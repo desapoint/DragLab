@@ -216,11 +216,13 @@ Acceptance required for Slice 3:
 - Demonstrate authored assembled-engine quotes both above and below comparable loose-part totals, along with condition/completeness-dependent car/chassis valuations. No universal one-to-one pricing rule or linear upgrade-rank price substitutes for the valuation policy.
 - Recovery routes cover the last non-running/salvaged car, retained spares and low cash. Economy routes include rational reuse, downgrade, rebuilding, complete-assembly sale and part-out decisions; persistent fuel/wear remains tied to the correct owned instances.
 
-## Slice 4 — Input and platform validation
+## Slice 4 — Interface migration, input and platform validation
 
-Replace IMGUI controls with Unity UI and an input abstraction supporting keyboard, controller and genuine multitouch. Add remapping, focus handling, accessible assist presets, mobile safe areas, scalable HUD, suspend/resume and save timing. Establish target Android devices and desktop minimum specs through profiling.
+Revised after Slice 3H and the approved inventory/cart, component, settings, bench, audio and performance additions. Migrate all existing player interfaces and both development benches to scalable Unity UI, preserving their actual controls, ownership, previews and shared simulation. Use shared input actions for keyboard, controller and genuine multitouch; retain remapping, accessible navigation, safe areas, focus/lifecycle handling and recoverable save timing. Establish supported hardware and budgets through measured profiling.
 
-Acceptance: controller-only operation from launch to garage; simultaneous throttle/clutch input on a real phone; no simulation speed advantage at 30/60/120 display FPS; orientation and backgrounding do not pay duplicate income or advance a paused race.
+The authoritative [Slice 4 review plan](SLICE_4_PLAN.md) orders **4A–4Q**: coverage/layouts → shell/widgets/input → settings → garage/collection/stats → tuning/configurations → installed maintenance → inventory → shop/cart → assemblies/valuation/salvage → career/free race/records → business/recovery → race HUD/results → sound bench → physical bench → controller/accessibility → Android → integrated acceptance. One phase produces one reviewable checkpoint; **stop and wait for the user's explicit validation before starting the next**. 4A reviews layouts before package or runtime changes. All phases are currently not started.
+
+Acceptance: feature/control coverage including advanced settings and both benches; readable summaries/comparisons and a visible hardware-aware shift light; preserved Apply/Revert, held throttle, input ownership, exact worn assets and atomic carts/quotes; controller-only workflows and simultaneous real-phone pedals/shifts; no display-FPS simulation advantage at 30/60/120; no duplicate income/rewards or advancing paused races on focus/background/orientation changes. Automated evidence and user interface approval are separate gates. Final vehicle art/content remains Slice 5, commercial hardening Slice 6.
 
 ## Slice 5 — Content and visual finish
 

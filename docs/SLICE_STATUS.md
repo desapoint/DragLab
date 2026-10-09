@@ -2,6 +2,8 @@
 
 **2A–2L and 3A–3H developer acceptance are complete.** See [phase plan](IMPLEMENTATION_PHASES.md), [full Slice 3 audit](../reports/SLICE_3_AUDIT.md), [career](CAREER_PROGRESSION.md), [garage business](GARAGE_BUSINESS.md) and [economy balance](ECONOMY_BALANCE.md).
 
+**Slice 4: plan revised, implementation not started (2026-10-09).** [4A–4Q](SLICE_4_PLAN.md) splits layouts, shared UI/input, player workflows, each bench and device validation into separate checkpoints. Stop after every phase for explicit user validation. Next is 4A coverage/layout review; no UI framework/packages, gameplay or saves changed in this planning increment.
+
 Source of scope: [objective.md](objective.md), section 58. The eight-car roster includes the requested pickup, three-cylinder hatch, AWD turbo sedan, inline-six GT and supercharged V8. The four new mechanical configurations reuse existing layered placeholder bodies. Mechanics and editable data take priority over finished graphics or menus.
 
 Current Slice 3 progress: eight-car collection, retained engine assemblies, saved configurations, immutable paid quotes/salvage, 21 career events, exact reserved garage jobs and captured offline accrual are implemented. Full-loop funded scenarios preserve actual fuel/fluids/wear and viable recovery. Prices are calibrated prototype values, with human pacing review still required. 3H passed the integrated interruption/migration/save gate and complete domain/Windows reruns; see [ordered phases](IMPLEMENTATION_PHASES.md).

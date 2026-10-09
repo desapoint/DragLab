@@ -2,6 +2,8 @@
 
 The project keeps its fixed-step simulation and vehicle data portable. Android support is being installed through Unity Hub; no phone build has been claimed until the module, SDK/NDK/OpenJDK and real-device verification complete.
 
+Current execution order: [Slice 4 interface/input/platform plan](SLICE_4_PLAN.md). Desktop screens are reviewed individually before controller/accessibility (4O), genuine Android touch/lifecycle (4P) and integrated acceptance (4Q). The checklist below is preparatory; it does not authorize skipping those checkpoints or certify a device build.
+
 ## Android first test
 
 1. Finish the Android Build Support installation, including Unity's SDK/NDK and OpenJDK components.

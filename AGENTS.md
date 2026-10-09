@@ -6,6 +6,7 @@ These instructions apply to this repository and all its subdirectories.
 
 - Read `docs/objective.md`, `docs/IMPLEMENTATION_PHASES.md` and the current status/report before implementing the next increment. Preserve approved spontaneous requirements as well as the ordered phase plan.
 - Work on one slice/subphase or requested change at a time. Keep a runnable checkpoint and do not silently advance later phases.
+- For Slice 4, follow `docs/SLICE_4_PLAN.md`: deliver and locally commit one lettered phase, report its checks/build and interface review checklist, then stop for explicit user validation before starting the next. Track technical completion separately from user acceptance; silence or passing automation is not approval.
 - Use the same authoritative simulation in races and the physical bench; experimental bench state must remain isolated from player assets and resources.
 - Preserve held throttle across shifts, keyboard/slider ownership, installed hardware tuning permissions, explicit Apply/Revert, actual component identities, retained wear/faults/resources and recoverable saves. Do not fabricate missing OEM parts or heal condition during normalization.
 

@@ -1,8 +1,10 @@
-# Slice 2 and Slice 3 implementation phases
+# Slice 2, Slice 3 and Slice 4 implementation phases
 
 Additional catalog foundation (2026-10-08): [part-owned tuning permissions and 128 new hardware choices](../reports/part-hardware/CHANGES.md), integrated with shared race/physical-bench resolution. Preserve physical turbo-size swaps, fixed/adjustable controller and pulley distinctions, supported final-drive gearsets, saved-value enforcement and unrestricted raw acoustic experiments during remaining phases. Physical capture model was v12; the approved service/fluids extension uses v13. This records the original catalog extension; final integration acceptance is in the completion record below.
 
 This is the implementation order for the requirements in [GAME_PLAN.md](GAME_PLAN.md). **2A–2L and 3A–3H developer acceptance are complete.** User-approved changes and the reconciled final gates are consolidated in [Slice 2 plan reconciliation](SLICE_2_PLAN_RECONCILIATION.md). Existing feature checkpoints do not independently complete later integration gates. No approved requirement is removed.
+
+**Slice 4 is planned, not started.** Its revised [interface/input/platform contract](SLICE_4_PLAN.md) preserves the accumulated settings, inventory/cart, condition comparisons, saved configurations and both benches. Implement 4A–4Q one at a time, with explicit user validation at each handoff before beginning the next. This additional review gate applies to Slice 4; it does not reopen accepted Slice 2/3 domain work.
 
 The user-requested bench extension supplies shared provisional engine/driveline wear/failure and simulation difficulty foundations: None/Partial 25%/Full wear, isolated accelerated wear, optimal thermals, clutch and stall assists, and continuous peak-preserving graphs. These remain the baseline for the final stress/recovery and integrated calibration gates in 2K–2L. Apply the captured/persisted difficulty rules to each new thermal/contact/condition subsystem as it lands; retain installed ECU protections and use one simulation in race and bench. See [simulation settings](SIMULATION_SETTINGS.md).
 
@@ -10,7 +12,7 @@ Additional approved foundation: [component-specific failures and AWD](COMPONENT_
 
 Additional approved foundation: [part effects and tuning equipment](PART_EFFECTS_AND_EQUIPMENT.md). Catalog-specific heat transfer/radiator capacity, fuel/ignition power delivery, category-specific ratings, left/right differential allocation, removable cabin equipment, and separately purchased limiter/two-step/shift-light modules now run through the shared resolver. These additions predated 2F–2J; the checkpoint evidence below records their later integration with independent wheel contact, mass, fuel and tire life. Final stress/recovery and all-system calibration remain 2K–2L. Retain equipment-driven tuning permissions and removal/ownership rules in those phases.
 
-Implement one subphase to a working, reviewable checkpoint before beginning the next. A checkpoint includes the minimal usable controls, relevant authoring tools, save behavior and recorded verification for its scope; UI polish remains later work. Each phase has a defined exit gate. Avoid one large replacement of physics, inventory, saves and economy at once.
+Implement one subphase to a working, reviewable checkpoint before beginning the next. A checkpoint includes usable controls, relevant authoring tools, save behavior and recorded verification for its scope. Slice 2/3 prioritized mechanics over UI; Slice 4 now addresses functional interface quality and input, while final art/content remains Slice 5. Each phase has a defined exit gate. Avoid one large replacement of physics, inventory, saves and economy at once.
 
 ## Rules for every subphase
 
@@ -138,3 +140,29 @@ Approved requested refinements: modulate tire resonance using actual grip/load/r
 ## Shared inventory and component-set extension (2026-10-09)
 
 Approved post-3H refinement: shared storage/car/engine/seller/cart views, retained dealer component stock, complete-set defaults with explicit unit counts, optional individual engine/tire purchases, targeted reuse, staged ownership moves and atomic net-price trade checkout. Existing complete/partial assembly valuation, salvage, driving ownership and explicit Apply remain intact. See [contract and controls](INVENTORY_COMMERCE.md) and [verification](../reports/inventory-commerce/CHANGES.md). No later planned slice is advanced.
+
+## Slice 4 — ordered interface review checkpoints
+
+All rows are **not started**. Detailed scope, technical gates, preservation mapping and user-review procedure are authoritative in [SLICE_4_PLAN.md](SLICE_4_PLAN.md). Implement only the next authorized row, retain the runnable checkpoint and wait for explicit user validation before moving forward.
+
+| Phase | Reviewable increment |
+|---|---|
+| 4A | Existing-control coverage map, navigation and annotated layouts; approve framework/layouts before runtime migration |
+| 4B | Shared UI shell, common widgets, action adapters, focus and responsive sizing |
+| 4C | Audio, units, simulation/driving settings, keyboard bindings and progression reset |
+| 4D | Garage overview, exact owned-car selection, dealership and car stats/dyno |
+| 4E | Hardware-gated tuning, Apply/Revert and saved configuration library |
+| 4F | Installed parts, failure identification, maintenance, top-ups and rebuild service |
+| 4G | Shared storage/spares, compatibility, donor destinations and staged transfers |
+| 4H | Parts shop, full sets/individual units, retained dealer stock and cumulative trade cart |
+| 4I | Complete/partial engines, valuation, keep/dispose sales and salvage |
+| 4J | Career/free/practice selection, eligibility/entry costs and existing records |
+| 4K | Offline business, reservations, claim/cancel and recovery work |
+| 4L | Warm-up, neutral staging, race HUD/shift light, pause and results |
+| 4M | Full engine/sound fixture interface, A/B scenarios and chronological dyno |
+| 4N | Shared physical driving bench, wear/faults/liquids, recording/replay and telemetry |
+| 4O | Controller/keyboard-only workflows, remapping, analog pedals and accessibility |
+| 4P | Real Android multitouch, safe areas, suspend/resume and device profiling |
+| 4Q | Full feature parity, save/input/lifecycle regression, performance evidence and user acceptance |
+
+Plan revision completed 2026-10-09; evidence is [the planning report](../reports/slice-4-plan/CHANGES.md). This records a documentation increment, not implementation of 4A or acceptance of later phases. Final art/content and commercial hardening remain Slice 5 and Slice 6.
