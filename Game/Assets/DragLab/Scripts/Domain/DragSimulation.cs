@@ -132,7 +132,7 @@ namespace DragLab.Domain
             if (induction != null && induction.Validate() != null) return induction.Validate();
             if (!Finite(displacementLitres) || displacementLitres < 0 || displacementLitres > 12) return "Invalid engine displacement (0 = sound-profile fallback).";
             if (string.IsNullOrWhiteSpace(id)) return "Vehicle needs a stable ID.";
-            if (!Finite(massKg) || massKg < 400 || massKg > 4000) return "Mass must be 400Ã¢â‚¬â€œ4000 kg.";
+            if (!Finite(massKg) || massKg < 400 || massKg > 4000) return "Mass must be 400-4000 kg.";
             if (!Finite(wheelRadiusM) || wheelRadiusM < .15 || wheelRadiusM > .6) return "Invalid wheel radius.";
             if (!Finite(wheelbaseM) || wheelbaseM < 1.5 || wheelbaseM > 5) return "Invalid wheelbase.";
             if (!Finite(centerOfGravityM) || centerOfGravityM < .1 || centerOfGravityM > 1.5) return "Invalid center of gravity.";
@@ -150,7 +150,7 @@ namespace DragLab.Domain
             if (!Finite(limiterDropRpm) || limiterDropRpm < 0 || limiterDropRpm > 1000) return "Limiter recovery must be 0 (auto) or up to 1000 RPM.";
             if (!Finite(idleRpm) || !Finite(redlineRpm) || idleRpm < 400 || redlineRpm < idleRpm + 2000 || redlineRpm > 14000) return "Invalid RPM range.";
             if (!Enum.IsDefined(typeof(DriveType), drive)) return "Invalid drivetrain.";
-            if (gears == null || gears.Length < 2 || gears.Length > 8) return "Use 2Ã¢â‚¬â€œ8 forward gears.";
+            if (gears == null || gears.Length < 2 || gears.Length > 8) return "Use 2-8 forward gears.";
             for (int i = 0; i < gears.Length; i++)
                 if (!Finite(gears[i]) || gears[i] <= .2 || gears[i] > 6 || (i > 0 && gears[i] >= gears[i - 1])) return "Gear ratios must be positive and descending.";
             if (torque == null || torque.Length < 3) return "Provide at least three torque samples.";

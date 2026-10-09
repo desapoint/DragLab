@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using DragLab.Domain;
 using DragLab.Infrastructure;
@@ -61,6 +62,7 @@ namespace DragLab.Runtime
         {
             yield return null;
             yield return Capture("garage");
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-economy-integration")>=0){yield return EconomyIntegrationRun();yield break;}
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-balance-only")>=0){yield return BalanceRun();yield break;}
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-business-only")>=0){yield return BusinessRun();yield break;}
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-expanded-career-only")>=0){yield return ExpandedCareerRun();yield break;}
@@ -110,7 +112,8 @@ namespace DragLab.Runtime
             }
             Check(game.Profile.cash == 1200, "Fresh isolated profile.");
             int cash = game.Profile.cash;
-            game.StartRace(game.career[0]);
+            var firstEvent = game.career.Single(e => e.stableId == "first-pass");
+            game.StartRace(firstEvent);
             while (game.Race.time < 2.55) yield return null;
             Check(game.Race.player.state.gear == 0 && game.Race.player.state.stagingBrakesHeld && game.Race.player.state.brake == 1 &&
                 game.Race.opponent.state.gear == 0 && game.Race.opponent.state.brake == 1, "Both cars stage in neutral with brakes held.");
@@ -127,7 +130,7 @@ namespace DragLab.Runtime
             yield return Capture("automatic-race");
             yield return AwaitFinish();
             yield return Capture("automatic-result");
-            Check(game.Race.playerWon && game.Profile.cash == cash + game.career[0].cashWin, "Career win settles once.");
+            Check(game.Race.playerWon && game.Profile.cash == cash + firstEvent.cashWin, "Career win settles once.");
             Check(game.Profile.SelectedCar.completedRuns == 1, "Per-car records stored.");
             int settled = game.Profile.cash;
             double settledEt = game.Race.player.state.elapsed, settledTrap = game.Race.player.state.trapSpeed;

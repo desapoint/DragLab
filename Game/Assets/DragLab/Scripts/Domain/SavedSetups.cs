@@ -39,7 +39,7 @@ namespace DragLab.Domain.Mechanics
         {
             var car = AssemblyOperations.MutableCar(p, carId);
             name = (name ?? "").Trim();
-            if (name.Length < 1 || name.Length > 64 || !Enum.IsDefined(typeof(SetupScope), scope)) throw new InvalidOperationException("Give the setup a name of 1â€“64 characters.");
+            if (name.Length < 1 || name.Length > 64 || !Enum.IsDefined(typeof(SetupScope), scope)) throw new InvalidOperationException("Give the setup a name of 1-64 characters.");
             var setup = new SavedVehicleSetup { id = MechanicsOwnership.NewId("setup"), name = name, vehicleDefinitionId = car.vehicleId, scope = scope, tune = car.tune.Copy() };
             foreach (var slot in car.installed.slots.Where(s => InScope(scope, AssemblyOperations.Parse(s.slot))))
                 setup.parts.Add(new SetupPart { slot = slot.slot, definitionId = p.parts.Find(i => i.instanceId == slot.partInstanceId).definitionId });

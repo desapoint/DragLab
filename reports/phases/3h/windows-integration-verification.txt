@@ -1,0 +1,18 @@
+3H actual Windows combined job / paid career / pause / forced termination / reload.
+3H actual Windows combined job / paid career / pause / forced termination / reload.
+PASS: Actual dealership buys a distinct same-model car.
+PASS: Actual job reserves first car while duplicate remains available.
+PASS: Pause freezes motion, fuel and elapsed simulation while saving the checkpoint.
+PASS: Resume restores continuing throttle and simulation.
+PASS: Transmitted torque fails shaft without stopping engine.
+PASS: Career checkpoint and independent reservation are durable together.
+PASS: Forced restart retains both owned instances and matching currency.
+PASS: Interrupted career closes without result, record or duplicate payout.
+PASS: Both independent partial tank quantities survive termination.
+PASS: Failed original and separate job reservation survive restart.
+PASS: Actual replacement charges once and retains failed original.
+PASS: Actual real-deadline claim releases offline job once.
+PASS: Repaired interrupted career wins and records only the new pass.
+PASS: Completed retry reload retains one reward and exclusive ownership.
+PASS: No runtime, GUI or audio errors.
+Runtime errors: 0

@@ -1,0 +1,11 @@
+# 3H integration harness checkpoint (2026-10-09)
+
+The new economy/save matrix passed **500 checks across all eight models** using production transactions, actual disk saves and the shared race. It combines paid duplicate ownership, partial tanks/fluids, individual wear and missing kits, concurrent garage/rebuild reservations, failed writes and repeated claims, interrupted entry, saved result before shutdown closure, chassis salvage, engine descendant sale and paid missing-part blueprint restoration. Corrupt-primary backup, future-schema write protection and legacy earned/schema-4 migration also pass. Fixture cash/damage and deadline advances are explicit test inputs; this is integration evidence, not a funded pacing measurement.
+
+The Windows combined workflow passed **15 semantic checks across two processes**, with zero runtime/GUI/audio errors. Actual dealership, selection, job, career, replacement and claim controls were exercised. Pause froze simulation/resources; resume continued throttle. The host terminated only the named fixture player after its durable checkpoint, skipping normal quit callbacks. Restart retained both instances, partial tanks, an actually torque-failed shaft, the career no-payout outcome and the other car's job. Paid replacement retained the failed original; the real-clock job claim and retry race/reload completed.
+
+Four pre-existing malformed range labels were repaired. The original gameplay probe now chooses the stable opening event ID rather than relying on Resources enumeration order after the event expansion. The new runner preserves historical tracked reports byte-for-byte and collects fresh acceptance evidence separately.
+
+Tools: `Invoke-Unity.ps1 -Action EconomyIntegrationVerify`, `Test-EconomyInterruptedRun.ps1 -ShowPlayer`, and `Test-SliceThreeIntegration.ps1 -ShowPlayer`. Saves/screenshots/raw logs are isolated under local fixture directories. The Windows build passed.
+
+**This is a working harness checkpoint. Full Slice 3 feature/regression acceptance and final packaging are still pending; it does not yet declare 3H or Slice 3 complete.** The final audit will distinguish current reruns, inherited requirements, deferred content and human/device acceptance limits.

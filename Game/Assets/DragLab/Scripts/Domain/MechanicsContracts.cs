@@ -30,7 +30,7 @@ namespace DragLab.Domain.Mechanics
         public ComponentCondition Copy() { var copy=(ComponentCondition)MemberwiseClone(); if(elements!=null)copy.elements=Array.ConvertAll(elements,e=>e==null?null:e.Copy()); if(tires!=null)copy.tires=Array.ConvertAll(tires,t=>t==null?null:t.Copy());return copy; }
         public string Validate()
         {
-            if (!MechanicsSchema.Finite(health) || health < 0 || health > 1) return "Health must be 0â€“1.";
+            if (!MechanicsSchema.Finite(health) || health < 0 || health > 1) return "Health must be 0-1.";
             if (!MechanicsSchema.Finite(runningSeconds) || !MechanicsSchema.Finite(distanceM) || !MechanicsSchema.Finite(stressExposure) || runningSeconds < 0 || distanceM < 0 || stressExposure < 0) return "Invalid component history.";
             if (failed && string.IsNullOrWhiteSpace(failureReason)) return "Failed component needs a cause.";
             if (!MechanicsSchema.Finite(temperatureC) || temperatureC < -50 || temperatureC > 2000 || !MechanicsSchema.Finite(slipEnergyJ) || slipEnergyJ < 0) return "Invalid component thermal history.";

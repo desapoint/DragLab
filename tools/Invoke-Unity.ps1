@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('Prepare','CareerExpandedVerify','BusinessVerify','BalanceVerify','PaidVerify','ValuationVerify','AssemblyVerify','CollectionVerify','Verify','RecoveryVerify','IntegratedVerify','BenchVerify','AxleVerify','PartsEffectsVerify','DurabilityAudit','SliceTwoAudit','MassVerify','ContactVerify','DrivingContactVerify','LaunchVerify','AwdContactVerify','FuelVerify','FuelingConversionVerify','ServiceVerify','IndividualEngineVerify','TireVerify','TireFailureVerify','CareerVerify','SceneCheck','UnitsVisualVerify','ManualGearboxVerify','PartHardwareVerify','BuildWindows','BuildPlayerOnly','Open')]
+    [ValidateSet('Prepare','CareerExpandedVerify','BusinessVerify','BalanceVerify','EconomyIntegrationVerify','PaidVerify','ValuationVerify','AssemblyVerify','CollectionVerify','Verify','RecoveryVerify','IntegratedVerify','BenchVerify','AxleVerify','PartsEffectsVerify','DurabilityAudit','SliceTwoAudit','MassVerify','ContactVerify','DrivingContactVerify','LaunchVerify','AwdContactVerify','FuelVerify','FuelingConversionVerify','ServiceVerify','IndividualEngineVerify','TireVerify','TireFailureVerify','CareerVerify','SceneCheck','UnitsVisualVerify','ManualGearboxVerify','PartHardwareVerify','BuildWindows','BuildPlayerOnly','Open')]
     [string]$Action = 'Prepare',
     [string]$EditorPath = 'C:\Program Files\Unity\Hub\Editor\6000.6.4f1\Editor\Unity.exe'
 )
@@ -28,6 +28,7 @@ $taskMethod = switch ($Action) {
     'AxleVerify' { 'DragLab.Editor.AxleFailureVerification.RunStandalone' }
     'DurabilityAudit' { 'DragLab.Editor.StockDurabilityVerification.Audit' }
     'SliceTwoAudit' { 'DragLab.Editor.SliceTwoAudit.Run' }
+    'EconomyIntegrationVerify' { 'DragLab.Editor.EconomyIntegrationVerification.RunStandalone' }
     'BalanceVerify' { 'DragLab.Editor.EconomyBalanceVerification.RunStandalone' }
     'BusinessVerify' { 'DragLab.Editor.GarageBusinessVerification.RunStandalone' }
     'CareerExpandedVerify' { 'DragLab.Editor.CareerExpansionVerification.RunStandalone' }
