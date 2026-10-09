@@ -1,0 +1,12 @@
+Pinned stats summary / actual Windows preview mouse / isolated save.
+PASS: Saved-car summary shows core values without a comparison.
+PASS: Actual cooling preview puts concrete heat-transfer and radiator improvements in the pinned summary.
+PASS: Summary fits above the details at 1280 × 720.
+PASS: Scrolling detailed stats leaves the summary and comparison values pinned in place.
+PASS: Forged-internal preview summarizes stronger ratings while engine output remains unchanged.
+PASS: Actual tire preview pins higher grip and separate shorter rolling/sliding life
+PASS: Tuning summary shows wheel mass/radius effects and selected pressure units.
+PASS: Incomplete previews show unavailable quarter-mile estimates instead of zero seconds.
+PASS: Summary previews and detail scrolling leave saved cash, tune, inventory and condition untouched.
+PASS: Summary UI has no runtime/GUI/DSP errors.
+Runtime errors: 0

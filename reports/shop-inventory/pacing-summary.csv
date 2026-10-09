@@ -1,0 +1,8 @@
+fixture,phase,frames_after_10_skipped,frame_median_ms,frame_p95_ms,frame_max_ms,frames_above_33_3_ms,gui_median_ms,gui_p95_ms,gui_max_ms
+old-partial-inspection,startup,92,16.308,1254.456,1285.539,22,12.499,1243.691,1276.06
+new-full-inspection,startup,765,9.826,17.356,386.797,13,7.272,12.405,31.184
+new-cart-workflow,startup,137,15.464,18.052,24.763,0,13.304,15.089,21.419
+new-cart-workflow,shop-cart-clicks,783,12.858,16.59,137.53,6,10.467,13.573,32.14
+new-cart-workflow,tuning-slider-preview,121,10.365,21.114,23.77,0,7.5,17.986,20.494
+new-cart-workflow,driving-setting-held-gesture,331,6.947,7.065,36.317,1,0.933,1.071,4.532
+new-cart-workflow,opponent-audio-race,297,6.945,7.049,46.364,1,0.215,0.269,0.414

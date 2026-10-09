@@ -1,0 +1,21 @@
+Car stats / previews / draft tuning / actual Windows mouse / isolated save.
+PASS: Garage automatically shows full saved stats and dyno without a comparison.
+PASS: Actual part Preview shows increased dyno power without buying, installing or saving anything.
+PASS: Opening tuning observes saved values without creating an accidental draft.
+PASS: Actual outer-radius slider changes only the preview, not saved tune or disk. [dirty=True, diameter=1,48054623603821, savedTuneUnchanged=True, diskUnchanged=True]
+PASS: Live preview exposes larger-tire mass/gearing changes and launch advice.
+PASS: Actual tire slider visibly enlarges wheel layers in the draft preview.
+PASS: Leaving tuning restores the saved wheel geometry.
+PASS: Leaving and reentering tuning discards the uncommitted slider values.
+PASS: Actual Apply atomically commits the draft and durable saved values.
+PASS: Applied wheel geometry carries into the actual practice race.
+PASS: A real practice race uses the applied wheel size.
+PASS: A subsequent edit creates an independent draft.
+PASS: Starting a race discards unapplied edits and keeps the previously saved size.
+PASS: Actual shop Buy + install immediately saves the part and updates the baseline stats.
+PASS: Actual torque Settings button selects lb-ft without changing the tune. [torque=PoundFeet; tune unchanged=True]
+PASS: Actual Settings buttons select mph and psi without altering the car.
+PASS: Shared units persist and boost displays bar plus psi.
+PASS: Torque preference persists after reload and updates the live garage summary.
+PASS: Inspection/tuning/shop UI has no runtime/GUI/DSP errors.
+Runtime errors: 0

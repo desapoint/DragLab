@@ -1,0 +1,68 @@
+PASS: city-three combined preview installs checked entries only
+PASS: city-three cart preview does not spend, assign identities or heal
+PASS: city-three failed checkout save rolls back entire cart
+PASS: city-three one save and receipt publish whole cart /
+PASS: city-three displaced original retains real identity and wear
+PASS: city-three combined installed stats match preview
+PASS: city-three insufficient funds never write or partially buy
+PASS: rally-sedan combined preview installs checked entries only
+PASS: rally-sedan cart preview does not spend, assign identities or heal
+PASS: rally-sedan failed checkout save rolls back entire cart
+PASS: rally-sedan one save and receipt publish whole cart /
+PASS: rally-sedan displaced original retains real identity and wear
+PASS: rally-sedan combined installed stats match preview
+PASS: rally-sedan insufficient funds never write or partially buy
+PASS: sport-coupe combined preview installs checked entries only
+PASS: sport-coupe cart preview does not spend, assign identities or heal
+PASS: sport-coupe failed checkout save rolls back entire cart
+PASS: sport-coupe one save and receipt publish whole cart /
+PASS: sport-coupe displaced original retains real identity and wear
+PASS: sport-coupe combined installed stats match preview
+PASS: sport-coupe insufficient funds never write or partially buy
+PASS: starter-hatch combined preview installs checked entries only
+PASS: starter-hatch cart preview does not spend, assign identities or heal
+PASS: starter-hatch failed checkout save rolls back entire cart
+PASS: starter-hatch one save and receipt publish whole cart /
+PASS: starter-hatch displaced original retains real identity and wear
+PASS: starter-hatch combined installed stats match preview
+PASS: starter-hatch insufficient funds never write or partially buy
+PASS: super-v8 combined preview installs checked entries only
+PASS: super-v8 cart preview does not spend, assign identities or heal
+PASS: super-v8 failed checkout save rolls back entire cart
+PASS: super-v8 one save and receipt publish whole cart /
+PASS: super-v8 displaced original retains real identity and wear
+PASS: super-v8 combined installed stats match preview
+PASS: super-v8 insufficient funds never write or partially buy
+PASS: touring-six combined preview installs checked entries only
+PASS: touring-six cart preview does not spend, assign identities or heal
+PASS: touring-six failed checkout save rolls back entire cart
+PASS: touring-six one save and receipt publish whole cart /
+PASS: touring-six displaced original retains real identity and wear
+PASS: touring-six combined installed stats match preview
+PASS: touring-six insufficient funds never write or partially buy
+PASS: utility-pickup combined preview installs checked entries only
+PASS: utility-pickup cart preview does not spend, assign identities or heal
+PASS: utility-pickup failed checkout save rolls back entire cart
+PASS: utility-pickup one save and receipt publish whole cart /
+PASS: utility-pickup displaced original retains real identity and wear
+PASS: utility-pickup combined installed stats match preview
+PASS: utility-pickup insufficient funds never write or partially buy
+PASS: v8-muscle combined preview installs checked entries only
+PASS: v8-muscle cart preview does not spend, assign identities or heal
+PASS: v8-muscle failed checkout save rolls back entire cart
+PASS: v8-muscle one save and receipt publish whole cart /
+PASS: v8-muscle displaced original retains real identity and wear
+PASS: v8-muscle combined installed stats match preview
+PASS: v8-muscle insufficient funds never write or partially buy
+PASS: Individual faults/wear reduce dyno; healthy reference restores only copied condition
+PASS: No-wear reference preserves actual ledger, fuel and liquids
+PASS: Conflicting installs rejected; spare offers remain allowed
+PASS: Same-revision asset changes invalidate checkout quote
+PASS: No-wear reference never creates a removed required component
+PASS: Expired quote rejects before mutation
+PASS: Valid quote commits once
+PASS: Replayed checkout cannot spend twice or duplicate parts
+PASS: Quantity bound rejects 0
+PASS: Quantity bound rejects 100
+PASS: Old wheel checkpoints safely acquire diagnostic arrays without altering physics
+Checks: 67

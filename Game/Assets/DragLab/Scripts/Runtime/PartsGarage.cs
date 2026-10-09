@@ -40,7 +40,13 @@ namespace DragLab.Runtime
             var catalog = profile.catalog;
             if (partProse == null) partProse = new GUIStyle(GUI.skin.label) { wordWrap = true };
             if (repairsOnly) { RepairsGUI(); return; }
-            GUILayout.Label("PARTS / provisional prices / inventory persists", stat);
+            EnsureCartOwner();
+            GUILayout.Label(partsPage.ToUpperInvariant()+" / parts retain identity and condition", stat);
+            GUILayout.BeginHorizontal();
+            foreach(string page in new[]{"Installed","Inventory","Shop"})if(PartButton("parts-page:"+page,page==partsPage?"["+page+"]":page)){string selected=page;pendingAction=()=>SelectPartsPage(selected);}
+            GUILayout.EndHorizontal();
+            if(partsPage=="Shop")CartGUI();
+
             if(PartButton("parts-setups", "Save / load configurations / buy missing setup parts")) pendingAction = OpenSetups;
             if(PartButton("parts-valuation", "Compare used-market quotes / preview only")) pendingAction = () => OpenValuation(ValuationKind.Car, Build.instanceId);
             MaintenanceSummary();
@@ -71,7 +77,8 @@ namespace DragLab.Runtime
                 if (PartButton("remove", "Remove to inventory")) QueuePartAction(p => PartOperations.Remove(p, carId, category));
                 GUILayout.EndHorizontal();
             }
-            GUILayout.Label("COMPATIBLE CATALOG / no preceding purchases required");
+            if(partsPage=="Shop") {
+            GUILayout.Label("COMPATIBLE SHOP / independent offers / add multiple categories to cart");
             foreach (var definition in catalog.parts.Where(p => p.category == partCategory && catalog.Fits(Selected.spec, p)))
             {
                 string id = definition.id;
@@ -80,24 +87,38 @@ namespace DragLab.Runtime
                 GUILayout.Label(PartTuning.Summary(definition), partProse);
                 foreach (var value in PartSemantics.Stats(definition)) GUILayout.Label(value.label + ": " + (value.unit == "Nm" ? SharedUnitSettings.Torque(value.value, "0.##") : value.unit == "bar" ? SharedUnitSettings.Pressure(value.value) : value.value.ToString("0.##") + " " + value.unit));
                 GUILayout.BeginHorizontal();
-                if (PartButton("preview:" + id, "Preview stats / dyno")) PreviewPart(id);
+                if (PartButton("preview:" + id, "Preview this part / dyno")) PreviewPart(id);
+                GUI.enabled=profile.reputation>=definition.reputationRequired;
+                if(PartButton("cart-add:"+id,"Add to cart"))AddToCart(id);
+                if(PartButton("cart-fit:"+id,"Add / mark install"))AddToCart(id,true);
                 GUI.enabled = profile.cash >= definition.price && profile.reputation >= definition.reputationRequired;
                 if(definition.reputationRequired>0)GUILayout.Label("Requires REP "+definition.reputationRequired+" / independent offer");
                 if (PartButton("buy:" + id, "Buy loose")) QueuePayment(new PaymentRequest { kind = PaymentKind.Part, carId = carId, targetId = id });
                 if (PartButton("fit:" + id, "Buy + install")) QueuePayment(new PaymentRequest { kind = PaymentKind.Part, carId = carId, targetId = id, install = true });
                 GUI.enabled = true; GUILayout.EndHorizontal();
             }
-            GUILayout.Label("LOOSE INVENTORY / compatible " + partCategory);
-            foreach (var item in profile.parts.Where(p => p.location == PartLocation.Inventory && catalog.Find(p.definitionId).category == partCategory && catalog.Fits(Selected.spec, catalog.Find(p.definitionId))))
+            }
+            if(partsPage=="Inventory") {
+            inventoryAllCategories=GUILayout.Toggle(inventoryAllCategories,"Show all part categories");
+            inventoryCompatibleOnly=GUILayout.Toggle(inventoryCompatibleOnly,"Show only parts compatible with this car");
+            GUILayout.Label("LOOSE INVENTORY / "+profile.parts.Count(p=>p.location==PartLocation.Inventory)+" retained parts");
+            if(PartButton("inventory-assemblies","Stored engines / attached component trees"))pendingAction=OpenAssemblies;
+
+            foreach (var item in profile.parts.Where(p => p.location == PartLocation.Inventory && (inventoryAllCategories || catalog.Find(p.definitionId).category == partCategory) && (!inventoryCompatibleOnly || catalog.Fits(Selected.spec, catalog.Find(p.definitionId)))))
             {
                 string id = item.instanceId; var definition = catalog.Find(item.definitionId);
                 GUILayout.Label(definition.name + " / " + Condition(item)); GUILayout.BeginHorizontal();
+                bool enabled=GUI.enabled;GUI.enabled=enabled&&catalog.Fits(Selected.spec,definition);
                 if (PartButton("preview-item:" + id, "Preview worn part")) PreviewPart(instanceId: id);
                 if (PartButton("install:" + id, "Install / reuse")) QueuePartAction(p => PartOperations.Install(p, catalog, carId, id));
+                GUI.enabled=enabled;
+                if(!catalog.Fits(Selected.spec,definition))GUILayout.Label("Fits another vehicle / cannot install here");
                 if (PartButton("sell:" + id, "Sell loose / preview buyer quote")) pendingAction = () => OpenValuation(ValuationKind.LoosePart, id);
                 if (PartButton("part-quote:" + id, "Buyer quote")) pendingAction = () => OpenValuation(ValuationKind.LoosePart, id);
                 GUILayout.EndHorizontal();
             }
+            }
+            if(partsPage=="Inventory"||partsPage=="Installed") {
             GUILayout.Label("DONORS / transfer leaves the donor slot empty");
             foreach (var donor in profile.cars.Where(c => c.instanceId != carId))
             {
@@ -107,6 +128,7 @@ namespace DragLab.Runtime
                 string donorId = donor.instanceId; var category = partCategory;
                 if (PartButton("preview-donor:" + donorId, "Preview donor component")) PreviewPart(instanceId: item.instanceId);
                 if (PartButton("donor:" + donorId, "Transfer from " + VehicleCollection.Label(catalog, donor) + " / " + Condition(item))) QueuePartAction(p => PartOperations.Transfer(p, catalog, donorId, carId, category));
+            }
             }
             int incompatible = profile.parts.Count(p => p.location == PartLocation.Inventory && !catalog.Fits(Selected.spec, catalog.Find(p.definitionId)));
             GUILayout.Label(incompatible + " loose parts fit another vehicle. Select its model in Garage to inspect them.");

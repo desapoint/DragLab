@@ -64,6 +64,7 @@ namespace DragLab.Runtime
             race?.CloseOpponentWorker(); race = null; activeEvent = null; previousPass = finishedPass = null;
             benchmark = null; lastBenchmarkKey = null; accumulator = 0;
             practiceRun = awarded = paused = audioSettingsOpen = false;
+            cart.Clear();cartOwner=null;previewCart=false;
             freeDistance = 402.336f; freeOpponent = 0; partCategory = 0;
             resetGameConfirm = false; resetRects.Clear(); partRects.Clear();
             scroll = resultScroll = Vector2.zero; controls.Clear();

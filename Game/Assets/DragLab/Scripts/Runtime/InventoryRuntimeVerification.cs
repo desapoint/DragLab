@@ -159,6 +159,11 @@ namespace DragLab.Runtime
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
         IEnumerator ClickPart(WindowsKeyboardProbe mouse, string key)
         {
+            if(game.ScreenName=="Parts") {
+                if((key.StartsWith("install:")||key.StartsWith("preview-item:")||key.StartsWith("sell:")||key.StartsWith("part-quote:"))&&game.PartsPage!="Inventory")game.SelectPartsPage("Inventory");
+                else if((key.StartsWith("buy:")||key.StartsWith("fit:")||key.StartsWith("preview:"))&&game.PartsPage!="Shop")game.SelectPartsPage("Shop");
+                yield return new WaitForEndOfFrame();
+            }
             game.ScrollToPart(key); yield return new WaitForSecondsRealtime(.12f);
             yield return new WaitForEndOfFrame();
             Rect rect; Check(game.partRects.TryGetValue(key, out rect) && rect.height > 0 && rect.center.y >= 125 && rect.center.y < Screen.height - 70, "Visible part control: " + key);
@@ -168,6 +173,7 @@ namespace DragLab.Runtime
             // Transactions run in Update; derived inspection is refreshed by OnGUI.
             // Assertions inspect the rendered committed state, regardless of frame cost.
             yield return new WaitForEndOfFrame();
+            if(game.ScreenName=="Parts"||game.ScreenName=="Tuning"||game.ScreenName=="Garage"||game.ScreenName=="Stats")yield return WaitForInspection();
         }
 #endif
     }

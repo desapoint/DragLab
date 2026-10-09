@@ -1,0 +1,30 @@
+Native tire contact sound and bounded smoke; same shared warm-up simulation.
+PASS: Bounded actual contact smoke / starter-hatch
+PASS: FWD smoke comes only from slipping front tires
+PASS: Actual tire DSP is audible / starter-hatch / RMS 0,03274175
+PASS: starter-hatch / particles 25 / front 46 / rear 0 / tire RMS 0,03274175
+PASS: Pause freezes particles and silences tire source / starter-hatch
+PASS: Particles change rendered pixels, not only emitter counters / starter-hatch / pixels 1502
+PASS: Rendered smoke pixel difference / starter-hatch / 1502
+PASS: Smoke expires after grip recovery / starter-hatch
+PASS: Garage/reset clears stale smoke / starter-hatch
+PASS: Bounded actual contact smoke / sport-coupe
+PASS: RWD smoke comes only from slipping rear tires
+PASS: Actual tire DSP is audible / sport-coupe / RMS 0,03139081
+PASS: sport-coupe / particles 25 / front 0 / rear 40 / tire RMS 0,03139081
+PASS: Pause freezes particles and silences tire source / sport-coupe
+PASS: Particles change rendered pixels, not only emitter counters / sport-coupe / pixels 1530
+PASS: Rendered smoke pixel difference / sport-coupe / 1530
+PASS: Smoke expires after grip recovery / sport-coupe
+PASS: Garage/reset clears stale smoke / sport-coupe
+PASS: Bounded actual contact smoke / rally-sedan
+PASS: AWD low-grip fixture emits from both actual slipping axles
+PASS: Actual tire DSP is audible / rally-sedan / RMS 0,05196885
+PASS: rally-sedan / particles 52 / front 42 / rear 38 / tire RMS 0,05196885
+PASS: Pause freezes particles and silences tire source / rally-sedan
+PASS: Particles change rendered pixels, not only emitter counters / rally-sedan / pixels 3079
+PASS: Rendered smoke pixel difference / rally-sedan / 3079
+PASS: Smoke expires after grip recovery / rally-sedan
+PASS: Garage/reset clears stale smoke / rally-sedan
+PASS: Tire effects have zero runtime/GUI/DSP errors
+Checks: 22 / Runtime errors: 0

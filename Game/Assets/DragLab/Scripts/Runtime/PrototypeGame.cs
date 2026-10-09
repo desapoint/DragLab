@@ -53,6 +53,8 @@ namespace DragLab.Runtime
         internal PlayerProfile Profile { get { return profile; } }
         internal RaceSimulation Race { get { return race; } }
         internal EngineAudio Audio { get { return engineAudio; } }
+        internal EngineAudio OpponentAudio => opponentAudio;
+        internal void ShowDrivingSettings() { DiscardPreviews(); screen="Driving"; scroll=Vector2.zero; }
         internal LayeredCarView PlayerView=>playerView;
         internal string ScreenName { get { return screen; } }
         internal bool IsPractice { get { return practiceRun; } }
@@ -154,7 +156,7 @@ namespace DragLab.Runtime
             liveRunId=MechanicsOwnership.NewId("run");liveRunOwner=Build.instanceId;liveRunTick=0;savedRunTick=-1;savedRunFailures=RunPersistence.FailureCount(race.player);liveRunClosed=false;
             PlayerProfile entered;string entrySaveError;
             var initial=RunPersistence.Capture(liveRunId,liveRunOwner,0,race.player);
-            if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{CareerProgression.Enter(p,liveRunId,liveRunOwner,evt,practiceRun);MechanicsTransactions.ApplyCheckpoint(p,initial);},ProfileStore.TrySave,out entered,out entrySaveError)){notice=entrySaveError;race=null;return;}
+            if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{CareerProgression.Enter(p,liveRunId,liveRunOwner,evt,practiceRun);MechanicsTransactions.ApplyCheckpoint(p,initial);},ProfileStore.TrySave,out entered,out entrySaveError)){notice=entrySaveError;race.CloseOpponentWorker();race=null;return;}
             profile=entered;settings=profile.driving;savedRunTick=0;saveDelay=0;
             RaceCheckpointStore.Prepare();
             aiView.gameObject.SetActive(true);
@@ -344,6 +346,10 @@ namespace DragLab.Runtime
             GUILayout.Label(resolved.Drivable ? (resolved.warnings.Count == 0 ? "BUILD READY" : "ENGINE CAN RUN / COMPONENT WARNINGS") : "ENGINE / BUILD UNAVAILABLE: " + string.Join("; ", resolved.errors), stat);
             if (resolved.warnings.Count > 0) GUILayout.Label(string.Join("; ", resolved.warnings));
             if (GUILayout.Button("Inspect / buy / swap individual parts")) pendingAction = () => ShowParts(PartCategory.Pistons);
+            GUILayout.BeginHorizontal();
+            if(PartButton("garage-shop","Shop / parts cart"))pendingAction=()=>{ShowParts(partCategory);SelectPartsPage("Shop");};
+            if(PartButton("garage-inventory","Inventory / retained spares"))pendingAction=()=>{ShowParts(partCategory);SelectPartsPage("Inventory");};
+            GUILayout.EndHorizontal();
             GUILayout.Label("Installed " + resolved.tune.inductionUpgrade + " induction / " + TransmissionDynamics.DisplayName(TransmissionDynamics.Configuration(resolved.spec, resolved.tune)) + " gearbox. Hardware changes are in Parts.");
             if (GUILayout.Button("Tune this car / preview changes")) pendingAction = OpenTuning;
             if (GUILayout.Button("Full car statistics")) pendingAction = () => { DiscardPreviews(); screen = "Stats"; scroll = Vector2.zero; };
@@ -368,6 +374,7 @@ namespace DragLab.Runtime
             GUILayout.Label(name + ": " + value.ToString(format));
             var kind = Event.current.rawType;
             float next = GUILayout.HorizontalSlider(value, min, max);
+            if(name.StartsWith("Digital clutch")&&Event.current.type==EventType.Repaint)partRects["driving-clutch"]=RuntimeGuiRect.ToClient(GUILayoutUtility.GetLastRect());
             bool changed = GUI.enabled && (kind == EventType.MouseDown || kind == EventType.MouseDrag || kind == EventType.MouseUp || kind == EventType.KeyDown) && Math.Abs(next - value) > .0001f;
             if (changed) value = next; return changed;
         }

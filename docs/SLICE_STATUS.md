@@ -112,3 +112,8 @@ Tire resonance now follows actual effective friction, load and radius as well as
 ## Menu preview responsiveness (2026-10-09)
 
 Stat previews publish dyno values immediately and calculate shared copied-car driving estimates on one bounded background task after a short debounce. Garage reuses condition-aware inspections; service prices and tuning hardware resolution are cached. Difficulty/driving gestures save only after release, while transactions and Apply retain full saves. See [implementation and checks](../reports/menu-preview/CHANGES.md).
+
+
+## Opponent audio, menu responsiveness and shop/inventory extension (2026-10-09)
+
+Approved requested refinements: modulate tire resonance using actual grip/load/radius as well as contact sliding work; opponent-specific audio with distance attenuation and a saved volume under the shared master; concurrent opponent advancement with fixed-tick joins and exact shared-physics parity; immediate dyno plus bounded background copied-car probes; no full saves from tune/part/cart previews, with definitive transaction/Apply and completed settings gestures saved. Parts now provides separate Installed/Inventory/Shop pages, a session-only cart with quantities and cumulative checked-install preview, atomic checkout preserving displaced identities/condition, and current-versus-no-wear graph/stat comparison without healing or refilling actual assets. Existing immediate replacement/service shortcuts remain. See [implementation, timing and 392 named checks](../reports/shop-inventory/CHANGES.md). This completes this spontaneous increment without advancing another planned slice. Full-save/transition pauses and simulation allocations remain documented limits.

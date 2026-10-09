@@ -11,7 +11,7 @@ namespace DragLab.Domain
         public FluidState startingFluids;
         public BuildResolution build;
         public List<PartInstance> components;
-        public static InspectionBuild Capture(PlayerProfile profile, OwnedCar car, Tune adjustments = null, string definitionId = null, string instanceId = null, PartCategory? remove = null)
+        public static InspectionBuild Capture(PlayerProfile profile, OwnedCar car, Tune adjustments = null, string definitionId = null, string instanceId = null, PartCategory? remove = null, IEnumerable<PartCartLine> cart = null, bool healthy = false)
         {
             var map = MechanicsOwnership.Definitions(profile, car);
             var components = car.installed.slots.Select(s => profile.parts.Find(p => p.instanceId == s.partInstanceId)).Where(p => p != null).Select(p => p.Copy()).ToList();
@@ -25,6 +25,17 @@ namespace DragLab.Domain
                 replacement.slot = definition.category.ToString(); components.Add(replacement);
             }
             if (remove.HasValue) { map.Remove(remove.Value); components.RemoveAll(p => p.slot == remove.Value.ToString()); }
+            if(cart!=null) foreach(var line in cart.Where(l=>l.install)) {
+                var d=profile.catalog.Find(line.definitionId);
+                if(d==null||!profile.catalog.Fits(profile.catalog.Spec(car.vehicleId),d))throw new ArgumentException("Incompatible cart preview.");
+                map[d.category]=d.id;components.RemoveAll(p=>p.slot==d.category.ToString());
+                components.Add(new PartInstance {instanceId="cart-preview/"+d.id,definitionId=d.id,slot=d.category.ToString()});
+            }
+            if(healthy) foreach(var item in components) {
+                var c=item.condition;c.health=1;c.failed=false;c.failureReason="";c.deposits=c.leakSeverity=c.adjustmentError=c.stressExposure=c.serviceWearRemainder=0;c.clutchOilCondition=1;
+                foreach(var e in c.elements){e.health=1;e.fault=ElementFault.None;e.severity=0;e.wearRemainder=0;}
+                foreach(var t in c.tires){t.health=1;t.failed=false;t.consumedLife=0;}
+            }
             var resolved = profile.catalog.Resolve(car.vehicleId, map, adjustments ?? car.tune);
             if(string.IsNullOrEmpty(car.engineAssemblyId))resolved.errors.Add("No engine attached: stored engines retain their own hardware and liquids.");
             foreach (var p in components) if ((PartSemantics.Wears(profile.catalog.Find(p.definitionId).category) || profile.catalog.Find(p.definitionId).category == PartCategory.Controls && resolved.spec.engineBehavior.fueling == FuelSystem.Injection) && (p.condition.failed || p.condition.health <= 0)) (MechanicalCatalog.DisablingEngineFailure(profile.catalog.Find(p.definitionId).category) || profile.catalog.Find(p.definitionId).category == PartCategory.Controls && resolved.spec.engineBehavior.fueling == FuelSystem.Injection ? resolved.errors : resolved.warnings).Add("Failed " + p.slot + ": " + p.condition.failureReason);

@@ -8,6 +8,7 @@ namespace DragLab.Runtime
     {
         static GUIStyle wrapped;
         internal static Rect VerificationSliderRect;
+        internal static Rect VerificationOpponentSliderRect;
         public static void Draw(EngineAudio audio = null)
         {
             // A slider consumes MouseUp. Remember it before drawing so the final
@@ -35,6 +36,7 @@ namespace DragLab.Runtime
             GUILayout.EndHorizontal();
             GUILayout.Label("Opponent sounds / " + SharedAudioSettings.OpponentVolume.ToString("P0"));
             float opponent = GUILayout.HorizontalSlider(SharedAudioSettings.OpponentVolume, 0, 1);
+            if(Event.current.type==EventType.Repaint)VerificationOpponentSliderRect=RuntimeGuiRect.ToClient(GUILayoutUtility.GetLastRect());
             if (GUI.enabled && opponent != SharedAudioSettings.OpponentVolume && (inputType == EventType.MouseDown || inputType == EventType.MouseDrag || inputType == EventType.KeyDown)) SharedAudioSettings.SetOpponentVolume(opponent, false);
             if (inputType == EventType.MouseUp || inputType == EventType.KeyUp) SharedAudioSettings.Save();
             GUILayout.Label("Opponent engine and tires start about 4 dB quieter at equal distance, fade as the cars separate, and also follow master volume.", wrapped);

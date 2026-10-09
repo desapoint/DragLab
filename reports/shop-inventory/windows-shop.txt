@@ -1,0 +1,18 @@
+Shop/cart/inventory, wear graph, definitive saves and opponent audio / actual Windows mouse / isolated profile.
+PASS: Current wear/faults show a higher-power no-wear reference without repairing the car
+PASS: Mouse cart changes aggregate installed hardware across categories and quantities
+PASS: Adding, quantities and cumulative previews never save, spend or change the ledger
+PASS: Actual checkout durably buys all entries and matches cumulative dyno
+PASS: Removed original remains in inventory with its existing wear
+PASS: Inventory is a distinct ownership view, without catalog purchase rows
+PASS: Actual inventory installation reuses and saves the selected identity
+PASS: Tuning gestures update previews without a full save
+PASS: Holding a settings slider beyond the old save delay does not write a full save
+PASS: Completed settings gesture saves its final value
+PASS: Actual opponent volume slider changes the shared preference
+PASS: Opponent slider final value survives reload
+PASS: Opponent has audible independent engine output with distance/volume attenuation
+PASS: Opponent mute silences its engine while player audio remains audible
+PASS: Pause silences both cars
+PASS: Shop, background inspection, settings and opponent DSP have no runtime/GUI errors
+Runtime errors: 0

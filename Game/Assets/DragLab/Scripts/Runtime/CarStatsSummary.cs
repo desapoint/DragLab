@@ -17,7 +17,7 @@ namespace DragLab.Runtime
             public bool Different { get { return oldText != null ? oldText != newText : Format(previous) != Format(value); } }
             public string Format(double number) { return double.IsNaN(number) ? "Unavailable" : number.ToString(format) + " " + unit; }
         }
-        GUIStyle quickLabel, quickValue;
+        GUIStyle quickLabel, quickValue, quickTile;
         List<QuickStat> coreSummary, changedSummary;
         CarInspection summaryBefore, summaryAfter;
         string summarySlot;
@@ -117,10 +117,10 @@ namespace DragLab.Runtime
         void DrawSummary(float width, string slot)
         {
             BuildSummary(slot);
-            if (quickLabel == null) { quickLabel = new GUIStyle(muted) { fontSize = 11 }; quickValue = new GUIStyle(prose) { fontSize = 13, fontStyle = FontStyle.Bold }; }
+            if (quickLabel == null) { quickLabel = new GUIStyle(muted) { fontSize = 11 }; quickValue = new GUIStyle(prose) { fontSize = 13, fontStyle = FontStyle.Bold }; quickTile=new GUIStyle(GUI.skin.box){padding=new RectOffset(6,6,2,2),margin=new RectOffset(2,2,2,2)}; }
             SummaryForVerification.Clear();
             GUILayout.BeginVertical();
-            GUILayout.Label(comparison ? "QUICK SUMMARY / current → preview" : "QUICK SUMMARY / saved car");
+            GUILayout.Label(comparison ? (healthComparison?"QUICK SUMMARY / current → no wear":"QUICK SUMMARY / current → preview") : "QUICK SUMMARY / saved car");
             DrawSummaryTiles(coreSummary, width);
             if (comparison) {
                 if (changedSummary.Count > 0) {
@@ -139,7 +139,7 @@ namespace DragLab.Runtime
                 for (int j = i; j < Math.Min(i + 2, metrics.Count); j++) {
                     var metric = metrics[j]; string value = SummaryValue(metric);
                     SummaryForVerification.Add(metric.label + ": " + value);
-                    GUILayout.BeginVertical(GUI.skin.box, GUILayout.Width(Mathf.Max(100, (width - 24) / 2)));
+                    GUILayout.BeginVertical(quickTile, GUILayout.Width(Mathf.Max(100, (width - 24) / 2)));
                     GUILayout.Label(metric.label, quickLabel);
                     var color = GUI.contentColor; GUI.contentColor = SummaryColor(metric); GUILayout.Label(value, quickValue); GUI.contentColor = color;
                     GUILayout.EndVertical();

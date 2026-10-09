@@ -8,37 +8,39 @@ namespace DragLab.Runtime
 {
     public sealed partial class CarStatsView : IDisposable
     {
-        readonly BenchPlotLines lines = new BenchPlotLines();
+        bool showComponentDetails;
         Vector2 scroll;
         GUIStyle prose, muted, rightValue;
         bool showWarnings;
-        CarInspection before, after;
+        CarInspection before, after, healthy;
+        bool showHealthy=true, healthComparison;
         bool comparison;
         UnitPreferences units;
         internal void SetScrollForInspection(float y) { scroll.y = y; }
-        public void Draw(Rect area, CarInspection installed, CarInspection preview, string title, string partSlot = null)
+        public void Draw(Rect area, CarInspection installed, CarInspection preview, string title, string partSlot = null, CarInspection healthyReference = null)
         {
-            before = installed; after = preview ?? installed; comparison = preview != null; units = SharedUnitSettings.Current;
+            before = installed; healthy=healthyReference;healthComparison=preview==null&&healthy!=null&&showHealthy;after=healthComparison?healthy:preview??installed;comparison=preview!=null||healthComparison; units = SharedUnitSettings.Current;
             if (prose == null) { prose = new GUIStyle(GUI.skin.label) { wordWrap = true }; muted = new GUIStyle(prose) { normal = { textColor = new Color(.65f, .72f, .8f) }, fontSize = 11 }; rightValue = new GUIStyle(prose) { alignment = TextAnchor.UpperRight }; }
             Color original = GUI.color; GUI.color = new Color(.025f, .045f, .065f, 1); GUI.DrawTexture(area, Texture2D.whiteTexture); GUI.color = original;
             GUILayout.BeginArea(area, GUI.skin.box);
             GUILayout.Label(title, prose);
-            GUILayout.Label(comparison ? "Saved build: grey / preview: green. Preview never changes the race car." : "Saved installed build / no comparison", muted);
+            GUILayout.Label(healthComparison ? "Current condition: grey / no wear: blue. Same hardware, tune, temperatures, fuel and fluid quantities." : comparison ? "Current: grey / preview installs: green / no wear: blue." : "Saved installed build / no comparison", muted);
+            if(healthy!=null)showHealthy=GUILayout.Toggle(showHealthy,"Show no-wear reference / comparison only; does not repair anything");
             if(!before.probeComplete||!after.probeComplete)GUILayout.Label("Dyno / hardware values ready. Driving estimate calculating in background...",muted);
             DrawSummary(area.width, partSlot);
-            if (after.warnings.Count == 0) GUILayout.Label("No setup issues found by the limited probe.", muted);
+            if ((healthComparison?before:after).warnings.Count == 0) GUILayout.Label("No setup issues found by the limited probe.", muted);
             else
             {
-                var first = after.warnings.Find(w => w.critical) ?? after.warnings[0];
+                var first = (healthComparison?before:after).warnings.Find(w => w.critical) ?? (healthComparison?before:after).warnings[0];
                 var tint = GUI.contentColor; GUI.contentColor = first.critical ? new Color(1, .4f, .35f) : new Color(1, .8f, .35f);
-                showWarnings = GUILayout.Toggle(showWarnings, after.warnings.Count + " setup warning(s): " + first.title + " / show advice", GUI.skin.button);
+                showWarnings = GUILayout.Toggle(showWarnings, (healthComparison?before:after).warnings.Count + " setup warning(s): " + first.title + " / show advice", GUI.skin.button);
                 GUI.contentColor = tint;
             }
-            var chart = GUILayoutUtility.GetRect(100, area.height < 500 ? 104 : 126, GUILayout.ExpandWidth(true)); DrawDyno(chart);
-            scroll = GUILayout.BeginScrollView(scroll);
+            var chart = GUILayoutUtility.GetRect(100, area.height < 600 ? 104 : 126, GUILayout.ExpandWidth(true)); DrawDyno(chart);
+            scroll = GUILayout.BeginScrollView(scroll,GUILayout.MinHeight(110));
             GUILayout.Label("DETAILED STATS / scroll for explanations and component ratings");
             GUILayout.Label("Bars: grey = current; green = improvement; red = drawback; amber = tradeoff. Ranges are display scales, not safe operating limits.", muted);
-            if (showWarnings) foreach (var warning in after.warnings)
+            if (showWarnings) foreach (var warning in (healthComparison?before:after).warnings)
             {
                 var color = GUI.contentColor; GUI.contentColor = warning.critical ? new Color(1, .4f, .35f) : new Color(1, .8f, .35f);
                 GUILayout.Label((warning.critical ? "STOP: " : "CAUTION: ") + warning.title, prose); GUI.contentColor = color;
@@ -66,7 +68,7 @@ namespace DragLab.Runtime
             Row("Installed build + oil/coolant", before.mass.dryInstalledKg, after.mass.dryInstalledKg, "kg", -1, "Installed hardware and current oil/coolant, without driver, ballast or fuel; wheel and flywheel replacement masses count once.");
             Row("Driver", before.mass.driverKg, after.mass.driverKg, "kg", 0, "Driver weight carried in the cabin.");
             Row("Ballast / payload", before.mass.payloadKg, after.mass.payloadKg, "kg", 0, "Extra weight; placement changes axle grip as well as total acceleration load.");
-            Row("Current fuel mass", before.mass.fuelKg, after.mass.fuelKg, "kg", 0, "Tank quantity times fuel density. Fuel burns during physical idle, staging and driving, reducing weight. Refill is free in Slice 2.");
+            Row("Current fuel mass", before.mass.fuelKg, after.mass.fuelKg, "kg", 0, "Tank quantity times fuel density. Fuel burns during physical idle, staging and driving, reducing weight. Garage refills charge the operating policy price.");
             Row("CG from front axle", before.mass.centerOfGravityFromFrontM, after.mass.centerOfGravityFromFrontM, "m", 0, "Moving weight toward the rear shifts static grip toward the rear axle.");
             Row("CG height", before.mass.centerOfGravityHeightM, after.mass.centerOfGravityHeightM, "m", 0, "Higher weight transfers more load rearward during acceleration and forward under braking.");
             Row("Static front axle load", before.mass.frontNormalLoadN, after.mass.frontNormalLoadN, "N", 0, "Gravitational load before acceleration/braking transfer.");
@@ -107,8 +109,8 @@ namespace DragLab.Runtime
             Row("Oil condition",bf.oilCondition*100,af.oilCondition*100,"%",1,"Aging degrades lubrication; oil and filter service restore the fluid, not damaged bearings.");
             Row("Cam duration at 0.050 inch",before.source.build.spec.valvetrain.durationAt050Degrees,after.source.build.spec.valvetrain.durationAt050Degrees,"crank °",0,"Larger cams shift torque upward and can increase low-speed fuel demand. Match springs and use compatible timing hardware.");
             if (partSlot != null) ComponentComparison(partSlot);
-            GUILayout.Label("INSTALLED COMPONENT DETAILS");
-            foreach (var item in after.source.components)
+            showComponentDetails=GUILayout.Toggle(showComponentDetails,"Show installed component ratings and descriptions ("+after.source.components.Count+")",GUI.skin.button);
+            if(showComponentDetails)foreach (var item in after.source.components)
             {
                 var definition = Array.Find(after.source.build.spec.fittedParts, p => p.id == item.definitionId); if (definition == null) continue;
                 bool wears = PartSemantics.Wears(definition.category);
@@ -116,7 +118,7 @@ namespace DragLab.Runtime
                 GUILayout.Label(definition.name + " / " + SharedUnitSettings.TorqueText(definition.description), muted);
                 foreach (var value in PartSemantics.Stats(definition)) GUILayout.Label(value.label + ": " + (value.unit == "Nm" ? SharedUnitSettings.Torque(value.value, "0.##") : value.unit == "bar" ? SharedUnitSettings.Pressure(value.value) : value.value.ToString("0.##") + " " + value.unit), muted);
             }
-            GUILayout.Label("Modeled, fictional specifications. Settled dyno excludes transient lag and combustion cuts. Shared contact, fuel, wear and fluids are active; operating-cost balance remains Slice 3.", muted);
+            GUILayout.Label("Modeled, fictional specifications. Settled dyno excludes transient lag and combustion cuts. Shared contact, fuel, wear and fluids are active; Operating costs use the current provisional economy policy.", muted);
             GUILayout.EndScrollView(); GUILayout.EndArea();
         }
         void ComponentComparison(string slot)
@@ -212,24 +214,34 @@ namespace DragLab.Runtime
         {
             if (Event.current.type != EventType.Repaint) return;
             double maxRpm = Math.Max(before.source.build.spec.redlineRpm, after.source.build.spec.redlineRpm), maxHp = Math.Max(1, Math.Max(before.peakHp, after.peakHp)), maxNm = Math.Max(1, Math.Max(before.peakTorque, after.peakTorque));
+            if(healthy!=null&&showHealthy){maxRpm=Math.Max(maxRpm,healthy.source.build.spec.redlineRpm);maxHp=Math.Max(maxHp,healthy.peakHp);maxNm=Math.Max(maxNm,healthy.peakTorque);}
             var plot = new Rect(rect.x + 35, rect.y + 25, rect.width - 75, rect.height - 50);
             GUI.Label(new Rect(rect.x, rect.y, rect.width, 20), "DYNO / HP thick, engine " + SharedUnitSettings.TorqueLabel + " thin / independent scales");
             GUI.Label(new Rect(rect.x, plot.y - 3, 40, 20), maxHp.ToString("F0")); GUI.Label(new Rect(plot.xMax + 4, plot.y - 3, 42, 20), DisplayUnits.Torque(maxNm, units.torque).ToString("F0"));
             GUI.Label(new Rect(plot.x, plot.yMax + 3, plot.width, 20), "0 RPM                         " + maxRpm.ToString("F0") + " RPM");
-            // This chart is inside a GUILayout area; GL uses absolute screen coordinates.
-            Vector2 offset = GUIUtility.GUIToScreenPoint(Vector2.zero) / GUI.matrix.m00;
-            plot.position += offset;
-            lines.Begin();
-            for (int i = 0; i <= 4; i++) { float f = i / 4f; lines.Line(new Vector2(plot.x, plot.y + f * plot.height), new Vector2(plot.xMax, plot.y + f * plot.height), new Color(.3f, .4f, .5f, .4f), 1); }
+            // Draw through GUI so area/scroll clipping and subsequent widgets retain their renderer state.
+            for (int i = 0; i <= 4; i++) { float f = i / 4f; GuiLine(new Vector2(plot.x, plot.y + f * plot.height), new Vector2(plot.xMax, plot.y + f * plot.height), new Color(.3f, .4f, .5f, .4f), 1); }
             if (comparison) Curve(before, plot, maxRpm, maxHp, maxNm, new Color(.6f, .65f, .75f, .85f));
-            Curve(after, plot, maxRpm, maxHp, maxNm, new Color(.25f, 1, .55f)); lines.End();
+            if(!healthComparison)Curve(after, plot, maxRpm, maxHp, maxNm, new Color(.25f, 1, .55f));
+            if(healthy!=null&&showHealthy)Curve(healthy,plot,maxRpm,maxHp,maxNm,new Color(.3f,.65f,1));
         }
         void Curve(CarInspection stats, Rect plot, double rpm, double hp, double nm, Color color)
         {
-            lines.Series(stats.curve.Count, plot.width, i => new Vector2(plot.x + (float)(stats.curve[i].rpm / rpm) * plot.width, plot.yMax - (float)(stats.curve[i].hp / hp) * plot.height), color, 3);
-            color = Color.Lerp(color, new Color(1, .7f, .2f, color.a), .5f);
-            lines.Series(stats.curve.Count, plot.width, i => new Vector2(plot.x + (float)(stats.curve[i].rpm / rpm) * plot.width, plot.yMax - (float)(stats.curve[i].torque / nm) * plot.height), color, 1.5f);
+            for(int i=1;i<stats.curve.Count;i++) {
+                var a=stats.curve[i-1];var b=stats.curve[i];
+                GuiLine(new Vector2(plot.x+(float)(a.rpm/rpm)*plot.width,plot.yMax-(float)(a.hp/hp)*plot.height),new Vector2(plot.x+(float)(b.rpm/rpm)*plot.width,plot.yMax-(float)(b.hp/hp)*plot.height),color,3);
+                GuiLine(new Vector2(plot.x+(float)(a.rpm/rpm)*plot.width,plot.yMax-(float)(a.torque/nm)*plot.height),new Vector2(plot.x+(float)(b.rpm/rpm)*plot.width,plot.yMax-(float)(b.torque/nm)*plot.height),Color.Lerp(color,new Color(1,.7f,.2f,color.a),.5f),1.5f);
+            }
         }
-        public void Dispose() { lines.Dispose(); }
+        static void GuiLine(Vector2 from,Vector2 to,Color color,float thickness)
+        {
+            var matrix=GUI.matrix;var prior=GUI.color;
+            try {
+                Vector2 delta=to-from;
+                GUIUtility.RotateAroundPivot(Mathf.Atan2(delta.y,delta.x)*Mathf.Rad2Deg,from);
+                GUI.color=color;GUI.DrawTexture(new Rect(from.x,from.y-thickness*.5f,delta.magnitude,thickness),Texture2D.whiteTexture);
+            }finally{GUI.matrix=matrix;GUI.color=prior;}
+        }
+        public void Dispose() { }
     }
 }

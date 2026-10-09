@@ -40,6 +40,7 @@ namespace DragLab.Runtime
             game.Profile.cash = 100000; ProfileStore.Save(game.Profile); yield return new WaitForSecondsRealtime(.25f);
             string savedBytes = File.ReadAllText(ProfileStore.FilePath), installedTune = JsonUtility.ToJson(game.Profile.SelectedCar.tune);
             float savedVisualSize = game.CarViewForVerification.TireSizeScale;
+            yield return WaitForInspection();
             yield return Capture("stats-saved-car");
             require(game.SavedInspection != null && game.ProposedInspection == null && game.SavedInspection.completed, "Garage automatically shows full saved stats and dyno without a comparison.");
             game.ShowParts(PartCategory.HeadIntake); yield return new WaitForSecondsRealtime(.3f);
@@ -68,7 +69,7 @@ namespace DragLab.Runtime
                 yield return ClickTune(mouse, "apply-top");
                 require(!game.DraftDirty && Math.Abs(game.Profile.SelectedCar.tune.WheelDiameter - appliedDiameter) < 1e-5 && ProfileStore.Load().SelectedCar.tune.wheelDiameter == game.Profile.SelectedCar.tune.wheelDiameter, "Actual Apply atomically commits the draft and durable saved values.");
                 yield return Capture("stats-tuning-applied");
-                game.StartPractice(); require(Math.Abs(game.CarViewForVerification.TireSizeScale - appliedDiameter) < 1e-5, "Applied wheel geometry carries into the actual practice race."); require(Math.Abs(game.Race.player.tune.WheelDiameter - appliedDiameter) < 1e-5, "A real practice race uses the applied wheel size.");
+                game.StartPractice(); require(Math.Abs(game.CarViewForVerification.TireSizeScale - savedVisualSize * appliedDiameter) < 1e-5, "Applied wheel geometry carries into the actual practice race."); require(Math.Abs(game.Race.player.tune.WheelDiameter - appliedDiameter) < 1e-5, "A real practice race uses the applied wheel size.");
                 game.ReturnToGarage(); game.OpenTuning(); yield return new WaitForSecondsRealtime(.2f);
                 yield return MoveTuneSlider(mouse, "radius", .05f);
                 require(game.DraftDirty, "A subsequent edit creates an independent draft.");
