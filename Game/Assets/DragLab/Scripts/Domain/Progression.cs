@@ -234,8 +234,12 @@ namespace DragLab.Domain
                 if (car.state.distance >= 402.336)
                     time -= DragMath.FixedStep * (1 - DragMath.Clamp((402.336 - before) / Math.Max(.000001, car.state.distance - before), 0, 1));
             }
+            return Rating(time,car.state.speed*3.6);
+        }
+        public static BenchmarkResult Rating(double time,double trapKmh)
+        {
             string cls = time > 18 ? "F" : time > 16.5 ? "E" : time > 15 ? "D" : time > 13.5 ? "C" : time > 12 ? "B" : time > 10.5 ? "A" : "S";
-            return new BenchmarkResult { elapsed = time, trapKmh = car.state.speed * 3.6, performanceClass = cls,
+            return new BenchmarkResult { elapsed = time, trapKmh = trapKmh, performanceClass = cls,
                 points = (int)DragMath.Clamp((22 - time) * 60, 0, 999) };
         }
     }

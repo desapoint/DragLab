@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using DragLab.Domain;
 using DragLab.Domain.Mechanics;
@@ -19,13 +21,44 @@ namespace DragLab.Runtime
         internal Rect StatsSummaryRect { get { return statsView.SummaryRect; } }
         internal void PreviewPart(string definitionId = null, string instanceId = null, PartCategory? remove = null)
         { previewDefinitionId = definitionId; previewInstanceId = instanceId; previewRemoval = remove; statsKey = null; }
+        Task<CarInspection[]> inspectionTask;
+        string inspectionTaskKey, inspectionTaskBaseKey, inspectionBaseKey;
+        InspectionBuild inspectionPendingSource;
+        float inspectionChangedAt;
+        int inspectionFrame=-1;
+        internal bool InspectionBusy => inspectionTask != null || savedStats != null && !savedStats.probeComplete || proposedStats != null && !proposedStats.probeComplete;
         internal void RefreshInspection()
         {
-            string key = profile.revision + "/" + Build.instanceId + "/" + JsonUtility.ToJson(Build.tune) + "/" + JsonUtility.ToJson(Build.installed) + "/" + string.Join("/", profile.parts.Where(p => p.ownerId == Build.instanceId || p.ownerId == Build.engineAssemblyId).Select(p => JsonUtility.ToJson(p.condition))) + "/" + previewDefinitionId + "/" + previewInstanceId + "/" + previewRemoval + "/" + (draft == null ? "" : JsonUtility.ToJson(draft.values) + "/" + draft.paint);
-            if (statsKey == key) return; statsKey = key;
-            savedStats = CarInspection.Calculate(InspectionBuild.Capture(profile, Build)); proposedStats = null;
-            if (screen == "Tuning" && draft != null && DraftDirty) proposedStats = CarInspection.Calculate(InspectionBuild.Capture(profile, Build, draft.values));
-            else if (screen == "Parts" && (previewDefinitionId != null || previewInstanceId != null || previewRemoval.HasValue)) proposedStats = CarInspection.Calculate(InspectionBuild.Capture(profile, Build, definitionId: previewDefinitionId, instanceId: previewInstanceId, remove: previewRemoval));
+            if(inspectionFrame==Time.frameCount)return; inspectionFrame=Time.frameCount;
+            string baseKey = profile.revision + "/" + Build.instanceId + "/" + JsonUtility.ToJson(Build.tune) + "/" + JsonUtility.ToJson(Build.installed) + "/" + JsonUtility.ToJson(Build.fuel) + "/" + JsonUtility.ToJson(Build.fluids) + "/" + string.Join("/", profile.parts.Where(p => p.ownerId == Build.instanceId || p.ownerId == Build.engineAssemblyId).Select(p => JsonUtility.ToJson(p.condition)));
+            string key=baseKey+"/"+screen+"/"+previewDefinitionId+"/"+previewInstanceId+"/"+previewRemoval+"/"+(draft==null?"":JsonUtility.ToJson(draft.values)+"/"+draft.paint);
+            if(inspectionTask!=null && inspectionTask.IsCompleted) {
+                try {
+                    var result=inspectionTask.GetAwaiter().GetResult();
+                    if(inspectionTaskBaseKey==baseKey)savedStats=result[0];
+                    if(inspectionTaskKey==key)proposedStats=result[1];
+                } catch(Exception e) { notice="Inspection probe failed: "+e.Message; }
+                inspectionTask=null;
+            }
+            if(statsKey!=key) {
+                statsKey=key;inspectionChangedAt=Time.realtimeSinceStartup;
+                if(inspectionBaseKey!=baseKey || savedStats==null) {
+                    inspectionBaseKey=baseKey;
+                    var capture=InspectionBuild.Capture(profile,Build);
+                    savedStats=CarInspection.CalculatePrepared(capture,CarInspection.PrepareCar(capture),false);
+                }
+                inspectionPendingSource=null;proposedStats=null;
+                if(screen=="Tuning"&&draft!=null&&DraftDirty)inspectionPendingSource=InspectionBuild.Capture(profile,Build,draft.values);
+                else if(screen=="Parts"&&(previewDefinitionId!=null||previewInstanceId!=null||previewRemoval.HasValue))inspectionPendingSource=InspectionBuild.Capture(profile,Build,definitionId:previewDefinitionId,instanceId:previewInstanceId,remove:previewRemoval);
+                if(inspectionPendingSource!=null)proposedStats=CarInspection.CalculatePrepared(inspectionPendingSource,CarInspection.PrepareCar(inspectionPendingSource),false);
+            }
+            if(inspectionTask==null&&Time.realtimeSinceStartup-inspectionChangedAt>=.12f&&(!savedStats.probeComplete||proposedStats!=null&&!proposedStats.probeComplete)) {
+                var saved=savedStats;var proposed=proposedStats;
+                var savedCar=saved.probeComplete?null:CarInspection.PrepareCar(saved.source);
+                var proposedCar=proposed==null?null:CarInspection.PrepareCar(proposed.source);
+                inspectionTaskKey=key;inspectionTaskBaseKey=baseKey;
+                inspectionTask=Task.Run(()=>new[]{saved.probeComplete?saved:CarInspection.CalculatePrepared(saved.source,savedCar),proposed==null?null:CarInspection.CalculatePrepared(proposed.source,proposedCar)});
+            }
             var visible = (proposedStats ?? savedStats).source.build;
             playerView.ApplySetup(visible.spec, visible.tune);
             Color paint; string paintHex = screen == "Tuning" && draft != null ? draft.paint : Build.paintHex;
@@ -34,6 +67,7 @@ namespace DragLab.Runtime
         void DrawCarStats(float width, float height)
         {
             RefreshInspection();
+            if(InspectionBusy) notice="Dyno updated; copied-car performance probe pending. Preview never saves.";
             float left = panelWidth + 30;
             if (width - left < 260) return;
             string title = screen == "Tuning" ? "CAR STATS / " + (DraftDirty ? "DRAFT TUNE" : "saved tune") : screen == "Parts" && proposedStats != null ? "PART PREVIEW / saved → proposed" : "FULL CAR STATS / " + Selected.spec.displayName;

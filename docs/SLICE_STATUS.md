@@ -107,3 +107,8 @@ User audition requests recognizable rubber-on-asphalt screech with less white-no
 ## Race audio and opponent worker (2026-10-09)
 
 Tire resonance now follows actual effective friction, load and radius as well as sliding work. Opponent engine/tire audio uses its own state, distance attenuation and a saved volume control under the shared master. Desktop races advance the opponent on a persistent worker with a fixed-tick join and the same authoritative physics. Eight-car exact parity and paired timing passed; see [checks and implementation](../reports/race-audio-worker/CHANGES.md). No later slice is advanced.
+
+
+## Menu preview responsiveness (2026-10-09)
+
+Stat previews publish dyno values immediately and calculate shared copied-car driving estimates on one bounded background task after a short debounce. Garage reuses condition-aware inspections; service prices and tuning hardware resolution are cached. Difficulty/driving gestures save only after release, while transactions and Apply retain full saves. See [implementation and checks](../reports/menu-preview/CHANGES.md).

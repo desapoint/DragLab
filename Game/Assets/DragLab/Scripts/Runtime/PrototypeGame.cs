@@ -177,7 +177,7 @@ namespace DragLab.Runtime
         {
             if (profile == null) return;
             if (pendingAction != null) { var action = pendingAction; pendingAction = null; action(); }
-            if (saveDelay > 0) { saveDelay -= Time.unscaledDeltaTime; if (saveDelay <= 0) ProfileStore.Save(profile); }
+            if (saveDelay > 0 && GUIUtility.hotControl == 0 && !Input.GetMouseButton(0) && !Input.GetMouseButton(1)) { ProfileStore.Save(profile); saveDelay = 0; }
             if (screen == "Garage" && Input.GetKeyDown(KeyCode.P)) StartPractice();
             if (screen != "Race" || race == null) return;
             if ((race.phase == RacePhase.Finished || paused) && Input.GetKeyDown(KeyCode.G)) { ReturnToGarage(); return; }
@@ -289,6 +289,7 @@ namespace DragLab.Runtime
             panelWidth = Mathf.Min(630, width - 32);
             if (heading == null) { heading = new GUIStyle(GUI.skin.label) { fontSize = 24, fontStyle = FontStyle.Bold }; stat = new GUIStyle(GUI.skin.label) { fontSize = 17 }; }
             if (screen == "Race") { RaceGUI(width, height); return; }
+            if(Build!=null&&(screen=="Garage"||screen=="Parts"||screen=="Tuning"||screen=="Stats"))RefreshInspection();
             GUILayout.BeginArea(new Rect(16, 16, panelWidth, height - 32), GUI.skin.box);
             GUILayout.Label("DRAGLAB / first systems slice", heading);
             GUILayout.Label("$" + profile.cash + "   |   REP " + profile.reputation + "   |   " + (Build == null ? "EMPTY GARAGE / retained assets preserved" : Selected.spec.displayName), stat);
@@ -330,15 +331,9 @@ namespace DragLab.Runtime
             if(PartButton("valuation-open", "Value car / engine / chassis / loose parts")) pendingAction = () => OpenValuation(ValuationKind.Car, Build.instanceId);
             MaintenanceSummary(); FuelGarage(); FluidGarage();
             if (GUILayout.Button("Engine / sound test bench")) { ProfileStore.Save(profile); SceneManager.LoadScene("EngineTest"); return; }
-            var tune = Build.tune;
-            MechanicsOwnership.Ensure(profile, profile.catalog ?? MechanicsTransactions.Catalog());
-            var resolved = MechanicsOwnership.Resolve(profile, Build, profile.catalog);
-            string key = JsonUtility.ToJson(resolved.spec) + JsonUtility.ToJson(resolved.tune);
-            if (resolved.Drivable) {
-                if (key != lastBenchmarkKey) { benchmark = Benchmark.QuarterMile(resolved.spec, resolved.tune); lastBenchmarkKey = key; }
-                GUILayout.Label(Selected.spec.drive + " / " + (resolved.spec.massKg * resolved.tune.MassMultiplier).ToString("F0") + " kg / " + DragMath.PeakHorsepower(resolved.spec, resolved.tune).ToString("F0") + " hp / " + benchmark.performanceClass + " " + benchmark.points + " PP", stat);
-                GUILayout.Label("Full-tank auto benchmark: " + benchmark.elapsed.ToString("F2") + " s at " + SharedUnitSettings.Speed(benchmark.trapKmh / 3.6, "F0") + " (modeled)");
-            } else GUILayout.Label("Incomplete / unavailable build: no driving benchmark until repaired or assembled.", stat);
+            var resolved = savedStats.source.build;
+            GUILayout.Label(Selected.spec.drive + " / " + savedStats.vehicleMassKg.ToString("F0") + " kg / " + savedStats.peakHp.ToString("F0") + " hp" + (savedStats.completed ? " / " + Benchmark.Rating(savedStats.elapsed,savedStats.trapMps*3.6).performanceClass + " " + Benchmark.Rating(savedStats.elapsed,savedStats.trapMps*3.6).points + " PP" : ""),stat);
+            GUILayout.Label(savedStats.probeComplete ? (savedStats.completed ? "Current-build auto probe: " + savedStats.elapsed.ToString("F2") + " s at " + SharedUnitSettings.Speed(savedStats.trapMps,"F0") : "Current-build probe could not complete; inspect warnings.") : "Calculating copied-car performance in background...");
             GUI.enabled = resolved.Drivable;
             if (GUILayout.Button("Physical driving bench / this installed build"))
                 pendingAction = () => { PhysicalBenchTransfer.Put(PhysicalBenchTransfer.Capture(profile, Build)); ProfileStore.Save(profile); SceneManager.LoadScene("DrivingTest"); };

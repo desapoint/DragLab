@@ -14,8 +14,16 @@ namespace DragLab.Runtime
         { return new PaymentRequest { kind = kind, carId = Build?.instanceId, litres = oil, coolantLitres = coolant, targetId = target, service = service }; }
         internal VehicleOffer AuthoredOffer(string model)
         { var v = Array.Find(vehicles, a => a.spec.id == model); return v == null ? null : new VehicleOffer { model = model, price = v.purchasePrice, reputation = v.reputationRequired, stock = v.CreateStockTune(), paint = "#" + ColorUtility.ToHtmlStringRGB(v.defaultPaint) }; }
+        readonly System.Collections.Generic.Dictionary<string,int> paymentCosts=new System.Collections.Generic.Dictionary<string,int>();
+        PlayerProfile paymentCostsProfile;long paymentCostsRevision=-1;
         internal int PaymentCost(PaymentRequest request)
-        { try { return PaidEconomy.Preview(profile, profile.catalog, Costs, PricingPolicy, request, DateTime.UtcNow.Ticks).cost; } catch { return -1; } }
+        {
+            if(paymentCostsProfile!=profile||paymentCostsRevision!=profile.revision){paymentCosts.Clear();paymentCostsProfile=profile;paymentCostsRevision=profile.revision;}
+            string key=JsonUtility.ToJson(request)+"/"+JsonUtility.ToJson(Build?.fuel)+"/"+JsonUtility.ToJson(Build?.fluids);
+            if(paymentCosts.TryGetValue(key,out var cost))return cost;
+            try{cost=PaidEconomy.Preview(profile,profile.catalog,Costs,PricingPolicy,request,DateTime.UtcNow.Ticks).cost;}catch{cost=-1;}
+            if(paymentCosts.Count>=256)paymentCosts.Clear();paymentCosts[key]=cost;return cost;
+        }
         internal bool PayNow(PaymentQuote quote)
         {
             if (quote == null) return false;

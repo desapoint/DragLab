@@ -47,15 +47,23 @@ namespace DragLab.Domain
         public double coolingTransferPercent, radiatorWattsPerC, tireRollingLifeKm, tireSlidingLifeMj, tireGripFactor, lowestTireHealth;
         public MassBreakdown mass;
         public double elapsed, trapMps, maxSlip, maxClutchSlip, slippingSeconds;
-        public bool completed, probeFailed;
+        public bool completed, probeFailed, probeComplete;
         public TransmissionType transmission;
         public string induction, fueling, transmissionName;
         public double[] gearRedlineMps, rpmAfterUpshift;
-        public static CarInspection Calculate(InspectionBuild source)
+        public static CarSimulation PrepareCar(InspectionBuild source)
         {
-            var result = new CarInspection { source = source }; var b = source.build; var spec = b.spec; var tune = b.tune;
-            var driver = new DriverSettings { tractionAssist = false, wearMode = WearMode.Full };
-            var car = new CarSimulation(spec, tune, driver, source.components); if (source.startingFuel != null) car.SetMassInputs(tune.driverMassKg, tune.payloadMassKg, tune.payloadPositionM, tune.payloadHeightM, source.startingFuel.litres); if(source.startingFluids!=null)car.SetFluids(source.startingFluids); var wheels = car.wheels;
+            var tune=source.build.tune;
+            var car=new CarSimulation(source.build.spec,tune,new DriverSettings { tractionAssist=false, wearMode=WearMode.Full },source.components);
+            if(source.startingFuel!=null)car.SetMassInputs(tune.driverMassKg,tune.payloadMassKg,tune.payloadPositionM,tune.payloadHeightM,source.startingFuel.litres);
+            if(source.startingFluids!=null)car.SetFluids(source.startingFluids);
+            return car;
+        }
+        public static CarInspection Calculate(InspectionBuild source) => CalculatePrepared(source,PrepareCar(source));
+        // Preparation loads authored catalog data on the main thread. This method is pure domain math.
+        public static CarInspection CalculatePrepared(InspectionBuild source,CarSimulation car,bool runProbe=true)
+        {
+            var result = new CarInspection { source = source, probeComplete=runProbe }; var b = source.build; var spec = b.spec; var tune = b.tune; var wheels = car.wheels;
             result.mass = car.mass;
             var radiator = car.mechanics.parts.Find(p => p.slot == PartCategory.Cooling.ToString());
             result.coolingTransferPercent = car.state.engineCoolingFactor * 100;
@@ -87,7 +95,7 @@ namespace DragLab.Domain
             result.rpmAfterUpshift = Enumerable.Range(1, spec.gears.Length - 1).Select(i => car.ShiftPoint(i) * spec.gears[i] / spec.gears[i - 1]).ToArray();
             if (result.transmission == TransmissionType.CVT) result.gearRedlineMps = new[] { spec.redlineRpm / FlywheelDynamics.RpmPerRadian * wheels.radius / (car.transmission.cvtMaxRatio * tune.finalDrive), spec.redlineRpm / FlywheelDynamics.RpmPerRadian * wheels.radius / (car.transmission.cvtMinRatio * tune.finalDrive) };
             car.state.rpm=spec.idleRpm;car.mechanics.Prepare(car.state);ServiceDynamics.Prepare(car);
-            if (b.Drivable)
+            if (b.Drivable && runProbe)
             {
                 for (int tick = 0; tick < 360; tick++) car.Stage(DragMath.FixedStep, new DriverInput());
                 car.Launch(0); double stable = 0;
@@ -148,7 +156,7 @@ namespace DragLab.Domain
             if (condition < .5) warnings.Add(new SetupWarning("A fitted component is heavily worn", "Lowest fitted-part health is " + (condition * 100).ToString("F0") + "%. Replacement does not repair the removed original.", "Inspect the component list and replace or swap the worn part before hard driving."));
             if (car.engine.limiter == LimiterStyle.None) warnings.Add(new SetupWarning("No combustion rev limiter", "Holding gas can overrev and damage the engine; even a limiter cannot prevent a mechanical money shift.", "Select a safe main limiter, upgrade appropriate internals, and avoid unsafe downshifts."));
             if (probeFailed) warnings.Add(new SetupWarning("The assisted full-throttle probe broke the car", car.state.feedback, "Inspect torque/RPM ratings and worn parts; reduce boost and aggressive controls or replace weak hardware.", true));
-            else if (b.Drivable && !completed) warnings.Add(new SetupWarning("Probe did not finish within 30 seconds", "The copied car could not complete a quarter mile under the standard automatic driver.", "Check clutch capacity, tall/heavy wheels, grip and final-drive gearing."));
+            else if (probeComplete && b.Drivable && !completed) warnings.Add(new SetupWarning("Probe did not finish within 30 seconds", "The copied car could not complete a quarter mile under the standard automatic driver.", "Check clutch capacity, tall/heavy wheels, grip and final-drive gearing."));
         }
     }
 }

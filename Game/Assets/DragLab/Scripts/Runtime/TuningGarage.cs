@@ -10,6 +10,7 @@ namespace DragLab.Runtime
     public sealed partial class PrototypeGame
     {
         TuneDraft draft;
+        string tuningResolutionKey; BuildResolution tuningResolution;
         internal readonly Dictionary<string, Rect> tuneRects = new Dictionary<string, Rect>();
         internal bool DraftDirty { get { return draft != null && (JsonUtility.ToJson(draft.values) != JsonUtility.ToJson(draft.saved) || draft.paint != draft.savedPaint); } }
         internal Tune DraftValues { get { return draft == null ? null : draft.values; } }
@@ -43,7 +44,9 @@ namespace DragLab.Runtime
         {
             if(PartButton("tuning-setups", "Saved configurations / applied tune library")) pendingAction = OpenSetups;
             if (draft == null || draft.vehicleInstanceId != Build.instanceId || draft.revision != profile.revision) BeginTuneDraft();
-            var tune = draft.values; var defaults = Selected.CreateStockTune(); defaults.ClampTo(Selected.spec); var resolved = InspectionBuild.Capture(profile, Build, tune).build;
+            var tune = draft.values; var defaults = Selected.CreateStockTune(); defaults.ClampTo(Selected.spec); string resolvedKey=profile.revision+"/"+Build.instanceId+"/"+JsonUtility.ToJson(tune);
+            if(tuningResolutionKey!=resolvedKey){tuningResolutionKey=resolvedKey;tuningResolution=profile.catalog.Resolve(Build.vehicleId,MechanicsOwnership.Definitions(profile,Build),tune);}
+            var resolved=tuningResolution;
             GUILayout.Label("TUNING / " + (DraftDirty ? "UNAPPLIED DRAFT" : "saved values"), stat);
             GUILayout.BeginHorizontal();
             if (TuneButton("apply-top", "Apply changes")) pendingAction = ApplyTuneDraft;

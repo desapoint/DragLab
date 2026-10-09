@@ -49,7 +49,7 @@ namespace DragLab.Runtime
             int chosen = GUILayout.SelectionGrid(Math.Max(0, Array.IndexOf(categories, partCategory)), categories.Select(c => (service.Any(p => catalog.Find(p.definitionId).category == c && PartFailed(p)) ? "FAILED / " : service.Any(p => catalog.Find(p.definitionId).category == c) ? "SERVICE / " : "") + PartSemantics.Friendly(c.ToString())).ToArray(), 3);
             if (categories[chosen] != partCategory) { partCategory = categories[chosen]; partRects.Clear(); PreviewPart(); }
             var car = Build; string carId = car.instanceId;
-            var resolved = MechanicsOwnership.Resolve(profile, car, catalog);
+            var resolved = savedStats.source.build;
             GUILayout.Label(resolved.Drivable ? "Ready / internal strength headroom: " + SharedUnitSettings.Torque(resolved.safeTorqueNm, "F0") + ", " + resolved.safeRpm.ToString("F0") + " RPM" : "Cannot drive: " + string.Join("; ", resolved.errors));
             GUILayout.BeginHorizontal();
             if (PartButton("safe", "Preview conservative tune defaults")) pendingAction = () =>

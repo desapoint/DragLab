@@ -24,6 +24,7 @@ namespace DragLab.Runtime
             GUILayout.BeginArea(area, GUI.skin.box);
             GUILayout.Label(title, prose);
             GUILayout.Label(comparison ? "Saved build: grey / preview: green. Preview never changes the race car." : "Saved installed build / no comparison", muted);
+            if(!before.probeComplete||!after.probeComplete)GUILayout.Label("Dyno / hardware values ready. Driving estimate calculating in background...",muted);
             DrawSummary(area.width, partSlot);
             if (after.warnings.Count == 0) GUILayout.Label("No setup issues found by the limited probe.", muted);
             else
