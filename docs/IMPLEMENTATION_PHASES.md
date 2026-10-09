@@ -119,3 +119,8 @@ Individual-component/clutch checkpoint (2026-10-08): **5,242 foundation checks**
 ## Post-3H requested refinement (2026-10-09)
 
 [Tire contact audio/particles and stutter diagnosis](../reports/tire-feedback/CHANGES.md) is a focused spontaneous increment. Keep the accepted shared physics and recovery semantics; performance fixes are reported and pending review. It does not complete any later content phase.
+
+
+## Asynchronous race checkpoints (2026-10-09)
+
+Approved after the tire-feedback stutter report: full recoverable saves remain at race entry, result, pause, exit and other explicit transaction boundaries. During driving, one copied active-car snapshot per simulated second (also on newly detected failures) is queued to a bounded background journal writer. It captures fuel, fluids, component/element condition and the thermal clock without rebuilding the garage ledger. Full saves drain pending writes and retire the journal only after durable publication; interrupted loads validate and merge it before closing the run without payout. The physical bench remains isolated. This increment does not change physics, wear, fixed-tick catch-up, CSV exports or graphs. See [implementation and verification](../reports/async-race-saves/CHANGES.md).

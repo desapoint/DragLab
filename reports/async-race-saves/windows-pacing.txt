@@ -1,0 +1,4 @@
+Native race pacing probe; isolated fixture; shared simulation and current save implementation.
+PASS: Native simulation / owned cars 1 / tick time 12,1416666666666 / speed 26,482116075877
+PASS: Native simulation / owned cars 8 / tick time 12,1999999999999 / speed 26,583459500252
+Runtime errors: 0

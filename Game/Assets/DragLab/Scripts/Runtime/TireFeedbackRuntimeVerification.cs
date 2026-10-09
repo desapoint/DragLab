@@ -64,7 +64,7 @@ namespace DragLab.Runtime
         {
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
             using(var input=new WindowsKeyboardProbe()) {
-            var report = new StringBuilder("Native race pacing probe; isolated fixture; unchanged saving and simulation.\n");
+            var report = new StringBuilder("Native race pacing probe; isolated fixture; shared simulation and current save implementation.\n");
             foreach (int count in new[] {1,8}) {
                 game.ReturnToGarage();
                 if (count == 8) foreach (var definition in game.vehicles)

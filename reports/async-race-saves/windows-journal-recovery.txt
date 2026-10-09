@@ -1,0 +1,16 @@
+2K forced process interruption / real race Update / isolated owned save.
+2K forced process interruption / real race Update / isolated owned save.
+PASS: Real Update asynchronously journals the captured owned run.
+PASS: Actual transmitted torque fails weakened shaft while engine keeps running.
+PASS: Critical failure journal retains damaged state before quit callbacks or full save.
+PASS: Full profile remains at entry; restart must merge the separate journal.
+PASS: In-progress practice consumes fuel and adds no reward/record.
+PASS: Forced restart retains ownership/cash and adds no reward or record.
+PASS: Forced restart closes the interrupted receipt without resuming a race.
+PASS: Forced restart retains committed fuel and oil quantities.
+PASS: Failed shaft identity and cause survive forced termination.
+PASS: Actual repair button charges once and retains the failed original.
+PASS: Replacement after interrupted run restores a complete real practice pass.
+PASS: Garage return closes all run resources with no practice payout.
+PASS: Interruption/recovery/replacement have no runtime, GUI or DSP errors.
+Runtime errors: 0

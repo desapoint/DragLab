@@ -1,0 +1,5 @@
+implementation,phase,frames,frame_median_ms,frame_p95_ms,frame_max_ms,frames_over_33_3ms,checkpoints,checkpoint_median_ms,checkpoint_max_ms
+baseline,race-1,689,13.93,20.969,57.335,12,12,44.504,54.645
+baseline,race-8,594,13.93,20.975,204.175,14,11,190.66,201.409
+async-final,race-1,1718,6.944,7.065,7.364,0,12,0.316,1.05
+async-final,race-8,1720,6.947,7.063,7.263,0,12,0.319,0.343

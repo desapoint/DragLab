@@ -30,6 +30,7 @@ namespace DragLab.Infrastructure
         public static string Status { get; private set; }
         public static PlayerProfile Load(bool recoverInterrupted=false)
         {
+            RaceCheckpointStore.Drain();
             long now = DateTime.UtcNow.Ticks;
             recoveredBackup = false;
             writeBlocked = false;
@@ -76,6 +77,9 @@ namespace DragLab.Infrastructure
                     }
                     recoveredBackup = path.EndsWith(".bak");
                     Status = path.EndsWith(".bak") ? "Recovered previous save." : "Save loaded.";
+                    string checkpointWarning;
+                    if(RaceCheckpointStore.Merge(FilePath,profile,true,out checkpointWarning))Status="Save and latest race checkpoint loaded.";
+                    if(checkpointWarning!=null){Status+=" "+checkpointWarning;Debug.LogWarning(checkpointWarning);}
                     if(recoverInterrupted && !writeBlocked && RunPersistence.RecoverInterrupted(profile)){
                         bool saved=TrySave(profile);Status=saved?"Recovered interrupted run: committed wear/fuel retained; no reward added.":"Interrupted run retained in memory; "+Status;
                     }
@@ -91,8 +95,14 @@ namespace DragLab.Infrastructure
         {
             if (!TrySave(profile)) Debug.LogError(Status);
         }
+        public static bool TryCheckpoint(PlayerProfile profile, RunCheckpoint checkpoint, out string error)
+        {
+            if(writeBlocked){error="Save writes blocked; existing save preserved.";return false;}
+            return RaceCheckpointStore.TryQueue(FilePath,profile,checkpoint,out error);
+        }
         public static bool TryReset(PlayerProfile current, out PlayerProfile committed)
         {
+            RaceCheckpointStore.Drain();
             committed = current;
             string primaryTemp = FilePath + ".reset.tmp", backupTemp = FilePath + ".reset-backup.tmp";
             string rollback = FilePath + ".reset-rollback.tmp", backup = FilePath + ".bak";
@@ -109,6 +119,7 @@ namespace DragLab.Infrastructure
                 if (hadBackup) File.Copy(backup, rollback, true);
                 Publish(backupTemp, backup); backupChanged = true;
                 Publish(primaryTemp, FilePath);
+                RaceCheckpointStore.Retire(FilePath);
                 recoveredBackup = false;
                 committed = fresh; Status = "Game reset. Driving and volume settings kept.";
                 return true;
@@ -144,10 +155,13 @@ namespace DragLab.Infrastructure
         }
         public static bool TrySave(PlayerProfile profile)
         {
+            RaceCheckpointStore.Drain();
             try
             {
                 if (writeBlocked) throw new InvalidDataException("Save writes blocked because a newer schema was encountered.");
                 MechanicsOwnership.Ensure(profile, MechanicsTransactions.Catalog());
+                string checkpointWarning;
+                RaceCheckpointStore.Merge(FilePath,profile,false,out checkpointWarning);
                 Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
                 string temp = FilePath + ".tmp";
                 // Flush to disk before replacing the previous complete profile.
@@ -156,6 +170,7 @@ namespace DragLab.Infrastructure
                 // Temp is in the same directory, permitting an atomic file rename/replace.
                 if (File.Exists(FilePath)) File.Replace(temp, FilePath, null);
                 else File.Move(temp, FilePath);
+                RaceCheckpointStore.Retire(FilePath);
                 recoveredBackup = false;
                 Status = "Saved.";
                 return true;

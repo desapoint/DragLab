@@ -150,7 +150,8 @@ namespace DragLab.Runtime
             PlayerProfile entered;string entrySaveError;
             var initial=RunPersistence.Capture(liveRunId,liveRunOwner,0,race.player);
             if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{CareerProgression.Enter(p,liveRunId,liveRunOwner,evt,practiceRun);MechanicsTransactions.ApplyCheckpoint(p,initial);},ProfileStore.TrySave,out entered,out entrySaveError)){notice=entrySaveError;race=null;return;}
-            profile=entered;settings=profile.driving;savedRunTick=0;
+            profile=entered;settings=profile.driving;savedRunTick=0;saveDelay=0;
+            RaceCheckpointStore.Prepare();
             aiView.gameObject.SetActive(true);
             aiView.Build(opponent.spec.artId, opponent.defaultPaint, 0);
             playerView.ApplySetup(race.player.spec, race.player.tune);
@@ -236,14 +237,25 @@ namespace DragLab.Runtime
         void OnApplicationFocus(bool focused) { if (!focused && screen == "Race" && !RuntimeVerification.Active) SetPaused(true); }
         void SaveLiveRunIfDue()
         {
-            if(liveRunTick-savedRunTick>=RunPersistence.PeriodTicks || RunPersistence.FailureCount(race.player)!=savedRunFailures)SyncRaceWear();
+            if(liveRunClosed)return;
+            string backgroundError=RaceCheckpointStore.Error;
+            if(backgroundError!=null)notice=backgroundError+"; full save will retry at pause/exit.";
+            if(liveRunTick-savedRunTick<RunPersistence.PeriodTicks && RunPersistence.FailureCount(race.player)==savedRunFailures)return;
+            using(FramePacingProbe.Measure(3)) {
+                var checkpoint=RunPersistence.Capture(liveRunId,liveRunOwner,liveRunTick,race.player);
+                string error;
+                if(!ProfileStore.TryCheckpoint(profile,checkpoint,out error)){notice="Run checkpoint failed; live state retained. "+error;return;}
+                // These are queued ticks; full boundaries always capture the latest authoritative state.
+                savedRunTick=liveRunTick;savedRunFailures=RunPersistence.FailureCount(race.player);
+            }
         }
         bool SyncRaceWear(bool close=false,string reason="")
         { using (FramePacingProbe.Measure(3)) return SyncRaceWearMeasured(close,reason); }
         bool SyncRaceWearMeasured(bool close=false,string reason="")
         {
             if(race==null||profile==null||liveRunClosed)return true;
-            if(!close&&liveRunTick==savedRunTick)return true;
+            var durable=profile.runCheckpoints.Find(r=>r.runId==liveRunId);
+            if(!close&&durable!=null&&liveRunTick==durable.tick)return true;
             var checkpoint=RunPersistence.Capture(liveRunId,liveRunOwner,liveRunTick,race.player,close,reason);
             PlayerProfile next;string error;
             if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{MechanicsTransactions.ApplyCheckpoint(p,checkpoint);if(close)CareerProgression.Interrupted(p,liveRunId);},ProfileStore.TrySave,out next,out error)){notice="Run save failed; live state retained. "+error;return false;}

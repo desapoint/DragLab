@@ -31,6 +31,24 @@ namespace DragLab.Infrastructure
         }
         public static void ApplyCheckpoint(PlayerProfile profile, RunCheckpoint checkpoint)
         {
+            ValidateCheckpoint(profile, checkpoint);
+            foreach (var snapshot in checkpoint.components)
+                profile.parts.Find(p => p.instanceId == snapshot.instanceId).condition = snapshot.condition.Copy();
+            var car = profile.cars.Find(c => c.instanceId == checkpoint.ownedVehicleId);
+            if(checkpoint.fluids!=null)car.fluids=checkpoint.fluids.Copy();
+            car.thermalUtcTicks=Math.Max(car.thermalUtcTicks,checkpoint.thermalUtcTicks);
+            if(checkpoint.hasFuel)car.fuel=new FuelState{litres=checkpoint.fuel.litres,cumulativeUsedLitres=checkpoint.fuel.cumulativeUsedLitres,flowLitresPerSecond=checkpoint.fuel.flowLitresPerSecond};
+            var old = profile.runCheckpoints.Find(r => r.runId == checkpoint.runId);
+            if (old != null) profile.runCheckpoints.Remove(old);
+            // Receipts contain no duplicate component trees; conditions live in the owned ledger.
+            profile.runCheckpoints.Add(new RunCheckpoint { runId=checkpoint.runId, ownedVehicleId=checkpoint.ownedVehicleId,
+                revision=profile.revision+1, tick=checkpoint.tick, thermalUtcTicks=checkpoint.thermalUtcTicks,
+                hasFuel=checkpoint.hasFuel, fuel=new FuelState {litres=car.fuel.litres,cumulativeUsedLitres=car.fuel.cumulativeUsedLitres,flowLitresPerSecond=car.fuel.flowLitresPerSecond},
+                fluids=car.fluids.Copy(), settled=checkpoint.settled, closedReason=checkpoint.closedReason });
+        }
+        // Validate every field before touching the ledger, also used by lightweight race snapshots.
+        public static void ValidateCheckpoint(PlayerProfile profile, RunCheckpoint checkpoint)
+        {
             var car = profile.cars.Find(c => c.instanceId == checkpoint.ownedVehicleId);
             if(car!=null)EngineRebuilds.RequireAvailable(car);
             if (car == null || checkpoint.version != MechanicsSchema.Version || checkpoint.model != MechanicsSchema.Model || checkpoint.tick < 0 || checkpoint.components == null || string.IsNullOrWhiteSpace(checkpoint.runId)) throw new InvalidOperationException("Invalid checkpoint owner/model/tick.");
@@ -51,17 +69,8 @@ namespace DragLab.Infrastructure
                 if (!seen.Add(snapshot.instanceId) || item == null || !car.installed.slots.Any(b=>b.partInstanceId==snapshot.instanceId) || item.ownerId != car.instanceId && item.ownerId != car.engineAssemblyId || snapshot.definitionId != item.definitionId || snapshot.slot!=item.slot || snapshot.ownerId!=item.ownerId || snapshot.condition.Validate() != null) throw new InvalidOperationException("Checkpoint has invalid identity/condition for "+snapshot.slot+".");
                 if(!EngineElements.CanAdvance(item.condition,snapshot.condition))throw new InvalidOperationException("Checkpoint rewinds individual elements: "+snapshot.slot);
                 if(!RunPersistence.ConditionAdvances(item.condition,snapshot.condition))throw new InvalidOperationException("Checkpoint rewinds mechanical history/condition: "+snapshot.slot);
-                item.condition = snapshot.condition.Copy();
             }
-            if(checkpoint.fluids!=null)car.fluids=checkpoint.fluids.Copy();
             if(checkpoint.thermalUtcTicks<0||checkpoint.thermalUtcTicks>DateTime.MaxValue.Ticks)throw new InvalidOperationException("Invalid thermal clock.");
-            car.thermalUtcTicks=Math.Max(car.thermalUtcTicks,checkpoint.thermalUtcTicks);
-            if(checkpoint.hasFuel)car.fuel=new FuelState{litres=checkpoint.fuel.litres,cumulativeUsedLitres=checkpoint.fuel.cumulativeUsedLitres,flowLitresPerSecond=checkpoint.fuel.flowLitresPerSecond};
-            checkpoint.revision = profile.revision + 1;
-            if (old != null) profile.runCheckpoints.Remove(old);
-            var receipt=JsonUtility.FromJson<RunCheckpoint>(JsonUtility.ToJson(checkpoint));
-            // Current resources already live in the owned ledger; receipts need no duplicate element trees.
-            receipt.components.Clear();profile.runCheckpoints.Add(receipt);
         }
     }
 }

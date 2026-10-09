@@ -19,13 +19,17 @@ namespace DragLab.Runtime
                 game.settings.ApplyPreset(DrivingPreset.Automatic);game.settings.ApplySimulationPreset(SimulationDifficulty.Simulation);
                 game.verificationInput=()=>new DriverInput{throttle=1};game.StartPractice();
                 while(game.Race.time<5)yield return null;
-                require(game.Profile.runCheckpoints.Count==1&&game.Profile.runCheckpoints[0].tick>=120,"Real Update periodically persists the captured owned run.");
+                var checkpointed=ProfileStore.Load();
+                require(checkpointed.runCheckpoints.Count==1&&checkpointed.runCheckpoints[0].tick>=120,"Real Update asynchronously journals the captured owned run.");
                 game.Race.player.mechanics.Part(PartCategory.Driveshaft).condition.health=.000001f;
                 float until=Time.realtimeSinceStartup+10;while(!game.Race.player.state.drivetrainFailed&&Time.realtimeSinceStartup<until)yield return null;
                 require(game.Race.player.state.drivetrainFailed&&!game.Race.player.state.engineFailed,"Actual transmitted torque fails weakened shaft while engine keeps running.");
-                game.PauseRace(true);
-                var saved=JsonUtility.FromJson<PlayerProfile>(File.ReadAllText(ProfileStore.FilePath));
-                require(saved.runCheckpoints.Count==1&&!saved.runCheckpoints[0].settled&&saved.parts.Any(p=>p.slot=="Driveshaft"&&p.condition.failed),"Critical failure and pause persist the full damaged owned state before quit callbacks.");
+                // Freeze input/ticks without invoking pause's full-save path, then kill after journal durability.
+                game.enabled=false;RaceCheckpointStore.Drain();
+                var saved=ProfileStore.Load();
+                var baseSave=JsonUtility.FromJson<PlayerProfile>(File.ReadAllText(ProfileStore.FilePath, System.Text.Encoding.UTF8));
+                require(saved.runCheckpoints.Count==1&&!saved.runCheckpoints[0].settled&&saved.parts.Any(p=>p.slot=="Driveshaft"&&p.condition.failed),"Critical failure journal retains damaged state before quit callbacks or full save.");
+                require(baseSave.runCheckpoints.Single().tick==0&&!baseSave.parts.Any(p=>p.condition.failed),"Full profile remains at entry; restart must merge the separate journal.");
                 require(saved.SelectedCar.fuel.litres<game.Race.player.spec.fuel.capacityLitres&&saved.cash==1200&&saved.SelectedCar.completedRuns==0,"In-progress practice consumes fuel and adds no reward/record.");
                 yield return Capture("interruption-before-kill");File.WriteAllText(Path.Combine(output,"expected-before-kill.json"),JsonUtility.ToJson(saved,true));File.WriteAllText(Path.Combine(output,"stage-checks.txt"),report.ToString());File.WriteAllText(Path.Combine(output,"recovery-ready.txt"),"Own isolated player ready for forced termination.");
                 // The host kills this exact fixture process, skipping OnApplicationQuit.

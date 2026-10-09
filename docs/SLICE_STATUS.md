@@ -92,3 +92,8 @@ Current 3H evidence: 13 domain gates, 18 native Windows workflows, 16,719 founda
 ## Tire feedback refinement and performance diagnosis (2026-10-09)
 
 Contact-based rubber scrub/squeal and bounded tire smoke now run in races and the shared physical bench. The acoustic bench retains authored slip audio/particle previews and deterministic export. The eight-engine clutch audit confirms capacity-limited torque, friction power loss and reduced new tire-slip work under matched partial-clamp conditions. Rendered profiling identifies synchronous checkpoint saves and full bench CSV/export operations as major hitches; optimizations are deliberately pending the requested report/review. See [tire feedback and stutter findings](../reports/tire-feedback/CHANGES.md). This does not advance Slice 4 or alter the accepted mechanical/save model.
+
+
+## Asynchronous race checkpoints (2026-10-09)
+
+Approved after the tire-feedback stutter report: full recoverable saves remain at race entry, result, pause, exit and other explicit transaction boundaries. During driving, one copied active-car snapshot per simulated second (also on newly detected failures) is queued to a bounded background journal writer. It captures fuel, fluids, component/element condition and the thermal clock without rebuilding the garage ledger. Full saves drain pending writes and retire the journal only after durable publication; interrupted loads validate and merge it before closing the run without payout. The physical bench remains isolated. This increment does not change physics, wear, fixed-tick catch-up, CSV exports or graphs. See [implementation and verification](../reports/async-race-saves/CHANGES.md).

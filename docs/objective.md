@@ -2351,3 +2351,8 @@ Funded career/loss, real worn-component DNF and paid repair, downgrade/reuse, ti
 ### Tire feedback and stutter audit request (2026-10-09)
 
 Refine tire-slip audio and emit smoke at slipping tire patches, using independent contact in physical modes and declared test inputs in acoustic mode. Preserve shared volume and pause/reset/replay behavior. Audit clutch power loss before changing coupling. Diagnose stutters and report findings before performance changes. The focused implementation/audit is recorded in [tire feedback report](../reports/tire-feedback/CHANGES.md); save, simulation and graph performance fixes are pending review.
+
+
+## Asynchronous race checkpoints (2026-10-09)
+
+Approved after the tire-feedback stutter report: full recoverable saves remain at race entry, result, pause, exit and other explicit transaction boundaries. During driving, one copied active-car snapshot per simulated second (also on newly detected failures) is queued to a bounded background journal writer. It captures fuel, fluids, component/element condition and the thermal clock without rebuilding the garage ledger. Full saves drain pending writes and retire the journal only after durable publication; interrupted loads validate and merge it before closing the run without payout. The physical bench remains isolated. This increment does not change physics, wear, fixed-tick catch-up, CSV exports or graphs. See [implementation and verification](../reports/async-race-saves/CHANGES.md).
