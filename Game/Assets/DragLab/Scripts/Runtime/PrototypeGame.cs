@@ -73,7 +73,7 @@ namespace DragLab.Runtime
             { benchBootHandled = true; SceneManager.LoadScene("DrivingTest"); return; }
             var authoredVehicles = Resources.LoadAll<VehicleDefinition>("Data/Vehicles");
             if (authoredVehicles.Length > 0) vehicles = authoredVehicles;
-            if (career == null || career.Length == 0) career = Resources.LoadAll<CareerEventDefinition>("Data/Events");
+            career = Resources.LoadAll<CareerEventDefinition>("Data/Events");
             if (vehicles.Length == 0) { Debug.LogError("Run DragLab > Prepare First Slice in the editor."); enabled = false; return; }
             Array.Sort(career, (a, b) => a.reputationRequired.CompareTo(b.reputationRequired));
             profile = ProfileStore.Load(true);
@@ -126,7 +126,7 @@ namespace DragLab.Runtime
             if (Build == null) { notice = "No owned car. Open Collection / recovery work to buy a replacement."; return; }
             DiscardPreviews();
             if(!SyncRaceWear(true,"Retry / new race"))return;
-            if (evt != null && profile.reputation < evt.reputationRequired) { notice = "Earn more reputation to unlock this event."; return; }
+            string entryError=CareerProgression.EntryError(profile,Build,evt); if(entryError!=null){notice=entryError;return;}
             MechanicsOwnership.Ensure(profile, MechanicsTransactions.Catalog());
             var resolved = MechanicsOwnership.Resolve(profile, Build, profile.catalog);
             if (!resolved.Drivable) { notice = "Build cannot drive: " + string.Join("; ", resolved.errors); return; }
@@ -145,7 +145,10 @@ namespace DragLab.Runtime
             race.player.state.fuelUsedLitres = Build.fuel.cumulativeUsedLitres;
             race.player.SetFluids(Build.fluids);
             liveRunId=MechanicsOwnership.NewId("run");liveRunOwner=Build.instanceId;liveRunTick=0;savedRunTick=-1;savedRunFailures=RunPersistence.FailureCount(race.player);liveRunClosed=false;liveCooldownApplied=false;
-            if(!SyncRaceWear()){race=null;return;}
+            PlayerProfile entered;string entrySaveError;
+            var initial=RunPersistence.Capture(liveRunId,liveRunOwner,0,race.player);
+            if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{CareerProgression.Enter(p,liveRunId,liveRunOwner,evt,practiceRun);MechanicsTransactions.ApplyCheckpoint(p,initial);},ProfileStore.TrySave,out entered,out entrySaveError)){notice=entrySaveError;race=null;return;}
+            profile=entered;settings=profile.driving;savedRunTick=0;
             aiView.gameObject.SetActive(true);
             aiView.Build(opponent.spec.artId, opponent.defaultPaint, 0);
             playerView.ApplySetup(race.player.spec, race.player.tune);
@@ -211,23 +214,12 @@ namespace DragLab.Runtime
 
         void FinishRace()
         {
-            if (awarded || race == null || race.phase != RacePhase.Finished) return;
-            awarded = true;
-            if(!SyncRaceWear()){awarded=false;return;}
-            bool legit = race.player.state.finished && !race.player.state.disqualified;
-            if (legit)
-            {
-                if (!practiceRun)
-                    profile.AwardRace(race.playerWon, activeEvent != null ? activeEvent.stableId : null,
-                        activeEvent != null ? activeEvent.cashWin : 120, activeEvent != null ? activeEvent.cashLoss : 40,
-                        activeEvent != null ? activeEvent.reputationWin : 0);
-                Build.Record(race);
-                finishedPass = Build.lastPass;
-                if (Math.Abs(race.distance - 402.336) < .01 && (profile.bestQuarterSeconds == 0 || race.player.state.elapsed < profile.bestQuarterSeconds))
-                    profile.bestQuarterSeconds = race.player.state.elapsed;
-            }
-            ProfileStore.Save(profile);
-            notice = !legit ? "No reward for a red light or incomplete run." : (practiceRun ? "Practice saved / no cash or REP / " : "Race reward / ") + ProfileStore.Status;
+            if(awarded||race==null||race.phase!=RacePhase.Finished)return;
+            var checkpoint=RunPersistence.Capture(liveRunId,liveRunOwner,liveRunTick,race.player,false,"Result settled / shutdown still running");
+            PlayerProfile next;string error;
+            if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{var old=p.runCheckpoints.Find(r=>r.runId==liveRunId);if(old==null||old.tick<liveRunTick)MechanicsTransactions.ApplyCheckpoint(p,checkpoint);CareerProgression.Settle(p,liveRunId,race);},ProfileStore.TrySave,out next,out error)){notice="Result save failed; retry retained. "+error;return;}
+            profile=next;settings=profile.driving;awarded=true;savedRunTick=liveRunTick;savedRunFailures=RunPersistence.FailureCount(race.player);finishedPass=Build.lastPass;
+            var result=profile.careerRuns.Find(r=>r.runId==liveRunId);notice=result.outcome+(practiceRun?" / Practice / no payout":" / reward and resources saved once");
         }
         void SetPaused(bool value)
         {
@@ -248,7 +240,7 @@ namespace DragLab.Runtime
             if(!close&&liveRunTick==savedRunTick)return true;
             var checkpoint=RunPersistence.Capture(liveRunId,liveRunOwner,liveRunTick,race.player,close,reason);
             PlayerProfile next;string error;
-            if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>MechanicsTransactions.ApplyCheckpoint(p,checkpoint),ProfileStore.TrySave,out next,out error)){notice="Run save failed; live state retained. "+error;return false;}
+            if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{MechanicsTransactions.ApplyCheckpoint(p,checkpoint);if(close)CareerProgression.Interrupted(p,liveRunId);},ProfileStore.TrySave,out next,out error)){notice="Run save failed; live state retained. "+error;return false;}
             profile=next;settings=profile.driving;savedRunTick=liveRunTick;savedRunFailures=RunPersistence.FailureCount(race.player);liveRunClosed=close;return true;
         }
         void OnApplicationPause(bool pause) { if (pause)SetPaused(true); }
@@ -381,16 +373,18 @@ namespace DragLab.Runtime
         }
         void CareerGUI()
         {
-            GUILayout.Label("LOCAL LADDER", heading);
-            GUILayout.Label("Reputation unlocks events. First wins grant REP; repeats grant cash.");
+            GUILayout.Label("CAREER / F to S",heading);
+            GUILayout.Label("Qualifications unlock rivals. First wins add REP and a bonus; repeats pay cash only. Entry and rewards settle with the real build and its fuel/wear.");
             DifficultyGUI();
-            foreach (var evt in career)
-            {
-                GUILayout.Label(evt.displayName + "  |  Rival: " + evt.rivalName + "  |  REP " + evt.reputationRequired);
-                GUI.enabled = profile.reputation >= evt.reputationRequired;
-                if (GUILayout.Button((profile.careerWins.Contains(evt.stableId) ? "[WON] " : "") + "Race / $" + evt.cashWin + " win / " + evt.reputationWin + " REP")) pendingAction = () => StartRace(evt);
-                GUI.enabled = true;
+            foreach(var evt in career){
+                GUILayout.Label(evt.tier+" / "+evt.eventKind+" / "+evt.displayName+" / "+evt.rivalName);
+                string error=CareerProgression.EntryError(profile,Build,evt);
+                GUILayout.Label("REP "+evt.reputationRequired+" / entry $"+evt.entryFee+" / win $"+evt.cashWin+" / completed loss $"+evt.cashLoss+" / first bonus $"+evt.firstWinBonus+" / "+evt.reputationWin+" REP");
+                if(error!=null)GUILayout.Label(error);
+                GUI.enabled=error==null;
+                if(PartButton("career-"+evt.stableId,(profile.careerWins.Contains(evt.stableId)?"[WON] ":"")+"Stage "+evt.displayName))pendingAction=()=>StartRace(evt);GUI.enabled=true;
             }
+            GUILayout.Label("Recent race outcomes");foreach(var r in profile.careerRuns.FindAll(r=>r.complete).GetRange(Math.Max(0,profile.careerRuns.FindAll(r=>r.complete).Count-10),Math.Min(10,profile.careerRuns.FindAll(r=>r.complete).Count)))GUILayout.Label((r.eventId??"Free / practice")+" / "+r.outcome);
         }
         void DifficultyGUI()
         {

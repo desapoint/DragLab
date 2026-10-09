@@ -81,7 +81,8 @@ namespace DragLab.Runtime
                 foreach (var value in PartSemantics.Stats(definition)) GUILayout.Label(value.label + ": " + (value.unit == "Nm" ? SharedUnitSettings.Torque(value.value, "0.##") : value.unit == "bar" ? SharedUnitSettings.Pressure(value.value) : value.value.ToString("0.##") + " " + value.unit));
                 GUILayout.BeginHorizontal();
                 if (PartButton("preview:" + id, "Preview stats / dyno")) PreviewPart(id);
-                GUI.enabled = profile.cash >= definition.price;
+                GUI.enabled = profile.cash >= definition.price && profile.reputation >= definition.reputationRequired;
+                if(definition.reputationRequired>0)GUILayout.Label("Requires REP "+definition.reputationRequired+" / independent offer");
                 if (PartButton("buy:" + id, "Buy loose")) QueuePayment(new PaymentRequest { kind = PaymentKind.Part, carId = carId, targetId = id });
                 if (PartButton("fit:" + id, "Buy + install")) QueuePayment(new PaymentRequest { kind = PaymentKind.Part, carId = carId, targetId = id, install = true });
                 GUI.enabled = true; GUILayout.EndHorizontal();

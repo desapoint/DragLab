@@ -9,6 +9,7 @@ namespace DragLab.Domain.Mechanics
         public static string Buy(PlayerProfile profile, MechanicalCatalog catalog, string vehicleId, string definitionId, bool install)
         {
             var car = Car(profile, vehicleId); var part = catalog.Find(definitionId);
+            if(part==null||profile.reputation<part.reputationRequired)throw new InvalidOperationException("Part offer requires REP "+(part==null?0:part.reputationRequired)+"; no preceding rank purchase is required.");
             if (!catalog.Fits(catalog.Spec(car.vehicleId), part)) throw new InvalidOperationException("Incompatible purchase for selected vehicle.");
             if (part.price < 0 || profile.cash < part.price) throw new InvalidOperationException("Insufficient cash.");
             var item = new PartInstance { instanceId = MechanicsOwnership.NewId("part"), definitionId = part.id };

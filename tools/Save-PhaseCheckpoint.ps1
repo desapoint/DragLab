@@ -1,6 +1,6 @@
 param([Parameter(Mandatory=$true)][string]$Phase)
 $ErrorActionPreference = 'Stop'
-if ($Phase -notmatch '^(2[a-l]|3[a-d])$') { throw 'Expected phase 2a through 2l or 3a through 3d.' }
+if ($Phase -notmatch '^(2[a-l]|3[a-g])$') { throw 'Expected phase 2a through 2l or 3a through 3g.' }
 $taskRoot = Split-Path $PSScriptRoot -Parent
 $taskDestination = Join-Path $taskRoot "reports/phases/$Phase"
 New-Item -ItemType Directory -Path $taskDestination -Force | Out-Null

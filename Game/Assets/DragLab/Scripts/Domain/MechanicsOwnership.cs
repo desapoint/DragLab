@@ -22,6 +22,7 @@ namespace DragLab.Domain.Mechanics
             if (profile.engines == null) profile.engines = new List<EngineAssemblyInstance>();
             if (profile.runCheckpoints == null) profile.runCheckpoints = new List<RunCheckpoint>();
             profile.catalog = catalog;
+            CareerProgression.Ensure(profile);
             PaidEconomy.Ensure(profile);
             if (profile.savedSetups == null) profile.savedSetups = new List<SavedVehicleSetup>();
             foreach (var engine in profile.engines) { if (engine.slots == null) engine.slots = new List<SlotBinding>(); if (engine.tune == null) engine.tune = new Tune(); if (!string.IsNullOrEmpty(engine.parentVehicleId)) engine.fluids = null; }
@@ -155,6 +156,7 @@ namespace DragLab.Domain.Mechanics
             if (profile.saveVersion != SaveVersion || profile.mechanicsVersion != MechanicsSchema.Version || profile.revision < 0 || profile.cash < 0) return "Invalid profile version/revision/cash.";
             if(profile.cars.Count == 0 ? !string.IsNullOrEmpty(profile.selectedOwnedVehicleId) || !string.IsNullOrEmpty(profile.selectedVehicleId) : !profile.cars.Any(c=>c.instanceId==profile.selectedOwnedVehicleId&&c.vehicleId==profile.selectedVehicleId))return "Invalid selected owned vehicle reference.";
             string economyError = PaidEconomy.ValidateState(profile); if (economyError != null) return economyError;
+            string careerError = CareerProgression.Validate(profile); if (careerError != null) return careerError;
             var identities = new HashSet<string>(); var bindings = new HashSet<string>();
             Func<string, bool> unique = id => !string.IsNullOrEmpty(id) && identities.Add(id);
             foreach (var car in profile.cars)

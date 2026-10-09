@@ -26,7 +26,7 @@ namespace DragLab.Infrastructure
         public static bool RecoverInterrupted(PlayerProfile profile)
         {
             bool changed=false;
-            foreach(var run in profile.runCheckpoints.Where(r=>!r.settled)){run.settled=true;run.closedReason="Interrupted / no race resumed or reward added";changed=true;}
+            foreach(var run in profile.runCheckpoints.Where(r=>!r.settled)){run.settled=true;run.closedReason="Interrupted / no race resumed or reward added";CareerProgression.Interrupted(profile,run.runId);changed=true;}
             if(changed)profile.revision++;return changed;
         }
     }

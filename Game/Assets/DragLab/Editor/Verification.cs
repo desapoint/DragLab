@@ -403,7 +403,7 @@ namespace DragLab.Editor
         public static void VerifyCareerStandalone() { int count=0;string result=VerifyCareer(ref count); File.WriteAllText(Path.Combine(Path.GetFullPath(Path.Combine(Application.dataPath,"../..")),"reports/career-path.txt"),result);Debug.Log("CAREER PARTS PASS: " + count); }
         static string VerifyCareer(ref int count)
         {
-            var events = Resources.LoadAll<CareerEventDefinition>("Data/Events");
+            var events = Resources.LoadAll<CareerEventDefinition>("Data/Events").Where(e=>new[]{"first-pass","club-run","coupe-rival","local-final"}.Contains(e.stableId)).ToArray();
             Array.Sort(events, (a, b) => a.reputationRequired.CompareTo(b.reputationRequired));
             var starter = Array.Find(Resources.LoadAll<VehicleDefinition>("Data/Vehicles"), v => v.spec.id == "starter-hatch");
             var ledger = PlayerProfile.New(DateTime.UtcNow.Ticks);

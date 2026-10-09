@@ -27,7 +27,7 @@ namespace DragLab.Editor
                 var game = UnityEngine.Object.FindFirstObjectByType<PrototypeGame>();
                 Check(game != null, "Scene contains PrototypeGame.");
                 Invoke(game, "Start");
-                Check(game.vehicles.Length >= 8 && game.career.Length == 4, "Scene loads the expanded vehicle catalog and four existing events.");
+                Check(game.vehicles.Length >= 8 && game.career.Length >= 21, "Scene loads the expanded vehicle catalog and expanded career events.");
                 var profile = Field<PlayerProfile>(game, "profile");
                 int startCash = profile.cash;
                 game.StartRace(game.career[0]);
@@ -76,7 +76,7 @@ namespace DragLab.Editor
                 Check(savedPass != null && Math.Abs(savedPass.elapsedSeconds - race.player.state.elapsed) < 1e-10 && savedPass.tune != profile.SelectedCar.tune &&
                     savedPass.driving.launch == race.player.driver.launch, "Last-pass timing, tune and assists persist independently.");
                 game.ReturnToGarage(); Check(Field<string>(game, "screen") == "Garage", "Completed practice returns to garage without restarting.");
-                string report = "PASS: scene initialization, eight-car/four-event wiring, first race, reward/save roundtrip, backup recovery and twelve-layer runtime car assembly.\n" +
+                string report = "PASS: scene initialization, eight-car/expanded-event wiring, first race, reward/save roundtrip, backup recovery and twelve-layer runtime car assembly.\n" +
                     "Practice settles once with no payout, last-pass snapshots persist, legacy saves have no invented pass, and return to garage succeeds.\n" +
                     "Editor: " + Application.unityVersion + "\nFixture: " + fixtures + "\nNo actual player save was accessed.\n" +
                     "Scope: synchronous scene integration; UI input, rendering, audio and device behavior still require Play Mode/device QA.\n";

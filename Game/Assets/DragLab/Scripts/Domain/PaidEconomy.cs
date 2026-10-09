@@ -104,7 +104,7 @@ namespace DragLab.Domain.Mechanics
             var a = new PaymentAmounts { description = request.kind.ToString() };
             if (request.kind == PaymentKind.Car) { a.cost = DealerPrice(cat, policy, prices, request.offer); a.fuel = cat.Spec(request.offer.model).fuel.capacityLitres; a.oil = cat.Spec(request.offer.model).fluids.oilCapacityLitres; a.coolant = cat.Spec(request.offer.model).fluids.coolantCapacityLitres; return a; }
             var car = Car(p, request.carId); var build = MechanicsOwnership.Resolve(p, car, cat);
-            if (request.kind == PaymentKind.Part) { var d = cat.Find(request.targetId); if (d == null || !cat.Fits(cat.Spec(car.vehicleId), d) || d.price < 0) throw new InvalidOperationException("Incompatible/unavailable part purchase."); a.cost = d.price; return a; }
+            if (request.kind == PaymentKind.Part) { var d = cat.Find(request.targetId); if (d == null || !cat.Fits(cat.Spec(car.vehicleId), d) || d.price < 0 || p.reputation<d.reputationRequired) throw new InvalidOperationException("Incompatible/unavailable part purchase; check reputation requirement."); a.cost = d.price; return a; }
             if (request.kind == PaymentKind.Fuel) { a.fuel = Quantity(request.litres, cat.Spec(car.vehicleId).fuel.capacityLitres - car.fuel.litres); a.cost = Money(a.fuel * policy.fuelPerLitre); return a; }
             if (request.kind == PaymentKind.Fluids || request.kind == PaymentKind.OilChange || request.kind == PaymentKind.CoolantFlush) {
                 if (string.IsNullOrEmpty(car.engineAssemblyId)) throw new InvalidOperationException("No attached engine to service.");

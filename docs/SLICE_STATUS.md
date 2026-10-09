@@ -1,5 +1,7 @@
 ﻿# First playable slice
 
+3E adds the expanded career and atomic captured race settlement. See [3E report](../reports/phases/3e/CHANGES.md) and [controls](CAREER_PROGRESSION.md). Garage jobs and full-loop balance remain 3F/3G; integrated release audit remains 3H.
+
 Source of scope: [objective.md](objective.md), section 58. The eight-car roster includes the requested pickup, three-cylinder hatch, AWD turbo sedan, inline-six GT and supercharged V8. The four new mechanical configurations reuse existing layered placeholder bodies. Mechanics and editable data take priority over finished graphics or menus.
 
 Current Slice 3 progress: 3A–3D are complete: eight-car collection, retained engine assemblies, named saved hardware/tune configurations with missing-part purchases, and captured buyer valuations for actual loose parts/elements, engines, chassis and complete/incomplete cars. Quotes explain condition/history/completeness and exclude retained assets; stale or reserved states block validation. 3D adds confirmed quote-backed sales/salvage, paid fuel/services/dealer packages, empty-garage saves and bounded timed recovery. Next is 3E career/availability; see [paid operations](PAID_OPERATIONS_AND_RECOVERY.md). Prices remain provisional. See [phase plan](IMPLEMENTATION_PHASES.md), [assembly controls](ASSEMBLIES_AND_SETUPS.md) and [valuation controls](VALUATION_AND_QUOTES.md).

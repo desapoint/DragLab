@@ -1,4 +1,4 @@
-# 2D Drag Racing Game — First Iteration
+﻿# 2D Drag Racing Game — First Iteration
 
 ## 1. Core Vision
 
@@ -2326,3 +2326,8 @@ Versioned immutable quotes capture exact ownership/condition/resources/tuning an
 Confirmed captured-quote sales cover loose packs/elements, complete/partial engines, chassis and cars. Chassis salvage retains its attached engine tree and original wear/faults/liquids; individual keep controls retain excluded hardware. Cash and ownership commit once in the recoverable candidate/save transaction, with exact disposed/retained IDs in operating receipts. Valid empty garages remain empty through schema-5 migration/reload; no replacement or missing hardware is gifted.
 
 Normal fuel, fluids and applicable service/replacement/rebuild/dealer operations are paid; isolated benches remain free. Auto top-up uses paid service and blocks entry if unaffordable. Bounded real-time recovery work persists offline and funds fuel, repair or an unrestricted replacement without healing or manufacturing assets. Existing setup missing-part Apply and rebuild reservation behavior is preserved. Default dealer pricing prevents immediate stock-disposal profit, while final pricing/recovery balance remains 3G. See [controls and authoring](PAID_OPERATIONS_AND_RECOVERY.md). Next: 3E career/availability.
+
+
+### Slice 3E implementation (2026-10-09)
+
+The first structured career now has 21 events: the four original IDs, fourteen ordered F–S qualification/rival events and three optional installed-build restriction challenges. Tier names identify competitions; they do not assert each opponent has that exact benchmark PP. Entries capture fees/payout terms, settlement commits records/rewards/resources atomically, and shutdown continues consuming physical resources. Existing mechanical ranks remain directly available; new motorsport compressor offers use independent REP unlocks. See [career progression](CAREER_PROGRESSION.md). Prize cars, 100+ events and broad manufacturer/generation content remain later content, outside this systems phase.

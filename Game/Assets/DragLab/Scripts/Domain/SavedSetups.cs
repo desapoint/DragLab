@@ -71,6 +71,7 @@ namespace DragLab.Domain.Mechanics
                 var owned = fitted != null && fitted.definitionId == d.id && Usable(fitted) ? fitted :
                     p.parts.Where(i => i.location == PartLocation.Inventory && i.definitionId == d.id && Usable(i)).OrderByDescending(i => i.condition.health).ThenBy(i => i.instanceId, StringComparer.Ordinal).FirstOrDefault();
                 var line = new SetupPlanLine { category = d.category, definitionId = d.id, itemId = owned == null ? null : owned.instanceId, installed = owned != null && owned == fitted, purchase = owned == null, cost = owned == null ? d.price : 0 };
+                if(line.purchase && p.reputation<d.reputationRequired)plan.errors.Add(d.name+": requires REP "+d.reputationRequired);
                 plan.cost = checked(plan.cost + line.cost); plan.lines.Add(line);
                 if (owned != null && owned.condition.health < .95) plan.warnings.Add(d.name + ": reuse at " + owned.condition.health.ToString("P0") + " health; wear is retained.");
             }

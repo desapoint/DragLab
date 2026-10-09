@@ -16,5 +16,11 @@ namespace DragLab.Data
         public int cashWin = 500;
         public int cashLoss = 100;
         public int reputationWin = 2;
+        public string tier = "F", eventKind = "Race", prerequisite;
+        public int entryFee, firstWinBonus;
+        public float minimumHp, maximumHp, maximumDisplacementL, minimumMassKg, maximumMassKg;
+        public bool restrictDrive, naturallyAspiratedOnly, turboOnly;
+        public DriveType requiredDrive;
+        public string requiredModel;
     }
 }

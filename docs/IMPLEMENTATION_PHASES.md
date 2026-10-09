@@ -1,4 +1,4 @@
-# Slice 2 and Slice 3 implementation phases
+﻿# Slice 2 and Slice 3 implementation phases
 
 Additional catalog foundation (2026-10-08): [part-owned tuning permissions and 128 new hardware choices](../reports/part-hardware/CHANGES.md), integrated with shared race/physical-bench resolution. Preserve physical turbo-size swaps, fixed/adjustable controller and pulley distinctions, supported final-drive gearsets, saved-value enforcement and unrestricted raw acoustic experiments during remaining phases. Physical capture model was v12; the approved service/fluids extension uses v13. This records the original catalog extension; final integration acceptance is in the completion record below.
 
@@ -59,6 +59,8 @@ Start Slice 3 only after 2L passes. Reuse the ownership/checkpoint/transaction l
 | **3H — Economy/save integration checkpoint** | Run the complete interruption/migration/ownership/quote/pause/resume matrix and Windows UI workflows; package a reviewable build and balance report. | Multiple same-model cars, partial tanks, worn/failed parts, missing components, retained/sold engine trees, career records and jobs survive reload/recovery. No duplicate payouts/assets or permanent recovery dead ends. All Slice 3 requirements pass before marking the slice complete; human balance review remains explicit. |
 
 ## Completion record
+
+- **3E complete (2026-10-09):** 21 authored events, ordered F–S qualifications/rivals, installed-build restrictions, independent specialist offers, captured entries and atomic outcomes/rewards/resources. Legacy wins and unrestricted ranks remain valid. See [career controls](CAREER_PROGRESSION.md) and [evidence](../reports/phases/3e/CHANGES.md). 3F–3H remain subsequent phases.
 
 - **3D complete (2026-10-09):** quote-backed paid fuel/services/dealer purchases and confirmed part/element/engine/car sales and chassis salvage. Exact retained engine trees, schema-5 empty garages, operating receipts and bounded offline recovery jobs persist atomically. Default dealer packages prevent immediate stock disposal profit; final balance remains 3G. Controls: [paid operations and recovery](PAID_OPERATIONS_AND_RECOVERY.md). Evidence: [3D report](../reports/phases/3d/CHANGES.md). Next: 3E career/availability.
 

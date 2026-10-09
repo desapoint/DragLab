@@ -100,6 +100,7 @@ namespace DragLab.Domain
         public long idleClaimUtcTicks;
         public List<OwnedCar> cars = new List<OwnedCar>();
         public List<string> careerWins = new List<string>();
+        public List<CareerRun> careerRuns = new List<CareerRun>();
         public double bestQuarterSeconds;
         public DriverSettings driving = new DriverSettings();
         public int difficulty = 1;

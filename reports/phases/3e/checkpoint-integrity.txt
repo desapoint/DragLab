@@ -1,0 +1,3 @@
+Windows-checkpoint.zip: 263 entries / SHA256 30aa736b834c8e7d72c0ff389d6e95f948312a190251e7089eff2b368f34142c
+Archived/current Assembly-CSharp.dll match.
+source-checkpoint.zip: 626 entries / SHA256 6e0baece2d12e0618d3843785e7945f3ef173baf41ebda3d3e2a7255380b437b

@@ -1,0 +1,13 @@
+# Career progression (3E)
+
+Career loads all event assets from `Game/Assets/DragLab/Resources/Data/Events`. The four original IDs and earned wins remain valid. Fourteen new qualification/rival events form an ordered F–S ladder, with three optional drive/displacement/induction/weight challenges. These are competition tier names, not a claim that every opponent's benchmark PP equals that letter. The current ladder is deliberately attainable; 3G evaluates the funded route and 3H remains the final integrated checkpoint.
+
+The Career page shows required reputation, prerequisite, actual build eligibility, entry fee, repeat win/completed-loss cash, first-win bonus and reputation. Missing hardware, rebuild reservations and unsettled runs block staging. Authored restrictions examine the installed resolver's drivetrain, displacement, induction, horsepower and dry mass. An owned blueprint or a displayed upgrade rank cannot satisfy them.
+
+Entry fees and a captured payout contract are saved with the initial physical checkpoint. At the finish, fuel/fluids/condition, pass records, outcome and reward commit together. Failed writes retain the previous whole profile; retries settle once. First wins alone add REP/bonus. Completed losses pay their authored consolation amount; disqualifications, mechanical/incomplete DNFs and interruption add no reward. Practice records valid passes without cash or REP. Shutdown remains physically simulated and its resources continue to checkpoint after payout. Retry/garage/quit close that run.
+
+Existing mechanical offers remain directly purchasable without buying preceding ranks. An additional motorsport compressor offer per model unlocks independently at REP 8; its price/flow differ from the original. Locked missing parts cannot be acquired through shop, paid quotes or saved-setup Apply. Already-owned compatible parts can be reused regardless of shop availability.
+
+Author event fields in their ScriptableObject inspectors. `DragLab > Prepare Expanded Career` adds missing assets without overwriting designer edits. `DragLab > Verify Expanded Career` exports eligibility and real shared-simulation build matrices. Component `reputationRequired` is authorable through the existing part override tooling; a value of zero preserves unrestricted availability.
+
+Career entries retain up to 256 recent outcomes. Existing saves receive an empty ledger without inventing passes or replaying rewards. An interrupted captured entry is marked closed without refunding its entry fee or reversing fuel/wear already saved. Bonuses, tiers and prices are fictional game calibration.

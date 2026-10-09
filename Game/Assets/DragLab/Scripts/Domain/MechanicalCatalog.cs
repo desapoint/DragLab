@@ -12,7 +12,7 @@ namespace DragLab.Domain.Mechanics
         public float boreMm, power = 1, grip = 1, massScale = 1, shiftScale = 1, capacityScale = 1, boostScale = 1;
         public float rpmLimit, torqueLimitNm, massKg, inertiaKgM2;
         public float positionFromFrontAxleM, heightM = .4f;
-        public int price, stage;
+        public int price, stage, reputationRequired;
         public ClutchEnvironment clutchEnvironment; public ClutchMaterial clutchMaterial; public ClutchActuation clutchActuation;
         public int clutchPlateCount=1; public float clutchOilCapacityLitres, clutchEngagementRpm=1800;
         public PartTuningOptions tuning;
@@ -61,6 +61,8 @@ namespace DragLab.Domain.Mechanics
         public MechanicalCatalog(IEnumerable<VehicleSpec> vehicles, bool applyOverrides=true)
         {
             foreach (var source in vehicles) { var spec=source.Copy(); specs.Add(spec.id,spec.Copy()); Author(spec); }
+            // Extra offers unlock independently. Existing ranks remain purchasable directly.
+            foreach(var model in specs.Keys){var source=parts.Where(p=>p.id.StartsWith(model+"/")&&p.category==PartCategory.Induction&&p.turboUnits>0).OrderByDescending(p=>p.turboSize).FirstOrDefault();if(source!=null){var extra=source.Copy();extra.id=model+"/Induction/motorsport";extra.name=source.name+" / motorsport compressor";extra.reputationRequired=8;extra.price=checked(source.price+400);extra.boostScale=Math.Min(4,source.boostScale*1.05f);extra.description+=" Independent REP 8 offer; preceding induction ranks are not required. Higher flow needs matching strength, tires and cooling.";parts.Add(extra);}}
             if(applyOverrides)PartCatalogOverrides.Apply(this,PartCatalogOverrides.Load());
         }
         public VehicleSpec Spec(string id) { return specs[id].Copy(); }
