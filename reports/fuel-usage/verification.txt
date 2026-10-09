@@ -1,0 +1,75 @@
+PASS: Older driver JSON keeps its pre-existing realistic fuel usage, including old Balanced captures.
+PASS: Fuel usage follows newly applied difficulty preset: Arcade
+PASS: Fuel preset preserves chosen driver modes: Arcade
+PASS: Fuel usage follows newly applied difficulty preset: Balanced
+PASS: Fuel preset preserves chosen driver modes: Balanced
+PASS: Fuel usage follows newly applied difficulty preset: Simulation
+PASS: Fuel preset preserves chosen driver modes: Simulation
+PASS: sport-coupe / Realistic: loaded demand and actual flow scale exactly by the selected rate.
+PASS: sport-coupe / Realistic: burn telemetry, remaining quantity and fuel/service-fluid mass agree.
+PASS: sport-coupe / Realistic: None runs the engine without consuming or deleting tank weight.
+PASS: sport-coupe / Realistic: full fuel/mass/running trace replays exactly after JSON round trip.
+PASS: sport-coupe / Realistic: race/bench capture owns an independent copy of consumption settings.
+PASS: sport-coupe / Reduced: loaded demand and actual flow scale exactly by the selected rate.
+PASS: sport-coupe / Reduced: burn telemetry, remaining quantity and fuel/service-fluid mass agree.
+PASS: sport-coupe / Reduced: None runs the engine without consuming or deleting tank weight.
+PASS: sport-coupe / Reduced: full fuel/mass/running trace replays exactly after JSON round trip.
+PASS: sport-coupe / Reduced: race/bench capture owns an independent copy of consumption settings.
+PASS: sport-coupe / None: loaded demand and actual flow scale exactly by the selected rate.
+PASS: sport-coupe / None: burn telemetry, remaining quantity and fuel/service-fluid mass agree.
+PASS: sport-coupe / None: None runs the engine without consuming or deleting tank weight.
+PASS: sport-coupe / None: full fuel/mass/running trace replays exactly after JSON round trip.
+PASS: sport-coupe / None: race/bench capture owns an independent copy of consumption settings.
+PASS: sport-coupe: repeatable neutral revving consumes exactly 25% in Reduced.
+PASS: starter-hatch / Realistic: loaded demand and actual flow scale exactly by the selected rate.
+PASS: starter-hatch / Realistic: burn telemetry, remaining quantity and fuel/service-fluid mass agree.
+PASS: starter-hatch / Realistic: None runs the engine without consuming or deleting tank weight.
+PASS: starter-hatch / Realistic: full fuel/mass/running trace replays exactly after JSON round trip.
+PASS: starter-hatch / Realistic: race/bench capture owns an independent copy of consumption settings.
+PASS: starter-hatch / Reduced: loaded demand and actual flow scale exactly by the selected rate.
+PASS: starter-hatch / Reduced: burn telemetry, remaining quantity and fuel/service-fluid mass agree.
+PASS: starter-hatch / Reduced: None runs the engine without consuming or deleting tank weight.
+PASS: starter-hatch / Reduced: full fuel/mass/running trace replays exactly after JSON round trip.
+PASS: starter-hatch / Reduced: race/bench capture owns an independent copy of consumption settings.
+PASS: starter-hatch / None: loaded demand and actual flow scale exactly by the selected rate.
+PASS: starter-hatch / None: burn telemetry, remaining quantity and fuel/service-fluid mass agree.
+PASS: starter-hatch / None: None runs the engine without consuming or deleting tank weight.
+PASS: starter-hatch / None: full fuel/mass/running trace replays exactly after JSON round trip.
+PASS: starter-hatch / None: race/bench capture owns an independent copy of consumption settings.
+PASS: starter-hatch: repeatable neutral revving consumes exactly 25% in Reduced.
+PASS: utility-pickup / Realistic: loaded demand and actual flow scale exactly by the selected rate.
+PASS: utility-pickup / Realistic: burn telemetry, remaining quantity and fuel/service-fluid mass agree.
+PASS: utility-pickup / Realistic: None runs the engine without consuming or deleting tank weight.
+PASS: utility-pickup / Realistic: full fuel/mass/running trace replays exactly after JSON round trip.
+PASS: utility-pickup / Realistic: race/bench capture owns an independent copy of consumption settings.
+PASS: utility-pickup / Reduced: loaded demand and actual flow scale exactly by the selected rate.
+PASS: utility-pickup / Reduced: burn telemetry, remaining quantity and fuel/service-fluid mass agree.
+PASS: utility-pickup / Reduced: None runs the engine without consuming or deleting tank weight.
+PASS: utility-pickup / Reduced: full fuel/mass/running trace replays exactly after JSON round trip.
+PASS: utility-pickup / Reduced: race/bench capture owns an independent copy of consumption settings.
+PASS: utility-pickup / None: loaded demand and actual flow scale exactly by the selected rate.
+PASS: utility-pickup / None: burn telemetry, remaining quantity and fuel/service-fluid mass agree.
+PASS: utility-pickup / None: None runs the engine without consuming or deleting tank weight.
+PASS: utility-pickup / None: full fuel/mass/running trace replays exactly after JSON round trip.
+PASS: utility-pickup / None: race/bench capture owns an independent copy of consumption settings.
+PASS: utility-pickup: repeatable neutral revving consumes exactly 25% in Reduced.
+PASS: v8-muscle / Realistic: loaded demand and actual flow scale exactly by the selected rate.
+PASS: v8-muscle / Realistic: burn telemetry, remaining quantity and fuel/service-fluid mass agree.
+PASS: v8-muscle / Realistic: None runs the engine without consuming or deleting tank weight.
+PASS: v8-muscle / Realistic: full fuel/mass/running trace replays exactly after JSON round trip.
+PASS: v8-muscle / Realistic: race/bench capture owns an independent copy of consumption settings.
+PASS: v8-muscle / Reduced: loaded demand and actual flow scale exactly by the selected rate.
+PASS: v8-muscle / Reduced: burn telemetry, remaining quantity and fuel/service-fluid mass agree.
+PASS: v8-muscle / Reduced: None runs the engine without consuming or deleting tank weight.
+PASS: v8-muscle / Reduced: full fuel/mass/running trace replays exactly after JSON round trip.
+PASS: v8-muscle / Reduced: race/bench capture owns an independent copy of consumption settings.
+PASS: v8-muscle / None: loaded demand and actual flow scale exactly by the selected rate.
+PASS: v8-muscle / None: burn telemetry, remaining quantity and fuel/service-fluid mass agree.
+PASS: v8-muscle / None: None runs the engine without consuming or deleting tank weight.
+PASS: v8-muscle / None: full fuel/mass/running trace replays exactly after JSON round trip.
+PASS: v8-muscle / None: race/bench capture owns an independent copy of consumption settings.
+PASS: v8-muscle: repeatable neutral revving consumes exactly 25% in Reduced.
+PASS: Fuel preference persists across JSON save/load and progression reset.
+PASS: Unknown saved fuel mode sanitizes to the prior realistic default.
+PASS: Replay rejects an unknown fuel mode rather than silently changing its consumption.
+Checks: 74

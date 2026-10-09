@@ -1,0 +1,14 @@
+OEM durability / full wear, simulated thermals, multiplier 1 / shared race and bench model.
+FAIL: sport-coupe / ten-quarter-miles / passes 3 / lowest health 0,00 ٪ / Brakes: Thermal overload
+PASS: sport-coupe / two-minute-pull / passes 0 / lowest health 98,56 ٪ / 
+PASS: sport-coupe / five-minute-idle / passes 0 / lowest health 100,00 ٪ / 
+FAIL: starter-hatch / ten-quarter-miles / passes 5 / lowest health 0,00 ٪ / Brakes: Thermal overload
+PASS: starter-hatch / two-minute-pull / passes 0 / lowest health 99,15 ٪ / 
+PASS: starter-hatch / five-minute-idle / passes 0 / lowest health 100,00 ٪ / 
+FAIL: utility-pickup / ten-quarter-miles / passes 2 / lowest health 0,00 ٪ / Brakes: Thermal overload
+PASS: utility-pickup / two-minute-pull / passes 0 / lowest health 98,35 ٪ / 
+PASS: utility-pickup / five-minute-idle / passes 0 / lowest health 100,00 ٪ / 
+FAIL: v8-muscle / ten-quarter-miles / passes 3 / lowest health 0,00 ٪ / Brakes: Thermal overload
+FAIL: v8-muscle / two-minute-pull / passes 0 / lowest health 86,85 ٪ / 
+PASS: v8-muscle / five-minute-idle / passes 0 / lowest health 100,00 ٪ / 
+Checks: 12

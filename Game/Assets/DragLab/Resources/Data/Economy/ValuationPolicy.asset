@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 186f37ff411557a44b03b546954de9e1, type: 3}
+  m_Name: ValuationPolicy
+  m_EditorClassIdentifier: Assembly-CSharp::DragLab.Data.ValuationPolicyDefinition
+  policy:
+    id: prototype-used-market
+    version: 1
+    quoteSeconds: 300
+    usedPartFraction: 0.45
+    scrapFraction: 0.08
+    minimumWearFactor: 0.1
+    distanceDiscountPerKm: 0.00002
+    hourDiscount: 0.0005
+    stressDiscountPerSecond: 0.0001
+    reconditionDiscount: 0.01
+    historyDiscountLimit: 0.2
+    defaultBareChassis: 200
+    buyers:
+    - id: enthusiast
+      name: Enthusiast
+      parts: 1
+      engine: 1.18
+      chassis: 1
+      car: 1.1
+      incomplete: 0.65
+      faulty: 0.55
+    - id: builder
+      name: Engine builder
+      parts: 1
+      engine: 1.3
+      chassis: 0.8
+      car: 0.95
+      incomplete: 0.9
+      faulty: 0.8
+    - id: wholesale
+      name: Parts wholesaler
+      parts: 1
+      engine: 0.85
+      chassis: 0.85
+      car: 0.85
+      incomplete: 0.8
+      faulty: 0.65
+    - id: recycler
+      name: Recycler
+      parts: 0.5
+      engine: 0.6
+      chassis: 0.65
+      car: 0.6
+      incomplete: 1
+      faulty: 0.95
+    models:
+    - model: starter-hatch
+      bareChassis: 280
+      engineDemand: 1
+      chassisDemand: 1
+      carDemand: 1
+    - model: city-three
+      bareChassis: 180
+      engineDemand: 1
+      chassisDemand: 1
+      carDemand: 1
+    - model: sport-coupe
+      bareChassis: 840
+      engineDemand: 1
+      chassisDemand: 1
+      carDemand: 1
+    - model: utility-pickup
+      bareChassis: 1240
+      engineDemand: 1
+      chassisDemand: 1
+      carDemand: 1
+    - model: v8-muscle
+      bareChassis: 1500
+      engineDemand: 1
+      chassisDemand: 1
+      carDemand: 1
+    - model: rally-sedan
+      bareChassis: 1600
+      engineDemand: 1
+      chassisDemand: 1
+      carDemand: 1
+    - model: touring-six
+      bareChassis: 1360
+      engineDemand: 1
+      chassisDemand: 1
+      carDemand: 1
+    - model: super-v8
+      bareChassis: 2200
+      engineDemand: 1
+      chassisDemand: 1
+      carDemand: 1
+    qualities:
+    - quality: OEM
+      factor: 1
+    - quality: Forged
+      factor: 1.08
+    - quality: Aftermarket
+      factor: 1.04

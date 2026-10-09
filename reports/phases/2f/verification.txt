@@ -1,0 +1,69 @@
+PASS: Axle load conservation sport-coupe
+PASS: Mass conservation sport-coupe
+PASS: Equal ballast mass, different axle placement sport-coupe
+PASS: Live mass changes preserve motion sport-coupe
+PASS: Fuel mass counted exactly once sport-coupe
+PASS: Flywheel static replacement and rotational inertia are separate sport-coupe
+PASS: Incomplete mass excludes actually removed Flywheel / sport-coupe
+PASS: Incomplete mass excludes actually removed Wheels / sport-coupe
+PASS: Incomplete mass excludes actually removed Tires / sport-coupe
+PASS: Nonfinite captured mass rejected sport-coupe
+PASS: Mass checkpoint preserves movement and captures actual ballast sport-coupe
+PASS: Old trace remains repeatable after live mass change sport-coupe
+PASS: New mass segment replays exactly sport-coupe
+PASS: JSON mass continuation preserves fuel and distance sport-coupe
+PASS: Body upgrade reduces structure only, not fuel or driver sport-coupe
+PASS: Interior removal subtracts installed hardware once sport-coupe
+PASS: Axle load conservation starter-hatch
+PASS: Mass conservation starter-hatch
+PASS: Equal ballast mass, different axle placement starter-hatch
+PASS: Live mass changes preserve motion starter-hatch
+PASS: Fuel mass counted exactly once starter-hatch
+PASS: Flywheel static replacement and rotational inertia are separate starter-hatch
+PASS: Incomplete mass excludes actually removed Flywheel / starter-hatch
+PASS: Incomplete mass excludes actually removed Wheels / starter-hatch
+PASS: Incomplete mass excludes actually removed Tires / starter-hatch
+PASS: Nonfinite captured mass rejected starter-hatch
+PASS: Mass checkpoint preserves movement and captures actual ballast starter-hatch
+PASS: Old trace remains repeatable after live mass change starter-hatch
+PASS: New mass segment replays exactly starter-hatch
+PASS: JSON mass continuation preserves fuel and distance starter-hatch
+PASS: Body upgrade reduces structure only, not fuel or driver starter-hatch
+PASS: Interior removal subtracts installed hardware once starter-hatch
+PASS: Axle load conservation utility-pickup
+PASS: Mass conservation utility-pickup
+PASS: Equal ballast mass, different axle placement utility-pickup
+PASS: Live mass changes preserve motion utility-pickup
+PASS: Fuel mass counted exactly once utility-pickup
+PASS: Flywheel static replacement and rotational inertia are separate utility-pickup
+PASS: Incomplete mass excludes actually removed Flywheel / utility-pickup
+PASS: Incomplete mass excludes actually removed Wheels / utility-pickup
+PASS: Incomplete mass excludes actually removed Tires / utility-pickup
+PASS: Nonfinite captured mass rejected utility-pickup
+PASS: Mass checkpoint preserves movement and captures actual ballast utility-pickup
+PASS: Old trace remains repeatable after live mass change utility-pickup
+PASS: New mass segment replays exactly utility-pickup
+PASS: JSON mass continuation preserves fuel and distance utility-pickup
+PASS: Body upgrade reduces structure only, not fuel or driver utility-pickup
+PASS: Interior removal subtracts installed hardware once utility-pickup
+PASS: Axle load conservation v8-muscle
+PASS: Mass conservation v8-muscle
+PASS: Equal ballast mass, different axle placement v8-muscle
+PASS: Live mass changes preserve motion v8-muscle
+PASS: Fuel mass counted exactly once v8-muscle
+PASS: Flywheel static replacement and rotational inertia are separate v8-muscle
+PASS: Incomplete mass excludes actually removed Flywheel / v8-muscle
+PASS: Incomplete mass excludes actually removed Wheels / v8-muscle
+PASS: Incomplete mass excludes actually removed Tires / v8-muscle
+PASS: Nonfinite captured mass rejected v8-muscle
+PASS: Mass checkpoint preserves movement and captures actual ballast v8-muscle
+PASS: Old trace remains repeatable after live mass change v8-muscle
+PASS: New mass segment replays exactly v8-muscle
+PASS: JSON mass continuation preserves fuel and distance v8-muscle
+PASS: Body upgrade reduces structure only, not fuel or driver v8-muscle
+PASS: Interior removal subtracts installed hardware once v8-muscle
+PASS: Old save initializes fuel once and tolerates omitted presets
+PASS: Repeated migration preserves empty tank and custom driver mass
+PASS: Ownership validation does not change state or refill tanks
+PASS: Initial stationary telemetry includes conserved static axle loads
+Checks: 68

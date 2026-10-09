@@ -1,0 +1,124 @@
+PASS: sport-coupe: factory fuel hardware still runs.
+PASS: sport-coupe: captures predating controller metadata retain exact factory behavior.
+PASS: sport-coupe: factory injected engine has no pointless carb conversion kit.
+PASS: starter-hatch: factory fuel hardware still runs.
+PASS: starter-hatch: captures predating controller metadata retain exact factory behavior.
+PASS: starter-hatch: factory injected engine has no pointless carb conversion kit.
+PASS: utility-pickup: factory fuel hardware still runs.
+PASS: utility-pickup: captures predating controller metadata retain exact factory behavior.
+PASS: utility-pickup/EfiThrottleBody: mechanical carb controller cannot run injectors.
+PASS: utility-pickup/EfiThrottleBody: missing injector power stops engine without destroying its internals.
+PASS: utility-pickup/EfiThrottleBody: controller is required after conversion.
+PASS: utility-pickup/EfiThrottleBody: four-cylinder factory controller cannot run this V8 conversion.
+PASS: utility-pickup/EfiThrottleBody/utility-pickup/Controls/EfiStreet: compatible kit and controller resolve as a valid injected engine.
+PASS: utility-pickup/EfiThrottleBody: sound uses injection metering while retaining engine, cam and exhaust voice.
+PASS: utility-pickup/EfiThrottleBody: metering and hesitation improve without replacing the cam.
+PASS: utility-pickup/EfiThrottleBody: conversion grants no arbitrary steady horsepower multiplier.
+PASS: utility-pickup/EfiThrottleBody: installed kit runs, revs and consumes fuel in shared simulation.
+PASS: utility-pickup/EfiThrottleBody: controller failure stalls injection; engine internals remain intact.
+PASS: utility-pickup/EfiThrottleBody: injection hardware and controller replay deterministically after JSON serialization.
+PASS: utility-pickup/EfiThrottleBody: converted physical bench retains original carb slot fitment for downgrades.
+PASS: utility-pickup/EfiThrottleBody/utility-pickup/Controls/1: compatible kit and controller resolve as a valid injected engine.
+PASS: utility-pickup/EfiThrottleBody: sound uses injection metering while retaining engine, cam and exhaust voice.
+PASS: utility-pickup/EfiThrottleBody: metering and hesitation improve without replacing the cam.
+PASS: utility-pickup/EfiThrottleBody: conversion grants no arbitrary steady horsepower multiplier.
+PASS: utility-pickup/EfiThrottleBody: installed kit runs, revs and consumes fuel in shared simulation.
+PASS: utility-pickup/EfiThrottleBody: controller failure stalls injection; engine internals remain intact.
+PASS: utility-pickup/EfiThrottleBody: injection hardware and controller replay deterministically after JSON serialization.
+PASS: utility-pickup/EfiThrottleBody: converted physical bench retains original carb slot fitment for downgrades.
+PASS: utility-pickup/EfiThrottleBody: fixed EFI controller does not silently grant programmable limiter/anti-lag hardware.
+PASS: utility-pickup/EfiThrottleBody: programmable limiter/two-step can use injector fuel cut after conversion.
+PASS: utility-pickup/EfiThrottleBody: fuel cut stops injector delivery in cut events; ignition cut continues requested fuel.
+PASS: utility-pickup/EfiThrottleBody: Reduced fuel usage remains exactly 25% with injector cut.
+PASS: utility-pickup/EfiThrottleBody: None fuel usage remains zero after conversion.
+PASS: utility-pickup/EfiThrottleBody: programmable injection can still select ignition cut independently.
+PASS: utility-pickup/EfiThrottleBody: carb downgrade restores metering, sound behavior and ignition-only cut without requiring EFI controller.
+PASS: utility-pickup/EfiPortInjection: mechanical carb controller cannot run injectors.
+PASS: utility-pickup/EfiPortInjection: missing injector power stops engine without destroying its internals.
+PASS: utility-pickup/EfiPortInjection: controller is required after conversion.
+PASS: utility-pickup/EfiPortInjection: four-cylinder factory controller cannot run this V8 conversion.
+PASS: utility-pickup/EfiPortInjection/utility-pickup/Controls/EfiStreet: compatible kit and controller resolve as a valid injected engine.
+PASS: utility-pickup/EfiPortInjection: sound uses injection metering while retaining engine, cam and exhaust voice.
+PASS: utility-pickup/EfiPortInjection: metering and hesitation improve without replacing the cam.
+PASS: utility-pickup/EfiPortInjection: conversion grants no arbitrary steady horsepower multiplier.
+PASS: utility-pickup/EfiPortInjection: installed kit runs, revs and consumes fuel in shared simulation.
+PASS: utility-pickup/EfiPortInjection: controller failure stalls injection; engine internals remain intact.
+PASS: utility-pickup/EfiPortInjection: injection hardware and controller replay deterministically after JSON serialization.
+PASS: utility-pickup/EfiPortInjection: converted physical bench retains original carb slot fitment for downgrades.
+PASS: utility-pickup/EfiPortInjection/utility-pickup/Controls/1: compatible kit and controller resolve as a valid injected engine.
+PASS: utility-pickup/EfiPortInjection: sound uses injection metering while retaining engine, cam and exhaust voice.
+PASS: utility-pickup/EfiPortInjection: metering and hesitation improve without replacing the cam.
+PASS: utility-pickup/EfiPortInjection: conversion grants no arbitrary steady horsepower multiplier.
+PASS: utility-pickup/EfiPortInjection: installed kit runs, revs and consumes fuel in shared simulation.
+PASS: utility-pickup/EfiPortInjection: controller failure stalls injection; engine internals remain intact.
+PASS: utility-pickup/EfiPortInjection: injection hardware and controller replay deterministically after JSON serialization.
+PASS: utility-pickup/EfiPortInjection: converted physical bench retains original carb slot fitment for downgrades.
+PASS: utility-pickup/EfiPortInjection: fixed EFI controller does not silently grant programmable limiter/anti-lag hardware.
+PASS: utility-pickup/EfiPortInjection: programmable limiter/two-step can use injector fuel cut after conversion.
+PASS: utility-pickup/EfiPortInjection: fuel cut stops injector delivery in cut events; ignition cut continues requested fuel.
+PASS: utility-pickup/EfiPortInjection: Reduced fuel usage remains exactly 25% with injector cut.
+PASS: utility-pickup/EfiPortInjection: None fuel usage remains zero after conversion.
+PASS: utility-pickup/EfiPortInjection: programmable injection can still select ignition cut independently.
+PASS: utility-pickup/EfiPortInjection: carb downgrade restores metering, sound behavior and ignition-only cut without requiring EFI controller.
+PASS: utility-pickup: bought conversion, original carb identity and existing wear survive save/reload.
+PASS: utility-pickup: reusable carb restores original fueling without healing wear or discarding kit.
+PASS: v8-muscle: factory fuel hardware still runs.
+PASS: v8-muscle: captures predating controller metadata retain exact factory behavior.
+PASS: v8-muscle/EfiThrottleBody: mechanical carb controller cannot run injectors.
+PASS: v8-muscle/EfiThrottleBody: missing injector power stops engine without destroying its internals.
+PASS: v8-muscle/EfiThrottleBody: controller is required after conversion.
+PASS: v8-muscle/EfiThrottleBody: four-cylinder factory controller cannot run this V8 conversion.
+PASS: v8-muscle/EfiThrottleBody/v8-muscle/Controls/EfiStreet: compatible kit and controller resolve as a valid injected engine.
+PASS: v8-muscle/EfiThrottleBody: sound uses injection metering while retaining engine, cam and exhaust voice.
+PASS: v8-muscle/EfiThrottleBody: metering and hesitation improve without replacing the cam.
+PASS: v8-muscle/EfiThrottleBody: conversion grants no arbitrary steady horsepower multiplier.
+PASS: v8-muscle/EfiThrottleBody: installed kit runs, revs and consumes fuel in shared simulation.
+PASS: v8-muscle/EfiThrottleBody: controller failure stalls injection; engine internals remain intact.
+PASS: v8-muscle/EfiThrottleBody: injection hardware and controller replay deterministically after JSON serialization.
+PASS: v8-muscle/EfiThrottleBody: converted physical bench retains original carb slot fitment for downgrades.
+PASS: v8-muscle/EfiThrottleBody/v8-muscle/Controls/1: compatible kit and controller resolve as a valid injected engine.
+PASS: v8-muscle/EfiThrottleBody: sound uses injection metering while retaining engine, cam and exhaust voice.
+PASS: v8-muscle/EfiThrottleBody: metering and hesitation improve without replacing the cam.
+PASS: v8-muscle/EfiThrottleBody: conversion grants no arbitrary steady horsepower multiplier.
+PASS: v8-muscle/EfiThrottleBody: installed kit runs, revs and consumes fuel in shared simulation.
+PASS: v8-muscle/EfiThrottleBody: controller failure stalls injection; engine internals remain intact.
+PASS: v8-muscle/EfiThrottleBody: injection hardware and controller replay deterministically after JSON serialization.
+PASS: v8-muscle/EfiThrottleBody: converted physical bench retains original carb slot fitment for downgrades.
+PASS: v8-muscle/EfiThrottleBody: fixed EFI controller does not silently grant programmable limiter/anti-lag hardware.
+PASS: v8-muscle/EfiThrottleBody: programmable limiter/two-step can use injector fuel cut after conversion.
+PASS: v8-muscle/EfiThrottleBody: fuel cut stops injector delivery in cut events; ignition cut continues requested fuel.
+PASS: v8-muscle/EfiThrottleBody: Reduced fuel usage remains exactly 25% with injector cut.
+PASS: v8-muscle/EfiThrottleBody: None fuel usage remains zero after conversion.
+PASS: v8-muscle/EfiThrottleBody: programmable injection can still select ignition cut independently.
+PASS: v8-muscle/EfiThrottleBody: carb downgrade restores metering, sound behavior and ignition-only cut without requiring EFI controller.
+PASS: v8-muscle/EfiPortInjection: mechanical carb controller cannot run injectors.
+PASS: v8-muscle/EfiPortInjection: missing injector power stops engine without destroying its internals.
+PASS: v8-muscle/EfiPortInjection: controller is required after conversion.
+PASS: v8-muscle/EfiPortInjection: four-cylinder factory controller cannot run this V8 conversion.
+PASS: v8-muscle/EfiPortInjection/v8-muscle/Controls/EfiStreet: compatible kit and controller resolve as a valid injected engine.
+PASS: v8-muscle/EfiPortInjection: sound uses injection metering while retaining engine, cam and exhaust voice.
+PASS: v8-muscle/EfiPortInjection: metering and hesitation improve without replacing the cam.
+PASS: v8-muscle/EfiPortInjection: conversion grants no arbitrary steady horsepower multiplier.
+PASS: v8-muscle/EfiPortInjection: installed kit runs, revs and consumes fuel in shared simulation.
+PASS: v8-muscle/EfiPortInjection: controller failure stalls injection; engine internals remain intact.
+PASS: v8-muscle/EfiPortInjection: injection hardware and controller replay deterministically after JSON serialization.
+PASS: v8-muscle/EfiPortInjection: converted physical bench retains original carb slot fitment for downgrades.
+PASS: v8-muscle/EfiPortInjection/v8-muscle/Controls/1: compatible kit and controller resolve as a valid injected engine.
+PASS: v8-muscle/EfiPortInjection: sound uses injection metering while retaining engine, cam and exhaust voice.
+PASS: v8-muscle/EfiPortInjection: metering and hesitation improve without replacing the cam.
+PASS: v8-muscle/EfiPortInjection: conversion grants no arbitrary steady horsepower multiplier.
+PASS: v8-muscle/EfiPortInjection: installed kit runs, revs and consumes fuel in shared simulation.
+PASS: v8-muscle/EfiPortInjection: controller failure stalls injection; engine internals remain intact.
+PASS: v8-muscle/EfiPortInjection: injection hardware and controller replay deterministically after JSON serialization.
+PASS: v8-muscle/EfiPortInjection: converted physical bench retains original carb slot fitment for downgrades.
+PASS: v8-muscle/EfiPortInjection: fixed EFI controller does not silently grant programmable limiter/anti-lag hardware.
+PASS: v8-muscle/EfiPortInjection: programmable limiter/two-step can use injector fuel cut after conversion.
+PASS: v8-muscle/EfiPortInjection: fuel cut stops injector delivery in cut events; ignition cut continues requested fuel.
+PASS: v8-muscle/EfiPortInjection: Reduced fuel usage remains exactly 25% with injector cut.
+PASS: v8-muscle/EfiPortInjection: None fuel usage remains zero after conversion.
+PASS: v8-muscle/EfiPortInjection: programmable injection can still select ignition cut independently.
+PASS: v8-muscle/EfiPortInjection: carb downgrade restores metering, sound behavior and ignition-only cut without requiring EFI controller.
+PASS: v8-muscle: bought conversion, original carb identity and existing wear survive save/reload.
+PASS: v8-muscle: reusable carb restores original fueling without healing wear or discarding kit.
+Checks: 122
+Catalog definitions: 649

@@ -1,0 +1,13 @@
+3D actual paid fuel / repairs / last incomplete chassis salvage.
+PASS: Actual typed overfill is capped; paid fuel charges accepted litres exactly once.
+PASS: Unaffordable automatic pre-race top-up blocks race and never supplies free fluids.
+PASS: Actual paid manual top-up preserves oil aging and writes operating receipt.
+PASS: Actual priced reseal repairs leak while keeping structural wear.
+PASS: Cancel actual disposal keeps cash and all ownership.
+PASS: Actual incomplete last-chassis salvage pays once and stores exact engine/fluid tree.
+PASS: Retained damaged individual hardware is unchanged and documented in disposal receipt.
+PASS: Repeated stale disposal cannot pay again.
+PASS: Disk roundtrip retains empty garage, retained engine and committed disposal; fixture explicitly stages zero cash for restart.
+PASS: Actual work start saves captured deadline/reward before process exit without upfront cash.
+PASS: No runtime/GUI/DSP errors.
+Runtime errors: 0

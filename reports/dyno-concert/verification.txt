@@ -1,0 +1,20 @@
+Engine-only classical concert / four-car score ranges / deterministic auditions.
+PASS: Entire score stays in the engine's playable range without modifying the source: sport-coupe / Ode to Joy / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: sport-coupe / Für Elise / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: sport-coupe / In the Hall of the Mountain King / Grieg
+PASS: Entire score stays in the engine's playable range without modifying the source: starter-hatch / Ode to Joy / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: starter-hatch / Für Elise / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: starter-hatch / In the Hall of the Mountain King / Grieg
+PASS: Entire score stays in the engine's playable range without modifying the source: utility-pickup / Ode to Joy / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: utility-pickup / Für Elise / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: utility-pickup / In the Hall of the Mountain King / Grieg
+PASS: Entire score stays in the engine's playable range without modifying the source: v8-muscle / Ode to Joy / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: v8-muscle / Für Elise / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: v8-muscle / In the Hall of the Mountain King / Grieg
+PASS: Complete engine-DSP audition is audible, bounded and sample-exact on repeat: Ode to Joy / Beethoven
+Ode to Joy / Beethoven / 16,00 s / RMS 0,0073
+PASS: Complete engine-DSP audition is audible, bounded and sample-exact on repeat: Für Elise / Beethoven
+Für Elise / Beethoven / 11,27 s / RMS 0,0075
+PASS: Complete engine-DSP audition is audible, bounded and sample-exact on repeat: In the Hall of the Mountain King / Grieg
+In the Hall of the Mountain King / Grieg / 12,80 s / RMS 0,0088
+PASS: 15 concert checks.

@@ -1,0 +1,140 @@
+PASS: Higher compound grip trades sliding/rolling lifetime: sport-coupe / 0 / loss 0,00248712301254272
+PASS: Actual contact work heats and persists four tire histories: sport-coupe / 0
+PASS: Overheated tire loses grip: sport-coupe / 0
+PASS: Full-road compound trace contains measured contact heat/wear: sport-coupe / 0
+PASS: Unpowered tire cools without fictitious sliding heat: sport-coupe / 0
+PASS: Higher compound grip trades sliding/rolling lifetime: sport-coupe / 1 / loss 0,0033227801322937
+PASS: Actual contact work heats and persists four tire histories: sport-coupe / 1
+PASS: Overheated tire loses grip: sport-coupe / 1
+PASS: Full-road compound trace contains measured contact heat/wear: sport-coupe / 1
+PASS: Unpowered tire cools without fictitious sliding heat: sport-coupe / 1
+PASS: Higher compound grip trades sliding/rolling lifetime: sport-coupe / 2 / loss 0,00625479221343994
+PASS: Actual contact work heats and persists four tire histories: sport-coupe / 2
+PASS: Overheated tire loses grip: sport-coupe / 2
+PASS: Full-road compound trace contains measured contact heat/wear: sport-coupe / 2
+PASS: Unpowered tire cools without fictitious sliding heat: sport-coupe / 2
+PASS: Higher compound grip trades sliding/rolling lifetime: sport-coupe / 3 / loss 0,0100470781326294
+PASS: Actual contact work heats and persists four tire histories: sport-coupe / 3
+PASS: Overheated tire loses grip: sport-coupe / 3
+PASS: Full-road compound trace contains measured contact heat/wear: sport-coupe / 3
+PASS: Unpowered tire cools without fictitious sliding heat: sport-coupe / 3
+PASS: None/Partial 25%/Full use the same work and proportional life: sport-coupe
+PASS: Wear difficulty does not turn off tire heat: sport-coupe
+PASS: Double precision rolling wear accumulates across tiny ticks: sport-coupe
+PASS: Pressure abuse shortens equal-work life: sport-coupe
+PASS: Larger rubber has greater heat/sliding reserve, alongside mass/inertia cost: sport-coupe
+PASS: Light rims reduce mass/inertia without removing rubber: sport-coupe
+PASS: Single failed tire loses grip without destroying engine or other tires: sport-coupe
+PASS: Owned condition copies isolate per-wheel state: sport-coupe
+PASS: Repair ignores old cumulative contact work: sport-coupe
+PASS: Reused pack retains wear, resets only contact-counter reference: sport-coupe
+PASS: Full physical pull/shift/coast/brake produces tire wear: sport-coupe
+PASS: Serialized checkpoint retains exact per-wheel thermal/wear trace: sport-coupe
+PASS: Higher compound grip trades sliding/rolling lifetime: starter-hatch / 0 / loss 0,00245648622512817
+PASS: Actual contact work heats and persists four tire histories: starter-hatch / 0
+PASS: Overheated tire loses grip: starter-hatch / 0
+PASS: Full-road compound trace contains measured contact heat/wear: starter-hatch / 0
+PASS: Unpowered tire cools without fictitious sliding heat: starter-hatch / 0
+PASS: Higher compound grip trades sliding/rolling lifetime: starter-hatch / 1 / loss 0,00328177213668823
+PASS: Actual contact work heats and persists four tire histories: starter-hatch / 1
+PASS: Overheated tire loses grip: starter-hatch / 1
+PASS: Full-road compound trace contains measured contact heat/wear: starter-hatch / 1
+PASS: Unpowered tire cools without fictitious sliding heat: starter-hatch / 1
+PASS: Higher compound grip trades sliding/rolling lifetime: starter-hatch / 2 / loss 0,00617772340774536
+PASS: Actual contact work heats and persists four tire histories: starter-hatch / 2
+PASS: Overheated tire loses grip: starter-hatch / 2
+PASS: Full-road compound trace contains measured contact heat/wear: starter-hatch / 2
+PASS: Unpowered tire cools without fictitious sliding heat: starter-hatch / 2
+PASS: Higher compound grip trades sliding/rolling lifetime: starter-hatch / 3 / loss 0,00992321968078613
+PASS: Actual contact work heats and persists four tire histories: starter-hatch / 3
+PASS: Overheated tire loses grip: starter-hatch / 3
+PASS: Full-road compound trace contains measured contact heat/wear: starter-hatch / 3
+PASS: Unpowered tire cools without fictitious sliding heat: starter-hatch / 3
+PASS: None/Partial 25%/Full use the same work and proportional life: starter-hatch
+PASS: Wear difficulty does not turn off tire heat: starter-hatch
+PASS: Double precision rolling wear accumulates across tiny ticks: starter-hatch
+PASS: Pressure abuse shortens equal-work life: starter-hatch
+PASS: Larger rubber has greater heat/sliding reserve, alongside mass/inertia cost: starter-hatch
+PASS: Light rims reduce mass/inertia without removing rubber: starter-hatch
+PASS: Single failed tire loses grip without destroying engine or other tires: starter-hatch
+PASS: Owned condition copies isolate per-wheel state: starter-hatch
+PASS: Repair ignores old cumulative contact work: starter-hatch
+PASS: Reused pack retains wear, resets only contact-counter reference: starter-hatch
+PASS: Full physical pull/shift/coast/brake produces tire wear: starter-hatch
+PASS: Serialized checkpoint retains exact per-wheel thermal/wear trace: starter-hatch
+PASS: Higher compound grip trades sliding/rolling lifetime: utility-pickup / 0 / loss 0,00281274318695068
+PASS: Actual contact work heats and persists four tire histories: utility-pickup / 0
+PASS: Overheated tire loses grip: utility-pickup / 0
+PASS: Full-road compound trace contains measured contact heat/wear: utility-pickup / 0
+PASS: Unpowered tire cools without fictitious sliding heat: utility-pickup / 0
+PASS: Higher compound grip trades sliding/rolling lifetime: utility-pickup / 1 / loss 0,0037577748298645
+PASS: Actual contact work heats and persists four tire histories: utility-pickup / 1
+PASS: Overheated tire loses grip: utility-pickup / 1
+PASS: Full-road compound trace contains measured contact heat/wear: utility-pickup / 1
+PASS: Unpowered tire cools without fictitious sliding heat: utility-pickup / 1
+PASS: Higher compound grip trades sliding/rolling lifetime: utility-pickup / 2 / loss 0,00707370042800903
+PASS: Actual contact work heats and persists four tire histories: utility-pickup / 2
+PASS: Overheated tire loses grip: utility-pickup / 2
+PASS: Full-road compound trace contains measured contact heat/wear: utility-pickup / 2
+PASS: Unpowered tire cools without fictitious sliding heat: utility-pickup / 2
+PASS: Higher compound grip trades sliding/rolling lifetime: utility-pickup / 3 / loss 0,0113624334335327
+PASS: Actual contact work heats and persists four tire histories: utility-pickup / 3
+PASS: Overheated tire loses grip: utility-pickup / 3
+PASS: Full-road compound trace contains measured contact heat/wear: utility-pickup / 3
+PASS: Unpowered tire cools without fictitious sliding heat: utility-pickup / 3
+PASS: None/Partial 25%/Full use the same work and proportional life: utility-pickup
+PASS: Wear difficulty does not turn off tire heat: utility-pickup
+PASS: Double precision rolling wear accumulates across tiny ticks: utility-pickup
+PASS: Pressure abuse shortens equal-work life: utility-pickup
+PASS: Larger rubber has greater heat/sliding reserve, alongside mass/inertia cost: utility-pickup
+PASS: Light rims reduce mass/inertia without removing rubber: utility-pickup
+PASS: Single failed tire loses grip without destroying engine or other tires: utility-pickup
+PASS: Owned condition copies isolate per-wheel state: utility-pickup
+PASS: Repair ignores old cumulative contact work: utility-pickup
+PASS: Reused pack retains wear, resets only contact-counter reference: utility-pickup
+PASS: Full physical pull/shift/coast/brake produces tire wear: utility-pickup
+PASS: Serialized checkpoint retains exact per-wheel thermal/wear trace: utility-pickup
+PASS: Higher compound grip trades sliding/rolling lifetime: v8-muscle / 0 / loss 0,0026317834854126
+PASS: Actual contact work heats and persists four tire histories: v8-muscle / 0
+PASS: Overheated tire loses grip: v8-muscle / 0
+PASS: Full-road compound trace contains measured contact heat/wear: v8-muscle / 0
+PASS: Unpowered tire cools without fictitious sliding heat: v8-muscle / 0
+PASS: Higher compound grip trades sliding/rolling lifetime: v8-muscle / 1 / loss 0,00351595878601074
+PASS: Actual contact work heats and persists four tire histories: v8-muscle / 1
+PASS: Overheated tire loses grip: v8-muscle / 1
+PASS: Full-road compound trace contains measured contact heat/wear: v8-muscle / 1
+PASS: Unpowered tire cools without fictitious sliding heat: v8-muscle / 1
+PASS: Higher compound grip trades sliding/rolling lifetime: v8-muscle / 2 / loss 0,00661849975585938
+PASS: Actual contact work heats and persists four tire histories: v8-muscle / 2
+PASS: Overheated tire loses grip: v8-muscle / 2
+PASS: Full-road compound trace contains measured contact heat/wear: v8-muscle / 2
+PASS: Unpowered tire cools without fictitious sliding heat: v8-muscle / 2
+PASS: Higher compound grip trades sliding/rolling lifetime: v8-muscle / 3 / loss 0,0106313228607178
+PASS: Actual contact work heats and persists four tire histories: v8-muscle / 3
+PASS: Overheated tire loses grip: v8-muscle / 3
+PASS: Full-road compound trace contains measured contact heat/wear: v8-muscle / 3
+PASS: Unpowered tire cools without fictitious sliding heat: v8-muscle / 3
+PASS: None/Partial 25%/Full use the same work and proportional life: v8-muscle
+PASS: Wear difficulty does not turn off tire heat: v8-muscle
+PASS: Double precision rolling wear accumulates across tiny ticks: v8-muscle
+PASS: Pressure abuse shortens equal-work life: v8-muscle
+PASS: Larger rubber has greater heat/sliding reserve, alongside mass/inertia cost: v8-muscle
+PASS: Light rims reduce mass/inertia without removing rubber: v8-muscle
+PASS: Single failed tire loses grip without destroying engine or other tires: v8-muscle
+PASS: Owned condition copies isolate per-wheel state: v8-muscle
+PASS: Repair ignores old cumulative contact work: v8-muscle
+PASS: Reused pack retains wear, resets only contact-counter reference: v8-muscle
+PASS: Full physical pull/shift/coast/brake produces tire wear: v8-muscle
+PASS: Serialized checkpoint retains exact per-wheel thermal/wear trace: v8-muscle
+PASS: Legacy aggregate tire condition migrates idempotently without healing
+PASS: Existing tire failure flags and diagnostic cause survive continued simulation
+PASS: Malformed per-wheel conditions are rejected
+PASS: Owned save reload retains individual tire wear/heat and identity
+PASS: Removing tire pack retains identity and individual wear in inventory
+PASS: Reinstalling retained tires does not heal them
+PASS: Compatible fresh replacement retains the worn original unchanged
+PASS: Ordinary gas/brake burnout produces rear sliding work, heat and wear without invented damage
+PASS: Wear multiplier scales tire life from the same physical work
+PASS: Optimal thermals keeps each tire at its compound optimum
+PASS: One failed rear tire limits an open differential more than a solid axle while engine continues running
+Checks: 139

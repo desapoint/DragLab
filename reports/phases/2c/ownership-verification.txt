@@ -1,0 +1,21 @@
+PASS: Migration is idempotent; no new parts/IDs on repeat.
+PASS: Migration retains cash, career and historical pass configuration.
+PASS: Legacy mechanical rank becomes installed head/intake definition.
+PASS: Two same-model vehicles own independent chassis, engines and parts.
+PASS: Donor move retains identity and failed condition without duplicating ownership.
+PASS: Reload/migration does not invent a removed OEM component.
+PASS: Failed persistence rolls back cash and every owned instance.
+PASS: Stale transaction revision rejected.
+PASS: Duplicate instance transaction rejected.
+PASS: Successful transaction publishes only validated candidate.
+PASS: Owned run checkpoint commits condition once.
+PASS: Settled checkpoint cannot repeat.
+PASS: Checkpoint cannot heal or rewind condition.
+PASS: Original earned v1 save backed up byte-for-byte before migration.
+PASS: Migration IDs are durable before any gameplay save; immediate second load repeats them.
+PASS: Migrated profile atomically saves.
+PASS: Repeated disk load preserves earned records/IDs with no duplicated OEM parts.
+PASS: Second complete save writes a recoverable backup.
+PASS: Corrupt primary recovers complete previous ownership ledger.
+PASS: Unsupported future schema cannot be overwritten by fallback/recovered profile.
+Checks: 20

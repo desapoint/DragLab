@@ -1,0 +1,9 @@
+PASS: Windows-checkpoint.zip / 263 entries / CRC verified
+PASS: archived player DLL matches current Windows build / SHA256 91dfc79cf289c836b2cf51813e32842eb5e02efa5580e59248f7ef87a004f9e7
+Windows-checkpoint.zip SHA256 30bb445f04cd7d5eff3e3a4220fda4672d455b5450290b6f9fec56f23fe217b0
+PASS: source-checkpoint.zip / 571 entries / CRC verified
+PASS: valuation domain/runtime/verification/policy/documentation present in source checkpoint
+source-checkpoint.zip SHA256 f4b55316ab5038447354487caf88bce9a6dfa89ac407246c46d3da777d99219a
+PASS: phase-3c-valuation-first / 14 semantic checks / runtime errors 0
+PASS: phase-3c-assemblies-setups-regression / 13 semantic checks / runtime errors 0
+PASS: phase-3c-parts-regression / 41 semantic checks / runtime errors 0

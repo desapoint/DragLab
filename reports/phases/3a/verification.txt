@@ -1,0 +1,364 @@
+Model: draglab-integrated-tools-v15
+PASS: Eight unique authored cars are available.
+PASS: Valid specification and paid repeat purchase: city-three
+PASS: Complete OEM recipe resolves: city-three
+PASS: Authored part validates: city-three/Pistons/0
+PASS: Authored part validates: city-three/Rods/0
+PASS: Authored part validates: city-three/Crankshaft/0
+PASS: Authored part validates: city-three/HeadIntake/0
+PASS: Authored part validates: city-three/FuelSystem/0
+PASS: Authored part validates: city-three/Ignition/0
+PASS: Authored part validates: city-three/Cooling/0
+PASS: Authored part validates: city-three/Induction/0
+PASS: Authored part validates: city-three/Exhaust/0
+PASS: Authored part validates: city-three/Clutch/0
+PASS: Authored part validates: city-three/Flywheel/0
+PASS: Authored part validates: city-three/Gearbox/0
+PASS: Authored part validates: city-three/Differential/0
+PASS: Authored part validates: city-three/Wheels/0
+PASS: Authored part validates: city-three/Tires/0
+PASS: Authored part validates: city-three/Brakes/0
+PASS: Authored part validates: city-three/Body/0
+PASS: Authored part validates: city-three/Controls/0
+PASS: Authored part validates: city-three/Driveshaft/0
+PASS: Authored part validates: city-three/FrontAxle/0
+PASS: Authored part validates: city-three/Interior/0
+PASS: Authored part validates: city-three/Accessories/0
+PASS: Authored part validates: city-three/RevLimiter/0
+PASS: Authored part validates: city-three/Camshaft/0
+PASS: Authored part validates: city-three/ValveSprings/0
+PASS: Authored part validates: city-three/Valves/0
+PASS: Authored part validates: city-three/Followers/0
+PASS: Authored part validates: city-three/TimingDrive/0
+PASS: Authored part validates: city-three/PistonRings/0
+PASS: Authored part validates: city-three/CylinderBlock/0
+PASS: Authored part validates: city-three/Bearings/0
+PASS: Authored part validates: city-three/ValveSeals/0
+PASS: Authored part validates: city-three/OilPan/0
+PASS: Authored part validates: city-three/OilPump/0
+PASS: Authored part validates: city-three/OilFilter/0
+PASS: Authored part validates: city-three/CoolantPump/0
+PASS: Authored part validates: city-three/CoolingCap/0
+PASS: Authored part validates: city-three/CoolingHoses/0
+PASS: Stock benchmark finishes: city-three
+PASS: Stock pull/shift/coast/brake survives with full wear: city-three
+PASS: Valid specification and paid repeat purchase: rally-sedan
+PASS: Complete OEM recipe resolves: rally-sedan
+PASS: Authored part validates: rally-sedan/Pistons/0
+PASS: Authored part validates: rally-sedan/Rods/0
+PASS: Authored part validates: rally-sedan/Crankshaft/0
+PASS: Authored part validates: rally-sedan/HeadIntake/0
+PASS: Authored part validates: rally-sedan/FuelSystem/0
+PASS: Authored part validates: rally-sedan/Ignition/0
+PASS: Authored part validates: rally-sedan/Cooling/0
+PASS: Authored part validates: rally-sedan/Induction/0
+PASS: Authored part validates: rally-sedan/Exhaust/0
+PASS: Authored part validates: rally-sedan/Clutch/0
+PASS: Authored part validates: rally-sedan/Flywheel/0
+PASS: Authored part validates: rally-sedan/Gearbox/0
+PASS: Authored part validates: rally-sedan/Differential/0
+PASS: Authored part validates: rally-sedan/Wheels/0
+PASS: Authored part validates: rally-sedan/Tires/0
+PASS: Authored part validates: rally-sedan/Brakes/0
+PASS: Authored part validates: rally-sedan/Body/0
+PASS: Authored part validates: rally-sedan/Controls/0
+PASS: Authored part validates: rally-sedan/Driveshaft/0
+PASS: Authored part validates: rally-sedan/FrontAxle/0
+PASS: Authored part validates: rally-sedan/RearAxle/0
+PASS: Authored part validates: rally-sedan/FrontDriveshaft/0
+PASS: Authored part validates: rally-sedan/RearDriveshaft/0
+PASS: Authored part validates: rally-sedan/FrontDifferential/0
+PASS: Authored part validates: rally-sedan/RearDifferential/0
+PASS: Authored part validates: rally-sedan/TransferCase/0
+PASS: Authored part validates: rally-sedan/Interior/0
+PASS: Authored part validates: rally-sedan/Accessories/0
+PASS: Authored part validates: rally-sedan/RevLimiter/0
+PASS: Authored part validates: rally-sedan/TwoStep/0
+PASS: Authored part validates: rally-sedan/Camshaft/0
+PASS: Authored part validates: rally-sedan/ValveSprings/0
+PASS: Authored part validates: rally-sedan/Valves/0
+PASS: Authored part validates: rally-sedan/Followers/0
+PASS: Authored part validates: rally-sedan/TimingDrive/0
+PASS: Authored part validates: rally-sedan/PistonRings/0
+PASS: Authored part validates: rally-sedan/CylinderBlock/0
+PASS: Authored part validates: rally-sedan/Bearings/0
+PASS: Authored part validates: rally-sedan/ValveSeals/0
+PASS: Authored part validates: rally-sedan/OilPan/0
+PASS: Authored part validates: rally-sedan/OilPump/0
+PASS: Authored part validates: rally-sedan/OilFilter/0
+PASS: Authored part validates: rally-sedan/CoolantPump/0
+PASS: Authored part validates: rally-sedan/CoolingCap/0
+PASS: Authored part validates: rally-sedan/CoolingHoses/0
+PASS: Stock benchmark finishes: rally-sedan
+PASS: Stock pull/shift/coast/brake survives with full wear: rally-sedan
+PASS: Valid specification and paid repeat purchase: sport-coupe
+PASS: Complete OEM recipe resolves: sport-coupe
+PASS: Authored part validates: sport-coupe/Pistons/0
+PASS: Authored part validates: sport-coupe/Rods/0
+PASS: Authored part validates: sport-coupe/Crankshaft/0
+PASS: Authored part validates: sport-coupe/HeadIntake/0
+PASS: Authored part validates: sport-coupe/FuelSystem/0
+PASS: Authored part validates: sport-coupe/Ignition/0
+PASS: Authored part validates: sport-coupe/Cooling/0
+PASS: Authored part validates: sport-coupe/Induction/0
+PASS: Authored part validates: sport-coupe/Exhaust/0
+PASS: Authored part validates: sport-coupe/Clutch/0
+PASS: Authored part validates: sport-coupe/Flywheel/0
+PASS: Authored part validates: sport-coupe/Gearbox/0
+PASS: Authored part validates: sport-coupe/Differential/0
+PASS: Authored part validates: sport-coupe/Wheels/0
+PASS: Authored part validates: sport-coupe/Tires/0
+PASS: Authored part validates: sport-coupe/Brakes/0
+PASS: Authored part validates: sport-coupe/Body/0
+PASS: Authored part validates: sport-coupe/Controls/0
+PASS: Authored part validates: sport-coupe/Driveshaft/0
+PASS: Authored part validates: sport-coupe/RearAxle/0
+PASS: Authored part validates: sport-coupe/Interior/0
+PASS: Authored part validates: sport-coupe/Accessories/0
+PASS: Authored part validates: sport-coupe/RevLimiter/0
+PASS: Authored part validates: sport-coupe/TwoStep/0
+PASS: Authored part validates: sport-coupe/Camshaft/0
+PASS: Authored part validates: sport-coupe/ValveSprings/0
+PASS: Authored part validates: sport-coupe/Valves/0
+PASS: Authored part validates: sport-coupe/Followers/0
+PASS: Authored part validates: sport-coupe/TimingDrive/0
+PASS: Authored part validates: sport-coupe/PistonRings/0
+PASS: Authored part validates: sport-coupe/CylinderBlock/0
+PASS: Authored part validates: sport-coupe/Bearings/0
+PASS: Authored part validates: sport-coupe/ValveSeals/0
+PASS: Authored part validates: sport-coupe/OilPan/0
+PASS: Authored part validates: sport-coupe/OilPump/0
+PASS: Authored part validates: sport-coupe/OilFilter/0
+PASS: Authored part validates: sport-coupe/CoolantPump/0
+PASS: Authored part validates: sport-coupe/CoolingCap/0
+PASS: Authored part validates: sport-coupe/CoolingHoses/0
+PASS: Stock benchmark finishes: sport-coupe
+PASS: Stock pull/shift/coast/brake survives with full wear: sport-coupe
+PASS: Valid specification and paid repeat purchase: starter-hatch
+PASS: Complete OEM recipe resolves: starter-hatch
+PASS: Authored part validates: starter-hatch/Pistons/0
+PASS: Authored part validates: starter-hatch/Rods/0
+PASS: Authored part validates: starter-hatch/Crankshaft/0
+PASS: Authored part validates: starter-hatch/HeadIntake/0
+PASS: Authored part validates: starter-hatch/FuelSystem/0
+PASS: Authored part validates: starter-hatch/Ignition/0
+PASS: Authored part validates: starter-hatch/Cooling/0
+PASS: Authored part validates: starter-hatch/Induction/0
+PASS: Authored part validates: starter-hatch/Exhaust/0
+PASS: Authored part validates: starter-hatch/Clutch/0
+PASS: Authored part validates: starter-hatch/Flywheel/0
+PASS: Authored part validates: starter-hatch/Gearbox/0
+PASS: Authored part validates: starter-hatch/Differential/0
+PASS: Authored part validates: starter-hatch/Wheels/0
+PASS: Authored part validates: starter-hatch/Tires/0
+PASS: Authored part validates: starter-hatch/Brakes/0
+PASS: Authored part validates: starter-hatch/Body/0
+PASS: Authored part validates: starter-hatch/Controls/0
+PASS: Authored part validates: starter-hatch/Driveshaft/0
+PASS: Authored part validates: starter-hatch/FrontAxle/0
+PASS: Authored part validates: starter-hatch/Interior/0
+PASS: Authored part validates: starter-hatch/Accessories/0
+PASS: Authored part validates: starter-hatch/RevLimiter/0
+PASS: Authored part validates: starter-hatch/Camshaft/0
+PASS: Authored part validates: starter-hatch/ValveSprings/0
+PASS: Authored part validates: starter-hatch/Valves/0
+PASS: Authored part validates: starter-hatch/Followers/0
+PASS: Authored part validates: starter-hatch/TimingDrive/0
+PASS: Authored part validates: starter-hatch/PistonRings/0
+PASS: Authored part validates: starter-hatch/CylinderBlock/0
+PASS: Authored part validates: starter-hatch/Bearings/0
+PASS: Authored part validates: starter-hatch/ValveSeals/0
+PASS: Authored part validates: starter-hatch/OilPan/0
+PASS: Authored part validates: starter-hatch/OilPump/0
+PASS: Authored part validates: starter-hatch/OilFilter/0
+PASS: Authored part validates: starter-hatch/CoolantPump/0
+PASS: Authored part validates: starter-hatch/CoolingCap/0
+PASS: Authored part validates: starter-hatch/CoolingHoses/0
+PASS: Stock benchmark finishes: starter-hatch
+PASS: Stock pull/shift/coast/brake survives with full wear: starter-hatch
+PASS: Valid specification and paid repeat purchase: super-v8
+PASS: Complete OEM recipe resolves: super-v8
+PASS: Authored part validates: super-v8/Pistons/0
+PASS: Authored part validates: super-v8/Rods/0
+PASS: Authored part validates: super-v8/Crankshaft/0
+PASS: Authored part validates: super-v8/HeadIntake/0
+PASS: Authored part validates: super-v8/FuelSystem/0
+PASS: Authored part validates: super-v8/Ignition/0
+PASS: Authored part validates: super-v8/Cooling/0
+PASS: Authored part validates: super-v8/Induction/0
+PASS: Authored part validates: super-v8/Exhaust/0
+PASS: Authored part validates: super-v8/Clutch/0
+PASS: Authored part validates: super-v8/Flywheel/0
+PASS: Authored part validates: super-v8/Gearbox/0
+PASS: Authored part validates: super-v8/Differential/0
+PASS: Authored part validates: super-v8/Wheels/0
+PASS: Authored part validates: super-v8/Tires/0
+PASS: Authored part validates: super-v8/Brakes/0
+PASS: Authored part validates: super-v8/Body/0
+PASS: Authored part validates: super-v8/Controls/0
+PASS: Authored part validates: super-v8/Driveshaft/0
+PASS: Authored part validates: super-v8/RearAxle/0
+PASS: Authored part validates: super-v8/Interior/0
+PASS: Authored part validates: super-v8/Accessories/0
+PASS: Authored part validates: super-v8/RevLimiter/0
+PASS: Authored part validates: super-v8/TwoStep/0
+PASS: Authored part validates: super-v8/Camshaft/0
+PASS: Authored part validates: super-v8/ValveSprings/0
+PASS: Authored part validates: super-v8/Valves/0
+PASS: Authored part validates: super-v8/Followers/0
+PASS: Authored part validates: super-v8/TimingDrive/0
+PASS: Authored part validates: super-v8/PistonRings/0
+PASS: Authored part validates: super-v8/CylinderBlock/0
+PASS: Authored part validates: super-v8/Bearings/0
+PASS: Authored part validates: super-v8/ValveSeals/0
+PASS: Authored part validates: super-v8/OilPan/0
+PASS: Authored part validates: super-v8/OilPump/0
+PASS: Authored part validates: super-v8/OilFilter/0
+PASS: Authored part validates: super-v8/CoolantPump/0
+PASS: Authored part validates: super-v8/CoolingCap/0
+PASS: Authored part validates: super-v8/CoolingHoses/0
+PASS: Stock benchmark finishes: super-v8
+PASS: Stock pull/shift/coast/brake survives with full wear: super-v8
+PASS: Valid specification and paid repeat purchase: touring-six
+PASS: Complete OEM recipe resolves: touring-six
+PASS: Authored part validates: touring-six/Pistons/0
+PASS: Authored part validates: touring-six/Rods/0
+PASS: Authored part validates: touring-six/Crankshaft/0
+PASS: Authored part validates: touring-six/HeadIntake/0
+PASS: Authored part validates: touring-six/FuelSystem/0
+PASS: Authored part validates: touring-six/Ignition/0
+PASS: Authored part validates: touring-six/Cooling/0
+PASS: Authored part validates: touring-six/Induction/0
+PASS: Authored part validates: touring-six/Exhaust/0
+PASS: Authored part validates: touring-six/Clutch/0
+PASS: Authored part validates: touring-six/Flywheel/0
+PASS: Authored part validates: touring-six/Gearbox/0
+PASS: Authored part validates: touring-six/Differential/0
+PASS: Authored part validates: touring-six/Wheels/0
+PASS: Authored part validates: touring-six/Tires/0
+PASS: Authored part validates: touring-six/Brakes/0
+PASS: Authored part validates: touring-six/Body/0
+PASS: Authored part validates: touring-six/Controls/0
+PASS: Authored part validates: touring-six/Driveshaft/0
+PASS: Authored part validates: touring-six/RearAxle/0
+PASS: Authored part validates: touring-six/Interior/0
+PASS: Authored part validates: touring-six/Accessories/0
+PASS: Authored part validates: touring-six/RevLimiter/0
+PASS: Authored part validates: touring-six/Camshaft/0
+PASS: Authored part validates: touring-six/ValveSprings/0
+PASS: Authored part validates: touring-six/Valves/0
+PASS: Authored part validates: touring-six/Followers/0
+PASS: Authored part validates: touring-six/TimingDrive/0
+PASS: Authored part validates: touring-six/PistonRings/0
+PASS: Authored part validates: touring-six/CylinderBlock/0
+PASS: Authored part validates: touring-six/Bearings/0
+PASS: Authored part validates: touring-six/ValveSeals/0
+PASS: Authored part validates: touring-six/OilPan/0
+PASS: Authored part validates: touring-six/OilPump/0
+PASS: Authored part validates: touring-six/OilFilter/0
+PASS: Authored part validates: touring-six/CoolantPump/0
+PASS: Authored part validates: touring-six/CoolingCap/0
+PASS: Authored part validates: touring-six/CoolingHoses/0
+PASS: Stock benchmark finishes: touring-six
+PASS: Stock pull/shift/coast/brake survives with full wear: touring-six
+PASS: Valid specification and paid repeat purchase: utility-pickup
+PASS: Complete OEM recipe resolves: utility-pickup
+PASS: Authored part validates: utility-pickup/Pistons/0
+PASS: Authored part validates: utility-pickup/Rods/0
+PASS: Authored part validates: utility-pickup/Crankshaft/0
+PASS: Authored part validates: utility-pickup/HeadIntake/0
+PASS: Authored part validates: utility-pickup/FuelSystem/0
+PASS: Authored part validates: utility-pickup/Ignition/0
+PASS: Authored part validates: utility-pickup/Cooling/0
+PASS: Authored part validates: utility-pickup/Induction/0
+PASS: Authored part validates: utility-pickup/Exhaust/0
+PASS: Authored part validates: utility-pickup/Clutch/0
+PASS: Authored part validates: utility-pickup/Flywheel/0
+PASS: Authored part validates: utility-pickup/Gearbox/0
+PASS: Authored part validates: utility-pickup/Differential/0
+PASS: Authored part validates: utility-pickup/Wheels/0
+PASS: Authored part validates: utility-pickup/Tires/0
+PASS: Authored part validates: utility-pickup/Brakes/0
+PASS: Authored part validates: utility-pickup/Body/0
+PASS: Authored part validates: utility-pickup/Controls/0
+PASS: Authored part validates: utility-pickup/Driveshaft/0
+PASS: Authored part validates: utility-pickup/FrontAxle/0
+PASS: Authored part validates: utility-pickup/RearAxle/0
+PASS: Authored part validates: utility-pickup/FrontDriveshaft/0
+PASS: Authored part validates: utility-pickup/RearDriveshaft/0
+PASS: Authored part validates: utility-pickup/FrontDifferential/0
+PASS: Authored part validates: utility-pickup/RearDifferential/0
+PASS: Authored part validates: utility-pickup/TransferCase/0
+PASS: Authored part validates: utility-pickup/Interior/0
+PASS: Authored part validates: utility-pickup/Accessories/0
+PASS: Authored part validates: utility-pickup/Camshaft/0
+PASS: Authored part validates: utility-pickup/ValveSprings/0
+PASS: Authored part validates: utility-pickup/Valves/0
+PASS: Authored part validates: utility-pickup/Followers/0
+PASS: Authored part validates: utility-pickup/TimingDrive/0
+PASS: Authored part validates: utility-pickup/PistonRings/0
+PASS: Authored part validates: utility-pickup/CylinderBlock/0
+PASS: Authored part validates: utility-pickup/Bearings/0
+PASS: Authored part validates: utility-pickup/ValveSeals/0
+PASS: Authored part validates: utility-pickup/OilPan/0
+PASS: Authored part validates: utility-pickup/OilPump/0
+PASS: Authored part validates: utility-pickup/OilFilter/0
+PASS: Authored part validates: utility-pickup/CoolantPump/0
+PASS: Authored part validates: utility-pickup/CoolingCap/0
+PASS: Authored part validates: utility-pickup/CoolingHoses/0
+PASS: Stock benchmark finishes: utility-pickup
+PASS: Stock pull/shift/coast/brake survives with full wear: utility-pickup
+PASS: Valid specification and paid repeat purchase: v8-muscle
+PASS: Complete OEM recipe resolves: v8-muscle
+PASS: Authored part validates: v8-muscle/Pistons/0
+PASS: Authored part validates: v8-muscle/Rods/0
+PASS: Authored part validates: v8-muscle/Crankshaft/0
+PASS: Authored part validates: v8-muscle/HeadIntake/0
+PASS: Authored part validates: v8-muscle/FuelSystem/0
+PASS: Authored part validates: v8-muscle/Ignition/0
+PASS: Authored part validates: v8-muscle/Cooling/0
+PASS: Authored part validates: v8-muscle/Induction/0
+PASS: Authored part validates: v8-muscle/Exhaust/0
+PASS: Authored part validates: v8-muscle/Clutch/0
+PASS: Authored part validates: v8-muscle/Flywheel/0
+PASS: Authored part validates: v8-muscle/Gearbox/0
+PASS: Authored part validates: v8-muscle/Differential/0
+PASS: Authored part validates: v8-muscle/Wheels/0
+PASS: Authored part validates: v8-muscle/Tires/0
+PASS: Authored part validates: v8-muscle/Brakes/0
+PASS: Authored part validates: v8-muscle/Body/0
+PASS: Authored part validates: v8-muscle/Controls/0
+PASS: Authored part validates: v8-muscle/Driveshaft/0
+PASS: Authored part validates: v8-muscle/RearAxle/0
+PASS: Authored part validates: v8-muscle/Interior/0
+PASS: Authored part validates: v8-muscle/Accessories/0
+PASS: Authored part validates: v8-muscle/Camshaft/0
+PASS: Authored part validates: v8-muscle/ValveSprings/0
+PASS: Authored part validates: v8-muscle/Valves/0
+PASS: Authored part validates: v8-muscle/Followers/0
+PASS: Authored part validates: v8-muscle/TimingDrive/0
+PASS: Authored part validates: v8-muscle/PistonRings/0
+PASS: Authored part validates: v8-muscle/CylinderBlock/0
+PASS: Authored part validates: v8-muscle/Bearings/0
+PASS: Authored part validates: v8-muscle/ValveSeals/0
+PASS: Authored part validates: v8-muscle/OilPan/0
+PASS: Authored part validates: v8-muscle/OilPump/0
+PASS: Authored part validates: v8-muscle/OilFilter/0
+PASS: Authored part validates: v8-muscle/CoolantPump/0
+PASS: Authored part validates: v8-muscle/CoolingCap/0
+PASS: Authored part validates: v8-muscle/CoolingHoses/0
+PASS: Stock benchmark finishes: v8-muscle
+PASS: Stock pull/shift/coast/brake survives with full wear: v8-muscle
+PASS: Paid second copy commits atomically.
+PASS: Same-model copies own separate vehicle/chassis/engine trees.
+PASS: Stale duplicate purchase cannot debit or create another copy.
+PASS: Failed disk write retains original cash/selection/ownership.
+PASS: Fuel, tune presets, records and condition remain independent.
+PASS: Donor transfer moves the actual worn identity once and leaves only its donor incomplete.
+PASS: Repeated ownership initialization does not recreate sold/removed components.
+PASS: Same-model collection saves.
+PASS: Reload selects the exact instance and retains independent resources.
+PASS: Loaded collection has exclusive valid ownership.
+PASS: Insufficient cash rejects the complete purchase.
+PASS: Reputation requirements remain enforced for new cars.
+Checks including ownership/inventory: 399

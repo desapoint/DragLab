@@ -1,0 +1,25 @@
+# Paid operations, salvage and recovery — 3D
+
+Normal play now charges for fuel, oil/coolant, oil/filter changes, coolant flushes, applicable repairs, wet-clutch oil, individual replacement components, rebuilds, new parts and dealer packages. Existing setup-library missing-part purchases retain their captured-price, atomic Apply workflow. Isolated engine and physical benches remain free and never change player assets.
+
+## Controls
+
+In Garage, enter a fuel quantity or move its slider; the accepted quantity is capped to free tank space. The price uses accepted litres, rounded up to whole game dollars. Full tanks and zero quantities cannot charge. Fuel consumption, difficulty multipliers and fuel mass remain the shared simulation's behavior. There is no free pre-race refill. Automatic fluid top-up uses the same paid service path and blocks race entry when unaffordable; manual service remains available.
+
+Use **Value car / engine / chassis / loose parts**, select the exact asset and buyer, and inspect the offer. **Chassis / keep engine** salvages the rolling chassis and its offered components while automatically storing its attached engine, descendants, individual faults and oil/coolant. Loose inventory and other stored engines remain owned. **Attached engine** can sell the engine while retaining its chassis. **Selected car** disposes of its offered chassis and attached engine. Missing components contribute no sale value. Individual keep controls exclude fitted packs and their children, moving them into loose inventory on disposal. Rebuild reservations and unsettled runs block disposal.
+
+Sales require an explicit preview and confirmation. Cancel keeps all assets. Cash and ownership commit together; confirmation revalidates the captured revision, contents, policy, catalogue and expiry. Stale quotes require Refresh. Selling the final chassis is allowed: no starter is fabricated on save/reload, and the interface opens Collection with driving disabled until an actual playable car is selected or purchased. Blueprints survive disposal.
+
+Use **Recovery work / operating receipts** in Garage or Collection. Below the authored cash ceiling, start one real-time garage job, then claim its captured reward once after the deadline. Deadlines persist offline. Claims do not create or repair assets. Work, retained-asset sales and existing idle earnings can fund repairs, fuel or a replacement; the cheapest unrestricted dealer package is below the default assistance ceiling. This is a basic recovery route; broader economy balance remains 3G.
+
+## Services and prices
+
+Repairs affect only the fault their existing service action treats; resealing does not restore structural wear or resurrect failed components. Top-ups retain fluid aging. Oil changes include new oil, filter and labour, retaining the removed filter in inventory. Coolant flushes charge coolant and labour. Wet-clutch oil service preserves friction wear. Individual component replacement retains its existing identity/fitment rules and removed-item inventory. Rebuilds retain their existing paid reservation and offline deadline.
+
+The Resources **OperatingPolicy** asset exposes per-litre costs, service labour/factors, payment lifetime, dealer spread and recovery duration/reward/ceiling. **DragLab → Prepare Operating Policy** creates missing data while preserving authored edits. The existing **ValuationPolicy** controls buyer prices. Dealer package prices include supplied OEM fluids and use a provisional stock-disposal floor when older authored MSRP is too low, preventing immediate stock buy/part-out profit under the default policies. Final prices, rewards and intentional assembly/build premiums are balanced in 3G.
+
+## Saves and development checks
+
+Player schema 5 migrates schema 4 without changing owned identities and retains `.legacy-v4`. Valid empty garages remain empty. The latest 256 committed operation receipts capture cash before/after, accepted resources and disposed/retained identities. Revision/content validation, unique receipt IDs and actual asset removal prevent repeat payment or disposal. Candidate normalization initializes newly bought packs before validation; it never fabricates missing existing hardware or heals wear. A failed write leaves the published profile unchanged. Backup recovery restores a whole previous transaction state, including its matching cash and asset tree.
+
+Run `tools/Invoke-Unity.ps1 -Action PaidVerify` for the domain/payment/save matrix. Build with `-Action BuildPlayerOnly`, then run `tools/Test-WindowsSlice.ps1 -PaidOnly -ShowPlayer -FixtureName <name>` and a second process with the same name plus `-PaidResume`. Native fixtures use actual fuel/service/salvage/recovery/dealer controls and isolated saves. One recovery deadline waits in real time; subsequent deadlines are explicitly advanced only in the fixture to check repeated recovery economically. See [3D evidence](../reports/phases/3d/CHANGES.md).

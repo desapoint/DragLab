@@ -1,0 +1,141 @@
+PASS: Old transmission JSON defaults to H-pattern, with enum ordinals unchanged.
+PASS: Unknown manual selector is rejected.
+PASS: Sequential multiplier outside the supported faster-selection range is rejected.
+PASS: sport-coupe: installed sequential hardware remains a manual gearbox.
+PASS: sport-coupe: equivalent gearboxes select in 0,262 s H-pattern versus 0,118 s sequential.
+PASS: sport-coupe: selector does not invent different ratios, power or ECU interlocks.
+PASS: sport-coupe: manual torque interruption has no DCT overlap or converter retention.
+PASS: sport-coupe: authored selector speed changes the shared shift duration.
+PASS: sport-coupe: sound bench uses the same selector duration.
+PASS: sport-coupe / Automatic / HPattern: ordinary adjacent upshift accepted.
+PASS: sport-coupe / Automatic / HPattern: physical handover lasts exactly its authored fixed ticks.
+PASS: sport-coupe / Automatic / HPattern: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: sport-coupe / Automatic / Sequential: ordinary adjacent upshift accepted.
+PASS: sport-coupe / Automatic / Sequential: physical handover lasts exactly its authored fixed ticks.
+PASS: sport-coupe / Automatic / Sequential: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: sport-coupe / Sequential / HPattern: ordinary adjacent upshift accepted.
+PASS: sport-coupe / Sequential / HPattern: physical handover lasts exactly its authored fixed ticks.
+PASS: sport-coupe / Sequential / HPattern: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: sport-coupe / Sequential / Sequential: ordinary adjacent upshift accepted.
+PASS: sport-coupe / Sequential / Sequential: physical handover lasts exactly its authored fixed ticks.
+PASS: sport-coupe / Sequential / Sequential: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: sport-coupe / ManualClutch / HPattern: ordinary adjacent upshift accepted.
+PASS: sport-coupe / ManualClutch / HPattern: physical handover lasts exactly its authored fixed ticks.
+PASS: sport-coupe / ManualClutch / HPattern: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: sport-coupe / ManualClutch / Sequential: ordinary adjacent upshift accepted.
+PASS: sport-coupe / ManualClutch / Sequential: physical handover lasts exactly its authored fixed ticks.
+PASS: sport-coupe / ManualClutch / Sequential: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: sport-coupe: full-manual sequential shift still needs the single clutch.
+PASS: sport-coupe: unprotected sequential manual permits a dangerous downshift.
+PASS: sport-coupe: money-shift synchronization can damage the engine.
+PASS: sport-coupe: explicit installed interlock blocks the same downshift.
+PASS: sport-coupe: captured sequential hardware and inputs replay exactly through shared physics.
+PASS: sport-coupe: installed identity persists and original gearbox remains available for reuse.
+PASS: sport-coupe: reinstalling OEM removes the sequential selector benefit.
+PASS: sport-coupe: manual layout does not alter DCT handovers.
+PASS: sport-coupe: manual layout does not alter Automatic handovers.
+PASS: sport-coupe: manual layout does not alter CVT handovers.
+PASS: starter-hatch: installed sequential hardware remains a manual gearbox.
+PASS: starter-hatch: equivalent gearboxes select in 0,262 s H-pattern versus 0,118 s sequential.
+PASS: starter-hatch: selector does not invent different ratios, power or ECU interlocks.
+PASS: starter-hatch: manual torque interruption has no DCT overlap or converter retention.
+PASS: starter-hatch: authored selector speed changes the shared shift duration.
+PASS: starter-hatch: sound bench uses the same selector duration.
+PASS: starter-hatch / Automatic / HPattern: ordinary adjacent upshift accepted.
+PASS: starter-hatch / Automatic / HPattern: physical handover lasts exactly its authored fixed ticks.
+PASS: starter-hatch / Automatic / HPattern: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: starter-hatch / Automatic / Sequential: ordinary adjacent upshift accepted.
+PASS: starter-hatch / Automatic / Sequential: physical handover lasts exactly its authored fixed ticks.
+PASS: starter-hatch / Automatic / Sequential: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: starter-hatch / Sequential / HPattern: ordinary adjacent upshift accepted.
+PASS: starter-hatch / Sequential / HPattern: physical handover lasts exactly its authored fixed ticks.
+PASS: starter-hatch / Sequential / HPattern: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: starter-hatch / Sequential / Sequential: ordinary adjacent upshift accepted.
+PASS: starter-hatch / Sequential / Sequential: physical handover lasts exactly its authored fixed ticks.
+PASS: starter-hatch / Sequential / Sequential: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: starter-hatch / ManualClutch / HPattern: ordinary adjacent upshift accepted.
+PASS: starter-hatch / ManualClutch / HPattern: physical handover lasts exactly its authored fixed ticks.
+PASS: starter-hatch / ManualClutch / HPattern: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: starter-hatch / ManualClutch / Sequential: ordinary adjacent upshift accepted.
+PASS: starter-hatch / ManualClutch / Sequential: physical handover lasts exactly its authored fixed ticks.
+PASS: starter-hatch / ManualClutch / Sequential: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: starter-hatch: full-manual sequential shift still needs the single clutch.
+PASS: starter-hatch: unprotected sequential manual permits a dangerous downshift.
+PASS: starter-hatch: money-shift synchronization can damage the engine.
+PASS: starter-hatch: explicit installed interlock blocks the same downshift.
+PASS: starter-hatch: captured sequential hardware and inputs replay exactly through shared physics.
+PASS: starter-hatch: installed identity persists and original gearbox remains available for reuse.
+PASS: starter-hatch: reinstalling OEM removes the sequential selector benefit.
+PASS: starter-hatch: manual layout does not alter DCT handovers.
+PASS: starter-hatch: manual layout does not alter Automatic handovers.
+PASS: starter-hatch: manual layout does not alter CVT handovers.
+PASS: utility-pickup: installed sequential hardware remains a manual gearbox.
+PASS: utility-pickup: equivalent gearboxes select in 0,262 s H-pattern versus 0,118 s sequential.
+PASS: utility-pickup: selector does not invent different ratios, power or ECU interlocks.
+PASS: utility-pickup: manual torque interruption has no DCT overlap or converter retention.
+PASS: utility-pickup: authored selector speed changes the shared shift duration.
+PASS: utility-pickup: sound bench uses the same selector duration.
+PASS: utility-pickup / Automatic / HPattern: ordinary adjacent upshift accepted.
+PASS: utility-pickup / Automatic / HPattern: physical handover lasts exactly its authored fixed ticks.
+PASS: utility-pickup / Automatic / HPattern: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: utility-pickup / Automatic / Sequential: ordinary adjacent upshift accepted.
+PASS: utility-pickup / Automatic / Sequential: physical handover lasts exactly its authored fixed ticks.
+PASS: utility-pickup / Automatic / Sequential: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: utility-pickup / Sequential / HPattern: ordinary adjacent upshift accepted.
+PASS: utility-pickup / Sequential / HPattern: physical handover lasts exactly its authored fixed ticks.
+PASS: utility-pickup / Sequential / HPattern: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: utility-pickup / Sequential / Sequential: ordinary adjacent upshift accepted.
+PASS: utility-pickup / Sequential / Sequential: physical handover lasts exactly its authored fixed ticks.
+PASS: utility-pickup / Sequential / Sequential: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: utility-pickup / ManualClutch / HPattern: ordinary adjacent upshift accepted.
+PASS: utility-pickup / ManualClutch / HPattern: physical handover lasts exactly its authored fixed ticks.
+PASS: utility-pickup / ManualClutch / HPattern: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: utility-pickup / ManualClutch / Sequential: ordinary adjacent upshift accepted.
+PASS: utility-pickup / ManualClutch / Sequential: physical handover lasts exactly its authored fixed ticks.
+PASS: utility-pickup / ManualClutch / Sequential: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: utility-pickup: full-manual sequential shift still needs the single clutch.
+PASS: utility-pickup: unprotected sequential manual permits a dangerous downshift.
+PASS: utility-pickup: money-shift synchronization can damage the engine.
+PASS: utility-pickup: explicit installed interlock blocks the same downshift.
+PASS: utility-pickup: captured sequential hardware and inputs replay exactly through shared physics.
+PASS: utility-pickup: installed identity persists and original gearbox remains available for reuse.
+PASS: utility-pickup: reinstalling OEM removes the sequential selector benefit.
+PASS: utility-pickup: manual layout does not alter DCT handovers.
+PASS: utility-pickup: manual layout does not alter Automatic handovers.
+PASS: utility-pickup: manual layout does not alter CVT handovers.
+PASS: v8-muscle: installed sequential hardware remains a manual gearbox.
+PASS: v8-muscle: equivalent gearboxes select in 0,262 s H-pattern versus 0,118 s sequential.
+PASS: v8-muscle: selector does not invent different ratios, power or ECU interlocks.
+PASS: v8-muscle: manual torque interruption has no DCT overlap or converter retention.
+PASS: v8-muscle: authored selector speed changes the shared shift duration.
+PASS: v8-muscle: sound bench uses the same selector duration.
+PASS: v8-muscle / Automatic / HPattern: ordinary adjacent upshift accepted.
+PASS: v8-muscle / Automatic / HPattern: physical handover lasts exactly its authored fixed ticks.
+PASS: v8-muscle / Automatic / HPattern: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: v8-muscle / Automatic / Sequential: ordinary adjacent upshift accepted.
+PASS: v8-muscle / Automatic / Sequential: physical handover lasts exactly its authored fixed ticks.
+PASS: v8-muscle / Automatic / Sequential: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: v8-muscle / Sequential / HPattern: ordinary adjacent upshift accepted.
+PASS: v8-muscle / Sequential / HPattern: physical handover lasts exactly its authored fixed ticks.
+PASS: v8-muscle / Sequential / HPattern: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: v8-muscle / Sequential / Sequential: ordinary adjacent upshift accepted.
+PASS: v8-muscle / Sequential / Sequential: physical handover lasts exactly its authored fixed ticks.
+PASS: v8-muscle / Sequential / Sequential: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: v8-muscle / ManualClutch / HPattern: ordinary adjacent upshift accepted.
+PASS: v8-muscle / ManualClutch / HPattern: physical handover lasts exactly its authored fixed ticks.
+PASS: v8-muscle / ManualClutch / HPattern: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: v8-muscle / ManualClutch / Sequential: ordinary adjacent upshift accepted.
+PASS: v8-muscle / ManualClutch / Sequential: physical handover lasts exactly its authored fixed ticks.
+PASS: v8-muscle / ManualClutch / Sequential: flywheel keeps rotating, player gas remains held and manual shaft carries only bounded wet-oil residual drag (dry = zero).
+PASS: v8-muscle: full-manual sequential shift still needs the single clutch.
+PASS: v8-muscle: unprotected sequential manual permits a dangerous downshift.
+PASS: v8-muscle: money-shift synchronization can damage the engine.
+PASS: v8-muscle: explicit installed interlock blocks the same downshift.
+PASS: v8-muscle: captured sequential hardware and inputs replay exactly through shared physics.
+PASS: v8-muscle: installed identity persists and original gearbox remains available for reuse.
+PASS: v8-muscle: reinstalling OEM removes the sequential selector benefit.
+PASS: v8-muscle: manual layout does not alter DCT handovers.
+PASS: v8-muscle: manual layout does not alter Automatic handovers.
+PASS: v8-muscle: manual layout does not alter CVT handovers.
+Checks: 139
+Model: draglab-integrated-tools-v15

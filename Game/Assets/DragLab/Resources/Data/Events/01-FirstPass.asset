@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74f42563bb65c6e44b17ee586df87dc5, type: 3}
+  m_Name: 01-FirstPass
+  m_EditorClassIdentifier: Assembly-CSharp::DragLab.Data.CareerEventDefinition
+  stableId: first-pass
+  displayName: First pass
+  rivalName: Mika
+  opponent: {fileID: 11400000, guid: 913887ae81f6cc5459b418b2b912bc0b, type: 2}
+  opponentTune:
+    launchRpm: 3200
+    finalDrive: 4.1
+    tirePressurePsi: 30
+    shiftRpm: 6800
+    engineLevel: 0
+    tireLevel: 0
+    weightLevel: 0
+    gearboxLevel: 0
+  distanceM: 402.336
+  reputationRequired: 0
+  cashWin: 500
+  cashLoss: 100
+  reputationWin: 2

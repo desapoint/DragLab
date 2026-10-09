@@ -1,0 +1,14 @@
+vehicle,trial,launch_rpm,final_drive,pressure_psi,engine_stage,tire_stage,weight_stage,gearbox_stage,traction_control,quarter_s,trap_kmh,delta_s
+starter-hatch,baseline,3200,4.10,30.0,1,1,0,0,1,16.1671,141.62,0.0000
+starter-hatch,launch-0,1500,4.10,30.0,1,1,0,0,1,16.5686,141.43,0.4015
+starter-hatch,launch-1,2800,4.10,30.0,1,1,0,0,1,16.1984,141.56,0.0314
+starter-hatch,launch-2,4100,4.10,30.0,1,1,0,0,1,16.1220,141.68,-0.0451
+starter-hatch,launch-3,5400,4.10,30.0,1,1,0,0,1,16.0472,141.80,-0.1198
+starter-hatch,launch-4,6700,4.10,30.0,1,1,0,0,1,16.3502,141.00,0.1832
+starter-hatch,gearing-2.0,3200,2.00,30.0,1,1,0,0,1,18.3018,136.34,2.1347
+starter-hatch,gearing-2.8,3200,2.80,30.0,1,1,0,0,1,16.8107,140.06,0.6436
+starter-hatch,gearing-3.4,3200,3.40,30.0,1,1,0,0,1,16.3386,142.14,0.1716
+starter-hatch,gearing-4.1,3200,4.10,30.0,1,1,0,0,1,16.1671,141.62,0.0000
+starter-hatch,gearing-4.8,3200,4.80,30.0,1,1,0,0,1,16.1916,140.58,0.0245
+starter-hatch,gearing-5.5,3200,5.50,30.0,1,1,0,0,1,16.3201,141.80,0.1530
+starter-hatch,gearing-6.0,3200,6.00,30.0,1,1,0,0,1,16.3635,141.92,0.1965

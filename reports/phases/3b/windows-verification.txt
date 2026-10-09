@@ -1,0 +1,106 @@
+Model v15 / player schema 4 / final Windows UI workflows
+
+phase-3b-assemblies-setups-accepted
+3B actual Windows saved-config / missing-parts purchase / stored engine transfer.
+PASS: Actual Save stores applied hardware definitions and tuning.
+PASS: Actual sale removes hardware while retaining the saved configuration.
+PASS: Actual Load previews one missing purchase without changing cash/build.
+PASS: Actual Buy missing + apply restores setup with new paid identity.
+PASS: Actual detach retains engine/liquids and a non-running chassis.
+PASS: Stored assembly supports removing an individual pack without generating replacements.
+PASS: Actual stored reassembly preserves worn hardware.
+PASS: Transfer target is a separately purchased owned chassis.
+PASS: Actual attach transfers exact engine descendants and liquids to second chassis.
+PASS: Actual tuning-only load/apply changes adjustments without a parts purchase.
+PASS: Transferred used assembly races on its actual new owner with independent records.
+PASS: Reload preserves configurations, stored engine and exclusive ownership.
+PASS: No runtime/GUI/DSP errors during new interfaces and race.
+Runtime errors: 0
+
+phase-3b-collection-regression
+3A actual Windows dealership / selection / independent real race / isolated save.
+PASS: Actual dealership button buys and selects an independent second starter.
+PASS: Buying retains original resources/presets and creates independent defaults.
+PASS: Actual selection restores the exact first instance and tune.
+PASS: Second instance selected before race.
+PASS: Second instance remains selected at race finish.
+PASS: Real race records and wear affect only the selected duplicate.
+PASS: Reload preserves duplicate identities and exact selected car.
+PASS: Actual new-car purchase resolves playable hardware: city-three
+PASS: Actual new-car purchase resolves playable hardware: rally-sedan
+PASS: Actual new-car purchase resolves playable hardware: touring-six
+PASS: Actual new-car purchase resolves playable hardware: super-v8
+PASS: Expanded collection has no runtime/GUI/DSP errors.
+Runtime errors: 0
+
+phase-3b-parts-accepted
+Windows Parts controls / OS mouse events / isolated save.
+PASS: Actual Buy + install purchases forged pistons directly.
+PASS: Original worn pistons remain loose and unhealed.
+PASS: Actual removal leaves an owned incomplete build that cannot race.
+PASS: Actual Install / reuse downgrades to the original identity.
+PASS: Actual Sell loose removes the forged identity and credits provisional value once.
+PASS: Mouse workflow persists IDs, cash and worn condition on disk.
+PASS: Safe defaults do not repair components.
+PASS: Stale runtime action rejected.
+PASS: Garage transaction boundary locks parts during a real active race.
+PASS: Shop preview names sequential manual hardware and shows reduced shift time.
+PASS: Actual Buy + install carries sequential manual hardware into the real race.
+PASS: Sequential gearbox identity and selector behavior persist on disk.
+PASS: Reusing the retained original gearbox restores H-pattern behavior.
+PASS: New large fixed turbo preview derives its physical size and tuning restrictions from the selected part.
+PASS: Fixed turbo tuning page has no physical-size or boost slider.
+PASS: Adjustable kit unlocks boost only; physical turbo size remains a hardware choice.
+PASS: Actual boost slider edits preview only until Apply. [dirty=True, draft=1,160082, saved=0,8, baseline=0,8]
+PASS: Applied adjustable boost and fitted turbo size carry into actual race physics.
+PASS: Reinstalling retained OEM induction restores factory physical sizing.
+PASS: EFI shop preview shows injection with explicit missing-controller warning.
+PASS: Blocked EFI conversion preview reports unavailable wheelspin rather than a false traction improvement.
+PASS: Installed conversion cannot race on carb mechanical controls.
+PASS: Actual EFI controller purchase completes runnable injection conversion. [fueling=Injection; errors=]
+PASS: EFI shop purchases reach real race physics with V8 engine character.
+PASS: EFI hardware and retained original carb persist on disk.
+PASS: Actual retained-carb Install restores carbureted behavior.
+PASS: Actual fluid top-up fills installed capacities without renewing aged oil.
+PASS: Top-up leaves the radiator leak fault intact.
+PASS: Actual reseal action repairs only the radiator leak.
+PASS: Actual oil/filter service renews oil and retains the used filter.
+PASS: Race cam preview warns when factory springs cannot control its profile.
+PASS: Installed cam/spring hardware and serviced fluids reach the same race solver.
+PASS: Fluid service and repair history persist after race/garage save.
+PASS: Actual individual-piston button charges unit cost and retains neighbouring parts.
+PASS: Removed individual piston retains its identity and wear.
+PASS: Actual individual inventory sale removes one retained piston.
+PASS: Actual wet multi-plate purchase reaches shared race coupling with dedicated oil bath.
+PASS: Actual paid rebuild button creates persisted timed reservation.
+PASS: Reserved engine cannot start a real race.
+PASS: Actual Collect completes overdue fixture job exactly once and persists availability.
+PASS: Parts UI has no runtime/GUI errors.
+Runtime errors: 0
+
+phase-3b-reset-accepted
+Settings Reset game / actual Windows mouse / isolated save.
+PASS: Actual Arcade button applies shared no-wear/no-fuel-usage, optimal-temperature and driver-assist rules.
+PASS: Actual Balanced button selects 25% wear/fuel and simulated heat without changing shift/launch, AI or volume preferences.
+PASS: Actual fuel setting independently selects None and marks difficulty Custom.
+PASS: Actual fuel setting independently selects Reduced and marks difficulty Custom.
+PASS: Actual fuel setting independently selects Realistic and marks difficulty Custom.
+PASS: Real practice race receives the selected Reduced fuel rule.
+PASS: Opening reset confirmation does not change or save progression.
+PASS: Actual Cancel keeps all progress, inventory and tunes.
+PASS: An old confirmation cannot reset from Garage or an active race.
+PASS: Actual Reset progression starts fresh cash, career and garage business.
+PASS: Old cars and purchased inventory are replaced by one new OEM starter build.
+PASS: Car tunes, presets, paint and race records are cleared.
+PASS: Actual progression reset clears saved configurations and detached engines.
+PASS: Live driving settings and AI difficulty remain bound to the preserved copy.
+PASS: Live volume and its persisted settings are unchanged.
+PASS: Old race state, run settlements and banked offline income are cleared.
+PASS: Reload retains the reset garage and both driving preferences.
+PASS: Reload retains the shared master volume.
+PASS: Double or stale reset action cannot create another identity tree.
+PASS: The fresh starter can enter neutral practice with preserved manual settings.
+PASS: Reset is blocked during a race.
+PASS: Reset Settings UI and fresh garage have no runtime/GUI errors.
+Runtime errors: 0
+

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74f42563bb65c6e44b17ee586df87dc5, type: 3}
+  m_Name: 03-CoupeRival
+  m_EditorClassIdentifier: Assembly-CSharp::DragLab.Data.CareerEventDefinition
+  stableId: coupe-rival
+  displayName: Coupe rival
+  rivalName: Ash
+  opponent: {fileID: 11400000, guid: 42818352e704b6542933d9f7df7697e2, type: 2}
+  opponentTune:
+    launchRpm: 3200
+    finalDrive: 3.7
+    tirePressurePsi: 30
+    shiftRpm: 7000
+    engineLevel: 0
+    tireLevel: 0
+    weightLevel: 0
+    gearboxLevel: 0
+  distanceM: 402.336
+  reputationRequired: 4
+  cashWin: 1000
+  cashLoss: 100
+  reputationWin: 4

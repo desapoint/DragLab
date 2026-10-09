@@ -1,0 +1,20 @@
+Exhaust pop pressure bursts / legacy pitched-pair regression.
+PASS: Burst is audible, bounded and reproducible: 4 cylinders.
+PASS: Former bell partials lose at least 70% of their normalized concentration: 4 cylinders.
+4 cyl old-pair fraction 0,12704 / pressure-burst fraction 0,00024
+PASS: Pop ends without a sustained metallic tail: 4 cylinders.
+PASS: Pop gain isolates the layer without changing mechanics: 4 cylinders.
+PASS: Burst is audible, bounded and reproducible: 8 cylinders.
+PASS: Former bell partials lose at least 70% of their normalized concentration: 8 cylinders.
+8 cyl old-pair fraction 0,12728 / pressure-burst fraction 0,00170
+PASS: Pop ends without a sustained metallic tail: 8 cylinders.
+PASS: Pop gain isolates the layer without changing mechanics: 8 cylinders.
+PASS: Sharpness changes the pressure shape/filter.
+PASS: Decay controls brief turbulent energy, not a fixed ringing oscillator.
+PASS: Burst works at the live player's 48 kHz rate.
+PASS: Invalid pop controls are rejected.
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: sport-coupe
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: starter-hatch
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: utility-pickup
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: v8-muscle
+PASS: 16 exhaust-pop checks.

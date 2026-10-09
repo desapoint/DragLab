@@ -1,0 +1,15 @@
+Component maintenance / actual Windows mouse / isolated saved inventory.
+PASS: Summary contains only installed failures/worn parts, puts failures first, and excludes loose broken inventory.
+PASS: Actual Garage shortcut opens failed-component cards with purchase and usable inventory replacement actions.
+PASS: New-part preview shows build/dyno comparison without buying or healing.
+PASS: Actual Fit spare selects the healthiest usable compatible item and preserves its used condition.
+PASS: Inventory replacement costs no purchase cash and retains the original failed instance.
+PASS: A flagged failed spare at 100% health is not selected; installed failure count refreshes immediately.
+PASS: Unaffordable quick replacement stays disabled without changing cash, installation or disk.
+PASS: Choose alternatives opens the failed component's correct shop/inventory category.
+PASS: Actual Buy same + replace charges the shown price once and fits a new healthy instance of the same component.
+PASS: Removed brakes retain partial health, failure flag and cause rather than becoming repaired stock.
+PASS: Repairs remove resolved failures, keep unrelated wear visible, and preserve the actual applied tune.
+PASS: Replacement ownership, cash and retained conditions survive reload.
+PASS: Maintenance UI has no runtime/GUI/DSP errors.
+Runtime errors: 0

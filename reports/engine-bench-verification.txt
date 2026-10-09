@@ -1,0 +1,3 @@
+Standalone engine bench / exhaust transfer / deterministic scenario replay.
+PASS: 71 bench/exhaust checks, including identical PCM rerenders of all 11 scenarios on all four cars.
+A/B exports use matched 120 Hz physics / 60 Hz publication / 44100 Hz PCM; no player saves accessed.

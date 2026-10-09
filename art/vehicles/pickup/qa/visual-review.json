@@ -1,0 +1,21 @@
+{
+  "accepted": true,
+  "reviewer": "Codex visual inspection",
+  "checks": [
+    "alpha-backgrounds",
+    "complete-rotors",
+    "complete-tires",
+    "fender-occlusion",
+    "hub-alignment",
+    "identity",
+    "layer-isolation",
+    "paint-coverage-exclusions",
+    "paint-layer-isolation",
+    "stationary-calipers",
+    "underlay-coverage"
+  ],
+  "notes": "Original generic vehicle type reviewed on white/black/checkerboard and recolor sheets, neutral paint and fixture isolation, native wheel crops at 0/45/90/180 degrees and fixed-caliper comparisons. Generic identity only; no OEM identity claim. Mechanical hashes match approved revision 1.",
+  "unresolvedIssues": [],
+  "contentFingerprint": "228d152942071efbc63bc9715a4d9018a6f05b94490f2e14f561954e558a75f4",
+  "qaReportHash": "1228c54cb7e6b4514ef6668a32870a833a46509f712199ddd00bee0e60490ec9"
+}

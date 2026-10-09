@@ -1,0 +1,36 @@
+Calculated flywheel / neutral coast / bounded gear synchronization.
+PASS: 10 kg / 0.2 m solid disc has inertia 0.2 kg m².
+PASS: Annular disc uses both inner and outer radii.
+PASS: Flywheel mass changes inertia linearly.
+PASS: Doubling both radii quadruples inertia without changing mass.
+PASS: Vehicle copies own their flywheel data.
+PASS: Legacy tune zero selects stock flywheel mass.
+PASS: Legacy specs without flywheel data resolve a modeled flywheel plus explicit core inertia.
+PASS: Invalid annular geometry is rejected.
+PASS: Non-finite flywheel mass is rejected.
+PASS: Non-finite tune mass resolves to a bounded value.
+PASS: Stored energy scales with RPM squared; angular momentum with RPM.
+PASS: After the same neutral lift, the heavier flywheel retains substantially more RPM.
+PASS: Neutral drag consumes stored energy rather than holding RPM indefinitely.
+PASS: Zero combustion horsepower does not mean a stopped engine.
+PASS: Both coast-downs settle at idle without an unintended stall.
+PASS: Lighter flywheel also revs up faster under identical combustion torque.
+PASS: Bench gear selection preserves RPM and starts a timed handover.
+PASS: Manual handover disconnects the shaft while engine rotation and combustion continue.
+PASS: Selecting neutral releases handover load without a ratio-induced RPM reset.
+PASS: Gear selection preserves crank and vehicle momentum: Manual
+PASS: First shift tick is finite with rolling momentum: Manual
+PASS: Gear selection preserves crank and vehicle momentum: DCT
+PASS: First shift tick is finite with rolling momentum: DCT
+PASS: Gear selection preserves crank and vehicle momentum: Automatic
+PASS: First shift tick is finite with rolling momentum: Automatic
+PASS: Neutral coast scenario reproduces every CSV sample exactly.
+PASS: A/B flywheel change produces a different full coast trace.
+PASS: Dynamic pull, handovers and release repeat deterministically.
+PASS: Dyno export includes inertia, energy and angular momentum.
+Full gas 1→2 / ratio 3,45→2,05; stock clutch 237,5 Nm; matched 599,2 Nm.
+Within 0.75 s: stock minimum 5365 RPM / final slip 635; matched minimum 4645 RPM / final slip 65.
+PASS: Matched clutch produces a clear finite RPM drop and couples under uninterrupted full gas.
+PASS: Under-rated clutch retains physical slip instead of disguising it as close gear ratios.
+PASS: Sizing the fixture leaves the authored stock clutch unchanged.
+PASS: 32 flywheel checks.

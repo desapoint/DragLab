@@ -1,0 +1,9 @@
+3D actual process restart / empty garage / recovery / replacement.
+PASS: Actual second process opens empty collection without spawning an OEM replacement.
+PASS: Actual second process resumes the saved work deadline/reward without restarting it or paying early.
+PASS: Actual real-time deadline completes once and claim pays the saved reward.
+PASS: Repeated bounded recovery buttons fund replacement while retaining assets; subsequent deadlines advanced only in fixture.
+PASS: Actual funded replacement purchase restores playable car without consuming retained engine.
+PASS: Recovered garage and operating receipts persist after purchase.
+PASS: No runtime/GUI/DSP errors.
+Runtime errors: 0

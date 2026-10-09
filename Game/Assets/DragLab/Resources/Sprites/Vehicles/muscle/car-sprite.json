@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 1,
+  "revision": 2,
+  "vehicle": {
+    "id": "generic-muscle",
+    "make": "DragLab",
+    "model": "Muscle",
+    "year": null,
+    "trim": "Mechanics placeholder",
+    "facing": "right"
+  },
+  "canvas": {
+    "width": 1024,
+    "height": 384
+  },
+  "anchors": {
+    "rearWheel": {
+      "x": 240,
+      "y": 276,
+      "radius": 76
+    },
+    "frontWheel": {
+      "x": 786,
+      "y": 276,
+      "radius": 76
+    }
+  },
+  "layers": [
+    {
+      "id": "shadow",
+      "file": "shadow.png",
+      "z": 0,
+      "placement": {
+        "mode": "canvas",
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "car-underlay",
+      "file": "car-underlay.png",
+      "z": 50,
+      "placement": {
+        "mode": "canvas",
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "rear-rotor",
+      "file": "rotor.png",
+      "z": 100,
+      "placement": {
+        "mode": "anchor",
+        "anchor": "rearWheel",
+        "offset": [
+          0,
+          0
+        ],
+        "scale": 0.88,
+        "pivotNormalized": [
+          0.5,
+          0.5
+        ]
+      },
+      "rotateWithWheel": true
+    },
+    {
+      "id": "rear-caliper",
+      "file": "caliper.png",
+      "z": 200,
+      "placement": {
+        "mode": "anchor",
+        "anchor": "rearWheel",
+        "offset": [
+          0,
+          0
+        ],
+        "scale": 0.88,
+        "pivotNormalized": [
+          0.5,
+          0.5
+        ]
+      },
+      "rotateWithWheel": false
+    },
+    {
+      "id": "rear-wheel",
+      "file": "wheel.png",
+      "z": 300,
+      "placement": {
+        "mode": "anchor",
+        "anchor": "rearWheel",
+        "offset": [
+          0,
+          0
+        ],
+        "scale": 1.0,
+        "pivotNormalized": [
+          0.5,
+          0.5
+        ]
+      },
+      "rotateWithWheel": true
+    },
+    {
+      "id": "front-rotor",
+      "file": "rotor.png",
+      "z": 100,
+      "placement": {
+        "mode": "anchor",
+        "anchor": "frontWheel",
+        "offset": [
+          0,
+          0
+        ],
+        "scale": 1.0,
+        "pivotNormalized": [
+          0.5,
+          0.5
+        ]
+      },
+      "rotateWithWheel": true
+    },
+    {
+      "id": "front-caliper",
+      "file": "caliper.png",
+      "z": 200,
+      "placement": {
+        "mode": "anchor",
+        "anchor": "frontWheel",
+        "offset": [
+          0,
+          0
+        ],
+        "scale": 1.0,
+        "pivotNormalized": [
+          0.5,
+          0.5
+        ]
+      },
+      "rotateWithWheel": false
+    },
+    {
+      "id": "front-wheel",
+      "file": "wheel.png",
+      "z": 300,
+      "placement": {
+        "mode": "anchor",
+        "anchor": "frontWheel",
+        "offset": [
+          0,
+          0
+        ],
+        "scale": 1.0,
+        "pivotNormalized": [
+          0.5,
+          0.5
+        ]
+      },
+      "rotateWithWheel": true
+    },
+    {
+      "id": "body-paint",
+      "file": "body-paint.png",
+      "z": 400,
+      "placement": {
+        "mode": "canvas",
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "body-shading",
+      "file": "body-shading.png",
+      "z": 420,
+      "placement": {
+        "mode": "canvas",
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "body-glass",
+      "file": "body-glass.png",
+      "z": 440,
+      "placement": {
+        "mode": "canvas",
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "body-trim",
+      "file": "body-trim.png",
+      "z": 460,
+      "placement": {
+        "mode": "canvas",
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "masks": {
+    "paint": "paint-mask.png"
+  },
+  "notes": [
+    "Original procedural placeholder; no OEM identity or factory measurements.",
+    "Sprite units are art coordinates, never physics dimensions.",
+    "Generic lowered stance deliberately occludes upper tires.",
+    "Shared wheel art; rear brake artwork scales to 88% for visual variety.",
+    "body-paint is neutral with fixture regions filled; fixtures render above it."
+  ],
+  "sources": [
+    {
+      "file": "tools/generate_placeholder_sprites.py",
+      "kind": "procedural-original"
+    }
+  ],
+  "provenance": {
+    "generatorSha256": "e4ced2ec92bc2b0cbea958255241b936211de1177e46b43afdb82c84929cc827",
+    "outputsSha256": {
+      "body-glass.png": "15139ac593db8492e902ee5314a3ceff78b1013fd42abe3aeafe896cca8a87f9",
+      "body-paint.png": "44bb33be89077d0f18ae6b32c5568375d27c684b35dcd46a18d82bdb0084ebaf",
+      "body-shading.png": "b3f50fd8b64e5f0ebab5c0a8c9f4839bc82a020c3d32d4be0345bc7678c37a91",
+      "body-trim.png": "926fb12d76e096d161dcdaaafd9a0ed0d1a274f38faee53253d43c70b4bdbc44",
+      "caliper.png": "c548d208cb400f70556632eef5af99f875ed587e4f4f2703af61e4511a775fe3",
+      "car-underlay.png": "f60cb80349216b1f564aa6302e85e181fc08c3c46275620982520850d3535e77",
+      "paint-mask.png": "2fbd825c3b668ac37aef54a0db040aec0d7e7ad745190f8725a18c7f774bc5d4",
+      "rotor.png": "f362e7125d7e06a20cff7034bf66fc7cd15782b97cdc095aee7cfb631d7b2b36",
+      "shadow.png": "e20f2f714acf443edbbf4bbc4d1a5839418fd5b3a5fe744561dbfe7684051fe1",
+      "wheel.png": "b4b11da1902a31934b48ba3bba8e827d252a6efb95b33b473a5cab842531b142"
+    }
+  }
+}

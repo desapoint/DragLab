@@ -1,0 +1,5 @@
+PASS: starter-hatch / actual race save retains four finite worn/heated tire histories, with matching aggregate life and owned ID part-b0b4c6a4cd0448b5862984658cdeca32
+PASS: sport-coupe / actual race save retains four finite worn/heated tire histories, with matching aggregate life and owned ID part-35d09f794d24462d8ef7378640aa4049
+PASS: v8-muscle / actual race save retains four finite worn/heated tire histories, with matching aggregate life and owned ID part-fe9141d9a72646d1ba11c323dfd1dbca
+PASS: utility-pickup / actual race save retains four finite worn/heated tire histories, with matching aggregate life and owned ID part-1dce1f5b02f640468105e3cbc2e35297
+Checks: 4

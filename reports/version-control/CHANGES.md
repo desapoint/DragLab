@@ -1,0 +1,9 @@
+# Local Git initialization (2026-10-09)
+
+Created a local repository on `main` using the existing Git author configuration. History starts from the actual current project baseline through 3D, including repaired documentation encoding. No historical slice commits are fabricated and no remote is configured.
+
+Tracked scope: Unity assets/source/scenes and metadata, packages/lock, project settings, current source art and review/provenance, tools, design documentation and concise verification reports/matrices. Required static legacy save fixture remains included. Generated caches, builds, raw logs/audio/screenshots/save fixtures/time-series traces, ZIP checkpoints and duplicate art exports remain on disk but outside Git.
+
+Root `AGENTS.md` requires a local commit for every completed slice/subphase, step and spontaneous request, including bug fixes, data/calibration, documentation and tooling. It requires scoped staging, appropriate checks, preservation of user changes, staged review and reporting the commit hash. `.gitattributes` normalizes text/YAML line endings and protects binary assets. UTF-8 reads/writes must be explicit.
+
+Repository/static validation confirms the Unity source/data/settings/package lock and every asset's metadata are staged, required migration input is staged, and caches/builds/raw fixtures/archives are ignored. The new repository instructions/configuration and README/doc edits pass scoped staged whitespace validation. The full first-import whitespace check reports 2082 pre-existing whitespace issues in legacy source/generated Unity YAML/report text; this baseline preserves those files without an unrelated formatting sweep. Future diffs must check new changes. No runtime game behavior or Unity project serialization settings changed; a Unity simulation rerun is unnecessary for this repository-only change.

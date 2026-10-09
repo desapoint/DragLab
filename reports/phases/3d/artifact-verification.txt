@@ -1,0 +1,12 @@
+PASS: Windows-checkpoint.zip / 263 entries / CRC verified
+PASS: archived player DLL matches current Windows build / SHA256 14f8577b5839528f2d8fa4c0150c7ee6aff71bd40f20a02639bf5dc5c6b213ed
+Windows-checkpoint.zip SHA256 b4792f1062ad699387b4e36a9b80cdd8d3fdf151e5d15dc30986018fea9c33a7
+PASS: source-checkpoint.zip / 584 entries / CRC verified
+PASS: paid domain/runtime/native gate/policy/docs/tools match current source
+source-checkpoint.zip SHA256 975bd0895820107eef8bf8b898dfdfab16e74da744b195eb60e8bdd4d105383b
+PASS: previous 3C source and Windows archive hashes unchanged
+PASS: phase-3d-paid-final / stage-verification.txt / 11 semantic checks / runtime errors 0
+PASS: phase-3d-paid-final / resume-verification.txt / 7 semantic checks / runtime errors 0
+PASS: phase-3d-parts-regression / runtime-verification.txt / 41 semantic checks / runtime errors 0
+PASS: phase-3d-assemblies-regression / runtime-verification.txt / 13 semantic checks / runtime errors 0
+PASS: phase-3d-maintenance-final / runtime-verification.txt / 13 semantic checks / runtime errors 0

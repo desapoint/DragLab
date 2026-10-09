@@ -1,0 +1,18 @@
+PASS: Buy/install forged internals directly with no preceding rank.
+PASS: Replaced OEM component remains in inventory with its original condition.
+PASS: Installed item sale rejected.
+PASS: Direct downgrade reuses existing OEM identity.
+PASS: Downgrade retains both components and does not heal OEM.
+PASS: Loose part sale atomically changes cash and removes identity.
+PASS: Repeated sold-item action cannot duplicate cash.
+PASS: Wrong geometry purchase rejected before deducting cash.
+PASS: Component removal is a valid owned incomplete build.
+PASS: Incomplete build cannot drive.
+PASS: Reinstalled failed component stays failed and blocks driving.
+PASS: Compatible regular replacement restores operation without renewing retained failed part.
+PASS: Removed failed component retains failure cause.
+PASS: Compatible shared part transfers between different engine models.
+PASS: Donor remains incomplete and moved part retains condition.
+PASS: Conservative tune defaults change adjustments without healing hardware.
+PASS: Inventory/worn/failed conditions survive save serialization and reload.
+Checks: 17

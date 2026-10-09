@@ -1,0 +1,44 @@
+PASS: Every 120 Hz sample repeats exactly in memory: sport-coupe
+PASS: Trace retains every chronological tick from idle through braking: sport-coupe
+PASS: Full timeline includes staged revs, shifts, release and neutral coasting: sport-coupe
+PASS: Healthy RPM retains its authored rough-idle band and never resets to zero during shifts: sport-coupe / min 897,72222329577289
+PASS: Shift preserves gas and combustion output: sport-coupe
+PASS: Selecting neutral preserves momentum; later pedal braking decelerates: sport-coupe
+PASS: Bench ticks do not alter owned parts, fuel, cash or records: sport-coupe
+PASS: Exported JSON replays within serialization precision: sport-coupe / distance 290,74551457826107 -> 290,74551457826107 / RPM 899,72350380110277 -> 899,72350380110277
+PASS: Captured build/spec/conditions are deeply isolated: sport-coupe
+PASS: Every 120 Hz sample repeats exactly in memory: starter-hatch
+PASS: Trace retains every chronological tick from idle through braking: starter-hatch
+PASS: Full timeline includes staged revs, shifts, release and neutral coasting: starter-hatch
+PASS: Healthy RPM retains its authored rough-idle band and never resets to zero during shifts: starter-hatch / min 897,57578200765852
+PASS: Shift preserves gas and combustion output: starter-hatch
+PASS: Selecting neutral preserves momentum; later pedal braking decelerates: starter-hatch
+PASS: Bench ticks do not alter owned parts, fuel, cash or records: starter-hatch
+PASS: Exported JSON replays within serialization precision: starter-hatch / distance 216,83990058710657 -> 216,83990058710657 / RPM 899,7246541199446 -> 899,7246541199446
+PASS: Captured build/spec/conditions are deeply isolated: starter-hatch
+PASS: Every 120 Hz sample repeats exactly in memory: utility-pickup
+PASS: Trace retains every chronological tick from idle through braking: utility-pickup
+PASS: Full timeline includes staged revs, shifts, release and neutral coasting: utility-pickup
+PASS: Healthy RPM retains its authored rough-idle band and never resets to zero during shifts: utility-pickup / min 879,88999729226646
+PASS: Shift preserves gas and combustion output: utility-pickup
+PASS: Selecting neutral preserves momentum; later pedal braking decelerates: utility-pickup
+PASS: Bench ticks do not alter owned parts, fuel, cash or records: utility-pickup
+PASS: Exported JSON replays within serialization precision: utility-pickup / distance 265,49255759698968 -> 265,49255759698968 / RPM 897,57789926115834 -> 897,57789926115834
+PASS: Captured build/spec/conditions are deeply isolated: utility-pickup
+PASS: Every 120 Hz sample repeats exactly in memory: v8-muscle
+PASS: Trace retains every chronological tick from idle through braking: v8-muscle
+PASS: Full timeline includes staged revs, shifts, release and neutral coasting: v8-muscle
+PASS: Healthy RPM retains its authored rough-idle band and never resets to zero during shifts: v8-muscle / min 815,64176317121235
+PASS: Shift preserves gas and combustion output: v8-muscle
+PASS: Selecting neutral preserves momentum; later pedal braking decelerates: v8-muscle
+PASS: Bench ticks do not alter owned parts, fuel, cash or records: v8-muscle
+PASS: Exported JSON replays within serialization precision: v8-muscle / distance 272,53572278730081 -> 272,53572278730081 / RPM 889,4558932414252 -> 889,4558932414252
+PASS: Captured build/spec/conditions are deeply isolated: v8-muscle
+PASS: Neutral release drops RPM through calculated flywheel inertia and settles in the idle band.
+PASS: Seeded provider repeats controls and changes them only with seed.
+PASS: Nonchronological imported input rejected.
+PASS: Nonfinite imported pedal rejected.
+PASS: Wrong model version rejected instead of silently replaying another physics model.
+PASS: Invalid installed mass multiplier rejected before starting imported physics.
+PASS: Physical driving continues beyond quarter mile without a race finish or truncated trace.
+Checks: 43

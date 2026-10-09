@@ -1,0 +1,16 @@
+# Simulation difficulty
+
+The Settings and Driving pages edit the same persistent `DriverSettings`. AI difficulty remains separate. The physical bench edits copied driver rules, includes a wear multiplier and records the entire configuration for deterministic replay. See [physical bench controls and preset matrix](PHYSICAL_DRIVING_BENCH.md#simulation-difficulty-and-wear-controls).
+
+Arcade disables new wear and fuel consumption, uses ideal temperatures and enables clutch, stall, traction and rev-match assists. Balanced uses 25% wear and 25% fuel consumption with real temperatures and the same assists. Simulation uses full wear and realistic fuel consumption with real temperatures and those assists disabled. Launch and shift modes remain explicitly selectable under every preset. Custom combinations are supported. None wear does not repair existing damage, and a preset does not change ECU/gearbox protection hardware.
+
+Fuel usage is independently selectable in Settings, Driving and the physical bench: **None (0%)**, **Reduced (25%)**, **Realistic (100%)**. The rate scales the existing shared fuel model, including idle, loaded driving, neutral revving, limiter cut behavior and anti-lag. Flow telemetry and fuel mass follow the amount actually consumed. Tank quantity still sets weight; None prevents consumption without filling an empty tank. Refuelling remains free in Slice 2, capped by tank capacity. Pricing and economic balance remain Slice 3.
+
+The preference survives save/reload and progression reset, and is captured in physical replays. Older saves/captures without it retain their previous realistic rate; applying a preset selects its new fuel rule. This additive setting retains replay model v12 because default fuel behavior is unchanged. Realistic uses the prototype's existing consumption calibration; it is not a claim of measured OEM consumption.
+
+The rules are applied inside the shared `CarSimulation`, `MechanicalStress`, `EngineBehaviorDynamics`, `ClutchDynamics` and `InductionDynamics`; runtime screens do not implement alternate physics. Optimal charge cooling changes actual torque, stall prevention affects actual crank behavior, and wear settings scale actual persistent condition loss and engine abuse damage. Bench multipliers accelerate wear without accelerating physics time or heat accumulation. Game reset copies these preferences while clearing progression and hardware.
+
+The present heat and stress calibrations are provisional. Tire heat/life, complete cooling, independent wheel/contact integration, fuel and long-duration failure calibration remain in their explicit 2F–2L subphase gates. Apply these difficulty rules to each new subsystem as it lands rather than adding separate arcade or bench simulations.
+
+
+Service/fluids extension: independent oil/coolant depletion and oil aging None/Reduced 25%/Realistic, condition effects Assisted/Reduced 25%/Full, and manual or auto top-up before races. Arcade selects None/Assisted/Auto; Balanced selects 25%/Manual; Simulation selects Full/Manual. Top-up never repairs a leak or wear and does not renew oil condition. All preferences are captured in physical replay and retained by progression reset. Model v13 captures the new fluid/fault state; prior v12 recordings require a fresh capture. See [details](WEAR_FLUIDS_AND_SERVICE.md).

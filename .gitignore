@@ -1,0 +1,70 @@
+# Unity-generated project and editor caches
+Game/Library/
+Game/Temp/
+Game/Obj/
+Game/Logs/
+Game/UserSettings/
+Game/Builds/
+Game/.vs/
+Game/*.csproj
+Game/*.sln
+*.user
+*.suo
+__pycache__/
+tools/.test-bin/
+
+# Additional Unity / IDE generated files
+Game/[Tt]emp/
+Game/[Oo]bj/
+Game/[Ll]ogs/
+Game/MemoryCaptures/
+Game/Recordings/
+Game/.idea/
+Game/*.slnx
+Game/*.pidb
+Game/*.booproj
+Game/*.opendb
+Game/*.VC.db
+Game/sysinfo.txt
+.vs/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local credentials and signing material
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+*.pfx
+*.p12
+*.pem
+
+# Generated report artifacts remain on disk; keep reviewable text evidence.
+/reports/**
+!/reports/**/
+!/reports/**/*.md
+!/reports/*.txt
+!/reports/*matrix.csv
+!/reports/tune-comparisons.csv
+!/reports/*/*.txt
+!/reports/*/*matrix.csv
+!/reports/*/*manifest.csv
+!/reports/phases/*/*.txt
+!/reports/phases/*/*matrix.csv
+!/reports/phases/*/*manifest.csv
+/reports/**/verification-progress.txt
+/reports/**/resume-progress.txt
+/reports/player-fixtures/
+/reports/scene-fixtures/
+
+# Required static migration fixture and its recorded initial baseline.
+!/reports/phases/2a/before/legacy-earned-profile-v1.json
+!/reports/phases/2a/before/*.txt
+!/reports/phases/2a/before/*.csv
+
+# Packaged / duplicated historical art exports; current source art stays tracked.
+/art/packages/
+/art/revisions/

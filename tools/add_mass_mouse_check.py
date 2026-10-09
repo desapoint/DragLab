@@ -1,0 +1,13 @@
+from pathlib import Path
+p=Path('Game/Assets/DragLab/Scripts/Runtime/PhysicalBenchMass.cs');s=p.read_text(encoding='utf-8-sig');s=s.replace('        bool MassSlider', '        internal readonly System.Collections.Generic.Dictionary<string,Rect> massRects = new System.Collections.Generic.Dictionary<string,Rect>();\n        internal void MassPanelForVerification(float scroll) { showDiagnostics = true; diagnosticsScroll = new Vector2(0,scroll); }\n        bool MassSlider');s=s.replace('return TuningSlider.Draw(ref value, min, max, initial);', 'bool changed = TuningSlider.Draw(ref value, min, max, initial); if (Event.current.type == EventType.Repaint) massRects[label] = RuntimeGuiRect.ToClient(GUILayoutUtility.GetLastRect()); return changed;');p.write_text(s,encoding='utf-8')
+p=Path('Game/Assets/DragLab/Scripts/Runtime/PhysicalDrivingBench.cs');s=p.read_text(encoding='utf-8-sig').replace('            if (Session == null) return;\n            if (partProse', '            if (Session == null) return;\n            RuntimeGuiRect.BeginFrame();\n            if (partProse');p.write_text(s,encoding='utf-8')
+p=Path('Game/Assets/DragLab/Scripts/Runtime/DrivingBenchRuntimeVerification.cs');s=p.read_text(encoding='utf-8-sig');needle='                yield return Capture("physical-manual-controls");';insert='''                double speedBeforeMass=scene.Session.car.state.speed, rpmBeforeMass=scene.Session.car.state.rpm;
+                Rect ballastRect = new Rect(); bool visibleMass=false;
+                for(int offset=0;offset<1600;offset+=40) { scene.MassPanelForVerification(offset); yield return new WaitForEndOfFrame(); if(scene.massRects.TryGetValue("Test ballast (kg)",out ballastRect) && ballastRect.center.y>270 && ballastRect.center.y<450){visibleMass=true;break;} }
+                check(visibleMass,"Bench exposes ballast slider in scrollable physical diagnostics.");
+                int bx=(int)(ballastRect.x+ballastRect.width*.23), by=(int)ballastRect.center.y;
+                input.MouseButtonAt(bx,by,true);yield return new WaitForSecondsRealtime(.07f);input.MouseButtonAt(bx,by,false);yield return new WaitForSecondsRealtime(.2f);
+                check(scene.Session.car.mass.payloadKg>100 && scene.Session.car.state.speed==speedBeforeMass && scene.Session.car.state.rpm==rpmBeforeMass,"Actual mouse ballast edit updates physical mass without resetting paused movement/RPM.");
+                check(scene.KeyboardOwned && scene.Paused && !scene.Recording,"Mass controls preserve keyboard pedal ownership, pause and recording choice.");
+                yield return Capture("physical-live-mass-controls");
+''';assert needle in s;s=s.replace(needle,insert+needle);p.write_text(s,encoding='utf-8')

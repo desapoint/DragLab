@@ -1,0 +1,141 @@
+PASS: Healthy finite powered contact sport-coupe / Manual / speed 1,50355238328605 / rpm 7076,93973280361
+PASS: Spinning without brakes generates no brake heat sport-coupe / Manual
+PASS: Independent wheel spin under power sport-coupe / Manual / slip 0,906561531140261
+PASS: Shift keeps rotating engine and held gas sport-coupe / Manual
+PASS: Neutral preserves spinning wheel momentum sport-coupe / Manual
+PASS: Contact regains grip without resetting spin sport-coupe / Manual / slip 0,000132818090106956
+PASS: Wheel/engine checkpoint continuation is exact sport-coupe / Manual
+PASS: Serialized contact trace replays every sample exactly sport-coupe / Manual
+PASS: Actual brake work stops body without killing engine sport-coupe / Manual
+PASS: Healthy finite powered contact sport-coupe / DCT / speed 1,50355238328605 / rpm 7076,93973280361
+PASS: Spinning without brakes generates no brake heat sport-coupe / DCT
+PASS: Independent wheel spin under power sport-coupe / DCT / slip 0,906561531140261
+PASS: Shift keeps rotating engine and held gas sport-coupe / DCT
+PASS: Neutral preserves spinning wheel momentum sport-coupe / DCT
+PASS: Contact regains grip without resetting spin sport-coupe / DCT / slip 0,000132826682790688
+PASS: Wheel/engine checkpoint continuation is exact sport-coupe / DCT
+PASS: Serialized contact trace replays every sample exactly sport-coupe / DCT
+PASS: Actual brake work stops body without killing engine sport-coupe / DCT
+PASS: Healthy finite powered contact sport-coupe / Automatic / speed 1,50354536811588 / rpm 7138,90490302341
+PASS: Spinning without brakes generates no brake heat sport-coupe / Automatic
+PASS: Independent wheel spin under power sport-coupe / Automatic / slip 0,906618739082076
+PASS: Shift keeps rotating engine and held gas sport-coupe / Automatic
+PASS: Neutral preserves spinning wheel momentum sport-coupe / Automatic
+PASS: Contact regains grip without resetting spin sport-coupe / Automatic / slip 0,000132820912595255
+PASS: Wheel/engine checkpoint continuation is exact sport-coupe / Automatic
+PASS: Serialized contact trace replays every sample exactly sport-coupe / Automatic
+PASS: Actual brake work stops body without killing engine sport-coupe / Automatic
+PASS: Healthy finite powered contact sport-coupe / CVT / speed 1,50196704007074 / rpm 6951,37523811041
+PASS: Spinning without brakes generates no brake heat sport-coupe / CVT
+PASS: Independent wheel spin under power sport-coupe / CVT / slip 0,982043033046302
+PASS: Neutral preserves spinning wheel momentum sport-coupe / CVT
+PASS: Contact regains grip without resetting spin sport-coupe / CVT / slip 9,94674349526512E-05
+PASS: Wheel/engine checkpoint continuation is exact sport-coupe / CVT
+PASS: Serialized contact trace replays every sample exactly sport-coupe / CVT
+PASS: Actual brake work stops body without killing engine sport-coupe / CVT
+PASS: Healthy finite powered contact starter-hatch / Manual / speed 1,8323622453416 / rpm 6970,50674157034
+PASS: Spinning without brakes generates no brake heat starter-hatch / Manual
+PASS: Independent wheel spin under power starter-hatch / Manual / slip 0,877188397024448
+PASS: Shift keeps rotating engine and held gas starter-hatch / Manual
+PASS: Neutral preserves spinning wheel momentum starter-hatch / Manual
+PASS: Contact regains grip without resetting spin starter-hatch / Manual / slip 0,000132933119865397
+PASS: Wheel/engine checkpoint continuation is exact starter-hatch / Manual
+PASS: Serialized contact trace replays every sample exactly starter-hatch / Manual
+PASS: Actual brake work stops body without killing engine starter-hatch / Manual
+PASS: Healthy finite powered contact starter-hatch / DCT / speed 1,8323622453416 / rpm 6970,50674157034
+PASS: Spinning without brakes generates no brake heat starter-hatch / DCT
+PASS: Independent wheel spin under power starter-hatch / DCT / slip 0,877188397024448
+PASS: Shift keeps rotating engine and held gas starter-hatch / DCT
+PASS: Neutral preserves spinning wheel momentum starter-hatch / DCT
+PASS: Contact regains grip without resetting spin starter-hatch / DCT / slip 0,000132949619248701
+PASS: Wheel/engine checkpoint continuation is exact starter-hatch / DCT
+PASS: Serialized contact trace replays every sample exactly starter-hatch / DCT
+PASS: Actual brake work stops body without killing engine starter-hatch / DCT
+PASS: Healthy finite powered contact starter-hatch / Automatic / speed 1,83243745844541 / rpm 6868,01514410625
+PASS: Spinning without brakes generates no brake heat starter-hatch / Automatic
+PASS: Independent wheel spin under power starter-hatch / Automatic / slip 0,874373407903301
+PASS: Shift keeps rotating engine and held gas starter-hatch / Automatic
+PASS: Neutral preserves spinning wheel momentum starter-hatch / Automatic
+PASS: Contact regains grip without resetting spin starter-hatch / Automatic / slip 0,00013293592364183
+PASS: Wheel/engine checkpoint continuation is exact starter-hatch / Automatic
+PASS: Serialized contact trace replays every sample exactly starter-hatch / Automatic
+PASS: Actual brake work stops body without killing engine starter-hatch / Automatic
+PASS: Healthy finite powered contact starter-hatch / CVT / speed 1,82829227836698 / rpm 6767,68583334958
+PASS: Spinning without brakes generates no brake heat starter-hatch / CVT
+PASS: Independent wheel spin under power starter-hatch / CVT / slip 0,974614929390409
+PASS: Neutral preserves spinning wheel momentum starter-hatch / CVT
+PASS: Contact regains grip without resetting spin starter-hatch / CVT / slip 7,86812321895434E-05
+PASS: Wheel/engine checkpoint continuation is exact starter-hatch / CVT
+PASS: Serialized contact trace replays every sample exactly starter-hatch / CVT
+PASS: Actual brake work stops body without killing engine starter-hatch / CVT
+PASS: Healthy finite powered contact utility-pickup / Manual / speed 2,73861656038326 / rpm 7442,45434370432
+PASS: Spinning without brakes generates no brake heat utility-pickup / Manual
+PASS: Independent wheel spin under power utility-pickup / Manual / slip 0,923161952444553
+PASS: Shift keeps rotating engine and held gas utility-pickup / Manual
+PASS: Neutral preserves spinning wheel momentum utility-pickup / Manual
+PASS: Contact regains grip without resetting spin utility-pickup / Manual / slip 8,36179618282519E-05
+PASS: Wheel/engine checkpoint continuation is exact utility-pickup / Manual
+PASS: Serialized contact trace replays every sample exactly utility-pickup / Manual
+PASS: Actual brake work stops body without killing engine utility-pickup / Manual
+PASS: Healthy finite powered contact utility-pickup / DCT / speed 2,73861656038326 / rpm 7442,45434370432
+PASS: Spinning without brakes generates no brake heat utility-pickup / DCT
+PASS: Independent wheel spin under power utility-pickup / DCT / slip 0,923161952444553
+PASS: Shift keeps rotating engine and held gas utility-pickup / DCT
+PASS: Neutral preserves spinning wheel momentum utility-pickup / DCT
+PASS: Contact regains grip without resetting spin utility-pickup / DCT / slip 8,15028104695693E-05
+PASS: Wheel/engine checkpoint continuation is exact utility-pickup / DCT
+PASS: Serialized contact trace replays every sample exactly utility-pickup / DCT
+PASS: Actual brake work stops body without killing engine utility-pickup / DCT
+PASS: Healthy finite powered contact utility-pickup / Automatic / speed 2,72954849455004 / rpm 7455,22073575575
+PASS: Spinning without brakes generates no brake heat utility-pickup / Automatic
+PASS: Independent wheel spin under power utility-pickup / Automatic / slip 0,919585879631275
+PASS: Shift keeps rotating engine and held gas utility-pickup / Automatic
+PASS: Neutral preserves spinning wheel momentum utility-pickup / Automatic
+PASS: Contact regains grip without resetting spin utility-pickup / Automatic / slip 8,43084820987942E-05
+PASS: Wheel/engine checkpoint continuation is exact utility-pickup / Automatic
+PASS: Serialized contact trace replays every sample exactly utility-pickup / Automatic
+PASS: Actual brake work stops body without killing engine utility-pickup / Automatic
+PASS: Healthy finite powered contact utility-pickup / CVT / speed 3,02675751984724 / rpm 5961,90768904978
+PASS: Spinning without brakes generates no brake heat utility-pickup / CVT
+PASS: Independent wheel spin under power utility-pickup / CVT / slip 0,965070461989086
+PASS: Neutral preserves spinning wheel momentum utility-pickup / CVT
+PASS: Contact regains grip without resetting spin utility-pickup / CVT / slip 4,99263482707894E-05
+PASS: Wheel/engine checkpoint continuation is exact utility-pickup / CVT
+PASS: Serialized contact trace replays every sample exactly utility-pickup / CVT
+PASS: Actual brake work stops body without killing engine utility-pickup / CVT
+PASS: Healthy finite powered contact v8-muscle / Manual / speed 1,37391852999867 / rpm 8321,83655412258
+PASS: Spinning without brakes generates no brake heat v8-muscle / Manual
+PASS: Independent wheel spin under power v8-muscle / Manual / slip 0,947953128179076
+PASS: Shift keeps rotating engine and held gas v8-muscle / Manual
+PASS: Neutral preserves spinning wheel momentum v8-muscle / Manual
+PASS: Contact regains grip without resetting spin v8-muscle / Manual / slip 0,000132813866790177
+PASS: Wheel/engine checkpoint continuation is exact v8-muscle / Manual
+PASS: Serialized contact trace replays every sample exactly v8-muscle / Manual
+PASS: Actual brake work stops body without killing engine v8-muscle / Manual
+PASS: Healthy finite powered contact v8-muscle / DCT / speed 1,37391852999867 / rpm 8321,83655412258
+PASS: Spinning without brakes generates no brake heat v8-muscle / DCT
+PASS: Independent wheel spin under power v8-muscle / DCT / slip 0,947953128179076
+PASS: Shift keeps rotating engine and held gas v8-muscle / DCT
+PASS: Neutral preserves spinning wheel momentum v8-muscle / DCT
+PASS: Contact regains grip without resetting spin v8-muscle / DCT / slip 0,00013282272565962
+PASS: Wheel/engine checkpoint continuation is exact v8-muscle / DCT
+PASS: Serialized contact trace replays every sample exactly v8-muscle / DCT
+PASS: Actual brake work stops body without killing engine v8-muscle / DCT
+PASS: Healthy finite powered contact v8-muscle / Automatic / speed 1,37392879493189 / rpm 8332,87739638104
+PASS: Spinning without brakes generates no brake heat v8-muscle / Automatic
+PASS: Independent wheel spin under power v8-muscle / Automatic / slip 0,945614734484533
+PASS: Shift keeps rotating engine and held gas v8-muscle / Automatic
+PASS: Neutral preserves spinning wheel momentum v8-muscle / Automatic
+PASS: Contact regains grip without resetting spin v8-muscle / Automatic / slip 0,000132812932138987
+PASS: Wheel/engine checkpoint continuation is exact v8-muscle / Automatic
+PASS: Serialized contact trace replays every sample exactly v8-muscle / Automatic
+PASS: Actual brake work stops body without killing engine v8-muscle / Automatic
+PASS: Healthy finite powered contact v8-muscle / CVT / speed 1,37718441728821 / rpm 7754,39881399722
+PASS: Spinning without brakes generates no brake heat v8-muscle / CVT
+PASS: Independent wheel spin under power v8-muscle / CVT / slip 0,987080968572079
+PASS: Neutral preserves spinning wheel momentum v8-muscle / CVT
+PASS: Contact regains grip without resetting spin v8-muscle / CVT / slip 0,000100828402733552
+PASS: Wheel/engine checkpoint continuation is exact v8-muscle / CVT
+PASS: Serialized contact trace replays every sample exactly v8-muscle / CVT
+PASS: Actual brake work stops body without killing engine v8-muscle / CVT
+Checks: 140

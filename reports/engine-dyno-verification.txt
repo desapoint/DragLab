@@ -1,0 +1,24 @@
+Persistent bench control sources / chronological live dyno.
+PASS: Sliders hold partial throttle with no keys.
+PASS: Slider source ignores unselected pedal overrides.
+PASS: Keyboard takeover restores dynamic RPM and temperature while preserving current gear/load.
+PASS: Keyboard takeover clears latched slider pedals.
+PASS: Keyboard pedals operate independently.
+PASS: Displayed feedback receives effective pedal inputs.
+PASS: Release returns to zero and stays in keyboard mode instead of falling back to old slider gas.
+PASS: Slider takeover remains latched across ticks.
+PASS: Preset timeline publishes gear, RPM target, load and gas feedback.
+PASS: Editing a UI feedback copy cannot mutate the applied input snapshot.
+PASS: Capture includes start, every 120 Hz tick and the complete endpoint.
+PASS: Throttle-off tail remains in the run.
+PASS: Gearbox handover and shaft recovery remain connected while the engine keeps producing power.
+PASS: Completion archives the whole trace without a live continuation.
+PASS: Run configuration is independent of subsequent edits.
+PASS: Fresh replay produces identical full telemetry, including shifts and release.
+PASS: Falling RPM is retained in chronological order, never sorted or binned.
+PASS: Repeated RPM with different output remains separate samples.
+PASS: CSV includes all samples and no WOT-only filtering.
+PASS: History retains the six latest whole runs.
+PASS: Clearing overlays leaves the live recording intact.
+PASS: Long sessions split into complete 10-minute segments without dropping their beginning.
+PASS: 22 input/dyno checks.

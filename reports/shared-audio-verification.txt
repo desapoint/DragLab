@@ -1,0 +1,9 @@
+Application-wide audio preference / independent file / persisted mute / invalid data recovery.
+PASS: Fresh preference publishes one 75% DSP gain with an unattenuated listener.
+PASS: Master gain survives a reload from the independent settings file.
+PASS: An intentionally saved DSP mute stays muted after reload.
+PASS: Out-of-range input cannot amplify the listener beyond full volume.
+PASS: Non-finite input recovers to the shared default.
+PASS: A damaged settings file recovers without reading or modifying career saves.
+PASS: Unsupported preference versions recover to the known default.
+PASS: 7 shared audio checks.

@@ -1,0 +1,1479 @@
+PASS: Every catalog ID is unique; old IDs remain addressable.
+PASS: sport-coupe/sport-coupe/Pistons/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Pistons/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Pistons/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Pistons/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Pistons/cast: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Pistons/cast: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Rods/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Rods/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Rods/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Rods/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Rods/cast: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Rods/cast: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Crankshaft/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Crankshaft/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Crankshaft/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Crankshaft/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Crankshaft/cast: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Crankshaft/cast: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/HeadIntake/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/HeadIntake/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/HeadIntake/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/HeadIntake/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/HeadIntake/2: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/HeadIntake/2: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/HeadIntake/3: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/HeadIntake/3: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/FuelSystem/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/FuelSystem/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/FuelSystem/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/FuelSystem/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Ignition/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Ignition/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Ignition/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Ignition/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Cooling/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Cooling/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Cooling/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Cooling/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Exhaust/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Exhaust/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Exhaust/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Exhaust/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Exhaust/2: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Exhaust/2: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Exhaust/3: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Exhaust/3: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Clutch/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Clutch/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Clutch/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Clutch/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Flywheel/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Flywheel/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Flywheel/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Flywheel/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Gearbox/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Gearbox/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Gearbox/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Gearbox/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Gearbox/2: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Gearbox/2: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Gearbox/3: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Gearbox/3: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Differential/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Differential/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Differential/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Differential/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Differential/2: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Differential/2: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Differential/3: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Differential/3: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Wheels/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Wheels/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Wheels/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Wheels/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Tires/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Tires/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Tires/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Tires/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Tires/2: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Tires/2: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Tires/3: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Tires/3: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Brakes/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Brakes/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Brakes/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Brakes/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Body/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Body/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Body/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Body/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Body/2: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Body/2: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Body/3: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Body/3: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Controls/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Controls/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Driveshaft/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Driveshaft/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Driveshaft/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Driveshaft/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/RearAxle/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/RearAxle/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/RearAxle/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/RearAxle/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Interior/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Interior/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Interior/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Interior/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Accessories/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Accessories/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Accessories/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Accessories/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/RevLimiter/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/RevLimiter/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/RevLimiter/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/RevLimiter/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/ShiftLight/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/ShiftLight/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/ShiftLight/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/ShiftLight/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/TwoStep/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/TwoStep/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/TwoStep/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/TwoStep/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/Turbo: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/Turbo: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/Supercharger: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/Supercharger: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinTurbo: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinTurbo: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinSupercharger: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinSupercharger: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/Twincharged: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/Twincharged: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Gearbox/Manual: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Gearbox/Manual: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Gearbox/DCT: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Gearbox/DCT: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Gearbox/Automatic: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Gearbox/Automatic: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Gearbox/CVT: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Gearbox/CVT: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Gearbox/SequentialManual: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Gearbox/SequentialManual: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Gearbox/ManualInterlocked: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Gearbox/ManualInterlocked: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TurboCompactFixed: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TurboCompactFixed: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TurboCompactAdjustable: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TurboCompactAdjustable: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TurboStreetFixed: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TurboStreetFixed: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TurboStreetAdjustable: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TurboStreetAdjustable: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TurboLargeFixed: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TurboLargeFixed: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TurboLargeAdjustable: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TurboLargeAdjustable: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinTurboCompactFixed: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinTurboCompactFixed: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinTurboCompactAdjustable: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinTurboCompactAdjustable: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinTurboStreetFixed: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinTurboStreetFixed: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinTurboStreetAdjustable: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinTurboStreetAdjustable: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinTurboLargeFixed: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinTurboLargeFixed: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinTurboLargeAdjustable: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinTurboLargeAdjustable: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinchargedCompactFixed: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinchargedCompactFixed: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinchargedCompactAdjustable: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinchargedCompactAdjustable: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinchargedStreetFixed: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinchargedStreetFixed: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinchargedStreetAdjustable: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinchargedStreetAdjustable: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinchargedLargeFixed: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinchargedLargeFixed: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinchargedLargeAdjustable: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinchargedLargeAdjustable: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/SuperchargerFixedDrive: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/SuperchargerFixedDrive: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/SuperchargerPulleySet: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/SuperchargerPulleySet: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinSuperchargerFixedDrive: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinSuperchargerFixedDrive: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Induction/TwinSuperchargerPulleySet: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Induction/TwinSuperchargerPulleySet: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Flywheel/HeavyStreet: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Flywheel/HeavyStreet: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Flywheel/BalancedStreet: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Flywheel/BalancedStreet: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Cooling/Endurance: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Cooling/Endurance: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Cooling/LightSport: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Cooling/LightSport: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Clutch/StreetOrganic: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Clutch/StreetOrganic: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Clutch/RaceFriction: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Clutch/RaceFriction: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Tires/Touring: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Tires/Touring: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Brakes/Endurance: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Brakes/Endurance: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Gearbox/ShortFixed: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Gearbox/ShortFixed: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Gearbox/Interchangeable: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Gearbox/Interchangeable: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Camshaft/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Camshaft/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Camshaft/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Camshaft/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Camshaft/2: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Camshaft/2: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/ValveSprings/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/ValveSprings/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/ValveSprings/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/ValveSprings/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Valves/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Valves/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Valves/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Valves/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Followers/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Followers/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Followers/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Followers/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/TimingDrive/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/TimingDrive/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/TimingDrive/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/TimingDrive/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/PistonRings/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/PistonRings/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/PistonRings/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/PistonRings/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/CylinderBlock/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/CylinderBlock/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/CylinderBlock/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/CylinderBlock/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Bearings/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Bearings/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Bearings/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Bearings/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/ValveSeals/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/ValveSeals/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/ValveSeals/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/ValveSeals/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/OilPan/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/OilPan/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/OilPan/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/OilPan/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/OilPump/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/OilPump/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/OilPump/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/OilPump/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/OilFilter/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/OilFilter/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/OilFilter/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/OilFilter/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/CoolantPump/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/CoolantPump/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/CoolantPump/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/CoolantPump/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/CoolingCap/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/CoolingCap/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/CoolingCap/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/CoolingCap/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/CoolingHoses/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/CoolingHoses/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/CoolingHoses/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/CoolingHoses/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/OilCooler/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/OilCooler/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/OilCooler/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/OilCooler/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Clutch/DryTwinOrganic: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Clutch/DryTwinOrganic: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Clutch/DryTwinCeramic: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Clutch/DryTwinCeramic: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Clutch/DryTripleSintered: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Clutch/DryTripleSintered: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Clutch/WetMultiOrganic: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Clutch/WetMultiOrganic: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Clutch/WetMultiRace: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Clutch/WetMultiRace: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/sport-coupe/Clutch/DryCentrifugal: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/sport-coupe/Clutch/DryCentrifugal: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/starter-hatch/FuelSystem/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/starter-hatch/FuelSystem/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/starter-hatch/FuelSystem/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/starter-hatch/FuelSystem/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/starter-hatch/Ignition/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/starter-hatch/Ignition/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/starter-hatch/Ignition/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/starter-hatch/Ignition/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/starter-hatch/Controls/0: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/starter-hatch/Controls/0: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/starter-hatch/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/starter-hatch/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/utility-pickup/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/utility-pickup/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/utility-pickup/Controls/EfiStreet: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/utility-pickup/Controls/EfiStreet: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/v8-muscle/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/v8-muscle/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/v8-muscle/Controls/EfiStreet: tuning permissions and stats are explicit and finite.
+PASS: sport-coupe/v8-muscle/Controls/EfiStreet: compatible hardware runs through shared physical simulation.
+PASS: sport-coupe/Induction/TurboCompact: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: sport-coupe/Induction/TurboCompact: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: sport-coupe/Induction/TurboCompact: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: sport-coupe/Induction/TurboCompact: installed boost/pulley upper bounds are enforced.
+PASS: sport-coupe/Induction/TurboStreet: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: sport-coupe/Induction/TurboStreet: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: sport-coupe/Induction/TurboStreet: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: sport-coupe/Induction/TurboStreet: installed boost/pulley upper bounds are enforced.
+PASS: sport-coupe/Induction/TurboLarge: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: sport-coupe/Induction/TurboLarge: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: sport-coupe/Induction/TurboLarge: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: sport-coupe/Induction/TurboLarge: installed boost/pulley upper bounds are enforced.
+PASS: sport-coupe/Turbo: compact hardware develops boost earlier in RPM envelope.
+PASS: sport-coupe/Turbo: compact transient is faster; large unit has greater airflow capacity.
+PASS: sport-coupe/Induction/TwinTurboCompact: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: sport-coupe/Induction/TwinTurboCompact: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: sport-coupe/Induction/TwinTurboCompact: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: sport-coupe/Induction/TwinTurboCompact: installed boost/pulley upper bounds are enforced.
+PASS: sport-coupe/Induction/TwinTurboStreet: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: sport-coupe/Induction/TwinTurboStreet: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: sport-coupe/Induction/TwinTurboStreet: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: sport-coupe/Induction/TwinTurboStreet: installed boost/pulley upper bounds are enforced.
+PASS: sport-coupe/Induction/TwinTurboLarge: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: sport-coupe/Induction/TwinTurboLarge: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: sport-coupe/Induction/TwinTurboLarge: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: sport-coupe/Induction/TwinTurboLarge: installed boost/pulley upper bounds are enforced.
+PASS: sport-coupe/TwinTurbo: compact hardware develops boost earlier in RPM envelope.
+PASS: sport-coupe/TwinTurbo: compact transient is faster; large unit has greater airflow capacity.
+PASS: sport-coupe/Induction/TwinchargedCompact: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: sport-coupe/Induction/TwinchargedCompact: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: sport-coupe/Induction/TwinchargedCompact: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: sport-coupe/Induction/TwinchargedCompact: installed boost/pulley upper bounds are enforced.
+PASS: sport-coupe/Induction/TwinchargedStreet: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: sport-coupe/Induction/TwinchargedStreet: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: sport-coupe/Induction/TwinchargedStreet: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: sport-coupe/Induction/TwinchargedStreet: installed boost/pulley upper bounds are enforced.
+PASS: sport-coupe/Induction/TwinchargedLarge: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: sport-coupe/Induction/TwinchargedLarge: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: sport-coupe/Induction/TwinchargedLarge: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: sport-coupe/Induction/TwinchargedLarge: installed boost/pulley upper bounds are enforced.
+PASS: sport-coupe/Twincharged: compact hardware develops boost earlier in RPM envelope.
+PASS: sport-coupe/Twincharged: compact transient is faster; large unit has greater airflow capacity.
+PASS: sport-coupe/Supercharger: fixed street blower has no electronic boost or pulley tuning.
+PASS: sport-coupe/Supercharger: pulley set unlocks drive ratio only.
+PASS: sport-coupe/TwinSupercharger: fixed street blower has no electronic boost or pulley tuning.
+PASS: sport-coupe/TwinSupercharger: pulley set unlocks drive ratio only.
+PASS: sport-coupe: OEM fixed gearset cannot be rewritten by a saved ratio.
+PASS: sport-coupe: fixed short gearset sets real wheel gearing.
+PASS: sport-coupe: included gearsets enforce their range independently of stage.
+PASS: sport-coupe: Apply sanitizes disallowed values and installation retains original hardware.
+PASS: sport-coupe: new physical part identity and fixed settings survive save/reload.
+PASS: sport-coupe: reusing OEM restores OEM compressor size, without free upgrades.
+PASS: sport-coupe: hardware permissions/settings are captured and replay exactly in shared physical bench.
+PASS: sport-coupe: unrestricted raw sound-engineering bench still supports arbitrary A/B configurations.
+PASS: starter-hatch/sport-coupe/FuelSystem/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/sport-coupe/FuelSystem/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/sport-coupe/FuelSystem/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/sport-coupe/FuelSystem/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/sport-coupe/Ignition/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/sport-coupe/Ignition/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/sport-coupe/Ignition/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/sport-coupe/Ignition/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/sport-coupe/Controls/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/sport-coupe/Controls/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/sport-coupe/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/sport-coupe/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Pistons/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Pistons/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Pistons/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Pistons/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Rods/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Rods/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Rods/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Rods/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Crankshaft/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Crankshaft/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Crankshaft/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Crankshaft/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/HeadIntake/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/HeadIntake/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/HeadIntake/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/HeadIntake/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/HeadIntake/2: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/HeadIntake/2: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/HeadIntake/3: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/HeadIntake/3: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/FuelSystem/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/FuelSystem/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/FuelSystem/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/FuelSystem/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Ignition/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Ignition/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Ignition/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Ignition/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Cooling/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Cooling/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Cooling/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Cooling/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Exhaust/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Exhaust/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Exhaust/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Exhaust/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Exhaust/2: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Exhaust/2: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Exhaust/3: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Exhaust/3: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Clutch/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Clutch/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Clutch/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Clutch/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Flywheel/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Flywheel/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Flywheel/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Flywheel/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Gearbox/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Gearbox/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Gearbox/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Gearbox/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Gearbox/2: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Gearbox/2: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Gearbox/3: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Gearbox/3: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Differential/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Differential/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Differential/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Differential/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Differential/2: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Differential/2: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Differential/3: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Differential/3: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Wheels/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Wheels/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Wheels/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Wheels/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Tires/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Tires/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Tires/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Tires/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Tires/2: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Tires/2: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Tires/3: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Tires/3: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Brakes/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Brakes/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Brakes/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Brakes/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Body/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Body/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Body/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Body/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Body/2: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Body/2: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Body/3: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Body/3: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Controls/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Controls/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Driveshaft/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Driveshaft/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Driveshaft/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Driveshaft/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/FrontAxle/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/FrontAxle/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/FrontAxle/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/FrontAxle/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Interior/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Interior/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Interior/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Interior/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Accessories/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Accessories/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Accessories/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Accessories/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/RevLimiter/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/RevLimiter/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/RevLimiter/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/RevLimiter/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/ShiftLight/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/ShiftLight/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/ShiftLight/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/ShiftLight/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/TwoStep/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/TwoStep/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/TwoStep/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/TwoStep/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/Turbo: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/Turbo: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/Supercharger: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/Supercharger: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinTurbo: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinTurbo: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinSupercharger: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinSupercharger: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/Twincharged: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/Twincharged: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Gearbox/Manual: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Gearbox/Manual: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Gearbox/DCT: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Gearbox/DCT: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Gearbox/Automatic: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Gearbox/Automatic: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Gearbox/CVT: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Gearbox/CVT: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Gearbox/SequentialManual: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Gearbox/SequentialManual: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Gearbox/ManualInterlocked: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Gearbox/ManualInterlocked: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TurboCompactFixed: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TurboCompactFixed: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TurboCompactAdjustable: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TurboCompactAdjustable: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TurboStreetFixed: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TurboStreetFixed: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TurboStreetAdjustable: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TurboStreetAdjustable: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TurboLargeFixed: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TurboLargeFixed: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TurboLargeAdjustable: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TurboLargeAdjustable: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinTurboCompactFixed: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinTurboCompactFixed: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinTurboCompactAdjustable: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinTurboCompactAdjustable: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinTurboStreetFixed: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinTurboStreetFixed: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinTurboStreetAdjustable: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinTurboStreetAdjustable: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinTurboLargeFixed: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinTurboLargeFixed: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinTurboLargeAdjustable: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinTurboLargeAdjustable: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinchargedCompactFixed: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinchargedCompactFixed: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinchargedCompactAdjustable: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinchargedCompactAdjustable: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinchargedStreetFixed: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinchargedStreetFixed: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinchargedStreetAdjustable: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinchargedStreetAdjustable: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinchargedLargeFixed: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinchargedLargeFixed: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinchargedLargeAdjustable: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinchargedLargeAdjustable: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/SuperchargerFixedDrive: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/SuperchargerFixedDrive: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/SuperchargerPulleySet: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/SuperchargerPulleySet: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinSuperchargerFixedDrive: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinSuperchargerFixedDrive: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Induction/TwinSuperchargerPulleySet: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Induction/TwinSuperchargerPulleySet: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Flywheel/HeavyStreet: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Flywheel/HeavyStreet: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Flywheel/BalancedStreet: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Flywheel/BalancedStreet: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Cooling/Endurance: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Cooling/Endurance: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Cooling/LightSport: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Cooling/LightSport: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Clutch/StreetOrganic: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Clutch/StreetOrganic: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Clutch/RaceFriction: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Clutch/RaceFriction: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Tires/Touring: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Tires/Touring: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Brakes/Endurance: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Brakes/Endurance: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Gearbox/ShortFixed: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Gearbox/ShortFixed: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Gearbox/Interchangeable: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Gearbox/Interchangeable: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Camshaft/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Camshaft/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Camshaft/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Camshaft/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Camshaft/2: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Camshaft/2: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/ValveSprings/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/ValveSprings/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/ValveSprings/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/ValveSprings/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Valves/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Valves/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Valves/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Valves/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Followers/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Followers/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Followers/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Followers/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/TimingDrive/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/TimingDrive/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/TimingDrive/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/TimingDrive/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/PistonRings/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/PistonRings/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/PistonRings/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/PistonRings/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/CylinderBlock/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/CylinderBlock/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/CylinderBlock/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/CylinderBlock/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Bearings/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Bearings/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Bearings/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Bearings/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/ValveSeals/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/ValveSeals/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/ValveSeals/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/ValveSeals/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/OilPan/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/OilPan/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/OilPan/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/OilPan/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/OilPump/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/OilPump/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/OilPump/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/OilPump/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/OilFilter/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/OilFilter/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/OilFilter/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/OilFilter/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/CoolantPump/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/CoolantPump/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/CoolantPump/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/CoolantPump/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/CoolingCap/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/CoolingCap/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/CoolingCap/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/CoolingCap/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/CoolingHoses/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/CoolingHoses/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/CoolingHoses/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/CoolingHoses/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/OilCooler/0: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/OilCooler/0: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/OilCooler/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/OilCooler/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Clutch/DryTwinOrganic: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Clutch/DryTwinOrganic: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Clutch/DryTwinCeramic: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Clutch/DryTwinCeramic: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Clutch/DryTripleSintered: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Clutch/DryTripleSintered: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Clutch/WetMultiOrganic: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Clutch/WetMultiOrganic: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Clutch/WetMultiRace: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Clutch/WetMultiRace: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/starter-hatch/Clutch/DryCentrifugal: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/starter-hatch/Clutch/DryCentrifugal: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/utility-pickup/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/utility-pickup/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/utility-pickup/Controls/EfiStreet: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/utility-pickup/Controls/EfiStreet: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/v8-muscle/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/v8-muscle/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/v8-muscle/Controls/EfiStreet: tuning permissions and stats are explicit and finite.
+PASS: starter-hatch/v8-muscle/Controls/EfiStreet: compatible hardware runs through shared physical simulation.
+PASS: starter-hatch/Induction/TurboCompact: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: starter-hatch/Induction/TurboCompact: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: starter-hatch/Induction/TurboCompact: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: starter-hatch/Induction/TurboCompact: installed boost/pulley upper bounds are enforced.
+PASS: starter-hatch/Induction/TurboStreet: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: starter-hatch/Induction/TurboStreet: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: starter-hatch/Induction/TurboStreet: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: starter-hatch/Induction/TurboStreet: installed boost/pulley upper bounds are enforced.
+PASS: starter-hatch/Induction/TurboLarge: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: starter-hatch/Induction/TurboLarge: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: starter-hatch/Induction/TurboLarge: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: starter-hatch/Induction/TurboLarge: installed boost/pulley upper bounds are enforced.
+PASS: starter-hatch/Turbo: compact hardware develops boost earlier in RPM envelope.
+PASS: starter-hatch/Turbo: compact transient is faster; large unit has greater airflow capacity.
+PASS: starter-hatch/Induction/TwinTurboCompact: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: starter-hatch/Induction/TwinTurboCompact: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: starter-hatch/Induction/TwinTurboCompact: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: starter-hatch/Induction/TwinTurboCompact: installed boost/pulley upper bounds are enforced.
+PASS: starter-hatch/Induction/TwinTurboStreet: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: starter-hatch/Induction/TwinTurboStreet: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: starter-hatch/Induction/TwinTurboStreet: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: starter-hatch/Induction/TwinTurboStreet: installed boost/pulley upper bounds are enforced.
+PASS: starter-hatch/Induction/TwinTurboLarge: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: starter-hatch/Induction/TwinTurboLarge: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: starter-hatch/Induction/TwinTurboLarge: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: starter-hatch/Induction/TwinTurboLarge: installed boost/pulley upper bounds are enforced.
+PASS: starter-hatch/TwinTurbo: compact hardware develops boost earlier in RPM envelope.
+PASS: starter-hatch/TwinTurbo: compact transient is faster; large unit has greater airflow capacity.
+PASS: starter-hatch/Induction/TwinchargedCompact: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: starter-hatch/Induction/TwinchargedCompact: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: starter-hatch/Induction/TwinchargedCompact: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: starter-hatch/Induction/TwinchargedCompact: installed boost/pulley upper bounds are enforced.
+PASS: starter-hatch/Induction/TwinchargedStreet: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: starter-hatch/Induction/TwinchargedStreet: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: starter-hatch/Induction/TwinchargedStreet: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: starter-hatch/Induction/TwinchargedStreet: installed boost/pulley upper bounds are enforced.
+PASS: starter-hatch/Induction/TwinchargedLarge: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: starter-hatch/Induction/TwinchargedLarge: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: starter-hatch/Induction/TwinchargedLarge: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: starter-hatch/Induction/TwinchargedLarge: installed boost/pulley upper bounds are enforced.
+PASS: starter-hatch/Twincharged: compact hardware develops boost earlier in RPM envelope.
+PASS: starter-hatch/Twincharged: compact transient is faster; large unit has greater airflow capacity.
+PASS: starter-hatch/Supercharger: fixed street blower has no electronic boost or pulley tuning.
+PASS: starter-hatch/Supercharger: pulley set unlocks drive ratio only.
+PASS: starter-hatch/TwinSupercharger: fixed street blower has no electronic boost or pulley tuning.
+PASS: starter-hatch/TwinSupercharger: pulley set unlocks drive ratio only.
+PASS: starter-hatch: OEM fixed gearset cannot be rewritten by a saved ratio.
+PASS: starter-hatch: fixed short gearset sets real wheel gearing.
+PASS: starter-hatch: included gearsets enforce their range independently of stage.
+PASS: starter-hatch: Apply sanitizes disallowed values and installation retains original hardware.
+PASS: starter-hatch: new physical part identity and fixed settings survive save/reload.
+PASS: starter-hatch: reusing OEM restores OEM compressor size, without free upgrades.
+PASS: starter-hatch: hardware permissions/settings are captured and replay exactly in shared physical bench.
+PASS: starter-hatch: unrestricted raw sound-engineering bench still supports arbitrary A/B configurations.
+PASS: utility-pickup/sport-coupe/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/sport-coupe/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/starter-hatch/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/starter-hatch/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Pistons/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Pistons/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Pistons/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Pistons/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Rods/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Rods/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Rods/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Rods/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Crankshaft/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Crankshaft/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Crankshaft/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Crankshaft/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/HeadIntake/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/HeadIntake/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/HeadIntake/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/HeadIntake/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/HeadIntake/2: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/HeadIntake/2: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/HeadIntake/3: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/HeadIntake/3: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/FuelSystem/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/FuelSystem/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/FuelSystem/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/FuelSystem/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Ignition/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Ignition/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Ignition/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Ignition/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Cooling/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Cooling/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Cooling/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Cooling/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Exhaust/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Exhaust/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Exhaust/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Exhaust/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Exhaust/2: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Exhaust/2: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Exhaust/3: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Exhaust/3: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Clutch/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Clutch/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Clutch/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Clutch/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Flywheel/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Flywheel/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Flywheel/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Flywheel/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Gearbox/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Gearbox/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Gearbox/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Gearbox/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Gearbox/2: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Gearbox/2: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Gearbox/3: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Gearbox/3: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Differential/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Differential/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Differential/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Differential/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Differential/2: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Differential/2: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Differential/3: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Differential/3: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Wheels/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Wheels/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Wheels/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Wheels/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Tires/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Tires/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Tires/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Tires/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Tires/2: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Tires/2: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Tires/3: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Tires/3: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Brakes/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Brakes/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Brakes/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Brakes/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Body/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Body/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Body/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Body/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Body/2: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Body/2: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Body/3: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Body/3: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Controls/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Controls/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Driveshaft/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Driveshaft/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Driveshaft/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Driveshaft/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/FrontAxle/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/FrontAxle/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/FrontAxle/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/FrontAxle/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/RearAxle/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/RearAxle/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/RearAxle/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/RearAxle/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/FrontDriveshaft/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/FrontDriveshaft/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/FrontDriveshaft/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/FrontDriveshaft/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/RearDriveshaft/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/RearDriveshaft/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/RearDriveshaft/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/RearDriveshaft/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/FrontDifferential/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/FrontDifferential/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/FrontDifferential/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/FrontDifferential/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/FrontDifferential/2: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/FrontDifferential/2: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/FrontDifferential/3: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/FrontDifferential/3: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/RearDifferential/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/RearDifferential/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/RearDifferential/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/RearDifferential/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/RearDifferential/2: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/RearDifferential/2: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/RearDifferential/3: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/RearDifferential/3: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/TransferCase/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/TransferCase/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/TransferCase/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/TransferCase/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Interior/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Interior/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Interior/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Interior/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Accessories/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Accessories/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Accessories/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Accessories/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/RevLimiter/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/RevLimiter/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/RevLimiter/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/RevLimiter/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/ShiftLight/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/ShiftLight/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/ShiftLight/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/ShiftLight/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/TwoStep/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/TwoStep/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/TwoStep/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/TwoStep/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/Turbo: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/Turbo: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/Supercharger: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/Supercharger: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinTurbo: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinTurbo: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinSupercharger: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinSupercharger: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/Twincharged: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/Twincharged: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Gearbox/Manual: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Gearbox/Manual: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Gearbox/DCT: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Gearbox/DCT: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Gearbox/Automatic: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Gearbox/Automatic: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Gearbox/CVT: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Gearbox/CVT: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Gearbox/SequentialManual: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Gearbox/SequentialManual: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Gearbox/ManualInterlocked: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Gearbox/ManualInterlocked: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TurboCompactFixed: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TurboCompactFixed: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TurboCompactAdjustable: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TurboCompactAdjustable: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TurboStreetFixed: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TurboStreetFixed: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TurboStreetAdjustable: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TurboStreetAdjustable: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TurboLargeFixed: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TurboLargeFixed: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TurboLargeAdjustable: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TurboLargeAdjustable: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinTurboCompactFixed: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinTurboCompactFixed: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinTurboCompactAdjustable: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinTurboCompactAdjustable: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinTurboStreetFixed: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinTurboStreetFixed: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinTurboStreetAdjustable: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinTurboStreetAdjustable: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinTurboLargeFixed: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinTurboLargeFixed: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinTurboLargeAdjustable: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinTurboLargeAdjustable: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinchargedCompactFixed: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinchargedCompactFixed: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinchargedCompactAdjustable: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinchargedCompactAdjustable: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinchargedStreetFixed: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinchargedStreetFixed: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinchargedStreetAdjustable: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinchargedStreetAdjustable: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinchargedLargeFixed: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinchargedLargeFixed: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinchargedLargeAdjustable: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinchargedLargeAdjustable: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/SuperchargerFixedDrive: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/SuperchargerFixedDrive: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/SuperchargerPulleySet: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/SuperchargerPulleySet: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinSuperchargerFixedDrive: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinSuperchargerFixedDrive: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Induction/TwinSuperchargerPulleySet: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Induction/TwinSuperchargerPulleySet: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Flywheel/HeavyStreet: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Flywheel/HeavyStreet: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Flywheel/BalancedStreet: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Flywheel/BalancedStreet: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Cooling/Endurance: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Cooling/Endurance: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Cooling/LightSport: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Cooling/LightSport: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Clutch/StreetOrganic: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Clutch/StreetOrganic: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Clutch/RaceFriction: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Clutch/RaceFriction: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Tires/Touring: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Tires/Touring: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Brakes/Endurance: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Brakes/Endurance: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Gearbox/ShortFixed: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Gearbox/ShortFixed: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Gearbox/Interchangeable: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Gearbox/Interchangeable: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/FuelSystem/EfiThrottleBody: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/FuelSystem/EfiThrottleBody: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/FuelSystem/EfiPortInjection: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/FuelSystem/EfiPortInjection: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Controls/EfiStreet: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Controls/EfiStreet: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Camshaft/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Camshaft/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Camshaft/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Camshaft/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Camshaft/2: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Camshaft/2: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/ValveSprings/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/ValveSprings/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/ValveSprings/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/ValveSprings/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Valves/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Valves/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Valves/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Valves/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Followers/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Followers/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Followers/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Followers/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/TimingDrive/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/TimingDrive/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/TimingDrive/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/TimingDrive/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/PistonRings/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/PistonRings/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/PistonRings/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/PistonRings/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/CylinderBlock/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/CylinderBlock/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/CylinderBlock/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/CylinderBlock/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Bearings/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Bearings/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Bearings/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Bearings/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/ValveSeals/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/ValveSeals/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/ValveSeals/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/ValveSeals/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/OilPan/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/OilPan/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/OilPan/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/OilPan/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/OilPump/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/OilPump/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/OilPump/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/OilPump/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/OilFilter/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/OilFilter/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/OilFilter/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/OilFilter/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/CoolantPump/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/CoolantPump/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/CoolantPump/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/CoolantPump/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/CoolingCap/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/CoolingCap/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/CoolingCap/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/CoolingCap/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/CoolingHoses/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/CoolingHoses/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/CoolingHoses/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/CoolingHoses/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/OilCooler/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/OilCooler/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/OilCooler/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/OilCooler/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Clutch/DryTwinOrganic: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Clutch/DryTwinOrganic: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Clutch/DryTwinCeramic: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Clutch/DryTwinCeramic: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Clutch/DryTripleSintered: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Clutch/DryTripleSintered: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Clutch/WetMultiOrganic: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Clutch/WetMultiOrganic: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Clutch/WetMultiRace: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Clutch/WetMultiRace: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/utility-pickup/Clutch/DryCentrifugal: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/utility-pickup/Clutch/DryCentrifugal: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/v8-muscle/Controls/0: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/v8-muscle/Controls/0: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/v8-muscle/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/v8-muscle/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/v8-muscle/Controls/EfiStreet: tuning permissions and stats are explicit and finite.
+PASS: utility-pickup/v8-muscle/Controls/EfiStreet: compatible hardware runs through shared physical simulation.
+PASS: utility-pickup/Induction/TurboCompact: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: utility-pickup/Induction/TurboCompact: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: utility-pickup/Induction/TurboCompact: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: utility-pickup/Induction/TurboCompact: installed boost/pulley upper bounds are enforced.
+PASS: utility-pickup/Induction/TurboStreet: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: utility-pickup/Induction/TurboStreet: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: utility-pickup/Induction/TurboStreet: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: utility-pickup/Induction/TurboStreet: installed boost/pulley upper bounds are enforced.
+PASS: utility-pickup/Induction/TurboLarge: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: utility-pickup/Induction/TurboLarge: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: utility-pickup/Induction/TurboLarge: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: utility-pickup/Induction/TurboLarge: installed boost/pulley upper bounds are enforced.
+PASS: utility-pickup/Turbo: compact hardware develops boost earlier in RPM envelope.
+PASS: utility-pickup/Turbo: compact transient is faster; large unit has greater airflow capacity.
+PASS: utility-pickup/Induction/TwinTurboCompact: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: utility-pickup/Induction/TwinTurboCompact: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: utility-pickup/Induction/TwinTurboCompact: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: utility-pickup/Induction/TwinTurboCompact: installed boost/pulley upper bounds are enforced.
+PASS: utility-pickup/Induction/TwinTurboStreet: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: utility-pickup/Induction/TwinTurboStreet: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: utility-pickup/Induction/TwinTurboStreet: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: utility-pickup/Induction/TwinTurboStreet: installed boost/pulley upper bounds are enforced.
+PASS: utility-pickup/Induction/TwinTurboLarge: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: utility-pickup/Induction/TwinTurboLarge: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: utility-pickup/Induction/TwinTurboLarge: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: utility-pickup/Induction/TwinTurboLarge: installed boost/pulley upper bounds are enforced.
+PASS: utility-pickup/TwinTurbo: compact hardware develops boost earlier in RPM envelope.
+PASS: utility-pickup/TwinTurbo: compact transient is faster; large unit has greater airflow capacity.
+PASS: utility-pickup/Induction/TwinchargedCompact: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: utility-pickup/Induction/TwinchargedCompact: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: utility-pickup/Induction/TwinchargedCompact: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: utility-pickup/Induction/TwinchargedCompact: installed boost/pulley upper bounds are enforced.
+PASS: utility-pickup/Induction/TwinchargedStreet: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: utility-pickup/Induction/TwinchargedStreet: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: utility-pickup/Induction/TwinchargedStreet: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: utility-pickup/Induction/TwinchargedStreet: installed boost/pulley upper bounds are enforced.
+PASS: utility-pickup/Induction/TwinchargedLarge: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: utility-pickup/Induction/TwinchargedLarge: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: utility-pickup/Induction/TwinchargedLarge: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: utility-pickup/Induction/TwinchargedLarge: installed boost/pulley upper bounds are enforced.
+PASS: utility-pickup/Twincharged: compact hardware develops boost earlier in RPM envelope.
+PASS: utility-pickup/Twincharged: compact transient is faster; large unit has greater airflow capacity.
+PASS: utility-pickup/Supercharger: fixed street blower has no electronic boost or pulley tuning.
+PASS: utility-pickup/Supercharger: pulley set unlocks drive ratio only.
+PASS: utility-pickup/TwinSupercharger: fixed street blower has no electronic boost or pulley tuning.
+PASS: utility-pickup/TwinSupercharger: pulley set unlocks drive ratio only.
+PASS: utility-pickup: OEM fixed gearset cannot be rewritten by a saved ratio.
+PASS: utility-pickup: fixed short gearset sets real wheel gearing.
+PASS: utility-pickup: included gearsets enforce their range independently of stage.
+PASS: utility-pickup: Apply sanitizes disallowed values and installation retains original hardware.
+PASS: utility-pickup: new physical part identity and fixed settings survive save/reload.
+PASS: utility-pickup: reusing OEM restores OEM compressor size, without free upgrades.
+PASS: utility-pickup: hardware permissions/settings are captured and replay exactly in shared physical bench.
+PASS: utility-pickup: unrestricted raw sound-engineering bench still supports arbitrary A/B configurations.
+PASS: v8-muscle/sport-coupe/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/sport-coupe/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/starter-hatch/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/starter-hatch/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/utility-pickup/Controls/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/utility-pickup/Controls/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/utility-pickup/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/utility-pickup/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Pistons/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Pistons/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Pistons/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Pistons/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Rods/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Rods/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Rods/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Rods/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Crankshaft/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Crankshaft/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Crankshaft/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Crankshaft/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/HeadIntake/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/HeadIntake/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/HeadIntake/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/HeadIntake/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/HeadIntake/2: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/HeadIntake/2: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/HeadIntake/3: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/HeadIntake/3: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/FuelSystem/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/FuelSystem/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/FuelSystem/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/FuelSystem/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Ignition/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Ignition/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Ignition/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Ignition/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Cooling/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Cooling/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Cooling/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Cooling/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Exhaust/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Exhaust/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Exhaust/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Exhaust/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Exhaust/2: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Exhaust/2: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Exhaust/3: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Exhaust/3: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Clutch/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Clutch/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Clutch/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Clutch/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Flywheel/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Flywheel/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Flywheel/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Flywheel/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Gearbox/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Gearbox/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Gearbox/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Gearbox/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Gearbox/2: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Gearbox/2: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Gearbox/3: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Gearbox/3: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Differential/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Differential/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Differential/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Differential/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Differential/2: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Differential/2: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Differential/3: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Differential/3: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Wheels/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Wheels/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Wheels/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Wheels/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Tires/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Tires/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Tires/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Tires/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Tires/2: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Tires/2: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Tires/3: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Tires/3: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Brakes/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Brakes/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Brakes/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Brakes/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Body/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Body/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Body/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Body/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Body/2: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Body/2: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Body/3: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Body/3: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Controls/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Controls/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Controls/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Controls/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Driveshaft/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Driveshaft/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Driveshaft/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Driveshaft/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/RearAxle/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/RearAxle/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/RearAxle/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/RearAxle/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Interior/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Interior/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Interior/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Interior/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Accessories/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Accessories/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Accessories/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Accessories/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/RevLimiter/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/RevLimiter/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/RevLimiter/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/RevLimiter/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/ShiftLight/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/ShiftLight/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/ShiftLight/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/ShiftLight/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/TwoStep/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/TwoStep/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/TwoStep/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/TwoStep/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/Turbo: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/Turbo: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/Supercharger: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/Supercharger: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinTurbo: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinTurbo: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinSupercharger: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinSupercharger: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/Twincharged: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/Twincharged: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Gearbox/Manual: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Gearbox/Manual: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Gearbox/DCT: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Gearbox/DCT: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Gearbox/Automatic: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Gearbox/Automatic: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Gearbox/CVT: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Gearbox/CVT: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Gearbox/SequentialManual: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Gearbox/SequentialManual: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Gearbox/ManualInterlocked: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Gearbox/ManualInterlocked: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TurboCompactFixed: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TurboCompactFixed: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TurboCompactAdjustable: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TurboCompactAdjustable: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TurboStreetFixed: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TurboStreetFixed: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TurboStreetAdjustable: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TurboStreetAdjustable: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TurboLargeFixed: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TurboLargeFixed: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TurboLargeAdjustable: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TurboLargeAdjustable: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinTurboCompactFixed: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinTurboCompactFixed: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinTurboCompactAdjustable: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinTurboCompactAdjustable: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinTurboStreetFixed: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinTurboStreetFixed: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinTurboStreetAdjustable: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinTurboStreetAdjustable: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinTurboLargeFixed: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinTurboLargeFixed: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinTurboLargeAdjustable: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinTurboLargeAdjustable: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinchargedCompactFixed: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinchargedCompactFixed: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinchargedCompactAdjustable: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinchargedCompactAdjustable: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinchargedStreetFixed: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinchargedStreetFixed: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinchargedStreetAdjustable: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinchargedStreetAdjustable: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinchargedLargeFixed: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinchargedLargeFixed: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinchargedLargeAdjustable: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinchargedLargeAdjustable: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/SuperchargerFixedDrive: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/SuperchargerFixedDrive: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/SuperchargerPulleySet: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/SuperchargerPulleySet: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinSuperchargerFixedDrive: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinSuperchargerFixedDrive: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Induction/TwinSuperchargerPulleySet: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Induction/TwinSuperchargerPulleySet: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Flywheel/HeavyStreet: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Flywheel/HeavyStreet: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Flywheel/BalancedStreet: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Flywheel/BalancedStreet: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Cooling/Endurance: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Cooling/Endurance: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Cooling/LightSport: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Cooling/LightSport: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Clutch/StreetOrganic: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Clutch/StreetOrganic: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Clutch/RaceFriction: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Clutch/RaceFriction: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Tires/Touring: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Tires/Touring: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Brakes/Endurance: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Brakes/Endurance: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Gearbox/ShortFixed: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Gearbox/ShortFixed: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Gearbox/Interchangeable: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Gearbox/Interchangeable: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/FuelSystem/EfiThrottleBody: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/FuelSystem/EfiThrottleBody: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/FuelSystem/EfiPortInjection: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/FuelSystem/EfiPortInjection: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Controls/EfiStreet: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Controls/EfiStreet: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Camshaft/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Camshaft/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Camshaft/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Camshaft/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Camshaft/2: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Camshaft/2: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/ValveSprings/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/ValveSprings/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/ValveSprings/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/ValveSprings/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Valves/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Valves/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Valves/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Valves/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Followers/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Followers/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Followers/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Followers/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/TimingDrive/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/TimingDrive/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/TimingDrive/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/TimingDrive/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/PistonRings/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/PistonRings/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/PistonRings/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/PistonRings/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/CylinderBlock/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/CylinderBlock/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/CylinderBlock/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/CylinderBlock/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Bearings/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Bearings/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Bearings/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Bearings/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/ValveSeals/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/ValveSeals/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/ValveSeals/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/ValveSeals/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/OilPan/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/OilPan/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/OilPan/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/OilPan/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/OilPump/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/OilPump/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/OilPump/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/OilPump/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/OilFilter/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/OilFilter/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/OilFilter/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/OilFilter/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/CoolantPump/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/CoolantPump/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/CoolantPump/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/CoolantPump/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/CoolingCap/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/CoolingCap/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/CoolingCap/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/CoolingCap/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/CoolingHoses/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/CoolingHoses/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/CoolingHoses/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/CoolingHoses/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/OilCooler/0: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/OilCooler/0: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/OilCooler/1: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/OilCooler/1: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Clutch/DryTwinOrganic: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Clutch/DryTwinOrganic: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Clutch/DryTwinCeramic: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Clutch/DryTwinCeramic: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Clutch/DryTripleSintered: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Clutch/DryTripleSintered: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Clutch/WetMultiOrganic: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Clutch/WetMultiOrganic: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Clutch/WetMultiRace: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Clutch/WetMultiRace: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/v8-muscle/Clutch/DryCentrifugal: tuning permissions and stats are explicit and finite.
+PASS: v8-muscle/v8-muscle/Clutch/DryCentrifugal: compatible hardware runs through shared physical simulation.
+PASS: v8-muscle/Induction/TurboCompact: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: v8-muscle/Induction/TurboCompact: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: v8-muscle/Induction/TurboCompact: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: v8-muscle/Induction/TurboCompact: installed boost/pulley upper bounds are enforced.
+PASS: v8-muscle/Induction/TurboStreet: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: v8-muscle/Induction/TurboStreet: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: v8-muscle/Induction/TurboStreet: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: v8-muscle/Induction/TurboStreet: installed boost/pulley upper bounds are enforced.
+PASS: v8-muscle/Induction/TurboLarge: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: v8-muscle/Induction/TurboLarge: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: v8-muscle/Induction/TurboLarge: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: v8-muscle/Induction/TurboLarge: installed boost/pulley upper bounds are enforced.
+PASS: v8-muscle/Turbo: compact hardware develops boost earlier in RPM envelope.
+PASS: v8-muscle/Turbo: compact transient is faster; large unit has greater airflow capacity.
+PASS: v8-muscle/Induction/TwinTurboCompact: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: v8-muscle/Induction/TwinTurboCompact: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: v8-muscle/Induction/TwinTurboCompact: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: v8-muscle/Induction/TwinTurboCompact: installed boost/pulley upper bounds are enforced.
+PASS: v8-muscle/Induction/TwinTurboStreet: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: v8-muscle/Induction/TwinTurboStreet: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: v8-muscle/Induction/TwinTurboStreet: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: v8-muscle/Induction/TwinTurboStreet: installed boost/pulley upper bounds are enforced.
+PASS: v8-muscle/Induction/TwinTurboLarge: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: v8-muscle/Induction/TwinTurboLarge: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: v8-muscle/Induction/TwinTurboLarge: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: v8-muscle/Induction/TwinTurboLarge: installed boost/pulley upper bounds are enforced.
+PASS: v8-muscle/TwinTurbo: compact hardware develops boost earlier in RPM envelope.
+PASS: v8-muscle/TwinTurbo: compact transient is faster; large unit has greater airflow capacity.
+PASS: v8-muscle/Induction/TwinchargedCompact: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: v8-muscle/Induction/TwinchargedCompact: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: v8-muscle/Induction/TwinchargedCompact: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: v8-muscle/Induction/TwinchargedCompact: installed boost/pulley upper bounds are enforced.
+PASS: v8-muscle/Induction/TwinchargedStreet: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: v8-muscle/Induction/TwinchargedStreet: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: v8-muscle/Induction/TwinchargedStreet: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: v8-muscle/Induction/TwinchargedStreet: installed boost/pulley upper bounds are enforced.
+PASS: v8-muscle/Induction/TwinchargedLarge: fixed hardware ignores old sliders, presets and forged capability flags.
+PASS: v8-muscle/Induction/TwinchargedLarge: direct race/snapshot clamp keeps physical dimensions and fixed boost.
+PASS: v8-muscle/Induction/TwinchargedLarge: adjustable boost respects the spring floor; size stays physical and valve is configurable.
+PASS: v8-muscle/Induction/TwinchargedLarge: installed boost/pulley upper bounds are enforced.
+PASS: v8-muscle/Twincharged: compact hardware develops boost earlier in RPM envelope.
+PASS: v8-muscle/Twincharged: compact transient is faster; large unit has greater airflow capacity.
+PASS: v8-muscle/Supercharger: fixed street blower has no electronic boost or pulley tuning.
+PASS: v8-muscle/Supercharger: pulley set unlocks drive ratio only.
+PASS: v8-muscle/TwinSupercharger: fixed street blower has no electronic boost or pulley tuning.
+PASS: v8-muscle/TwinSupercharger: pulley set unlocks drive ratio only.
+PASS: v8-muscle: OEM fixed gearset cannot be rewritten by a saved ratio.
+PASS: v8-muscle: fixed short gearset sets real wheel gearing.
+PASS: v8-muscle: included gearsets enforce their range independently of stage.
+PASS: v8-muscle: Apply sanitizes disallowed values and installation retains original hardware.
+PASS: v8-muscle: new physical part identity and fixed settings survive save/reload.
+PASS: v8-muscle: reusing OEM restores OEM compressor size, without free upgrades.
+PASS: v8-muscle: hardware permissions/settings are captured and replay exactly in shared physical bench.
+PASS: v8-muscle: unrestricted raw sound-engineering bench still supports arbitrary A/B configurations.
+Checks: 1477
+Catalog definitions: 649

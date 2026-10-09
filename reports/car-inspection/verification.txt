@@ -1,0 +1,25 @@
+PASS: Saved build has a complete settled dyno and bounded shared-simulation probe.
+PASS: Wheel display is true outer tire radius in inches, with separate outer diameter.
+PASS: Stats/dyno/probe do not change player cash, wear, tune, inventory or history.
+PASS: Forged internals provide strength headroom without invented horsepower.
+PASS: Head/intake preview produces real torque and horsepower curve gains.
+PASS: Power preview warns when engine torque exceeds the existing clutch capacity.
+PASS: Better grip reduces or preserves estimated slip without adding engine horsepower.
+PASS: Larger outer radius exposes gearing, mass and launch tradeoffs with practical advice.
+PASS: Light flywheel affects stored inertia rather than fake engine power.
+PASS: Removal preview marks an incomplete build and skips driving it.
+PASS: Every shop preview is isolated and does not purchase parts or assign owned identities.
+PASS: Inventory previews use actual wear instead of fresh shop condition and never heal it.
+PASS: Tune draft is independent of saved tune and paint.
+PASS: Failed tune save leaves the running build and ownership unchanged.
+PASS: Explicit apply changes supported gearset/fitment/paint adjustments atomically, while retaining the installed physical turbo size and identities.
+PASS: Old draft cannot overwrite a newer applied build.
+PASS: Nonfinite tuning is rejected before publication.
+PASS: Presets retain fitment settings; effective turbo size still comes from installed hardware.
+PASS: Speed formatting converts canonical physics values correctly.
+PASS: Pressure conversion round trips without altering the tune: Bar
+PASS: Pressure conversion round trips without altering the tune: Psi
+PASS: Pressure conversion round trips without altering the tune: Kilopascals
+PASS: Independent shared unit preferences survive reload and progression reset.
+PASS: Boost remains readable in both bar and psi under either preference.
+Checks: 24

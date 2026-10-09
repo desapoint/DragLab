@@ -1,0 +1,72 @@
+PASS: Ordinary pedals and manual downshift cause engine failure: sport-coupe / peak 10769,4672447121
+PASS: Selecting gear does not fake failure; clutch back-drive overrevs with gas released: sport-coupe
+PASS: Destructive trace repeats every sample exactly: sport-coupe
+PASS: JSON replays actual failure: sport-coupe
+PASS: Installed manual interlock rejects same destructive inputs: sport-coupe
+PASS: Failed engine cannot be healed by restart; neutral coasting/braking continues: sport-coupe
+PASS: Fresh isolated reset creates healthy engine: sport-coupe
+PASS: Checkpoint continuation preserves complete dynamics at tick 250: sport-coupe
+PASS: Continuation snapshot replays independently: 250 / sport-coupe
+PASS: Serialized continuation retains physical state: 250 / sport-coupe
+PASS: Checkpoint continuation preserves complete dynamics at tick 1700: sport-coupe
+PASS: Continuation snapshot replays independently: 1700 / sport-coupe
+PASS: Serialized continuation retains physical state: 1700 / sport-coupe
+PASS: Checkpoint continuation preserves complete dynamics at tick 2036: sport-coupe
+PASS: Continuation snapshot replays independently: 2036 / sport-coupe
+PASS: Serialized continuation retains physical state: 2036 / sport-coupe
+PASS: Ordinary pedals and manual downshift cause engine failure: starter-hatch / peak 10414,4232911836
+PASS: Selecting gear does not fake failure; clutch back-drive overrevs with gas released: starter-hatch
+PASS: Destructive trace repeats every sample exactly: starter-hatch
+PASS: JSON replays actual failure: starter-hatch
+PASS: Installed manual interlock rejects same destructive inputs: starter-hatch
+PASS: Failed engine cannot be healed by restart; neutral coasting/braking continues: starter-hatch
+PASS: Fresh isolated reset creates healthy engine: starter-hatch
+PASS: Checkpoint continuation preserves complete dynamics at tick 250: starter-hatch
+PASS: Continuation snapshot replays independently: 250 / starter-hatch
+PASS: Serialized continuation retains physical state: 250 / starter-hatch
+PASS: Checkpoint continuation preserves complete dynamics at tick 1789: starter-hatch
+PASS: Continuation snapshot replays independently: 1789 / starter-hatch
+PASS: Serialized continuation retains physical state: 1789 / starter-hatch
+PASS: Checkpoint continuation preserves complete dynamics at tick 2125: starter-hatch
+PASS: Continuation snapshot replays independently: 2125 / starter-hatch
+PASS: Serialized continuation retains physical state: 2125 / starter-hatch
+PASS: Ordinary pedals and manual downshift cause engine failure: utility-pickup / peak 9000
+PASS: Selecting gear does not fake failure; clutch back-drive overrevs with gas released: utility-pickup
+PASS: Destructive trace repeats every sample exactly: utility-pickup
+PASS: JSON replays actual failure: utility-pickup
+PASS: Installed manual interlock rejects same destructive inputs: utility-pickup
+PASS: Failed engine cannot be healed by restart; neutral coasting/braking continues: utility-pickup
+PASS: Fresh isolated reset creates healthy engine: utility-pickup
+PASS: Checkpoint continuation preserves complete dynamics at tick 250: utility-pickup
+PASS: Continuation snapshot replays independently: 250 / utility-pickup
+PASS: Serialized continuation retains physical state: 250 / utility-pickup
+PASS: Checkpoint continuation preserves complete dynamics at tick 1660: utility-pickup
+PASS: Continuation snapshot replays independently: 1660 / utility-pickup
+PASS: Serialized continuation retains physical state: 1660 / utility-pickup
+PASS: Checkpoint continuation preserves complete dynamics at tick 1996: utility-pickup
+PASS: Continuation snapshot replays independently: 1996 / utility-pickup
+PASS: Serialized continuation retains physical state: 1996 / utility-pickup
+PASS: Ordinary pedals and manual downshift cause engine failure: v8-muscle / peak 9750
+PASS: Selecting gear does not fake failure; clutch back-drive overrevs with gas released: v8-muscle
+PASS: Destructive trace repeats every sample exactly: v8-muscle
+PASS: JSON replays actual failure: v8-muscle
+PASS: Installed manual interlock rejects same destructive inputs: v8-muscle
+PASS: Failed engine cannot be healed by restart; neutral coasting/braking continues: v8-muscle
+PASS: Fresh isolated reset creates healthy engine: v8-muscle
+PASS: Checkpoint continuation preserves complete dynamics at tick 250: v8-muscle
+PASS: Continuation snapshot replays independently: 250 / v8-muscle
+PASS: Serialized continuation retains physical state: 250 / v8-muscle
+PASS: Checkpoint continuation preserves complete dynamics at tick 2260: v8-muscle
+PASS: Continuation snapshot replays independently: 2260 / v8-muscle
+PASS: Serialized continuation retains physical state: 2260 / v8-muscle
+PASS: Checkpoint continuation preserves complete dynamics at tick 2596: v8-muscle
+PASS: Continuation snapshot replays independently: 2596 / v8-muscle
+PASS: Serialized continuation retains physical state: 2596 / v8-muscle
+PASS: Driving continues beyond ten-minute recording boundary without resetting physics/time.
+PASS: Continuation is deeply isolated and independently replayable.
+PASS: Nonfinite checkpoint rejected.
+PASS: Missing continuation state rejected.
+PASS: Original snapshots with no checkpoint remain compatible.
+PASS: Shared hardware retains DCT transmission protection.
+PASS: Shared hardware retains Automatic transmission protection.
+Checks: 71

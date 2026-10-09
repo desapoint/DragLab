@@ -1,0 +1,43 @@
+Windows Parts controls / OS mouse events / isolated save.
+PASS: Actual Buy + install purchases forged pistons directly.
+PASS: Original worn pistons remain loose and unhealed.
+PASS: Actual removal leaves an owned incomplete build that cannot race.
+PASS: Actual Install / reuse downgrades to the original identity.
+PASS: Actual Sell loose removes the forged identity and credits provisional value once.
+PASS: Mouse workflow persists IDs, cash and worn condition on disk.
+PASS: Safe defaults do not repair components.
+PASS: Stale runtime action rejected.
+PASS: Garage transaction boundary locks parts during a real active race.
+PASS: Shop preview names sequential manual hardware and shows reduced shift time.
+PASS: Actual Buy + install carries sequential manual hardware into the real race.
+PASS: Sequential gearbox identity and selector behavior persist on disk.
+PASS: Reusing the retained original gearbox restores H-pattern behavior.
+PASS: New large fixed turbo preview derives its physical size and tuning restrictions from the selected part.
+PASS: Fixed turbo tuning page has no physical-size or boost slider.
+PASS: Adjustable kit unlocks boost only; physical turbo size remains a hardware choice.
+PASS: Actual boost slider edits preview only until Apply. [dirty=True, draft=1,160082, saved=0,8, baseline=0,8]
+PASS: Applied adjustable boost and fitted turbo size carry into actual race physics.
+PASS: Reinstalling retained OEM induction restores factory physical sizing.
+PASS: EFI shop preview shows injection with explicit missing-controller warning.
+PASS: Blocked EFI conversion preview reports unavailable wheelspin rather than a false traction improvement.
+PASS: Installed conversion cannot race on carb mechanical controls.
+PASS: Actual EFI controller purchase completes runnable injection conversion. [fueling=Injection; errors=]
+PASS: EFI shop purchases reach real race physics with V8 engine character.
+PASS: EFI hardware and retained original carb persist on disk.
+PASS: Actual retained-carb Install restores carbureted behavior.
+PASS: Actual fluid top-up fills installed capacities without renewing aged oil.
+PASS: Top-up leaves the radiator leak fault intact.
+PASS: Actual reseal action repairs only the radiator leak.
+PASS: Actual oil/filter service renews oil and retains the used filter.
+PASS: Race cam preview warns when factory springs cannot control its profile.
+PASS: Installed cam/spring hardware and serviced fluids reach the same race solver.
+PASS: Fluid service and repair history persist after race/garage save.
+PASS: Actual individual-piston button charges unit cost and retains neighbouring parts.
+PASS: Removed individual piston retains its identity and wear.
+PASS: Actual individual inventory sale removes one retained piston.
+PASS: Actual wet multi-plate purchase reaches shared race coupling with dedicated oil bath.
+PASS: Actual paid rebuild button creates persisted timed reservation.
+PASS: Reserved engine cannot start a real race.
+PASS: Actual Collect completes overdue fixture job exactly once and persists availability.
+PASS: Parts UI has no runtime/GUI errors.
+Runtime errors: 0

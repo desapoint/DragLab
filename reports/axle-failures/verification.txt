@@ -1,0 +1,95 @@
+Shared component failure effects / axle demand model / isolated fixtures.
+PASS: Failed brakes retain engine combustion and propulsion during a shared full-throttle pull.
+PASS: Unused healthy brakes accumulate no friction wear or heat during staging/acceleration.
+PASS: Brake failure removes actual friction deceleration; rolling/aero coast remain without phantom braking heat.
+PASS: Worn brakes progressively lose capacity rather than breaking engine internals.
+PASS: Hot brakes fade without an engine failure.
+PASS: Common Driveshaft failure disconnects drive, keeps engine running and preserves road momentum. RPM 6752, peak HP 59, engine failed False
+PASS: Healthy brakes stop a car with failed Driveshaft.
+PASS: Common Differential failure disconnects drive, keeps engine running and preserves road momentum. RPM 6752, peak HP 59, engine failed False
+PASS: Healthy brakes stop a car with failed Differential.
+PASS: Common Gearbox failure disconnects drive, keeps engine running and preserves road momentum. RPM 6752, peak HP 59, engine failed False
+PASS: Healthy brakes stop a car with failed Gearbox.
+PASS: Common Clutch failure disconnects drive, keeps engine running and preserves road momentum. RPM 6752, peak HP 59, engine failed False
+PASS: Healthy brakes stop a car with failed Clutch.
+PASS: Common TransferCase failure disconnects drive, keeps engine running and preserves road momentum. RPM 6752, peak HP 59, engine failed False
+PASS: Healthy brakes stop a car with failed TransferCase.
+PASS: FWD driven axle failure removes wheel drive, preserving engine free-revving.
+PASS: RWD driven axle failure removes wheel drive, preserving engine free-revving.
+PASS: Isolating AWD retains healthy branch after FrontAxle failure.
+PASS: Disconnected FrontAxle receives no allocated torque after isolation.
+PASS: Isolating AWD retains healthy branch after FrontDriveshaft failure.
+PASS: Disconnected FrontDriveshaft receives no allocated torque after isolation.
+PASS: Isolating AWD retains healthy branch after FrontDifferential failure.
+PASS: Disconnected FrontDifferential receives no allocated torque after isolation.
+PASS: Isolating AWD retains healthy branch after RearAxle failure.
+PASS: Disconnected RearAxle receives no allocated torque after isolation.
+PASS: Isolating AWD retains healthy branch after RearDriveshaft failure.
+PASS: Disconnected RearDriveshaft receives no allocated torque after isolation.
+PASS: Isolating AWD retains healthy branch after RearDifferential failure.
+PASS: Disconnected RearDifferential receives no allocated torque after isolation.
+PASS: Unisolated open center spins disconnected shaft, with negligible useful propulsion.
+PASS: Manual open center routes most output work into free front shaft: 7381 J versus healthy 11 J / road 0,00 m/s.
+PASS: 50/50 open center preserves equal shaft torque while power differs with shaft speed: Manual
+PASS: Free shaft retains inertia and decays under friction in neutral: Manual
+PASS: DCT open center routes most output work into free front shaft: 7380 J versus healthy 11 J / road 0,00 m/s.
+PASS: 50/50 open center preserves equal shaft torque while power differs with shaft speed: DCT
+PASS: Free shaft retains inertia and decays under friction in neutral: DCT
+PASS: Automatic open center routes most output work into free front shaft: 4002 J versus healthy 10 J / road 0,00 m/s.
+PASS: 50/50 open center preserves equal shaft torque while power differs with shaft speed: Automatic
+PASS: Free shaft retains inertia and decays under friction in neutral: Automatic
+PASS: CVT open center routes most output work into free front shaft: 87362 J versus healthy 307 J / road 0,28 m/s.
+PASS: 50/50 open center preserves equal shaft torque while power differs with shaft speed: CVT
+PASS: Free shaft retains inertia and decays under friction in neutral: CVT
+PASS: Manual open center routes most output work into free rear shaft: 7381 J versus healthy 11 J / road 0,00 m/s.
+PASS: 50/50 open center preserves equal shaft torque while power differs with shaft speed: Manual
+PASS: Free shaft retains inertia and decays under friction in neutral: Manual
+PASS: DCT open center routes most output work into free rear shaft: 7380 J versus healthy 11 J / road 0,00 m/s.
+PASS: 50/50 open center preserves equal shaft torque while power differs with shaft speed: DCT
+PASS: Free shaft retains inertia and decays under friction in neutral: DCT
+PASS: Automatic open center routes most output work into free rear shaft: 4002 J versus healthy 10 J / road 0,00 m/s.
+PASS: 50/50 open center preserves equal shaft torque while power differs with shaft speed: Automatic
+PASS: Free shaft retains inertia and decays under friction in neutral: Automatic
+PASS: CVT open center routes most output work into free rear shaft: 87387 J versus healthy 287 J / road 0,28 m/s.
+PASS: 50/50 open center preserves equal shaft torque while power differs with shaft speed: CVT
+PASS: Free shaft retains inertia and decays under friction in neutral: CVT
+PASS: Locked center retains surviving front drive without optional controller isolation.
+PASS: Fixed independent coupling preserves only the assigned healthy share when isolation is absent.
+PASS: On-demand front primary engages gradually after slip rather than instant full coupling.
+PASS: On-demand secondary engagement respects its maximum share and response time.
+PASS: Failed on-demand coupling leaves the direct primary drive functional.
+PASS: Primary-branch break requires isolation-capable hardware for on-demand fallback.
+PASS: On-demand rear primary engages gradually after slip rather than instant full coupling.
+PASS: On-demand secondary engagement respects its maximum share and response time.
+PASS: Failed on-demand coupling leaves the direct primary drive functional.
+PASS: Primary-branch break requires isolation-capable hardware for on-demand fallback.
+PASS: 50/50 divides demand equally and conserves total force below grip limits.
+PASS: 25/75 actually changes axle force while conserving demand.
+PASS: Each axle is grip-limited separately, including independent demand slip and weight-transfer capacity.
+PASS: Active bias transfers requested share away from slipping front axle within authored bounds.
+PASS: Engine braking stays signed through axle distribution; it cannot turn into propulsion.
+PASS: Locked center keeps axle slip estimates synchronized and distributes resisting torque against unequal grip.
+PASS: Automatic propulsion does not depend on the separate manual friction clutch.
+PASS: CVT propulsion does not depend on the separate manual friction clutch.
+PASS: FuelSystem failure stops combustion without destroying rotating engine internals.
+PASS: Ignition failure stops combustion without destroying rotating engine internals.
+PASS: Cooling failure reduces heat rejection instead of instantly destroying the engine.
+PASS: Ungoverned stock pickup can overrev from sustained gas against an open-center free shaft; this is RPM abuse, not a blanket axle-failure engine flag.
+PASS: An installed limiter protects the actual pickup during sustained free-shaft operation without restoring open-center road propulsion.
+PASS: Garage permits an otherwise working engine with failed brakes; failures no longer share a global build gate.
+PASS: Inspection reports zero stopping capacity with a warning while the propulsion probe still completes.
+PASS: Failed crankshaft still blocks a running-engine launch.
+PASS: Legacy pickup migration adds AWD branch parts once while preserving existing identities and damage.
+PASS: Later intentional removal stays removed; migration never respawns a missing axle.
+PASS: Applied AWD settings are copied, not linked to discarded tune drafts.
+PASS: Tune presets retain isolated AWD calibration.
+PASS: Invalid nested AWD settings are rejected before tune publication.
+PASS: On-demand surviving-axle run replays exact dynamics and diagnostic traces, including coupling state.
+PASS: Physical CSV exposes branch failures, torque shares, forces, measured wheel slip and brake capacity.
+PASS: Recording continuation preserves partial failure and axle/coupler state exactly.
+PASS: Prior physics recordings explicitly require rerecording rather than silently changing replay behavior.
+PASS: Free-shaft speed, torque, power and damaged branch replay exactly through JSON serialization.
+PASS: Mid-spin checkpoint preserves free-shaft inertia state and restored component bindings.
+PASS: Physical bench recording does not alter free-shaft dynamics compared with direct shared race-model integration.
+PASS: Actual torque overload can break an axle without destroying engine or surviving AWD branch.
+Checks: 93

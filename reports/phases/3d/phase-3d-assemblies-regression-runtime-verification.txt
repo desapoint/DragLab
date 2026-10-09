@@ -1,0 +1,15 @@
+3B actual Windows saved-config / missing-parts purchase / stored engine transfer.
+PASS: Actual Save stores applied hardware definitions and tuning.
+PASS: Actual sale removes hardware while retaining the saved configuration.
+PASS: Actual Load previews one missing purchase without changing cash/build.
+PASS: Actual Buy missing + apply restores setup with new paid identity.
+PASS: Actual detach retains engine/liquids and a non-running chassis.
+PASS: Stored assembly supports removing an individual pack without generating replacements.
+PASS: Actual stored reassembly preserves worn hardware.
+PASS: Transfer target is a separately purchased owned chassis.
+PASS: Actual attach transfers exact engine descendants and liquids to second chassis.
+PASS: Actual tuning-only load/apply changes adjustments without a parts purchase.
+PASS: Transferred used assembly races on its actual new owner with independent records.
+PASS: Reload preserves configurations, stored engine and exclusive ownership.
+PASS: No runtime/GUI/DSP errors during new interfaces and race.
+Runtime errors: 0

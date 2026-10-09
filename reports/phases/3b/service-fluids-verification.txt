@@ -1,0 +1,1097 @@
+PASS: city-three: factory service hardware is complete and runs.
+PASS: city-three/city-three/Camshaft/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/Camshaft/0: installed option ticks without invalid state.
+PASS: city-three/city-three/Camshaft/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/Camshaft/1: installed option ticks without invalid state.
+PASS: city-three/city-three/Camshaft/2: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/Camshaft/2: installed option ticks without invalid state.
+PASS: city-three/city-three/ValveSprings/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/ValveSprings/0: installed option ticks without invalid state.
+PASS: city-three/city-three/ValveSprings/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/ValveSprings/1: installed option ticks without invalid state.
+PASS: city-three/city-three/Valves/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/Valves/0: installed option ticks without invalid state.
+PASS: city-three/city-three/Valves/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/Valves/1: installed option ticks without invalid state.
+PASS: city-three/city-three/Followers/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/Followers/0: installed option ticks without invalid state.
+PASS: city-three/city-three/Followers/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/Followers/1: installed option ticks without invalid state.
+PASS: city-three/city-three/TimingDrive/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/TimingDrive/0: installed option ticks without invalid state.
+PASS: city-three/city-three/TimingDrive/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/TimingDrive/1: installed option ticks without invalid state.
+PASS: city-three/city-three/PistonRings/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/PistonRings/0: installed option ticks without invalid state.
+PASS: city-three/city-three/PistonRings/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/PistonRings/1: installed option ticks without invalid state.
+PASS: city-three/city-three/CylinderBlock/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/CylinderBlock/0: installed option ticks without invalid state.
+PASS: city-three/city-three/CylinderBlock/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/CylinderBlock/1: installed option ticks without invalid state.
+PASS: city-three/city-three/Bearings/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/Bearings/0: installed option ticks without invalid state.
+PASS: city-three/city-three/Bearings/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/Bearings/1: installed option ticks without invalid state.
+PASS: city-three/city-three/ValveSeals/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/ValveSeals/0: installed option ticks without invalid state.
+PASS: city-three/city-three/ValveSeals/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/ValveSeals/1: installed option ticks without invalid state.
+PASS: city-three/city-three/OilPan/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/OilPan/0: installed option ticks without invalid state.
+PASS: city-three/city-three/OilPan/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/OilPan/1: installed option ticks without invalid state.
+PASS: city-three/city-three/OilPump/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/OilPump/0: installed option ticks without invalid state.
+PASS: city-three/city-three/OilPump/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/OilPump/1: installed option ticks without invalid state.
+PASS: city-three/city-three/OilFilter/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/OilFilter/0: installed option ticks without invalid state.
+PASS: city-three/city-three/OilFilter/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/OilFilter/1: installed option ticks without invalid state.
+PASS: city-three/city-three/CoolantPump/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/CoolantPump/0: installed option ticks without invalid state.
+PASS: city-three/city-three/CoolantPump/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/CoolantPump/1: installed option ticks without invalid state.
+PASS: city-three/city-three/CoolingCap/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/CoolingCap/0: installed option ticks without invalid state.
+PASS: city-three/city-three/CoolingCap/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/CoolingCap/1: installed option ticks without invalid state.
+PASS: city-three/city-three/CoolingHoses/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/CoolingHoses/0: installed option ticks without invalid state.
+PASS: city-three/city-three/CoolingHoses/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/CoolingHoses/1: installed option ticks without invalid state.
+PASS: city-three/city-three/OilCooler/0: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/OilCooler/0: installed option ticks without invalid state.
+PASS: city-three/city-three/OilCooler/1: hardware resolves with finite meaningful stats.
+PASS: city-three/city-three/OilCooler/1: installed option ticks without invalid state.
+PASS: city-three: stock repeated quarter-mile pass 0 survives with physical thermals and retained condition. 
+PASS: city-three: stock repeated quarter-mile pass 1 survives with physical thermals and retained condition. 
+PASS: city-three: stock repeated quarter-mile pass 2 survives with physical thermals and retained condition. 
+PASS: city-three: stock repeated quarter-mile pass 3 survives with physical thermals and retained condition. 
+PASS: city-three/PistonRings: wear changes output/friction before failure.
+PASS: city-three/PistonRings: Reduced condition effects reduce performance loss.
+PASS: city-three/PistonRings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: city-three/CylinderBlock: wear changes output/friction before failure.
+PASS: city-three/CylinderBlock: Reduced condition effects reduce performance loss.
+PASS: city-three/CylinderBlock: Assisted removes gradual performance loss, retaining the worn part.
+PASS: city-three/Valves: wear changes output/friction before failure.
+PASS: city-three/Valves: Reduced condition effects reduce performance loss.
+PASS: city-three/Valves: Assisted removes gradual performance loss, retaining the worn part.
+PASS: city-three/Camshaft: wear changes output/friction before failure.
+PASS: city-three/Camshaft: Reduced condition effects reduce performance loss.
+PASS: city-three/Camshaft: Assisted removes gradual performance loss, retaining the worn part.
+PASS: city-three/Followers: wear changes output/friction before failure.
+PASS: city-three/Followers: Reduced condition effects reduce performance loss.
+PASS: city-three/Followers: Assisted removes gradual performance loss, retaining the worn part.
+PASS: city-three/TimingDrive: wear changes output/friction before failure.
+PASS: city-three/TimingDrive: Reduced condition effects reduce performance loss.
+PASS: city-three/TimingDrive: Assisted removes gradual performance loss, retaining the worn part.
+PASS: city-three/Bearings: wear changes output/friction before failure.
+PASS: city-three/Bearings: Reduced condition effects reduce performance loss.
+PASS: city-three/Bearings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: city-three/Ignition: wear changes output/friction before failure.
+PASS: city-three/Ignition: Reduced condition effects reduce performance loss.
+PASS: city-three/Ignition: Assisted removes gradual performance loss, retaining the worn part.
+PASS: city-three/ValveSprings: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: city-three/Followers: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: city-three: zero structural bearing condition cannot be masked by an unset failure flag.
+PASS: city-three: worn sealing consumes more fuel for equal output, without a universal part-wear fuel multiplier.
+PASS: city-three: metering deposits affect efficiency.
+PASS: city-three: aggressive cam changes the idle voice while preserving engine family.
+PASS: city-three: aggressive cam reshapes low/high RPM torque.
+PASS: city-three: aggressive cam reveals factory spring mismatch.
+PASS: city-three: matched springs restore valve control.
+PASS: city-three: fixed timing drive rejects cam tuning.
+PASS: city-three: adjustable timing drive unlocks saved cam timing.
+PASS: city-three: oil and coolant quantity affect mass exactly once.
+PASS: city-three: top-up clamps to installed free capacity.
+PASS: city-three: radiator can still cool while leaking and loses coolant in engine-off cooldown.
+PASS: city-three: top-up does not seal a radiator leak.
+PASS: city-three: reseal removes only the leak fault.
+PASS: city-three: Reduced fluid loss and telemetry are exactly 25%.
+PASS: city-three: None freezes fluid quantity and aging without repairing faults.
+PASS: city-three: coolant can vent from overheating without instantly destroying radiator hardware.
+PASS: city-three: empty oil system loses pressure.
+PASS: city-three: sustained starvation damages bearings and can break the engine.
+PASS: city-three: ring-only repair rejected with an unhealthy bore.
+PASS: city-three: usable bore permits limited ring reconditioning, not complete restoration.
+PASS: city-three: save/reload does not duplicate factory parts or refill deliberately empty fluids.
+PASS: city-three: owned service uses resolved capacity.
+PASS: city-three: oil service replaces filter while retaining dirty original identity.
+PASS: city-three: larger pan does not create free oil during a part swap.
+PASS: city-three: pan downgrade retains existing liquid quantity.
+PASS: city-three: one-time migration never recreates a deliberately removed service part.
+PASS: city-three: legacy migration initializes fluids once and adds OEM hardware without replacing prior identities.
+PASS: city-three: failed persistence rolls back a fluid service transaction.
+PASS: city-three: checkpoint refuses unauthorized refill.
+PASS: city-three: worn stem seals increase oil consumption without an instant engine failure.
+PASS: city-three: worn bearing clearances reduce oil pressure.
+PASS: city-three: intake deposits reduce breathing.
+PASS: city-three: deposit cleaning restores breathing without replacing healthy hardware.
+PASS: city-three: actual oil cooler heat rejection lowers hot-oil temperature.
+PASS: city-three: failed oil cooler loses heat rejection and can leak without instant engine destruction.
+PASS: city-three: Arcade selects fluid and service assistance coherently.
+PASS: city-three: Balanced selects independent 25% service rules.
+PASS: city-three: fluids, faults, thermals and wear replay exactly after JSON continuation capture.
+PASS: city-three: corrupt checkpoint fluids rejected.
+PASS: rally-sedan: factory service hardware is complete and runs.
+PASS: rally-sedan/rally-sedan/Camshaft/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/Camshaft/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/Camshaft/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/Camshaft/1: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/Camshaft/2: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/Camshaft/2: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/ValveSprings/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/ValveSprings/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/ValveSprings/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/ValveSprings/1: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/Valves/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/Valves/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/Valves/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/Valves/1: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/Followers/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/Followers/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/Followers/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/Followers/1: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/TimingDrive/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/TimingDrive/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/TimingDrive/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/TimingDrive/1: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/PistonRings/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/PistonRings/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/PistonRings/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/PistonRings/1: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/CylinderBlock/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/CylinderBlock/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/CylinderBlock/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/CylinderBlock/1: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/Bearings/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/Bearings/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/Bearings/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/Bearings/1: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/ValveSeals/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/ValveSeals/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/ValveSeals/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/ValveSeals/1: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/OilPan/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/OilPan/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/OilPan/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/OilPan/1: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/OilPump/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/OilPump/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/OilPump/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/OilPump/1: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/OilFilter/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/OilFilter/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/OilFilter/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/OilFilter/1: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/CoolantPump/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/CoolantPump/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/CoolantPump/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/CoolantPump/1: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/CoolingCap/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/CoolingCap/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/CoolingCap/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/CoolingCap/1: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/CoolingHoses/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/CoolingHoses/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/CoolingHoses/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/CoolingHoses/1: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/OilCooler/0: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/OilCooler/0: installed option ticks without invalid state.
+PASS: rally-sedan/rally-sedan/OilCooler/1: hardware resolves with finite meaningful stats.
+PASS: rally-sedan/rally-sedan/OilCooler/1: installed option ticks without invalid state.
+PASS: rally-sedan: stock repeated quarter-mile pass 0 survives with physical thermals and retained condition. 
+PASS: rally-sedan: stock repeated quarter-mile pass 1 survives with physical thermals and retained condition. 
+PASS: rally-sedan: stock repeated quarter-mile pass 2 survives with physical thermals and retained condition. 
+PASS: rally-sedan: stock repeated quarter-mile pass 3 survives with physical thermals and retained condition. 
+PASS: rally-sedan/PistonRings: wear changes output/friction before failure.
+PASS: rally-sedan/PistonRings: Reduced condition effects reduce performance loss.
+PASS: rally-sedan/PistonRings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: rally-sedan/CylinderBlock: wear changes output/friction before failure.
+PASS: rally-sedan/CylinderBlock: Reduced condition effects reduce performance loss.
+PASS: rally-sedan/CylinderBlock: Assisted removes gradual performance loss, retaining the worn part.
+PASS: rally-sedan/Valves: wear changes output/friction before failure.
+PASS: rally-sedan/Valves: Reduced condition effects reduce performance loss.
+PASS: rally-sedan/Valves: Assisted removes gradual performance loss, retaining the worn part.
+PASS: rally-sedan/Camshaft: wear changes output/friction before failure.
+PASS: rally-sedan/Camshaft: Reduced condition effects reduce performance loss.
+PASS: rally-sedan/Camshaft: Assisted removes gradual performance loss, retaining the worn part.
+PASS: rally-sedan/Followers: wear changes output/friction before failure.
+PASS: rally-sedan/Followers: Reduced condition effects reduce performance loss.
+PASS: rally-sedan/Followers: Assisted removes gradual performance loss, retaining the worn part.
+PASS: rally-sedan/TimingDrive: wear changes output/friction before failure.
+PASS: rally-sedan/TimingDrive: Reduced condition effects reduce performance loss.
+PASS: rally-sedan/TimingDrive: Assisted removes gradual performance loss, retaining the worn part.
+PASS: rally-sedan/Bearings: wear changes output/friction before failure.
+PASS: rally-sedan/Bearings: Reduced condition effects reduce performance loss.
+PASS: rally-sedan/Bearings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: rally-sedan/Ignition: wear changes output/friction before failure.
+PASS: rally-sedan/Ignition: Reduced condition effects reduce performance loss.
+PASS: rally-sedan/Ignition: Assisted removes gradual performance loss, retaining the worn part.
+PASS: rally-sedan/ValveSprings: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: rally-sedan/Followers: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: rally-sedan: zero structural bearing condition cannot be masked by an unset failure flag.
+PASS: rally-sedan: worn sealing consumes more fuel for equal output, without a universal part-wear fuel multiplier.
+PASS: rally-sedan: metering deposits affect efficiency.
+PASS: rally-sedan: aggressive cam changes the idle voice while preserving engine family.
+PASS: rally-sedan: aggressive cam reshapes low/high RPM torque.
+PASS: rally-sedan: aggressive cam reveals factory spring mismatch.
+PASS: rally-sedan: matched springs restore valve control.
+PASS: rally-sedan: fixed timing drive rejects cam tuning.
+PASS: rally-sedan: adjustable timing drive unlocks saved cam timing.
+PASS: rally-sedan: oil and coolant quantity affect mass exactly once.
+PASS: rally-sedan: top-up clamps to installed free capacity.
+PASS: rally-sedan: radiator can still cool while leaking and loses coolant in engine-off cooldown.
+PASS: rally-sedan: top-up does not seal a radiator leak.
+PASS: rally-sedan: reseal removes only the leak fault.
+PASS: rally-sedan: Reduced fluid loss and telemetry are exactly 25%.
+PASS: rally-sedan: None freezes fluid quantity and aging without repairing faults.
+PASS: rally-sedan: coolant can vent from overheating without instantly destroying radiator hardware.
+PASS: rally-sedan: empty oil system loses pressure.
+PASS: rally-sedan: sustained starvation damages bearings and can break the engine.
+PASS: rally-sedan: ring-only repair rejected with an unhealthy bore.
+PASS: rally-sedan: usable bore permits limited ring reconditioning, not complete restoration.
+PASS: rally-sedan: save/reload does not duplicate factory parts or refill deliberately empty fluids.
+PASS: rally-sedan: owned service uses resolved capacity.
+PASS: rally-sedan: oil service replaces filter while retaining dirty original identity.
+PASS: rally-sedan: larger pan does not create free oil during a part swap.
+PASS: rally-sedan: pan downgrade retains existing liquid quantity.
+PASS: rally-sedan: one-time migration never recreates a deliberately removed service part.
+PASS: rally-sedan: legacy migration initializes fluids once and adds OEM hardware without replacing prior identities.
+PASS: rally-sedan: failed persistence rolls back a fluid service transaction.
+PASS: rally-sedan: checkpoint refuses unauthorized refill.
+PASS: rally-sedan: worn stem seals increase oil consumption without an instant engine failure.
+PASS: rally-sedan: worn bearing clearances reduce oil pressure.
+PASS: rally-sedan: intake deposits reduce breathing.
+PASS: rally-sedan: deposit cleaning restores breathing without replacing healthy hardware.
+PASS: rally-sedan: actual oil cooler heat rejection lowers hot-oil temperature.
+PASS: rally-sedan: failed oil cooler loses heat rejection and can leak without instant engine destruction.
+PASS: rally-sedan: Arcade selects fluid and service assistance coherently.
+PASS: rally-sedan: Balanced selects independent 25% service rules.
+PASS: rally-sedan: fluids, faults, thermals and wear replay exactly after JSON continuation capture.
+PASS: rally-sedan: corrupt checkpoint fluids rejected.
+PASS: sport-coupe: factory service hardware is complete and runs.
+PASS: sport-coupe/sport-coupe/Camshaft/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/Camshaft/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/Camshaft/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/Camshaft/1: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/Camshaft/2: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/Camshaft/2: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/ValveSprings/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/ValveSprings/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/ValveSprings/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/ValveSprings/1: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/Valves/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/Valves/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/Valves/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/Valves/1: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/Followers/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/Followers/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/Followers/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/Followers/1: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/TimingDrive/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/TimingDrive/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/TimingDrive/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/TimingDrive/1: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/PistonRings/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/PistonRings/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/PistonRings/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/PistonRings/1: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/CylinderBlock/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/CylinderBlock/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/CylinderBlock/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/CylinderBlock/1: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/Bearings/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/Bearings/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/Bearings/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/Bearings/1: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/ValveSeals/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/ValveSeals/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/ValveSeals/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/ValveSeals/1: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/OilPan/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/OilPan/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/OilPan/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/OilPan/1: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/OilPump/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/OilPump/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/OilPump/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/OilPump/1: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/OilFilter/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/OilFilter/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/OilFilter/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/OilFilter/1: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/CoolantPump/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/CoolantPump/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/CoolantPump/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/CoolantPump/1: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/CoolingCap/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/CoolingCap/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/CoolingCap/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/CoolingCap/1: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/CoolingHoses/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/CoolingHoses/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/CoolingHoses/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/CoolingHoses/1: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/OilCooler/0: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/OilCooler/0: installed option ticks without invalid state.
+PASS: sport-coupe/sport-coupe/OilCooler/1: hardware resolves with finite meaningful stats.
+PASS: sport-coupe/sport-coupe/OilCooler/1: installed option ticks without invalid state.
+PASS: sport-coupe: stock repeated quarter-mile pass 0 survives with physical thermals and retained condition. 
+PASS: sport-coupe: stock repeated quarter-mile pass 1 survives with physical thermals and retained condition. 
+PASS: sport-coupe: stock repeated quarter-mile pass 2 survives with physical thermals and retained condition. 
+PASS: sport-coupe: stock repeated quarter-mile pass 3 survives with physical thermals and retained condition. 
+PASS: sport-coupe/PistonRings: wear changes output/friction before failure.
+PASS: sport-coupe/PistonRings: Reduced condition effects reduce performance loss.
+PASS: sport-coupe/PistonRings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: sport-coupe/CylinderBlock: wear changes output/friction before failure.
+PASS: sport-coupe/CylinderBlock: Reduced condition effects reduce performance loss.
+PASS: sport-coupe/CylinderBlock: Assisted removes gradual performance loss, retaining the worn part.
+PASS: sport-coupe/Valves: wear changes output/friction before failure.
+PASS: sport-coupe/Valves: Reduced condition effects reduce performance loss.
+PASS: sport-coupe/Valves: Assisted removes gradual performance loss, retaining the worn part.
+PASS: sport-coupe/Camshaft: wear changes output/friction before failure.
+PASS: sport-coupe/Camshaft: Reduced condition effects reduce performance loss.
+PASS: sport-coupe/Camshaft: Assisted removes gradual performance loss, retaining the worn part.
+PASS: sport-coupe/Followers: wear changes output/friction before failure.
+PASS: sport-coupe/Followers: Reduced condition effects reduce performance loss.
+PASS: sport-coupe/Followers: Assisted removes gradual performance loss, retaining the worn part.
+PASS: sport-coupe/TimingDrive: wear changes output/friction before failure.
+PASS: sport-coupe/TimingDrive: Reduced condition effects reduce performance loss.
+PASS: sport-coupe/TimingDrive: Assisted removes gradual performance loss, retaining the worn part.
+PASS: sport-coupe/Bearings: wear changes output/friction before failure.
+PASS: sport-coupe/Bearings: Reduced condition effects reduce performance loss.
+PASS: sport-coupe/Bearings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: sport-coupe/Ignition: wear changes output/friction before failure.
+PASS: sport-coupe/Ignition: Reduced condition effects reduce performance loss.
+PASS: sport-coupe/Ignition: Assisted removes gradual performance loss, retaining the worn part.
+PASS: sport-coupe/ValveSprings: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: sport-coupe/Followers: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: sport-coupe: zero structural bearing condition cannot be masked by an unset failure flag.
+PASS: sport-coupe: worn sealing consumes more fuel for equal output, without a universal part-wear fuel multiplier.
+PASS: sport-coupe: metering deposits affect efficiency.
+PASS: sport-coupe: aggressive cam changes the idle voice while preserving engine family.
+PASS: sport-coupe: aggressive cam reshapes low/high RPM torque.
+PASS: sport-coupe: aggressive cam reveals factory spring mismatch.
+PASS: sport-coupe: matched springs restore valve control.
+PASS: sport-coupe: fixed timing drive rejects cam tuning.
+PASS: sport-coupe: adjustable timing drive unlocks saved cam timing.
+PASS: sport-coupe: oil and coolant quantity affect mass exactly once.
+PASS: sport-coupe: top-up clamps to installed free capacity.
+PASS: sport-coupe: radiator can still cool while leaking and loses coolant in engine-off cooldown.
+PASS: sport-coupe: top-up does not seal a radiator leak.
+PASS: sport-coupe: reseal removes only the leak fault.
+PASS: sport-coupe: Reduced fluid loss and telemetry are exactly 25%.
+PASS: sport-coupe: None freezes fluid quantity and aging without repairing faults.
+PASS: sport-coupe: coolant can vent from overheating without instantly destroying radiator hardware.
+PASS: sport-coupe: empty oil system loses pressure.
+PASS: sport-coupe: sustained starvation damages bearings and can break the engine.
+PASS: sport-coupe: ring-only repair rejected with an unhealthy bore.
+PASS: sport-coupe: usable bore permits limited ring reconditioning, not complete restoration.
+PASS: sport-coupe: save/reload does not duplicate factory parts or refill deliberately empty fluids.
+PASS: sport-coupe: owned service uses resolved capacity.
+PASS: sport-coupe: oil service replaces filter while retaining dirty original identity.
+PASS: sport-coupe: larger pan does not create free oil during a part swap.
+PASS: sport-coupe: pan downgrade retains existing liquid quantity.
+PASS: sport-coupe: one-time migration never recreates a deliberately removed service part.
+PASS: sport-coupe: legacy migration initializes fluids once and adds OEM hardware without replacing prior identities.
+PASS: sport-coupe: failed persistence rolls back a fluid service transaction.
+PASS: sport-coupe: checkpoint refuses unauthorized refill.
+PASS: sport-coupe: worn stem seals increase oil consumption without an instant engine failure.
+PASS: sport-coupe: worn bearing clearances reduce oil pressure.
+PASS: sport-coupe: intake deposits reduce breathing.
+PASS: sport-coupe: deposit cleaning restores breathing without replacing healthy hardware.
+PASS: sport-coupe: actual oil cooler heat rejection lowers hot-oil temperature.
+PASS: sport-coupe: failed oil cooler loses heat rejection and can leak without instant engine destruction.
+PASS: sport-coupe: Arcade selects fluid and service assistance coherently.
+PASS: sport-coupe: Balanced selects independent 25% service rules.
+PASS: sport-coupe: fluids, faults, thermals and wear replay exactly after JSON continuation capture.
+PASS: sport-coupe: corrupt checkpoint fluids rejected.
+PASS: starter-hatch: factory service hardware is complete and runs.
+PASS: starter-hatch/starter-hatch/Camshaft/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/Camshaft/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/Camshaft/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/Camshaft/1: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/Camshaft/2: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/Camshaft/2: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/ValveSprings/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/ValveSprings/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/ValveSprings/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/ValveSprings/1: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/Valves/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/Valves/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/Valves/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/Valves/1: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/Followers/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/Followers/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/Followers/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/Followers/1: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/TimingDrive/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/TimingDrive/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/TimingDrive/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/TimingDrive/1: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/PistonRings/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/PistonRings/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/PistonRings/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/PistonRings/1: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/CylinderBlock/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/CylinderBlock/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/CylinderBlock/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/CylinderBlock/1: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/Bearings/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/Bearings/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/Bearings/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/Bearings/1: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/ValveSeals/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/ValveSeals/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/ValveSeals/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/ValveSeals/1: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/OilPan/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/OilPan/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/OilPan/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/OilPan/1: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/OilPump/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/OilPump/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/OilPump/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/OilPump/1: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/OilFilter/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/OilFilter/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/OilFilter/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/OilFilter/1: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/CoolantPump/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/CoolantPump/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/CoolantPump/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/CoolantPump/1: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/CoolingCap/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/CoolingCap/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/CoolingCap/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/CoolingCap/1: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/CoolingHoses/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/CoolingHoses/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/CoolingHoses/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/CoolingHoses/1: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/OilCooler/0: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/OilCooler/0: installed option ticks without invalid state.
+PASS: starter-hatch/starter-hatch/OilCooler/1: hardware resolves with finite meaningful stats.
+PASS: starter-hatch/starter-hatch/OilCooler/1: installed option ticks without invalid state.
+PASS: starter-hatch: stock repeated quarter-mile pass 0 survives with physical thermals and retained condition. 
+PASS: starter-hatch: stock repeated quarter-mile pass 1 survives with physical thermals and retained condition. 
+PASS: starter-hatch: stock repeated quarter-mile pass 2 survives with physical thermals and retained condition. 
+PASS: starter-hatch: stock repeated quarter-mile pass 3 survives with physical thermals and retained condition. 
+PASS: starter-hatch/PistonRings: wear changes output/friction before failure.
+PASS: starter-hatch/PistonRings: Reduced condition effects reduce performance loss.
+PASS: starter-hatch/PistonRings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: starter-hatch/CylinderBlock: wear changes output/friction before failure.
+PASS: starter-hatch/CylinderBlock: Reduced condition effects reduce performance loss.
+PASS: starter-hatch/CylinderBlock: Assisted removes gradual performance loss, retaining the worn part.
+PASS: starter-hatch/Valves: wear changes output/friction before failure.
+PASS: starter-hatch/Valves: Reduced condition effects reduce performance loss.
+PASS: starter-hatch/Valves: Assisted removes gradual performance loss, retaining the worn part.
+PASS: starter-hatch/Camshaft: wear changes output/friction before failure.
+PASS: starter-hatch/Camshaft: Reduced condition effects reduce performance loss.
+PASS: starter-hatch/Camshaft: Assisted removes gradual performance loss, retaining the worn part.
+PASS: starter-hatch/Followers: wear changes output/friction before failure.
+PASS: starter-hatch/Followers: Reduced condition effects reduce performance loss.
+PASS: starter-hatch/Followers: Assisted removes gradual performance loss, retaining the worn part.
+PASS: starter-hatch/TimingDrive: wear changes output/friction before failure.
+PASS: starter-hatch/TimingDrive: Reduced condition effects reduce performance loss.
+PASS: starter-hatch/TimingDrive: Assisted removes gradual performance loss, retaining the worn part.
+PASS: starter-hatch/Bearings: wear changes output/friction before failure.
+PASS: starter-hatch/Bearings: Reduced condition effects reduce performance loss.
+PASS: starter-hatch/Bearings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: starter-hatch/Ignition: wear changes output/friction before failure.
+PASS: starter-hatch/Ignition: Reduced condition effects reduce performance loss.
+PASS: starter-hatch/Ignition: Assisted removes gradual performance loss, retaining the worn part.
+PASS: starter-hatch/ValveSprings: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: starter-hatch/Followers: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: starter-hatch: zero structural bearing condition cannot be masked by an unset failure flag.
+PASS: starter-hatch: worn sealing consumes more fuel for equal output, without a universal part-wear fuel multiplier.
+PASS: starter-hatch: metering deposits affect efficiency.
+PASS: starter-hatch: aggressive cam changes the idle voice while preserving engine family.
+PASS: starter-hatch: aggressive cam reshapes low/high RPM torque.
+PASS: starter-hatch: aggressive cam reveals factory spring mismatch.
+PASS: starter-hatch: matched springs restore valve control.
+PASS: starter-hatch: fixed timing drive rejects cam tuning.
+PASS: starter-hatch: adjustable timing drive unlocks saved cam timing.
+PASS: starter-hatch: oil and coolant quantity affect mass exactly once.
+PASS: starter-hatch: top-up clamps to installed free capacity.
+PASS: starter-hatch: radiator can still cool while leaking and loses coolant in engine-off cooldown.
+PASS: starter-hatch: top-up does not seal a radiator leak.
+PASS: starter-hatch: reseal removes only the leak fault.
+PASS: starter-hatch: Reduced fluid loss and telemetry are exactly 25%.
+PASS: starter-hatch: None freezes fluid quantity and aging without repairing faults.
+PASS: starter-hatch: coolant can vent from overheating without instantly destroying radiator hardware.
+PASS: starter-hatch: empty oil system loses pressure.
+PASS: starter-hatch: sustained starvation damages bearings and can break the engine.
+PASS: starter-hatch: ring-only repair rejected with an unhealthy bore.
+PASS: starter-hatch: usable bore permits limited ring reconditioning, not complete restoration.
+PASS: starter-hatch: save/reload does not duplicate factory parts or refill deliberately empty fluids.
+PASS: starter-hatch: owned service uses resolved capacity.
+PASS: starter-hatch: oil service replaces filter while retaining dirty original identity.
+PASS: starter-hatch: larger pan does not create free oil during a part swap.
+PASS: starter-hatch: pan downgrade retains existing liquid quantity.
+PASS: starter-hatch: one-time migration never recreates a deliberately removed service part.
+PASS: starter-hatch: legacy migration initializes fluids once and adds OEM hardware without replacing prior identities.
+PASS: starter-hatch: failed persistence rolls back a fluid service transaction.
+PASS: starter-hatch: checkpoint refuses unauthorized refill.
+PASS: starter-hatch: worn stem seals increase oil consumption without an instant engine failure.
+PASS: starter-hatch: worn bearing clearances reduce oil pressure.
+PASS: starter-hatch: intake deposits reduce breathing.
+PASS: starter-hatch: deposit cleaning restores breathing without replacing healthy hardware.
+PASS: starter-hatch: actual oil cooler heat rejection lowers hot-oil temperature.
+PASS: starter-hatch: failed oil cooler loses heat rejection and can leak without instant engine destruction.
+PASS: starter-hatch: Arcade selects fluid and service assistance coherently.
+PASS: starter-hatch: Balanced selects independent 25% service rules.
+PASS: starter-hatch: fluids, faults, thermals and wear replay exactly after JSON continuation capture.
+PASS: starter-hatch: corrupt checkpoint fluids rejected.
+PASS: super-v8: factory service hardware is complete and runs.
+PASS: super-v8/super-v8/Camshaft/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/Camshaft/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/Camshaft/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/Camshaft/1: installed option ticks without invalid state.
+PASS: super-v8/super-v8/Camshaft/2: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/Camshaft/2: installed option ticks without invalid state.
+PASS: super-v8/super-v8/ValveSprings/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/ValveSprings/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/ValveSprings/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/ValveSprings/1: installed option ticks without invalid state.
+PASS: super-v8/super-v8/Valves/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/Valves/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/Valves/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/Valves/1: installed option ticks without invalid state.
+PASS: super-v8/super-v8/Followers/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/Followers/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/Followers/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/Followers/1: installed option ticks without invalid state.
+PASS: super-v8/super-v8/TimingDrive/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/TimingDrive/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/TimingDrive/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/TimingDrive/1: installed option ticks without invalid state.
+PASS: super-v8/super-v8/PistonRings/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/PistonRings/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/PistonRings/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/PistonRings/1: installed option ticks without invalid state.
+PASS: super-v8/super-v8/CylinderBlock/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/CylinderBlock/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/CylinderBlock/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/CylinderBlock/1: installed option ticks without invalid state.
+PASS: super-v8/super-v8/Bearings/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/Bearings/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/Bearings/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/Bearings/1: installed option ticks without invalid state.
+PASS: super-v8/super-v8/ValveSeals/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/ValveSeals/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/ValveSeals/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/ValveSeals/1: installed option ticks without invalid state.
+PASS: super-v8/super-v8/OilPan/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/OilPan/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/OilPan/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/OilPan/1: installed option ticks without invalid state.
+PASS: super-v8/super-v8/OilPump/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/OilPump/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/OilPump/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/OilPump/1: installed option ticks without invalid state.
+PASS: super-v8/super-v8/OilFilter/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/OilFilter/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/OilFilter/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/OilFilter/1: installed option ticks without invalid state.
+PASS: super-v8/super-v8/CoolantPump/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/CoolantPump/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/CoolantPump/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/CoolantPump/1: installed option ticks without invalid state.
+PASS: super-v8/super-v8/CoolingCap/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/CoolingCap/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/CoolingCap/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/CoolingCap/1: installed option ticks without invalid state.
+PASS: super-v8/super-v8/CoolingHoses/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/CoolingHoses/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/CoolingHoses/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/CoolingHoses/1: installed option ticks without invalid state.
+PASS: super-v8/super-v8/OilCooler/0: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/OilCooler/0: installed option ticks without invalid state.
+PASS: super-v8/super-v8/OilCooler/1: hardware resolves with finite meaningful stats.
+PASS: super-v8/super-v8/OilCooler/1: installed option ticks without invalid state.
+PASS: super-v8: stock repeated quarter-mile pass 0 survives with physical thermals and retained condition. 
+PASS: super-v8: stock repeated quarter-mile pass 1 survives with physical thermals and retained condition. 
+PASS: super-v8: stock repeated quarter-mile pass 2 survives with physical thermals and retained condition. 
+PASS: super-v8: stock repeated quarter-mile pass 3 survives with physical thermals and retained condition. 
+PASS: super-v8/PistonRings: wear changes output/friction before failure.
+PASS: super-v8/PistonRings: Reduced condition effects reduce performance loss.
+PASS: super-v8/PistonRings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: super-v8/CylinderBlock: wear changes output/friction before failure.
+PASS: super-v8/CylinderBlock: Reduced condition effects reduce performance loss.
+PASS: super-v8/CylinderBlock: Assisted removes gradual performance loss, retaining the worn part.
+PASS: super-v8/Valves: wear changes output/friction before failure.
+PASS: super-v8/Valves: Reduced condition effects reduce performance loss.
+PASS: super-v8/Valves: Assisted removes gradual performance loss, retaining the worn part.
+PASS: super-v8/Camshaft: wear changes output/friction before failure.
+PASS: super-v8/Camshaft: Reduced condition effects reduce performance loss.
+PASS: super-v8/Camshaft: Assisted removes gradual performance loss, retaining the worn part.
+PASS: super-v8/Followers: wear changes output/friction before failure.
+PASS: super-v8/Followers: Reduced condition effects reduce performance loss.
+PASS: super-v8/Followers: Assisted removes gradual performance loss, retaining the worn part.
+PASS: super-v8/TimingDrive: wear changes output/friction before failure.
+PASS: super-v8/TimingDrive: Reduced condition effects reduce performance loss.
+PASS: super-v8/TimingDrive: Assisted removes gradual performance loss, retaining the worn part.
+PASS: super-v8/Bearings: wear changes output/friction before failure.
+PASS: super-v8/Bearings: Reduced condition effects reduce performance loss.
+PASS: super-v8/Bearings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: super-v8/Ignition: wear changes output/friction before failure.
+PASS: super-v8/Ignition: Reduced condition effects reduce performance loss.
+PASS: super-v8/Ignition: Assisted removes gradual performance loss, retaining the worn part.
+PASS: super-v8/ValveSprings: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: super-v8/Followers: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: super-v8: zero structural bearing condition cannot be masked by an unset failure flag.
+PASS: super-v8: worn sealing consumes more fuel for equal output, without a universal part-wear fuel multiplier.
+PASS: super-v8: metering deposits affect efficiency.
+PASS: super-v8: aggressive cam changes the idle voice while preserving engine family.
+PASS: super-v8: aggressive cam reshapes low/high RPM torque.
+PASS: super-v8: aggressive cam reveals factory spring mismatch.
+PASS: super-v8: matched springs restore valve control.
+PASS: super-v8: fixed timing drive rejects cam tuning.
+PASS: super-v8: adjustable timing drive unlocks saved cam timing.
+PASS: super-v8: oil and coolant quantity affect mass exactly once.
+PASS: super-v8: top-up clamps to installed free capacity.
+PASS: super-v8: radiator can still cool while leaking and loses coolant in engine-off cooldown.
+PASS: super-v8: top-up does not seal a radiator leak.
+PASS: super-v8: reseal removes only the leak fault.
+PASS: super-v8: Reduced fluid loss and telemetry are exactly 25%.
+PASS: super-v8: None freezes fluid quantity and aging without repairing faults.
+PASS: super-v8: coolant can vent from overheating without instantly destroying radiator hardware.
+PASS: super-v8: empty oil system loses pressure.
+PASS: super-v8: sustained starvation damages bearings and can break the engine.
+PASS: super-v8: ring-only repair rejected with an unhealthy bore.
+PASS: super-v8: usable bore permits limited ring reconditioning, not complete restoration.
+PASS: super-v8: save/reload does not duplicate factory parts or refill deliberately empty fluids.
+PASS: super-v8: owned service uses resolved capacity.
+PASS: super-v8: oil service replaces filter while retaining dirty original identity.
+PASS: super-v8: larger pan does not create free oil during a part swap.
+PASS: super-v8: pan downgrade retains existing liquid quantity.
+PASS: super-v8: one-time migration never recreates a deliberately removed service part.
+PASS: super-v8: legacy migration initializes fluids once and adds OEM hardware without replacing prior identities.
+PASS: super-v8: failed persistence rolls back a fluid service transaction.
+PASS: super-v8: checkpoint refuses unauthorized refill.
+PASS: super-v8: worn stem seals increase oil consumption without an instant engine failure.
+PASS: super-v8: worn bearing clearances reduce oil pressure.
+PASS: super-v8: intake deposits reduce breathing.
+PASS: super-v8: deposit cleaning restores breathing without replacing healthy hardware.
+PASS: super-v8: actual oil cooler heat rejection lowers hot-oil temperature.
+PASS: super-v8: failed oil cooler loses heat rejection and can leak without instant engine destruction.
+PASS: super-v8: Arcade selects fluid and service assistance coherently.
+PASS: super-v8: Balanced selects independent 25% service rules.
+PASS: super-v8: fluids, faults, thermals and wear replay exactly after JSON continuation capture.
+PASS: super-v8: corrupt checkpoint fluids rejected.
+PASS: touring-six: factory service hardware is complete and runs.
+PASS: touring-six/touring-six/Camshaft/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/Camshaft/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/Camshaft/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/Camshaft/1: installed option ticks without invalid state.
+PASS: touring-six/touring-six/Camshaft/2: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/Camshaft/2: installed option ticks without invalid state.
+PASS: touring-six/touring-six/ValveSprings/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/ValveSprings/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/ValveSprings/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/ValveSprings/1: installed option ticks without invalid state.
+PASS: touring-six/touring-six/Valves/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/Valves/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/Valves/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/Valves/1: installed option ticks without invalid state.
+PASS: touring-six/touring-six/Followers/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/Followers/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/Followers/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/Followers/1: installed option ticks without invalid state.
+PASS: touring-six/touring-six/TimingDrive/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/TimingDrive/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/TimingDrive/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/TimingDrive/1: installed option ticks without invalid state.
+PASS: touring-six/touring-six/PistonRings/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/PistonRings/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/PistonRings/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/PistonRings/1: installed option ticks without invalid state.
+PASS: touring-six/touring-six/CylinderBlock/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/CylinderBlock/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/CylinderBlock/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/CylinderBlock/1: installed option ticks without invalid state.
+PASS: touring-six/touring-six/Bearings/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/Bearings/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/Bearings/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/Bearings/1: installed option ticks without invalid state.
+PASS: touring-six/touring-six/ValveSeals/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/ValveSeals/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/ValveSeals/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/ValveSeals/1: installed option ticks without invalid state.
+PASS: touring-six/touring-six/OilPan/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/OilPan/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/OilPan/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/OilPan/1: installed option ticks without invalid state.
+PASS: touring-six/touring-six/OilPump/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/OilPump/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/OilPump/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/OilPump/1: installed option ticks without invalid state.
+PASS: touring-six/touring-six/OilFilter/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/OilFilter/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/OilFilter/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/OilFilter/1: installed option ticks without invalid state.
+PASS: touring-six/touring-six/CoolantPump/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/CoolantPump/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/CoolantPump/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/CoolantPump/1: installed option ticks without invalid state.
+PASS: touring-six/touring-six/CoolingCap/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/CoolingCap/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/CoolingCap/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/CoolingCap/1: installed option ticks without invalid state.
+PASS: touring-six/touring-six/CoolingHoses/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/CoolingHoses/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/CoolingHoses/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/CoolingHoses/1: installed option ticks without invalid state.
+PASS: touring-six/touring-six/OilCooler/0: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/OilCooler/0: installed option ticks without invalid state.
+PASS: touring-six/touring-six/OilCooler/1: hardware resolves with finite meaningful stats.
+PASS: touring-six/touring-six/OilCooler/1: installed option ticks without invalid state.
+PASS: touring-six: stock repeated quarter-mile pass 0 survives with physical thermals and retained condition. 
+PASS: touring-six: stock repeated quarter-mile pass 1 survives with physical thermals and retained condition. 
+PASS: touring-six: stock repeated quarter-mile pass 2 survives with physical thermals and retained condition. 
+PASS: touring-six: stock repeated quarter-mile pass 3 survives with physical thermals and retained condition. 
+PASS: touring-six/PistonRings: wear changes output/friction before failure.
+PASS: touring-six/PistonRings: Reduced condition effects reduce performance loss.
+PASS: touring-six/PistonRings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: touring-six/CylinderBlock: wear changes output/friction before failure.
+PASS: touring-six/CylinderBlock: Reduced condition effects reduce performance loss.
+PASS: touring-six/CylinderBlock: Assisted removes gradual performance loss, retaining the worn part.
+PASS: touring-six/Valves: wear changes output/friction before failure.
+PASS: touring-six/Valves: Reduced condition effects reduce performance loss.
+PASS: touring-six/Valves: Assisted removes gradual performance loss, retaining the worn part.
+PASS: touring-six/Camshaft: wear changes output/friction before failure.
+PASS: touring-six/Camshaft: Reduced condition effects reduce performance loss.
+PASS: touring-six/Camshaft: Assisted removes gradual performance loss, retaining the worn part.
+PASS: touring-six/Followers: wear changes output/friction before failure.
+PASS: touring-six/Followers: Reduced condition effects reduce performance loss.
+PASS: touring-six/Followers: Assisted removes gradual performance loss, retaining the worn part.
+PASS: touring-six/TimingDrive: wear changes output/friction before failure.
+PASS: touring-six/TimingDrive: Reduced condition effects reduce performance loss.
+PASS: touring-six/TimingDrive: Assisted removes gradual performance loss, retaining the worn part.
+PASS: touring-six/Bearings: wear changes output/friction before failure.
+PASS: touring-six/Bearings: Reduced condition effects reduce performance loss.
+PASS: touring-six/Bearings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: touring-six/Ignition: wear changes output/friction before failure.
+PASS: touring-six/Ignition: Reduced condition effects reduce performance loss.
+PASS: touring-six/Ignition: Assisted removes gradual performance loss, retaining the worn part.
+PASS: touring-six/ValveSprings: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: touring-six/Followers: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: touring-six: zero structural bearing condition cannot be masked by an unset failure flag.
+PASS: touring-six: worn sealing consumes more fuel for equal output, without a universal part-wear fuel multiplier.
+PASS: touring-six: metering deposits affect efficiency.
+PASS: touring-six: aggressive cam changes the idle voice while preserving engine family.
+PASS: touring-six: aggressive cam reshapes low/high RPM torque.
+PASS: touring-six: aggressive cam reveals factory spring mismatch.
+PASS: touring-six: matched springs restore valve control.
+PASS: touring-six: fixed timing drive rejects cam tuning.
+PASS: touring-six: adjustable timing drive unlocks saved cam timing.
+PASS: touring-six: oil and coolant quantity affect mass exactly once.
+PASS: touring-six: top-up clamps to installed free capacity.
+PASS: touring-six: radiator can still cool while leaking and loses coolant in engine-off cooldown.
+PASS: touring-six: top-up does not seal a radiator leak.
+PASS: touring-six: reseal removes only the leak fault.
+PASS: touring-six: Reduced fluid loss and telemetry are exactly 25%.
+PASS: touring-six: None freezes fluid quantity and aging without repairing faults.
+PASS: touring-six: coolant can vent from overheating without instantly destroying radiator hardware.
+PASS: touring-six: empty oil system loses pressure.
+PASS: touring-six: sustained starvation damages bearings and can break the engine.
+PASS: touring-six: ring-only repair rejected with an unhealthy bore.
+PASS: touring-six: usable bore permits limited ring reconditioning, not complete restoration.
+PASS: touring-six: save/reload does not duplicate factory parts or refill deliberately empty fluids.
+PASS: touring-six: owned service uses resolved capacity.
+PASS: touring-six: oil service replaces filter while retaining dirty original identity.
+PASS: touring-six: larger pan does not create free oil during a part swap.
+PASS: touring-six: pan downgrade retains existing liquid quantity.
+PASS: touring-six: one-time migration never recreates a deliberately removed service part.
+PASS: touring-six: legacy migration initializes fluids once and adds OEM hardware without replacing prior identities.
+PASS: touring-six: failed persistence rolls back a fluid service transaction.
+PASS: touring-six: checkpoint refuses unauthorized refill.
+PASS: touring-six: worn stem seals increase oil consumption without an instant engine failure.
+PASS: touring-six: worn bearing clearances reduce oil pressure.
+PASS: touring-six: intake deposits reduce breathing.
+PASS: touring-six: deposit cleaning restores breathing without replacing healthy hardware.
+PASS: touring-six: actual oil cooler heat rejection lowers hot-oil temperature.
+PASS: touring-six: failed oil cooler loses heat rejection and can leak without instant engine destruction.
+PASS: touring-six: Arcade selects fluid and service assistance coherently.
+PASS: touring-six: Balanced selects independent 25% service rules.
+PASS: touring-six: fluids, faults, thermals and wear replay exactly after JSON continuation capture.
+PASS: touring-six: corrupt checkpoint fluids rejected.
+PASS: utility-pickup: factory service hardware is complete and runs.
+PASS: utility-pickup/utility-pickup/Camshaft/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/Camshaft/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/Camshaft/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/Camshaft/1: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/Camshaft/2: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/Camshaft/2: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/ValveSprings/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/ValveSprings/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/ValveSprings/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/ValveSprings/1: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/Valves/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/Valves/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/Valves/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/Valves/1: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/Followers/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/Followers/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/Followers/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/Followers/1: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/TimingDrive/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/TimingDrive/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/TimingDrive/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/TimingDrive/1: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/PistonRings/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/PistonRings/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/PistonRings/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/PistonRings/1: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/CylinderBlock/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/CylinderBlock/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/CylinderBlock/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/CylinderBlock/1: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/Bearings/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/Bearings/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/Bearings/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/Bearings/1: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/ValveSeals/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/ValveSeals/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/ValveSeals/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/ValveSeals/1: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/OilPan/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/OilPan/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/OilPan/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/OilPan/1: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/OilPump/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/OilPump/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/OilPump/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/OilPump/1: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/OilFilter/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/OilFilter/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/OilFilter/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/OilFilter/1: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/CoolantPump/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/CoolantPump/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/CoolantPump/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/CoolantPump/1: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/CoolingCap/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/CoolingCap/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/CoolingCap/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/CoolingCap/1: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/CoolingHoses/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/CoolingHoses/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/CoolingHoses/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/CoolingHoses/1: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/OilCooler/0: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/OilCooler/0: installed option ticks without invalid state.
+PASS: utility-pickup/utility-pickup/OilCooler/1: hardware resolves with finite meaningful stats.
+PASS: utility-pickup/utility-pickup/OilCooler/1: installed option ticks without invalid state.
+PASS: utility-pickup: stock repeated quarter-mile pass 0 survives with physical thermals and retained condition. 
+PASS: utility-pickup: stock repeated quarter-mile pass 1 survives with physical thermals and retained condition. 
+PASS: utility-pickup: stock repeated quarter-mile pass 2 survives with physical thermals and retained condition. 
+PASS: utility-pickup: stock repeated quarter-mile pass 3 survives with physical thermals and retained condition. 
+PASS: utility-pickup/PistonRings: wear changes output/friction before failure.
+PASS: utility-pickup/PistonRings: Reduced condition effects reduce performance loss.
+PASS: utility-pickup/PistonRings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: utility-pickup/CylinderBlock: wear changes output/friction before failure.
+PASS: utility-pickup/CylinderBlock: Reduced condition effects reduce performance loss.
+PASS: utility-pickup/CylinderBlock: Assisted removes gradual performance loss, retaining the worn part.
+PASS: utility-pickup/Valves: wear changes output/friction before failure.
+PASS: utility-pickup/Valves: Reduced condition effects reduce performance loss.
+PASS: utility-pickup/Valves: Assisted removes gradual performance loss, retaining the worn part.
+PASS: utility-pickup/Camshaft: wear changes output/friction before failure.
+PASS: utility-pickup/Camshaft: Reduced condition effects reduce performance loss.
+PASS: utility-pickup/Camshaft: Assisted removes gradual performance loss, retaining the worn part.
+PASS: utility-pickup/Followers: wear changes output/friction before failure.
+PASS: utility-pickup/Followers: Reduced condition effects reduce performance loss.
+PASS: utility-pickup/Followers: Assisted removes gradual performance loss, retaining the worn part.
+PASS: utility-pickup/TimingDrive: wear changes output/friction before failure.
+PASS: utility-pickup/TimingDrive: Reduced condition effects reduce performance loss.
+PASS: utility-pickup/TimingDrive: Assisted removes gradual performance loss, retaining the worn part.
+PASS: utility-pickup/Bearings: wear changes output/friction before failure.
+PASS: utility-pickup/Bearings: Reduced condition effects reduce performance loss.
+PASS: utility-pickup/Bearings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: utility-pickup/Ignition: wear changes output/friction before failure.
+PASS: utility-pickup/Ignition: Reduced condition effects reduce performance loss.
+PASS: utility-pickup/Ignition: Assisted removes gradual performance loss, retaining the worn part.
+PASS: utility-pickup/ValveSprings: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: utility-pickup/Followers: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: utility-pickup: zero structural bearing condition cannot be masked by an unset failure flag.
+PASS: utility-pickup: worn sealing consumes more fuel for equal output, without a universal part-wear fuel multiplier.
+PASS: utility-pickup: metering deposits affect efficiency.
+PASS: utility-pickup: aggressive cam changes the idle voice while preserving engine family.
+PASS: utility-pickup: aggressive cam reshapes low/high RPM torque.
+PASS: utility-pickup: aggressive cam reveals factory spring mismatch.
+PASS: utility-pickup: matched springs restore valve control.
+PASS: utility-pickup: fixed timing drive rejects cam tuning.
+PASS: utility-pickup: adjustable timing drive unlocks saved cam timing.
+PASS: utility-pickup: oil and coolant quantity affect mass exactly once.
+PASS: utility-pickup: top-up clamps to installed free capacity.
+PASS: utility-pickup: radiator can still cool while leaking and loses coolant in engine-off cooldown.
+PASS: utility-pickup: top-up does not seal a radiator leak.
+PASS: utility-pickup: reseal removes only the leak fault.
+PASS: utility-pickup: Reduced fluid loss and telemetry are exactly 25%.
+PASS: utility-pickup: None freezes fluid quantity and aging without repairing faults.
+PASS: utility-pickup: coolant can vent from overheating without instantly destroying radiator hardware.
+PASS: utility-pickup: empty oil system loses pressure.
+PASS: utility-pickup: sustained starvation damages bearings and can break the engine.
+PASS: utility-pickup: ring-only repair rejected with an unhealthy bore.
+PASS: utility-pickup: usable bore permits limited ring reconditioning, not complete restoration.
+PASS: utility-pickup: save/reload does not duplicate factory parts or refill deliberately empty fluids.
+PASS: utility-pickup: owned service uses resolved capacity.
+PASS: utility-pickup: oil service replaces filter while retaining dirty original identity.
+PASS: utility-pickup: larger pan does not create free oil during a part swap.
+PASS: utility-pickup: pan downgrade retains existing liquid quantity.
+PASS: utility-pickup: one-time migration never recreates a deliberately removed service part.
+PASS: utility-pickup: legacy migration initializes fluids once and adds OEM hardware without replacing prior identities.
+PASS: utility-pickup: failed persistence rolls back a fluid service transaction.
+PASS: utility-pickup: checkpoint refuses unauthorized refill.
+PASS: utility-pickup: worn stem seals increase oil consumption without an instant engine failure.
+PASS: utility-pickup: worn bearing clearances reduce oil pressure.
+PASS: utility-pickup: intake deposits reduce breathing.
+PASS: utility-pickup: deposit cleaning restores breathing without replacing healthy hardware.
+PASS: utility-pickup: actual oil cooler heat rejection lowers hot-oil temperature.
+PASS: utility-pickup: failed oil cooler loses heat rejection and can leak without instant engine destruction.
+PASS: utility-pickup: Arcade selects fluid and service assistance coherently.
+PASS: utility-pickup: Balanced selects independent 25% service rules.
+PASS: utility-pickup: fluids, faults, thermals and wear replay exactly after JSON continuation capture.
+PASS: utility-pickup: corrupt checkpoint fluids rejected.
+PASS: v8-muscle: factory service hardware is complete and runs.
+PASS: v8-muscle/v8-muscle/Camshaft/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/Camshaft/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/Camshaft/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/Camshaft/1: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/Camshaft/2: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/Camshaft/2: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/ValveSprings/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/ValveSprings/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/ValveSprings/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/ValveSprings/1: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/Valves/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/Valves/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/Valves/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/Valves/1: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/Followers/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/Followers/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/Followers/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/Followers/1: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/TimingDrive/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/TimingDrive/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/TimingDrive/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/TimingDrive/1: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/PistonRings/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/PistonRings/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/PistonRings/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/PistonRings/1: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/CylinderBlock/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/CylinderBlock/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/CylinderBlock/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/CylinderBlock/1: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/Bearings/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/Bearings/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/Bearings/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/Bearings/1: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/ValveSeals/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/ValveSeals/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/ValveSeals/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/ValveSeals/1: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/OilPan/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/OilPan/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/OilPan/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/OilPan/1: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/OilPump/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/OilPump/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/OilPump/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/OilPump/1: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/OilFilter/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/OilFilter/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/OilFilter/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/OilFilter/1: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/CoolantPump/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/CoolantPump/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/CoolantPump/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/CoolantPump/1: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/CoolingCap/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/CoolingCap/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/CoolingCap/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/CoolingCap/1: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/CoolingHoses/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/CoolingHoses/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/CoolingHoses/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/CoolingHoses/1: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/OilCooler/0: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/OilCooler/0: installed option ticks without invalid state.
+PASS: v8-muscle/v8-muscle/OilCooler/1: hardware resolves with finite meaningful stats.
+PASS: v8-muscle/v8-muscle/OilCooler/1: installed option ticks without invalid state.
+PASS: v8-muscle: stock repeated quarter-mile pass 0 survives with physical thermals and retained condition. 
+PASS: v8-muscle: stock repeated quarter-mile pass 1 survives with physical thermals and retained condition. 
+PASS: v8-muscle: stock repeated quarter-mile pass 2 survives with physical thermals and retained condition. 
+PASS: v8-muscle: stock repeated quarter-mile pass 3 survives with physical thermals and retained condition. 
+PASS: v8-muscle/PistonRings: wear changes output/friction before failure.
+PASS: v8-muscle/PistonRings: Reduced condition effects reduce performance loss.
+PASS: v8-muscle/PistonRings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: v8-muscle/CylinderBlock: wear changes output/friction before failure.
+PASS: v8-muscle/CylinderBlock: Reduced condition effects reduce performance loss.
+PASS: v8-muscle/CylinderBlock: Assisted removes gradual performance loss, retaining the worn part.
+PASS: v8-muscle/Valves: wear changes output/friction before failure.
+PASS: v8-muscle/Valves: Reduced condition effects reduce performance loss.
+PASS: v8-muscle/Valves: Assisted removes gradual performance loss, retaining the worn part.
+PASS: v8-muscle/Camshaft: wear changes output/friction before failure.
+PASS: v8-muscle/Camshaft: Reduced condition effects reduce performance loss.
+PASS: v8-muscle/Camshaft: Assisted removes gradual performance loss, retaining the worn part.
+PASS: v8-muscle/Followers: wear changes output/friction before failure.
+PASS: v8-muscle/Followers: Reduced condition effects reduce performance loss.
+PASS: v8-muscle/Followers: Assisted removes gradual performance loss, retaining the worn part.
+PASS: v8-muscle/TimingDrive: wear changes output/friction before failure.
+PASS: v8-muscle/TimingDrive: Reduced condition effects reduce performance loss.
+PASS: v8-muscle/TimingDrive: Assisted removes gradual performance loss, retaining the worn part.
+PASS: v8-muscle/Bearings: wear changes output/friction before failure.
+PASS: v8-muscle/Bearings: Reduced condition effects reduce performance loss.
+PASS: v8-muscle/Bearings: Assisted removes gradual performance loss, retaining the worn part.
+PASS: v8-muscle/Ignition: wear changes output/friction before failure.
+PASS: v8-muscle/Ignition: Reduced condition effects reduce performance loss.
+PASS: v8-muscle/Ignition: Assisted removes gradual performance loss, retaining the worn part.
+PASS: v8-muscle/ValveSprings: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: v8-muscle/Followers: complete failure stops combustion without declaring all engine internals destroyed.
+PASS: v8-muscle: zero structural bearing condition cannot be masked by an unset failure flag.
+PASS: v8-muscle: worn sealing consumes more fuel for equal output, without a universal part-wear fuel multiplier.
+PASS: v8-muscle: metering deposits affect efficiency.
+PASS: v8-muscle: aggressive cam changes the idle voice while preserving engine family.
+PASS: v8-muscle: aggressive cam reshapes low/high RPM torque.
+PASS: v8-muscle: aggressive cam reveals factory spring mismatch.
+PASS: v8-muscle: matched springs restore valve control.
+PASS: v8-muscle: fixed timing drive rejects cam tuning.
+PASS: v8-muscle: adjustable timing drive unlocks saved cam timing.
+PASS: v8-muscle: oil and coolant quantity affect mass exactly once.
+PASS: v8-muscle: top-up clamps to installed free capacity.
+PASS: v8-muscle: radiator can still cool while leaking and loses coolant in engine-off cooldown.
+PASS: v8-muscle: top-up does not seal a radiator leak.
+PASS: v8-muscle: reseal removes only the leak fault.
+PASS: v8-muscle: Reduced fluid loss and telemetry are exactly 25%.
+PASS: v8-muscle: None freezes fluid quantity and aging without repairing faults.
+PASS: v8-muscle: coolant can vent from overheating without instantly destroying radiator hardware.
+PASS: v8-muscle: empty oil system loses pressure.
+PASS: v8-muscle: sustained starvation damages bearings and can break the engine.
+PASS: v8-muscle: ring-only repair rejected with an unhealthy bore.
+PASS: v8-muscle: usable bore permits limited ring reconditioning, not complete restoration.
+PASS: v8-muscle: save/reload does not duplicate factory parts or refill deliberately empty fluids.
+PASS: v8-muscle: owned service uses resolved capacity.
+PASS: v8-muscle: oil service replaces filter while retaining dirty original identity.
+PASS: v8-muscle: larger pan does not create free oil during a part swap.
+PASS: v8-muscle: pan downgrade retains existing liquid quantity.
+PASS: v8-muscle: one-time migration never recreates a deliberately removed service part.
+PASS: v8-muscle: legacy migration initializes fluids once and adds OEM hardware without replacing prior identities.
+PASS: v8-muscle: failed persistence rolls back a fluid service transaction.
+PASS: v8-muscle: checkpoint refuses unauthorized refill.
+PASS: v8-muscle: worn stem seals increase oil consumption without an instant engine failure.
+PASS: v8-muscle: worn bearing clearances reduce oil pressure.
+PASS: v8-muscle: intake deposits reduce breathing.
+PASS: v8-muscle: deposit cleaning restores breathing without replacing healthy hardware.
+PASS: v8-muscle: actual oil cooler heat rejection lowers hot-oil temperature.
+PASS: v8-muscle: failed oil cooler loses heat rejection and can leak without instant engine destruction.
+PASS: v8-muscle: Arcade selects fluid and service assistance coherently.
+PASS: v8-muscle: Balanced selects independent 25% service rules.
+PASS: v8-muscle: fluids, faults, thermals and wear replay exactly after JSON continuation capture.
+PASS: v8-muscle: corrupt checkpoint fluids rejected.
+TOTAL 1096

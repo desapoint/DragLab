@@ -1,0 +1,27 @@
+PASS: Race construction and unrecorded bench share identical physical/condition behavior: sport-coupe
+PASS: Assigned clutch condition and heat reduce actual capacity: sport-coupe
+PASS: Isolated repair clears wear/heat while retaining clutch fluid condition and road momentum: sport-coupe
+PASS: Weak driveshaft breaks from real transmitted torque; engine continues but wheel torque stops: sport-coupe / health 0 / cause Torque overload / engine failed False
+PASS: Healthy stock shaft survives the same controls: sport-coupe
+PASS: Race construction and unrecorded bench share identical physical/condition behavior: starter-hatch
+PASS: Assigned clutch condition and heat reduce actual capacity: starter-hatch
+PASS: Isolated repair clears wear/heat while retaining clutch fluid condition and road momentum: starter-hatch
+PASS: Weak driveshaft breaks from real transmitted torque; engine continues but wheel torque stops: starter-hatch / health 0 / cause Torque overload / engine failed False
+PASS: Healthy stock shaft survives the same controls: starter-hatch
+PASS: Race construction and unrecorded bench share identical physical/condition behavior: utility-pickup
+PASS: Assigned clutch condition and heat reduce actual capacity: utility-pickup
+PASS: Isolated repair clears wear/heat while retaining clutch fluid condition and road momentum: utility-pickup
+PASS: Weak driveshaft breaks from real transmitted torque; engine continues but wheel torque stops: utility-pickup / health 0 / cause Torque overload / engine failed False
+PASS: Healthy stock shaft survives the same controls: utility-pickup
+PASS: Race construction and unrecorded bench share identical physical/condition behavior: v8-muscle
+PASS: Assigned clutch condition and heat reduce actual capacity: v8-muscle
+PASS: Isolated repair clears wear/heat while retaining clutch fluid condition and road momentum: v8-muscle
+PASS: Weak driveshaft breaks from real transmitted torque; engine continues but wheel torque stops: v8-muscle / health 0 / cause Torque overload / engine failed False
+PASS: Healthy stock shaft survives the same controls: v8-muscle
+PASS: Actual sustained clutch slip dissipates energy, heats and wears the clutch: 3363253,86848461 J / 292,970665507468 C / 0,8679747
+PASS: Torque converter generates gearbox heat rather than fictitious friction-clutch wear.
+PASS: Recording off runs past ten minutes with bounded telemetry and no recorded inputs.
+PASS: Enabling recording captures current dynamics and wear rather than restarting simulation.
+PASS: Additive v2 migration adds one shaft while preserving existing ownership IDs.
+PASS: Migration does not respawn a removed shaft; its absence disconnects drive without rejecting a running engine.
+Checks: 26

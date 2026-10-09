@@ -1,0 +1,23 @@
+Starter-car career path; normal AI; no injected funds or reputation.
+WIN first-pass / ET 16,581 / rival ET 16,581 / FD 4,10 / launch 3200 RPM / E-T-W-G 0-0-0-0 / cash 1700 / REP 2
+BUY engine / cash 1100
+WIN club-run / ET 15,798 / rival ET 15,777 / FD 4,10 / launch 6700 RPM / E-T-W-G 1-0-0-0 / cash 1800 / REP 4
+BUY engine / cash 600
+BUY weight / cash 100
+REPEAT club-run / cash 800
+BUY tires / cash 400
+REPEAT club-run / cash 1100
+BUY tires / cash 300
+REPEAT club-run / cash 1000
+BUY weight / cash 0
+REPEAT club-run / cash 700
+BUY gearbox / cash 250
+REPEAT club-run / cash 950
+BUY gearbox / cash 50
+REPEAT club-run / cash 750
+REPEAT club-run / cash 1450
+BUY tires / cash 250
+WIN coupe-rival / ET 14,365 / rival ET 14,386 / FD 3,40 / launch 5400 RPM / E-T-W-G 2-3-2-2 / cash 1250 / REP 8
+REPEAT coupe-rival / cash 2250
+BUY engine / cash 450
+WIN local-final / ET 13,993 / rival ET 14,159 / FD 3,40 / launch 5400 RPM / E-T-W-G 3-3-2-2 / cash 2050 / REP 12

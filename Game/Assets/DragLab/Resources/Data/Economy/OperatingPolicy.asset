@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61c5bf4b87e3ea47a50eaccc8f7e1ba, type: 3}
+  m_Name: OperatingPolicy
+  m_EditorClassIdentifier: Assembly-CSharp::DragLab.Data.OperatingPolicyDefinition
+  policy:
+    id: prototype-operating-costs
+    version: 1
+    quoteSeconds: 300
+    fuelPerLitre: 2
+    oilPerLitre: 6
+    coolantPerLitre: 3
+    clutchOilPerLitre: 6
+    repairLabour: 15
+    oilChangeLabour: 25
+    coolantFlushLabour: 20
+    repairPriceFraction: 0.08
+    dealerSpread: 0.1
+    recoverySeconds: 30
+    recoveryReward: 500
+    recoveryCashLimit: 10000

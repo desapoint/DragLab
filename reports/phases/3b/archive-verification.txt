@@ -1,0 +1,3 @@
+source-checkpoint.zip: 557 entries, CRC OK
+Windows-checkpoint.zip: 263 entries, CRC OK
+Archived runtime matches verified player: SHA256 8751b1d212982b99131f557b56ddee13ed7d10580ba27515f4a39e667fdd5921

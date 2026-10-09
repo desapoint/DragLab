@@ -1,0 +1,47 @@
+PASS: Running idle burns finite fuel: sport-coupe / 0,0132930179430311 L
+PASS: Fuel and service-fluid losses change actual mass exactly once: sport-coupe
+PASS: Neutral revving consumes more than the equivalent idle duration: sport-coupe
+PASS: Empty tank stops combustion without destroying engine: sport-coupe
+PASS: Refuel preserves usage and requires restart: sport-coupe
+PASS: Refuel plus explicit restart restores healthy idle: sport-coupe
+PASS: Refuel is capped to tank free space: sport-coupe
+PASS: Nonfinite refuel rejected: sport-coupe
+PASS: Full fuel/mass/gear trace repeats exactly: sport-coupe
+PASS: Live refuel checkpoint retains wheel/engine momentum: sport-coupe
+PASS: Running idle burns finite fuel: starter-hatch / 0,0103568119107571 L
+PASS: Fuel and service-fluid losses change actual mass exactly once: starter-hatch
+PASS: Neutral revving consumes more than the equivalent idle duration: starter-hatch
+PASS: Empty tank stops combustion without destroying engine: starter-hatch
+PASS: Refuel preserves usage and requires restart: starter-hatch
+PASS: Refuel plus explicit restart restores healthy idle: starter-hatch
+PASS: Refuel is capped to tank free space: starter-hatch
+PASS: Nonfinite refuel rejected: starter-hatch
+PASS: Full fuel/mass/gear trace repeats exactly: starter-hatch
+PASS: Live refuel checkpoint retains wheel/engine momentum: starter-hatch
+PASS: Running idle burns finite fuel: utility-pickup / 0,0321999990175127 L
+PASS: Fuel and service-fluid losses change actual mass exactly once: utility-pickup
+PASS: Neutral revving consumes more than the equivalent idle duration: utility-pickup
+PASS: Empty tank stops combustion without destroying engine: utility-pickup
+PASS: Refuel preserves usage and requires restart: utility-pickup
+PASS: Refuel plus explicit restart restores healthy idle: utility-pickup
+PASS: Refuel is capped to tank free space: utility-pickup
+PASS: Nonfinite refuel rejected: utility-pickup
+PASS: Full fuel/mass/gear trace repeats exactly: utility-pickup
+PASS: Live refuel checkpoint retains wheel/engine momentum: utility-pickup
+PASS: Running idle burns finite fuel: v8-muscle / 0,038333333904544 L
+PASS: Fuel and service-fluid losses change actual mass exactly once: v8-muscle
+PASS: Neutral revving consumes more than the equivalent idle duration: v8-muscle
+PASS: Empty tank stops combustion without destroying engine: v8-muscle
+PASS: Refuel preserves usage and requires restart: v8-muscle
+PASS: Refuel plus explicit restart restores healthy idle: v8-muscle
+PASS: Refuel is capped to tank free space: v8-muscle
+PASS: Nonfinite refuel rejected: v8-muscle
+PASS: Full fuel/mass/gear trace repeats exactly: v8-muscle
+PASS: Live refuel checkpoint retains wheel/engine momentum: v8-muscle
+PASS: Injection overrun fuel cut consumes no fuel
+PASS: Carburetor continues fueling on overrun
+PASS: Fuel-cut limiter consumes no injected fuel
+PASS: Ignition cut can continue consuming unburned fuel
+PASS: Anti-lag increases fuel demand independently of wheel speed
+PASS: Owned fuel roundtrips and free refuel does not spend cash
+Checks: 46

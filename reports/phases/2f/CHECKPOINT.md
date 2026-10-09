@@ -1,0 +1,7 @@
+# 2F checkpoint — 2026-10-08
+
+Completed mass/load phase, model draglab-mass-load-v7. Full Unity foundation gate: 1,405 checks. Targeted mass gate: 68 checks (included in foundation). Windows physical driving/ballast/recording fixture: 24 checks, zero runtime/DSP/GUI errors, reports/player-fixtures/slice2f-final-driving. Windows inspection workflow: 14 checks, zero runtime errors, reports/player-fixtures/slice2f-inspection.
+
+Mass includes dry installed components, driver, located payload and actual static fuel quantity. Incomplete build mass excludes removed wheel/tire/flywheel/body hardware. CG, conserved static axle loads and dynamic transfer use that mass. Live bench edits preserve motion and pedal ownership; recordings split into independently replayable checkpoints. One-time migrations retain later empty tanks and driver settings; validation is read-only. Real parts career reachability passes all four events with earned cash and retained cabin removal. It probes fresh copied conditions; persistent endurance/economy remains later scope.
+
+Fuel consumption remains 2I. Independent wheel contact and transmission coupling remain 2G–2H. Equivalent rotational acceleration load is temporary, never scale weight. Data is fictional modeled calibration. Windows-checkpoint.zip includes the entire required build folder; copy its complete extracted folder to run. Source-checkpoint.zip preserves code/data/docs and Unity settings; use the original workspace tooling for batch tests.

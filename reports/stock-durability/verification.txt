@@ -1,0 +1,23 @@
+OEM durability / full wear, simulated thermals, multiplier 1 / shared race and bench model.
+PASS: sport-coupe / ten-quarter-miles / passes 10 / lowest health 98,16 ٪ / 
+PASS: sport-coupe / two-minute-pull / passes 0 / lowest health 99,57 ٪ / 
+PASS: sport-coupe / five-minute-idle / passes 0 / lowest health 100,00 ٪ / 
+PASS: starter-hatch / ten-quarter-miles / passes 10 / lowest health 98,72 ٪ / 
+PASS: starter-hatch / two-minute-pull / passes 0 / lowest health 99,74 ٪ / 
+PASS: starter-hatch / five-minute-idle / passes 0 / lowest health 100,00 ٪ / 
+PASS: utility-pickup / ten-quarter-miles / passes 10 / lowest health 96,01 ٪ / 
+PASS: utility-pickup / two-minute-pull / passes 0 / lowest health 99,20 ٪ / 
+PASS: utility-pickup / five-minute-idle / passes 0 / lowest health 100,00 ٪ / 
+PASS: v8-muscle / ten-quarter-miles / passes 10 / lowest health 94,71 ٪ / 
+PASS: v8-muscle / two-minute-pull / passes 0 / lowest health 99,32 ٪ / 
+PASS: v8-muscle / five-minute-idle / passes 0 / lowest health 100,00 ٪ / 
+PASS: Prior physics recordings are rejected instead of silently changing their repeatable results.
+PASS: Brake heat is bounded by actual body plus independent wheel energy loss and applied brake work.
+PASS: Published road brake work is the same heat consumed by shared component stress.
+PASS: Holding brakes stationary does not heat or wear them.
+PASS: Truly overheated worn brakes can still fail; OEM calibration does not disable thermal damage.
+PASS: Manual-gearbox handover keeps rotating and preserves input; only automatic driver lifts: Automatic
+PASS: Automatic handover reapplies held gas without re-pressing the input.
+PASS: Manual-gearbox handover keeps rotating and preserves input; only automatic driver lifts: Sequential
+PASS: Classic V8 retains no limiter and still fails under sustained manual neutral overrev.
+Checks: 21

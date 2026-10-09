@@ -1,0 +1,24 @@
+PASS: Same clutch slip work produces None=0, Partial=25%, Full=100%, multiplier=10x health loss within float condition precision.
+PASS: Wear rate does not independently change physical friction heat.
+PASS: Overrev abuse uses the same None/Partial/Full and multiplier rules.
+PASS: Partial wear still permits a worn shaft to break under torque abuse.
+PASS: None wear does not heal an existing failed component.
+PASS: Optimal thermals initializes warm and removes clutch heat fade through the shared model.
+PASS: Optimal charge temperatures affect actual torque as well as telemetry.
+PASS: Clutch assist allows manual shift requests without a clutch pedal; hardware checks still apply.
+PASS: Stall prevention can be selected independently of wear and thermal settings.
+PASS: Simulation preset preserves chosen driving modes and other preferences: Arcade
+PASS: Preset sets coherent wear/thermal/clutch rules: Arcade
+PASS: Captured simulation preset replays exactly after JSON round trip: Arcade
+PASS: Simulation preset preserves chosen driving modes and other preferences: Balanced
+PASS: Preset sets coherent wear/thermal/clutch rules: Balanced
+PASS: Captured simulation preset replays exactly after JSON round trip: Balanced
+PASS: Simulation preset preserves chosen driving modes and other preferences: Simulation
+PASS: Preset sets coherent wear/thermal/clutch rules: Simulation
+PASS: Captured simulation preset replays exactly after JSON round trip: Simulation
+PASS: Game reset retains new simulation preferences and independent AI difficulty.
+PASS: Invalid save wear rules sanitize to finite full-rate defaults.
+PASS: Replay rejects nonfinite simulation rules rather than corrupting dynamics.
+PASS: Old saves without new settings retain ownership and the pre-change full-wear thermal behavior.
+PASS: Plot reduction preserves brief spikes, negative torque, RPM reversals, chronology and final zero tail.
+Checks: 23

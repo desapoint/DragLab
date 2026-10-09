@@ -1,0 +1,2407 @@
+3C / draglab-integrated-tools-v15 / quote schema 1
+PASS: city-three stock Car / enthusiast is complete and priced.
+PASS: Fresh quote validates: city-three/Car/enthusiast
+PASS: Unique captured assets and explanations: city-three/Car
+PASS: city-three stock Chassis / enthusiast is complete and priced.
+PASS: Fresh quote validates: city-three/Chassis/enthusiast
+PASS: Unique captured assets and explanations: city-three/Chassis
+PASS: city-three stock Engine / enthusiast is complete and priced.
+PASS: Fresh quote validates: city-three/Engine/enthusiast
+PASS: Unique captured assets and explanations: city-three/Engine
+PASS: city-three stock Car / builder is complete and priced.
+PASS: Fresh quote validates: city-three/Car/builder
+PASS: Unique captured assets and explanations: city-three/Car
+PASS: city-three stock Chassis / builder is complete and priced.
+PASS: Fresh quote validates: city-three/Chassis/builder
+PASS: Unique captured assets and explanations: city-three/Chassis
+PASS: city-three stock Engine / builder is complete and priced.
+PASS: Fresh quote validates: city-three/Engine/builder
+PASS: Unique captured assets and explanations: city-three/Engine
+PASS: city-three stock Car / wholesale is complete and priced.
+PASS: Fresh quote validates: city-three/Car/wholesale
+PASS: Unique captured assets and explanations: city-three/Car
+PASS: city-three stock Chassis / wholesale is complete and priced.
+PASS: Fresh quote validates: city-three/Chassis/wholesale
+PASS: Unique captured assets and explanations: city-three/Chassis
+PASS: city-three stock Engine / wholesale is complete and priced.
+PASS: Fresh quote validates: city-three/Engine/wholesale
+PASS: Unique captured assets and explanations: city-three/Engine
+PASS: city-three stock Car / recycler is complete and priced.
+PASS: Fresh quote validates: city-three/Car/recycler
+PASS: Unique captured assets and explanations: city-three/Car
+PASS: city-three stock Chassis / recycler is complete and priced.
+PASS: Fresh quote validates: city-three/Chassis/recycler
+PASS: Unique captured assets and explanations: city-three/Chassis
+PASS: city-three stock Engine / recycler is complete and priced.
+PASS: Fresh quote validates: city-three/Engine/recycler
+PASS: Unique captured assets and explanations: city-three/Engine
+PASS: Engine and chassis exclusive trees partition whole build: city-three
+PASS: Controlled engine offers both above and below identical loose-component total: city-three
+PASS: All quote operations are nonmutating: city-three
+PASS: Same-revision saved tune edit invalidates: city-three
+PASS: Resource edit invalidates: city-three
+PASS: Wear never improves quote: city-three/Pistons
+PASS: Condition edit invalidates even without revision: city-three/Pistons
+PASS: Failed component discounts part/assembly: city-three/Pistons
+PASS: Single-element failure priced despite healthy aggregate: city-three/Pistons
+PASS: Keeping pack excludes actual children and value: city-three/Pistons
+PASS: Required kept hardware affects completeness: city-three/Pistons
+PASS: Partial retained quote validates: city-three/Pistons
+PASS: Wear never improves quote: city-three/Rods
+PASS: Condition edit invalidates even without revision: city-three/Rods
+PASS: Failed component discounts part/assembly: city-three/Rods
+PASS: Single-element failure priced despite healthy aggregate: city-three/Rods
+PASS: Keeping pack excludes actual children and value: city-three/Rods
+PASS: Required kept hardware affects completeness: city-three/Rods
+PASS: Partial retained quote validates: city-three/Rods
+PASS: Wear never improves quote: city-three/Crankshaft
+PASS: Condition edit invalidates even without revision: city-three/Crankshaft
+PASS: Failed component discounts part/assembly: city-three/Crankshaft
+PASS: Keeping pack excludes actual children and value: city-three/Crankshaft
+PASS: Required kept hardware affects completeness: city-three/Crankshaft
+PASS: Partial retained quote validates: city-three/Crankshaft
+PASS: Wear never improves quote: city-three/HeadIntake
+PASS: Condition edit invalidates even without revision: city-three/HeadIntake
+PASS: Failed component discounts part/assembly: city-three/HeadIntake
+PASS: Keeping pack excludes actual children and value: city-three/HeadIntake
+PASS: Required kept hardware affects completeness: city-three/HeadIntake
+PASS: Partial retained quote validates: city-three/HeadIntake
+PASS: Wear never improves quote: city-three/FuelSystem
+PASS: Condition edit invalidates even without revision: city-three/FuelSystem
+PASS: Failed component discounts part/assembly: city-three/FuelSystem
+PASS: Single-element failure priced despite healthy aggregate: city-three/FuelSystem
+PASS: Keeping pack excludes actual children and value: city-three/FuelSystem
+PASS: Required kept hardware affects completeness: city-three/FuelSystem
+PASS: Partial retained quote validates: city-three/FuelSystem
+PASS: Wear never improves quote: city-three/Ignition
+PASS: Condition edit invalidates even without revision: city-three/Ignition
+PASS: Failed component discounts part/assembly: city-three/Ignition
+PASS: Single-element failure priced despite healthy aggregate: city-three/Ignition
+PASS: Keeping pack excludes actual children and value: city-three/Ignition
+PASS: Required kept hardware affects completeness: city-three/Ignition
+PASS: Partial retained quote validates: city-three/Ignition
+PASS: Wear never improves quote: city-three/Cooling
+PASS: Condition edit invalidates even without revision: city-three/Cooling
+PASS: Failed component discounts part/assembly: city-three/Cooling
+PASS: Keeping pack excludes actual children and value: city-three/Cooling
+PASS: Optional removal does not invent incompleteness: city-three/Cooling
+PASS: Partial retained quote validates: city-three/Cooling
+PASS: Wear never improves quote: city-three/Induction
+PASS: Condition edit invalidates even without revision: city-three/Induction
+PASS: Failed component discounts part/assembly: city-three/Induction
+PASS: Keeping pack excludes actual children and value: city-three/Induction
+PASS: Optional removal does not invent incompleteness: city-three/Induction
+PASS: Partial retained quote validates: city-three/Induction
+PASS: Wear never improves quote: city-three/Exhaust
+PASS: Condition edit invalidates even without revision: city-three/Exhaust
+PASS: Failed component discounts part/assembly: city-three/Exhaust
+PASS: Keeping pack excludes actual children and value: city-three/Exhaust
+PASS: Optional removal does not invent incompleteness: city-three/Exhaust
+PASS: Partial retained quote validates: city-three/Exhaust
+PASS: Wear never improves quote: city-three/Clutch
+PASS: Condition edit invalidates even without revision: city-three/Clutch
+PASS: Failed component discounts part/assembly: city-three/Clutch
+PASS: Keeping pack excludes actual children and value: city-three/Clutch
+PASS: Required kept hardware affects completeness: city-three/Clutch
+PASS: Partial retained quote validates: city-three/Clutch
+PASS: Wear never improves quote: city-three/Flywheel
+PASS: Condition edit invalidates even without revision: city-three/Flywheel
+PASS: Failed component discounts part/assembly: city-three/Flywheel
+PASS: Keeping pack excludes actual children and value: city-three/Flywheel
+PASS: Required kept hardware affects completeness: city-three/Flywheel
+PASS: Partial retained quote validates: city-three/Flywheel
+PASS: Wear never improves quote: city-three/Gearbox
+PASS: Condition edit invalidates even without revision: city-three/Gearbox
+PASS: Failed component discounts part/assembly: city-three/Gearbox
+PASS: Keeping pack excludes actual children and value: city-three/Gearbox
+PASS: Required kept hardware affects completeness: city-three/Gearbox
+PASS: Partial retained quote validates: city-three/Gearbox
+PASS: Wear never improves quote: city-three/Differential
+PASS: Condition edit invalidates even without revision: city-three/Differential
+PASS: Failed component discounts part/assembly: city-three/Differential
+PASS: Keeping pack excludes actual children and value: city-three/Differential
+PASS: Required kept hardware affects completeness: city-three/Differential
+PASS: Partial retained quote validates: city-three/Differential
+PASS: Wear never improves quote: city-three/Wheels
+PASS: Condition edit invalidates even without revision: city-three/Wheels
+PASS: Failed component discounts part/assembly: city-three/Wheels
+PASS: Keeping pack excludes actual children and value: city-three/Wheels
+PASS: Required kept hardware affects completeness: city-three/Wheels
+PASS: Partial retained quote validates: city-three/Wheels
+PASS: Wear never improves quote: city-three/Tires
+PASS: Condition edit invalidates even without revision: city-three/Tires
+PASS: Failed component discounts part/assembly: city-three/Tires
+PASS: Keeping pack excludes actual children and value: city-three/Tires
+PASS: Required kept hardware affects completeness: city-three/Tires
+PASS: Partial retained quote validates: city-three/Tires
+PASS: Wear never improves quote: city-three/Brakes
+PASS: Condition edit invalidates even without revision: city-three/Brakes
+PASS: Failed component discounts part/assembly: city-three/Brakes
+PASS: Keeping pack excludes actual children and value: city-three/Brakes
+PASS: Required kept hardware affects completeness: city-three/Brakes
+PASS: Partial retained quote validates: city-three/Brakes
+PASS: Wear never improves quote: city-three/Body
+PASS: Condition edit invalidates even without revision: city-three/Body
+PASS: Failed component discounts part/assembly: city-three/Body
+PASS: Keeping pack excludes actual children and value: city-three/Body
+PASS: Required kept hardware affects completeness: city-three/Body
+PASS: Partial retained quote validates: city-three/Body
+PASS: Wear never improves quote: city-three/Controls
+PASS: Condition edit invalidates even without revision: city-three/Controls
+PASS: Failed component discounts part/assembly: city-three/Controls
+PASS: Keeping pack excludes actual children and value: city-three/Controls
+PASS: Required kept hardware affects completeness: city-three/Controls
+PASS: Partial retained quote validates: city-three/Controls
+PASS: Wear never improves quote: city-three/Driveshaft
+PASS: Condition edit invalidates even without revision: city-three/Driveshaft
+PASS: Failed component discounts part/assembly: city-three/Driveshaft
+PASS: Keeping pack excludes actual children and value: city-three/Driveshaft
+PASS: Required kept hardware affects completeness: city-three/Driveshaft
+PASS: Partial retained quote validates: city-three/Driveshaft
+PASS: Wear never improves quote: city-three/FrontAxle
+PASS: Condition edit invalidates even without revision: city-three/FrontAxle
+PASS: Failed component discounts part/assembly: city-three/FrontAxle
+PASS: Keeping pack excludes actual children and value: city-three/FrontAxle
+PASS: Required kept hardware affects completeness: city-three/FrontAxle
+PASS: Partial retained quote validates: city-three/FrontAxle
+PASS: Wear never improves quote: city-three/Interior
+PASS: Condition edit invalidates even without revision: city-three/Interior
+PASS: Failed component discounts part/assembly: city-three/Interior
+PASS: Keeping pack excludes actual children and value: city-three/Interior
+PASS: Optional removal does not invent incompleteness: city-three/Interior
+PASS: Partial retained quote validates: city-three/Interior
+PASS: Wear never improves quote: city-three/Accessories
+PASS: Condition edit invalidates even without revision: city-three/Accessories
+PASS: Failed component discounts part/assembly: city-three/Accessories
+PASS: Keeping pack excludes actual children and value: city-three/Accessories
+PASS: Optional removal does not invent incompleteness: city-three/Accessories
+PASS: Partial retained quote validates: city-three/Accessories
+PASS: Wear never improves quote: city-three/RevLimiter
+PASS: Condition edit invalidates even without revision: city-three/RevLimiter
+PASS: Failed component discounts part/assembly: city-three/RevLimiter
+PASS: Keeping pack excludes actual children and value: city-three/RevLimiter
+PASS: Optional removal does not invent incompleteness: city-three/RevLimiter
+PASS: Partial retained quote validates: city-three/RevLimiter
+PASS: Wear never improves quote: city-three/Camshaft
+PASS: Condition edit invalidates even without revision: city-three/Camshaft
+PASS: Failed component discounts part/assembly: city-three/Camshaft
+PASS: Keeping pack excludes actual children and value: city-three/Camshaft
+PASS: Required kept hardware affects completeness: city-three/Camshaft
+PASS: Partial retained quote validates: city-three/Camshaft
+PASS: Wear never improves quote: city-three/ValveSprings
+PASS: Condition edit invalidates even without revision: city-three/ValveSprings
+PASS: Failed component discounts part/assembly: city-three/ValveSprings
+PASS: Single-element failure priced despite healthy aggregate: city-three/ValveSprings
+PASS: Keeping pack excludes actual children and value: city-three/ValveSprings
+PASS: Required kept hardware affects completeness: city-three/ValveSprings
+PASS: Partial retained quote validates: city-three/ValveSprings
+PASS: Wear never improves quote: city-three/Valves
+PASS: Condition edit invalidates even without revision: city-three/Valves
+PASS: Failed component discounts part/assembly: city-three/Valves
+PASS: Single-element failure priced despite healthy aggregate: city-three/Valves
+PASS: Keeping pack excludes actual children and value: city-three/Valves
+PASS: Required kept hardware affects completeness: city-three/Valves
+PASS: Partial retained quote validates: city-three/Valves
+PASS: Wear never improves quote: city-three/Followers
+PASS: Condition edit invalidates even without revision: city-three/Followers
+PASS: Failed component discounts part/assembly: city-three/Followers
+PASS: Single-element failure priced despite healthy aggregate: city-three/Followers
+PASS: Keeping pack excludes actual children and value: city-three/Followers
+PASS: Required kept hardware affects completeness: city-three/Followers
+PASS: Partial retained quote validates: city-three/Followers
+PASS: Wear never improves quote: city-three/TimingDrive
+PASS: Condition edit invalidates even without revision: city-three/TimingDrive
+PASS: Failed component discounts part/assembly: city-three/TimingDrive
+PASS: Keeping pack excludes actual children and value: city-three/TimingDrive
+PASS: Required kept hardware affects completeness: city-three/TimingDrive
+PASS: Partial retained quote validates: city-three/TimingDrive
+PASS: Wear never improves quote: city-three/PistonRings
+PASS: Condition edit invalidates even without revision: city-three/PistonRings
+PASS: Failed component discounts part/assembly: city-three/PistonRings
+PASS: Single-element failure priced despite healthy aggregate: city-three/PistonRings
+PASS: Keeping pack excludes actual children and value: city-three/PistonRings
+PASS: Required kept hardware affects completeness: city-three/PistonRings
+PASS: Partial retained quote validates: city-three/PistonRings
+PASS: Wear never improves quote: city-three/CylinderBlock
+PASS: Condition edit invalidates even without revision: city-three/CylinderBlock
+PASS: Failed component discounts part/assembly: city-three/CylinderBlock
+PASS: Keeping pack excludes actual children and value: city-three/CylinderBlock
+PASS: Required kept hardware affects completeness: city-three/CylinderBlock
+PASS: Partial retained quote validates: city-three/CylinderBlock
+PASS: Wear never improves quote: city-three/Bearings
+PASS: Condition edit invalidates even without revision: city-three/Bearings
+PASS: Failed component discounts part/assembly: city-three/Bearings
+PASS: Single-element failure priced despite healthy aggregate: city-three/Bearings
+PASS: Keeping pack excludes actual children and value: city-three/Bearings
+PASS: Required kept hardware affects completeness: city-three/Bearings
+PASS: Partial retained quote validates: city-three/Bearings
+PASS: Wear never improves quote: city-three/ValveSeals
+PASS: Condition edit invalidates even without revision: city-three/ValveSeals
+PASS: Failed component discounts part/assembly: city-three/ValveSeals
+PASS: Single-element failure priced despite healthy aggregate: city-three/ValveSeals
+PASS: Keeping pack excludes actual children and value: city-three/ValveSeals
+PASS: Required kept hardware affects completeness: city-three/ValveSeals
+PASS: Partial retained quote validates: city-three/ValveSeals
+PASS: Wear never improves quote: city-three/OilPan
+PASS: Condition edit invalidates even without revision: city-three/OilPan
+PASS: Failed component discounts part/assembly: city-three/OilPan
+PASS: Keeping pack excludes actual children and value: city-three/OilPan
+PASS: Required kept hardware affects completeness: city-three/OilPan
+PASS: Partial retained quote validates: city-three/OilPan
+PASS: Wear never improves quote: city-three/OilPump
+PASS: Condition edit invalidates even without revision: city-three/OilPump
+PASS: Failed component discounts part/assembly: city-three/OilPump
+PASS: Keeping pack excludes actual children and value: city-three/OilPump
+PASS: Required kept hardware affects completeness: city-three/OilPump
+PASS: Partial retained quote validates: city-three/OilPump
+PASS: Wear never improves quote: city-three/OilFilter
+PASS: Condition edit invalidates even without revision: city-three/OilFilter
+PASS: Failed component discounts part/assembly: city-three/OilFilter
+PASS: Keeping pack excludes actual children and value: city-three/OilFilter
+PASS: Required kept hardware affects completeness: city-three/OilFilter
+PASS: Partial retained quote validates: city-three/OilFilter
+PASS: Wear never improves quote: city-three/CoolantPump
+PASS: Condition edit invalidates even without revision: city-three/CoolantPump
+PASS: Failed component discounts part/assembly: city-three/CoolantPump
+PASS: Keeping pack excludes actual children and value: city-three/CoolantPump
+PASS: Optional removal does not invent incompleteness: city-three/CoolantPump
+PASS: Partial retained quote validates: city-three/CoolantPump
+PASS: Wear never improves quote: city-three/CoolingCap
+PASS: Condition edit invalidates even without revision: city-three/CoolingCap
+PASS: Failed component discounts part/assembly: city-three/CoolingCap
+PASS: Keeping pack excludes actual children and value: city-three/CoolingCap
+PASS: Optional removal does not invent incompleteness: city-three/CoolingCap
+PASS: Partial retained quote validates: city-three/CoolingCap
+PASS: Wear never improves quote: city-three/CoolingHoses
+PASS: Condition edit invalidates even without revision: city-three/CoolingHoses
+PASS: Failed component discounts part/assembly: city-three/CoolingHoses
+PASS: Keeping pack excludes actual children and value: city-three/CoolingHoses
+PASS: Optional removal does not invent incompleteness: city-three/CoolingHoses
+PASS: Partial retained quote validates: city-three/CoolingHoses
+PASS: Use/abuse/reconditioning history changes price: city-three
+PASS: Quote survives exact JSON reload: city-three
+PASS: Transfer/detach invalidates old quote: city-three
+PASS: Stored engine prices exact retained hardware equally: city-three
+PASS: Kept engine excluded from chassis/incomplete car: city-three
+PASS: Partial engine never credits missing pack: city-three
+PASS: Loose inventory independently quoted: city-three
+PASS: Empty engine identity creates no free core value: city-three
+PASS: Quote/removal matrix preserves money and ownership: city-three
+PASS: rally-sedan stock Car / enthusiast is complete and priced.
+PASS: Fresh quote validates: rally-sedan/Car/enthusiast
+PASS: Unique captured assets and explanations: rally-sedan/Car
+PASS: rally-sedan stock Chassis / enthusiast is complete and priced.
+PASS: Fresh quote validates: rally-sedan/Chassis/enthusiast
+PASS: Unique captured assets and explanations: rally-sedan/Chassis
+PASS: rally-sedan stock Engine / enthusiast is complete and priced.
+PASS: Fresh quote validates: rally-sedan/Engine/enthusiast
+PASS: Unique captured assets and explanations: rally-sedan/Engine
+PASS: rally-sedan stock Car / builder is complete and priced.
+PASS: Fresh quote validates: rally-sedan/Car/builder
+PASS: Unique captured assets and explanations: rally-sedan/Car
+PASS: rally-sedan stock Chassis / builder is complete and priced.
+PASS: Fresh quote validates: rally-sedan/Chassis/builder
+PASS: Unique captured assets and explanations: rally-sedan/Chassis
+PASS: rally-sedan stock Engine / builder is complete and priced.
+PASS: Fresh quote validates: rally-sedan/Engine/builder
+PASS: Unique captured assets and explanations: rally-sedan/Engine
+PASS: rally-sedan stock Car / wholesale is complete and priced.
+PASS: Fresh quote validates: rally-sedan/Car/wholesale
+PASS: Unique captured assets and explanations: rally-sedan/Car
+PASS: rally-sedan stock Chassis / wholesale is complete and priced.
+PASS: Fresh quote validates: rally-sedan/Chassis/wholesale
+PASS: Unique captured assets and explanations: rally-sedan/Chassis
+PASS: rally-sedan stock Engine / wholesale is complete and priced.
+PASS: Fresh quote validates: rally-sedan/Engine/wholesale
+PASS: Unique captured assets and explanations: rally-sedan/Engine
+PASS: rally-sedan stock Car / recycler is complete and priced.
+PASS: Fresh quote validates: rally-sedan/Car/recycler
+PASS: Unique captured assets and explanations: rally-sedan/Car
+PASS: rally-sedan stock Chassis / recycler is complete and priced.
+PASS: Fresh quote validates: rally-sedan/Chassis/recycler
+PASS: Unique captured assets and explanations: rally-sedan/Chassis
+PASS: rally-sedan stock Engine / recycler is complete and priced.
+PASS: Fresh quote validates: rally-sedan/Engine/recycler
+PASS: Unique captured assets and explanations: rally-sedan/Engine
+PASS: Engine and chassis exclusive trees partition whole build: rally-sedan
+PASS: Controlled engine offers both above and below identical loose-component total: rally-sedan
+PASS: All quote operations are nonmutating: rally-sedan
+PASS: Same-revision saved tune edit invalidates: rally-sedan
+PASS: Resource edit invalidates: rally-sedan
+PASS: Wear never improves quote: rally-sedan/Pistons
+PASS: Condition edit invalidates even without revision: rally-sedan/Pistons
+PASS: Failed component discounts part/assembly: rally-sedan/Pistons
+PASS: Single-element failure priced despite healthy aggregate: rally-sedan/Pistons
+PASS: Keeping pack excludes actual children and value: rally-sedan/Pistons
+PASS: Required kept hardware affects completeness: rally-sedan/Pistons
+PASS: Partial retained quote validates: rally-sedan/Pistons
+PASS: Wear never improves quote: rally-sedan/Rods
+PASS: Condition edit invalidates even without revision: rally-sedan/Rods
+PASS: Failed component discounts part/assembly: rally-sedan/Rods
+PASS: Single-element failure priced despite healthy aggregate: rally-sedan/Rods
+PASS: Keeping pack excludes actual children and value: rally-sedan/Rods
+PASS: Required kept hardware affects completeness: rally-sedan/Rods
+PASS: Partial retained quote validates: rally-sedan/Rods
+PASS: Wear never improves quote: rally-sedan/Crankshaft
+PASS: Condition edit invalidates even without revision: rally-sedan/Crankshaft
+PASS: Failed component discounts part/assembly: rally-sedan/Crankshaft
+PASS: Keeping pack excludes actual children and value: rally-sedan/Crankshaft
+PASS: Required kept hardware affects completeness: rally-sedan/Crankshaft
+PASS: Partial retained quote validates: rally-sedan/Crankshaft
+PASS: Wear never improves quote: rally-sedan/HeadIntake
+PASS: Condition edit invalidates even without revision: rally-sedan/HeadIntake
+PASS: Failed component discounts part/assembly: rally-sedan/HeadIntake
+PASS: Keeping pack excludes actual children and value: rally-sedan/HeadIntake
+PASS: Required kept hardware affects completeness: rally-sedan/HeadIntake
+PASS: Partial retained quote validates: rally-sedan/HeadIntake
+PASS: Wear never improves quote: rally-sedan/FuelSystem
+PASS: Condition edit invalidates even without revision: rally-sedan/FuelSystem
+PASS: Failed component discounts part/assembly: rally-sedan/FuelSystem
+PASS: Single-element failure priced despite healthy aggregate: rally-sedan/FuelSystem
+PASS: Keeping pack excludes actual children and value: rally-sedan/FuelSystem
+PASS: Required kept hardware affects completeness: rally-sedan/FuelSystem
+PASS: Partial retained quote validates: rally-sedan/FuelSystem
+PASS: Wear never improves quote: rally-sedan/Ignition
+PASS: Condition edit invalidates even without revision: rally-sedan/Ignition
+PASS: Failed component discounts part/assembly: rally-sedan/Ignition
+PASS: Single-element failure priced despite healthy aggregate: rally-sedan/Ignition
+PASS: Keeping pack excludes actual children and value: rally-sedan/Ignition
+PASS: Required kept hardware affects completeness: rally-sedan/Ignition
+PASS: Partial retained quote validates: rally-sedan/Ignition
+PASS: Wear never improves quote: rally-sedan/Cooling
+PASS: Condition edit invalidates even without revision: rally-sedan/Cooling
+PASS: Failed component discounts part/assembly: rally-sedan/Cooling
+PASS: Keeping pack excludes actual children and value: rally-sedan/Cooling
+PASS: Optional removal does not invent incompleteness: rally-sedan/Cooling
+PASS: Partial retained quote validates: rally-sedan/Cooling
+PASS: Wear never improves quote: rally-sedan/Induction
+PASS: Condition edit invalidates even without revision: rally-sedan/Induction
+PASS: Failed component discounts part/assembly: rally-sedan/Induction
+PASS: Keeping pack excludes actual children and value: rally-sedan/Induction
+PASS: Optional removal does not invent incompleteness: rally-sedan/Induction
+PASS: Partial retained quote validates: rally-sedan/Induction
+PASS: Wear never improves quote: rally-sedan/Exhaust
+PASS: Condition edit invalidates even without revision: rally-sedan/Exhaust
+PASS: Failed component discounts part/assembly: rally-sedan/Exhaust
+PASS: Keeping pack excludes actual children and value: rally-sedan/Exhaust
+PASS: Optional removal does not invent incompleteness: rally-sedan/Exhaust
+PASS: Partial retained quote validates: rally-sedan/Exhaust
+PASS: Wear never improves quote: rally-sedan/Clutch
+PASS: Condition edit invalidates even without revision: rally-sedan/Clutch
+PASS: Failed component discounts part/assembly: rally-sedan/Clutch
+PASS: Keeping pack excludes actual children and value: rally-sedan/Clutch
+PASS: Required kept hardware affects completeness: rally-sedan/Clutch
+PASS: Partial retained quote validates: rally-sedan/Clutch
+PASS: Wear never improves quote: rally-sedan/Flywheel
+PASS: Condition edit invalidates even without revision: rally-sedan/Flywheel
+PASS: Failed component discounts part/assembly: rally-sedan/Flywheel
+PASS: Keeping pack excludes actual children and value: rally-sedan/Flywheel
+PASS: Required kept hardware affects completeness: rally-sedan/Flywheel
+PASS: Partial retained quote validates: rally-sedan/Flywheel
+PASS: Wear never improves quote: rally-sedan/Gearbox
+PASS: Condition edit invalidates even without revision: rally-sedan/Gearbox
+PASS: Failed component discounts part/assembly: rally-sedan/Gearbox
+PASS: Keeping pack excludes actual children and value: rally-sedan/Gearbox
+PASS: Required kept hardware affects completeness: rally-sedan/Gearbox
+PASS: Partial retained quote validates: rally-sedan/Gearbox
+PASS: Wear never improves quote: rally-sedan/Differential
+PASS: Condition edit invalidates even without revision: rally-sedan/Differential
+PASS: Failed component discounts part/assembly: rally-sedan/Differential
+PASS: Keeping pack excludes actual children and value: rally-sedan/Differential
+PASS: Required kept hardware affects completeness: rally-sedan/Differential
+PASS: Partial retained quote validates: rally-sedan/Differential
+PASS: Wear never improves quote: rally-sedan/Wheels
+PASS: Condition edit invalidates even without revision: rally-sedan/Wheels
+PASS: Failed component discounts part/assembly: rally-sedan/Wheels
+PASS: Keeping pack excludes actual children and value: rally-sedan/Wheels
+PASS: Required kept hardware affects completeness: rally-sedan/Wheels
+PASS: Partial retained quote validates: rally-sedan/Wheels
+PASS: Wear never improves quote: rally-sedan/Tires
+PASS: Condition edit invalidates even without revision: rally-sedan/Tires
+PASS: Failed component discounts part/assembly: rally-sedan/Tires
+PASS: Keeping pack excludes actual children and value: rally-sedan/Tires
+PASS: Required kept hardware affects completeness: rally-sedan/Tires
+PASS: Partial retained quote validates: rally-sedan/Tires
+PASS: Wear never improves quote: rally-sedan/Brakes
+PASS: Condition edit invalidates even without revision: rally-sedan/Brakes
+PASS: Failed component discounts part/assembly: rally-sedan/Brakes
+PASS: Keeping pack excludes actual children and value: rally-sedan/Brakes
+PASS: Required kept hardware affects completeness: rally-sedan/Brakes
+PASS: Partial retained quote validates: rally-sedan/Brakes
+PASS: Wear never improves quote: rally-sedan/Body
+PASS: Condition edit invalidates even without revision: rally-sedan/Body
+PASS: Failed component discounts part/assembly: rally-sedan/Body
+PASS: Keeping pack excludes actual children and value: rally-sedan/Body
+PASS: Required kept hardware affects completeness: rally-sedan/Body
+PASS: Partial retained quote validates: rally-sedan/Body
+PASS: Wear never improves quote: rally-sedan/Controls
+PASS: Condition edit invalidates even without revision: rally-sedan/Controls
+PASS: Failed component discounts part/assembly: rally-sedan/Controls
+PASS: Keeping pack excludes actual children and value: rally-sedan/Controls
+PASS: Required kept hardware affects completeness: rally-sedan/Controls
+PASS: Partial retained quote validates: rally-sedan/Controls
+PASS: Wear never improves quote: rally-sedan/Driveshaft
+PASS: Condition edit invalidates even without revision: rally-sedan/Driveshaft
+PASS: Failed component discounts part/assembly: rally-sedan/Driveshaft
+PASS: Keeping pack excludes actual children and value: rally-sedan/Driveshaft
+PASS: Required kept hardware affects completeness: rally-sedan/Driveshaft
+PASS: Partial retained quote validates: rally-sedan/Driveshaft
+PASS: Wear never improves quote: rally-sedan/FrontAxle
+PASS: Condition edit invalidates even without revision: rally-sedan/FrontAxle
+PASS: Failed component discounts part/assembly: rally-sedan/FrontAxle
+PASS: Keeping pack excludes actual children and value: rally-sedan/FrontAxle
+PASS: Required kept hardware affects completeness: rally-sedan/FrontAxle
+PASS: Partial retained quote validates: rally-sedan/FrontAxle
+PASS: Wear never improves quote: rally-sedan/RearAxle
+PASS: Condition edit invalidates even without revision: rally-sedan/RearAxle
+PASS: Failed component discounts part/assembly: rally-sedan/RearAxle
+PASS: Keeping pack excludes actual children and value: rally-sedan/RearAxle
+PASS: Required kept hardware affects completeness: rally-sedan/RearAxle
+PASS: Partial retained quote validates: rally-sedan/RearAxle
+PASS: Wear never improves quote: rally-sedan/FrontDriveshaft
+PASS: Condition edit invalidates even without revision: rally-sedan/FrontDriveshaft
+PASS: Failed component discounts part/assembly: rally-sedan/FrontDriveshaft
+PASS: Keeping pack excludes actual children and value: rally-sedan/FrontDriveshaft
+PASS: Required kept hardware affects completeness: rally-sedan/FrontDriveshaft
+PASS: Partial retained quote validates: rally-sedan/FrontDriveshaft
+PASS: Wear never improves quote: rally-sedan/RearDriveshaft
+PASS: Condition edit invalidates even without revision: rally-sedan/RearDriveshaft
+PASS: Failed component discounts part/assembly: rally-sedan/RearDriveshaft
+PASS: Keeping pack excludes actual children and value: rally-sedan/RearDriveshaft
+PASS: Required kept hardware affects completeness: rally-sedan/RearDriveshaft
+PASS: Partial retained quote validates: rally-sedan/RearDriveshaft
+PASS: Wear never improves quote: rally-sedan/FrontDifferential
+PASS: Condition edit invalidates even without revision: rally-sedan/FrontDifferential
+PASS: Failed component discounts part/assembly: rally-sedan/FrontDifferential
+PASS: Keeping pack excludes actual children and value: rally-sedan/FrontDifferential
+PASS: Required kept hardware affects completeness: rally-sedan/FrontDifferential
+PASS: Partial retained quote validates: rally-sedan/FrontDifferential
+PASS: Wear never improves quote: rally-sedan/RearDifferential
+PASS: Condition edit invalidates even without revision: rally-sedan/RearDifferential
+PASS: Failed component discounts part/assembly: rally-sedan/RearDifferential
+PASS: Keeping pack excludes actual children and value: rally-sedan/RearDifferential
+PASS: Required kept hardware affects completeness: rally-sedan/RearDifferential
+PASS: Partial retained quote validates: rally-sedan/RearDifferential
+PASS: Wear never improves quote: rally-sedan/TransferCase
+PASS: Condition edit invalidates even without revision: rally-sedan/TransferCase
+PASS: Failed component discounts part/assembly: rally-sedan/TransferCase
+PASS: Keeping pack excludes actual children and value: rally-sedan/TransferCase
+PASS: Required kept hardware affects completeness: rally-sedan/TransferCase
+PASS: Partial retained quote validates: rally-sedan/TransferCase
+PASS: Wear never improves quote: rally-sedan/Interior
+PASS: Condition edit invalidates even without revision: rally-sedan/Interior
+PASS: Failed component discounts part/assembly: rally-sedan/Interior
+PASS: Keeping pack excludes actual children and value: rally-sedan/Interior
+PASS: Optional removal does not invent incompleteness: rally-sedan/Interior
+PASS: Partial retained quote validates: rally-sedan/Interior
+PASS: Wear never improves quote: rally-sedan/Accessories
+PASS: Condition edit invalidates even without revision: rally-sedan/Accessories
+PASS: Failed component discounts part/assembly: rally-sedan/Accessories
+PASS: Keeping pack excludes actual children and value: rally-sedan/Accessories
+PASS: Optional removal does not invent incompleteness: rally-sedan/Accessories
+PASS: Partial retained quote validates: rally-sedan/Accessories
+PASS: Wear never improves quote: rally-sedan/RevLimiter
+PASS: Condition edit invalidates even without revision: rally-sedan/RevLimiter
+PASS: Failed component discounts part/assembly: rally-sedan/RevLimiter
+PASS: Keeping pack excludes actual children and value: rally-sedan/RevLimiter
+PASS: Optional removal does not invent incompleteness: rally-sedan/RevLimiter
+PASS: Partial retained quote validates: rally-sedan/RevLimiter
+PASS: Wear never improves quote: rally-sedan/TwoStep
+PASS: Condition edit invalidates even without revision: rally-sedan/TwoStep
+PASS: Failed component discounts part/assembly: rally-sedan/TwoStep
+PASS: Keeping pack excludes actual children and value: rally-sedan/TwoStep
+PASS: Optional removal does not invent incompleteness: rally-sedan/TwoStep
+PASS: Partial retained quote validates: rally-sedan/TwoStep
+PASS: Wear never improves quote: rally-sedan/Camshaft
+PASS: Condition edit invalidates even without revision: rally-sedan/Camshaft
+PASS: Failed component discounts part/assembly: rally-sedan/Camshaft
+PASS: Keeping pack excludes actual children and value: rally-sedan/Camshaft
+PASS: Required kept hardware affects completeness: rally-sedan/Camshaft
+PASS: Partial retained quote validates: rally-sedan/Camshaft
+PASS: Wear never improves quote: rally-sedan/ValveSprings
+PASS: Condition edit invalidates even without revision: rally-sedan/ValveSprings
+PASS: Failed component discounts part/assembly: rally-sedan/ValveSprings
+PASS: Single-element failure priced despite healthy aggregate: rally-sedan/ValveSprings
+PASS: Keeping pack excludes actual children and value: rally-sedan/ValveSprings
+PASS: Required kept hardware affects completeness: rally-sedan/ValveSprings
+PASS: Partial retained quote validates: rally-sedan/ValveSprings
+PASS: Wear never improves quote: rally-sedan/Valves
+PASS: Condition edit invalidates even without revision: rally-sedan/Valves
+PASS: Failed component discounts part/assembly: rally-sedan/Valves
+PASS: Single-element failure priced despite healthy aggregate: rally-sedan/Valves
+PASS: Keeping pack excludes actual children and value: rally-sedan/Valves
+PASS: Required kept hardware affects completeness: rally-sedan/Valves
+PASS: Partial retained quote validates: rally-sedan/Valves
+PASS: Wear never improves quote: rally-sedan/Followers
+PASS: Condition edit invalidates even without revision: rally-sedan/Followers
+PASS: Failed component discounts part/assembly: rally-sedan/Followers
+PASS: Single-element failure priced despite healthy aggregate: rally-sedan/Followers
+PASS: Keeping pack excludes actual children and value: rally-sedan/Followers
+PASS: Required kept hardware affects completeness: rally-sedan/Followers
+PASS: Partial retained quote validates: rally-sedan/Followers
+PASS: Wear never improves quote: rally-sedan/TimingDrive
+PASS: Condition edit invalidates even without revision: rally-sedan/TimingDrive
+PASS: Failed component discounts part/assembly: rally-sedan/TimingDrive
+PASS: Keeping pack excludes actual children and value: rally-sedan/TimingDrive
+PASS: Required kept hardware affects completeness: rally-sedan/TimingDrive
+PASS: Partial retained quote validates: rally-sedan/TimingDrive
+PASS: Wear never improves quote: rally-sedan/PistonRings
+PASS: Condition edit invalidates even without revision: rally-sedan/PistonRings
+PASS: Failed component discounts part/assembly: rally-sedan/PistonRings
+PASS: Single-element failure priced despite healthy aggregate: rally-sedan/PistonRings
+PASS: Keeping pack excludes actual children and value: rally-sedan/PistonRings
+PASS: Required kept hardware affects completeness: rally-sedan/PistonRings
+PASS: Partial retained quote validates: rally-sedan/PistonRings
+PASS: Wear never improves quote: rally-sedan/CylinderBlock
+PASS: Condition edit invalidates even without revision: rally-sedan/CylinderBlock
+PASS: Failed component discounts part/assembly: rally-sedan/CylinderBlock
+PASS: Keeping pack excludes actual children and value: rally-sedan/CylinderBlock
+PASS: Required kept hardware affects completeness: rally-sedan/CylinderBlock
+PASS: Partial retained quote validates: rally-sedan/CylinderBlock
+PASS: Wear never improves quote: rally-sedan/Bearings
+PASS: Condition edit invalidates even without revision: rally-sedan/Bearings
+PASS: Failed component discounts part/assembly: rally-sedan/Bearings
+PASS: Single-element failure priced despite healthy aggregate: rally-sedan/Bearings
+PASS: Keeping pack excludes actual children and value: rally-sedan/Bearings
+PASS: Required kept hardware affects completeness: rally-sedan/Bearings
+PASS: Partial retained quote validates: rally-sedan/Bearings
+PASS: Wear never improves quote: rally-sedan/ValveSeals
+PASS: Condition edit invalidates even without revision: rally-sedan/ValveSeals
+PASS: Failed component discounts part/assembly: rally-sedan/ValveSeals
+PASS: Single-element failure priced despite healthy aggregate: rally-sedan/ValveSeals
+PASS: Keeping pack excludes actual children and value: rally-sedan/ValveSeals
+PASS: Required kept hardware affects completeness: rally-sedan/ValveSeals
+PASS: Partial retained quote validates: rally-sedan/ValveSeals
+PASS: Wear never improves quote: rally-sedan/OilPan
+PASS: Condition edit invalidates even without revision: rally-sedan/OilPan
+PASS: Failed component discounts part/assembly: rally-sedan/OilPan
+PASS: Keeping pack excludes actual children and value: rally-sedan/OilPan
+PASS: Required kept hardware affects completeness: rally-sedan/OilPan
+PASS: Partial retained quote validates: rally-sedan/OilPan
+PASS: Wear never improves quote: rally-sedan/OilPump
+PASS: Condition edit invalidates even without revision: rally-sedan/OilPump
+PASS: Failed component discounts part/assembly: rally-sedan/OilPump
+PASS: Keeping pack excludes actual children and value: rally-sedan/OilPump
+PASS: Required kept hardware affects completeness: rally-sedan/OilPump
+PASS: Partial retained quote validates: rally-sedan/OilPump
+PASS: Wear never improves quote: rally-sedan/OilFilter
+PASS: Condition edit invalidates even without revision: rally-sedan/OilFilter
+PASS: Failed component discounts part/assembly: rally-sedan/OilFilter
+PASS: Keeping pack excludes actual children and value: rally-sedan/OilFilter
+PASS: Required kept hardware affects completeness: rally-sedan/OilFilter
+PASS: Partial retained quote validates: rally-sedan/OilFilter
+PASS: Wear never improves quote: rally-sedan/CoolantPump
+PASS: Condition edit invalidates even without revision: rally-sedan/CoolantPump
+PASS: Failed component discounts part/assembly: rally-sedan/CoolantPump
+PASS: Keeping pack excludes actual children and value: rally-sedan/CoolantPump
+PASS: Optional removal does not invent incompleteness: rally-sedan/CoolantPump
+PASS: Partial retained quote validates: rally-sedan/CoolantPump
+PASS: Wear never improves quote: rally-sedan/CoolingCap
+PASS: Condition edit invalidates even without revision: rally-sedan/CoolingCap
+PASS: Failed component discounts part/assembly: rally-sedan/CoolingCap
+PASS: Keeping pack excludes actual children and value: rally-sedan/CoolingCap
+PASS: Optional removal does not invent incompleteness: rally-sedan/CoolingCap
+PASS: Partial retained quote validates: rally-sedan/CoolingCap
+PASS: Wear never improves quote: rally-sedan/CoolingHoses
+PASS: Condition edit invalidates even without revision: rally-sedan/CoolingHoses
+PASS: Failed component discounts part/assembly: rally-sedan/CoolingHoses
+PASS: Keeping pack excludes actual children and value: rally-sedan/CoolingHoses
+PASS: Optional removal does not invent incompleteness: rally-sedan/CoolingHoses
+PASS: Partial retained quote validates: rally-sedan/CoolingHoses
+PASS: Use/abuse/reconditioning history changes price: rally-sedan
+PASS: Quote survives exact JSON reload: rally-sedan
+PASS: Transfer/detach invalidates old quote: rally-sedan
+PASS: Stored engine prices exact retained hardware equally: rally-sedan
+PASS: Kept engine excluded from chassis/incomplete car: rally-sedan
+PASS: Partial engine never credits missing pack: rally-sedan
+PASS: Loose inventory independently quoted: rally-sedan
+PASS: Empty engine identity creates no free core value: rally-sedan
+PASS: Quote/removal matrix preserves money and ownership: rally-sedan
+PASS: sport-coupe stock Car / enthusiast is complete and priced.
+PASS: Fresh quote validates: sport-coupe/Car/enthusiast
+PASS: Unique captured assets and explanations: sport-coupe/Car
+PASS: sport-coupe stock Chassis / enthusiast is complete and priced.
+PASS: Fresh quote validates: sport-coupe/Chassis/enthusiast
+PASS: Unique captured assets and explanations: sport-coupe/Chassis
+PASS: sport-coupe stock Engine / enthusiast is complete and priced.
+PASS: Fresh quote validates: sport-coupe/Engine/enthusiast
+PASS: Unique captured assets and explanations: sport-coupe/Engine
+PASS: sport-coupe stock Car / builder is complete and priced.
+PASS: Fresh quote validates: sport-coupe/Car/builder
+PASS: Unique captured assets and explanations: sport-coupe/Car
+PASS: sport-coupe stock Chassis / builder is complete and priced.
+PASS: Fresh quote validates: sport-coupe/Chassis/builder
+PASS: Unique captured assets and explanations: sport-coupe/Chassis
+PASS: sport-coupe stock Engine / builder is complete and priced.
+PASS: Fresh quote validates: sport-coupe/Engine/builder
+PASS: Unique captured assets and explanations: sport-coupe/Engine
+PASS: sport-coupe stock Car / wholesale is complete and priced.
+PASS: Fresh quote validates: sport-coupe/Car/wholesale
+PASS: Unique captured assets and explanations: sport-coupe/Car
+PASS: sport-coupe stock Chassis / wholesale is complete and priced.
+PASS: Fresh quote validates: sport-coupe/Chassis/wholesale
+PASS: Unique captured assets and explanations: sport-coupe/Chassis
+PASS: sport-coupe stock Engine / wholesale is complete and priced.
+PASS: Fresh quote validates: sport-coupe/Engine/wholesale
+PASS: Unique captured assets and explanations: sport-coupe/Engine
+PASS: sport-coupe stock Car / recycler is complete and priced.
+PASS: Fresh quote validates: sport-coupe/Car/recycler
+PASS: Unique captured assets and explanations: sport-coupe/Car
+PASS: sport-coupe stock Chassis / recycler is complete and priced.
+PASS: Fresh quote validates: sport-coupe/Chassis/recycler
+PASS: Unique captured assets and explanations: sport-coupe/Chassis
+PASS: sport-coupe stock Engine / recycler is complete and priced.
+PASS: Fresh quote validates: sport-coupe/Engine/recycler
+PASS: Unique captured assets and explanations: sport-coupe/Engine
+PASS: Engine and chassis exclusive trees partition whole build: sport-coupe
+PASS: Controlled engine offers both above and below identical loose-component total: sport-coupe
+PASS: All quote operations are nonmutating: sport-coupe
+PASS: Same-revision saved tune edit invalidates: sport-coupe
+PASS: Resource edit invalidates: sport-coupe
+PASS: Wear never improves quote: sport-coupe/Pistons
+PASS: Condition edit invalidates even without revision: sport-coupe/Pistons
+PASS: Failed component discounts part/assembly: sport-coupe/Pistons
+PASS: Single-element failure priced despite healthy aggregate: sport-coupe/Pistons
+PASS: Keeping pack excludes actual children and value: sport-coupe/Pistons
+PASS: Required kept hardware affects completeness: sport-coupe/Pistons
+PASS: Partial retained quote validates: sport-coupe/Pistons
+PASS: Wear never improves quote: sport-coupe/Rods
+PASS: Condition edit invalidates even without revision: sport-coupe/Rods
+PASS: Failed component discounts part/assembly: sport-coupe/Rods
+PASS: Single-element failure priced despite healthy aggregate: sport-coupe/Rods
+PASS: Keeping pack excludes actual children and value: sport-coupe/Rods
+PASS: Required kept hardware affects completeness: sport-coupe/Rods
+PASS: Partial retained quote validates: sport-coupe/Rods
+PASS: Wear never improves quote: sport-coupe/Crankshaft
+PASS: Condition edit invalidates even without revision: sport-coupe/Crankshaft
+PASS: Failed component discounts part/assembly: sport-coupe/Crankshaft
+PASS: Keeping pack excludes actual children and value: sport-coupe/Crankshaft
+PASS: Required kept hardware affects completeness: sport-coupe/Crankshaft
+PASS: Partial retained quote validates: sport-coupe/Crankshaft
+PASS: Wear never improves quote: sport-coupe/HeadIntake
+PASS: Condition edit invalidates even without revision: sport-coupe/HeadIntake
+PASS: Failed component discounts part/assembly: sport-coupe/HeadIntake
+PASS: Keeping pack excludes actual children and value: sport-coupe/HeadIntake
+PASS: Required kept hardware affects completeness: sport-coupe/HeadIntake
+PASS: Partial retained quote validates: sport-coupe/HeadIntake
+PASS: Wear never improves quote: sport-coupe/FuelSystem
+PASS: Condition edit invalidates even without revision: sport-coupe/FuelSystem
+PASS: Failed component discounts part/assembly: sport-coupe/FuelSystem
+PASS: Single-element failure priced despite healthy aggregate: sport-coupe/FuelSystem
+PASS: Keeping pack excludes actual children and value: sport-coupe/FuelSystem
+PASS: Required kept hardware affects completeness: sport-coupe/FuelSystem
+PASS: Partial retained quote validates: sport-coupe/FuelSystem
+PASS: Wear never improves quote: sport-coupe/Ignition
+PASS: Condition edit invalidates even without revision: sport-coupe/Ignition
+PASS: Failed component discounts part/assembly: sport-coupe/Ignition
+PASS: Single-element failure priced despite healthy aggregate: sport-coupe/Ignition
+PASS: Keeping pack excludes actual children and value: sport-coupe/Ignition
+PASS: Required kept hardware affects completeness: sport-coupe/Ignition
+PASS: Partial retained quote validates: sport-coupe/Ignition
+PASS: Wear never improves quote: sport-coupe/Cooling
+PASS: Condition edit invalidates even without revision: sport-coupe/Cooling
+PASS: Failed component discounts part/assembly: sport-coupe/Cooling
+PASS: Keeping pack excludes actual children and value: sport-coupe/Cooling
+PASS: Optional removal does not invent incompleteness: sport-coupe/Cooling
+PASS: Partial retained quote validates: sport-coupe/Cooling
+PASS: Wear never improves quote: sport-coupe/Induction
+PASS: Condition edit invalidates even without revision: sport-coupe/Induction
+PASS: Failed component discounts part/assembly: sport-coupe/Induction
+PASS: Keeping pack excludes actual children and value: sport-coupe/Induction
+PASS: Optional removal does not invent incompleteness: sport-coupe/Induction
+PASS: Partial retained quote validates: sport-coupe/Induction
+PASS: Wear never improves quote: sport-coupe/Exhaust
+PASS: Condition edit invalidates even without revision: sport-coupe/Exhaust
+PASS: Failed component discounts part/assembly: sport-coupe/Exhaust
+PASS: Keeping pack excludes actual children and value: sport-coupe/Exhaust
+PASS: Optional removal does not invent incompleteness: sport-coupe/Exhaust
+PASS: Partial retained quote validates: sport-coupe/Exhaust
+PASS: Wear never improves quote: sport-coupe/Clutch
+PASS: Condition edit invalidates even without revision: sport-coupe/Clutch
+PASS: Failed component discounts part/assembly: sport-coupe/Clutch
+PASS: Keeping pack excludes actual children and value: sport-coupe/Clutch
+PASS: Required kept hardware affects completeness: sport-coupe/Clutch
+PASS: Partial retained quote validates: sport-coupe/Clutch
+PASS: Wear never improves quote: sport-coupe/Flywheel
+PASS: Condition edit invalidates even without revision: sport-coupe/Flywheel
+PASS: Failed component discounts part/assembly: sport-coupe/Flywheel
+PASS: Keeping pack excludes actual children and value: sport-coupe/Flywheel
+PASS: Required kept hardware affects completeness: sport-coupe/Flywheel
+PASS: Partial retained quote validates: sport-coupe/Flywheel
+PASS: Wear never improves quote: sport-coupe/Gearbox
+PASS: Condition edit invalidates even without revision: sport-coupe/Gearbox
+PASS: Failed component discounts part/assembly: sport-coupe/Gearbox
+PASS: Keeping pack excludes actual children and value: sport-coupe/Gearbox
+PASS: Required kept hardware affects completeness: sport-coupe/Gearbox
+PASS: Partial retained quote validates: sport-coupe/Gearbox
+PASS: Wear never improves quote: sport-coupe/Differential
+PASS: Condition edit invalidates even without revision: sport-coupe/Differential
+PASS: Failed component discounts part/assembly: sport-coupe/Differential
+PASS: Keeping pack excludes actual children and value: sport-coupe/Differential
+PASS: Required kept hardware affects completeness: sport-coupe/Differential
+PASS: Partial retained quote validates: sport-coupe/Differential
+PASS: Wear never improves quote: sport-coupe/Wheels
+PASS: Condition edit invalidates even without revision: sport-coupe/Wheels
+PASS: Failed component discounts part/assembly: sport-coupe/Wheels
+PASS: Keeping pack excludes actual children and value: sport-coupe/Wheels
+PASS: Required kept hardware affects completeness: sport-coupe/Wheels
+PASS: Partial retained quote validates: sport-coupe/Wheels
+PASS: Wear never improves quote: sport-coupe/Tires
+PASS: Condition edit invalidates even without revision: sport-coupe/Tires
+PASS: Failed component discounts part/assembly: sport-coupe/Tires
+PASS: Keeping pack excludes actual children and value: sport-coupe/Tires
+PASS: Required kept hardware affects completeness: sport-coupe/Tires
+PASS: Partial retained quote validates: sport-coupe/Tires
+PASS: Wear never improves quote: sport-coupe/Brakes
+PASS: Condition edit invalidates even without revision: sport-coupe/Brakes
+PASS: Failed component discounts part/assembly: sport-coupe/Brakes
+PASS: Keeping pack excludes actual children and value: sport-coupe/Brakes
+PASS: Required kept hardware affects completeness: sport-coupe/Brakes
+PASS: Partial retained quote validates: sport-coupe/Brakes
+PASS: Wear never improves quote: sport-coupe/Body
+PASS: Condition edit invalidates even without revision: sport-coupe/Body
+PASS: Failed component discounts part/assembly: sport-coupe/Body
+PASS: Keeping pack excludes actual children and value: sport-coupe/Body
+PASS: Required kept hardware affects completeness: sport-coupe/Body
+PASS: Partial retained quote validates: sport-coupe/Body
+PASS: Wear never improves quote: sport-coupe/Controls
+PASS: Condition edit invalidates even without revision: sport-coupe/Controls
+PASS: Failed component discounts part/assembly: sport-coupe/Controls
+PASS: Keeping pack excludes actual children and value: sport-coupe/Controls
+PASS: Required kept hardware affects completeness: sport-coupe/Controls
+PASS: Partial retained quote validates: sport-coupe/Controls
+PASS: Wear never improves quote: sport-coupe/Driveshaft
+PASS: Condition edit invalidates even without revision: sport-coupe/Driveshaft
+PASS: Failed component discounts part/assembly: sport-coupe/Driveshaft
+PASS: Keeping pack excludes actual children and value: sport-coupe/Driveshaft
+PASS: Required kept hardware affects completeness: sport-coupe/Driveshaft
+PASS: Partial retained quote validates: sport-coupe/Driveshaft
+PASS: Wear never improves quote: sport-coupe/RearAxle
+PASS: Condition edit invalidates even without revision: sport-coupe/RearAxle
+PASS: Failed component discounts part/assembly: sport-coupe/RearAxle
+PASS: Keeping pack excludes actual children and value: sport-coupe/RearAxle
+PASS: Required kept hardware affects completeness: sport-coupe/RearAxle
+PASS: Partial retained quote validates: sport-coupe/RearAxle
+PASS: Wear never improves quote: sport-coupe/Interior
+PASS: Condition edit invalidates even without revision: sport-coupe/Interior
+PASS: Failed component discounts part/assembly: sport-coupe/Interior
+PASS: Keeping pack excludes actual children and value: sport-coupe/Interior
+PASS: Optional removal does not invent incompleteness: sport-coupe/Interior
+PASS: Partial retained quote validates: sport-coupe/Interior
+PASS: Wear never improves quote: sport-coupe/Accessories
+PASS: Condition edit invalidates even without revision: sport-coupe/Accessories
+PASS: Failed component discounts part/assembly: sport-coupe/Accessories
+PASS: Keeping pack excludes actual children and value: sport-coupe/Accessories
+PASS: Optional removal does not invent incompleteness: sport-coupe/Accessories
+PASS: Partial retained quote validates: sport-coupe/Accessories
+PASS: Wear never improves quote: sport-coupe/RevLimiter
+PASS: Condition edit invalidates even without revision: sport-coupe/RevLimiter
+PASS: Failed component discounts part/assembly: sport-coupe/RevLimiter
+PASS: Keeping pack excludes actual children and value: sport-coupe/RevLimiter
+PASS: Optional removal does not invent incompleteness: sport-coupe/RevLimiter
+PASS: Partial retained quote validates: sport-coupe/RevLimiter
+PASS: Wear never improves quote: sport-coupe/TwoStep
+PASS: Condition edit invalidates even without revision: sport-coupe/TwoStep
+PASS: Failed component discounts part/assembly: sport-coupe/TwoStep
+PASS: Keeping pack excludes actual children and value: sport-coupe/TwoStep
+PASS: Optional removal does not invent incompleteness: sport-coupe/TwoStep
+PASS: Partial retained quote validates: sport-coupe/TwoStep
+PASS: Wear never improves quote: sport-coupe/Camshaft
+PASS: Condition edit invalidates even without revision: sport-coupe/Camshaft
+PASS: Failed component discounts part/assembly: sport-coupe/Camshaft
+PASS: Keeping pack excludes actual children and value: sport-coupe/Camshaft
+PASS: Required kept hardware affects completeness: sport-coupe/Camshaft
+PASS: Partial retained quote validates: sport-coupe/Camshaft
+PASS: Wear never improves quote: sport-coupe/ValveSprings
+PASS: Condition edit invalidates even without revision: sport-coupe/ValveSprings
+PASS: Failed component discounts part/assembly: sport-coupe/ValveSprings
+PASS: Single-element failure priced despite healthy aggregate: sport-coupe/ValveSprings
+PASS: Keeping pack excludes actual children and value: sport-coupe/ValveSprings
+PASS: Required kept hardware affects completeness: sport-coupe/ValveSprings
+PASS: Partial retained quote validates: sport-coupe/ValveSprings
+PASS: Wear never improves quote: sport-coupe/Valves
+PASS: Condition edit invalidates even without revision: sport-coupe/Valves
+PASS: Failed component discounts part/assembly: sport-coupe/Valves
+PASS: Single-element failure priced despite healthy aggregate: sport-coupe/Valves
+PASS: Keeping pack excludes actual children and value: sport-coupe/Valves
+PASS: Required kept hardware affects completeness: sport-coupe/Valves
+PASS: Partial retained quote validates: sport-coupe/Valves
+PASS: Wear never improves quote: sport-coupe/Followers
+PASS: Condition edit invalidates even without revision: sport-coupe/Followers
+PASS: Failed component discounts part/assembly: sport-coupe/Followers
+PASS: Single-element failure priced despite healthy aggregate: sport-coupe/Followers
+PASS: Keeping pack excludes actual children and value: sport-coupe/Followers
+PASS: Required kept hardware affects completeness: sport-coupe/Followers
+PASS: Partial retained quote validates: sport-coupe/Followers
+PASS: Wear never improves quote: sport-coupe/TimingDrive
+PASS: Condition edit invalidates even without revision: sport-coupe/TimingDrive
+PASS: Failed component discounts part/assembly: sport-coupe/TimingDrive
+PASS: Keeping pack excludes actual children and value: sport-coupe/TimingDrive
+PASS: Required kept hardware affects completeness: sport-coupe/TimingDrive
+PASS: Partial retained quote validates: sport-coupe/TimingDrive
+PASS: Wear never improves quote: sport-coupe/PistonRings
+PASS: Condition edit invalidates even without revision: sport-coupe/PistonRings
+PASS: Failed component discounts part/assembly: sport-coupe/PistonRings
+PASS: Single-element failure priced despite healthy aggregate: sport-coupe/PistonRings
+PASS: Keeping pack excludes actual children and value: sport-coupe/PistonRings
+PASS: Required kept hardware affects completeness: sport-coupe/PistonRings
+PASS: Partial retained quote validates: sport-coupe/PistonRings
+PASS: Wear never improves quote: sport-coupe/CylinderBlock
+PASS: Condition edit invalidates even without revision: sport-coupe/CylinderBlock
+PASS: Failed component discounts part/assembly: sport-coupe/CylinderBlock
+PASS: Keeping pack excludes actual children and value: sport-coupe/CylinderBlock
+PASS: Required kept hardware affects completeness: sport-coupe/CylinderBlock
+PASS: Partial retained quote validates: sport-coupe/CylinderBlock
+PASS: Wear never improves quote: sport-coupe/Bearings
+PASS: Condition edit invalidates even without revision: sport-coupe/Bearings
+PASS: Failed component discounts part/assembly: sport-coupe/Bearings
+PASS: Single-element failure priced despite healthy aggregate: sport-coupe/Bearings
+PASS: Keeping pack excludes actual children and value: sport-coupe/Bearings
+PASS: Required kept hardware affects completeness: sport-coupe/Bearings
+PASS: Partial retained quote validates: sport-coupe/Bearings
+PASS: Wear never improves quote: sport-coupe/ValveSeals
+PASS: Condition edit invalidates even without revision: sport-coupe/ValveSeals
+PASS: Failed component discounts part/assembly: sport-coupe/ValveSeals
+PASS: Single-element failure priced despite healthy aggregate: sport-coupe/ValveSeals
+PASS: Keeping pack excludes actual children and value: sport-coupe/ValveSeals
+PASS: Required kept hardware affects completeness: sport-coupe/ValveSeals
+PASS: Partial retained quote validates: sport-coupe/ValveSeals
+PASS: Wear never improves quote: sport-coupe/OilPan
+PASS: Condition edit invalidates even without revision: sport-coupe/OilPan
+PASS: Failed component discounts part/assembly: sport-coupe/OilPan
+PASS: Keeping pack excludes actual children and value: sport-coupe/OilPan
+PASS: Required kept hardware affects completeness: sport-coupe/OilPan
+PASS: Partial retained quote validates: sport-coupe/OilPan
+PASS: Wear never improves quote: sport-coupe/OilPump
+PASS: Condition edit invalidates even without revision: sport-coupe/OilPump
+PASS: Failed component discounts part/assembly: sport-coupe/OilPump
+PASS: Keeping pack excludes actual children and value: sport-coupe/OilPump
+PASS: Required kept hardware affects completeness: sport-coupe/OilPump
+PASS: Partial retained quote validates: sport-coupe/OilPump
+PASS: Wear never improves quote: sport-coupe/OilFilter
+PASS: Condition edit invalidates even without revision: sport-coupe/OilFilter
+PASS: Failed component discounts part/assembly: sport-coupe/OilFilter
+PASS: Keeping pack excludes actual children and value: sport-coupe/OilFilter
+PASS: Required kept hardware affects completeness: sport-coupe/OilFilter
+PASS: Partial retained quote validates: sport-coupe/OilFilter
+PASS: Wear never improves quote: sport-coupe/CoolantPump
+PASS: Condition edit invalidates even without revision: sport-coupe/CoolantPump
+PASS: Failed component discounts part/assembly: sport-coupe/CoolantPump
+PASS: Keeping pack excludes actual children and value: sport-coupe/CoolantPump
+PASS: Optional removal does not invent incompleteness: sport-coupe/CoolantPump
+PASS: Partial retained quote validates: sport-coupe/CoolantPump
+PASS: Wear never improves quote: sport-coupe/CoolingCap
+PASS: Condition edit invalidates even without revision: sport-coupe/CoolingCap
+PASS: Failed component discounts part/assembly: sport-coupe/CoolingCap
+PASS: Keeping pack excludes actual children and value: sport-coupe/CoolingCap
+PASS: Optional removal does not invent incompleteness: sport-coupe/CoolingCap
+PASS: Partial retained quote validates: sport-coupe/CoolingCap
+PASS: Wear never improves quote: sport-coupe/CoolingHoses
+PASS: Condition edit invalidates even without revision: sport-coupe/CoolingHoses
+PASS: Failed component discounts part/assembly: sport-coupe/CoolingHoses
+PASS: Keeping pack excludes actual children and value: sport-coupe/CoolingHoses
+PASS: Optional removal does not invent incompleteness: sport-coupe/CoolingHoses
+PASS: Partial retained quote validates: sport-coupe/CoolingHoses
+PASS: Use/abuse/reconditioning history changes price: sport-coupe
+PASS: Quote survives exact JSON reload: sport-coupe
+PASS: Transfer/detach invalidates old quote: sport-coupe
+PASS: Stored engine prices exact retained hardware equally: sport-coupe
+PASS: Kept engine excluded from chassis/incomplete car: sport-coupe
+PASS: Partial engine never credits missing pack: sport-coupe
+PASS: Loose inventory independently quoted: sport-coupe
+PASS: Empty engine identity creates no free core value: sport-coupe
+PASS: Quote/removal matrix preserves money and ownership: sport-coupe
+PASS: starter-hatch stock Car / enthusiast is complete and priced.
+PASS: Fresh quote validates: starter-hatch/Car/enthusiast
+PASS: Unique captured assets and explanations: starter-hatch/Car
+PASS: starter-hatch stock Chassis / enthusiast is complete and priced.
+PASS: Fresh quote validates: starter-hatch/Chassis/enthusiast
+PASS: Unique captured assets and explanations: starter-hatch/Chassis
+PASS: starter-hatch stock Engine / enthusiast is complete and priced.
+PASS: Fresh quote validates: starter-hatch/Engine/enthusiast
+PASS: Unique captured assets and explanations: starter-hatch/Engine
+PASS: starter-hatch stock Car / builder is complete and priced.
+PASS: Fresh quote validates: starter-hatch/Car/builder
+PASS: Unique captured assets and explanations: starter-hatch/Car
+PASS: starter-hatch stock Chassis / builder is complete and priced.
+PASS: Fresh quote validates: starter-hatch/Chassis/builder
+PASS: Unique captured assets and explanations: starter-hatch/Chassis
+PASS: starter-hatch stock Engine / builder is complete and priced.
+PASS: Fresh quote validates: starter-hatch/Engine/builder
+PASS: Unique captured assets and explanations: starter-hatch/Engine
+PASS: starter-hatch stock Car / wholesale is complete and priced.
+PASS: Fresh quote validates: starter-hatch/Car/wholesale
+PASS: Unique captured assets and explanations: starter-hatch/Car
+PASS: starter-hatch stock Chassis / wholesale is complete and priced.
+PASS: Fresh quote validates: starter-hatch/Chassis/wholesale
+PASS: Unique captured assets and explanations: starter-hatch/Chassis
+PASS: starter-hatch stock Engine / wholesale is complete and priced.
+PASS: Fresh quote validates: starter-hatch/Engine/wholesale
+PASS: Unique captured assets and explanations: starter-hatch/Engine
+PASS: starter-hatch stock Car / recycler is complete and priced.
+PASS: Fresh quote validates: starter-hatch/Car/recycler
+PASS: Unique captured assets and explanations: starter-hatch/Car
+PASS: starter-hatch stock Chassis / recycler is complete and priced.
+PASS: Fresh quote validates: starter-hatch/Chassis/recycler
+PASS: Unique captured assets and explanations: starter-hatch/Chassis
+PASS: starter-hatch stock Engine / recycler is complete and priced.
+PASS: Fresh quote validates: starter-hatch/Engine/recycler
+PASS: Unique captured assets and explanations: starter-hatch/Engine
+PASS: Engine and chassis exclusive trees partition whole build: starter-hatch
+PASS: Controlled engine offers both above and below identical loose-component total: starter-hatch
+PASS: All quote operations are nonmutating: starter-hatch
+PASS: Same-revision saved tune edit invalidates: starter-hatch
+PASS: Resource edit invalidates: starter-hatch
+PASS: Wear never improves quote: starter-hatch/Pistons
+PASS: Condition edit invalidates even without revision: starter-hatch/Pistons
+PASS: Failed component discounts part/assembly: starter-hatch/Pistons
+PASS: Single-element failure priced despite healthy aggregate: starter-hatch/Pistons
+PASS: Keeping pack excludes actual children and value: starter-hatch/Pistons
+PASS: Required kept hardware affects completeness: starter-hatch/Pistons
+PASS: Partial retained quote validates: starter-hatch/Pistons
+PASS: Wear never improves quote: starter-hatch/Rods
+PASS: Condition edit invalidates even without revision: starter-hatch/Rods
+PASS: Failed component discounts part/assembly: starter-hatch/Rods
+PASS: Single-element failure priced despite healthy aggregate: starter-hatch/Rods
+PASS: Keeping pack excludes actual children and value: starter-hatch/Rods
+PASS: Required kept hardware affects completeness: starter-hatch/Rods
+PASS: Partial retained quote validates: starter-hatch/Rods
+PASS: Wear never improves quote: starter-hatch/Crankshaft
+PASS: Condition edit invalidates even without revision: starter-hatch/Crankshaft
+PASS: Failed component discounts part/assembly: starter-hatch/Crankshaft
+PASS: Keeping pack excludes actual children and value: starter-hatch/Crankshaft
+PASS: Required kept hardware affects completeness: starter-hatch/Crankshaft
+PASS: Partial retained quote validates: starter-hatch/Crankshaft
+PASS: Wear never improves quote: starter-hatch/HeadIntake
+PASS: Condition edit invalidates even without revision: starter-hatch/HeadIntake
+PASS: Failed component discounts part/assembly: starter-hatch/HeadIntake
+PASS: Keeping pack excludes actual children and value: starter-hatch/HeadIntake
+PASS: Required kept hardware affects completeness: starter-hatch/HeadIntake
+PASS: Partial retained quote validates: starter-hatch/HeadIntake
+PASS: Wear never improves quote: starter-hatch/FuelSystem
+PASS: Condition edit invalidates even without revision: starter-hatch/FuelSystem
+PASS: Failed component discounts part/assembly: starter-hatch/FuelSystem
+PASS: Single-element failure priced despite healthy aggregate: starter-hatch/FuelSystem
+PASS: Keeping pack excludes actual children and value: starter-hatch/FuelSystem
+PASS: Required kept hardware affects completeness: starter-hatch/FuelSystem
+PASS: Partial retained quote validates: starter-hatch/FuelSystem
+PASS: Wear never improves quote: starter-hatch/Ignition
+PASS: Condition edit invalidates even without revision: starter-hatch/Ignition
+PASS: Failed component discounts part/assembly: starter-hatch/Ignition
+PASS: Single-element failure priced despite healthy aggregate: starter-hatch/Ignition
+PASS: Keeping pack excludes actual children and value: starter-hatch/Ignition
+PASS: Required kept hardware affects completeness: starter-hatch/Ignition
+PASS: Partial retained quote validates: starter-hatch/Ignition
+PASS: Wear never improves quote: starter-hatch/Cooling
+PASS: Condition edit invalidates even without revision: starter-hatch/Cooling
+PASS: Failed component discounts part/assembly: starter-hatch/Cooling
+PASS: Keeping pack excludes actual children and value: starter-hatch/Cooling
+PASS: Optional removal does not invent incompleteness: starter-hatch/Cooling
+PASS: Partial retained quote validates: starter-hatch/Cooling
+PASS: Wear never improves quote: starter-hatch/Induction
+PASS: Condition edit invalidates even without revision: starter-hatch/Induction
+PASS: Failed component discounts part/assembly: starter-hatch/Induction
+PASS: Keeping pack excludes actual children and value: starter-hatch/Induction
+PASS: Optional removal does not invent incompleteness: starter-hatch/Induction
+PASS: Partial retained quote validates: starter-hatch/Induction
+PASS: Wear never improves quote: starter-hatch/Exhaust
+PASS: Condition edit invalidates even without revision: starter-hatch/Exhaust
+PASS: Failed component discounts part/assembly: starter-hatch/Exhaust
+PASS: Keeping pack excludes actual children and value: starter-hatch/Exhaust
+PASS: Optional removal does not invent incompleteness: starter-hatch/Exhaust
+PASS: Partial retained quote validates: starter-hatch/Exhaust
+PASS: Wear never improves quote: starter-hatch/Clutch
+PASS: Condition edit invalidates even without revision: starter-hatch/Clutch
+PASS: Failed component discounts part/assembly: starter-hatch/Clutch
+PASS: Keeping pack excludes actual children and value: starter-hatch/Clutch
+PASS: Required kept hardware affects completeness: starter-hatch/Clutch
+PASS: Partial retained quote validates: starter-hatch/Clutch
+PASS: Wear never improves quote: starter-hatch/Flywheel
+PASS: Condition edit invalidates even without revision: starter-hatch/Flywheel
+PASS: Failed component discounts part/assembly: starter-hatch/Flywheel
+PASS: Keeping pack excludes actual children and value: starter-hatch/Flywheel
+PASS: Required kept hardware affects completeness: starter-hatch/Flywheel
+PASS: Partial retained quote validates: starter-hatch/Flywheel
+PASS: Wear never improves quote: starter-hatch/Gearbox
+PASS: Condition edit invalidates even without revision: starter-hatch/Gearbox
+PASS: Failed component discounts part/assembly: starter-hatch/Gearbox
+PASS: Keeping pack excludes actual children and value: starter-hatch/Gearbox
+PASS: Required kept hardware affects completeness: starter-hatch/Gearbox
+PASS: Partial retained quote validates: starter-hatch/Gearbox
+PASS: Wear never improves quote: starter-hatch/Differential
+PASS: Condition edit invalidates even without revision: starter-hatch/Differential
+PASS: Failed component discounts part/assembly: starter-hatch/Differential
+PASS: Keeping pack excludes actual children and value: starter-hatch/Differential
+PASS: Required kept hardware affects completeness: starter-hatch/Differential
+PASS: Partial retained quote validates: starter-hatch/Differential
+PASS: Wear never improves quote: starter-hatch/Wheels
+PASS: Condition edit invalidates even without revision: starter-hatch/Wheels
+PASS: Failed component discounts part/assembly: starter-hatch/Wheels
+PASS: Keeping pack excludes actual children and value: starter-hatch/Wheels
+PASS: Required kept hardware affects completeness: starter-hatch/Wheels
+PASS: Partial retained quote validates: starter-hatch/Wheels
+PASS: Wear never improves quote: starter-hatch/Tires
+PASS: Condition edit invalidates even without revision: starter-hatch/Tires
+PASS: Failed component discounts part/assembly: starter-hatch/Tires
+PASS: Keeping pack excludes actual children and value: starter-hatch/Tires
+PASS: Required kept hardware affects completeness: starter-hatch/Tires
+PASS: Partial retained quote validates: starter-hatch/Tires
+PASS: Wear never improves quote: starter-hatch/Brakes
+PASS: Condition edit invalidates even without revision: starter-hatch/Brakes
+PASS: Failed component discounts part/assembly: starter-hatch/Brakes
+PASS: Keeping pack excludes actual children and value: starter-hatch/Brakes
+PASS: Required kept hardware affects completeness: starter-hatch/Brakes
+PASS: Partial retained quote validates: starter-hatch/Brakes
+PASS: Wear never improves quote: starter-hatch/Body
+PASS: Condition edit invalidates even without revision: starter-hatch/Body
+PASS: Failed component discounts part/assembly: starter-hatch/Body
+PASS: Keeping pack excludes actual children and value: starter-hatch/Body
+PASS: Required kept hardware affects completeness: starter-hatch/Body
+PASS: Partial retained quote validates: starter-hatch/Body
+PASS: Wear never improves quote: starter-hatch/Controls
+PASS: Condition edit invalidates even without revision: starter-hatch/Controls
+PASS: Failed component discounts part/assembly: starter-hatch/Controls
+PASS: Keeping pack excludes actual children and value: starter-hatch/Controls
+PASS: Required kept hardware affects completeness: starter-hatch/Controls
+PASS: Partial retained quote validates: starter-hatch/Controls
+PASS: Wear never improves quote: starter-hatch/Driveshaft
+PASS: Condition edit invalidates even without revision: starter-hatch/Driveshaft
+PASS: Failed component discounts part/assembly: starter-hatch/Driveshaft
+PASS: Keeping pack excludes actual children and value: starter-hatch/Driveshaft
+PASS: Required kept hardware affects completeness: starter-hatch/Driveshaft
+PASS: Partial retained quote validates: starter-hatch/Driveshaft
+PASS: Wear never improves quote: starter-hatch/FrontAxle
+PASS: Condition edit invalidates even without revision: starter-hatch/FrontAxle
+PASS: Failed component discounts part/assembly: starter-hatch/FrontAxle
+PASS: Keeping pack excludes actual children and value: starter-hatch/FrontAxle
+PASS: Required kept hardware affects completeness: starter-hatch/FrontAxle
+PASS: Partial retained quote validates: starter-hatch/FrontAxle
+PASS: Wear never improves quote: starter-hatch/Interior
+PASS: Condition edit invalidates even without revision: starter-hatch/Interior
+PASS: Failed component discounts part/assembly: starter-hatch/Interior
+PASS: Keeping pack excludes actual children and value: starter-hatch/Interior
+PASS: Optional removal does not invent incompleteness: starter-hatch/Interior
+PASS: Partial retained quote validates: starter-hatch/Interior
+PASS: Wear never improves quote: starter-hatch/Accessories
+PASS: Condition edit invalidates even without revision: starter-hatch/Accessories
+PASS: Failed component discounts part/assembly: starter-hatch/Accessories
+PASS: Keeping pack excludes actual children and value: starter-hatch/Accessories
+PASS: Optional removal does not invent incompleteness: starter-hatch/Accessories
+PASS: Partial retained quote validates: starter-hatch/Accessories
+PASS: Wear never improves quote: starter-hatch/RevLimiter
+PASS: Condition edit invalidates even without revision: starter-hatch/RevLimiter
+PASS: Failed component discounts part/assembly: starter-hatch/RevLimiter
+PASS: Keeping pack excludes actual children and value: starter-hatch/RevLimiter
+PASS: Optional removal does not invent incompleteness: starter-hatch/RevLimiter
+PASS: Partial retained quote validates: starter-hatch/RevLimiter
+PASS: Wear never improves quote: starter-hatch/Camshaft
+PASS: Condition edit invalidates even without revision: starter-hatch/Camshaft
+PASS: Failed component discounts part/assembly: starter-hatch/Camshaft
+PASS: Keeping pack excludes actual children and value: starter-hatch/Camshaft
+PASS: Required kept hardware affects completeness: starter-hatch/Camshaft
+PASS: Partial retained quote validates: starter-hatch/Camshaft
+PASS: Wear never improves quote: starter-hatch/ValveSprings
+PASS: Condition edit invalidates even without revision: starter-hatch/ValveSprings
+PASS: Failed component discounts part/assembly: starter-hatch/ValveSprings
+PASS: Single-element failure priced despite healthy aggregate: starter-hatch/ValveSprings
+PASS: Keeping pack excludes actual children and value: starter-hatch/ValveSprings
+PASS: Required kept hardware affects completeness: starter-hatch/ValveSprings
+PASS: Partial retained quote validates: starter-hatch/ValveSprings
+PASS: Wear never improves quote: starter-hatch/Valves
+PASS: Condition edit invalidates even without revision: starter-hatch/Valves
+PASS: Failed component discounts part/assembly: starter-hatch/Valves
+PASS: Single-element failure priced despite healthy aggregate: starter-hatch/Valves
+PASS: Keeping pack excludes actual children and value: starter-hatch/Valves
+PASS: Required kept hardware affects completeness: starter-hatch/Valves
+PASS: Partial retained quote validates: starter-hatch/Valves
+PASS: Wear never improves quote: starter-hatch/Followers
+PASS: Condition edit invalidates even without revision: starter-hatch/Followers
+PASS: Failed component discounts part/assembly: starter-hatch/Followers
+PASS: Single-element failure priced despite healthy aggregate: starter-hatch/Followers
+PASS: Keeping pack excludes actual children and value: starter-hatch/Followers
+PASS: Required kept hardware affects completeness: starter-hatch/Followers
+PASS: Partial retained quote validates: starter-hatch/Followers
+PASS: Wear never improves quote: starter-hatch/TimingDrive
+PASS: Condition edit invalidates even without revision: starter-hatch/TimingDrive
+PASS: Failed component discounts part/assembly: starter-hatch/TimingDrive
+PASS: Keeping pack excludes actual children and value: starter-hatch/TimingDrive
+PASS: Required kept hardware affects completeness: starter-hatch/TimingDrive
+PASS: Partial retained quote validates: starter-hatch/TimingDrive
+PASS: Wear never improves quote: starter-hatch/PistonRings
+PASS: Condition edit invalidates even without revision: starter-hatch/PistonRings
+PASS: Failed component discounts part/assembly: starter-hatch/PistonRings
+PASS: Single-element failure priced despite healthy aggregate: starter-hatch/PistonRings
+PASS: Keeping pack excludes actual children and value: starter-hatch/PistonRings
+PASS: Required kept hardware affects completeness: starter-hatch/PistonRings
+PASS: Partial retained quote validates: starter-hatch/PistonRings
+PASS: Wear never improves quote: starter-hatch/CylinderBlock
+PASS: Condition edit invalidates even without revision: starter-hatch/CylinderBlock
+PASS: Failed component discounts part/assembly: starter-hatch/CylinderBlock
+PASS: Keeping pack excludes actual children and value: starter-hatch/CylinderBlock
+PASS: Required kept hardware affects completeness: starter-hatch/CylinderBlock
+PASS: Partial retained quote validates: starter-hatch/CylinderBlock
+PASS: Wear never improves quote: starter-hatch/Bearings
+PASS: Condition edit invalidates even without revision: starter-hatch/Bearings
+PASS: Failed component discounts part/assembly: starter-hatch/Bearings
+PASS: Single-element failure priced despite healthy aggregate: starter-hatch/Bearings
+PASS: Keeping pack excludes actual children and value: starter-hatch/Bearings
+PASS: Required kept hardware affects completeness: starter-hatch/Bearings
+PASS: Partial retained quote validates: starter-hatch/Bearings
+PASS: Wear never improves quote: starter-hatch/ValveSeals
+PASS: Condition edit invalidates even without revision: starter-hatch/ValveSeals
+PASS: Failed component discounts part/assembly: starter-hatch/ValveSeals
+PASS: Single-element failure priced despite healthy aggregate: starter-hatch/ValveSeals
+PASS: Keeping pack excludes actual children and value: starter-hatch/ValveSeals
+PASS: Required kept hardware affects completeness: starter-hatch/ValveSeals
+PASS: Partial retained quote validates: starter-hatch/ValveSeals
+PASS: Wear never improves quote: starter-hatch/OilPan
+PASS: Condition edit invalidates even without revision: starter-hatch/OilPan
+PASS: Failed component discounts part/assembly: starter-hatch/OilPan
+PASS: Keeping pack excludes actual children and value: starter-hatch/OilPan
+PASS: Required kept hardware affects completeness: starter-hatch/OilPan
+PASS: Partial retained quote validates: starter-hatch/OilPan
+PASS: Wear never improves quote: starter-hatch/OilPump
+PASS: Condition edit invalidates even without revision: starter-hatch/OilPump
+PASS: Failed component discounts part/assembly: starter-hatch/OilPump
+PASS: Keeping pack excludes actual children and value: starter-hatch/OilPump
+PASS: Required kept hardware affects completeness: starter-hatch/OilPump
+PASS: Partial retained quote validates: starter-hatch/OilPump
+PASS: Wear never improves quote: starter-hatch/OilFilter
+PASS: Condition edit invalidates even without revision: starter-hatch/OilFilter
+PASS: Failed component discounts part/assembly: starter-hatch/OilFilter
+PASS: Keeping pack excludes actual children and value: starter-hatch/OilFilter
+PASS: Required kept hardware affects completeness: starter-hatch/OilFilter
+PASS: Partial retained quote validates: starter-hatch/OilFilter
+PASS: Wear never improves quote: starter-hatch/CoolantPump
+PASS: Condition edit invalidates even without revision: starter-hatch/CoolantPump
+PASS: Failed component discounts part/assembly: starter-hatch/CoolantPump
+PASS: Keeping pack excludes actual children and value: starter-hatch/CoolantPump
+PASS: Optional removal does not invent incompleteness: starter-hatch/CoolantPump
+PASS: Partial retained quote validates: starter-hatch/CoolantPump
+PASS: Wear never improves quote: starter-hatch/CoolingCap
+PASS: Condition edit invalidates even without revision: starter-hatch/CoolingCap
+PASS: Failed component discounts part/assembly: starter-hatch/CoolingCap
+PASS: Keeping pack excludes actual children and value: starter-hatch/CoolingCap
+PASS: Optional removal does not invent incompleteness: starter-hatch/CoolingCap
+PASS: Partial retained quote validates: starter-hatch/CoolingCap
+PASS: Wear never improves quote: starter-hatch/CoolingHoses
+PASS: Condition edit invalidates even without revision: starter-hatch/CoolingHoses
+PASS: Failed component discounts part/assembly: starter-hatch/CoolingHoses
+PASS: Keeping pack excludes actual children and value: starter-hatch/CoolingHoses
+PASS: Optional removal does not invent incompleteness: starter-hatch/CoolingHoses
+PASS: Partial retained quote validates: starter-hatch/CoolingHoses
+PASS: Use/abuse/reconditioning history changes price: starter-hatch
+PASS: Quote survives exact JSON reload: starter-hatch
+PASS: Transfer/detach invalidates old quote: starter-hatch
+PASS: Stored engine prices exact retained hardware equally: starter-hatch
+PASS: Kept engine excluded from chassis/incomplete car: starter-hatch
+PASS: Partial engine never credits missing pack: starter-hatch
+PASS: Loose inventory independently quoted: starter-hatch
+PASS: Empty engine identity creates no free core value: starter-hatch
+PASS: Quote/removal matrix preserves money and ownership: starter-hatch
+PASS: super-v8 stock Car / enthusiast is complete and priced.
+PASS: Fresh quote validates: super-v8/Car/enthusiast
+PASS: Unique captured assets and explanations: super-v8/Car
+PASS: super-v8 stock Chassis / enthusiast is complete and priced.
+PASS: Fresh quote validates: super-v8/Chassis/enthusiast
+PASS: Unique captured assets and explanations: super-v8/Chassis
+PASS: super-v8 stock Engine / enthusiast is complete and priced.
+PASS: Fresh quote validates: super-v8/Engine/enthusiast
+PASS: Unique captured assets and explanations: super-v8/Engine
+PASS: super-v8 stock Car / builder is complete and priced.
+PASS: Fresh quote validates: super-v8/Car/builder
+PASS: Unique captured assets and explanations: super-v8/Car
+PASS: super-v8 stock Chassis / builder is complete and priced.
+PASS: Fresh quote validates: super-v8/Chassis/builder
+PASS: Unique captured assets and explanations: super-v8/Chassis
+PASS: super-v8 stock Engine / builder is complete and priced.
+PASS: Fresh quote validates: super-v8/Engine/builder
+PASS: Unique captured assets and explanations: super-v8/Engine
+PASS: super-v8 stock Car / wholesale is complete and priced.
+PASS: Fresh quote validates: super-v8/Car/wholesale
+PASS: Unique captured assets and explanations: super-v8/Car
+PASS: super-v8 stock Chassis / wholesale is complete and priced.
+PASS: Fresh quote validates: super-v8/Chassis/wholesale
+PASS: Unique captured assets and explanations: super-v8/Chassis
+PASS: super-v8 stock Engine / wholesale is complete and priced.
+PASS: Fresh quote validates: super-v8/Engine/wholesale
+PASS: Unique captured assets and explanations: super-v8/Engine
+PASS: super-v8 stock Car / recycler is complete and priced.
+PASS: Fresh quote validates: super-v8/Car/recycler
+PASS: Unique captured assets and explanations: super-v8/Car
+PASS: super-v8 stock Chassis / recycler is complete and priced.
+PASS: Fresh quote validates: super-v8/Chassis/recycler
+PASS: Unique captured assets and explanations: super-v8/Chassis
+PASS: super-v8 stock Engine / recycler is complete and priced.
+PASS: Fresh quote validates: super-v8/Engine/recycler
+PASS: Unique captured assets and explanations: super-v8/Engine
+PASS: Engine and chassis exclusive trees partition whole build: super-v8
+PASS: Controlled engine offers both above and below identical loose-component total: super-v8
+PASS: All quote operations are nonmutating: super-v8
+PASS: Same-revision saved tune edit invalidates: super-v8
+PASS: Resource edit invalidates: super-v8
+PASS: Wear never improves quote: super-v8/Pistons
+PASS: Condition edit invalidates even without revision: super-v8/Pistons
+PASS: Failed component discounts part/assembly: super-v8/Pistons
+PASS: Single-element failure priced despite healthy aggregate: super-v8/Pistons
+PASS: Keeping pack excludes actual children and value: super-v8/Pistons
+PASS: Required kept hardware affects completeness: super-v8/Pistons
+PASS: Partial retained quote validates: super-v8/Pistons
+PASS: Wear never improves quote: super-v8/Rods
+PASS: Condition edit invalidates even without revision: super-v8/Rods
+PASS: Failed component discounts part/assembly: super-v8/Rods
+PASS: Single-element failure priced despite healthy aggregate: super-v8/Rods
+PASS: Keeping pack excludes actual children and value: super-v8/Rods
+PASS: Required kept hardware affects completeness: super-v8/Rods
+PASS: Partial retained quote validates: super-v8/Rods
+PASS: Wear never improves quote: super-v8/Crankshaft
+PASS: Condition edit invalidates even without revision: super-v8/Crankshaft
+PASS: Failed component discounts part/assembly: super-v8/Crankshaft
+PASS: Keeping pack excludes actual children and value: super-v8/Crankshaft
+PASS: Required kept hardware affects completeness: super-v8/Crankshaft
+PASS: Partial retained quote validates: super-v8/Crankshaft
+PASS: Wear never improves quote: super-v8/HeadIntake
+PASS: Condition edit invalidates even without revision: super-v8/HeadIntake
+PASS: Failed component discounts part/assembly: super-v8/HeadIntake
+PASS: Keeping pack excludes actual children and value: super-v8/HeadIntake
+PASS: Required kept hardware affects completeness: super-v8/HeadIntake
+PASS: Partial retained quote validates: super-v8/HeadIntake
+PASS: Wear never improves quote: super-v8/FuelSystem
+PASS: Condition edit invalidates even without revision: super-v8/FuelSystem
+PASS: Failed component discounts part/assembly: super-v8/FuelSystem
+PASS: Single-element failure priced despite healthy aggregate: super-v8/FuelSystem
+PASS: Keeping pack excludes actual children and value: super-v8/FuelSystem
+PASS: Required kept hardware affects completeness: super-v8/FuelSystem
+PASS: Partial retained quote validates: super-v8/FuelSystem
+PASS: Wear never improves quote: super-v8/Ignition
+PASS: Condition edit invalidates even without revision: super-v8/Ignition
+PASS: Failed component discounts part/assembly: super-v8/Ignition
+PASS: Single-element failure priced despite healthy aggregate: super-v8/Ignition
+PASS: Keeping pack excludes actual children and value: super-v8/Ignition
+PASS: Required kept hardware affects completeness: super-v8/Ignition
+PASS: Partial retained quote validates: super-v8/Ignition
+PASS: Wear never improves quote: super-v8/Cooling
+PASS: Condition edit invalidates even without revision: super-v8/Cooling
+PASS: Failed component discounts part/assembly: super-v8/Cooling
+PASS: Keeping pack excludes actual children and value: super-v8/Cooling
+PASS: Optional removal does not invent incompleteness: super-v8/Cooling
+PASS: Partial retained quote validates: super-v8/Cooling
+PASS: Wear never improves quote: super-v8/Induction
+PASS: Condition edit invalidates even without revision: super-v8/Induction
+PASS: Failed component discounts part/assembly: super-v8/Induction
+PASS: Keeping pack excludes actual children and value: super-v8/Induction
+PASS: Optional removal does not invent incompleteness: super-v8/Induction
+PASS: Partial retained quote validates: super-v8/Induction
+PASS: Wear never improves quote: super-v8/Exhaust
+PASS: Condition edit invalidates even without revision: super-v8/Exhaust
+PASS: Failed component discounts part/assembly: super-v8/Exhaust
+PASS: Keeping pack excludes actual children and value: super-v8/Exhaust
+PASS: Optional removal does not invent incompleteness: super-v8/Exhaust
+PASS: Partial retained quote validates: super-v8/Exhaust
+PASS: Wear never improves quote: super-v8/Clutch
+PASS: Condition edit invalidates even without revision: super-v8/Clutch
+PASS: Failed component discounts part/assembly: super-v8/Clutch
+PASS: Keeping pack excludes actual children and value: super-v8/Clutch
+PASS: Optional removal does not invent incompleteness: super-v8/Clutch
+PASS: Partial retained quote validates: super-v8/Clutch
+PASS: Wear never improves quote: super-v8/Flywheel
+PASS: Condition edit invalidates even without revision: super-v8/Flywheel
+PASS: Failed component discounts part/assembly: super-v8/Flywheel
+PASS: Keeping pack excludes actual children and value: super-v8/Flywheel
+PASS: Required kept hardware affects completeness: super-v8/Flywheel
+PASS: Partial retained quote validates: super-v8/Flywheel
+PASS: Wear never improves quote: super-v8/Gearbox
+PASS: Condition edit invalidates even without revision: super-v8/Gearbox
+PASS: Failed component discounts part/assembly: super-v8/Gearbox
+PASS: Keeping pack excludes actual children and value: super-v8/Gearbox
+PASS: Required kept hardware affects completeness: super-v8/Gearbox
+PASS: Partial retained quote validates: super-v8/Gearbox
+PASS: Wear never improves quote: super-v8/Differential
+PASS: Condition edit invalidates even without revision: super-v8/Differential
+PASS: Failed component discounts part/assembly: super-v8/Differential
+PASS: Keeping pack excludes actual children and value: super-v8/Differential
+PASS: Required kept hardware affects completeness: super-v8/Differential
+PASS: Partial retained quote validates: super-v8/Differential
+PASS: Wear never improves quote: super-v8/Wheels
+PASS: Condition edit invalidates even without revision: super-v8/Wheels
+PASS: Failed component discounts part/assembly: super-v8/Wheels
+PASS: Keeping pack excludes actual children and value: super-v8/Wheels
+PASS: Required kept hardware affects completeness: super-v8/Wheels
+PASS: Partial retained quote validates: super-v8/Wheels
+PASS: Wear never improves quote: super-v8/Tires
+PASS: Condition edit invalidates even without revision: super-v8/Tires
+PASS: Failed component discounts part/assembly: super-v8/Tires
+PASS: Keeping pack excludes actual children and value: super-v8/Tires
+PASS: Required kept hardware affects completeness: super-v8/Tires
+PASS: Partial retained quote validates: super-v8/Tires
+PASS: Wear never improves quote: super-v8/Brakes
+PASS: Condition edit invalidates even without revision: super-v8/Brakes
+PASS: Failed component discounts part/assembly: super-v8/Brakes
+PASS: Keeping pack excludes actual children and value: super-v8/Brakes
+PASS: Required kept hardware affects completeness: super-v8/Brakes
+PASS: Partial retained quote validates: super-v8/Brakes
+PASS: Wear never improves quote: super-v8/Body
+PASS: Condition edit invalidates even without revision: super-v8/Body
+PASS: Failed component discounts part/assembly: super-v8/Body
+PASS: Keeping pack excludes actual children and value: super-v8/Body
+PASS: Required kept hardware affects completeness: super-v8/Body
+PASS: Partial retained quote validates: super-v8/Body
+PASS: Wear never improves quote: super-v8/Controls
+PASS: Condition edit invalidates even without revision: super-v8/Controls
+PASS: Failed component discounts part/assembly: super-v8/Controls
+PASS: Keeping pack excludes actual children and value: super-v8/Controls
+PASS: Required kept hardware affects completeness: super-v8/Controls
+PASS: Partial retained quote validates: super-v8/Controls
+PASS: Wear never improves quote: super-v8/Driveshaft
+PASS: Condition edit invalidates even without revision: super-v8/Driveshaft
+PASS: Failed component discounts part/assembly: super-v8/Driveshaft
+PASS: Keeping pack excludes actual children and value: super-v8/Driveshaft
+PASS: Required kept hardware affects completeness: super-v8/Driveshaft
+PASS: Partial retained quote validates: super-v8/Driveshaft
+PASS: Wear never improves quote: super-v8/RearAxle
+PASS: Condition edit invalidates even without revision: super-v8/RearAxle
+PASS: Failed component discounts part/assembly: super-v8/RearAxle
+PASS: Keeping pack excludes actual children and value: super-v8/RearAxle
+PASS: Required kept hardware affects completeness: super-v8/RearAxle
+PASS: Partial retained quote validates: super-v8/RearAxle
+PASS: Wear never improves quote: super-v8/Interior
+PASS: Condition edit invalidates even without revision: super-v8/Interior
+PASS: Failed component discounts part/assembly: super-v8/Interior
+PASS: Keeping pack excludes actual children and value: super-v8/Interior
+PASS: Optional removal does not invent incompleteness: super-v8/Interior
+PASS: Partial retained quote validates: super-v8/Interior
+PASS: Wear never improves quote: super-v8/Accessories
+PASS: Condition edit invalidates even without revision: super-v8/Accessories
+PASS: Failed component discounts part/assembly: super-v8/Accessories
+PASS: Keeping pack excludes actual children and value: super-v8/Accessories
+PASS: Optional removal does not invent incompleteness: super-v8/Accessories
+PASS: Partial retained quote validates: super-v8/Accessories
+PASS: Wear never improves quote: super-v8/RevLimiter
+PASS: Condition edit invalidates even without revision: super-v8/RevLimiter
+PASS: Failed component discounts part/assembly: super-v8/RevLimiter
+PASS: Keeping pack excludes actual children and value: super-v8/RevLimiter
+PASS: Optional removal does not invent incompleteness: super-v8/RevLimiter
+PASS: Partial retained quote validates: super-v8/RevLimiter
+PASS: Wear never improves quote: super-v8/TwoStep
+PASS: Condition edit invalidates even without revision: super-v8/TwoStep
+PASS: Failed component discounts part/assembly: super-v8/TwoStep
+PASS: Keeping pack excludes actual children and value: super-v8/TwoStep
+PASS: Optional removal does not invent incompleteness: super-v8/TwoStep
+PASS: Partial retained quote validates: super-v8/TwoStep
+PASS: Wear never improves quote: super-v8/Camshaft
+PASS: Condition edit invalidates even without revision: super-v8/Camshaft
+PASS: Failed component discounts part/assembly: super-v8/Camshaft
+PASS: Keeping pack excludes actual children and value: super-v8/Camshaft
+PASS: Required kept hardware affects completeness: super-v8/Camshaft
+PASS: Partial retained quote validates: super-v8/Camshaft
+PASS: Wear never improves quote: super-v8/ValveSprings
+PASS: Condition edit invalidates even without revision: super-v8/ValveSprings
+PASS: Failed component discounts part/assembly: super-v8/ValveSprings
+PASS: Single-element failure priced despite healthy aggregate: super-v8/ValveSprings
+PASS: Keeping pack excludes actual children and value: super-v8/ValveSprings
+PASS: Required kept hardware affects completeness: super-v8/ValveSprings
+PASS: Partial retained quote validates: super-v8/ValveSprings
+PASS: Wear never improves quote: super-v8/Valves
+PASS: Condition edit invalidates even without revision: super-v8/Valves
+PASS: Failed component discounts part/assembly: super-v8/Valves
+PASS: Single-element failure priced despite healthy aggregate: super-v8/Valves
+PASS: Keeping pack excludes actual children and value: super-v8/Valves
+PASS: Required kept hardware affects completeness: super-v8/Valves
+PASS: Partial retained quote validates: super-v8/Valves
+PASS: Wear never improves quote: super-v8/Followers
+PASS: Condition edit invalidates even without revision: super-v8/Followers
+PASS: Failed component discounts part/assembly: super-v8/Followers
+PASS: Single-element failure priced despite healthy aggregate: super-v8/Followers
+PASS: Keeping pack excludes actual children and value: super-v8/Followers
+PASS: Required kept hardware affects completeness: super-v8/Followers
+PASS: Partial retained quote validates: super-v8/Followers
+PASS: Wear never improves quote: super-v8/TimingDrive
+PASS: Condition edit invalidates even without revision: super-v8/TimingDrive
+PASS: Failed component discounts part/assembly: super-v8/TimingDrive
+PASS: Keeping pack excludes actual children and value: super-v8/TimingDrive
+PASS: Required kept hardware affects completeness: super-v8/TimingDrive
+PASS: Partial retained quote validates: super-v8/TimingDrive
+PASS: Wear never improves quote: super-v8/PistonRings
+PASS: Condition edit invalidates even without revision: super-v8/PistonRings
+PASS: Failed component discounts part/assembly: super-v8/PistonRings
+PASS: Single-element failure priced despite healthy aggregate: super-v8/PistonRings
+PASS: Keeping pack excludes actual children and value: super-v8/PistonRings
+PASS: Required kept hardware affects completeness: super-v8/PistonRings
+PASS: Partial retained quote validates: super-v8/PistonRings
+PASS: Wear never improves quote: super-v8/CylinderBlock
+PASS: Condition edit invalidates even without revision: super-v8/CylinderBlock
+PASS: Failed component discounts part/assembly: super-v8/CylinderBlock
+PASS: Keeping pack excludes actual children and value: super-v8/CylinderBlock
+PASS: Required kept hardware affects completeness: super-v8/CylinderBlock
+PASS: Partial retained quote validates: super-v8/CylinderBlock
+PASS: Wear never improves quote: super-v8/Bearings
+PASS: Condition edit invalidates even without revision: super-v8/Bearings
+PASS: Failed component discounts part/assembly: super-v8/Bearings
+PASS: Single-element failure priced despite healthy aggregate: super-v8/Bearings
+PASS: Keeping pack excludes actual children and value: super-v8/Bearings
+PASS: Required kept hardware affects completeness: super-v8/Bearings
+PASS: Partial retained quote validates: super-v8/Bearings
+PASS: Wear never improves quote: super-v8/ValveSeals
+PASS: Condition edit invalidates even without revision: super-v8/ValveSeals
+PASS: Failed component discounts part/assembly: super-v8/ValveSeals
+PASS: Single-element failure priced despite healthy aggregate: super-v8/ValveSeals
+PASS: Keeping pack excludes actual children and value: super-v8/ValveSeals
+PASS: Required kept hardware affects completeness: super-v8/ValveSeals
+PASS: Partial retained quote validates: super-v8/ValveSeals
+PASS: Wear never improves quote: super-v8/OilPan
+PASS: Condition edit invalidates even without revision: super-v8/OilPan
+PASS: Failed component discounts part/assembly: super-v8/OilPan
+PASS: Keeping pack excludes actual children and value: super-v8/OilPan
+PASS: Required kept hardware affects completeness: super-v8/OilPan
+PASS: Partial retained quote validates: super-v8/OilPan
+PASS: Wear never improves quote: super-v8/OilPump
+PASS: Condition edit invalidates even without revision: super-v8/OilPump
+PASS: Failed component discounts part/assembly: super-v8/OilPump
+PASS: Keeping pack excludes actual children and value: super-v8/OilPump
+PASS: Required kept hardware affects completeness: super-v8/OilPump
+PASS: Partial retained quote validates: super-v8/OilPump
+PASS: Wear never improves quote: super-v8/OilFilter
+PASS: Condition edit invalidates even without revision: super-v8/OilFilter
+PASS: Failed component discounts part/assembly: super-v8/OilFilter
+PASS: Keeping pack excludes actual children and value: super-v8/OilFilter
+PASS: Required kept hardware affects completeness: super-v8/OilFilter
+PASS: Partial retained quote validates: super-v8/OilFilter
+PASS: Wear never improves quote: super-v8/CoolantPump
+PASS: Condition edit invalidates even without revision: super-v8/CoolantPump
+PASS: Failed component discounts part/assembly: super-v8/CoolantPump
+PASS: Keeping pack excludes actual children and value: super-v8/CoolantPump
+PASS: Optional removal does not invent incompleteness: super-v8/CoolantPump
+PASS: Partial retained quote validates: super-v8/CoolantPump
+PASS: Wear never improves quote: super-v8/CoolingCap
+PASS: Condition edit invalidates even without revision: super-v8/CoolingCap
+PASS: Failed component discounts part/assembly: super-v8/CoolingCap
+PASS: Keeping pack excludes actual children and value: super-v8/CoolingCap
+PASS: Optional removal does not invent incompleteness: super-v8/CoolingCap
+PASS: Partial retained quote validates: super-v8/CoolingCap
+PASS: Wear never improves quote: super-v8/CoolingHoses
+PASS: Condition edit invalidates even without revision: super-v8/CoolingHoses
+PASS: Failed component discounts part/assembly: super-v8/CoolingHoses
+PASS: Keeping pack excludes actual children and value: super-v8/CoolingHoses
+PASS: Optional removal does not invent incompleteness: super-v8/CoolingHoses
+PASS: Partial retained quote validates: super-v8/CoolingHoses
+PASS: Use/abuse/reconditioning history changes price: super-v8
+PASS: Quote survives exact JSON reload: super-v8
+PASS: Transfer/detach invalidates old quote: super-v8
+PASS: Stored engine prices exact retained hardware equally: super-v8
+PASS: Kept engine excluded from chassis/incomplete car: super-v8
+PASS: Partial engine never credits missing pack: super-v8
+PASS: Loose inventory independently quoted: super-v8
+PASS: Empty engine identity creates no free core value: super-v8
+PASS: Quote/removal matrix preserves money and ownership: super-v8
+PASS: touring-six stock Car / enthusiast is complete and priced.
+PASS: Fresh quote validates: touring-six/Car/enthusiast
+PASS: Unique captured assets and explanations: touring-six/Car
+PASS: touring-six stock Chassis / enthusiast is complete and priced.
+PASS: Fresh quote validates: touring-six/Chassis/enthusiast
+PASS: Unique captured assets and explanations: touring-six/Chassis
+PASS: touring-six stock Engine / enthusiast is complete and priced.
+PASS: Fresh quote validates: touring-six/Engine/enthusiast
+PASS: Unique captured assets and explanations: touring-six/Engine
+PASS: touring-six stock Car / builder is complete and priced.
+PASS: Fresh quote validates: touring-six/Car/builder
+PASS: Unique captured assets and explanations: touring-six/Car
+PASS: touring-six stock Chassis / builder is complete and priced.
+PASS: Fresh quote validates: touring-six/Chassis/builder
+PASS: Unique captured assets and explanations: touring-six/Chassis
+PASS: touring-six stock Engine / builder is complete and priced.
+PASS: Fresh quote validates: touring-six/Engine/builder
+PASS: Unique captured assets and explanations: touring-six/Engine
+PASS: touring-six stock Car / wholesale is complete and priced.
+PASS: Fresh quote validates: touring-six/Car/wholesale
+PASS: Unique captured assets and explanations: touring-six/Car
+PASS: touring-six stock Chassis / wholesale is complete and priced.
+PASS: Fresh quote validates: touring-six/Chassis/wholesale
+PASS: Unique captured assets and explanations: touring-six/Chassis
+PASS: touring-six stock Engine / wholesale is complete and priced.
+PASS: Fresh quote validates: touring-six/Engine/wholesale
+PASS: Unique captured assets and explanations: touring-six/Engine
+PASS: touring-six stock Car / recycler is complete and priced.
+PASS: Fresh quote validates: touring-six/Car/recycler
+PASS: Unique captured assets and explanations: touring-six/Car
+PASS: touring-six stock Chassis / recycler is complete and priced.
+PASS: Fresh quote validates: touring-six/Chassis/recycler
+PASS: Unique captured assets and explanations: touring-six/Chassis
+PASS: touring-six stock Engine / recycler is complete and priced.
+PASS: Fresh quote validates: touring-six/Engine/recycler
+PASS: Unique captured assets and explanations: touring-six/Engine
+PASS: Engine and chassis exclusive trees partition whole build: touring-six
+PASS: Controlled engine offers both above and below identical loose-component total: touring-six
+PASS: All quote operations are nonmutating: touring-six
+PASS: Same-revision saved tune edit invalidates: touring-six
+PASS: Resource edit invalidates: touring-six
+PASS: Wear never improves quote: touring-six/Pistons
+PASS: Condition edit invalidates even without revision: touring-six/Pistons
+PASS: Failed component discounts part/assembly: touring-six/Pistons
+PASS: Single-element failure priced despite healthy aggregate: touring-six/Pistons
+PASS: Keeping pack excludes actual children and value: touring-six/Pistons
+PASS: Required kept hardware affects completeness: touring-six/Pistons
+PASS: Partial retained quote validates: touring-six/Pistons
+PASS: Wear never improves quote: touring-six/Rods
+PASS: Condition edit invalidates even without revision: touring-six/Rods
+PASS: Failed component discounts part/assembly: touring-six/Rods
+PASS: Single-element failure priced despite healthy aggregate: touring-six/Rods
+PASS: Keeping pack excludes actual children and value: touring-six/Rods
+PASS: Required kept hardware affects completeness: touring-six/Rods
+PASS: Partial retained quote validates: touring-six/Rods
+PASS: Wear never improves quote: touring-six/Crankshaft
+PASS: Condition edit invalidates even without revision: touring-six/Crankshaft
+PASS: Failed component discounts part/assembly: touring-six/Crankshaft
+PASS: Keeping pack excludes actual children and value: touring-six/Crankshaft
+PASS: Required kept hardware affects completeness: touring-six/Crankshaft
+PASS: Partial retained quote validates: touring-six/Crankshaft
+PASS: Wear never improves quote: touring-six/HeadIntake
+PASS: Condition edit invalidates even without revision: touring-six/HeadIntake
+PASS: Failed component discounts part/assembly: touring-six/HeadIntake
+PASS: Keeping pack excludes actual children and value: touring-six/HeadIntake
+PASS: Required kept hardware affects completeness: touring-six/HeadIntake
+PASS: Partial retained quote validates: touring-six/HeadIntake
+PASS: Wear never improves quote: touring-six/FuelSystem
+PASS: Condition edit invalidates even without revision: touring-six/FuelSystem
+PASS: Failed component discounts part/assembly: touring-six/FuelSystem
+PASS: Single-element failure priced despite healthy aggregate: touring-six/FuelSystem
+PASS: Keeping pack excludes actual children and value: touring-six/FuelSystem
+PASS: Required kept hardware affects completeness: touring-six/FuelSystem
+PASS: Partial retained quote validates: touring-six/FuelSystem
+PASS: Wear never improves quote: touring-six/Ignition
+PASS: Condition edit invalidates even without revision: touring-six/Ignition
+PASS: Failed component discounts part/assembly: touring-six/Ignition
+PASS: Single-element failure priced despite healthy aggregate: touring-six/Ignition
+PASS: Keeping pack excludes actual children and value: touring-six/Ignition
+PASS: Required kept hardware affects completeness: touring-six/Ignition
+PASS: Partial retained quote validates: touring-six/Ignition
+PASS: Wear never improves quote: touring-six/Cooling
+PASS: Condition edit invalidates even without revision: touring-six/Cooling
+PASS: Failed component discounts part/assembly: touring-six/Cooling
+PASS: Keeping pack excludes actual children and value: touring-six/Cooling
+PASS: Optional removal does not invent incompleteness: touring-six/Cooling
+PASS: Partial retained quote validates: touring-six/Cooling
+PASS: Wear never improves quote: touring-six/Induction
+PASS: Condition edit invalidates even without revision: touring-six/Induction
+PASS: Failed component discounts part/assembly: touring-six/Induction
+PASS: Keeping pack excludes actual children and value: touring-six/Induction
+PASS: Optional removal does not invent incompleteness: touring-six/Induction
+PASS: Partial retained quote validates: touring-six/Induction
+PASS: Wear never improves quote: touring-six/Exhaust
+PASS: Condition edit invalidates even without revision: touring-six/Exhaust
+PASS: Failed component discounts part/assembly: touring-six/Exhaust
+PASS: Keeping pack excludes actual children and value: touring-six/Exhaust
+PASS: Optional removal does not invent incompleteness: touring-six/Exhaust
+PASS: Partial retained quote validates: touring-six/Exhaust
+PASS: Wear never improves quote: touring-six/Clutch
+PASS: Condition edit invalidates even without revision: touring-six/Clutch
+PASS: Failed component discounts part/assembly: touring-six/Clutch
+PASS: Keeping pack excludes actual children and value: touring-six/Clutch
+PASS: Required kept hardware affects completeness: touring-six/Clutch
+PASS: Partial retained quote validates: touring-six/Clutch
+PASS: Wear never improves quote: touring-six/Flywheel
+PASS: Condition edit invalidates even without revision: touring-six/Flywheel
+PASS: Failed component discounts part/assembly: touring-six/Flywheel
+PASS: Keeping pack excludes actual children and value: touring-six/Flywheel
+PASS: Required kept hardware affects completeness: touring-six/Flywheel
+PASS: Partial retained quote validates: touring-six/Flywheel
+PASS: Wear never improves quote: touring-six/Gearbox
+PASS: Condition edit invalidates even without revision: touring-six/Gearbox
+PASS: Failed component discounts part/assembly: touring-six/Gearbox
+PASS: Keeping pack excludes actual children and value: touring-six/Gearbox
+PASS: Required kept hardware affects completeness: touring-six/Gearbox
+PASS: Partial retained quote validates: touring-six/Gearbox
+PASS: Wear never improves quote: touring-six/Differential
+PASS: Condition edit invalidates even without revision: touring-six/Differential
+PASS: Failed component discounts part/assembly: touring-six/Differential
+PASS: Keeping pack excludes actual children and value: touring-six/Differential
+PASS: Required kept hardware affects completeness: touring-six/Differential
+PASS: Partial retained quote validates: touring-six/Differential
+PASS: Wear never improves quote: touring-six/Wheels
+PASS: Condition edit invalidates even without revision: touring-six/Wheels
+PASS: Failed component discounts part/assembly: touring-six/Wheels
+PASS: Keeping pack excludes actual children and value: touring-six/Wheels
+PASS: Required kept hardware affects completeness: touring-six/Wheels
+PASS: Partial retained quote validates: touring-six/Wheels
+PASS: Wear never improves quote: touring-six/Tires
+PASS: Condition edit invalidates even without revision: touring-six/Tires
+PASS: Failed component discounts part/assembly: touring-six/Tires
+PASS: Keeping pack excludes actual children and value: touring-six/Tires
+PASS: Required kept hardware affects completeness: touring-six/Tires
+PASS: Partial retained quote validates: touring-six/Tires
+PASS: Wear never improves quote: touring-six/Brakes
+PASS: Condition edit invalidates even without revision: touring-six/Brakes
+PASS: Failed component discounts part/assembly: touring-six/Brakes
+PASS: Keeping pack excludes actual children and value: touring-six/Brakes
+PASS: Required kept hardware affects completeness: touring-six/Brakes
+PASS: Partial retained quote validates: touring-six/Brakes
+PASS: Wear never improves quote: touring-six/Body
+PASS: Condition edit invalidates even without revision: touring-six/Body
+PASS: Failed component discounts part/assembly: touring-six/Body
+PASS: Keeping pack excludes actual children and value: touring-six/Body
+PASS: Required kept hardware affects completeness: touring-six/Body
+PASS: Partial retained quote validates: touring-six/Body
+PASS: Wear never improves quote: touring-six/Controls
+PASS: Condition edit invalidates even without revision: touring-six/Controls
+PASS: Failed component discounts part/assembly: touring-six/Controls
+PASS: Keeping pack excludes actual children and value: touring-six/Controls
+PASS: Required kept hardware affects completeness: touring-six/Controls
+PASS: Partial retained quote validates: touring-six/Controls
+PASS: Wear never improves quote: touring-six/Driveshaft
+PASS: Condition edit invalidates even without revision: touring-six/Driveshaft
+PASS: Failed component discounts part/assembly: touring-six/Driveshaft
+PASS: Keeping pack excludes actual children and value: touring-six/Driveshaft
+PASS: Required kept hardware affects completeness: touring-six/Driveshaft
+PASS: Partial retained quote validates: touring-six/Driveshaft
+PASS: Wear never improves quote: touring-six/RearAxle
+PASS: Condition edit invalidates even without revision: touring-six/RearAxle
+PASS: Failed component discounts part/assembly: touring-six/RearAxle
+PASS: Keeping pack excludes actual children and value: touring-six/RearAxle
+PASS: Required kept hardware affects completeness: touring-six/RearAxle
+PASS: Partial retained quote validates: touring-six/RearAxle
+PASS: Wear never improves quote: touring-six/Interior
+PASS: Condition edit invalidates even without revision: touring-six/Interior
+PASS: Failed component discounts part/assembly: touring-six/Interior
+PASS: Keeping pack excludes actual children and value: touring-six/Interior
+PASS: Optional removal does not invent incompleteness: touring-six/Interior
+PASS: Partial retained quote validates: touring-six/Interior
+PASS: Wear never improves quote: touring-six/Accessories
+PASS: Condition edit invalidates even without revision: touring-six/Accessories
+PASS: Failed component discounts part/assembly: touring-six/Accessories
+PASS: Keeping pack excludes actual children and value: touring-six/Accessories
+PASS: Optional removal does not invent incompleteness: touring-six/Accessories
+PASS: Partial retained quote validates: touring-six/Accessories
+PASS: Wear never improves quote: touring-six/RevLimiter
+PASS: Condition edit invalidates even without revision: touring-six/RevLimiter
+PASS: Failed component discounts part/assembly: touring-six/RevLimiter
+PASS: Keeping pack excludes actual children and value: touring-six/RevLimiter
+PASS: Optional removal does not invent incompleteness: touring-six/RevLimiter
+PASS: Partial retained quote validates: touring-six/RevLimiter
+PASS: Wear never improves quote: touring-six/Camshaft
+PASS: Condition edit invalidates even without revision: touring-six/Camshaft
+PASS: Failed component discounts part/assembly: touring-six/Camshaft
+PASS: Keeping pack excludes actual children and value: touring-six/Camshaft
+PASS: Required kept hardware affects completeness: touring-six/Camshaft
+PASS: Partial retained quote validates: touring-six/Camshaft
+PASS: Wear never improves quote: touring-six/ValveSprings
+PASS: Condition edit invalidates even without revision: touring-six/ValveSprings
+PASS: Failed component discounts part/assembly: touring-six/ValveSprings
+PASS: Single-element failure priced despite healthy aggregate: touring-six/ValveSprings
+PASS: Keeping pack excludes actual children and value: touring-six/ValveSprings
+PASS: Required kept hardware affects completeness: touring-six/ValveSprings
+PASS: Partial retained quote validates: touring-six/ValveSprings
+PASS: Wear never improves quote: touring-six/Valves
+PASS: Condition edit invalidates even without revision: touring-six/Valves
+PASS: Failed component discounts part/assembly: touring-six/Valves
+PASS: Single-element failure priced despite healthy aggregate: touring-six/Valves
+PASS: Keeping pack excludes actual children and value: touring-six/Valves
+PASS: Required kept hardware affects completeness: touring-six/Valves
+PASS: Partial retained quote validates: touring-six/Valves
+PASS: Wear never improves quote: touring-six/Followers
+PASS: Condition edit invalidates even without revision: touring-six/Followers
+PASS: Failed component discounts part/assembly: touring-six/Followers
+PASS: Single-element failure priced despite healthy aggregate: touring-six/Followers
+PASS: Keeping pack excludes actual children and value: touring-six/Followers
+PASS: Required kept hardware affects completeness: touring-six/Followers
+PASS: Partial retained quote validates: touring-six/Followers
+PASS: Wear never improves quote: touring-six/TimingDrive
+PASS: Condition edit invalidates even without revision: touring-six/TimingDrive
+PASS: Failed component discounts part/assembly: touring-six/TimingDrive
+PASS: Keeping pack excludes actual children and value: touring-six/TimingDrive
+PASS: Required kept hardware affects completeness: touring-six/TimingDrive
+PASS: Partial retained quote validates: touring-six/TimingDrive
+PASS: Wear never improves quote: touring-six/PistonRings
+PASS: Condition edit invalidates even without revision: touring-six/PistonRings
+PASS: Failed component discounts part/assembly: touring-six/PistonRings
+PASS: Single-element failure priced despite healthy aggregate: touring-six/PistonRings
+PASS: Keeping pack excludes actual children and value: touring-six/PistonRings
+PASS: Required kept hardware affects completeness: touring-six/PistonRings
+PASS: Partial retained quote validates: touring-six/PistonRings
+PASS: Wear never improves quote: touring-six/CylinderBlock
+PASS: Condition edit invalidates even without revision: touring-six/CylinderBlock
+PASS: Failed component discounts part/assembly: touring-six/CylinderBlock
+PASS: Keeping pack excludes actual children and value: touring-six/CylinderBlock
+PASS: Required kept hardware affects completeness: touring-six/CylinderBlock
+PASS: Partial retained quote validates: touring-six/CylinderBlock
+PASS: Wear never improves quote: touring-six/Bearings
+PASS: Condition edit invalidates even without revision: touring-six/Bearings
+PASS: Failed component discounts part/assembly: touring-six/Bearings
+PASS: Single-element failure priced despite healthy aggregate: touring-six/Bearings
+PASS: Keeping pack excludes actual children and value: touring-six/Bearings
+PASS: Required kept hardware affects completeness: touring-six/Bearings
+PASS: Partial retained quote validates: touring-six/Bearings
+PASS: Wear never improves quote: touring-six/ValveSeals
+PASS: Condition edit invalidates even without revision: touring-six/ValveSeals
+PASS: Failed component discounts part/assembly: touring-six/ValveSeals
+PASS: Single-element failure priced despite healthy aggregate: touring-six/ValveSeals
+PASS: Keeping pack excludes actual children and value: touring-six/ValveSeals
+PASS: Required kept hardware affects completeness: touring-six/ValveSeals
+PASS: Partial retained quote validates: touring-six/ValveSeals
+PASS: Wear never improves quote: touring-six/OilPan
+PASS: Condition edit invalidates even without revision: touring-six/OilPan
+PASS: Failed component discounts part/assembly: touring-six/OilPan
+PASS: Keeping pack excludes actual children and value: touring-six/OilPan
+PASS: Required kept hardware affects completeness: touring-six/OilPan
+PASS: Partial retained quote validates: touring-six/OilPan
+PASS: Wear never improves quote: touring-six/OilPump
+PASS: Condition edit invalidates even without revision: touring-six/OilPump
+PASS: Failed component discounts part/assembly: touring-six/OilPump
+PASS: Keeping pack excludes actual children and value: touring-six/OilPump
+PASS: Required kept hardware affects completeness: touring-six/OilPump
+PASS: Partial retained quote validates: touring-six/OilPump
+PASS: Wear never improves quote: touring-six/OilFilter
+PASS: Condition edit invalidates even without revision: touring-six/OilFilter
+PASS: Failed component discounts part/assembly: touring-six/OilFilter
+PASS: Keeping pack excludes actual children and value: touring-six/OilFilter
+PASS: Required kept hardware affects completeness: touring-six/OilFilter
+PASS: Partial retained quote validates: touring-six/OilFilter
+PASS: Wear never improves quote: touring-six/CoolantPump
+PASS: Condition edit invalidates even without revision: touring-six/CoolantPump
+PASS: Failed component discounts part/assembly: touring-six/CoolantPump
+PASS: Keeping pack excludes actual children and value: touring-six/CoolantPump
+PASS: Optional removal does not invent incompleteness: touring-six/CoolantPump
+PASS: Partial retained quote validates: touring-six/CoolantPump
+PASS: Wear never improves quote: touring-six/CoolingCap
+PASS: Condition edit invalidates even without revision: touring-six/CoolingCap
+PASS: Failed component discounts part/assembly: touring-six/CoolingCap
+PASS: Keeping pack excludes actual children and value: touring-six/CoolingCap
+PASS: Optional removal does not invent incompleteness: touring-six/CoolingCap
+PASS: Partial retained quote validates: touring-six/CoolingCap
+PASS: Wear never improves quote: touring-six/CoolingHoses
+PASS: Condition edit invalidates even without revision: touring-six/CoolingHoses
+PASS: Failed component discounts part/assembly: touring-six/CoolingHoses
+PASS: Keeping pack excludes actual children and value: touring-six/CoolingHoses
+PASS: Optional removal does not invent incompleteness: touring-six/CoolingHoses
+PASS: Partial retained quote validates: touring-six/CoolingHoses
+PASS: Use/abuse/reconditioning history changes price: touring-six
+PASS: Quote survives exact JSON reload: touring-six
+PASS: Transfer/detach invalidates old quote: touring-six
+PASS: Stored engine prices exact retained hardware equally: touring-six
+PASS: Kept engine excluded from chassis/incomplete car: touring-six
+PASS: Partial engine never credits missing pack: touring-six
+PASS: Loose inventory independently quoted: touring-six
+PASS: Empty engine identity creates no free core value: touring-six
+PASS: Quote/removal matrix preserves money and ownership: touring-six
+PASS: utility-pickup stock Car / enthusiast is complete and priced.
+PASS: Fresh quote validates: utility-pickup/Car/enthusiast
+PASS: Unique captured assets and explanations: utility-pickup/Car
+PASS: utility-pickup stock Chassis / enthusiast is complete and priced.
+PASS: Fresh quote validates: utility-pickup/Chassis/enthusiast
+PASS: Unique captured assets and explanations: utility-pickup/Chassis
+PASS: utility-pickup stock Engine / enthusiast is complete and priced.
+PASS: Fresh quote validates: utility-pickup/Engine/enthusiast
+PASS: Unique captured assets and explanations: utility-pickup/Engine
+PASS: utility-pickup stock Car / builder is complete and priced.
+PASS: Fresh quote validates: utility-pickup/Car/builder
+PASS: Unique captured assets and explanations: utility-pickup/Car
+PASS: utility-pickup stock Chassis / builder is complete and priced.
+PASS: Fresh quote validates: utility-pickup/Chassis/builder
+PASS: Unique captured assets and explanations: utility-pickup/Chassis
+PASS: utility-pickup stock Engine / builder is complete and priced.
+PASS: Fresh quote validates: utility-pickup/Engine/builder
+PASS: Unique captured assets and explanations: utility-pickup/Engine
+PASS: utility-pickup stock Car / wholesale is complete and priced.
+PASS: Fresh quote validates: utility-pickup/Car/wholesale
+PASS: Unique captured assets and explanations: utility-pickup/Car
+PASS: utility-pickup stock Chassis / wholesale is complete and priced.
+PASS: Fresh quote validates: utility-pickup/Chassis/wholesale
+PASS: Unique captured assets and explanations: utility-pickup/Chassis
+PASS: utility-pickup stock Engine / wholesale is complete and priced.
+PASS: Fresh quote validates: utility-pickup/Engine/wholesale
+PASS: Unique captured assets and explanations: utility-pickup/Engine
+PASS: utility-pickup stock Car / recycler is complete and priced.
+PASS: Fresh quote validates: utility-pickup/Car/recycler
+PASS: Unique captured assets and explanations: utility-pickup/Car
+PASS: utility-pickup stock Chassis / recycler is complete and priced.
+PASS: Fresh quote validates: utility-pickup/Chassis/recycler
+PASS: Unique captured assets and explanations: utility-pickup/Chassis
+PASS: utility-pickup stock Engine / recycler is complete and priced.
+PASS: Fresh quote validates: utility-pickup/Engine/recycler
+PASS: Unique captured assets and explanations: utility-pickup/Engine
+PASS: Engine and chassis exclusive trees partition whole build: utility-pickup
+PASS: Controlled engine offers both above and below identical loose-component total: utility-pickup
+PASS: All quote operations are nonmutating: utility-pickup
+PASS: Same-revision saved tune edit invalidates: utility-pickup
+PASS: Resource edit invalidates: utility-pickup
+PASS: Wear never improves quote: utility-pickup/Pistons
+PASS: Condition edit invalidates even without revision: utility-pickup/Pistons
+PASS: Failed component discounts part/assembly: utility-pickup/Pistons
+PASS: Single-element failure priced despite healthy aggregate: utility-pickup/Pistons
+PASS: Keeping pack excludes actual children and value: utility-pickup/Pistons
+PASS: Required kept hardware affects completeness: utility-pickup/Pistons
+PASS: Partial retained quote validates: utility-pickup/Pistons
+PASS: Wear never improves quote: utility-pickup/Rods
+PASS: Condition edit invalidates even without revision: utility-pickup/Rods
+PASS: Failed component discounts part/assembly: utility-pickup/Rods
+PASS: Single-element failure priced despite healthy aggregate: utility-pickup/Rods
+PASS: Keeping pack excludes actual children and value: utility-pickup/Rods
+PASS: Required kept hardware affects completeness: utility-pickup/Rods
+PASS: Partial retained quote validates: utility-pickup/Rods
+PASS: Wear never improves quote: utility-pickup/Crankshaft
+PASS: Condition edit invalidates even without revision: utility-pickup/Crankshaft
+PASS: Failed component discounts part/assembly: utility-pickup/Crankshaft
+PASS: Keeping pack excludes actual children and value: utility-pickup/Crankshaft
+PASS: Required kept hardware affects completeness: utility-pickup/Crankshaft
+PASS: Partial retained quote validates: utility-pickup/Crankshaft
+PASS: Wear never improves quote: utility-pickup/HeadIntake
+PASS: Condition edit invalidates even without revision: utility-pickup/HeadIntake
+PASS: Failed component discounts part/assembly: utility-pickup/HeadIntake
+PASS: Keeping pack excludes actual children and value: utility-pickup/HeadIntake
+PASS: Required kept hardware affects completeness: utility-pickup/HeadIntake
+PASS: Partial retained quote validates: utility-pickup/HeadIntake
+PASS: Wear never improves quote: utility-pickup/FuelSystem
+PASS: Condition edit invalidates even without revision: utility-pickup/FuelSystem
+PASS: Failed component discounts part/assembly: utility-pickup/FuelSystem
+PASS: Keeping pack excludes actual children and value: utility-pickup/FuelSystem
+PASS: Required kept hardware affects completeness: utility-pickup/FuelSystem
+PASS: Partial retained quote validates: utility-pickup/FuelSystem
+PASS: Wear never improves quote: utility-pickup/Ignition
+PASS: Condition edit invalidates even without revision: utility-pickup/Ignition
+PASS: Failed component discounts part/assembly: utility-pickup/Ignition
+PASS: Single-element failure priced despite healthy aggregate: utility-pickup/Ignition
+PASS: Keeping pack excludes actual children and value: utility-pickup/Ignition
+PASS: Required kept hardware affects completeness: utility-pickup/Ignition
+PASS: Partial retained quote validates: utility-pickup/Ignition
+PASS: Wear never improves quote: utility-pickup/Cooling
+PASS: Condition edit invalidates even without revision: utility-pickup/Cooling
+PASS: Failed component discounts part/assembly: utility-pickup/Cooling
+PASS: Keeping pack excludes actual children and value: utility-pickup/Cooling
+PASS: Optional removal does not invent incompleteness: utility-pickup/Cooling
+PASS: Partial retained quote validates: utility-pickup/Cooling
+PASS: Wear never improves quote: utility-pickup/Induction
+PASS: Condition edit invalidates even without revision: utility-pickup/Induction
+PASS: Failed component discounts part/assembly: utility-pickup/Induction
+PASS: Keeping pack excludes actual children and value: utility-pickup/Induction
+PASS: Optional removal does not invent incompleteness: utility-pickup/Induction
+PASS: Partial retained quote validates: utility-pickup/Induction
+PASS: Wear never improves quote: utility-pickup/Exhaust
+PASS: Condition edit invalidates even without revision: utility-pickup/Exhaust
+PASS: Failed component discounts part/assembly: utility-pickup/Exhaust
+PASS: Keeping pack excludes actual children and value: utility-pickup/Exhaust
+PASS: Optional removal does not invent incompleteness: utility-pickup/Exhaust
+PASS: Partial retained quote validates: utility-pickup/Exhaust
+PASS: Wear never improves quote: utility-pickup/Clutch
+PASS: Condition edit invalidates even without revision: utility-pickup/Clutch
+PASS: Failed component discounts part/assembly: utility-pickup/Clutch
+PASS: Keeping pack excludes actual children and value: utility-pickup/Clutch
+PASS: Optional removal does not invent incompleteness: utility-pickup/Clutch
+PASS: Partial retained quote validates: utility-pickup/Clutch
+PASS: Wear never improves quote: utility-pickup/Flywheel
+PASS: Condition edit invalidates even without revision: utility-pickup/Flywheel
+PASS: Failed component discounts part/assembly: utility-pickup/Flywheel
+PASS: Keeping pack excludes actual children and value: utility-pickup/Flywheel
+PASS: Required kept hardware affects completeness: utility-pickup/Flywheel
+PASS: Partial retained quote validates: utility-pickup/Flywheel
+PASS: Wear never improves quote: utility-pickup/Gearbox
+PASS: Condition edit invalidates even without revision: utility-pickup/Gearbox
+PASS: Failed component discounts part/assembly: utility-pickup/Gearbox
+PASS: Keeping pack excludes actual children and value: utility-pickup/Gearbox
+PASS: Required kept hardware affects completeness: utility-pickup/Gearbox
+PASS: Partial retained quote validates: utility-pickup/Gearbox
+PASS: Wear never improves quote: utility-pickup/Differential
+PASS: Condition edit invalidates even without revision: utility-pickup/Differential
+PASS: Failed component discounts part/assembly: utility-pickup/Differential
+PASS: Keeping pack excludes actual children and value: utility-pickup/Differential
+PASS: Required kept hardware affects completeness: utility-pickup/Differential
+PASS: Partial retained quote validates: utility-pickup/Differential
+PASS: Wear never improves quote: utility-pickup/Wheels
+PASS: Condition edit invalidates even without revision: utility-pickup/Wheels
+PASS: Failed component discounts part/assembly: utility-pickup/Wheels
+PASS: Keeping pack excludes actual children and value: utility-pickup/Wheels
+PASS: Required kept hardware affects completeness: utility-pickup/Wheels
+PASS: Partial retained quote validates: utility-pickup/Wheels
+PASS: Wear never improves quote: utility-pickup/Tires
+PASS: Condition edit invalidates even without revision: utility-pickup/Tires
+PASS: Failed component discounts part/assembly: utility-pickup/Tires
+PASS: Keeping pack excludes actual children and value: utility-pickup/Tires
+PASS: Required kept hardware affects completeness: utility-pickup/Tires
+PASS: Partial retained quote validates: utility-pickup/Tires
+PASS: Wear never improves quote: utility-pickup/Brakes
+PASS: Condition edit invalidates even without revision: utility-pickup/Brakes
+PASS: Failed component discounts part/assembly: utility-pickup/Brakes
+PASS: Keeping pack excludes actual children and value: utility-pickup/Brakes
+PASS: Required kept hardware affects completeness: utility-pickup/Brakes
+PASS: Partial retained quote validates: utility-pickup/Brakes
+PASS: Wear never improves quote: utility-pickup/Body
+PASS: Condition edit invalidates even without revision: utility-pickup/Body
+PASS: Failed component discounts part/assembly: utility-pickup/Body
+PASS: Keeping pack excludes actual children and value: utility-pickup/Body
+PASS: Required kept hardware affects completeness: utility-pickup/Body
+PASS: Partial retained quote validates: utility-pickup/Body
+PASS: Wear never improves quote: utility-pickup/Controls
+PASS: Condition edit invalidates even without revision: utility-pickup/Controls
+PASS: Failed component discounts part/assembly: utility-pickup/Controls
+PASS: Keeping pack excludes actual children and value: utility-pickup/Controls
+PASS: Optional removal does not invent incompleteness: utility-pickup/Controls
+PASS: Partial retained quote validates: utility-pickup/Controls
+PASS: Wear never improves quote: utility-pickup/Driveshaft
+PASS: Condition edit invalidates even without revision: utility-pickup/Driveshaft
+PASS: Failed component discounts part/assembly: utility-pickup/Driveshaft
+PASS: Keeping pack excludes actual children and value: utility-pickup/Driveshaft
+PASS: Required kept hardware affects completeness: utility-pickup/Driveshaft
+PASS: Partial retained quote validates: utility-pickup/Driveshaft
+PASS: Wear never improves quote: utility-pickup/FrontAxle
+PASS: Condition edit invalidates even without revision: utility-pickup/FrontAxle
+PASS: Failed component discounts part/assembly: utility-pickup/FrontAxle
+PASS: Keeping pack excludes actual children and value: utility-pickup/FrontAxle
+PASS: Required kept hardware affects completeness: utility-pickup/FrontAxle
+PASS: Partial retained quote validates: utility-pickup/FrontAxle
+PASS: Wear never improves quote: utility-pickup/RearAxle
+PASS: Condition edit invalidates even without revision: utility-pickup/RearAxle
+PASS: Failed component discounts part/assembly: utility-pickup/RearAxle
+PASS: Keeping pack excludes actual children and value: utility-pickup/RearAxle
+PASS: Required kept hardware affects completeness: utility-pickup/RearAxle
+PASS: Partial retained quote validates: utility-pickup/RearAxle
+PASS: Wear never improves quote: utility-pickup/FrontDriveshaft
+PASS: Condition edit invalidates even without revision: utility-pickup/FrontDriveshaft
+PASS: Failed component discounts part/assembly: utility-pickup/FrontDriveshaft
+PASS: Keeping pack excludes actual children and value: utility-pickup/FrontDriveshaft
+PASS: Required kept hardware affects completeness: utility-pickup/FrontDriveshaft
+PASS: Partial retained quote validates: utility-pickup/FrontDriveshaft
+PASS: Wear never improves quote: utility-pickup/RearDriveshaft
+PASS: Condition edit invalidates even without revision: utility-pickup/RearDriveshaft
+PASS: Failed component discounts part/assembly: utility-pickup/RearDriveshaft
+PASS: Keeping pack excludes actual children and value: utility-pickup/RearDriveshaft
+PASS: Required kept hardware affects completeness: utility-pickup/RearDriveshaft
+PASS: Partial retained quote validates: utility-pickup/RearDriveshaft
+PASS: Wear never improves quote: utility-pickup/FrontDifferential
+PASS: Condition edit invalidates even without revision: utility-pickup/FrontDifferential
+PASS: Failed component discounts part/assembly: utility-pickup/FrontDifferential
+PASS: Keeping pack excludes actual children and value: utility-pickup/FrontDifferential
+PASS: Required kept hardware affects completeness: utility-pickup/FrontDifferential
+PASS: Partial retained quote validates: utility-pickup/FrontDifferential
+PASS: Wear never improves quote: utility-pickup/RearDifferential
+PASS: Condition edit invalidates even without revision: utility-pickup/RearDifferential
+PASS: Failed component discounts part/assembly: utility-pickup/RearDifferential
+PASS: Keeping pack excludes actual children and value: utility-pickup/RearDifferential
+PASS: Required kept hardware affects completeness: utility-pickup/RearDifferential
+PASS: Partial retained quote validates: utility-pickup/RearDifferential
+PASS: Wear never improves quote: utility-pickup/TransferCase
+PASS: Condition edit invalidates even without revision: utility-pickup/TransferCase
+PASS: Failed component discounts part/assembly: utility-pickup/TransferCase
+PASS: Keeping pack excludes actual children and value: utility-pickup/TransferCase
+PASS: Required kept hardware affects completeness: utility-pickup/TransferCase
+PASS: Partial retained quote validates: utility-pickup/TransferCase
+PASS: Wear never improves quote: utility-pickup/Interior
+PASS: Condition edit invalidates even without revision: utility-pickup/Interior
+PASS: Failed component discounts part/assembly: utility-pickup/Interior
+PASS: Keeping pack excludes actual children and value: utility-pickup/Interior
+PASS: Optional removal does not invent incompleteness: utility-pickup/Interior
+PASS: Partial retained quote validates: utility-pickup/Interior
+PASS: Wear never improves quote: utility-pickup/Accessories
+PASS: Condition edit invalidates even without revision: utility-pickup/Accessories
+PASS: Failed component discounts part/assembly: utility-pickup/Accessories
+PASS: Keeping pack excludes actual children and value: utility-pickup/Accessories
+PASS: Optional removal does not invent incompleteness: utility-pickup/Accessories
+PASS: Partial retained quote validates: utility-pickup/Accessories
+PASS: Wear never improves quote: utility-pickup/Camshaft
+PASS: Condition edit invalidates even without revision: utility-pickup/Camshaft
+PASS: Failed component discounts part/assembly: utility-pickup/Camshaft
+PASS: Keeping pack excludes actual children and value: utility-pickup/Camshaft
+PASS: Required kept hardware affects completeness: utility-pickup/Camshaft
+PASS: Partial retained quote validates: utility-pickup/Camshaft
+PASS: Wear never improves quote: utility-pickup/ValveSprings
+PASS: Condition edit invalidates even without revision: utility-pickup/ValveSprings
+PASS: Failed component discounts part/assembly: utility-pickup/ValveSprings
+PASS: Single-element failure priced despite healthy aggregate: utility-pickup/ValveSprings
+PASS: Keeping pack excludes actual children and value: utility-pickup/ValveSprings
+PASS: Required kept hardware affects completeness: utility-pickup/ValveSprings
+PASS: Partial retained quote validates: utility-pickup/ValveSprings
+PASS: Wear never improves quote: utility-pickup/Valves
+PASS: Condition edit invalidates even without revision: utility-pickup/Valves
+PASS: Failed component discounts part/assembly: utility-pickup/Valves
+PASS: Single-element failure priced despite healthy aggregate: utility-pickup/Valves
+PASS: Keeping pack excludes actual children and value: utility-pickup/Valves
+PASS: Required kept hardware affects completeness: utility-pickup/Valves
+PASS: Partial retained quote validates: utility-pickup/Valves
+PASS: Wear never improves quote: utility-pickup/Followers
+PASS: Condition edit invalidates even without revision: utility-pickup/Followers
+PASS: Failed component discounts part/assembly: utility-pickup/Followers
+PASS: Single-element failure priced despite healthy aggregate: utility-pickup/Followers
+PASS: Keeping pack excludes actual children and value: utility-pickup/Followers
+PASS: Required kept hardware affects completeness: utility-pickup/Followers
+PASS: Partial retained quote validates: utility-pickup/Followers
+PASS: Wear never improves quote: utility-pickup/TimingDrive
+PASS: Condition edit invalidates even without revision: utility-pickup/TimingDrive
+PASS: Failed component discounts part/assembly: utility-pickup/TimingDrive
+PASS: Keeping pack excludes actual children and value: utility-pickup/TimingDrive
+PASS: Required kept hardware affects completeness: utility-pickup/TimingDrive
+PASS: Partial retained quote validates: utility-pickup/TimingDrive
+PASS: Wear never improves quote: utility-pickup/PistonRings
+PASS: Condition edit invalidates even without revision: utility-pickup/PistonRings
+PASS: Failed component discounts part/assembly: utility-pickup/PistonRings
+PASS: Single-element failure priced despite healthy aggregate: utility-pickup/PistonRings
+PASS: Keeping pack excludes actual children and value: utility-pickup/PistonRings
+PASS: Required kept hardware affects completeness: utility-pickup/PistonRings
+PASS: Partial retained quote validates: utility-pickup/PistonRings
+PASS: Wear never improves quote: utility-pickup/CylinderBlock
+PASS: Condition edit invalidates even without revision: utility-pickup/CylinderBlock
+PASS: Failed component discounts part/assembly: utility-pickup/CylinderBlock
+PASS: Keeping pack excludes actual children and value: utility-pickup/CylinderBlock
+PASS: Required kept hardware affects completeness: utility-pickup/CylinderBlock
+PASS: Partial retained quote validates: utility-pickup/CylinderBlock
+PASS: Wear never improves quote: utility-pickup/Bearings
+PASS: Condition edit invalidates even without revision: utility-pickup/Bearings
+PASS: Failed component discounts part/assembly: utility-pickup/Bearings
+PASS: Single-element failure priced despite healthy aggregate: utility-pickup/Bearings
+PASS: Keeping pack excludes actual children and value: utility-pickup/Bearings
+PASS: Required kept hardware affects completeness: utility-pickup/Bearings
+PASS: Partial retained quote validates: utility-pickup/Bearings
+PASS: Wear never improves quote: utility-pickup/ValveSeals
+PASS: Condition edit invalidates even without revision: utility-pickup/ValveSeals
+PASS: Failed component discounts part/assembly: utility-pickup/ValveSeals
+PASS: Single-element failure priced despite healthy aggregate: utility-pickup/ValveSeals
+PASS: Keeping pack excludes actual children and value: utility-pickup/ValveSeals
+PASS: Required kept hardware affects completeness: utility-pickup/ValveSeals
+PASS: Partial retained quote validates: utility-pickup/ValveSeals
+PASS: Wear never improves quote: utility-pickup/OilPan
+PASS: Condition edit invalidates even without revision: utility-pickup/OilPan
+PASS: Failed component discounts part/assembly: utility-pickup/OilPan
+PASS: Keeping pack excludes actual children and value: utility-pickup/OilPan
+PASS: Required kept hardware affects completeness: utility-pickup/OilPan
+PASS: Partial retained quote validates: utility-pickup/OilPan
+PASS: Wear never improves quote: utility-pickup/OilPump
+PASS: Condition edit invalidates even without revision: utility-pickup/OilPump
+PASS: Failed component discounts part/assembly: utility-pickup/OilPump
+PASS: Keeping pack excludes actual children and value: utility-pickup/OilPump
+PASS: Required kept hardware affects completeness: utility-pickup/OilPump
+PASS: Partial retained quote validates: utility-pickup/OilPump
+PASS: Wear never improves quote: utility-pickup/OilFilter
+PASS: Condition edit invalidates even without revision: utility-pickup/OilFilter
+PASS: Failed component discounts part/assembly: utility-pickup/OilFilter
+PASS: Keeping pack excludes actual children and value: utility-pickup/OilFilter
+PASS: Required kept hardware affects completeness: utility-pickup/OilFilter
+PASS: Partial retained quote validates: utility-pickup/OilFilter
+PASS: Wear never improves quote: utility-pickup/CoolantPump
+PASS: Condition edit invalidates even without revision: utility-pickup/CoolantPump
+PASS: Failed component discounts part/assembly: utility-pickup/CoolantPump
+PASS: Keeping pack excludes actual children and value: utility-pickup/CoolantPump
+PASS: Optional removal does not invent incompleteness: utility-pickup/CoolantPump
+PASS: Partial retained quote validates: utility-pickup/CoolantPump
+PASS: Wear never improves quote: utility-pickup/CoolingCap
+PASS: Condition edit invalidates even without revision: utility-pickup/CoolingCap
+PASS: Failed component discounts part/assembly: utility-pickup/CoolingCap
+PASS: Keeping pack excludes actual children and value: utility-pickup/CoolingCap
+PASS: Optional removal does not invent incompleteness: utility-pickup/CoolingCap
+PASS: Partial retained quote validates: utility-pickup/CoolingCap
+PASS: Wear never improves quote: utility-pickup/CoolingHoses
+PASS: Condition edit invalidates even without revision: utility-pickup/CoolingHoses
+PASS: Failed component discounts part/assembly: utility-pickup/CoolingHoses
+PASS: Keeping pack excludes actual children and value: utility-pickup/CoolingHoses
+PASS: Optional removal does not invent incompleteness: utility-pickup/CoolingHoses
+PASS: Partial retained quote validates: utility-pickup/CoolingHoses
+PASS: Use/abuse/reconditioning history changes price: utility-pickup
+PASS: Quote survives exact JSON reload: utility-pickup
+PASS: Transfer/detach invalidates old quote: utility-pickup
+PASS: Stored engine prices exact retained hardware equally: utility-pickup
+PASS: Kept engine excluded from chassis/incomplete car: utility-pickup
+PASS: Partial engine never credits missing pack: utility-pickup
+PASS: Loose inventory independently quoted: utility-pickup
+PASS: Empty engine identity creates no free core value: utility-pickup
+PASS: Quote/removal matrix preserves money and ownership: utility-pickup
+PASS: v8-muscle stock Car / enthusiast is complete and priced.
+PASS: Fresh quote validates: v8-muscle/Car/enthusiast
+PASS: Unique captured assets and explanations: v8-muscle/Car
+PASS: v8-muscle stock Chassis / enthusiast is complete and priced.
+PASS: Fresh quote validates: v8-muscle/Chassis/enthusiast
+PASS: Unique captured assets and explanations: v8-muscle/Chassis
+PASS: v8-muscle stock Engine / enthusiast is complete and priced.
+PASS: Fresh quote validates: v8-muscle/Engine/enthusiast
+PASS: Unique captured assets and explanations: v8-muscle/Engine
+PASS: v8-muscle stock Car / builder is complete and priced.
+PASS: Fresh quote validates: v8-muscle/Car/builder
+PASS: Unique captured assets and explanations: v8-muscle/Car
+PASS: v8-muscle stock Chassis / builder is complete and priced.
+PASS: Fresh quote validates: v8-muscle/Chassis/builder
+PASS: Unique captured assets and explanations: v8-muscle/Chassis
+PASS: v8-muscle stock Engine / builder is complete and priced.
+PASS: Fresh quote validates: v8-muscle/Engine/builder
+PASS: Unique captured assets and explanations: v8-muscle/Engine
+PASS: v8-muscle stock Car / wholesale is complete and priced.
+PASS: Fresh quote validates: v8-muscle/Car/wholesale
+PASS: Unique captured assets and explanations: v8-muscle/Car
+PASS: v8-muscle stock Chassis / wholesale is complete and priced.
+PASS: Fresh quote validates: v8-muscle/Chassis/wholesale
+PASS: Unique captured assets and explanations: v8-muscle/Chassis
+PASS: v8-muscle stock Engine / wholesale is complete and priced.
+PASS: Fresh quote validates: v8-muscle/Engine/wholesale
+PASS: Unique captured assets and explanations: v8-muscle/Engine
+PASS: v8-muscle stock Car / recycler is complete and priced.
+PASS: Fresh quote validates: v8-muscle/Car/recycler
+PASS: Unique captured assets and explanations: v8-muscle/Car
+PASS: v8-muscle stock Chassis / recycler is complete and priced.
+PASS: Fresh quote validates: v8-muscle/Chassis/recycler
+PASS: Unique captured assets and explanations: v8-muscle/Chassis
+PASS: v8-muscle stock Engine / recycler is complete and priced.
+PASS: Fresh quote validates: v8-muscle/Engine/recycler
+PASS: Unique captured assets and explanations: v8-muscle/Engine
+PASS: Engine and chassis exclusive trees partition whole build: v8-muscle
+PASS: Controlled engine offers both above and below identical loose-component total: v8-muscle
+PASS: All quote operations are nonmutating: v8-muscle
+PASS: Same-revision saved tune edit invalidates: v8-muscle
+PASS: Resource edit invalidates: v8-muscle
+PASS: Wear never improves quote: v8-muscle/Pistons
+PASS: Condition edit invalidates even without revision: v8-muscle/Pistons
+PASS: Failed component discounts part/assembly: v8-muscle/Pistons
+PASS: Single-element failure priced despite healthy aggregate: v8-muscle/Pistons
+PASS: Keeping pack excludes actual children and value: v8-muscle/Pistons
+PASS: Required kept hardware affects completeness: v8-muscle/Pistons
+PASS: Partial retained quote validates: v8-muscle/Pistons
+PASS: Wear never improves quote: v8-muscle/Rods
+PASS: Condition edit invalidates even without revision: v8-muscle/Rods
+PASS: Failed component discounts part/assembly: v8-muscle/Rods
+PASS: Single-element failure priced despite healthy aggregate: v8-muscle/Rods
+PASS: Keeping pack excludes actual children and value: v8-muscle/Rods
+PASS: Required kept hardware affects completeness: v8-muscle/Rods
+PASS: Partial retained quote validates: v8-muscle/Rods
+PASS: Wear never improves quote: v8-muscle/Crankshaft
+PASS: Condition edit invalidates even without revision: v8-muscle/Crankshaft
+PASS: Failed component discounts part/assembly: v8-muscle/Crankshaft
+PASS: Keeping pack excludes actual children and value: v8-muscle/Crankshaft
+PASS: Required kept hardware affects completeness: v8-muscle/Crankshaft
+PASS: Partial retained quote validates: v8-muscle/Crankshaft
+PASS: Wear never improves quote: v8-muscle/HeadIntake
+PASS: Condition edit invalidates even without revision: v8-muscle/HeadIntake
+PASS: Failed component discounts part/assembly: v8-muscle/HeadIntake
+PASS: Keeping pack excludes actual children and value: v8-muscle/HeadIntake
+PASS: Required kept hardware affects completeness: v8-muscle/HeadIntake
+PASS: Partial retained quote validates: v8-muscle/HeadIntake
+PASS: Wear never improves quote: v8-muscle/FuelSystem
+PASS: Condition edit invalidates even without revision: v8-muscle/FuelSystem
+PASS: Failed component discounts part/assembly: v8-muscle/FuelSystem
+PASS: Keeping pack excludes actual children and value: v8-muscle/FuelSystem
+PASS: Required kept hardware affects completeness: v8-muscle/FuelSystem
+PASS: Partial retained quote validates: v8-muscle/FuelSystem
+PASS: Wear never improves quote: v8-muscle/Ignition
+PASS: Condition edit invalidates even without revision: v8-muscle/Ignition
+PASS: Failed component discounts part/assembly: v8-muscle/Ignition
+PASS: Single-element failure priced despite healthy aggregate: v8-muscle/Ignition
+PASS: Keeping pack excludes actual children and value: v8-muscle/Ignition
+PASS: Required kept hardware affects completeness: v8-muscle/Ignition
+PASS: Partial retained quote validates: v8-muscle/Ignition
+PASS: Wear never improves quote: v8-muscle/Cooling
+PASS: Condition edit invalidates even without revision: v8-muscle/Cooling
+PASS: Failed component discounts part/assembly: v8-muscle/Cooling
+PASS: Keeping pack excludes actual children and value: v8-muscle/Cooling
+PASS: Optional removal does not invent incompleteness: v8-muscle/Cooling
+PASS: Partial retained quote validates: v8-muscle/Cooling
+PASS: Wear never improves quote: v8-muscle/Induction
+PASS: Condition edit invalidates even without revision: v8-muscle/Induction
+PASS: Failed component discounts part/assembly: v8-muscle/Induction
+PASS: Keeping pack excludes actual children and value: v8-muscle/Induction
+PASS: Optional removal does not invent incompleteness: v8-muscle/Induction
+PASS: Partial retained quote validates: v8-muscle/Induction
+PASS: Wear never improves quote: v8-muscle/Exhaust
+PASS: Condition edit invalidates even without revision: v8-muscle/Exhaust
+PASS: Failed component discounts part/assembly: v8-muscle/Exhaust
+PASS: Keeping pack excludes actual children and value: v8-muscle/Exhaust
+PASS: Optional removal does not invent incompleteness: v8-muscle/Exhaust
+PASS: Partial retained quote validates: v8-muscle/Exhaust
+PASS: Wear never improves quote: v8-muscle/Clutch
+PASS: Condition edit invalidates even without revision: v8-muscle/Clutch
+PASS: Failed component discounts part/assembly: v8-muscle/Clutch
+PASS: Keeping pack excludes actual children and value: v8-muscle/Clutch
+PASS: Required kept hardware affects completeness: v8-muscle/Clutch
+PASS: Partial retained quote validates: v8-muscle/Clutch
+PASS: Wear never improves quote: v8-muscle/Flywheel
+PASS: Condition edit invalidates even without revision: v8-muscle/Flywheel
+PASS: Failed component discounts part/assembly: v8-muscle/Flywheel
+PASS: Keeping pack excludes actual children and value: v8-muscle/Flywheel
+PASS: Required kept hardware affects completeness: v8-muscle/Flywheel
+PASS: Partial retained quote validates: v8-muscle/Flywheel
+PASS: Wear never improves quote: v8-muscle/Gearbox
+PASS: Condition edit invalidates even without revision: v8-muscle/Gearbox
+PASS: Failed component discounts part/assembly: v8-muscle/Gearbox
+PASS: Keeping pack excludes actual children and value: v8-muscle/Gearbox
+PASS: Required kept hardware affects completeness: v8-muscle/Gearbox
+PASS: Partial retained quote validates: v8-muscle/Gearbox
+PASS: Wear never improves quote: v8-muscle/Differential
+PASS: Condition edit invalidates even without revision: v8-muscle/Differential
+PASS: Failed component discounts part/assembly: v8-muscle/Differential
+PASS: Keeping pack excludes actual children and value: v8-muscle/Differential
+PASS: Required kept hardware affects completeness: v8-muscle/Differential
+PASS: Partial retained quote validates: v8-muscle/Differential
+PASS: Wear never improves quote: v8-muscle/Wheels
+PASS: Condition edit invalidates even without revision: v8-muscle/Wheels
+PASS: Failed component discounts part/assembly: v8-muscle/Wheels
+PASS: Keeping pack excludes actual children and value: v8-muscle/Wheels
+PASS: Required kept hardware affects completeness: v8-muscle/Wheels
+PASS: Partial retained quote validates: v8-muscle/Wheels
+PASS: Wear never improves quote: v8-muscle/Tires
+PASS: Condition edit invalidates even without revision: v8-muscle/Tires
+PASS: Failed component discounts part/assembly: v8-muscle/Tires
+PASS: Keeping pack excludes actual children and value: v8-muscle/Tires
+PASS: Required kept hardware affects completeness: v8-muscle/Tires
+PASS: Partial retained quote validates: v8-muscle/Tires
+PASS: Wear never improves quote: v8-muscle/Brakes
+PASS: Condition edit invalidates even without revision: v8-muscle/Brakes
+PASS: Failed component discounts part/assembly: v8-muscle/Brakes
+PASS: Keeping pack excludes actual children and value: v8-muscle/Brakes
+PASS: Required kept hardware affects completeness: v8-muscle/Brakes
+PASS: Partial retained quote validates: v8-muscle/Brakes
+PASS: Wear never improves quote: v8-muscle/Body
+PASS: Condition edit invalidates even without revision: v8-muscle/Body
+PASS: Failed component discounts part/assembly: v8-muscle/Body
+PASS: Keeping pack excludes actual children and value: v8-muscle/Body
+PASS: Required kept hardware affects completeness: v8-muscle/Body
+PASS: Partial retained quote validates: v8-muscle/Body
+PASS: Wear never improves quote: v8-muscle/Controls
+PASS: Condition edit invalidates even without revision: v8-muscle/Controls
+PASS: Failed component discounts part/assembly: v8-muscle/Controls
+PASS: Keeping pack excludes actual children and value: v8-muscle/Controls
+PASS: Optional removal does not invent incompleteness: v8-muscle/Controls
+PASS: Partial retained quote validates: v8-muscle/Controls
+PASS: Wear never improves quote: v8-muscle/Driveshaft
+PASS: Condition edit invalidates even without revision: v8-muscle/Driveshaft
+PASS: Failed component discounts part/assembly: v8-muscle/Driveshaft
+PASS: Keeping pack excludes actual children and value: v8-muscle/Driveshaft
+PASS: Required kept hardware affects completeness: v8-muscle/Driveshaft
+PASS: Partial retained quote validates: v8-muscle/Driveshaft
+PASS: Wear never improves quote: v8-muscle/RearAxle
+PASS: Condition edit invalidates even without revision: v8-muscle/RearAxle
+PASS: Failed component discounts part/assembly: v8-muscle/RearAxle
+PASS: Keeping pack excludes actual children and value: v8-muscle/RearAxle
+PASS: Required kept hardware affects completeness: v8-muscle/RearAxle
+PASS: Partial retained quote validates: v8-muscle/RearAxle
+PASS: Wear never improves quote: v8-muscle/Interior
+PASS: Condition edit invalidates even without revision: v8-muscle/Interior
+PASS: Failed component discounts part/assembly: v8-muscle/Interior
+PASS: Keeping pack excludes actual children and value: v8-muscle/Interior
+PASS: Optional removal does not invent incompleteness: v8-muscle/Interior
+PASS: Partial retained quote validates: v8-muscle/Interior
+PASS: Wear never improves quote: v8-muscle/Accessories
+PASS: Condition edit invalidates even without revision: v8-muscle/Accessories
+PASS: Failed component discounts part/assembly: v8-muscle/Accessories
+PASS: Keeping pack excludes actual children and value: v8-muscle/Accessories
+PASS: Optional removal does not invent incompleteness: v8-muscle/Accessories
+PASS: Partial retained quote validates: v8-muscle/Accessories
+PASS: Wear never improves quote: v8-muscle/Camshaft
+PASS: Condition edit invalidates even without revision: v8-muscle/Camshaft
+PASS: Failed component discounts part/assembly: v8-muscle/Camshaft
+PASS: Keeping pack excludes actual children and value: v8-muscle/Camshaft
+PASS: Required kept hardware affects completeness: v8-muscle/Camshaft
+PASS: Partial retained quote validates: v8-muscle/Camshaft
+PASS: Wear never improves quote: v8-muscle/ValveSprings
+PASS: Condition edit invalidates even without revision: v8-muscle/ValveSprings
+PASS: Failed component discounts part/assembly: v8-muscle/ValveSprings
+PASS: Single-element failure priced despite healthy aggregate: v8-muscle/ValveSprings
+PASS: Keeping pack excludes actual children and value: v8-muscle/ValveSprings
+PASS: Required kept hardware affects completeness: v8-muscle/ValveSprings
+PASS: Partial retained quote validates: v8-muscle/ValveSprings
+PASS: Wear never improves quote: v8-muscle/Valves
+PASS: Condition edit invalidates even without revision: v8-muscle/Valves
+PASS: Failed component discounts part/assembly: v8-muscle/Valves
+PASS: Single-element failure priced despite healthy aggregate: v8-muscle/Valves
+PASS: Keeping pack excludes actual children and value: v8-muscle/Valves
+PASS: Required kept hardware affects completeness: v8-muscle/Valves
+PASS: Partial retained quote validates: v8-muscle/Valves
+PASS: Wear never improves quote: v8-muscle/Followers
+PASS: Condition edit invalidates even without revision: v8-muscle/Followers
+PASS: Failed component discounts part/assembly: v8-muscle/Followers
+PASS: Single-element failure priced despite healthy aggregate: v8-muscle/Followers
+PASS: Keeping pack excludes actual children and value: v8-muscle/Followers
+PASS: Required kept hardware affects completeness: v8-muscle/Followers
+PASS: Partial retained quote validates: v8-muscle/Followers
+PASS: Wear never improves quote: v8-muscle/TimingDrive
+PASS: Condition edit invalidates even without revision: v8-muscle/TimingDrive
+PASS: Failed component discounts part/assembly: v8-muscle/TimingDrive
+PASS: Keeping pack excludes actual children and value: v8-muscle/TimingDrive
+PASS: Required kept hardware affects completeness: v8-muscle/TimingDrive
+PASS: Partial retained quote validates: v8-muscle/TimingDrive
+PASS: Wear never improves quote: v8-muscle/PistonRings
+PASS: Condition edit invalidates even without revision: v8-muscle/PistonRings
+PASS: Failed component discounts part/assembly: v8-muscle/PistonRings
+PASS: Single-element failure priced despite healthy aggregate: v8-muscle/PistonRings
+PASS: Keeping pack excludes actual children and value: v8-muscle/PistonRings
+PASS: Required kept hardware affects completeness: v8-muscle/PistonRings
+PASS: Partial retained quote validates: v8-muscle/PistonRings
+PASS: Wear never improves quote: v8-muscle/CylinderBlock
+PASS: Condition edit invalidates even without revision: v8-muscle/CylinderBlock
+PASS: Failed component discounts part/assembly: v8-muscle/CylinderBlock
+PASS: Keeping pack excludes actual children and value: v8-muscle/CylinderBlock
+PASS: Required kept hardware affects completeness: v8-muscle/CylinderBlock
+PASS: Partial retained quote validates: v8-muscle/CylinderBlock
+PASS: Wear never improves quote: v8-muscle/Bearings
+PASS: Condition edit invalidates even without revision: v8-muscle/Bearings
+PASS: Failed component discounts part/assembly: v8-muscle/Bearings
+PASS: Single-element failure priced despite healthy aggregate: v8-muscle/Bearings
+PASS: Keeping pack excludes actual children and value: v8-muscle/Bearings
+PASS: Required kept hardware affects completeness: v8-muscle/Bearings
+PASS: Partial retained quote validates: v8-muscle/Bearings
+PASS: Wear never improves quote: v8-muscle/ValveSeals
+PASS: Condition edit invalidates even without revision: v8-muscle/ValveSeals
+PASS: Failed component discounts part/assembly: v8-muscle/ValveSeals
+PASS: Single-element failure priced despite healthy aggregate: v8-muscle/ValveSeals
+PASS: Keeping pack excludes actual children and value: v8-muscle/ValveSeals
+PASS: Required kept hardware affects completeness: v8-muscle/ValveSeals
+PASS: Partial retained quote validates: v8-muscle/ValveSeals
+PASS: Wear never improves quote: v8-muscle/OilPan
+PASS: Condition edit invalidates even without revision: v8-muscle/OilPan
+PASS: Failed component discounts part/assembly: v8-muscle/OilPan
+PASS: Keeping pack excludes actual children and value: v8-muscle/OilPan
+PASS: Required kept hardware affects completeness: v8-muscle/OilPan
+PASS: Partial retained quote validates: v8-muscle/OilPan
+PASS: Wear never improves quote: v8-muscle/OilPump
+PASS: Condition edit invalidates even without revision: v8-muscle/OilPump
+PASS: Failed component discounts part/assembly: v8-muscle/OilPump
+PASS: Keeping pack excludes actual children and value: v8-muscle/OilPump
+PASS: Required kept hardware affects completeness: v8-muscle/OilPump
+PASS: Partial retained quote validates: v8-muscle/OilPump
+PASS: Wear never improves quote: v8-muscle/OilFilter
+PASS: Condition edit invalidates even without revision: v8-muscle/OilFilter
+PASS: Failed component discounts part/assembly: v8-muscle/OilFilter
+PASS: Keeping pack excludes actual children and value: v8-muscle/OilFilter
+PASS: Required kept hardware affects completeness: v8-muscle/OilFilter
+PASS: Partial retained quote validates: v8-muscle/OilFilter
+PASS: Wear never improves quote: v8-muscle/CoolantPump
+PASS: Condition edit invalidates even without revision: v8-muscle/CoolantPump
+PASS: Failed component discounts part/assembly: v8-muscle/CoolantPump
+PASS: Keeping pack excludes actual children and value: v8-muscle/CoolantPump
+PASS: Optional removal does not invent incompleteness: v8-muscle/CoolantPump
+PASS: Partial retained quote validates: v8-muscle/CoolantPump
+PASS: Wear never improves quote: v8-muscle/CoolingCap
+PASS: Condition edit invalidates even without revision: v8-muscle/CoolingCap
+PASS: Failed component discounts part/assembly: v8-muscle/CoolingCap
+PASS: Keeping pack excludes actual children and value: v8-muscle/CoolingCap
+PASS: Optional removal does not invent incompleteness: v8-muscle/CoolingCap
+PASS: Partial retained quote validates: v8-muscle/CoolingCap
+PASS: Wear never improves quote: v8-muscle/CoolingHoses
+PASS: Condition edit invalidates even without revision: v8-muscle/CoolingHoses
+PASS: Failed component discounts part/assembly: v8-muscle/CoolingHoses
+PASS: Keeping pack excludes actual children and value: v8-muscle/CoolingHoses
+PASS: Optional removal does not invent incompleteness: v8-muscle/CoolingHoses
+PASS: Partial retained quote validates: v8-muscle/CoolingHoses
+PASS: Use/abuse/reconditioning history changes price: v8-muscle
+PASS: Quote survives exact JSON reload: v8-muscle
+PASS: Transfer/detach invalidates old quote: v8-muscle
+PASS: Stored engine prices exact retained hardware equally: v8-muscle
+PASS: Kept engine excluded from chassis/incomplete car: v8-muscle
+PASS: Partial engine never credits missing pack: v8-muscle
+PASS: Loose inventory independently quoted: v8-muscle
+PASS: Empty engine identity creates no free core value: v8-muscle
+PASS: Quote/removal matrix preserves money and ownership: v8-muscle
+PASS: Mixed forged/OEM engine quotes only fitted hardware and leaves displaced worn pack unhealed.
+PASS: Actual fitted forged quality has authored positive demand adjustment.
+PASS: Authored model demand changes actual quote by its explicit factor and invalidates a different policy receipt.
+PASS: Service counters alone cannot manufacture a resale premium.
+PASS: Shared deposits/leak/adjustment faults reduce pre-failure market condition.
+PASS: Expiry boundary and backwards clock rejected.
+PASS: Revision changes invalidate receipt.
+PASS: Policy version changes invalidate.
+PASS: Unversioned authored policy changes still invalidate.
+PASS: Unversioned catalogue price changes invalidate.
+PASS: Non-price catalogue changes invalidate.
+PASS: Unknown identity rejected.
+PASS: Unknown buyer rejected.
+PASS: Installed item cannot be quoted as loose.
+PASS: Caller request changes cannot alter immutable receipt contents.
+PASS: Unowned retained identity rejected.
+PASS: Duplicate retained identity rejected.
+PASS: Corrupt duplicate ownership rejected before quote.
+PASS: Nonfinite policy rejected.
+PASS: Owned singular piston has its own quote.
+PASS: Singular sale invalidates original quote.
+PASS: Paid rebuild reservation allows inspection but blocks disposal quote.
+PASS: Unsettled race blocks disposal quote.
+PASS: Loose-part quote cannot retain itself and create an empty sale.
+PASS: Unsettled race also blocks loose-part disposal validation.
+Checks: 2405

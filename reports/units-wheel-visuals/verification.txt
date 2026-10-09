@@ -1,0 +1,47 @@
+PASS: Legacy unit save defaults to Nm and retains other preferences.
+PASS: Invalid torque preference safely defaults to Nm.
+PASS: 100 Nm displays as 73.7562149277 lb-ft.
+PASS: Torque conversion round trip: NewtonMetres / -500
+PASS: Torque conversion round trip: NewtonMetres / 0
+PASS: Torque conversion round trip: NewtonMetres / 1
+PASS: Torque conversion round trip: NewtonMetres / 350
+PASS: Torque conversion round trip: NewtonMetres / 2000
+PASS: Torque conversion round trip: PoundFeet / -500
+PASS: Torque conversion round trip: PoundFeet / 0
+PASS: Torque conversion round trip: PoundFeet / 1
+PASS: Torque conversion round trip: PoundFeet / 350
+PASS: Torque conversion round trip: PoundFeet / 2000
+PASS: Torque preference persists; older two-unit callers retain it.
+PASS: Embedded warning/description torque displays in selected units.
+PASS: Progression reset preserves torque units.
+PASS: SportCoupe: 14→18 outer radius enlarges wheel sprite by 28.57%.
+PASS: SportCoupe: independent brakes and body retain their dimensions.
+PASS: SportCoupe: tire growth raises axle and body while shadow stays grounded.
+PASS: SportCoupe: repeated rendering does not accumulate transforms or mutate physics.
+PASS: SportCoupe: wheel/rotor rotate together and caliper remains fixed after resizing.
+PASS: SportCoupe: removing brakes hides brake layers only.
+PASS: SportCoupe: removed wheel hardware is absent in preview; body remains visible.
+PASS: StarterHatch: 14→18 outer radius enlarges wheel sprite by 28.57%.
+PASS: StarterHatch: independent brakes and body retain their dimensions.
+PASS: StarterHatch: tire growth raises axle and body while shadow stays grounded.
+PASS: StarterHatch: repeated rendering does not accumulate transforms or mutate physics.
+PASS: StarterHatch: wheel/rotor rotate together and caliper remains fixed after resizing.
+PASS: StarterHatch: removing brakes hides brake layers only.
+PASS: StarterHatch: removed wheel hardware is absent in preview; body remains visible.
+PASS: UtilityPickup: 14→18 outer radius enlarges wheel sprite by 28.57%.
+PASS: UtilityPickup: independent brakes and body retain their dimensions.
+PASS: UtilityPickup: tire growth raises axle and body while shadow stays grounded.
+PASS: UtilityPickup: repeated rendering does not accumulate transforms or mutate physics.
+PASS: UtilityPickup: wheel/rotor rotate together and caliper remains fixed after resizing.
+PASS: UtilityPickup: removing brakes hides brake layers only.
+PASS: UtilityPickup: removed wheel hardware is absent in preview; body remains visible.
+PASS: V8Muscle: 14→18 outer radius enlarges wheel sprite by 28.57%.
+PASS: V8Muscle: independent brakes and body retain their dimensions.
+PASS: V8Muscle: tire growth raises axle and body while shadow stays grounded.
+PASS: V8Muscle: repeated rendering does not accumulate transforms or mutate physics.
+PASS: V8Muscle: wheel/rotor rotate together and caliper remains fixed after resizing.
+PASS: V8Muscle: removing brakes hides brake layers only.
+PASS: V8Muscle: removed wheel hardware is absent in preview; body remains visible.
+Existing car inspection/save/parts/tune checks: 24
+Targeted checks: 44
+Total including inspection: 68

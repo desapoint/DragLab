@@ -1,0 +1,6 @@
+PASS: A nearly exhausted tire actually fails from gas/brake contact work
+PASS: Physical tire failure leaves the engine and drivetrain running
+PASS: Physics-driven failure survives owned-instance save/reload
+PASS: Buying a compatible replacement keeps the failed original and charges only its provisional price
+PASS: Replacement restores fresh contact behavior without healing the old tires
+Checks: 5

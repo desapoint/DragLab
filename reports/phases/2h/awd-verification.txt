@@ -1,0 +1,10 @@
+PASS: Finite healthy engine with zero-grip connected front axle
+PASS: Center LSD physical preload increases surviving axle propulsion: zero-grip connected front axle / open 0,00177392833836467 / LSD 14,803749287054
+PASS: Shaft work telemetry observes free and useful paths: zero-grip connected front axle
+PASS: Finite healthy engine with disconnected front shaft
+PASS: Center LSD physical preload increases surviving axle propulsion: disconnected front shaft / open 0 / LSD 14,8111866679289
+PASS: Shaft work telemetry observes free and useful paths: disconnected front shaft
+PASS: Locked center equates axle means under split grip
+PASS: Safe wheel-imposed downshift remains allowed despite harmless crank flare
+PASS: Dangerous wheel-imposed downshift blocked despite low crank RPM
+Checks: 9
