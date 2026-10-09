@@ -1,0 +1,33 @@
+PASS: Burnout/skid output stays finite with headroom / 44100 / 1
+PASS: Sustained friction remains audible / 44100 / 1
+PASS: Moving skids retain a different texture from stationary burnouts / 44100 / 1
+PASS: Regaining grip does not abruptly cut the screech waveform / 44100 / 1
+PASS: Lower contact intensity gives quieter friction / 44100 / 1
+PASS: A short slip chirp attenuates by at least 40 dB within one second of grip recovery / 44100 / 1
+PASS: Static slip is sample-exact across callback boundaries / 44100 / 1
+PASS: Reset cannot leak old tire-filter energy / 44100 / 1
+PASS: Burnout/skid output stays finite with headroom / 44100 / 2
+PASS: Sustained friction remains audible / 44100 / 2
+PASS: Moving skids retain a different texture from stationary burnouts / 44100 / 2
+PASS: Regaining grip does not abruptly cut the screech waveform / 44100 / 2
+PASS: Lower contact intensity gives quieter friction / 44100 / 2
+PASS: A short slip chirp attenuates by at least 40 dB within one second of grip recovery / 44100 / 2
+PASS: Static slip is sample-exact across callback boundaries / 44100 / 2
+PASS: Reset cannot leak old tire-filter energy / 44100 / 2
+PASS: Burnout/skid output stays finite with headroom / 48000 / 1
+PASS: Sustained friction remains audible / 48000 / 1
+PASS: Moving skids retain a different texture from stationary burnouts / 48000 / 1
+PASS: Regaining grip does not abruptly cut the screech waveform / 48000 / 1
+PASS: Lower contact intensity gives quieter friction / 48000 / 1
+PASS: A short slip chirp attenuates by at least 40 dB within one second of grip recovery / 48000 / 1
+PASS: Static slip is sample-exact across callback boundaries / 48000 / 1
+PASS: Reset cannot leak old tire-filter energy / 48000 / 1
+PASS: Burnout/skid output stays finite with headroom / 48000 / 2
+PASS: Sustained friction remains audible / 48000 / 2
+PASS: Moving skids retain a different texture from stationary burnouts / 48000 / 2
+PASS: Regaining grip does not abruptly cut the screech waveform / 48000 / 2
+PASS: Lower contact intensity gives quieter friction / 48000 / 2
+PASS: A short slip chirp attenuates by at least 40 dB within one second of grip recovery / 48000 / 2
+PASS: Static slip is sample-exact across callback boundaries / 48000 / 2
+PASS: Reset cannot leak old tire-filter energy / 48000 / 2
+Checks: 32

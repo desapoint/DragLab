@@ -124,3 +124,8 @@ Individual-component/clutch checkpoint (2026-10-08): **5,242 foundation checks**
 ## Asynchronous race checkpoints (2026-10-09)
 
 Approved after the tire-feedback stutter report: full recoverable saves remain at race entry, result, pause, exit and other explicit transaction boundaries. During driving, one copied active-car snapshot per simulated second (also on newly detected failures) is queued to a bounded background journal writer. It captures fuel, fluids, component/element condition and the thermal clock without rebuilding the garage ledger. Full saves drain pending writes and retire the journal only after durable publication; interrupted loads validate and merge it before closing the run without payout. The physical bench remains isolated. This increment does not change physics, wear, fixed-tick catch-up, CSV exports or graphs. See [implementation and verification](../reports/async-race-saves/CHANGES.md).
+
+
+## Tire sound harshness refinement (2026-10-09)
+
+User audition requests recognizable rubber-on-asphalt screech with less white-noise-like grit: replace the four wavering pure-tone voices with prominent noise-excited rubber resonances, remove the broadband hiss bed and reduce low contact texture. Preserve contact-driven intensity, smooth shift chirps and grip recovery, shared volume and pause/reset/export behavior. See [sound refinement and verification](../reports/tire-sound-refinement/CHANGES.md). Physics, smoke and asynchronous race saves remain unchanged.

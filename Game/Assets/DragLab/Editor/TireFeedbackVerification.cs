@@ -17,7 +17,11 @@ namespace DragLab.Editor
     {
         public static void VerifyEffects()
         {
-            string folder=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/tire-feedback"));Directory.CreateDirectory(folder);
+            VerifyEffectsAt(Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/tire-feedback")));
+        }
+        public static void VerifyEffectsAt(string folder)
+        {
+            Directory.CreateDirectory(folder);
             int checks=0;var log=new StringBuilder("Contact-based tire feedback, deterministic DSP, master volume and bounded sprite smoke.\n");
             Action<bool,string> check=(ok,label)=>{log.AppendLine((ok?"PASS: ":"FAIL: ")+label);File.WriteAllText(Path.Combine(folder,"effects-verification.txt"),log.ToString(),new UTF8Encoding(false));if(!ok)throw new InvalidOperationException(label);checks++;};
             var state=new CarState{wheelRadiusM=.3,wheelContactInitialized=true,speed=0};
