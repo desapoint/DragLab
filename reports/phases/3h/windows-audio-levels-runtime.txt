@@ -1,0 +1,19 @@
+Windows standalone engine bench / real Update / DSP / OnGUI.
+PASS: Bench loads directly without race/profile initialization.
+MEASURE: master 25% RMS 0.006806 / 75% RMS 0.022101
+PASS: Actual listener PCM scales with intermediate master values, not only mute.
+PASS: Master slider has a reachable player-client rectangle.
+MEASURE: dragged master 0.247917 / listener 1.000000
+PASS: Real mouse drag changes master preference.
+PASS: Master slider drag changes actual PCM loudness.
+PASS: Master drag release saves the selected value.
+PASS: Engine gain slider is reachable in Mix.
+MEASURE: dragged engine gain config 0.196552 / running 0.196552
+PASS: Real Mix slider drag applies engine gain to the running DSP hardware.
+MEASURE: engine gain RMS before 0.022101 / after 0.005590
+PASS: Engine gain slider drag changes actual PCM loudness.
+MEASURE: turbo gain 0.002931 / RMS before 0.000004 / after 0.000000
+PASS: Real accessory gain drag independently silences turbo whistle.
+PASS: Stock V8 loads the louder +6 dB idle setting.
+PASS: Audio level regression has no runtime/DSP/GUI errors.
+Runtime errors: 0

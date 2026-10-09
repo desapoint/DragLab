@@ -1,0 +1,15 @@
+PASS: 13 domain gates and 18 Windows workflows. Overlapping checks are not summed as unique cases.
+domain-assembly-verification.txt: Checks: 142 / prior ownership/inventory: 37 / total 179
+domain-balance-verification.txt: Checks: 1388
+domain-business-verification.txt: Checks: 159
+domain-career-verification.txt: Checks: 208
+domain-collection-verification.txt: Checks including ownership/inventory: 399
+domain-economy-save-integration-verification.txt: Checks: 500
+domain-foundation-audit-verification.txt: Checks: 5662; failures: 0; simulation runs: 2429; simulated seconds: 36629.00000
+domain-foundation-unity-verification.txt: PASS: 16719 foundation checks.
+domain-foundation-verification.txt: Checks: 74
+domain-integrated-tools-tools-verification.txt: Checks: 1465
+domain-interrupted-physics-recovery-verification.txt: Checks: 296
+domain-paid-verification.txt: Checks: 226
+domain-thermal-thermal-verification.txt: Checks: 156
+domain-valuation-verification.txt: Checks: 2405

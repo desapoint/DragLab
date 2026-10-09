@@ -1,0 +1,5 @@
+PASS: Windows player Update/OnGUI, four-car rendering, start tree, automatic career win, one-time settlement, upgrade/preset, manual launch/sequential shifts, automatic launch/manual-clutch shifts, paused time/audio/shutdown motion, nonzero warmed listener audio, automatic and manual shutdown braking, stable finish times/rewards, records/settings/save reload, clutch/brake telemetry and red-light denial.
+Unity: 6000.6.4f1
+Screenshots: 1280x720 requested window.
+Runtime errors: 0
+Inputs injected at the driver boundary; physical keyboard and Android device touch are not covered.

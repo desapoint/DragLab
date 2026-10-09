@@ -1,0 +1,228 @@
+3D / schema 5 / draglab-integrated-tools-v16
+PASS: Refuel capped and priced on actual free space: city-three
+PASS: Paid fuel retains history and settles once: city-three
+PASS: Duplicate fuel quote rejected atomically: city-three
+PASS: Full tank purchases reject without cash change: city-three
+PASS: Low-cash fuel keeps money/quantity unchanged: city-three
+PASS: Paid fluids retain aging / existing faults: city-three
+PASS: Paid repair restores leak only, preserves structural wear: city-three
+PASS: Unrepairable failure cannot be healed by paid reseal: city-three
+PASS: Oil/filter/labour charged once; old filter retained: city-three
+PASS: Quoted upgrade purchase settles once: city-three
+PASS: Dealership payment includes new package resources and separate identities: city-three
+PASS: Stock immediate disposal cannot profit from dealership package: city-three
+PASS: Whole-car sale removes descendants, reselects actual remaining car: city-three
+PASS: Repeated whole-car sale pays nothing: city-three
+PASS: Last incomplete/stripped chassis salvaged with retained engine/loose inventory: city-three
+PASS: Engine identities/faults/resources remain exact in salvage receipt: city-three
+PASS: Empty garage survives normalization without free OEM car: city-three
+PASS: Partial engine sale excludes exact kept failed pack and children: city-three
+PASS: Retained loose pack can be sold once separately: city-three
+PASS: All multi-asset transactions preserve exclusive ownership: city-three
+PASS: Paid flush charges full coolant and labour: city-three
+PASS: Paid singular replacement retains removed fault and all other cylinders: city-three
+PASS: Quoted individual spare sale removes only its actual identity: city-three
+PASS: Individual spare cannot be sold twice: city-three
+PASS: Attached engine sale preserves chassis/fuel and selected retained pack: city-three
+PASS: Refuel capped and priced on actual free space: rally-sedan
+PASS: Paid fuel retains history and settles once: rally-sedan
+PASS: Duplicate fuel quote rejected atomically: rally-sedan
+PASS: Full tank purchases reject without cash change: rally-sedan
+PASS: Low-cash fuel keeps money/quantity unchanged: rally-sedan
+PASS: Paid fluids retain aging / existing faults: rally-sedan
+PASS: Paid repair restores leak only, preserves structural wear: rally-sedan
+PASS: Unrepairable failure cannot be healed by paid reseal: rally-sedan
+PASS: Oil/filter/labour charged once; old filter retained: rally-sedan
+PASS: Quoted upgrade purchase settles once: rally-sedan
+PASS: Dealership payment includes new package resources and separate identities: rally-sedan
+PASS: Stock immediate disposal cannot profit from dealership package: rally-sedan
+PASS: Whole-car sale removes descendants, reselects actual remaining car: rally-sedan
+PASS: Repeated whole-car sale pays nothing: rally-sedan
+PASS: Last incomplete/stripped chassis salvaged with retained engine/loose inventory: rally-sedan
+PASS: Engine identities/faults/resources remain exact in salvage receipt: rally-sedan
+PASS: Empty garage survives normalization without free OEM car: rally-sedan
+PASS: Partial engine sale excludes exact kept failed pack and children: rally-sedan
+PASS: Retained loose pack can be sold once separately: rally-sedan
+PASS: All multi-asset transactions preserve exclusive ownership: rally-sedan
+PASS: Paid flush charges full coolant and labour: rally-sedan
+PASS: Paid singular replacement retains removed fault and all other cylinders: rally-sedan
+PASS: Quoted individual spare sale removes only its actual identity: rally-sedan
+PASS: Individual spare cannot be sold twice: rally-sedan
+PASS: Attached engine sale preserves chassis/fuel and selected retained pack: rally-sedan
+PASS: Refuel capped and priced on actual free space: sport-coupe
+PASS: Paid fuel retains history and settles once: sport-coupe
+PASS: Duplicate fuel quote rejected atomically: sport-coupe
+PASS: Full tank purchases reject without cash change: sport-coupe
+PASS: Low-cash fuel keeps money/quantity unchanged: sport-coupe
+PASS: Paid fluids retain aging / existing faults: sport-coupe
+PASS: Paid repair restores leak only, preserves structural wear: sport-coupe
+PASS: Unrepairable failure cannot be healed by paid reseal: sport-coupe
+PASS: Oil/filter/labour charged once; old filter retained: sport-coupe
+PASS: Quoted upgrade purchase settles once: sport-coupe
+PASS: Dealership payment includes new package resources and separate identities: sport-coupe
+PASS: Stock immediate disposal cannot profit from dealership package: sport-coupe
+PASS: Whole-car sale removes descendants, reselects actual remaining car: sport-coupe
+PASS: Repeated whole-car sale pays nothing: sport-coupe
+PASS: Last incomplete/stripped chassis salvaged with retained engine/loose inventory: sport-coupe
+PASS: Engine identities/faults/resources remain exact in salvage receipt: sport-coupe
+PASS: Empty garage survives normalization without free OEM car: sport-coupe
+PASS: Partial engine sale excludes exact kept failed pack and children: sport-coupe
+PASS: Retained loose pack can be sold once separately: sport-coupe
+PASS: All multi-asset transactions preserve exclusive ownership: sport-coupe
+PASS: Paid flush charges full coolant and labour: sport-coupe
+PASS: Paid singular replacement retains removed fault and all other cylinders: sport-coupe
+PASS: Quoted individual spare sale removes only its actual identity: sport-coupe
+PASS: Individual spare cannot be sold twice: sport-coupe
+PASS: Attached engine sale preserves chassis/fuel and selected retained pack: sport-coupe
+PASS: Refuel capped and priced on actual free space: starter-hatch
+PASS: Paid fuel retains history and settles once: starter-hatch
+PASS: Duplicate fuel quote rejected atomically: starter-hatch
+PASS: Full tank purchases reject without cash change: starter-hatch
+PASS: Low-cash fuel keeps money/quantity unchanged: starter-hatch
+PASS: Paid fluids retain aging / existing faults: starter-hatch
+PASS: Paid repair restores leak only, preserves structural wear: starter-hatch
+PASS: Unrepairable failure cannot be healed by paid reseal: starter-hatch
+PASS: Oil/filter/labour charged once; old filter retained: starter-hatch
+PASS: Quoted upgrade purchase settles once: starter-hatch
+PASS: Dealership payment includes new package resources and separate identities: starter-hatch
+PASS: Stock immediate disposal cannot profit from dealership package: starter-hatch
+PASS: Whole-car sale removes descendants, reselects actual remaining car: starter-hatch
+PASS: Repeated whole-car sale pays nothing: starter-hatch
+PASS: Last incomplete/stripped chassis salvaged with retained engine/loose inventory: starter-hatch
+PASS: Engine identities/faults/resources remain exact in salvage receipt: starter-hatch
+PASS: Empty garage survives normalization without free OEM car: starter-hatch
+PASS: Partial engine sale excludes exact kept failed pack and children: starter-hatch
+PASS: Retained loose pack can be sold once separately: starter-hatch
+PASS: All multi-asset transactions preserve exclusive ownership: starter-hatch
+PASS: Paid flush charges full coolant and labour: starter-hatch
+PASS: Paid singular replacement retains removed fault and all other cylinders: starter-hatch
+PASS: Quoted individual spare sale removes only its actual identity: starter-hatch
+PASS: Individual spare cannot be sold twice: starter-hatch
+PASS: Attached engine sale preserves chassis/fuel and selected retained pack: starter-hatch
+PASS: Refuel capped and priced on actual free space: super-v8
+PASS: Paid fuel retains history and settles once: super-v8
+PASS: Duplicate fuel quote rejected atomically: super-v8
+PASS: Full tank purchases reject without cash change: super-v8
+PASS: Low-cash fuel keeps money/quantity unchanged: super-v8
+PASS: Paid fluids retain aging / existing faults: super-v8
+PASS: Paid repair restores leak only, preserves structural wear: super-v8
+PASS: Unrepairable failure cannot be healed by paid reseal: super-v8
+PASS: Oil/filter/labour charged once; old filter retained: super-v8
+PASS: Quoted upgrade purchase settles once: super-v8
+PASS: Dealership payment includes new package resources and separate identities: super-v8
+PASS: Stock immediate disposal cannot profit from dealership package: super-v8
+PASS: Whole-car sale removes descendants, reselects actual remaining car: super-v8
+PASS: Repeated whole-car sale pays nothing: super-v8
+PASS: Last incomplete/stripped chassis salvaged with retained engine/loose inventory: super-v8
+PASS: Engine identities/faults/resources remain exact in salvage receipt: super-v8
+PASS: Empty garage survives normalization without free OEM car: super-v8
+PASS: Partial engine sale excludes exact kept failed pack and children: super-v8
+PASS: Retained loose pack can be sold once separately: super-v8
+PASS: All multi-asset transactions preserve exclusive ownership: super-v8
+PASS: Paid flush charges full coolant and labour: super-v8
+PASS: Paid singular replacement retains removed fault and all other cylinders: super-v8
+PASS: Quoted individual spare sale removes only its actual identity: super-v8
+PASS: Individual spare cannot be sold twice: super-v8
+PASS: Attached engine sale preserves chassis/fuel and selected retained pack: super-v8
+PASS: Refuel capped and priced on actual free space: touring-six
+PASS: Paid fuel retains history and settles once: touring-six
+PASS: Duplicate fuel quote rejected atomically: touring-six
+PASS: Full tank purchases reject without cash change: touring-six
+PASS: Low-cash fuel keeps money/quantity unchanged: touring-six
+PASS: Paid fluids retain aging / existing faults: touring-six
+PASS: Paid repair restores leak only, preserves structural wear: touring-six
+PASS: Unrepairable failure cannot be healed by paid reseal: touring-six
+PASS: Oil/filter/labour charged once; old filter retained: touring-six
+PASS: Quoted upgrade purchase settles once: touring-six
+PASS: Dealership payment includes new package resources and separate identities: touring-six
+PASS: Stock immediate disposal cannot profit from dealership package: touring-six
+PASS: Whole-car sale removes descendants, reselects actual remaining car: touring-six
+PASS: Repeated whole-car sale pays nothing: touring-six
+PASS: Last incomplete/stripped chassis salvaged with retained engine/loose inventory: touring-six
+PASS: Engine identities/faults/resources remain exact in salvage receipt: touring-six
+PASS: Empty garage survives normalization without free OEM car: touring-six
+PASS: Partial engine sale excludes exact kept failed pack and children: touring-six
+PASS: Retained loose pack can be sold once separately: touring-six
+PASS: All multi-asset transactions preserve exclusive ownership: touring-six
+PASS: Paid flush charges full coolant and labour: touring-six
+PASS: Paid singular replacement retains removed fault and all other cylinders: touring-six
+PASS: Quoted individual spare sale removes only its actual identity: touring-six
+PASS: Individual spare cannot be sold twice: touring-six
+PASS: Attached engine sale preserves chassis/fuel and selected retained pack: touring-six
+PASS: Refuel capped and priced on actual free space: utility-pickup
+PASS: Paid fuel retains history and settles once: utility-pickup
+PASS: Duplicate fuel quote rejected atomically: utility-pickup
+PASS: Full tank purchases reject without cash change: utility-pickup
+PASS: Low-cash fuel keeps money/quantity unchanged: utility-pickup
+PASS: Paid fluids retain aging / existing faults: utility-pickup
+PASS: Paid repair restores leak only, preserves structural wear: utility-pickup
+PASS: Unrepairable failure cannot be healed by paid reseal: utility-pickup
+PASS: Oil/filter/labour charged once; old filter retained: utility-pickup
+PASS: Quoted upgrade purchase settles once: utility-pickup
+PASS: Dealership payment includes new package resources and separate identities: utility-pickup
+PASS: Stock immediate disposal cannot profit from dealership package: utility-pickup
+PASS: Whole-car sale removes descendants, reselects actual remaining car: utility-pickup
+PASS: Repeated whole-car sale pays nothing: utility-pickup
+PASS: Last incomplete/stripped chassis salvaged with retained engine/loose inventory: utility-pickup
+PASS: Engine identities/faults/resources remain exact in salvage receipt: utility-pickup
+PASS: Empty garage survives normalization without free OEM car: utility-pickup
+PASS: Partial engine sale excludes exact kept failed pack and children: utility-pickup
+PASS: Retained loose pack can be sold once separately: utility-pickup
+PASS: All multi-asset transactions preserve exclusive ownership: utility-pickup
+PASS: Paid flush charges full coolant and labour: utility-pickup
+PASS: Paid singular replacement retains removed fault and all other cylinders: utility-pickup
+PASS: Quoted individual spare sale removes only its actual identity: utility-pickup
+PASS: Individual spare cannot be sold twice: utility-pickup
+PASS: Attached engine sale preserves chassis/fuel and selected retained pack: utility-pickup
+PASS: Refuel capped and priced on actual free space: v8-muscle
+PASS: Paid fuel retains history and settles once: v8-muscle
+PASS: Duplicate fuel quote rejected atomically: v8-muscle
+PASS: Full tank purchases reject without cash change: v8-muscle
+PASS: Low-cash fuel keeps money/quantity unchanged: v8-muscle
+PASS: Paid fluids retain aging / existing faults: v8-muscle
+PASS: Paid repair restores leak only, preserves structural wear: v8-muscle
+PASS: Unrepairable failure cannot be healed by paid reseal: v8-muscle
+PASS: Oil/filter/labour charged once; old filter retained: v8-muscle
+PASS: Quoted upgrade purchase settles once: v8-muscle
+PASS: Dealership payment includes new package resources and separate identities: v8-muscle
+PASS: Stock immediate disposal cannot profit from dealership package: v8-muscle
+PASS: Whole-car sale removes descendants, reselects actual remaining car: v8-muscle
+PASS: Repeated whole-car sale pays nothing: v8-muscle
+PASS: Last incomplete/stripped chassis salvaged with retained engine/loose inventory: v8-muscle
+PASS: Engine identities/faults/resources remain exact in salvage receipt: v8-muscle
+PASS: Empty garage survives normalization without free OEM car: v8-muscle
+PASS: Partial engine sale excludes exact kept failed pack and children: v8-muscle
+PASS: Retained loose pack can be sold once separately: v8-muscle
+PASS: All multi-asset transactions preserve exclusive ownership: v8-muscle
+PASS: Paid flush charges full coolant and labour: v8-muscle
+PASS: Paid singular replacement retains removed fault and all other cylinders: v8-muscle
+PASS: Quoted individual spare sale removes only its actual identity: v8-muscle
+PASS: Individual spare cannot be sold twice: v8-muscle
+PASS: Attached engine sale preserves chassis/fuel and selected retained pack: v8-muscle
+PASS: Rebuild payment includes renewal oil, existing component/filter cost and labour.
+PASS: Rebuild job captures actual paid total once.
+PASS: Reserved rebuild blocks whole-car disposal.
+PASS: Paid modification cannot bypass rebuild reservation.
+PASS: Rebuild collection retains paid fee and releases reservation without second charge.
+PASS: Paid wet-clutch oil renews bath without restoring friction wear.
+PASS: Same-revision tank edit rejects stale payment.
+PASS: Unversioned fuel price edit rejects old payment.
+PASS: Expired payment rejected.
+PASS: Nonfinite litres rejected without mutation.
+PASS: Failed persistence rolls back fuel/cash/receipt.
+PASS: Failed multi-asset salvage persistence preserves car/engine/cash.
+PASS: Recovery cannot claim before deadline.
+PASS: Cannot stack recovery jobs.
+PASS: Timed recovery funds empty garage without creating or repairing assets.
+PASS: Repeated recovery claim rejected.
+PASS: Backwards clock cannot start additional jobs.
+PASS: Recovery reward bounded by cash eligibility.
+PASS: Recovery cash ceiling can fund a playable no-reputation replacement package.
+PASS: Zero-cash empty garage recovers through bounded timed work and funded replacement, retaining stored assets.
+PASS: Schema-4 migration retains original identities and backup.
+PASS: Actual disk transaction commits last-car sale.
+PASS: Disk reload keeps disposal receipt / money / empty ownership together.
+PASS: Reloaded disposal cannot pay twice.
+PASS: Leftover temporary transaction file cannot duplicate settlement.
+PASS: Backup recovery restores complete pre-sale assets and pre-sale cash, never a mixed tree/payment.
+Checks: 226

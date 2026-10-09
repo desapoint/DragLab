@@ -1,4 +1,4 @@
-﻿model,cars,engines,parts,career_records,jobs,cash,partial_fuel,revision
+model,cars,engines,parts,career_records,jobs,cash,remaining_car_fuel_l,revision
 city-three,1,1,42,2,0,97330,40,20
 rally-sedan,1,1,49,2,0,95792,50,20
 sport-coupe,1,1,43,2,0,96982,50,20

@@ -1,0 +1,30 @@
+Windows standalone engine bench / real Update / DSP / OnGUI.
+PASS: Bench loads directly without race/profile initialization.
+PASS: Held OS W owns driving before hardware edits.
+PASS: Configuration control is visible for OS mouse input.
+PASS: Actual turbo-type mouse selection applies during keyboard driving.
+PASS: Delayed hardware apply preserves keyboard ownership, held gas and rotating engine.
+PASS: Further repaints cannot switch driving back to slider values.
+PASS: Configuration control is visible for OS mouse input.
+PASS: Actual gearbox hardware selection leaves keyboard pedals active.
+PASS: Configuration control is visible for OS mouse input.
+PASS: Configuration control is visible for OS mouse input.
+PASS: Actual sequential-manual hardware control applies while keyboard gas remains held.
+PASS: Sound bench uses the shared faster sequential manual shift duration.
+PASS: Configuration control is visible for OS mouse input.
+PASS: Actual Mix slider applies without changing pedal ownership or cancelling W.
+PASS: Configuration control is visible for OS mouse input.
+PASS: A hardware numeric field can receive focus while keyboard gas stays held.
+PASS: Releasing W during hardware editing stops gas without restoring old slider throttle.
+PASS: W from hardware numeric focus resumes driving without a lost press.
+PASS: Configuration control is visible for OS mouse input.
+PASS: Actual engine/car selection retains keyboard driving and held gas on the fresh test engine.
+PASS: Configuration control is visible for OS mouse input.
+PASS: Engine on/off remains an editable independent Drive option in keyboard mode.
+PASS: Configuration control is visible for OS mouse input.
+PASS: Re-enabling the test engine resumes held keyboard gas without a mode switch.
+PASS: Configuration control is visible for OS mouse input.
+PASS: Keyboard-controlled pedal slider remains feedback-only and cannot override held gas.
+PASS: Final gas release keeps keyboard mode with zero throttle after every hardware edit.
+PASS: Live configuration edits have no runtime/DSP/GUI errors.
+Runtime errors: 0

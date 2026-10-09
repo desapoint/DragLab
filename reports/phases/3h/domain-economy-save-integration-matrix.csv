@@ -1,0 +1,9 @@
+model,cars,engines,parts,career_records,jobs,cash,remaining_car_fuel_l,revision
+city-three,1,1,42,2,0,97330,40,20
+rally-sedan,1,1,49,2,0,95792,50,20
+sport-coupe,1,1,43,2,0,96982,50,20
+starter-hatch,1,1,42,2,0,97640,50,20
+super-v8,1,1,43,2,0,92922,65,20
+touring-six,1,1,42,2,0,96590,60,20
+utility-pickup,1,1,47,2,0,96858,50,20
+v8-muscle,1,1,41,2,0,95899,50,20

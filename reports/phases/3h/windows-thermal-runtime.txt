@@ -1,0 +1,15 @@
+Windows thermal Settings / shared warm-up Update / save boundary
+PASS: Actual optimal race-start choice keeps heat management enabled
+PASS: Actual Heat management toggle disables live heat
+PASS: Disabled race-entry choices cannot change while heat management is OFF
+PASS: Actual Live and warm-up controls select independent saved preferences
+PASS: New temperature preferences persist through real disk reload
+PASS: Actual player enters optional neutral warm-up with lights waiting
+PASS: Actual burnout line-lock toggle selects non-driven brake axle
+PASS: Actual Update warm-up produces road slip, tire heat and consumed fuel
+PASS: Warm-up pause freezes simulation without starting countdown
+PASS: Warm-up checkpoint retains actual heat/work and per-car thermal clock
+PASS: Actual car can brake and stop after burnout
+PASS: Actual Ready button starts ordinary lights in neutral
+PASS: Thermal Settings/warm-up reports zero runtime/GUI/DSP errors
+Runtime errors: 0

@@ -169,7 +169,7 @@ namespace DragLab.Editor
         {
             string path = EditorUtility.SaveFilePanel("Export balance matrix", "", "draglab-balance.csv", "csv");
             if (path.Length == 0) return;
-            File.WriteAllText(path, BalanceCsv()); message = "128 modeled combinations exported: " + path;
+            File.WriteAllText(path, BalanceCsv()); message = (Resources.LoadAll<VehicleDefinition>("Data/Vehicles").Length * 32) + " modeled combinations exported: " + path;
         }
         public static string BalanceCsv()
         {

@@ -2341,3 +2341,8 @@ Four garage business levels preserve existing unrestricted collection storage wh
 ### Slice 3G implementation (2026-10-09)
 
 Funded career/loss, real worn-component DNF and paid repair, downgrade/reuse, timed profitable rebuild/assembly sale, idle reinvestment and empty-garage replacement routes have recorded ledgers. Recovery pays $250 per real minute; filter pricing and authorable rebuild labour replace generic costs. Numeric JSON snapshot drift no longer blocks unchanged paid quotes/jobs after driving; currency/IDs/health/failures and meaningful state changes stay strict. See [economy calibration and controls](ECONOMY_BALANCE.md). 3H is still required for integrated Slice-3 acceptance and packaging; this does not deliver the full original long-career/used-dealer/storefront content.
+
+
+### Slice 3H implementation acceptance (2026-10-09)
+
+3A–3H passed integrated developer acceptance: 13 domain gates, 18 Windows workflows and 16,719 foundation checks, including the 5,662-check / 2,429-run configuration matrix. The approved thermal extension separates optimal at race start from continuous optimal-temperature assistance, with saved live cooling and optional shared warm-up. See [full Slice 3 audit](../reports/SLICE_3_AUDIT.md) and [3H checkpoint](../reports/phases/3h/CHANGES.md). This completes the planned operating-loop systems slice; the larger original content, human/device acceptance and commercial hardening remain later work.

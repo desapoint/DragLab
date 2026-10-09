@@ -1,0 +1,14 @@
+3A actual Windows dealership / selection / independent real race / isolated save.
+PASS: Actual dealership button buys and selects an independent second starter.
+PASS: Buying retains original resources/presets and creates independent defaults.
+PASS: Actual selection restores the exact first instance and tune.
+PASS: Second instance selected before race.
+PASS: Second instance remains selected at race finish.
+PASS: Real race records and wear affect only the selected duplicate.
+PASS: Reload preserves duplicate identities and exact selected car.
+PASS: Actual new-car purchase resolves playable hardware: city-three
+PASS: Actual new-car purchase resolves playable hardware: rally-sedan
+PASS: Actual new-car purchase resolves playable hardware: touring-six
+PASS: Actual new-car purchase resolves playable hardware: super-v8
+PASS: Expanded collection has no runtime/GUI/DSP errors.
+Runtime errors: 0

@@ -8,4 +8,4 @@ Four pre-existing malformed range labels were repaired. The original gameplay pr
 
 Tools: `Invoke-Unity.ps1 -Action EconomyIntegrationVerify`, `Test-EconomyInterruptedRun.ps1 -ShowPlayer`, and `Test-SliceThreeIntegration.ps1 -ShowPlayer`. Saves/screenshots/raw logs are isolated under local fixture directories. The Windows build passed.
 
-**This is a working harness checkpoint. Full Slice 3 feature/regression acceptance and final packaging are still pending; it does not yet declare 3H or Slice 3 complete.** The final audit will distinguish current reruns, inherited requirements, deferred content and human/device acceptance limits.
+**This was the initial working harness checkpoint (`6ba37eb`).** It did not yet declare 3H complete. Full current acceptance is now recorded in [CHANGES.md](CHANGES.md) and the [Slice 3 audit](../../SLICE_3_AUDIT.md), with inherited requirements, deferred content and human/device limits separated.

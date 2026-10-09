@@ -1,0 +1,6 @@
+3H checkpoint integrity / complete source and runnable Windows folder
+PASS: source-checkpoint-final.zip / 1073 files / complete paths, CRC and every payload match
+source-checkpoint-final.zip SHA256 7f1ca851fcc84d29ab09edb18291f8745b2870d990daf24196f0da129441ed26
+PASS: archived compiled gameplay assembly matches the current validated player
+PASS: Windows-checkpoint-final.zip / 260 files / complete paths, CRC and every payload match
+Windows-checkpoint-final.zip SHA256 db272fed2e17b19dc11607217742e1875da78291385d5ce22d6153d8038a57ae

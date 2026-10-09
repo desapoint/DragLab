@@ -1,0 +1,159 @@
+Race thermal difficulty / real elapsed parked time / shared warm-up physics
+PASS: city-three / FullyCooled: authored temperature policy without repairing health
+PASS: city-three / FullyCooled: resources/health never replenished
+PASS: city-three: optimum is compound-specific
+PASS: city-three / Optimal: authored temperature policy without repairing health
+PASS: city-three / Optimal: resources/health never replenished
+PASS: city-three: optimum is compound-specific
+PASS: city-three / Live: authored temperature policy without repairing health
+PASS: city-three / Live: resources/health never replenished
+PASS: city-three: optimum is compound-specific
+PASS: city-three: clock rollback cannot fabricate cooling
+PASS: city-three: legacy missing clock preserves heat until first checkpoint
+PASS: city-three: offline day advances real parked time without a real wait
+PASS: city-three: heat management OFF overrides the disabled start policy
+PASS: city-three / FullyCooled: start-temperature assist cannot bypass independent parked leaks
+PASS: city-three / Optimal: start-temperature assist cannot bypass independent parked leaks
+PASS: city-three / Live: start-temperature assist cannot bypass independent parked leaks
+PASS: city-three: disabling heat management does not disable fluid depletion
+PASS: city-three: explicit None fluid difficulty still prevents parked depletion
+PASS: rally-sedan / FullyCooled: authored temperature policy without repairing health
+PASS: rally-sedan / FullyCooled: resources/health never replenished
+PASS: rally-sedan: optimum is compound-specific
+PASS: rally-sedan / Optimal: authored temperature policy without repairing health
+PASS: rally-sedan / Optimal: resources/health never replenished
+PASS: rally-sedan: optimum is compound-specific
+PASS: rally-sedan / Live: authored temperature policy without repairing health
+PASS: rally-sedan / Live: resources/health never replenished
+PASS: rally-sedan: optimum is compound-specific
+PASS: rally-sedan: clock rollback cannot fabricate cooling
+PASS: rally-sedan: legacy missing clock preserves heat until first checkpoint
+PASS: rally-sedan: offline day advances real parked time without a real wait
+PASS: rally-sedan: heat management OFF overrides the disabled start policy
+PASS: rally-sedan / FullyCooled: start-temperature assist cannot bypass independent parked leaks
+PASS: rally-sedan / Optimal: start-temperature assist cannot bypass independent parked leaks
+PASS: rally-sedan / Live: start-temperature assist cannot bypass independent parked leaks
+PASS: rally-sedan: disabling heat management does not disable fluid depletion
+PASS: rally-sedan: explicit None fluid difficulty still prevents parked depletion
+PASS: sport-coupe / FullyCooled: authored temperature policy without repairing health
+PASS: sport-coupe / FullyCooled: resources/health never replenished
+PASS: sport-coupe: optimum is compound-specific
+PASS: sport-coupe / Optimal: authored temperature policy without repairing health
+PASS: sport-coupe / Optimal: resources/health never replenished
+PASS: sport-coupe: optimum is compound-specific
+PASS: sport-coupe / Live: authored temperature policy without repairing health
+PASS: sport-coupe / Live: resources/health never replenished
+PASS: sport-coupe: optimum is compound-specific
+PASS: sport-coupe: clock rollback cannot fabricate cooling
+PASS: sport-coupe: legacy missing clock preserves heat until first checkpoint
+PASS: sport-coupe: offline day advances real parked time without a real wait
+PASS: sport-coupe: heat management OFF overrides the disabled start policy
+PASS: sport-coupe / FullyCooled: start-temperature assist cannot bypass independent parked leaks
+PASS: sport-coupe / Optimal: start-temperature assist cannot bypass independent parked leaks
+PASS: sport-coupe / Live: start-temperature assist cannot bypass independent parked leaks
+PASS: sport-coupe: disabling heat management does not disable fluid depletion
+PASS: sport-coupe: explicit None fluid difficulty still prevents parked depletion
+PASS: starter-hatch / FullyCooled: authored temperature policy without repairing health
+PASS: starter-hatch / FullyCooled: resources/health never replenished
+PASS: starter-hatch: optimum is compound-specific
+PASS: starter-hatch / Optimal: authored temperature policy without repairing health
+PASS: starter-hatch / Optimal: resources/health never replenished
+PASS: starter-hatch: optimum is compound-specific
+PASS: starter-hatch / Live: authored temperature policy without repairing health
+PASS: starter-hatch / Live: resources/health never replenished
+PASS: starter-hatch: optimum is compound-specific
+PASS: starter-hatch: clock rollback cannot fabricate cooling
+PASS: starter-hatch: legacy missing clock preserves heat until first checkpoint
+PASS: starter-hatch: offline day advances real parked time without a real wait
+PASS: starter-hatch: heat management OFF overrides the disabled start policy
+PASS: starter-hatch / FullyCooled: start-temperature assist cannot bypass independent parked leaks
+PASS: starter-hatch / Optimal: start-temperature assist cannot bypass independent parked leaks
+PASS: starter-hatch / Live: start-temperature assist cannot bypass independent parked leaks
+PASS: starter-hatch: disabling heat management does not disable fluid depletion
+PASS: starter-hatch: explicit None fluid difficulty still prevents parked depletion
+PASS: super-v8 / FullyCooled: authored temperature policy without repairing health
+PASS: super-v8 / FullyCooled: resources/health never replenished
+PASS: super-v8: optimum is compound-specific
+PASS: super-v8 / Optimal: authored temperature policy without repairing health
+PASS: super-v8 / Optimal: resources/health never replenished
+PASS: super-v8: optimum is compound-specific
+PASS: super-v8 / Live: authored temperature policy without repairing health
+PASS: super-v8 / Live: resources/health never replenished
+PASS: super-v8: optimum is compound-specific
+PASS: super-v8: clock rollback cannot fabricate cooling
+PASS: super-v8: legacy missing clock preserves heat until first checkpoint
+PASS: super-v8: offline day advances real parked time without a real wait
+PASS: super-v8: heat management OFF overrides the disabled start policy
+PASS: super-v8 / FullyCooled: start-temperature assist cannot bypass independent parked leaks
+PASS: super-v8 / Optimal: start-temperature assist cannot bypass independent parked leaks
+PASS: super-v8 / Live: start-temperature assist cannot bypass independent parked leaks
+PASS: super-v8: disabling heat management does not disable fluid depletion
+PASS: super-v8: explicit None fluid difficulty still prevents parked depletion
+PASS: touring-six / FullyCooled: authored temperature policy without repairing health
+PASS: touring-six / FullyCooled: resources/health never replenished
+PASS: touring-six: optimum is compound-specific
+PASS: touring-six / Optimal: authored temperature policy without repairing health
+PASS: touring-six / Optimal: resources/health never replenished
+PASS: touring-six: optimum is compound-specific
+PASS: touring-six / Live: authored temperature policy without repairing health
+PASS: touring-six / Live: resources/health never replenished
+PASS: touring-six: optimum is compound-specific
+PASS: touring-six: clock rollback cannot fabricate cooling
+PASS: touring-six: legacy missing clock preserves heat until first checkpoint
+PASS: touring-six: offline day advances real parked time without a real wait
+PASS: touring-six: heat management OFF overrides the disabled start policy
+PASS: touring-six / FullyCooled: start-temperature assist cannot bypass independent parked leaks
+PASS: touring-six / Optimal: start-temperature assist cannot bypass independent parked leaks
+PASS: touring-six / Live: start-temperature assist cannot bypass independent parked leaks
+PASS: touring-six: disabling heat management does not disable fluid depletion
+PASS: touring-six: explicit None fluid difficulty still prevents parked depletion
+PASS: utility-pickup / FullyCooled: authored temperature policy without repairing health
+PASS: utility-pickup / FullyCooled: resources/health never replenished
+PASS: utility-pickup: optimum is compound-specific
+PASS: utility-pickup / Optimal: authored temperature policy without repairing health
+PASS: utility-pickup / Optimal: resources/health never replenished
+PASS: utility-pickup: optimum is compound-specific
+PASS: utility-pickup / Live: authored temperature policy without repairing health
+PASS: utility-pickup / Live: resources/health never replenished
+PASS: utility-pickup: optimum is compound-specific
+PASS: utility-pickup: clock rollback cannot fabricate cooling
+PASS: utility-pickup: legacy missing clock preserves heat until first checkpoint
+PASS: utility-pickup: offline day advances real parked time without a real wait
+PASS: utility-pickup: heat management OFF overrides the disabled start policy
+PASS: utility-pickup / FullyCooled: start-temperature assist cannot bypass independent parked leaks
+PASS: utility-pickup / Optimal: start-temperature assist cannot bypass independent parked leaks
+PASS: utility-pickup / Live: start-temperature assist cannot bypass independent parked leaks
+PASS: utility-pickup: disabling heat management does not disable fluid depletion
+PASS: utility-pickup: explicit None fluid difficulty still prevents parked depletion
+PASS: v8-muscle / FullyCooled: authored temperature policy without repairing health
+PASS: v8-muscle / FullyCooled: resources/health never replenished
+PASS: v8-muscle: optimum is compound-specific
+PASS: v8-muscle / Optimal: authored temperature policy without repairing health
+PASS: v8-muscle / Optimal: resources/health never replenished
+PASS: v8-muscle: optimum is compound-specific
+PASS: v8-muscle / Live: authored temperature policy without repairing health
+PASS: v8-muscle / Live: resources/health never replenished
+PASS: v8-muscle: optimum is compound-specific
+PASS: v8-muscle: clock rollback cannot fabricate cooling
+PASS: v8-muscle: legacy missing clock preserves heat until first checkpoint
+PASS: v8-muscle: offline day advances real parked time without a real wait
+PASS: v8-muscle: heat management OFF overrides the disabled start policy
+PASS: v8-muscle / FullyCooled: start-temperature assist cannot bypass independent parked leaks
+PASS: v8-muscle / Optimal: start-temperature assist cannot bypass independent parked leaks
+PASS: v8-muscle / Live: start-temperature assist cannot bypass independent parked leaks
+PASS: v8-muscle: disabling heat management does not disable fluid depletion
+PASS: v8-muscle: explicit None fluid difficulty still prevents parked depletion
+PASS: Warm-up idles in neutral without consuming race countdown
+PASS: RWD line-lock burnout uses actual wheel slip, tire heat and fuel
+PASS: Burnout retains wear without starting or red-lighting race
+PASS: Moving/spinning wheels cannot be silently teleported to starting line
+PASS: Stopped warm-up advances explicitly to lights
+PASS: Staging preserves warm-up heat/wear/fuel and releases line lock
+PASS: Normal countdown resumes in staged neutral
+PASS: Thermal timestamp persists through checkpoint and save serialization
+PASS: Temperature/warm-up preferences copy and serialize
+PASS: Controlled undersized gearbox survives one second above its torque rating
+PASS: Same undersized gearbox fails after sustained overload without changing its rating
+PASS: Repeated eight-car owner-cached normalization preserves every identity/condition/resource
+Informational: five eight-car normalizations / 172.970 ms; no machine-dependent pass threshold.
+Checks: 156

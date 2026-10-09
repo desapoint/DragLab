@@ -20,7 +20,7 @@ function Save-GateRow([string]$stage, [string]$gate, [string]$result, [string]$e
 }
 # Preserve historical review evidence byte-for-byte. Generated raw fixtures stay isolated locally.
 $taskHistorical = @{}
-foreach ($taskPath in (& git -C $taskRoot ls-files reports)) {
+foreach ($taskPath in $(if (!$NativeOnly) { & git -C $taskRoot ls-files reports })) {
     if (!$taskPath.StartsWith('reports/phases/3h/')) {
         $taskAbsolute = Join-Path $taskRoot $taskPath
         if (Test-Path -LiteralPath $taskAbsolute -PathType Leaf) { $taskHistorical[$taskAbsolute] = [IO.File]::ReadAllBytes($taskAbsolute) }
@@ -29,6 +29,7 @@ foreach ($taskPath in (& git -C $taskRoot ls-files reports)) {
 try {
     if (!$NativeOnly) {
         $taskCases = @(
+            @{Name='thermal';Action='ThermalVerify';Files=@('reports/phases/3h/thermal-verification.txt')},
             @{Name='collection';Action='CollectionVerify';Files=@('reports/phases/3a/verification.txt','reports/phases/3a/calibration.csv')},
             @{Name='assembly';Action='AssemblyVerify';Files=@('reports/phases/3b/verification.txt')},
             @{Name='valuation';Action='ValuationVerify';Files=@('reports/phases/3c/verification.txt','reports/phases/3c/valuation-matrix.csv')},
@@ -37,7 +38,7 @@ try {
             @{Name='business';Action='BusinessVerify';Files=@('reports/phases/3f/verification.txt','reports/phases/3f/business-matrix.csv')},
             @{Name='balance';Action='BalanceVerify';Files=@('reports/phases/3g/verification.txt','reports/phases/3g/economy-ledger-matrix.csv','reports/phases/3g/market-matrix.csv','reports/phases/3g/fuel-mode-matrix.csv')},
             @{Name='economy-save';Action='EconomyIntegrationVerify';Files=@('reports/phases/3h/integration-verification.txt','reports/phases/3h/integration-matrix.csv')},
-            @{Name='foundation';Action='Verify';Files=@('reports/unity-verification.txt','reports/career-path.txt','reports/balance-matrix.csv')},
+            @{Name='foundation';Action='Verify';Files=@('reports/unity-verification.txt','reports/career-path.txt','reports/balance-matrix.csv','reports/stock-durability/verification.txt','reports/stock-durability/parts.csv','reports/slice-2-audit/verification.txt','reports/slice-2-audit/runs.csv','reports/slice-2-audit/parts.csv')},
             @{Name='interrupted-physics';Action='RecoveryVerify';Files=@('reports/phases/2k/recovery-verification.txt','reports/phases/2k/recovery-matrix.csv')},
             @{Name='integrated-tools';Action='IntegratedVerify';Files=@('reports/phases/2l/tools-verification.txt','reports/phases/2l/controlled-runs.csv')},
             @{Name='scene';Action='SceneCheck';Files=@('reports/unity-scene-verification.txt')}
@@ -48,7 +49,8 @@ try {
             foreach ($taskPath in $taskCase.Files) {
                 $taskSource = Join-Path $taskRoot $taskPath
                 if (!(Test-Path -LiteralPath $taskSource)) { throw "Expected verification evidence missing: $taskPath" }
-                $taskTarget = Join-Path $taskEvidence ($taskCase.Name + '-' + [IO.Path]::GetFileName($taskSource))
+                $taskLabel = if($taskPath.StartsWith('reports/slice-2-audit/')) {'audit-'} elseif($taskPath.StartsWith('reports/stock-durability/')) {'stock-'} else {''}
+                $taskTarget = Join-Path $taskEvidence ($taskCase.Name + '-' + $taskLabel + [IO.Path]::GetFileName($taskSource))
                 Copy-Item -LiteralPath $taskSource -Destination $taskTarget
             }
             Save-GateRow 'Domain' $taskCase.Name 'PASS' ($taskCase.Name + '-*')
@@ -62,6 +64,8 @@ try {
         Save-GateRow 'Windows' 'economy-interruption' 'PASS' $taskFixture
         $taskCases = @(
             @{Name='collection';Flag='CollectionOnly'},
+            @{Name='thermal';Flag='ThermalOnly'},
+            @{Name='stock-durability';Flag='DurabilityOnly'},
             @{Name='setups';Flag='AssemblySetupsOnly'},
             @{Name='valuation';Flag='ValuationOnly'},
             @{Name='paid';Flag='PaidOnly'},

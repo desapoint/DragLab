@@ -1,0 +1,1467 @@
+Model: draglab-integrated-tools-v16
+PASS Telemetry labels are unique and CSV-safe.
+PASS Every graph group fits two channel rows.
+PASS Authored definition validates: city-three/Pistons/0 /
+PASS Authored definition validates: city-three/Pistons/1 /
+PASS Authored definition validates: city-three/Rods/0 /
+PASS Authored definition validates: city-three/Rods/1 /
+PASS Authored definition validates: city-three/Crankshaft/0 /
+PASS Authored definition validates: city-three/Crankshaft/1 /
+PASS Authored definition validates: city-three/HeadIntake/0 /
+PASS Authored definition validates: city-three/HeadIntake/1 /
+PASS Authored definition validates: city-three/HeadIntake/2 /
+PASS Authored definition validates: city-three/HeadIntake/3 /
+PASS Authored definition validates: city-three/FuelSystem/0 /
+PASS Authored definition validates: city-three/FuelSystem/1 /
+PASS Authored definition validates: city-three/Ignition/0 /
+PASS Authored definition validates: city-three/Ignition/1 /
+PASS Authored definition validates: city-three/Cooling/0 /
+PASS Authored definition validates: city-three/Cooling/1 /
+PASS Authored definition validates: city-three/Induction/0 /
+PASS Authored definition validates: city-three/Induction/1 /
+PASS Authored definition validates: city-three/Exhaust/0 /
+PASS Authored definition validates: city-three/Exhaust/1 /
+PASS Authored definition validates: city-three/Exhaust/2 /
+PASS Authored definition validates: city-three/Exhaust/3 /
+PASS Authored definition validates: city-three/Clutch/0 /
+PASS Authored definition validates: city-three/Clutch/1 /
+PASS Authored definition validates: city-three/Flywheel/0 /
+PASS Authored definition validates: city-three/Flywheel/1 /
+PASS Authored definition validates: city-three/Gearbox/0 /
+PASS Authored definition validates: city-three/Gearbox/1 /
+PASS Authored definition validates: city-three/Gearbox/2 /
+PASS Authored definition validates: city-three/Gearbox/3 /
+PASS Authored definition validates: city-three/Differential/0 /
+PASS Authored definition validates: city-three/Differential/1 /
+PASS Authored definition validates: city-three/Differential/2 /
+PASS Authored definition validates: city-three/Differential/3 /
+PASS Authored definition validates: city-three/Wheels/0 /
+PASS Authored definition validates: city-three/Wheels/1 /
+PASS Authored definition validates: city-three/Tires/0 /
+PASS Authored definition validates: city-three/Tires/1 /
+PASS Authored definition validates: city-three/Tires/2 /
+PASS Authored definition validates: city-three/Tires/3 /
+PASS Authored definition validates: city-three/Brakes/0 /
+PASS Authored definition validates: city-three/Brakes/1 /
+PASS Authored definition validates: city-three/Body/0 /
+PASS Authored definition validates: city-three/Body/1 /
+PASS Authored definition validates: city-three/Body/2 /
+PASS Authored definition validates: city-three/Body/3 /
+PASS Authored definition validates: city-three/Controls/0 /
+PASS Authored definition validates: city-three/Controls/1 /
+PASS Authored definition validates: city-three/Driveshaft/0 /
+PASS Authored definition validates: city-three/Driveshaft/1 /
+PASS Authored definition validates: city-three/FrontAxle/0 /
+PASS Authored definition validates: city-three/FrontAxle/1 /
+PASS Authored definition validates: city-three/RearAxle/0 /
+PASS Authored definition validates: city-three/RearAxle/1 /
+PASS Authored definition validates: city-three/FrontDriveshaft/0 /
+PASS Authored definition validates: city-three/FrontDriveshaft/1 /
+PASS Authored definition validates: city-three/RearDriveshaft/0 /
+PASS Authored definition validates: city-three/RearDriveshaft/1 /
+PASS Authored definition validates: city-three/FrontDifferential/0 /
+PASS Authored definition validates: city-three/FrontDifferential/1 /
+PASS Authored definition validates: city-three/FrontDifferential/2 /
+PASS Authored definition validates: city-three/FrontDifferential/3 /
+PASS Authored definition validates: city-three/RearDifferential/0 /
+PASS Authored definition validates: city-three/RearDifferential/1 /
+PASS Authored definition validates: city-three/RearDifferential/2 /
+PASS Authored definition validates: city-three/RearDifferential/3 /
+PASS Authored definition validates: city-three/TransferCase/0 /
+PASS Authored definition validates: city-three/TransferCase/1 /
+PASS Authored definition validates: city-three/Interior/0 /
+PASS Authored definition validates: city-three/Interior/1 /
+PASS Authored definition validates: city-three/Accessories/0 /
+PASS Authored definition validates: city-three/Accessories/1 /
+PASS Authored definition validates: city-three/RevLimiter/0 /
+PASS Authored definition validates: city-three/RevLimiter/1 /
+PASS Authored definition validates: city-three/ShiftLight/0 /
+PASS Authored definition validates: city-three/ShiftLight/1 /
+PASS Authored definition validates: city-three/TwoStep/0 /
+PASS Authored definition validates: city-three/TwoStep/1 /
+PASS Authored definition validates: city-three/Induction/Turbo /
+PASS Authored definition validates: city-three/Induction/Supercharger /
+PASS Authored definition validates: city-three/Induction/TwinTurbo /
+PASS Authored definition validates: city-three/Induction/TwinSupercharger /
+PASS Authored definition validates: city-three/Induction/Twincharged /
+PASS Authored definition validates: city-three/Gearbox/Manual /
+PASS Authored definition validates: city-three/Gearbox/DCT /
+PASS Authored definition validates: city-three/Gearbox/Automatic /
+PASS Authored definition validates: city-three/Gearbox/CVT /
+PASS Authored definition validates: city-three/Gearbox/SequentialManual /
+PASS Authored definition validates: city-three/Gearbox/ManualInterlocked /
+PASS Authored definition validates: city-three/Induction/TurboCompactFixed /
+PASS Authored definition validates: city-three/Induction/TurboCompactAdjustable /
+PASS Authored definition validates: city-three/Induction/TurboStreetFixed /
+PASS Authored definition validates: city-three/Induction/TurboStreetAdjustable /
+PASS Authored definition validates: city-three/Induction/TurboLargeFixed /
+PASS Authored definition validates: city-three/Induction/TurboLargeAdjustable /
+PASS Authored definition validates: city-three/Induction/TwinTurboCompactFixed /
+PASS Authored definition validates: city-three/Induction/TwinTurboCompactAdjustable /
+PASS Authored definition validates: city-three/Induction/TwinTurboStreetFixed /
+PASS Authored definition validates: city-three/Induction/TwinTurboStreetAdjustable /
+PASS Authored definition validates: city-three/Induction/TwinTurboLargeFixed /
+PASS Authored definition validates: city-three/Induction/TwinTurboLargeAdjustable /
+PASS Authored definition validates: city-three/Induction/TwinchargedCompactFixed /
+PASS Authored definition validates: city-three/Induction/TwinchargedCompactAdjustable /
+PASS Authored definition validates: city-three/Induction/TwinchargedStreetFixed /
+PASS Authored definition validates: city-three/Induction/TwinchargedStreetAdjustable /
+PASS Authored definition validates: city-three/Induction/TwinchargedLargeFixed /
+PASS Authored definition validates: city-three/Induction/TwinchargedLargeAdjustable /
+PASS Authored definition validates: city-three/Induction/SuperchargerFixedDrive /
+PASS Authored definition validates: city-three/Induction/SuperchargerPulleySet /
+PASS Authored definition validates: city-three/Induction/TwinSuperchargerFixedDrive /
+PASS Authored definition validates: city-three/Induction/TwinSuperchargerPulleySet /
+PASS Authored definition validates: city-three/Flywheel/HeavyStreet /
+PASS Authored definition validates: city-three/Flywheel/BalancedStreet /
+PASS Authored definition validates: city-three/Cooling/Endurance /
+PASS Authored definition validates: city-three/Cooling/LightSport /
+PASS Authored definition validates: city-three/Clutch/StreetOrganic /
+PASS Authored definition validates: city-three/Clutch/RaceFriction /
+PASS Authored definition validates: city-three/Tires/Touring /
+PASS Authored definition validates: city-three/Brakes/Endurance /
+PASS Authored definition validates: city-three/Gearbox/ShortFixed /
+PASS Authored definition validates: city-three/Gearbox/Interchangeable /
+PASS Authored definition validates: city-three/Camshaft/0 /
+PASS Authored definition validates: city-three/Camshaft/1 /
+PASS Authored definition validates: city-three/Camshaft/2 /
+PASS Authored definition validates: city-three/ValveSprings/0 /
+PASS Authored definition validates: city-three/ValveSprings/1 /
+PASS Authored definition validates: city-three/Valves/0 /
+PASS Authored definition validates: city-three/Valves/1 /
+PASS Authored definition validates: city-three/Followers/0 /
+PASS Authored definition validates: city-three/Followers/1 /
+PASS Authored definition validates: city-three/TimingDrive/0 /
+PASS Authored definition validates: city-three/TimingDrive/1 /
+PASS Authored definition validates: city-three/PistonRings/0 /
+PASS Authored definition validates: city-three/PistonRings/1 /
+PASS Authored definition validates: city-three/CylinderBlock/0 /
+PASS Authored definition validates: city-three/CylinderBlock/1 /
+PASS Authored definition validates: city-three/Bearings/0 /
+PASS Authored definition validates: city-three/Bearings/1 /
+PASS Authored definition validates: city-three/ValveSeals/0 /
+PASS Authored definition validates: city-three/ValveSeals/1 /
+PASS Authored definition validates: city-three/OilPan/0 /
+PASS Authored definition validates: city-three/OilPan/1 /
+PASS Authored definition validates: city-three/OilPump/0 /
+PASS Authored definition validates: city-three/OilPump/1 /
+PASS Authored definition validates: city-three/OilFilter/0 /
+PASS Authored definition validates: city-three/OilFilter/1 /
+PASS Authored definition validates: city-three/CoolantPump/0 /
+PASS Authored definition validates: city-three/CoolantPump/1 /
+PASS Authored definition validates: city-three/CoolingCap/0 /
+PASS Authored definition validates: city-three/CoolingCap/1 /
+PASS Authored definition validates: city-three/CoolingHoses/0 /
+PASS Authored definition validates: city-three/CoolingHoses/1 /
+PASS Authored definition validates: city-three/OilCooler/0 /
+PASS Authored definition validates: city-three/OilCooler/1 /
+PASS Authored definition validates: city-three/Clutch/DryTwinOrganic /
+PASS Authored definition validates: city-three/Clutch/DryTwinCeramic /
+PASS Authored definition validates: city-three/Clutch/DryTripleSintered /
+PASS Authored definition validates: city-three/Clutch/WetMultiOrganic /
+PASS Authored definition validates: city-three/Clutch/WetMultiRace /
+PASS Authored definition validates: city-three/Clutch/DryCentrifugal /
+PASS Authored definition validates: rally-sedan/Pistons/0 /
+PASS Authored definition validates: rally-sedan/Pistons/1 /
+PASS Authored definition validates: rally-sedan/Rods/0 /
+PASS Authored definition validates: rally-sedan/Rods/1 /
+PASS Authored definition validates: rally-sedan/Crankshaft/0 /
+PASS Authored definition validates: rally-sedan/Crankshaft/1 /
+PASS Authored definition validates: rally-sedan/HeadIntake/0 /
+PASS Authored definition validates: rally-sedan/HeadIntake/1 /
+PASS Authored definition validates: rally-sedan/HeadIntake/2 /
+PASS Authored definition validates: rally-sedan/HeadIntake/3 /
+PASS Authored definition validates: rally-sedan/FuelSystem/0 /
+PASS Authored definition validates: rally-sedan/FuelSystem/1 /
+PASS Authored definition validates: rally-sedan/Ignition/0 /
+PASS Authored definition validates: rally-sedan/Ignition/1 /
+PASS Authored definition validates: rally-sedan/Cooling/0 /
+PASS Authored definition validates: rally-sedan/Cooling/1 /
+PASS Authored definition validates: rally-sedan/Induction/0 /
+PASS Authored definition validates: rally-sedan/Induction/1 /
+PASS Authored definition validates: rally-sedan/Exhaust/0 /
+PASS Authored definition validates: rally-sedan/Exhaust/1 /
+PASS Authored definition validates: rally-sedan/Exhaust/2 /
+PASS Authored definition validates: rally-sedan/Exhaust/3 /
+PASS Authored definition validates: rally-sedan/Clutch/0 /
+PASS Authored definition validates: rally-sedan/Clutch/1 /
+PASS Authored definition validates: rally-sedan/Flywheel/0 /
+PASS Authored definition validates: rally-sedan/Flywheel/1 /
+PASS Authored definition validates: rally-sedan/Gearbox/0 /
+PASS Authored definition validates: rally-sedan/Gearbox/1 /
+PASS Authored definition validates: rally-sedan/Gearbox/2 /
+PASS Authored definition validates: rally-sedan/Gearbox/3 /
+PASS Authored definition validates: rally-sedan/Differential/0 /
+PASS Authored definition validates: rally-sedan/Differential/1 /
+PASS Authored definition validates: rally-sedan/Differential/2 /
+PASS Authored definition validates: rally-sedan/Differential/3 /
+PASS Authored definition validates: rally-sedan/Wheels/0 /
+PASS Authored definition validates: rally-sedan/Wheels/1 /
+PASS Authored definition validates: rally-sedan/Tires/0 /
+PASS Authored definition validates: rally-sedan/Tires/1 /
+PASS Authored definition validates: rally-sedan/Tires/2 /
+PASS Authored definition validates: rally-sedan/Tires/3 /
+PASS Authored definition validates: rally-sedan/Brakes/0 /
+PASS Authored definition validates: rally-sedan/Brakes/1 /
+PASS Authored definition validates: rally-sedan/Body/0 /
+PASS Authored definition validates: rally-sedan/Body/1 /
+PASS Authored definition validates: rally-sedan/Body/2 /
+PASS Authored definition validates: rally-sedan/Body/3 /
+PASS Authored definition validates: rally-sedan/Controls/0 /
+PASS Authored definition validates: rally-sedan/Controls/1 /
+PASS Authored definition validates: rally-sedan/Driveshaft/0 /
+PASS Authored definition validates: rally-sedan/Driveshaft/1 /
+PASS Authored definition validates: rally-sedan/FrontAxle/0 /
+PASS Authored definition validates: rally-sedan/FrontAxle/1 /
+PASS Authored definition validates: rally-sedan/RearAxle/0 /
+PASS Authored definition validates: rally-sedan/RearAxle/1 /
+PASS Authored definition validates: rally-sedan/FrontDriveshaft/0 /
+PASS Authored definition validates: rally-sedan/FrontDriveshaft/1 /
+PASS Authored definition validates: rally-sedan/RearDriveshaft/0 /
+PASS Authored definition validates: rally-sedan/RearDriveshaft/1 /
+PASS Authored definition validates: rally-sedan/FrontDifferential/0 /
+PASS Authored definition validates: rally-sedan/FrontDifferential/1 /
+PASS Authored definition validates: rally-sedan/FrontDifferential/2 /
+PASS Authored definition validates: rally-sedan/FrontDifferential/3 /
+PASS Authored definition validates: rally-sedan/RearDifferential/0 /
+PASS Authored definition validates: rally-sedan/RearDifferential/1 /
+PASS Authored definition validates: rally-sedan/RearDifferential/2 /
+PASS Authored definition validates: rally-sedan/RearDifferential/3 /
+PASS Authored definition validates: rally-sedan/TransferCase/0 /
+PASS Authored definition validates: rally-sedan/TransferCase/1 /
+PASS Authored definition validates: rally-sedan/Interior/0 /
+PASS Authored definition validates: rally-sedan/Interior/1 /
+PASS Authored definition validates: rally-sedan/Accessories/0 /
+PASS Authored definition validates: rally-sedan/Accessories/1 /
+PASS Authored definition validates: rally-sedan/RevLimiter/0 /
+PASS Authored definition validates: rally-sedan/RevLimiter/1 /
+PASS Authored definition validates: rally-sedan/ShiftLight/0 /
+PASS Authored definition validates: rally-sedan/ShiftLight/1 /
+PASS Authored definition validates: rally-sedan/TwoStep/0 /
+PASS Authored definition validates: rally-sedan/TwoStep/1 /
+PASS Authored definition validates: rally-sedan/Induction/Turbo /
+PASS Authored definition validates: rally-sedan/Induction/Supercharger /
+PASS Authored definition validates: rally-sedan/Induction/TwinTurbo /
+PASS Authored definition validates: rally-sedan/Induction/TwinSupercharger /
+PASS Authored definition validates: rally-sedan/Induction/Twincharged /
+PASS Authored definition validates: rally-sedan/Gearbox/Manual /
+PASS Authored definition validates: rally-sedan/Gearbox/DCT /
+PASS Authored definition validates: rally-sedan/Gearbox/Automatic /
+PASS Authored definition validates: rally-sedan/Gearbox/CVT /
+PASS Authored definition validates: rally-sedan/Gearbox/SequentialManual /
+PASS Authored definition validates: rally-sedan/Gearbox/ManualInterlocked /
+PASS Authored definition validates: rally-sedan/Induction/TurboCompactFixed /
+PASS Authored definition validates: rally-sedan/Induction/TurboCompactAdjustable /
+PASS Authored definition validates: rally-sedan/Induction/TurboStreetFixed /
+PASS Authored definition validates: rally-sedan/Induction/TurboStreetAdjustable /
+PASS Authored definition validates: rally-sedan/Induction/TurboLargeFixed /
+PASS Authored definition validates: rally-sedan/Induction/TurboLargeAdjustable /
+PASS Authored definition validates: rally-sedan/Induction/TwinTurboCompactFixed /
+PASS Authored definition validates: rally-sedan/Induction/TwinTurboCompactAdjustable /
+PASS Authored definition validates: rally-sedan/Induction/TwinTurboStreetFixed /
+PASS Authored definition validates: rally-sedan/Induction/TwinTurboStreetAdjustable /
+PASS Authored definition validates: rally-sedan/Induction/TwinTurboLargeFixed /
+PASS Authored definition validates: rally-sedan/Induction/TwinTurboLargeAdjustable /
+PASS Authored definition validates: rally-sedan/Induction/TwinchargedCompactFixed /
+PASS Authored definition validates: rally-sedan/Induction/TwinchargedCompactAdjustable /
+PASS Authored definition validates: rally-sedan/Induction/TwinchargedStreetFixed /
+PASS Authored definition validates: rally-sedan/Induction/TwinchargedStreetAdjustable /
+PASS Authored definition validates: rally-sedan/Induction/TwinchargedLargeFixed /
+PASS Authored definition validates: rally-sedan/Induction/TwinchargedLargeAdjustable /
+PASS Authored definition validates: rally-sedan/Induction/SuperchargerFixedDrive /
+PASS Authored definition validates: rally-sedan/Induction/SuperchargerPulleySet /
+PASS Authored definition validates: rally-sedan/Induction/TwinSuperchargerFixedDrive /
+PASS Authored definition validates: rally-sedan/Induction/TwinSuperchargerPulleySet /
+PASS Authored definition validates: rally-sedan/Flywheel/HeavyStreet /
+PASS Authored definition validates: rally-sedan/Flywheel/BalancedStreet /
+PASS Authored definition validates: rally-sedan/Cooling/Endurance /
+PASS Authored definition validates: rally-sedan/Cooling/LightSport /
+PASS Authored definition validates: rally-sedan/Clutch/StreetOrganic /
+PASS Authored definition validates: rally-sedan/Clutch/RaceFriction /
+PASS Authored definition validates: rally-sedan/Tires/Touring /
+PASS Authored definition validates: rally-sedan/Brakes/Endurance /
+PASS Authored definition validates: rally-sedan/Gearbox/ShortFixed /
+PASS Authored definition validates: rally-sedan/Gearbox/Interchangeable /
+PASS Authored definition validates: rally-sedan/Camshaft/0 /
+PASS Authored definition validates: rally-sedan/Camshaft/1 /
+PASS Authored definition validates: rally-sedan/Camshaft/2 /
+PASS Authored definition validates: rally-sedan/ValveSprings/0 /
+PASS Authored definition validates: rally-sedan/ValveSprings/1 /
+PASS Authored definition validates: rally-sedan/Valves/0 /
+PASS Authored definition validates: rally-sedan/Valves/1 /
+PASS Authored definition validates: rally-sedan/Followers/0 /
+PASS Authored definition validates: rally-sedan/Followers/1 /
+PASS Authored definition validates: rally-sedan/TimingDrive/0 /
+PASS Authored definition validates: rally-sedan/TimingDrive/1 /
+PASS Authored definition validates: rally-sedan/PistonRings/0 /
+PASS Authored definition validates: rally-sedan/PistonRings/1 /
+PASS Authored definition validates: rally-sedan/CylinderBlock/0 /
+PASS Authored definition validates: rally-sedan/CylinderBlock/1 /
+PASS Authored definition validates: rally-sedan/Bearings/0 /
+PASS Authored definition validates: rally-sedan/Bearings/1 /
+PASS Authored definition validates: rally-sedan/ValveSeals/0 /
+PASS Authored definition validates: rally-sedan/ValveSeals/1 /
+PASS Authored definition validates: rally-sedan/OilPan/0 /
+PASS Authored definition validates: rally-sedan/OilPan/1 /
+PASS Authored definition validates: rally-sedan/OilPump/0 /
+PASS Authored definition validates: rally-sedan/OilPump/1 /
+PASS Authored definition validates: rally-sedan/OilFilter/0 /
+PASS Authored definition validates: rally-sedan/OilFilter/1 /
+PASS Authored definition validates: rally-sedan/CoolantPump/0 /
+PASS Authored definition validates: rally-sedan/CoolantPump/1 /
+PASS Authored definition validates: rally-sedan/CoolingCap/0 /
+PASS Authored definition validates: rally-sedan/CoolingCap/1 /
+PASS Authored definition validates: rally-sedan/CoolingHoses/0 /
+PASS Authored definition validates: rally-sedan/CoolingHoses/1 /
+PASS Authored definition validates: rally-sedan/OilCooler/0 /
+PASS Authored definition validates: rally-sedan/OilCooler/1 /
+PASS Authored definition validates: rally-sedan/Clutch/DryTwinOrganic /
+PASS Authored definition validates: rally-sedan/Clutch/DryTwinCeramic /
+PASS Authored definition validates: rally-sedan/Clutch/DryTripleSintered /
+PASS Authored definition validates: rally-sedan/Clutch/WetMultiOrganic /
+PASS Authored definition validates: rally-sedan/Clutch/WetMultiRace /
+PASS Authored definition validates: rally-sedan/Clutch/DryCentrifugal /
+PASS Authored definition validates: sport-coupe/Pistons/0 /
+PASS Authored definition validates: sport-coupe/Pistons/1 /
+PASS Authored definition validates: sport-coupe/Pistons/cast /
+PASS Authored definition validates: sport-coupe/Rods/0 /
+PASS Authored definition validates: sport-coupe/Rods/1 /
+PASS Authored definition validates: sport-coupe/Rods/cast /
+PASS Authored definition validates: sport-coupe/Crankshaft/0 /
+PASS Authored definition validates: sport-coupe/Crankshaft/1 /
+PASS Authored definition validates: sport-coupe/Crankshaft/cast /
+PASS Authored definition validates: sport-coupe/HeadIntake/0 /
+PASS Authored definition validates: sport-coupe/HeadIntake/1 /
+PASS Authored definition validates: sport-coupe/HeadIntake/2 /
+PASS Authored definition validates: sport-coupe/HeadIntake/3 /
+PASS Authored definition validates: sport-coupe/FuelSystem/0 /
+PASS Authored definition validates: sport-coupe/FuelSystem/1 /
+PASS Authored definition validates: sport-coupe/Ignition/0 /
+PASS Authored definition validates: sport-coupe/Ignition/1 /
+PASS Authored definition validates: sport-coupe/Cooling/0 /
+PASS Authored definition validates: sport-coupe/Cooling/1 /
+PASS Authored definition validates: sport-coupe/Induction/0 /
+PASS Authored definition validates: sport-coupe/Induction/1 /
+PASS Authored definition validates: sport-coupe/Exhaust/0 /
+PASS Authored definition validates: sport-coupe/Exhaust/1 /
+PASS Authored definition validates: sport-coupe/Exhaust/2 /
+PASS Authored definition validates: sport-coupe/Exhaust/3 /
+PASS Authored definition validates: sport-coupe/Clutch/0 /
+PASS Authored definition validates: sport-coupe/Clutch/1 /
+PASS Authored definition validates: sport-coupe/Flywheel/0 /
+PASS Authored definition validates: sport-coupe/Flywheel/1 /
+PASS Authored definition validates: sport-coupe/Gearbox/0 /
+PASS Authored definition validates: sport-coupe/Gearbox/1 /
+PASS Authored definition validates: sport-coupe/Gearbox/2 /
+PASS Authored definition validates: sport-coupe/Gearbox/3 /
+PASS Authored definition validates: sport-coupe/Differential/0 /
+PASS Authored definition validates: sport-coupe/Differential/1 /
+PASS Authored definition validates: sport-coupe/Differential/2 /
+PASS Authored definition validates: sport-coupe/Differential/3 /
+PASS Authored definition validates: sport-coupe/Wheels/0 /
+PASS Authored definition validates: sport-coupe/Wheels/1 /
+PASS Authored definition validates: sport-coupe/Tires/0 /
+PASS Authored definition validates: sport-coupe/Tires/1 /
+PASS Authored definition validates: sport-coupe/Tires/2 /
+PASS Authored definition validates: sport-coupe/Tires/3 /
+PASS Authored definition validates: sport-coupe/Brakes/0 /
+PASS Authored definition validates: sport-coupe/Brakes/1 /
+PASS Authored definition validates: sport-coupe/Body/0 /
+PASS Authored definition validates: sport-coupe/Body/1 /
+PASS Authored definition validates: sport-coupe/Body/2 /
+PASS Authored definition validates: sport-coupe/Body/3 /
+PASS Authored definition validates: sport-coupe/Controls/0 /
+PASS Authored definition validates: sport-coupe/Controls/1 /
+PASS Authored definition validates: sport-coupe/Driveshaft/0 /
+PASS Authored definition validates: sport-coupe/Driveshaft/1 /
+PASS Authored definition validates: sport-coupe/FrontAxle/0 /
+PASS Authored definition validates: sport-coupe/FrontAxle/1 /
+PASS Authored definition validates: sport-coupe/RearAxle/0 /
+PASS Authored definition validates: sport-coupe/RearAxle/1 /
+PASS Authored definition validates: sport-coupe/FrontDriveshaft/0 /
+PASS Authored definition validates: sport-coupe/FrontDriveshaft/1 /
+PASS Authored definition validates: sport-coupe/RearDriveshaft/0 /
+PASS Authored definition validates: sport-coupe/RearDriveshaft/1 /
+PASS Authored definition validates: sport-coupe/FrontDifferential/0 /
+PASS Authored definition validates: sport-coupe/FrontDifferential/1 /
+PASS Authored definition validates: sport-coupe/FrontDifferential/2 /
+PASS Authored definition validates: sport-coupe/FrontDifferential/3 /
+PASS Authored definition validates: sport-coupe/RearDifferential/0 /
+PASS Authored definition validates: sport-coupe/RearDifferential/1 /
+PASS Authored definition validates: sport-coupe/RearDifferential/2 /
+PASS Authored definition validates: sport-coupe/RearDifferential/3 /
+PASS Authored definition validates: sport-coupe/TransferCase/0 /
+PASS Authored definition validates: sport-coupe/TransferCase/1 /
+PASS Authored definition validates: sport-coupe/Interior/0 /
+PASS Authored definition validates: sport-coupe/Interior/1 /
+PASS Authored definition validates: sport-coupe/Accessories/0 /
+PASS Authored definition validates: sport-coupe/Accessories/1 /
+PASS Authored definition validates: sport-coupe/RevLimiter/0 /
+PASS Authored definition validates: sport-coupe/RevLimiter/1 /
+PASS Authored definition validates: sport-coupe/ShiftLight/0 /
+PASS Authored definition validates: sport-coupe/ShiftLight/1 /
+PASS Authored definition validates: sport-coupe/TwoStep/0 /
+PASS Authored definition validates: sport-coupe/TwoStep/1 /
+PASS Authored definition validates: sport-coupe/Induction/Turbo /
+PASS Authored definition validates: sport-coupe/Induction/Supercharger /
+PASS Authored definition validates: sport-coupe/Induction/TwinTurbo /
+PASS Authored definition validates: sport-coupe/Induction/TwinSupercharger /
+PASS Authored definition validates: sport-coupe/Induction/Twincharged /
+PASS Authored definition validates: sport-coupe/Gearbox/Manual /
+PASS Authored definition validates: sport-coupe/Gearbox/DCT /
+PASS Authored definition validates: sport-coupe/Gearbox/Automatic /
+PASS Authored definition validates: sport-coupe/Gearbox/CVT /
+PASS Authored definition validates: sport-coupe/Gearbox/SequentialManual /
+PASS Authored definition validates: sport-coupe/Gearbox/ManualInterlocked /
+PASS Authored definition validates: sport-coupe/Induction/TurboCompactFixed /
+PASS Authored definition validates: sport-coupe/Induction/TurboCompactAdjustable /
+PASS Authored definition validates: sport-coupe/Induction/TurboStreetFixed /
+PASS Authored definition validates: sport-coupe/Induction/TurboStreetAdjustable /
+PASS Authored definition validates: sport-coupe/Induction/TurboLargeFixed /
+PASS Authored definition validates: sport-coupe/Induction/TurboLargeAdjustable /
+PASS Authored definition validates: sport-coupe/Induction/TwinTurboCompactFixed /
+PASS Authored definition validates: sport-coupe/Induction/TwinTurboCompactAdjustable /
+PASS Authored definition validates: sport-coupe/Induction/TwinTurboStreetFixed /
+PASS Authored definition validates: sport-coupe/Induction/TwinTurboStreetAdjustable /
+PASS Authored definition validates: sport-coupe/Induction/TwinTurboLargeFixed /
+PASS Authored definition validates: sport-coupe/Induction/TwinTurboLargeAdjustable /
+PASS Authored definition validates: sport-coupe/Induction/TwinchargedCompactFixed /
+PASS Authored definition validates: sport-coupe/Induction/TwinchargedCompactAdjustable /
+PASS Authored definition validates: sport-coupe/Induction/TwinchargedStreetFixed /
+PASS Authored definition validates: sport-coupe/Induction/TwinchargedStreetAdjustable /
+PASS Authored definition validates: sport-coupe/Induction/TwinchargedLargeFixed /
+PASS Authored definition validates: sport-coupe/Induction/TwinchargedLargeAdjustable /
+PASS Authored definition validates: sport-coupe/Induction/SuperchargerFixedDrive /
+PASS Authored definition validates: sport-coupe/Induction/SuperchargerPulleySet /
+PASS Authored definition validates: sport-coupe/Induction/TwinSuperchargerFixedDrive /
+PASS Authored definition validates: sport-coupe/Induction/TwinSuperchargerPulleySet /
+PASS Authored definition validates: sport-coupe/Flywheel/HeavyStreet /
+PASS Authored definition validates: sport-coupe/Flywheel/BalancedStreet /
+PASS Authored definition validates: sport-coupe/Cooling/Endurance /
+PASS Authored definition validates: sport-coupe/Cooling/LightSport /
+PASS Authored definition validates: sport-coupe/Clutch/StreetOrganic /
+PASS Authored definition validates: sport-coupe/Clutch/RaceFriction /
+PASS Authored definition validates: sport-coupe/Tires/Touring /
+PASS Authored definition validates: sport-coupe/Brakes/Endurance /
+PASS Authored definition validates: sport-coupe/Gearbox/ShortFixed /
+PASS Authored definition validates: sport-coupe/Gearbox/Interchangeable /
+PASS Authored definition validates: sport-coupe/Camshaft/0 /
+PASS Authored definition validates: sport-coupe/Camshaft/1 /
+PASS Authored definition validates: sport-coupe/Camshaft/2 /
+PASS Authored definition validates: sport-coupe/ValveSprings/0 /
+PASS Authored definition validates: sport-coupe/ValveSprings/1 /
+PASS Authored definition validates: sport-coupe/Valves/0 /
+PASS Authored definition validates: sport-coupe/Valves/1 /
+PASS Authored definition validates: sport-coupe/Followers/0 /
+PASS Authored definition validates: sport-coupe/Followers/1 /
+PASS Authored definition validates: sport-coupe/TimingDrive/0 /
+PASS Authored definition validates: sport-coupe/TimingDrive/1 /
+PASS Authored definition validates: sport-coupe/PistonRings/0 /
+PASS Authored definition validates: sport-coupe/PistonRings/1 /
+PASS Authored definition validates: sport-coupe/CylinderBlock/0 /
+PASS Authored definition validates: sport-coupe/CylinderBlock/1 /
+PASS Authored definition validates: sport-coupe/Bearings/0 /
+PASS Authored definition validates: sport-coupe/Bearings/1 /
+PASS Authored definition validates: sport-coupe/ValveSeals/0 /
+PASS Authored definition validates: sport-coupe/ValveSeals/1 /
+PASS Authored definition validates: sport-coupe/OilPan/0 /
+PASS Authored definition validates: sport-coupe/OilPan/1 /
+PASS Authored definition validates: sport-coupe/OilPump/0 /
+PASS Authored definition validates: sport-coupe/OilPump/1 /
+PASS Authored definition validates: sport-coupe/OilFilter/0 /
+PASS Authored definition validates: sport-coupe/OilFilter/1 /
+PASS Authored definition validates: sport-coupe/CoolantPump/0 /
+PASS Authored definition validates: sport-coupe/CoolantPump/1 /
+PASS Authored definition validates: sport-coupe/CoolingCap/0 /
+PASS Authored definition validates: sport-coupe/CoolingCap/1 /
+PASS Authored definition validates: sport-coupe/CoolingHoses/0 /
+PASS Authored definition validates: sport-coupe/CoolingHoses/1 /
+PASS Authored definition validates: sport-coupe/OilCooler/0 /
+PASS Authored definition validates: sport-coupe/OilCooler/1 /
+PASS Authored definition validates: sport-coupe/Clutch/DryTwinOrganic /
+PASS Authored definition validates: sport-coupe/Clutch/DryTwinCeramic /
+PASS Authored definition validates: sport-coupe/Clutch/DryTripleSintered /
+PASS Authored definition validates: sport-coupe/Clutch/WetMultiOrganic /
+PASS Authored definition validates: sport-coupe/Clutch/WetMultiRace /
+PASS Authored definition validates: sport-coupe/Clutch/DryCentrifugal /
+PASS Authored definition validates: starter-hatch/Pistons/0 /
+PASS Authored definition validates: starter-hatch/Pistons/1 /
+PASS Authored definition validates: starter-hatch/Rods/0 /
+PASS Authored definition validates: starter-hatch/Rods/1 /
+PASS Authored definition validates: starter-hatch/Crankshaft/0 /
+PASS Authored definition validates: starter-hatch/Crankshaft/1 /
+PASS Authored definition validates: starter-hatch/HeadIntake/0 /
+PASS Authored definition validates: starter-hatch/HeadIntake/1 /
+PASS Authored definition validates: starter-hatch/HeadIntake/2 /
+PASS Authored definition validates: starter-hatch/HeadIntake/3 /
+PASS Authored definition validates: starter-hatch/FuelSystem/0 /
+PASS Authored definition validates: starter-hatch/FuelSystem/1 /
+PASS Authored definition validates: starter-hatch/Ignition/0 /
+PASS Authored definition validates: starter-hatch/Ignition/1 /
+PASS Authored definition validates: starter-hatch/Cooling/0 /
+PASS Authored definition validates: starter-hatch/Cooling/1 /
+PASS Authored definition validates: starter-hatch/Induction/0 /
+PASS Authored definition validates: starter-hatch/Induction/1 /
+PASS Authored definition validates: starter-hatch/Exhaust/0 /
+PASS Authored definition validates: starter-hatch/Exhaust/1 /
+PASS Authored definition validates: starter-hatch/Exhaust/2 /
+PASS Authored definition validates: starter-hatch/Exhaust/3 /
+PASS Authored definition validates: starter-hatch/Clutch/0 /
+PASS Authored definition validates: starter-hatch/Clutch/1 /
+PASS Authored definition validates: starter-hatch/Flywheel/0 /
+PASS Authored definition validates: starter-hatch/Flywheel/1 /
+PASS Authored definition validates: starter-hatch/Gearbox/0 /
+PASS Authored definition validates: starter-hatch/Gearbox/1 /
+PASS Authored definition validates: starter-hatch/Gearbox/2 /
+PASS Authored definition validates: starter-hatch/Gearbox/3 /
+PASS Authored definition validates: starter-hatch/Differential/0 /
+PASS Authored definition validates: starter-hatch/Differential/1 /
+PASS Authored definition validates: starter-hatch/Differential/2 /
+PASS Authored definition validates: starter-hatch/Differential/3 /
+PASS Authored definition validates: starter-hatch/Wheels/0 /
+PASS Authored definition validates: starter-hatch/Wheels/1 /
+PASS Authored definition validates: starter-hatch/Tires/0 /
+PASS Authored definition validates: starter-hatch/Tires/1 /
+PASS Authored definition validates: starter-hatch/Tires/2 /
+PASS Authored definition validates: starter-hatch/Tires/3 /
+PASS Authored definition validates: starter-hatch/Brakes/0 /
+PASS Authored definition validates: starter-hatch/Brakes/1 /
+PASS Authored definition validates: starter-hatch/Body/0 /
+PASS Authored definition validates: starter-hatch/Body/1 /
+PASS Authored definition validates: starter-hatch/Body/2 /
+PASS Authored definition validates: starter-hatch/Body/3 /
+PASS Authored definition validates: starter-hatch/Controls/0 /
+PASS Authored definition validates: starter-hatch/Controls/1 /
+PASS Authored definition validates: starter-hatch/Driveshaft/0 /
+PASS Authored definition validates: starter-hatch/Driveshaft/1 /
+PASS Authored definition validates: starter-hatch/FrontAxle/0 /
+PASS Authored definition validates: starter-hatch/FrontAxle/1 /
+PASS Authored definition validates: starter-hatch/RearAxle/0 /
+PASS Authored definition validates: starter-hatch/RearAxle/1 /
+PASS Authored definition validates: starter-hatch/FrontDriveshaft/0 /
+PASS Authored definition validates: starter-hatch/FrontDriveshaft/1 /
+PASS Authored definition validates: starter-hatch/RearDriveshaft/0 /
+PASS Authored definition validates: starter-hatch/RearDriveshaft/1 /
+PASS Authored definition validates: starter-hatch/FrontDifferential/0 /
+PASS Authored definition validates: starter-hatch/FrontDifferential/1 /
+PASS Authored definition validates: starter-hatch/FrontDifferential/2 /
+PASS Authored definition validates: starter-hatch/FrontDifferential/3 /
+PASS Authored definition validates: starter-hatch/RearDifferential/0 /
+PASS Authored definition validates: starter-hatch/RearDifferential/1 /
+PASS Authored definition validates: starter-hatch/RearDifferential/2 /
+PASS Authored definition validates: starter-hatch/RearDifferential/3 /
+PASS Authored definition validates: starter-hatch/TransferCase/0 /
+PASS Authored definition validates: starter-hatch/TransferCase/1 /
+PASS Authored definition validates: starter-hatch/Interior/0 /
+PASS Authored definition validates: starter-hatch/Interior/1 /
+PASS Authored definition validates: starter-hatch/Accessories/0 /
+PASS Authored definition validates: starter-hatch/Accessories/1 /
+PASS Authored definition validates: starter-hatch/RevLimiter/0 /
+PASS Authored definition validates: starter-hatch/RevLimiter/1 /
+PASS Authored definition validates: starter-hatch/ShiftLight/0 /
+PASS Authored definition validates: starter-hatch/ShiftLight/1 /
+PASS Authored definition validates: starter-hatch/TwoStep/0 /
+PASS Authored definition validates: starter-hatch/TwoStep/1 /
+PASS Authored definition validates: starter-hatch/Induction/Turbo /
+PASS Authored definition validates: starter-hatch/Induction/Supercharger /
+PASS Authored definition validates: starter-hatch/Induction/TwinTurbo /
+PASS Authored definition validates: starter-hatch/Induction/TwinSupercharger /
+PASS Authored definition validates: starter-hatch/Induction/Twincharged /
+PASS Authored definition validates: starter-hatch/Gearbox/Manual /
+PASS Authored definition validates: starter-hatch/Gearbox/DCT /
+PASS Authored definition validates: starter-hatch/Gearbox/Automatic /
+PASS Authored definition validates: starter-hatch/Gearbox/CVT /
+PASS Authored definition validates: starter-hatch/Gearbox/SequentialManual /
+PASS Authored definition validates: starter-hatch/Gearbox/ManualInterlocked /
+PASS Authored definition validates: starter-hatch/Induction/TurboCompactFixed /
+PASS Authored definition validates: starter-hatch/Induction/TurboCompactAdjustable /
+PASS Authored definition validates: starter-hatch/Induction/TurboStreetFixed /
+PASS Authored definition validates: starter-hatch/Induction/TurboStreetAdjustable /
+PASS Authored definition validates: starter-hatch/Induction/TurboLargeFixed /
+PASS Authored definition validates: starter-hatch/Induction/TurboLargeAdjustable /
+PASS Authored definition validates: starter-hatch/Induction/TwinTurboCompactFixed /
+PASS Authored definition validates: starter-hatch/Induction/TwinTurboCompactAdjustable /
+PASS Authored definition validates: starter-hatch/Induction/TwinTurboStreetFixed /
+PASS Authored definition validates: starter-hatch/Induction/TwinTurboStreetAdjustable /
+PASS Authored definition validates: starter-hatch/Induction/TwinTurboLargeFixed /
+PASS Authored definition validates: starter-hatch/Induction/TwinTurboLargeAdjustable /
+PASS Authored definition validates: starter-hatch/Induction/TwinchargedCompactFixed /
+PASS Authored definition validates: starter-hatch/Induction/TwinchargedCompactAdjustable /
+PASS Authored definition validates: starter-hatch/Induction/TwinchargedStreetFixed /
+PASS Authored definition validates: starter-hatch/Induction/TwinchargedStreetAdjustable /
+PASS Authored definition validates: starter-hatch/Induction/TwinchargedLargeFixed /
+PASS Authored definition validates: starter-hatch/Induction/TwinchargedLargeAdjustable /
+PASS Authored definition validates: starter-hatch/Induction/SuperchargerFixedDrive /
+PASS Authored definition validates: starter-hatch/Induction/SuperchargerPulleySet /
+PASS Authored definition validates: starter-hatch/Induction/TwinSuperchargerFixedDrive /
+PASS Authored definition validates: starter-hatch/Induction/TwinSuperchargerPulleySet /
+PASS Authored definition validates: starter-hatch/Flywheel/HeavyStreet /
+PASS Authored definition validates: starter-hatch/Flywheel/BalancedStreet /
+PASS Authored definition validates: starter-hatch/Cooling/Endurance /
+PASS Authored definition validates: starter-hatch/Cooling/LightSport /
+PASS Authored definition validates: starter-hatch/Clutch/StreetOrganic /
+PASS Authored definition validates: starter-hatch/Clutch/RaceFriction /
+PASS Authored definition validates: starter-hatch/Tires/Touring /
+PASS Authored definition validates: starter-hatch/Brakes/Endurance /
+PASS Authored definition validates: starter-hatch/Gearbox/ShortFixed /
+PASS Authored definition validates: starter-hatch/Gearbox/Interchangeable /
+PASS Authored definition validates: starter-hatch/Camshaft/0 /
+PASS Authored definition validates: starter-hatch/Camshaft/1 /
+PASS Authored definition validates: starter-hatch/Camshaft/2 /
+PASS Authored definition validates: starter-hatch/ValveSprings/0 /
+PASS Authored definition validates: starter-hatch/ValveSprings/1 /
+PASS Authored definition validates: starter-hatch/Valves/0 /
+PASS Authored definition validates: starter-hatch/Valves/1 /
+PASS Authored definition validates: starter-hatch/Followers/0 /
+PASS Authored definition validates: starter-hatch/Followers/1 /
+PASS Authored definition validates: starter-hatch/TimingDrive/0 /
+PASS Authored definition validates: starter-hatch/TimingDrive/1 /
+PASS Authored definition validates: starter-hatch/PistonRings/0 /
+PASS Authored definition validates: starter-hatch/PistonRings/1 /
+PASS Authored definition validates: starter-hatch/CylinderBlock/0 /
+PASS Authored definition validates: starter-hatch/CylinderBlock/1 /
+PASS Authored definition validates: starter-hatch/Bearings/0 /
+PASS Authored definition validates: starter-hatch/Bearings/1 /
+PASS Authored definition validates: starter-hatch/ValveSeals/0 /
+PASS Authored definition validates: starter-hatch/ValveSeals/1 /
+PASS Authored definition validates: starter-hatch/OilPan/0 /
+PASS Authored definition validates: starter-hatch/OilPan/1 /
+PASS Authored definition validates: starter-hatch/OilPump/0 /
+PASS Authored definition validates: starter-hatch/OilPump/1 /
+PASS Authored definition validates: starter-hatch/OilFilter/0 /
+PASS Authored definition validates: starter-hatch/OilFilter/1 /
+PASS Authored definition validates: starter-hatch/CoolantPump/0 /
+PASS Authored definition validates: starter-hatch/CoolantPump/1 /
+PASS Authored definition validates: starter-hatch/CoolingCap/0 /
+PASS Authored definition validates: starter-hatch/CoolingCap/1 /
+PASS Authored definition validates: starter-hatch/CoolingHoses/0 /
+PASS Authored definition validates: starter-hatch/CoolingHoses/1 /
+PASS Authored definition validates: starter-hatch/OilCooler/0 /
+PASS Authored definition validates: starter-hatch/OilCooler/1 /
+PASS Authored definition validates: starter-hatch/Clutch/DryTwinOrganic /
+PASS Authored definition validates: starter-hatch/Clutch/DryTwinCeramic /
+PASS Authored definition validates: starter-hatch/Clutch/DryTripleSintered /
+PASS Authored definition validates: starter-hatch/Clutch/WetMultiOrganic /
+PASS Authored definition validates: starter-hatch/Clutch/WetMultiRace /
+PASS Authored definition validates: starter-hatch/Clutch/DryCentrifugal /
+PASS Authored definition validates: super-v8/Pistons/0 /
+PASS Authored definition validates: super-v8/Pistons/1 /
+PASS Authored definition validates: super-v8/Rods/0 /
+PASS Authored definition validates: super-v8/Rods/1 /
+PASS Authored definition validates: super-v8/Crankshaft/0 /
+PASS Authored definition validates: super-v8/Crankshaft/1 /
+PASS Authored definition validates: super-v8/HeadIntake/0 /
+PASS Authored definition validates: super-v8/HeadIntake/1 /
+PASS Authored definition validates: super-v8/HeadIntake/2 /
+PASS Authored definition validates: super-v8/HeadIntake/3 /
+PASS Authored definition validates: super-v8/FuelSystem/0 /
+PASS Authored definition validates: super-v8/FuelSystem/1 /
+PASS Authored definition validates: super-v8/Ignition/0 /
+PASS Authored definition validates: super-v8/Ignition/1 /
+PASS Authored definition validates: super-v8/Cooling/0 /
+PASS Authored definition validates: super-v8/Cooling/1 /
+PASS Authored definition validates: super-v8/Induction/0 /
+PASS Authored definition validates: super-v8/Induction/1 /
+PASS Authored definition validates: super-v8/Exhaust/0 /
+PASS Authored definition validates: super-v8/Exhaust/1 /
+PASS Authored definition validates: super-v8/Exhaust/2 /
+PASS Authored definition validates: super-v8/Exhaust/3 /
+PASS Authored definition validates: super-v8/Clutch/0 /
+PASS Authored definition validates: super-v8/Clutch/1 /
+PASS Authored definition validates: super-v8/Flywheel/0 /
+PASS Authored definition validates: super-v8/Flywheel/1 /
+PASS Authored definition validates: super-v8/Gearbox/0 /
+PASS Authored definition validates: super-v8/Gearbox/1 /
+PASS Authored definition validates: super-v8/Gearbox/2 /
+PASS Authored definition validates: super-v8/Gearbox/3 /
+PASS Authored definition validates: super-v8/Differential/0 /
+PASS Authored definition validates: super-v8/Differential/1 /
+PASS Authored definition validates: super-v8/Differential/2 /
+PASS Authored definition validates: super-v8/Differential/3 /
+PASS Authored definition validates: super-v8/Wheels/0 /
+PASS Authored definition validates: super-v8/Wheels/1 /
+PASS Authored definition validates: super-v8/Tires/0 /
+PASS Authored definition validates: super-v8/Tires/1 /
+PASS Authored definition validates: super-v8/Tires/2 /
+PASS Authored definition validates: super-v8/Tires/3 /
+PASS Authored definition validates: super-v8/Brakes/0 /
+PASS Authored definition validates: super-v8/Brakes/1 /
+PASS Authored definition validates: super-v8/Body/0 /
+PASS Authored definition validates: super-v8/Body/1 /
+PASS Authored definition validates: super-v8/Body/2 /
+PASS Authored definition validates: super-v8/Body/3 /
+PASS Authored definition validates: super-v8/Controls/0 /
+PASS Authored definition validates: super-v8/Controls/1 /
+PASS Authored definition validates: super-v8/Driveshaft/0 /
+PASS Authored definition validates: super-v8/Driveshaft/1 /
+PASS Authored definition validates: super-v8/FrontAxle/0 /
+PASS Authored definition validates: super-v8/FrontAxle/1 /
+PASS Authored definition validates: super-v8/RearAxle/0 /
+PASS Authored definition validates: super-v8/RearAxle/1 /
+PASS Authored definition validates: super-v8/FrontDriveshaft/0 /
+PASS Authored definition validates: super-v8/FrontDriveshaft/1 /
+PASS Authored definition validates: super-v8/RearDriveshaft/0 /
+PASS Authored definition validates: super-v8/RearDriveshaft/1 /
+PASS Authored definition validates: super-v8/FrontDifferential/0 /
+PASS Authored definition validates: super-v8/FrontDifferential/1 /
+PASS Authored definition validates: super-v8/FrontDifferential/2 /
+PASS Authored definition validates: super-v8/FrontDifferential/3 /
+PASS Authored definition validates: super-v8/RearDifferential/0 /
+PASS Authored definition validates: super-v8/RearDifferential/1 /
+PASS Authored definition validates: super-v8/RearDifferential/2 /
+PASS Authored definition validates: super-v8/RearDifferential/3 /
+PASS Authored definition validates: super-v8/TransferCase/0 /
+PASS Authored definition validates: super-v8/TransferCase/1 /
+PASS Authored definition validates: super-v8/Interior/0 /
+PASS Authored definition validates: super-v8/Interior/1 /
+PASS Authored definition validates: super-v8/Accessories/0 /
+PASS Authored definition validates: super-v8/Accessories/1 /
+PASS Authored definition validates: super-v8/RevLimiter/0 /
+PASS Authored definition validates: super-v8/RevLimiter/1 /
+PASS Authored definition validates: super-v8/ShiftLight/0 /
+PASS Authored definition validates: super-v8/ShiftLight/1 /
+PASS Authored definition validates: super-v8/TwoStep/0 /
+PASS Authored definition validates: super-v8/TwoStep/1 /
+PASS Authored definition validates: super-v8/Induction/Turbo /
+PASS Authored definition validates: super-v8/Induction/Supercharger /
+PASS Authored definition validates: super-v8/Induction/TwinTurbo /
+PASS Authored definition validates: super-v8/Induction/TwinSupercharger /
+PASS Authored definition validates: super-v8/Induction/Twincharged /
+PASS Authored definition validates: super-v8/Gearbox/Manual /
+PASS Authored definition validates: super-v8/Gearbox/DCT /
+PASS Authored definition validates: super-v8/Gearbox/Automatic /
+PASS Authored definition validates: super-v8/Gearbox/CVT /
+PASS Authored definition validates: super-v8/Gearbox/SequentialManual /
+PASS Authored definition validates: super-v8/Gearbox/ManualInterlocked /
+PASS Authored definition validates: super-v8/Induction/TurboCompactFixed /
+PASS Authored definition validates: super-v8/Induction/TurboCompactAdjustable /
+PASS Authored definition validates: super-v8/Induction/TurboStreetFixed /
+PASS Authored definition validates: super-v8/Induction/TurboStreetAdjustable /
+PASS Authored definition validates: super-v8/Induction/TurboLargeFixed /
+PASS Authored definition validates: super-v8/Induction/TurboLargeAdjustable /
+PASS Authored definition validates: super-v8/Induction/TwinTurboCompactFixed /
+PASS Authored definition validates: super-v8/Induction/TwinTurboCompactAdjustable /
+PASS Authored definition validates: super-v8/Induction/TwinTurboStreetFixed /
+PASS Authored definition validates: super-v8/Induction/TwinTurboStreetAdjustable /
+PASS Authored definition validates: super-v8/Induction/TwinTurboLargeFixed /
+PASS Authored definition validates: super-v8/Induction/TwinTurboLargeAdjustable /
+PASS Authored definition validates: super-v8/Induction/TwinchargedCompactFixed /
+PASS Authored definition validates: super-v8/Induction/TwinchargedCompactAdjustable /
+PASS Authored definition validates: super-v8/Induction/TwinchargedStreetFixed /
+PASS Authored definition validates: super-v8/Induction/TwinchargedStreetAdjustable /
+PASS Authored definition validates: super-v8/Induction/TwinchargedLargeFixed /
+PASS Authored definition validates: super-v8/Induction/TwinchargedLargeAdjustable /
+PASS Authored definition validates: super-v8/Induction/SuperchargerFixedDrive /
+PASS Authored definition validates: super-v8/Induction/SuperchargerPulleySet /
+PASS Authored definition validates: super-v8/Induction/TwinSuperchargerFixedDrive /
+PASS Authored definition validates: super-v8/Induction/TwinSuperchargerPulleySet /
+PASS Authored definition validates: super-v8/Flywheel/HeavyStreet /
+PASS Authored definition validates: super-v8/Flywheel/BalancedStreet /
+PASS Authored definition validates: super-v8/Cooling/Endurance /
+PASS Authored definition validates: super-v8/Cooling/LightSport /
+PASS Authored definition validates: super-v8/Clutch/StreetOrganic /
+PASS Authored definition validates: super-v8/Clutch/RaceFriction /
+PASS Authored definition validates: super-v8/Tires/Touring /
+PASS Authored definition validates: super-v8/Brakes/Endurance /
+PASS Authored definition validates: super-v8/Gearbox/ShortFixed /
+PASS Authored definition validates: super-v8/Gearbox/Interchangeable /
+PASS Authored definition validates: super-v8/Camshaft/0 /
+PASS Authored definition validates: super-v8/Camshaft/1 /
+PASS Authored definition validates: super-v8/Camshaft/2 /
+PASS Authored definition validates: super-v8/ValveSprings/0 /
+PASS Authored definition validates: super-v8/ValveSprings/1 /
+PASS Authored definition validates: super-v8/Valves/0 /
+PASS Authored definition validates: super-v8/Valves/1 /
+PASS Authored definition validates: super-v8/Followers/0 /
+PASS Authored definition validates: super-v8/Followers/1 /
+PASS Authored definition validates: super-v8/TimingDrive/0 /
+PASS Authored definition validates: super-v8/TimingDrive/1 /
+PASS Authored definition validates: super-v8/PistonRings/0 /
+PASS Authored definition validates: super-v8/PistonRings/1 /
+PASS Authored definition validates: super-v8/CylinderBlock/0 /
+PASS Authored definition validates: super-v8/CylinderBlock/1 /
+PASS Authored definition validates: super-v8/Bearings/0 /
+PASS Authored definition validates: super-v8/Bearings/1 /
+PASS Authored definition validates: super-v8/ValveSeals/0 /
+PASS Authored definition validates: super-v8/ValveSeals/1 /
+PASS Authored definition validates: super-v8/OilPan/0 /
+PASS Authored definition validates: super-v8/OilPan/1 /
+PASS Authored definition validates: super-v8/OilPump/0 /
+PASS Authored definition validates: super-v8/OilPump/1 /
+PASS Authored definition validates: super-v8/OilFilter/0 /
+PASS Authored definition validates: super-v8/OilFilter/1 /
+PASS Authored definition validates: super-v8/CoolantPump/0 /
+PASS Authored definition validates: super-v8/CoolantPump/1 /
+PASS Authored definition validates: super-v8/CoolingCap/0 /
+PASS Authored definition validates: super-v8/CoolingCap/1 /
+PASS Authored definition validates: super-v8/CoolingHoses/0 /
+PASS Authored definition validates: super-v8/CoolingHoses/1 /
+PASS Authored definition validates: super-v8/OilCooler/0 /
+PASS Authored definition validates: super-v8/OilCooler/1 /
+PASS Authored definition validates: super-v8/Clutch/DryTwinOrganic /
+PASS Authored definition validates: super-v8/Clutch/DryTwinCeramic /
+PASS Authored definition validates: super-v8/Clutch/DryTripleSintered /
+PASS Authored definition validates: super-v8/Clutch/WetMultiOrganic /
+PASS Authored definition validates: super-v8/Clutch/WetMultiRace /
+PASS Authored definition validates: super-v8/Clutch/DryCentrifugal /
+PASS Authored definition validates: touring-six/Pistons/0 /
+PASS Authored definition validates: touring-six/Pistons/1 /
+PASS Authored definition validates: touring-six/Rods/0 /
+PASS Authored definition validates: touring-six/Rods/1 /
+PASS Authored definition validates: touring-six/Crankshaft/0 /
+PASS Authored definition validates: touring-six/Crankshaft/1 /
+PASS Authored definition validates: touring-six/HeadIntake/0 /
+PASS Authored definition validates: touring-six/HeadIntake/1 /
+PASS Authored definition validates: touring-six/HeadIntake/2 /
+PASS Authored definition validates: touring-six/HeadIntake/3 /
+PASS Authored definition validates: touring-six/FuelSystem/0 /
+PASS Authored definition validates: touring-six/FuelSystem/1 /
+PASS Authored definition validates: touring-six/Ignition/0 /
+PASS Authored definition validates: touring-six/Ignition/1 /
+PASS Authored definition validates: touring-six/Cooling/0 /
+PASS Authored definition validates: touring-six/Cooling/1 /
+PASS Authored definition validates: touring-six/Induction/0 /
+PASS Authored definition validates: touring-six/Induction/1 /
+PASS Authored definition validates: touring-six/Exhaust/0 /
+PASS Authored definition validates: touring-six/Exhaust/1 /
+PASS Authored definition validates: touring-six/Exhaust/2 /
+PASS Authored definition validates: touring-six/Exhaust/3 /
+PASS Authored definition validates: touring-six/Clutch/0 /
+PASS Authored definition validates: touring-six/Clutch/1 /
+PASS Authored definition validates: touring-six/Flywheel/0 /
+PASS Authored definition validates: touring-six/Flywheel/1 /
+PASS Authored definition validates: touring-six/Gearbox/0 /
+PASS Authored definition validates: touring-six/Gearbox/1 /
+PASS Authored definition validates: touring-six/Gearbox/2 /
+PASS Authored definition validates: touring-six/Gearbox/3 /
+PASS Authored definition validates: touring-six/Differential/0 /
+PASS Authored definition validates: touring-six/Differential/1 /
+PASS Authored definition validates: touring-six/Differential/2 /
+PASS Authored definition validates: touring-six/Differential/3 /
+PASS Authored definition validates: touring-six/Wheels/0 /
+PASS Authored definition validates: touring-six/Wheels/1 /
+PASS Authored definition validates: touring-six/Tires/0 /
+PASS Authored definition validates: touring-six/Tires/1 /
+PASS Authored definition validates: touring-six/Tires/2 /
+PASS Authored definition validates: touring-six/Tires/3 /
+PASS Authored definition validates: touring-six/Brakes/0 /
+PASS Authored definition validates: touring-six/Brakes/1 /
+PASS Authored definition validates: touring-six/Body/0 /
+PASS Authored definition validates: touring-six/Body/1 /
+PASS Authored definition validates: touring-six/Body/2 /
+PASS Authored definition validates: touring-six/Body/3 /
+PASS Authored definition validates: touring-six/Controls/0 /
+PASS Authored definition validates: touring-six/Controls/1 /
+PASS Authored definition validates: touring-six/Driveshaft/0 /
+PASS Authored definition validates: touring-six/Driveshaft/1 /
+PASS Authored definition validates: touring-six/FrontAxle/0 /
+PASS Authored definition validates: touring-six/FrontAxle/1 /
+PASS Authored definition validates: touring-six/RearAxle/0 /
+PASS Authored definition validates: touring-six/RearAxle/1 /
+PASS Authored definition validates: touring-six/FrontDriveshaft/0 /
+PASS Authored definition validates: touring-six/FrontDriveshaft/1 /
+PASS Authored definition validates: touring-six/RearDriveshaft/0 /
+PASS Authored definition validates: touring-six/RearDriveshaft/1 /
+PASS Authored definition validates: touring-six/FrontDifferential/0 /
+PASS Authored definition validates: touring-six/FrontDifferential/1 /
+PASS Authored definition validates: touring-six/FrontDifferential/2 /
+PASS Authored definition validates: touring-six/FrontDifferential/3 /
+PASS Authored definition validates: touring-six/RearDifferential/0 /
+PASS Authored definition validates: touring-six/RearDifferential/1 /
+PASS Authored definition validates: touring-six/RearDifferential/2 /
+PASS Authored definition validates: touring-six/RearDifferential/3 /
+PASS Authored definition validates: touring-six/TransferCase/0 /
+PASS Authored definition validates: touring-six/TransferCase/1 /
+PASS Authored definition validates: touring-six/Interior/0 /
+PASS Authored definition validates: touring-six/Interior/1 /
+PASS Authored definition validates: touring-six/Accessories/0 /
+PASS Authored definition validates: touring-six/Accessories/1 /
+PASS Authored definition validates: touring-six/RevLimiter/0 /
+PASS Authored definition validates: touring-six/RevLimiter/1 /
+PASS Authored definition validates: touring-six/ShiftLight/0 /
+PASS Authored definition validates: touring-six/ShiftLight/1 /
+PASS Authored definition validates: touring-six/TwoStep/0 /
+PASS Authored definition validates: touring-six/TwoStep/1 /
+PASS Authored definition validates: touring-six/Induction/Turbo /
+PASS Authored definition validates: touring-six/Induction/Supercharger /
+PASS Authored definition validates: touring-six/Induction/TwinTurbo /
+PASS Authored definition validates: touring-six/Induction/TwinSupercharger /
+PASS Authored definition validates: touring-six/Induction/Twincharged /
+PASS Authored definition validates: touring-six/Gearbox/Manual /
+PASS Authored definition validates: touring-six/Gearbox/DCT /
+PASS Authored definition validates: touring-six/Gearbox/Automatic /
+PASS Authored definition validates: touring-six/Gearbox/CVT /
+PASS Authored definition validates: touring-six/Gearbox/SequentialManual /
+PASS Authored definition validates: touring-six/Gearbox/ManualInterlocked /
+PASS Authored definition validates: touring-six/Induction/TurboCompactFixed /
+PASS Authored definition validates: touring-six/Induction/TurboCompactAdjustable /
+PASS Authored definition validates: touring-six/Induction/TurboStreetFixed /
+PASS Authored definition validates: touring-six/Induction/TurboStreetAdjustable /
+PASS Authored definition validates: touring-six/Induction/TurboLargeFixed /
+PASS Authored definition validates: touring-six/Induction/TurboLargeAdjustable /
+PASS Authored definition validates: touring-six/Induction/TwinTurboCompactFixed /
+PASS Authored definition validates: touring-six/Induction/TwinTurboCompactAdjustable /
+PASS Authored definition validates: touring-six/Induction/TwinTurboStreetFixed /
+PASS Authored definition validates: touring-six/Induction/TwinTurboStreetAdjustable /
+PASS Authored definition validates: touring-six/Induction/TwinTurboLargeFixed /
+PASS Authored definition validates: touring-six/Induction/TwinTurboLargeAdjustable /
+PASS Authored definition validates: touring-six/Induction/TwinchargedCompactFixed /
+PASS Authored definition validates: touring-six/Induction/TwinchargedCompactAdjustable /
+PASS Authored definition validates: touring-six/Induction/TwinchargedStreetFixed /
+PASS Authored definition validates: touring-six/Induction/TwinchargedStreetAdjustable /
+PASS Authored definition validates: touring-six/Induction/TwinchargedLargeFixed /
+PASS Authored definition validates: touring-six/Induction/TwinchargedLargeAdjustable /
+PASS Authored definition validates: touring-six/Induction/SuperchargerFixedDrive /
+PASS Authored definition validates: touring-six/Induction/SuperchargerPulleySet /
+PASS Authored definition validates: touring-six/Induction/TwinSuperchargerFixedDrive /
+PASS Authored definition validates: touring-six/Induction/TwinSuperchargerPulleySet /
+PASS Authored definition validates: touring-six/Flywheel/HeavyStreet /
+PASS Authored definition validates: touring-six/Flywheel/BalancedStreet /
+PASS Authored definition validates: touring-six/Cooling/Endurance /
+PASS Authored definition validates: touring-six/Cooling/LightSport /
+PASS Authored definition validates: touring-six/Clutch/StreetOrganic /
+PASS Authored definition validates: touring-six/Clutch/RaceFriction /
+PASS Authored definition validates: touring-six/Tires/Touring /
+PASS Authored definition validates: touring-six/Brakes/Endurance /
+PASS Authored definition validates: touring-six/Gearbox/ShortFixed /
+PASS Authored definition validates: touring-six/Gearbox/Interchangeable /
+PASS Authored definition validates: touring-six/Camshaft/0 /
+PASS Authored definition validates: touring-six/Camshaft/1 /
+PASS Authored definition validates: touring-six/Camshaft/2 /
+PASS Authored definition validates: touring-six/ValveSprings/0 /
+PASS Authored definition validates: touring-six/ValveSprings/1 /
+PASS Authored definition validates: touring-six/Valves/0 /
+PASS Authored definition validates: touring-six/Valves/1 /
+PASS Authored definition validates: touring-six/Followers/0 /
+PASS Authored definition validates: touring-six/Followers/1 /
+PASS Authored definition validates: touring-six/TimingDrive/0 /
+PASS Authored definition validates: touring-six/TimingDrive/1 /
+PASS Authored definition validates: touring-six/PistonRings/0 /
+PASS Authored definition validates: touring-six/PistonRings/1 /
+PASS Authored definition validates: touring-six/CylinderBlock/0 /
+PASS Authored definition validates: touring-six/CylinderBlock/1 /
+PASS Authored definition validates: touring-six/Bearings/0 /
+PASS Authored definition validates: touring-six/Bearings/1 /
+PASS Authored definition validates: touring-six/ValveSeals/0 /
+PASS Authored definition validates: touring-six/ValveSeals/1 /
+PASS Authored definition validates: touring-six/OilPan/0 /
+PASS Authored definition validates: touring-six/OilPan/1 /
+PASS Authored definition validates: touring-six/OilPump/0 /
+PASS Authored definition validates: touring-six/OilPump/1 /
+PASS Authored definition validates: touring-six/OilFilter/0 /
+PASS Authored definition validates: touring-six/OilFilter/1 /
+PASS Authored definition validates: touring-six/CoolantPump/0 /
+PASS Authored definition validates: touring-six/CoolantPump/1 /
+PASS Authored definition validates: touring-six/CoolingCap/0 /
+PASS Authored definition validates: touring-six/CoolingCap/1 /
+PASS Authored definition validates: touring-six/CoolingHoses/0 /
+PASS Authored definition validates: touring-six/CoolingHoses/1 /
+PASS Authored definition validates: touring-six/OilCooler/0 /
+PASS Authored definition validates: touring-six/OilCooler/1 /
+PASS Authored definition validates: touring-six/Clutch/DryTwinOrganic /
+PASS Authored definition validates: touring-six/Clutch/DryTwinCeramic /
+PASS Authored definition validates: touring-six/Clutch/DryTripleSintered /
+PASS Authored definition validates: touring-six/Clutch/WetMultiOrganic /
+PASS Authored definition validates: touring-six/Clutch/WetMultiRace /
+PASS Authored definition validates: touring-six/Clutch/DryCentrifugal /
+PASS Authored definition validates: utility-pickup/Pistons/0 /
+PASS Authored definition validates: utility-pickup/Pistons/1 /
+PASS Authored definition validates: utility-pickup/Rods/0 /
+PASS Authored definition validates: utility-pickup/Rods/1 /
+PASS Authored definition validates: utility-pickup/Crankshaft/0 /
+PASS Authored definition validates: utility-pickup/Crankshaft/1 /
+PASS Authored definition validates: utility-pickup/HeadIntake/0 /
+PASS Authored definition validates: utility-pickup/HeadIntake/1 /
+PASS Authored definition validates: utility-pickup/HeadIntake/2 /
+PASS Authored definition validates: utility-pickup/HeadIntake/3 /
+PASS Authored definition validates: utility-pickup/FuelSystem/0 /
+PASS Authored definition validates: utility-pickup/FuelSystem/1 /
+PASS Authored definition validates: utility-pickup/Ignition/0 /
+PASS Authored definition validates: utility-pickup/Ignition/1 /
+PASS Authored definition validates: utility-pickup/Cooling/0 /
+PASS Authored definition validates: utility-pickup/Cooling/1 /
+PASS Authored definition validates: utility-pickup/Induction/0 /
+PASS Authored definition validates: utility-pickup/Induction/1 /
+PASS Authored definition validates: utility-pickup/Exhaust/0 /
+PASS Authored definition validates: utility-pickup/Exhaust/1 /
+PASS Authored definition validates: utility-pickup/Exhaust/2 /
+PASS Authored definition validates: utility-pickup/Exhaust/3 /
+PASS Authored definition validates: utility-pickup/Clutch/0 /
+PASS Authored definition validates: utility-pickup/Clutch/1 /
+PASS Authored definition validates: utility-pickup/Flywheel/0 /
+PASS Authored definition validates: utility-pickup/Flywheel/1 /
+PASS Authored definition validates: utility-pickup/Gearbox/0 /
+PASS Authored definition validates: utility-pickup/Gearbox/1 /
+PASS Authored definition validates: utility-pickup/Gearbox/2 /
+PASS Authored definition validates: utility-pickup/Gearbox/3 /
+PASS Authored definition validates: utility-pickup/Differential/0 /
+PASS Authored definition validates: utility-pickup/Differential/1 /
+PASS Authored definition validates: utility-pickup/Differential/2 /
+PASS Authored definition validates: utility-pickup/Differential/3 /
+PASS Authored definition validates: utility-pickup/Wheels/0 /
+PASS Authored definition validates: utility-pickup/Wheels/1 /
+PASS Authored definition validates: utility-pickup/Tires/0 /
+PASS Authored definition validates: utility-pickup/Tires/1 /
+PASS Authored definition validates: utility-pickup/Tires/2 /
+PASS Authored definition validates: utility-pickup/Tires/3 /
+PASS Authored definition validates: utility-pickup/Brakes/0 /
+PASS Authored definition validates: utility-pickup/Brakes/1 /
+PASS Authored definition validates: utility-pickup/Body/0 /
+PASS Authored definition validates: utility-pickup/Body/1 /
+PASS Authored definition validates: utility-pickup/Body/2 /
+PASS Authored definition validates: utility-pickup/Body/3 /
+PASS Authored definition validates: utility-pickup/Controls/0 /
+PASS Authored definition validates: utility-pickup/Controls/1 /
+PASS Authored definition validates: utility-pickup/Driveshaft/0 /
+PASS Authored definition validates: utility-pickup/Driveshaft/1 /
+PASS Authored definition validates: utility-pickup/FrontAxle/0 /
+PASS Authored definition validates: utility-pickup/FrontAxle/1 /
+PASS Authored definition validates: utility-pickup/RearAxle/0 /
+PASS Authored definition validates: utility-pickup/RearAxle/1 /
+PASS Authored definition validates: utility-pickup/FrontDriveshaft/0 /
+PASS Authored definition validates: utility-pickup/FrontDriveshaft/1 /
+PASS Authored definition validates: utility-pickup/RearDriveshaft/0 /
+PASS Authored definition validates: utility-pickup/RearDriveshaft/1 /
+PASS Authored definition validates: utility-pickup/FrontDifferential/0 /
+PASS Authored definition validates: utility-pickup/FrontDifferential/1 /
+PASS Authored definition validates: utility-pickup/FrontDifferential/2 /
+PASS Authored definition validates: utility-pickup/FrontDifferential/3 /
+PASS Authored definition validates: utility-pickup/RearDifferential/0 /
+PASS Authored definition validates: utility-pickup/RearDifferential/1 /
+PASS Authored definition validates: utility-pickup/RearDifferential/2 /
+PASS Authored definition validates: utility-pickup/RearDifferential/3 /
+PASS Authored definition validates: utility-pickup/TransferCase/0 /
+PASS Authored definition validates: utility-pickup/TransferCase/1 /
+PASS Authored definition validates: utility-pickup/Interior/0 /
+PASS Authored definition validates: utility-pickup/Interior/1 /
+PASS Authored definition validates: utility-pickup/Accessories/0 /
+PASS Authored definition validates: utility-pickup/Accessories/1 /
+PASS Authored definition validates: utility-pickup/RevLimiter/0 /
+PASS Authored definition validates: utility-pickup/RevLimiter/1 /
+PASS Authored definition validates: utility-pickup/ShiftLight/0 /
+PASS Authored definition validates: utility-pickup/ShiftLight/1 /
+PASS Authored definition validates: utility-pickup/TwoStep/0 /
+PASS Authored definition validates: utility-pickup/TwoStep/1 /
+PASS Authored definition validates: utility-pickup/Induction/Turbo /
+PASS Authored definition validates: utility-pickup/Induction/Supercharger /
+PASS Authored definition validates: utility-pickup/Induction/TwinTurbo /
+PASS Authored definition validates: utility-pickup/Induction/TwinSupercharger /
+PASS Authored definition validates: utility-pickup/Induction/Twincharged /
+PASS Authored definition validates: utility-pickup/Gearbox/Manual /
+PASS Authored definition validates: utility-pickup/Gearbox/DCT /
+PASS Authored definition validates: utility-pickup/Gearbox/Automatic /
+PASS Authored definition validates: utility-pickup/Gearbox/CVT /
+PASS Authored definition validates: utility-pickup/Gearbox/SequentialManual /
+PASS Authored definition validates: utility-pickup/Gearbox/ManualInterlocked /
+PASS Authored definition validates: utility-pickup/Induction/TurboCompactFixed /
+PASS Authored definition validates: utility-pickup/Induction/TurboCompactAdjustable /
+PASS Authored definition validates: utility-pickup/Induction/TurboStreetFixed /
+PASS Authored definition validates: utility-pickup/Induction/TurboStreetAdjustable /
+PASS Authored definition validates: utility-pickup/Induction/TurboLargeFixed /
+PASS Authored definition validates: utility-pickup/Induction/TurboLargeAdjustable /
+PASS Authored definition validates: utility-pickup/Induction/TwinTurboCompactFixed /
+PASS Authored definition validates: utility-pickup/Induction/TwinTurboCompactAdjustable /
+PASS Authored definition validates: utility-pickup/Induction/TwinTurboStreetFixed /
+PASS Authored definition validates: utility-pickup/Induction/TwinTurboStreetAdjustable /
+PASS Authored definition validates: utility-pickup/Induction/TwinTurboLargeFixed /
+PASS Authored definition validates: utility-pickup/Induction/TwinTurboLargeAdjustable /
+PASS Authored definition validates: utility-pickup/Induction/TwinchargedCompactFixed /
+PASS Authored definition validates: utility-pickup/Induction/TwinchargedCompactAdjustable /
+PASS Authored definition validates: utility-pickup/Induction/TwinchargedStreetFixed /
+PASS Authored definition validates: utility-pickup/Induction/TwinchargedStreetAdjustable /
+PASS Authored definition validates: utility-pickup/Induction/TwinchargedLargeFixed /
+PASS Authored definition validates: utility-pickup/Induction/TwinchargedLargeAdjustable /
+PASS Authored definition validates: utility-pickup/Induction/SuperchargerFixedDrive /
+PASS Authored definition validates: utility-pickup/Induction/SuperchargerPulleySet /
+PASS Authored definition validates: utility-pickup/Induction/TwinSuperchargerFixedDrive /
+PASS Authored definition validates: utility-pickup/Induction/TwinSuperchargerPulleySet /
+PASS Authored definition validates: utility-pickup/Flywheel/HeavyStreet /
+PASS Authored definition validates: utility-pickup/Flywheel/BalancedStreet /
+PASS Authored definition validates: utility-pickup/Cooling/Endurance /
+PASS Authored definition validates: utility-pickup/Cooling/LightSport /
+PASS Authored definition validates: utility-pickup/Clutch/StreetOrganic /
+PASS Authored definition validates: utility-pickup/Clutch/RaceFriction /
+PASS Authored definition validates: utility-pickup/Tires/Touring /
+PASS Authored definition validates: utility-pickup/Brakes/Endurance /
+PASS Authored definition validates: utility-pickup/Gearbox/ShortFixed /
+PASS Authored definition validates: utility-pickup/Gearbox/Interchangeable /
+PASS Authored definition validates: utility-pickup/FuelSystem/EfiThrottleBody /
+PASS Authored definition validates: utility-pickup/FuelSystem/EfiPortInjection /
+PASS Authored definition validates: utility-pickup/Controls/EfiStreet /
+PASS Authored definition validates: utility-pickup/Camshaft/0 /
+PASS Authored definition validates: utility-pickup/Camshaft/1 /
+PASS Authored definition validates: utility-pickup/Camshaft/2 /
+PASS Authored definition validates: utility-pickup/ValveSprings/0 /
+PASS Authored definition validates: utility-pickup/ValveSprings/1 /
+PASS Authored definition validates: utility-pickup/Valves/0 /
+PASS Authored definition validates: utility-pickup/Valves/1 /
+PASS Authored definition validates: utility-pickup/Followers/0 /
+PASS Authored definition validates: utility-pickup/Followers/1 /
+PASS Authored definition validates: utility-pickup/TimingDrive/0 /
+PASS Authored definition validates: utility-pickup/TimingDrive/1 /
+PASS Authored definition validates: utility-pickup/PistonRings/0 /
+PASS Authored definition validates: utility-pickup/PistonRings/1 /
+PASS Authored definition validates: utility-pickup/CylinderBlock/0 /
+PASS Authored definition validates: utility-pickup/CylinderBlock/1 /
+PASS Authored definition validates: utility-pickup/Bearings/0 /
+PASS Authored definition validates: utility-pickup/Bearings/1 /
+PASS Authored definition validates: utility-pickup/ValveSeals/0 /
+PASS Authored definition validates: utility-pickup/ValveSeals/1 /
+PASS Authored definition validates: utility-pickup/OilPan/0 /
+PASS Authored definition validates: utility-pickup/OilPan/1 /
+PASS Authored definition validates: utility-pickup/OilPump/0 /
+PASS Authored definition validates: utility-pickup/OilPump/1 /
+PASS Authored definition validates: utility-pickup/OilFilter/0 /
+PASS Authored definition validates: utility-pickup/OilFilter/1 /
+PASS Authored definition validates: utility-pickup/CoolantPump/0 /
+PASS Authored definition validates: utility-pickup/CoolantPump/1 /
+PASS Authored definition validates: utility-pickup/CoolingCap/0 /
+PASS Authored definition validates: utility-pickup/CoolingCap/1 /
+PASS Authored definition validates: utility-pickup/CoolingHoses/0 /
+PASS Authored definition validates: utility-pickup/CoolingHoses/1 /
+PASS Authored definition validates: utility-pickup/OilCooler/0 /
+PASS Authored definition validates: utility-pickup/OilCooler/1 /
+PASS Authored definition validates: utility-pickup/Clutch/DryTwinOrganic /
+PASS Authored definition validates: utility-pickup/Clutch/DryTwinCeramic /
+PASS Authored definition validates: utility-pickup/Clutch/DryTripleSintered /
+PASS Authored definition validates: utility-pickup/Clutch/WetMultiOrganic /
+PASS Authored definition validates: utility-pickup/Clutch/WetMultiRace /
+PASS Authored definition validates: utility-pickup/Clutch/DryCentrifugal /
+PASS Authored definition validates: v8-muscle/Pistons/0 /
+PASS Authored definition validates: v8-muscle/Pistons/1 /
+PASS Authored definition validates: v8-muscle/Rods/0 /
+PASS Authored definition validates: v8-muscle/Rods/1 /
+PASS Authored definition validates: v8-muscle/Crankshaft/0 /
+PASS Authored definition validates: v8-muscle/Crankshaft/1 /
+PASS Authored definition validates: v8-muscle/HeadIntake/0 /
+PASS Authored definition validates: v8-muscle/HeadIntake/1 /
+PASS Authored definition validates: v8-muscle/HeadIntake/2 /
+PASS Authored definition validates: v8-muscle/HeadIntake/3 /
+PASS Authored definition validates: v8-muscle/FuelSystem/0 /
+PASS Authored definition validates: v8-muscle/FuelSystem/1 /
+PASS Authored definition validates: v8-muscle/Ignition/0 /
+PASS Authored definition validates: v8-muscle/Ignition/1 /
+PASS Authored definition validates: v8-muscle/Cooling/0 /
+PASS Authored definition validates: v8-muscle/Cooling/1 /
+PASS Authored definition validates: v8-muscle/Induction/0 /
+PASS Authored definition validates: v8-muscle/Induction/1 /
+PASS Authored definition validates: v8-muscle/Exhaust/0 /
+PASS Authored definition validates: v8-muscle/Exhaust/1 /
+PASS Authored definition validates: v8-muscle/Exhaust/2 /
+PASS Authored definition validates: v8-muscle/Exhaust/3 /
+PASS Authored definition validates: v8-muscle/Clutch/0 /
+PASS Authored definition validates: v8-muscle/Clutch/1 /
+PASS Authored definition validates: v8-muscle/Flywheel/0 /
+PASS Authored definition validates: v8-muscle/Flywheel/1 /
+PASS Authored definition validates: v8-muscle/Gearbox/0 /
+PASS Authored definition validates: v8-muscle/Gearbox/1 /
+PASS Authored definition validates: v8-muscle/Gearbox/2 /
+PASS Authored definition validates: v8-muscle/Gearbox/3 /
+PASS Authored definition validates: v8-muscle/Differential/0 /
+PASS Authored definition validates: v8-muscle/Differential/1 /
+PASS Authored definition validates: v8-muscle/Differential/2 /
+PASS Authored definition validates: v8-muscle/Differential/3 /
+PASS Authored definition validates: v8-muscle/Wheels/0 /
+PASS Authored definition validates: v8-muscle/Wheels/1 /
+PASS Authored definition validates: v8-muscle/Tires/0 /
+PASS Authored definition validates: v8-muscle/Tires/1 /
+PASS Authored definition validates: v8-muscle/Tires/2 /
+PASS Authored definition validates: v8-muscle/Tires/3 /
+PASS Authored definition validates: v8-muscle/Brakes/0 /
+PASS Authored definition validates: v8-muscle/Brakes/1 /
+PASS Authored definition validates: v8-muscle/Body/0 /
+PASS Authored definition validates: v8-muscle/Body/1 /
+PASS Authored definition validates: v8-muscle/Body/2 /
+PASS Authored definition validates: v8-muscle/Body/3 /
+PASS Authored definition validates: v8-muscle/Controls/0 /
+PASS Authored definition validates: v8-muscle/Controls/1 /
+PASS Authored definition validates: v8-muscle/Driveshaft/0 /
+PASS Authored definition validates: v8-muscle/Driveshaft/1 /
+PASS Authored definition validates: v8-muscle/FrontAxle/0 /
+PASS Authored definition validates: v8-muscle/FrontAxle/1 /
+PASS Authored definition validates: v8-muscle/RearAxle/0 /
+PASS Authored definition validates: v8-muscle/RearAxle/1 /
+PASS Authored definition validates: v8-muscle/FrontDriveshaft/0 /
+PASS Authored definition validates: v8-muscle/FrontDriveshaft/1 /
+PASS Authored definition validates: v8-muscle/RearDriveshaft/0 /
+PASS Authored definition validates: v8-muscle/RearDriveshaft/1 /
+PASS Authored definition validates: v8-muscle/FrontDifferential/0 /
+PASS Authored definition validates: v8-muscle/FrontDifferential/1 /
+PASS Authored definition validates: v8-muscle/FrontDifferential/2 /
+PASS Authored definition validates: v8-muscle/FrontDifferential/3 /
+PASS Authored definition validates: v8-muscle/RearDifferential/0 /
+PASS Authored definition validates: v8-muscle/RearDifferential/1 /
+PASS Authored definition validates: v8-muscle/RearDifferential/2 /
+PASS Authored definition validates: v8-muscle/RearDifferential/3 /
+PASS Authored definition validates: v8-muscle/TransferCase/0 /
+PASS Authored definition validates: v8-muscle/TransferCase/1 /
+PASS Authored definition validates: v8-muscle/Interior/0 /
+PASS Authored definition validates: v8-muscle/Interior/1 /
+PASS Authored definition validates: v8-muscle/Accessories/0 /
+PASS Authored definition validates: v8-muscle/Accessories/1 /
+PASS Authored definition validates: v8-muscle/RevLimiter/0 /
+PASS Authored definition validates: v8-muscle/RevLimiter/1 /
+PASS Authored definition validates: v8-muscle/ShiftLight/0 /
+PASS Authored definition validates: v8-muscle/ShiftLight/1 /
+PASS Authored definition validates: v8-muscle/TwoStep/0 /
+PASS Authored definition validates: v8-muscle/TwoStep/1 /
+PASS Authored definition validates: v8-muscle/Induction/Turbo /
+PASS Authored definition validates: v8-muscle/Induction/Supercharger /
+PASS Authored definition validates: v8-muscle/Induction/TwinTurbo /
+PASS Authored definition validates: v8-muscle/Induction/TwinSupercharger /
+PASS Authored definition validates: v8-muscle/Induction/Twincharged /
+PASS Authored definition validates: v8-muscle/Gearbox/Manual /
+PASS Authored definition validates: v8-muscle/Gearbox/DCT /
+PASS Authored definition validates: v8-muscle/Gearbox/Automatic /
+PASS Authored definition validates: v8-muscle/Gearbox/CVT /
+PASS Authored definition validates: v8-muscle/Gearbox/SequentialManual /
+PASS Authored definition validates: v8-muscle/Gearbox/ManualInterlocked /
+PASS Authored definition validates: v8-muscle/Induction/TurboCompactFixed /
+PASS Authored definition validates: v8-muscle/Induction/TurboCompactAdjustable /
+PASS Authored definition validates: v8-muscle/Induction/TurboStreetFixed /
+PASS Authored definition validates: v8-muscle/Induction/TurboStreetAdjustable /
+PASS Authored definition validates: v8-muscle/Induction/TurboLargeFixed /
+PASS Authored definition validates: v8-muscle/Induction/TurboLargeAdjustable /
+PASS Authored definition validates: v8-muscle/Induction/TwinTurboCompactFixed /
+PASS Authored definition validates: v8-muscle/Induction/TwinTurboCompactAdjustable /
+PASS Authored definition validates: v8-muscle/Induction/TwinTurboStreetFixed /
+PASS Authored definition validates: v8-muscle/Induction/TwinTurboStreetAdjustable /
+PASS Authored definition validates: v8-muscle/Induction/TwinTurboLargeFixed /
+PASS Authored definition validates: v8-muscle/Induction/TwinTurboLargeAdjustable /
+PASS Authored definition validates: v8-muscle/Induction/TwinchargedCompactFixed /
+PASS Authored definition validates: v8-muscle/Induction/TwinchargedCompactAdjustable /
+PASS Authored definition validates: v8-muscle/Induction/TwinchargedStreetFixed /
+PASS Authored definition validates: v8-muscle/Induction/TwinchargedStreetAdjustable /
+PASS Authored definition validates: v8-muscle/Induction/TwinchargedLargeFixed /
+PASS Authored definition validates: v8-muscle/Induction/TwinchargedLargeAdjustable /
+PASS Authored definition validates: v8-muscle/Induction/SuperchargerFixedDrive /
+PASS Authored definition validates: v8-muscle/Induction/SuperchargerPulleySet /
+PASS Authored definition validates: v8-muscle/Induction/TwinSuperchargerFixedDrive /
+PASS Authored definition validates: v8-muscle/Induction/TwinSuperchargerPulleySet /
+PASS Authored definition validates: v8-muscle/Flywheel/HeavyStreet /
+PASS Authored definition validates: v8-muscle/Flywheel/BalancedStreet /
+PASS Authored definition validates: v8-muscle/Cooling/Endurance /
+PASS Authored definition validates: v8-muscle/Cooling/LightSport /
+PASS Authored definition validates: v8-muscle/Clutch/StreetOrganic /
+PASS Authored definition validates: v8-muscle/Clutch/RaceFriction /
+PASS Authored definition validates: v8-muscle/Tires/Touring /
+PASS Authored definition validates: v8-muscle/Brakes/Endurance /
+PASS Authored definition validates: v8-muscle/Gearbox/ShortFixed /
+PASS Authored definition validates: v8-muscle/Gearbox/Interchangeable /
+PASS Authored definition validates: v8-muscle/FuelSystem/EfiThrottleBody /
+PASS Authored definition validates: v8-muscle/FuelSystem/EfiPortInjection /
+PASS Authored definition validates: v8-muscle/Controls/EfiStreet /
+PASS Authored definition validates: v8-muscle/Camshaft/0 /
+PASS Authored definition validates: v8-muscle/Camshaft/1 /
+PASS Authored definition validates: v8-muscle/Camshaft/2 /
+PASS Authored definition validates: v8-muscle/ValveSprings/0 /
+PASS Authored definition validates: v8-muscle/ValveSprings/1 /
+PASS Authored definition validates: v8-muscle/Valves/0 /
+PASS Authored definition validates: v8-muscle/Valves/1 /
+PASS Authored definition validates: v8-muscle/Followers/0 /
+PASS Authored definition validates: v8-muscle/Followers/1 /
+PASS Authored definition validates: v8-muscle/TimingDrive/0 /
+PASS Authored definition validates: v8-muscle/TimingDrive/1 /
+PASS Authored definition validates: v8-muscle/PistonRings/0 /
+PASS Authored definition validates: v8-muscle/PistonRings/1 /
+PASS Authored definition validates: v8-muscle/CylinderBlock/0 /
+PASS Authored definition validates: v8-muscle/CylinderBlock/1 /
+PASS Authored definition validates: v8-muscle/Bearings/0 /
+PASS Authored definition validates: v8-muscle/Bearings/1 /
+PASS Authored definition validates: v8-muscle/ValveSeals/0 /
+PASS Authored definition validates: v8-muscle/ValveSeals/1 /
+PASS Authored definition validates: v8-muscle/OilPan/0 /
+PASS Authored definition validates: v8-muscle/OilPan/1 /
+PASS Authored definition validates: v8-muscle/OilPump/0 /
+PASS Authored definition validates: v8-muscle/OilPump/1 /
+PASS Authored definition validates: v8-muscle/OilFilter/0 /
+PASS Authored definition validates: v8-muscle/OilFilter/1 /
+PASS Authored definition validates: v8-muscle/CoolantPump/0 /
+PASS Authored definition validates: v8-muscle/CoolantPump/1 /
+PASS Authored definition validates: v8-muscle/CoolingCap/0 /
+PASS Authored definition validates: v8-muscle/CoolingCap/1 /
+PASS Authored definition validates: v8-muscle/CoolingHoses/0 /
+PASS Authored definition validates: v8-muscle/CoolingHoses/1 /
+PASS Authored definition validates: v8-muscle/OilCooler/0 /
+PASS Authored definition validates: v8-muscle/OilCooler/1 /
+PASS Authored definition validates: v8-muscle/Clutch/DryTwinOrganic /
+PASS Authored definition validates: v8-muscle/Clutch/DryTwinCeramic /
+PASS Authored definition validates: v8-muscle/Clutch/DryTripleSintered /
+PASS Authored definition validates: v8-muscle/Clutch/WetMultiOrganic /
+PASS Authored definition validates: v8-muscle/Clutch/WetMultiRace /
+PASS Authored definition validates: v8-muscle/Clutch/DryCentrifugal /
+PASS Authored definition validates: city-three/Induction/motorsport /
+PASS Authored definition validates: rally-sedan/Induction/motorsport /
+PASS Authored definition validates: sport-coupe/Induction/motorsport /
+PASS Authored definition validates: starter-hatch/Induction/motorsport /
+PASS Authored definition validates: super-v8/Induction/motorsport /
+PASS Authored definition validates: touring-six/Induction/motorsport /
+PASS Authored definition validates: utility-pickup/Induction/motorsport /
+PASS Authored definition validates: v8-muscle/Induction/motorsport /
+PASS Validated draft is copied into catalog without mutating original.
+PASS Authored cooling transfer changes the actual shared simulation.
+PASS Captured fitted hardware retains its original definition after project authoring.
+PASS Atomic authoring rejection: NaN
+PASS Atomic authoring rejection: negative
+PASS Atomic authoring rejection: fitment
+PASS Atomic authoring rejection: category
+PASS Atomic authoring rejection: unknown
+PASS Atomic authoring rejection: range
+PASS Atomic authoring rejection: plates
+PASS Atomic authoring rejection: flags
+PASS Atomic authoring rejection: life
+PASS Atomic authoring rejection: duplicate
+PASS Atomic authoring rejection: future schema
+PASS All measured channels finite over staged launch / shifts / lift / braking: city-three
+PASS Measured wheel drive and actual braking appear independently: city-three
+PASS Measured reaction torque equals contact force times tire radius: city-three
+PASS No applied brake torque without pedal/staging brake: city-three
+PASS Full current-model telemetry replay is exact: city-three
+PASS Continued JSON trace preserves exact wheel observations and history: city-three
+PASS CSV retains every 120 Hz row and has matching columns: city-three
+PASS OEM braking reaches zero without destroying car: city-three
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: city-three / Sequential / 18,0481571290975
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: city-three / ManualClutch / 18,0497756639976
+PASS Controlled integrated scenario remains finite: city-three / stock
+PASS Controlled integrated scenario remains finite: city-three / payload250
+PASS Controlled integrated scenario remains finite: city-three / fuel5
+PASS Controlled integrated scenario remains finite: city-three / radius130
+PASS Controlled integrated scenario remains finite: city-three / pressure18
+PASS Controlled integrated scenario remains finite: city-three / cold
+PASS Controlled integrated scenario remains finite: city-three / reduced
+PASS Controlled integrated scenario remains finite: city-three / none
+PASS None wear/fuel remains respected in integrated scenario: city-three
+PASS All measured channels finite over staged launch / shifts / lift / braking: rally-sedan
+PASS Measured wheel drive and actual braking appear independently: rally-sedan
+PASS Measured reaction torque equals contact force times tire radius: rally-sedan
+PASS No applied brake torque without pedal/staging brake: rally-sedan
+PASS Full current-model telemetry replay is exact: rally-sedan
+PASS Continued JSON trace preserves exact wheel observations and history: rally-sedan
+PASS CSV retains every 120 Hz row and has matching columns: rally-sedan
+PASS OEM braking reaches zero without destroying car: rally-sedan
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: rally-sedan / Sequential / 13,9288503993995
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: rally-sedan / ManualClutch / 13,9288503993995
+PASS Controlled integrated scenario remains finite: rally-sedan / stock
+PASS Controlled integrated scenario remains finite: rally-sedan / payload250
+PASS Controlled integrated scenario remains finite: rally-sedan / fuel5
+PASS Controlled integrated scenario remains finite: rally-sedan / radius130
+PASS Controlled integrated scenario remains finite: rally-sedan / pressure18
+PASS Controlled integrated scenario remains finite: rally-sedan / cold
+PASS Controlled integrated scenario remains finite: rally-sedan / reduced
+PASS Controlled integrated scenario remains finite: rally-sedan / none
+PASS None wear/fuel remains respected in integrated scenario: rally-sedan
+PASS All measured channels finite over staged launch / shifts / lift / braking: sport-coupe
+PASS Measured wheel drive and actual braking appear independently: sport-coupe
+PASS Measured reaction torque equals contact force times tire radius: sport-coupe
+PASS No applied brake torque without pedal/staging brake: sport-coupe
+PASS Full current-model telemetry replay is exact: sport-coupe
+PASS Continued JSON trace preserves exact wheel observations and history: sport-coupe
+PASS CSV retains every 120 Hz row and has matching columns: sport-coupe
+PASS OEM braking reaches zero without destroying car: sport-coupe
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: sport-coupe / Sequential / 14,8226137739121
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: sport-coupe / ManualClutch / 14,8226137739121
+PASS Controlled integrated scenario remains finite: sport-coupe / stock
+PASS Controlled integrated scenario remains finite: sport-coupe / payload250
+PASS Controlled integrated scenario remains finite: sport-coupe / fuel5
+PASS Controlled integrated scenario remains finite: sport-coupe / radius130
+PASS Controlled integrated scenario remains finite: sport-coupe / pressure18
+PASS Controlled integrated scenario remains finite: sport-coupe / cold
+PASS Controlled integrated scenario remains finite: sport-coupe / reduced
+PASS Controlled integrated scenario remains finite: sport-coupe / none
+PASS None wear/fuel remains respected in integrated scenario: sport-coupe
+PASS All measured channels finite over staged launch / shifts / lift / braking: starter-hatch
+PASS Measured wheel drive and actual braking appear independently: starter-hatch
+PASS Measured reaction torque equals contact force times tire radius: starter-hatch
+PASS No applied brake torque without pedal/staging brake: starter-hatch
+PASS Full current-model telemetry replay is exact: starter-hatch
+PASS Continued JSON trace preserves exact wheel observations and history: starter-hatch
+PASS CSV retains every 120 Hz row and has matching columns: starter-hatch
+PASS OEM braking reaches zero without destroying car: starter-hatch
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: starter-hatch / Sequential / 16,923669654016
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: starter-hatch / ManualClutch / 16,9264095262602
+PASS Controlled integrated scenario remains finite: starter-hatch / stock
+PASS Controlled integrated scenario remains finite: starter-hatch / payload250
+PASS Controlled integrated scenario remains finite: starter-hatch / fuel5
+PASS Controlled integrated scenario remains finite: starter-hatch / radius130
+PASS Controlled integrated scenario remains finite: starter-hatch / pressure18
+PASS Controlled integrated scenario remains finite: starter-hatch / cold
+PASS Controlled integrated scenario remains finite: starter-hatch / reduced
+PASS Controlled integrated scenario remains finite: starter-hatch / none
+PASS None wear/fuel remains respected in integrated scenario: starter-hatch
+PASS All measured channels finite over staged launch / shifts / lift / braking: super-v8
+PASS Measured wheel drive and actual braking appear independently: super-v8
+PASS Measured reaction torque equals contact force times tire radius: super-v8
+PASS No applied brake torque without pedal/staging brake: super-v8
+PASS Full current-model telemetry replay is exact: super-v8
+PASS Continued JSON trace preserves exact wheel observations and history: super-v8
+PASS CSV retains every 120 Hz row and has matching columns: super-v8
+PASS OEM braking reaches zero without destroying car: super-v8
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: super-v8 / Sequential / 13,5765855626818
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: super-v8 / ManualClutch / 13,5765855626818
+PASS Controlled integrated scenario remains finite: super-v8 / stock
+PASS Controlled integrated scenario remains finite: super-v8 / payload250
+PASS Controlled integrated scenario remains finite: super-v8 / fuel5
+PASS Controlled integrated scenario remains finite: super-v8 / radius130
+PASS Controlled integrated scenario remains finite: super-v8 / pressure18
+PASS Controlled integrated scenario remains finite: super-v8 / cold
+PASS Controlled integrated scenario remains finite: super-v8 / reduced
+PASS Controlled integrated scenario remains finite: super-v8 / none
+PASS None wear/fuel remains respected in integrated scenario: super-v8
+PASS All measured channels finite over staged launch / shifts / lift / braking: touring-six
+PASS Measured wheel drive and actual braking appear independently: touring-six
+PASS Measured reaction torque equals contact force times tire radius: touring-six
+PASS No applied brake torque without pedal/staging brake: touring-six
+PASS Full current-model telemetry replay is exact: touring-six
+PASS Continued JSON trace preserves exact wheel observations and history: touring-six
+PASS CSV retains every 120 Hz row and has matching columns: touring-six
+PASS OEM braking reaches zero without destroying car: touring-six
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: touring-six / Sequential / 15,0593100120755
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: touring-six / ManualClutch / 15,061778815881
+PASS Controlled integrated scenario remains finite: touring-six / stock
+PASS Controlled integrated scenario remains finite: touring-six / payload250
+PASS Controlled integrated scenario remains finite: touring-six / fuel5
+PASS Controlled integrated scenario remains finite: touring-six / radius130
+PASS Controlled integrated scenario remains finite: touring-six / pressure18
+PASS Controlled integrated scenario remains finite: touring-six / cold
+PASS Controlled integrated scenario remains finite: touring-six / reduced
+PASS Controlled integrated scenario remains finite: touring-six / none
+PASS None wear/fuel remains respected in integrated scenario: touring-six
+PASS All measured channels finite over staged launch / shifts / lift / braking: utility-pickup
+PASS Measured wheel drive and actual braking appear independently: utility-pickup
+PASS Measured reaction torque equals contact force times tire radius: utility-pickup
+PASS No applied brake torque without pedal/staging brake: utility-pickup
+PASS Full current-model telemetry replay is exact: utility-pickup
+PASS Continued JSON trace preserves exact wheel observations and history: utility-pickup
+PASS CSV retains every 120 Hz row and has matching columns: utility-pickup
+PASS OEM braking reaches zero without destroying car: utility-pickup
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: utility-pickup / Sequential / 15,7748807858561
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: utility-pickup / ManualClutch / 15,7748807858561
+PASS Controlled integrated scenario remains finite: utility-pickup / stock
+PASS Controlled integrated scenario remains finite: utility-pickup / payload250
+PASS Controlled integrated scenario remains finite: utility-pickup / fuel5
+PASS Controlled integrated scenario remains finite: utility-pickup / radius130
+PASS Controlled integrated scenario remains finite: utility-pickup / pressure18
+PASS Controlled integrated scenario remains finite: utility-pickup / cold
+PASS Controlled integrated scenario remains finite: utility-pickup / reduced
+PASS Controlled integrated scenario remains finite: utility-pickup / none
+PASS None wear/fuel remains respected in integrated scenario: utility-pickup
+PASS All measured channels finite over staged launch / shifts / lift / braking: v8-muscle
+PASS Measured wheel drive and actual braking appear independently: v8-muscle
+PASS Measured reaction torque equals contact force times tire radius: v8-muscle
+PASS No applied brake torque without pedal/staging brake: v8-muscle
+PASS Full current-model telemetry replay is exact: v8-muscle
+PASS Continued JSON trace preserves exact wheel observations and history: v8-muscle
+PASS CSV retains every 120 Hz row and has matching columns: v8-muscle
+PASS OEM braking reaches zero without destroying car: v8-muscle
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: v8-muscle / Sequential / 15,256870645812
+PASS Matched OEM driver mode finishes within 25% of assisted calibration: v8-muscle / ManualClutch / 15,1346010946469
+PASS Controlled integrated scenario remains finite: v8-muscle / stock
+PASS Controlled integrated scenario remains finite: v8-muscle / payload250
+PASS Controlled integrated scenario remains finite: v8-muscle / fuel5
+PASS Controlled integrated scenario remains finite: v8-muscle / radius130
+PASS Controlled integrated scenario remains finite: v8-muscle / pressure18
+PASS Controlled integrated scenario remains finite: v8-muscle / cold
+PASS Controlled integrated scenario remains finite: v8-muscle / reduced
+PASS Controlled integrated scenario remains finite: v8-muscle / none
+PASS None wear/fuel remains respected in integrated scenario: v8-muscle
+Checks: 1465

@@ -1,0 +1,16 @@
+3C actual Windows quote / buyer comparison / kept assets / stale state.
+PASS: Garage button opens a valid exact-car quote.
+PASS: Engine-builder actual button shows assembly premium above loose components.
+PASS: Wholesaler actual button shows below loose-component total.
+PASS: Keep-engine chassis quote excludes exact engine and all its children.
+PASS: Actual keep-part control removes piston value and marks incomplete build.
+PASS: All quote UI operations preserve money and physical assets.
+PASS: Existing immutable quote becomes stale on same-revision wear; never silently replaced.
+PASS: Explicit refresh prices new wear and restores validation.
+PASS: Stored-engine actual quote button captures detached retained hardware.
+PASS: Actual inventory quote button explains worn loose pack price.
+PASS: Collection exact-car quote detects missing engine without crediting stored assets.
+PASS: Ownership and currency stay intact after UI preview / detach / removal.
+PASS: Disk reload retains actual worn detached hardware; no quote grants assets.
+PASS: No runtime / GUI / DSP errors.
+Runtime errors: 0
