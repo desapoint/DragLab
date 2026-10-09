@@ -1,0 +1,60 @@
+PASS: OEM recipe preserves healthy stock calibration: city-three
+PASS: Forged pistons give strength, not free HP: city-three
+PASS: Direct option 3 mixed build runs without buying intermediate options: city-three
+PASS: Legacy rank fields cannot stack installed output: city-three
+PASS: Direct downgrade restores OEM output: city-three
+PASS: Missing radiator permits unsafe operation with an overheating warning: city-three
+PASS: OEM recipe preserves healthy stock calibration: rally-sedan
+PASS: Forged pistons give strength, not free HP: rally-sedan
+PASS: Direct option 3 mixed build runs without buying intermediate options: rally-sedan
+PASS: Legacy rank fields cannot stack installed output: rally-sedan
+PASS: Direct downgrade restores OEM output: rally-sedan
+PASS: Missing radiator permits unsafe operation with an overheating warning: rally-sedan
+PASS: OEM recipe preserves healthy stock calibration: sport-coupe
+PASS: Forged pistons give strength, not free HP: sport-coupe
+PASS: Direct option 3 mixed build runs without buying intermediate options: sport-coupe
+PASS: Legacy rank fields cannot stack installed output: sport-coupe
+PASS: Direct downgrade restores OEM output: sport-coupe
+PASS: Missing radiator permits unsafe operation with an overheating warning: sport-coupe
+PASS: OEM recipe preserves healthy stock calibration: starter-hatch
+PASS: Forged pistons give strength, not free HP: starter-hatch
+PASS: Direct option 3 mixed build runs without buying intermediate options: starter-hatch
+PASS: Legacy rank fields cannot stack installed output: starter-hatch
+PASS: Direct downgrade restores OEM output: starter-hatch
+PASS: Missing radiator permits unsafe operation with an overheating warning: starter-hatch
+PASS: OEM recipe preserves healthy stock calibration: super-v8
+PASS: Forged pistons give strength, not free HP: super-v8
+PASS: Direct option 3 mixed build runs without buying intermediate options: super-v8
+PASS: Legacy rank fields cannot stack installed output: super-v8
+PASS: Direct downgrade restores OEM output: super-v8
+PASS: Missing radiator permits unsafe operation with an overheating warning: super-v8
+PASS: OEM recipe preserves healthy stock calibration: touring-six
+PASS: Forged pistons give strength, not free HP: touring-six
+PASS: Direct option 3 mixed build runs without buying intermediate options: touring-six
+PASS: Legacy rank fields cannot stack installed output: touring-six
+PASS: Direct downgrade restores OEM output: touring-six
+PASS: Missing radiator permits unsafe operation with an overheating warning: touring-six
+PASS: OEM recipe preserves healthy stock calibration: utility-pickup
+PASS: Forged pistons give strength, not free HP: utility-pickup
+PASS: Direct option 3 mixed build runs without buying intermediate options: utility-pickup
+PASS: Legacy rank fields cannot stack installed output: utility-pickup
+PASS: Direct downgrade restores OEM output: utility-pickup
+PASS: Missing radiator permits unsafe operation with an overheating warning: utility-pickup
+PASS: OEM recipe preserves healthy stock calibration: v8-muscle
+PASS: Forged pistons give strength, not free HP: v8-muscle
+PASS: Direct option 3 mixed build runs without buying intermediate options: v8-muscle
+PASS: Legacy rank fields cannot stack installed output: v8-muscle
+PASS: Direct downgrade restores OEM output: v8-muscle
+PASS: Missing radiator permits unsafe operation with an overheating warning: v8-muscle
+PASS: Wrong piston geometry/interface rejected.
+PASS: Wrong bore rejected even with correct interface.
+PASS: Shared injection connector admits compatible fuel delivery from another engine.
+PASS: OEM recipes can include different factory internal quality.
+PASS: Factory-forged engine accepts a cheaper compatible cast downgrade without losing OEM horsepower.
+PASS: Induction independent of rank: Factory
+PASS: Induction independent of rank: Turbo
+PASS: Induction independent of rank: Supercharger
+PASS: Induction independent of rank: TwinTurbo
+PASS: Induction independent of rank: TwinSupercharger
+PASS: Induction independent of rank: Twincharged
+Checks: 59

@@ -33,13 +33,13 @@ namespace DragLab.Domain.Mechanics
     {
         public static void RequireAvailable(OwnedCar c){if(c==null)throw new InvalidOperationException("Service vehicle no longer exists.");if(!string.IsNullOrEmpty(c.garageJobId))throw new InvalidOperationException("Car and installed components reserved by garage job; claim or cancel it first.");if(c.engineRebuild!=null&&c.engineRebuild.active)throw new InvalidOperationException("Engine reserved at rebuild shop; collect it before modifying/racing this car.");}
         public static bool Scope(PartCategory c){return PartSemantics.EngineInternal(c)||c==PartCategory.HeadIntake||c==PartCategory.Camshaft||c==PartCategory.Valves||c==PartCategory.ValveSprings||c==PartCategory.Followers||c==PartCategory.TimingDrive||c==PartCategory.PistonRings||c==PartCategory.CylinderBlock||c==PartCategory.Bearings||c==PartCategory.ValveSeals||c==PartCategory.OilPump;}
-        public static EngineRebuildJob Quote(PlayerProfile p,OwnedCar car,long now)
+        public static EngineRebuildJob Quote(PlayerProfile p,OwnedCar car,long now,OperatingPolicy costs=null)
         {
             RequireAvailable(car);if(string.IsNullOrEmpty(car.engineAssemblyId))throw new InvalidOperationException("No engine attached to rebuild.");if(now<=0||now>DateTime.MaxValue.Ticks-TimeSpan.TicksPerDay)throw new ArgumentException("Invalid shop time.");
             var required=MechanicalCatalog.Slots(p.catalog.Spec(car.vehicleId)).Where(Scope);
             if(required.Any(c=>!car.installed.slots.Any(s=>s.slot==c.ToString())))throw new InvalidOperationException("Assemble missing engine components before requesting a rebuild.");
             var job=new EngineRebuildJob{active=true,id=MechanicsOwnership.NewId("rebuild"),engineId=car.engineAssemblyId,startedUtcTicks=now};
-            int work=0;job.paidPrice=300+p.catalog.Spec(car.vehicleId).sound.cylinders*50;
+            costs=costs??new OperatingPolicy();costs.Validate();int work=0;job.paidPrice=checked(costs.rebuildBaseLabour+p.catalog.Spec(car.vehicleId).sound.cylinders*costs.rebuildPerCylinder);
             foreach(var binding in car.installed.slots){var part=p.parts.Find(i=>i.instanceId==binding.partInstanceId);var d=p.catalog.Find(part.definitionId);if(!Scope(d.category))continue;
                 bool replace=part.condition.failed||part.condition.health<.35||part.condition.elements.Any(e=>e.Failed||e.fault==ElementFault.DroppedValve||e.fault==ElementFault.Seized||e.fault==ElementFault.WeakSpring);
                 job.targets.Add(new EngineRebuildTarget{partId=part.instanceId,definitionId=part.definitionId,replace=replace});job.paidPrice=checked(job.paidPrice+(replace?d.price:(int)Math.Ceiling(d.price*(1-part.condition.health)*.5)));if(replace||part.condition.health<.9||EngineElements.NeedsService(part.condition))work++;
@@ -47,8 +47,8 @@ namespace DragLab.Domain.Mechanics
             job.paidPrice+=p.catalog.Find(p.catalog.Id(car.vehicleId,PartCategory.OilFilter)).price;
             job.readyUtcTicks=checked(now+TimeSpan.TicksPerMinute*(5+work));return job;
         }
-        public static void Start(PlayerProfile p,string carId,long now)
-        {var car=p.cars.Find(c=>c.instanceId==carId);var job=Quote(p,car,now);if(p.cash<job.paidPrice)throw new InvalidOperationException("Insufficient cash for quoted rebuild.");p.cash-=job.paidPrice;car.engineRebuild=job;}
+        public static void Start(PlayerProfile p,string carId,long now,OperatingPolicy costs=null)
+        {var car=p.cars.Find(c=>c.instanceId==carId);var job=Quote(p,car,now,costs);if(p.cash<job.paidPrice)throw new InvalidOperationException("Insufficient cash for quoted rebuild.");p.cash-=job.paidPrice;car.engineRebuild=job;}
         public static string Validate(PlayerProfile p,OwnedCar car)
         {var j=car.engineRebuild;if(j==null||!j.active)return null;if(string.IsNullOrEmpty(j.id)||j.engineId!=car.engineAssemblyId||j.paidPrice<0||j.startedUtcTicks<=0||j.readyUtcTicks<=j.startedUtcTicks||j.readyUtcTicks>DateTime.MaxValue.Ticks||j.targets==null||j.targets.Count==0||j.targets.Select(t=>t.partId).Distinct().Count()!=j.targets.Count)return "Invalid rebuild quote.";foreach(var t in j.targets)if(!car.installed.slots.Any(s=>s.partInstanceId==t.partId)||!p.parts.Any(i=>i.instanceId==t.partId&&i.definitionId==t.definitionId))return "Rebuild contents changed.";return null;}
         public static void Collect(PlayerProfile p,string carId,string jobId,long now)

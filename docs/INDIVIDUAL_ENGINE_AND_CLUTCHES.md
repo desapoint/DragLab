@@ -1,6 +1,6 @@
 # Individual engine components, rebuilds and clutch hardware
 
-Approved extension to Slice 2K–2L, 2026-10-08. Shared race/physical-bench model `draglab-cylinder-service-v14`. Engine shop prices/times are provisional; final operating-cost balance remains Slice 3.
+Approved extension to Slice 2K–2L, 2026-10-08. Shared race/physical-bench model `draglab-cylinder-service-v14`. 3G calibrates shop labour/filter prices with recorded funded scenarios; final human pacing and integrated acceptance remain 3H.
 
 ## Individual engine condition
 
@@ -12,13 +12,13 @@ Cylinder contribution changes crank torque, simplified torque ripple and the sou
 
 ## Replacement and inventory
 
-Parts / Repairs: select a cylinder under an installed supported set and replace one element. Unit price is the set price divided by its element count, rounded up; provisional labour is free. Removed individual elements are retained separately for reuse/sale with their identity, health and fault. Reuse requires the same matched definition and role to avoid freely mixing incompatible piston masses or valve profiles. Full compatible kits can still upgrade/downgrade via existing inventory. Whole-set structural failures remain distinct from a single fault. Replacing a piece does not renew its neighbours, other assemblies or fluids.
+Parts / Repairs: select a cylinder under an installed supported set and replace one element. Unit price is the set price divided by its element count, rounded up; normal play charges this component price, with no additional labour for this targeted action. Isolated bench service remains free. Removed individual elements are retained separately for reuse/sale with their identity, health and fault. Reuse requires the same matched definition and role to avoid freely mixing incompatible piston masses or valve profiles. Full compatible kits can still upgrade/downgrade via existing inventory. Whole-set structural failures remain distinct from a single fault. Replacing a piece does not renew its neighbours, other assemblies or fluids.
 
 ## Engine rebuild shop
 
-Garage fluid/service section and Repairs expose a quote, Pay + send, remaining time and Collect. Quotes include core/valvetrain reconditioning, replacement of failed/unsalvageable matched sets, fresh engine oil and a filter. Provisional labour is $300 + $50 per cylinder, plus replacement/service costs. Duration is five real minutes plus one per worn/failed set. The paid quote, assembly identity, captured contents and UTC deadline persist across reload/offline time. The car/installed parts remain reserved until collection; insufficient funds, early/repeated collection, changed contents and edits/removal/racing during reservation are rejected. Existing atomic profile transactions roll back failed saves. No automatic second payment at collection.
+Garage fluid/service section and Repairs expose a quote, Pay + send, remaining time and Collect. Quotes include core/valvetrain reconditioning, replacement of failed/unsalvageable matched sets, fresh engine oil and a filter. Current 3G labour is $150 + $25 per cylinder, authorable in OperatingPolicy, plus replacement/service costs. Standard / extended-life filters cost $25 / $80. Existing paid jobs keep their captured price and deadline. Duration is five real minutes plus one per worn/failed set. The paid quote, assembly identity, captured contents and UTC deadline persist across reload/offline time. The car/installed parts remain reserved until collection; insufficient funds, early/repeated collection, changed contents and edits/removal/racing during reservation are rejected. Existing atomic profile transactions roll back failed saves. No automatic second payment at collection.
 
-Reconditioning brings eligible intact pieces to at least 95%; replacement retains old sets in inventory. Saved tune, fuel, tires, brakes, turbo, cooling and drivetrain remain separate. Missing required core parts must be assembled before requesting a rebuild. Full timed-job economy/valuation/recovery balance belongs to Slice 3D/3G.
+Reconditioning brings eligible intact pieces to at least 95%; replacement retains old sets in inventory. Saved tune, fuel, tires, brakes, turbo, cooling and drivetrain remain separate. Missing required core parts must be assembled before requesting a rebuild. 3D supplies atomic paid service; 3G validates a timed damaged-engine rebuild/sale margin and funded recovery. See [economy evidence](../reports/phases/3g/CHANGES.md); 3H remains the integrated acceptance gate.
 
 ## Clutch hardware
 

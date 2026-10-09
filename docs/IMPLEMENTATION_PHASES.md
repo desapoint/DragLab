@@ -2,7 +2,7 @@
 
 Additional catalog foundation (2026-10-08): [part-owned tuning permissions and 128 new hardware choices](../reports/part-hardware/CHANGES.md), integrated with shared race/physical-bench resolution. Preserve physical turbo-size swaps, fixed/adjustable controller and pulley distinctions, supported final-drive gearsets, saved-value enforcement and unrestricted raw acoustic experiments during remaining phases. Physical capture model was v12; the approved service/fluids extension uses v13. This records the original catalog extension; final integration acceptance is in the completion record below.
 
-This is the implementation order for the requirements in [GAME_PLAN.md](GAME_PLAN.md). **2A–2L and 3A–3D are complete; 3E–3H remain planned.** User-approved changes and the reconciled final gates are consolidated in [Slice 2 plan reconciliation](SLICE_2_PLAN_RECONCILIATION.md). Existing feature checkpoints do not independently complete later integration gates. No approved requirement is removed.
+This is the implementation order for the requirements in [GAME_PLAN.md](GAME_PLAN.md). **2A–2L and 3A–3G are complete; 3H remains planned.** User-approved changes and the reconciled final gates are consolidated in [Slice 2 plan reconciliation](SLICE_2_PLAN_RECONCILIATION.md). Existing feature checkpoints do not independently complete later integration gates. No approved requirement is removed.
 
 The user-requested bench extension supplies shared provisional engine/driveline wear/failure and simulation difficulty foundations: None/Partial 25%/Full wear, isolated accelerated wear, optimal thermals, clutch and stall assists, and continuous peak-preserving graphs. These remain the baseline for the final stress/recovery and integrated calibration gates in 2K–2L. Apply the captured/persisted difficulty rules to each new thermal/contact/condition subsystem as it lands; retain installed ECU protections and use one simulation in race and bench. See [simulation settings](SIMULATION_SETTINGS.md).
 
@@ -59,6 +59,8 @@ Start Slice 3 only after 2L passes. Reuse the ownership/checkpoint/transaction l
 | **3H — Economy/save integration checkpoint** | Run the complete interruption/migration/ownership/quote/pause/resume matrix and Windows UI workflows; package a reviewable build and balance report. | Multiple same-model cars, partial tanks, worn/failed parts, missing components, retained/sold engine trees, career records and jobs survive reload/recovery. No duplicate payouts/assets or permanent recovery dead ends. All Slice 3 requirements pass before marking the slice complete; human balance review remains explicit. |
 
 ## Completion record
+
+- **3G complete (2026-10-09):** funded shared-simulation career/loss/failure/reuse/rebuild/salvage/idle scenarios, catalog/dealer no-work margin checks, recovery guidance and fuel modes. Rebalanced work/filter/rebuild labour and fixed numeric JSON quote/job snapshot drift while retaining strict IDs/health/currency/metadata. See [economy calibration](ECONOMY_BALANCE.md) and [evidence](../reports/phases/3g/CHANGES.md). Next is 3H integrated acceptance.
 
 - **3F complete (2026-10-09):** persisted old-rate accrual/fractions, expanded caps/bays, actual owned-car job reservations, captured offline contracts, atomic claim/cancel/release and full nested disposal/tuning/service guards. See [business controls](GARAGE_BUSINESS.md) and [evidence](../reports/phases/3f/CHANGES.md). 3G/3H remain subsequent phases.
 

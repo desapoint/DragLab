@@ -87,6 +87,7 @@ namespace DragLab.Domain.Mechanics
             profile.equipmentVersion = 1; profile.drivelineVersion = 2; profile.mechanicsVersion = MechanicsSchema.Version; profile.saveVersion = SaveVersion;
             var selected = profile.SelectedCar ?? profile.cars.FirstOrDefault();
             profile.selectedVehicleId = selected?.vehicleId ?? ""; profile.selectedOwnedVehicleId = selected?.instanceId ?? "";
+            GarageBusiness.UpgradeLegacySnapshots(profile);
             string error = Validate(profile, catalog); if (error != null) throw new InvalidOperationException(error);
         }
         public static Dictionary<PartCategory, string> Definitions(PlayerProfile profile, OwnedCar car)

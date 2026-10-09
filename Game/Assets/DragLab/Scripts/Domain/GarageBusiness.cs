@@ -24,7 +24,7 @@ namespace DragLab.Domain.Mechanics
     }
     [Serializable] public sealed class AssignedGarageJob
     {
-        public string id, offerId, name, carId, engineId, snapshot;
+        public string id, offerId, name, carId, engineId, snapshot, snapshotJson;
         public string[] partIds;
         public long startedUtcTicks, readyUtcTicks;
         public int reward;
@@ -34,6 +34,8 @@ namespace DragLab.Domain.Mechanics
         public int version, ratePerHour, capHours;public long accruedThroughUtcTicks;public double bank;public bool legacyEightHourCap;
         public List<AssignedGarageJob> jobs=new List<AssignedGarageJob>();
     }
+    [Serializable] public sealed class ReservedBuildSnapshot
+    {public FuelState fuel;public FluidState fluids;public Tune tune;public string paint;public PartInstance[] parts;}
     public static class GarageBusiness
     {
         public static GarageBusinessPolicy DefaultPolicy(){return new GarageBusinessPolicy();}
@@ -83,22 +85,26 @@ namespace DragLab.Domain.Mechanics
             foreach(var s in c.installed.slots.OrderBy(s=>s.partInstanceId,StringComparer.Ordinal)){text+=s.slot+JsonUtility.ToJson(p.parts.Find(i=>i.instanceId==s.partInstanceId));}
             using(var sha=SHA256.Create())return Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(text)));
         }
+        static ReservedBuildSnapshot Contents(PlayerProfile p,OwnedCar c){return new ReservedBuildSnapshot{fuel=c.fuel,fluids=c.fluids,tune=c.tune,paint=c.paintHex,parts=c.installed.slots.OrderBy(s=>s.partInstanceId,StringComparer.Ordinal).Select(s=>p.parts.Find(i=>i.instanceId==s.partInstanceId)).ToArray()};}
+        static bool Matches(PlayerProfile p,OwnedCar c,AssignedGarageJob j){return Snapshot(p,c)==j.snapshot||!string.IsNullOrEmpty(j.snapshotJson)&&SnapshotEquality.Serialized(j.snapshotJson,Contents(p,c));}
+        public static void UpgradeLegacySnapshots(PlayerProfile p)
+        {foreach(var j in p.business.jobs){var c=p.cars.Find(v=>v.instanceId==j.carId);if(c!=null&&string.IsNullOrEmpty(j.snapshotJson)&&Snapshot(p,c)==j.snapshot)j.snapshotJson=JsonUtility.ToJson(Contents(p,c));}}
         public static void Assign(PlayerProfile p,GarageBusinessPolicy policy,string carId,string offerId,long now)
         {
             Guard(p,now);policy.Validate();if(p.business.jobs.Count>=policy.jobSlots[p.garageLevel-1])throw new InvalidOperationException("All job bays occupied.");var offer=policy.offers.Find(o=>o.id==offerId);var car=p.cars.Find(c=>c.instanceId==carId);string error=Eligibility(p,car,offer);if(error!=null)throw new InvalidOperationException(error);
             var job=new AssignedGarageJob{id=MechanicsOwnership.NewId("garage-job"),offerId=offer.id,name=offer.name,carId=carId,engineId=car.engineAssemblyId,partIds=car.installed.slots.Select(s=>s.partInstanceId).OrderBy(s=>s,StringComparer.Ordinal).ToArray(),snapshot=Snapshot(p,car),startedUtcTicks=now,readyUtcTicks=checked(now+TimeSpan.TicksPerSecond*offer.seconds),reward=offer.reward};
-            car.garageJobId=job.id;p.business.jobs.Add(job);p.lastEconomyUtcTicks=now;
+            job.snapshotJson=JsonUtility.ToJson(Contents(p,car));car.garageJobId=job.id;p.business.jobs.Add(job);p.lastEconomyUtcTicks=now;
         }
         public static void Finish(PlayerProfile p,string jobId,long now,bool cancel=false)
         {
             Guard(p,now);var job=p.business.jobs.Find(j=>j.id==jobId)??throw new InvalidOperationException("Job already released or missing.");if(!cancel&&now<job.readyUtcTicks)throw new InvalidOperationException("Job is still running.");
-            var c=p.cars.Find(v=>v.instanceId==job.carId);if(c==null||c.garageJobId!=job.id||Snapshot(p,c)!=job.snapshot)throw new InvalidOperationException("Reserved job contents changed.");
+            var c=p.cars.Find(v=>v.instanceId==job.carId);if(c==null||c.garageJobId!=job.id||!Matches(p,c,job))throw new InvalidOperationException("Reserved job contents changed.");
             int before=p.cash;if(!cancel)p.cash=checked(p.cash+job.reward);c.garageJobId="";p.business.jobs.Remove(job);PaidEconomy.Record(p,job.id,cancel?"Cancel garage job":"Garage job",job.carId,before,now);
         }
         public static string Validate(PlayerProfile p)
         {
             var s=p.business;if(s==null||s.version!=1||s.ratePerHour<1||s.ratePerHour>100000||s.capHours<1||s.capHours>168||s.jobs==null||s.jobs.Count>8||s.accruedThroughUtcTicks<1||s.accruedThroughUtcTicks>DateTime.MaxValue.Ticks||!MechanicsSchema.Finite(s.bank)||s.bank<0||s.bank>100000000)return "Invalid business state.";
-            var ids=new HashSet<string>();var cars=new HashSet<string>();foreach(var j in s.jobs){var c=p.cars.Find(v=>v.instanceId==j?.carId);if(j==null||string.IsNullOrEmpty(j.id)||!ids.Add(j.id)||!cars.Add(j.carId)||c==null||c.garageJobId!=j.id||c.engineAssemblyId!=j.engineId||j.partIds==null||!j.partIds.OrderBy(v=>v,StringComparer.Ordinal).SequenceEqual(c.installed.slots.Select(b=>b.partInstanceId).OrderBy(v=>v,StringComparer.Ordinal))||j.reward<1||j.startedUtcTicks<1||j.readyUtcTicks<=j.startedUtcTicks||j.readyUtcTicks>DateTime.MaxValue.Ticks||j.snapshot!=Snapshot(p,c)||p.economyReceipts.Any(r=>r.id==j.id))return "Invalid/dangling garage reservation.";}
+            var ids=new HashSet<string>();var cars=new HashSet<string>();foreach(var j in s.jobs){var c=p.cars.Find(v=>v.instanceId==j?.carId);if(j==null||string.IsNullOrEmpty(j.id)||!ids.Add(j.id)||!cars.Add(j.carId)||c==null||c.garageJobId!=j.id||c.engineAssemblyId!=j.engineId||j.partIds==null||!j.partIds.OrderBy(v=>v,StringComparer.Ordinal).SequenceEqual(c.installed.slots.Select(b=>b.partInstanceId).OrderBy(v=>v,StringComparer.Ordinal))||j.reward<1||j.startedUtcTicks<1||j.readyUtcTicks<=j.startedUtcTicks||j.readyUtcTicks>DateTime.MaxValue.Ticks||!Matches(p,c,j)||p.economyReceipts.Any(r=>r.id==j.id))return "Invalid/dangling garage reservation.";}
             if(p.cars.Any(c=>!string.IsNullOrEmpty(c.garageJobId)&&!s.jobs.Any(j=>j.id==c.garageJobId&&j.carId==c.instanceId)))return "Missing job reservation.";return null;
         }
         public static bool Reserved(PlayerProfile p,string id){return p.business.jobs.Any(j=>j.carId==id||j.engineId==id||j.partIds.Contains(id));}

@@ -1,10 +1,10 @@
 ﻿# First playable slice
 
-3E adds the expanded career and atomic captured race settlement. See [3E report](../reports/phases/3e/CHANGES.md) and [controls](CAREER_PROGRESSION.md). Garage jobs and full-loop balance remain 3F/3G; integrated release audit remains 3H.
+**2A–2L and 3A–3G are complete; 3H is next.** See [phase plan](IMPLEMENTATION_PHASES.md), [3G evidence](../reports/phases/3g/CHANGES.md), [career](CAREER_PROGRESSION.md), [garage business](GARAGE_BUSINESS.md) and [economy balance](ECONOMY_BALANCE.md).
 
 Source of scope: [objective.md](objective.md), section 58. The eight-car roster includes the requested pickup, three-cylinder hatch, AWD turbo sedan, inline-six GT and supercharged V8. The four new mechanical configurations reuse existing layered placeholder bodies. Mechanics and editable data take priority over finished graphics or menus.
 
-Current Slice 3 progress: 3A–3D are complete: eight-car collection, retained engine assemblies, named saved hardware/tune configurations with missing-part purchases, and captured buyer valuations for actual loose parts/elements, engines, chassis and complete/incomplete cars. Quotes explain condition/history/completeness and exclude retained assets; stale or reserved states block validation. 3D adds confirmed quote-backed sales/salvage, paid fuel/services/dealer packages, empty-garage saves and bounded timed recovery. Next is 3E career/availability; see [paid operations](PAID_OPERATIONS_AND_RECOVERY.md). Prices remain provisional. See [phase plan](IMPLEMENTATION_PHASES.md), [assembly controls](ASSEMBLIES_AND_SETUPS.md) and [valuation controls](VALUATION_AND_QUOTES.md).
+Current Slice 3 progress: eight-car collection, retained engine assemblies, saved configurations, immutable paid quotes/salvage, 21 career events, exact reserved garage jobs and captured offline accrual are implemented. Full-loop funded scenarios preserve actual fuel/fluids/wear and viable recovery. Prices are calibrated prototype values, with human pacing review still required. 3H remains the interruption/migration/save integrated release gate; see [ordered phases](IMPLEMENTATION_PHASES.md).
 
 ## Implemented milestone
 
@@ -17,8 +17,8 @@ Current Slice 3 progress: 3A–3D are complete: eight-car collection, retained e
 | Launch controls / protection | Factory or upgraded two-step/preload/anti-lag; separate hard/soft/absent main limiter; fuel/ignition cuts; duration/heat/wear constraints; shared persistent overspeed/component failure |
 | Wheels / gearbox hardware | Diameter/width/mass change gearing, static/rotational load and manual-clutch stall risk; Manual/DCT/converter Automatic/CVT hardware; clutch-in restart |
 | Older-engine behavior | Injection/carb, cam/mixture/idle control, warmup and pump hesitation affect physical state and deeper exhaust/gulp/burble/pop/clatter audio |
-| Traction | Driven-axle load transfer, pressure/grip modifiers, demand-based slip and traction control |
-| Failure effects / AWD | Component-specific brake/engine/common-drive/branch consequences; separate axle grip caps and slip estimates; pickup AWD with fixed/open/locked/on-demand/active modes and hardware-dependent surviving-axle drive; [details](COMPONENT_FAILURES_AWD.md) |
+| Traction | Independent four-wheel/contact rotation, mass/load transfer, differential allocation, compound/temperature/wear grip, slip through shifts and traction control |
+| Failure effects / AWD | Component-specific brake/engine/common-drive/branch consequences; independent per-wheel contacts and axle torque paths; pickup AWD with fixed/open/locked/on-demand/active modes and hardware-dependent surviving-axle drive; [details](COMPONENT_FAILURES_AWD.md) |
 | Manual/automatic shifting | Automatic, sequential and manual clutch; hardware/controller-based downshift protection shared by race and bench; unprotected manuals can mechanically overrev |
 | Manual/automatic launch | Automatic/assisted staging holds tuned RPM until pedal override; W/Space raises revs in any mode; E / shift-up engages first (CVT Drive) for assisted/manual; Enter remains an alternate; manual clutch remains independent of transmission selection |
 | Staging | Explicit neutral (N), automatic brake hold, free revs without clutch input, zero wheel torque/creep; valid launch engages first and releases staging brakes |
@@ -72,13 +72,13 @@ Engine-side inertia and bounded clutch capacity replace the launch RPM floor. Cl
 
 The extracted input adapter captures each finger independently and consumes launch/shift edges once on fixed ticks. W and Space are interchangeable held gas keys, independent of action edges. Race timing treats E / shift-up as first-gear engagement from staged neutral, then as upshift while driving; the six-control overlay combines these actions. CVT selects Drive and retains continuous ratios. Enter remains a launch/restart alternative. Automatic launch retains its reaction schedule, early assisted/manual engagement red-lights and the launch edge cannot also select second. Gas stays held during transmission torque interruption and is read immediately after entering/resuming a race. Pointer contacts still require release after a reset. Synthetic tests cover simultaneous throttle/clutch/brake, partial pressure and independent release. An opt-in Windows OS keyboard-event probe tests the real Unity polling path without driver-input injection. Physical hardware rollover and Android behavior remain unverified. Engine audio observes the physical compressor state and valve events; continuous combustion/turbo white noise has been removed, valve air is filtered and tire hiss is quieter. The five induction kits change live torque, HP, dyno curves and acceleration. Pausing freezes compressor/race/shutdown state and silences audio; menus/results also silence playback. Earlier version-1 saves retain hardware choices and receive compatible tuning defaults. These are reduced-order models with fictional calibration; see `INDUCTION.md`.
 
-The prototype uses a temporary IMGUI systems overlay. Preserve the mechanics boundary and replace this overlay with uGUI/UI Toolkit when the input and application state are separated. Production audio, controller input, Android device validation, tire temperature, burnout, complete component durability/repair economy, measured compressor-map calibration, individual player-adjustable ratios, event restrictions, expanded parts content, XP, long career and storefront work remain later slices from the objective. Launch/gearbox/fueling models are detailed in `POWERTRAIN.md`; shared stress and difficulty controls are detailed in `PHYSICAL_DRIVING_BENCH.md` and `SIMULATION_SETTINGS.md`.
+The prototype uses a temporary IMGUI systems overlay. Preserve the mechanics boundary and replace this overlay with uGUI/UI Toolkit when the input and application state are separated. Finished production audio, controller input, Android device acceptance, measured compressor-map calibration, individual editable ratios, XP, prize cars, much larger career content and storefront work remain later work. Shared tire thermals/burnout, durability/repair, event restrictions and the prototype operating economy are already implemented. Launch/gearbox/fueling models are detailed in `POWERTRAIN.md`; shared stress and difficulty controls are detailed in `PHYSICAL_DRIVING_BENCH.md` and `SIMULATION_SETTINGS.md`.
 
 ## Next focused slice
 
-1. **3E — career and availability** follows completed 3A–3D; see [ordered phases](IMPLEMENTATION_PHASES.md#slice-3--ordered-subphases). Preserve quote-backed paid operations, retained engine trees and empty-garage recovery.
-2. Continue 3F garage/business/idle, 3G full-loop balance/recovery and 3H integrated economy/save checkpoint after their dependencies pass.
-3. Human driving/listening review and Android/controller device validation remain separate acceptance work.
+1. **3H — integrated economy/save checkpoint** follows completed 3A–3G. Run interruption/migration, quote/ownership/reservation, pause/resume and packaging matrices.
+2. Human driving/listening and economy pacing review, then finished art/UI and larger career content.
+3. Android/controller device validation remains separate acceptance work.
 
 Historical early Slice-2 equipment note:
 

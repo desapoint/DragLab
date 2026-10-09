@@ -2336,3 +2336,8 @@ The first structured career now has 21 events: the four original IDs, fourteen o
 ### Slice 3F implementation (2026-10-09)
 
 Four garage business levels preserve existing unrestricted collection storage while expanding income, caps and simultaneous jobs. Prototype display jobs keep engines off, consume no driving resources/wear and reserve exact owned builds until claim or cancellation. Captured rate/deadline/reward contracts survive offline time and policy edits; old-rate/fractional accrual, clock rollback and failed-write recovery are covered. See [garage business](GARAGE_BUSINESS.md). Used/specialist dealer rotations, driving customer jobs and a fifth workshop level remain later content.
+
+
+### Slice 3G implementation (2026-10-09)
+
+Funded career/loss, real worn-component DNF and paid repair, downgrade/reuse, timed profitable rebuild/assembly sale, idle reinvestment and empty-garage replacement routes have recorded ledgers. Recovery pays $250 per real minute; filter pricing and authorable rebuild labour replace generic costs. Numeric JSON snapshot drift no longer blocks unchanged paid quotes/jobs after driving; currency/IDs/health/failures and meaningful state changes stay strict. See [economy calibration and controls](ECONOMY_BALANCE.md). 3H is still required for integrated Slice-3 acceptance and packaging; this does not deliver the full original long-career/used-dealer/storefront content.

@@ -1,0 +1,21 @@
+# Economy scenarios and recovery (3G)
+
+The prototype economy now has recorded funded routes through the main career, repeated losses, worn-component replacement, downgrade/reuse, timed rebuild/assembly sale, chassis salvage/empty-garage recovery and idle reinvestment. `DragLab > Verify Full Economy Scenarios` / `tools/Invoke-Unity.ps1 -Action BalanceVerify` produces cash/fuel/ownership ledgers, market margins and fuel-mode matrices. Each operation uses the same owned ledger, paid quotes and shared race simulation as the player. Each run preserves fuel, liquids, condition, records and shutdown. Fixture clock advances and starting damage are explicitly test data; simulated race/cooldown durations are not measured human play times.
+
+Current calibration:
+
+- Fuel $2/L; oil $6/L; coolant $3/L; wet-clutch oil $6/L. Filling adds the actual fluid mass. Consumption None / Reduced 25% / Realistic keeps tank mass physical.
+- Rebuild labour $150 + $25/cylinder, plus actual replacement/reconditioning, filter and supplied oil costs. Already-booked jobs keep their captured paid price and deadline. Collection never charges again.
+- Standard / extended-life filters $25 / $80, replacing generic hardware prices of $200 / $700. Their physical specifications are unchanged.
+- Recovery work $250 for a real minute, available below $10,000 cash. The lowest unrestricted paid replacement remains below that ceiling. It runs offline, supplies no parts/healing, and a captured older recovery job keeps its original terms.
+- Race entries, first-win bonuses, repeated-win/completed-loss cash, REP unlocks, garage expansion/rates/caps and buyer/model/quality multipliers stay independently authorable. The tested current values support funded progression; human pacing and final integration remain 3H acceptance work.
+
+The funded route buys a torque-capable clutch before increasing the starter's engine output. A stock clutch on that high-output/high-launch tune eventually slips as it wears: this is a component mismatch, not a reason to erase wear. It retains the original, then uses reliable earlier races to fund a modest second car. Early tier rewards fund internals/coupling before its later power increases. Multiple build strategies remain possible; this is a verified route, not an optimal shopping prescription.
+
+Rebuilding a known owned damaged engine can increase its buyer value by more than the paid work cost. That requires real retained ownership, compatible components, a paid job and waiting for collection. New dealer packages exceed both immediate whole-car offers and the best engine-plus-chassis part-out offers. Every offered new part exceeds its highest same-definition loose used offer. Fully assembled values remain independent from sums of loose parts. Rotating used-dealer acquisitions and speculative trade markets remain later content.
+
+Recovery shows low fuel, missing engine, failed packs, existing rebuild/job reservations, the cheapest unlocked replacement and estimated work claims. Its small-fill button buys up to one litre with the normal immutable paid quote. Reuse compatible inventory or replace individual elements before discarding an engine; use repair/rebuild only for supported faults. A brake failure does not become an engine failure merely because it is listed here.
+
+Quotes and reserved jobs now compare captured state structurally. Unity's JSON parser can shift an unchanged double history/resource value by one floating-point representable step (ULP). Comparison permits at most four ULPs for those doubles; IDs, currency, revisions, enum/boolean states, float health and failure fields remain exact. Catalog/policy metadata hashes, expiry, ownership and quantities/prices are revalidated separately. This prevents false stale quotes after racing without allowing meaningful refuelling, healing or changed prices. Previously raced job snapshots survive repeated transactions and disk persistence. Legacy hash-only jobs gain a structural snapshot only when their existing hash matches; uncertain/corrupt contents are not silently reconstructed.
+
+Evidence and explicit fixture scope: [3G report](../reports/phases/3g/CHANGES.md). The complete interruption/migration/device/pause-resume acceptance sweep and final Slice-3 packaging belong to **3H**; passing balance scenarios alone does not complete Slice 3.

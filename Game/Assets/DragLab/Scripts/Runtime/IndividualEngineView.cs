@@ -28,7 +28,7 @@ namespace DragLab.Runtime
             if(Build==null)return;long now=DateTime.UtcNow.Ticks;var job=Build.engineRebuild;string car=Build.instanceId;
             GUILayout.Label("ENGINE REBUILD SHOP",stat);
             if(job!=null){bool ready=now>=job.readyUtcTicks;GUILayout.Label("Paid $"+job.paidPrice+" / "+(ready?"Ready to collect":TimeSpan.FromTicks(job.readyUtcTicks-now).ToString(@"hh\:mm\:ss")+" remaining")+" / engine reserved until collection. Time continues while offline.");bool enabled=GUI.enabled;GUI.enabled=enabled&&ready;if(PartButton("engine-rebuild-collect","Collect rebuilt engine")){string id=job.id;QueuePartAction(p=>EngineRebuilds.Collect(p,car,id,DateTime.UtcNow.Ticks));}GUI.enabled=enabled;return;}
-            EngineRebuildJob quote;try{quote=EngineRebuilds.Quote(profile,Build,now);}catch(InvalidOperationException e){GUILayout.Label(e.Message);return;}
+            EngineRebuildJob quote;try{quote=EngineRebuilds.Quote(profile,Build,now,Costs);}catch(InvalidOperationException e){GUILayout.Label(e.Message);return;}
             GUILayout.Label("Recondition intact core/valvetrain; replace failed/unsalvageable sets with matching hardware, renew engine oil/filter. Cooling, turbo, gearbox and clutch remain separate. Tune retained.");
             GUILayout.Label("Quote $"+PaymentCost(Payment(PaymentKind.Rebuild))+" including renewal oil / "+TimeSpan.FromTicks(quote.readyUtcTicks-now).TotalMinutes.ToString("F0")+" real minutes. Provisional service price/time; final economy balance in Slice 3.");
             PaidButton("engine-rebuild-start","Pay quote + send engine to shop",Payment(PaymentKind.Rebuild));

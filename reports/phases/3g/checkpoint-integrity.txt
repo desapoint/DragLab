@@ -1,0 +1,5 @@
+3G checkpoint integrity (2026-10-09)
+PASS: archived/current Assembly-CSharp.dll bytes match.
+PASS: Windows-checkpoint.zip: 263 entries; CRC valid; SHA-256 6ab89a4c0bbfba1662f7159edf996443db48114c6d934380ee4fbb01ee04c2d7
+PASS: source-checkpoint.zip: 648 entries; CRC valid; SHA-256 76628c7d1f4e44d1fb4d41a3e6210faf0992f3728026f5d8d3a0a5e387c1f30b
+PASS: final source documentation snapshot: source-checkpoint-final.zip: 648 entries; CRC valid; SHA-256 1f052efe9c263a4f9409c501a791a9c875c464cddc9f59e96e552199ffff4d23. Archived/current documentation bytes match. Earlier source archive preserved.

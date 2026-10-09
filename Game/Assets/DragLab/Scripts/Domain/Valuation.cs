@@ -79,10 +79,11 @@ namespace DragLab.Domain.Mechanics
         public ReadOnlyCollection<string> IncludedIds { get; } public ReadOnlyCollection<string> RetainedIds { get; }
         public ReadOnlyCollection<string> Warnings { get; } public ReadOnlyCollection<ValuationLine> Lines { get; }
         internal string Fingerprint { get; }
+        internal string ProfileJson { get; }
         internal ValuationQuote(ValuationKind kind, string asset, string buyer, ValuationPolicy p, PlayerProfile profile, long now, string fingerprint, List<string> included, string[] kept, List<string> warnings, List<ValuationLine> lines, double loose, double core, double total, bool complete, bool faulty, bool reserved)
         {
             Id = Guid.NewGuid().ToString("N"); PolicyId = p.id; PolicyVersion = p.version; Kind = kind; AssetId = asset; BuyerId = buyer; BuyerName = p.buyers.Find(b => b.id == buyer).name;
-            Revision = profile.revision; IssuedUtcTicks = now; ExpiresUtcTicks = checked(now + TimeSpan.FromSeconds(p.quoteSeconds).Ticks); Fingerprint = fingerprint;
+            Revision = profile.revision; IssuedUtcTicks = now; ExpiresUtcTicks = checked(now + TimeSpan.FromSeconds(p.quoteSeconds).Ticks); Fingerprint = fingerprint;ProfileJson=JsonUtility.ToJson(profile);
             IncludedIds = included.AsReadOnly(); RetainedIds = Array.AsReadOnly((string[])kept.Clone()); Warnings = warnings.AsReadOnly(); Lines = lines.AsReadOnly();
             LoosePartTotal = loose; ChassisCore = core; Total = checked((int)Math.Round(total, MidpointRounding.AwayFromZero)); Complete = complete; Faulty = faulty; Reserved = reserved;
         }
@@ -183,19 +184,19 @@ namespace DragLab.Domain.Mechanics
             if (profile.revision != quote.Revision) return "Profile revision changed. Refresh.";
             try {
                 policy.Validate();
-                if (policy.id != quote.PolicyId || policy.version != quote.PolicyVersion || Fingerprint(profile, catalog, policy) != quote.Fingerprint) return "Owned assets, condition, resources, configuration, catalogue or pricing policy changed. Refresh.";
+                if (policy.id != quote.PolicyId || policy.version != quote.PolicyVersion || !SnapshotEquality.Profile(quote.ProfileJson,profile,catalog)||Fingerprint(profile, catalog, policy,quote.ProfileJson) != quote.Fingerprint) return "Owned assets, condition, resources, configuration, catalogue or pricing policy changed. Refresh.";
                 var current = Capture(profile, catalog, policy, quote.Kind, quote.AssetId, quote.BuyerId, quote.IssuedUtcTicks, quote.RetainedIds);
                 if (current.Reserved) return "Asset reserved by a rebuild or unsettled run. Inspection only.";
                 if (current.Total != quote.Total || !current.IncludedIds.SequenceEqual(quote.IncludedIds)) return "Quote contents changed. Refresh.";
             } catch (Exception e) { return "Quote unavailable: " + e.Message; }
             return null;
         }
-        internal static string Fingerprint(PlayerProfile p, MechanicalCatalog catalog, ValuationPolicy policy)
+        internal static string Fingerprint(PlayerProfile p, MechanicalCatalog catalog, ValuationPolicy policy,string profileJson=null)
         {
             // Conservative whole-profile lock also detects same-revision edits from benches/services.
             // Never hash UI drafts; only the authoritative owned profile and authored catalogue/policy.
             var payload = new StringBuilder("valuation-schema-" + ValuationQuote.Schema + "/catalog-" + MechanicalCatalog.Version);
-            payload.Append(JsonUtility.ToJson(p)).Append(JsonUtility.ToJson(policy));
+            payload.Append(profileJson??JsonUtility.ToJson(p)).Append(JsonUtility.ToJson(policy));
             // Only definitions that can contribute to owned assets; serializing all shop offers every
             // UI second is unnecessary and makes a catalogue expansion slow quote inspection down.
             foreach (var id in p.parts.Select(i => i.definitionId).Concat(p.looseEngineElements.Select(e => e.definitionId)).Distinct().OrderBy(id => id, StringComparer.Ordinal)) payload.Append(JsonUtility.ToJson(catalog.Find(id)));

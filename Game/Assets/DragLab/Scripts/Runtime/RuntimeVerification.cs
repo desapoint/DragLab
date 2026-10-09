@@ -61,6 +61,7 @@ namespace DragLab.Runtime
         {
             yield return null;
             yield return Capture("garage");
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-balance-only")>=0){yield return BalanceRun();yield break;}
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-business-only")>=0){yield return BusinessRun();yield break;}
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-expanded-career-only")>=0){yield return ExpandedCareerRun();yield break;}
             if (Array.IndexOf(Environment.GetCommandLineArgs(), "--draglab-paid-only") >= 0) { yield return PaidOperationsRun(); yield break; }

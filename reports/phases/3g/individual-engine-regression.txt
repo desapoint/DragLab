@@ -1,0 +1,519 @@
+PASS: city-three: healthy OEM cylinders contribute equally.
+PASS: city-three: Pistons individual layout.
+PASS: city-three: Rods individual layout.
+PASS: city-three: FuelSystem individual layout.
+PASS: city-three: Ignition individual layout.
+PASS: city-three: ValveSprings individual layout.
+PASS: city-three: Valves individual layout.
+PASS: city-three: Followers individual layout.
+PASS: city-three: PistonRings individual layout.
+PASS: city-three: Bearings individual layout.
+PASS: city-three: ValveSeals individual layout.
+PASS: city-three: one dead plug leaves other cylinders running.
+PASS: city-three: dead cylinder reduces physical torque.
+PASS: city-three: spark failure retains fuel delivery.
+PASS: city-three: missing firing event changes finite audio output.
+PASS: city-three: shared/individual coil fault scope.
+PASS: city-three: injector stops local fuel only.
+PASS: city-three: failed injector reduces flow.
+PASS: city-three: stuck valve reduces compression.
+PASS: city-three: spring fault depends on RPM.
+PASS: city-three: dropped valve is destructive.
+PASS: city-three: single piston cheaper than full set.
+PASS: city-three: replacement retains original and neighbours.
+PASS: city-three: individual inventory survives load.
+PASS: city-three: worn original reusable without renewal.
+PASS: city-three: checkpoint cannot heal local damage.
+PASS: city-three: rebuild paid/reserved.
+PASS: city-three: early collection denied.
+PASS: city-three: reserved parts locked.
+PASS: city-three: paid deadline survives offline reload.
+PASS: city-three: collection preserves unrelated hardware/fuel/tune.
+PASS: city-three: collection validates /
+PASS: city-three: repeated collection denied.
+PASS: city-three: city-three/Clutch/0 coupling works.
+PASS: city-three: finite engagement.
+PASS: city-three: city-three/Clutch/1 coupling works.
+PASS: city-three: finite engagement.
+PASS: city-three: city-three/Clutch/StreetOrganic coupling works.
+PASS: city-three: finite engagement.
+PASS: city-three: city-three/Clutch/RaceFriction coupling works.
+PASS: city-three: finite engagement.
+PASS: city-three: city-three/Clutch/DryTwinOrganic coupling works.
+PASS: city-three: finite engagement.
+PASS: city-three: city-three/Clutch/DryTwinCeramic coupling works.
+PASS: city-three: finite engagement.
+PASS: city-three: city-three/Clutch/DryTripleSintered coupling works.
+PASS: city-three: finite engagement.
+PASS: city-three: city-three/Clutch/WetMultiOrganic coupling works.
+PASS: city-three: wet bath affects capacity separately.
+PASS: city-three: finite engagement.
+PASS: city-three: city-three/Clutch/WetMultiRace coupling works.
+PASS: city-three: wet bath affects capacity separately.
+PASS: city-three: finite engagement.
+PASS: city-three: city-three/Clutch/DryCentrifugal coupling works.
+PASS: city-three: finite engagement.
+PASS: city-three: wet oil bath rejects more equal-work clutch heat.
+PASS: city-three: missing clutch oil removes its own liquid mass exactly once.
+PASS: city-three: injected clutch leak drains dedicated bath.
+PASS: city-three: fluid-depletion assistance also covers clutch bath.
+PASS: city-three: wear reset does not refill dedicated clutch oil.
+PASS: city-three: wasted-spark coil affects exactly its pair.
+PASS: city-three: singular valve repair retains other valve identities.
+PASS: city-three: sub-float wear accumulates instead of disappearing.
+PASS: city-three: centrifugal RPM clamp.
+PASS: city-three: exact local-fault replay through shifts/coast.
+PASS: rally-sedan: healthy OEM cylinders contribute equally.
+PASS: rally-sedan: Pistons individual layout.
+PASS: rally-sedan: Rods individual layout.
+PASS: rally-sedan: FuelSystem individual layout.
+PASS: rally-sedan: Ignition individual layout.
+PASS: rally-sedan: ValveSprings individual layout.
+PASS: rally-sedan: Valves individual layout.
+PASS: rally-sedan: Followers individual layout.
+PASS: rally-sedan: PistonRings individual layout.
+PASS: rally-sedan: Bearings individual layout.
+PASS: rally-sedan: ValveSeals individual layout.
+PASS: rally-sedan: one dead plug leaves other cylinders running.
+PASS: rally-sedan: dead cylinder reduces physical torque.
+PASS: rally-sedan: spark failure retains fuel delivery.
+PASS: rally-sedan: missing firing event changes finite audio output.
+PASS: rally-sedan: shared/individual coil fault scope.
+PASS: rally-sedan: injector stops local fuel only.
+PASS: rally-sedan: failed injector reduces flow.
+PASS: rally-sedan: stuck valve reduces compression.
+PASS: rally-sedan: spring fault depends on RPM.
+PASS: rally-sedan: dropped valve is destructive.
+PASS: rally-sedan: single piston cheaper than full set.
+PASS: rally-sedan: replacement retains original and neighbours.
+PASS: rally-sedan: individual inventory survives load.
+PASS: rally-sedan: worn original reusable without renewal.
+PASS: rally-sedan: checkpoint cannot heal local damage.
+PASS: rally-sedan: rebuild paid/reserved.
+PASS: rally-sedan: early collection denied.
+PASS: rally-sedan: reserved parts locked.
+PASS: rally-sedan: paid deadline survives offline reload.
+PASS: rally-sedan: collection preserves unrelated hardware/fuel/tune.
+PASS: rally-sedan: collection validates /
+PASS: rally-sedan: repeated collection denied.
+PASS: rally-sedan: rally-sedan/Clutch/0 coupling works.
+PASS: rally-sedan: wet bath affects capacity separately.
+PASS: rally-sedan: finite engagement.
+PASS: rally-sedan: rally-sedan/Clutch/1 coupling works.
+PASS: rally-sedan: finite engagement.
+PASS: rally-sedan: rally-sedan/Clutch/StreetOrganic coupling works.
+PASS: rally-sedan: finite engagement.
+PASS: rally-sedan: rally-sedan/Clutch/RaceFriction coupling works.
+PASS: rally-sedan: finite engagement.
+PASS: rally-sedan: rally-sedan/Clutch/DryTwinOrganic coupling works.
+PASS: rally-sedan: finite engagement.
+PASS: rally-sedan: rally-sedan/Clutch/DryTwinCeramic coupling works.
+PASS: rally-sedan: finite engagement.
+PASS: rally-sedan: rally-sedan/Clutch/DryTripleSintered coupling works.
+PASS: rally-sedan: finite engagement.
+PASS: rally-sedan: rally-sedan/Clutch/WetMultiOrganic coupling works.
+PASS: rally-sedan: wet bath affects capacity separately.
+PASS: rally-sedan: finite engagement.
+PASS: rally-sedan: rally-sedan/Clutch/WetMultiRace coupling works.
+PASS: rally-sedan: wet bath affects capacity separately.
+PASS: rally-sedan: finite engagement.
+PASS: rally-sedan: rally-sedan/Clutch/DryCentrifugal coupling works.
+PASS: rally-sedan: finite engagement.
+PASS: rally-sedan: wet oil bath rejects more equal-work clutch heat.
+PASS: rally-sedan: missing clutch oil removes its own liquid mass exactly once.
+PASS: rally-sedan: injected clutch leak drains dedicated bath.
+PASS: rally-sedan: fluid-depletion assistance also covers clutch bath.
+PASS: rally-sedan: wear reset does not refill dedicated clutch oil.
+PASS: rally-sedan: wasted-spark coil affects exactly its pair.
+PASS: rally-sedan: singular valve repair retains other valve identities.
+PASS: rally-sedan: sub-float wear accumulates instead of disappearing.
+PASS: rally-sedan: centrifugal RPM clamp.
+PASS: rally-sedan: exact local-fault replay through shifts/coast.
+PASS: sport-coupe: healthy OEM cylinders contribute equally.
+PASS: sport-coupe: Pistons individual layout.
+PASS: sport-coupe: Rods individual layout.
+PASS: sport-coupe: FuelSystem individual layout.
+PASS: sport-coupe: Ignition individual layout.
+PASS: sport-coupe: ValveSprings individual layout.
+PASS: sport-coupe: Valves individual layout.
+PASS: sport-coupe: Followers individual layout.
+PASS: sport-coupe: PistonRings individual layout.
+PASS: sport-coupe: Bearings individual layout.
+PASS: sport-coupe: ValveSeals individual layout.
+PASS: sport-coupe: one dead plug leaves other cylinders running.
+PASS: sport-coupe: dead cylinder reduces physical torque.
+PASS: sport-coupe: spark failure retains fuel delivery.
+PASS: sport-coupe: missing firing event changes finite audio output.
+PASS: sport-coupe: shared/individual coil fault scope.
+PASS: sport-coupe: injector stops local fuel only.
+PASS: sport-coupe: failed injector reduces flow.
+PASS: sport-coupe: stuck valve reduces compression.
+PASS: sport-coupe: spring fault depends on RPM.
+PASS: sport-coupe: dropped valve is destructive.
+PASS: sport-coupe: single piston cheaper than full set.
+PASS: sport-coupe: replacement retains original and neighbours.
+PASS: sport-coupe: individual inventory survives load.
+PASS: sport-coupe: worn original reusable without renewal.
+PASS: sport-coupe: checkpoint cannot heal local damage.
+PASS: sport-coupe: rebuild paid/reserved.
+PASS: sport-coupe: early collection denied.
+PASS: sport-coupe: reserved parts locked.
+PASS: sport-coupe: paid deadline survives offline reload.
+PASS: sport-coupe: collection preserves unrelated hardware/fuel/tune.
+PASS: sport-coupe: collection validates /
+PASS: sport-coupe: repeated collection denied.
+PASS: sport-coupe: sport-coupe/Clutch/0 coupling works.
+PASS: sport-coupe: wet bath affects capacity separately.
+PASS: sport-coupe: finite engagement.
+PASS: sport-coupe: sport-coupe/Clutch/1 coupling works.
+PASS: sport-coupe: finite engagement.
+PASS: sport-coupe: sport-coupe/Clutch/StreetOrganic coupling works.
+PASS: sport-coupe: finite engagement.
+PASS: sport-coupe: sport-coupe/Clutch/RaceFriction coupling works.
+PASS: sport-coupe: finite engagement.
+PASS: sport-coupe: sport-coupe/Clutch/DryTwinOrganic coupling works.
+PASS: sport-coupe: finite engagement.
+PASS: sport-coupe: sport-coupe/Clutch/DryTwinCeramic coupling works.
+PASS: sport-coupe: finite engagement.
+PASS: sport-coupe: sport-coupe/Clutch/DryTripleSintered coupling works.
+PASS: sport-coupe: finite engagement.
+PASS: sport-coupe: sport-coupe/Clutch/WetMultiOrganic coupling works.
+PASS: sport-coupe: wet bath affects capacity separately.
+PASS: sport-coupe: finite engagement.
+PASS: sport-coupe: sport-coupe/Clutch/WetMultiRace coupling works.
+PASS: sport-coupe: wet bath affects capacity separately.
+PASS: sport-coupe: finite engagement.
+PASS: sport-coupe: sport-coupe/Clutch/DryCentrifugal coupling works.
+PASS: sport-coupe: finite engagement.
+PASS: sport-coupe: wet oil bath rejects more equal-work clutch heat.
+PASS: sport-coupe: missing clutch oil removes its own liquid mass exactly once.
+PASS: sport-coupe: injected clutch leak drains dedicated bath.
+PASS: sport-coupe: fluid-depletion assistance also covers clutch bath.
+PASS: sport-coupe: wear reset does not refill dedicated clutch oil.
+PASS: sport-coupe: wasted-spark coil affects exactly its pair.
+PASS: sport-coupe: singular valve repair retains other valve identities.
+PASS: sport-coupe: sub-float wear accumulates instead of disappearing.
+PASS: sport-coupe: centrifugal RPM clamp.
+PASS: sport-coupe: exact local-fault replay through shifts/coast.
+PASS: starter-hatch: healthy OEM cylinders contribute equally.
+PASS: starter-hatch: Pistons individual layout.
+PASS: starter-hatch: Rods individual layout.
+PASS: starter-hatch: FuelSystem individual layout.
+PASS: starter-hatch: Ignition individual layout.
+PASS: starter-hatch: ValveSprings individual layout.
+PASS: starter-hatch: Valves individual layout.
+PASS: starter-hatch: Followers individual layout.
+PASS: starter-hatch: PistonRings individual layout.
+PASS: starter-hatch: Bearings individual layout.
+PASS: starter-hatch: ValveSeals individual layout.
+PASS: starter-hatch: one dead plug leaves other cylinders running.
+PASS: starter-hatch: dead cylinder reduces physical torque.
+PASS: starter-hatch: spark failure retains fuel delivery.
+PASS: starter-hatch: missing firing event changes finite audio output.
+PASS: starter-hatch: shared/individual coil fault scope.
+PASS: starter-hatch: injector stops local fuel only.
+PASS: starter-hatch: failed injector reduces flow.
+PASS: starter-hatch: stuck valve reduces compression.
+PASS: starter-hatch: spring fault depends on RPM.
+PASS: starter-hatch: dropped valve is destructive.
+PASS: starter-hatch: single piston cheaper than full set.
+PASS: starter-hatch: replacement retains original and neighbours.
+PASS: starter-hatch: individual inventory survives load.
+PASS: starter-hatch: worn original reusable without renewal.
+PASS: starter-hatch: checkpoint cannot heal local damage.
+PASS: starter-hatch: rebuild paid/reserved.
+PASS: starter-hatch: early collection denied.
+PASS: starter-hatch: reserved parts locked.
+PASS: starter-hatch: paid deadline survives offline reload.
+PASS: starter-hatch: collection preserves unrelated hardware/fuel/tune.
+PASS: starter-hatch: collection validates /
+PASS: starter-hatch: repeated collection denied.
+PASS: starter-hatch: starter-hatch/Clutch/0 coupling works.
+PASS: starter-hatch: finite engagement.
+PASS: starter-hatch: starter-hatch/Clutch/1 coupling works.
+PASS: starter-hatch: finite engagement.
+PASS: starter-hatch: starter-hatch/Clutch/StreetOrganic coupling works.
+PASS: starter-hatch: finite engagement.
+PASS: starter-hatch: starter-hatch/Clutch/RaceFriction coupling works.
+PASS: starter-hatch: finite engagement.
+PASS: starter-hatch: starter-hatch/Clutch/DryTwinOrganic coupling works.
+PASS: starter-hatch: finite engagement.
+PASS: starter-hatch: starter-hatch/Clutch/DryTwinCeramic coupling works.
+PASS: starter-hatch: finite engagement.
+PASS: starter-hatch: starter-hatch/Clutch/DryTripleSintered coupling works.
+PASS: starter-hatch: finite engagement.
+PASS: starter-hatch: starter-hatch/Clutch/WetMultiOrganic coupling works.
+PASS: starter-hatch: wet bath affects capacity separately.
+PASS: starter-hatch: finite engagement.
+PASS: starter-hatch: starter-hatch/Clutch/WetMultiRace coupling works.
+PASS: starter-hatch: wet bath affects capacity separately.
+PASS: starter-hatch: finite engagement.
+PASS: starter-hatch: starter-hatch/Clutch/DryCentrifugal coupling works.
+PASS: starter-hatch: finite engagement.
+PASS: starter-hatch: wet oil bath rejects more equal-work clutch heat.
+PASS: starter-hatch: missing clutch oil removes its own liquid mass exactly once.
+PASS: starter-hatch: injected clutch leak drains dedicated bath.
+PASS: starter-hatch: fluid-depletion assistance also covers clutch bath.
+PASS: starter-hatch: wear reset does not refill dedicated clutch oil.
+PASS: starter-hatch: wasted-spark coil affects exactly its pair.
+PASS: starter-hatch: singular valve repair retains other valve identities.
+PASS: starter-hatch: sub-float wear accumulates instead of disappearing.
+PASS: starter-hatch: centrifugal RPM clamp.
+PASS: starter-hatch: exact local-fault replay through shifts/coast.
+PASS: super-v8: healthy OEM cylinders contribute equally.
+PASS: super-v8: Pistons individual layout.
+PASS: super-v8: Rods individual layout.
+PASS: super-v8: FuelSystem individual layout.
+PASS: super-v8: Ignition individual layout.
+PASS: super-v8: ValveSprings individual layout.
+PASS: super-v8: Valves individual layout.
+PASS: super-v8: Followers individual layout.
+PASS: super-v8: PistonRings individual layout.
+PASS: super-v8: Bearings individual layout.
+PASS: super-v8: ValveSeals individual layout.
+PASS: super-v8: one dead plug leaves other cylinders running.
+PASS: super-v8: dead cylinder reduces physical torque.
+PASS: super-v8: spark failure retains fuel delivery.
+PASS: super-v8: missing firing event changes finite audio output.
+PASS: super-v8: shared/individual coil fault scope.
+PASS: super-v8: injector stops local fuel only.
+PASS: super-v8: failed injector reduces flow.
+PASS: super-v8: stuck valve reduces compression.
+PASS: super-v8: spring fault depends on RPM.
+PASS: super-v8: dropped valve is destructive.
+PASS: super-v8: single piston cheaper than full set.
+PASS: super-v8: replacement retains original and neighbours.
+PASS: super-v8: individual inventory survives load.
+PASS: super-v8: worn original reusable without renewal.
+PASS: super-v8: checkpoint cannot heal local damage.
+PASS: super-v8: rebuild paid/reserved.
+PASS: super-v8: early collection denied.
+PASS: super-v8: reserved parts locked.
+PASS: super-v8: paid deadline survives offline reload.
+PASS: super-v8: collection preserves unrelated hardware/fuel/tune.
+PASS: super-v8: collection validates /
+PASS: super-v8: repeated collection denied.
+PASS: super-v8: super-v8/Clutch/0 coupling works.
+PASS: super-v8: finite engagement.
+PASS: super-v8: super-v8/Clutch/1 coupling works.
+PASS: super-v8: finite engagement.
+PASS: super-v8: super-v8/Clutch/StreetOrganic coupling works.
+PASS: super-v8: finite engagement.
+PASS: super-v8: super-v8/Clutch/RaceFriction coupling works.
+PASS: super-v8: finite engagement.
+PASS: super-v8: super-v8/Clutch/DryTwinOrganic coupling works.
+PASS: super-v8: finite engagement.
+PASS: super-v8: super-v8/Clutch/DryTwinCeramic coupling works.
+PASS: super-v8: finite engagement.
+PASS: super-v8: super-v8/Clutch/DryTripleSintered coupling works.
+PASS: super-v8: finite engagement.
+PASS: super-v8: super-v8/Clutch/WetMultiOrganic coupling works.
+PASS: super-v8: wet bath affects capacity separately.
+PASS: super-v8: finite engagement.
+PASS: super-v8: super-v8/Clutch/WetMultiRace coupling works.
+PASS: super-v8: wet bath affects capacity separately.
+PASS: super-v8: finite engagement.
+PASS: super-v8: super-v8/Clutch/DryCentrifugal coupling works.
+PASS: super-v8: finite engagement.
+PASS: super-v8: wet oil bath rejects more equal-work clutch heat.
+PASS: super-v8: missing clutch oil removes its own liquid mass exactly once.
+PASS: super-v8: injected clutch leak drains dedicated bath.
+PASS: super-v8: fluid-depletion assistance also covers clutch bath.
+PASS: super-v8: wear reset does not refill dedicated clutch oil.
+PASS: super-v8: wasted-spark coil affects exactly its pair.
+PASS: super-v8: singular valve repair retains other valve identities.
+PASS: super-v8: sub-float wear accumulates instead of disappearing.
+PASS: super-v8: centrifugal RPM clamp.
+PASS: super-v8: exact local-fault replay through shifts/coast.
+PASS: touring-six: healthy OEM cylinders contribute equally.
+PASS: touring-six: Pistons individual layout.
+PASS: touring-six: Rods individual layout.
+PASS: touring-six: FuelSystem individual layout.
+PASS: touring-six: Ignition individual layout.
+PASS: touring-six: ValveSprings individual layout.
+PASS: touring-six: Valves individual layout.
+PASS: touring-six: Followers individual layout.
+PASS: touring-six: PistonRings individual layout.
+PASS: touring-six: Bearings individual layout.
+PASS: touring-six: ValveSeals individual layout.
+PASS: touring-six: one dead plug leaves other cylinders running.
+PASS: touring-six: dead cylinder reduces physical torque.
+PASS: touring-six: spark failure retains fuel delivery.
+PASS: touring-six: missing firing event changes finite audio output.
+PASS: touring-six: shared/individual coil fault scope.
+PASS: touring-six: injector stops local fuel only.
+PASS: touring-six: failed injector reduces flow.
+PASS: touring-six: stuck valve reduces compression.
+PASS: touring-six: spring fault depends on RPM.
+PASS: touring-six: dropped valve is destructive.
+PASS: touring-six: single piston cheaper than full set.
+PASS: touring-six: replacement retains original and neighbours.
+PASS: touring-six: individual inventory survives load.
+PASS: touring-six: worn original reusable without renewal.
+PASS: touring-six: checkpoint cannot heal local damage.
+PASS: touring-six: rebuild paid/reserved.
+PASS: touring-six: early collection denied.
+PASS: touring-six: reserved parts locked.
+PASS: touring-six: paid deadline survives offline reload.
+PASS: touring-six: collection preserves unrelated hardware/fuel/tune.
+PASS: touring-six: collection validates /
+PASS: touring-six: repeated collection denied.
+PASS: touring-six: touring-six/Clutch/0 coupling works.
+PASS: touring-six: finite engagement.
+PASS: touring-six: touring-six/Clutch/1 coupling works.
+PASS: touring-six: finite engagement.
+PASS: touring-six: touring-six/Clutch/StreetOrganic coupling works.
+PASS: touring-six: finite engagement.
+PASS: touring-six: touring-six/Clutch/RaceFriction coupling works.
+PASS: touring-six: finite engagement.
+PASS: touring-six: touring-six/Clutch/DryTwinOrganic coupling works.
+PASS: touring-six: finite engagement.
+PASS: touring-six: touring-six/Clutch/DryTwinCeramic coupling works.
+PASS: touring-six: finite engagement.
+PASS: touring-six: touring-six/Clutch/DryTripleSintered coupling works.
+PASS: touring-six: finite engagement.
+PASS: touring-six: touring-six/Clutch/WetMultiOrganic coupling works.
+PASS: touring-six: wet bath affects capacity separately.
+PASS: touring-six: finite engagement.
+PASS: touring-six: touring-six/Clutch/WetMultiRace coupling works.
+PASS: touring-six: wet bath affects capacity separately.
+PASS: touring-six: finite engagement.
+PASS: touring-six: touring-six/Clutch/DryCentrifugal coupling works.
+PASS: touring-six: finite engagement.
+PASS: touring-six: wet oil bath rejects more equal-work clutch heat.
+PASS: touring-six: missing clutch oil removes its own liquid mass exactly once.
+PASS: touring-six: injected clutch leak drains dedicated bath.
+PASS: touring-six: fluid-depletion assistance also covers clutch bath.
+PASS: touring-six: wear reset does not refill dedicated clutch oil.
+PASS: touring-six: wasted-spark coil affects exactly its pair.
+PASS: touring-six: singular valve repair retains other valve identities.
+PASS: touring-six: sub-float wear accumulates instead of disappearing.
+PASS: touring-six: centrifugal RPM clamp.
+PASS: touring-six: exact local-fault replay through shifts/coast.
+PASS: utility-pickup: healthy OEM cylinders contribute equally.
+PASS: utility-pickup: Pistons individual layout.
+PASS: utility-pickup: Rods individual layout.
+PASS: utility-pickup: FuelSystem individual layout.
+PASS: utility-pickup: Ignition individual layout.
+PASS: utility-pickup: ValveSprings individual layout.
+PASS: utility-pickup: Valves individual layout.
+PASS: utility-pickup: Followers individual layout.
+PASS: utility-pickup: PistonRings individual layout.
+PASS: utility-pickup: Bearings individual layout.
+PASS: utility-pickup: ValveSeals individual layout.
+PASS: utility-pickup: one dead plug leaves other cylinders running.
+PASS: utility-pickup: dead cylinder reduces physical torque.
+PASS: utility-pickup: spark failure retains fuel delivery.
+PASS: utility-pickup: missing firing event changes finite audio output.
+PASS: utility-pickup: shared/individual coil fault scope.
+PASS: utility-pickup: stuck valve reduces compression.
+PASS: utility-pickup: spring fault depends on RPM.
+PASS: utility-pickup: dropped valve is destructive.
+PASS: utility-pickup: single piston cheaper than full set.
+PASS: utility-pickup: replacement retains original and neighbours.
+PASS: utility-pickup: individual inventory survives load.
+PASS: utility-pickup: worn original reusable without renewal.
+PASS: utility-pickup: checkpoint cannot heal local damage.
+PASS: utility-pickup: rebuild paid/reserved.
+PASS: utility-pickup: early collection denied.
+PASS: utility-pickup: reserved parts locked.
+PASS: utility-pickup: paid deadline survives offline reload.
+PASS: utility-pickup: collection preserves unrelated hardware/fuel/tune.
+PASS: utility-pickup: collection validates /
+PASS: utility-pickup: repeated collection denied.
+PASS: utility-pickup: utility-pickup/Clutch/0 coupling works.
+PASS: utility-pickup: finite engagement.
+PASS: utility-pickup: utility-pickup/Clutch/1 coupling works.
+PASS: utility-pickup: finite engagement.
+PASS: utility-pickup: utility-pickup/Clutch/StreetOrganic coupling works.
+PASS: utility-pickup: finite engagement.
+PASS: utility-pickup: utility-pickup/Clutch/RaceFriction coupling works.
+PASS: utility-pickup: finite engagement.
+PASS: utility-pickup: utility-pickup/Clutch/DryTwinOrganic coupling works.
+PASS: utility-pickup: finite engagement.
+PASS: utility-pickup: utility-pickup/Clutch/DryTwinCeramic coupling works.
+PASS: utility-pickup: finite engagement.
+PASS: utility-pickup: utility-pickup/Clutch/DryTripleSintered coupling works.
+PASS: utility-pickup: finite engagement.
+PASS: utility-pickup: utility-pickup/Clutch/WetMultiOrganic coupling works.
+PASS: utility-pickup: wet bath affects capacity separately.
+PASS: utility-pickup: finite engagement.
+PASS: utility-pickup: utility-pickup/Clutch/WetMultiRace coupling works.
+PASS: utility-pickup: wet bath affects capacity separately.
+PASS: utility-pickup: finite engagement.
+PASS: utility-pickup: utility-pickup/Clutch/DryCentrifugal coupling works.
+PASS: utility-pickup: finite engagement.
+PASS: utility-pickup: wet oil bath rejects more equal-work clutch heat.
+PASS: utility-pickup: missing clutch oil removes its own liquid mass exactly once.
+PASS: utility-pickup: injected clutch leak drains dedicated bath.
+PASS: utility-pickup: fluid-depletion assistance also covers clutch bath.
+PASS: utility-pickup: wear reset does not refill dedicated clutch oil.
+PASS: utility-pickup: wasted-spark coil affects exactly its pair.
+PASS: utility-pickup: singular valve repair retains other valve identities.
+PASS: utility-pickup: sub-float wear accumulates instead of disappearing.
+PASS: utility-pickup: centrifugal RPM clamp.
+PASS: utility-pickup: exact local-fault replay through shifts/coast.
+PASS: v8-muscle: healthy OEM cylinders contribute equally.
+PASS: v8-muscle: Pistons individual layout.
+PASS: v8-muscle: Rods individual layout.
+PASS: v8-muscle: FuelSystem individual layout.
+PASS: v8-muscle: Ignition individual layout.
+PASS: v8-muscle: ValveSprings individual layout.
+PASS: v8-muscle: Valves individual layout.
+PASS: v8-muscle: Followers individual layout.
+PASS: v8-muscle: PistonRings individual layout.
+PASS: v8-muscle: Bearings individual layout.
+PASS: v8-muscle: ValveSeals individual layout.
+PASS: v8-muscle: one dead plug leaves other cylinders running.
+PASS: v8-muscle: dead cylinder reduces physical torque.
+PASS: v8-muscle: spark failure retains fuel delivery.
+PASS: v8-muscle: missing firing event changes finite audio output.
+PASS: v8-muscle: shared/individual coil fault scope.
+PASS: v8-muscle: stuck valve reduces compression.
+PASS: v8-muscle: spring fault depends on RPM.
+PASS: v8-muscle: dropped valve is destructive.
+PASS: v8-muscle: single piston cheaper than full set.
+PASS: v8-muscle: replacement retains original and neighbours.
+PASS: v8-muscle: individual inventory survives load.
+PASS: v8-muscle: worn original reusable without renewal.
+PASS: v8-muscle: checkpoint cannot heal local damage.
+PASS: v8-muscle: rebuild paid/reserved.
+PASS: v8-muscle: early collection denied.
+PASS: v8-muscle: reserved parts locked.
+PASS: v8-muscle: paid deadline survives offline reload.
+PASS: v8-muscle: collection preserves unrelated hardware/fuel/tune.
+PASS: v8-muscle: collection validates /
+PASS: v8-muscle: repeated collection denied.
+PASS: v8-muscle: v8-muscle/Clutch/0 coupling works.
+PASS: v8-muscle: finite engagement.
+PASS: v8-muscle: v8-muscle/Clutch/1 coupling works.
+PASS: v8-muscle: finite engagement.
+PASS: v8-muscle: v8-muscle/Clutch/StreetOrganic coupling works.
+PASS: v8-muscle: finite engagement.
+PASS: v8-muscle: v8-muscle/Clutch/RaceFriction coupling works.
+PASS: v8-muscle: finite engagement.
+PASS: v8-muscle: v8-muscle/Clutch/DryTwinOrganic coupling works.
+PASS: v8-muscle: finite engagement.
+PASS: v8-muscle: v8-muscle/Clutch/DryTwinCeramic coupling works.
+PASS: v8-muscle: finite engagement.
+PASS: v8-muscle: v8-muscle/Clutch/DryTripleSintered coupling works.
+PASS: v8-muscle: finite engagement.
+PASS: v8-muscle: v8-muscle/Clutch/WetMultiOrganic coupling works.
+PASS: v8-muscle: wet bath affects capacity separately.
+PASS: v8-muscle: finite engagement.
+PASS: v8-muscle: v8-muscle/Clutch/WetMultiRace coupling works.
+PASS: v8-muscle: wet bath affects capacity separately.
+PASS: v8-muscle: finite engagement.
+PASS: v8-muscle: v8-muscle/Clutch/DryCentrifugal coupling works.
+PASS: v8-muscle: finite engagement.
+PASS: v8-muscle: wet oil bath rejects more equal-work clutch heat.
+PASS: v8-muscle: missing clutch oil removes its own liquid mass exactly once.
+PASS: v8-muscle: injected clutch leak drains dedicated bath.
+PASS: v8-muscle: fluid-depletion assistance also covers clutch bath.
+PASS: v8-muscle: wear reset does not refill dedicated clutch oil.
+PASS: v8-muscle: wasted-spark coil affects exactly its pair.
+PASS: v8-muscle: singular valve repair retains other valve identities.
+PASS: v8-muscle: sub-float wear accumulates instead of disappearing.
+PASS: v8-muscle: centrifugal RPM clamp.
+PASS: v8-muscle: exact local-fault replay through shifts/coast.
+TOTAL 518

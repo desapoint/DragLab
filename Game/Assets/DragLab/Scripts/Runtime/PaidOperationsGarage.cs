@@ -45,6 +45,7 @@ namespace DragLab.Runtime
             GUILayout.Label("RECOVERY / garage work / operating receipts", stat);
             GUILayout.Label("Keep your retained engines and spares. Earn a bounded payment for a real-time garage job, then buy fuel, a compatible repair or a replacement car. No parts are repaired or created by a claim.");
             if (Costs == null) { GUILayout.Label("Missing operating policy. Prepare it in Unity."); return; }
+            RecoveryAdviceGUI();
             long now = DateTime.UtcNow.Ticks; var job = profile.recoveryWork;
             if (job == null) {
                 GUILayout.Label("Garage job: " + Costs.recoverySeconds + " seconds / up to $" + Costs.recoveryReward + " / available below $" + Costs.recoveryCashLimit + " cash. Continues offline.");
