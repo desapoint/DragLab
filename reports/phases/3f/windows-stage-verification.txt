@@ -1,0 +1,6 @@
+﻿3F actual Windows business expansion / job assignment / durable shutdown.
+PASS: Actual expansion button settles old rate and purchases level two.
+PASS: Actual assignment reserves exact selected car/engine/parts.
+PASS: Assigned car is unavailable to race.
+PASS: No runtime / GUI / audio errors.
+Runtime errors: 0

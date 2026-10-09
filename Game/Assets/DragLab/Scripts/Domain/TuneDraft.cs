@@ -19,6 +19,7 @@ namespace DragLab.Domain
             if (profile.revision != revision) throw new InvalidOperationException("The installed build changed. Reopen tuning before applying.");
             var car = profile.cars.Find(c => c.instanceId == vehicleInstanceId);
             if (car == null) throw new InvalidOperationException("The tuned car no longer exists.");
+            DragLab.Domain.Mechanics.EngineRebuilds.RequireAvailable(car);
             if (values.awd != null && values.awd.Validate() != null) throw new InvalidOperationException(values.awd.Validate());
             foreach (var field in typeof(Tune).GetFields()) if (field.FieldType == typeof(float))
             { float v = (float)field.GetValue(values); if (float.IsNaN(v) || float.IsInfinity(v)) throw new InvalidOperationException("Tune values must be finite."); }

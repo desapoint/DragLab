@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdad71281ca1f764cb6758fc0580d631, type: 3}
+  m_Name: GarageBusinessPolicy
+  m_EditorClassIdentifier: Assembly-CSharp::DragLab.Data.GarageBusinessPolicyDefinition
+  policy:
+    version: 1
+    hourlyRates: 64000000b40000002c010000f4010000i
+    capsHours: 080000000c0000001200000018000000i
+    upgradeCosts: b004000060090000100e0000i
+    jobSlots: 01000000020000000300000004000000i
+    offers:
+    - id: photo-session
+      name: Local photo session
+      seconds: 30
+      reward: 20
+      reputationRequired: 0
+      levelRequired: 1
+      minimumHp: 0
+      restrictDrive: 0
+      drive: 0
+    - id: car-show
+      name: Club car show
+      seconds: 1800
+      reward: 300
+      reputationRequired: 0
+      levelRequired: 1
+      minimumHp: 0
+      restrictDrive: 0
+      drive: 0
+    - id: dyno-display
+      name: Dyno exhibit (engine off display)
+      seconds: 7200
+      reward: 1200
+      reputationRequired: 4
+      levelRequired: 2
+      minimumHp: 200
+      restrictDrive: 0
+      drive: 0
+    - id: awd-show
+      name: AWD promotional display
+      seconds: 14400
+      reward: 2200
+      reputationRequired: 8
+      levelRequired: 3
+      minimumHp: 0
+      restrictDrive: 1
+      drive: 2

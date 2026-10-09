@@ -55,9 +55,10 @@ namespace DragLab.Runtime
                 GUI.enabled = now >= job.readyUtcTicks;
                 if (PartButton("recovery-claim", "Claim finished job once")) { string id = job.id; QueuePartAction(p => PaidEconomy.ClaimRecovery(p, id, DateTime.UtcNow.Ticks)); } GUI.enabled = true;
             }
-            int idle = profile.PendingIdle(now);
+            int idle = GarageBusiness.Pending(profile,BusinessPolicy,now);
             GUI.enabled = idle > 0;
-            if (PartButton("recovery-idle", "Claim existing idle earnings / $" + idle)) QueuePartAction(p => p.ClaimIdle(DateTime.UtcNow.Ticks)); GUI.enabled = true;
+            if (PartButton("recovery-idle", "Claim existing idle earnings / $" + idle)) QueuePartAction(p => GarageBusiness.Claim(p,BusinessPolicy,DateTime.UtcNow.Ticks)); GUI.enabled = true;
+            if(PartButton("recovery-business","Business / reserved jobs / expansion"))pendingAction=OpenBusiness;
             if (PartButton("recovery-collection", "Dealership / owned cars")) pendingAction = OpenCollection;
             if (PartButton("recovery-assets", "Value / sell retained assets")) pendingAction = () => OpenValuation(ValuationKind.Car, Build?.instanceId ?? "");
             if (Build != null && PartButton("recovery-repairs", "Repair / replace selected car parts")) pendingAction = ShowRepairs;

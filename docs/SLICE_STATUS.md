@@ -85,3 +85,6 @@ Historical early Slice-2 equipment note:
 Parts/equipment foundation (2026-10-08): see [part effects and equipment](PART_EFFECTS_AND_EQUIPMENT.md). Category-specific ratings and descriptions, engine/coolant/radiator heat transfer, delivery limits, left/right open/LSD/welded/spool allocation, removable interior/comfort equipment and separate limiter/two-step/shift-light purchases now use the shared race/bench resolver. Hardware gates editable equipment settings; garage drafts still require Apply. Independent wheel/contact/slip-work tire life and final calibration remain in 2G–2L. Old physical captures must be recorded again for model v5.
 
 
+
+
+3F adds [garage business](GARAGE_BUSINESS.md): captured rates/fractions, expanded offline caps/bays and exact car/engine/component reservations with atomic claims and cancellation. See [3F report](../reports/phases/3f/CHANGES.md). 3G balance and 3H integrated release audit remain separate.

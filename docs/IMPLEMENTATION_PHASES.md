@@ -60,6 +60,8 @@ Start Slice 3 only after 2L passes. Reuse the ownership/checkpoint/transaction l
 
 ## Completion record
 
+- **3F complete (2026-10-09):** persisted old-rate accrual/fractions, expanded caps/bays, actual owned-car job reservations, captured offline contracts, atomic claim/cancel/release and full nested disposal/tuning/service guards. See [business controls](GARAGE_BUSINESS.md) and [evidence](../reports/phases/3f/CHANGES.md). 3G/3H remain subsequent phases.
+
 - **3E complete (2026-10-09):** 21 authored events, ordered F–S qualifications/rivals, installed-build restrictions, independent specialist offers, captured entries and atomic outcomes/rewards/resources. Legacy wins and unrestricted ranks remain valid. See [career controls](CAREER_PROGRESSION.md) and [evidence](../reports/phases/3e/CHANGES.md). 3F–3H remain subsequent phases.
 
 - **3D complete (2026-10-09):** quote-backed paid fuel/services/dealer purchases and confirmed part/element/engine/car sales and chassis salvage. Exact retained engine trees, schema-5 empty garages, operating receipts and bounded offline recovery jobs persist atomically. Default dealer packages prevent immediate stock disposal profit; final balance remains 3G. Controls: [paid operations and recovery](PAID_OPERATIONS_AND_RECOVERY.md). Evidence: [3D report](../reports/phases/3d/CHANGES.md). Next: 3E career/availability.

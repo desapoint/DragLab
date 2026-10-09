@@ -31,7 +31,7 @@ namespace DragLab.Domain.Mechanics
     }
     public static class EngineRebuilds
     {
-        public static void RequireAvailable(OwnedCar c){if(c==null)throw new InvalidOperationException("Service vehicle no longer exists.");if(c.engineRebuild!=null&&c.engineRebuild.active)throw new InvalidOperationException("Engine reserved at rebuild shop; collect it before modifying/racing this car.");}
+        public static void RequireAvailable(OwnedCar c){if(c==null)throw new InvalidOperationException("Service vehicle no longer exists.");if(!string.IsNullOrEmpty(c.garageJobId))throw new InvalidOperationException("Car and installed components reserved by garage job; claim or cancel it first.");if(c.engineRebuild!=null&&c.engineRebuild.active)throw new InvalidOperationException("Engine reserved at rebuild shop; collect it before modifying/racing this car.");}
         public static bool Scope(PartCategory c){return PartSemantics.EngineInternal(c)||c==PartCategory.HeadIntake||c==PartCategory.Camshaft||c==PartCategory.Valves||c==PartCategory.ValveSprings||c==PartCategory.Followers||c==PartCategory.TimingDrive||c==PartCategory.PistonRings||c==PartCategory.CylinderBlock||c==PartCategory.Bearings||c==PartCategory.ValveSeals||c==PartCategory.OilPump;}
         public static EngineRebuildJob Quote(PlayerProfile p,OwnedCar car,long now)
         {

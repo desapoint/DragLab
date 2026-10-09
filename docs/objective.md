@@ -2331,3 +2331,8 @@ Normal fuel, fluids and applicable service/replacement/rebuild/dealer operations
 ### Slice 3E implementation (2026-10-09)
 
 The first structured career now has 21 events: the four original IDs, fourteen ordered F–S qualification/rival events and three optional installed-build restriction challenges. Tier names identify competitions; they do not assert each opponent has that exact benchmark PP. Entries capture fees/payout terms, settlement commits records/rewards/resources atomically, and shutdown continues consuming physical resources. Existing mechanical ranks remain directly available; new motorsport compressor offers use independent REP unlocks. See [career progression](CAREER_PROGRESSION.md). Prize cars, 100+ events and broad manufacturer/generation content remain later content, outside this systems phase.
+
+
+### Slice 3F implementation (2026-10-09)
+
+Four garage business levels preserve existing unrestricted collection storage while expanding income, caps and simultaneous jobs. Prototype display jobs keep engines off, consume no driving resources/wear and reserve exact owned builds until claim or cancellation. Captured rate/deadline/reward contracts survive offline time and policy edits; old-rate/fractional accrual, clock rollback and failed-write recovery are covered. See [garage business](GARAGE_BUSINESS.md). Used/specialist dealer rotations, driving customer jobs and a fifth workshop level remain later content.

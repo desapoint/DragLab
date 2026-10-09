@@ -171,6 +171,7 @@ namespace DragLab.Domain.Mechanics
                 if (faulty) total = Change(lines, assetId, "Assembly fault risk", total, buyer.faulty, "Buyer diagnosis/rebuild risk in addition to individual damaged item values");
             }
             if (kept.Length > 0) warnings.Add(kept.Length + " retained parts and their individual descendants excluded; no replacement parts credited.");
+            if(GarageBusiness.Reserved(profile,assetId)||car!=null&&GarageBusiness.Reserved(profile,car.instanceId)){reserved=true;warnings.Add("Reserved by an assigned garage job; claim or cancel before disposal.");}
             if (profile.runCheckpoints.Any(r => !r.settled) && !reserved) { reserved = true; warnings.Add("Unsettled run: inspection only; quote cannot authorize disposal."); }
             if (!MechanicsSchema.Finite(total) || total < 0 || total > int.MaxValue) throw new InvalidOperationException("Quote total outside supported currency range.");
             return new ValuationQuote(kind, assetId, buyerId, policy, profile, nowUtcTicks, Fingerprint(profile, catalog, policy), ids, kept, warnings, lines, loose, core, total, complete, faulty, reserved);

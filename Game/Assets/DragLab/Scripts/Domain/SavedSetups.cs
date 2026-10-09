@@ -85,6 +85,7 @@ namespace DragLab.Domain.Mechanics
                 plan.errors.Clear();
                 plan.warnings.AddRange(MechanicsOwnership.Resolve(p, car, p.catalog).errors.Select(e => "Build remains unavailable: " + e));
                 if (car.engineRebuild != null) plan.errors.Add("Collect the reserved rebuilt engine first.");
+                if(!string.IsNullOrEmpty(car.garageJobId))plan.errors.Add("Claim or cancel the assigned garage job first.");
                 if (p.runCheckpoints.Any(r => !r.settled)) plan.errors.Add("Close the active run first.");
             }
             if (p.cash < plan.cost) plan.errors.Add("Insufficient cash: need $" + plan.cost + ". No parts or tune will change.");

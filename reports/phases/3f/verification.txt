@@ -1,0 +1,160 @@
+﻿PASS: Offline cap at garage level 1
+PASS: Capped durable claim at level 1
+PASS: Same-time repeat claim pays nothing at level 1
+PASS: Backwards clock cannot rewind accrual at level 1
+PASS: Rollback clock survives Sanitize/reload at level 1
+PASS: Offline cap at garage level 2
+PASS: Capped durable claim at level 2
+PASS: Same-time repeat claim pays nothing at level 2
+PASS: Backwards clock cannot rewind accrual at level 2
+PASS: Rollback clock survives Sanitize/reload at level 2
+PASS: Offline cap at garage level 3
+PASS: Capped durable claim at level 3
+PASS: Same-time repeat claim pays nothing at level 3
+PASS: Backwards clock cannot rewind accrual at level 3
+PASS: Rollback clock survives Sanitize/reload at level 3
+PASS: Offline cap at garage level 4
+PASS: Capped durable claim at level 4
+PASS: Same-time repeat claim pays nothing at level 4
+PASS: Backwards clock cannot rewind accrual at level 4
+PASS: Rollback clock survives Sanitize/reload at level 4
+PASS: Fractional dollar retained on zero-value claim.
+PASS: Expansion settles old rate before using new rate/cap.
+PASS: Authored rate change cannot retrospectively double income.
+PASS: New authored rate takes effect after old-rate settlement.
+PASS: Legacy higher-level income retains original eight-hour cap.
+PASS: Legacy claim transitions to expanded cap without retroactive grant.
+PASS: Exact whole-build reservation: city-three
+PASS: Assigned car cannot race: city-three
+PASS: Assigned part cannot be removed: city-three
+PASS: Assigned engine cannot detach: city-three
+PASS: Assigned tune cannot apply: city-three
+PASS: Assigned car cannot buy operating resources: city-three
+PASS: All nested assembly valuations are inspection-only: city-three
+PASS: Pre-assignment quote cannot dispose assigned assets: city-three
+PASS: Early job claim rejected: city-three
+PASS: Reservation and captured job survive serialization: city-three
+PASS: Failed write retains reservation and unpaid job: city-three
+PASS: Captured reward/release settles once: city-three
+PASS: Idle job does not consume/restore fuel, fluids or wear: city-three
+PASS: Repeat claim cannot duplicate payment: city-three
+PASS: Cancel releases with no payout: city-three
+PASS: Post-release salvage leaves no dangling reservation: city-three
+PASS: Exact whole-build reservation: rally-sedan
+PASS: Assigned car cannot race: rally-sedan
+PASS: Assigned part cannot be removed: rally-sedan
+PASS: Assigned engine cannot detach: rally-sedan
+PASS: Assigned tune cannot apply: rally-sedan
+PASS: Assigned car cannot buy operating resources: rally-sedan
+PASS: All nested assembly valuations are inspection-only: rally-sedan
+PASS: Pre-assignment quote cannot dispose assigned assets: rally-sedan
+PASS: Early job claim rejected: rally-sedan
+PASS: Reservation and captured job survive serialization: rally-sedan
+PASS: Failed write retains reservation and unpaid job: rally-sedan
+PASS: Captured reward/release settles once: rally-sedan
+PASS: Idle job does not consume/restore fuel, fluids or wear: rally-sedan
+PASS: Repeat claim cannot duplicate payment: rally-sedan
+PASS: Cancel releases with no payout: rally-sedan
+PASS: Post-release salvage leaves no dangling reservation: rally-sedan
+PASS: Exact whole-build reservation: sport-coupe
+PASS: Assigned car cannot race: sport-coupe
+PASS: Assigned part cannot be removed: sport-coupe
+PASS: Assigned engine cannot detach: sport-coupe
+PASS: Assigned tune cannot apply: sport-coupe
+PASS: Assigned car cannot buy operating resources: sport-coupe
+PASS: All nested assembly valuations are inspection-only: sport-coupe
+PASS: Pre-assignment quote cannot dispose assigned assets: sport-coupe
+PASS: Early job claim rejected: sport-coupe
+PASS: Reservation and captured job survive serialization: sport-coupe
+PASS: Failed write retains reservation and unpaid job: sport-coupe
+PASS: Captured reward/release settles once: sport-coupe
+PASS: Idle job does not consume/restore fuel, fluids or wear: sport-coupe
+PASS: Repeat claim cannot duplicate payment: sport-coupe
+PASS: Cancel releases with no payout: sport-coupe
+PASS: Post-release salvage leaves no dangling reservation: sport-coupe
+PASS: Exact whole-build reservation: starter-hatch
+PASS: Assigned car cannot race: starter-hatch
+PASS: Assigned part cannot be removed: starter-hatch
+PASS: Assigned engine cannot detach: starter-hatch
+PASS: Assigned tune cannot apply: starter-hatch
+PASS: Assigned car cannot buy operating resources: starter-hatch
+PASS: All nested assembly valuations are inspection-only: starter-hatch
+PASS: Pre-assignment quote cannot dispose assigned assets: starter-hatch
+PASS: Early job claim rejected: starter-hatch
+PASS: Reservation and captured job survive serialization: starter-hatch
+PASS: Failed write retains reservation and unpaid job: starter-hatch
+PASS: Captured reward/release settles once: starter-hatch
+PASS: Idle job does not consume/restore fuel, fluids or wear: starter-hatch
+PASS: Repeat claim cannot duplicate payment: starter-hatch
+PASS: Cancel releases with no payout: starter-hatch
+PASS: Post-release salvage leaves no dangling reservation: starter-hatch
+PASS: Exact whole-build reservation: super-v8
+PASS: Assigned car cannot race: super-v8
+PASS: Assigned part cannot be removed: super-v8
+PASS: Assigned engine cannot detach: super-v8
+PASS: Assigned tune cannot apply: super-v8
+PASS: Assigned car cannot buy operating resources: super-v8
+PASS: All nested assembly valuations are inspection-only: super-v8
+PASS: Pre-assignment quote cannot dispose assigned assets: super-v8
+PASS: Early job claim rejected: super-v8
+PASS: Reservation and captured job survive serialization: super-v8
+PASS: Failed write retains reservation and unpaid job: super-v8
+PASS: Captured reward/release settles once: super-v8
+PASS: Idle job does not consume/restore fuel, fluids or wear: super-v8
+PASS: Repeat claim cannot duplicate payment: super-v8
+PASS: Cancel releases with no payout: super-v8
+PASS: Post-release salvage leaves no dangling reservation: super-v8
+PASS: Exact whole-build reservation: touring-six
+PASS: Assigned car cannot race: touring-six
+PASS: Assigned part cannot be removed: touring-six
+PASS: Assigned engine cannot detach: touring-six
+PASS: Assigned tune cannot apply: touring-six
+PASS: Assigned car cannot buy operating resources: touring-six
+PASS: All nested assembly valuations are inspection-only: touring-six
+PASS: Pre-assignment quote cannot dispose assigned assets: touring-six
+PASS: Early job claim rejected: touring-six
+PASS: Reservation and captured job survive serialization: touring-six
+PASS: Failed write retains reservation and unpaid job: touring-six
+PASS: Captured reward/release settles once: touring-six
+PASS: Idle job does not consume/restore fuel, fluids or wear: touring-six
+PASS: Repeat claim cannot duplicate payment: touring-six
+PASS: Cancel releases with no payout: touring-six
+PASS: Post-release salvage leaves no dangling reservation: touring-six
+PASS: Exact whole-build reservation: utility-pickup
+PASS: Assigned car cannot race: utility-pickup
+PASS: Assigned part cannot be removed: utility-pickup
+PASS: Assigned engine cannot detach: utility-pickup
+PASS: Assigned tune cannot apply: utility-pickup
+PASS: Assigned car cannot buy operating resources: utility-pickup
+PASS: All nested assembly valuations are inspection-only: utility-pickup
+PASS: Pre-assignment quote cannot dispose assigned assets: utility-pickup
+PASS: Early job claim rejected: utility-pickup
+PASS: Reservation and captured job survive serialization: utility-pickup
+PASS: Failed write retains reservation and unpaid job: utility-pickup
+PASS: Captured reward/release settles once: utility-pickup
+PASS: Idle job does not consume/restore fuel, fluids or wear: utility-pickup
+PASS: Repeat claim cannot duplicate payment: utility-pickup
+PASS: Cancel releases with no payout: utility-pickup
+PASS: Post-release salvage leaves no dangling reservation: utility-pickup
+PASS: Exact whole-build reservation: v8-muscle
+PASS: Assigned car cannot race: v8-muscle
+PASS: Assigned part cannot be removed: v8-muscle
+PASS: Assigned engine cannot detach: v8-muscle
+PASS: Assigned tune cannot apply: v8-muscle
+PASS: Assigned car cannot buy operating resources: v8-muscle
+PASS: All nested assembly valuations are inspection-only: v8-muscle
+PASS: Pre-assignment quote cannot dispose assigned assets: v8-muscle
+PASS: Early job claim rejected: v8-muscle
+PASS: Reservation and captured job survive serialization: v8-muscle
+PASS: Failed write retains reservation and unpaid job: v8-muscle
+PASS: Captured reward/release settles once: v8-muscle
+PASS: Idle job does not consume/restore fuel, fluids or wear: v8-muscle
+PASS: Repeat claim cannot duplicate payment: v8-muscle
+PASS: Cancel releases with no payout: v8-muscle
+PASS: Post-release salvage leaves no dangling reservation: v8-muscle
+PASS: Level one limits simultaneous jobs.
+PASS: Expansion allows two independent duplicate-model assignments.
+PASS: Same owned instance cannot be assigned twice.
+PASS: Cash overflow rolls claim back.
+PASS: Future business version blocked.
+Checks: 159

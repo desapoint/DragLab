@@ -30,7 +30,7 @@ namespace DragLab.Domain
     [Serializable]
     public class OwnedCar
     {
-        public string instanceId, chassisId, engineAssemblyId;
+        public string instanceId, chassisId, engineAssemblyId, garageJobId;
         public InstalledBuild installed;
         public FuelState fuel = new FuelState();
         public bool fuelInitialized;
@@ -89,6 +89,7 @@ namespace DragLab.Domain
         public long lastEconomyUtcTicks;
         public List<EconomyReceipt> economyReceipts = new List<EconomyReceipt>();
         public RecoveryWork recoveryWork;
+        public GarageBusinessState business;
         [NonSerialized] public MechanicalCatalog catalog;
         public int saveVersion = 1;
         public int drivelineVersion;
@@ -107,7 +108,7 @@ namespace DragLab.Domain
 
         public static PlayerProfile New(long utcTicks)
         {
-            var p = new PlayerProfile { idleClaimUtcTicks = utcTicks };
+            var p = new PlayerProfile { idleClaimUtcTicks = utcTicks, business=new GarageBusinessState{version=1,accruedThroughUtcTicks=utcTicks,ratePerHour=100,capHours=8} };
             p.cars.Add(new OwnedCar { vehicleId = "starter-hatch" });
             return p;
         }
@@ -122,21 +123,8 @@ namespace DragLab.Domain
         }
         public OwnedCar SelectedCar { get { return cars.Find(c => c.instanceId == selectedOwnedVehicleId && c.vehicleId == selectedVehicleId) ?? cars.Find(c => c.vehicleId == selectedVehicleId); } }
         public int IdleRate { get { return new[] { 100, 180, 300, 500 }[garageLevel - 1]; } }
-        public int PendingIdle(long utcTicks)
-        {
-            double hours = Math.Max(0, (utcTicks - idleClaimUtcTicks) / (double)TimeSpan.TicksPerHour);
-            return (int)Math.Floor(Math.Min(8, hours) * IdleRate);
-        }
-        public int ClaimIdle(long utcTicks)
-        {
-            int reward = PendingIdle(utcTicks);
-            if (reward == 0) return 0;
-            cash += reward;
-            double hours = Math.Max(0, (utcTicks - idleClaimUtcTicks) / (double)TimeSpan.TicksPerHour);
-            // Preserve fractional earnings unless the cap has been exceeded.
-            idleClaimUtcTicks = hours >= 8 ? utcTicks : idleClaimUtcTicks + (long)(reward * (double)TimeSpan.TicksPerHour / IdleRate);
-            return reward;
-        }
+        public int PendingIdle(long utcTicks) { return GarageBusiness.Pending(this,GarageBusiness.DefaultPolicy(),utcTicks); }
+        public int ClaimIdle(long utcTicks) { return GarageBusiness.Claim(this,GarageBusiness.DefaultPolicy(),utcTicks,false); }
         public bool Upgrade(string category)
         {
             if (mechanicsVersion > 0) return catalog != null && MechanicsOwnership.LegacyUpgrade(this, category);
@@ -187,7 +175,7 @@ namespace DragLab.Domain
             cash = Math.Max(0, cash);
             reputation = Math.Max(0, reputation);
             garageLevel = (int)DragMath.Clamp(garageLevel, 1, 4);
-            if (idleClaimUtcTicks <= 0 || idleClaimUtcTicks > now) idleClaimUtcTicks = now;
+            if (idleClaimUtcTicks <= 0) idleClaimUtcTicks = now;
             if (careerWins == null) careerWins = new List<string>();
             if (saveVersion >= 2 && (cars == null || cars.Count == 0 && saveVersion < 5 || cars.Exists(c => c == null || string.IsNullOrEmpty(c.vehicleId)))) throw new ArgumentException("Invalid owned vehicle list.");
             if (cars == null || cars.Count == 0 && saveVersion < 5) cars = New(now).cars;

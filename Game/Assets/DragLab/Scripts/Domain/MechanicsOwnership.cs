@@ -23,6 +23,7 @@ namespace DragLab.Domain.Mechanics
             if (profile.runCheckpoints == null) profile.runCheckpoints = new List<RunCheckpoint>();
             profile.catalog = catalog;
             CareerProgression.Ensure(profile);
+            GarageBusiness.Ensure(profile);
             PaidEconomy.Ensure(profile);
             if (profile.savedSetups == null) profile.savedSetups = new List<SavedVehicleSetup>();
             foreach (var engine in profile.engines) { if (engine.slots == null) engine.slots = new List<SlotBinding>(); if (engine.tune == null) engine.tune = new Tune(); if (!string.IsNullOrEmpty(engine.parentVehicleId)) engine.fluids = null; }
@@ -103,6 +104,7 @@ namespace DragLab.Domain.Mechanics
             var result = catalog.Resolve(car.vehicleId, Definitions(profile, car), car.tune);
             if(string.IsNullOrEmpty(car.engineAssemblyId))result.errors.Add("No engine attached. Attach a stored engine in Assemblies.");
             if(car.engineRebuild!=null)result.errors.Add("Engine is reserved at the rebuild shop. Collect it after the quoted time.");
+            if(!string.IsNullOrEmpty(car.garageJobId))result.errors.Add("Car and installed components are reserved by a garage job. Claim or cancel to release.");
             foreach (var binding in car.installed.slots)
             {
                 var item = profile.parts.Find(p => p.instanceId == binding.partInstanceId);
@@ -157,6 +159,7 @@ namespace DragLab.Domain.Mechanics
             if(profile.cars.Count == 0 ? !string.IsNullOrEmpty(profile.selectedOwnedVehicleId) || !string.IsNullOrEmpty(profile.selectedVehicleId) : !profile.cars.Any(c=>c.instanceId==profile.selectedOwnedVehicleId&&c.vehicleId==profile.selectedVehicleId))return "Invalid selected owned vehicle reference.";
             string economyError = PaidEconomy.ValidateState(profile); if (economyError != null) return economyError;
             string careerError = CareerProgression.Validate(profile); if (careerError != null) return careerError;
+            string businessError=GarageBusiness.Validate(profile);if(businessError!=null)return businessError;
             var identities = new HashSet<string>(); var bindings = new HashSet<string>();
             Func<string, bool> unique = id => !string.IsNullOrEmpty(id) && identities.Add(id);
             foreach (var car in profile.cars)

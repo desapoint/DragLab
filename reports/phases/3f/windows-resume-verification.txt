@@ -1,0 +1,9 @@
+﻿3F actual second process / offline reservation / real-clock claim.
+PASS: Actual restart retains captured deadline, reward and reservation.
+PASS: Actual real-clock claim pays captured reward and releases once.
+PASS: Offline work retains exact fuel, liquids and worn components.
+PASS: Actual cancel releases without payout.
+PASS: Actual idle button claims old captured rate, retaining fractional income.
+PASS: Claim/cancel/income remain valid after disk reload.
+PASS: No runtime / GUI / audio errors.
+Runtime errors: 0

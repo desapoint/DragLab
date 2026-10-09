@@ -263,7 +263,7 @@ namespace DragLab.Runtime
             GUILayout.Label("DRAGLAB / first systems slice", heading);
             GUILayout.Label("$" + profile.cash + "   |   REP " + profile.reputation + "   |   " + (Build == null ? "EMPTY GARAGE / retained assets preserved" : Selected.spec.displayName), stat);
             GUILayout.BeginHorizontal();
-            foreach (string tab in new[] { "Garage", "Parts", "Tuning", "Stats", "Race setup", "Career", "Driving", "Settings" })
+            foreach (string tab in new[] { "Garage", "Parts", "Tuning", "Stats", "Race setup", "Career", "Business", "Driving", "Settings" })
             {
                 GUI.enabled = Build != null || tab == "Garage" || tab == "Driving" || tab == "Settings";
                 if (GUILayout.Button(tab, GUILayout.Height(32))) pendingAction = () => { resetGameConfirm = false; DiscardPreviews(); screen = tab; scroll = Vector2.zero; if (tab == "Parts") repairsOnly = false; if (tab == "Tuning") BeginTuneDraft(); };
@@ -277,6 +277,7 @@ namespace DragLab.Runtime
             if (screen == "Stats") GUILayout.Label("Full saved car statistics are shown alongside. Choose Tuning or preview a part to compare changes.");
             if (screen == "Race setup") FreeRaceGUI();
             if (screen == "Career") CareerGUI();
+            if (screen == "Business") BusinessGUI();
             if (screen == "Driving") DrivingGUI();
             if (screen == "Settings") SettingsGUI();
             if (screen == "Collection") CollectionGUI();
@@ -323,17 +324,11 @@ namespace DragLab.Runtime
             if (GUILayout.Button("Full car statistics")) pendingAction = () => { DiscardPreviews(); screen = "Stats"; scroll = Vector2.zero; };
             GUILayout.Space(8);
             if (GUILayout.Button("Owned car collection / dealership / buy another copy")) pendingAction = OpenCollection;
-            GUILayout.Label("GARAGE BUSINESS / $" + profile.IdleRate + " per hour, eight-hour cap", stat);
-            int idle = profile.PendingIdle(DateTime.UtcNow.Ticks);
-            if (GUILayout.Button("Claim $" + idle)) { profile.ClaimIdle(DateTime.UtcNow.Ticks); ProfileStore.Save(profile); }
-            GUI.enabled = profile.garageLevel < 4 && profile.cash >= profile.garageLevel * 1200;
-            if (GUILayout.Button("Upgrade business / $" + profile.garageLevel * 1200))
-            {
-                // Settle old-rate earnings before raising the income rate.
-                profile.ClaimIdle(DateTime.UtcNow.Ticks); profile.idleClaimUtcTicks = DateTime.UtcNow.Ticks;
-                profile.cash -= profile.garageLevel * 1200; profile.garageLevel++; ProfileStore.Save(profile);
-            }
-            GUI.enabled = true;
+            GUILayout.Label("GARAGE BUSINESS / $"+BusinessPolicy.hourlyRates[profile.garageLevel-1]+" per hour / "+BusinessPolicy.capsHours[profile.garageLevel-1]+" hour cap",stat);
+            if(PartButton("garage-business","Jobs / expansion / claim income"))pendingAction=OpenBusiness;
+            int idle=GarageBusiness.Pending(profile,BusinessPolicy,DateTime.UtcNow.Ticks);
+            GUI.enabled=idle>0;if(PartButton("garage-idle","Claim $"+idle))QueuePartAction(p=>GarageBusiness.Claim(p,BusinessPolicy,DateTime.UtcNow.Ticks));GUI.enabled=true;
+
         }
 
         bool EquipmentButtons(string label, ref EquipmentSetting setting)
