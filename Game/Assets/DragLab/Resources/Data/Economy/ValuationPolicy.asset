@@ -19,6 +19,8 @@ MonoBehaviour:
     usedPartFraction: 0.45
     scrapFraction: 0.08
     minimumWearFactor: 0.1
+    dealerResaleMarkup: 0.35
+    dealerHandlingFee: 1
     distanceDiscountPerKm: 0.00002
     hourDiscount: 0.0005
     stressDiscountPerSecond: 0.0001

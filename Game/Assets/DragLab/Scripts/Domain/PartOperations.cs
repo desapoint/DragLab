@@ -11,9 +11,9 @@ namespace DragLab.Domain.Mechanics
             var car = Car(profile, vehicleId); var part = catalog.Find(definitionId);
             if(part==null||profile.reputation<part.reputationRequired)throw new InvalidOperationException("Part offer requires REP "+(part==null?0:part.reputationRequired)+"; no preceding rank purchase is required.");
             if (!catalog.Fits(catalog.Spec(car.vehicleId), part)) throw new InvalidOperationException("Incompatible purchase for selected vehicle.");
-            if (part.price < 0 || profile.cash < part.price) throw new InvalidOperationException("Insufficient cash.");
+            int price=InventoryPricing.NewSet(part);if (price < 0 || profile.cash < price) throw new InvalidOperationException("Insufficient cash.");
             var item = new PartInstance { instanceId = MechanicsOwnership.NewId("part"), definitionId = part.id };
-            profile.parts.Add(item); profile.cash -= part.price;
+            profile.parts.Add(item); profile.cash -= price;
             if (install) MechanicsOwnership.Replace(profile, car, item, catalog);
             return item.instanceId;
         }

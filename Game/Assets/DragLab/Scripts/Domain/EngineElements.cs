@@ -16,7 +16,7 @@ namespace DragLab.Domain.Mechanics
         public bool Failed {get{return health<=0||fault==ElementFault.Disabled||fault==ElementFault.DroppedValve||fault==ElementFault.Seized;}}
     }
     [Serializable] public sealed class LooseEngineElement
-    { public string definitionId; public int unitPrice; public EngineElement element; }
+    { public string definitionId, storageId; public int unitPrice; public EngineElement element; public bool tireUnit; public TireCondition tire; }
     public static class EngineElements
     {
         public static int ValveCount(VehicleSpec v){return v.valvesPerCylinder>0?v.valvesPerCylinder:(v.fuelSystemConverted?v.originalFueling:v.engineBehavior.fueling)==FuelSystem.Carburetor?2:4;}

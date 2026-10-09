@@ -26,6 +26,8 @@ namespace DragLab.Domain.Mechanics
         public string id = "prototype-used-market";
         public int version = 1, quoteSeconds = 300;
         public double usedPartFraction = .45, scrapFraction = .08, minimumWearFactor = .1;
+        public double dealerResaleMarkup = .35;
+        public int dealerHandlingFee = 1;
         public double distanceDiscountPerKm = .00002, hourDiscount = .0005, stressDiscountPerSecond = .0001, reconditionDiscount = .01, historyDiscountLimit = .2;
         public int defaultBareChassis = 200;
         public List<BuyerPolicy> buyers = new List<BuyerPolicy>();
@@ -48,6 +50,7 @@ namespace DragLab.Domain.Mechanics
         }
         internal void Validate()
         {
+            if(!MechanicsSchema.Finite(dealerResaleMarkup)||dealerResaleMarkup<0||dealerResaleMarkup>10||dealerHandlingFee<1)throw new InvalidOperationException("Invalid dealer spread/handling fee.");
             if (string.IsNullOrWhiteSpace(id) || version < 1 || quoteSeconds < 1 || quoteSeconds > 86400 || defaultBareChassis < 0) throw new InvalidOperationException("Invalid valuation policy identity/lifetime/core value.");
             foreach (var v in new[] { usedPartFraction, scrapFraction, minimumWearFactor, historyDiscountLimit }) if (!MechanicsSchema.Finite(v) || v < 0 || v > 1) throw new InvalidOperationException("Invalid valuation policy fraction.");
             if (scrapFraction > 1 || buyers == null || buyers.Count == 0 || models == null || qualities == null) throw new InvalidOperationException("Missing valuation policy tables.");
@@ -154,7 +157,7 @@ namespace DragLab.Domain.Mechanics
             if (kept.Any(id => !items.Any(i => i.instanceId == id))) throw new InvalidOperationException("Retained IDs must be actual parts inside the quoted asset.");
             foreach (var item in items.Where(i => !kept.Contains(i.instanceId)).OrderBy(i => i.instanceId, StringComparer.Ordinal)) {
                 var d = catalog.Find(item.definitionId); if (d.price < 0) throw new InvalidOperationException("Invalid catalogue price.");
-                loose += PartValue(item, d, policy, buyer, lines); ids.Add(item.instanceId); ids.AddRange(item.condition.elements.Select(e => e.id)); faulty |= Fault(item.condition);
+                loose += PartValue(item, d, policy, buyer, lines); ids.AddRange(item.ItemIds); faulty |= Fault(item.condition);
             }
             if (spec != null) {
                 var defs = items.Where(i => !kept.Contains(i.instanceId)).ToDictionary(i => catalog.Find(i.definitionId).category, i => i.definitionId);

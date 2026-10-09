@@ -13,7 +13,7 @@ namespace DragLab.Domain.Mechanics
     }
     public static class EngineElementService
     {
-        public static int Price(PartDefinition d,ComponentCondition c){return Math.Max(1,(int)Math.Ceiling(d.price/(double)Math.Max(1,c.elements.Length)));}
+        public static int Price(PartDefinition d,ComponentCondition c){return InventoryPricing.NewUnit(d,c.elements.Length);}
         static PartInstance Installed(PlayerProfile p,OwnedCar car,string partId)
         {EngineRebuilds.RequireAvailable(car);var item=p.parts.Find(i=>i.instanceId==partId);if(item==null||!car.installed.slots.Any(s=>s.partInstanceId==partId)||item.condition.elements==null||item.condition.elements.Length==0)throw new InvalidOperationException("Individual part is no longer installed.");if(item.condition.failed)foreach(var e in item.condition.elements)e.health=0;return item;}
         public static void RefreshAggregate(ComponentCondition c)

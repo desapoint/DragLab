@@ -83,6 +83,7 @@ namespace DragLab.Domain
         public string selectedOwnedVehicleId;
         public List<PartInstance> parts = new List<PartInstance>();
         public List<LooseEngineElement> looseEngineElements=new List<LooseEngineElement>();
+        public InventoryState inventory = new InventoryState();
         public List<SavedVehicleSetup> savedSetups = new List<SavedVehicleSetup>();
         public List<EngineAssemblyInstance> engines = new List<EngineAssemblyInstance>();
         public List<RunCheckpoint> runCheckpoints = new List<RunCheckpoint>();

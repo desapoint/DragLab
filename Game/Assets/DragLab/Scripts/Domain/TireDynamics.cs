@@ -3,6 +3,7 @@ using System.Linq;
 using DragLab.Domain.Mechanics;
 namespace DragLab.Domain {
  [Serializable] public sealed class TireCondition {
+  public string id;
   public float health=1; public bool failed; public double temperatureC=20,slipEnergyJ,distanceM,lastContactWorkJ,consumedLife;
   public TireCondition Copy(){return (TireCondition)MemberwiseClone();}
   public string Validate(){if(!MechanicsSchema.Finite(health)||health<0||health>1||!MechanicsSchema.Finite(temperatureC)||temperatureC< -50||temperatureC>2000||!MechanicsSchema.Finite(slipEnergyJ)||slipEnergyJ<0||!MechanicsSchema.Finite(distanceM)||distanceM<0||!MechanicsSchema.Finite(lastContactWorkJ)||lastContactWorkJ<0||!MechanicsSchema.Finite(consumedLife)||consumedLife<0)return "Invalid per-wheel tire condition.";return null;}

@@ -13,9 +13,10 @@ namespace DragLab.Domain
         public List<PartInstance> components;
         public static InspectionBuild Capture(PlayerProfile profile, OwnedCar car, Tune adjustments = null, string definitionId = null, string instanceId = null, PartCategory? remove = null, IEnumerable<PartCartLine> cart = null, bool healthy = false)
         {
+            if(cart!=null)return PartCart.Preview(profile,car,cart);
             var map = MechanicsOwnership.Definitions(profile, car);
             var components = car.installed.slots.Select(s => profile.parts.Find(p => p.instanceId == s.partInstanceId)).Where(p => p != null).Select(p => p.Copy()).ToList();
-            PartInstance existing = instanceId == null ? null : profile.parts.Find(p => p.instanceId == instanceId);
+            PartInstance existing = instanceId == null ? null : profile.parts.Find(p => p.instanceId == instanceId) ?? profile.inventory.dealer.Where(s=>s.part!=null).Select(s=>s.part).FirstOrDefault(p=>p.instanceId==instanceId);
             var definition = profile.catalog.Find(existing == null ? definitionId : existing.definitionId);
             if (definition != null)
             {
@@ -25,12 +26,6 @@ namespace DragLab.Domain
                 replacement.slot = definition.category.ToString(); components.Add(replacement);
             }
             if (remove.HasValue) { map.Remove(remove.Value); components.RemoveAll(p => p.slot == remove.Value.ToString()); }
-            if(cart!=null) foreach(var line in cart.Where(l=>l.install)) {
-                var d=profile.catalog.Find(line.definitionId);
-                if(d==null||!profile.catalog.Fits(profile.catalog.Spec(car.vehicleId),d))throw new ArgumentException("Incompatible cart preview.");
-                map[d.category]=d.id;components.RemoveAll(p=>p.slot==d.category.ToString());
-                components.Add(new PartInstance {instanceId="cart-preview/"+d.id,definitionId=d.id,slot=d.category.ToString()});
-            }
             if(healthy) foreach(var item in components) {
                 var c=item.condition;c.health=1;c.failed=false;c.failureReason="";c.deposits=c.leakSeverity=c.adjustmentError=c.stressExposure=c.serviceWearRemainder=0;c.clutchOilCondition=1;
                 foreach(var e in c.elements){e.health=1;e.fault=ElementFault.None;e.severity=0;e.wearRemainder=0;}

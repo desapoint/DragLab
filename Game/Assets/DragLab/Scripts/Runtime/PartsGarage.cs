@@ -45,7 +45,8 @@ namespace DragLab.Runtime
             GUILayout.BeginHorizontal();
             foreach(string page in new[]{"Installed","Inventory","Shop"})if(PartButton("parts-page:"+page,page==partsPage?"["+page+"]":page)){string selected=page;pendingAction=()=>SelectPartsPage(selected);}
             GUILayout.EndHorizontal();
-            if(partsPage=="Shop")CartGUI();
+            CartGUI();
+            if(partsPage!="Shop")InventoryDestinationGUI();
 
             if(PartButton("parts-setups", "Save / load configurations / buy missing setup parts")) pendingAction = OpenSetups;
             if(PartButton("parts-valuation", "Compare used-market quotes / preview only")) pendingAction = () => OpenValuation(ValuationKind.Car, Build.instanceId);
@@ -70,6 +71,7 @@ namespace DragLab.Runtime
             else
             {
                 GUILayout.Label(catalog.Find(installed.definitionId).name + " / " + Condition(installed));
+                if(partsPage!="Shop")StageMoveButton(installed.instanceId,installed.definitionId);
                 InstalledService(installed);
                 var category = partCategory;
                 GUILayout.BeginHorizontal();
@@ -85,6 +87,7 @@ namespace DragLab.Runtime
                 GUILayout.Label(definition.name + " / $" + definition.price + " / " + definition.quality);
                 GUILayout.Label(SharedUnitSettings.TorqueText(definition.description), partProse);
                 GUILayout.Label(PartTuning.Summary(definition), partProse);
+                OfferModeGUI(definition);
                 foreach (var value in PartSemantics.Stats(definition)) GUILayout.Label(value.label + ": " + (value.unit == "Nm" ? SharedUnitSettings.Torque(value.value, "0.##") : value.unit == "bar" ? SharedUnitSettings.Pressure(value.value) : value.value.ToString("0.##") + " " + value.unit));
                 GUILayout.BeginHorizontal();
                 if (PartButton("preview:" + id, "Preview this part / dyno")) PreviewPart(id);
@@ -93,10 +96,11 @@ namespace DragLab.Runtime
                 if(PartButton("cart-fit:"+id,"Add / mark install"))AddToCart(id,true);
                 GUI.enabled = profile.cash >= definition.price && profile.reputation >= definition.reputationRequired;
                 if(definition.reputationRequired>0)GUILayout.Label("Requires REP "+definition.reputationRequired+" / independent offer");
-                if (PartButton("buy:" + id, "Buy loose")) QueuePayment(new PaymentRequest { kind = PaymentKind.Part, carId = carId, targetId = id });
-                if (PartButton("fit:" + id, "Buy + install")) QueuePayment(new PaymentRequest { kind = PaymentKind.Part, carId = carId, targetId = id, install = true });
+                if (PartButton("buy:" + id, "Buy complete set now")) QueuePayment(new PaymentRequest { kind = PaymentKind.Part, carId = carId, targetId = id });
+                if (PartButton("fit:" + id, "Buy + install complete set now")) QueuePayment(new PaymentRequest { kind = PaymentKind.Part, carId = carId, targetId = id, install = true });
                 GUI.enabled = true; GUILayout.EndHorizontal();
             }
+            DealerGUI();
             }
             if(partsPage=="Inventory") {
             inventoryAllCategories=GUILayout.Toggle(inventoryAllCategories,"Show all part categories");
@@ -104,8 +108,9 @@ namespace DragLab.Runtime
             GUILayout.Label("LOOSE INVENTORY / "+profile.parts.Count(p=>p.location==PartLocation.Inventory)+" retained parts");
             if(PartButton("inventory-assemblies","Stored engines / attached component trees"))pendingAction=OpenAssemblies;
 
-            foreach (var item in profile.parts.Where(p => p.location == PartLocation.Inventory && (inventoryAllCategories || catalog.Find(p.definitionId).category == partCategory) && (!inventoryCompatibleOnly || catalog.Fits(Selected.spec, catalog.Find(p.definitionId)))))
+            foreach (var entry in SharedInventory.Entries(profile,InventoryKind.Storage,inventoryStorage).Where(e=>e.part!=null&&(inventoryAllCategories||catalog.Find(e.definitionId).category==partCategory)&&(!inventoryCompatibleOnly||catalog.Fits(Selected.spec,catalog.Find(e.definitionId)))))
             {
+                var item=entry.part;
                 string id = item.instanceId; var definition = catalog.Find(item.definitionId);
                 GUILayout.Label(definition.name + " / " + Condition(item)); GUILayout.BeginHorizontal();
                 bool enabled=GUI.enabled;GUI.enabled=enabled&&catalog.Fits(Selected.spec,definition);
@@ -116,7 +121,10 @@ namespace DragLab.Runtime
                 if (PartButton("sell:" + id, "Sell loose / preview buyer quote")) pendingAction = () => OpenValuation(ValuationKind.LoosePart, id);
                 if (PartButton("part-quote:" + id, "Buyer quote")) pendingAction = () => OpenValuation(ValuationKind.LoosePart, id);
                 GUILayout.EndHorizontal();
+                StageMoveButton(id,item.definitionId);
+                if(PartButton("cart-sell:"+id,"Add sale to cart / wholesaler"))StageInventory(new PartCartLine{action=CartAction.SellPart,assetId=id,definitionId=item.definitionId});
             }
+            InventoryUnitsGUI();
             }
             if(partsPage=="Inventory"||partsPage=="Installed") {
             GUILayout.Label("DONORS / transfer leaves the donor slot empty");

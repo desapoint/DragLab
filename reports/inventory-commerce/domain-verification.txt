@@ -1,0 +1,408 @@
+PASS: city-three / Complete piston set counts the actual engine cylinders
+PASS: city-three / Valve set counts cylinder and valve topology
+PASS: city-three / Individual preview never changes condition, identities or resources
+PASS: Atomic checkout / one save
+PASS: city-three / Single replacement restores only the chosen piston
+PASS: city-three / Old individual identity and unused purchased unit remain in storage
+PASS: city-three / Individual cumulative dyno matches actual installation
+PASS: Atomic checkout / one save
+PASS: city-three / Default quantity one purchases and installs a complete matched set
+PASS: Atomic checkout / one save
+PASS: city-three / Moving containers preserves condition and exclusive item ownership
+PASS: Atomic checkout / one save
+PASS: city-three / Sale moves the original item to dealer stock and records disposal from player ownership
+PASS: city-three / Dealer spread prevents immediate same-buyer resale profit
+PASS: Atomic checkout / one save
+PASS: city-three / Used purchase returns the same identity and wear without duplication
+PASS: Atomic checkout / one save
+PASS: city-three / Individual tire replacement retains the other tires' life/heat and old tire condition
+PASS: city-three / Whole-car sale quote includes fitted individual tire identities
+PASS: Atomic checkout / one save
+PASS: city-three / Rods / rods buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: city-three / FuelSystem / injector buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: city-three / Ignition / spark plug / lead buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: city-three / Ignition / ignition coil buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: city-three / ValveSprings / intake spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: city-three / ValveSprings / exhaust spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: city-three / Valves / intake valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: city-three / Valves / exhaust valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: city-three / Followers / intake follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: city-three / Followers / exhaust follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: city-three / PistonRings / piston ring pack buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: city-three / Bearings / rod bearing pair buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: city-three / ValveSeals / intake valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: city-three / ValveSeals / exhaust valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: city-three / Pistons / pistons buys independently without a fitted target
+PASS: city-three / Storage/dealer/unit state reloads without healing or rewriting identities
+PASS: rally-sedan / Complete piston set counts the actual engine cylinders
+PASS: rally-sedan / Valve set counts cylinder and valve topology
+PASS: rally-sedan / Individual preview never changes condition, identities or resources
+PASS: Atomic checkout / one save
+PASS: rally-sedan / Single replacement restores only the chosen piston
+PASS: rally-sedan / Old individual identity and unused purchased unit remain in storage
+PASS: rally-sedan / Individual cumulative dyno matches actual installation
+PASS: Atomic checkout / one save
+PASS: rally-sedan / Default quantity one purchases and installs a complete matched set
+PASS: Atomic checkout / one save
+PASS: rally-sedan / Moving containers preserves condition and exclusive item ownership
+PASS: Atomic checkout / one save
+PASS: rally-sedan / Sale moves the original item to dealer stock and records disposal from player ownership
+PASS: rally-sedan / Dealer spread prevents immediate same-buyer resale profit
+PASS: Atomic checkout / one save
+PASS: rally-sedan / Used purchase returns the same identity and wear without duplication
+PASS: Atomic checkout / one save
+PASS: rally-sedan / Individual tire replacement retains the other tires' life/heat and old tire condition
+PASS: rally-sedan / Whole-car sale quote includes fitted individual tire identities
+PASS: Atomic checkout / one save
+PASS: rally-sedan / Rods / rods buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: rally-sedan / FuelSystem / injector buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: rally-sedan / Ignition / spark plug / lead buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: rally-sedan / Ignition / ignition coil buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: rally-sedan / ValveSprings / intake spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: rally-sedan / ValveSprings / exhaust spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: rally-sedan / Valves / intake valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: rally-sedan / Valves / exhaust valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: rally-sedan / Followers / intake follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: rally-sedan / Followers / exhaust follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: rally-sedan / PistonRings / piston ring pack buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: rally-sedan / Bearings / rod bearing pair buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: rally-sedan / ValveSeals / intake valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: rally-sedan / ValveSeals / exhaust valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: rally-sedan / Pistons / pistons buys independently without a fitted target
+PASS: rally-sedan / Storage/dealer/unit state reloads without healing or rewriting identities
+PASS: sport-coupe / Complete piston set counts the actual engine cylinders
+PASS: sport-coupe / Valve set counts cylinder and valve topology
+PASS: sport-coupe / Individual preview never changes condition, identities or resources
+PASS: Atomic checkout / one save
+PASS: sport-coupe / Single replacement restores only the chosen piston
+PASS: sport-coupe / Old individual identity and unused purchased unit remain in storage
+PASS: sport-coupe / Individual cumulative dyno matches actual installation
+PASS: Atomic checkout / one save
+PASS: sport-coupe / Default quantity one purchases and installs a complete matched set
+PASS: Atomic checkout / one save
+PASS: sport-coupe / Moving containers preserves condition and exclusive item ownership
+PASS: Atomic checkout / one save
+PASS: sport-coupe / Sale moves the original item to dealer stock and records disposal from player ownership
+PASS: sport-coupe / Dealer spread prevents immediate same-buyer resale profit
+PASS: Atomic checkout / one save
+PASS: sport-coupe / Used purchase returns the same identity and wear without duplication
+PASS: Atomic checkout / one save
+PASS: sport-coupe / Individual tire replacement retains the other tires' life/heat and old tire condition
+PASS: sport-coupe / Whole-car sale quote includes fitted individual tire identities
+PASS: Atomic checkout / one save
+PASS: sport-coupe / Rods / rods buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: sport-coupe / FuelSystem / injector buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: sport-coupe / Ignition / spark plug / lead buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: sport-coupe / Ignition / ignition coil buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: sport-coupe / ValveSprings / intake spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: sport-coupe / ValveSprings / exhaust spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: sport-coupe / Valves / intake valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: sport-coupe / Valves / exhaust valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: sport-coupe / Followers / intake follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: sport-coupe / Followers / exhaust follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: sport-coupe / PistonRings / piston ring pack buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: sport-coupe / Bearings / rod bearing pair buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: sport-coupe / ValveSeals / intake valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: sport-coupe / ValveSeals / exhaust valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: sport-coupe / Pistons / pistons buys independently without a fitted target
+PASS: sport-coupe / Storage/dealer/unit state reloads without healing or rewriting identities
+PASS: starter-hatch / Complete piston set counts the actual engine cylinders
+PASS: starter-hatch / Valve set counts cylinder and valve topology
+PASS: starter-hatch / Individual preview never changes condition, identities or resources
+PASS: Atomic checkout / one save
+PASS: starter-hatch / Single replacement restores only the chosen piston
+PASS: starter-hatch / Old individual identity and unused purchased unit remain in storage
+PASS: starter-hatch / Individual cumulative dyno matches actual installation
+PASS: Atomic checkout / one save
+PASS: starter-hatch / Default quantity one purchases and installs a complete matched set
+PASS: Atomic checkout / one save
+PASS: starter-hatch / Moving containers preserves condition and exclusive item ownership
+PASS: Atomic checkout / one save
+PASS: starter-hatch / Sale moves the original item to dealer stock and records disposal from player ownership
+PASS: starter-hatch / Dealer spread prevents immediate same-buyer resale profit
+PASS: Atomic checkout / one save
+PASS: starter-hatch / Used purchase returns the same identity and wear without duplication
+PASS: Atomic checkout / one save
+PASS: starter-hatch / Individual tire replacement retains the other tires' life/heat and old tire condition
+PASS: starter-hatch / Whole-car sale quote includes fitted individual tire identities
+PASS: Atomic checkout / one save
+PASS: starter-hatch / Rods / rods buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: starter-hatch / FuelSystem / injector buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: starter-hatch / Ignition / spark plug / lead buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: starter-hatch / Ignition / ignition coil buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: starter-hatch / ValveSprings / intake spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: starter-hatch / ValveSprings / exhaust spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: starter-hatch / Valves / intake valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: starter-hatch / Valves / exhaust valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: starter-hatch / Followers / intake follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: starter-hatch / Followers / exhaust follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: starter-hatch / PistonRings / piston ring pack buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: starter-hatch / Bearings / rod bearing pair buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: starter-hatch / ValveSeals / intake valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: starter-hatch / ValveSeals / exhaust valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: starter-hatch / Pistons / pistons buys independently without a fitted target
+PASS: starter-hatch / Storage/dealer/unit state reloads without healing or rewriting identities
+PASS: super-v8 / Complete piston set counts the actual engine cylinders
+PASS: super-v8 / Valve set counts cylinder and valve topology
+PASS: super-v8 / Individual preview never changes condition, identities or resources
+PASS: Atomic checkout / one save
+PASS: super-v8 / Single replacement restores only the chosen piston
+PASS: super-v8 / Old individual identity and unused purchased unit remain in storage
+PASS: super-v8 / Individual cumulative dyno matches actual installation
+PASS: Atomic checkout / one save
+PASS: super-v8 / Default quantity one purchases and installs a complete matched set
+PASS: Atomic checkout / one save
+PASS: super-v8 / Moving containers preserves condition and exclusive item ownership
+PASS: Atomic checkout / one save
+PASS: super-v8 / Sale moves the original item to dealer stock and records disposal from player ownership
+PASS: super-v8 / Dealer spread prevents immediate same-buyer resale profit
+PASS: Atomic checkout / one save
+PASS: super-v8 / Used purchase returns the same identity and wear without duplication
+PASS: Atomic checkout / one save
+PASS: super-v8 / Individual tire replacement retains the other tires' life/heat and old tire condition
+PASS: super-v8 / Whole-car sale quote includes fitted individual tire identities
+PASS: Atomic checkout / one save
+PASS: super-v8 / Rods / rods buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: super-v8 / FuelSystem / injector buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: super-v8 / Ignition / spark plug / lead buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: super-v8 / Ignition / ignition coil buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: super-v8 / ValveSprings / intake spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: super-v8 / ValveSprings / exhaust spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: super-v8 / Valves / intake valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: super-v8 / Valves / exhaust valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: super-v8 / Followers / intake follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: super-v8 / Followers / exhaust follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: super-v8 / PistonRings / piston ring pack buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: super-v8 / Bearings / rod bearing pair buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: super-v8 / ValveSeals / intake valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: super-v8 / ValveSeals / exhaust valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: super-v8 / Pistons / pistons buys independently without a fitted target
+PASS: super-v8 / Storage/dealer/unit state reloads without healing or rewriting identities
+PASS: touring-six / Complete piston set counts the actual engine cylinders
+PASS: touring-six / Valve set counts cylinder and valve topology
+PASS: touring-six / Individual preview never changes condition, identities or resources
+PASS: Atomic checkout / one save
+PASS: touring-six / Single replacement restores only the chosen piston
+PASS: touring-six / Old individual identity and unused purchased unit remain in storage
+PASS: touring-six / Individual cumulative dyno matches actual installation
+PASS: Atomic checkout / one save
+PASS: touring-six / Default quantity one purchases and installs a complete matched set
+PASS: Atomic checkout / one save
+PASS: touring-six / Moving containers preserves condition and exclusive item ownership
+PASS: Atomic checkout / one save
+PASS: touring-six / Sale moves the original item to dealer stock and records disposal from player ownership
+PASS: touring-six / Dealer spread prevents immediate same-buyer resale profit
+PASS: Atomic checkout / one save
+PASS: touring-six / Used purchase returns the same identity and wear without duplication
+PASS: Atomic checkout / one save
+PASS: touring-six / Individual tire replacement retains the other tires' life/heat and old tire condition
+PASS: touring-six / Whole-car sale quote includes fitted individual tire identities
+PASS: Atomic checkout / one save
+PASS: touring-six / Rods / rods buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: touring-six / FuelSystem / injector buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: touring-six / Ignition / spark plug / lead buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: touring-six / Ignition / ignition coil buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: touring-six / ValveSprings / intake spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: touring-six / ValveSprings / exhaust spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: touring-six / Valves / intake valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: touring-six / Valves / exhaust valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: touring-six / Followers / intake follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: touring-six / Followers / exhaust follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: touring-six / PistonRings / piston ring pack buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: touring-six / Bearings / rod bearing pair buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: touring-six / ValveSeals / intake valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: touring-six / ValveSeals / exhaust valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: touring-six / Pistons / pistons buys independently without a fitted target
+PASS: touring-six / Storage/dealer/unit state reloads without healing or rewriting identities
+PASS: utility-pickup / Complete piston set counts the actual engine cylinders
+PASS: utility-pickup / Valve set counts cylinder and valve topology
+PASS: utility-pickup / Individual preview never changes condition, identities or resources
+PASS: Atomic checkout / one save
+PASS: utility-pickup / Single replacement restores only the chosen piston
+PASS: utility-pickup / Old individual identity and unused purchased unit remain in storage
+PASS: utility-pickup / Individual cumulative dyno matches actual installation
+PASS: Atomic checkout / one save
+PASS: utility-pickup / Default quantity one purchases and installs a complete matched set
+PASS: Atomic checkout / one save
+PASS: utility-pickup / Moving containers preserves condition and exclusive item ownership
+PASS: Atomic checkout / one save
+PASS: utility-pickup / Sale moves the original item to dealer stock and records disposal from player ownership
+PASS: utility-pickup / Dealer spread prevents immediate same-buyer resale profit
+PASS: Atomic checkout / one save
+PASS: utility-pickup / Used purchase returns the same identity and wear without duplication
+PASS: Atomic checkout / one save
+PASS: utility-pickup / Individual tire replacement retains the other tires' life/heat and old tire condition
+PASS: utility-pickup / Whole-car sale quote includes fitted individual tire identities
+PASS: Atomic checkout / one save
+PASS: utility-pickup / Rods / rods buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: utility-pickup / Ignition / spark plug / lead buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: utility-pickup / Ignition / ignition coil buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: utility-pickup / ValveSprings / intake spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: utility-pickup / ValveSprings / exhaust spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: utility-pickup / Valves / intake valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: utility-pickup / Valves / exhaust valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: utility-pickup / Followers / intake follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: utility-pickup / Followers / exhaust follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: utility-pickup / PistonRings / piston ring pack buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: utility-pickup / Bearings / rod bearing pair buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: utility-pickup / ValveSeals / intake valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: utility-pickup / ValveSeals / exhaust valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: utility-pickup / Pistons / pistons buys independently without a fitted target
+PASS: utility-pickup / Storage/dealer/unit state reloads without healing or rewriting identities
+PASS: v8-muscle / Complete piston set counts the actual engine cylinders
+PASS: v8-muscle / Valve set counts cylinder and valve topology
+PASS: v8-muscle / Individual preview never changes condition, identities or resources
+PASS: Atomic checkout / one save
+PASS: v8-muscle / Single replacement restores only the chosen piston
+PASS: v8-muscle / Old individual identity and unused purchased unit remain in storage
+PASS: v8-muscle / Individual cumulative dyno matches actual installation
+PASS: Atomic checkout / one save
+PASS: v8-muscle / Default quantity one purchases and installs a complete matched set
+PASS: Atomic checkout / one save
+PASS: v8-muscle / Moving containers preserves condition and exclusive item ownership
+PASS: Atomic checkout / one save
+PASS: v8-muscle / Sale moves the original item to dealer stock and records disposal from player ownership
+PASS: v8-muscle / Dealer spread prevents immediate same-buyer resale profit
+PASS: Atomic checkout / one save
+PASS: v8-muscle / Used purchase returns the same identity and wear without duplication
+PASS: Atomic checkout / one save
+PASS: v8-muscle / Individual tire replacement retains the other tires' life/heat and old tire condition
+PASS: v8-muscle / Whole-car sale quote includes fitted individual tire identities
+PASS: Atomic checkout / one save
+PASS: v8-muscle / Rods / rods buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: v8-muscle / Ignition / spark plug / lead buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: v8-muscle / Ignition / ignition coil buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: v8-muscle / ValveSprings / intake spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: v8-muscle / ValveSprings / exhaust spring / retainer buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: v8-muscle / Valves / intake valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: v8-muscle / Valves / exhaust valve / guide buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: v8-muscle / Followers / intake follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: v8-muscle / Followers / exhaust follower / rocker buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: v8-muscle / PistonRings / piston ring pack buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: v8-muscle / Bearings / rod bearing pair buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: v8-muscle / ValveSeals / intake valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: v8-muscle / ValveSeals / exhaust valve seal buys independently without a fitted target
+PASS: Atomic checkout / one save
+PASS: v8-muscle / Pistons / pistons buys independently without a fitted target
+PASS: v8-muscle / Storage/dealer/unit state reloads without healing or rewriting identities
+PASS: Trade basket credits a sale before charging purchases; no initial cash required
+PASS: Failed mixed buy/sell save publishes nothing
+PASS: Atomic checkout / one save
+PASS: Successful trade settles the captured net price exactly
+PASS: Pricing policy change invalidates the entire quote
+PASS: Replayed mixed cart cannot resell or duplicate stock
+PASS: Invalid destination/individual position rejected before payment
+PASS: Invalid destination/individual position rejected before payment
+PASS: Shared move between cars retains original IDs and source slot becomes empty
+PASS: Moving an engine carries its descendant tree and retains an incomplete car
+PASS: Shared engine move installs the original complete tree
+Checks: 407

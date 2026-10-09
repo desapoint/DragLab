@@ -5,7 +5,7 @@ using System.Linq;
 namespace DragLab.Domain.Mechanics
 {
     [Serializable] public sealed class EngineAssemblyInstance {
-        public string instanceId, parentVehicleId, vehicleDefinitionId;
+        public string instanceId, parentVehicleId, vehicleDefinitionId, storageId;
         // Attached bindings/fluids live only in the car. Detached descendants live only here.
         public List<SlotBinding> slots = new List<SlotBinding>();
         public FluidState fluids;
@@ -28,6 +28,7 @@ namespace DragLab.Domain.Mechanics
             if (profile.savedSetups == null) profile.savedSetups = new List<SavedVehicleSetup>();
             foreach (var engine in profile.engines) { if (engine.slots == null) engine.slots = new List<SlotBinding>(); if (engine.tune == null) engine.tune = new Tune(); if (!string.IsNullOrEmpty(engine.parentVehicleId)) engine.fluids = null; }
             if(profile.looseEngineElements==null)profile.looseEngineElements=new List<LooseEngineElement>();
+            SharedInventory.Ensure(profile);
             foreach (var car in profile.cars)
             {
                 if(car.engineRebuild!=null&&!car.engineRebuild.active)car.engineRebuild=null;
@@ -220,6 +221,8 @@ namespace DragLab.Domain.Mechanics
                 if (!unique(item.instanceId) || item.Validate() != null || catalog.Find(item.definitionId) == null || (item.location != PartLocation.Inventory) != bindings.Contains(item.instanceId)) return "Duplicate/invalid/orphan part instance.";
             foreach(var loose in profile.looseEngineElements)if(loose==null||loose.element==null||loose.element.Validate()!=null||catalog.Find(loose.definitionId)==null||loose.unitPrice<0||!unique(loose.element.id))return "Invalid loose engine element.";
             foreach(var part in profile.parts)foreach(var element in part.condition.elements??new EngineElement[0])if(!EngineElements.FaultAllowed(catalog.Find(part.definitionId).category,element)||!unique(element.id))return "Invalid/duplicate engine element identity or fault.";
+            foreach(var part in profile.parts)foreach(var tire in part.condition.tires??new TireCondition[0])if(!string.IsNullOrEmpty(tire.id)&&!unique(tire.id))return "Duplicate tire identity.";
+            string inventoryError=SharedInventory.Validate(profile,identities);if(inventoryError!=null)return inventoryError;
             foreach(var car in profile.cars){if(car.engineRebuild!=null&&EngineRebuilds.Validate(profile,car)!=null)return "Invalid engine rebuild reservation.";}
             var runs = new HashSet<string>();
             foreach (var run in profile.runCheckpoints)

@@ -43,6 +43,7 @@ namespace DragLab.Runtime
                 inspectionTask=null;
             }
             if(statsKey!=key) {
+                if(screen=="Parts"&&previewCart)RefreshCartPrice();
                 statsKey=key;inspectionChangedAt=Time.realtimeSinceStartup;
                 if(inspectionBaseKey!=baseKey || savedStats==null) {
                     inspectionBaseKey=baseKey;
@@ -55,7 +56,7 @@ namespace DragLab.Runtime
                     }
                 }
                 inspectionPendingSource=null;proposedStats=null;
-                if(screen=="Parts"&&partsPage=="Shop"&&previewCart&&cart.Any(l=>l.install))inspectionPendingSource=InspectionBuild.Capture(profile,Build,cart:cart);
+                if(screen=="Parts"&&previewCart&&cartError==null&&cart.Any(l=>l.install||l.action==CartAction.Move))inspectionPendingSource=InspectionBuild.Capture(profile,Build,cart:cart);
                 else if(screen=="Tuning"&&draft!=null&&DraftDirty)inspectionPendingSource=InspectionBuild.Capture(profile,Build,draft.values);
                 else if(screen=="Parts"&&(previewDefinitionId!=null||previewInstanceId!=null||previewRemoval.HasValue))inspectionPendingSource=InspectionBuild.Capture(profile,Build,definitionId:previewDefinitionId,instanceId:previewInstanceId,remove:previewRemoval);
                 if(inspectionPendingSource!=null)proposedStats=CarInspection.CalculatePrepared(inspectionPendingSource,CarInspection.PrepareCar(inspectionPendingSource),false);

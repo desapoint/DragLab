@@ -1,0 +1,14 @@
+Shared inventories, set/unit offers, trade cart and dealer buyback / actual Windows mouse / isolated profile.
+PASS: Default offer buys a complete piston set without selecting any cylinder
+PASS: Complete kit preview never saves or modifies assets
+PASS: Installing the complete kit retains the old set and every worn element
+PASS: Staged storage move waits for confirmation
+PASS: Actual container move survives disk reload
+PASS: Cart sale transfers the actual worn set to dealer stock
+PASS: Buying back dealer stock retains identity and wear with no duplication
+PASS: Individual units can be purchased without choosing a cylinder
+PASS: Inventory unit installation changes only the selected piston and keeps the reused identity
+PASS: Individual installation and retained old piston survive reload
+PASS: Complete set remains directly selectable after individual buying
+PASS: Inventory commerce workflow reports zero runtime/GUI errors
+Runtime errors: 0

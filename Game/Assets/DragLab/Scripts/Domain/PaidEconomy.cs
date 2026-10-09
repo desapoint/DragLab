@@ -164,8 +164,8 @@ namespace DragLab.Domain.Mechanics
             if (q == null) throw new InvalidOperationException("Request a sale quote first."); Guard(p, now, q.Id);
             string invalid = Valuations.Validate(q, p, cat, policy, now); if (invalid != null) throw new InvalidOperationException(invalid);
             int before = p.cash; int after = checked(before + q.Total); var kept = q.RetainedIds.ToArray(); var keptTree = new List<string>();
-            if (q.Kind == ValuationKind.LoosePart) p.parts.RemoveAll(i => i.instanceId == q.AssetId);
-            else if (q.Kind == ValuationKind.LooseElement) p.looseEngineElements.RemoveAll(e => e.element.id == q.AssetId);
+            if (q.Kind == ValuationKind.LoosePart) {var item=p.parts.Find(i=>i.instanceId==q.AssetId);p.parts.Remove(item);p.inventory.dealer.Add(new DealerStock{part=item,paidPrice=q.Total});}
+            else if (q.Kind == ValuationKind.LooseElement) {var item=p.looseEngineElements.Find(e=>e.element.id==q.AssetId);p.looseEngineElements.Remove(item);p.inventory.dealer.Add(new DealerStock{isUnit=true,unit=item,paidPrice=q.Total});}
             else if (q.Kind == ValuationKind.Engine) {
                 var engine = p.engines.Find(e => e.instanceId == q.AssetId); if (!string.IsNullOrEmpty(engine.parentVehicleId)) AssemblyOperations.Detach(p, engine.parentVehicleId);
                 foreach (string id in kept) AssemblyOperations.RemovePart(p, engine.instanceId, cat.Find(p.parts.Find(i => i.instanceId == id).definitionId).category);
@@ -176,7 +176,7 @@ namespace DragLab.Domain.Mechanics
                 if (!string.IsNullOrEmpty(engineId)) AssemblyOperations.Detach(p, car.instanceId);
                 if (q.Kind == ValuationKind.Chassis && !string.IsNullOrEmpty(engineId)) {
                     var keptEngine = p.engines.Find(e => e.instanceId == engineId); keptTree.Add(engineId);
-                    foreach (var b in keptEngine.slots) { var part = p.parts.Find(i => i.instanceId == b.partInstanceId); keptTree.Add(part.instanceId); keptTree.AddRange(part.condition.elements.Select(e => e.id)); }
+                    foreach (var b in keptEngine.slots) { var part = p.parts.Find(i => i.instanceId == b.partInstanceId); keptTree.AddRange(part.ItemIds); }
                 }
                 foreach (string id in kept) {
                     var item = p.parts.Find(i => i.instanceId == id); var category = cat.Find(item.definitionId).category;
@@ -188,7 +188,7 @@ namespace DragLab.Domain.Mechanics
                 if (p.selectedOwnedVehicleId == car.instanceId) { var next = p.cars.FirstOrDefault(); p.selectedOwnedVehicleId = next?.instanceId ?? ""; p.selectedVehicleId = next?.vehicleId ?? ""; }
             }
             p.cash = after;
-            var retained = new List<string>(kept); foreach (string id in kept) { var item = p.parts.Find(i => i.instanceId == id); if (item != null) retained.AddRange(item.condition.elements.Select(e => e.id)); }
+            var retained = new List<string>(); foreach (string id in kept) { var item = p.parts.Find(i => i.instanceId == id);if(item!=null)retained.AddRange(item.ItemIds);else retained.Add(id); }
             retained.AddRange(keptTree);
             Record(p, q.Id, "Sell " + q.Kind, q.AssetId, before, now, 0, 0, 0, q.IncludedIds.ToArray(), retained.ToArray());
         }

@@ -1,0 +1,7 @@
+fixture,phase,frames_after_10_skipped,frame_median_ms,frame_p95_ms,frame_max_ms,frames_above_33_3_ms,gui_median_ms,gui_p95_ms,gui_max_ms
+inventory-commerce-native-final,startup,1701,9.441,15.536,146.815,11,7.091,13.196,41.326
+inventory-commerce-shop-final,startup,135,15.602,17.551,22.984,0,13.43,14.922,19.623
+inventory-commerce-shop-final,shop-cart-clicks,772,13.027,17.024,145.653,7,10.611,13.984,42.912
+inventory-commerce-shop-final,tuning-slider-preview,120,10.322,21.227,24.256,0,7.51,18.094,21.111
+inventory-commerce-shop-final,driving-setting-held-gesture,330,6.946,7.162,40.99,1,0.943,1.159,4.626
+inventory-commerce-shop-final,opponent-audio-race,296,6.941,7.085,47.894,1,0.219,0.288,0.436

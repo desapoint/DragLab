@@ -25,7 +25,7 @@ namespace DragLab.Runtime
         }
         internal void RefreshValuation()
         {
-            try { valuationQuote = Valuations.Capture(profile, profile.catalog, PricingPolicy, valuationKind, valuationAsset, valuationBuyer, DateTime.UtcNow.Ticks, valuationKept); CheckValuation(); }
+            try { valuationQuote = InventoryPricing.Sell(profile, valuationKind, valuationAsset, PricingPolicy, valuationBuyer, DateTime.UtcNow.Ticks, valuationKept); CheckValuation(); }
             catch (Exception e) { valuationQuote = null; valuationStatus = e.Message; }
         }
         internal void CheckValuation() { valuationStatus = Valuations.Validate(valuationQuote, profile, profile.catalog, PricingPolicy, DateTime.UtcNow.Ticks); valuationCheckAt = Time.realtimeSinceStartup + 1; }

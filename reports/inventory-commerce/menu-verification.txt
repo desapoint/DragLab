@@ -1,0 +1,8 @@
+PASS: Background prepared-car probe completes without accessing Unity APIs
+PASS: Immediate dyno matches full authoritative probe
+PASS: Fast and background previews preserve all owned state
+Isolated starter preview wall ms: immediate=30,09 full=664,78
+PASS: Legacy settings retain master and default opponent gain
+PASS: Opponent volume persists independently
+PASS: Audio slider preview does not write until final gesture save
+Checks: 6

@@ -45,10 +45,11 @@ namespace DragLab.Domain.Mechanics
     public sealed class PartInstance
     {
         public int version = MechanicsSchema.Version;
-        public string instanceId, definitionId;
+        public string instanceId, definitionId, storageId;
         public PartLocation location;
         public string ownerId = "", slot = "";
         public ComponentCondition condition = new ComponentCondition();
+        public IEnumerable<string> ItemIds { get {yield return instanceId;foreach(var e in condition.elements??new EngineElement[0])yield return e.id;foreach(var t in condition.tires??new TireCondition[0])if(!string.IsNullOrEmpty(t.id))yield return t.id;} }
         public PartInstance Copy() { var copy = (PartInstance)MemberwiseClone(); copy.condition = condition == null ? null : condition.Copy(); return copy; }
         public string Validate()
         {
