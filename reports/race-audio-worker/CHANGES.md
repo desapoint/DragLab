@@ -1,0 +1,9 @@
+# Race audio and opponent worker — 2026-10-09
+
+Tire audio retains the accepted noise-excited rubber screech without restoring the broadband hiss. Intensity uses actual wheel/contact sliding speed and contact force. Resonance also uses the solver’s effective friction (compound, tire wear/temperature, pressure, road grip), normal load and outer radius. Contact diagnostics are copied with wheel checkpoints; they do not change forces, wear or the mechanical schema.
+
+The opponent has independent engine/exhaust/accessory and tire synthesis using its own hardware and state. Its gain is 0.65 at equal longitudinal position (approximately −3.7 dB), with additional distance attenuation over 35 metres. Settings includes a separately persisted opponent volume beneath the shared master. Legacy volume files default the new preference to 100%; mute, pause, garage and reset silence both cars. Preferences survive progression reset.
+
+A persistent opponent worker advances only the already-created domain car, concurrently with player advancement. Each fixed tick joins before telemetry, result logic, saving or presentation can read the opponent. Creation, staging, Unity objects and audio publication stay on the main thread. Worker shutdown joins on return, retry, reset and destruction. WebGL keeps sequential execution. No simulation duplication or live profile access on the worker.
+
+Validation: Unity compilation and RacePresentationVerify passed 163 checks, including sample-exact player/opponent checkpoint parity and outcomes for all eight vehicles, contact-spectrum modulation and attenuation. The paired 1,800-tick timing measurements are in verification.txt; they are isolated batch wall-time measurements, not an FPS promise. Windows audio/menu interaction validation will accompany the subsequent interface increment. Historical Slice 3 gates were retained, not rerun.

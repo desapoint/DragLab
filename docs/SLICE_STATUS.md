@@ -102,3 +102,8 @@ Approved after the tire-feedback stutter report: full recoverable saves remain a
 ## Tire sound harshness refinement (2026-10-09)
 
 User audition requests recognizable rubber-on-asphalt screech with less white-noise-like grit: replace the four wavering pure-tone voices with prominent noise-excited rubber resonances, remove the broadband hiss bed and reduce low contact texture. Preserve contact-driven intensity, smooth shift chirps and grip recovery, shared volume and pause/reset/export behavior. See [sound refinement and verification](../reports/tire-sound-refinement/CHANGES.md). Physics, smoke and asynchronous race saves remain unchanged.
+
+
+## Race audio and opponent worker (2026-10-09)
+
+Tire resonance now follows actual effective friction, load and radius as well as sliding work. Opponent engine/tire audio uses its own state, distance attenuation and a saved volume control under the shared master. Desktop races advance the opponent on a persistent worker with a fixed-tick join and the same authoritative physics. Eight-car exact parity and paired timing passed; see [checks and implementation](../reports/race-audio-worker/CHANGES.md). No later slice is advanced.

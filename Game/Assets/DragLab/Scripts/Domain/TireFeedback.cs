@@ -5,7 +5,7 @@ namespace DragLab.Domain
     // Presentation derives from contact, never engine torque demand. Braking skids count too.
     public struct TireFeedback
     {
-        public double intensity, slidingSpeed, slip;
+        public double intensity, slidingSpeed, slip, grip, normalLoadN, radiusM;
         public static TireFeedback Read(CarState state,int wheel)
         {
             if(state==null||state.contact==null||!state.wheelContactInitialized||wheel<0||wheel>3)return default;
@@ -14,7 +14,7 @@ namespace DragLab.Domain
             double force=Math.Abs(state.contact.force[wheel]);
             if(!Finite(relative)||!Finite(ratio)||!Finite(force)||relative<.3||ratio<.045||force<40)return default;
             double gate=DragMath.Clamp((ratio-.045)/.10,0,1)*DragMath.Clamp((relative-.3)/1.2,0,1);
-            return new TireFeedback{slidingSpeed=relative,slip=ratio,intensity=gate*DragMath.Clamp(Math.Sqrt(relative*force/24000),0,1)};
+            return new TireFeedback{slidingSpeed=relative,slip=ratio,grip=state.contact.friction[wheel],normalLoadN=state.contact.normalLoadN[wheel],radiusM=state.wheelRadiusM,intensity=gate*DragMath.Clamp(Math.Sqrt(relative*force/24000),0,1)};
         }
         static bool Finite(double value){return !double.IsNaN(value)&&!double.IsInfinity(value);}
         public static TireFeedback Authored(CarState state,int wheel,DriveType drive)
@@ -63,8 +63,14 @@ namespace DragLab.Domain
             for(int w=0;w<4;w++) {
                 // Noise excites a prominent rubber squeal and a rough upper resonance.
                 // No independent pure tones or fixed per-wheel musical pitch offsets.
-                double center=1150+moving*420+Math.Min(170,frame.Wheel(w).slidingSpeed*6);
-                double angle=2*Math.PI*center/rate,alpha=Math.Sin(angle)/(2*9),normal=1+alpha;
+                var contact=frame.Wheel(w);
+                // Effective friction includes compound, temperature, wear, pressure and local road grip.
+                // Load and tire radius shift rubber resonance gently; contact work controls loudness.
+                double grip=contact.grip>0?DragMath.Clamp(contact.grip, .25, 2):1;
+                double load=contact.normalLoadN>0?DragMath.Clamp(contact.normalLoadN/3500,.4,2):1;
+                double radius=contact.radiusM>0?DragMath.Clamp(.3/contact.radiusM,.8,1.2):1;
+                double center=(1150+moving*420+Math.Min(170,contact.slidingSpeed*6))*radius*(1+.07*(grip-1)-.04*(load-1));
+                double angle=2*Math.PI*center/rate,alpha=Math.Sin(angle)/(2*(8+grip)),normal=1+alpha;
                 b0[w]=alpha/normal;a1[w]=-2*Math.Cos(angle)/normal;a2[w]=(1-alpha)/normal;
                 angle=2*Math.PI*center*1.8/rate;alpha=Math.Sin(angle)/(2*4.5);normal=1+alpha;
                 ub0[w]=alpha/normal;ua1[w]=-2*Math.Cos(angle)/normal;ua2[w]=(1-alpha)/normal;

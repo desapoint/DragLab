@@ -45,6 +45,6 @@ namespace DragLab.Runtime
             }
             statsView.Draw(new Rect(left, 150, width - left - 16, height - 166), savedStats, proposedStats, title, slot);
         }
-        void OnDestroy() { statsView.Dispose(); }
+        void OnDestroy() { race?.CloseOpponentWorker(); statsView.Dispose(); }
     }
 }

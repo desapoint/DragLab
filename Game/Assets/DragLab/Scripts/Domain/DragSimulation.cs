@@ -764,6 +764,12 @@ namespace DragLab.Domain
 
     public sealed class RaceSimulation
     {
+        OpponentWorker opponentWorker;
+        readonly Action opponentTick;
+        double opponentDt, opponentGreenTime;
+        public void EnableOpponentWorker() { if (opponentWorker == null) opponentWorker = new OpponentWorker(); }
+        public void CloseOpponentWorker() { if (opponentWorker != null) { opponentWorker.Dispose(); opponentWorker = null; } }
+        void AdvanceOpponent() { Advance(opponent, new DriverInput { throttle = 1 }, opponentDt, opponentGreenTime); }
         public const double GreenAt = 3;
         public readonly CarSimulation player;
         public readonly CarSimulation opponent;
@@ -788,6 +794,7 @@ namespace DragLab.Domain
         {
             if (double.IsNaN(distance) || distance <= 0 || distance > 1609.345) throw new ArgumentOutOfRangeException("distance");
             this.player = player; this.opponent = opponent; this.distance = distance;
+            opponentTick = AdvanceOpponent;
             phase = RacePhase.Countdown;
         }
 
@@ -826,8 +833,14 @@ namespace DragLab.Domain
             if (greenTime >= opponent.driver.reactionSeconds) opponent.Launch(greenTime);
             DriverInput ai = new DriverInput { throttle = 1 };
             // Launch is timestamped at this tick's end. Drive begins on the following interval.
-            if (playerWasLaunched) Advance(player, input, dt, greenTime);
-            if (opponentWasLaunched) Advance(opponent, ai, dt, greenTime);
+            if (opponentWasLaunched && opponentWorker != null) {
+                opponentDt = dt; opponentGreenTime = greenTime; opponentWorker.Begin(opponentTick);
+                try { if (playerWasLaunched) Advance(player, input, dt, greenTime); }
+                finally { opponentWorker.Join(); }
+            } else {
+                if (playerWasLaunched) Advance(player, input, dt, greenTime);
+                if (opponentWasLaunched) Advance(opponent, ai, dt, greenTime);
+            }
             telemetry.Record(player, greenTime, dt);
             if ((player.state.finished || player.state.disqualified || player.state.engineFailed || player.state.drivetrainFailed) && (opponent.state.finished || opponent.state.engineFailed || opponent.state.drivetrainFailed) || greenTime >= 90)
             {

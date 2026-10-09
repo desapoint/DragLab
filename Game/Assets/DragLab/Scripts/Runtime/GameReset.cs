@@ -61,7 +61,7 @@ namespace DragLab.Runtime
             profile = fresh; settings = profile.driving; difficulty = profile.difficulty;
             DiscardPreviews();
             saveDelay = 0; pendingAction = null;
-            race = null; activeEvent = null; previousPass = finishedPass = null;
+            race?.CloseOpponentWorker(); race = null; activeEvent = null; previousPass = finishedPass = null;
             benchmark = null; lastBenchmarkKey = null; accumulator = 0;
             practiceRun = awarded = paused = audioSettingsOpen = false;
             freeDistance = 402.336f; freeOpponent = 0; partCategory = 0;

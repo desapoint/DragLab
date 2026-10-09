@@ -23,7 +23,7 @@ namespace DragLab.Runtime
         LayeredCarView playerView, aiView;
         Camera raceCamera;
         DragStripView strip;
-        EngineAudio engineAudio;
+        EngineAudio engineAudio, opponentAudio;
         readonly RaceInputAdapter controls = new RaceInputAdapter();
         Action pendingAction;
         float saveDelay;
@@ -59,7 +59,7 @@ namespace DragLab.Runtime
         internal void PauseRace(bool value) { SetPaused(value); }
         internal void OpenAudioSettings() { if (screen == "Race") { SetPaused(true); audioSettingsOpen = true; } else { DiscardPreviews(); screen = "Settings"; scroll = Vector2.zero; } }
         internal void PreviewVehicle(string id) { DiscardPreviews(); profile.selectedVehicleId = id; MechanicsOwnership.Ensure(profile,profile.catalog); lastBenchmarkKey = null; screen = "Garage"; ShowGarageCar(); }
-        public void ReturnToGarage() { DiscardPreviews(); if(!SyncRaceWear(true,"Returned to garage"))return; race = null; screen = "Garage"; ShowGarageCar(); }
+        public void ReturnToGarage() { DiscardPreviews(); if(!SyncRaceWear(true,"Returned to garage"))return; race?.CloseOpponentWorker(); race = null; screen = "Garage"; ShowGarageCar(); }
         public void StartPractice() { StartRace(null, true); }
 
         VehicleDefinition Selected { get { return Array.Find(vehicles, v => v.spec.id == profile.selectedVehicleId) ?? vehicles[0]; } }
@@ -98,6 +98,7 @@ namespace DragLab.Runtime
             raceCamera.transform.position = new Vector3(2, 0, -10);
             if (raceCamera.GetComponent<AudioListener>() == null) raceCamera.gameObject.AddComponent<AudioListener>();
             engineAudio = new GameObject("Driving Audio").AddComponent<EngineAudio>(); engineAudio.Initialize();
+            opponentAudio = new GameObject("Opponent Audio").AddComponent<EngineAudio>(); opponentAudio.Initialize();
             strip = new GameObject("Drag Strip").AddComponent<DragStripView>(); strip.Build();
             playerView = new GameObject("Player Car").AddComponent<LayeredCarView>();
             aiView = new GameObject("Opponent Car").AddComponent<LayeredCarView>();
@@ -107,7 +108,7 @@ namespace DragLab.Runtime
         }
         void ShowGarageCar()
         {
-            if (Build == null) { playerView.gameObject.SetActive(false); aiView.gameObject.SetActive(false); strip.ShowGarage(); engineAudio.Silence(); controls.Clear(); return; }
+            if (Build == null) { playerView.gameObject.SetActive(false); aiView.gameObject.SetActive(false); strip.ShowGarage(); engineAudio.Silence(); opponentAudio.Silence(); controls.Clear(); return; }
             playerView.gameObject.SetActive(true);
             Color paint;
             if (!ColorUtility.TryParseHtmlString(Build.paintHex, out paint)) paint = Selected.defaultPaint;
@@ -118,7 +119,7 @@ namespace DragLab.Runtime
             aiView.gameObject.SetActive(false);
             raceCamera.transform.position = new Vector3(2, 0, -10);
             strip.ShowGarage();
-            engineAudio.Silence(); controls.Clear();
+            engineAudio.Silence(); opponentAudio.Silence(); controls.Clear();
         }
 
         public void StartRace(CareerEventDefinition evt = null, bool practice = false)
@@ -138,9 +139,13 @@ namespace DragLab.Runtime
             Tune enemyTune = evt != null ? JsonUtility.FromJson<Tune>(JsonUtility.ToJson(evt.opponentTune)) : opponent.CreateStockTune();
             var enemyDriver = new DriverSettings { reactionSeconds = difficulty < .5 ? .45 : difficulty < 1.5 ? .22 : .08 };
             var playerDriver = JsonUtility.FromJson<DriverSettings>(JsonUtility.ToJson(settings));
+            race?.CloseOpponentWorker();
             race = RaceSessionFactory.Create(resolved.spec, resolved.tune, playerDriver,
                 opponent.spec, enemyTune, enemyDriver, evt != null ? evt.distanceM : practiceRun ? 402.336 : freeDistance,
                 profile.parts.FindAll(p => p.ownerId == Build.instanceId || p.ownerId == Build.engineAssemblyId));
+            #if !UNITY_WEBGL
+            race.EnableOpponentWorker();
+#endif
             race.player.SetMassInputs(resolved.tune.driverMassKg, resolved.tune.payloadMassKg, resolved.tune.payloadPositionM, resolved.tune.payloadHeightM, Build.fuel.litres);
             race.player.state.fuelUsedLitres = Build.fuel.cumulativeUsedLitres;
             race.player.SetFluids(Build.fluids);
@@ -162,6 +167,7 @@ namespace DragLab.Runtime
             accumulator = 0; awarded = false; paused = false; resultScroll = Vector2.zero;
             controls.Clear(); engineAudio.Silence();
             engineAudio.Configure(race.player.spec, race.player.tune);
+            opponentAudio.Configure(race.opponent.spec, race.opponent.tune);
             strip.Render(race);
         }
 
@@ -215,6 +221,8 @@ namespace DragLab.Runtime
             playerView.Animate(race.player.state);
             aiView.Animate(race.opponent.state);
             engineAudio.Render(race.player.state, !paused && race.phase != RacePhase.Finished, 1, tiresActive:!paused);
+            opponentAudio.Render(race.opponent.state, !paused && race.phase != RacePhase.Finished,
+                SharedAudioSettings.OpponentVolume * SharedAudioSettings.OpponentGain(race.opponent.state.distance - race.player.state.distance), tiresActive:!paused);
         }
 
         void FinishRace()
@@ -232,6 +240,7 @@ namespace DragLab.Runtime
             if (!value) audioSettingsOpen = false;
             // Windows can send a pause callback before Awake creates the audio source.
             if (engineAudio != null) engineAudio.Silence();
+            if (opponentAudio != null) opponentAudio.Silence();
             if(value&&profile!=null&&race!=null)SyncRaceWear();
         }
         void OnApplicationFocus(bool focused) { if (!focused && screen == "Race" && !RuntimeVerification.Active) SetPaused(true); }

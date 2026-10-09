@@ -33,6 +33,11 @@ namespace DragLab.Runtime
             if (GUILayout.Button("75%")) SharedAudioSettings.SetMasterVolume(.75f);
             if (GUILayout.Button("100%")) SharedAudioSettings.SetMasterVolume(1);
             GUILayout.EndHorizontal();
+            GUILayout.Label("Opponent sounds / " + SharedAudioSettings.OpponentVolume.ToString("P0"));
+            float opponent = GUILayout.HorizontalSlider(SharedAudioSettings.OpponentVolume, 0, 1);
+            if (GUI.enabled && opponent != SharedAudioSettings.OpponentVolume && (inputType == EventType.MouseDown || inputType == EventType.MouseDrag || inputType == EventType.KeyDown)) SharedAudioSettings.SetOpponentVolume(opponent, false);
+            if (inputType == EventType.MouseUp || inputType == EventType.KeyUp) SharedAudioSettings.Save();
+            GUILayout.Label("Opponent engine and tires start about 4 dB quieter at equal distance, fade as the cars separate, and also follow master volume.", wrapped);
             GUILayout.Label("One saved setting for racing, engine tests and the dyno concert. 0% mutes all sound.", wrapped);
             GUILayout.Label("Engine, exhaust and accessory gains remain available in the bench Mix tab for sound design.", wrapped);
             if (audio != null) GUILayout.Label("Generated output: " + (audio.OutputRms > .000001f ? (20 * Mathf.Log10(audio.OutputRms)).ToString("F1") + " dBFS RMS" : "silent"), wrapped);

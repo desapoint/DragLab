@@ -7,7 +7,8 @@ namespace DragLab.Domain
         // Order FL, FR, RL, RR. Angular speed rad/s, angle rad, forces N, work J.
         public double speed,distance,acceleration,brakeWorkJ,contactWorkJ,differentialWorkJ,resistanceWorkJ,driveWorkJ;
         public double[] omega=new double[4],angle=new double[4],slip=new double[4],force=new double[4],slipWorkJ=new double[4],driveTorqueNm=new double[4],brakeTorqueNm=new double[4],contactTorqueNm=new double[4];
-        public WheelContactState Copy(){var s=(WheelContactState)MemberwiseClone();s.omega=(double[])omega.Clone();s.angle=(double[])angle.Clone();s.slip=(double[])slip.Clone();s.force=(double[])force.Clone();s.slipWorkJ=(double[])slipWorkJ.Clone();s.driveTorqueNm=(double[])driveTorqueNm.Clone();s.brakeTorqueNm=(double[])brakeTorqueNm.Clone();s.contactTorqueNm=(double[])contactTorqueNm.Clone();return s;}
+        public double[] normalLoadN=new double[4], friction=new double[4];
+        public WheelContactState Copy(){var s=(WheelContactState)MemberwiseClone();s.normalLoadN=(double[])normalLoadN.Clone();s.friction=(double[])friction.Clone();s.omega=(double[])omega.Clone();s.angle=(double[])angle.Clone();s.slip=(double[])slip.Clone();s.force=(double[])force.Clone();s.slipWorkJ=(double[])slipWorkJ.Clone();s.driveTorqueNm=(double[])driveTorqueNm.Clone();s.brakeTorqueNm=(double[])brakeTorqueNm.Clone();s.contactTorqueNm=(double[])contactTorqueNm.Clone();return s;}
         public string Validate(){foreach(var values in new[]{omega,angle,slip,force,slipWorkJ,driveTorqueNm,brakeTorqueNm,contactTorqueNm}){if(values==null||values.Length!=4)return "Four wheel values required.";foreach(double value in values)if(!Mechanics.MechanicsSchema.Finite(value))return "Nonfinite wheel state.";}foreach(double value in new[]{speed,distance,acceleration,brakeWorkJ,contactWorkJ,differentialWorkJ,resistanceWorkJ,driveWorkJ})if(!Mechanics.MechanicsSchema.Finite(value))return "Nonfinite contact history.";if(speed<0)return "Invalid forward road speed.";return null;}
         public double KineticEnergy(double mass,double inertia){double e=.5*mass*speed*speed;foreach(double w in omega)e+=.5*inertia*w*w;return e;}
     }
@@ -54,7 +55,7 @@ namespace DragLab.Domain
             if(s.Validate()!=null||input.frontDifferential==null||input.rearDifferential==null||input.frontDifferential.Validate()!=null||input.rearDifferential.Validate()!=null)throw new ArgumentException("Invalid wheel/differential state.");
             if(input.massKg<=0||input.radiusM<=0||input.inertiaKgM2<=0||!Mechanics.MechanicsSchema.Finite(dt)||dt<=0||dt>.05)throw new ArgumentException("Invalid wheel contact parameters.");
             if(input.centerPreloadNm<0||input.centerTorqueBiasRatio<1||input.centerTorqueBiasRatio>10)throw new ArgumentException("Invalid center LSD parameters.");
-            double before=s.speed;Array.Clear(s.force,0,4);Array.Clear(s.driveTorqueNm,0,4);Array.Clear(s.brakeTorqueNm,0,4);Array.Clear(s.contactTorqueNm,0,4);var torque=new double[4];var p=Projection(input);ProjectInitial(s,p,input.inertiaKgM2);int steps=(int)Math.Ceiling(dt/(1.0/960));double h=dt/steps;
+            double before=s.speed;Array.Copy(input.normalLoadN,s.normalLoadN,4);Array.Copy(input.friction,s.friction,4);Array.Clear(s.force,0,4);Array.Clear(s.driveTorqueNm,0,4);Array.Clear(s.brakeTorqueNm,0,4);Array.Clear(s.contactTorqueNm,0,4);var torque=new double[4];var p=Projection(input);ProjectInitial(s,p,input.inertiaKgM2);int steps=(int)Math.Ceiling(dt/(1.0/960));double h=dt/steps;
             for(int sub=0;sub<steps;sub++)
             {
                 double subSpeedBefore=s.speed;var previous=(double[])s.omega.Clone();
