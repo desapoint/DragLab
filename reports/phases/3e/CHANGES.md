@@ -15,3 +15,5 @@ Validation:
 - Actual Windows career buttons and two races: **6 semantic checks**, persistent first/repeat rewards and real fuel use; **zero runtime/GUI/audio errors**. Fixtures stay separate from the player's save.
 
 Authoring/controls: [career progression](../../../docs/CAREER_PROGRESSION.md). `CareerExpandedVerify` adds missing assets without overwriting author edits. Source and complete Windows ZIP checkpoints accompany this report locally; generated captures/logs/saves/ZIPs are intentionally untracked. 3F and 3G follow; 3H remains the final integrated checkpoint.
+
+Post-checkpoint repository hygiene: Unity generated trailing spaces on empty YAML/meta fields. A separate follow-up commit removes those spaces without changing values or GUIDs. The immutable phase ZIPs retain their tested bytes. No Unity rerun was needed for whitespace-only normalization; the follow-up staged whitespace check passes.
