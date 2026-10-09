@@ -53,6 +53,7 @@ namespace DragLab.Runtime
         internal PlayerProfile Profile { get { return profile; } }
         internal RaceSimulation Race { get { return race; } }
         internal EngineAudio Audio { get { return engineAudio; } }
+        internal LayeredCarView PlayerView=>playerView;
         internal string ScreenName { get { return screen; } }
         internal bool IsPractice { get { return practiceRun; } }
         internal void PauseRace(bool value) { SetPaused(value); }
@@ -164,6 +165,8 @@ namespace DragLab.Runtime
         }
 
         void Update()
+        { using (FramePacingProbe.Measure(0)) UpdateMeasured(); }
+        void UpdateMeasured()
         {
             if (profile == null) return;
             if (pendingAction != null) { var action = pendingAction; pendingAction = null; action(); }
@@ -194,7 +197,7 @@ namespace DragLab.Runtime
             {
                 var input = controls.Consume();
                 if (verificationInput != null) input = verificationInput();
-                race.Step(input);
+                using (FramePacingProbe.Measure(2)) race.Step(input);
                 liveRunTick++;
                 accumulator -= DragMath.FixedStep;
             }
@@ -210,7 +213,7 @@ namespace DragLab.Runtime
             strip.Render(race);
             playerView.Animate(race.player.state);
             aiView.Animate(race.opponent.state);
-            engineAudio.Render(race.player.state, !paused && race.phase != RacePhase.Finished, 1);
+            engineAudio.Render(race.player.state, !paused && race.phase != RacePhase.Finished, 1, tiresActive:!paused);
         }
 
         void FinishRace()
@@ -236,6 +239,8 @@ namespace DragLab.Runtime
             if(liveRunTick-savedRunTick>=RunPersistence.PeriodTicks || RunPersistence.FailureCount(race.player)!=savedRunFailures)SyncRaceWear();
         }
         bool SyncRaceWear(bool close=false,string reason="")
+        { using (FramePacingProbe.Measure(3)) return SyncRaceWearMeasured(close,reason); }
+        bool SyncRaceWearMeasured(bool close=false,string reason="")
         {
             if(race==null||profile==null||liveRunClosed)return true;
             if(!close&&liveRunTick==savedRunTick)return true;
@@ -250,6 +255,8 @@ namespace DragLab.Runtime
         internal string AuditMouseEvents = "";
         internal Rect warmupLineLockRect;
         void OnGUI()
+        { using (FramePacingProbe.Measure(4)) DrawMeasuredGUI(); }
+        void DrawMeasuredGUI()
         {
             if (RuntimeVerification.Active && (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseUp)) AuditMouseEvents += Event.current.type + "@" + Event.current.mousePosition + ";";
             if (profile == null) return;

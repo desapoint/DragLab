@@ -1,0 +1,41 @@
+Contact-based tire feedback, deterministic DSP, master volume and bounded sprite smoke.
+PASS: A stationary burnout is audible without a body-speed gate
+PASS: An unloaded freely rotating wheel emits no road sound/smoke
+PASS: Pure rolling emits no slip feedback
+PASS: A locked braking tire uses the same contact feedback
+PASS: 44100 Hz / 1 channels repeats sample-exactly
+PASS: Bounded audible rubber friction / 44100 / 1
+PASS: Master volume applies once / 44100 / 1
+PASS: Master zero mutes tire DSP exactly
+PASS: Silence/reset clears tire voice
+PASS: Grip recovery has no persistent scrub layer
+PASS: Slip onset ramps without a sudden click
+PASS: 44100 Hz / 2 channels repeats sample-exactly
+PASS: Bounded audible rubber friction / 44100 / 2
+PASS: Master volume applies once / 44100 / 2
+PASS: Master zero mutes tire DSP exactly
+PASS: Silence/reset clears tire voice
+PASS: Grip recovery has no persistent scrub layer
+PASS: Slip onset ramps without a sudden click
+PASS: 48000 Hz / 1 channels repeats sample-exactly
+PASS: Bounded audible rubber friction / 48000 / 1
+PASS: Master volume applies once / 48000 / 1
+PASS: Master zero mutes tire DSP exactly
+PASS: Silence/reset clears tire voice
+PASS: Grip recovery has no persistent scrub layer
+PASS: Slip onset ramps without a sudden click
+PASS: 48000 Hz / 2 channels repeats sample-exactly
+PASS: Bounded audible rubber friction / 48000 / 2
+PASS: Master volume applies once / 48000 / 2
+PASS: Master zero mutes tire DSP exactly
+PASS: Silence/reset clears tire voice
+PASS: Grip recovery has no persistent scrub layer
+PASS: Slip onset ramps without a sudden click
+PASS: Acoustic-only bench retains its authored slip slider
+PASS: Authored acoustic RWD slip affects the rear axle only
+PASS: Sustained four-wheel smoke reuses a fixed pool
+PASS: Smoke fades after slip stops
+PASS: Reset clears particles and emission history
+PASS: Acoustic-only authored slip also previews particles on the selected driven axle
+PASS: Acoustic burnout WAV includes the new layer and repeats exactly with output headroom
+Checks: 39

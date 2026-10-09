@@ -1,4 +1,4 @@
-param([string]$FixtureName = (Get-Date -Format 'yyyyMMdd-HHmmss'), [switch]$CaptureOnly, [switch]$ThermalOnly, [switch]$ExpandedCareerOnly, [switch]$BalanceOnly, [switch]$BusinessOnly, [switch]$BusinessResume, [switch]$CollectionOnly, [switch]$ValuationOnly, [switch]$PaidOnly, [switch]$PaidResume, [switch]$AssemblySetupsOnly, [switch]$KeyboardOnly, [switch]$InductionOnly, [switch]$PowertrainOnly, [switch]$EngineBenchOnly, [switch]$MusicOnly, [switch]$AudioSettingsOnly, [switch]$AudioLevelsOnly, [switch]$ShiftHoldOnly, [switch]$BenchConfigOnly, [switch]$PartsOnly, [switch]$DrivingBenchOnly, [switch]$DrivingFailureOnly, [switch]$ResetOnly, [switch]$InspectionOnly, [switch]$DurabilityOnly, [switch]$AxleFailuresOnly, [switch]$PartEffectsOnly, [switch]$TuningGesturesOnly, [switch]$MaintenanceOnly, [switch]$StatsSummaryOnly, [switch]$ShowPlayer)
+param([string]$FixtureName = (Get-Date -Format 'yyyyMMdd-HHmmss'), [switch]$TireFeedbackOnly, [switch]$PacingOnly, [switch]$FrameProbe, [switch]$CaptureOnly, [switch]$ThermalOnly, [switch]$ExpandedCareerOnly, [switch]$BalanceOnly, [switch]$BusinessOnly, [switch]$BusinessResume, [switch]$CollectionOnly, [switch]$ValuationOnly, [switch]$PaidOnly, [switch]$PaidResume, [switch]$AssemblySetupsOnly, [switch]$KeyboardOnly, [switch]$InductionOnly, [switch]$PowertrainOnly, [switch]$EngineBenchOnly, [switch]$MusicOnly, [switch]$AudioSettingsOnly, [switch]$AudioLevelsOnly, [switch]$ShiftHoldOnly, [switch]$BenchConfigOnly, [switch]$PartsOnly, [switch]$DrivingBenchOnly, [switch]$DrivingFailureOnly, [switch]$ResetOnly, [switch]$InspectionOnly, [switch]$DurabilityOnly, [switch]$AxleFailuresOnly, [switch]$PartEffectsOnly, [switch]$TuningGesturesOnly, [switch]$MaintenanceOnly, [switch]$StatsSummaryOnly, [switch]$ShowPlayer)
 $ErrorActionPreference = 'Stop'
 if ($BusinessResume -and -not $BusinessOnly) { throw 'BusinessResume requires BusinessOnly and the original FixtureName.' }
 if ($PaidResume -and -not $PaidOnly) { throw 'PaidResume requires PaidOnly and the same FixtureName used for the paid first process.' }
@@ -11,6 +11,7 @@ $taskFixtures = (Resolve-Path -LiteralPath $taskFixtures).Path
 $taskLog = Join-Path $taskFixtures 'player.log'
 Write-Output "Player verification fixtures: $taskFixtures"
 $taskArgs = @('-screen-fullscreen','0','-screen-width','1280','-screen-height','720','-logFile',('"' + $taskLog + '"'),'--draglab-verify',('"' + $taskFixtures + '"'))
+if ($PacingOnly) { $taskArgs += '--draglab-pacing-only' }
 if ($EngineBenchOnly -or $MusicOnly -or $AudioSettingsOnly -or $AudioLevelsOnly -or $ShiftHoldOnly -or $BenchConfigOnly) {
     $taskArgs = @('-screen-fullscreen','0','-screen-width','1280','-screen-height','720','-logFile',('"' + $taskLog + '"'),'--draglab-engine-bench','--draglab-bench-verify',('"' + $taskFixtures + '"'))
     if ($KeyboardOnly) { $taskArgs += '--draglab-bench-keyboard' }
@@ -24,6 +25,8 @@ if ($ThermalOnly) { $taskArgs += '--draglab-thermal-only' }
 if ($CaptureOnly) { $taskArgs += '--draglab-capture-only' }
 if ($DrivingBenchOnly -or $DrivingFailureOnly) { $taskArgs = @('-screen-fullscreen','0','-screen-width','1280','-screen-height','720','-logFile',('"' + $taskLog + '"'),'--draglab-driving-bench','--draglab-driving-verify',('"' + $taskFixtures + '"')) }
 if ($DrivingFailureOnly) { $taskArgs += '--draglab-driving-failure' }
+if ($FrameProbe) { $taskArgs += '--draglab-frame-probe' }
+if ($TireFeedbackOnly) { $taskArgs += '--draglab-tire-feedback-only' }
 if ($AssemblySetupsOnly) { $taskArgs += '--draglab-assembly-setups-only' }
 if ($BalanceOnly) { $taskArgs += '--draglab-balance-only' }
 if ($BusinessOnly) { $taskArgs += '--draglab-business-only' }

@@ -140,6 +140,21 @@ namespace DragLab.Runtime
         }
         IEnumerator Run()
         {
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-tire-feedback-only")>=0) {
+                scene.SelectVehicle(0);scene.UseSliders();
+                scene.SetSliderControls(new EngineBenchControls{fixedRpm=true,targetRpm=3200,throttle=1,load=.3f,gear=1,tireSlip=.8f,roadSpeedKmh=0,launchControls=false});
+                SharedAudioSettings.SetMasterVolume(1);yield return new WaitForSecondsRealtime(.5f);
+                Check(scene.CarView.SlipParticleCount>0&&scene.Audio.TireOutputRms>.0001,"Authored acoustic slip produces smoke and audible tires at zero road speed");
+                float full=scene.Audio.TireOutputRms;SharedAudioSettings.SetMasterVolume(.25f);yield return new WaitForSecondsRealtime(.3f);
+                Check(scene.Audio.TireOutputRms<full*.4f&&scene.Audio.TireOutputRms>full*.18f,"Acoustic tire voice follows the shared master volume");
+                SharedAudioSettings.SetMasterVolume(0);yield return new WaitForSecondsRealtime(.25f);
+                Check(scene.Audio.TireOutputRms<1e-6,"Shared mute silences the new tire source");SharedAudioSettings.SetMasterVolume(.75f);
+                scene.Pause(true);int count=scene.CarView.SlipParticleCount;yield return new WaitForSecondsRealtime(.2f);
+                Check(scene.CarView.SlipParticleCount==count&&scene.Audio.TireOutputRms==0,"Acoustic pause freezes smoke and silences tires");
+                scene.ResetBench();yield return null;
+                Check(scene.CarView.SlipParticleCount==0,"Acoustic reset clears stale particles");
+                Check(errors==0,"Acoustic tire preview has zero runtime/GUI/DSP errors");yield break;
+            }
             yield return new WaitForSecondsRealtime(.2f);
             Check(scene.Bench != null && scene.Audio.Ready && FindFirstObjectByType<PrototypeGame>() == null, "Bench loads directly without race/profile initialization.");
             if (Array.IndexOf(Environment.GetCommandLineArgs(), "--draglab-bench-config") >= 0)

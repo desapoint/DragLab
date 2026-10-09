@@ -169,7 +169,7 @@ namespace DragLab.Domain
         readonly ExhaustFilter exhaustFilter;
         readonly ExhaustPopSynth pop;
         double cylinderPulseGain=1;
-        double firingPhase, crankPhase, turboPhase, turboSecondPhase, chargerPhase, chargerSecondPhase, tirePhase, tireAir, releasePhase, rpm, gain, low, airLow, dcIn, dcOut;
+        double firingPhase, crankPhase, turboPhase, turboSecondPhase, chargerPhase, chargerSecondPhase, releasePhase, rpm, gain, low, airLow, dcIn, dcOut;
         double releaseAge = 10, releaseStrength;
         int lastRelease;
         double gulpPhase, clatterPhase;
@@ -255,7 +255,7 @@ namespace DragLab.Domain
                 pulse *= 1 + frame.idleRoughness * (.55 * Math.Sin(Tau * crankPhase) + .25 * Math.Sin(Tau * crankPhase * 2));
                 pulse += carb * (.025 + profile.camOverlap * .04) * Math.Sin(phase) * (1 - frame.fuelHesitation * .7);
                 if(frame.cylinderContribution!=null&&frame.cylinderContribution.Length==profile.cylinders){int firingIndex=Math.Min(profile.cylinders-1,(int)(crankPhase*profile.cylinders));double contribution=frame.cylinderContribution[Mechanics.EngineElements.FiringOrder(profile.cylinders)[firingIndex]];cylinderPulseGain+=(contribution-cylinderPulseGain)*(1-Math.Exp(-1.0/(sampleRate*.001)));pulse*=cylinderPulseGain;}
-                double noise = Noise(); // Air noise is confined to brief valve events and a quiet filtered tire layer.
+                double noise = Noise(); // Engine air noise is confined to brief valve events; tire DSP is separate.
                 low += voiceFilter * (pulse - low);
                 double value = low * gain * (1 + profile.exhaust * .16);
                 gulpPhase = Advance(gulpPhase, 90 + frame.throttle * 75, sampleRate);
@@ -297,10 +297,6 @@ namespace DragLab.Domain
                     value += air * envelope * releaseStrength * profile.releaseGain * frame.volume;
                     releaseAge += 1.0 / sampleRate;
                 }
-                double squeal = Math.Max(0, frame.slip - .12) * Math.Min(1, frame.speed / 3);
-                tirePhase = Advance(tirePhase, 850 + DragMath.Clamp(frame.slip, 0, 1) * 240, sampleRate);
-                tireAir += .12 * (noise - tireAir);
-                value += (Math.Sin(Tau * tirePhase) * .6 + tireAir * .08) * Math.Min(.035, squeal * .04) * frame.volume;
                 // Remove DC and softly saturate the combined layers with headroom for other game audio.
                 double filtered = value - dcIn + .995 * dcOut; dcIn = value; dcOut = filtered;
                 outputGain += (targetOutputGain - outputGain) * masterSmooth;

@@ -1,0 +1,8 @@
+Windows standalone engine bench / real Update / DSP / OnGUI.
+PASS: Authored acoustic slip produces smoke and audible tires at zero road speed
+PASS: Acoustic tire voice follows the shared master volume
+PASS: Shared mute silences the new tire source
+PASS: Acoustic pause freezes smoke and silences tires
+PASS: Acoustic reset clears stale particles
+PASS: Acoustic tire preview has zero runtime/GUI/DSP errors
+Runtime errors: 0

@@ -35,6 +35,7 @@ namespace DragLab.Runtime
         EngineBenchScenario capturedScenario;
         string capturedLabel;
         LayeredCarView view;
+        internal LayeredCarView CarView=>view;
         double accumulator;
         int selected, tab;
         Vector2 scroll;
@@ -86,6 +87,7 @@ namespace DragLab.Runtime
         }
         public void ApplyConfig(bool reset = false)
         {
+            if(reset)view.ClearSlipEffects();
             string invalid = config.Validate(); if (invalid != null) { notice = invalid + " Previous valid sound remains active."; return; }
             if (!reset) { Dyno.Finish("configuration changed"); RunningScenario = false; }
             Bench = new EngineTestBench(config.vehicle, config.tune, reset || Bench == null ? null : Bench.state);
@@ -258,7 +260,7 @@ namespace DragLab.Runtime
                     if (Paused) break;
                 }
             }
-            view.Animate(Bench.state);
+            view.Animate(Bench.state,!Paused,true);
             Audio.Render(Bench.state, !Paused && Bench.state.rpm > 0, PlayingMusic ? music.GainAt(Math.Max(0, MusicTick - 1)) : 1, Bench.audioLoad);
         }
         void OnApplicationFocus(bool focus) { if (!focus) { guiGasW = guiGasSpace = false; if (!automated && Audio != null) Pause(true); } }

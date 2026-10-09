@@ -1,0 +1,114 @@
+Clutch capacity/power audit; no physics changes.
+PASS: city-three capacity falls with pedal disengagement (bounded wet drag allowed) / 0 / 159,30 Nm
+PASS: city-three slower output shaft receives less power than engine-side friction port / 0
+PASS: city-three capacity falls with pedal disengagement (bounded wet drag allowed) / 0,55 / 86,89 Nm
+PASS: city-three slower output shaft receives less power than engine-side friction port / 0,55
+PASS: city-three capacity falls with pedal disengagement (bounded wet drag allowed) / 0,75 / 28,96 Nm
+PASS: city-three slower output shaft receives less power than engine-side friction port / 0,75
+PASS: city-three capacity falls with pedal disengagement (bounded wet drag allowed) / 1 / 0,00 Nm
+PASS: city-three slower output shaft receives less power than engine-side friction port / 1
+PASS: city-three full shared coupling publishes finite contact and nonnegative dissipated power
+PASS: city-three open clutch sends only bounded wet drag to independent wheels
+PASS: city-three stored wheel momentum survives open clutch while friction slows it
+PASS: city-three partial clamp limits actual road-tick torque / full 159,30 / partial 28,96
+PASS: city-three reduced clutch torque reduces new tire-slip work under matched low-grip initial conditions
+PASS: city-three actual partial coupling dissipates positive power with signed engine/shaft mismatch
+PASS: rally-sedan capacity falls with pedal disengagement (bounded wet drag allowed) / 0 / 479,25 Nm
+PASS: rally-sedan slower output shaft receives less power than engine-side friction port / 0
+PASS: rally-sedan capacity falls with pedal disengagement (bounded wet drag allowed) / 0,55 / 261,41 Nm
+PASS: rally-sedan slower output shaft receives less power than engine-side friction port / 0,55
+PASS: rally-sedan capacity falls with pedal disengagement (bounded wet drag allowed) / 0,75 / 87,14 Nm
+PASS: rally-sedan slower output shaft receives less power than engine-side friction port / 0,75
+PASS: rally-sedan capacity falls with pedal disengagement (bounded wet drag allowed) / 1 / 1,60 Nm
+PASS: rally-sedan slower output shaft receives less power than engine-side friction port / 1
+PASS: rally-sedan full shared coupling publishes finite contact and nonnegative dissipated power
+PASS: rally-sedan open clutch sends only bounded wet drag to independent wheels
+PASS: rally-sedan stored wheel momentum survives open clutch while friction slows it
+PASS: rally-sedan partial clamp limits actual road-tick torque / full 479,25 / partial 87,14
+PASS: rally-sedan reduced clutch torque reduces new tire-slip work under matched low-grip initial conditions
+PASS: rally-sedan actual partial coupling dissipates positive power with signed engine/shaft mismatch
+PASS: sport-coupe capacity falls with pedal disengagement (bounded wet drag allowed) / 0 / 371,25 Nm
+PASS: sport-coupe slower output shaft receives less power than engine-side friction port / 0
+PASS: sport-coupe capacity falls with pedal disengagement (bounded wet drag allowed) / 0,55 / 202,50 Nm
+PASS: sport-coupe slower output shaft receives less power than engine-side friction port / 0,55
+PASS: sport-coupe capacity falls with pedal disengagement (bounded wet drag allowed) / 0,75 / 67,50 Nm
+PASS: sport-coupe slower output shaft receives less power than engine-side friction port / 0,75
+PASS: sport-coupe capacity falls with pedal disengagement (bounded wet drag allowed) / 1 / 1,60 Nm
+PASS: sport-coupe slower output shaft receives less power than engine-side friction port / 1
+PASS: sport-coupe full shared coupling publishes finite contact and nonnegative dissipated power
+PASS: sport-coupe open clutch sends only bounded wet drag to independent wheels
+PASS: sport-coupe stored wheel momentum survives open clutch while friction slows it
+PASS: sport-coupe partial clamp limits actual road-tick torque / full 371,25 / partial 67,50
+PASS: sport-coupe reduced clutch torque reduces new tire-slip work under matched low-grip initial conditions
+PASS: sport-coupe actual partial coupling dissipates positive power with signed engine/shaft mismatch
+PASS: starter-hatch capacity falls with pedal disengagement (bounded wet drag allowed) / 0 / 206,55 Nm
+PASS: starter-hatch slower output shaft receives less power than engine-side friction port / 0
+PASS: starter-hatch capacity falls with pedal disengagement (bounded wet drag allowed) / 0,55 / 112,66 Nm
+PASS: starter-hatch slower output shaft receives less power than engine-side friction port / 0,55
+PASS: starter-hatch capacity falls with pedal disengagement (bounded wet drag allowed) / 0,75 / 37,55 Nm
+PASS: starter-hatch slower output shaft receives less power than engine-side friction port / 0,75
+PASS: starter-hatch capacity falls with pedal disengagement (bounded wet drag allowed) / 1 / 0,00 Nm
+PASS: starter-hatch slower output shaft receives less power than engine-side friction port / 1
+PASS: starter-hatch full shared coupling publishes finite contact and nonnegative dissipated power
+PASS: starter-hatch open clutch sends only bounded wet drag to independent wheels
+PASS: starter-hatch stored wheel momentum survives open clutch while friction slows it
+PASS: starter-hatch partial clamp limits actual road-tick torque / full 206,55 / partial 37,55
+PASS: starter-hatch reduced clutch torque reduces new tire-slip work under matched low-grip initial conditions
+PASS: starter-hatch actual partial coupling dissipates positive power with signed engine/shaft mismatch
+PASS: super-v8 capacity falls with pedal disengagement (bounded wet drag allowed) / 0 / 810,00 Nm
+PASS: super-v8 slower output shaft receives less power than engine-side friction port / 0
+PASS: super-v8 capacity falls with pedal disengagement (bounded wet drag allowed) / 0,55 / 441,82 Nm
+PASS: super-v8 slower output shaft receives less power than engine-side friction port / 0,55
+PASS: super-v8 capacity falls with pedal disengagement (bounded wet drag allowed) / 0,75 / 147,27 Nm
+PASS: super-v8 slower output shaft receives less power than engine-side friction port / 0,75
+PASS: super-v8 capacity falls with pedal disengagement (bounded wet drag allowed) / 1 / 0,00 Nm
+PASS: super-v8 slower output shaft receives less power than engine-side friction port / 1
+PASS: super-v8 full shared coupling publishes finite contact and nonnegative dissipated power
+PASS: super-v8 open clutch sends only bounded wet drag to independent wheels
+PASS: super-v8 stored wheel momentum survives open clutch while friction slows it
+PASS: super-v8 partial clamp limits actual road-tick torque / full 810,00 / partial 147,27
+PASS: super-v8 reduced clutch torque reduces new tire-slip work under matched low-grip initial conditions
+PASS: super-v8 actual partial coupling dissipates positive power with signed engine/shaft mismatch
+PASS: touring-six capacity falls with pedal disengagement (bounded wet drag allowed) / 0 / 398,25 Nm
+PASS: touring-six slower output shaft receives less power than engine-side friction port / 0
+PASS: touring-six capacity falls with pedal disengagement (bounded wet drag allowed) / 0,55 / 217,23 Nm
+PASS: touring-six slower output shaft receives less power than engine-side friction port / 0,55
+PASS: touring-six capacity falls with pedal disengagement (bounded wet drag allowed) / 0,75 / 72,41 Nm
+PASS: touring-six slower output shaft receives less power than engine-side friction port / 0,75
+PASS: touring-six capacity falls with pedal disengagement (bounded wet drag allowed) / 1 / 0,00 Nm
+PASS: touring-six slower output shaft receives less power than engine-side friction port / 1
+PASS: touring-six full shared coupling publishes finite contact and nonnegative dissipated power
+PASS: touring-six open clutch sends only bounded wet drag to independent wheels
+PASS: touring-six stored wheel momentum survives open clutch while friction slows it
+PASS: touring-six partial clamp limits actual road-tick torque / full 398,25 / partial 72,41
+PASS: touring-six reduced clutch torque reduces new tire-slip work under matched low-grip initial conditions
+PASS: touring-six actual partial coupling dissipates positive power with signed engine/shaft mismatch
+PASS: utility-pickup capacity falls with pedal disengagement (bounded wet drag allowed) / 0 / 519,75 Nm
+PASS: utility-pickup slower output shaft receives less power than engine-side friction port / 0
+PASS: utility-pickup capacity falls with pedal disengagement (bounded wet drag allowed) / 0,55 / 283,50 Nm
+PASS: utility-pickup slower output shaft receives less power than engine-side friction port / 0,55
+PASS: utility-pickup capacity falls with pedal disengagement (bounded wet drag allowed) / 0,75 / 94,50 Nm
+PASS: utility-pickup slower output shaft receives less power than engine-side friction port / 0,75
+PASS: utility-pickup capacity falls with pedal disengagement (bounded wet drag allowed) / 1 / 0,00 Nm
+PASS: utility-pickup slower output shaft receives less power than engine-side friction port / 1
+PASS: utility-pickup full shared coupling publishes finite contact and nonnegative dissipated power
+PASS: utility-pickup open clutch sends only bounded wet drag to independent wheels
+PASS: utility-pickup stored wheel momentum survives open clutch while friction slows it
+PASS: utility-pickup partial clamp limits actual road-tick torque / full 519,75 / partial 94,50
+PASS: utility-pickup reduced clutch torque reduces new tire-slip work under matched low-grip initial conditions
+PASS: utility-pickup actual partial coupling dissipates positive power with signed engine/shaft mismatch
+PASS: v8-muscle capacity falls with pedal disengagement (bounded wet drag allowed) / 0 / 594,00 Nm
+PASS: v8-muscle slower output shaft receives less power than engine-side friction port / 0
+PASS: v8-muscle capacity falls with pedal disengagement (bounded wet drag allowed) / 0,55 / 324,00 Nm
+PASS: v8-muscle slower output shaft receives less power than engine-side friction port / 0,55
+PASS: v8-muscle capacity falls with pedal disengagement (bounded wet drag allowed) / 0,75 / 108,00 Nm
+PASS: v8-muscle slower output shaft receives less power than engine-side friction port / 0,75
+PASS: v8-muscle capacity falls with pedal disengagement (bounded wet drag allowed) / 1 / 0,00 Nm
+PASS: v8-muscle slower output shaft receives less power than engine-side friction port / 1
+PASS: v8-muscle full shared coupling publishes finite contact and nonnegative dissipated power
+PASS: v8-muscle open clutch sends only bounded wet drag to independent wheels
+PASS: v8-muscle stored wheel momentum survives open clutch while friction slows it
+PASS: v8-muscle partial clamp limits actual road-tick torque / full 594,00 / partial 108,00
+PASS: v8-muscle reduced clutch torque reduces new tire-slip work under matched low-grip initial conditions
+PASS: v8-muscle actual partial coupling dissipates positive power with signed engine/shaft mismatch
+Checks: 112

@@ -62,6 +62,8 @@ namespace DragLab.Runtime
         IEnumerator Run()
         {
             yield return null;
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-pacing-only")>=0){yield return PacingRun();yield break;}
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-tire-feedback-only")>=0){yield return TireFeedbackRun();yield break;}
             yield return Capture("garage");
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-thermal-only")>=0){yield return RaceThermalRun();yield break;}
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-economy-integration")>=0){yield return EconomyIntegrationRun();yield break;}

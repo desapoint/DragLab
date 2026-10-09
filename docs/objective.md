@@ -2346,3 +2346,8 @@ Funded career/loss, real worn-component DNF and paid repair, downgrade/reuse, ti
 ### Slice 3H implementation acceptance (2026-10-09)
 
 3A–3H passed integrated developer acceptance: 13 domain gates, 18 Windows workflows and 16,719 foundation checks, including the 5,662-check / 2,429-run configuration matrix. The approved thermal extension separates optimal at race start from continuous optimal-temperature assistance, with saved live cooling and optional shared warm-up. See [full Slice 3 audit](../reports/SLICE_3_AUDIT.md) and [3H checkpoint](../reports/phases/3h/CHANGES.md). This completes the planned operating-loop systems slice; the larger original content, human/device acceptance and commercial hardening remain later work.
+
+
+### Tire feedback and stutter audit request (2026-10-09)
+
+Refine tire-slip audio and emit smoke at slipping tire patches, using independent contact in physical modes and declared test inputs in acoustic mode. Preserve shared volume and pause/reset/replay behavior. Audit clutch power loss before changing coupling. Diagnose stutters and report findings before performance changes. The focused implementation/audit is recorded in [tire feedback report](../reports/tire-feedback/CHANGES.md); save, simulation and graph performance fixes are pending review.

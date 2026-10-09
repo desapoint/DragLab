@@ -1,0 +1,17 @@
+car,mode,ticks,elapsedMs,allocatedBytes,gc0
+city-three,neutral,600,126.743,0,6
+city-three,loaded,600,128.573,0,6
+rally-sedan,neutral,600,139.853,0,6
+rally-sedan,loaded,600,148.216,0,6
+sport-coupe,neutral,600,136.208,0,5
+sport-coupe,loaded,600,130.830,0,5
+starter-hatch,neutral,600,131.320,0,5
+starter-hatch,loaded,600,128.208,0,5
+super-v8,neutral,600,136.026,0,5
+super-v8,loaded,600,141.264,0,5
+touring-six,neutral,600,128.592,0,6
+touring-six,loaded,600,143.604,0,6
+utility-pickup,neutral,600,143.325,0,6
+utility-pickup,loaded,600,145.719,0,6
+v8-muscle,neutral,600,124.435,0,5
+v8-muscle,loaded,600,125.101,0,6

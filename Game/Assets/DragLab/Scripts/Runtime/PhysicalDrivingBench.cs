@@ -94,6 +94,8 @@ namespace DragLab.Runtime
             while (history.Count > 6) history.RemoveAt(0);
         }
         public void StartScenario(PhysicalScenario scenario)
+        { using(FramePacingProbe.Measure(6)) StartScenarioMeasured(scenario); }
+        void StartScenarioMeasured(PhysicalScenario scenario)
         {
             Recording = true;
             ResetBench(); timeline = PhysicalScenarios.Timeline(scenario, config.seed); notice = "Scenario " + scenario + " / seed " + config.seed;
@@ -160,6 +162,8 @@ namespace DragLab.Runtime
         void ManualCommand() { if (timeline != null) UseSliders(); }
         public void EndRun() { Archive(); SetPaused(true); if (timeline != null) { sliders = AppliedInput; sliders.shiftUp = sliders.shiftDown = sliders.launch = false; neutral = Session.car.state.gear == 0; staging = Session.car.state.stagingBrakesHeld; } timeline = null; }
         void Update()
+        { using (FramePacingProbe.Measure(1)) UpdateMeasured(); }
+        void UpdateMeasured()
         {
             if (Session == null) return;
             if (Input.GetKeyDown(KeyCode.R)) ResetBench();
@@ -182,7 +186,7 @@ namespace DragLab.Runtime
                 if (timeline != null)
                 {
                     if (Session.Tick >= timeline.Count) { EndRun(); break; }
-                    Session.Step(timeline[(int)Session.Tick]);
+                    using (FramePacingProbe.Measure(2)) Session.Step(timeline[(int)Session.Tick]);
                     if (Session.Tick >= timeline.Count) EndRun();
                 }
                 else
@@ -193,13 +197,15 @@ namespace DragLab.Runtime
                     if (upPending && Session.car.state.gear == 0) { neutral = false; staging = false; }
                     if (downPending && Session.car.state.gear == 1) { neutral = true; staging = false; input.shiftDown = false; }
                     input.launch |= sliders.launch; sliders.launch = false; upPending = downPending = false;
-                    Session.Step(new TickInput { tick = Session.Tick, input = input, neutral = neutral, staging = staging });
+                    using (FramePacingProbe.Measure(2)) Session.Step(new TickInput { tick = Session.Tick, input = input, neutral = neutral, staging = staging });
                 }
                 accumulator = Math.Max(0, accumulator - DragMath.FixedStep);
             }
             view.Animate(Session.car.state); Audio.Render(Session.car.state, !Paused, 1);
         }
         public void Export(string folder = null)
+        { using(FramePacingProbe.Measure(7)) ExportMeasured(folder); }
+        void ExportMeasured(string folder = null)
         {
             if (!Recording) { notice = "Enable recording to export an input timeline. Recording is off."; return; }
             folder = folder ?? exportFolder; Directory.CreateDirectory(folder); string id = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff");
@@ -207,6 +213,8 @@ namespace DragLab.Runtime
             File.WriteAllText(Path.Combine(folder, id + ".json"), JsonUtility.ToJson(Session.snapshot, true)); notice = "CSV + replay JSON exported to " + folder;
         }
         public bool Import(string path)
+        { using(FramePacingProbe.Measure(8)) return ImportMeasured(path); }
+        bool ImportMeasured(string path)
         {
             try
             {
@@ -226,6 +234,8 @@ namespace DragLab.Runtime
             return clicked;
         }
         void OnGUI()
+        { using (FramePacingProbe.Measure(5)) DrawMeasuredGUI(); }
+        void DrawMeasuredGUI()
         {
             if (Session == null) return;
             RuntimeGuiRect.BeginFrame();

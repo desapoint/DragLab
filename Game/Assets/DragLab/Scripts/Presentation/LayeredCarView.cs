@@ -15,6 +15,12 @@ namespace DragLab.Presentation
         struct GeometryBinding { public Transform transform; public SpriteRenderer renderer; public string id; public Vector3 position, scale; }
         readonly List<GeometryBinding> geometry = new List<GeometryBinding>();
         float nominalRadiusM, artworkRadius;
+        TireSmokeView smoke;
+        Vector3 frontWheel,rearWheel;
+        DriveType drive;
+        public int SlipParticleCount=>smoke==null?0:smoke.ActiveCount;
+        public int FrontSmokeEmitted=>smoke==null?0:smoke.FrontEmitted;
+        public int RearSmokeEmitted=>smoke==null?0:smoke.RearEmitted;
         public float TireSizeScale { get; private set; } = 1;
         readonly List<WheelBinding> rotating = new List<WheelBinding>();
         readonly List<SpriteRenderer> paintLayers = new List<SpriteRenderer>();
@@ -43,6 +49,8 @@ namespace DragLab.Presentation
             if (json == null) throw new InvalidOperationException("Missing car manifest: " + artId);
             var manifest = JsonUtility.FromJson<Manifest>(json.text);
             artworkRadius = manifest.anchors.rearWheel.radius / PixelsPerUnit;
+            frontWheel=new Vector3((manifest.anchors.frontWheel.x-manifest.canvas.width*.5f)/PixelsPerUnit,(manifest.canvas.height*.5f-manifest.anchors.frontWheel.y)/PixelsPerUnit,0);
+            rearWheel=new Vector3((manifest.anchors.rearWheel.x-manifest.canvas.width*.5f)/PixelsPerUnit,(manifest.canvas.height*.5f-manifest.anchors.rearWheel.y)/PixelsPerUnit,0);
             foreach (var layer in manifest.layers)
             {
                 var obj = new GameObject(layer.id);
@@ -64,12 +72,17 @@ namespace DragLab.Presentation
                 geometry.Add(new GeometryBinding { transform = obj.transform, renderer = renderer, id = layer.id, position = obj.transform.localPosition, scale = obj.transform.localScale });
                 if (layer.id == "body-paint") { paintLayers.Add(renderer); renderer.color = paint; }
             }
+            var smokeObject=new GameObject("Contact tire smoke");smokeObject.transform.SetParent(transform,false);
+            smoke=smokeObject.AddComponent<TireSmokeView>();
+            int smokeOrder=laneOrder;foreach(var layer in manifest.layers)smokeOrder=Mathf.Max(smokeOrder,laneOrder+layer.z+1);
+            smoke.Initialize(smokeOrder);UpdateSmokeContacts();
         }
 
         // Geometry follows the same resolved hardware/tune as physics, including draft previews.
         // Scale from immutable authored transforms, never from the previous frame.
         public void ApplySetup(VehicleSpec spec, Tune tune)
         {
+            drive=spec.drive;
             if (nominalRadiusM <= 0) nominalRadiusM = spec.wheelRadiusM;
             TireSizeScale = (float)(spec.wheelRadiusM * tune.WheelDiameter / nominalRadiusM);
             if (float.IsNaN(TireSizeScale) || float.IsInfinity(TireSizeScale) || TireSizeScale <= 0) TireSizeScale = 1;
@@ -88,16 +101,20 @@ namespace DragLab.Presentation
                 part.transform.localPosition = part.position + (part.id == "shadow" ? Vector3.zero : Vector3.up * lift);
                 part.renderer.enabled = wheel ? wheels : brake ? brakes : part.id == "shadow" || body;
             }
+            UpdateSmokeContacts();
         }
+        void UpdateSmokeContacts(){if(smoke!=null){var offset=Vector3.up*(artworkRadius*(TireSizeScale-1)-artworkRadius*TireSizeScale);smoke.SetContacts(frontWheel+offset,rearWheel+offset);}}
+        public void ClearSlipEffects(){if(smoke!=null)smoke.Clear();}
         static bool HasPart(VehicleSpec spec, PartCategory category)
         { return spec.fittedParts != null && Array.Exists(spec.fittedParts, part => part.category == category); }
 
         public void SetPaint(Color color) { foreach (var layer in paintLayers) layer.color = color; }
-        public void Animate(CarState state)
+        public void Animate(CarState state, bool effectsActive=true, bool acousticSlip=false)
         {
             foreach (var part in rotating)
                 part.transform.localRotation = Quaternion.Euler(0, 0, -(float)((part.front ? state.frontWheelAngleDegrees : state.rearWheelAngleDegrees) % 360));
             // Calipers are deliberately absent from rotating: they follow the car only.
+            if(smoke!=null&&effectsActive)smoke.Step(state,Time.unscaledDeltaTime,acousticSlip,drive);
         }
     }
 }

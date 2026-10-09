@@ -22,6 +22,8 @@ namespace DragLab.Presentation
         }
         AudioSource source;
         AudioClip clockClip;
+        TireAudio tires;
+        public float TireOutputRms=>tires==null?0:tires.OutputRms;
         Session session;
         int sampleRate;
         float pitch;
@@ -42,20 +44,24 @@ namespace DragLab.Presentation
             clockClip = AudioClip.Create("DragLab DSP clock (silent)", sampleRate, 1, sampleRate, false);
             source = gameObject.AddComponent<AudioSource>(); source.clip = clockClip;
             source.loop = true; source.playOnAwake = false; source.spatialBlend = 0; source.volume = 0; source.Play();
+            var tireObject=new GameObject("Tire contact audio");tireObject.transform.SetParent(transform,false);
+            tires=tireObject.AddComponent<TireAudio>();tires.Initialize();
             AudioSettings.OnAudioConfigurationChanged += AudioConfigurationChanged;
         }
         void AudioConfigurationChanged(bool changed) { Volatile.Write(ref sampleRate, AudioSettings.outputSampleRate); }
         public void Configure(VehicleSpec spec, Tune tune)
         {
+            if(tires!=null)tires.Configure(spec.drive);
             // Each callback captures a consistent session when hardware changes on the main thread.
             Volatile.Write(ref session, new Session(spec, tune)); pitch = (float)spec.idleRpm / 3000;
         }
-        public void Render(CarState state, bool active, float volume, double loadOverride = -1)
+        public void Render(CarState state, bool active, float volume, double loadOverride = -1, bool? tiresActive = null)
         {
             if (!Ready) return;
             var current = session;
             Volatile.Write(ref current.frame, current.controller.Update(state, active, volume, Time.unscaledDeltaTime, loadOverride));
             source.volume = active ? 1 : 0; pitch = (float)state.rpm / 3000;
+            if(tires!=null)tires.Render(state,tiresActive??active,volume);
         }
         void OnAudioFilterRead(float[] data, int channels)
         {
@@ -68,6 +74,7 @@ namespace DragLab.Presentation
         public void Silence()
         {
             if (source != null) source.volume = 0;
+            if(tires!=null)tires.Silence();
             var current = session;
             if (current != null) Volatile.Write(ref current.frame, current.controller.Update(new CarState(), false, 0, 0));
         }

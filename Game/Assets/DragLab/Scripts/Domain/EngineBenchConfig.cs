@@ -37,6 +37,7 @@ namespace DragLab.Domain
             var bench = new EngineTestBench(config.vehicle, config.tune);
             var controller = new EngineSoundController(bench.spec, bench.tune);
             var synth = new EngineSoundSynth(new EngineSoundProfile(bench.spec, bench.tune));
+            var tires = new TireSoundSynth();var tireBlock=new float[735];
             int ticks = EngineBenchScenarios.DurationTicks(scenario);
             var pcm = new float[ticks / 2 * 735]; var block = new float[735];
             for (int tick = 0; tick < ticks; tick += 2)
@@ -44,6 +45,8 @@ namespace DragLab.Domain
                 bench.Step(EngineBenchScenarios.At(scenario, tick, bench.spec, config.controls));
                 bench.Step(EngineBenchScenarios.At(scenario, tick + 1, bench.spec, config.controls));
                 synth.Fill(block, 1, 44100, controller.Update(bench.state, bench.state.rpm > 0, 1, 1.0 / 60, bench.audioLoad), config.volume);
+                tires.Fill(tireBlock,1,44100,TireSoundFrame.From(bench.state,true,1,bench.spec.drive),config.volume);
+                for(int i=0;i<block.Length;i++)block[i]+=tireBlock[i];
                 Array.Copy(block, 0, pcm, tick / 2 * 735, 735);
             }
             return pcm;

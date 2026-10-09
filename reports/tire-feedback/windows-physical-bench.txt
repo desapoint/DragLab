@@ -1,0 +1,49 @@
+Physical driving bench / actual Update, OnGUI, DSP and OS input.
+PASS: Recording defaults off while the shared simulation runs normally.
+PASS: Standalone physical bench starts at audible neutral idle without loading a race/save.
+PASS: Held OS W revs with staging brakes held and takes control from sliders.
+PASS: Actual graph group click selects measured energy without changing held pedal ownership.
+PASS: Actual graph click exposes per-wheel torque while keyboard remains authoritative.
+PASS: Physical test hardware reset preserves keyboard mode and held W.
+PASS: Editing the independent scenario seed preserves keyboard mode and held W.
+PASS: Live slider feedback reflects requested pedals separately from neutral coupling and automatic brake hold.
+PASS: E engages first without countdown or cancelling W.
+PASS: Actual mouse shift-up preserves held gas and engine rotation: gear 2 / gas 1 / RPM 4628,21693493046 / EARLY SHIFT / driver Sequential
+PASS: Overlapping W/Space releases only the released gas key.
+PASS: Neutral retains road momentum and flywheel RPM; released keyboard gas stays released.
+PASS: Actual slider explicitly takes control and sets a latched partial throttle.
+PASS: Slider value remains latched while physics continues.
+PASS: Keyboard takeover disables slider authority and does not restore its old value.
+PASS: Pause freezes every recorded tick and silences DSP.
+PASS: Bench exposes ballast slider in scrollable physical diagnostics.
+PASS: Actual mouse ballast edit updates physical mass without resetting paused movement/RPM.
+PASS: Mass controls preserve keyboard pedal ownership, pause and recording choice.
+PASS: Paused physical bench burns no fuel.
+PASS: Free refuel button is reachable in physical diagnostics.
+PASS: Actual refuel click caps tank and preserves motion, RPM, keyboard ownership and pause.
+PASS: Held OS W remains active after refuel and consumption resumes.
+PASS: Physical oil quantity slider is reachable without changing pedal ownership.
+PASS: Actual oil slider changes isolated quantity while keeping keyboard control and pause.
+PASS: Wear reset leaves the deliberately lowered oil quantity unchanged.
+PASS: Test oil top-up button is reachable in physical diagnostics.
+PASS: Actual test top-up caps to pan capacity and retains driving ownership.
+PASS: Paused bench accepts independent rear-left tire life/temperature
+PASS: Single tire assignment keeps other tires and keyboard pedal ownership
+PASS: Per-wheel tire life slider is reachable in the physical bench
+PASS: Actual mouse tire edit updates only its condition and keeps keyboard pedal source
+PASS: Actual repair button resets all four isolated tire conditions
+PASS: Actual Reset returns to neutral idle.
+PASS: Full live scenario captures staged revs, shifts, lift, neutral coast and braking at 120 Hz.
+PASS: Live replay produces exactly the same complete chronological trace.
+PASS: Exported snapshot can be imported without a race cycle.
+PASS: Imported replay retains output within JSON precision.
+PASS: Reset/scenario/replay/export leave player-save sentinel untouched.
+PASS: Individual ignition health slider is reachable in the component panel.
+PASS: Actual individual slider changes only one element and retains keyboard ownership.
+PASS: Applicable individual fault buttons are reachable in the component panel.
+PASS: Actual disabled-plug button removes one cylinder's combustion without disabling the engine or keyboard.
+PASS: Individual isolated replacement button is reachable.
+PASS: Actual individual test replacement restores its cylinder while preserving pedal ownership.
+PASS: Individual fault and replacement controls leave player save untouched.
+PASS: Physical bench has no runtime/DSP/GUI errors.
+Runtime errors: 0

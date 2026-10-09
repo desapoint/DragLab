@@ -115,3 +115,7 @@ Approved individual-component/clutch extension: [individual engine and clutch co
 Individual-component/clutch checkpoint (2026-10-08): **5,242 foundation checks**, including **257 focused component/clutch checks**, passed with a Windows build. Final native Parts/service, driving/fault controls and reset workflows passed **107 checks**, with zero runtime/DSP/GUI errors. Readable added graph channels and targeted replacement were verified with screenshots. Evidence and limitations: [implementation report](../reports/individual-engine/CHANGES.md). At that individual-component checkpoint the integrated 2K–2L gates remained open; follow the current completion record above. Slice 3 operating-cost balance remains planned.
 
 
+
+## Post-3H requested refinement (2026-10-09)
+
+[Tire contact audio/particles and stutter diagnosis](../reports/tire-feedback/CHANGES.md) is a focused spontaneous increment. Keep the accepted shared physics and recovery semantics; performance fixes are reported and pending review. It does not complete any later content phase.

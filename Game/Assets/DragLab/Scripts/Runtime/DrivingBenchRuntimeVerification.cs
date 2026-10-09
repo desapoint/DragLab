@@ -57,10 +57,10 @@ namespace DragLab.Runtime
                     check(scene.Paused && scene.Session.car.state.engineFailed, "Actual money-shift button runs ordinary controls through destructive clutch back-drive to engine failure.");
                     check(scene.Session.car.transmission.type == TransmissionType.Manual && scene.Session.samples.Any(s => s.signedClutchSlipRpm < -500) && scene.Session.samples.Any(s => s.engineDamage > 0 && s.throttle == 0), "Diagnostics capture negative synchronization mismatch and mechanical damage with gas released.");
                     yield return Capture("physical-engine-failure-diagnostics");
-                    string original = scene.Session.Csv(); scene.Export(output);
+                    string original = TimedCsv(scene.Session); scene.Export(output);
                     yield return Click(input, "replay"); until = Time.realtimeSinceStartup + 65;
                     while (!scene.Paused && Time.realtimeSinceStartup < until) yield return null;
-                    check(scene.Paused && original == scene.Session.Csv(), "Live destructive replay repeats every sample including failure.");
+                    check(scene.Paused && original == TimedCsv(scene.Session), "Live destructive replay repeats every sample including failure.");
                     yield return Click(input, "reset");
                     check(!scene.Session.car.state.engineFailed && scene.Session.car.state.gear == 0, "Reset replaces only the isolated failed engine and returns to neutral idle.");
                     scene.SetRecording(false); scene.SetPaused(true);
@@ -77,7 +77,7 @@ namespace DragLab.Runtime
                     scene.ContinueLiveRecording();
                     check(scene.Session.TotalTick == total && Math.Abs(scene.Session.car.state.rpm - rpm) < 1e-9 && scene.KeyboardOwned && !scene.Paused, "Live segment rollover preserves exact RPM, continuous time and keyboard ownership.");
                     yield return new WaitForSecondsRealtime(.15f); input.Key(0x57, false); scene.EndRun();
-                    check(scene.Session.TotalTick > total && scene.Session.snapshot.hasStartingDynamics && scene.Session.Csv() == PhysicalDrivingSession.Replay(scene.Session.snapshot).Csv(), "Continued live inputs append after checkpoint and replay independently.");
+                    check(scene.Session.TotalTick > total && scene.Session.snapshot.hasStartingDynamics && TimedCsv(scene.Session) == PhysicalDrivingSession.Replay(scene.Session.snapshot).Csv(), "Continued live inputs append after checkpoint and replay independently.");
                     scene.Export(output); string continuation = Directory.GetFiles(output, "*.json").Where(p => p != sentinelPath && !p.EndsWith("audio-settings.json") && !p.EndsWith("unit-settings.json")).OrderByDescending(p => p).First();
                     check(scene.Import(continuation), "Continuation JSON imports its captured crank/drivetrain state.");
                     yield return new WaitForSecondsRealtime(.4f);
@@ -160,12 +160,12 @@ namespace DragLab.Runtime
                 yield return Capture("physical-manual-controls");
                 yield return Click(input, "reset"); check(scene.Session.car.state.gear == 0 && Math.Abs(scene.Session.car.state.rpm - scene.Session.car.spec.idleRpm) < scene.Session.car.spec.idleRpm * .05, "Actual Reset returns to neutral idle.");
                 yield return Click(input, "scenario"); yield return AwaitEnd();
-                string first = scene.Session.Csv();
+                string first = TimedCsv(scene.Session);
                 check(scene.Session.samples.Count == 1921 && scene.Session.samples.Any(s => s.shifting && s.throttle == 1) && scene.Session.samples.Last().brake == 1, "Full live scenario captures staged revs, shifts, lift, neutral coast and braking at 120 Hz.");
                 scene.ElementPanelForVerification("Ignition",0); // Show the graph for visual trace review.
                 yield return Capture("physical-full-trace");
                 yield return Click(input, "replay"); yield return AwaitEnd();
-                check(scene.Session.Csv() == first, "Live replay produces exactly the same complete chronological trace.");
+                check(TimedCsv(scene.Session) == first, "Live replay produces exactly the same complete chronological trace.");
                 scene.Export(output); string json = Directory.GetFiles(output, "*.json").Where(p => p != sentinelPath && !p.EndsWith("audio-settings.json") && !p.EndsWith("unit-settings.json")).OrderByDescending(p => p).First();
                 check(scene.Import(json), "Exported snapshot can be imported without a race cycle."); yield return AwaitEnd();
                 check(Math.Abs(scene.Session.samples.Last().distance - scene.history[scene.history.Count - 2].samples.Last().distance) < 1e-8, "Imported replay retains output within JSON precision.");
@@ -204,6 +204,7 @@ namespace DragLab.Runtime
         }
 #endif
         IEnumerator AwaitEnd() { float until = Time.realtimeSinceStartup + 30; while (!scene.Paused && Time.realtimeSinceStartup < until) yield return null; if (!scene.Paused || scene.Session.Tick != 1920) throw new InvalidOperationException("Full physical scenario did not end at its captured tick."); }
+        static string TimedCsv(PhysicalDrivingSession session) { using(FramePacingProbe.Measure(8)) return session.Csv(); }
         IEnumerator Capture(string name) { yield return new WaitForEndOfFrame(); var image = ScreenCapture.CaptureScreenshotAsTexture(); File.WriteAllBytes(Path.Combine(output, name + ".png"), image.EncodeToPNG()); Destroy(image); }
     }
 }
