@@ -1,0 +1,26 @@
+Stock OEM Windows races / real Update, shutdown, DSP and saved condition / isolated fixture / no OS input.
+PASS: city-three / ET 18,082 s / lowest health 99,91 ٪ / brakes 59,0 C / stopped without a breakdown.
+PASS: Garage return retains identities and wear: city-three
+PASS: Actual part conditions persist without repair: city-three
+PASS: rally-sedan / ET 13,929 s / lowest health 99,67 ٪ / brakes 141,1 C / stopped without a breakdown.
+PASS: Garage return retains identities and wear: rally-sedan
+PASS: Actual part conditions persist without repair: rally-sedan
+PASS: sport-coupe / ET 14,903 s / lowest health 99,78 ٪ / brakes 124,0 C / stopped without a breakdown.
+PASS: Garage return retains identities and wear: sport-coupe
+PASS: Actual part conditions persist without repair: sport-coupe
+PASS: starter-hatch / ET 16,936 s / lowest health 99,87 ٪ / brakes 72,3 C / stopped without a breakdown.
+PASS: Garage return retains identities and wear: starter-hatch
+PASS: Actual part conditions persist without repair: starter-hatch
+PASS: super-v8 / ET 14,521 s / lowest health 99,49 ٪ / brakes 188,6 C / stopped without a breakdown.
+PASS: Garage return retains identities and wear: super-v8
+PASS: Actual part conditions persist without repair: super-v8
+PASS: touring-six / ET 15,795 s / lowest health 99,62 ٪ / brakes 128,4 C / stopped without a breakdown.
+PASS: Garage return retains identities and wear: touring-six
+PASS: Actual part conditions persist without repair: touring-six
+PASS: utility-pickup / ET 15,542 s / lowest health 99,62 ٪ / brakes 121,0 C / stopped without a breakdown.
+PASS: Garage return retains identities and wear: utility-pickup
+PASS: Actual part conditions persist without repair: utility-pickup
+PASS: v8-muscle / ET 14,899 s / lowest health 99,52 ٪ / brakes 152,8 C / stopped without a breakdown.
+PASS: Garage return retains identities and wear: v8-muscle
+PASS: Actual part conditions persist without repair: v8-muscle
+Runtime errors: 0

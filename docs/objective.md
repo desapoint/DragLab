@@ -1,4 +1,4 @@
-﻿# 2D Drag Racing Game — First Iteration
+# 2D Drag Racing Game — First Iteration
 
 ## 1. Core Vision
 
@@ -2251,7 +2251,7 @@ The detailed requirements in this objective and `GAME_PLAN.md` are preserved. Co
 
 # 67. Simulation Difficulty and Accelerated Wear Testing
 
-Allow simulation and arcade driving through shared parameter rules, independently of opponent difficulty and launch/shift modes. Offer Arcade, Balanced and Simulation presets plus individual overrides for always-optimal thermals, clutch assistance, stall prevention, traction/rev matching and mechanical wear: None, Partial at 25%, or Full. Partial still permits failures from abuse. None prevents new wear without repairing existing components. Persist these preferences and keep them through game reset.
+Allow simulation and arcade driving through shared parameter rules, independently of opponent difficulty and launch/shift modes. Offer Arcade, Balanced and Simulation presets plus individual overrides for heat management, clutch assistance, stall prevention, traction/rev matching and mechanical wear: None, Partial at 25%, or Full. With heat management enabled, race-entry temperatures are Fully cooled (ambient), Optimal (operating targets at start only), or Live (retained heat cooled by actual parked/offline time). With heat management disabled, temperatures remain optimal throughout driving and race-entry temperature choices are disabled. Optional pre-race warm-up permits neutral idle, ordinary driving and physical burnouts before the lights; retain actual heat, tire wear, fuel and fluids when advancing to staged neutral. Partial still permits failures from abuse. None prevents new wear without repairing existing components. Persist these preferences and keep them through game reset.
 
 The physical bench uses those same rules, with an isolated wear multiplier for accelerated tests; exact replay captures both the selected rules and multiplier. Do not accelerate elapsed physics time or friction heat to fake faster wear. Graphs show continuous chronological curves with shift cuts, throttle-off tails and previous overlays. As tire thermal/contact/fuel/cooling systems arrive in Slice 2, integrate their applicable difficulty parameters into this single model.
 

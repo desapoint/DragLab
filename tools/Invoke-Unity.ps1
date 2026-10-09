@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('Prepare','CareerExpandedVerify','BusinessVerify','BalanceVerify','EconomyIntegrationVerify','PaidVerify','ValuationVerify','AssemblyVerify','CollectionVerify','Verify','RecoveryVerify','IntegratedVerify','BenchVerify','AxleVerify','PartsEffectsVerify','DurabilityAudit','SliceTwoAudit','MassVerify','ContactVerify','DrivingContactVerify','LaunchVerify','AwdContactVerify','FuelVerify','FuelingConversionVerify','ServiceVerify','IndividualEngineVerify','TireVerify','TireFailureVerify','CareerVerify','SceneCheck','UnitsVisualVerify','ManualGearboxVerify','PartHardwareVerify','BuildWindows','BuildPlayerOnly','Open')]
+    [ValidateSet('Prepare','ThermalVerify','CareerExpandedVerify','BusinessVerify','BalanceVerify','EconomyIntegrationVerify','PaidVerify','ValuationVerify','AssemblyVerify','CollectionVerify','Verify','RecoveryVerify','IntegratedVerify','BenchVerify','AxleVerify','PartsEffectsVerify','DurabilityAudit','SliceTwoAudit','MassVerify','ContactVerify','DrivingContactVerify','LaunchVerify','AwdContactVerify','FuelVerify','FuelingConversionVerify','ServiceVerify','IndividualEngineVerify','TireVerify','TireFailureVerify','CareerVerify','SceneCheck','UnitsVisualVerify','ManualGearboxVerify','PartHardwareVerify','BuildWindows','BuildPlayerOnly','Open')]
     [string]$Action = 'Prepare',
     [string]$EditorPath = 'C:\Program Files\Unity\Hub\Editor\6000.6.4f1\Editor\Unity.exe'
 )
@@ -21,6 +21,7 @@ $taskMethod = switch ($Action) {
     'ValuationVerify' { 'DragLab.Editor.ValuationVerification.RunStandalone' }
     'CollectionVerify' { 'DragLab.Editor.CollectionVerification.RunStandalone' }
     'Verify' { 'DragLab.Editor.Verification.Run' }
+    'ThermalVerify' { 'DragLab.Editor.RaceThermalVerification.RunStandalone' }
     'IntegratedVerify' { 'DragLab.Editor.IntegratedToolsVerification.RunStandalone' }
     'RecoveryVerify' { 'DragLab.Editor.MechanicalRecoveryVerification.RunStandalone' }
     'BenchVerify' { 'DragLab.Editor.SharedMechanicsVerification.RunStandalone' }
@@ -59,5 +60,3 @@ $taskProcess = Start-Process -FilePath $EditorPath -ArgumentList $taskArgs -Wind
 $taskProcess.WaitForExit()
 if ($taskProcess.ExitCode -ne 0) { throw "Unity failed ($($taskProcess.ExitCode)). Read $taskLog" }
 Write-Output "Unity $Action finished. Log: $taskLog"
-
-

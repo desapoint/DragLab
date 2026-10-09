@@ -36,6 +36,7 @@ namespace DragLab.Domain
         public bool fuelInitialized;
         public FluidState fluids;
         public int serviceHardwareVersion;
+        public long thermalUtcTicks;
         public EngineRebuildJob engineRebuild;
         public int massVersion;
         public string vehicleId;

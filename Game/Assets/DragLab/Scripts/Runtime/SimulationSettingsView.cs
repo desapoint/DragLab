@@ -9,6 +9,7 @@ namespace DragLab.Runtime
     {
         internal static readonly System.Collections.Generic.Dictionary<string, Rect> presetRects = new System.Collections.Generic.Dictionary<string, Rect>();
         internal static Rect fuelUsageRect;
+        internal static Rect heatManagementRect, raceTemperaturesRect, warmupRect;
         static ConsumptionMode Consumption(string label, ConsumptionMode value) { return (ConsumptionMode)GUILayout.SelectionGrid((int)value, new[] { "Realistic / 100%", "Reduced / 25%", "None / 0%" }, 3); }
         public static bool Draw(DriverSettings settings, bool bench = false)
         {
@@ -39,7 +40,17 @@ namespace DragLab.Runtime
             settings.conditionEffects = (ConditionEffectMode)GUILayout.SelectionGrid((int)settings.conditionEffects, new[] { "Full", "Reduced / 25%", "Assisted / no gradual loss" }, 3);
             GUILayout.Label("Fluid service assist (retains faults / wear)");
             settings.serviceAssist = (ServiceAssist)GUILayout.SelectionGrid((int)settings.serviceAssist, new[] { "Manual", "Auto top-up before race" }, 2);
-            settings.optimalThermals = GUILayout.Toggle(settings.optimalThermals, "Always optimal thermals (warm engine / no heat fade)");
+            settings.optimalThermals = !GUILayout.Toggle(!settings.optimalThermals, "Heat management (temperatures evolve while driving)");
+            if(Event.current.type==EventType.Repaint)heatManagementRect=RuntimeGuiRect.ToClient(GUILayoutUtility.GetLastRect());
+            GUILayout.Label("Temperatures at race entry (heat during driving remains separate)");
+            bool temperaturesEnabled=GUI.enabled;GUI.enabled=temperaturesEnabled&&!settings.optimalThermals;
+            settings.raceTemperatures=(RaceTemperatureMode)GUILayout.SelectionGrid((int)settings.raceTemperatures,new[]{"Fully cooled / ambient","Optimal / ready","Live / elapsed time"},3);
+            if(Event.current.type==EventType.Repaint)raceTemperaturesRect=RuntimeGuiRect.ToClient(GUILayoutUtility.GetLastRect());
+            GUI.enabled=temperaturesEnabled;
+            if(settings.optimalThermals)GUILayout.Label("Heat management OFF: temperatures stay optimal throughout driving; race-entry choices are disabled.");
+            settings.warmupBeforeRace=GUILayout.Toggle(settings.warmupBeforeRace,"Optional pre-race warm-up / burnouts before starting lights");
+            if(Event.current.type==EventType.Repaint)warmupRect=RuntimeGuiRect.ToClient(GUILayoutUtility.GetLastRect());
+            GUILayout.Label("Live retains heat and cools during real parked/offline time. Warm-up consumes fuel and wears parts using your selected rules.");
             settings.clutchAssist = GUILayout.Toggle(settings.clutchAssist, "Assist manual clutch engagement and shifts");
             settings.stallPrevention = GUILayout.Toggle(settings.stallPrevention, "Prevent engine stalls");
             settings.tractionAssist = GUILayout.Toggle(settings.tractionAssist, "Traction control");

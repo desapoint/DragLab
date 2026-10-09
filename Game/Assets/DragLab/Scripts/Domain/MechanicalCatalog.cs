@@ -118,7 +118,7 @@ namespace DragLab.Domain.Mechanics
                     if (category == PartCategory.Wheels) p.massScale = level == 0 ? 1 : .8f;
                     if (category == PartCategory.Clutch) p.capacityScale = level == 0 ? 1 : 1.6f;
                     if (category == PartCategory.Clutch) { p.thermalLimitC = 260; p.coolingWattsPerC = 10; p.wearEnergyJ = level == 0 ? 30000000 : 65000000; }
-                    if (category == PartCategory.Gearbox) { p.thermalLimitC = 140; p.heatCapacityJPerC = 18000; }
+                    if (category == PartCategory.Gearbox) { p.thermalLimitC = 140; p.heatCapacityJPerC = 18000; if(spec.transmission.type==TransmissionType.Automatic||spec.transmission.type==TransmissionType.CVT)p.coolingWattsPerC=80; }
                     if (category == PartCategory.Driveshaft || category == PartCategory.Differential) { p.torqueLimitNm *= spec.gears[0]; p.heatCapacityJPerC = 5000; }
                     if (DriveBranch(category)) { p.torqueLimitNm *= spec.gears[0] * (category == PartCategory.FrontAxle || category == PartCategory.RearAxle ? spec.finalDrive : 1); p.heatCapacityJPerC = 5000; }
                     if (category == PartCategory.Brakes)

@@ -14,3 +14,6 @@ The present heat and stress calibrations are provisional. Tire heat/life, comple
 
 
 Service/fluids extension: independent oil/coolant depletion and oil aging None/Reduced 25%/Realistic, condition effects Assisted/Reduced 25%/Full, and manual or auto top-up before races. Arcade selects None/Assisted/Auto; Balanced selects 25%/Manual; Simulation selects Full/Manual. Top-up never repairs a leak or wear and does not renew oil condition. All preferences are captured in physical replay and retained by progression reset. Model v13 captures the new fluid/fault state; prior v12 recordings require a fresh capture. See [details](WEAR_FLUIDS_AND_SERVICE.md).
+
+
+Approved thermal difficulty clarification (2026-10-09): [race temperature modes and optional warm-up](HEAT_AND_RACE_TURNAROUND.md). Optimal at race start is separate from disabling heat management throughout driving. The latter disables starting-temperature choices. Arcade selects continuous optimum; Balanced selects an ambient start with evolving heat; Simulation retains heat with real elapsed parked/offline cooling. Warm-up is optional and uses shared physical tire/slip/stress/fuel behavior. No fixed cooldown is granted by Retry or Garage return. Current physical capture model is v16; model references above describe earlier checkpoints.

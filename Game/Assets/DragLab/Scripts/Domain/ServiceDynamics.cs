@@ -89,9 +89,9 @@ namespace DragLab.Domain
             double capHealth=ServiceDynamics.Health(car,PartCategory.CoolingCap);
             double target=DragMath.Clamp((coolantC-60)/55,0,1)*spec.capPressureBar*capHealth*pressureSeal;
             f.coolantPressureBar+= (target-f.coolantPressureBar)*(1-Math.Exp(-dt/(parked?30:3)));
-            double cooling=(20+spec.oilCoolerWattsPerC*ServiceDynamics.Health(car,PartCategory.OilCooler))*(1+s.speed*.02)*(f.oilTemperatureC-20);
+            double cooling=(20+spec.oilCoolerWattsPerC*ServiceDynamics.Health(car,PartCategory.OilCooler))*(1+(parked?0:s.speed)*.02)*(f.oilTemperatureC-20);
             double heating=running?Math.Abs(s.engineHorsepower)*745.7*.015+1000:0;
-            if(s.optimalThermals)f.oilTemperatureC=90;else f.oilTemperatureC=DragMath.Clamp(f.oilTemperatureC+(heating-cooling)/Math.Max(1000,f.oilLitres*.86*2000)*dt,20,400);
+            if(s.optimalThermals&&!parked)f.oilTemperatureC=90;else if(parked)f.oilTemperatureC=20+(f.oilTemperatureC-20)*Math.Exp(-dt*(20+spec.oilCoolerWattsPerC*ServiceDynamics.Health(car,PartCategory.OilCooler))/Math.Max(1000,f.oilLitres*.86*2000));else f.oilTemperatureC=DragMath.Clamp(f.oilTemperatureC+(heating-cooling)/Math.Max(1000,f.oilLitres*.86*2000)*dt,20,400);
             f.oilBurnLps=running?(.000005*car.spec.DisplacementLitres*(.2+s.throttle)*(.5+s.rpm/car.spec.redlineRpm))*(1+12*Math.Max(1-ServiceDynamics.Health(car,PartCategory.PistonRings),EngineElements.LocalLoss(car,PartCategory.PistonRings))+8*Math.Max(1-ServiceDynamics.Health(car,PartCategory.ValveSeals),EngineElements.LocalLoss(car,PartCategory.ValveSeals))+6*(car.induction.turboCount>0?Leak(car,PartCategory.Induction):0)):0;
             f.oilLeakLps=(Leak(car,PartCategory.OilPan)+Leak(car,PartCategory.OilCooler))*(.0002+(running?f.oilPressureBar*.0005:0));
             f.coolantLeakLps=(Leak(car,PartCategory.Cooling)+Leak(car,PartCategory.CoolingHoses))*(.0005+f.coolantPressureBar*.004);
@@ -107,13 +107,46 @@ namespace DragLab.Domain
             double coolantLeak=Math.Min(f.coolantLitres,(f.coolantLeakLps+f.coolantVentLps)*dt);f.coolantLitres-=coolantLeak;f.coolantLostLitres+=coolantLeak;
             if(running)f.oilCondition=DragMath.Clamp(f.oilCondition-dt*(.0000002+Math.Max(0,f.oilTemperatureC-120)*.00000008)*car.driver.FluidAgingRate,0,1);
             if(parked){f.serviceElapsedSeconds+=dt;if(cooler!=null)cooler.condition.temperatureC=20+(coolantC-20)*Math.Exp(-dt/120);}
-            ServiceDynamics.Tick(car,parked?0:dt);EngineElements.TickLocal(car,parked?0:dt);car.mechanics.Prepare(s);ServiceDynamics.Prepare(car);if(parked)f.oilPressureBar=0;if(s.engineFailed)s.engineTorqueNm=s.engineHorsepower=s.transmittedTorqueNm=0;car.RefreshFluidMass();
+            ServiceDynamics.Tick(car,parked?0:dt);EngineElements.TickLocal(car,parked?0:dt);if(!parked){car.mechanics.Prepare(s);ServiceDynamics.Prepare(car);}if(parked)f.oilPressureBar=0;if(s.engineFailed)s.engineTorqueNm=s.engineHorsepower=s.transmittedTorqueNm=0;car.RefreshFluidMass();
         }
     }
     public sealed partial class CarSimulation
     {
         public void RefreshFluidMass(){UpdateMass();}
         public void SetFluids(FluidState fluids){if(fluids==null||fluids.Validate(spec.fluids)!=null)throw new ArgumentException("Invalid fluid state.");state.fluids=fluids.Copy();RefreshFluidMass();}
-        public void CoolDown(double seconds){if(!MechanicsSchema.Finite(seconds)||seconds<0||seconds>3600)throw new ArgumentException("Cooldown must be 0–3600 simulated seconds.");for(double time=0;time<seconds;time+=1)FluidDynamics.Tick(this,Math.Min(1,seconds-time),true);}
+        public void ApplyRaceTemperatures(RaceTemperatureMode mode,long previousUtcTicks,long nowUtcTicks)
+        {
+            if(!Enum.IsDefined(typeof(RaceTemperatureMode),mode)||previousUtcTicks<0||nowUtcTicks<0||previousUtcTicks>DateTime.MaxValue.Ticks||nowUtcTicks>DateTime.MaxValue.Ticks)throw new ArgumentException("Invalid race temperature mode/clock.");
+            // Thermal difficulty must not bypass the independent parked fluid/leak rules.
+            if(previousUtcTicks>0&&nowUtcTicks>previousUtcTicks)CoolDown((nowUtcTicks-previousUtcTicks)/(double)TimeSpan.TicksPerSecond);
+            if(driver.optimalThermals)mode=RaceTemperatureMode.Optimal;
+            if(mode==RaceTemperatureMode.Live)return;
+            bool optimal=mode==RaceTemperatureMode.Optimal;
+            foreach(var part in mechanics.parts) {
+                var d=mechanics.Definition(part);part.condition.temperatureC=optimal?MechanicalStress.OptimalTemperature(d.category):20;
+                if(d.category==PartCategory.Tires&&part.condition.tires!=null){foreach(var tire in part.condition.tires)tire.temperatureC=optimal?d.tireOptimalC:20;part.condition.temperatureC=optimal?d.tireOptimalC:20;}
+            }
+            state.fluids.oilTemperatureC=optimal?90:20;state.fluids.oilPressureBar=state.fluids.coolantPressureBar=0;state.engineTemperature=optimal?1:0;state.exhaustHeat=0;
+        }
+        public void CoolDown(double seconds)
+        {
+            if(!MechanicsSchema.Finite(seconds)||seconds<0||seconds>DateTime.MaxValue.Ticks/(double)TimeSpan.TicksPerSecond)throw new ArgumentException("Invalid elapsed cooldown time.");
+            // Resolve the hot transient each second; after an hour the remaining parked
+            // tail uses the same exponential cooling and retained leak rates in one step.
+            for(double time=0;time<seconds;) {
+                double dt=time<3600?Math.Min(1,seconds-time):seconds-time;
+                foreach(var p in mechanics.parts) {
+                    var d=mechanics.Definition(p);
+                    // Cooling's liquid/pressure circuit is advanced by FluidDynamics below.
+                    if(d.category!=PartCategory.Cooling)p.condition.temperatureC=20+(p.condition.temperatureC-20)*Math.Exp(-dt*d.coolingWattsPerC/Math.Max(1,d.heatCapacityJPerC));
+                    if(d.category==PartCategory.Tires&&p.condition.tires!=null) {
+                        double capacity=d.heatCapacityJPerC*Math.Max(.1,wheels.tireMassKg/Math.Max(.1,wheels.referenceTireMassKg));
+                        foreach(var tire in p.condition.tires)tire.temperatureC=20+(tire.temperatureC-20)*Math.Exp(-dt*d.coolingWattsPerC/capacity);
+                    }
+                }
+                FluidDynamics.Tick(this,dt,true);
+                time+=dt;
+            }
+        }
     }
 }

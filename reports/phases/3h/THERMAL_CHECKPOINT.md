@@ -1,0 +1,7 @@
+# Thermal difficulty and warm-up checkpoint — 2026-10-09
+
+Heat management OFF maintains optimum throughout driving and disables race-entry temperature choices. ON permits ambient, optimal-at-start or actual elapsed live cooling. Per-car clocks and engine-off component/tire/oil/coolant dynamics persist through owned checkpoints. Parked leakage obeys independent difficulty under every temperature policy. Optional shared neutral warm-up and real line-lock/contact burnouts precede staging without rewards or race time.
+
+Focused thermal domain verification passed **156 checks**. The actual Windows settings/warm-up workflow passed **13 semantic checks** plus UI reachability checks, with zero runtime errors. All eight Windows OEM passes, shutdown stops and condition reloads passed; the converter/stale-heat calibration and normalization caching fixes are documented in the [thermal contract](../../../docs/HEAT_AND_RACE_TURNAROUND.md). The targeted funded balance test passed **1,388 checks / 330 ledger operations** with a paid tire upgrade for the new cold-start route. The full 18-workflow Windows suite also passed; broad domain regression is still running at this checkpoint.
+
+Save schema remains 5 with additive clocks/preferences. Physical capture model advances to v16; older exact recordings require new captures while owned saves remain supported. No source/assets were edited during the running batch. This is a tested feature checkpoint, not final 3H acceptance or packaging.

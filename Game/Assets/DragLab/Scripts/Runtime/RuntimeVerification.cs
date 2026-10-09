@@ -52,9 +52,10 @@ namespace DragLab.Runtime
         }
         void Update()
         {
-            if (startedAt > 0 && Time.realtimeSinceStartup - startedAt > 180)
+            float budget=Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-durability-only")>=0?600:180;
+            if (startedAt > 0 && Time.realtimeSinceStartup - startedAt > budget)
             {
-                File.WriteAllText(Path.Combine(output, "runtime-verification.txt"), "FAIL: Probe exceeded 180 seconds.\n");
+                File.WriteAllText(Path.Combine(output, "runtime-verification.txt"), "FAIL: Probe exceeded "+budget+" seconds.\n");
                 Application.Quit(2);
             }
         }
@@ -62,6 +63,7 @@ namespace DragLab.Runtime
         {
             yield return null;
             yield return Capture("garage");
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-thermal-only")>=0){yield return RaceThermalRun();yield break;}
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-economy-integration")>=0){yield return EconomyIntegrationRun();yield break;}
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-balance-only")>=0){yield return BalanceRun();yield break;}
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-business-only")>=0){yield return BusinessRun();yield break;}

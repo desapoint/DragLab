@@ -83,7 +83,24 @@ namespace DragLab.Domain.Mechanics
                     profile.parts.Add(item); car.installed.slots.Add(new SlotBinding { slot = item.slot, partInstanceId = item.instanceId });
                 }
             }
-            foreach(var item in profile.parts){var d=catalog.Find(item.definitionId);var owner=string.IsNullOrEmpty(item.ownerId)?null:profile.cars.Find(c=>c.engineAssemblyId==item.ownerId||c.instanceId==item.ownerId);if(d!=null&&owner!=null)EngineElements.Ensure(catalog.Resolve(owner.vehicleId,Definitions(profile,owner),owner.tune).spec,d,item);if(d!=null&&owner==null&&item.location==PartLocation.Assembly){var stored=profile.engines.Find(e=>e.instanceId==item.ownerId&&string.IsNullOrEmpty(e.parentVehicleId));if(stored!=null)EngineElements.Ensure(catalog.Resolve(stored.vehicleDefinitionId,AssemblyOperations.Definitions(profile,stored),stored.tune).spec,d,item);}if(d!=null)ClutchHardware.Ensure(d,item.condition);}
+            // Resolve an owner's hardware once per normalization, rather than once
+            // per part. Multi-car checkpoints must not re-resolve hundreds of builds.
+            var ownerById=new Dictionary<string,OwnedCar>();
+            foreach(var car in profile.cars){ownerById[car.instanceId]=car;if(!string.IsNullOrEmpty(car.engineAssemblyId))ownerById[car.engineAssemblyId]=car;}
+            var resolvedOwners=new Dictionary<string,VehicleSpec>();
+            foreach(var item in profile.parts) {
+                var d=catalog.Find(item.definitionId);OwnedCar owner=null;VehicleSpec spec;
+                if(!string.IsNullOrEmpty(item.ownerId))ownerById.TryGetValue(item.ownerId,out owner);
+                if(d!=null&&owner!=null) {
+                    if(!resolvedOwners.TryGetValue(owner.instanceId,out spec)){spec=catalog.Resolve(owner.vehicleId,Definitions(profile,owner),owner.tune).spec;resolvedOwners[owner.instanceId]=spec;}
+                    EngineElements.Ensure(spec,d,item);
+                }
+                if(d!=null&&owner==null&&item.location==PartLocation.Assembly) {
+                    var stored=profile.engines.Find(e=>e.instanceId==item.ownerId&&string.IsNullOrEmpty(e.parentVehicleId));
+                    if(stored!=null){if(!resolvedOwners.TryGetValue(stored.instanceId,out spec)){spec=catalog.Resolve(stored.vehicleDefinitionId,AssemblyOperations.Definitions(profile,stored),stored.tune).spec;resolvedOwners[stored.instanceId]=spec;}EngineElements.Ensure(spec,d,item);}
+                }
+                if(d!=null)ClutchHardware.Ensure(d,item.condition);
+            }
             profile.equipmentVersion = 1; profile.drivelineVersion = 2; profile.mechanicsVersion = MechanicsSchema.Version; profile.saveVersion = SaveVersion;
             var selected = profile.SelectedCar ?? profile.cars.FirstOrDefault();
             profile.selectedVehicleId = selected?.vehicleId ?? ""; profile.selectedOwnedVehicleId = selected?.instanceId ?? "";
@@ -167,6 +184,7 @@ namespace DragLab.Domain.Mechanics
             {
                 if (MassDynamics.ValidateInputs(catalog.Spec(car.vehicleId),car.tune) != null) return "Invalid owned mass/placement inputs.";
                 if(car.serviceHardwareVersion!=1||car.fluids==null||car.fluids.Validate(catalog.Spec(car.vehicleId).fluids)!=null)return "Invalid owned fluids/service migration.";
+                if(car.thermalUtcTicks<0||car.thermalUtcTicks>DateTime.MaxValue.Ticks)return "Invalid owned thermal clock.";
                 if (car.fuel == null || car.fuel.Validate(catalog.Spec(car.vehicleId).fuel) != null || !car.fuelInitialized || car.massVersion != 1) return "Invalid fuel/mass state.";
                 if (!unique(car.instanceId) || !unique(car.chassisId) || car.installed == null || car.installed.version != MechanicsSchema.Version || car.installed.instanceId != car.instanceId || car.installed.vehicleDefinitionId != car.vehicleId) return "Invalid vehicle/chassis/build identity.";
                 var engine = profile.engines.Find(e => e.instanceId == car.engineAssemblyId);

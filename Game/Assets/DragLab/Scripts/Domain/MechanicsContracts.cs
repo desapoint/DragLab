@@ -7,7 +7,7 @@ namespace DragLab.Domain.Mechanics
     public static class MechanicsSchema
     {
         public const int Version = 1, TraceVersion = 1;
-        public const string Model = "draglab-integrated-tools-v15";
+        public const string Model = "draglab-integrated-tools-v16";
         public static bool Finite(double value) { return !double.IsNaN(value) && !double.IsInfinity(value); }
     }
     public enum PartCategory { Pistons, Rods, Crankshaft, HeadIntake, FuelSystem, Ignition, Cooling, Induction, Exhaust, Clutch, Flywheel, Gearbox, Differential, Wheels, Tires, Brakes, Body, Controls, Driveshaft, FrontAxle, RearAxle, FrontDriveshaft, RearDriveshaft, FrontDifferential, RearDifferential, TransferCase, Interior, Accessories, RevLimiter, ShiftLight, TwoStep, Camshaft, ValveSprings, Valves, Followers, TimingDrive, PistonRings, CylinderBlock, Bearings, ValveSeals, OilPan, OilPump, OilFilter, CoolantPump, CoolingCap, CoolingHoses, OilCooler }
@@ -112,7 +112,7 @@ namespace DragLab.Domain.Mechanics
     {
         public int version = MechanicsSchema.Version;
         public string runId, ownedVehicleId, model = MechanicsSchema.Model;
-        public long revision, tick;
+        public long revision, tick, thermalUtcTicks;
         public FuelState fuel = new FuelState();
         public bool hasFuel;
         public string closedReason = "";

@@ -38,7 +38,6 @@ namespace DragLab.Runtime
         long liveRunTick, savedRunTick;
         int savedRunFailures;
         bool liveRunClosed;
-        bool liveCooldownApplied;
         bool paused;
         bool audioSettingsOpen;
         bool practiceRun;
@@ -59,7 +58,7 @@ namespace DragLab.Runtime
         internal void PauseRace(bool value) { SetPaused(value); }
         internal void OpenAudioSettings() { if (screen == "Race") { SetPaused(true); audioSettingsOpen = true; } else { DiscardPreviews(); screen = "Settings"; scroll = Vector2.zero; } }
         internal void PreviewVehicle(string id) { DiscardPreviews(); profile.selectedVehicleId = id; MechanicsOwnership.Ensure(profile,profile.catalog); lastBenchmarkKey = null; screen = "Garage"; ShowGarageCar(); }
-        public void ReturnToGarage() { DiscardPreviews(); if(race!=null&&!liveCooldownApplied){race.player.CoolDown(60);liveCooldownApplied=true;} if(!SyncRaceWear(true,"Returned to garage"))return; race = null; screen = "Garage"; ShowGarageCar(); }
+        public void ReturnToGarage() { DiscardPreviews(); if(!SyncRaceWear(true,"Returned to garage"))return; race = null; screen = "Garage"; ShowGarageCar(); }
         public void StartPractice() { StartRace(null, true); }
 
         VehicleDefinition Selected { get { return Array.Find(vehicles, v => v.spec.id == profile.selectedVehicleId) ?? vehicles[0]; } }
@@ -144,7 +143,9 @@ namespace DragLab.Runtime
             race.player.SetMassInputs(resolved.tune.driverMassKg, resolved.tune.payloadMassKg, resolved.tune.payloadPositionM, resolved.tune.payloadHeightM, Build.fuel.litres);
             race.player.state.fuelUsedLitres = Build.fuel.cumulativeUsedLitres;
             race.player.SetFluids(Build.fluids);
-            liveRunId=MechanicsOwnership.NewId("run");liveRunOwner=Build.instanceId;liveRunTick=0;savedRunTick=-1;savedRunFailures=RunPersistence.FailureCount(race.player);liveRunClosed=false;liveCooldownApplied=false;
+            race.player.ApplyRaceTemperatures(playerDriver.raceTemperatures,Build.thermalUtcTicks,DateTime.UtcNow.Ticks);
+            if(playerDriver.warmupBeforeRace)race.BeginWarmup();
+            liveRunId=MechanicsOwnership.NewId("run");liveRunOwner=Build.instanceId;liveRunTick=0;savedRunTick=-1;savedRunFailures=RunPersistence.FailureCount(race.player);liveRunClosed=false;
             PlayerProfile entered;string entrySaveError;
             var initial=RunPersistence.Capture(liveRunId,liveRunOwner,0,race.player);
             if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{CareerProgression.Enter(p,liveRunId,liveRunOwner,evt,practiceRun);MechanicsTransactions.ApplyCheckpoint(p,initial);},ProfileStore.TrySave,out entered,out entrySaveError)){notice=entrySaveError;race=null;return;}
@@ -247,6 +248,7 @@ namespace DragLab.Runtime
         void OnApplicationQuit() { if (profile != null) { SyncRaceWear(true,"Quit");ProfileStore.Save(profile); } }
 
         internal string AuditMouseEvents = "";
+        internal Rect warmupLineLockRect;
         void OnGUI()
         {
             if (RuntimeVerification.Active && (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseUp)) AuditMouseEvents += Event.current.type + "@" + Event.current.mousePosition + ";";
@@ -434,7 +436,7 @@ namespace DragLab.Runtime
             GUI.DrawTexture(new Rect(rpmBar.x, rpmBar.y, rpmBar.width * Mathf.Clamp01((float)state.rpm / race.player.spec.redlineRpm), rpmBar.height), Texture2D.whiteTexture);
             GUI.color = Color.yellow; GUI.DrawTexture(new Rect(rpmBar.x + rpmBar.width * (float)target / race.player.spec.redlineRpm - 1, rpmBar.y, 2, rpmBar.height), Texture2D.whiteTexture);
             GUI.color = oldColor;
-            string message = race.time < 1.5 ? "STAGED" : race.time < 2 ? "AMBER 1" : race.time < 2.5 ? "AMBER 2" : race.time < 3 ? "AMBER 3" : "GREEN";
+            string message = race.warmup ? "WARM-UP / LIGHTS WAITING" : race.time < 1.5 ? "STAGED" : race.time < 2 ? "AMBER 1" : race.time < 2.5 ? "AMBER 2" : race.time < 3 ? "AMBER 3" : "GREEN";
             if (state.disqualified) message = "RED LIGHT";
             else if (state.stagingBrakesHeld) message += " / NEUTRAL / BRAKES HELD";
             else if (state.finished) message = "FINISH RECORDED / SHUTDOWN LANE    " + Math.Max(0, state.distance - state.finishDistance).ToString("F1") + " m beyond finish";
@@ -497,11 +499,24 @@ namespace DragLab.Runtime
                 return;
             }
             var held = controls.Peek();
+            if(race.warmup) {
+                GUILayout.BeginArea(new Rect(16,16+hudHeight,width-32,175),GUI.skin.box);
+                GUILayout.Label("WARM-UP: W/Space gas; E engage/upshift; Q downshift to neutral; Shift clutch; S brake. Stop before staging.");
+                var tires=race.player.mechanics.Part(DragLab.Domain.Mechanics.PartCategory.Tires);
+                GUILayout.Label("Tires C: "+string.Join(" / ",System.Array.ConvertAll(tires.condition.tires,t=>t.temperatureC.ToString("F1")))+" / gearbox "+race.player.mechanics.Part(DragLab.Domain.Mechanics.PartCategory.Gearbox).condition.temperatureC.ToString("F1")+" C / oil "+state.fluids.oilTemperatureC.ToString("F1")+" C");
+                if(race.player.spec.drive!=DriveType.AWD){state.warmupLineLock=GUILayout.Toggle(state.warmupLineLock,"Burnout line lock: brake non-driven axle only (hold S)");if(Event.current.type==EventType.Repaint)warmupLineLockRect=RuntimeGuiRect.ToClient(GUILayoutUtility.GetLastRect());}
+                GUI.enabled=race.WarmupStopped&&!state.engineFailed&&!state.drivetrainFailed;
+                if(PartButton("warmup-ready","Ready / start lights (Enter)"))pendingAction=()=>race.BeginCountdown();
+                GUI.enabled=true;
+                if(PartButton("warmup-abort","Return to garage / keep fuel and wear"))pendingAction=ReturnToGarage;
+                GUILayout.EndArea();
+            }
             string[] labels = { "Gas / W or Space\n" + (held.throttle * 100).ToString("F0") + "%", "Clutch / Shift\n" + (held.clutch * 100).ToString("F0") + "%", "Shift down / Q", state.launched ? "Shift up / E" : "N → 1 / E\nLaunch at green", "Pause", "Brake / S\n" + (held.brake * 100).ToString("F0") + "%" };
+            if(race.warmup){labels[RaceInputAdapter.UpControl]="Engage / shift up / E";labels[RaceInputAdapter.DownControl]="Downshift / neutral / Q";}
             if (cvt) { labels[RaceInputAdapter.DownControl] = "CVT / continuous ratio"; labels[RaceInputAdapter.UpControl] = state.launched ? "Drive / CVT" : "N → D / E\nLaunch at green"; }
             if (state.stalled) labels[RaceInputAdapter.UpControl] = "Restart / E\nClutch in if manual";
             for (int i = 0; i < labels.Length; i++) GUI.Box(RaceInputAdapter.ControlRect(i, width, height), labels[i], GUI.skin.button);
-            GUI.Label(new Rect(16, height - 24, width - 32, 22), cvt ? "Hold W or Space for gas. E selects Drive at green; CVT then adjusts its ratio continuously. Enter also launches." : "Hold W or Space for gas. E engages first at green, then shifts up; keep holding gas. Enter also launches.");
+            GUI.Label(new Rect(16, height - 24, width - 32, 22), race.warmup?"Warm-up: E engages drive, Q returns first gear to neutral. Stop, then Ready / Enter begins the lights.":cvt ? "Hold W or Space for gas. E selects Drive at green; CVT then adjusts its ratio continuously. Enter also launches." : "Hold W or Space for gas. E engages first at green, then shifts up; keep holding gas. Enter also launches.");
         }
     }
 }

@@ -82,6 +82,12 @@ namespace DragLab.Runtime
             var point = new Point { x = x, y = y };
             if (!ClientToScreen(window, ref point) || !SetCursorPos(point.x, point.y)) throw new InvalidOperationException("Mouse probe could not locate its own client area.");
         }
+        public void ScrollAt(int x,int y,int notches)
+        {
+            MoveMouseAt(x,y);
+            var input=new InputEvent{type=0,payload=new Payload{mouse=new Mouse{flags=0x800,data=unchecked((uint)(notches*120))}}};
+            if(SendInput(1,new[]{input},Marshal.SizeOf(typeof(InputEvent)))!=1)throw new InvalidOperationException("Mouse wheel event was not accepted.");
+        }
     }
 }
 #endif

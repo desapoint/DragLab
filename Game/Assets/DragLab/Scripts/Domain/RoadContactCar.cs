@@ -49,10 +49,11 @@ namespace DragLab.Domain
             if(centerLsd&&s.openCenterFreeBranch){double frontI=s.frontDriveAvailable?wheels.totalInertia*.5/(tune.finalDrive*tune.finalDrive):awd.freeShaftInertiaKgM2,rearI=s.rearDriveAvailable?wheels.totalInertia*.5/(tune.finalDrive*tune.finalDrive):awd.freeShaftInertiaKgM2;double cap=awd.centerPreloadNm+Math.Abs(port)*.5*(awd.torqueBiasRatio-1)/(awd.torqueBiasRatio+1);double transfer=DragMath.Clamp((s.frontShaftRpm-s.rearShaftRpm)/FlywheelDynamics.RpmPerRadian/(1/frontI+1/rearI)/dt,-cap,cap);frontPort-=transfer;rearPort+=transfer;}
             double front=frontPort*tune.finalDrive,rear=rearPort*tune.finalDrive;
             double brakeTotal=mass.TranslatingKg*spec.BrakeDeceleration*s.brakeCapacityFactor*s.brake*wheels.radius;
+            double frontBrakeBias=s.warmupLineLock&&spec.drive!=DriveType.AWD?(spec.drive==DriveType.RWD?1:0):spec.frontBrakeBias;
             bool tires=MassDynamics.Installed(spec,Mechanics.PartCategory.Wheels)&&MassDynamics.Installed(spec,Mechanics.PartCategory.Tires);
             var input=new WheelContactInput { massKg=mass.TranslatingKg,radiusM=wheels.radius,inertiaKgM2=Math.Max(1e-5,wheels.totalInertia*.25),frontTorqueNm=s.frontDriveAvailable?front:0,rearTorqueNm=s.rearDriveAvailable?rear:0,
                 normalLoadN=new[]{s.frontLoadN*.5,s.frontLoadN*.5,s.rearLoadN*.5,s.rearLoadN*.5},friction=new[]{tires?Friction*roadTireGrip[0]*DifferentialDynamics.Grip(tune.frontLeftGrip):0,tires?Friction*roadTireGrip[1]*DifferentialDynamics.Grip(tune.frontRightGrip):0,tires?Friction*roadTireGrip[2]*DifferentialDynamics.Grip(tune.rearLeftGrip):0,tires?Friction*roadTireGrip[3]*DifferentialDynamics.Grip(tune.rearRightGrip):0},
-                brakeNm=new[]{brakeTotal*spec.frontBrakeBias*.5,brakeTotal*spec.frontBrakeBias*.5,brakeTotal*(1-spec.frontBrakeBias)*.5,brakeTotal*(1-spec.frontBrakeBias)*.5},frontDifferential=spec.frontDifferential,rearDifferential=spec.rearDifferential,frontDifferentialHealth=s.frontDriveAvailable?s.frontDifferentialHealth:0,rearDifferentialHealth=s.rearDriveAvailable?s.rearDifferentialHealth:0,lockCenter=spec.drive==DriveType.AWD&&awd.mode==AwdMode.LockedCenter&&s.frontDriveAvailable&&s.rearDriveAvailable,
+                brakeNm=new[]{brakeTotal*frontBrakeBias*.5,brakeTotal*frontBrakeBias*.5,brakeTotal*(1-frontBrakeBias)*.5,brakeTotal*(1-frontBrakeBias)*.5},frontDifferential=spec.frontDifferential,rearDifferential=spec.rearDifferential,frontDifferentialHealth=s.frontDriveAvailable?s.frontDifferentialHealth:0,rearDifferentialHealth=s.rearDriveAvailable?s.rearDifferentialHealth:0,lockCenter=spec.drive==DriveType.AWD&&awd.mode==AwdMode.LockedCenter&&s.frontDriveAvailable&&s.rearDriveAvailable,
                 centerPreloadNm=centerLsd&&!s.openCenterFreeBranch?awd.centerPreloadNm*tune.finalDrive:0,centerTorqueBiasRatio=centerLsd&&!s.openCenterFreeBranch?awd.torqueBiasRatio:1,
                 resistanceN=.5*1.225*spec.dragAreaM2*s.contact.speed*s.contact.speed+mass.TranslatingKg*DragMath.Gravity*spec.rollingResistance };
             WheelContactDynamics.Step(s.contact,input,dt);
@@ -74,17 +75,19 @@ namespace DragLab.Domain
         }
         double AdvancePhysicalDrive(double dt,double gas,bool manualPedal,bool launchControl,bool torqueInterrupt,bool shifting,double ratio)
         {
-            BeginRoadTick();UpdateTorqueSplit(dt,ratio);int steps=(int)Math.Ceiling(dt/(1.0/960));double h=dt/steps,torqueSum=0,clutchWork=0;
+            BeginRoadTick();UpdateTorqueSplit(dt,ratio);int steps=(int)Math.Ceiling(dt/(1.0/960));double h=dt/steps,torqueSum=0,clutchWork=0,converterWork=0;
             for(int i=0;i<steps;i++) {
                 double rpm=DrivenWheelOmega*FlywheelDynamics.RpmPerRadian*ratio,previousEngine=state.rpm,shaft;
+                state.converterLossPowerW=0;
                 if(state.drivetrainFailed){state.rpm=ClutchDynamics.FreeRev(spec,tune,state.rpm,gas,h,ref state.limiter,InductionDynamics.Torque(induction,state,state.rpm,gas)*state.combustionFraction,engine,state);shaft=0;}
                 else if(transmission.type==TransmissionType.Automatic||transmission.type==TransmissionType.CVT)shaft=TransmissionDynamics.Converter(spec,tune,engine,induction,transmission,state,gas,rpm,shifting,h,wheels,ratio,ReflectedWheelInertia(ratio));
                 else shaft=ClutchDynamics.Transmit(spec,tune,state,gas,rpm,manualPedal,launchControl,torqueInterrupt,h,induction,engine,wheels,ratio,shifting?TransmissionDynamics.Retention(transmission):1,ReflectedWheelInertia(ratio),frictionHardware);
                 if(state.engineFailed)shaft=0;if(engagementPenalty>0)shaft*=.65;
+                converterWork+=state.converterLossPowerW*h;
                 AdvanceContact(h,dt,shaft,ratio);torqueSum+=shaft/steps;
                 if(transmission.type==TransmissionType.Manual||transmission.type==TransmissionType.DCT){double slip=((previousEngine+state.rpm)*.5-(rpm+DrivenWheelOmega*FlywheelDynamics.RpmPerRadian*ratio)*.5)/FlywheelDynamics.RpmPerRadian;if(Math.Abs(slip*FlywheelDynamics.RpmPerRadian)>100)clutchWork+=Math.Max(0,shaft*slip*h);}
             }
-            state.transmittedTorqueNm=torqueSum;state.clutchFrictionPowerW=clutchWork/dt;FinishRoadTick(dt);return torqueSum;
+            state.transmittedTorqueNm=torqueSum;state.clutchFrictionPowerW=clutchWork/dt;state.converterLossPowerW=converterWork/dt;FinishRoadTick(dt);return torqueSum;
         }
     }
 }

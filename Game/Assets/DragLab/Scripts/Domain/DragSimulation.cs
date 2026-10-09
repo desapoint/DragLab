@@ -277,6 +277,7 @@ namespace DragLab.Domain
         }
     }
 
+    public enum RaceTemperatureMode { FullyCooled, Optimal, Live }
     [Serializable]
     public class DriverSettings
     {
@@ -300,6 +301,8 @@ namespace DragLab.Domain
         public double ConditionSeverity {get{return conditionEffects==Mechanics.ConditionEffectMode.Assisted?0:conditionEffects==Mechanics.ConditionEffectMode.Reduced?.25:1;}}
         public float wearMultiplier = 1;
         public bool optimalThermals, clutchAssist, stallPrevention;
+        public RaceTemperatureMode raceTemperatures = RaceTemperatureMode.FullyCooled;
+        public bool warmupBeforeRace;
         public SimulationDifficulty simulationDifficulty = SimulationDifficulty.Custom;
         public double WearRate { get { return wearMode == WearMode.None ? 0 : (wearMode == WearMode.Partial ? .25 : 1) * DragMath.Clamp(wearMultiplier, 0, 1000); } }
         public double FuelUsageRate { get { return fuelUsage == FuelUsageMode.None ? 0 : fuelUsage == FuelUsageMode.Reduced ? .25 : 1; } }
@@ -313,6 +316,7 @@ namespace DragLab.Domain
             conditionEffects=preset==SimulationDifficulty.Arcade?Mechanics.ConditionEffectMode.Assisted:preset==SimulationDifficulty.Balanced?Mechanics.ConditionEffectMode.Reduced:Mechanics.ConditionEffectMode.Full;
             serviceAssist=preset==SimulationDifficulty.Arcade?Mechanics.ServiceAssist.AutoTopUp:Mechanics.ServiceAssist.Manual;
             optimalThermals = preset == SimulationDifficulty.Arcade;
+            raceTemperatures = preset == SimulationDifficulty.Arcade ? RaceTemperatureMode.Optimal : preset == SimulationDifficulty.Balanced ? RaceTemperatureMode.FullyCooled : RaceTemperatureMode.Live;
             clutchAssist = stallPrevention = tractionAssist = revMatchAssist = preset != SimulationDifficulty.Simulation;
         }
         public DriverSettings Copy() { return (DriverSettings)MemberwiseClone(); }
@@ -419,6 +423,7 @@ namespace DragLab.Domain
         public bool limiter;
         public double engineTime, engineTemperature = 1, engineDamage, exhaustHeat, antiLagTime;
         public double brakeFrictionPowerW, clutchFrictionPowerW, converterLossPowerW, frontContactForceN, rearContactForceN, drivelineWheelRpm;
+        public bool warmupLineLock;
         public WheelContactState contact = new WheelContactState();
         public bool wheelContactInitialized;
         public bool stalled, engineFailed, launchControlActive, antiLagActive, previousLimiter, converterLocked;
@@ -570,6 +575,7 @@ namespace DragLab.Domain
             if (state.launched || state.disqualified) return;
             PrepareSimulationRules();
             state.gear = 0; state.stagingBrakesHeld = true; state.brake = 1;
+            ClearDisconnectedCoupling();
             state.speed = state.acceleration = state.slip = state.transmittedTorqueNm = state.clutchSlipRpm = state.brakeFrictionPowerW = 0;
             state.frontSlip = state.rearSlip = state.frontDriveForceN = state.rearDriveForceN = 0;
             if (input.throttle > 0) stagingPedal = true;
@@ -738,7 +744,13 @@ namespace DragLab.Domain
         }
         void AdvanceUnpoweredRoad(double dt, double brake)
         {
+            ClearDisconnectedCoupling();
             BeginRoadTick(); state.brake = brake; UpdateTorqueSplit(dt, 0); AdvanceContact(dt, dt, 0, 0); FinishRoadTick(dt);
+        }
+        void ClearDisconnectedCoupling()
+        {
+            state.clutchFrictionPowerW = state.converterLossPowerW = 0;
+            state.converterSlipRpm=0;state.converterLocked=false;
         }
         public void Shutdown(double dt, double brake)
         {
@@ -760,6 +772,15 @@ namespace DragLab.Domain
         public RacePhase phase;
         public bool playerWon;
         public bool timedOut;
+        public bool warmup, warmupNeutral = true;
+        public bool WarmupStopped { get { return Math.Abs(player.state.speed)<.1 && Array.TrueForAll(player.state.contact.omega,w=>Math.Abs(w)<.5); } }
+        public void BeginWarmup() { if(time!=0||phase!=RacePhase.Countdown)throw new InvalidOperationException("Warm-up must precede countdown.");warmup=true;warmupNeutral=true; }
+        public bool BeginCountdown()
+        {
+            if(!warmup||!WarmupStopped||player.state.engineFailed||player.state.drivetrainFailed)return false;
+            var s=player.state;s.warmupLineLock=false;s.launched=s.finished=s.disqualified=false;s.gear=0;s.distance=s.contact.distance=s.elapsed=s.launchTime=0;s.reaction=-1;s.shiftRemaining=0;s.splits.Clear();
+            warmup=false;warmupNeutral=true;return true;
+        }
         public readonly RaceTelemetry telemetry = new RaceTelemetry();
         static readonly double[] Markers = { 18.288, 201.168, 402.336, 804.672, 1609.344 };
 
@@ -774,6 +795,15 @@ namespace DragLab.Domain
         {
             if (double.IsNaN(dt) || dt <= 0 || dt > .05) throw new ArgumentOutOfRangeException("dt");
             if (phase == RacePhase.Finished) return;
+            if(warmup) {
+                if(input.launch&&BeginCountdown())return;
+                if(input.shiftDown&&player.state.gear<=1){warmupNeutral=true;input.shiftDown=false;}
+                if(input.shiftUp&&warmupNeutral)warmupNeutral=false;
+                bool assist=player.driver.throttleAssist;
+                try {player.driver.throttleAssist=false;player.IndependentStep(dt,input,warmupNeutral,false);}
+                finally {player.driver.throttleAssist=assist;}
+                return;
+            }
             double previousTime = time;
             time += dt;
             double greenTime = time - GreenAt;

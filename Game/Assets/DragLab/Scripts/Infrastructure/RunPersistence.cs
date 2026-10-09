@@ -10,7 +10,7 @@ namespace DragLab.Infrastructure
         public const int PeriodTicks=120;
         public static RunCheckpoint Capture(string runId,string ownerId,long tick,CarSimulation car,bool closed=false,string reason="")
         {
-            return new RunCheckpoint{runId=runId,ownedVehicleId=ownerId,tick=tick,hasFuel=true,fuel=car.FuelSnapshot(),fluids=car.state.fluids.Copy(),components=car.mechanics.parts.Select(p=>p.Copy()).ToList(),settled=closed,closedReason=reason};
+            return new RunCheckpoint{runId=runId,ownedVehicleId=ownerId,tick=tick,thermalUtcTicks=DateTime.UtcNow.Ticks,hasFuel=true,fuel=car.FuelSnapshot(),fluids=car.state.fluids.Copy(),components=car.mechanics.parts.Select(p=>p.Copy()).ToList(),settled=closed,closedReason=reason};
         }
         public static bool ConditionAdvances(ComponentCondition a,ComponentCondition b)
         {

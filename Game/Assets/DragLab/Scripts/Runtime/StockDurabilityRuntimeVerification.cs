@@ -30,11 +30,11 @@ namespace DragLab.Runtime
                 log.AppendLine("PASS: " + vehicle.spec.id + " / ET " + car.state.elapsed.ToString("F3") + " s / lowest health " + car.mechanics.parts.Min(p => p.condition.health).ToString("P2") + " / brakes " + car.mechanics.parts.Find(p => p.slot == "Brakes").condition.temperatureC.ToString("F1") + " C / stopped without a breakdown.");
                 yield return Capture("stock-durability-" + vehicle.spec.id);
                 var beforeCooldown = car.mechanics.parts.Select(p => p.Copy()).ToList(); game.ReturnToGarage();
-                // Garage return advances the same car through engine-off cooldown before saving.
-                // Compare that committed boundary, while separately ensuring no wear is healed.
+                // Garage return commits actual state. Cooling now follows the saved
+                // race-entry preference; returning alone cannot grant invented elapsed time.
                 var actual = car.mechanics.parts.Select(p => p.Copy()).ToList();
-                Check(actual.All(p => beforeCooldown.Any(before => before.instanceId == p.instanceId && p.condition.health <= before.condition.health && (!before.condition.failed || p.condition.failed))), "Garage cooldown retains actual identities and does not repair OEM wear: " + vehicle.spec.id);
-                log.AppendLine("PASS: Garage cooldown retains identities and wear: " + vehicle.spec.id);
+                Check(actual.All(p => beforeCooldown.Any(before => before.instanceId == p.instanceId && p.condition.health <= before.condition.health && (!before.condition.failed || p.condition.failed))), "Garage return retains actual identities and does not repair OEM wear: " + vehicle.spec.id);
+                log.AppendLine("PASS: Garage return retains identities and wear: " + vehicle.spec.id);
                 var saved = ProfileStore.Load();
                 Check(actual.All(p => saved.parts.Any(owned => owned.instanceId == p.instanceId && owned.condition.health == p.condition.health && owned.condition.failed == p.condition.failed && Math.Abs(owned.condition.temperatureC - p.condition.temperatureC) < 1e-6)), "Actual condition persists after race/shutdown/garage: " + vehicle.spec.id);
                 log.AppendLine("PASS: Actual part conditions persist without repair: " + vehicle.spec.id);

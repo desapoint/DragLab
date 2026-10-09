@@ -65,7 +65,7 @@ namespace DragLab.Domain
             {
                 var d = Definition(part); if (d == null) continue; var c = part.condition;
                 if(d.category==PartCategory.Tires){TireDynamics.Ensure(c);continue;}
-                if (s.optimalThermals) c.temperatureC = d.category == PartCategory.Gearbox ? 70 : d.category == PartCategory.Clutch ? 60 : d.category == PartCategory.Brakes ? 80 : d.category == PartCategory.Pistons || d.category == PartCategory.Rods || d.category == PartCategory.Crankshaft || d.category == PartCategory.Cooling ? 90 : 20;
+                if (s.optimalThermals) c.temperatureC = OptimalTemperature(d.category);
                 if (d.category == PartCategory.Clutch && frictionClutch)
                     s.clutchCapacityFactor = c.failed ? 0 : ClutchHardware.Capacity(d,c)*Math.Max(.05, .4 + .6 * ConditionHealth(c,s)) * DragMath.Clamp(1 - Math.Max(0, c.temperatureC - d.thermalLimitC * .7) / d.thermalLimitC, .15, 1);
                 if (d.category == PartCategory.HeadIntake || d.category == PartCategory.Induction || d.category == PartCategory.Exhaust)
@@ -155,6 +155,7 @@ namespace DragLab.Domain
             else if (s.openCenterFreeBranch) { s.feedback = "FREE CENTER OUTPUT / DISCONNECTED SHAFT SPINNING / LOW ROAD TORQUE"; s.feedbackRemaining = 2; }
             else if (spec.drive == DriveType.AWD && (!s.frontDriveAvailable || !s.rearDriveAvailable)) { s.feedback = "AWD DEGRADED / " + (s.frontDriveAvailable ? "FRONT" : "REAR") + " DRIVE AVAILABLE"; s.feedbackRemaining = 2; }
         }
+        public static double OptimalTemperature(PartCategory category) { return category==PartCategory.Gearbox?70:category==PartCategory.Clutch?60:category==PartCategory.Brakes?80:PartSemantics.EngineInternal(category)||category==PartCategory.Cooling?90:20; }
         static void Fail(ComponentCondition c, string reason) { c.failed = true; c.failureReason = reason; }
         public void ResetWear(CarState s)
         {

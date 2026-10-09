@@ -35,17 +35,19 @@ namespace DragLab.Editor
             }
             public void Pay(PaymentRequest r){var q=PaidEconomy.Quote(p,cat,costs,values,r,now);var normalized=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(p));MechanicsOwnership.Ensure(normalized,cat);if(JsonUtility.ToJson(p)!=JsonUtility.ToJson(normalized)){string folder=Path.Combine(Directory.GetParent(Application.dataPath).Parent.FullName,"reports/phases/3g");File.WriteAllText(Path.Combine(folder,"quote-before.json"),JsonUtility.ToJson(p));File.WriteAllText(Path.Combine(folder,"quote-normalized.json"),JsonUtility.ToJson(normalized));}Apply("Pay "+r.kind+" / $"+q.Cost,a=>PaidEconomy.Pay(a,cat,costs,values,q,now,r.kind==PaymentKind.Car?r.offer:null));}
             public void Buy(PartCategory c,int rank){Pay(new PaymentRequest{kind=PaymentKind.Part,carId=p.SelectedCar.instanceId,targetId=cat.Id(p.SelectedCar.vehicleId,c,rank),install=true});}
+            RunCheckpoint Snapshot(string id,string owner,long tick,CarSimulation car,bool closed=false,string reason=""){var result=RunPersistence.Capture(id,owner,tick,car,closed,reason);result.thermalUtcTicks=now;return result;}
             public void RecoverTo(int cash){int guard=0;while(p.cash<cash){if(++guard>100)throw new InvalidOperationException("Unbounded recovery route.");Apply("Start recovery",a=>PaidEconomy.StartRecovery(a,costs,now));var job=p.recoveryWork;now=job.readyUtcTicks;Apply("Claim recovery",a=>PaidEconomy.ClaimRecovery(a,job.id,now));}}
             public RaceSimulation Race(CareerEventDefinition e,bool forceLoss=false)
             {
                 var car=p.SelectedCar;var b=MechanicsOwnership.Resolve(p,car,cat);if(!b.Drivable)throw new InvalidOperationException("Unavailable before race: "+string.Join("; ",b.errors));
                 var race=RaceSessionFactory.Create(b.spec,b.tune,p.driving,e.opponent.spec,e.opponentTune,new DriverSettings{reactionSeconds=forceLoss?0:.22},e.distanceM,p.parts.FindAll(i=>i.ownerId==car.instanceId||i.ownerId==car.engineAssemblyId));race.player.SetFluids(car.fluids);race.player.SetMassInputs(b.tune.driverMassKg,b.tune.payloadMassKg,b.tune.payloadPositionM,b.tune.payloadHeightM,car.fuel.litres);race.player.state.fuelUsedLitres=car.fuel.cumulativeUsedLitres;
+                race.player.ApplyRaceTemperatures(p.driving.raceTemperatures,car.thermalUtcTicks,now);
                 if(forceLoss)race.player.driver.reactionSeconds=3;
-                string id=MechanicsOwnership.NewId("scenario-run"),owner=car.instanceId;Apply("Enter "+e.stableId,a=>{CareerProgression.Enter(a,id,owner,e,false);MechanicsTransactions.ApplyCheckpoint(a,RunPersistence.Capture(id,owner,0,race.player));});int ticks=0;while(race.phase!=RacePhase.Finished&&ticks++<25000)race.Step(new DriverInput());if(ticks>=25000)throw new InvalidOperationException("Race did not terminate.");
+                string id=MechanicsOwnership.NewId("scenario-run"),owner=car.instanceId;Apply("Enter "+e.stableId,a=>{CareerProgression.Enter(a,id,owner,e,false);MechanicsTransactions.ApplyCheckpoint(a,Snapshot(id,owner,0,race.player));});int ticks=0;while(race.phase!=RacePhase.Finished&&ticks++<25000)race.Step(new DriverInput());if(ticks>=25000)throw new InvalidOperationException("Race did not terminate.");
                 // Persist the same finish/shutdown/garage boundaries as the running game.
-                now+=TimeSpan.FromSeconds(race.time).Ticks;Apply("Settle "+e.stableId+" / "+(race.playerWon?"win":race.player.state.finished?"loss":"DNF"),a=>{MechanicsTransactions.ApplyCheckpoint(a,RunPersistence.Capture(id,owner,ticks,race.player));CareerProgression.Settle(a,id,race);});
-                int shutdown=0;while(race.player.state.speed>.1&&shutdown++<6000){race.Shutdown(new DriverInput());ticks++;}race.player.CoolDown(60);now+=TimeSpan.FromSeconds(shutdown*DragMath.FixedStep+60).Ticks;
-                Apply("Shutdown / garage",a=>MechanicsTransactions.ApplyCheckpoint(a,RunPersistence.Capture(id,owner,ticks,race.player,true,"Scenario returned to garage")));
+                now+=TimeSpan.FromSeconds(race.time).Ticks;Apply("Settle "+e.stableId+" / "+(race.playerWon?"win":race.player.state.finished?"loss":"DNF"),a=>{MechanicsTransactions.ApplyCheckpoint(a,Snapshot(id,owner,ticks,race.player));CareerProgression.Settle(a,id,race);});
+                int shutdown=0;while(race.player.state.speed>.1&&shutdown++<6000){race.Shutdown(new DriverInput());ticks++;}now+=TimeSpan.FromSeconds(shutdown*DragMath.FixedStep).Ticks;
+                Apply("Shutdown / garage",a=>MechanicsTransactions.ApplyCheckpoint(a,Snapshot(id,owner,ticks,race.player,true,"Scenario returned to garage")));
                 if(!race.playerWon){string folder=Path.Combine(Directory.GetParent(Application.dataPath).Parent.FullName,"reports/phases/3g");File.WriteAllText(Path.Combine(folder,name+"-loss-profile.json"),JsonUtility.ToJson(p));File.WriteAllText(Path.Combine(folder,name+"-loss-diagnostic.txt"),"Player ET "+race.player.state.elapsed+" / opponent ET "+race.opponent.state.elapsed+" / player reaction "+race.player.state.reaction+" / opponent reaction "+race.opponent.state.reaction+" / engine failed "+race.player.state.engineFailed+" / drivetrain failed "+race.player.state.drivetrainFailed+"\n"+string.Join("\n",p.parts.Where(i=>car.installed.slots.Any(b=>b.partInstanceId==i.instanceId)).Select(i=>i.slot+" / health "+i.condition.health+" / failed "+i.condition.failed+" / "+i.condition.failureReason)));}return race;
             }
         }
@@ -69,6 +71,9 @@ namespace DragLab.Editor
             attempts=0;while(earned.p.cash<heroPrice+firstHeroUpgrades+500){check(earned.Race(events.First(e=>e.stableId=="club-run")).playerWon,"Reliable earlier club event funds second build.");if(++attempts>40)throw new InvalidOperationException("Hero funding stalled.");}
             earned.Pay(new PaymentRequest{kind=PaymentKind.Car,offer=offer(hero)});earned.Buy(PartCategory.HeadIntake,1);earned.Buy(PartCategory.Tires,1);
             check(earned.Race(events.First(e=>e.stableId=="local-final")).playerWon,"Funded second build wins local championship.");
+            // Explicitly pay for more grip before the D/C rivals: fully cooled starts
+            // no longer inherit warm tires from previous passes as an invisible benefit.
+            earned.Buy(PartCategory.Tires,2);
             bool strengthened=false;
             foreach(var e in events.Where(e=>e.stableId.StartsWith("ladder-")).OrderBy(e=>e.reputationRequired)){
                 if(!strengthened&&e.reputationRequired>=44){while(earned.p.cash<upgradePrice+300)check(earned.Race(events.First(x=>x.stableId=="ladder-c-rival")).playerWon,"Earlier tier funds safe high-output build.");

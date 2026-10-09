@@ -1,0 +1,3 @@
+Reproduced before fixes: Supercharged V8 / ten quarter-mile passes with 60-second real neutral coast/idle intervals / failed on pass 6 / Gearbox thermal overload, health 0%.
+Stale-heat correction alone: same scenario failed on pass 8 at a peak gearbox temperature of 214.9593 C; two-minute sustained steady-speed pull remained healthy.
+Factory converter cooler rejection was then calibrated from generic 25 W/C to 80 W/C. Thermal/wear/failure thresholds and stock reliability assertions were retained. Final results are in the collected domain durability evidence.

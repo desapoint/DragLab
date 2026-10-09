@@ -67,8 +67,28 @@ namespace DragLab.Editor
             {
                 Action<bool, string> check = (ok, label) => { checks++; report.AppendLine((ok ? "PASS: " : "FAIL: ") + label); if (!ok) failures.Add(label); };
                 var hatch = vehicles.First(v => v.spec.id == "starter-hatch");
+                foreach(var vehicle in vehicles) {
+                    var build=catalog.Resolve(vehicle.spec.id,catalog.Recipe(vehicle.spec.id),vehicle.CreateStockTune());
+                    var free=new CarSimulation(build.spec,build.tune,new DriverSettings {throttleAssist=false});
+                    free.state.converterLossPowerW=80000;free.state.clutchFrictionPowerW=80000;
+                    var box=free.mechanics.Part(PartCategory.Gearbox);box.condition.temperatureC=100;
+                    free.IndependentStep(DragMath.FixedStep,new DriverInput(),true,false);
+                    check(free.state.converterLossPowerW==0&&free.state.clutchFrictionPowerW==0&&box.condition.temperatureC<100,"Disconnected neutral clears prior coupling heat and gearbox cools: "+vehicle.spec.id);
+                    free.state.converterLossPowerW=80000;free.state.clutchFrictionPowerW=80000;
+                    free.Stage(DragMath.FixedStep,new DriverInput());
+                    check(free.state.converterLossPowerW==0&&free.state.clutchFrictionPowerW==0,"Staging cannot retain a previous coupling heat sample: "+vehicle.spec.id);
+                    foreach(var part in free.mechanics.parts){part.condition.temperatureC=100;if(part.condition.tires!=null)foreach(var tire in part.condition.tires)tire.temperatureC=100;}
+                    box.condition.health=.7f;box.condition.failed=true;box.condition.failureReason="Fixture failure";
+                    free.state.fluids.oilTemperatureC=110;double fuel=free.state.fuelLitres,oil=free.state.fluids.oilLitres;
+                    free.CoolDown(600);
+                    check(box.condition.temperatureC<100&&box.condition.health==.7f&&box.condition.failed&&box.condition.failureReason=="Fixture failure","Race turnaround cools a gearbox without repairing it: "+vehicle.spec.id);
+                    check(free.state.fuelLitres==fuel&&free.state.fluids.oilLitres<=oil&&free.state.fluids.oilTemperatureC<110,"Parked turnaround burns no fuel, adds no liquid, and cools oil: "+vehicle.spec.id);
+                    check(free.mechanics.Part(PartCategory.Tires).condition.tires.All(t=>t.temperatureC<100),"Turnaround cools each retained tire: "+vehicle.spec.id);
+                }
                 var oldReplay = new RunSnapshot { model = "draglab-shared-stress-v2", vehicle = hatch.spec.Copy(), tune = hatch.CreateStockTune(), driving = new DriverSettings() };
                 check(PhysicalDrivingSession.Validate(oldReplay) != null, "Prior physics recordings are rejected instead of silently changing their repeatable results.");
+                oldReplay.model="draglab-integrated-tools-v15";
+                check(PhysicalDrivingSession.Validate(oldReplay)!=null,"Pre-thermal-integration v15 recordings require a new capture.");
                 var lowGrip = catalog.Resolve(hatch.spec.id, catalog.Recipe(hatch.spec.id), hatch.CreateStockTune()); lowGrip.spec.tireFriction = .4f;
                 var stop = new CarSimulation(lowGrip.spec, lowGrip.tune, new DriverSettings()); RoadFixture.Seed(stop, 35);
                 double energyBefore = stop.state.contact.KineticEnergy(stop.mass.TranslatingKg, stop.wheels.totalInertia * .25);

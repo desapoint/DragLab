@@ -85,7 +85,7 @@ namespace DragLab.Editor
             string root = Directory.GetParent(Application.dataPath).Parent.FullName;
             string folder = Path.Combine(root, "reports/phases/3h"); Directory.CreateDirectory(folder);
             string fixtures = Path.Combine(folder, "fixtures", DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff"));
-            var log = new StringBuilder(); var matrix = new StringBuilder("model,cars,engines,parts,career_records,jobs,cash,partial_fuel,revision\n"); int checks = 0;
+            var log = new StringBuilder(); var matrix = new StringBuilder("model,cars,engines,parts,career_records,jobs,cash,remaining_car_fuel_l,revision\n"); int checks = 0;
             Action<bool, string> check = (ok, label) => {
                 log.AppendLine((ok ? "PASS: " : "FAIL: ") + label);
                 File.WriteAllText(Path.Combine(folder, "integration-progress.txt"), log.ToString(), Encoding.UTF8);

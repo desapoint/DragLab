@@ -54,6 +54,8 @@ namespace DragLab.Infrastructure
                 item.condition = snapshot.condition.Copy();
             }
             if(checkpoint.fluids!=null)car.fluids=checkpoint.fluids.Copy();
+            if(checkpoint.thermalUtcTicks<0||checkpoint.thermalUtcTicks>DateTime.MaxValue.Ticks)throw new InvalidOperationException("Invalid thermal clock.");
+            car.thermalUtcTicks=Math.Max(car.thermalUtcTicks,checkpoint.thermalUtcTicks);
             if(checkpoint.hasFuel)car.fuel=new FuelState{litres=checkpoint.fuel.litres,cumulativeUsedLitres=checkpoint.fuel.cumulativeUsedLitres,flowLitresPerSecond=checkpoint.fuel.flowLitresPerSecond};
             checkpoint.revision = profile.revision + 1;
             if (old != null) profile.runCheckpoints.Remove(old);

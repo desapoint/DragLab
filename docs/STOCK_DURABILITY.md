@@ -1,6 +1,6 @@
 # Stock durability calibration
 
-The stock-car regression uses the same `CarSimulation` as races and the physical bench. All four OEM recipes run with full wear, multiplier 1, simulated temperatures and no traction assistance. It does not turn off failure or repair parts between passes.
+The stock-car regression uses the same `CarSimulation` as races and the physical bench. The original four OEM recipes ran with full wear, multiplier 1, simulated temperatures and no traction assistance. It does not turn off failure or repair parts between passes.
 
 ## Reproduced problems
 
@@ -32,3 +32,6 @@ After calibration, minimum part health after ten passes is:
 `reports/stock-durability/parts.csv` records per-part health, peak temperature, engine/shaft torque and RPM. Run `./tools/Invoke-Unity.ps1 -Action DurabilityAudit` for diagnostic results, or `-Action Verify` for the enforced full regression suite. This remains provisional durability calibration; long-term tire life, full cooling and remaining component-specific behavior retain their later Slice 2 gates.
 
 For actual Windows Update/DSP/shutdown and persistence checks, run `./tools/Test-WindowsSlice.ps1 -FixtureName stock-durability-review -DurabilityOnly -ShowPlayer`. It uses isolated workspace saves and driver-boundary inputs; no OS keyboard/mouse events are sent. The visible window is needed for Unity's screenshot capture. It runs one actual stock race and stop per car, verifies all parts remain healthy, and checks the saved conditions after returning to Garage.
+
+
+3H extension (2026-10-09): the enforced gate now covers all eight OEM models. Neutral no longer reuses stale converter heat, converter dissipation is averaged across substeps, and factory converter gearboxes have authored cooler rejection of 80 W/C. Thermal/wear limits and the ten-pass/90%-health assertions remain unchanged. The no-free-break neutral-coast durability fixture remains separate from player race-entry difficulty. New ambient/optimal/live start policies, continuous heat management and shared pre-race burnouts are specified in [heat and race turnaround](HEAT_AND_RACE_TURNAROUND.md). The original four-car health table above is historical; current eight-car outcomes are collected in the Slice 3 audit.
