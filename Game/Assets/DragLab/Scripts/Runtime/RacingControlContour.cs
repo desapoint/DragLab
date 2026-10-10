@@ -51,7 +51,7 @@ namespace DragLab.Runtime
                 // A narrow bevel, quiet lower reflection and a single soft sweep.
                 Face(0,1,w,Mathf.Min(5,h*.14f),C(1,1,1,.065f),C(1,1,1,0));
                 Face(0,h-7,w,6,C(1,1,1,0),C(1,1,1,.022f));
-                if(hovered||focused) Face(0,0,w,h,C(1,1,1,.045f));
+                if(hovered) Face(0,0,w,h,C(1,1,1,.045f));
                 if(ShineActive)
                     for(int i=0;i<48;i++)
                     {
@@ -74,7 +74,6 @@ namespace DragLab.Runtime
                 float accent=Mathf.Pow(Mathf.Clamp01(1-corner/80),.65f);
                 return Color.Lerp(neutral,A(),accent);
             }
-            if(focused) return A(1,.6f);
             if(kind==Kind.DangerAction) return A(.8f);
             return red?Color.Lerp(A(1,.12f),A(.75f),p.y/h):neutral;
         }

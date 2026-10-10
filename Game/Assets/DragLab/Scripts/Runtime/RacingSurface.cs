@@ -14,7 +14,7 @@ namespace DragLab.Runtime
         readonly List<Vertex> vertices = new List<Vertex>(1024);
         readonly List<ushort> indices = new List<ushort>(4096);
         static Texture2D dither;
-        bool hovered, focused, pressed, selected, wasAnimating;
+        bool hovered, pressed, selected, wasAnimating;
         float sweepStarted = float.NegativeInfinity;
         internal bool ShineActive => Time.realtimeSinceStartup - sweepStarted < SweepSeconds;
         internal float ShineProgress => Mathf.Clamp01((Time.realtimeSinceStartup - sweepStarted) / SweepSeconds);
@@ -30,10 +30,8 @@ namespace DragLab.Runtime
             if (kind == Kind.Header || kind == Kind.Footer || kind == Kind.Metal || kind == Kind.Panel) return;
             owner.RegisterCallback<PointerEnterEvent>(evt => { if (evt.target != owner || hovered) return; hovered = true; StartShine(); });
             owner.RegisterCallback<PointerLeaveEvent>(evt => { if (evt.target != owner) return; hovered = false; pressed = false; MarkDirtyRepaint(); });
-            owner.RegisterCallback<FocusInEvent>(evt => { if (evt.target != owner || focused) return; focused = true; if (!hovered) StartShine(); });
-            owner.RegisterCallback<FocusOutEvent>(evt => { if (evt.target != owner) return; focused = false; MarkDirtyRepaint(); });
-            owner.RegisterCallback<PointerDownEvent>(_ => { pressed = true; MarkDirtyRepaint(); });
-            owner.RegisterCallback<PointerUpEvent>(_ => { pressed = false; MarkDirtyRepaint(); });
+            owner.RegisterCallback<PointerDownEvent>(_ => { pressed = true; MarkDirtyRepaint(); }, TrickleDown.TrickleDown);
+            owner.RegisterCallback<PointerUpEvent>(_ => { pressed = false; MarkDirtyRepaint(); }, TrickleDown.TrickleDown);
         }
         void StartShine() { if (ShineActive) return; sweepStarted = Time.realtimeSinceStartup; MarkDirtyRepaint(); }
         internal void Tick(bool visible)
@@ -51,7 +49,7 @@ namespace DragLab.Runtime
             if (w < 1 || h < 1) return;
             PaintCount++;
             vertices.Clear(); indices.Clear();
-            bool lit = hovered || focused;
+            bool lit = hovered;
             if (UsesContour) DrawContouredControl(w,h);
             else if (kind == Kind.Metal)
             {

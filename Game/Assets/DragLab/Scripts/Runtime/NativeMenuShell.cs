@@ -36,6 +36,14 @@ namespace DragLab.Runtime
             document.visualTreeAsset = Resources.Load<VisualTreeAsset>("UI/NativeShell");
             root = document.rootVisualElement.Q("shell");
             root.AddToClassList("hidden");
+            root.RegisterCallback<KeyDownEvent>(evt => {
+                if (evt.keyCode != KeyCode.Tab) return;
+                root.focusController.IgnoreEvent(evt); evt.StopImmediatePropagation();
+            }, TrickleDown.TrickleDown);
+            root.RegisterCallback<NavigationMoveEvent>(evt => {
+                if (evt.direction != NavigationMoveEvent.Direction.Next && evt.direction != NavigationMoveEvent.Direction.Previous) return;
+                root.focusController.IgnoreEvent(evt); evt.StopImmediatePropagation();
+            }, TrickleDown.TrickleDown);
             root.RegisterCallback<CustomStyleResolvedEvent>(evt => {
                 if(evt.target!=root)return;
                 foreach(var surface in surfaces)surface.MarkDirtyRepaint();
@@ -75,6 +83,13 @@ namespace DragLab.Runtime
                 Hint(tab, categories[i]);
             }
             InitializeSettings();
+            ExcludeTabTraversal();
+        }
+
+        void ExcludeTabTraversal()
+        {
+            root.tabIndex = -1;
+            root.Query<VisualElement>().ForEach(element => element.tabIndex = -1);
         }
 
         void AddSurface(VisualElement owner, RacingSurface.Kind kind)

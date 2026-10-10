@@ -181,6 +181,7 @@ namespace DragLab.Runtime
                 buttons.Add(button); AddSurface(button, action.primary ? RacingSurface.Kind.Action : RacingSurface.Kind.SecondaryAction); dialogSurfaces.Add(button.Q<RacingSurface>());
             }
             root.Q("modalLayer").RemoveFromClassList("hidden"); root.Q("navBar").SetEnabled(false); root.Q("settingsTabs").SetEnabled(false); root.Q("settingsBody").SetEnabled(false); root.Q("settingsActions").SetEnabled(false);
+            ExcludeTabTraversal();
             root.Q<Button>("modalClose").Focus();
         }
         void CloseDialog()

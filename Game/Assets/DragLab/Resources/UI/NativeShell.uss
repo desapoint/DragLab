@@ -28,7 +28,6 @@
 }
 .nav-button { flex-direction: row; align-items: center; border-radius: 0; border-width: 0; font-size: 17px; -unity-font-definition: url("project://database/Assets/DragLab/Resources/UI/Fonts/BarlowCondensed-BoldItalic.asset"); }
 .nav-button:hover, .category-button:hover, .settings-button:hover { background-color: rgba(255, 255, 255, 0.025); color: white; }
-.nav-button:focus, .category-button:focus, .settings-button:focus { border-color: var(--racing-accent); color: white; }
 .nav-button:active, .category-button:active, .settings-button:active { background-color: rgba(0, 0, 0, 0.05); }
 .nav-button.selected, .category-button.selected, .settings-button.selected { background-color: transparent; color: white; border-top-color: var(--racing-accent); border-bottom-color: var(--racing-accent); }
 .nav-button.selected:hover, .category-button.selected:hover, .settings-button.selected:hover { background-color: rgba(255, 255, 255, 0.025); }
@@ -72,7 +71,8 @@
 .action-button { min-width: 116px; height: 34px; margin-left: 10px; padding: 0 20px; }
 .settings-actions { flex-direction: row; align-items: center; flex-shrink: 0; margin-top: 12px; }
 .settings-status { flex-grow: 1; color: var(--racing-accent); font-size: 17px; }
-.info-button { width: 18px; height: 18px; min-width: 18px; margin-left: 9px; padding: 0; border-radius: 9px; border-width: 1px; border-color: #63707b; background-color: #222a32; color: #bac2ca; font-size: 13px; }
+.info-button, .info-button:focus { width: 18px; height: 18px; min-width: 18px; margin-left: 9px; padding: 0; border-radius: 9px; border-width: 1px; border-color: #63707b; background-color: #222a32; color: #bac2ca; font-size: 13px; }
+.info-button:active { background-color: #171e25; }
 .setting-toggle .unity-toggle__input, .setting-toggle:checked .unity-toggle__input { width: 56px; height: 28px; padding: 0; border-width: 0; background-color: transparent; }
 .setting-toggle .unity-toggle__checkmark { display: none; }
 .switch-surface { position: absolute; top: 0; right: 0; bottom: 0; left: 0; }
@@ -88,7 +88,8 @@
 .modal-card { width: 620px; max-width: 90%; max-height: 85%; background-color: #151c23; border-width: 1px; border-color: #6d737c; border-left-color: var(--racing-accent); border-radius: 10px; padding: 20px; }
 .modal-heading { flex-direction: row; align-items: center; margin-bottom: 12px; }
 .modal-heading Label { flex-grow: 1; font-size: 24px; }
-.close-button { width: 32px; height: 32px; font-size: 24px; color: white; background-color: #2c333b; border-width: 1px; border-color: #606972; border-radius: 4px; }
+.close-button, .close-button:focus { width: 32px; height: 32px; font-size: 24px; color: white; background-color: #2c333b; border-width: 1px; border-color: #606972; border-radius: 4px; }
+.close-button:active { background-color: #20272e; }
 .modal-content { flex-shrink: 1; min-height: 32px; }
 .modal-content Label { white-space: normal; font-size: 19px; margin-bottom: 6px; }
 .modal-actions { flex-direction: row; justify-content: flex-end; margin-top: 20px; flex-shrink: 0; }

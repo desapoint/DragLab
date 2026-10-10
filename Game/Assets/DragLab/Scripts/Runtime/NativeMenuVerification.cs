@@ -138,9 +138,33 @@ namespace DragLab.Runtime
                     "Static metal/noise backdrop ignores input and keeps cached geometry without ongoing repaint");
                 input.MoveMouseAt(1100, 500);
                 yield return new WaitForSecondsRealtime(.2f);
+                yield return new WaitForSecondsRealtime(.7f);
+                var originalFocus = shell.Root.focusController.focusedElement;
                 yield return Key(input, 0x09);
-                var focusedButton = shell.Root.focusController.focusedElement as Button;
-                Check(focusedButton != null && focusedButton.Q<RacingSurface>().ShineActive, "Real keyboard Tab provides focus shine without clicking");
+                Check(shell.Root.focusController.focusedElement == originalFocus && !surface.ShineActive,
+                    "Real Tab does not navigate or start focus shine");
+                input.Key(0x10,true); yield return Key(input,0x09); input.Key(0x10,false);
+                Check(shell.Root.focusController.focusedElement == originalFocus && game.ScreenName == "Garage",
+                    "Real Shift+Tab does not navigate or change destination");
+                int unfocusedPaint=surface.PaintCount;
+                shell.Root.Q<Button>("navBuild").Focus(); yield return new WaitForSecondsRealtime(.15f);
+                Check(!surface.ShineActive && surface.PaintCount==unfocusedPaint,
+                    "Button focus does not add highlight, start shine or repaint decoration");
+                var garageButton=shell.Root.Q<Button>("navGarage"); var garageRect=garageButton.worldBound;
+                input.MoveMouseAt((int)garageRect.center.x,(int)garageRect.center.y);
+                yield return new WaitForSecondsRealtime(.8f);
+                var released=ScreenCapture.CaptureScreenshotAsTexture();
+                float releasedLight=Pixel(released,garageRect.center.x,garageRect.yMax-8).grayscale;Destroy(released);
+                input.MouseButtonAt((int)garageRect.center.x,(int)garageRect.center.y,true);
+                yield return new WaitForSecondsRealtime(.15f);
+                var down=ScreenCapture.CaptureScreenshotAsTexture();
+                float downLight=Pixel(down,garageRect.center.x,garageRect.yMax-8).grayscale;Destroy(down);
+                Check(downLight<releasedLight-.005f,"Mouse down retains visible pressed shading on the selected navigation button: "+releasedLight+" → "+downLight);
+                Check(!garageButton.Q<RacingSurface>().ShineActive,"Mouse down does not restart finished hover shine");
+                input.MouseButtonAt((int)garageRect.center.x,(int)garageRect.center.y,false);
+                yield return new WaitForSecondsRealtime(.2f);
+                var up=ScreenCapture.CaptureScreenshotAsTexture();
+                Check(Mathf.Abs(Pixel(up,garageRect.center.x,garageRect.yMax-8).grayscale-releasedLight)<.015f,"Mouse up restores normal selected/hover shading without persistent focus highlight");Destroy(up);
                 foreach (var destination in new[] { new[] {"navBuild", "Parts"}, new[] {"navTuning", "Tuning"}, new[] {"navRace", "Race setup"}, new[] {"navBusiness", "Business"}, new[] {"navData", "Stats"}, new[] {"navGarage", "Garage"} })
                 {
                     yield return Click(input, destination[0]);
