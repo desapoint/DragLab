@@ -2,7 +2,7 @@
 
 **2A–2L and 3A–3H developer acceptance are complete.** See [phase plan](IMPLEMENTATION_PHASES.md), [full Slice 3 audit](../reports/SLICE_3_AUDIT.md), [career](CAREER_PROGRESSION.md), [garage business](GARAGE_BUSINESS.md) and [economy balance](ECONOMY_BALANCE.md).
 
-**Slice 4: icon/text alignment correction ready for review (2026-10-10).** Resource icons and labels share their optical row offset; flag/fuel-pump silhouettes center within their viewboxes. Existing text centering, Settings interactions and footer joins remain. See [latest checks/review](../reports/phases/4b/16-ICON-ALIGNMENT.md). No later interface is started; technical checks are separate from human visual acceptance.
+**Slice 4: 4D.1 owned-car grid ready for review (2026-10-10).** Native Garage displays actual owned instances, layered previews, applied stats/class estimates, condition/fuel and the current-car marker. Cards are read-only in this checkpoint. See [checks/review](../reports/phases/4d/01-OWNED-GRID.md). Search/filtering, sorting, selection/actions, dealership and drawer remain later controls; 4D is not complete and human acceptance is pending.
 
 Source of scope: [objective.md](objective.md), section 58. The eight-car roster includes the requested pickup, three-cylinder hatch, AWD turbo sedan, inline-six GT and supercharged V8. The four new mechanical configurations reuse existing layered placeholder bodies. Mechanics and editable data take priority over finished graphics or menus.
 

@@ -82,6 +82,7 @@ namespace DragLab.Runtime
                 tab.clicked += () => { category = index; renderedRoute = null; Refresh(); ShowCategory(); };
                 Hint(tab, categories[i]);
             }
+            InitializeOwnedCars();
             InitializeSettings();
             ExcludeTabTraversal();
         }
@@ -127,6 +128,7 @@ namespace DragLab.Runtime
             SetText("cash", "$" + profile.cash.ToString("N0"));
             SetText("fuel", car == null ? "— L" : car.fuel.litres.ToString("F1") + " / " + profile.catalog.Spec(car.vehicleId).fuel.capacityLitres.ToString("F0") + " L");
             SetText("progression", "REP " + profile.reputation);
+            RefreshOwnedCars(route);
             if (renderedRoute == route) return;
             renderedRoute = route;
             bool settings = route == "Settings";
@@ -139,7 +141,7 @@ namespace DragLab.Runtime
             for (int i = 0; i < categoryIds.Length; i++) root.Q<Button>("tab" + categoryIds[i]).EnableInClassList("selected", i == category);
         }
         void SetText(string id, string value) { var label = root.Q<Label>(id); if (label.text != value) label.text = value; }
-        void OnDestroy() { if (panel != null) Destroy(panel); }
+        void OnDestroy() { ownedCancellation?.Cancel(); ownedCancellation?.Dispose(); if (panel != null) Destroy(panel); }
     }
 
     // Filled, procedurally tessellated shapes stay sharp at native display resolution.

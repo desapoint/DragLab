@@ -237,6 +237,7 @@ namespace DragLab.Runtime
                 shell.Refresh();
                 yield return Capture("settings-restored");
                 yield return SettingsChecks(input);
+                yield return OwnedCarChecks(input);
             }
 #else
             throw new InvalidOperationException("Native probe requires a Windows development player.");

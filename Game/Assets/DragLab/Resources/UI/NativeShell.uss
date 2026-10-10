@@ -123,3 +123,20 @@
 
 .reset-control { justify-content: flex-end; }
 .reset-action { margin-left: 0; }
+
+.owned-cars-scroll { flex-grow: 1; min-height: 0; }
+.owned-cars-grid { flex-direction: row; flex-wrap: wrap; align-items: flex-start; padding: 2px; }
+.owned-car-card { width: 304px; min-height: 278px; margin-right: 16px; margin-bottom: 16px; padding: 14px 16px; border-radius: 12px; overflow: hidden; }
+.car-card-heading { flex-direction: row; align-items: center; }
+.car-card-title { flex-grow: 1; font-size: 23px; margin: 0; padding: 0; -unity-text-align: middle-left; translate: 0 -1px; }
+.car-current { color: var(--racing-accent); font-size: 14px; -unity-text-align: middle-right; }
+.car-identity { font-size: 16px; color: var(--racing-muted); margin: 0; padding: 0; }
+.car-preview { width: 270px; height: 112px; margin-top: 8px; margin-bottom: 8px; overflow: hidden; }
+.car-card-stats { font-size: 18px; margin: 0; padding: 0; }
+.car-class { font-size: 16px; color: var(--racing-muted); margin: 0; padding: 0; }
+.car-condition { font-size: 18px; margin-top: 6px; padding: 0; }
+.car-ready { color: #b5cfb5; }
+.car-warning { color: #e6bf80; }
+.car-critical { color: var(--racing-accent); }
+.car-reason { font-size: 16px; color: var(--racing-muted); white-space: normal; margin: 0; padding: 0; }
+.car-empty { font-size: 20px; color: var(--racing-muted); }

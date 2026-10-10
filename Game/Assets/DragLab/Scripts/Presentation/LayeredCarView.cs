@@ -31,7 +31,7 @@ namespace DragLab.Presentation
         [Serializable] class Layer { public string id; public string file; public int z; public Placement placement; public bool rotateWithWheel; }
         [Serializable] class Placement { public string mode; public string anchor; public float x; public float y; public float[] offset; public float scale = 1; public float[] pivotNormalized; }
 
-        public void Build(string artId, Color paint, int laneOrder = 0)
+        public void Build(string artId, Color paint, int laneOrder = 0, bool includeSlipEffects = true)
         {
             for (int i = transform.childCount - 1; i >= 0; i--)
             {
@@ -72,6 +72,8 @@ namespace DragLab.Presentation
                 geometry.Add(new GeometryBinding { transform = obj.transform, renderer = renderer, id = layer.id, position = obj.transform.localPosition, scale = obj.transform.localScale });
                 if (layer.id == "body-paint") { paintLayers.Add(renderer); renderer.color = paint; }
             }
+            smoke = null;
+            if (!includeSlipEffects) return;
             var smokeObject=new GameObject("Contact tire smoke");smokeObject.transform.SetParent(transform,false);
             smoke=smokeObject.AddComponent<TireSmokeView>();
             int smokeOrder=laneOrder;foreach(var layer in manifest.layers)smokeOrder=Mathf.Max(smokeOrder,laneOrder+layer.z+1);
