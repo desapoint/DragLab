@@ -22,6 +22,12 @@ namespace DragLab.Runtime
         TorqueUnit ownedTorque;
         CancellationTokenSource ownedCancellation;
         Task<Dictionary<string,string>> ownedRatings;
+        string ownedDetailId;
+        Vector2 ownedReturnScroll;
+        long ownedDetailRevision;
+        VisualElement ownedDetails, ownedDetailContent;
+        Button ownedUse;
+        internal bool OwnedDetailsOpen => ownedDetailId != null && game.ScreenName == "Garage" && Visible;
         readonly List<RacingSurface> ownedSurfaces = new List<RacingSurface>();
         internal int OwnedGridBuildCount { get; private set; }
         internal void InvalidateOwnedGrid() => ownedRevision = -1;
@@ -32,10 +38,27 @@ namespace DragLab.Runtime
             ownedScroll.AddToClassList("owned-cars-scroll"); ownedScroll.AddToClassList("hidden");
             ownedGrid = new VisualElement { name = "ownedCarGrid" }; ownedGrid.AddToClassList("owned-cars-grid");
             ownedScroll.Add(ownedGrid); root.Q(className:"workspace").Add(ownedScroll);
+            ownedDetails = new VisualElement { name = "ownedDetails" }; ownedDetails.AddToClassList("car-details-page"); ownedDetails.AddToClassList("hidden");
+            root.Q(className:"workspace").Add(ownedDetails);
+            var heading = new VisualElement(); heading.AddToClassList("car-details-heading"); ownedDetails.Add(heading);
+            var back = new Button(BackToOwnedCars) { name = "ownedBack", tooltip = "Back to owned cars" }; back.AddToClassList("action-button"); back.AddToClassList("car-back-button");
+            back.Add(new FilledMenuIcon("Back")); heading.Add(back); AddSurface(back,RacingSurface.Kind.SecondaryAction);
+            var title = new Label { name = "ownedDetailTitle" }; title.AddToClassList("car-detail-title"); heading.Add(title);
+            var frame = new VisualElement(); frame.AddToClassList("car-details-frame"); ownedDetails.Add(frame); AddSurface(frame,RacingSurface.Kind.Panel);
+            var detailScroll = new ScrollView { name = "ownedDetailScroll", horizontalScrollerVisibility = ScrollerVisibility.Hidden }; detailScroll.AddToClassList("car-details-scroll"); frame.Add(detailScroll);
+            ownedDetailContent = new VisualElement { name = "ownedCarDetails" }; ownedDetailContent.AddToClassList("car-details-content"); detailScroll.Add(ownedDetailContent);
+            var actions = new VisualElement(); actions.AddToClassList("car-details-actions"); ownedDetails.Add(actions);
+            var error = new Label { name = "carSelectionError" }; error.AddToClassList("car-critical"); error.AddToClassList("car-selection-error"); actions.Add(error);
+            ownedUse = new Button(() => {
+                if (!game.SelectNativeCar(ownedDetailId,ownedDetailRevision)) { error.text = game.NativeNotice; return; }
+                BackToOwnedCars();
+            }) { name = "ownedUseCar", text = "Use this car" };
+            ownedUse.AddToClassList("action-button"); ownedUse.AddToClassList("primary-action"); actions.Add(ownedUse); AddSurface(ownedUse,RacingSurface.Kind.Action);
         }
         void RefreshOwnedCars(string route)
         {
-            ownedScroll.EnableInClassList("hidden", route != "Garage");
+            ownedScroll.EnableInClassList("hidden", route != "Garage" || ownedDetailId != null);
+            ownedDetails.EnableInClassList("hidden", route != "Garage" || ownedDetailId == null);
             if (route != "Garage") return;
             var profile = game.Profile;
             TorqueUnit units = SharedUnitSettings.Current.torque;
@@ -47,6 +70,10 @@ namespace DragLab.Runtime
                 foreach (var rating in completed.Result) {
                     var label = ownedGrid.Q<Label>("carClass:"+rating.Key);
                     if (label != null) label.text = rating.Value;
+                    if (ownedDetailId == rating.Key) {
+                        var detail = ownedDetailContent.Q<Label>(className:"car-class");
+                        if (detail != null) detail.text = rating.Value;
+                    }
                 }
             } catch (Exception) {
                 ownedGrid.Query<Label>(className:"car-class").ForEach(label => label.text = "Class unavailable");
@@ -64,8 +91,9 @@ namespace DragLab.Runtime
             OwnedGridBuildCount++;
             var probes = new List<Tuple<string,InspectionBuild,CarSimulation>>();
             foreach (var car in profile.cars) {
-                var card = new VisualElement { name = "ownedCar:"+car.instanceId, tooltip = car.instanceId, pickingMode = PickingMode.Ignore };
-                card.AddToClassList("owned-car-card"); ownedGrid.Add(card);
+                string id = car.instanceId;
+                var card = new Button(() => OpenOwnedCar(id)) { name = "ownedCar:"+id, tooltip = "View car · "+id };
+                card.AddToClassList("owned-car-card"); card.AddToClassList("clickable-panel"); ownedGrid.Add(card);
                 AddSurface(card,RacingSurface.Kind.Panel); ownedSurfaces.Add(surfaces[surfaces.Count-1]);
                 var heading = new VisualElement(); heading.AddToClassList("car-card-heading"); card.Add(heading);
                 var title = new Label(profile.catalog.Spec(car.vehicleId).displayName); title.AddToClassList("car-card-title"); heading.Add(title);
@@ -100,9 +128,10 @@ namespace DragLab.Runtime
                 } catch (Exception) {
                     var unavailable = new Label("Build data unavailable"); unavailable.AddToClassList("car-critical"); info.Add(unavailable);
                 }
+                card.Query<VisualElement>().ForEach(element => { if (element != card) element.pickingMode = PickingMode.Ignore; });
             }
             if (profile.cars.Count == 0) { var empty = new Label("No owned cars"); empty.AddToClassList("car-empty"); ownedGrid.Add(empty); }
-            ownedScroll.scrollOffset = scroll; ExcludeTabTraversal();
+            ownedScroll.scrollOffset = scroll; RefreshOwnedDetails(); ExcludeTabTraversal();
             ownedRatings = Task.Run(() => {
                 var result = new Dictionary<string,string>();
                 foreach (var probe in probes) {
@@ -113,6 +142,49 @@ namespace DragLab.Runtime
                 }
                 return result;
             });
+        }
+        void OpenOwnedCar(string id)
+        {
+            if (ModalOpen || game.ScreenName != "Garage") return;
+            if (!game.Profile.cars.Exists(car => car.instanceId == id)) return;
+            ownedReturnScroll = ownedScroll.scrollOffset;
+            ownedDetailId = id;
+            RefreshOwnedDetails(); Refresh();
+        }
+        void BackToOwnedCars()
+        {
+            ownedDetailId = null; ownedDetailContent.Clear();
+            root.Q<Label>("carSelectionError").text = "";
+            Refresh();
+            ownedScroll.schedule.Execute(() => ownedScroll.scrollOffset = ownedReturnScroll);
+        }
+        void RefreshOwnedDetails()
+        {
+            if (ownedDetailId == null) return;
+            var profile = game.Profile;
+            var car = profile.cars.Find(item => item.instanceId == ownedDetailId);
+            var card = ownedGrid.Q("ownedCar:"+ownedDetailId);
+            if (car == null || card == null) { ownedDetailId = null; ownedDetailContent.Clear(); ownedDetails.AddToClassList("hidden"); if(game.ScreenName=="Garage")ownedScroll.RemoveFromClassList("hidden"); return; }
+            ownedDetailRevision = profile.revision;
+            root.Q<Label>("ownedDetailTitle").text = profile.catalog.Spec(car.vehicleId).displayName;
+            root.Q<Label>("carSelectionError").text = "";
+            ownedDetailContent.Clear(); ownedDetailContent.tooltip = car.instanceId;
+            var identity = new Label("#"+car.instanceId.Substring(Math.Max(0,car.instanceId.Length-6))); identity.AddToClassList("car-identity"); ownedDetailContent.Add(identity);
+            var body = new VisualElement(); body.AddToClassList("car-card-body"); ownedDetailContent.Add(body);
+            var visual = new VisualElement(); visual.AddToClassList("car-visual"); body.Add(visual);
+            visual.Add(CarPreview(MechanicsOwnership.Resolve(profile,car,profile.catalog),car.paintHex));
+            body.Add(CopyCarSummary(card.Q("carSummary")));
+            bool current = car.instanceId == profile.selectedOwnedVehicleId;
+            ownedUse.SetEnabled(!current); ownedUse.tooltip = current ? "Already the current car" : "Use this owned car";
+            ExcludeTabTraversal();
+        }
+        static VisualElement CopyCarSummary(VisualElement original)
+        {
+            VisualElement copy = original is Label label ? new Label(label.text) : new VisualElement();
+            foreach (string className in original.GetClasses()) copy.AddToClassList(className);
+            foreach (var child in original.Children()) copy.Add(CopyCarSummary(child));
+            copy.pickingMode = PickingMode.Ignore;
+            return copy;
         }
         static void CarFact(VisualElement parent,string caption,string value)
         {

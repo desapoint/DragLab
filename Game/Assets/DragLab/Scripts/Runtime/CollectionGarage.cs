@@ -6,6 +6,16 @@ namespace DragLab.Runtime
 {
     public sealed partial class PrototypeGame
     {
+        internal bool SelectNativeCar(string id,long revision)
+        {
+            if (screen != "Garage" || pendingAction != null) { notice = "Garage is no longer available."; return false; }
+            if (profile.revision != revision) { notice = "Car details changed. Go back and reopen this car."; return false; }
+            if (!profile.cars.Exists(car => car.instanceId == id)) { notice = "Owned car no longer exists."; return false; }
+            if (profile.selectedOwnedVehicleId == id) return true;
+            if (!CommitParts(revision,p => VehicleCollection.Select(p,id))) return false;
+            ShowGarageCar(); notice = "Current car saved.";
+            return true;
+        }
         internal void OpenCollection() { DiscardPreviews(); screen = "Collection"; scroll = Vector2.zero; partRects.Clear(); }
         void CollectionGUI()
         {

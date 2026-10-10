@@ -126,7 +126,8 @@
 
 .owned-cars-scroll { flex-grow: 1; min-height: 0; }
 .owned-cars-grid { flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; padding: 2px; }
-.owned-car-card { width: 49%; min-height: 238px; margin-bottom: 16px; padding: 14px 16px; border-radius: 12px; overflow: hidden; }
+.owned-car-card { width: 49%; min-height: 238px; margin: 0 0 16px 0; padding: 14px 16px; border-radius: 12px; overflow: hidden; flex-direction: column; align-items: stretch; color: var(--racing-text); font-size: 16px; -unity-text-align: middle-left; }
+.owned-car-card, .owned-car-card:hover, .owned-car-card:focus, .owned-car-card:active { background-color: transparent; border-width: 0; }
 .car-card-heading { flex-direction: row; align-items: center; }
 .car-card-title { flex-grow: 1; font-size: 23px; margin: 0; padding: 0; -unity-text-align: middle-left; translate: 0 -1px; }
 .car-current { color: var(--racing-text); font-size: 14px; -unity-text-align: middle-right; }
@@ -146,3 +147,14 @@
 .car-critical { color: var(--racing-accent); }
 .car-reason { font-size: 16px; color: var(--racing-muted); white-space: normal; margin: 0; padding: 0; }
 .car-empty { font-size: 20px; color: var(--racing-muted); }
+.car-details-page { flex-grow: 1; min-height: 0; }
+.car-details-heading { flex-direction: row; align-items: center; margin-bottom: 16px; flex-shrink: 0; }
+.car-back-button { min-width: 40px; width: 40px; padding: 0; margin-left: 0; margin-right: 16px; }
+.car-back-button .filled-icon { width: 20px; height: 20px; margin: 0; }
+.car-detail-title { font-size: 26px; margin: 0; padding: 0; -unity-text-align: middle-left; }
+.car-details-frame { flex-grow: 1; min-height: 0; padding: 22px; border-radius: 12px; overflow: hidden; }
+.car-details-scroll { flex-grow: 1; min-height: 0; }
+.car-details-content { padding-right: 16px; }
+.car-details-content .car-card-body { min-height: 220px; }
+.car-details-actions { flex-direction: row; justify-content: flex-end; align-items: center; margin-top: 16px; flex-shrink: 0; }
+.car-selection-error { flex-grow: 1; white-space: normal; margin: 0; padding: 0; }

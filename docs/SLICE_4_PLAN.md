@@ -9,6 +9,8 @@ Latest direction (2026-10-10): cars and parts use responsive grids with search/f
 
 Owned-grid clarification: keep exactly two elongated cards per row, previews left and common specifications/condition right. Restore the original rounded corners and fading red corner accents; removing them was a misunderstanding. [Current correction](../reports/phases/4d/03-RESTORE-CORNERS.md); no later browser control is authorized.
 
+User approved Garage access grouping and requested the immediate next interaction: card click/details page with Back and Use this car, delivered as [4D.2](../reports/phases/4d/04-CAR-SELECTION.md). This explicitly moves selection before filters/sorting. Remaining access points require their own reviewed checkpoints; full inspection/drawer is not included.
+
 ## Goal and boundaries
 
 Make the existing mechanics, ownership, economy and development tools usable through scalable interfaces and keyboard, controller and touch input. Migrate one workflow at a time without rewriting the simulation or silently simplifying advanced options. Finish functional layout, navigation, feedback and readability here; original vehicle artwork, extensive content and final visual/audio finish remain Slice 5. Storefront integration and commercial hardening remain Slice 6.

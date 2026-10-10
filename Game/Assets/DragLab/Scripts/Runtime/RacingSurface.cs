@@ -27,7 +27,7 @@ namespace DragLab.Runtime
             AddToClassList("racing-surface");
             generateVisualContent += Draw;
             RegisterCallback<CustomStyleResolvedEvent>(_ => MarkDirtyRepaint());
-            if (kind == Kind.Header || kind == Kind.Footer || kind == Kind.Metal || kind == Kind.Panel) return;
+            if (kind == Kind.Header || kind == Kind.Footer || kind == Kind.Metal || kind == Kind.Panel && !owner.ClassListContains("clickable-panel")) return;
             owner.RegisterCallback<PointerEnterEvent>(evt => { if (evt.target != owner || hovered) return; hovered = true; StartShine(); });
             owner.RegisterCallback<PointerLeaveEvent>(evt => { if (evt.target != owner) return; hovered = false; pressed = false; MarkDirtyRepaint(); });
             owner.RegisterCallback<PointerDownEvent>(_ => { pressed = true; MarkDirtyRepaint(); }, TrickleDown.TrickleDown);

@@ -46,7 +46,7 @@ namespace DragLab.Runtime
             float spacing=panel?3.8f:2.1f;
             for(float x=-h;x<w;x+=spacing+Next(ref seed)*1.8f)
                 Stroke(new Vector2(x,h),new Vector2(x+h*.75f,0),.4f,C(.82f,.86f,.9f,(panel?.014f:.026f)*(.5f+Next(ref seed))));
-            if(!panel)
+            if(!panel || owner.ClassListContains("clickable-panel"))
             {
                 // A narrow bevel, quiet lower reflection and a single soft sweep.
                 Face(0,1,w,Mathf.Min(5,h*.14f),C(1,1,1,.065f),C(1,1,1,0));

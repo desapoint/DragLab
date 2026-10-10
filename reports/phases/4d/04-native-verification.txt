@@ -1,0 +1,286 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: F8 displays native Garage shell on unchanged route
+PASS: Navigation anchored top/full width at 1280x720
+PASS: Settings has twelve-point right inset/full bar height: nav (x:0.00, y:0.00, width:1280.00, height:64.00), settings (x:1188.00, y:0.00, width:80.00, height:64.00)
+PASS: navGarage visible without overlapping Settings
+PASS: navBuild visible without overlapping Settings
+PASS: navTuning visible without overlapping Settings
+PASS: navRace visible without overlapping Settings
+PASS: navBusiness visible without overlapping Settings
+PASS: navData visible without overlapping Settings
+PASS: cashGroup visible without overlapping Settings
+PASS: fuelGroup visible without overlapping Settings
+PASS: repGroup visible without overlapping Settings
+PASS: Settings filled icon keeps aspect ratio and padding
+PASS: Rendered selected-tab red glow fades upward and sideways from its bottom center
+PASS: Rendered Settings red plate has two slanted sides rather than a rectangular fill
+PASS: Header has red bottom accents on both ends with a neutral center
+PASS: Footer red trim keeps its metal center break and raised corner details
+PASS: Selected navigation/tabs replace redundant titles, subtitles and placeholder descriptions
+PASS: Navigation uses bundled condensed bold italic racing font
+PASS: Settings uses bundled readable condensed medium font
+PASS: Layered button surface cannot intercept clicks
+PASS: Hover provides visual feedback without duplicating visible button labels in the footer
+PASS: Hover starts timed shine sweep
+PASS: Shine progresses across successive rendered frames
+PASS: Shine finishes instead of running a perpetual hover animation
+PASS: Stationary hovered button keeps cached geometry after shine
+PASS: Static metal/noise backdrop ignores input and keeps cached geometry without ongoing repaint
+PASS: Real Tab does not navigate or start focus shine
+PASS: Real Shift+Tab does not navigate or change destination
+PASS: Button focus does not add highlight, start shine or repaint decoration
+PASS: Mouse down retains visible pressed shading on the selected navigation button: 0,2641177 → 0,2083569
+PASS: Mouse down does not restart finished hover shine
+PASS: Mouse up restores normal selected/hover shading without persistent focus highlight
+PASS: Native click selects navBuild and stays New
+PASS: Native click selects navTuning and stays New
+PASS: Native click selects navRace and stays New
+PASS: Native click selects navBusiness and stays New
+PASS: Native click selects navData and stays New
+PASS: Native click selects navGarage and stays New
+PASS: Settings retains its full-height hit area including the clear corner outside the slanted face
+PASS: Gear opens fullscreen native Settings
+PASS: Active native pointer gesture blocks F8
+PASS: Settings category Difficulty selected
+PASS: Settings category Sound selected
+PASS: Settings category Units selected
+PASS: Settings category Controls selected
+PASS: Settings category General selected
+PASS: F8 restores original Settings on same route
+PASS: F8 retains native Settings category
+PASS: Navigation/categories/F8 do not publish player preferences or resources
+PASS: Shell actions do not save preferences
+PASS: Resize retains Settings presentation/category
+PASS: Navigation anchored top/full width at 1024x768
+PASS: Settings has twelve-point right inset/full bar height: nav (x:0.00, y:0.00, width:1024.00, height:64.00), settings (x:932.00, y:0.00, width:80.00, height:64.00)
+PASS: navGarage visible without overlapping Settings
+PASS: navBuild visible without overlapping Settings
+PASS: navTuning visible without overlapping Settings
+PASS: navRace visible without overlapping Settings
+PASS: navBusiness visible without overlapping Settings
+PASS: navData visible without overlapping Settings
+PASS: cashGroup visible without overlapping Settings
+PASS: fuelGroup visible without overlapping Settings
+PASS: repGroup visible without overlapping Settings
+PASS: Settings filled icon keeps aspect ratio and padding
+PASS: Resize retains Settings presentation/category
+PASS: Navigation anchored top/full width at 1920x1080
+PASS: Settings has twelve-point right inset/full bar height: nav (x:0.00, y:0.00, width:1920.00, height:64.00), settings (x:1828.00, y:0.00, width:80.00, height:64.00)
+PASS: navGarage visible without overlapping Settings
+PASS: navBuild visible without overlapping Settings
+PASS: navTuning visible without overlapping Settings
+PASS: navRace visible without overlapping Settings
+PASS: navBusiness visible without overlapping Settings
+PASS: navData visible without overlapping Settings
+PASS: cashGroup visible without overlapping Settings
+PASS: fuelGroup visible without overlapping Settings
+PASS: repGroup visible without overlapping Settings
+PASS: Settings filled icon keeps aspect ratio and padding
+PASS: Resize retains Settings presentation/category
+LIMIT: requested 3840x2160; platform rendered 3360x2160
+PASS: Navigation anchored top/full width at 3360x2160
+PASS: Settings has twelve-point right inset/full bar height: nav (x:0.00, y:0.00, width:1920.00, height:64.00), settings (x:1828.00, y:0.00, width:80.00, height:64.00)
+PASS: navGarage visible without overlapping Settings
+PASS: navBuild visible without overlapping Settings
+PASS: navTuning visible without overlapping Settings
+PASS: navRace visible without overlapping Settings
+PASS: navBusiness visible without overlapping Settings
+PASS: navData visible without overlapping Settings
+PASS: cashGroup visible without overlapping Settings
+PASS: fuelGroup visible without overlapping Settings
+PASS: repGroup visible without overlapping Settings
+PASS: Settings filled icon keeps aspect ratio and padding
+PASS: True 3840x2160 render target uses shared 2x scale
+PASS: Fullscreen transition preserves Settings category
+PASS: Navigation anchored top/full width at 1920x1080
+PASS: Settings has twelve-point right inset/full bar height: nav (x:0.00, y:0.00, width:1920.00, height:64.00), settings (x:1828.00, y:0.00, width:80.00, height:64.00)
+PASS: navGarage visible without overlapping Settings
+PASS: navBuild visible without overlapping Settings
+PASS: navTuning visible without overlapping Settings
+PASS: navRace visible without overlapping Settings
+PASS: navBusiness visible without overlapping Settings
+PASS: navData visible without overlapping Settings
+PASS: cashGroup visible without overlapping Settings
+PASS: fuelGroup visible without overlapping Settings
+PASS: repGroup visible without overlapping Settings
+PASS: Settings filled icon keeps aspect ratio and padding
+PASS: Windowed mode/default fixture size restored
+PASS: Resolution changes preserve actual player state
+PASS: Empty garage does not fabricate fuel/tank
+PASS: Sparse shell does not add unnecessary car identity text
+PASS: Populated category Difficulty visible
+PASS: Apply/Cancel remain outside scrolling panel: Difficulty
+PASS: Populated category Sound visible
+PASS: Apply/Cancel remain outside scrolling panel: Sound
+PASS: Populated category Units visible
+PASS: Apply/Cancel remain outside scrolling panel: Units
+PASS: Populated category Controls visible
+PASS: Apply/Cancel remain outside scrolling panel: Controls
+PASS: Populated category General visible
+PASS: Reset game is aligned to the right of its General row
+PASS: Reset entry is a subdued action, separate from primary Apply
+PASS: Apply/Cancel remain outside scrolling panel: General
+PASS: Bulk driving/simulation presets share a distinct group separate from individual controls
+PASS: Preset group and individual settings have separate concise visible labels and spacing
+PASS: Compact Settings exposes at least nine full driving rows at 1280x720: 9
+PASS: Page actions use compact matching heights
+PASS: Choice group rounds only its two outer ends
+PASS: Joined choices have no gap between segments
+PASS: Scrollbar has a slim eight-point column and no stock arrow buttons: 8
+PASS: Scrollbar thumb fits its slim column without overflowing
+PASS: Both rounded panel corners visibly render red accents
+PASS: Panel highlights fade locally within the first 80 points, leaving neutral long edges
+PASS: Scrollbar aligns within the frame with a ten-point right gap and symmetric twelve-point ends: (x:48.00, y:133.00, width:1184.00, height:487.00) / (x:1214.00, y:145.00, width:8.00, height:463.00)
+PASS: Native palette stylesheet supplies the shared accent token
+PASS: Shared palette accent reaches native element: navBar
+PASS: Shared palette accent reaches native element: settingsButton
+PASS: Shared palette accent reaches native element: navGarage
+PASS: Shared palette accent reaches native element: settingsBody
+PASS: Shared palette accent reaches native element: tabDifficulty
+PASS: Shared palette accent reaches native element: heatManagement
+PASS: Shared palette accent reaches native element: masterVolume
+PASS: Header wordmark uses the same palette accent as procedural content
+PASS: Hover and shine leave the clear slanted corner unchanged: tabSound
+PASS: Angled outline uses a one-physical-pixel alpha fringe: tabSound
+PASS: Hover and shine leave the clear slanted corner unchanged: settingsButton
+PASS: Angled outline uses a one-physical-pixel alpha fringe: settingsButton
+PASS: Real toggle click animates thumb and track through intermediate state
+PASS: Rapid toggle reversal continues from the current thumb position
+PASS: Toggle settles exactly at original state after reversal
+PASS: Toggle reaches opposite endpoint without continual animation
+PASS: Settled switch geometry stays cached
+PASS: Existing driving preference mapped: shifting
+PASS: Existing driving preference mapped: launch
+PASS: Existing driving preference mapped: throttleAssist
+PASS: Existing driving preference mapped: tractionAssist
+PASS: Existing driving preference mapped: revMatchAssist
+PASS: Existing driving preference mapped: clutchReleaseSeconds
+PASS: Existing driving preference mapped: shutdownBrakeAssist
+PASS: Existing driving preference mapped: wearMode
+PASS: Existing driving preference mapped: fuelUsage
+PASS: Existing driving preference mapped: fluidDepletion
+PASS: Existing driving preference mapped: fluidAging
+PASS: Existing driving preference mapped: conditionEffects
+PASS: Existing driving preference mapped: serviceAssist
+PASS: Existing driving preference mapped: clutchAssist
+PASS: Existing driving preference mapped: stallPrevention
+PASS: Existing driving preference mapped: raceTemperatures
+PASS: Existing driving preference mapped: warmupBeforeRace
+PASS: Existing driving preference mapped: simulationDifficulty
+PASS: Optimal thermals mapped as Heat management
+PASS: Arcade preset edits shared draft
+PASS: Heat management off disables race-start temperature only
+PASS: Re-enabling heat preserves remembered race-start preference
+PASS: Reduced wear/fuel retain approved 25% rates
+PASS: Slider fill has visible track width
+PASS: Numeric entry uses readable dark themed background
+PASS: Slider thumb is vertically centered on the track: (x:536.00, y:185.00, width:576.00, height:6.00) / (x:954.50, y:179.00, width:18.00, height:18.00)
+PASS: Numeric input uses the shared condensed UI font
+PASS: Real volume slider edits draft without publishing audio gain
+PASS: Numeric input and slider stay synchronized without live publication
+PASS: Real keyboard numeric entry edits only sound draft
+PASS: Tab leaves mouse-focused numeric editing and draft value intact: FloatField masterVolumeValue (x:596.00, y:3.00, width:66.00, height:28.00) world rect: (x:1128.00, y:174.00, width:66.00, height:28.00) → FloatField masterVolumeValue (x:596.00, y:3.00, width:66.00, height:28.00) world rect: (x:1128.00, y:174.00, width:66.00, height:28.00) / 32
+PASS: Shift+Tab leaves numeric focus intact
+PASS: Native numeric text focus blocks F8
+PASS: Driving/units/category edits leave applied profile untouched
+PASS: F8 keeps dirty draft while showing legacy Settings
+PASS: F8 restores same dirty Settings draft
+PASS: Apply opens actual-change confirmation
+PASS: Tab and Shift+Tab do not traverse dynamically generated confirmation buttons
+PASS: Confirmation names actual pending changes
+PASS: Confirmation details use the same themed scrollbar
+PASS: Dialog reuses the shared brushed panel surface without a full left accent border
+PASS: Rendered dialog has top-left/bottom-right corner highlights and a neutral middle edge
+PASS: Confirmation blocks F8
+PASS: Mouse hover visibly lights dialog X even while it has modal focus
+PASS: Dialog X retains distinct mouse-down styling before release
+PASS: X dismisses only dialog and keeps draft
+PASS: Leaving dialog X removes hover despite retained focus
+PASS: Dirty navigation asks Apply/Discard/Stay
+PASS: Stay retains draft
+PASS: Confirmed Apply publishes whole driving draft
+PASS: Reduced rules and opponent difficulty persist together
+PASS: Confirmed Apply publishes shared audio gains
+PASS: Audio and all units survive reload
+PASS: Applied driving settings survive profile reload
+PASS: Locked profile rejects settings commit
+PASS: Failed commit never publishes new profile or audio cache
+PASS: Interrupted rollback retains durable recovery journal
+PASS: Incomplete settings write recovers after lock released
+PASS: Recovery restores all three files and profile backup exactly
+PASS: Successful recovery retires journal
+PASS: Clean Cancel returns to prior Garage
+PASS: Dirty Cancel discards draft and returns to actual previous menu
+PASS: Reopened Settings starts from applied preferences
+PASS: Definitive external unit change preserves unrelated local sound draft
+PASS: Definitive external units reconcile into native draft
+PASS: Conflicting definitive preference edit blocks stale Apply
+PASS: Revert loads latest applied settings
+PASS: Reset opens separate destructive dialog
+PASS: Escape cancels reset without changing progression
+PASS: Reset clears progression and retains applied driving preferences
+PASS: Reset retains applied sound and does not publish unsaved sound draft
+PASS: Cancel after reset discards only Settings draft
+PASS: Click and selected-state change continue original hover sweep
+PASS: Pointer leave does not interrupt full hover sweep
+PASS: Sweep ends once after original hover interval
+PASS: Populated Settings actions remain reachable at compact resolution
+PASS: Populated 4K layout retains panel/action separation with shared 2x scale
+PASS: True 4K target keeps its edge fringe at one physical pixel
+PASS: Owned-car interaction fixture has valid complete reservation/asset identities
+PASS: Grid shows every owned instance, including duplicate models
+PASS: Only the actual current owned instance is marked
+PASS: Layered preview and exact card ID exist: vehicle-1bbbe55a852043b7a5a79bed60d83596
+PASS: Layered preview and exact card ID exist: vehicle-7c104350e82445a09a4287e51d61a289
+PASS: Layered preview and exact card ID exist: vehicle-b40ae0975d7c497eb9242e80950f5954
+PASS: Layered preview and exact card ID exist: vehicle-50d588a29ea54d229a7245dc53ecf969
+PASS: Layered preview and exact card ID exist: vehicle-d4c91328daa84349823b6a873f534174
+PASS: Layered preview and exact card ID exist: vehicle-aec539a31b7f44bda2c7a1d9b926cf39
+PASS: Layered preview and exact card ID exist: vehicle-cb0ab88a4c8142aa9f7dc52ca06819ea
+PASS: Layered preview and exact card ID exist: vehicle-5c9b15e4f2ee466e9bfb0dfc970f902d
+PASS: Layered preview and exact card ID exist: vehicle-16ddb428fe0941068df18e94abe349f4
+PASS: Worn installed component is visible without healing
+PASS: Failed brakes remain a component warning instead of disabling all cars
+PASS: Missing engine remains visibly unavailable
+PASS: Reserved car remains visible with its restriction
+PASS: Empty tank remains visible without refilling
+PASS: Unchanged frames retain cached card geometry and previews
+PASS: Shared background inspection finishes class estimates without UI rebuilding
+PASS: Class results update labels without rebuilding cards
+PASS: Clicking a card replaces the grid with exact-instance details, without a dialog
+PASS: Details reuse layered preview and common HP/torque/weight facts
+PASS: F8 compares the whole Garage details page
+PASS: Returning from F8 retains inspected car details
+PASS: Details block practice shortcut without altering car state
+PASS: Settings Cancel returns to the same inspected car page
+PASS: Back returns to the grid without selecting a car
+PASS: Reading/clicking cards and F8 do not select, save, spend, heal or replace assets
+PASS: Grid reflows without horizontal overflow at 1024
+PASS: Cards do not introduce Tab traversal at 1024
+PASS: Garage keeps exactly two cards per row at 1024
+PASS: HP, torque and weight stay to the right of each preview at 1024
+PASS: Car detail actions remain reachable at compact resolution
+PASS: Grid reflows without horizontal overflow at 1920
+PASS: Cards do not introduce Tab traversal at 1920
+PASS: Garage keeps exactly two cards per row at 1920
+PASS: HP, torque and weight stay to the right of each preview at 1920
+PASS: Owned grid fits true 4K target with shared two-times scale
+PASS: Garage keeps exactly two cards per row at 4K
+PASS: Right-side car summaries fit at 4K
+PASS: Garage scroll position survives Settings and Cancel
+PASS: Read-only grid and detail scenarios leave durable player assets untouched
+PASS: Back from car details restores the grid scroll position
+PASS: Use this car selects the exact inspected owned instance: Current car saved.
+PASS: Current-car change is saved through one profile transaction
+PASS: Selection preserves all car/part identities, wear, faults, resources, settings and records
+PASS: CURRENT marker moves only to the newly selected exact car
+PASS: Already-current car cannot create a redundant save
+PASS: Escape returns from current-car details without saving
+PASS: Stale selection command rejects the change and retains the current car/save
+PASS: Failed selection save reports an inline error and rolls back the live choice
+PASS: Retry after save failure selects the car while keeping failed brakes failed
+PASS: Incomplete cars remain selectable for management without recreating an engine
+PASS: Empty garage shows no fabricated car
+PASS: Empty-state browsing does not write another save
+Checks: 283 / runtime errors: 0

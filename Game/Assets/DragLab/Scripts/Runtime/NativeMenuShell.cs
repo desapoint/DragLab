@@ -109,6 +109,7 @@ namespace DragLab.Runtime
         void LateUpdate()
         {
             Refresh();
+            if (OwnedDetailsOpen && !ModalOpen && Input.GetKeyDown(KeyCode.Escape)) BackToOwnedCars();
             foreach (var surface in surfaces) surface.Tick(Visible);
             foreach (var surface in switchSurfaces) surface.Tick(Visible);
         }
@@ -165,6 +166,7 @@ namespace DragLab.Runtime
             Action<float,float,float> circle = (x,y,r) => { p.BeginPath(); p.Arc(new Vector2(x*sx,y*sy), r*sx, Angle.Degrees(0), Angle.Degrees(360)); p.ClosePath(); p.Fill(); };
             switch (kind)
             {
+                case "Back": polygon(new float[] {2,12,11,3,11,8,22,8,22,16,11,16,11,21}); break;
                 case "Settings":
                     var gear = new float[64];
                     for (int i = 0; i < 32; i++) { float a = i * Mathf.PI / 16; float r = i % 4 < 2 ? 10 : 7.8f; gear[i*2] = 12 + Mathf.Cos(a)*r; gear[i*2+1] = 12 + Mathf.Sin(a)*r; }
