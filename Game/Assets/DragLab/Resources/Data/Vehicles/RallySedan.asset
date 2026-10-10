@@ -16,6 +16,7 @@ MonoBehaviour:
     id: rally-sedan
     displayName: Tempest AWD 2.0T
     artId: coupe
+    bodyType: 3
     dataProvenance: Fictional, modeled values; not manufacturer specifications.
     drive: 2
     awd:

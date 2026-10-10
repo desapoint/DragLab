@@ -16,6 +16,7 @@ MonoBehaviour:
     id: touring-six
     displayName: Meridian GT 3.0
     artId: coupe
+    bodyType: 2
     dataProvenance: Fictional, modeled values; not manufacturer specifications.
     drive: 1
     awd:

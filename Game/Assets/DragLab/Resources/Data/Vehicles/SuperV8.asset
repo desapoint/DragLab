@@ -16,6 +16,7 @@ MonoBehaviour:
     id: super-v8
     displayName: Bison R 5.0 SC
     artId: muscle
+    bodyType: 2
     dataProvenance: Fictional, modeled values; not manufacturer specifications.
     drive: 1
     awd:

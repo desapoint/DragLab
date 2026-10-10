@@ -56,7 +56,8 @@ namespace DragLab.Runtime
                     yield return new WaitForSecondsRealtime(.1f);
                 Check(shell.Root.Query<Label>(className:"car-class").ToList().All(label=>label.text!="Class …"),"Shared background inspection finishes class estimates without UI rebuilding");
                 Check(shell.OwnedGridBuildCount==builds,"Class results update labels without rebuilding cards");
-                yield return Capture("owned-cars-1280");
+                yield return CarFilterChecks(input);
+                CarFilterToolbarLayout(1280);yield return Capture("owned-cars-1280");
                 var cardRect=shell.Root.Q("ownedCar:"+first.instanceId).worldBound;
                 input.MouseButtonAt((int)cardRect.center.x,(int)cardRect.center.y,true); yield return new WaitForSecondsRealtime(.1f);input.MouseButtonAt((int)cardRect.center.x,(int)cardRect.center.y,false);
                 yield return new WaitForSecondsRealtime(.2f);
@@ -122,7 +123,7 @@ namespace DragLab.Runtime
                     Check(cards.All(card=>card.tabIndex==-1),"Cards do not introduce Tab traversal at "+width);
                     Check(cards.Count(card=>Mathf.Abs(card.worldBound.yMin-cards[0].worldBound.yMin)<1)==2,"Garage keeps exactly two cards per row at "+width);
                     Check(cards.All(card=>card.Q("carSummary").worldBound.xMin>=card.Q("carPreview").worldBound.xMax && card.Q("carSummary").worldBound.xMax<=card.worldBound.xMax && card.Q(className:"car-card-stats").childCount==3),"HP, torque and weight stay to the right of each preview at "+width);
-                    yield return Capture("owned-cars-"+width);
+                    CarFilterToolbarLayout(width);yield return Capture("owned-cars-"+width);
                     {
                         yield return Click(input,"ownedCar:"+first.instanceId);
                         var detail=shell.Root.Q("ownedDetails").worldBound;
@@ -146,6 +147,7 @@ namespace DragLab.Runtime
                 }
                 var target = new RenderTexture(3840,2160,24); target.Create();
                 shell.Panel.targetTexture = target; yield return new WaitForSecondsRealtime(.4f); yield return new WaitForEndOfFrame();
+                CarFilterToolbarLayout(3840);
                 var viewport4k = shell.Root.Q<ScrollView>("ownedCars").contentViewport.worldBound;
                 Check(shell.Panel.scale==2 && shell.Root.Query(className:"owned-car-card").ToList().All(card=>card.worldBound.xMax<=viewport4k.xMax+1),"Owned grid fits true 4K target with shared two-times scale");
                 var cards4k=shell.Root.Query(className:"owned-car-card").ToList();

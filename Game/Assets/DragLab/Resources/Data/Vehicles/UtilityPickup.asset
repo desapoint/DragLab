@@ -16,6 +16,7 @@ MonoBehaviour:
     id: utility-pickup
     displayName: Timber Utility 4.2
     artId: pickup
+    bodyType: 4
     dataProvenance: Fictional, modeled values; not manufacturer specifications.
     drive: 2
     awd:

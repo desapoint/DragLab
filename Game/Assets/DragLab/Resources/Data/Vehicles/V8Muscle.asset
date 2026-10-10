@@ -16,6 +16,7 @@ MonoBehaviour:
     id: v8-muscle
     displayName: Bison 5.0
     artId: muscle
+    bodyType: 2
     dataProvenance: Fictional, modeled values; not manufacturer specifications.
     drive: 1
     massKg: 1580

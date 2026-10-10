@@ -5,6 +5,7 @@ using System.Collections.Generic;
 namespace DragLab.Domain
 {
     public enum DriveType { FWD, RWD, AWD }
+    public enum CarBodyType { Unknown, Hatchback, Coupe, Sedan, Pickup, SUV, Wagon, Van, Roadster }
     public enum ShiftMode { Automatic, Sequential, ManualClutch }
     public enum LaunchMode { Automatic, Assisted, Manual }
     public enum RacePhase { Countdown, Racing, Finished }
@@ -28,6 +29,7 @@ namespace DragLab.Domain
         public string id = "starter-hatch";
         public string displayName = "Juniper 1.6";
         public string artId = "hatch";
+        public CarBodyType bodyType;
         public string dataProvenance = "Fictional, modeled values; not manufacturer specifications.";
         public DriveType drive = DriveType.FWD;
         public AwdSpec awd = new AwdSpec();

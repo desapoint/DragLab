@@ -16,6 +16,7 @@ MonoBehaviour:
     id: starter-hatch
     displayName: Juniper 1.6
     artId: hatch
+    bodyType: 1
     dataProvenance: Fictional, modeled values; not manufacturer specifications.
     drive: 0
     awd:

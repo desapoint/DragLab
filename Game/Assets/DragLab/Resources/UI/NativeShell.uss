@@ -229,3 +229,21 @@
 .stat-range .stat-better { color: #b5cfb5; }
 .stat-range .stat-worse { color: var(--racing-accent); }
 .stat-range .stat-tradeoff { color: #e6bf80; }
+
+.owned-car-toolbar { flex-direction: row; align-items: center; flex-shrink: 0; margin-bottom: 16px; }
+.owned-car-search { flex-grow: 1; min-width: 120px; margin: 0; position: relative; }
+.owned-search-hint { position: absolute; left: 10px; top: 0; bottom: 0; color: var(--racing-muted); font-size: 18px; margin: 0; padding: 0; -unity-text-align: middle-left; }
+.owned-car-toolbar .action-button { margin-left: 10px; padding-left: 12px; padding-right: 12px; }
+.owned-car-toolbar .owned-query-clear { width: 34px; min-width: 34px; padding: 0; font-size: 23px; }
+.owned-car-toolbar .filled-icon { width: 17px; height: 17px; }
+.owned-car-count { min-width: 55px; margin: 0 0 0 12px; padding: 0; color: var(--racing-muted); font-size: 17px; -unity-text-align: middle-right; }
+.owned-query-group { margin-bottom: 12px; flex-shrink: 0; }
+.owned-query-group > Label { font-size: 17px; color: var(--racing-muted); margin: 0 0 4px 0; }
+.owned-query-choices { flex-direction: row; margin-bottom: 4px; flex-shrink: 0; }
+.owned-query-choices .choice-button { min-width: 0; padding-left: 6px; padding-right: 6px; font-size: 17px; }
+.owned-query-range { flex-direction: row; align-items: center; margin-bottom: 8px; flex-shrink: 0; }
+.owned-query-range > Label { font-size: 17px; margin: 0 8px 0 0; }
+.owned-query-range-title { flex-grow: 1; min-width: 120px; }
+.owned-query-range .setting-number { width: 90px; margin-left: 0; margin-right: 10px; }
+
+.car-summary > .car-identity { white-space: normal; }
