@@ -8,6 +8,8 @@ Source of scope: [objective.md](objective.md), section 58. The eight-car roster 
 
 Native UI direction is now recorded in [NATIVE_UI_DESIGN.md](NATIVE_UI_DESIGN.md): shaded grey/red controls, consistent top navigation/resources, opaque full-screen menus, flexible modal dialogs and unified tabbed Settings with explicit Save/confirmation. Settings will be the first replacement page; its new controls and behavior are not implemented by this documentation checkpoint. The existing Windows player and 4B.1 verification remain unchanged.
 
+Additional requirements recorded: recognizable icons, info dialogs for secondary details, four primary part stats (HP/torque/weight/durability) and actual change effects; common responsive scaling and anchors for resolution/window-mode changes, including top full-width navigation and right/full-bar-height Settings. Documentation only; native resize/device verification remains pending implementation.
+
 Current Slice 3 progress: eight-car collection, retained engine assemblies, saved configurations, immutable paid quotes/salvage, 21 career events, exact reserved garage jobs and captured offline accrual are implemented. Full-loop funded scenarios preserve actual fuel/fluids/wear and viable recovery. Prices are calibrated prototype values, with human pacing review still required. 3H passed the integrated interruption/migration/save gate and complete domain/Windows reruns; see [ordered phases](IMPLEMENTATION_PHASES.md).
 
 ## Implemented milestone

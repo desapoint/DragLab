@@ -9,6 +9,21 @@ Recorded 2026-10-09 from the user's instructions. This is the current design con
 - UI is not constrained to pixel sprites or the resolution/style of the 2D car art. Smooth shapes, shading, shadows and hover effects are allowed. Specific shades, radii, animation and effect strength will be reviewed in the actual game as their controls are introduced.
 - Hover effects must have equivalent focus feedback for keyboard/controller use. Touch needs pressed/selected feedback without requiring hover. Cosmetic transitions must not delay actions, claim driving input, save values or affect simulation.
 
+## Icons and progressive detail
+
+- Prefer icons over visible text where the action or value is recognizable, including Settings, information, close and familiar navigation/resource indicators. Use one consistent icon style. Keep text where the meaning would otherwise be ambiguous, especially confirmation choices and consequences; icons retain accessible names and hover/focus labels. Do not rely on hover alone to explain an action on touch devices.
+- Secondary information belongs behind a small info button opening a dialog. Deep part descriptions, detailed specifications and explanations remain available there instead of filling the primary card. The dialog uses the shared X/Close, focus and modal rules below; inspecting information never applies settings or spends resources.
+- A part's primary summary shows **HP, torque, weight and part durability**, plus the effect of the selected part/change. Preserve current-to-proposed values, units and positive/negative comparison feedback. Use authoritative installed/draft calculations and part data, not invented bonuses or misleading universal strength ratings. Detailed condition, compatibility, hardware permissions and specifications can live in the info dialog; essential failure, incompatibility, cost or transaction warnings remain visible when needed to make the decision.
+- Durability describes the part's actual applicable lifetime/robustness; distinguish it from its current wear/condition. If a stat is unavailable or inapplicable, show that clearly instead of fabricating a number. Exact labels and presentation are reviewed with the first part-summary control.
+
+## Responsive sizing and anchors
+
+- Layout must adapt to display resolution, aspect ratio and fullscreen/windowed mode, including live window resizing. Use a shared reference scale, spacing and sizing policy wherever possible; reference dimensions and minimum supported sizes will be validated with native implementation rather than assumed here. Avoid unrelated scale factors on each screen. Any necessary screen-specific scaling exception must be documented and reviewed.
+- Anchor the navigation bar to the **top, full width** of its parent. Anchor the Settings control to the **right edge of the bar**, with its control/hit area filling **100% of the bar's height**. Keep the icon proportionate and centered with padding; filling the hit area does not stretch the icon. Reserve its width so navigation/resources cannot overlap it.
+- Anchor the content area beneath the bar and let it use the remaining window space. Resize/reflow content before reducing readability; allow scrolling inside the relevant content panel while the top bar remains fixed. Keep shared buttons, sliders, text and interaction targets at consistent readable sizes. Dialogs fit the viewport and can scroll their content while close/confirmation actions remain reachable.
+- Resolution/mode/size changes must not reset drafts, selected tabs, cart contents, focus ownership or simulation state, or publish Settings edits. Compact layouts retain access to navigation, Settings and cash/fuel/progression information.
+- Each implemented control/screen gets layout checks at representative small and large windows, different aspect ratios and fullscreen/windowed transitions. Check for clipped/overlapping text, inaccessible actions, stretched icons and broken pointer/focus alignment. This documentation checkpoint does not claim device/layout validation has run.
+
 ## Full-screen menus and top navigation
 
 - Most menu interfaces fill the window with their own opaque background; the racing strip is not a permanent background. An intentional car preview may remain on screens that need it without exposing the strip everywhere.
