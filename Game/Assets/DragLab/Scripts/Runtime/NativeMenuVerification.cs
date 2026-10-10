@@ -65,7 +65,7 @@ namespace DragLab.Runtime
             var root = shell.Root; var nav = root.Q("navBar").worldBound; var settings = root.Q("settingsButton").worldBound;
             float scale = NativeMenuShell.DisplayScale(Screen.width, Screen.height);
             Check(nav.yMin < 1 && Mathf.Abs(nav.width * scale - Screen.width) < 2, "Navigation anchored top/full width at " + Screen.width + "x" + Screen.height);
-            Check(Mathf.Abs(settings.xMax - nav.xMax) < 1 && Mathf.Abs(settings.height - nav.height) < 1, "Settings anchored right/full bar height: nav " + nav + ", settings " + settings);
+            Check(Mathf.Abs(nav.xMax - settings.xMax - 12) < 1 && Mathf.Abs(settings.height - nav.height) < 1, "Settings has twelve-point right inset/full bar height: nav " + nav + ", settings " + settings);
             foreach (string id in new[] { "navGarage", "navBuild", "navTuning", "navRace", "navBusiness", "navData", "cashGroup", "fuelGroup", "repGroup" })
             {
                 var bounds = root.Q(id).worldBound;

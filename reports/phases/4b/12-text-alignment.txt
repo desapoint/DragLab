@@ -1,0 +1,9 @@
+Rendered glyph alignment, default 1280x720 Sound capture
+Geometry: master row/number center 188; tab center 110; Cancel center 649.
+Scan bright neutral glyph pixels inside text regions, excluding outlines/colored faces.
+PASS: Numeric value: glyph center 188.5, control center 188, offset 0.5 px
+PASS: Unit: glyph center 189.0, control center 188, offset 1.0 px
+PASS: Row caption: glyph center 188.0, control center 188, offset 0.0 px
+PASS: Sound tab: glyph center 109.5, control center 110, offset 0.5 px
+PASS: Cancel action: glyph center 648.5, control center 649, offset 0.5 px
+Five representative text roles pass; other categories/dialogs require retained visual review, not an assertion of every glyph.

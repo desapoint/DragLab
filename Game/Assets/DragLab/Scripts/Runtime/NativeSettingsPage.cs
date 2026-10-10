@@ -35,6 +35,7 @@ namespace DragLab.Runtime
         void InitializeSettings()
         {
             AddSurface(root.Q("settingsBody"), RacingSurface.Kind.Panel);
+            AddSurface(root.Q("modalCard"), RacingSurface.Kind.Panel);
             root.Query<ScrollView>().ForEach(scroll =>
             {
                 var scroller = scroll.verticalScroller;
@@ -233,11 +234,15 @@ namespace DragLab.Runtime
         }
         void BuildDriving()
         {
-            Choice(0, "drivingPreset", "Driving preset", new[] { "Automatic", "Shift myself", "Full manual" }, DrivingChoice, i => draftDriver.ApplyPreset((DrivingPreset)i));
+            Choice(0, "drivingPreset", "Driving preset", new[] { "Automatic", "Shift myself", "Full manual" }, DrivingChoice, i => draftDriver.ApplyPreset((DrivingPreset)i), "Changes shifting, launch and driving assists together. Individual settings below remain editable; Apply is still required.");
+            Choice(0, "simulationDifficulty", "Simulation preset", new[] { "Arcade", "Balanced", "Simulation" }, () => draftDriver.simulationDifficulty == SimulationDifficulty.Custom ? -1 : (int)draftDriver.simulationDifficulty, i => draftDriver.ApplySimulationPreset((SimulationDifficulty)i), "Changes simulation rules together. Keeps launch and shift modes; individual changes create a custom setup.");
+            var presets = new VisualElement { name = "presetGroup" }; presets.AddToClassList("preset-group");
+            presets.Add(new Label("Presets") { name = "presetHeading" });
+            presets.Add(root.Q("drivingPresetRow")); presets.Add(root.Q("simulationDifficultyRow")); pages[0].Insert(0,presets);
+            var individual = new Label("Individual settings") { name = "individualHeading" }; individual.AddToClassList("settings-group-label"); pages[0].Add(individual);
             Choice(0, "shifting", "Shifting", new[] { "Automatic", "Shift myself", "Manual clutch" }, () => (int)draftDriver.shifting, i => draftDriver.shifting = (ShiftMode)i, "E / Q select gears. Transmission hardware determines shift speed and downshift protection.");
             Choice(0, "launch", "Launch", new[] { "Automatic", "Assisted", "Manual" }, () => (int)draftDriver.launch, i => draftDriver.launch = (LaunchMode)i, "Staging holds neutral and brakes. Hold W / Space to rev. E engages first after green. For manual clutch, hold Shift then release it.");
             Choice(0, "opponentDifficulty", "Opponent", new[] { "Easy", "Normal", "Hard" }, () => draftAi, i => draftAi = i, "Changes opponent reaction time. Both cars use the same physics.");
-            Choice(0, "simulationDifficulty", "Simulation preset", new[] { "Arcade", "Balanced", "Simulation" }, () => draftDriver.simulationDifficulty == SimulationDifficulty.Custom ? -1 : (int)draftDriver.simulationDifficulty, i => draftDriver.ApplySimulationPreset((SimulationDifficulty)i), "Keeps launch and shift modes. Individual changes create a custom setup.");
             Choice(0, "wearMode", "Mechanical wear", new[] { "None", "Partial · 25%", "Full" }, () => (int)draftDriver.wearMode, i => draftDriver.wearMode = (WearMode)i, "None prevents new wear and abuse damage; it does not repair existing faults. Partial slows wear and abuse damage to 25%; failures remain possible.", true);
             Choice(0, "fuelUsage", "Fuel consumption", new[] { "Realistic", "Reduced · 25%", "None" }, () => (int)draftDriver.fuelUsage, i => draftDriver.fuelUsage = (FuelUsageMode)i, "Fuel quantity still adds weight. Consumption includes idle and anti-lag.", true);
             Choice(0, "fluidDepletion", "Oil / coolant use", new[] { "Realistic", "Reduced · 25%", "None" }, () => (int)draftDriver.fluidDepletion, i => draftDriver.fluidDepletion = (ConsumptionMode)i, "Changes depletion, including leaks. Existing faults remain.", true);

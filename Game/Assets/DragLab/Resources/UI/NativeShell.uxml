@@ -43,7 +43,7 @@
       <ui:Label name="interactionHint" class="footer-hint" text="F8 · Old / New" />
     </ui:VisualElement>
     <ui:VisualElement name="modalLayer" class="modal-layer hidden">
-      <ui:VisualElement class="modal-card">
+      <ui:VisualElement name="modalCard" class="modal-card">
         <ui:VisualElement class="modal-heading"><ui:Label name="modalTitle" /><ui:Button name="modalClose" text="×" class="close-button" /></ui:VisualElement>
         <ui:ScrollView name="modalContent" class="modal-content" />
         <ui:VisualElement name="modalActions" class="modal-actions" />

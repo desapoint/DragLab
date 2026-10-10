@@ -96,6 +96,9 @@ namespace DragLab.Runtime
                 Check(root.Q("cancelSettings").worldBound.yMax<Screen.height-30 && root.Q("applySettings").worldBound.yMax<Screen.height-30,"Apply/Cancel remain outside scrolling panel: "+id);
             }
             yield return Click(input,"tabDifficulty");
+            var presetGroup=root.Q("presetGroup");
+            Check(root.Q("drivingPresetRow").parent==presetGroup && root.Q("simulationDifficultyRow").parent==presetGroup && root.Q("shiftingRow").parent!=presetGroup,"Bulk driving/simulation presets share a distinct group separate from individual controls");
+            Check(presetGroup.worldBound.yMax<root.Q("shiftingRow").worldBound.yMin && root.Q<Label>("presetHeading").text=="Presets" && root.Q<Label>("individualHeading").text=="Individual settings","Preset group and individual settings have separate concise visible labels and spacing");
             yield return ControlStyleChecks(input);
             foreach(var field in typeof(DriverSettings).GetFields())
                 if(field.Name!="reactionSeconds" && field.Name!="soundVolume" && field.Name!="wearMultiplier" && field.Name!="optimalThermals")
@@ -145,6 +148,13 @@ namespace DragLab.Runtime
             Check(root.focusController.focusedElement==modalFocus && shell.ModalOpen,"Tab and Shift+Tab do not traverse dynamically generated confirmation buttons");
             Check(root.Q<ScrollView>("modalContent").Q<Label>().text.Contains("Master") && root.Q<ScrollView>("modalContent").Q<Label>().text.Contains("Mechanical wear"),"Confirmation names actual pending changes");
             Check(root.Q<ScrollView>("modalContent").verticalScroller.ClassListContains("settings-scrollbar") && root.Q<ScrollView>("modalContent").verticalScroller.lowButton.resolvedStyle.display==DisplayStyle.None,"Confirmation details use the same themed scrollbar");
+            yield return new WaitForEndOfFrame();
+            var dialogPixels=ScreenCapture.CaptureScreenshotAsTexture(); var dialogBounds=root.Q("modalCard").worldBound;
+            Color dialogTop=Pixel(dialogPixels,dialogBounds.xMin+14,dialogBounds.yMin+1);
+            Color dialogBottom=Pixel(dialogPixels,dialogBounds.xMax-14,dialogBounds.yMax-1);
+            Color dialogLeft=Pixel(dialogPixels,dialogBounds.xMin+1,dialogBounds.center.y);
+            Check(root.Q("modalCard").Q<RacingSurface>()!=null && root.Q("modalCard").resolvedStyle.borderLeftWidth==0,"Dialog reuses the shared brushed panel surface without a full left accent border");
+            Check(dialogTop.r-dialogTop.g>.1f && dialogBottom.r-dialogBottom.g>.1f && dialogLeft.r-dialogLeft.g<.08f,"Rendered dialog has top-left/bottom-right corner highlights and a neutral middle edge"); Destroy(dialogPixels);
             yield return Capture("settings-apply-dialog");yield return Key(input,0x77);Check(shell.Visible && shell.ModalOpen,"Confirmation blocks F8");
             yield return Click(input,"modalClose");Check(!shell.ModalOpen && shell.SettingsDirty && JsonUtility.ToJson(game.Profile)==before,"X dismisses only dialog and keeps draft");
             yield return Click(input,"navGarage");Check(shell.ModalOpen && game.ScreenName=="Settings","Dirty navigation asks Apply/Discard/Stay");
