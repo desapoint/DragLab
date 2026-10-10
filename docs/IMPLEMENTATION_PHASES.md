@@ -177,3 +177,6 @@ Plan revision completed 2026-10-09; evidence is [the planning report](../reports
 
 
 Full stats/reuse direction approved (2026-10-10): add inline collapsible grouped applied stats and saved settings on car details, with concise unit-labelled rows and optional per-value explanations. Use common stat definitions/interpretation for Current → Proposed comparisons and a shared labelled dyno for details/parts/cart/tuning. Keep inspection authoritative, previews isolated, tradeoffs explicit and all edits subject to existing Apply/checkout. Follow the [native design contract](NATIVE_UI_DESIGN.md) and control-sized review sequence: shared dyno infrastructure first, then Stats button/Engine group, then reviewed groups/integrations. This checkpoint does not migrate the remaining stats or comparison pages.
+
+
+4D.6 Engine inspection checkpoint (2026-10-10): implement the requested Stats button and first collapsible, read-only Engine group using the applied dyno inspection and shared stat definitions/rows. Other groups and comparison screens remain later reviewed controls. See [Engine delivery/review](../reports/phases/4d/12-ENGINE-STATS.md).

@@ -91,7 +91,7 @@ namespace DragLab.Runtime
             yield return Click(input,"ownedBack");yield return Click(input,"ownedCar:"+reservedId);
             Check(!shell.Root.Q("maintenanceFuel").enabledInHierarchy,"Reserved garage-job cars remain inspectable but cannot be serviced");yield return Click(input,"ownedBack");
             yield return Click(input,"ownedCar:"+selected);
-            Check(shell.Root.Q("maintenanceOil")==null&&shell.Root.Q("maintenanceOilChange")==null&&shell.Root.Q<NativeDynoPlot>("ownedDynoPlot")==null,"Detached engine does not expose oil/coolant actions or fabricate a dyno curve on its chassis");yield return Click(input,"ownedBack");
+            Check(shell.Root.Q("maintenanceOil")==null&&shell.Root.Q("maintenanceOilChange")==null&&shell.Root.Q<NativeDynoPlot>("ownedDynoPlot")==null,"Detached engine does not expose oil/coolant actions or fabricate a dyno curve on its chassis");Check(!shell.Root.Q<Button>("ownedStatsToggle").enabledSelf&&shell.Root.Q<NativeStatsPanel>("ownedCarStats")==null,"Detached engine disables Stats without inventing an engine configuration");yield return Click(input,"ownedBack");
             var request=new PaymentRequest {kind=PaymentKind.Fuel,carId=id,litres=1};disk=File.ReadAllText(ProfileStore.FilePath);
             Check(!game.CommitNativeMaintenance(request,game.Profile.revision-1,JsonUtility.ToJson(game.Profile),2)&&File.ReadAllText(ProfileStore.FilePath)==disk,"Stale maintenance confirmation cannot charge or change the saved car");
             yield return Click(input,"ownedCar:"+id);yield return MaintenanceClick(input,"maintenanceRebuild");yield return Click(input,"dialogConfirm");

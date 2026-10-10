@@ -166,6 +166,7 @@ namespace DragLab.Runtime
             Action<float,float,float> circle = (x,y,r) => { p.BeginPath(); p.Arc(new Vector2(x*sx,y*sy), r*sx, Angle.Degrees(0), Angle.Degrees(360)); p.ClosePath(); p.Fill(); };
             switch (kind)
             {
+                case "Expand": polygon(new float[] {4,8,20,8,12,17}); break;
                 case "Back": polygon(new float[] {2,12,11,3,11,8,22,8,22,16,11,16,11,21}); break;
                 case "Pencil": polygon(new float[] {4,15,9,20,20,9,15,4}); polygon(new float[] {3,17,7,21,2,22}); polygon(new float[] {16,3,19,1,23,5,21,8}); break;
                 case "Settings":

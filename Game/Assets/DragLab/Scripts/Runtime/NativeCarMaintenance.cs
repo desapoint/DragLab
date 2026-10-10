@@ -14,7 +14,9 @@ namespace DragLab.Runtime
         void ClearOwnedDetailContent()
         {
             foreach (var surface in maintenanceSurfaces) surfaces.Remove(surface);
-            maintenanceSurfaces.Clear(); ownedDetailContent.Clear();
+            maintenanceSurfaces.Clear();
+            foreach(var surface in ownedStatsSurfaces)surfaces.Remove(surface);ownedStatsSurfaces.Clear();
+            ownedDetailContent.Clear();
         }
         void BuildOwnedMaintenance(OwnedCar car)
         {

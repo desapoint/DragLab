@@ -80,6 +80,7 @@ namespace DragLab.Runtime
                 point=dyno.LocalToWorld(new Vector2(plot.xMin+2,plot.center.y));input.MoveMouseAt((int)point.x,(int)point.y);yield return new WaitForSecondsRealtime(.1f);
                 Check(dyno.HoverRpm.HasValue&&!dyno.HoverSamples[0].HasValue&&!dyno.HoverSamples[1].HasValue,"Hover below the first curve sample does not fabricate idle/output figures");
                 input.MoveMouseAt(10,100);yield return new WaitForSecondsRealtime(.1f);Check(!dyno.HoverRpm.HasValue&&readout.ClassListContains("hidden"),"Leaving the plot removes cursor line, intersections and readout");
+                yield return EngineStatsChecks(input,dyno);
                 // Exercise reuse as a different caller, with no profile or Garage dependency in the component.
                 var otherSource=fixture.cars.Where(car=>!string.IsNullOrEmpty(car.engineAssemblyId)).Select(car=>InspectionBuild.Capture(fixture,car)).OrderByDescending(source=>source.build.spec.redlineRpm).First();
                 var otherStats=CarInspection.CalculatePrepared(otherSource,CarInspection.PrepareCar(otherSource),false);
@@ -133,6 +134,13 @@ namespace DragLab.Runtime
                         input.MoveMouseAt((int)sizedPoint.x,(int)sizedPoint.y);yield return new WaitForSecondsRealtime(.15f);
                         var sizedReadout=shell.Root.Q("dynoHoverValues");Check(sizedPlot.HoverRpm.HasValue&&sizedReadout.worldBound.xMax<=sizedPlot.worldBound.xMax+1&&sizedReadout.worldBound.yMax<=sizedPlot.worldBound.yMax+1,"Hover readout fits the dyno sheet at "+width);
                         yield return Capture("owned-car-dyno-hover-"+width);
+                        yield return Click(input,"ownedStatsToggle");
+                        var statScroll=shell.Root.Q<ScrollView>("ownedDetailScroll");statScroll.scrollOffset=new Vector2(0,320);yield return new WaitForSecondsRealtime(.15f);
+                        var statPanel=shell.Root.Q<NativeStatsPanel>("ownedCarStats");var statViewport=statScroll.contentViewport.worldBound;
+                        Check(!statPanel.ClassListContains("hidden")&&statPanel.Query(className:"stat-row").ToList().All(row=>row.worldBound.xMin>=statViewport.xMin-1&&row.worldBound.xMax<=statViewport.xMax+1),"Expanded Engine stats reflow inside the details viewport at "+width);
+                        Check(statPanel.Query<Label>(className:"stat-value").ToList().All(label=>label.worldBound.xMax<=statViewport.xMax+1)&&shell.Root.Q("ownedUseCar").worldBound.yMax<=shell.Root.worldBound.yMax,"Engine values and car actions remain reachable at "+width);
+                        yield return Capture("engine-stats-"+width);statScroll.scrollOffset=Vector2.zero;yield return new WaitForSecondsRealtime(.15f);yield return Click(input,"ownedStatsToggle");
+
                         yield return Click(input,"ownedBack");
                     }
                 }

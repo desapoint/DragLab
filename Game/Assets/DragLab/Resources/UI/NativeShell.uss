@@ -202,3 +202,28 @@
 .maintenance-quantity { flex-direction: row; align-items: center; margin: 12px 0; }
 .maintenance-quantity .setting-number { width: 90px; }
 .compact .maintenance-meter { width: 75px; }
+
+.car-stats-button { align-self: flex-start; margin-left: 0; margin-top: 10px; min-width: 100px; padding: 0 12px; }
+.car-stats-button .filled-icon { width: 16px; height: 16px; margin-right: 8px; }
+.native-stats { margin-top: 20px; flex-shrink: 0; }
+.stat-group { border-radius: 8px; overflow: hidden; padding: 8px 12px; }
+.stat-group-toggle { justify-content: flex-start; margin: 0; width: 100%; padding: 0 8px; }
+.stat-group-toggle .filled-icon { width: 14px; height: 14px; margin-right: 10px; }
+.stat-chevron.collapsed { rotate: -90deg; }
+.stat-grid { flex-direction: row; flex-wrap: wrap; padding-top: 8px; }
+.stat-row { width: 48%; margin-right: 2%; padding: 6px 0; border-bottom-width: 1px; border-bottom-color: rgba(138,148,157,0.13); }
+.stat-line { flex-direction: row; align-items: center; justify-content: space-between; min-height: 24px; }
+.stat-caption { flex-direction: row; align-items: center; min-width: 0; flex-shrink: 1; }
+.stat-caption Label { font-size: 17px; margin: 0; padding: 0; white-space: normal; }
+.stat-value { font-size: 17px; margin: 0 0 0 12px; padding: 0; -unity-text-align: middle-right; flex-shrink: 0; }
+.stat-bar { height: 5px; margin-top: 6px; border-radius: 3px; background-color: #293039; overflow: hidden; }
+.stat-bar-fill { height: 100%; background-color: #63707b; }
+.stat-bar-change { position: absolute; top: 0; height: 100%; }
+.stat-range { flex-direction: row; justify-content: space-between; }
+.stat-range Label { font-size: 12px; color: var(--racing-muted); margin: 0; padding: 0; }
+.stat-bar-change.stat-better { background-color: #b5cfb5; }
+.stat-bar-change.stat-worse { background-color: var(--racing-accent); }
+.stat-bar-change.stat-tradeoff { background-color: #e6bf80; }
+.stat-range .stat-better { color: #b5cfb5; }
+.stat-range .stat-worse { color: var(--racing-accent); }
+.stat-range .stat-tradeoff { color: #e6bf80; }

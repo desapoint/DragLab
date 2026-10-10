@@ -15,6 +15,8 @@ Requested next control: per-owned-car naming in [4D.3](../reports/phases/4d/05-C
 
 Requested 4D.4 checkpoint: quick maintenance in car details, including the user's oil-change/other-service clarification. [Maintenance delivery](../reports/phases/4d/06-QUICK-MAINTENANCE.md) reuses existing liquids, service/repair/replacement and timed rebuild operations. This explicitly authorizes the necessary fluid/action controls together; later Garage migrations remain separate reviewed increments.
 
+Requested 4D.6 checkpoint: the shared dyno foundation is accepted for continuation. Add only the Stats button and first collapsible Engine group, with shared definition/row infrastructure for future comparisons. Keep applied settings read-only, help behind info dialogs, no fabricated missing data, and local-only disclosure state. Stop for review before other stat groups or new comparison-page integration. [Engine checkpoint](../reports/phases/4d/12-ENGINE-STATS.md).
+
 ## Goal and boundaries
 
 Make the existing mechanics, ownership, economy and development tools usable through scalable interfaces and keyboard, controller and touch input. Migrate one workflow at a time without rewriting the simulation or silently simplifying advanced options. Finish functional layout, navigation, feedback and readability here; original vehicle artwork, extensive content and final visual/audio finish remain Slice 5. Storefront integration and commercial hardening remain Slice 6.

@@ -206,6 +206,7 @@ namespace DragLab.Runtime
             visual.Add(CarPreview(MechanicsOwnership.Resolve(profile,car,profile.catalog),car.paintHex));
             body.Add(CopyCarSummary(card.Q("carSummary")));
             body.Add(OwnedCarDyno(car));
+            BuildOwnedStats(body,car);
             BuildOwnedMaintenance(car);
             bool current = car.instanceId == profile.selectedOwnedVehicleId;
             ownedUse.SetEnabled(!current); ownedUse.tooltip = current ? "Already the current car" : "Use this owned car";

@@ -1,0 +1,68 @@
+using System;
+using System.Collections.Generic;
+using DragLab.Domain;
+
+namespace DragLab.Runtime
+{
+    internal sealed class NativeStatsSnapshot
+    {
+        internal CarInspection Inspection { get; }
+        internal VehicleSpec Spec => Inspection.source.build.spec;
+        internal EngineBehaviorProfile Engine { get; }
+        internal NativeStatsSnapshot(CarInspection inspection)
+        { Inspection=inspection; Engine=new EngineBehaviorProfile(Spec,inspection.source.build.tune); }
+    }
+
+    internal sealed class NativeStatDefinition
+    {
+        internal string Id, Label, Help, Unit, Format;
+        internal double Minimum, Maximum;
+        internal int BenefitDirection;
+        internal Func<NativeStatsSnapshot,double?> Number;
+        internal Func<NativeStatsSnapshot,string> Text;
+        internal double Convert(double value,UnitPreferences units)=>Unit=="Nm"?DisplayUnits.Torque(value,units.torque):value;
+        internal string UnitLabel(UnitPreferences units)=>Unit=="Nm"?DisplayUnits.TorqueLabel(units.torque):Unit;
+        internal string Value(NativeStatsSnapshot snapshot,UnitPreferences units)
+        {
+            if(Text!=null)return Text(snapshot);
+            var number=Number(snapshot);return number.HasValue?Convert(number.Value,units).ToString(Format)+(string.IsNullOrEmpty(Unit)?"":" "+UnitLabel(units)):"—";
+        }
+    }
+    internal sealed class NativeStatGroup
+    {
+        internal string Id { get; }
+        internal string Title { get; }
+        internal IReadOnlyList<NativeStatDefinition> Definitions { get; }
+        internal NativeStatGroup(string id,string title,params NativeStatDefinition[] definitions)
+        { Id=id;Title=title;Definitions=Array.AsReadOnly(definitions); }
+    }
+    internal static class NativeStatCatalog
+    {
+        static NativeStatDefinition N(string id,string label,Func<NativeStatsSnapshot,double?> get,string unit,string format,double min,double max,string help,int benefit=0)
+            =>new NativeStatDefinition {Id=id,Label=label,Number=get,Unit=unit,Format=format,Minimum=min,Maximum=max,Help=help,BenefitDirection=benefit};
+        static NativeStatDefinition T(string id,string label,Func<NativeStatsSnapshot,string> get,string help)
+            =>new NativeStatDefinition {Id=id,Label=label,Text=get,Help=help};
+        internal static readonly NativeStatGroup Engine=new NativeStatGroup("Engine","Engine",
+            N("peakHp","Peak power",s=>s.Inspection.peakHp,"HP","F0",0,500,"Estimated full-load engine power with applied parts, tune, wear and supply limits; settled boost, not a measured race or transient response.",1),
+            N("hpRpm","Power peak",s=>s.Inspection.peakHp>0?(double?)s.Inspection.hpRpm:null,"RPM","F0",0,10000,"RPM at maximum estimated power. A higher peak RPM changes where the engine works best; it is not automatically an improvement."),
+            N("peakTorque","Peak torque",s=>s.Inspection.peakTorque,"Nm","F0",0,1000,"Estimated engine torque before gearing and driveline losses, including applied condition. More torque can require stronger components and better traction.",1),
+            N("torqueRpm","Torque peak",s=>s.Inspection.peakTorque>0?(double?)s.Inspection.torqueRpm:null,"RPM","F0",0,10000,"RPM at maximum estimated engine torque. Compare the full curve to understand low- and high-RPM delivery."),
+            N("cylinders","Cylinders",s=>s.Spec.sound.cylinders,"","F0",1,16,"Installed engine cylinder count; individual cylinder/component faults do not change its physical cylinder count."),
+            T("engineLayout","Layout",s=>s.Spec.sound.layout==EngineLayout.Crossplane?"Cross-plane V":s.Spec.sound.layout.ToString(),"Installed engine layout. Cross-plane V engines have different firing-pulse behavior from inline engines."),
+            N("displacement","Displacement",s=>s.Spec.DisplacementLitres,"L","F2",0,12,"Total installed engine swept volume. More displacement is a tradeoff involving torque, fuel use and mass."),
+            T("fueling","Fueling",s=>s.Engine.data.fueling==FuelSystem.Carburetor?"Carburetor":"Fuel injection","Effective installed fuel system, including an installed injection conversion. This describes hardware, not the player's fuel-consumption difficulty."),
+            N("idleRpm","Idle target",s=>s.Spec.idleRpm,"RPM","F0",0,2000,"Authored warm idle target; cold starts, faults and cam behavior can make actual RPM vary."),
+            N("redlineRpm","Redline",s=>s.Spec.redlineRpm,"RPM","F0",0,10000,"Installed engine's nominal redline. The limiter may act at a different saved target. This is not a guarantee against damage or mechanical overrev."),
+            T("limiterStyle","Rev limiter",s=>s.Engine.limiter==LimiterStyle.None?"None":s.Engine.limiter==LimiterStyle.Soft?"Soft cut":"Hard cut","Effective installed limiter behavior. Hard cut cycles combustion; soft cut progressively reduces torque. None leaves combustion without an RPM cut."),
+            N("limiterRpm","Limiter target",s=>s.Engine.limiter==LimiterStyle.None?(double?)null:s.Engine.limitRpm,"RPM","F0",0,10000,"Effective saved limiter target after installed hardware permissions. A combustion limiter cannot prevent a bad downshift forcing engine RPM upward."),
+            T("limiterCut","Cut method",s=>s.Engine.limiter==LimiterStyle.None?"—":s.Engine.cut==CutMethod.Ignition?"Ignition cut":"Fuel cut","Fuel cut stops injector delivery; ignition cut stops ignition while fuel may continue. The modeled carburetor uses ignition cut. No limiter has no active cut method."),
+            N("bore","Bore",s=>s.Spec.engineBoreMm>0?(double?)s.Spec.engineBoreMm:null,"mm","F1",0,160,"Authored cylinder bore used for fitment. A dash means it is not specified; no value is inferred."),
+            N("valvesPerCylinder","Valves / cylinder",s=>s.Spec.valvesPerCylinder>0?(double?)s.Spec.valvesPerCylinder:null,"","F0",0,8,"Authored valves per cylinder. A dash means the value is not specified; installed failures do not change the physical design count."),
+            N("camLift","Cam lift",s=>s.Spec.valvetrain.liftMm,"mm","F1",0,30,"Installed cam valve lift. More lift can increase airflow demand, spring load and wear; it is not universally better."),
+            N("camDuration","Cam duration @ 0.050 in",s=>s.Spec.valvetrain.durationAt050Degrees,"°","F0",80,360,"Crank degrees of valve opening measured at 0.050-inch lift. Longer duration shifts the useful RPM band and changes idle/fuel behavior."),
+            N("camOverlap","Valve overlap",s=>s.Spec.valvetrain.overlapDegrees,"°","F0",0,180,"Crank degrees with intake and exhaust valves open together. Overlap affects idle, mixture behavior and the torque curve."),
+            N("camSeparation","Lobe separation",s=>s.Spec.valvetrain.lobeSeparationDegrees,"°","F0",60,140,"Angle between cam lobe centers. This is a profile choice with tradeoffs, rather than a higher-is-better rating."),
+            N("camTiming","Cam timing",s=>s.Spec.valvetrain.camTimingDegrees,"°","F1",-6,6,"Applied cam timing after installed hardware permissions. Fixed hardware cannot gain adjustment by opening this read-only page.")
+        );
+    }
+}
