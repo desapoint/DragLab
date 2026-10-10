@@ -1,4 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
+  <ui:Style src="NativePalette.uss" />
   <ui:Style src="NativeShell.uss" />
   <ui:VisualElement name="shell" class="shell">
     <ui:VisualElement name="metalBackground" class="metal-background" picking-mode="Ignore" />

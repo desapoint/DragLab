@@ -36,6 +36,12 @@ namespace DragLab.Runtime
             document.visualTreeAsset = Resources.Load<VisualTreeAsset>("UI/NativeShell");
             root = document.rootVisualElement.Q("shell");
             root.AddToClassList("hidden");
+            root.RegisterCallback<CustomStyleResolvedEvent>(evt => {
+                if(evt.target!=root)return;
+                foreach(var surface in surfaces)surface.MarkDirtyRepaint();
+                foreach(var surface in switchSurfaces)surface.MarkDirtyRepaint();
+                root.Query<SliderFill>().ForEach(fill=>fill.MarkDirtyRepaint());
+            });
             AddSurface(root.Q("metalBackground"), RacingSurface.Kind.Metal);
             AddSurface(root.Q("navBar"), RacingSurface.Kind.Header);
             AddSurface(root.Q("footerBar"), RacingSurface.Kind.Footer);

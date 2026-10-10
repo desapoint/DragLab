@@ -17,7 +17,7 @@ namespace DragLab.Runtime
         {
             contour.Clear();
             float top=kind==Kind.Primary?5:1,bottom=kind==Kind.Primary?h-5:h-1;
-            float lean=kind==Kind.Primary?18:kind==Kind.Tab||kind==Kind.FirstTab?10:kind==Kind.Action||kind==Kind.SecondaryAction?6:0;
+            float lean=kind==Kind.Primary?18:kind==Kind.Tab||kind==Kind.FirstTab?10:kind==Kind.Action||kind==Kind.SecondaryAction||kind==Kind.DangerAction?6:0;
             float left=kind==Kind.ChoiceMiddle||kind==Kind.ChoiceLast?0:1;
             float right=kind==Kind.ChoiceFirst||kind==Kind.ChoiceMiddle?w:w-1;
             var corners=new[] { new Vector2(left+(kind==Kind.FirstTab?0:lean),top),new Vector2(right,top),new Vector2(right-lean,bottom),new Vector2(left,bottom) };
@@ -36,8 +36,8 @@ namespace DragLab.Runtime
             MakeContour(w,h);
             bool red=selected||kind==Kind.Primary||kind==Kind.Action;
             bool panel=kind==Kind.Panel;
-            Color top=panel?C(.095f,.108f,.12f):red?C(.64f,.055f,.085f):C(.19f,.21f,.235f);
-            Color bottom=panel?C(.05f,.06f,.072f):red?C(.27f,.018f,.034f):C(.075f,.085f,.10f);
+            Color top=panel?RacingPalette.Read(this,RacingPalette.PanelTop,C(.095f,.108f,.12f)):red?A(.68f):RacingPalette.Read(this,RacingPalette.MetalTop,C(.19f,.21f,.235f));
+            Color bottom=panel?RacingPalette.Read(this,RacingPalette.PanelBottom,C(.05f,.06f,.072f)):red?A(.29f):RacingPalette.Read(this,RacingPalette.MetalBottom,C(.075f,.085f,.10f));
             // Native alpha fringes cover both slanted and rounded edges in physical
             // pixels. All face/texture/shine layers use this same convex outline.
             Fan(contour,p => Color.Lerp(top,bottom,Mathf.Clamp01(p.y/h)));
@@ -71,11 +71,12 @@ namespace DragLab.Runtime
             if(panel)
             {
                 float corner=Mathf.Min(p.x+p.y,w-p.x+h-p.y);
-                float accent=Mathf.Pow(Mathf.Clamp01(1-corner/150),.65f);
-                return Color.Lerp(neutral,C(1,.08f,.13f),accent);
+                float accent=Mathf.Pow(Mathf.Clamp01(1-corner/80),.65f);
+                return Color.Lerp(neutral,A(),accent);
             }
-            if(focused) return C(.98f,.65f,.68f);
-            return red?Color.Lerp(C(1,.25f,.26f),C(.72f,.06f,.09f),p.y/h):neutral;
+            if(focused) return A(1,.6f);
+            if(kind==Kind.DangerAction) return A(.8f);
+            return red?Color.Lerp(A(1,.12f),A(.75f),p.y/h):neutral;
         }
         void Border(float w,float h,bool red,bool panel)
         {
@@ -84,10 +85,16 @@ namespace DragLab.Runtime
             {
                 int next=(i+1)%contour.Count; Vector2 a=contour[i],b=contour[next];
                 Vector2 na=Normal(i),nb=Normal(next);
-                Color ca=BorderColor(a,w,h,red,panel),cb=BorderColor(b,w,h,red,panel);
-                RawQuad(a-na*edge,b-nb*edge,b,a,ca,cb,cb,ca);
-                Color clearA=ca,clearB=cb;clearA.a=clearB.a=0;
-                RawQuad(a,b,b+nb*AntiAliasWidth,a+na*AntiAliasWidth,ca,cb,clearB,clearA);
+                int steps=panel?Mathf.CeilToInt(Vector2.Distance(a,b)/8):1;
+                for(int step=0;step<steps;step++)
+                {
+                    float u=step/(float)steps,v=(step+1)/(float)steps;
+                    Vector2 p=Vector2.Lerp(a,b,u),q=Vector2.Lerp(a,b,v),np=Vector2.Lerp(na,nb,u),nq=Vector2.Lerp(na,nb,v);
+                    Color ca=BorderColor(p,w,h,red,panel),cb=BorderColor(q,w,h,red,panel);
+                    RawQuad(p-np*edge,q-nq*edge,q,p,ca,cb,cb,ca);
+                    Color clearA=ca,clearB=cb;clearA.a=clearB.a=0;
+                    RawQuad(p,q,q+nq*AntiAliasWidth,p+np*AntiAliasWidth,ca,cb,clearB,clearA);
+                }
             }
         }
         Vector2 Normal(int i)

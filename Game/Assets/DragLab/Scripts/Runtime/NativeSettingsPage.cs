@@ -290,7 +290,8 @@ namespace DragLab.Runtime
                         CloseDialog(); ReconcileApplied(); UpdateControls();
                     }, true) }, game.CancelNativeReset);
             }) { name = "resetGame", text = "Reset game…" };
-            reset.AddToClassList("action-button"); reset.AddToClassList("primary-action"); Row(4, "gameData", "Game data").Add(reset); AddSurface(reset, RacingSurface.Kind.Action);
+            reset.AddToClassList("action-button"); reset.AddToClassList("reset-action");
+            var controls=Row(4, "gameData", "Game data");controls.AddToClassList("reset-control");controls.Add(reset);AddSurface(reset, RacingSurface.Kind.DangerAction);
         }
     }
 }

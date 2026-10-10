@@ -7,7 +7,7 @@ namespace DragLab.Runtime
     // Tessellated cel shading; decorative geometry never owns clicks or drive input.
     internal sealed partial class RacingSurface : VisualElement
     {
-        internal enum Kind { Header, Footer, Metal, Navigation, Button, Primary, Tab, FirstTab, Action, SecondaryAction, ChoiceFirst, ChoiceMiddle, ChoiceLast, Panel }
+        internal enum Kind { Header, Footer, Metal, Navigation, Button, Primary, Tab, FirstTab, Action, SecondaryAction, ChoiceFirst, ChoiceMiddle, ChoiceLast, DangerAction, Panel }
         const float SweepSeconds = .65f;
         readonly VisualElement owner;
         readonly Kind kind;
@@ -26,6 +26,7 @@ namespace DragLab.Runtime
             pickingMode = PickingMode.Ignore;
             AddToClassList("racing-surface");
             generateVisualContent += Draw;
+            RegisterCallback<CustomStyleResolvedEvent>(_ => MarkDirtyRepaint());
             if (kind == Kind.Header || kind == Kind.Footer || kind == Kind.Metal || kind == Kind.Panel) return;
             owner.RegisterCallback<PointerEnterEvent>(evt => { if (evt.target != owner || hovered) return; hovered = true; StartShine(); });
             owner.RegisterCallback<PointerLeaveEvent>(evt => { if (evt.target != owner) return; hovered = false; pressed = false; MarkDirtyRepaint(); });
@@ -69,16 +70,16 @@ namespace DragLab.Runtime
                 if (selected || lit)
                 {
                     // Vertex alpha gives a circular, soft light from below the active menu.
-                    Color light = selected ? C(.86f,.055f,.12f,.72f) : C(.7f,.75f,.82f,.16f);
+                    Color light = selected ? A(.9f,0,.72f) : C(.7f,.75f,.82f,.16f);
                     Radial(w,h,light);
                     if (selected)
-                        Radial(w,h,C(1,.22f,.28f,.28f),Mathf.Max(w*.38f,h*.6f));
+                        Radial(w,h,A(1,.12f,.28f),Mathf.Max(w*.38f,h*.6f));
                     if (selected)
                         for (int i = 0; i < 24; i++)
                         {
                             float x1 = i*w/24, x2 = (i+1)*w/24;
-                            Color left = C(.95f,.22f,.27f,Mathf.Sin(i*Mathf.PI/24)*.9f);
-                            Color right = C(.95f,.22f,.27f,Mathf.Sin((i+1)*Mathf.PI/24)*.9f);
+                            Color left = A(1,.12f,Mathf.Sin(i*Mathf.PI/24)*.9f);
+                            Color right = A(1,.12f,Mathf.Sin((i+1)*Mathf.PI/24)*.9f);
                             Quad(new Vector2(x1,h-2),new Vector2(x2,h-2),new Vector2(x2,h),new Vector2(x1,h),left,right,right,left);
                         }
                 }
@@ -140,14 +141,14 @@ namespace DragLab.Runtime
             {
                 System.Func<float,float,Vector2> point = (x,y) => new Vector2(side==0?x:w-x,y);
                 Stroke(point(0,0),point(17,0),1,C(.48f,.5f,.54f,.6f));
-                Stroke(point(17,0),point(28,8),1.5f,C(.8f,.095f,.14f));
-                Stroke(point(4,3),point(11,8),1.4f,C(.45f,.1f,.14f));
-                Stroke(point(12,3),point(19,8),1.4f,C(.45f,.1f,.14f));
+                Stroke(point(17,0),point(28,8),1.5f,A(.84f));
+                Stroke(point(4,3),point(11,8),1.4f,A(.47f));
+                Stroke(point(12,3),point(19,8),1.4f,A(.47f));
             }
         }
         void FadeLine(float x,float y,float w,float h,bool reverse)
         {
-            Color red=C(.92f,.09f,.14f,.88f), clear=C(.92f,.09f,.14f,0);
+            Color red=A(.96f,0,.88f), clear=A(.96f,0,0);
             Quad(new Vector2(x,y),new Vector2(x+w,y),new Vector2(x+w,y+h),new Vector2(x,y+h),reverse?clear:red,reverse?red:clear,reverse?red:clear,reverse?clear:red);
         }
         void Metal(float w,float h)
@@ -240,6 +241,7 @@ namespace DragLab.Runtime
             indices.Add((ushort)a); indices.Add((ushort)b); indices.Add((ushort)c);
             indices.Add((ushort)c); indices.Add((ushort)d); indices.Add((ushort)a);
         }
+        Color A(float brightness=1,float white=0,float alpha=1) => RacingPalette.Shade(this,brightness,white,alpha);
         static Color C(float r,float g,float b,float a = 1) => new Color(r,g,b,a);
     }
 }

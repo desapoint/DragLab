@@ -1,6 +1,6 @@
 # Slice 2, Slice 3 and Slice 4 implementation phases
 
-Current UI checkpoint (2026-10-10): complete menu Settings/Driving and deferred Apply/Cancel are delivered. The requested compact control/contour correction is ready for review; see [refinement report](../reports/phases/4b/09-CONTROL-POLISH.md) and [Settings baseline](../reports/phases/4b/08-SETTINGS.md). Further Slice 4 interfaces remain gated on user validation.
+Current UI checkpoint (2026-10-10): native menu Settings/Driving, deferred Apply/Cancel and compact controls are delivered. The requested reset placement, local corner fade, scrollbar alignment and shared palette correction are ready for review; see [latest report](../reports/phases/4b/10-PALETTE-LAYOUT.md). Further Slice 4 interfaces remain gated on user validation.
 
 Additional catalog foundation (2026-10-08): [part-owned tuning permissions and 128 new hardware choices](../reports/part-hardware/CHANGES.md), integrated with shared race/physical-bench resolution. Preserve physical turbo-size swaps, fixed/adjustable controller and pulley distinctions, supported final-drive gearsets, saved-value enforcement and unrestricted raw acoustic experiments during remaining phases. Physical capture model was v12; the approved service/fluids extension uses v13. This records the original catalog extension; final integration acceptance is in the completion record below.
 

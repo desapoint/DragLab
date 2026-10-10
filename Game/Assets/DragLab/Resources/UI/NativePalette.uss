@@ -1,0 +1,10 @@
+.shell {
+    --racing-accent: #f52235;
+    --racing-background: #181c21;
+    --racing-text: #eceef1;
+    --racing-muted: #afb5be;
+    --racing-metal-top: #30363c;
+    --racing-metal-bottom: #13161a;
+    --racing-panel-top: #181c1f;
+    --racing-panel-bottom: #0d0f12;
+}

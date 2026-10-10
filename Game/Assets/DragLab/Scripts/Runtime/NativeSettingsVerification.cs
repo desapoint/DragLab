@@ -37,7 +37,17 @@ namespace DragLab.Runtime
                 {var c=pixels.GetPixel((int)(lower?panel.xMax-1-x:panel.xMin+x),Screen.height-1-(int)(lower?panel.yMax-1-y:panel.yMin+y));best=Mathf.Max(best,c.r-c.g);}
                 return best;
             }
-            Check(CornerRed(false)>.3f && CornerRed(true)>.3f,"Both rounded panel corners visibly render red accents");Destroy(pixels);
+            Check(CornerRed(false)>.3f && CornerRed(true)>.3f,"Both rounded panel corners visibly render red accents");
+            float TopRed(float offset)
+            {float best=0;for(int y=0;y<4;y++){var c=pixels.GetPixel((int)(panel.xMin+offset),Screen.height-1-(int)(panel.yMin+y));best=Mathf.Max(best,c.r-c.g);}return best;}
+            Check(TopRed(24)>.15f && TopRed(120)<.08f && TopRed(panel.width/2)<.08f,"Panel highlights fade locally within the first 80 points, leaving neutral long edges");
+            Check(Mathf.Abs(panel.xMax-bar.worldBound.xMax-10)<1.5f && Mathf.Abs(bar.worldBound.yMin-panel.yMin-12)<1.5f && Mathf.Abs(panel.yMax-bar.worldBound.yMax-12)<1.5f,"Scrollbar aligns within the frame with a ten-point right gap and symmetric twelve-point ends: "+panel+" / "+bar.worldBound);
+            Color accent=RacingPalette.Accent(root);
+            Check(root.customStyle.TryGetValue(RacingPalette.AccentProperty,out var configuredAccent) && Vector4.Distance(configuredAccent,accent)<.01f && Vector4.Distance(accent,(Color)new Color32(245,34,53,255))<.01f,"Native palette stylesheet supplies the shared accent token");
+            foreach(string id in new[]{"navBar","settingsButton","navGarage","settingsBody","tabDifficulty","heatManagement","masterVolume"})
+                Check(RacingPalette.TryRead(root.Q(id),RacingPalette.AccentProperty,out var inheritedAccent) && Vector4.Distance(accent,inheritedAccent)<.01f,"Shared palette accent reaches native element: "+id);
+            Check(Vector4.Distance(root.Q<Label>(className:"brand").resolvedStyle.color,accent)<.01f,"Header wordmark uses the same palette accent as procedural content");
+            Destroy(pixels);
             foreach(string id in new[]{"tabSound","settingsButton"})
             {
                 var button=root.Q(id);var surface=button.Q<RacingSurface>();
@@ -77,6 +87,12 @@ namespace DragLab.Runtime
                 yield return Click(input,"tab"+id); shell.Root.Q<ScrollView>("settingsScroll").scrollOffset=Vector2.zero;
                 yield return new WaitForSecondsRealtime(.15f); yield return Capture("populated-"+id);
                 Check(root.Q("page"+id).resolvedStyle.display!=DisplayStyle.None,"Populated category "+id+" visible");
+                if(id=="General")
+                {
+                    var reset=root.Q("resetGame");var row=root.Q("gameDataChoices").worldBound;
+                    Check(Mathf.Abs(reset.worldBound.xMax-row.xMax)<1 && reset.worldBound.yMin>=row.yMin,"Reset game is aligned to the right of its General row");
+                    Check(!reset.ClassListContains("primary-action") && reset.ClassListContains("reset-action"),"Reset entry is a subdued action, separate from primary Apply");
+                }
                 Check(root.Q("cancelSettings").worldBound.yMax<Screen.height-30 && root.Q("applySettings").worldBound.yMax<Screen.height-30,"Apply/Cancel remain outside scrolling panel: "+id);
             }
             yield return Click(input,"tabDifficulty");

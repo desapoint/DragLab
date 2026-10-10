@@ -16,6 +16,7 @@ namespace DragLab.Runtime
         internal SwitchSurface(Toggle toggle)
         {
             this.toggle=toggle;pickingMode=PickingMode.Ignore;AddToClassList("switch-surface");generateVisualContent+=Draw;
+            RegisterCallback<CustomStyleResolvedEvent>(_=>MarkDirtyRepaint());
             toggle.RegisterCallback<FocusInEvent>(_=>MarkDirtyRepaint());toggle.RegisterCallback<FocusOutEvent>(_=>MarkDirtyRepaint());
         }
         internal void SetValue(bool value)
@@ -36,16 +37,16 @@ namespace DragLab.Runtime
         {
             float w=contentRect.width,h=contentRect.height;if(w<1||h<1)return;PaintCount++;
             var p=context.painter2D;
-            Color dark=new Color(.10f,.13f,.16f),red=new Color(.86f,.025f,.07f);
-            Capsule(p,new Rect(1,1,w-2,h-2),Color.Lerp(new Color(.31f,.35f,.39f),new Color(1,.18f,.21f),progress));
+            Color dark=new Color(.10f,.13f,.16f),red=RacingPalette.Shade(this,.92f);
+            Capsule(p,new Rect(1,1,w-2,h-2),Color.Lerp(new Color(.31f,.35f,.39f),RacingPalette.Shade(this,1,.08f),progress));
             Capsule(p,new Rect(2,2,w-4,h-4),Color.Lerp(dark,red,progress));
-            p.strokeColor=Color.Lerp(new Color(.6f,.65f,.7f,.25f),new Color(1,.48f,.44f,.4f),progress);p.lineWidth=1;
+            p.strokeColor=Color.Lerp(new Color(.6f,.65f,.7f,.25f),RacingPalette.Shade(this,1,.35f,.4f),progress);p.lineWidth=1;
             p.BeginPath();p.MoveTo(new Vector2(h*.5f,3));p.LineTo(new Vector2(w-h*.5f,3));p.Stroke();
             float radius=h*.5f-4,x=Mathf.Lerp(h*.5f,w-h*.5f,progress),y=h*.5f;
             Circle(p,x,y+1,radius+1,new Color(0,0,0,.45f));
             Circle(p,x,y,radius,new Color(.82f,.85f,.88f));Circle(p,x,y-.65f,radius-1,new Color(.96f,.97f,.985f));
             p.strokeColor=new Color(1,1,1,.85f);p.lineWidth=.8f;p.BeginPath();p.Arc(new Vector2(x,y),radius-1,Angle.Degrees(200),Angle.Degrees(330));p.Stroke();
-            if(toggle.focusController?.focusedElement==toggle) { p.strokeColor=new Color(1,.65f,.68f);p.lineWidth=1;p.BeginPath();p.MoveTo(new Vector2(h*.5f,h-1));p.LineTo(new Vector2(w-h*.5f,h-1));p.Stroke(); }
+            if(toggle.focusController?.focusedElement==toggle) { p.strokeColor=RacingPalette.Shade(this,1,.6f);p.lineWidth=1;p.BeginPath();p.MoveTo(new Vector2(h*.5f,h-1));p.LineTo(new Vector2(w-h*.5f,h-1));p.Stroke(); }
         }
         static void Capsule(Painter2D p,Rect r,Color color)
         {
