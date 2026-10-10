@@ -1,6 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
   <ui:Style src="NativeShell.uss" />
   <ui:VisualElement name="shell" class="shell">
+    <ui:VisualElement name="metalBackground" class="metal-background" picking-mode="Ignore" />
     <ui:VisualElement name="navBar" class="nav-bar">
       <ui:Label text="DRAGLAB" class="brand" />
       <ui:VisualElement class="destinations">

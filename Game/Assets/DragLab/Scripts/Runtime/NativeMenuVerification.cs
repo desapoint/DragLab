@@ -94,6 +94,20 @@ namespace DragLab.Runtime
                 Color edgeGlow = glowImage.GetPixel((int)(activeBounds.xMin+3),Screen.height-(int)(activeBounds.yMax-10)-1);
                 Check(bottomGlow.r-bottomGlow.g > topGlow.r-topGlow.g+.12f && bottomGlow.r-bottomGlow.g > edgeGlow.r-edgeGlow.g+.08f,
                     "Rendered selected-tab red glow fades upward and sideways from its bottom center");
+                var settingsBounds = shell.Root.Q("settingsButton").worldBound;
+                Color plateTopOutside = Pixel(glowImage,settingsBounds.xMin+5,settingsBounds.yMin+10);
+                Color plateBottomInside = Pixel(glowImage,settingsBounds.xMin+8,settingsBounds.yMax-12);
+                Color plateTopInside = Pixel(glowImage,settingsBounds.xMax-8,settingsBounds.yMin+10);
+                Color plateBottomOutside = Pixel(glowImage,settingsBounds.xMax-6,settingsBounds.yMax-12);
+                Check(plateBottomInside.r-plateBottomInside.g > plateTopOutside.r-plateTopOutside.g+.08f &&
+                    plateTopInside.r-plateTopInside.g > plateBottomOutside.r-plateBottomOutside.g+.08f,
+                    "Rendered Settings red plate has two slanted sides rather than a rectangular fill");
+                Color leftTrim = Pixel(glowImage,8,62),rightTrim = Pixel(glowImage,settingsBounds.xMin-5,62),centerTrim = Pixel(glowImage,Screen.width*.63f,62);
+                Check(leftTrim.r-leftTrim.g > .15f && rightTrim.r-rightTrim.g > .15f && centerTrim.r-centerTrim.g < .08f,
+                    "Header has red bottom accents on both ends with a neutral center");
+                Color footerTrim = Pixel(glowImage,Screen.width*.22f,Screen.height-31),footerCenter = Pixel(glowImage,Screen.width*.5f,Screen.height-31);
+                Check(footerTrim.r-footerTrim.g > .15f && footerCenter.r-footerCenter.g < .08f,
+                    "Footer red trim keeps its metal center break and raised corner details");
                 Destroy(glowImage);
                 Check(shell.Root.Q("pageTitle") == null && shell.Root.Q("pageDescription") == null && shell.Root.Q("contentTitle") == null && shell.Root.Q("contentDescription") == null,
                     "Selected navigation/tabs replace redundant titles, subtitles and placeholder descriptions");
@@ -117,6 +131,11 @@ namespace DragLab.Runtime
                 int idlePaint = surface.PaintCount;
                 yield return new WaitForSecondsRealtime(.3f);
                 Check(surface.PaintCount == idlePaint, "Stationary hovered button keeps cached geometry after shine");
+                var metal = shell.Root.Q("metalBackground").Q<RacingSurface>();
+                int metalPaint = metal.PaintCount;
+                yield return new WaitForSecondsRealtime(.3f);
+                Check(metal.pickingMode == PickingMode.Ignore && metal.PaintCount == metalPaint,
+                    "Static metal/noise backdrop ignores input and keeps cached geometry without ongoing repaint");
                 input.MoveMouseAt(1100, 500);
                 yield return new WaitForSecondsRealtime(.2f);
                 yield return Key(input, 0x09);
@@ -127,6 +146,12 @@ namespace DragLab.Runtime
                     yield return Click(input, destination[0]);
                     Check(shell.Visible && game.ScreenName == destination[1], "Native click selects " + destination[0] + " and stays New");
                 }
+                var settingsHit = shell.Root.Q("settingsButton").worldBound;
+                input.MouseButtonAt((int)settingsHit.xMin+3,(int)settingsHit.yMin+8,true);
+                yield return new WaitForSecondsRealtime(.08f);
+                input.MouseButtonAt((int)settingsHit.xMin+3,(int)settingsHit.yMin+8,false);
+                yield return new WaitForSecondsRealtime(.2f);
+                Check(game.ScreenName == "Settings" && shell.Visible,"Settings retains its full-height hit area including the clear corner outside the slanted face");
                 yield return Click(input, "settingsButton");
                 Check(game.ScreenName == "Settings" && shell.Visible, "Gear opens fullscreen native Settings");
                 var hit = shell.Root.Q("settingsButton").worldBound;
@@ -192,6 +217,7 @@ namespace DragLab.Runtime
             throw new InvalidOperationException("Native probe requires a Windows development player.");
 #endif
         }
+        static Color Pixel(Texture2D image,float x,float y) => image.GetPixel((int)x,image.height-(int)y-1);
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
         IEnumerator Key(WindowsKeyboardProbe input, ushort key)
         { input.Key(key, true); yield return new WaitForSecondsRealtime(.08f); input.Key(key, false); yield return new WaitForSecondsRealtime(.2f); }

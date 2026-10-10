@@ -6,6 +6,7 @@
     -unity-font-definition: url("project://database/Assets/DragLab/Resources/UI/Fonts/BarlowCondensed-Medium.asset");
 }
 .shell.hidden, .settings-tabs.hidden { display: none; }
+.metal-background { position: absolute; left: 0; right: 0; top: 64px; bottom: 30px; overflow: hidden; }
 .racing-surface { position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; border-radius: 3px; }
 .nav-bar { flex-direction: row; height: 64px; flex-shrink: 0; align-items: stretch; background-color: #17191c; overflow: hidden; }
 .brand { -unity-font-definition: url("project://database/Assets/DragLab/Resources/UI/Fonts/BarlowCondensed-BoldItalic.asset"); font-size: 22px; margin-left: 18px; margin-right: 18px; color: #e7454d; -unity-text-align: middle-left; }
@@ -37,12 +38,14 @@
 .filled-icon { width: 22px; height: 22px; flex-shrink: 0; margin-right: 7px; }
 .resource .filled-icon { width: 17px; height: 17px; margin-right: 6px; }
 .inspection-space { width: 42px; flex-shrink: 0; }
-.settings-button { width: 64px; height: 100%; border-radius: 0; border-top-width: 0; border-bottom-width: 0; border-right-width: 0; justify-content: center; align-items: center; background-color: #a32b35; }
+.settings-button { width: 80px; height: 100%; border-radius: 0; border-width: 0; justify-content: center; align-items: center; background-color: transparent; }
+.settings-button:hover, .settings-button:active, .settings-button.selected:hover { background-color: transparent; }
 .settings-button .filled-icon { width: 26px; height: 26px; margin-right: 0; }
 .workspace { flex-grow: 1; padding: 32px; }
 .settings-tabs { flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; }
 .category-button { flex-direction: row; align-items: center; justify-content: center; margin-bottom: 6px; margin-right: 8px; padding: 9px 17px; font-size: 17px; }
-.footer { height: 30px; flex-shrink: 0; flex-direction: row; align-items: center; padding-left: 20px; border-top-width: 1px; border-top-color: #3a4149; background-color: #17191c; overflow: hidden; }
+.footer { height: 30px; flex-shrink: 0; flex-direction: row; align-items: center; padding-left: 20px; background-color: #17191c; }
+.footer .racing-surface { top: -8px; border-radius: 0; }
 .footer-hint { color: #afb5be; flex-grow: 1; font-size: 13px; }
 .compact .brand { display: none; }
 .compact .nav-bar { padding-left: 8px; }

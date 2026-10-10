@@ -6,7 +6,7 @@ This is the implementation order for the requirements in [GAME_PLAN.md](GAME_PLA
 
 **Slice 4 now uses user-directed native control checkpoints.** 4A source coverage is retained; the user declined its web layouts. 4B.1 (F8 comparison) and 4B.2/4C.0 (native main navigation/Settings shell) are implemented for review. Individual Settings controls and remaining migration are pending; new bench presentation is deferred. Follow the [updated interface/input/platform contract](SLICE_4_PLAN.md), stopping after each requested button, slider or infrastructure step. This additional review gate does not reopen accepted Slice 2/3 domain work.
 
-Current shell style revision: [racing reference, circular selection glow, shaded buttons, condensed fonts and concise copy](../reports/phases/4b/06-RACING-STYLE.md), still pending visual acceptance. This does not advance another control or phase.
+Current shell style revision: [slanted Settings, partial red trim and static brushed metal](../reports/phases/4b/07-METAL-TRIM.md), preserving the prior circular selection glow, condensed fonts and concise-copy contract. Still pending visual acceptance. This does not advance another control or phase.
 
 Native direction recorded afterward: [grey/red style, top navigation, modal dialogs and Settings first](NATIVE_UI_DESIGN.md). Future Settings uses explicit Save/confirmation instead of live application/gesture-end save and absorbs Driving/difficulty into category tabs. Implement one requested Settings control with its minimum 4B dependencies at a time; recording the design does not start implementation.
 

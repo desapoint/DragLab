@@ -36,8 +36,9 @@ namespace DragLab.Runtime
             document.visualTreeAsset = Resources.Load<VisualTreeAsset>("UI/NativeShell");
             root = document.rootVisualElement.Q("shell");
             root.AddToClassList("hidden");
-            AddSurface(root.Q("navBar"), RacingSurface.Kind.Bar);
-            AddSurface(root.Q("footerBar"), RacingSurface.Kind.Bar);
+            AddSurface(root.Q("metalBackground"), RacingSurface.Kind.Metal);
+            AddSurface(root.Q("navBar"), RacingSurface.Kind.Header);
+            AddSurface(root.Q("footerBar"), RacingSurface.Kind.Footer);
             for (int i = 0; i < routes.Length; i++)
             {
                 int index = i;
@@ -131,7 +132,11 @@ namespace DragLab.Runtime
                 case "Settings":
                     var gear = new float[64];
                     for (int i = 0; i < 32; i++) { float a = i * Mathf.PI / 16; float r = i % 4 < 2 ? 10 : 7.8f; gear[i*2] = 12 + Mathf.Cos(a)*r; gear[i*2+1] = 12 + Mathf.Sin(a)*r; }
-                    polygon(gear); p.fillColor = new Color(.15f,.15f,.17f); circle(12,12,3.3f); break;
+                    polygon(gear);
+                    p.strokeColor = new Color(1,1,1,.65f); p.lineWidth = .65f; p.Stroke();
+                    p.fillColor = new Color(.15f,.15f,.17f); circle(12,12,3.3f);
+                    p.strokeColor = new Color(1,1,1,.6f); p.lineWidth = .7f;
+                    p.BeginPath(); p.Arc(new Vector2(12*sx,12*sy),4*sx,Angle.Degrees(195),Angle.Degrees(330)); p.Stroke(); break;
                 case "Garage": polygon(new float[] {2,10,12,2,22,10,22,22,16,22,16,13,8,13,8,22,2,22}); break;
                 case "Build": polygon(new float[] {4,2,9,2,9,7,13,7,13,2,18,2,18,9,14,13,14,22,8,22,8,13,4,9}); break;
                 case "Tuning": rect(3,2,3,20); rect(10,2,3,20); rect(17,2,3,20); rect(1,6,7,4); rect(8,14,7,4); rect(15,8,7,4); break;
