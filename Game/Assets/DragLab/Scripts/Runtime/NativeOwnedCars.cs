@@ -201,10 +201,11 @@ namespace DragLab.Runtime
             root.Q<Label>("carSelectionError").text = "";
             ClearOwnedDetailContent(); ownedDetailContent.tooltip = car.instanceId;
             var identity = new Label("#"+car.instanceId.Substring(Math.Max(0,car.instanceId.Length-6))); identity.AddToClassList("car-identity"); ownedDetailContent.Add(identity);
-            var body = new VisualElement(); body.AddToClassList("car-card-body"); ownedDetailContent.Add(body);
+            var body = new VisualElement { name = "ownedDetailsTopRow" }; body.AddToClassList("car-card-body"); body.AddToClassList("car-details-top"); ownedDetailContent.Add(body);
             var visual = new VisualElement(); visual.AddToClassList("car-visual"); body.Add(visual);
             visual.Add(CarPreview(MechanicsOwnership.Resolve(profile,car,profile.catalog),car.paintHex));
             body.Add(CopyCarSummary(card.Q("carSummary")));
+            body.Add(OwnedCarDyno(car));
             BuildOwnedMaintenance(car);
             bool current = car.instanceId == profile.selectedOwnedVehicleId;
             ownedUse.SetEnabled(!current); ownedUse.tooltip = current ? "Already the current car" : "Use this owned car";

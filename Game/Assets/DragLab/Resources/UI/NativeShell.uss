@@ -161,6 +161,22 @@
 .car-details-scroll { flex-grow: 1; min-height: 0; }
 .car-details-content { padding-right: 16px; }
 .car-details-content .car-card-body { min-height: 180px; }
+.car-details-top .car-visual { width: 28%; flex-shrink: 0; }
+.car-details-top .car-summary { margin-right: 16px; }
+.car-dyno { width: 44%; flex-shrink: 0; }
+.car-dyno-legend { flex-direction: row; align-items: center; justify-content: space-between; }
+.car-dyno-legend Label { font-size: 17px; margin: 0; padding: 0; }
+.dyno-hp { color: var(--racing-accent); }
+.dyno-torque { color: #e6bf80; }
+.dyno-reference { color: #8aa5bb; }
+.car-dyno-plot { height: 180px; }
+.dyno-axis { position: absolute; font-size: 14px; color: var(--racing-muted); margin: 0; padding: 0; }
+.dyno-axis-left { left: 0; width: 34px; -unity-text-align: middle-right; }
+.dyno-axis-right { right: 0; width: 42px; }
+.dyno-axis-top { top: 12px; }
+.dyno-axis-bottom { bottom: 18px; }
+.dyno-rpm-ticks { position: absolute; left: 38px; right: 46px; bottom: 0; flex-direction: row; justify-content: space-between; }
+.dyno-rpm-ticks Label { font-size: 14px; color: var(--racing-muted); margin: 0; padding: 0; }
 .car-details-actions { flex-direction: row; justify-content: flex-end; align-items: center; margin-top: 16px; flex-shrink: 0; }
 .car-selection-error { flex-grow: 1; white-space: normal; margin: 0; padding: 0; }
 .car-maintenance { margin-top: 14px; }

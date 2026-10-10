@@ -62,6 +62,12 @@ namespace DragLab.Runtime
                 yield return new WaitForSecondsRealtime(.2f);
                 Check(shell.OwnedDetailsOpen && !shell.ModalOpen && shell.Root.Q("ownedCarDetails").tooltip==first.instanceId && shell.Root.Q("ownedCars").ClassListContains("hidden"),"Clicking a card replaces the grid with exact-instance details, without a dialog");
                 Check(shell.Root.Q("ownedCarDetails").Q(className:"car-preview")!=null && shell.Root.Q("ownedCarDetails").Q(className:"car-card-stats").childCount==3,"Details reuse layered preview and common HP/torque/weight facts");
+                var dyno=shell.Root.Q<NativeDynoPlot>("ownedDynoPlot");
+                var expectedSource=InspectionBuild.Capture(fixture,first);var expectedDyno=CarInspection.CalculatePrepared(expectedSource,CarInspection.PrepareCar(expectedSource),false);
+                Check(dyno!=null&&dyno.Inspection.curve.Count==expectedDyno.curve.Count&&Math.Abs(dyno.Inspection.peakHp-expectedDyno.peakHp)<.001&&Math.Abs(dyno.Inspection.peakTorque-expectedDyno.peakTorque)<.001,"Details dyno resolves the inspected applied build through authoritative inspection");
+                Check(dyno.HealthyReference!=null&&dyno.HealthyReference.peakHp>dyno.Inspection.peakHp&&worn.condition.health==.25f,"Details dyno shows reduced worn output and a detached no-wear reference without healing");
+                Check(shell.Root.Q("ownedCarDyno").worldBound.xMin>=shell.Root.Q("ownedCarDetails").Q(className:"car-summary").worldBound.xMax&&shell.Root.Q("ownedCarDyno").worldBound.xMax<=shell.Root.Q("ownedDetailsTopRow").worldBound.xMax+1,"Dyno fits to the right of preview/stats in the first details row");
+                shell.Refresh();Check(ReferenceEquals(dyno,shell.Root.Q<NativeDynoPlot>("ownedDynoPlot")),"Unchanged details frames retain the computed dyno without running another simulation");
                 yield return Key(input,0x77);Check(!shell.Visible,"F8 compares the whole Garage details page");
                 yield return Key(input,0x77);Check(shell.OwnedDetailsOpen,"Returning from F8 retains inspected car details");
                 yield return Key(input,0x50);Check(game.ScreenName=="Garage" && JsonUtility.ToJson(game.Profile)==baseline,"Details block practice shortcut without altering car state");
@@ -80,11 +86,13 @@ namespace DragLab.Runtime
                     Check(cards.Count(card=>Mathf.Abs(card.worldBound.yMin-cards[0].worldBound.yMin)<1)==2,"Garage keeps exactly two cards per row at "+width);
                     Check(cards.All(card=>card.Q("carSummary").worldBound.xMin>=card.Q("carPreview").worldBound.xMax && card.Q("carSummary").worldBound.xMax<=card.worldBound.xMax && card.Q(className:"car-card-stats").childCount==3),"HP, torque and weight stay to the right of each preview at "+width);
                     yield return Capture("owned-cars-"+width);
-                    if(width==1024) {
+                    {
                         yield return Click(input,"ownedCar:"+first.instanceId);
                         var detail=shell.Root.Q("ownedDetails").worldBound;
                         Check(detail.xMin>=0 && detail.xMax<=shell.Root.worldBound.xMax && shell.Root.Q("ownedUseCar").worldBound.yMax<=shell.Root.worldBound.yMax,"Car detail actions remain reachable at compact resolution");
-                        yield return Capture("owned-car-details-1024");
+                        var chart=shell.Root.Q("ownedCarDyno");
+                        Check(chart.worldBound.width>250&&chart.worldBound.xMax<=shell.Root.Q("ownedDetailsTopRow").worldBound.xMax+1,"Details dyno remains readable and within its first row at "+width);
+                        yield return Capture("owned-car-details-"+width);
                         yield return Click(input,"ownedBack");
                     }
                 }
