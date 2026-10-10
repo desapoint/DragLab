@@ -180,3 +180,6 @@ Full stats/reuse direction approved (2026-10-10): add inline collapsible grouped
 
 
 4D.6 Engine inspection checkpoint (2026-10-10): implement the requested Stats button and first collapsible, read-only Engine group using the applied dyno inspection and shared stat definitions/rows. Other groups and comparison screens remain later reviewed controls. See [Engine delivery/review](../reports/phases/4d/12-ENGINE-STATS.md).
+
+
+Remaining detailed-stat groups approved (2026-10-10): the user explicitly accepted Engine and requested all other groups together. Deliver 4D.7 Induction/exhaust, Transmission/drivetrain (including gearing), Tires/wheels, Weight/balance, Cooling/fluids, Components/saved tuning and Performance/warnings in the existing inline Stats panel. Use the approved shared rows, units, bars and info dialogs with nested component/element disclosures. This authorizes the remaining stat groups as one checkpoint, not later comparison screens or another Garage workflow. [Delivery/review](../reports/phases/4d/14-STAT-GROUPS.md).

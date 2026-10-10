@@ -10,22 +10,37 @@ namespace DragLab.Runtime
     {
         internal NativeStatsSnapshot Current { get; }
         internal NativeStatsSnapshot Proposed { get; }
+        internal Action<string> GroupOpened;
+        internal void SetDrivingInspection(CarInspection inspection,UnitPreferences units,Action<NativeStatDefinition> info)
+        {
+            Current.DrivingInspection=inspection;
+            var body=this.Q("statsBody:Performance");
+            if(body==null||body.childCount==0)return;
+            body.Clear();
+            foreach(var definition in NativeStatCatalog.Performance(inspection,null).Definitions)body.Add(StatRow(definition,units,info));
+        }
         internal NativeStatsPanel(CarInspection current,UnitPreferences units,IEnumerable<NativeStatGroup> groups,
             IDictionary<string,bool> collapsed,Action<NativeStatDefinition> info,Action<VisualElement,RacingSurface.Kind> decorate,CarInspection proposed=null)
         {
             Current=new NativeStatsSnapshot(current);Proposed=proposed==null?null:new NativeStatsSnapshot(proposed);
             AddToClassList("native-stats");
-            foreach(var group in groups) {
-                var container=new VisualElement {name="statsGroupFrame:"+group.Id};container.AddToClassList("stat-group");Add(container);
+            foreach(var group in groups) AddGroup(this,group,units,collapsed,info,decorate);
+        }
+        void AddGroup(VisualElement parent,NativeStatGroup group,UnitPreferences units,IDictionary<string,bool> collapsed,
+            Action<NativeStatDefinition> info,Action<VisualElement,RacingSurface.Kind> decorate)
+        {
+                var container=new VisualElement {name="statsGroupFrame:"+group.Id};container.AddToClassList("stat-group");
+                parent.Add(container);
                 decorate(container,RacingSurface.Kind.Panel);
                 var body=new VisualElement {name="statsBody:"+group.Id};body.AddToClassList("stat-grid");
-                bool closed=collapsed.TryGetValue(group.Id,out var saved)&&saved;
-                var toggle=new Button {name="statsGroup:"+group.Id,text=group.Title};toggle.AddToClassList("action-button");toggle.AddToClassList("stat-group-toggle");
+                bool closed=collapsed.TryGetValue(group.Id,out var saved)?saved:group.InitiallyCollapsed,built=false;
+                var toggle=new Button {name="statsGroup:"+group.Id,text=group.Title,tabIndex=-1,focusable=false};toggle.AddToClassList("action-button");toggle.AddToClassList("stat-group-toggle");
                 var arrow=new FilledMenuIcon("Expand");arrow.AddToClassList("stat-chevron");toggle.Add(arrow);container.Add(toggle);decorate(toggle,RacingSurface.Kind.Button);
-                void UpdateGroup(){body.EnableInClassList("hidden",closed);arrow.EnableInClassList("collapsed",closed);toggle.tooltip=closed?"Expand "+group.Title:"Collapse "+group.Title;}
-                toggle.clicked+=()=>{closed=!closed;collapsed[group.Id]=closed;UpdateGroup();};UpdateGroup();container.Add(body);
-                foreach(var definition in group.Definitions)body.Add(StatRow(definition,units,info));
-            }
+                void UpdateGroup(){
+                    if(!closed&&!built){built=true;var rows=group.Id=="Performance"?NativeStatCatalog.Performance(Current.Driving,Proposed?.Driving).Definitions:group.Definitions;foreach(var definition in rows)body.Add(StatRow(definition,units,info));foreach(var child in group.Children)AddGroup(body,child,units,collapsed,info,decorate);}
+                    body.EnableInClassList("hidden",closed);arrow.EnableInClassList("collapsed",closed);toggle.tooltip=closed?"Expand "+group.Title:"Collapse "+group.Title;
+                }
+                toggle.clicked+=()=>{closed=!closed;collapsed[group.Id]=closed;UpdateGroup();if(!closed)GroupOpened?.Invoke(group.Id);};UpdateGroup();container.Add(body);
         }
         VisualElement StatRow(NativeStatDefinition definition,UnitPreferences units,Action<NativeStatDefinition> info)
         {
@@ -33,9 +48,10 @@ namespace DragLab.Runtime
             var line=new VisualElement();line.AddToClassList("stat-line");row.Add(line);
             var caption=new VisualElement();caption.AddToClassList("stat-caption");line.Add(caption);
             var label=new Label(definition.Label) {enableRichText=false};caption.Add(label);
-            var help=new Button(()=>info(definition)) {name="statInfo:"+definition.Id,text="i",tooltip=definition.Label};help.AddToClassList("info-button");caption.Add(help);
+            var help=new Button(()=>info(definition)) {name="statInfo:"+definition.Id,text="i",tooltip=definition.Label,tabIndex=-1,focusable=false};help.AddToClassList("info-button");caption.Add(help);
             string current=definition.Value(Current,units),value=Proposed==null?current:current+" → "+definition.Value(Proposed,units);
-            var number=new Label(value) {name="statValue:"+definition.Id,enableRichText=false};number.AddToClassList("stat-value");line.Add(number);
+            var number=new Label(value) {name="statValue:"+definition.Id,enableRichText=false,tooltip=value};number.AddToClassList("stat-value");line.Add(number);
+            if(definition.Text!=null)row.AddToClassList("stat-text-row");
             if(definition.Number==null)return row;
             var previous=definition.Number(Current);var next=Proposed==null?previous:definition.Number(Proposed);
             if(!previous.HasValue||!next.HasValue)return row;

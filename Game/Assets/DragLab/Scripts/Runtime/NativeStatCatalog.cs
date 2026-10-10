@@ -1,16 +1,35 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DragLab.Domain;
+using DragLab.Domain.Mechanics;
 
 namespace DragLab.Runtime
 {
     internal sealed class NativeStatsSnapshot
     {
         internal CarInspection Inspection { get; }
+        internal CarInspection DrivingInspection { get; set; }
+        internal CarInspection Driving => DrivingInspection ?? Inspection;
+        internal bool DrivingPending;
+        internal string DrivingError;
         internal VehicleSpec Spec => Inspection.source.build.spec;
         internal EngineBehaviorProfile Engine { get; }
+        internal Tune Tune => Inspection.source.build.tune;
+        internal InductionProfile Induction { get; }
+        internal TransmissionSpec Transmission { get; }
+        internal AwdSpec Awd { get; }
+        readonly Dictionary<string,PartInstance> parts;
+        readonly Dictionary<PartCategory,PartDefinition> definitions;
         internal NativeStatsSnapshot(CarInspection inspection)
-        { Inspection=inspection; Engine=new EngineBehaviorProfile(Spec,inspection.source.build.tune); }
+        {
+            Inspection=inspection; Engine=new EngineBehaviorProfile(Spec,Tune);
+            Induction=new InductionProfile(Spec,Tune);Transmission=TransmissionDynamics.Configuration(Spec,Tune);Awd=AxleDriveDynamics.Configuration(Spec,Tune);
+            parts=inspection.source.components.ToDictionary(p=>p.slot);definitions=(Spec.fittedParts??new PartDefinition[0]).ToDictionary(p=>p.category);
+        }
+        internal PartInstance Part(PartCategory slot)=>parts.TryGetValue(slot.ToString(),out var p)?p:null;
+        internal PartDefinition Definition(PartCategory slot)=>Part(slot)!=null&&definitions.TryGetValue(slot,out var p)?p:null;
+        internal bool Has(PartCategory slot)=>Part(slot)!=null;
     }
 
     internal sealed class NativeStatDefinition
@@ -20,8 +39,10 @@ namespace DragLab.Runtime
         internal int BenefitDirection;
         internal Func<NativeStatsSnapshot,double?> Number;
         internal Func<NativeStatsSnapshot,string> Text;
-        internal double Convert(double value,UnitPreferences units)=>Unit=="Nm"?DisplayUnits.Torque(value,units.torque):value;
-        internal string UnitLabel(UnitPreferences units)=>Unit=="Nm"?DisplayUnits.TorqueLabel(units.torque):Unit;
+        internal Func<NativeStatsSnapshot,string> Detail;
+        internal string Explanation(NativeStatsSnapshot snapshot)=>Detail==null?Help:Detail(snapshot);
+        internal double Convert(double value,UnitPreferences units)=>Unit=="Nm"?DisplayUnits.Torque(value,units.torque):Unit=="bar"?DisplayUnits.Pressure(value,units.pressure):Unit=="m/s"?DisplayUnits.Speed(value,units.speed):value;
+        internal string UnitLabel(UnitPreferences units)=>Unit=="Nm"?DisplayUnits.TorqueLabel(units.torque):Unit=="bar"?DisplayUnits.PressureLabel(units.pressure):Unit=="m/s"?DisplayUnits.SpeedLabel(units.speed):Unit;
         internal string Value(NativeStatsSnapshot snapshot,UnitPreferences units)
         {
             if(Text!=null)return Text(snapshot);
@@ -33,10 +54,12 @@ namespace DragLab.Runtime
         internal string Id { get; }
         internal string Title { get; }
         internal IReadOnlyList<NativeStatDefinition> Definitions { get; }
+        internal IReadOnlyList<NativeStatGroup> Children { get; set; }=Array.AsReadOnly(new NativeStatGroup[0]);
+        internal bool InitiallyCollapsed { get; set; }
         internal NativeStatGroup(string id,string title,params NativeStatDefinition[] definitions)
         { Id=id;Title=title;Definitions=Array.AsReadOnly(definitions); }
     }
-    internal static class NativeStatCatalog
+    internal static partial class NativeStatCatalog
     {
         static NativeStatDefinition N(string id,string label,Func<NativeStatsSnapshot,double?> get,string unit,string format,double min,double max,string help,int benefit=0)
             =>new NativeStatDefinition {Id=id,Label=label,Number=get,Unit=unit,Format=format,Minimum=min,Maximum=max,Help=help,BenefitDirection=benefit};

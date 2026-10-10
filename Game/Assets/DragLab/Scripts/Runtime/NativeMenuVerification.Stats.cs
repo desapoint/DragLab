@@ -19,7 +19,7 @@ namespace DragLab.Runtime
             Check(panel!=null&&panel.ClassListContains("hidden")&&ReferenceEquals(panel.Current.Inspection,dyno.Series[0].Inspection),"Stats starts hidden and shares the cached applied dyno inspection without another simulation");
             yield return Click(input,"ownedStatsToggle");
             Check(!panel.ClassListContains("hidden")&&shell.Root.Q("ownedStatsToggle").ClassListContains("selected")&&!shell.ModalOpen,"Stats button reveals inline Engine details without changing route or opening a dialog");
-            Check(panel.Query(className:"stat-row").ToList().Count==NativeStatCatalog.Engine.Definitions.Count&&panel.Query<TextField>().ToList().Count==0&&panel.Query<Slider>().ToList().Count==0,"Engine catalog renders every approved row as read-only content");
+            Check(panel.Q("statsBody:Engine").Query(className:"stat-row").ToList().Count==NativeStatCatalog.Engine.Definitions.Count&&panel.Query<TextField>().ToList().Count==0&&panel.Query<Slider>().ToList().Count==0,"Engine catalog renders every approved row as read-only content");
             var stats=panel.Current.Inspection;var spec=stats.source.build.spec;
             Check(panel.Q<Label>("statValue:peakHp").text==stats.peakHp.ToString("F0")+" HP"&&panel.Q<Label>("statValue:peakTorque").text==DisplayUnits.Torque(stats.peakTorque,dyno.Units).ToString("F0")+" "+DisplayUnits.TorqueLabel(dyno.Units),"Detailed power and torque match the worn applied dyno and selected units");
             Check(panel.Q<Label>("statValue:displacement").text==spec.DisplacementLitres.ToString("F2")+" L"&&panel.Q<Label>("statValue:cylinders").text==spec.sound.cylinders.ToString()&&panel.Q<Label>("statValue:redlineRpm").text==spec.redlineRpm.ToString("F0")+" RPM","Engine configuration and RPM limits use the inspected instance's resolved hardware");
@@ -49,6 +49,7 @@ namespace DragLab.Runtime
             draftSource.build.spec.engineBoreMm=0;draftSource.build.spec.valvesPerCylinder=0;draftSource.build.spec.engineBehavior.limiter=LimiterStyle.None;draftSource.build.tune.limiter=LimiterStyle.None;
             var absent=new NativeStatsPanel(draft,new UnitPreferences(),new[] {NativeStatCatalog.Engine},new Dictionary<string,bool>(),_=>{},(_,__)=>{});
             Check(absent.Q<Label>("statValue:bore").text=="—"&&absent.Q<Label>("statValue:valvesPerCylinder").text=="—"&&absent.Q<Label>("statValue:limiterRpm").text=="—","Unspecified dimensions and absent limiter targets do not fabricate values");
+            yield return RemainingStatsChecks(input,stats);
             shell.Refresh();Check(ReferenceEquals(panel,shell.Root.Q<NativeStatsPanel>("ownedCarStats")),"Unchanged frames retain the stat panel and captured engine values");
             Check(JsonUtility.ToJson(game.Profile)==baseline&&System.IO.File.ReadAllText(ProfileStore.FilePath)==disk,"Stats, explanations, collapse and copied comparisons do not select, save, spend, heal or refill assets");
             yield return Click(input,"ownedStatsToggle");Check(panel.ClassListContains("hidden"),"Stats closes inline and restores the compact maintenance-first view");

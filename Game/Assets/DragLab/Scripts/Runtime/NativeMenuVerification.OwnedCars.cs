@@ -139,7 +139,7 @@ namespace DragLab.Runtime
                         var statPanel=shell.Root.Q<NativeStatsPanel>("ownedCarStats");var statViewport=statScroll.contentViewport.worldBound;
                         Check(!statPanel.ClassListContains("hidden")&&statPanel.Query(className:"stat-row").ToList().All(row=>row.worldBound.xMin>=statViewport.xMin-1&&row.worldBound.xMax<=statViewport.xMax+1),"Expanded Engine stats reflow inside the details viewport at "+width);
                         Check(statPanel.Query<Label>(className:"stat-value").ToList().All(label=>label.worldBound.xMax<=statViewport.xMax+1)&&shell.Root.Q("ownedUseCar").worldBound.yMax<=shell.Root.worldBound.yMax,"Engine values and car actions remain reachable at "+width);
-                        yield return Capture("engine-stats-"+width);statScroll.scrollOffset=Vector2.zero;yield return new WaitForSecondsRealtime(.15f);yield return Click(input,"ownedStatsToggle");
+                        yield return Capture("engine-stats-"+width);yield return StatGroupLayoutChecks(input,width);statScroll.scrollOffset=Vector2.zero;yield return new WaitForSecondsRealtime(.15f);yield return Click(input,"ownedStatsToggle");
 
                         yield return Click(input,"ownedBack");
                     }
