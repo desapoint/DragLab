@@ -11,6 +11,8 @@ namespace DragLab.Runtime
         bool shortcutHeld;
         GUIStyle badgeStyle, emptyStyle;
         internal static bool IsReplacement(string route) => replacementRoutes.Contains(route);
+        internal static void SetReplacement(string route, bool enabled)
+        { if (enabled) replacementRoutes.Add(route); else replacementRoutes.Remove(route); }
         internal void ReleaseShortcut() { shortcutHeld = false; }
 
         internal bool HandleKey(string route, EventType type, KeyCode key, bool modified, bool blocked)

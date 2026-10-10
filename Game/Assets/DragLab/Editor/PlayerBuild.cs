@@ -18,6 +18,7 @@ namespace DragLab.Editor
         }
         public static void BuildPlayerOnly()
         {
+            NativeUiSetup.PrepareShell();
             PlayerSettings.fullScreenMode = FullScreenMode.Windowed;
             PlayerSettings.resizableWindow = true;
             string destination = "Builds/Windows/DragLab.exe";

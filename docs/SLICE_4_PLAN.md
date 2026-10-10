@@ -1,6 +1,6 @@
 # Slice 4 — Interface migration, input and platform validation
 
-Revised 2026-10-09 after Slice 3H and the approved audio, performance, shop and shared-inventory refinements. **4A source coverage is retained; its web layouts were declined. 4B.1 implements only the requested F8 comparison foundation.** The remainder of 4B and 4C–4Q are not started. The user directs native layouts one control at a time. Slice 2/3 developer acceptance remains complete; human driving, listening and economy review remain separate.
+Revised 2026-10-09 after Slice 3H and the approved audio, performance, shop and shared-inventory refinements. **4A source coverage is retained; its web layouts were declined. 4B.1 supplies F8 comparison; 4B.2/4C.0 supplies the native navigation/Settings shell for review.** Individual preference controls and further migration remain pending; new bench presentation is deferred. The user directs native layouts one control at a time. Slice 2/3 developer acceptance remains complete; human driving, listening and economy review remain separate.
 
 ## Goal and boundaries
 
@@ -48,7 +48,7 @@ Load / recovery → Garage overview / selected owned car
 Race → optional warm-up → neutral staging → pass → result / repair / retry
 ```
 
-Default technical proposal: Canvas-based Unity UI (uGUI) for runtime screens, a shared input-action layer and reusable presenters/widgets. Confirm the choice in 4A against graphs, controller navigation, multiple simultaneous touches, scalable layouts and the existing project. The current package manifest contains minimal built-in modules, not an installed modern UI/input stack; package selection and installation belong to 4B and must be recorded and verified there. This plan does not install packages.
+4B.2/4C.0 selects **Unity UI Toolkit** for the new native shell instead of the earlier unimplemented uGUI proposal: flex layouts, rounded USS styling, TextCore text and procedural filled icons support the requested high-resolution appearance using built-in modules. The Editor Package Manager resolved `com.unity.modules.uielements@1.0.0` and its built-in dependencies. Existing IMGUI is retained behind F8. No new input-action package or scene rewrite; controller/multitouch suitability and each future widget remain their own validation gates. See the [framework/assets/checks report](../reports/phases/4b/05-NATIVE-SHELL.md).
 
 Keep shared cards, lists, numeric fields, sliders, dialogs, tooltips, tab navigation and graph rendering consistent. Separate views from the existing simulation, transactions, inspection/pricing services and test sessions. Stable semantic control IDs should let interaction checks survive layout changes. Read-only feedback must not call setter callbacks. Use state/event-driven refresh, bounded background probes and cached quotes rather than recalculating builds or saving from repaint/binding updates. Virtualize large lists when measurement justifies it.
 
@@ -109,6 +109,6 @@ Keyboard/slider ownership is local to bench operating controls, not a lock on th
 
 ## Current handoff
 
-**Current checkpoint: native style/navigation/Settings requirements recorded; documentation only.** F8 comparison foundation (4B.1) is implemented. The [native contract](NATIVE_UI_DESIGN.md) selects Settings as the first future replacement page, with explicit Save and flexible confirmation. The user will direct implementation controls; do not begin the page or finish a phase from this requirements note. The [4A source index](ui/4a/SOURCE_INDEX.md) and [historical report](../reports/phases/4a/CHANGES.md) retain their original baseline; subsequent changes get their own native evidence.
+**Current checkpoint: main navigation and Settings shell implemented, ready for user review.** [4B.2/4C.0 report](../reports/phases/4b/05-NATIVE-SHELL.md): Windows build passed, 89 native shell checks and 48 existing comparison regressions passed. True 4K render-target evidence complements the monitor-limited 3360-wide window test. No preference widgets, Save/dialog flow, drawer or gameplay workspace migration yet. Stop for validation and the next specified Settings control; neither 4B nor 4C is complete. Historical 4A coverage remains archived baseline evidence.
 
-4B.1 technical handoff: updated Windows player built; 48 real-input/rendering checks passed with zero runtime errors. [Report and native review checklist](../reports/phases/4b/01-COMPARISON.md). Human validation is pending. No further control is selected or implemented by this handoff.
+F8 comparison remains the review mechanism; [original 4B.1 evidence](../reports/phases/4b/01-COMPARISON.md) is retained and its regression was rerun for this shell. Human interface validation is pending; no next preference control is selected by the checkpoint.

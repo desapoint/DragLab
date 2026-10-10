@@ -1,0 +1,143 @@
+using System;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+namespace DragLab.Runtime
+{
+    // Presentation-only shell. No preference draft widgets or domain transactions yet.
+    internal sealed class NativeMenuShell : MonoBehaviour
+    {
+        static readonly string[] routes = { "Garage", "Parts", "Tuning", "Race setup", "Business", "Stats" };
+        static readonly string[] names = { "Garage", "Build", "Tuning", "Race", "Business", "Data" };
+        static readonly string[] categories = { "Difficulty / Driving", "Sound", "Units", "Controls", "General" };
+        static readonly string[] categoryIds = { "Difficulty", "Sound", "Units", "Controls", "General" };
+        PrototypeGame game;
+        UIDocument document;
+        PanelSettings panel;
+        VisualElement root;
+        int category;
+        string renderedRoute;
+        internal VisualElement Root => root;
+        internal PanelSettings Panel => panel;
+        internal int Category => category;
+        internal bool Visible => root != null && !root.ClassListContains("hidden");
+        internal static bool Supports(string route) => Array.IndexOf(routes, route) >= 0 || route == "Settings";
+        internal static float DisplayScale(int width, int height) => Mathf.Max(1, Mathf.Min(width / 1920f, height / 1080f));
+
+        internal void Initialize(PrototypeGame owner)
+        {
+            game = owner;
+            panel = Instantiate(Resources.Load<PanelSettings>("UI/NativePanel"));
+            var host = new GameObject("Native menu document"); host.transform.SetParent(transform);
+            document = host.AddComponent<UIDocument>();
+            document.panelSettings = panel;
+            document.visualTreeAsset = Resources.Load<VisualTreeAsset>("UI/NativeShell");
+            root = document.rootVisualElement.Q("shell");
+            root.AddToClassList("hidden");
+            for (int i = 0; i < routes.Length; i++)
+            {
+                int index = i;
+                var button = root.Q<Button>("nav" + names[i]);
+                button.text = "";
+                button.Insert(0, new FilledMenuIcon(names[i]));
+                button.Add(new Label(names[i]) { pickingMode = PickingMode.Ignore });
+                button.clicked += () => game.QueueNativeNavigation(routes[index]);
+                Hint(button, names[i]);
+            }
+            var settingsButton = root.Q<Button>("settingsButton");
+            settingsButton.Add(new FilledMenuIcon("Settings"));
+            settingsButton.clicked += () => game.QueueNativeNavigation("Settings");
+            Hint(settingsButton, "Settings");
+            foreach (string resource in new[] { "cash", "fuel", "rep" })
+                root.Q(resource + "Group").Insert(0, new FilledMenuIcon(resource));
+            for (int i = 0; i < categoryIds.Length; i++)
+            {
+                int index = i;
+                var tab = root.Q<Button>("tab" + categoryIds[i]);
+                tab.clicked += () => { category = index; renderedRoute = null; Refresh(); };
+                Hint(tab, categories[i]);
+            }
+        }
+
+        void Hint(Button button, string text)
+        {
+            button.tooltip = text;
+            button.RegisterCallback<PointerEnterEvent>(_ => root.Q<Label>("interactionHint").text = text);
+            button.RegisterCallback<PointerLeaveEvent>(_ => ResetHint());
+            button.RegisterCallback<FocusInEvent>(_ => root.Q<Label>("interactionHint").text = text);
+            button.RegisterCallback<FocusOutEvent>(_ => ResetHint());
+        }
+        void ResetHint() => root.Q<Label>("interactionHint").text = "F8 · Compare with current interface";
+        void LateUpdate() => Refresh();
+        internal void Refresh()
+        {
+            if (root == null || game.Profile == null) return;
+            string route = game.ScreenName;
+            bool show = Supports(route) && InterfaceComparison.IsReplacement(route);
+            root.EnableInClassList("hidden", !show);
+            if (!show) return;
+            int width = panel.targetTexture == null ? Screen.width : panel.targetTexture.width;
+            int height = panel.targetTexture == null ? Screen.height : panel.targetTexture.height;
+            panel.scale = DisplayScale(width, height);
+            root.EnableInClassList("compact", width / panel.scale < 1150);
+            var profile = game.Profile; var car = profile.SelectedCar;
+            SetText("cash", "$" + profile.cash.ToString("N0"));
+            SetText("fuel", car == null ? "— L" : car.fuel.litres.ToString("F1") + " / " + profile.catalog.Spec(car.vehicleId).fuel.capacityLitres.ToString("F0") + " L");
+            SetText("progression", "REP " + profile.reputation);
+            SetText("selectedCar", car == null ? "No car selected" : profile.catalog.Spec(car.vehicleId).displayName);
+            if (renderedRoute == route) return;
+            renderedRoute = route;
+            bool settings = route == "Settings";
+            for (int i = 0; i < routes.Length; i++) root.Q<Button>("nav" + names[i]).EnableInClassList("selected", route == routes[i]);
+            root.Q<Button>("settingsButton").EnableInClassList("selected", settings);
+            root.Q("settingsTabs").EnableInClassList("hidden", !settings);
+            for (int i = 0; i < categoryIds.Length; i++) root.Q<Button>("tab" + categoryIds[i]).EnableInClassList("selected", i == category);
+            SetText("pageEyebrow", settings ? "PREFERENCES" : "VEHICLE MANAGEMENT");
+            SetText("pageTitle", settings ? "Settings" : names[Array.IndexOf(routes, route)]);
+            SetText("pageDescription", settings ? "Driving, sound and preferences in one place." : "Your garage, build and racing operation.");
+            SetText("contentTitle", settings ? categories[category] : "Workspace");
+            SetText("contentDescription", settings
+                ? "Settings controls will be added one at a time. Changes will take effect only after Save and confirmation. Use F8 to access current settings."
+                : "This workspace is ready for its next controls. Use F8 to access the current interface.");
+        }
+        void SetText(string id, string value) { var label = root.Q<Label>(id); if (label.text != value) label.text = value; }
+        void OnDestroy() { if (panel != null) Destroy(panel); }
+    }
+
+    // Filled, procedurally tessellated shapes stay sharp at native display resolution.
+    internal sealed class FilledMenuIcon : VisualElement
+    {
+        readonly string kind;
+        internal FilledMenuIcon(string name)
+        { kind = name; pickingMode = PickingMode.Ignore; AddToClassList("filled-icon"); generateVisualContent += Draw; }
+        void Draw(MeshGenerationContext context)
+        {
+            if (contentRect.width <= 0 || contentRect.height <= 0) return;
+            var p = context.painter2D; p.fillColor = new Color(.9f, .9f, .93f);
+            float sx = contentRect.width / 24, sy = contentRect.height / 24;
+            Action<float[]> polygon = points => {
+                p.BeginPath(); p.MoveTo(new Vector2(points[0] * sx, points[1] * sy));
+                for (int i = 2; i < points.Length; i += 2) p.LineTo(new Vector2(points[i] * sx, points[i + 1] * sy));
+                p.ClosePath(); p.Fill();
+            };
+            Action<float,float,float,float> rect = (x,y,w,h) => polygon(new[] { x,y,x+w,y,x+w,y+h,x,y+h });
+            Action<float,float,float> circle = (x,y,r) => { p.BeginPath(); p.Arc(new Vector2(x*sx,y*sy), r*sx, Angle.Degrees(0), Angle.Degrees(360)); p.ClosePath(); p.Fill(); };
+            switch (kind)
+            {
+                case "Settings":
+                    var gear = new float[64];
+                    for (int i = 0; i < 32; i++) { float a = i * Mathf.PI / 16; float r = i % 4 < 2 ? 10 : 7.8f; gear[i*2] = 12 + Mathf.Cos(a)*r; gear[i*2+1] = 12 + Mathf.Sin(a)*r; }
+                    polygon(gear); p.fillColor = new Color(.15f,.15f,.17f); circle(12,12,3.3f); break;
+                case "Garage": polygon(new float[] {2,10,12,2,22,10,22,22,16,22,16,13,8,13,8,22,2,22}); break;
+                case "Build": polygon(new float[] {4,2,9,2,9,7,13,7,13,2,18,2,18,9,14,13,14,22,8,22,8,13,4,9}); break;
+                case "Tuning": rect(3,2,3,20); rect(10,2,3,20); rect(17,2,3,20); rect(1,6,7,4); rect(8,14,7,4); rect(15,8,7,4); break;
+                case "Race": rect(3,2,3,21); rect(6,2,15,13); p.fillColor = new Color(.15f,.15f,.17f); rect(6,2,5,4); rect(16,2,5,4); rect(11,6,5,5); rect(6,11,5,4); rect(16,11,5,4); break;
+                case "Business": rect(2,7,20,15); rect(7,2,10,4); break;
+                case "Data": rect(2,14,5,8); rect(10,8,5,14); rect(18,2,4,20); break;
+                case "cash": rect(2,5,20,14); p.fillColor = new Color(.15f,.15f,.17f); circle(12,12,4); break;
+                case "fuel": rect(3,3,12,19); rect(16,8,3,13); rect(15,19,6,3); rect(19,5,3,15); p.fillColor = new Color(.15f,.15f,.17f); rect(5,5,8,6); break;
+                case "rep": polygon(new float[] {12,1,15,8,23,9,17,14,19,23,12,18,5,23,7,14,1,9,9,8}); break;
+            }
+        }
+    }
+}

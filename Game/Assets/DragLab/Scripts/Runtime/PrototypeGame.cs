@@ -26,6 +26,7 @@ namespace DragLab.Runtime
         EngineAudio engineAudio, opponentAudio;
         readonly RaceInputAdapter controls = new RaceInputAdapter();
         readonly InterfaceComparison interfaceComparison = new InterfaceComparison();
+        NativeMenuShell nativeMenu;
         internal string ComparisonRoute => screen == "Race" ? audioSettingsOpen ? "Race settings" : paused ? "Pause" : race != null && race.phase == RacePhase.Finished ? "Results" : "Race" : screen;
         Action pendingAction;
         float saveDelay;
@@ -110,6 +111,9 @@ namespace DragLab.Runtime
             notice = ProfileStore.Status;
             RuntimeVerification.AttachIfRequested(this);
             InterfaceComparisonVerification.AttachIfRequested();
+            nativeMenu = gameObject.AddComponent<NativeMenuShell>();
+            nativeMenu.Initialize(this);
+            NativeMenuVerification.AttachIfRequested(this, nativeMenu);
         }
         void ShowGarageCar()
         {
@@ -285,10 +289,24 @@ namespace DragLab.Runtime
             if (profile == null) return;
             using (FramePacingProbe.Measure(4))
             {
-                bool replacement = interfaceComparison.BeginGUI(ComparisonRoute, resetGameConfirm || (screen == "Valuation" && valuationQuote != null && saleConfirmation == valuationQuote.Id) || pendingAction != null);
+                bool replacement = interfaceComparison.BeginGUI(ComparisonRoute, resetGameConfirm || (screen == "Valuation" && valuationQuote != null && saleConfirmation == valuationQuote.Id) || pendingAction != null || (nativeMenu != null && nativeMenu.Visible && Input.GetMouseButton(0)));
                 if (!replacement) DrawMeasuredGUI();
-                interfaceComparison.DrawStatus(ComparisonRoute);
+                if (!replacement || !NativeMenuShell.Supports(ComparisonRoute)) interfaceComparison.DrawStatus(ComparisonRoute);
             }
+        }
+
+        internal void QueueNativeNavigation(string route)
+        {
+            if (!NativeMenuShell.Supports(route) || screen == route || pendingAction != null) return;
+            pendingAction = () => {
+                resetGameConfirm = false;
+                DiscardPreviews();
+                screen = route;
+                scroll = Vector2.zero;
+                if (route == "Parts") repairsOnly = false;
+                if (route == "Tuning" && Build != null) BeginTuneDraft();
+                InterfaceComparison.SetReplacement(route, true);
+            };
         }
         void DrawMeasuredGUI()
         {
