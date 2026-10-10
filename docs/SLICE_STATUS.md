@@ -2,7 +2,7 @@
 
 **2A–2L and 3A–3H developer acceptance are complete.** See [phase plan](IMPLEMENTATION_PHASES.md), [full Slice 3 audit](../reports/SLICE_3_AUDIT.md), [career](CAREER_PROGRESSION.md), [garage business](GARAGE_BUSINESS.md) and [economy balance](ECONOMY_BALANCE.md).
 
-**Slice 4: continuous footer joins ready for review (2026-10-10).** Each main diagonal joins the horizontal red strip with shared mitered geometry and matching thickness/color. Two smaller slashes remain at each mirrored end. See [latest checks/review](../reports/phases/4b/15-FOOTER-JOINS.md). Cars/parts grid requirements and Garage-first proposal remain documented; no later interface is started. Technical checks are separate from human visual acceptance; stop before another control.
+**Slice 4: icon/text alignment correction ready for review (2026-10-10).** Resource icons and labels share their optical row offset; flag/fuel-pump silhouettes center within their viewboxes. Existing text centering, Settings interactions and footer joins remain. See [latest checks/review](../reports/phases/4b/16-ICON-ALIGNMENT.md). No later interface is started; technical checks are separate from human visual acceptance.
 
 Source of scope: [objective.md](objective.md), section 58. The eight-car roster includes the requested pickup, three-cylinder hatch, AWD turbo sedan, inline-six GT and supercharged V8. The four new mechanical configurations reuse existing layered placeholder bodies. Mechanics and editable data take priority over finished graphics or menus.
 

@@ -32,9 +32,9 @@
 .nav-button.selected, .category-button.selected, .settings-button.selected { background-color: transparent; color: white; border-top-color: var(--racing-accent); border-bottom-color: var(--racing-accent); }
 .nav-button.selected:hover, .category-button.selected:hover, .settings-button.selected:hover { background-color: rgba(255, 255, 255, 0.025); }
 .resources { flex-direction: row; flex-grow: 1; justify-content: flex-end; align-items: center; margin-left: 12px; }
-.resource { flex-direction: row; align-items: center; margin-left: 16px; }
-.resource Label { font-size: 16px; }
-.filled-icon { width: 22px; height: 22px; flex-shrink: 0; margin-right: 7px; }
+.resource { flex-direction: row; align-items: center; margin-left: 16px; translate: 0 -1px; }
+.resource Label { font-size: 16px; translate: 0 -1px; }
+.filled-icon { width: 22px; height: 22px; flex-shrink: 0; align-self: center; margin-right: 7px; }
 .resource .filled-icon { width: 17px; height: 17px; margin-right: 6px; }
 .inspection-space { width: 42px; flex-shrink: 0; }
 .settings-button { width: 80px; height: 100%; margin-right: 12px; border-radius: 0; border-width: 0; justify-content: center; align-items: center; background-color: transparent; }
@@ -100,7 +100,7 @@
 .settings-group-label { margin-bottom: 2px; }
 .nav-button Label, .category-button Label, .choice-button Label, .action-button Label { height: 100%; margin: 0; padding: 0; -unity-text-align: middle-center; translate: 0 -1px; }
 .brand, .resource Label, .footer-hint, .settings-status, .setting-caption Label, .modal-heading Label { margin-top: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; -unity-text-align: middle-left; }
-.brand, .resource Label, .footer-hint { translate: 0 -2px; }
+.brand, .footer-hint { translate: 0 -2px; }
 .settings-status, .modal-heading Label { translate: 0 -1px; }
 .setting-number .unity-text-element { padding-top: 0; padding-bottom: 0; }
 .info-button, .close-button { -unity-text-align: middle-center; padding-top: 0; padding-bottom: 4px; }

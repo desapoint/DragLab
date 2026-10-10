@@ -1,0 +1,29 @@
+Rendered icon/text alignment: bright neutral pixel bounds (min RGB >145, channel spread <35), tolerance one logical point.
+PASS: 1280x720 Garage: icon center 31.5px, label center 31.5px, difference 0.00 logical points.
+PASS: 1280x720 Build: icon center 31.5px, label center 31.5px, difference 0.00 logical points.
+PASS: 1280x720 Tuning: icon center 31.5px, label center 31.5px, difference 0.00 logical points.
+PASS: 1280x720 Race: icon center 31.5px, label center 31.5px, difference 0.00 logical points.
+PASS: 1280x720 Business: icon center 31.5px, label center 31.5px, difference 0.00 logical points.
+PASS: 1280x720 Data: icon center 31.5px, label center 31.5px, difference 0.00 logical points.
+PASS: 1280x720 Cash: icon center 31.0px, label center 30.5px, difference 0.50 logical points.
+PASS: 1280x720 Fuel: icon center 31.0px, label center 30.5px, difference 0.50 logical points.
+PASS: 1280x720 Rep: icon center 30.5px, label center 30.0px, difference 0.50 logical points.
+PASS: 1920x1080 Garage: icon center 31.5px, label center 31.5px, difference 0.00 logical points.
+PASS: 1920x1080 Build: icon center 31.5px, label center 31.5px, difference 0.00 logical points.
+PASS: 1920x1080 Tuning: icon center 31.5px, label center 31.5px, difference 0.00 logical points.
+PASS: 1920x1080 Race: icon center 31.5px, label center 31.5px, difference 0.00 logical points.
+PASS: 1920x1080 Business: icon center 31.5px, label center 31.5px, difference 0.00 logical points.
+PASS: 1920x1080 Data: icon center 31.5px, label center 31.5px, difference 0.00 logical points.
+PASS: 1920x1080 Cash: icon center 31.0px, label center 30.5px, difference 0.50 logical points.
+PASS: 1920x1080 Fuel: icon center 31.0px, label center 30.5px, difference 0.50 logical points.
+PASS: 1920x1080 Rep: icon center 31.0px, label center 30.0px, difference 1.00 logical points.
+PASS: 3840x2160 Garage: icon center 63.5px, label center 63.5px, difference 0.00 logical points.
+PASS: 3840x2160 Build: icon center 63.5px, label center 63.5px, difference 0.00 logical points.
+PASS: 3840x2160 Tuning: icon center 63.5px, label center 63.5px, difference 0.00 logical points.
+PASS: 3840x2160 Race: icon center 63.5px, label center 63.5px, difference 0.00 logical points.
+PASS: 3840x2160 Business: icon center 63.5px, label center 63.5px, difference 0.00 logical points.
+PASS: 3840x2160 Data: icon center 63.5px, label center 63.0px, difference 0.25 logical points.
+PASS: 3840x2160 Cash: icon center 61.5px, label center 61.5px, difference 0.00 logical points.
+PASS: 3840x2160 Fuel: icon center 61.5px, label center 63.0px, difference 0.75 logical points.
+PASS: 3840x2160 Rep: icon center 62.0px, label center 62.0px, difference 0.00 logical points.
+27 icon/label pairs checked; separate visual review remains required.

@@ -1,6 +1,6 @@
 # Slice 2, Slice 3 and Slice 4 implementation phases
 
-Current UI checkpoint (2026-10-10): footer main diagonals now join the fading horizontal red strip continuously at both mirrored ends. See [latest report](../reports/phases/4b/15-FOOTER-JOINS.md). Cars/parts grids with search/filtering and sorting remain recorded; 4D Garage is recommended next but not started. Existing Settings/shared control/draft/F8 behavior remains. Further Slice 4 interfaces require user instruction and validation.
+Current UI checkpoint (2026-10-10): align visible icons beside centered button/resource text through shared group positioning and normalized flag/fuel-pump silhouettes. See [latest report](../reports/phases/4b/16-ICON-ALIGNMENT.md). Preserve current text centering, shared controls, footer joins and F8. Cars/parts grid requirements remain recorded; 4D Garage is recommended next but not started. Further Slice 4 interfaces require user instruction and validation.
 
 Additional catalog foundation (2026-10-08): [part-owned tuning permissions and 128 new hardware choices](../reports/part-hardware/CHANGES.md), integrated with shared race/physical-bench resolution. Preserve physical turbo-size swaps, fixed/adjustable controller and pulley distinctions, supported final-drive gearsets, saved-value enforcement and unrestricted raw acoustic experiments during remaining phases. Physical capture model was v12; the approved service/fluids extension uses v13. This records the original catalog extension; final integration acceptance is in the completion record below.
 

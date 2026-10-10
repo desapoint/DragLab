@@ -153,9 +153,10 @@ namespace DragLab.Runtime
             if (contentRect.width <= 0 || contentRect.height <= 0) return;
             var p = context.painter2D; p.fillColor = new Color(.9f, .9f, .93f);
             float sx = contentRect.width / 24, sy = contentRect.height / 24;
+            float yOffset = kind == "Race" || kind == "fuel" ? -.5f : 0;
             Action<float[]> polygon = points => {
-                p.BeginPath(); p.MoveTo(new Vector2(points[0] * sx, points[1] * sy));
-                for (int i = 2; i < points.Length; i += 2) p.LineTo(new Vector2(points[i] * sx, points[i + 1] * sy));
+                p.BeginPath(); p.MoveTo(new Vector2(points[0] * sx, (points[1]+yOffset) * sy));
+                for (int i = 2; i < points.Length; i += 2) p.LineTo(new Vector2(points[i] * sx, (points[i + 1]+yOffset) * sy));
                 p.ClosePath(); p.Fill();
             };
             Action<float,float,float,float> rect = (x,y,w,h) => polygon(new[] { x,y,x+w,y,x+w,y+h,x,y+h });
