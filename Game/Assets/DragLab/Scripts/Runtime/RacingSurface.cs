@@ -138,10 +138,10 @@ namespace DragLab.Runtime
             for (int side = 0; side < 2; side++)
             {
                 System.Func<float,float,Vector2> point = (x,y) => new Vector2(side==0?x:w-x,y);
-                Stroke(point(0,0),point(17,0),1,C(.48f,.5f,.54f,.6f));
-                Stroke(point(17,0),point(28,8),1.5f,A(.84f));
-                Stroke(point(4,3),point(11,8),1.4f,A(.47f));
-                Stroke(point(12,3),point(19,8),1.4f,A(.47f));
+                // Separate straight slashes, mirrored at the opposite corner.
+                // No bent terminal or horizontal lead-in to create a zigzag.
+                for (int mark = 0; mark < 3; mark++)
+                    SmoothStroke(point(2+mark*8,1),point(10+mark*8,7),1.2f,A(mark==2?.84f:.47f));
             }
         }
         void FadeLine(float x,float y,float w,float h,bool reverse)
@@ -198,6 +198,18 @@ namespace DragLab.Runtime
         {
             Vector2 side = new Vector2(b.y-a.y,a.x-b.x).normalized*width*.5f;
             Quad(a+side,b+side,b-side,a-side,color,color,color,color);
+        }
+        void SmoothStroke(Vector2 a,Vector2 b,float width,Color color)
+        {
+            Vector2 normal = new Vector2(b.y-a.y,a.x-b.x).normalized;
+            Vector2 inner = normal*width*.5f;
+            // One physical pixel of coverage smooths the oblique stroke at every UI scale.
+            float scale = scaledPixelsPerPoint;
+            Vector2 outer = inner+normal/Mathf.Max(1,scale);
+            Color clear = color; clear.a = 0;
+            Quad(a+outer,b+outer,b+inner,a+inner,clear,clear,color,color);
+            Quad(a+inner,b+inner,b-inner,a-inner,color,color,color,color);
+            Quad(a-inner,b-inner,b-outer,a-outer,color,color,clear,clear);
         }
         void Radial(float w,float h,Color light,float radius = 0)
         {

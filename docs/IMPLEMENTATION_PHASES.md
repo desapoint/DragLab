@@ -1,6 +1,6 @@
 # Slice 2, Slice 3 and Slice 4 implementation phases
 
-Current UI checkpoint (2026-10-10): the requested dialog X hover treatment is delivered for review; see [latest report](../reports/phases/4b/13-CLOSE-HOVER.md). Preset grouping, Settings inset, vertical alignment, shared dialog corners and deferred Apply/Cancel remain. No-focus/no-Tab policy retains mouse-down feedback. Further Slice 4 interfaces remain gated on user validation.
+Current UI checkpoint (2026-10-10): straight mirrored footer diagonals delivered; cars/parts grid, search/filtering and sorting requirements recorded. See [latest report](../reports/phases/4b/14-FOOTER-GRID-DIRECTION.md). 4D Garage is the recommended next interface, with control-sized checkpoints; no Garage content is started. Existing Settings/shared control/draft/F8 behavior remains. Further Slice 4 interfaces require user instruction and validation.
 
 Additional catalog foundation (2026-10-08): [part-owned tuning permissions and 128 new hardware choices](../reports/part-hardware/CHANGES.md), integrated with shared race/physical-bench resolution. Preserve physical turbo-size swaps, fixed/adjustable controller and pulley distinctions, supported final-drive gearsets, saved-value enforcement and unrestricted raw acoustic experiments during remaining phases. Physical capture model was v12; the approved service/fluids extension uses v13. This records the original catalog extension; final integration acceptance is in the completion record below.
 

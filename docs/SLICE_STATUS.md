@@ -2,7 +2,7 @@
 
 **2A–2L and 3A–3H developer acceptance are complete.** See [phase plan](IMPLEMENTATION_PHASES.md), [full Slice 3 audit](../reports/SLICE_3_AUDIT.md), [career](CAREER_PROGRESSION.md), [garage business](GARAGE_BUSINESS.md) and [economy balance](ECONOMY_BALANCE.md).
 
-**Slice 4: dialog X hover correction ready for user review (2026-10-10).** Close brightens with an accent border on hover, retains its darker mouse-down face and clears hover on pointer leave without a focus highlight. All Settings categories/drafts, hierarchy/alignment, Apply/Cancel and no-Tab rules remain. See [latest checks/review](../reports/phases/4b/13-CLOSE-HOVER.md) and [shared control standard](NATIVE_UI_DESIGN.md). Stop before another interface; technical checks are separate from human visual acceptance.
+**Slice 4: footer diagonals and browser direction ready for review (2026-10-10).** Both footer ends use straight mirrored diagonal marks. Cars/parts grids with search/filtering and sorting are recorded; 4D Garage is recommended next, beginning with its owned-car grid, but not started. My cars/Dealership and later Build grouping remain proposals. Settings, shared controls and F8 remain. See [latest checks/review](../reports/phases/4b/14-FOOTER-GRID-DIRECTION.md) and [browser direction](NATIVE_UI_DESIGN.md#car-and-part-browsers-2026-10-10). Technical checks are separate from human visual acceptance; stop before another control.
 
 Source of scope: [objective.md](objective.md), section 58. The eight-car roster includes the requested pickup, three-cylinder hatch, AWD turbo sedan, inline-six GT and supercharged V8. The four new mechanical configurations reuse existing layered placeholder bodies. Mechanics and editable data take priority over finished graphics or menus.
 
