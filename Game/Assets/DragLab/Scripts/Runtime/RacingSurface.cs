@@ -132,16 +132,40 @@ namespace DragLab.Runtime
         void FooterTrim(float w,float h)
         {
             Face(0,0,w,8,C(.065f,.08f,.095f));
-            Face(26,7,w-52,1,C(.43f,.47f,.52f,.5f));
-            FadeLine(28,7,w*.42f-28,1.5f,false);
-            FadeLine(w*.58f,7,w*.42f-28,1.5f,true);
+            Face(27,7,w-54,1,C(.43f,.47f,.52f,.5f));
             for (int side = 0; side < 2; side++)
             {
                 System.Func<float,float,Vector2> point = (x,y) => new Vector2(side==0?x:w-x,y);
-                // Separate straight slashes, mirrored at the opposite corner.
-                // No bent terminal or horizontal lead-in to create a zigzag.
-                for (int mark = 0; mark < 3; mark++)
-                    SmoothStroke(point(2+mark*8,1),point(10+mark*8,7),1.2f,A(mark==2?.84f:.47f));
+                FooterRail(w,side==1);
+                for (int mark = 0; mark < 2; mark++)
+                    SmoothStroke(point(2+mark*8,1),point(10+mark*8,7),1.2f,A(.47f));
+            }
+        }
+        void FooterRail(float w,bool right)
+        {
+            Vector2 start = new Vector2(18,1), join = new Vector2(27,7.75f);
+            Vector2 normal = new Vector2(join.y-start.y,start.x-join.x).normalized;
+            Vector2 miter = (normal+Vector2.down).normalized;
+            const float halfWidth = .75f;
+            Vector2[] points = {start,join,new Vector2(w*.42f,join.y)};
+            Vector2[] edges = {normal*halfWidth,miter*(halfWidth/Vector2.Dot(miter,Vector2.down)),Vector2.down*halfWidth};
+            Color red = A(.96f,0,.88f), clear = red; clear.a = 0;
+            float fringe = 1/Mathf.Max(1,scaledPixelsPerPoint);
+            System.Func<Vector2,Vector2> mirror = p => right?new Vector2(w-p.x,p.y):p;
+            void RailQuad(Vector2 a,Vector2 b,Vector2 c,Vector2 d,Color ca,Color cb,Color cc,Color cd)
+            {
+                if (right) Quad(mirror(d),mirror(c),mirror(b),mirror(a),cd,cc,cb,ca);
+                else Quad(a,b,c,d,ca,cb,cc,cd);
+            }
+            for (int segment = 0; segment < 2; segment++)
+            {
+                Vector2 a = points[segment], b = points[segment+1];
+                Vector2 ai = edges[segment], bi = edges[segment+1];
+                Vector2 ao = ai*(1+fringe/halfWidth), bo = bi*(1+fringe/halfWidth);
+                Color end = segment==0?red:clear;
+                RailQuad(a+ai,b+bi,b-bi,a-ai,red,end,end,red);
+                RailQuad(a+ao,b+bo,b+bi,a+ai,clear,clear,end,red);
+                RailQuad(a-ai,b-bi,b-bo,a-ao,red,end,clear,clear);
             }
         }
         void FadeLine(float x,float y,float w,float h,bool reverse)

@@ -1,0 +1,4 @@
+PASS: 1280x720 left diagonal and horizontal rail form one connected red pixel component (8-neighbor coverage; R>70, R-G>25).
+PASS: 1280x720 right diagonal and horizontal rail form one connected red pixel component (8-neighbor coverage; R>70, R-G>25).
+PASS: 3840x2160 left diagonal and horizontal rail form one connected red pixel component (8-neighbor coverage; R>70, R-G>25).
+PASS: 3840x2160 right diagonal and horizontal rail form one connected red pixel component (8-neighbor coverage; R>70, R-G>25).
