@@ -2,7 +2,7 @@
 
 **2A–2L and 3A–3H developer acceptance are complete.** See [phase plan](IMPLEMENTATION_PHASES.md), [full Slice 3 audit](../reports/SLICE_3_AUDIT.md), [career](CAREER_PROGRESSION.md), [garage business](GARAGE_BUSINESS.md) and [economy balance](ECONOMY_BALANCE.md).
 
-**Slice 4: Settings hierarchy/alignment correction ready for user review (2026-10-10).** Bulk presets are grouped separately from individual settings; Settings has a right inset, constrained text uses shared vertical alignment and dialogs reuse the panel corner accents. All Settings categories/drafts, Apply/Cancel and no-focus/no-Tab policy with mouse-down feedback remain. See [latest checks/review](../reports/phases/4b/12-HIERARCHY-ALIGNMENT.md) and [shared control standard](NATIVE_UI_DESIGN.md). Stop before another interface; technical checks are separate from human visual acceptance.
+**Slice 4: dialog X hover correction ready for user review (2026-10-10).** Close brightens with an accent border on hover, retains its darker mouse-down face and clears hover on pointer leave without a focus highlight. All Settings categories/drafts, hierarchy/alignment, Apply/Cancel and no-Tab rules remain. See [latest checks/review](../reports/phases/4b/13-CLOSE-HOVER.md) and [shared control standard](NATIVE_UI_DESIGN.md). Stop before another interface; technical checks are separate from human visual acceptance.
 
 Source of scope: [objective.md](objective.md), section 58. The eight-car roster includes the requested pickup, three-cylinder hatch, AWD turbo sedan, inline-six GT and supercharged V8. The four new mechanical configurations reuse existing layered placeholder bodies. Mechanics and editable data take priority over finished graphics or menus.
 

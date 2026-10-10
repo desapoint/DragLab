@@ -111,6 +111,8 @@ Keyboard/slider ownership is local to bench operating controls, not a lock on th
 
 ## Current handoff
 
+Latest requested control correction: [dialog X hover](../reports/phases/4b/13-CLOSE-HOVER.md), preserving pressed feedback and no-focus/no-Tab rules. Review it before another increment.
+
 **Full native menu Settings and its requested control refinement are technically ready for user review.** [Settings behavior](../reports/phases/4b/08-SETTINGS.md) and [control correction](../reports/phases/4b/09-CONTROL-POLISH.md) and [palette/layout correction](../reports/phases/4b/10-PALETTE-LAYOUT.md) and [shared control/input standard](../reports/phases/4b/11-CONTROL-STANDARD.md) and [hierarchy/alignment correction](../reports/phases/4b/12-HIERARCHY-ALIGNMENT.md) retain all existing options with draft Apply/confirmation, Revert and Cancel return. Final build and check counts are recorded in the latest report. User visual acceptance is pending; stop before another interface or control checkpoint. Neither 4B nor 4C is silently accepted by those checks.
 
 The [original shell report](../reports/phases/4b/05-NATIVE-SHELL.md), [original F8 evidence](../reports/phases/4b/01-COMPARISON.md) and historical 4A coverage remain archived baselines. No inspection drawer, gameplay workspace migration, controller/remapping or mobile acceptance is included. True 4K render-target evidence complements the monitor-limited 3360-wide window test.
