@@ -10,6 +10,8 @@ Native UI direction is now recorded in [NATIVE_UI_DESIGN.md](NATIVE_UI_DESIGN.md
 
 Additional requirements recorded: recognizable icons, info dialogs for secondary details, four primary part stats (HP/torque/weight/durability) and actual change effects; common responsive scaling and anchors for resolution/window-mode changes, including top full-width navigation and right/full-bar-height Settings. Documentation only; native resize/device verification remains pending implementation.
 
+Latest selections: filled icons; clear 1080p/sharp 4K presentation with current windowed defaults and mostly stable logical element sizes; Garage/Build/Tuning/Race/Business/Data navigation; future current-car slide-in inspection overlay left of Settings. New bench navigation/presentation is deferred while legacy tools remain. Both design replies in the user-opened reference chat have now been read; [reference candidates](NATIVE_UI_REFERENCE_NOTES.md) are not blanket approval of its layouts or additional mechanics. No runtime change in this note.
+
 Current Slice 3 progress: eight-car collection, retained engine assemblies, saved configurations, immutable paid quotes/salvage, 21 career events, exact reserved garage jobs and captured offline accrual are implemented. Full-loop funded scenarios preserve actual fuel/fluids/wear and viable recovery. Prices are calibrated prototype values, with human pacing review still required. 3H passed the integrated interruption/migration/save gate and complete domain/Windows reruns; see [ordered phases](IMPLEMENTATION_PHASES.md).
 
 ## Implemented milestone

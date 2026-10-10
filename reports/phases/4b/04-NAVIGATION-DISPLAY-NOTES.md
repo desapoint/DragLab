@@ -1,0 +1,11 @@
+# Filled icons, display targets and inspection drawer direction (2026-10-09)
+
+Documentation checkpoint following `d0d1021`; no runtime implementation or phase completion.
+
+Updated the [native UI contract](../../../docs/NATIVE_UI_DESIGN.md): filled icons, clear 1080p and crisp 4K presentation, current windowed defaults preserved, most elements retaining logical size, and anchors/reflow before unnecessary scaling. Read-only inspection of `Game/ProjectSettings/ProjectSettings.asset` confirms configured 1280×720, resizable window and windowed mode; no project settings changed.
+
+Main navigation order is Garage, Build, Tuning, Race, Business, Data. Reserve future current-car inspection immediately left of Settings: a right-side overlay drawer with preview, dyno, full stats/specifications, warnings, wear and failed parts. Underlying routes/drafts and actual applied car state remain authoritative. Detailed Data grouping/drawer interactions are not inferred from destination names. No new bench navigation/presentation is requested; retain existing developer tools and defer final packaging decisions.
+
+The supplied [shared conversation](https://chatgpt.com/share/6ac9ad7b-1d68-83e9-afe7-f91f683fe285) is reference-only. Initial web fetch returned a cache miss, hidden browser fallback timed out and direct conversation reading exposed only user prompts/content-reference placeholders. The user then opened [Design Racing Game Navigation](https://chatgpt.com/c/6ac9abdf-4ff0-83e9-a4e4-7552526c48bc) in the sidebar. Browser access successfully exposed both complete design replies. [Reference notes](../../../docs/NATIVE_UI_REFERENCE_NOTES.md) separate resource/condition/subsystem/warning/Data candidates from unselected new fluids, sensors/inspection mechanics, permanent sidebar layouts and expanded gameplay. User choices take precedence; no additional mechanic or widget is implemented.
+
+Checks: explicit UTF-8/garbled-text scan, local Markdown links, requirement coverage and Git whitespace/staged diff inspection. No `Game/` changes; no Unity build/native 4K or resize verification rerun for this documentation checkpoint. Historical Windows/F8 evidence remains unchanged. Settings is still the first implementation target, one requested control/minimal infrastructure increment at a time.
