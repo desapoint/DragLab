@@ -10,6 +10,21 @@ namespace DragLab.Domain.Mechanics
     }
     public static class VehicleCollection
     {
+        public const int NameLimit = 48;
+        public static string NormalizeName(string name)
+        {
+            name = (name ?? "").Trim();
+            if (name.Length > NameLimit || name.Any(char.IsControl)) throw new InvalidOperationException("Use up to 48 characters on one line.");
+            return name;
+        }
+        public static void Rename(PlayerProfile profile, string instanceId, string name)
+        {
+            var car = profile.cars.Find(c => c.instanceId == instanceId) ?? throw new InvalidOperationException("Owned car no longer exists.");
+            if (profile.runCheckpoints.Any(r => !r.settled)) throw new InvalidOperationException("Close the active run before renaming a car.");
+            car.customName = NormalizeName(name);
+        }
+        public static string DisplayName(MechanicalCatalog catalog, OwnedCar car)
+        { return string.IsNullOrWhiteSpace(car.customName) ? catalog.Spec(car.vehicleId).displayName : car.customName; }
         public static void Select(PlayerProfile profile, string instanceId)
         {
             var car = profile.cars.Find(c => c.instanceId == instanceId) ?? throw new InvalidOperationException("Owned car no longer exists.");
@@ -29,6 +44,6 @@ namespace DragLab.Domain.Mechanics
             return car.instanceId;
         }
         public static string Label(MechanicalCatalog catalog, OwnedCar car)
-        { return catalog.Spec(car.vehicleId).displayName + " / " + car.instanceId.Substring(Math.Max(0, car.instanceId.Length - 6)); }
+        { return DisplayName(catalog,car) + " / " + car.instanceId.Substring(Math.Max(0, car.instanceId.Length - 6)); }
     }
 }

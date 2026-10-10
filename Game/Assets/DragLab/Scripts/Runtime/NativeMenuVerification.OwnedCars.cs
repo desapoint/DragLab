@@ -134,6 +134,8 @@ namespace DragLab.Runtime
                 yield return Click(input,"ownedCar:"+fixture.cars[2].instanceId);yield return Click(input,"ownedUseCar");fixture=game.Profile;
                 Check(!shell.OwnedDetailsOpen && fixture.selectedOwnedVehicleId==fixture.cars[2].instanceId && string.IsNullOrEmpty(fixture.SelectedCar.engineAssemblyId),"Incomplete cars remain selectable for management without recreating an engine");
                 yield return Capture("owned-cars-selected");
+                yield return RenameCarChecks(input,first.instanceId);
+                fixture=game.Profile;
                 saved=File.ReadAllText(ProfileStore.FilePath);
                 fixture.cars.Clear();shell.InvalidateOwnedGrid();shell.Refresh();yield return Capture("owned-cars-empty");
                 Check(shell.Root.Query(className:"owned-car-card").ToList().Count==0 && shell.Root.Q<Label>(className:"car-empty").text=="No owned cars","Empty garage shows no fabricated car");
@@ -147,6 +149,61 @@ namespace DragLab.Runtime
                 else if(File.Exists(ProfileStore.FilePath+".bak"))File.Delete(ProfileStore.FilePath+".bak");
                 shell.InvalidateOwnedGrid();shell.Refresh();
             }
+        }
+        IEnumerator RenameCarChecks(WindowsKeyboardProbe input, string id)
+        {
+            var before = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(game.Profile)); before.catalog=game.Profile.catalog;
+            var originalCar = before.cars.Find(car=>car.instanceId==id);
+            string originalName=originalCar.customName, saved=File.ReadAllText(ProfileStore.FilePath);
+            var oldCar=JsonUtility.FromJson<OwnedCar>("{\"vehicleId\":\"starter-hatch\"}");
+            Check(VehicleCollection.DisplayName(before.catalog,oldCar)==before.catalog.Spec(oldCar.vehicleId).displayName,"Existing owned-car data without a custom name falls back to the model name");
+            yield return Click(input,"ownedCar:"+id);yield return Click(input,"renameOwnedCar");
+            var field=shell.Root.Q<TextField>("ownedCarName");
+            Check(shell.ModalOpen && !shell.Root.Q("ownedDetails").enabledInHierarchy && field.maxLength==48 && field.tabIndex==-1,"Pencil opens a themed rename form with modal ownership and a bounded editable input");
+            Check(!shell.Root.Q("dialogSave").enabledInHierarchy,"Unchanged name cannot create a redundant save");
+            yield return Click(input,"ownedCarName");
+            foreach(char letter in "track build")yield return Key(input,(ushort)(letter==' '?0x20:char.ToUpperInvariant(letter)));
+            Check(field.value=="track build" && shell.EditingText,"Real keyboard text entry edits the name draft");
+            yield return Key(input,0x77);Check(shell.Visible && shell.ModalOpen && field.value=="track build","F8 cannot bypass a rename draft or confirmation");
+            yield return Key(input,0x09);Check(shell.EditingText && shell.ModalOpen,"Rename form preserves the no-Tab-navigation policy");
+            yield return Capture("owned-car-rename-dialog");
+            yield return Click(input,"dialogCancel");
+            Check(!shell.ModalOpen && shell.OwnedDetailsOpen && JsonUtility.ToJson(game.Profile)==JsonUtility.ToJson(before) && File.ReadAllText(ProfileStore.FilePath)==saved,"Cancel discards the typed name without leaving details or saving");
+            yield return Click(input,"renameOwnedCar");shell.Root.Q<TextField>("ownedCarName").value="discard x";yield return Click(input,"modalClose");
+            Check(!shell.ModalOpen && shell.OwnedDetailsOpen && File.ReadAllText(ProfileStore.FilePath)==saved,"Rename X discards the draft and retains the details page");
+            yield return Click(input,"renameOwnedCar");shell.Root.Q<TextField>("ownedCarName").value="discard escape";yield return Key(input,0x1b);
+            Check(!shell.ModalOpen && shell.OwnedDetailsOpen && File.ReadAllText(ProfileStore.FilePath)==saved,"Escape closes only the rename dialog, without cascading to Back");
+            yield return Click(input,"renameOwnedCar");field=shell.Root.Q<TextField>("ownedCarName");field.value="  Track build  ";
+            Check(JsonUtility.ToJson(game.Profile)==JsonUtility.ToJson(before) && File.ReadAllText(ProfileStore.FilePath)==saved,"Previewing a changed name does not mutate assets or write saves");
+            yield return Click(input,"dialogSave");
+            Check(!shell.ModalOpen && shell.OwnedDetailsOpen && shell.Root.Q<Label>("ownedDetailTitle").text=="Track build","Confirming a name retains details and updates its heading");
+            var stored=JsonUtility.FromJson<PlayerProfile>(File.ReadAllText(ProfileStore.FilePath)); stored.catalog=before.catalog;
+            Check(stored.cars.Find(car=>car.instanceId==id).customName=="Track build" && game.Profile.revision==before.revision+1,"Trimmed per-instance name survives save deserialization with exactly one transaction");
+            var unchanged=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(game.Profile));unchanged.revision=before.revision;unchanged.cars.Find(car=>car.instanceId==id).customName=originalName;
+            Check(JsonUtility.ToJson(unchanged)==JsonUtility.ToJson(before),"Renaming preserves selection, all other names, parts, condition, resources, settings and records");
+            Check(VehicleCollection.Label(stored.catalog,stored.cars.Find(car=>car.instanceId==id)).StartsWith("Track build / "),"Shared legacy ownership labels also identify the renamed build");
+            yield return Click(input,"ownedBack");
+            Check(shell.Root.Q("ownedCar:"+id).Q<Label>(className:"car-card-title").text=="Track build" && game.Profile.cars.Where(car=>car.vehicleId==originalCar.vehicleId && car.instanceId!=id).All(car=>car.customName==before.cars.Find(old=>old.instanceId==car.instanceId).customName),"Grid uses the custom name without renaming duplicate models");
+            yield return Capture("owned-car-renamed-grid");
+            saved=File.ReadAllText(ProfileStore.FilePath);
+            Check(game.RenameNativeCar(id,game.Profile.revision,"Track build") && File.ReadAllText(ProfileStore.FilePath)==saved,"Same-name command is a no-op without a save");
+            Check(!game.RenameNativeCar(id,game.Profile.revision-1,"stale") && !game.RenameNativeCar("missing-car",game.Profile.revision,"missing") && !game.RenameNativeCar(id,game.Profile.revision,new string('x',49)) && !game.RenameNativeCar(id,game.Profile.revision,"bad\nname") && File.ReadAllText(ProfileStore.FilePath)==saved,"Stale/missing targets and overlong/multiline names reject without saving");
+            yield return Click(input,"ownedCar:"+id);yield return Click(input,"renameOwnedCar");field=shell.Root.Q<TextField>("ownedCarName");field.value="Retry build";
+            using(var locked=new FileStream(ProfileStore.FilePath,FileMode.Open,FileAccess.Read,FileShare.Read)) {
+                yield return Click(input,"dialogSave");
+                Check(shell.ModalOpen && field.value=="Retry build" && !string.IsNullOrEmpty(shell.Root.Q<Label>("renameCarError").text) && game.Profile.cars.Find(car=>car.instanceId==id).customName=="Track build" && File.ReadAllText(ProfileStore.FilePath)==saved,"Failed rename save retains the draft, reports an inline error and rolls back the name");
+            }
+            yield return Click(input,"dialogSave");Check(!shell.ModalOpen && game.Profile.cars.Find(car=>car.instanceId==id).customName=="Retry build","Rename can retry after a save failure");
+            yield return Click(input,"renameOwnedCar");field=shell.Root.Q<TextField>("ownedCarName");field.value=new string('W',48);
+            Screen.SetResolution(1024,768,false);yield return new WaitForSecondsRealtime(.4f);shell.Refresh();yield return new WaitForEndOfFrame();
+            Check(shell.Root.Q("dialogSave").worldBound.xMax<=shell.Root.worldBound.xMax && field.worldBound.xMin>=0 && field.worldBound.xMax<=shell.Root.worldBound.xMax,"Rename input and confirmation fit the compact window");
+            yield return Capture("owned-car-rename-1024");yield return Click(input,"dialogSave");yield return new WaitForEndOfFrame();
+            Check(shell.Root.Q("renameOwnedCar").worldBound.xMax<=shell.Root.worldBound.xMax && !shell.Root.Q<Label>("ownedDetailTitle").enableRichText,"Maximum-length headings keep the pencil reachable and render names as plain text");
+            yield return Capture("owned-car-long-name-1024");
+            yield return Click(input,"renameOwnedCar");shell.Root.Q<TextField>("ownedCarName").value="";yield return Click(input,"dialogSave");
+            Check(shell.Root.Q<Label>("ownedDetailTitle").text==before.catalog.Spec(originalCar.vehicleId).displayName && game.Profile.cars.Find(car=>car.instanceId==id).customName=="","Clearing the name explicitly restores the model name");
+            yield return Click(input,"ownedBack");
+            Screen.SetResolution(1280,720,false);yield return new WaitForSecondsRealtime(.3f);
         }
 #endif
     }

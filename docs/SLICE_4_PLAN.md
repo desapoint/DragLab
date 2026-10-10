@@ -11,6 +11,8 @@ Owned-grid clarification: keep exactly two elongated cards per row, previews lef
 
 User approved Garage access grouping and requested the immediate next interaction: card click/details page with Back and Use this car, delivered as [4D.2](../reports/phases/4d/04-CAR-SELECTION.md). This explicitly moves selection before filters/sorting. Remaining access points require their own reviewed checkpoints; full inspection/drawer is not included.
 
+Requested next control: per-owned-car naming in [4D.3](../reports/phases/4d/05-CAR-NAMING.md), using a details pencil and shared input/confirmation dialog. It is a cosmetic identity label, never a model/asset/configuration swap. Later controls remain pending review.
+
 ## Goal and boundaries
 
 Make the existing mechanics, ownership, economy and development tools usable through scalable interfaces and keyboard, controller and touch input. Migrate one workflow at a time without rewriting the simulation or silently simplifying advanced options. Finish functional layout, navigation, feedback and readability here; original vehicle artwork, extensive content and final visual/audio finish remain Slice 5. Storefront integration and commercial hardening remain Slice 6.

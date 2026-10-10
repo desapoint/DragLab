@@ -40,6 +40,7 @@ namespace DragLab.Domain
         public EngineRebuildJob engineRebuild;
         public int massVersion;
         public string vehicleId;
+        public string customName;
         public Tune tune = new Tune();
         public string paintHex = "#58C7BA";
         public List<Tune> presets = new List<Tune>();

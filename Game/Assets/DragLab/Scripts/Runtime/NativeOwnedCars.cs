@@ -43,7 +43,9 @@ namespace DragLab.Runtime
             var heading = new VisualElement(); heading.AddToClassList("car-details-heading"); ownedDetails.Add(heading);
             var back = new Button(BackToOwnedCars) { name = "ownedBack", tooltip = "Back to owned cars" }; back.AddToClassList("action-button"); back.AddToClassList("car-back-button");
             back.Add(new FilledMenuIcon("Back")); heading.Add(back); AddSurface(back,RacingSurface.Kind.SecondaryAction);
-            var title = new Label { name = "ownedDetailTitle" }; title.AddToClassList("car-detail-title"); heading.Add(title);
+            var title = new Label { name = "ownedDetailTitle", enableRichText = false }; title.AddToClassList("car-detail-title"); heading.Add(title);
+            var rename = new Button(OpenOwnedCarRename) { name = "renameOwnedCar", tooltip = "Rename car" }; rename.AddToClassList("action-button"); rename.AddToClassList("car-rename-button");
+            rename.Add(new FilledMenuIcon("Pencil")); heading.Add(rename); AddSurface(rename,RacingSurface.Kind.SecondaryAction);
             var frame = new VisualElement(); frame.AddToClassList("car-details-frame"); ownedDetails.Add(frame); AddSurface(frame,RacingSurface.Kind.Panel);
             var detailScroll = new ScrollView { name = "ownedDetailScroll", horizontalScrollerVisibility = ScrollerVisibility.Hidden }; detailScroll.AddToClassList("car-details-scroll"); frame.Add(detailScroll);
             ownedDetailContent = new VisualElement { name = "ownedCarDetails" }; ownedDetailContent.AddToClassList("car-details-content"); detailScroll.Add(ownedDetailContent);
@@ -92,11 +94,11 @@ namespace DragLab.Runtime
             var probes = new List<Tuple<string,InspectionBuild,CarSimulation>>();
             foreach (var car in profile.cars) {
                 string id = car.instanceId;
-                var card = new Button(() => OpenOwnedCar(id)) { name = "ownedCar:"+id, tooltip = "View car · "+id };
+                var card = new Button(() => OpenOwnedCar(id)) { name = "ownedCar:"+id, tooltip = VehicleCollection.DisplayName(profile.catalog,car)+" · "+id };
                 card.AddToClassList("owned-car-card"); card.AddToClassList("clickable-panel"); ownedGrid.Add(card);
                 AddSurface(card,RacingSurface.Kind.Panel); ownedSurfaces.Add(surfaces[surfaces.Count-1]);
                 var heading = new VisualElement(); heading.AddToClassList("car-card-heading"); card.Add(heading);
-                var title = new Label(profile.catalog.Spec(car.vehicleId).displayName); title.AddToClassList("car-card-title"); heading.Add(title);
+                var title = new Label(VehicleCollection.DisplayName(profile.catalog,car)) { enableRichText = false }; title.AddToClassList("car-card-title"); heading.Add(title);
                 if (car.instanceId == profile.SelectedCar?.instanceId) { var current = new Label("CURRENT"); current.AddToClassList("car-current"); heading.Add(current); }
                 var identity = new Label("#"+car.instanceId.Substring(Math.Max(0,car.instanceId.Length-6))); identity.AddToClassList("car-identity"); card.Add(identity);
                 var body = new VisualElement(); body.AddToClassList("car-card-body"); card.Add(body);
@@ -151,6 +153,35 @@ namespace DragLab.Runtime
             ownedDetailId = id;
             RefreshOwnedDetails(); Refresh();
         }
+        void OpenOwnedCarRename()
+        {
+            if (ModalOpen || !OwnedDetailsOpen) return;
+            string id = ownedDetailId;
+            var car = game.Profile.cars.Find(item => item.instanceId == id);
+            if (car == null) return;
+            long revision = game.Profile.revision;
+            var input = new TextField { name = "ownedCarName", maxLength = VehicleCollection.NameLimit, value = car.customName ?? "", tooltip = "Blank restores the model name" };
+            input.AddToClassList("setting-text");
+            var error = new Label { name = "renameCarError", enableRichText = false }; error.AddToClassList("car-critical");
+            OpenDialog("Rename car", null, new[] {
+                new DialogAction("Cancel",CloseDialog),
+                new DialogAction("Save",() => {
+                    if (!game.RenameNativeCar(id,revision,input.value)) { error.text = game.NativeNotice; return; }
+                    CloseDialog(); Refresh();
+                },true)
+            }, populate:content => {
+                content.Add(input);
+                var fallback = new Label("Blank: "+game.Profile.catalog.Spec(car.vehicleId).displayName) { name = "renameCarFallback", enableRichText = false };
+                fallback.AddToClassList("car-name-fallback"); content.Add(fallback); content.Add(error);
+            });
+            var save = root.Q<Button>("dialogSave");
+            void UpdateRename() {
+                try { string name = VehicleCollection.NormalizeName(input.value); error.text = ""; save.SetEnabled(name != (car.customName ?? "")); }
+                catch (InvalidOperationException invalid) { error.text = invalid.Message; save.SetEnabled(false); }
+            }
+            input.RegisterValueChangedCallback(_ => UpdateRename()); UpdateRename();
+            input.Focus(); ExcludeTabTraversal();
+        }
         void BackToOwnedCars()
         {
             ownedDetailId = null; ownedDetailContent.Clear();
@@ -166,7 +197,7 @@ namespace DragLab.Runtime
             var card = ownedGrid.Q("ownedCar:"+ownedDetailId);
             if (car == null || card == null) { ownedDetailId = null; ownedDetailContent.Clear(); ownedDetails.AddToClassList("hidden"); if(game.ScreenName=="Garage")ownedScroll.RemoveFromClassList("hidden"); return; }
             ownedDetailRevision = profile.revision;
-            root.Q<Label>("ownedDetailTitle").text = profile.catalog.Spec(car.vehicleId).displayName;
+            root.Q<Label>("ownedDetailTitle").text = VehicleCollection.DisplayName(profile.catalog,car);
             root.Q<Label>("carSelectionError").text = "";
             ownedDetailContent.Clear(); ownedDetailContent.tooltip = car.instanceId;
             var identity = new Label("#"+car.instanceId.Substring(Math.Max(0,car.instanceId.Length-6))); identity.AddToClassList("car-identity"); ownedDetailContent.Add(identity);

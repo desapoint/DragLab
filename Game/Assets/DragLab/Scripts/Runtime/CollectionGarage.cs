@@ -6,6 +6,19 @@ namespace DragLab.Runtime
 {
     public sealed partial class PrototypeGame
     {
+        internal bool RenameNativeCar(string id, long revision, string name)
+        {
+            if (screen != "Garage" || pendingAction != null) { notice = "Garage is no longer available."; return false; }
+            if (profile.revision != revision) { notice = "Car details changed. Close and reopen Rename."; return false; }
+            var car = profile.cars.Find(item => item.instanceId == id);
+            if (car == null) { notice = "Owned car no longer exists."; return false; }
+            string normalized;
+            try { normalized = VehicleCollection.NormalizeName(name); }
+            catch (InvalidOperationException error) { notice = error.Message; return false; }
+            if ((car.customName ?? "") == normalized) return true;
+            if (!CommitParts(revision,p => VehicleCollection.Rename(p,id,normalized))) return false;
+            notice = "Car name saved."; return true;
+        }
         internal bool SelectNativeCar(string id,long revision)
         {
             if (screen != "Garage" || pendingAction != null) { notice = "Garage is no longer available."; return false; }

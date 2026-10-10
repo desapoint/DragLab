@@ -23,6 +23,7 @@ namespace DragLab.Runtime
         readonly Dictionary<string, string> settingLabels = new Dictionary<string, string>();
         readonly List<RacingSurface> dialogSurfaces = new List<RacingSurface>();
         Action dismissDialog;
+        string dialogRoute;
         VisualElement returnFocus;
         internal bool ModalOpen => root != null && !root.Q("modalLayer").ClassListContains("hidden");
         internal bool EditingText
@@ -48,7 +49,6 @@ namespace DragLab.Runtime
             root.Q<Button>("cancelSettings").clicked += () => { ReadApplied(); game.QueueNativeNavigation(game.SettingsReturnRoute); };
             root.Q<Button>("applySettings").clicked += () => ConfirmApply(null);
             root.Q<Button>("modalClose").clicked += CloseDialog;
-            root.RegisterCallback<KeyDownEvent>(evt => { if (evt.keyCode == KeyCode.Escape && ModalOpen) { CloseDialog(); evt.StopPropagation(); } });
             for (int i = 0; i < categories.Length; i++)
             { var page = new VisualElement { name = "page" + categoryIds[i] }; page.AddToClassList("settings-page"); pages.Add(page); root.Q<ScrollView>("settingsScroll").Add(page); }
             BuildDriving(); BuildSound(); BuildUnits(); BuildControls(); BuildGeneral();
@@ -64,7 +64,8 @@ namespace DragLab.Runtime
         }
         void SyncSettingsEntry(string route)
         {
-            if (route != "Settings") { draftDriver = null; if (ModalOpen) CloseDialog(); return; }
+            if (ModalOpen && route != dialogRoute) CloseDialog();
+            if (route != "Settings") { draftDriver = null; return; }
             if (draftDriver == null) { ReadApplied(); UpdateControls(); }
             if (Time.realtimeSinceStartup < nextPreferenceCheck) return;
             nextPreferenceCheck = Time.realtimeSinceStartup + .25f;
@@ -167,12 +168,13 @@ namespace DragLab.Runtime
             internal string label; internal Action action; internal bool primary;
             internal DialogAction(string label, Action action, bool primary = false) { this.label = label; this.action = action; this.primary = primary; }
         }
-        void OpenDialog(string title, string text, DialogAction[] actions, Action dismiss = null)
+        void OpenDialog(string title, string text, DialogAction[] actions, Action dismiss = null, Action<VisualElement> populate = null)
         {
             returnFocus = root.focusController.focusedElement as VisualElement;
             dismissDialog = dismiss;
+            dialogRoute = game.ScreenName;
             root.Q<Label>("modalTitle").text = title;
-            var content = root.Q<ScrollView>("modalContent"); content.Clear(); content.Add(new Label(text));
+            var content = root.Q<ScrollView>("modalContent"); content.Clear(); if (!string.IsNullOrEmpty(text)) content.Add(new Label(text)); populate?.Invoke(content);
             var buttons = root.Q("modalActions");
             foreach (var surface in dialogSurfaces) surfaces.Remove(surface); dialogSurfaces.Clear(); buttons.Clear();
             foreach (var action in actions)
@@ -182,6 +184,7 @@ namespace DragLab.Runtime
                 buttons.Add(button); AddSurface(button, action.primary ? RacingSurface.Kind.Action : RacingSurface.Kind.SecondaryAction); dialogSurfaces.Add(button.Q<RacingSurface>());
             }
             root.Q("modalLayer").RemoveFromClassList("hidden"); root.Q("navBar").SetEnabled(false); root.Q("settingsTabs").SetEnabled(false); root.Q("settingsBody").SetEnabled(false); root.Q("settingsActions").SetEnabled(false);
+            root.Q(className:"workspace").SetEnabled(false);
             ExcludeTabTraversal();
             root.Q<Button>("modalClose").Focus();
         }
@@ -189,6 +192,7 @@ namespace DragLab.Runtime
         {
             var cancel = dismissDialog; dismissDialog = null; cancel?.Invoke();
             root.Q("modalLayer").AddToClassList("hidden");
+            dialogRoute = null; root.Q(className:"workspace").SetEnabled(true);
             foreach (string id in new[] { "navBar", "settingsTabs", "settingsBody", "settingsActions" }) root.Q(id).SetEnabled(true);
             UpdateControls(); returnFocus?.Focus();
         }

@@ -82,8 +82,10 @@
 .setting-slider .unity-base-slider__dragger-border { display: none; }
 .slider-fill { position: absolute; top: 0; bottom: 0; left: 0; right: 0; border-radius: 3px; overflow: hidden; }
 .setting-number { width: 66px; margin-right: 4px; height: 28px; }
-.setting-number .unity-base-field__input, .setting-number .unity-base-text-field__input { color: #e6e9ed; background-color: #20272e; border-width: 1px; border-top-color: #111820; border-left-color: #111820; border-right-color: #46505b; border-bottom-color: #46505b; border-radius: 4px; padding: 0 8px; }
-.setting-number .unity-text-element { -unity-font-definition: url("project://database/Assets/DragLab/Resources/UI/Fonts/BarlowCondensed-Medium.asset"); font-size: 18px; -unity-text-align: middle-right; }
+.setting-number .unity-base-field__input, .setting-number .unity-base-text-field__input, .setting-text .unity-base-field__input, .setting-text .unity-base-text-field__input { color: #e6e9ed; background-color: #20272e; border-width: 1px; border-top-color: #111820; border-left-color: #111820; border-right-color: #46505b; border-bottom-color: #46505b; border-radius: 4px; padding: 0 8px; }
+.setting-number .unity-text-element, .setting-text .unity-text-element { -unity-font-definition: url("project://database/Assets/DragLab/Resources/UI/Fonts/BarlowCondensed-Medium.asset"); font-size: 18px; -unity-text-align: middle-right; }
+.setting-text { height: 34px; margin: 0 0 8px 0; }
+.setting-text .unity-text-element { -unity-text-align: middle-left; padding-top: 0; padding-bottom: 0; }
 .modal-layer { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background-color: rgba(0,0,0,0.7); align-items: center; justify-content: center; }
 .modal-card { width: 620px; max-width: 90%; max-height: 85%; background-color: transparent; border-width: 0; border-radius: 12px; padding: 20px; }
 .modal-heading { flex-direction: row; align-items: center; margin-bottom: 12px; }
@@ -129,7 +131,7 @@
 .owned-car-card { width: 49%; min-height: 238px; margin: 0 0 16px 0; padding: 14px 16px; border-radius: 12px; overflow: hidden; flex-direction: column; align-items: stretch; color: var(--racing-text); font-size: 16px; -unity-text-align: middle-left; }
 .owned-car-card, .owned-car-card:hover, .owned-car-card:focus, .owned-car-card:active { background-color: transparent; border-width: 0; }
 .car-card-heading { flex-direction: row; align-items: center; }
-.car-card-title { flex-grow: 1; font-size: 23px; margin: 0; padding: 0; -unity-text-align: middle-left; translate: 0 -1px; }
+.car-card-title { flex-grow: 1; flex-shrink: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; font-size: 23px; margin: 0; padding: 0; -unity-text-align: middle-left; translate: 0 -1px; }
 .car-current { color: var(--racing-text); font-size: 14px; -unity-text-align: middle-right; }
 .car-identity { font-size: 16px; color: var(--racing-muted); margin: 0; padding: 0; }
 .car-card-body { flex-direction: row; align-items: center; flex-grow: 1; margin-top: 8px; }
@@ -151,7 +153,10 @@
 .car-details-heading { flex-direction: row; align-items: center; margin-bottom: 16px; flex-shrink: 0; }
 .car-back-button { min-width: 40px; width: 40px; padding: 0; margin-left: 0; margin-right: 16px; }
 .car-back-button .filled-icon { width: 20px; height: 20px; margin: 0; }
-.car-detail-title { font-size: 26px; margin: 0; padding: 0; -unity-text-align: middle-left; }
+.car-detail-title { font-size: 26px; margin: 0; padding: 0; -unity-text-align: middle-left; flex-shrink: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.car-rename-button { min-width: 36px; width: 36px; padding: 0; margin-left: 12px; flex-shrink: 0; }
+.car-rename-button .filled-icon { width: 18px; height: 18px; margin: 0; }
+.modal-content .car-name-fallback { font-size: 16px; color: var(--racing-muted); }
 .car-details-frame { flex-grow: 1; min-height: 0; padding: 22px; border-radius: 12px; overflow: hidden; }
 .car-details-scroll { flex-grow: 1; min-height: 0; }
 .car-details-content { padding-right: 16px; }
