@@ -184,7 +184,7 @@ namespace DragLab.Runtime
         }
         void BackToOwnedCars()
         {
-            ownedDetailId = null; ownedDetailContent.Clear();
+            ownedDetailId = null; ClearOwnedDetailContent();
             root.Q<Label>("carSelectionError").text = "";
             Refresh();
             ownedScroll.schedule.Execute(() => ownedScroll.scrollOffset = ownedReturnScroll);
@@ -195,16 +195,17 @@ namespace DragLab.Runtime
             var profile = game.Profile;
             var car = profile.cars.Find(item => item.instanceId == ownedDetailId);
             var card = ownedGrid.Q("ownedCar:"+ownedDetailId);
-            if (car == null || card == null) { ownedDetailId = null; ownedDetailContent.Clear(); ownedDetails.AddToClassList("hidden"); if(game.ScreenName=="Garage")ownedScroll.RemoveFromClassList("hidden"); return; }
+            if (car == null || card == null) { ownedDetailId = null; ClearOwnedDetailContent(); ownedDetails.AddToClassList("hidden"); if(game.ScreenName=="Garage")ownedScroll.RemoveFromClassList("hidden"); return; }
             ownedDetailRevision = profile.revision;
             root.Q<Label>("ownedDetailTitle").text = VehicleCollection.DisplayName(profile.catalog,car);
             root.Q<Label>("carSelectionError").text = "";
-            ownedDetailContent.Clear(); ownedDetailContent.tooltip = car.instanceId;
+            ClearOwnedDetailContent(); ownedDetailContent.tooltip = car.instanceId;
             var identity = new Label("#"+car.instanceId.Substring(Math.Max(0,car.instanceId.Length-6))); identity.AddToClassList("car-identity"); ownedDetailContent.Add(identity);
             var body = new VisualElement(); body.AddToClassList("car-card-body"); ownedDetailContent.Add(body);
             var visual = new VisualElement(); visual.AddToClassList("car-visual"); body.Add(visual);
             visual.Add(CarPreview(MechanicsOwnership.Resolve(profile,car,profile.catalog),car.paintHex));
             body.Add(CopyCarSummary(card.Q("carSummary")));
+            BuildOwnedMaintenance(car);
             bool current = car.instanceId == profile.selectedOwnedVehicleId;
             ownedUse.SetEnabled(!current); ownedUse.tooltip = current ? "Already the current car" : "Use this owned car";
             ExcludeTabTraversal();

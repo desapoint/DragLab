@@ -13,6 +13,8 @@ User approved Garage access grouping and requested the immediate next interactio
 
 Requested next control: per-owned-car naming in [4D.3](../reports/phases/4d/05-CAR-NAMING.md), using a details pencil and shared input/confirmation dialog. It is a cosmetic identity label, never a model/asset/configuration swap. Later controls remain pending review.
 
+Requested 4D.4 checkpoint: quick maintenance in car details, including the user's oil-change/other-service clarification. [Maintenance delivery](../reports/phases/4d/06-QUICK-MAINTENANCE.md) reuses existing liquids, service/repair/replacement and timed rebuild operations. This explicitly authorizes the necessary fluid/action controls together; later Garage migrations remain separate reviewed increments.
+
 ## Goal and boundaries
 
 Make the existing mechanics, ownership, economy and development tools usable through scalable interfaces and keyboard, controller and touch input. Migrate one workflow at a time without rewriting the simulation or silently simplifying advanced options. Finish functional layout, navigation, feedback and readability here; original vehicle artwork, extensive content and final visual/audio finish remain Slice 5. Storefront integration and commercial hardening remain Slice 6.

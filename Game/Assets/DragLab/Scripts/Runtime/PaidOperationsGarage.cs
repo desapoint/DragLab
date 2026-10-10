@@ -30,6 +30,41 @@ namespace DragLab.Runtime
             var request = JsonUtility.FromJson<PaymentRequest>(quote.RequestJson);
             return CommitParts(quote.Revision, p => PaidEconomy.Pay(p, p.catalog, Costs, PricingPolicy, quote, DateTime.UtcNow.Ticks, request.kind == PaymentKind.Car ? AuthoredOffer(request.offer.model) : null));
         }
+        internal bool CommitNativeMaintenance(PaymentRequest request, long revision, string snapshot, int shownCost, string replacedPartId = null)
+        {
+            try {
+                if (screen != "Garage" || pendingAction != null) throw new InvalidOperationException("Garage is no longer available.");
+                if (profile.revision != revision || !SnapshotEquality.Profile(snapshot,profile,profile.catalog)) throw new InvalidOperationException("Car details changed. Close and reopen maintenance.");
+                if (request == null || !new[] {PaymentKind.Fuel,PaymentKind.Fluids,PaymentKind.OilChange,PaymentKind.CoolantFlush,PaymentKind.ClutchOil,PaymentKind.Repair,PaymentKind.Part,PaymentKind.Rebuild}.Contains(request.kind)) throw new InvalidOperationException("Unsupported maintenance action.");
+                if (request.kind == PaymentKind.Part) {
+                    var car = profile.cars.Find(c => c.instanceId == request.carId);
+                    var old = profile.parts.Find(p => p.instanceId == replacedPartId);
+                    if (car == null || old == null || !request.install || request.targetId != old.definitionId || !car.installed.slots.Any(s => s.partInstanceId == old.instanceId)) throw new InvalidOperationException("Installed component changed. Reopen maintenance.");
+                }
+                var quote=PaidEconomy.Quote(profile,profile.catalog,Costs,PricingPolicy,request,DateTime.UtcNow.Ticks);
+                if (quote.Cost != shownCost) throw new InvalidOperationException("Maintenance price changed. Close and reopen.");
+                if (!PayNow(quote)) return false;
+                if (request.carId == profile.selectedOwnedVehicleId) ShowGarageCar();
+                notice = "Maintenance saved."; return true;
+            } catch (Exception error) { notice = error.Message; return false; }
+        }
+        internal bool CommitNativeService(string carId,long revision,string snapshot,string rebuildId=null)
+        {
+            try {
+                if(screen!="Garage"||pendingAction!=null||profile.revision!=revision||!SnapshotEquality.Profile(snapshot,profile,profile.catalog))throw new InvalidOperationException("Car details changed. Close and reopen maintenance.");
+                if(!CommitParts(revision,p=> {
+                    if(rebuildId!=null)EngineRebuilds.Collect(p,carId,rebuildId,DateTime.UtcNow.Ticks);
+                    else {
+                        var car=p.cars.Find(c=>c.instanceId==carId);EngineRebuilds.RequireAvailable(car);
+                        if(string.IsNullOrEmpty(car.engineAssemblyId))throw new InvalidOperationException("No attached engine to service.");
+                        double capacity=MechanicsOwnership.Resolve(p,car,p.catalog).spec.fluids.oilCapacityLitres;
+                        if(car.fluids.oilLitres<=capacity)throw new InvalidOperationException("There is no excess oil to drain.");
+                        car.fluids.oilLitres=capacity;
+                    }
+                }))return false;
+                if(carId==profile.selectedOwnedVehicleId)ShowGarageCar();notice="Maintenance saved.";return true;
+            }catch(Exception error){notice=error.Message;return false;}
+        }
         void QueuePayment(PaymentRequest request)
         {
             try { var quote = PaidEconomy.Quote(profile, profile.catalog, Costs, PricingPolicy, request, DateTime.UtcNow.Ticks); pendingAction = () => PayNow(quote); }

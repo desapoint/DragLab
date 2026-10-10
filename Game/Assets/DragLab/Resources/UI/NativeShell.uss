@@ -160,6 +160,24 @@
 .car-details-frame { flex-grow: 1; min-height: 0; padding: 22px; border-radius: 12px; overflow: hidden; }
 .car-details-scroll { flex-grow: 1; min-height: 0; }
 .car-details-content { padding-right: 16px; }
-.car-details-content .car-card-body { min-height: 220px; }
+.car-details-content .car-card-body { min-height: 180px; }
 .car-details-actions { flex-direction: row; justify-content: flex-end; align-items: center; margin-top: 16px; flex-shrink: 0; }
 .car-selection-error { flex-grow: 1; white-space: normal; margin: 0; padding: 0; }
+.car-maintenance { margin-top: 14px; }
+.maintenance-summary { font-size: 20px; margin-bottom: 10px; }
+.maintenance-fluid, .maintenance-engine { flex-direction: row; align-items: center; min-height: 42px; flex-wrap: wrap; border-bottom-width: 1px; border-bottom-color: rgba(138,148,157,0.13); }
+.maintenance-fluid-name { width: 92px; font-size: 18px; }
+.maintenance-fluid-level { width: 210px; font-size: 17px; }
+.maintenance-meter { width: 100px; height: 8px; min-height: 0; padding: 0; border-width: 0; margin: 0 14px 0 0; }
+.maintenance-meter .unity-progress-bar__title, .maintenance-meter .unity-progress-bar__title-container { display: none; }
+.maintenance-meter .unity-progress-bar__container { height: 8px; min-height: 0; padding: 0; border-width: 0; }
+.maintenance-meter .unity-progress-bar__background { background-color: #11171d; height: 8px; min-height: 0; padding: 0; border-width: 0; border-radius: 4px; }
+.maintenance-meter .unity-progress-bar__progress { background-color: var(--racing-accent); height: 8px; min-height: 0; padding: 0; border-width: 0; border-radius: 4px; }
+.maintenance-action { min-width: 90px; height: 30px; font-size: 17px; padding: 0 12px; margin: 4px 0 4px 8px; }
+.maintenance-part { flex-direction: row; align-items: center; flex-wrap: wrap; min-height: 60px; border-bottom-width: 1px; border-bottom-color: rgba(138,148,157,0.13); padding: 8px 0; }
+.maintenance-part-caption { flex-grow: 1; min-width: 220px; }
+.maintenance-part-name { font-size: 18px; }
+.maintenance-part-actions { flex-direction: row; flex-wrap: wrap; justify-content: flex-end; }
+.maintenance-quantity { flex-direction: row; align-items: center; margin: 12px 0; }
+.maintenance-quantity .setting-number { width: 90px; }
+.compact .maintenance-meter { width: 75px; }

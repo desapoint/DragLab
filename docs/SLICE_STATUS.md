@@ -2,7 +2,7 @@
 
 **2A–2L and 3A–3H developer acceptance are complete.** See [phase plan](IMPLEMENTATION_PHASES.md), [full Slice 3 audit](../reports/SLICE_3_AUDIT.md), [career](CAREER_PROGRESSION.md), [garage business](GARAGE_BUSINESS.md) and [economy balance](ECONOMY_BALANCE.md).
 
-**Slice 4: 4D.3 owned-car names ready for review (2026-10-10).** Details pencil and rename dialog label exact owned instances, with explicit Save and draft cancellation. Blank restores model name. 4D.2 full-page details/selection and grid styling remain. See [checks/review](../reports/phases/4d/05-CAR-NAMING.md). 4D is not complete; this checkpoint's human acceptance is pending.
+**Slice 4: 4D.4 quick maintenance ready for review (2026-10-10).** Details now expose current fluid levels/refills, oil/filter and coolant/clutch services, appropriate repairs, exact same-spec replacements and the existing rebuild shop. Transactions target the inspected car with quantity/cost confirmation and retained inventory/tunes/condition. See [checks/review](../reports/phases/4d/06-QUICK-MAINTENANCE.md). 4D is not complete; human acceptance is pending.
 
 Source of scope: [objective.md](objective.md), section 58. The eight-car roster includes the requested pickup, three-cylinder hatch, AWD turbo sedan, inline-six GT and supercharged V8. The four new mechanical configurations reuse existing layered placeholder bodies. Mechanics and editable data take priority over finished graphics or menus.
 

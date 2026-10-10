@@ -136,6 +136,8 @@ namespace DragLab.Runtime
                 yield return Capture("owned-cars-selected");
                 yield return RenameCarChecks(input,first.instanceId);
                 fixture=game.Profile;
+                yield return MaintenanceChecks(input,first.instanceId,second.instanceId,fixture.cars[3].instanceId);
+                fixture=game.Profile;
                 saved=File.ReadAllText(ProfileStore.FilePath);
                 fixture.cars.Clear();shell.InvalidateOwnedGrid();shell.Refresh();yield return Capture("owned-cars-empty");
                 Check(shell.Root.Query(className:"owned-car-card").ToList().Count==0 && shell.Root.Q<Label>(className:"car-empty").text=="No owned cars","Empty garage shows no fabricated car");
