@@ -24,13 +24,38 @@ namespace DragLab.Runtime
                 bool differs = stats.curve.Count == healthy.curve.Count && stats.curve.Zip(healthy.curve,(a,b)=>Math.Abs(a.hp-b.hp)>.1 || Math.Abs(a.torque-b.torque)>.1).Any(value=>value);
                 TorqueUnit units = SharedUnitSettings.Current.torque;
                 var legend = new VisualElement(); legend.AddToClassList("car-dyno-legend"); panel.Add(legend);
-                var hp = new Label(stats.peakHp.ToString("F0")+" HP") { tooltip = "Peak at "+stats.hpRpm.ToString("F0")+" RPM" }; hp.AddToClassList("dyno-hp"); legend.Add(hp);
-                var torque = new Label(DisplayUnits.Torque(stats.peakTorque,units).ToString("F0")+" "+DisplayUnits.TorqueLabel(units)) { tooltip = "Peak at "+stats.torqueRpm.ToString("F0")+" RPM" }; torque.AddToClassList("dyno-torque"); legend.Add(torque);
-                if (differs) { var reference = new Label("-- No wear"); reference.AddToClassList("dyno-reference"); legend.Add(reference); }
+                DynoLegend(legend,"HP "+stats.peakHp.ToString("F0"),true,false,"Peak at "+stats.hpRpm.ToString("F0")+" RPM");
+                DynoLegend(legend,"Torque "+DisplayUnits.Torque(stats.peakTorque,units).ToString("F0")+" "+DisplayUnits.TorqueLabel(units),false,false,"Peak at "+stats.torqueRpm.ToString("F0")+" RPM");
+                if (differs) {
+                    DynoLegend(legend,"HP · no wear",true,true,healthy.peakHp.ToString("F0")+" HP at "+healthy.hpRpm.ToString("F0")+" RPM");
+                    DynoLegend(legend,"Torque · no wear",false,true,DisplayUnits.Torque(healthy.peakTorque,units).ToString("F0")+" "+DisplayUnits.TorqueLabel(units)+" at "+healthy.torqueRpm.ToString("F0")+" RPM");
+                }
                 panel.Add(new NativeDynoPlot(stats,differs?healthy:null,units));
                 panel.tooltip = "Estimated engine output at full load and steady boost. Separate HP and torque scales; applied hardware, tune and condition. Dashed curves remove part wear only for comparison; stored fluids and missing hardware stay. No race or recording.";
             } catch (Exception) { var unavailable = new Label("Dyno unavailable"); unavailable.AddToClassList("car-warning"); panel.Add(unavailable); }
             return panel;
+        }
+        static void DynoLegend(VisualElement parent,string text,bool hp,bool healthy,string tooltip)
+        {
+            var entry = new VisualElement { tooltip = tooltip, pickingMode = PickingMode.Ignore };
+            entry.AddToClassList("dyno-legend-entry"); entry.AddToClassList(healthy?hp?"dyno-hp-reference":"dyno-torque-reference":hp?"dyno-hp":"dyno-torque");
+            entry.Add(new DynoLineSample(hp,healthy)); entry.Add(new Label(text)); parent.Add(entry);
+        }
+    }
+
+    internal sealed class DynoLineSample : VisualElement
+    {
+        internal DynoLineSample(bool hp,bool healthy)
+        {
+            AddToClassList("dyno-line-sample"); pickingMode = PickingMode.Ignore;
+            RegisterCallback<CustomStyleResolvedEvent>(_=>MarkDirtyRepaint());
+            generateVisualContent += context => {
+                var painter = context.painter2D; painter.strokeColor = NativeDynoPlot.CurveColor(this,hp,healthy); painter.lineWidth = hp?2.5f:1.8f;
+                float width=contentRect.width,y=contentRect.height*.5f;
+                for(float x=0;x<width;x+=healthy?9:width) {
+                    painter.BeginPath(); painter.MoveTo(new Vector2(x,y)); painter.LineTo(new Vector2(healthy?Math.Min(x+5,width):width,y)); painter.Stroke();
+                }
+            };
         }
     }
 
@@ -41,7 +66,12 @@ namespace DragLab.Runtime
         internal TorqueUnit Units { get; }
         readonly double maxRpm, maxHp, maxTorque;
         const float Left = 38, Right = 46, Top = 20, Bottom = 26;
-        static readonly Color TorqueColor = new Color32(230,191,128,255), ReferenceColor = new Color32(138,165,187,255);
+        static readonly CustomStyleProperty<Color> TorqueProperty = new CustomStyleProperty<Color>("--dyno-torque");
+        static readonly CustomStyleProperty<Color> HealthyHpProperty = new CustomStyleProperty<Color>("--dyno-hp-reference");
+        static readonly CustomStyleProperty<Color> HealthyTorqueProperty = new CustomStyleProperty<Color>("--dyno-torque-reference");
+        internal static Color CurveColor(VisualElement element,bool hp,bool healthy)
+            => healthy ? RacingPalette.Read(element,hp?HealthyHpProperty:HealthyTorqueProperty,hp?new Color32(116,191,255,255):new Color32(136,212,181,255))
+                : hp ? RacingPalette.Accent(element) : RacingPalette.Read(element,TorqueProperty,new Color32(230,191,128,255));
 
         internal NativeDynoPlot(CarInspection stats,CarInspection healthy,TorqueUnit units)
         {
@@ -83,7 +113,7 @@ namespace DragLab.Runtime
         }
         void Curve(Painter2D painter,CarInspection stats,Rect plot,bool hp,bool dashed)
         {
-            painter.lineWidth = hp?2.5f:1.8f; painter.strokeColor = dashed?ReferenceColor:hp?RacingPalette.Accent(this):TorqueColor;
+            painter.lineWidth = hp?2.5f:1.8f; painter.strokeColor = CurveColor(this,hp,dashed);
             float distance=0;
             for (int i=1;i<stats.curve.Count;i++) {
                 var a=stats.curve[i-1]; var b=stats.curve[i];
