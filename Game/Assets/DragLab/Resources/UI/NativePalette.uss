@@ -4,6 +4,8 @@
     --racing-text: #eceef1;
     --racing-muted: #afb5be;
     --dyno-torque: #e6bf80;
+    --dyno-hp-preview: #d39eff;
+    --dyno-torque-preview: #f4b170;
     --dyno-hp-reference: #74bfff;
     --dyno-torque-reference: #88d4b5;
     --racing-metal-top: #30363c;

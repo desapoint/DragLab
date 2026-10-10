@@ -64,22 +64,46 @@ namespace DragLab.Runtime
                 Check(shell.Root.Q("ownedCarDetails").Q(className:"car-preview")!=null && shell.Root.Q("ownedCarDetails").Q(className:"car-card-stats").childCount==3,"Details reuse layered preview and common HP/torque/weight facts");
                 var dyno=shell.Root.Q<NativeDynoPlot>("ownedDynoPlot");
                 var expectedSource=InspectionBuild.Capture(fixture,first);var expectedDyno=CarInspection.CalculatePrepared(expectedSource,CarInspection.PrepareCar(expectedSource),false);
-                Check(dyno!=null&&dyno.Inspection.curve.Count==expectedDyno.curve.Count&&Math.Abs(dyno.Inspection.peakHp-expectedDyno.peakHp)<.001&&Math.Abs(dyno.Inspection.peakTorque-expectedDyno.peakTorque)<.001,"Details dyno resolves the inspected applied build through authoritative inspection");
-                Check(dyno.HealthyReference!=null&&dyno.HealthyReference.peakHp>dyno.Inspection.peakHp&&worn.condition.health==.25f,"Details dyno shows reduced worn output and a detached no-wear reference without healing");
+                Check(dyno!=null&&dyno.Series[0].Inspection.curve.Count==expectedDyno.curve.Count&&Math.Abs(dyno.Series[0].Inspection.peakHp-expectedDyno.peakHp)<.001&&Math.Abs(dyno.Series[0].Inspection.peakTorque-expectedDyno.peakTorque)<.001,"Details dyno resolves the inspected applied build through authoritative inspection");
+                Check(dyno.Series[1].Inspection!=null&&dyno.Series[1].Inspection.peakHp>dyno.Series[0].Inspection.peakHp&&worn.condition.health==.25f,"Details dyno shows reduced worn output and a detached no-wear reference without healing");
                 Check(shell.Root.Q("ownedCarDyno").worldBound.xMin>=shell.Root.Q("ownedCarDetails").Q(className:"car-summary").worldBound.xMax&&shell.Root.Q("ownedCarDyno").worldBound.xMax<=shell.Root.Q("ownedDetailsTopRow").worldBound.xMax+1,"Dyno fits to the right of preview/stats in the first details row");
                 shell.Refresh();Check(ReferenceEquals(dyno,shell.Root.Q<NativeDynoPlot>("ownedDynoPlot")),"Unchanged details frames retain the computed dyno without running another simulation");
-                Check(shell.Root.Q("dynoCurrentLegend").Query<Label>().ToList().First().text=="Current"&&shell.Root.Q("dynoNoWearLegend").Query<Label>().ToList().First().text=="No wear"&&shell.Root.Q("dynoNoWearLegend").Query<Label>().ToList().Last().text.Contains(DisplayUnits.Torque(dyno.HealthyReference.peakTorque,dyno.Units).ToString("F0")),"Dyno legend has separate neutral Current/No wear groups with peak figures");
+                Check(shell.Root.Q("dynoCurrentLegend").Query<Label>().ToList().First().text=="Current"&&shell.Root.Q("dynoNoWearLegend").Query<Label>().ToList().First().text=="No wear"&&shell.Root.Q("dynoNoWearLegend").Query<Label>().ToList().Last().text.Contains(DisplayUnits.Torque(dyno.Series[1].Inspection.peakTorque,dyno.Units).ToString("F0")),"Dyno legend has separate neutral Current/No wear groups with peak figures");
                 var detailBar=shell.Root.Q<ScrollView>("ownedDetailScroll").verticalScroller;
                 Check(Mathf.Abs(shell.Root.Q(className:"car-details-frame").worldBound.xMax-detailBar.worldBound.xMax-10)<1&&detailBar.ClassListContains("settings-scrollbar"),"Details scrollbar shares Settings styling and its ten-point right inset");
                 var plot=dyno.PlotRect;var point=dyno.LocalToWorld(new Vector2(plot.center.x,plot.yMin+plot.height*.2f));
                 input.MoveMouseAt((int)point.x,(int)point.y);yield return new WaitForSecondsRealtime(.2f);
                 double middleRpm=expectedSource.build.spec.redlineRpm*.5;var midpoint=expectedDyno.curve.OrderBy(p=>Math.Abs(p.rpm-middleRpm)).First();
-                Check(dyno.HoverRpm.HasValue&&Math.Abs(dyno.HoverRpm.Value-middleRpm)<30&&dyno.HoverCurrent.HasValue&&Math.Abs(dyno.HoverCurrent.Value.hp-midpoint.hp)<2&&Math.Abs(dyno.HoverCurrent.Value.torque-midpoint.torque)<2&&dyno.HoverHealthy.HasValue,"Real pointer hover interpolates current/no-wear figures at the cursor RPM");
+                Check(dyno.HoverRpm.HasValue&&Math.Abs(dyno.HoverRpm.Value-middleRpm)<30&&dyno.HoverSamples[0].HasValue&&Math.Abs(dyno.HoverSamples[0].Value.hp-midpoint.hp)<2&&Math.Abs(dyno.HoverSamples[0].Value.torque-midpoint.torque)<2&&dyno.HoverSamples[1].HasValue,"Real pointer hover interpolates current/no-wear figures at the cursor RPM");
                 var readout=shell.Root.Q("dynoHoverValues");Check(!readout.ClassListContains("hidden")&&readout.worldBound.xMin>=dyno.worldBound.xMin&&readout.worldBound.xMax<=dyno.worldBound.xMax+1,"Hover figures are visible and clamped inside the dyno sheet");
                 yield return Capture("owned-car-dyno-hover");
                 point=dyno.LocalToWorld(new Vector2(plot.xMin+2,plot.center.y));input.MoveMouseAt((int)point.x,(int)point.y);yield return new WaitForSecondsRealtime(.1f);
-                Check(dyno.HoverRpm.HasValue&&!dyno.HoverCurrent.HasValue&&!dyno.HoverHealthy.HasValue,"Hover below the first curve sample does not fabricate idle/output figures");
+                Check(dyno.HoverRpm.HasValue&&!dyno.HoverSamples[0].HasValue&&!dyno.HoverSamples[1].HasValue,"Hover below the first curve sample does not fabricate idle/output figures");
                 input.MoveMouseAt(10,100);yield return new WaitForSecondsRealtime(.1f);Check(!dyno.HoverRpm.HasValue&&readout.ClassListContains("hidden"),"Leaving the plot removes cursor line, intersections and readout");
+                // Exercise reuse as a different caller, with no profile or Garage dependency in the component.
+                var otherSource=fixture.cars.Where(car=>!string.IsNullOrEmpty(car.engineAssemblyId)).Select(car=>InspectionBuild.Capture(fixture,car)).OrderByDescending(source=>source.build.spec.redlineRpm).First();
+                var otherStats=CarInspection.CalculatePrepared(otherSource,CarInspection.PrepareCar(otherSource),false);
+                var series=new[] {
+                    new NativeDynoSeries("Applied","Applied",dyno.Series[0].Inspection,NativeDynoStyle.Primary),
+                    new NativeDynoSeries("Draft","Draft",otherStats,NativeDynoStyle.Alternative),
+                    new NativeDynoSeries("Baseline","Applied without wear",dyno.Series[1].Inspection,NativeDynoStyle.Reference)
+                };
+                var reused=new NativeDynoPanel(series,TorqueUnit.PoundFeet,"comparisonDynoPlot");
+                series[0]=series[1];
+                Check(reused.Plot.Series.Count==3&&reused.Plot.Series[0].Id=="Applied","Shared dyno captures independent labelled series instead of retaining the caller's mutable list");
+                var originalChart=shell.Root.Q("ownedCarDyno");var chartParent=originalChart.parent;int chartIndex=chartParent.IndexOf(originalChart);
+                originalChart.RemoveFromHierarchy();reused.AddToClassList("car-dyno");chartParent.Insert(chartIndex,reused);yield return new WaitForSecondsRealtime(.2f);
+                Check(reused.Q("dynoDraftLegend").Query<Label>().ToList().First().text=="Draft"&&reused.Q("dynoBaselineLegend").Query<Label>().ToList().First().text=="Applied without wear","Shared legend labels belong to the supplied comparison, without hardcoded Current/No wear headings");
+                Check(reused.Plot.RpmLimit>dyno.RpmLimit&&Math.Abs(reused.Plot.RpmLimit-reused.Plot.Series.Max(item=>item.Inspection.source.build.spec.redlineRpm))<.001&&Math.Abs(reused.Plot.HpScale-reused.Plot.Series.Max(item=>item.Inspection.peakHp)*1.08)<.001&&Math.Abs(reused.Plot.TorqueScale-reused.Plot.Series.Max(item=>item.Inspection.peakTorque)*1.08)<.001,"Comparison axes include every supplied build rather than clipping to the first build's limits");
+                Check(reused.Q("dynoDraftLegend").Query<Label>().ToList().Last().text.Contains("lb-ft")&&reused.Plot.Units==TorqueUnit.PoundFeet,"Shared comparison converts displayed torque units while retaining Nm inspections");
+                var reusePoint=reused.Plot.LocalToWorld(reused.Plot.PlotRect.center);input.MoveMouseAt((int)reusePoint.x,(int)reusePoint.y);yield return new WaitForSecondsRealtime(.2f);
+                Check(reused.Plot.HoverRpm.HasValue&&reused.Plot.HoverSamples.All(sample=>sample.HasValue)&&reused.Q<Label>("dynoHoverDraft").text.StartsWith("Draft  ")&&reused.Q<Label>("dynoHoverBaseline").text.StartsWith("Applied without wear  "),"Real pointer inspection synchronizes three labelled builds at one RPM");
+                Check(NativeDynoPlot.CurveColor(reused.Plot,true,NativeDynoStyle.Alternative)!=NativeDynoPlot.CurveColor(reused.Plot,true,NativeDynoStyle.Primary)&&NativeDynoPlot.CurveColor(reused.Plot,true,NativeDynoStyle.Alternative)!=NativeDynoPlot.CurveColor(reused.Plot,true,NativeDynoStyle.Reference),"Optional proposed curve has a distinct shared palette and dash pattern");
+                Check(!reused.Plot.focusable&&reused.Plot.tabIndex==-1&&JsonUtility.ToJson(fixture)==baseline&&File.ReadAllText(ProfileStore.FilePath)==disk,"Shared comparison rendering does not focus, mutate, heal, refill or save player assets");
+                yield return Capture("shared-dyno-three-series");
+                input.MoveMouseAt(10,100);yield return new WaitForSecondsRealtime(.1f);
+                Check(!reused.Plot.HoverRpm.HasValue&&reused.Plot.HoverSamples.All(sample=>!sample.HasValue),"Shared comparison clears all series on pointer leave");
+                reused.RemoveFromHierarchy();chartParent.Insert(chartIndex,originalChart);yield return new WaitForSecondsRealtime(.1f);
                 yield return Key(input,0x77);Check(!shell.Visible,"F8 compares the whole Garage details page");
                 yield return Key(input,0x77);Check(shell.OwnedDetailsOpen,"Returning from F8 retains inspected car details");
                 yield return Key(input,0x50);Check(game.ScreenName=="Garage" && JsonUtility.ToJson(game.Profile)==baseline,"Details block practice shortcut without altering car state");
