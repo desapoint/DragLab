@@ -77,7 +77,7 @@
 .setting-toggle .unity-toggle__checkmark { display: none; }
 .switch-surface { position: absolute; top: 0; right: 0; bottom: 0; left: 0; }
 .setting-slider { flex-grow: 1; margin-right: 12px; height: 28px; }
-.setting-slider .unity-base-slider__tracker { position: absolute; top: 50%; height: 6px; margin-top: -3px; border-radius: 3px; background-color: #11171d; border-width: 0; }
+.setting-slider .unity-base-slider__tracker { position: absolute; top: 50%; height: 6px; margin-top: -3px; border-radius: 3px; background-color: #37414b; border-width: 1px; border-color: #59636e; }
 .setting-slider .unity-base-slider__dragger { top: 50%; width: 18px; height: 18px; margin-top: -9px; background-color: #e4e8ed; border-width: 1px; border-color: #8e97a0; border-radius: 9px; }
 .setting-slider .unity-base-slider__dragger-border { display: none; }
 .slider-fill { position: absolute; top: 0; bottom: 0; left: 0; right: 0; border-radius: 3px; overflow: hidden; }
@@ -167,7 +167,8 @@
 .maintenance-summary { font-size: 20px; margin-bottom: 10px; }
 .maintenance-fluid, .maintenance-engine { flex-direction: row; align-items: center; min-height: 42px; flex-wrap: wrap; border-bottom-width: 1px; border-bottom-color: rgba(138,148,157,0.13); }
 .maintenance-fluid-name { width: 92px; font-size: 18px; }
-.maintenance-fluid-level { width: 210px; font-size: 17px; }
+.maintenance-fluid-level { width: 210px; flex-direction: row; align-items: center; }
+.maintenance-fluid-level Label { font-size: 17px; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
 .maintenance-meter { width: 100px; height: 8px; min-height: 0; padding: 0; border-width: 0; margin: 0 14px 0 0; }
 .maintenance-meter .unity-progress-bar__title, .maintenance-meter .unity-progress-bar__title-container { display: none; }
 .maintenance-meter .unity-progress-bar__container { height: 8px; min-height: 0; padding: 0; border-width: 0; }

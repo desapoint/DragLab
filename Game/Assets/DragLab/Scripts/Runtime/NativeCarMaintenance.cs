@@ -35,7 +35,7 @@ namespace DragLab.Runtime
             var fuel=FluidRow(rows,"fuel","Fuel",car.fuel.litres,build.spec.fuel.capacityLitres);
             QuantityAction(fuel,"maintenanceFuel", "Refill",new PaymentRequest {kind=PaymentKind.Fuel,carId=car.instanceId},Math.Max(0,build.spec.fuel.capacityLitres-car.fuel.litres),available);
             if (!string.IsNullOrEmpty(car.engineAssemblyId)) {
-                var oil=FluidRow(rows,"oil","Engine oil",car.fluids.oilLitres,build.spec.fluids.oilCapacityLitres," · "+car.fluids.oilCondition.ToString("P0")+" quality");
+                var oil=FluidRow(rows,"oil","Engine oil",car.fluids.oilLitres,build.spec.fluids.oilCapacityLitres,car.fluids.oilCondition);
                 QuantityAction(oil,"maintenanceOil","Refill",new PaymentRequest {kind=PaymentKind.Fluids,carId=car.instanceId},Math.Max(0,build.spec.fluids.oilCapacityLitres-car.fluids.oilLitres),available);
                 MaintenanceAction(oil,"maintenanceOilChange","Change oil",new PaymentRequest {kind=PaymentKind.OilChange,carId=car.instanceId},"Fresh oil, a new filter and labour. The old filter stays in inventory; leaks and other wear remain.",available);
                 if(car.fluids.oilLitres>build.spec.fluids.oilCapacityLitres)
@@ -46,7 +46,7 @@ namespace DragLab.Runtime
             } else {var missing=new Label("No engine attached · oil/coolant stay with the stored engine");missing.AddToClassList("car-warning");section.Add(missing);}
             foreach(var clutch in installed.Where(p=>catalog.Find(p.definitionId).category==PartCategory.Clutch && catalog.Find(p.definitionId).clutchEnvironment==ClutchEnvironment.Wet)) {
                 var d=catalog.Find(clutch.definitionId);
-                var row=FluidRow(rows,"clutch","Clutch oil",clutch.condition.clutchOilLitres,d.clutchOilCapacityLitres," · "+clutch.condition.clutchOilCondition.ToString("P0")+" quality");
+                var row=FluidRow(rows,"clutch","Clutch oil",clutch.condition.clutchOilLitres,d.clutchOilCapacityLitres,clutch.condition.clutchOilCondition);
                 MaintenanceAction(row,"maintenanceClutchOil","Service oil",new PaymentRequest {kind=PaymentKind.ClutchOil,carId=car.instanceId,targetId=clutch.instanceId},"Renew the wet-clutch oil bath and pay labour. Clutch wear remains.",available);
             }
             var parts=new VisualElement {name="maintenanceParts"}; section.Add(parts);
@@ -56,7 +56,7 @@ namespace DragLab.Runtime
                 string model=catalog.Spec(car.vehicleId).displayName+" / "; string name=d.name.StartsWith(model,StringComparison.Ordinal)?d.name.Substring(model.Length):d.name;
                 var title=new Label(name) {tooltip=d.name+" · "+item.instanceId,enableRichText=false};title.AddToClassList("maintenance-part-name");caption.Add(title);
                 int faults=item.condition.elements.Count(e=>e.Failed||e.fault!=ElementFault.None||e.health<.5f)+item.condition.tires.Count(t=>t.failed||t.health<=.5f);
-                var state=new Label((PrototypeGame.PartFailed(item)?"Failed":"Condition "+item.condition.health.ToString("P0"))+(faults>0?" · "+faults+" faulty":"")) {tooltip=item.condition.failureReason};state.AddToClassList(PrototypeGame.PartFailed(item)?"car-critical":"car-warning");caption.Add(state);
+                var state=new Label((PrototypeGame.PartFailed(item)?"Failed":"Condition "+item.condition.health.ToString("P0"))+(faults>0?" · "+faults+" faulty":"")) {tooltip=item.condition.failureReason};state.AddToClassList(PrototypeGame.PartFailed(item)?"car-critical":ServiceConditionClass(item.condition.health));caption.Add(state);
                 var actions=new VisualElement();actions.AddToClassList("maintenance-part-actions");row.Add(actions);
                 foreach(var action in ServiceOperations.Available(d,item.condition))
                     MaintenanceAction(actions,"maintenanceRepair:"+action+":"+item.instanceId,action.ToString(),new PaymentRequest {kind=PaymentKind.Repair,carId=car.instanceId,targetId=item.instanceId,service=action},ServiceOperations.Description(action),available);
@@ -89,13 +89,20 @@ namespace DragLab.Runtime
                 CloseDialog();Refresh();
             },true)},populate:content=> {content.Add(new Label(description));content.Add(error);});
         }
-        VisualElement FluidRow(VisualElement parent,string id,string label,double quantity,double capacity,string condition="")
+        VisualElement FluidRow(VisualElement parent,string id,string label,double quantity,double capacity,double condition=-1)
         {
             var row=new VisualElement {name="maintenanceFluid:"+id};row.AddToClassList("maintenance-fluid");parent.Add(row);
             var caption=new Label(label);caption.AddToClassList("maintenance-fluid-name");row.Add(caption);
             var meter=new ProgressBar {lowValue=0,highValue=1,value=(float)Math.Max(0,Math.Min(1,quantity/Math.Max(.001,capacity)))};meter.AddToClassList("maintenance-meter");meter.pickingMode=PickingMode.Ignore;row.Add(meter);
-            var value=new Label(quantity.ToString("F2")+" / "+capacity.ToString("F1")+" L"+condition) {name="maintenanceLevel:"+id};value.AddToClassList("maintenance-fluid-level");row.Add(value);return row;
+            var level=new VisualElement();level.AddToClassList("maintenance-fluid-level");row.Add(level);
+            level.Add(new Label(quantity.ToString("F2")+" / "+capacity.ToString("F1")+" L") {name="maintenanceLevel:"+id});
+            if(condition>=0) {
+                var percentage=new Label(" · "+condition.ToString("P0")) {name="maintenanceCondition:"+id,tooltip="Remaining fluid condition"};
+                percentage.AddToClassList(ServiceConditionClass(condition));level.Add(percentage);
+            }
+            return row;
         }
+        static string ServiceConditionClass(double condition)=>condition<=.25?"car-critical":condition<=.5?"car-warning":"car-ready";
         Button MaintenanceButton(VisualElement parent,string id,string label,Action action,bool enabled)
         {
             var button=new Button(action) {name=id,text=label};button.AddToClassList("action-button");button.AddToClassList("maintenance-action");parent.Add(button);
