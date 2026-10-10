@@ -224,6 +224,8 @@ The authoritative [Slice 4 review plan](SLICE_4_PLAN.md) orders **4A–4Q**: cov
 
 Acceptance: feature/control coverage including advanced settings and both benches; readable summaries/comparisons and a visible hardware-aware shift light; preserved Apply/Revert, held throttle, input ownership, exact worn assets and atomic carts/quotes; controller-only workflows and simultaneous real-phone pedals/shifts; no display-FPS simulation advantage at 30/60/120; no duplicate income/rewards or advancing paused races on focus/background/orientation changes. Automated evidence and user interface approval are separate gates. Final vehicle art/content remains Slice 5, commercial hardening Slice 6.
 
+Current native presentation requirements: [grey/red styling, top navigation, dialogs and Settings-first contract](NATIVE_UI_DESIGN.md). Most menus hide the strip behind opaque full-screen content; persistent top navigation includes cash/fuel/progression and Settings at the far right. Driving/difficulty belongs in Settings tabs. New Settings changes take effect only after explicit Save/confirmation, replacing the earlier gesture-end-save plan. Settings is built first, one user-directed control at a time, using only the required shared foundations.
+
 ## Slice 5 — Content and visual finish
 
 Replace placeholders with original or licensed cel-shaded vehicle art while preserving pivots and IDs. Add configurable wheel/brake appearances, trim, paint, decals, smoke, start tree, parallax venues, engine/shift/tire audio and race feedback. Keep raw source files and provenance.
