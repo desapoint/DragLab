@@ -1,4 +1,5 @@
 using System;
+using DragLab.Domain;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -126,7 +127,7 @@ namespace DragLab.Runtime
             panel.scale = DisplayScale(width, height);
             root.EnableInClassList("compact", width / panel.scale < 1150);
             var profile = game.Profile; var car = profile.SelectedCar;
-            SetText("cash", "$" + profile.cash.ToString("N0"));
+            SetText("cash", DisplayUnits.Money(profile.cash));
             SetText("fuel", car == null ? "— L" : car.fuel.litres.ToString("F1") + " / " + profile.catalog.Spec(car.vehicleId).fuel.capacityLitres.ToString("F0") + " L");
             SetText("progression", "REP " + profile.reputation);
             RefreshOwnedCars(route);

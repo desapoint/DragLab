@@ -10,7 +10,7 @@ namespace DragLab.Runtime {
   string refuelText="5";
   void FuelGarage(){
    double free=Math.Max(0,Selected.spec.fuel.capacityLitres-Build.fuel.litres);
-   GUILayout.Label("FUEL / "+Build.fuel.litres.ToString("F2")+" / "+Selected.spec.fuel.capacityLitres.ToString("F0")+" L / "+(Build.fuel.litres*Selected.spec.fuel.densityKgPerLitre).ToString("F1")+" kg / $"+Costs.fuelPerLitre.ToString("F2")+" per litre");
+   GUILayout.Label("FUEL / "+Build.fuel.litres.ToString("F2")+" / "+Selected.spec.fuel.capacityLitres.ToString("F0")+" L / "+(Build.fuel.litres*Selected.spec.fuel.densityKgPerLitre).ToString("F1")+" kg / " + DisplayUnits.Money(Costs.fuelPerLitre, 2)+" per litre");
    GUILayout.Label("Free tank space "+free.ToString("F2")+" L. Quantity is capped to space; only accepted litres are charged.");
    float quantity=(float)Math.Min(refuelRequested,free);
    string entered=GUILayout.TextField(refuelText,16);if(Event.current.type==EventType.Repaint)partRects["fuel-quantity"]=RuntimeGuiRect.ToClient(GUILayoutUtility.GetLastRect());if(entered!=refuelText){refuelText=entered;double parsed;if(double.TryParse(entered,System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.CurrentCulture,out parsed)&&MechanicsSchema.Finite(parsed)){refuelRequested=(float)Math.Max(0,Math.Min(parsed,free));quantity=refuelRequested;}}

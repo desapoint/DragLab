@@ -117,7 +117,7 @@ namespace DragLab.Runtime
             int cost=-1;string reason=null;
             try { cost=PaidEconomy.Preview(game.Profile,game.Profile.catalog,game.Costs,game.PricingPolicy,request,DateTime.UtcNow.Ticks).cost; }
             catch(Exception error) {reason=error.Message;}
-            var button=MaintenanceButton(parent,id,label+ (cost>=0?" · $"+cost:""),()=>OpenMaintenance(label,request,description,replacedId:replacedId),available&&cost>=0);
+            var button=MaintenanceButton(parent,id,label+ (cost>=0?" · " + DisplayUnits.Money(cost):""),()=>OpenMaintenance(label,request,description,replacedId:replacedId),available&&cost>=0);
             button.tooltip=reason??description;
         }
         void OpenMaintenance(string title,PaymentRequest request,string description,double free=-1,bool coolant=false,string replacedId=null)
@@ -151,8 +151,8 @@ namespace DragLab.Runtime
                         if(coolant)draft.coolantLitres=quantity.value;else draft.litres=quantity.value;
                     }
                     var preview=PaidEconomy.Preview(game.Profile,game.Profile.catalog,game.Costs,game.PricingPolicy,draft,DateTime.UtcNow.Ticks);
-                    price=preview.cost;cost.text="Total $"+price+" · Cash $"+game.Profile.cash;
-                    bool enough=game.Profile.cash>=price;error.text=enough?"":"Need $"+(price-game.Profile.cash)+" more";
+                    price=preview.cost;cost.text="Total " + DisplayUnits.Money(price)+" · Cash " + DisplayUnits.Money(game.Profile.cash);
+                    bool enough=game.Profile.cash>=price;error.text=enough?"":"Need " + DisplayUnits.Money((price-game.Profile.cash))+" more";
                     confirm.SetEnabled(enough && (quantity==null || quantity.value>0));
                 }catch(Exception invalid) {price=-1;error.text=invalid.Message;confirm.SetEnabled(false);}
             }

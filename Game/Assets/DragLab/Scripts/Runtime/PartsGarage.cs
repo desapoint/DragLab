@@ -84,7 +84,7 @@ namespace DragLab.Runtime
             foreach (var definition in catalog.parts.Where(p => p.category == partCategory && catalog.Fits(Selected.spec, p)))
             {
                 string id = definition.id;
-                GUILayout.Label(definition.name + " / $" + definition.price + " / " + definition.quality);
+                GUILayout.Label(definition.name + " / " + DisplayUnits.Money(definition.price) + " / " + definition.quality);
                 GUILayout.Label(SharedUnitSettings.TorqueText(definition.description), partProse);
                 GUILayout.Label(PartTuning.Summary(definition), partProse);
                 OfferModeGUI(definition);

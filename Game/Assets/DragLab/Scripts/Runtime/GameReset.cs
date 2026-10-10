@@ -1,4 +1,5 @@
 using System;
+using DragLab.Domain;
 using System.Collections.Generic;
 using UnityEngine;
 using DragLab.Infrastructure;
@@ -33,7 +34,7 @@ namespace DragLab.Runtime
         void ResetSettingsGUI()
         {
             GUILayout.Label("RESET GAME", stat);
-            GUILayout.Label("Start again with $1,200 and a stock starter car.");
+            GUILayout.Label("Start again with " + DisplayUnits.Money(1200) + " and a stock starter car.");
             GUILayout.Label("Keeps driving assists, AI difficulty and volume settings.");
             if (!resetGameConfirm)
             {

@@ -26,7 +26,7 @@ namespace DragLab.Domain
             if(e.opponent==null||e.cashWin<0||e.cashLoss<0||e.reputationWin<0||e.entryFee<0||e.firstWinBonus<0)return "Invalid event authoring.";
             if(p.reputation<e.reputationRequired)return "Requires REP "+e.reputationRequired+".";
             if(!string.IsNullOrEmpty(e.prerequisite)&&!p.careerWins.Contains(e.prerequisite))return "Win "+e.prerequisite+" first.";
-            if(p.cash<e.entryFee)return "Entry costs $"+e.entryFee+". Use free races or garage work.";
+            if(p.cash<e.entryFee)return "Entry costs " + DisplayUnits.Money(e.entryFee)+". Use free races or garage work.";
             double hp=DragMath.PeakHorsepower(b.spec,b.tune), mass=b.spec.massKg*b.tune.MassMultiplier;
             if(e.minimumHp>0&&hp<e.minimumHp)return "Requires at least "+e.minimumHp+" hp from installed hardware.";
             if(e.maximumHp>0&&hp>e.maximumHp)return "Maximum "+e.maximumHp+" hp.";

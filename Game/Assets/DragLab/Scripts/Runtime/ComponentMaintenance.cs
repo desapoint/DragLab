@@ -77,12 +77,12 @@ namespace DragLab.Runtime
                 GUILayout.BeginHorizontal();
                 if (PartButton("repair-preview:" + oldId, "Preview new / stats")) PreviewPart(definitionId);
                 bool enabled = GUI.enabled; GUI.enabled = enabled && profile.cash >= definition.price;
-                if (PartButton("repair-buy:" + oldId, "Buy same + replace / $" + definition.price)) QueuePayment(new PaymentRequest {
+                if (PartButton("repair-buy:" + oldId, "Buy same + replace / " + DisplayUnits.Money(definition.price))) QueuePayment(new PaymentRequest {
                     kind = PaymentKind.Part, carId = carId, targetId = definitionId, install = true
                 });
                 GUI.enabled = enabled;
                 GUILayout.EndHorizontal();
-                if (profile.cash < definition.price) GUILayout.Label("Need $" + (definition.price - profile.cash) + " more for this new part. Fit a spare or browse cheaper compatible options.", partProse);
+                if (profile.cash < definition.price) GUILayout.Label("Need " + DisplayUnits.Money((definition.price - profile.cash)) + " more for this new part. Fit a spare or browse cheaper compatible options.", partProse);
                 if (spare != null) {
                     string spareId = spare.instanceId;
                     GUILayout.Label("Available spare: " + profile.catalog.Find(spare.definitionId).name + " / " + spare.condition.health.ToString("P0"), partProse);

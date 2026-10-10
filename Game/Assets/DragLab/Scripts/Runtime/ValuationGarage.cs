@@ -1,4 +1,5 @@
 using System;
+using DragLab.Domain;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -55,13 +56,13 @@ namespace DragLab.Runtime
             if (valuationQuote != null) {
                 if (Time.realtimeSinceStartup >= valuationCheckAt) CheckValuation();
                 var q = valuationQuote;
-                GUILayout.Label(q.Kind + " / " + q.BuyerName + " / $" + q.Total, stat);
+                GUILayout.Label(q.Kind + " / " + q.BuyerName + " / " + DisplayUnits.Money(q.Total), stat);
                 var quotedCar = profile.cars.Find(c => c.instanceId == q.AssetId || c.chassisId == q.AssetId);
                 var quotedEngine = profile.engines.Find(e => e.instanceId == q.AssetId);
                 var quotedPart = profile.parts.Find(i => i.instanceId == q.AssetId);
                 string name = quotedCar != null ? VehicleCollection.Label(profile.catalog, quotedCar) : quotedEngine != null ? profile.catalog.Spec(quotedEngine.vehicleDefinitionId).displayName + " engine" : quotedPart != null ? profile.catalog.Find(quotedPart.definitionId).name : q.Kind.ToString();
                 GUILayout.Label("Captured asset: " + name + " / " + q.AssetId);
-                GUILayout.Label("Comparable loose parts $" + q.LoosePartTotal.ToString("F2") + " + bare chassis $" + q.ChassisCore.ToString("F2") + " → offer $" + q.Total);
+                GUILayout.Label("Comparable loose parts " + DisplayUnits.Money(q.LoosePartTotal, 2) + " + bare chassis " + DisplayUnits.Money(q.ChassisCore, 2) + " → offer " + DisplayUnits.Money(q.Total));
                 GUILayout.Label((q.Complete ? "Required hardware complete" : "Incomplete / non-running") + (q.Faulty ? " / fault risk" : "") + " / " + q.IncludedIds.Count + " actual identities captured / " + q.RetainedIds.Count + " kept parts");
                 GUILayout.Label("Policy " + q.PolicyId + " v" + q.PolicyVersion + " / quote " + q.Id.Substring(0, 8) + " / expires " + new DateTime(q.ExpiresUtcTicks, DateTimeKind.Utc).ToLocalTime().ToString("HH:mm:ss"));
                 GUILayout.Label(valuationStatus == null ? "CURRENT / valid inspection quote" : "STALE / BLOCKED: " + valuationStatus);
@@ -70,7 +71,7 @@ namespace DragLab.Runtime
                 foreach (var warning in q.Warnings) GUILayout.Label("NOTE: " + warning);
                 if (PartButton("quote-details", (valuationDetails ? "Hide" : "Show") + " item values and every price adjustment")) valuationDetails = !valuationDetails;
                 if (valuationDetails) foreach (var line in q.Lines) {
-                    GUILayout.Label(line.Label + " / $" + line.Before.ToString("F2") + " → $" + line.After.ToString("F2") + " (" + line.Delta.ToString("+0.00;-0.00;0.00") + ")");
+                    GUILayout.Label(line.Label + " / " + DisplayUnits.Money(line.Before, 2) + " → " + DisplayUnits.Money(line.After, 2) + " (" + DisplayUnits.Money(line.Delta, 2, signed: true) + ")");
                     GUILayout.Label(line.Explanation);
                 }
                 if (PartButton("quote-retain-details", (valuationRetainDetails ? "Hide" : "Choose") + " individual fitted parts to keep / excluded from quote")) valuationRetainDetails = !valuationRetainDetails;

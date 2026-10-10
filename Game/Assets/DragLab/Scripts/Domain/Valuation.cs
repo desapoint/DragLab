@@ -107,7 +107,7 @@ namespace DragLab.Domain.Mechanics
         static double PartValue(PartInstance part, PartDefinition def, ValuationPolicy policy, BuyerPolicy buyer, List<ValuationLine> lines)
         {
             var c = part.condition; double value = def.price * policy.usedPartFraction;
-            lines.Add(new ValuationLine(part.instanceId, def.name, 0, value, "Catalogue $" + def.price + " × used-market " + policy.usedPartFraction.ToString("P0") + "; actual item " + part.instanceId));
+            lines.Add(new ValuationLine(part.instanceId, def.name, 0, value, "Catalogue " + DisplayUnits.Money(def.price) + " × used-market " + policy.usedPartFraction.ToString("P0") + "; actual item " + part.instanceId));
             var quality = policy.qualities.Find(q => q.quality == def.quality);
             value = Change(lines, part.instanceId, "Quality demand / " + def.quality, value, quality == null ? 1 : quality.factor, "Price already reflects construction; this is secondary buyer demand");
             value = Change(lines, part.instanceId, "Wear / individual condition", value, policy.minimumWearFactor + (1 - policy.minimumWearFactor) * Health(c), "Pack health, individual cylinder/valve/tire life and deposits/leaks/adjustment");
@@ -133,7 +133,7 @@ namespace DragLab.Domain.Mechanics
                 if (element == null || kept.Length > 0) throw new InvalidOperationException("Quote requires an owned loose engine element without retained descendants.");
                 ids.Add(assetId); faulty = element.element.Failed || element.element.fault != ElementFault.None;
                 loose = element.unitPrice * policy.usedPartFraction;
-                lines.Add(new ValuationLine(assetId, element.element.role + " / cylinder " + (element.element.cylinder + 1), 0, loose, "Owned single element / unit catalogue $" + element.unitPrice));
+                lines.Add(new ValuationLine(assetId, element.element.role + " / cylinder " + (element.element.cylinder + 1), 0, loose, "Owned single element / unit catalogue " + DisplayUnits.Money(element.unitPrice)));
                 loose = Change(lines, assetId, "Individual wear / fault", loose, (policy.minimumWearFactor + (1 - policy.minimumWearFactor) * ElementHealth(element.element)) * (faulty ? .65 : 1), "Actual element health/fault");
                 loose = Change(lines, assetId, "Loose-element buyer", loose, buyer.parts, buyer.name);
             } else {
@@ -152,7 +152,7 @@ namespace DragLab.Domain.Mechanics
                 }
                 reserved = car != null && car.engineRebuild != null || profile.runCheckpoints.Any(r => !r.settled);
                 if (reserved) warnings.Add("Reserved by an engine rebuild or unsettled run. Inspection only; quote cannot authorize disposal.");
-                warnings.Add("Fuel/oil/coolant retained in the captured state, valued at $0 in 3C. External controls/coupling remain with chassis for engine quotes.");
+                warnings.Add("Fuel/oil/coolant retained in the captured state, valued at " + DisplayUnits.Money(0) + " in 3C. External controls/coupling remain with chassis for engine quotes.");
             }
             if (kept.Any(id => !items.Any(i => i.instanceId == id))) throw new InvalidOperationException("Retained IDs must be actual parts inside the quoted asset.");
             foreach (var item in items.Where(i => !kept.Contains(i.instanceId)).OrderBy(i => i.instanceId, StringComparer.Ordinal)) {
@@ -162,7 +162,7 @@ namespace DragLab.Domain.Mechanics
             if (spec != null) {
                 var defs = items.Where(i => !kept.Contains(i.instanceId)).ToDictionary(i => catalog.Find(i.definitionId).category, i => i.definitionId);
                 foreach (var category in MechanicalCatalog.Slots(spec).Where(c => kind == ValuationKind.Engine ? MechanicalCatalog.EngineSlot(c) : kind == ValuationKind.Chassis ? !MechanicalCatalog.EngineSlot(c) : true))
-                    if (!defs.ContainsKey(category) && !PartSemantics.Optional(category, spec, defs, catalog)) { complete = false; warnings.Add("Missing required " + PartSemantics.Friendly(category.ToString()) + ": contributes $0."); }
+                    if (!defs.ContainsKey(category) && !PartSemantics.Optional(category, spec, defs, catalog)) { complete = false; warnings.Add("Missing required " + PartSemantics.Friendly(category.ToString()) + ": contributes " + DisplayUnits.Money(0) + "."); }
                 if (kind == ValuationKind.Car && kept.Length == 0) { var resolution = MechanicsOwnership.Resolve(profile, car, catalog); if (!resolution.Drivable) { complete = false; warnings.AddRange(resolution.errors); } warnings.AddRange(resolution.warnings); }
             }
             double total = loose + core;

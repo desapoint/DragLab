@@ -73,9 +73,9 @@ namespace DragLab.Runtime
         void PaidButton(string id, string label, PaymentRequest request, bool actionable = true)
         {
             int cost = PaymentCost(request); bool previous = GUI.enabled; GUI.enabled = previous && actionable && cost >= 0 && profile.cash >= cost;
-            if (PartButton(id, label + (cost < 0 ? " / unavailable" : " / $" + cost))) QueuePayment(request);
+            if (PartButton(id, label + (cost < 0 ? " / unavailable" : " / " + DisplayUnits.Money(cost)))) QueuePayment(request);
             GUI.enabled = previous;
-            if (cost > profile.cash) GUILayout.Label("Need $" + (cost - profile.cash) + " more. Recovery work / idle claims / sell retained spares are available.");
+            if (cost > profile.cash) GUILayout.Label("Need " + DisplayUnits.Money((cost - profile.cash)) + " more. Recovery work / idle claims / sell retained spares are available.");
         }
         internal void OpenRecovery() { DiscardPreviews(); screen = "Recovery"; scroll = Vector2.zero; partRects.Clear(); }
         void RecoveryGUI()
@@ -91,33 +91,33 @@ namespace DragLab.Runtime
             RecoveryAdviceGUI();
             long now = DateTime.UtcNow.Ticks; var job = profile.recoveryWork;
             if (job == null) {
-                GUILayout.Label("Garage job: " + Costs.recoverySeconds + " seconds / up to $" + Costs.recoveryReward + " / available below $" + Costs.recoveryCashLimit + " cash. Continues offline.");
+                GUILayout.Label("Garage job: " + Costs.recoverySeconds + " seconds / up to " + DisplayUnits.Money(Costs.recoveryReward) + " / available below " + DisplayUnits.Money(Costs.recoveryCashLimit) + " cash. Continues offline.");
                 GUI.enabled = profile.cash < Costs.recoveryCashLimit;
                 if (PartButton("recovery-start", "Start recovery work")) QueuePartAction(p => PaidEconomy.StartRecovery(p, Costs, DateTime.UtcNow.Ticks)); GUI.enabled = true;
             } else {
-                GUILayout.Label("Job " + job.id + " / $" + job.reward + " / " + (now >= job.readyUtcTicks ? "Ready" : Math.Ceiling((job.readyUtcTicks - now) / (double)TimeSpan.TicksPerSecond) + " seconds remaining"));
+                GUILayout.Label("Job " + job.id + " / " + DisplayUnits.Money(job.reward) + " / " + (now >= job.readyUtcTicks ? "Ready" : Math.Ceiling((job.readyUtcTicks - now) / (double)TimeSpan.TicksPerSecond) + " seconds remaining"));
                 GUI.enabled = now >= job.readyUtcTicks;
                 if (PartButton("recovery-claim", "Claim finished job once")) { string id = job.id; QueuePartAction(p => PaidEconomy.ClaimRecovery(p, id, DateTime.UtcNow.Ticks)); } GUI.enabled = true;
             }
             int idle = GarageBusiness.Pending(profile,BusinessPolicy,now);
             GUI.enabled = idle > 0;
-            if (PartButton("recovery-idle", "Claim existing idle earnings / $" + idle)) QueuePartAction(p => GarageBusiness.Claim(p,BusinessPolicy,DateTime.UtcNow.Ticks)); GUI.enabled = true;
+            if (PartButton("recovery-idle", "Claim existing idle earnings / " + DisplayUnits.Money(idle))) QueuePartAction(p => GarageBusiness.Claim(p,BusinessPolicy,DateTime.UtcNow.Ticks)); GUI.enabled = true;
             if(PartButton("recovery-business","Business / reserved jobs / expansion"))pendingAction=OpenBusiness;
             if (PartButton("recovery-collection", "Dealership / owned cars")) pendingAction = OpenCollection;
             if (PartButton("recovery-assets", "Value / sell retained assets")) pendingAction = () => OpenValuation(ValuationKind.Car, Build?.instanceId ?? "");
             if (Build != null && PartButton("recovery-repairs", "Repair / replace selected car parts")) pendingAction = ShowRepairs;
             if (PartButton("recovery-garage", "Garage")) pendingAction = ReturnToGarage;
             GUILayout.Label("Recent committed operations (last 256 retained)");
-            foreach (var r in profile.economyReceipts.AsEnumerable().Reverse().Take(20)) GUILayout.Label(r.operation + " / " + (r.cashAfter - r.cashBefore).ToString("+$0;-$0;$0") + " / cash $" + r.cashAfter + " / " + r.id.Substring(0, Math.Min(14, r.id.Length)));
+            foreach (var r in profile.economyReceipts.AsEnumerable().Reverse().Take(20)) GUILayout.Label(r.operation + " / " + DisplayUnits.Money((long)r.cashAfter - r.cashBefore, signed: true) + " / cash " + DisplayUnits.Money(r.cashAfter) + " / " + r.id.Substring(0, Math.Min(14, r.id.Length)));
         }
         string saleConfirmation;
         void QuoteSaleGUI(ValuationQuote quote)
         {
             bool previous = GUI.enabled; GUI.enabled = previous && valuationStatus == null && quote != null;
             string label = quote.Kind == ValuationKind.Chassis ? "Salvage chassis / keep engine tree" : "Sell captured " + quote.Kind;
-            if (PartButton("quote-sell-preview", label + " / $" + quote.Total)) saleConfirmation = quote.Id;
+            if (PartButton("quote-sell-preview", label + " / " + DisplayUnits.Money(quote.Total))) saleConfirmation = quote.Id;
             if (saleConfirmation == quote.Id) {
-                GUILayout.Label("CONFIRM: dispose of " + quote.IncludedIds.Count + " captured identities for $" + quote.Total + ". " + quote.RetainedIds.Count + " selected kept packs go to inventory. " + (quote.Kind == ValuationKind.Chassis ? "Attached engine and fluids remain stored." : "Use Chassis / keep engine to retain the full engine."));
+                GUILayout.Label("CONFIRM: dispose of " + quote.IncludedIds.Count + " captured identities for " + DisplayUnits.Money(quote.Total) + ". " + quote.RetainedIds.Count + " selected kept packs go to inventory. " + (quote.Kind == ValuationKind.Chassis ? "Attached engine and fluids remain stored." : "Use Chassis / keep engine to retain the full engine."));
                 if (PartButton("quote-sell-confirm", "Confirm disposal / save cash and ownership together")) {
                     long revision = quote.Revision; pendingAction = () => { if (CommitParts(revision, p => PaidEconomy.Sell(p, p.catalog, PricingPolicy, quote, DateTime.UtcNow.Ticks))) { saleConfirmation = null; valuationStatus = "Disposed once; request a quote for another asset."; } };
                 }

@@ -294,7 +294,7 @@ namespace DragLab.Runtime
         {
             var reset = new Button(() => {
                 long revision = game.BeginNativeReset();
-                OpenDialog("Reset game?", "Clear progression, cars, parts, inventory, tunes and records.\nStart with $1,200 and a stock starter car. Applied driving, sound and unit settings stay.", new[] {
+                OpenDialog("Reset game?", "Clear progression, cars, parts, inventory, tunes and records.\nStart with " + DisplayUnits.Money(1200) + " and a stock starter car. Applied driving, sound and unit settings stay.", new[] {
                     new DialogAction("Cancel", CloseDialog), new DialogAction("Reset game", () => {
                         if (!game.CommitGameReset(revision)) { CloseDialog(); OpenDialog("Reset failed", game.NativeNotice, new[] { new DialogAction("Close", CloseDialog) }); return; }
                         CloseDialog(); ReconcileApplied(); UpdateControls();

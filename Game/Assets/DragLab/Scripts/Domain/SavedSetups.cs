@@ -88,7 +88,7 @@ namespace DragLab.Domain.Mechanics
                 if(!string.IsNullOrEmpty(car.garageJobId))plan.errors.Add("Claim or cancel the assigned garage job first.");
                 if (p.runCheckpoints.Any(r => !r.settled)) plan.errors.Add("Close the active run first.");
             }
-            if (p.cash < plan.cost) plan.errors.Add("Insufficient cash: need $" + plan.cost + ". No parts or tune will change.");
+            if (p.cash < plan.cost) plan.errors.Add("Insufficient cash: need " + DisplayUnits.Money(plan.cost) + ". No parts or tune will change.");
             return plan;
         }
         // Recompute inside the existing atomic transaction; never trust UI prices or retained object references.

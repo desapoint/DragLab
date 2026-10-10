@@ -326,7 +326,7 @@ namespace DragLab.Runtime
             if(Build!=null&&(screen=="Garage"||screen=="Parts"||screen=="Tuning"||screen=="Stats"))RefreshInspection();
             GUILayout.BeginArea(new Rect(16, 16, panelWidth, height - 32), GUI.skin.box);
             GUILayout.Label("DRAGLAB / first systems slice", heading);
-            GUILayout.Label("$" + profile.cash + "   |   REP " + profile.reputation + "   |   " + (Build == null ? "EMPTY GARAGE / retained assets preserved" : Selected.spec.displayName), stat);
+            GUILayout.Label(DisplayUnits.Money(profile.cash) + "   |   REP " + profile.reputation + "   |   " + (Build == null ? "EMPTY GARAGE / retained assets preserved" : Selected.spec.displayName), stat);
             GUILayout.BeginHorizontal();
             foreach (string tab in new[] { "Garage", "Parts", "Tuning", "Stats", "Race setup", "Career", "Business", "Driving", "Settings" })
             {
@@ -387,10 +387,10 @@ namespace DragLab.Runtime
             if (GUILayout.Button("Full car statistics")) pendingAction = () => { DiscardPreviews(); screen = "Stats"; scroll = Vector2.zero; };
             GUILayout.Space(8);
             if (GUILayout.Button("Owned car collection / dealership / buy another copy")) pendingAction = OpenCollection;
-            GUILayout.Label("GARAGE BUSINESS / $"+BusinessPolicy.hourlyRates[profile.garageLevel-1]+" per hour / "+BusinessPolicy.capsHours[profile.garageLevel-1]+" hour cap",stat);
+            GUILayout.Label("GARAGE BUSINESS / " + DisplayUnits.Money(BusinessPolicy.hourlyRates[profile.garageLevel-1])+" per hour / "+BusinessPolicy.capsHours[profile.garageLevel-1]+" hour cap",stat);
             if(PartButton("garage-business","Jobs / expansion / claim income"))pendingAction=OpenBusiness;
             int idle=GarageBusiness.Pending(profile,BusinessPolicy,DateTime.UtcNow.Ticks);
-            GUI.enabled=idle>0;if(PartButton("garage-idle","Claim $"+idle))QueuePartAction(p=>GarageBusiness.Claim(p,BusinessPolicy,DateTime.UtcNow.Ticks));GUI.enabled=true;
+            GUI.enabled=idle>0;if(PartButton("garage-idle","Claim " + DisplayUnits.Money(idle)))QueuePartAction(p=>GarageBusiness.Claim(p,BusinessPolicy,DateTime.UtcNow.Ticks));GUI.enabled=true;
 
         }
 
@@ -415,14 +415,14 @@ namespace DragLab.Runtime
             int cost = PlayerProfile.UpgradeCost(type, level);
             int max = type == "controls" ? 1 : 3;
             GUI.enabled = level < max && profile.cash >= cost;
-            if (GUILayout.Button(type.ToUpperInvariant() + " " + level + "/" + max + "  |  " + effect + (level < max ? "  |  $" + cost : "  |  MAX")))
+            if (GUILayout.Button(type.ToUpperInvariant() + " " + level + "/" + max + "  |  " + effect + (level < max ? "  |  " + DisplayUnits.Money(cost) : "  |  MAX")))
             { profile.Upgrade(type); ProfileStore.Save(profile); notice = "Installed " + type + "."; }
             GUI.enabled = true;
         }
         void FreeRaceGUI()
         {
             GUILayout.Label("FREE RACE", heading);
-            GUILayout.Label("No entry fee. $120 win / $40 completed loss. No reputation farming.");
+            GUILayout.Label("No entry fee. " + DisplayUnits.Money(120) + " win / " + DisplayUnits.Money(40) + " completed loss. No reputation farming.");
             freeOpponent = GUILayout.SelectionGrid(freeOpponent, Array.ConvertAll(vehicles, v => v.spec.displayName), 1);
             int selectedDistance = freeDistance < 300 ? 0 : freeDistance < 600 ? 1 : 2;
             selectedDistance = GUILayout.SelectionGrid(selectedDistance, new[] { "1/8 mile", "1/4 mile", "1/2 mile" }, 3);
@@ -438,7 +438,7 @@ namespace DragLab.Runtime
             foreach(var evt in career){
                 GUILayout.Label(evt.tier+" / "+evt.eventKind+" / "+evt.displayName+" / "+evt.rivalName);
                 string error=CareerProgression.EntryError(profile,Build,evt);
-                GUILayout.Label("REP "+evt.reputationRequired+" / entry $"+evt.entryFee+" / win $"+evt.cashWin+" / completed loss $"+evt.cashLoss+" / first bonus $"+evt.firstWinBonus+" / "+evt.reputationWin+" REP");
+                GUILayout.Label("REP "+evt.reputationRequired+" / entry " + DisplayUnits.Money(evt.entryFee)+" / win " + DisplayUnits.Money(evt.cashWin)+" / completed loss " + DisplayUnits.Money(evt.cashLoss)+" / first bonus " + DisplayUnits.Money(evt.firstWinBonus)+" / "+evt.reputationWin+" REP");
                 if(error!=null)GUILayout.Label(error);
                 GUI.enabled=error==null;
                 if(PartButton("career-"+evt.stableId,(profile.careerWins.Contains(evt.stableId)?"[WON] ":"")+"Stage "+evt.displayName))pendingAction=()=>StartRace(evt);GUI.enabled=true;

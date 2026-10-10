@@ -18,7 +18,7 @@ namespace DragLab.Runtime
             foreach(var e in elements.Where(e=>e.cylinder==serviceCylinder||e.cylinder<0)){
                 GUILayout.Label(e.role+(e.valve>=0?" "+(e.valve+1):"")+" / "+e.health.ToString("P0")+" / "+e.fault+(e.fault!=ElementFault.None?" "+e.severity.ToString("P0"):""));
                 string car=Build.instanceId,part=item.instanceId,element=e.id;int cost=EngineElementService.Price(d,item.condition);bool enabled=GUI.enabled;GUI.enabled=enabled&&profile.cash>=cost&&Build.engineRebuild==null;
-                if(PartButton("element-new:"+element,"Replace this individual component / $"+cost+" provisional"))QueuePayment(new PaymentRequest{kind=PaymentKind.ElementNew,carId=car,targetId=part,auxiliaryId=element});GUI.enabled=enabled;
+                if(PartButton("element-new:"+element,"Replace this individual component / " + DisplayUnits.Money(cost)+" provisional"))QueuePayment(new PaymentRequest{kind=PaymentKind.ElementNew,carId=car,targetId=part,auxiliaryId=element});GUI.enabled=enabled;
                 foreach(var spare in profile.looseEngineElements.Where(l=>l.definitionId==item.definitionId&&l.element.role==e.role&&!l.element.Failed)) {string id=spare.element.id;if(PartButton("element-spare:"+element+":"+id,"Reuse individual spare / "+spare.element.health.ToString("P0")))QueuePartAction(p=>EngineElementService.Replace(p,car,part,element,id));}
             }
             foreach(var loose in profile.looseEngineElements.Where(l=>l.definitionId==item.definitionId)){string id=loose.element.id;GUILayout.Label("Loose "+loose.element.role+" / "+loose.element.health.ToString("P0")+" / "+loose.element.fault);if(PartButton("element-sell:"+id,"Sell individual spare / preview buyer quote"))pendingAction=()=>OpenValuation(ValuationKind.LooseElement,id);}
@@ -27,10 +27,10 @@ namespace DragLab.Runtime
         {
             if(Build==null)return;long now=DateTime.UtcNow.Ticks;var job=Build.engineRebuild;string car=Build.instanceId;
             GUILayout.Label("ENGINE REBUILD SHOP",stat);
-            if(job!=null){bool ready=now>=job.readyUtcTicks;GUILayout.Label("Paid $"+job.paidPrice+" / "+(ready?"Ready to collect":TimeSpan.FromTicks(job.readyUtcTicks-now).ToString(@"hh\:mm\:ss")+" remaining")+" / engine reserved until collection. Time continues while offline.");bool enabled=GUI.enabled;GUI.enabled=enabled&&ready;if(PartButton("engine-rebuild-collect","Collect rebuilt engine")){string id=job.id;QueuePartAction(p=>EngineRebuilds.Collect(p,car,id,DateTime.UtcNow.Ticks));}GUI.enabled=enabled;return;}
+            if(job!=null){bool ready=now>=job.readyUtcTicks;GUILayout.Label("Paid " + DisplayUnits.Money(job.paidPrice)+" / "+(ready?"Ready to collect":TimeSpan.FromTicks(job.readyUtcTicks-now).ToString(@"hh\:mm\:ss")+" remaining")+" / engine reserved until collection. Time continues while offline.");bool enabled=GUI.enabled;GUI.enabled=enabled&&ready;if(PartButton("engine-rebuild-collect","Collect rebuilt engine")){string id=job.id;QueuePartAction(p=>EngineRebuilds.Collect(p,car,id,DateTime.UtcNow.Ticks));}GUI.enabled=enabled;return;}
             EngineRebuildJob quote;try{quote=EngineRebuilds.Quote(profile,Build,now,Costs);}catch(InvalidOperationException e){GUILayout.Label(e.Message);return;}
             GUILayout.Label("Recondition intact core/valvetrain; replace failed/unsalvageable sets with matching hardware, renew engine oil/filter. Cooling, turbo, gearbox and clutch remain separate. Tune retained.");
-            GUILayout.Label("Quote $"+PaymentCost(Payment(PaymentKind.Rebuild))+" including renewal oil / "+TimeSpan.FromTicks(quote.readyUtcTicks-now).TotalMinutes.ToString("F0")+" real minutes. Provisional service price/time; final economy balance in Slice 3.");
+            GUILayout.Label("Quote " + DisplayUnits.Money(PaymentCost(Payment(PaymentKind.Rebuild)))+" including renewal oil / "+TimeSpan.FromTicks(quote.readyUtcTicks-now).TotalMinutes.ToString("F0")+" real minutes. Provisional service price/time; final economy balance in Slice 3.");
             PaidButton("engine-rebuild-start","Pay quote + send engine to shop",Payment(PaymentKind.Rebuild));
         }
     }

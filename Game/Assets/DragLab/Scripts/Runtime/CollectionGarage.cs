@@ -1,4 +1,5 @@
 using System;
+using DragLab.Domain;
 using System.Linq;
 using UnityEngine;
 using DragLab.Domain.Mechanics;
@@ -51,7 +52,7 @@ namespace DragLab.Runtime
                 GUILayout.Label(vehicle.spec.displayName + " / " + vehicle.spec.sound.cylinders + " cylinders / " + vehicle.spec.DisplacementLitres.ToString("F1") + " L / " + vehicle.spec.drive + " / owned " + profile.cars.Count(c => c.vehicleId == offer.model));
                 GUILayout.Label("OEM package includes initial fuel/oil/coolant. Component-value floor prevents an immediate stock part-out profit.");
                 GUI.enabled = profile.cash >= price && profile.reputation >= offer.reputation;
-                if (PartButton("car-buy:" + offer.model, "Buy another / $" + price + " / REP " + offer.reputation)) QueuePayment(new PaymentRequest { kind = PaymentKind.Car, offer = offer });
+                if (PartButton("car-buy:" + offer.model, "Buy another / " + DisplayUnits.Money(price) + " / REP " + offer.reputation)) QueuePayment(new PaymentRequest { kind = PaymentKind.Car, offer = offer });
                 GUI.enabled = true;
             }
             if (PartButton("collection-garage", "Garage / selected owned car")) pendingAction = ReturnToGarage;

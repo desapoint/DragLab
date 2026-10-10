@@ -13,6 +13,21 @@ namespace DragLab.Runtime
     internal sealed partial class NativeMenuVerification
     {
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
+        void MoneyFormattingChecks()
+        {
+            var original=System.Globalization.CultureInfo.CurrentCulture;
+            try {
+                foreach(string locale in new[] {"en-US","fr-CA","fr-FR"}) {
+                    var culture=System.Globalization.CultureInfo.GetCultureInfo(locale);
+                    System.Globalization.CultureInfo.CurrentCulture=culture;
+                    string group=culture.NumberFormat.NumberGroupSeparator,point=culture.NumberFormat.NumberDecimalSeparator;
+                    Check(DisplayUnits.Money(1234567)=="$1"+group+"234"+group+"567","Money groups thousands using "+locale+" separators");
+                    Check(DisplayUnits.Money(12345.67,2)=="$12"+group+"345"+point+"67"&&DisplayUnits.Money(2.5,2)=="$2"+point+"50","Money preserves cents for detailed values and fuel rates in "+locale);
+                    Check(DisplayUnits.Money(-1234)=="-$1"+group+"234"&&DisplayUnits.Money(1234,signed:true)=="+$1"+group+"234"&&DisplayUnits.Money(0,signed:true)=="$0","Money signs precede currency and zero is neutral in "+locale);
+                    Check(DisplayUnits.Money((long)int.MaxValue+1)=="$2"+group+"147"+group+"483"+group+"648","Money displays wide intermediate cart totals without overflow in "+locale);
+                }
+            } finally {System.Globalization.CultureInfo.CurrentCulture=original;}
+        }
         IEnumerator MaintenanceClick(WindowsKeyboardProbe input,string id)
         {
             if(!shell.ModalOpen) { shell.Root.Q<ScrollView>("ownedDetailScroll").ScrollTo(shell.Root.Q(id)); yield return new WaitForSecondsRealtime(.15f); }
@@ -36,6 +51,8 @@ namespace DragLab.Runtime
             Check(shell.Root.Q("maintenanceRepair:Reseal:"+radiator.instanceId)!=null && shell.Root.Q("maintenanceRepair:Clean:"+fuelPart.instanceId)!=null && shell.Root.Q("maintenanceRepair:Adjust:"+timing.instanceId)!=null && shell.Root.Q("maintenanceRepair:Recondition:"+rings.instanceId)!=null,"Quick maintenance exposes only applicable cleaning, adjustment, resealing and reconditioning actions");
             yield return MaintenanceClick(input,"maintenanceFuel");var quantity=shell.Root.Q<FloatField>("maintenanceQuantity");
             quantity.value=3;Check(shell.Root.Q<Slider>("maintenanceQuantitySlider").value==3,"Refill quantity synchronizes the shared slider/numeric input");
+            int refillCost=PaidEconomy.Preview(p,catalog,game.Costs,game.PricingPolicy,new PaymentRequest {kind=PaymentKind.Fuel,carId=id,litres=3},DateTime.UtcNow.Ticks).cost;
+            Check(shell.Root.Q<Label>("cash").text==DisplayUnits.Money(p.cash)&&shell.Root.Q<Label>("maintenanceCost").text=="Total "+DisplayUnits.Money(refillCost)+" · Cash "+DisplayUnits.Money(p.cash),"Refill popup total and balance match the navigation currency format after quantity edits");
             yield return Capture("car-maintenance-refill");yield return Key(input,0x77);Check(shell.ModalOpen&&shell.Visible,"Maintenance confirmation blocks F8");
             yield return Click(input,"dialogCancel");Check(JsonUtility.ToJson(game.Profile)==baseJson&&File.ReadAllText(ProfileStore.FilePath)==disk,"Maintenance draft/cancel does not spend, refill, repair or save");
             yield return MaintenanceClick(input,"maintenanceFuel");quantity=shell.Root.Q<FloatField>("maintenanceQuantity");quantity.value=1000;
@@ -94,7 +111,10 @@ namespace DragLab.Runtime
             Check(shell.Root.Q("maintenanceOil")==null&&shell.Root.Q("maintenanceOilChange")==null&&shell.Root.Q<NativeDynoPlot>("ownedDynoPlot")==null,"Detached engine does not expose oil/coolant actions or fabricate a dyno curve on its chassis");Check(!shell.Root.Q<Button>("ownedStatsToggle").enabledSelf&&shell.Root.Q<NativeStatsPanel>("ownedCarStats")==null,"Detached engine disables Stats without inventing an engine configuration");yield return Click(input,"ownedBack");
             var request=new PaymentRequest {kind=PaymentKind.Fuel,carId=id,litres=1};disk=File.ReadAllText(ProfileStore.FilePath);
             Check(!game.CommitNativeMaintenance(request,game.Profile.revision-1,JsonUtility.ToJson(game.Profile),2)&&File.ReadAllText(ProfileStore.FilePath)==disk,"Stale maintenance confirmation cannot charge or change the saved car");
-            yield return Click(input,"ownedCar:"+id);yield return MaintenanceClick(input,"maintenanceRebuild");yield return Click(input,"dialogConfirm");
+            yield return Click(input,"ownedCar:"+id);yield return MaintenanceClick(input,"maintenanceRebuild");
+            int rebuildCost=PaidEconomy.Preview(game.Profile,catalog,game.Costs,game.PricingPolicy,new PaymentRequest {kind=PaymentKind.Rebuild,carId=id},DateTime.UtcNow.Ticks).cost;
+            Check(shell.Root.Q<Label>("maintenanceCost").text=="Total "+DisplayUnits.Money(rebuildCost)+" · Cash "+DisplayUnits.Money(game.Profile.cash),"Rebuild quote and large current balance use the shared currency format in confirmation");
+            yield return Click(input,"dialogConfirm");
             var rebuilding=game.Profile.cars.Find(c=>c.instanceId==id);
             Check(rebuilding.engineRebuild!=null&&rebuilding.engineRebuild.active&&!shell.Root.Q("maintenanceFuel").enabledInHierarchy&&!shell.Root.Q("maintenanceRebuildCollect").enabledInHierarchy,"Paid shop rebuild persists a timed reservation and disables service/early collection");
             disk=File.ReadAllText(ProfileStore.FilePath);baseJson=JsonUtility.ToJson(game.Profile);
@@ -105,7 +125,8 @@ namespace DragLab.Runtime
             Check(!shell.ModalOpen&&game.Profile.cars.Find(c=>c.instanceId==id).engineRebuild==null&&game.Profile.selectedOwnedVehicleId==selected,"Collect applies the completed existing rebuild once without changing selected car");
             cash=game.Profile.cash;game.Profile.cash=0;shell.InvalidateOwnedGrid();shell.Refresh();yield return new WaitForSecondsRealtime(.2f);
             yield return MaintenanceClick(input,"maintenanceOilChange");
-            Check(!shell.Root.Q("dialogConfirm").enabledInHierarchy&&shell.Root.Q<Label>("maintenanceError").text.StartsWith("Need $"),"Unaffordable maintenance shows the shortfall and disables publication");yield return Click(input,"dialogCancel");game.Profile.cash=cash;shell.InvalidateOwnedGrid();shell.Refresh();
+            int oilCost=PaidEconomy.Preview(game.Profile,catalog,game.Costs,game.PricingPolicy,new PaymentRequest {kind=PaymentKind.OilChange,carId=id},DateTime.UtcNow.Ticks).cost;
+            Check(!shell.Root.Q("dialogConfirm").enabledInHierarchy&&shell.Root.Q<Label>("maintenanceError").text=="Need "+DisplayUnits.Money(oilCost)+" more"&&shell.Root.Q<Label>("maintenanceCost").text=="Total "+DisplayUnits.Money(oilCost)+" · Cash "+DisplayUnits.Money(0),"Unaffordable maintenance formats the shortfall/zero balance and disables publication");yield return Click(input,"dialogCancel");game.Profile.cash=cash;shell.InvalidateOwnedGrid();shell.Refresh();
             yield return Click(input,"ownedBack");
             Screen.SetResolution(1024,768,false);yield return new WaitForSecondsRealtime(.4f);yield return Click(input,"ownedCar:"+id);yield return MaintenanceClick(input,"maintenanceOilChange");
             Check(shell.Root.Q("dialogConfirm").worldBound.xMax<=shell.Root.worldBound.xMax&&shell.Root.Q("modalClose").worldBound.yMin>=0,"Maintenance confirmation remains reachable at compact resolution");yield return Capture("car-maintenance-1024");yield return Click(input,"dialogCancel");yield return Click(input,"ownedBack");

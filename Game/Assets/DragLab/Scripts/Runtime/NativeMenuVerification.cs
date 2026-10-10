@@ -81,6 +81,7 @@ namespace DragLab.Runtime
             using (var input = new WindowsKeyboardProbe())
             {
                 Check(ProfileStore.FilePath == Path.Combine(folder, "profile-v1.json"), "Profile isolated from player assets");
+                MoneyFormattingChecks();
                 var baseline = JsonUtility.ToJson(game.Profile);
                 string disk = File.Exists(ProfileStore.FilePath) ? File.ReadAllText(ProfileStore.FilePath) : null;
                 yield return Key(input, 0x77);

@@ -20,6 +20,12 @@ namespace DragLab.Domain
     }
     public static class DisplayUnits
     {
+        // Game currency keeps the established dollar prefix; separators follow the user's locale.
+        public static string Money(double amount, int decimals = 0, bool signed = false)
+        {
+            return (amount < 0 ? "-" : signed && amount > 0 ? "+" : "") + "$" +
+                Math.Abs(amount).ToString("N" + decimals, System.Globalization.CultureInfo.CurrentCulture);
+        }
         public const double NewtonMetresPerPoundFoot = 1.3558179483314004;
         public static double Torque(double nm, TorqueUnit unit) { return unit == TorqueUnit.PoundFeet ? nm / NewtonMetresPerPoundFoot : nm; }
         public static double ToNewtonMetres(double value, TorqueUnit unit) { return unit == TorqueUnit.PoundFeet ? value * NewtonMetresPerPoundFoot : value; }

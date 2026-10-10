@@ -4,6 +4,8 @@
 
 **Slice 4: 4D.6 Stats button/Engine group ready for review (2026-10-10).** The details summary has a Stats button revealing a collapsible, read-only Engine group with grouped applied figures, units, neutral range bars and info dialogs. Shared definitions/rows support later proposed-build comparisons; the reusable dyno is retained. The final Windows build/native probe passed 385 checks with zero runtime errors. Remaining stat groups and new comparison pages are not implemented. 4D is not complete; human acceptance remains separate. See [checks/review](../reports/phases/4d/12-ENGINE-STATS.md).
 
+**Currency correction (2026-10-10):** shared locale-aware money formatting now covers native popups/navigation and legacy prices, carts, sale/maintenance confirmations, rewards and balances. Windows build/native probe passed 399 checks with zero runtime errors. The Engine checkpoint and remaining 4D scope are unchanged. See [currency checks/review](../reports/phases/4d/13-MONEY-FORMATTING.md).
+
 Source of scope: [objective.md](objective.md), section 58. The eight-car roster includes the requested pickup, three-cylinder hatch, AWD turbo sedan, inline-six GT and supercharged V8. The four new mechanical configurations reuse existing layered placeholder bodies. Mechanics and editable data take priority over finished graphics or menus.
 
 Native UI direction is recorded in [NATIVE_UI_DESIGN.md](NATIVE_UI_DESIGN.md). The shaded grey/red shell, top navigation/resources and Settings tabs are now implemented; draft Apply/confirmation and help/reset dialogs are implemented for menu Settings. Current legacy settings remain available through F8 and retain their existing behavior.

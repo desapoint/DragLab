@@ -40,7 +40,7 @@ namespace DragLab.Runtime
                 var plan = setupPlan;
                 if (plan.revision != profile.revision || plan.carId != carId) { setupPlan = null; GUILayout.Label("Build changed: load a fresh preview."); }
                 else {
-                    GUILayout.Space(10); GUILayout.Label("LOAD PREVIEW / $" + plan.cost + " / " + plan.Missing + " missing purchases", stat);
+                    GUILayout.Space(10); GUILayout.Label("LOAD PREVIEW / " + DisplayUnits.Money(plan.cost) + " / " + plan.Missing + " missing purchases", stat);
                     GUILayout.Label(plan.lines.Count(l => l.installed) + " fitted parts kept / " + plan.lines.Count(l => !l.installed && !l.purchase) + " loose parts reused / " + plan.Missing + " new parts needed");
                     if (plan.resolution != null) {
                         var current = MechanicsOwnership.Resolve(profile, Build, profile.catalog);
@@ -50,13 +50,13 @@ namespace DragLab.Runtime
                     GUI.enabled = plan.errors.Count == 0 && plan.Missing == 0;
                     if (PartButton("setup-apply-owned", "Apply / reuse owned parts / no purchases")) QueuePartAction(p => SavedSetups.Apply(p, carId, plan.setupId, plan.revision, false, plan.cost));
                     GUI.enabled = plan.errors.Count == 0 && plan.Missing > 0;
-                    if (PartButton("setup-apply-buy", "Buy missing + apply / $" + plan.cost + " total")) QueuePartAction(p => SavedSetups.Apply(p, carId, plan.setupId, plan.revision, true, plan.cost));
+                    if (PartButton("setup-apply-buy", "Buy missing + apply / " + DisplayUnits.Money(plan.cost) + " total")) QueuePartAction(p => SavedSetups.Apply(p, carId, plan.setupId, plan.revision, true, plan.cost));
                     GUI.enabled = true;
                     showKeptSetupParts = GUILayout.Toggle(showKeptSetupParts, "Show unchanged fitted components");
                     foreach (var line in plan.lines.Where(l => showKeptSetupParts || !l.installed).OrderByDescending(l => l.purchase)) {
                         var d = profile.catalog.Find(line.definitionId);
                         var item = profile.parts.Find(p => p.instanceId == line.itemId);
-                        GUILayout.Label(d.name + " / " + (line.purchase ? "BUY MISSING $" + line.cost : line.installed ? "Keep installed / " + Condition(item) : "Reuse inventory / " + Condition(item)));
+                        GUILayout.Label(d.name + " / " + (line.purchase ? "BUY MISSING " + DisplayUnits.Money(line.cost) : line.installed ? "Keep installed / " + Condition(item) : "Reuse inventory / " + Condition(item)));
                     }
                     GUILayout.Label("Other fitted components in this setup's scope move to inventory. Parts on other cars or stored engines are never taken automatically.");
                     foreach (var message in plan.warnings) GUILayout.Label("NOTE: " + message);
