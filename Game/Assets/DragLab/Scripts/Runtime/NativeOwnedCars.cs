@@ -65,35 +65,40 @@ namespace DragLab.Runtime
             var probes = new List<Tuple<string,InspectionBuild,CarSimulation>>();
             foreach (var car in profile.cars) {
                 var card = new VisualElement { name = "ownedCar:"+car.instanceId, tooltip = car.instanceId, pickingMode = PickingMode.Ignore };
-                card.AddToClassList("owned-car-card"); ownedGrid.Add(card);
+                card.AddToClassList("owned-car-card"); card.AddToClassList("neutral-panel"); ownedGrid.Add(card);
                 AddSurface(card,RacingSurface.Kind.Panel); ownedSurfaces.Add(surfaces[surfaces.Count-1]);
                 var heading = new VisualElement(); heading.AddToClassList("car-card-heading"); card.Add(heading);
                 var title = new Label(profile.catalog.Spec(car.vehicleId).displayName); title.AddToClassList("car-card-title"); heading.Add(title);
                 if (car.instanceId == profile.SelectedCar?.instanceId) { var current = new Label("CURRENT"); current.AddToClassList("car-current"); heading.Add(current); }
                 var identity = new Label("#"+car.instanceId.Substring(Math.Max(0,car.instanceId.Length-6))); identity.AddToClassList("car-identity"); card.Add(identity);
+                var body = new VisualElement(); body.AddToClassList("car-card-body"); card.Add(body);
+                var visual = new VisualElement(); visual.AddToClassList("car-visual"); body.Add(visual);
+                var info = new VisualElement { name = "carSummary" }; info.AddToClassList("car-summary"); body.Add(info);
                 try {
                     var build = MechanicsOwnership.Resolve(profile,car,profile.catalog);
-                    card.Add(CarPreview(build,car.paintHex));
+                    visual.Add(CarPreview(build,car.paintHex));
                     var source = InspectionBuild.Capture(profile,car);
                     var simulation = CarInspection.PrepareCar(source);
                     var stats = CarInspection.CalculatePrepared(source,simulation,false);
-                    var values = new Label(stats.peakHp.ToString("F0")+" HP   ·   "+DisplayUnits.Torque(stats.peakTorque,SharedUnitSettings.Current.torque).ToString("F0")+" "+DisplayUnits.TorqueLabel(SharedUnitSettings.Current.torque)+"   ·   "+stats.vehicleMassKg.ToString("F0")+" kg");
-                    values.AddToClassList("car-card-stats"); card.Add(values);
-                    var rating = new Label("Class …") { name = "carClass:"+car.instanceId }; rating.AddToClassList("car-class"); card.Add(rating);
+                    var values = new VisualElement(); values.AddToClassList("car-card-stats"); info.Add(values);
+                    CarFact(values,"HP",stats.peakHp.ToString("F0"));
+                    CarFact(values,"Torque",DisplayUnits.Torque(stats.peakTorque,units).ToString("F0")+" "+DisplayUnits.TorqueLabel(units));
+                    CarFact(values,"Weight",stats.vehicleMassKg.ToString("F0")+" kg");
+                    var rating = new Label("Class …") { name = "carClass:"+car.instanceId }; rating.AddToClassList("car-class"); info.Add(rating);
                     var installed = car.installed.slots.Select(slot => profile.parts.Find(part => part.instanceId == slot.partInstanceId)).Where(part => part != null).ToArray();
                     int failed = installed.Count(part => part.condition.failed || part.condition.health <= 0);
                     int worn = installed.Count(part => PartSemantics.Wears(profile.catalog.Find(part.definitionId).category) && !part.condition.failed && part.condition.health > 0 && (part.condition.health <= .5f || part.condition.deposits >= .05 || part.condition.leakSeverity >= .01 || part.condition.adjustmentError >= .05 || EngineElements.NeedsService(part.condition) || part.condition.tires.Any(tire=>tire.failed || tire.health<=.5f)));
                     bool reserved = !string.IsNullOrEmpty(car.garageJobId) || car.engineRebuild != null;
                     string status = reserved ? "Reserved" : !build.Drivable ? "Unavailable" : car.fuel.litres <= 0 ? "No fuel" : failed > 0 || worn > 0 || build.warnings.Count > 0 ? "Needs service" : "Ready";
                     var condition = new Label(status+(failed>0?" · "+failed+" failed":"")+(worn>0?" · "+worn+" worn":""));
-                    condition.AddToClassList("car-condition"); condition.AddToClassList(failed>0 || !build.Drivable ? "car-critical" : status=="Ready"?"car-ready":"car-warning"); card.Add(condition);
-                    var fuel = new Label(build.spec.drive+"   ·   "+car.fuel.litres.ToString("F1")+" / "+build.spec.fuel.capacityLitres.ToString("F0")+" L"); fuel.AddToClassList("car-identity"); card.Add(fuel);
+                    condition.AddToClassList("car-condition"); condition.AddToClassList(failed>0 || !build.Drivable ? "car-critical" : status=="Ready"?"car-ready":"car-warning"); info.Add(condition);
+                    var fuel = new Label(build.spec.drive+"   ·   "+car.fuel.litres.ToString("F1")+" / "+build.spec.fuel.capacityLitres.ToString("F0")+" L"); fuel.AddToClassList("car-identity"); info.Add(fuel);
                     if (!build.Drivable || build.warnings.Count > 0) {
-                        var reason = new Label(string.IsNullOrEmpty(car.engineAssemblyId)?"No engine attached":build.errors.Concat(build.warnings).FirstOrDefault()); reason.AddToClassList("car-reason"); card.Add(reason);
+                        var reason = new Label(string.IsNullOrEmpty(car.engineAssemblyId)?"No engine attached":build.errors.Concat(build.warnings).FirstOrDefault()); reason.AddToClassList("car-reason"); info.Add(reason);
                     }
                     probes.Add(Tuple.Create(car.instanceId,source,CarInspection.PrepareCar(source)));
                 } catch (Exception) {
-                    var unavailable = new Label("Build data unavailable"); unavailable.AddToClassList("car-critical"); card.Add(unavailable);
+                    var unavailable = new Label("Build data unavailable"); unavailable.AddToClassList("car-critical"); info.Add(unavailable);
                 }
             }
             if (profile.cars.Count == 0) { var empty = new Label("No owned cars"); empty.AddToClassList("car-empty"); ownedGrid.Add(empty); }
@@ -108,6 +113,12 @@ namespace DragLab.Runtime
                 }
                 return result;
             });
+        }
+        static void CarFact(VisualElement parent,string caption,string value)
+        {
+            var row = new VisualElement(); row.AddToClassList("car-fact"); parent.Add(row);
+            var label = new Label(caption); label.AddToClassList("car-fact-label"); row.Add(label);
+            var number = new Label(value); number.AddToClassList("car-fact-value"); row.Add(number);
         }
         static VisualElement CarPreview(BuildResolution build,string paintHex)
         {
@@ -131,7 +142,11 @@ namespace DragLab.Runtime
                     image.style.height = Length.Percent(box.size.y/bounds.size.y*100);
                     preview.Add(image);
                 }
-                preview.style.height = 270*bounds.size.y/bounds.size.x;
+                float aspect = bounds.size.y/bounds.size.x;
+                preview.RegisterCallback<GeometryChangedEvent>(evt => {
+                    if (evt.newRect.width > 0 && !Mathf.Approximately(evt.newRect.width,evt.oldRect.width))
+                        preview.style.height = evt.newRect.width*aspect;
+                });
             } finally { stage.SetActive(false); Destroy(stage); }
             return preview;
         }

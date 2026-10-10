@@ -64,12 +64,17 @@ namespace DragLab.Runtime
                     var cards=shell.Root.Query(className:"owned-car-card").ToList();
                     Check(cards.All(card=>card.worldBound.xMin>=viewport.xMin-1 && card.worldBound.xMax<=viewport.xMax+1),"Grid reflows without horizontal overflow at "+width);
                     Check(cards.All(card=>card.tabIndex==-1),"Cards do not introduce Tab traversal at "+width);
+                    Check(cards.Count(card=>Mathf.Abs(card.worldBound.yMin-cards[0].worldBound.yMin)<1)==2,"Garage keeps exactly two cards per row at "+width);
+                    Check(cards.All(card=>card.Q("carSummary").worldBound.xMin>=card.Q("carPreview").worldBound.xMax && card.Q("carSummary").worldBound.xMax<=card.worldBound.xMax && card.Q(className:"car-card-stats").childCount==3),"HP, torque and weight stay to the right of each preview at "+width);
                     yield return Capture("owned-cars-"+width);
                 }
                 var target = new RenderTexture(3840,2160,24); target.Create();
                 shell.Panel.targetTexture = target; yield return new WaitForSecondsRealtime(.4f); yield return new WaitForEndOfFrame();
                 var viewport4k = shell.Root.Q<ScrollView>("ownedCars").contentViewport.worldBound;
                 Check(shell.Panel.scale==2 && shell.Root.Query(className:"owned-car-card").ToList().All(card=>card.worldBound.xMax<=viewport4k.xMax+1),"Owned grid fits true 4K target with shared two-times scale");
+                var cards4k=shell.Root.Query(className:"owned-car-card").ToList();
+                Check(cards4k.Count(card=>Mathf.Abs(card.worldBound.yMin-cards4k[0].worldBound.yMin)<1)==2,"Garage keeps exactly two cards per row at 4K");
+                Check(cards4k.All(card=>card.Q("carSummary").worldBound.xMin>=card.Q("carPreview").worldBound.xMax && card.Q("carSummary").worldBound.xMax<=card.worldBound.xMax),"Right-side car summaries fit at 4K");
                 var previous = RenderTexture.active; RenderTexture.active=target;
                 var image = new Texture2D(3840,2160,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,3840,2160),0,0);image.Apply();
                 File.WriteAllBytes(Path.Combine(folder,"owned-cars-4k-target.png"),image.EncodeToPNG());

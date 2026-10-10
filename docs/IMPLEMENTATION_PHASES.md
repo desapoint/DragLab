@@ -1,6 +1,6 @@
 # Slice 2, Slice 3 and Slice 4 implementation phases
 
-Current UI checkpoint (2026-10-10): **4D.1 owned-car grid** implemented for review. Actual owned-instance previews, applied stats/class estimates, condition/fuel and current marker reuse the native theme. See [grid report](../reports/phases/4d/01-OWNED-GRID.md). Cards are read-only; search/filtering, sorting, selection/actions, dealership and inspection drawer require separate instructions. This does not complete 4D. Preserve Settings/F8 and stop for visual validation.
+Current UI checkpoint (2026-10-10): **4D.1 card-layout correction** — two neutral rectangular cards per row, preview left and concise specs/condition right. See [correction report](../reports/phases/4d/02-CARD-LAYOUT.md). Preserve actual owned identities, read-only state, shared Settings/theme and F8. Search/filtering, sorting, selection/actions, dealership and drawer remain separately reviewed controls; stop for human visual validation.
 
 Additional catalog foundation (2026-10-08): [part-owned tuning permissions and 128 new hardware choices](../reports/part-hardware/CHANGES.md), integrated with shared race/physical-bench resolution. Preserve physical turbo-size swaps, fixed/adjustable controller and pulley distinctions, supported final-drive gearsets, saved-value enforcement and unrestricted raw acoustic experiments during remaining phases. Physical capture model was v12; the approved service/fluids extension uses v13. This records the original catalog extension; final integration acceptance is in the completion record below.
 
