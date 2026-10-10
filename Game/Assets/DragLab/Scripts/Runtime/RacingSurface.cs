@@ -5,9 +5,9 @@ using UnityEngine.UIElements;
 namespace DragLab.Runtime
 {
     // Tessellated cel shading; decorative geometry never owns clicks or drive input.
-    internal sealed class RacingSurface : VisualElement
+    internal sealed partial class RacingSurface : VisualElement
     {
-        internal enum Kind { Header, Footer, Metal, Navigation, Button, Primary, Tab, FirstTab, Action, Panel }
+        internal enum Kind { Header, Footer, Metal, Navigation, Button, Primary, Tab, FirstTab, Action, SecondaryAction, ChoiceFirst, ChoiceMiddle, ChoiceLast, Panel }
         const float SweepSeconds = .65f;
         readonly VisualElement owner;
         readonly Kind kind;
@@ -51,14 +51,7 @@ namespace DragLab.Runtime
             PaintCount++;
             vertices.Clear(); indices.Clear();
             bool lit = hovered || focused;
-            if (kind == Kind.Panel)
-            {
-                Face(0,0,w,h,C(.085f,.10f,.12f,.92f),C(.045f,.055f,.065f,.94f));
-                Stroke(new Vector2(0,22),new Vector2(0,0),2,C(.95f,.08f,.13f));
-                FadeLine(0,0,120,2,false);
-                Stroke(new Vector2(w,h-22),new Vector2(w,h),2,C(.95f,.08f,.13f));
-                FadeLine(w-120,h-2,120,2,true);
-            }
+            if (UsesContour) DrawContouredControl(w,h);
             else if (kind == Kind.Metal)
             {
                 Metal(w,h);
@@ -73,31 +66,12 @@ namespace DragLab.Runtime
             }
             else
             {
-                if (kind == Kind.Primary) SettingsPlate(w,h);
-                else if (kind == Kind.Tab || kind == Kind.FirstTab || kind == Kind.Action)
-                {
-                    bool red = selected || kind == Kind.Action;
-                    Face(0,0,w,h,red?C(.63f,.075f,.10f):C(.20f,.22f,.24f),red?C(.28f,.02f,.035f):C(.07f,.08f,.095f));
-                    Stroke(new Vector2(0,0),new Vector2(w,0),1.2f,red?C(1,.23f,.25f):C(.56f,.59f,.63f));
-                    Stroke(new Vector2(0,h),new Vector2(w,h),1.2f,red?C(.9f,.10f,.14f):C(.02f,.03f,.04f));
-                    Stroke(new Vector2(0,0),new Vector2(0,h),1,red?C(1,.16f,.19f):C(.39f,.42f,.46f));
-                    Stroke(new Vector2(w,0),new Vector2(w,h),1,red?C(.85f,.06f,.09f):C(.32f,.35f,.39f));
-                    for(float x=-h;x<w;x+=2.6f) Slant(x,0,.4f,h,C(1,1,1,.023f),h*.8f);
-                }
-                else if (kind != Kind.Navigation)
-                {
-                    Color top = selected ? C(.63f,.075f,.11f) : C(.23f,.25f,.28f);
-                    Color bottom = selected ? C(.28f,.025f,.045f) : C(.075f,.085f,.10f);
-                    Face(0,0,w,h,top,bottom);
-                    Face(1,0,w-2,1,C(1,1,1,kind == Kind.Primary ? .20f : .16f));
-                    Face(1,h-2,w-2,1,C(0,0,0,.3f));
-                }
-                if ((selected && kind != Kind.Primary) || (lit && kind == Kind.Navigation))
+                if (selected || lit)
                 {
                     // Vertex alpha gives a circular, soft light from below the active menu.
                     Color light = selected ? C(.86f,.055f,.12f,.72f) : C(.7f,.75f,.82f,.16f);
                     Radial(w,h,light);
-                    if (selected && kind == Kind.Navigation)
+                    if (selected)
                         Radial(w,h,C(1,.22f,.28f,.28f),Mathf.Max(w*.38f,h*.6f));
                     if (selected)
                         for (int i = 0; i < 24; i++)
@@ -109,18 +83,16 @@ namespace DragLab.Runtime
                         }
                 }
                 Grain(w,h,Mathf.Min(2400,(int)(w*h/6)),0x23df917u,.032f);
-                if (lit && kind != Kind.Navigation) Face(0,0,w,h,C(1,1,1,.035f));
                 if (ShineActive)
                 {
-                    // Sweep in the plate's own basis: its edges remain parallel
-                    // to the slanted control, without clamping/distorting a stripe.
+                    // Existing navigation sweep; contoured controls use their own clipped mesh.
                     for(int i=0;i<64;i++)
                     {
                         float u=i/64f, v=(i+1)/64f;
                         float center=Mathf.Lerp(-.3f,1.3f,ShineProgress);
                         float a=Mathf.Exp(-Mathf.Pow((u-center)/.11f,2))*.14f;
                         float b=Mathf.Exp(-Mathf.Pow((v-center)/.11f,2))*.14f;
-                        PlateQuad(u,v,w,h,C(1,1,1,a),C(1,1,1,b));
+                        Quad(new Vector2(u*w,0),new Vector2(v*w,0),new Vector2(v*w,h),new Vector2(u*w,h),C(1,1,1,a),C(1,1,1,b),C(1,1,1,b),C(1,1,1,a));
                     }
                 }
                 if (pressed) Face(0,0,w,h,C(0,0,0,.22f));
@@ -128,7 +100,7 @@ namespace DragLab.Runtime
             var mesh = context.Allocate(vertices.Count,indices.Count);
             foreach (var vertex in vertices) mesh.SetNextVertex(vertex);
             foreach (var index in indices) mesh.SetNextIndex(index);
-            if (kind != Kind.Header && kind != Kind.Footer) DrawDither(context,w,h);
+            if (!UsesContour && kind != Kind.Header && kind != Kind.Footer) DrawDither(context,w,h);
         }
         void DrawDither(MeshGenerationContext context,float w,float h)
         {
@@ -144,31 +116,11 @@ namespace DragLab.Runtime
             }
             var mesh=context.Allocate(4,6,dither); Rect uv=mesh.uvRegion;
             var a=new Vector2(0,0);var b=new Vector2(w,0);var c=new Vector2(w,h);var d=new Vector2(0,h);
-            if(kind==Kind.Primary){a=ClipPlate(a);b=ClipPlate(b);c=ClipPlate(c);d=ClipPlate(d);}
-            if(kind==Kind.Tab||kind==Kind.FirstTab||kind==Kind.Action){a=ClipTab(a);b=ClipTab(b);c=ClipTab(c);d=ClipTab(d);}
             mesh.SetNextVertex(new Vertex {position=new Vector3(a.x,a.y,Vertex.nearZ),tint=Color.white,uv=new Vector2(uv.xMin,uv.yMax)});
             mesh.SetNextVertex(new Vertex {position=new Vector3(b.x,b.y,Vertex.nearZ),tint=Color.white,uv=new Vector2(uv.xMax,uv.yMax)});
             mesh.SetNextVertex(new Vertex {position=new Vector3(c.x,c.y,Vertex.nearZ),tint=Color.white,uv=new Vector2(uv.xMax,uv.yMin)});
             mesh.SetNextVertex(new Vertex {position=new Vector3(d.x,d.y,Vertex.nearZ),tint=Color.white,uv=new Vector2(uv.xMin,uv.yMin)});
             foreach(ushort index in new ushort[]{0,1,2,2,3,0})mesh.SetNextIndex(index);
-        }
-        void SettingsPlate(float w,float h)
-        {
-            Face(0,5,w,h-10,C(.70f,.13f,.18f),C(.28f,.035f,.06f));
-            // Inset glass face and asymmetric light on the upper/left bevel.
-            Face(6,9,w-12,(h-18)*.5f,C(1,.35f,.30f,.13f),C(1,.35f,.30f,0));
-            Stroke(new Vector2(20,5),new Vector2(w-2,5),1.3f,C(1,.48f,.38f,.8f));
-            Stroke(new Vector2(20,5),new Vector2(2,h-5),1.2f,C(.85f,.18f,.23f));
-            Stroke(new Vector2(2,h-5),new Vector2(w-20,h-5),1.4f,C(.98f,.24f,.29f));
-            Stroke(new Vector2(w-2,5),new Vector2(w-20,h-5),1.1f,C(.20f,.018f,.04f));
-
-        }
-        Vector2 ClipPlate(Vector2 point)
-        {
-            float w = contentRect.width, h = contentRect.height;
-            float y = Mathf.Clamp(point.y,5,h-5);
-            float t = (y-5)/(h-10);
-            return new Vector2(Mathf.Clamp(point.x,20-18*t,w-2-18*t),y);
         }
         void HeaderTrim(float w,float h)
         {
@@ -193,24 +145,10 @@ namespace DragLab.Runtime
                 Stroke(point(12,3),point(19,8),1.4f,C(.45f,.1f,.14f));
             }
         }
-        Vector2 ClipTab(Vector2 p)
-        {
-            float h=contentRect.height,w=contentRect.width;
-            p.y=Mathf.Clamp(p.y,0,h); float lean=14*(1-p.y/h);
-            p.x=Mathf.Clamp(p.x,kind==Kind.FirstTab?0:lean,w-14*p.y/h); return p;
-        }
         void FadeLine(float x,float y,float w,float h,bool reverse)
         {
             Color red=C(.92f,.09f,.14f,.88f), clear=C(.92f,.09f,.14f,0);
             Quad(new Vector2(x,y),new Vector2(x+w,y),new Vector2(x+w,y+h),new Vector2(x,y+h),reverse?clear:red,reverse?red:clear,reverse?red:clear,reverse?clear:red);
-        }
-        void PlateQuad(float u,float v,float w,float h,Color left,Color right)
-        {
-            bool plate=kind==Kind.Primary;
-            float top=plate?5:0,bottom=plate?h-5:h;
-            float tl=plate?20:kind==Kind.FirstTab?0:kind==Kind.Tab||kind==Kind.Action?14:0;
-            float tr=plate?w-2:w,bl=plate?2:0,br=plate?w-20:kind==Kind.Tab||kind==Kind.FirstTab||kind==Kind.Action?w-14:w;
-            Quad(new Vector2(Mathf.Lerp(tl,tr,u),top),new Vector2(Mathf.Lerp(tl,tr,v),top),new Vector2(Mathf.Lerp(bl,br,v),bottom),new Vector2(Mathf.Lerp(bl,br,u),bottom),left,right,right,left);
         }
         void Metal(float w,float h)
         {
@@ -290,11 +228,8 @@ namespace DragLab.Runtime
         { Quad(new Vector2(x,y),new Vector2(x+w,y),new Vector2(x+w-lean,y+h),new Vector2(x-lean,y+h),color,color,color,color); }
         void Quad(Vector2 a,Vector2 b,Vector2 c,Vector2 d,Color ca,Color cb,Color cc,Color cd)
         {
+            if (clipContour) { ClipQuad(a,b,c,d,ca,cb,cc,cd); return; }
             int start = vertices.Count;
-            if (kind == Kind.Primary)
-            { a = ClipPlate(a); b = ClipPlate(b); c = ClipPlate(c); d = ClipPlate(d); }
-            if (kind == Kind.Tab || kind == Kind.FirstTab || kind == Kind.Action)
-            { a = ClipTab(a); b = ClipTab(b); c = ClipTab(c); d = ClipTab(d); }
             AddVertex(a,ca); AddVertex(b,cb); AddVertex(c,cc); AddVertex(d,cd);
             AddIndices(start,start+1,start+2,start+3);
         }

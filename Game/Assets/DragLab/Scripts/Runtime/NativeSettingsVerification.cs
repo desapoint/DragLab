@@ -16,6 +16,56 @@ namespace DragLab.Runtime
             var target=shell.Root.Q(id); shell.Root.Q<ScrollView>("settingsScroll").ScrollTo(target);
             yield return new WaitForSecondsRealtime(.15f); yield return Click(input,id);
         }
+        IEnumerator ControlStyleChecks(WindowsKeyboardProbe input)
+        {
+            var root=shell.Root;var scroll=root.Q<ScrollView>("settingsScroll");scroll.scrollOffset=Vector2.zero;
+            yield return new WaitForSecondsRealtime(.15f);
+            int rows=0;root.Q("pageDifficulty").Query(className:"setting-row").ForEach(row=>
+            {if(row.worldBound.yMin>=scroll.worldBound.yMin && row.worldBound.yMax<=scroll.worldBound.yMax)rows++;});
+            Check(rows>=9,"Compact Settings exposes at least nine full driving rows at 1280x720: "+rows);
+            Check(root.Q("cancelSettings").worldBound.height<=35 && root.Q("applySettings").worldBound.height<=35,"Page actions use compact matching heights");
+            var first=root.Q("shifting0");var middle=root.Q("shifting1");var last=root.Q("shifting2");
+            Check(first.resolvedStyle.borderTopLeftRadius>0 && first.resolvedStyle.borderTopRightRadius==0 && middle.resolvedStyle.borderTopLeftRadius==0 && middle.resolvedStyle.borderTopRightRadius==0 && last.resolvedStyle.borderTopLeftRadius==0 && last.resolvedStyle.borderTopRightRadius>0,"Choice group rounds only its two outer ends");
+            Check(Mathf.Abs(first.worldBound.xMax-middle.worldBound.xMin)<1 && Mathf.Abs(middle.worldBound.xMax-last.worldBound.xMin)<1,"Joined choices have no gap between segments");
+            var bar=scroll.verticalScroller;
+            Check(bar.worldBound.width<=9 && bar.lowButton.resolvedStyle.display==DisplayStyle.None && bar.highButton.resolvedStyle.display==DisplayStyle.None,"Scrollbar has a slim eight-point column and no stock arrow buttons: "+bar.worldBound.width);
+            Check(bar.slider.Q(className:"unity-base-slider__dragger").worldBound.width<=9,"Scrollbar thumb fits its slim column without overflowing");
+            yield return new WaitForEndOfFrame();var pixels=ScreenCapture.CaptureScreenshotAsTexture();var panel=root.Q("settingsBody").worldBound;
+            float CornerRed(bool lower)
+            {
+                float best=0;for(int x=0;x<16;x++)for(int y=0;y<16;y++)
+                {var c=pixels.GetPixel((int)(lower?panel.xMax-1-x:panel.xMin+x),Screen.height-1-(int)(lower?panel.yMax-1-y:panel.yMin+y));best=Mathf.Max(best,c.r-c.g);}
+                return best;
+            }
+            Check(CornerRed(false)>.3f && CornerRed(true)>.3f,"Both rounded panel corners visibly render red accents");Destroy(pixels);
+            foreach(string id in new[]{"tabSound","settingsButton"})
+            {
+                var button=root.Q(id);var surface=button.Q<RacingSurface>();
+                input.MoveMouseAt(400,650);yield return new WaitForSecondsRealtime(.7f);yield return new WaitForEndOfFrame();
+                var before=ScreenCapture.CaptureScreenshotAsTexture();var bounds=button.worldBound;
+                int x=(int)(id=="settingsButton"?bounds.xMin+3:bounds.xMax-2),y=Screen.height-1-(int)(id=="settingsButton"?bounds.yMin+8:bounds.yMax-3);
+                Color outside=before.GetPixel(x,y);Destroy(before);
+                input.MoveMouseAt((int)bounds.center.x,(int)bounds.center.y);yield return new WaitForSecondsRealtime(.15f);yield return new WaitForEndOfFrame();
+                var after=ScreenCapture.CaptureScreenshotAsTexture();Color hovered=after.GetPixel(x,y);Destroy(after);
+                Check(button.resolvedStyle.backgroundColor.a==0 && surface.UsesClippedContour && Vector3.Distance(new Vector3(outside.r,outside.g,outside.b),new Vector3(hovered.r,hovered.g,hovered.b))<.035f,"Hover and shine leave the clear slanted corner unchanged: "+id);
+                Check(Mathf.Abs(surface.AntiAliasWidth*surface.scaledPixelsPerPoint-1)<.01f,"Angled outline uses a one-physical-pixel alpha fringe: "+id);
+                yield return Capture("polished-hover-"+id);
+            }
+            var toggle=root.Q<Toggle>("heatManagement");scroll.ScrollTo(toggle);yield return new WaitForSecondsRealtime(.2f);
+            var decoration=toggle.Q<SwitchSurface>();float initial=decoration.Progress;bool initialValue=toggle.value;
+            void Tap() {var b=toggle.worldBound;input.MouseButtonAt((int)b.center.x,(int)b.center.y,true);input.MouseButtonAt((int)b.center.x,(int)b.center.y,false);}
+            Tap();yield return new WaitForSecondsRealtime(.055f);
+            Check(toggle.value!=initialValue && decoration.Progress>0 && decoration.Progress<1 && decoration.Animating,"Real toggle click animates thumb and track through intermediate state");
+            float halfway=decoration.Progress;Tap();yield return new WaitForSecondsRealtime(.02f);
+            Check(toggle.value==initialValue && Mathf.Abs(decoration.Progress-halfway)<.3f,"Rapid toggle reversal continues from the current thumb position");
+            yield return new WaitForSecondsRealtime(.25f);Check(decoration.Progress==initial && !decoration.Animating,"Toggle settles exactly at original state after reversal");
+            Tap();yield return new WaitForSecondsRealtime(.06f);yield return Capture("polished-switch-transition");
+            Check(decoration.Progress==(initialValue?0:1),"Toggle reaches opposite endpoint without continual animation");
+            yield return Capture("polished-switch-opposite");Tap();yield return new WaitForSecondsRealtime(.25f);
+            input.MoveMouseAt(400,650);yield return new WaitForSecondsRealtime(.2f);int paints=decoration.PaintCount;
+            yield return new WaitForSecondsRealtime(.3f);Check(decoration.PaintCount==paints,"Settled switch geometry stays cached");
+            yield return Click(input,"revertSettings");scroll.scrollOffset=Vector2.zero;
+        }
         IEnumerator SettingsChecks(WindowsKeyboardProbe input)
         {
             var before=JsonUtility.ToJson(game.Profile); var applied=game.settings.Copy();
@@ -30,6 +80,7 @@ namespace DragLab.Runtime
                 Check(root.Q("cancelSettings").worldBound.yMax<Screen.height-30 && root.Q("applySettings").worldBound.yMax<Screen.height-30,"Apply/Cancel remain outside scrolling panel: "+id);
             }
             yield return Click(input,"tabDifficulty");
+            yield return ControlStyleChecks(input);
             foreach(var field in typeof(DriverSettings).GetFields())
                 if(field.Name!="reactionSeconds" && field.Name!="soundVolume" && field.Name!="wearMultiplier" && field.Name!="optimalThermals")
                     Check(root.Q(field.Name+"Choices")!=null,"Existing driving preference mapped: "+field.Name);
@@ -50,6 +101,9 @@ namespace DragLab.Runtime
             var numericInput=root.Q<FloatField>("masterVolumeValue").Q(className:"unity-base-field__input");
             Check(numericInput!=null && numericInput.resolvedStyle.backgroundColor.r<.3f,"Numeric entry uses readable dark themed background");
             var tracker=slider.Q(className:"unity-base-slider__tracker").worldBound;
+            var knob=slider.Q(className:"unity-base-slider__dragger").worldBound;
+            Check(Mathf.Abs(tracker.center.y-knob.center.y)<1,"Slider thumb is vertically centered on the track: "+tracker+" / "+knob);
+            Check(numericInput.Q<TextElement>().resolvedStyle.unityFontDefinition.fontAsset==root.resolvedStyle.unityFontDefinition.fontAsset,"Numeric input uses the shared condensed UI font");
             input.MouseButtonAt((int)Mathf.Lerp(tracker.xMin,tracker.xMax,.32f),(int)tracker.center.y,true); yield return new WaitForSecondsRealtime(.1f);
             input.MouseButtonAt((int)Mathf.Lerp(tracker.xMin,tracker.xMax,.32f),(int)tracker.center.y,false);yield return new WaitForSecondsRealtime(.2f);
             Check(Mathf.Abs(slider.value-.32f)<.06f && SharedAudioSettings.MasterVolume==master && SharedAudioSettings.DspMasterVolume==master,"Real volume slider edits draft without publishing audio gain");
@@ -65,6 +119,7 @@ namespace DragLab.Runtime
             yield return Key(input,0x77);Check(shell.Visible && shell.SettingsDirty,"F8 restores same dirty Settings draft");
             yield return Click(input,"applySettings"); Check(shell.ModalOpen,"Apply opens actual-change confirmation");
             Check(root.Q<ScrollView>("modalContent").Q<Label>().text.Contains("Master") && root.Q<ScrollView>("modalContent").Q<Label>().text.Contains("Mechanical wear"),"Confirmation names actual pending changes");
+            Check(root.Q<ScrollView>("modalContent").verticalScroller.ClassListContains("settings-scrollbar") && root.Q<ScrollView>("modalContent").verticalScroller.lowButton.resolvedStyle.display==DisplayStyle.None,"Confirmation details use the same themed scrollbar");
             yield return Capture("settings-apply-dialog");yield return Key(input,0x77);Check(shell.Visible && shell.ModalOpen,"Confirmation blocks F8");
             yield return Click(input,"modalClose");Check(!shell.ModalOpen && shell.SettingsDirty && JsonUtility.ToJson(game.Profile)==before,"X dismisses only dialog and keeps draft");
             yield return Click(input,"navGarage");Check(shell.ModalOpen && game.ScreenName=="Settings","Dirty navigation asks Apply/Discard/Stay");
@@ -130,6 +185,7 @@ namespace DragLab.Runtime
             var target=new RenderTexture(3840,2160,24);target.Create();shell.Panel.targetTexture=target;
             yield return new WaitForSecondsRealtime(.4f);yield return new WaitForEndOfFrame();
             Check(shell.Panel.scale==2 && root.Q("applySettings").worldBound.xMax<=1920 && root.Q("settingsBody").worldBound.yMax<root.Q("settingsActions").worldBound.yMin,"Populated 4K layout retains panel/action separation with shared 2x scale");
+            Check(Mathf.Abs(root.Q("settingsBody").Q<RacingSurface>().AntiAliasWidth-.5f)<.01f,"True 4K target keeps its edge fringe at one physical pixel");
             var prior=RenderTexture.active;RenderTexture.active=target;var image=new Texture2D(3840,2160,TextureFormat.RGB24,false);
             image.ReadPixels(new Rect(0,0,3840,2160),0,0);image.Apply();File.WriteAllBytes(Path.Combine(folder,"settings-populated-4k.png"),image.EncodeToPNG());
             RenderTexture.active=prior;shell.Panel.targetTexture=null;target.Release();Destroy(target);Destroy(image);

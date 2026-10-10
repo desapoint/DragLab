@@ -17,6 +17,7 @@ namespace DragLab.Runtime
         int draftAi, baselineAi;
         bool conflicted;
         float nextPreferenceCheck;
+        readonly List<SwitchSurface> switchSurfaces = new List<SwitchSurface>();
         readonly List<Action> updateControls = new List<Action>();
         readonly List<VisualElement> pages = new List<VisualElement>();
         readonly Dictionary<string, string> settingLabels = new Dictionary<string, string>();
@@ -34,8 +35,14 @@ namespace DragLab.Runtime
         void InitializeSettings()
         {
             AddSurface(root.Q("settingsBody"), RacingSurface.Kind.Panel);
+            root.Query<ScrollView>().ForEach(scroll =>
+            {
+                var scroller = scroll.verticalScroller;
+                scroller.AddToClassList("settings-scrollbar"); scroller.slider.AddToClassList("settings-scrollbar-slider");
+                scroller.lowButton.AddToClassList("scrollbar-arrow"); scroller.highButton.AddToClassList("scrollbar-arrow");
+            });
             foreach (string id in new[] { "revertSettings", "cancelSettings", "applySettings" })
-                AddSurface(root.Q(id), id == "applySettings" ? RacingSurface.Kind.Action : RacingSurface.Kind.Button);
+                AddSurface(root.Q(id), id == "applySettings" ? RacingSurface.Kind.Action : RacingSurface.Kind.SecondaryAction);
             root.Q<Button>("revertSettings").clicked += () => { ReadApplied(); UpdateControls(); };
             root.Q<Button>("cancelSettings").clicked += () => { ReadApplied(); game.QueueNativeNavigation(game.SettingsReturnRoute); };
             root.Q<Button>("applySettings").clicked += () => ConfirmApply(null);
@@ -171,7 +178,7 @@ namespace DragLab.Runtime
             {
                 var button = new Button(action.action) { text = action.label, name = "dialog" + action.label.Replace("…", "").Replace(" ", "") };
                 button.AddToClassList("action-button"); if (action.primary) button.AddToClassList("primary-action");
-                buttons.Add(button); AddSurface(button, action.primary ? RacingSurface.Kind.Action : RacingSurface.Kind.Button); dialogSurfaces.Add(button.Q<RacingSurface>());
+                buttons.Add(button); AddSurface(button, action.primary ? RacingSurface.Kind.Action : RacingSurface.Kind.SecondaryAction); dialogSurfaces.Add(button.Q<RacingSurface>());
             }
             root.Q("modalLayer").RemoveFromClassList("hidden"); root.Q("navBar").SetEnabled(false); root.Q("settingsTabs").SetEnabled(false); root.Q("settingsBody").SetEnabled(false); root.Q("settingsActions").SetEnabled(false);
             root.Q<Button>("modalClose").Focus();
@@ -196,11 +203,12 @@ namespace DragLab.Runtime
         }
         void Choice(int page, string id, string label, string[] labels, Func<int> get, Action<int> set, string help = null, bool simulation = false)
         {
-            var group = Row(page, id, label, help); var buttons = new List<Button>();
+            var group = Row(page, id, label, help); group.AddToClassList("choice-group"); var buttons = new List<Button>();
             for (int i = 0; i < labels.Length; i++)
             {
                 int index = i; var button = new Button(() => { set(index); Changed(simulation); }) { text = labels[i], name = id + i }; button.AddToClassList("choice-button");
-                group.Add(button); AddSurface(button, RacingSurface.Kind.Button); buttons.Add(button);
+                button.AddToClassList(i==0?"choice-first":i==labels.Length-1?"choice-last":"choice-middle");
+                group.Add(button); AddSurface(button, i==0?RacingSurface.Kind.ChoiceFirst:i==labels.Length-1?RacingSurface.Kind.ChoiceLast:RacingSurface.Kind.ChoiceMiddle); buttons.Add(button);
             }
             updateControls.Add(() => { for (int i = 0; i < buttons.Count; i++) buttons[i].EnableInClassList("selected", get() == i); });
         }
@@ -208,9 +216,9 @@ namespace DragLab.Runtime
         {
             var group = Row(page, id, label, help);
             var toggle = new Toggle { name = id }; toggle.AddToClassList("setting-toggle"); group.Add(toggle);
-            var input = toggle.Q(className: "unity-toggle__input"); AddSurface(input, RacingSurface.Kind.Button);
+            var input = toggle.Q(className: "unity-toggle__input"); var surface = new SwitchSurface(toggle); input.Add(surface); switchSurfaces.Add(surface);
             toggle.RegisterValueChangedCallback(evt => { set(evt.newValue); Changed(simulation); });
-            updateControls.Add(() => { toggle.SetValueWithoutNotify(get()); input.EnableInClassList("selected", get()); });
+            updateControls.Add(() => { toggle.SetValueWithoutNotify(get()); surface.SetValue(get()); });
         }
         void Range(int page, string id, string label, float min, float max, Func<float> get, Action<float> set, bool percent, string help = null)
         {

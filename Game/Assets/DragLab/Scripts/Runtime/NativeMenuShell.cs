@@ -88,6 +88,7 @@ namespace DragLab.Runtime
         {
             Refresh();
             foreach (var surface in surfaces) surface.Tick(Visible);
+            foreach (var surface in switchSurfaces) surface.Tick(Visible);
         }
         internal void Refresh()
         {
