@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DragLab — Slice 4A layout review</title>
+  <link rel="stylesheet" href="review.css">
+</head>
+<body>
+  <header class="review-header">
+    <div><strong>DragLab / 4A</strong><span class="muted"> Layout review · illustrative data · no game connected</span></div>
+    <div class="review-controls">
+      <label>Screen <select id="screen-picker" aria-label="Review screen"></select></label>
+      <label>State <select id="state-picker"><option value="healthy">Ready</option><option value="worn">Worn / failed</option><option value="incomplete">Incomplete</option><option value="reserved">Reserved / locked</option><option value="empty">Empty garage</option></select></label>
+      <label>Width <select id="width-picker"><option value="fluid">Fit window</option><option value="1280">1280 desktop</option><option value="960">960 compact</option></select></label>
+      <button id="annotations-toggle" aria-pressed="true">Annotations on</button>
+    </div>
+  </header>
+  <div id="prototype">
+    <header class="game-header"><strong class="brand">DRAGLAB</strong><span id="car-header">Kestrel 2.0T · #8A21</span><span class="spacer"></span><span id="wallet">$4,820 · REP 120</span><button data-route="settings">Settings</button></header>
+    <div class="game-body"><nav id="navigation" aria-label="Game sections"></nav><main id="screen" tabindex="-1"></main></div>
+    <footer class="game-footer"><span id="scope-label">Player garage · saved owned car</span><span class="spacer"></span><span>Navigation preview · Tab: focus · Enter: select</span></footer>
+  </div>
+  <aside id="annotations" aria-label="Layout annotations"></aside>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <dialog id="review-dialog"><div id="dialog-content"></div><div class="actions"><button id="close-dialog">Back</button></div></dialog>
+  <script src="control-index.js"></script>
+  <script src="review.js"></script>
+</body>
+</html>

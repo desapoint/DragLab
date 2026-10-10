@@ -1,0 +1,7 @@
+4A layout review verification
+Checks: 1233
+Failures: 0
+Browser errors: 0
+16 screens x 5 states x 5 widths (1440/1280/960/800/640).
+Interactions: draft/revert, cart/dialog, heat dependency, bench ownership/config/tabs, coverage search and annotations.
+11 local screenshots retained; values are illustrative, not Unity/physics validation.

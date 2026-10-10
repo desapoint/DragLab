@@ -1,6 +1,6 @@
 # Slice 4 — Interface migration, input and platform validation
 
-Revised 2026-10-09 after Slice 3H and the approved audio, performance, shop and shared-inventory refinements. This is a planning checkpoint only: **4A–4Q are not started**. Slice 2/3 developer acceptance remains complete; human driving, listening and economy review remain separate.
+Revised 2026-10-09 after Slice 3H and the approved audio, performance, shop and shared-inventory refinements. **4A is ready for user review; 4B–4Q are not started.** [Layout review and source coverage](ui/4a/README.md). Slice 2/3 developer acceptance remains complete; human driving, listening and economy review remain separate.
 
 ## Goal and boundaries
 
@@ -96,4 +96,4 @@ Keyboard/slider ownership is local to bench operating controls, not a lock on th
 
 ## Current handoff
 
-The plan revision is ready. **Next is 4A only**, when implementation/design work is requested. No interfaces, packages, simulation parameters or saves were changed by this planning increment.
+**4A delivered for user review:** [clickable annotated layouts](ui/4a/index.html), [workflow/framework review](ui/4a/README.md) and [source index](ui/4a/SOURCE_INDEX.md). Framework recommendation remains uGUI/Input System, subject to approval; no Unity packages, runtime interfaces, simulation parameters or saves were changed. Technical evidence and limits are in [the 4A report](../reports/phases/4a/CHANGES.md). **Wait for explicit user validation before 4B.**

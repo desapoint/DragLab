@@ -4,7 +4,7 @@ Additional catalog foundation (2026-10-08): [part-owned tuning permissions and 1
 
 This is the implementation order for the requirements in [GAME_PLAN.md](GAME_PLAN.md). **2A–2L and 3A–3H developer acceptance are complete.** User-approved changes and the reconciled final gates are consolidated in [Slice 2 plan reconciliation](SLICE_2_PLAN_RECONCILIATION.md). Existing feature checkpoints do not independently complete later integration gates. No approved requirement is removed.
 
-**Slice 4 is planned, not started.** Its revised [interface/input/platform contract](SLICE_4_PLAN.md) preserves the accumulated settings, inventory/cart, condition comparisons, saved configurations and both benches. Implement 4A–4Q one at a time, with explicit user validation at each handoff before beginning the next. This additional review gate applies to Slice 4; it does not reopen accepted Slice 2/3 domain work.
+**Slice 4A is ready for user review; 4B–4Q are not started.** Its revised [interface/input/platform contract](SLICE_4_PLAN.md) preserves the accumulated settings, inventory/cart, condition comparisons, saved configurations and both benches. Implement 4A–4Q one at a time, with explicit user validation at each handoff before beginning the next. This additional review gate applies to Slice 4; it does not reopen accepted Slice 2/3 domain work.
 
 The user-requested bench extension supplies shared provisional engine/driveline wear/failure and simulation difficulty foundations: None/Partial 25%/Full wear, isolated accelerated wear, optimal thermals, clutch and stall assists, and continuous peak-preserving graphs. These remain the baseline for the final stress/recovery and integrated calibration gates in 2K–2L. Apply the captured/persisted difficulty rules to each new thermal/contact/condition subsystem as it lands; retain installed ECU protections and use one simulation in race and bench. See [simulation settings](SIMULATION_SETTINGS.md).
 
@@ -143,7 +143,7 @@ Approved post-3H refinement: shared storage/car/engine/seller/cart views, retain
 
 ## Slice 4 — ordered interface review checkpoints
 
-All rows are **not started**. Detailed scope, technical gates, preservation mapping and user-review procedure are authoritative in [SLICE_4_PLAN.md](SLICE_4_PLAN.md). Implement only the next authorized row, retain the runnable checkpoint and wait for explicit user validation before moving forward.
+**4A is ready for user review; all subsequent rows are not started.** Detailed scope, technical gates, preservation mapping and user-review procedure are authoritative in [SLICE_4_PLAN.md](SLICE_4_PLAN.md). Implement only the next authorized row, retain the runnable checkpoint and wait for explicit user validation before moving forward.
 
 | Phase | Reviewable increment |
 |---|---|
@@ -164,5 +164,7 @@ All rows are **not started**. Detailed scope, technical gates, preservation mapp
 | 4O | Controller/keyboard-only workflows, remapping, analog pedals and accessibility |
 | 4P | Real Android multitouch, safe areas, suspend/resume and device profiling |
 | 4Q | Full feature parity, save/input/lifecycle regression, performance evidence and user acceptance |
+
+4A review checkpoint (2026-10-09): [annotated layouts and workflow/framework proposal](ui/4a/README.md), [source inventory](ui/4a/SOURCE_INDEX.md), [verification and handoff](../reports/phases/4a/CHANGES.md). Technical review artifacts are delivered; user acceptance is pending. No runtime UI migration or 4B package work has begun.
 
 Plan revision completed 2026-10-09; evidence is [the planning report](../reports/slice-4-plan/CHANGES.md). This records a documentation increment, not implementation of 4A or acceptance of later phases. Final art/content and commercial hardening remain Slice 5 and Slice 6.
