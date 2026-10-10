@@ -20,7 +20,7 @@
       <ui:VisualElement name="inspectionSpace" class="inspection-space" picking-mode="Ignore" />
       <ui:Button name="settingsButton" class="settings-button" tooltip="Settings" />
     </ui:VisualElement>
-    <ui:ScrollView class="workspace">
+    <ui:VisualElement class="workspace">
       <ui:VisualElement name="settingsTabs" class="settings-tabs">
         <ui:Button name="tabDifficulty" text="Difficulty / Driving" class="category-button" />
         <ui:Button name="tabSound" text="Sound" class="category-button" />
@@ -28,9 +28,25 @@
         <ui:Button name="tabControls" text="Controls" class="category-button" />
         <ui:Button name="tabGeneral" text="General" class="category-button" />
       </ui:VisualElement>
-    </ui:ScrollView>
+          <ui:VisualElement name="settingsBody" class="settings-body hidden">
+        <ui:ScrollView name="settingsScroll" class="settings-scroll" />
+      </ui:VisualElement>
+      <ui:VisualElement name="settingsActions" class="settings-actions hidden">
+        <ui:Label name="settingsStatus" class="settings-status" />
+        <ui:Button name="revertSettings" text="Revert" class="action-button" />
+        <ui:Button name="cancelSettings" text="Cancel" class="action-button" />
+        <ui:Button name="applySettings" text="Apply" class="action-button primary-action" />
+      </ui:VisualElement>
+    </ui:VisualElement>
     <ui:VisualElement name="footerBar" class="footer">
       <ui:Label name="interactionHint" class="footer-hint" text="F8 · Old / New" />
+    </ui:VisualElement>
+    <ui:VisualElement name="modalLayer" class="modal-layer hidden">
+      <ui:VisualElement class="modal-card">
+        <ui:VisualElement class="modal-heading"><ui:Label name="modalTitle" /><ui:Button name="modalClose" text="×" class="close-button" /></ui:VisualElement>
+        <ui:ScrollView name="modalContent" class="modal-content" />
+        <ui:VisualElement name="modalActions" class="modal-actions" />
+      </ui:VisualElement>
     </ui:VisualElement>
   </ui:VisualElement>
 </ui:UXML>

@@ -1,5 +1,7 @@
 # Slice 2, Slice 3 and Slice 4 implementation phases
 
+Current UI checkpoint (2026-10-10): the user explicitly requested complete existing menu Settings/Driving. Native categories, deferred Apply/confirmation, Cancel return and styled controls are delivered for review; see [Settings report](../reports/phases/4b/08-SETTINGS.md). Further Slice 4 interfaces remain gated on user validation.
+
 Additional catalog foundation (2026-10-08): [part-owned tuning permissions and 128 new hardware choices](../reports/part-hardware/CHANGES.md), integrated with shared race/physical-bench resolution. Preserve physical turbo-size swaps, fixed/adjustable controller and pulley distinctions, supported final-drive gearsets, saved-value enforcement and unrestricted raw acoustic experiments during remaining phases. Physical capture model was v12; the approved service/fluids extension uses v13. This records the original catalog extension; final integration acceptance is in the completion record below.
 
 This is the implementation order for the requirements in [GAME_PLAN.md](GAME_PLAN.md). **2A–2L and 3A–3H developer acceptance are complete.** User-approved changes and the reconciled final gates are consolidated in [Slice 2 plan reconciliation](SLICE_2_PLAN_RECONCILIATION.md). Existing feature checkpoints do not independently complete later integration gates. No approved requirement is removed.

@@ -5,8 +5,8 @@ using UnityEngine.UIElements;
 
 namespace DragLab.Runtime
 {
-    // Presentation-only shell. No preference draft widgets or domain transactions yet.
-    internal sealed class NativeMenuShell : MonoBehaviour
+    // Shared native menu presentation; settings edits remain isolated until Apply.
+    internal sealed partial class NativeMenuShell : MonoBehaviour
     {
         static readonly string[] routes = { "Garage", "Parts", "Tuning", "Race setup", "Business", "Stats" };
         static readonly string[] names = { "Garage", "Build", "Tuning", "Race", "Business", "Data" };
@@ -47,13 +47,13 @@ namespace DragLab.Runtime
                 button.Insert(0, new FilledMenuIcon(names[i]));
                 button.Add(new Label(names[i].ToUpperInvariant()) { pickingMode = PickingMode.Ignore });
                 AddSurface(button, RacingSurface.Kind.Navigation);
-                button.clicked += () => game.QueueNativeNavigation(routes[index]);
+                button.clicked += () => Navigate(routes[index]);
                 Hint(button, names[i]);
             }
             var settingsButton = root.Q<Button>("settingsButton");
             settingsButton.Add(new FilledMenuIcon("Settings"));
             AddSurface(settingsButton, RacingSurface.Kind.Primary);
-            settingsButton.clicked += () => game.QueueNativeNavigation("Settings");
+            settingsButton.clicked += () => Navigate("Settings");
             Hint(settingsButton, "Settings");
             foreach (string resource in new[] { "cash", "fuel", "rep" })
                 root.Q(resource + "Group").Insert(0, new FilledMenuIcon(resource));
@@ -64,14 +64,21 @@ namespace DragLab.Runtime
                 string label = tab.text;
                 tab.text = "";
                 tab.Add(new Label(label) { pickingMode = PickingMode.Ignore });
-                AddSurface(tab, RacingSurface.Kind.Button);
-                tab.clicked += () => { category = index; renderedRoute = null; Refresh(); };
+                AddSurface(tab, i == 0 ? RacingSurface.Kind.FirstTab : RacingSurface.Kind.Tab);
+                tab.clicked += () => { category = index; renderedRoute = null; Refresh(); ShowCategory(); };
                 Hint(tab, categories[i]);
             }
+            InitializeSettings();
         }
 
         void AddSurface(VisualElement owner, RacingSurface.Kind kind)
-        { var surface = new RacingSurface(owner, kind); owner.Insert(0, surface); surfaces.Add(surface); }
+        {
+            // Button's immediate text draws before child decoration. Retain its
+            // caption as a child above the surface, including generated controls.
+            if (owner is Button button && !string.IsNullOrEmpty(button.text))
+            { string caption = button.text; button.text = ""; button.Add(new Label(caption) { pickingMode = PickingMode.Ignore }); }
+            var surface = new RacingSurface(owner, kind); owner.Insert(0, surface); surfaces.Add(surface);
+        }
 
         void Hint(Button button, string text)
         {
@@ -86,6 +93,7 @@ namespace DragLab.Runtime
         {
             if (root == null || game.Profile == null) return;
             string route = game.ScreenName;
+            SyncSettingsEntry(route);
             bool show = Supports(route) && InterfaceComparison.IsReplacement(route);
             root.EnableInClassList("hidden", !show);
             if (!show) return;
@@ -103,6 +111,9 @@ namespace DragLab.Runtime
             for (int i = 0; i < routes.Length; i++) root.Q<Button>("nav" + names[i]).EnableInClassList("selected", route == routes[i]);
             root.Q<Button>("settingsButton").EnableInClassList("selected", settings);
             root.Q("settingsTabs").EnableInClassList("hidden", !settings);
+            root.Q("settingsBody").EnableInClassList("hidden", !settings);
+            root.Q("settingsActions").EnableInClassList("hidden", !settings);
+            ShowCategory();
             for (int i = 0; i < categoryIds.Length; i++) root.Q<Button>("tab" + categoryIds[i]).EnableInClassList("selected", i == category);
         }
         void SetText(string id, string value) { var label = root.Q<Label>(id); if (label.text != value) label.text = value; }

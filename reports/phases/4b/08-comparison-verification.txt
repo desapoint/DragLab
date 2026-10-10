@@ -1,0 +1,50 @@
+Native interface comparison verification
+PASS: Real player uses an isolated profile fixture
+PASS: Garage enters an empty replacement without routing elsewhere
+PASS: Garage restores the existing interface
+PASS: Settings enters an empty replacement without routing elsewhere
+PASS: Settings restores the existing interface
+PASS: Driving enters an empty replacement without routing elsewhere
+PASS: Driving restores the existing interface
+PASS: Parts enters an empty replacement without routing elsewhere
+PASS: Parts restores the existing interface
+PASS: Tuning enters an empty replacement without routing elsewhere
+PASS: Tuning restores the existing interface
+PASS: Stats enters an empty replacement without routing elsewhere
+PASS: Stats restores the existing interface
+PASS: Race setup enters an empty replacement without routing elsewhere
+PASS: Race setup restores the existing interface
+PASS: Career enters an empty replacement without routing elsewhere
+PASS: Career restores the existing interface
+PASS: Business enters an empty replacement without routing elsewhere
+PASS: Business restores the existing interface
+PASS: Collection enters an empty replacement without routing elsewhere
+PASS: Collection restores the existing interface
+PASS: Setups enters an empty replacement without routing elsewhere
+PASS: Setups restores the existing interface
+PASS: Assemblies enters an empty replacement without routing elsewhere
+PASS: Assemblies restores the existing interface
+PASS: Recovery enters an empty replacement without routing elsewhere
+PASS: Recovery restores the existing interface
+PASS: All menu toggles retain exact player state without publication
+PASS: Presentation choice is independent for each main interface
+PASS: Returning to a main interface remembers its session choice
+PASS: Unapplied tuning draft survives comparison
+PASS: Unconfirmed cart retains original lines and quantities
+PASS: Comparison, tune draft and cart preview do not write the save
+PASS: Valuation switches as a whole main interface
+PASS: Reset confirmation blocks switching
+PASS: Held F8 toggles only once
+PASS: Held W and the same live race survive comparison
+PASS: Hidden legacy race shift hitbox cannot launch or change gear
+PASS: Sound F8 hides the entire interface without starting scenario B or replacing the engine
+PASS: Sound bench keeps held W and keyboard ownership
+PASS: Numeric field has actual IMGUI text focus
+PASS: Text focus blocks comparison
+PASS: Intentional W takeover leaves numeric editing before scenario shortcut
+PASS: Shift+F8 retains scenario B without switching presentation
+PASS: Physical F8 retains the same shared simulation session
+PASS: Physical simulation advances with held gas while hidden
+PASS: Comparison does not enable recording
+PASS: No native rendering or runtime errors
+Checks: 48 / runtime errors: 0

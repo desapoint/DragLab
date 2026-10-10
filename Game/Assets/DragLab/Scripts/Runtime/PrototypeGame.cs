@@ -27,6 +27,7 @@ namespace DragLab.Runtime
         readonly RaceInputAdapter controls = new RaceInputAdapter();
         readonly InterfaceComparison interfaceComparison = new InterfaceComparison();
         NativeMenuShell nativeMenu;
+        internal string SettingsReturnRoute { get; private set; } = "Garage";
         internal string ComparisonRoute => screen == "Race" ? audioSettingsOpen ? "Race settings" : paused ? "Pause" : race != null && race.phase == RacePhase.Finished ? "Results" : "Race" : screen;
         Action pendingAction;
         float saveDelay;
@@ -62,7 +63,7 @@ namespace DragLab.Runtime
         internal string ScreenName { get { return screen; } }
         internal bool IsPractice { get { return practiceRun; } }
         internal void PauseRace(bool value) { SetPaused(value); }
-        internal void OpenAudioSettings() { if (screen == "Race") { SetPaused(true); audioSettingsOpen = true; } else { DiscardPreviews(); screen = "Settings"; scroll = Vector2.zero; } }
+        internal void OpenAudioSettings() { if (screen == "Race") { SetPaused(true); audioSettingsOpen = true; } else { if (screen != "Settings") SettingsReturnRoute = screen; DiscardPreviews(); screen = "Settings"; scroll = Vector2.zero; } }
         internal void PreviewVehicle(string id) { DiscardPreviews(); profile.selectedVehicleId = id; MechanicsOwnership.Ensure(profile,profile.catalog); lastBenchmarkKey = null; screen = "Garage"; ShowGarageCar(); }
         public void ReturnToGarage() { DiscardPreviews(); if(!SyncRaceWear(true,"Returned to garage"))return; race?.CloseOpponentWorker(); race = null; screen = "Garage"; ShowGarageCar(); }
         public void StartPractice() { StartRace(null, true); }
@@ -81,6 +82,7 @@ namespace DragLab.Runtime
             career = Resources.LoadAll<CareerEventDefinition>("Data/Events");
             if (vehicles.Length == 0) { Debug.LogError("Run DragLab > Prepare First Slice in the editor."); enabled = false; return; }
             Array.Sort(career, (a, b) => a.reputationRequired.CompareTo(b.reputationRequired));
+            if (!PreferenceCommit.Recover(out var settingsRecoveryError)) { Debug.LogError(settingsRecoveryError); enabled = false; return; }
             profile = ProfileStore.Load(true);
             settings = profile.driving;
             difficulty = profile.difficulty;
@@ -289,7 +291,7 @@ namespace DragLab.Runtime
             if (profile == null) return;
             using (FramePacingProbe.Measure(4))
             {
-                bool replacement = interfaceComparison.BeginGUI(ComparisonRoute, resetGameConfirm || (screen == "Valuation" && valuationQuote != null && saleConfirmation == valuationQuote.Id) || pendingAction != null || (nativeMenu != null && nativeMenu.Visible && Input.GetMouseButton(0)));
+                bool replacement = interfaceComparison.BeginGUI(ComparisonRoute, resetGameConfirm || (nativeMenu != null && (nativeMenu.ModalOpen || nativeMenu.EditingText)) || (screen == "Valuation" && valuationQuote != null && saleConfirmation == valuationQuote.Id) || pendingAction != null || (nativeMenu != null && nativeMenu.Visible && Input.GetMouseButton(0)));
                 if (!replacement) DrawMeasuredGUI();
                 if (!replacement || !NativeMenuShell.Supports(ComparisonRoute)) interfaceComparison.DrawStatus(ComparisonRoute);
             }
@@ -297,15 +299,16 @@ namespace DragLab.Runtime
 
         internal void QueueNativeNavigation(string route)
         {
-            if (!NativeMenuShell.Supports(route) || screen == route || pendingAction != null) return;
+            if ((!NativeMenuShell.Supports(route) && route != SettingsReturnRoute) || screen == route || pendingAction != null) return;
             pendingAction = () => {
+                if (route == "Settings") SettingsReturnRoute = screen;
                 resetGameConfirm = false;
                 DiscardPreviews();
                 screen = route;
                 scroll = Vector2.zero;
                 if (route == "Parts") repairsOnly = false;
                 if (route == "Tuning" && Build != null) BeginTuneDraft();
-                InterfaceComparison.SetReplacement(route, true);
+                InterfaceComparison.SetReplacement(route, NativeMenuShell.Supports(route));
             };
         }
         void DrawMeasuredGUI()
@@ -328,7 +331,7 @@ namespace DragLab.Runtime
             foreach (string tab in new[] { "Garage", "Parts", "Tuning", "Stats", "Race setup", "Career", "Business", "Driving", "Settings" })
             {
                 GUI.enabled = Build != null || tab == "Garage" || tab == "Driving" || tab == "Settings";
-                if (GUILayout.Button(tab, GUILayout.Height(32))) pendingAction = () => { resetGameConfirm = false; DiscardPreviews(); screen = tab; scroll = Vector2.zero; if (tab == "Parts") repairsOnly = false; if (tab == "Tuning") BeginTuneDraft(); };
+                if (GUILayout.Button(tab, GUILayout.Height(32)) && !(nativeMenu != null && nativeMenu.GuardLegacyNavigation(tab))) pendingAction = () => { if (tab == "Settings" && screen != "Settings") SettingsReturnRoute = screen; resetGameConfirm = false; DiscardPreviews(); screen = tab; scroll = Vector2.zero; if (tab == "Parts") repairsOnly = false; if (tab == "Tuning") BeginTuneDraft(); };
             }
             GUI.enabled = true;
             GUILayout.EndHorizontal();

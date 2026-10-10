@@ -9,7 +9,7 @@ using DragLab.Infrastructure;
 namespace DragLab.Runtime
 {
     // Opt-in integration probe: real rendered layout and native mouse/keyboard events.
-    internal sealed class NativeMenuVerification : MonoBehaviour
+    internal sealed partial class NativeMenuVerification : MonoBehaviour
     {
         internal static bool Active => Debug.isDebugBuild && Array.IndexOf(Environment.GetCommandLineArgs(), "--draglab-native-menu-verify") >= 0;
         PrototypeGame game;
@@ -32,7 +32,7 @@ namespace DragLab.Runtime
         void Log(string message, string trace, LogType type)
         { if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert) { errors++; report.AppendLine(message); } }
         void Check(bool ok, string label) { checks++; if (!ok) throw new InvalidOperationException(label); report.AppendLine("PASS: " + label); }
-        void Update() { if (started > 0 && Time.realtimeSinceStartup - started > 110) Finish(new TimeoutException("Native shell probe timeout")); }
+        void Update() { if (started > 0 && Time.realtimeSinceStartup - started > 180) Finish(new TimeoutException("Native shell probe timeout")); }
         void Finish(Exception exception = null)
         {
             report.AppendLine("Checks: " + checks + " / runtime errors: " + errors);
@@ -212,6 +212,7 @@ namespace DragLab.Runtime
                 game.Profile.cars = cars;
                 shell.Refresh();
                 yield return Capture("settings-restored");
+                yield return SettingsChecks(input);
             }
 #else
             throw new InvalidOperationException("Native probe requires a Windows development player.");
