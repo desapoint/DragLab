@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using DragLab.Domain;
 using DragLab.Infrastructure;
 using UnityEngine;
@@ -21,25 +20,29 @@ namespace DragLab.Runtime
                 var stats = CarInspection.CalculatePrepared(source,CarInspection.PrepareCar(source),false);
                 var healthySource = InspectionBuild.Capture(game.Profile,car,healthy:true);
                 var healthy = CarInspection.CalculatePrepared(healthySource,CarInspection.PrepareCar(healthySource),false);
-                bool differs = stats.curve.Count == healthy.curve.Count && stats.curve.Zip(healthy.curve,(a,b)=>Math.Abs(a.hp-b.hp)>.1 || Math.Abs(a.torque-b.torque)>.1).Any(value=>value);
                 TorqueUnit units = SharedUnitSettings.Current.torque;
                 var legend = new VisualElement(); legend.AddToClassList("car-dyno-legend"); panel.Add(legend);
-                DynoLegend(legend,"HP "+stats.peakHp.ToString("F0"),true,false,"Peak at "+stats.hpRpm.ToString("F0")+" RPM");
-                DynoLegend(legend,"Torque "+DisplayUnits.Torque(stats.peakTorque,units).ToString("F0")+" "+DisplayUnits.TorqueLabel(units),false,false,"Peak at "+stats.torqueRpm.ToString("F0")+" RPM");
-                if (differs) {
-                    DynoLegend(legend,"HP · no wear",true,true,healthy.peakHp.ToString("F0")+" HP at "+healthy.hpRpm.ToString("F0")+" RPM");
-                    DynoLegend(legend,"Torque · no wear",false,true,DisplayUnits.Torque(healthy.peakTorque,units).ToString("F0")+" "+DisplayUnits.TorqueLabel(units)+" at "+healthy.torqueRpm.ToString("F0")+" RPM");
-                }
-                panel.Add(new NativeDynoPlot(stats,differs?healthy:null,units));
+                DynoLegendGroup(legend,"Current",stats,units,false);
+                DynoLegendGroup(legend,"No wear",healthy,units,true);
+                panel.Add(new NativeDynoPlot(stats,healthy,units));
                 panel.tooltip = "Estimated engine output at full load and steady boost. Separate HP and torque scales; applied hardware, tune and condition. Dashed curves remove part wear only for comparison; stored fluids and missing hardware stay. No race or recording.";
             } catch (Exception) { var unavailable = new Label("Dyno unavailable"); unavailable.AddToClassList("car-warning"); panel.Add(unavailable); }
             return panel;
         }
+        static void DynoLegendGroup(VisualElement parent,string title,CarInspection stats,TorqueUnit units,bool healthy)
+        {
+            var group = new VisualElement { name = healthy?"dynoNoWearLegend":"dynoCurrentLegend", pickingMode = PickingMode.Ignore };
+            group.AddToClassList("dyno-legend-group"); parent.Add(group);
+            if(!healthy)group.AddToClassList("dyno-legend-current");
+            var heading = new Label(title) { pickingMode = PickingMode.Ignore }; heading.AddToClassList("dyno-legend-title"); group.Add(heading);
+            DynoLegend(group,"HP "+stats.peakHp.ToString("F0"),true,healthy,"Maximum at "+stats.hpRpm.ToString("F0")+" RPM");
+            DynoLegend(group,"Torque "+DisplayUnits.Torque(stats.peakTorque,units).ToString("F0")+" "+DisplayUnits.TorqueLabel(units),false,healthy,"Maximum at "+stats.torqueRpm.ToString("F0")+" RPM");
+        }
         static void DynoLegend(VisualElement parent,string text,bool hp,bool healthy,string tooltip)
         {
             var entry = new VisualElement { tooltip = tooltip, pickingMode = PickingMode.Ignore };
-            entry.AddToClassList("dyno-legend-entry"); entry.AddToClassList(healthy?hp?"dyno-hp-reference":"dyno-torque-reference":hp?"dyno-hp":"dyno-torque");
-            entry.Add(new DynoLineSample(hp,healthy)); entry.Add(new Label(text)); parent.Add(entry);
+            entry.AddToClassList("dyno-legend-entry");
+            entry.Add(new DynoLineSample(hp,healthy)); entry.Add(new Label(text) { pickingMode = PickingMode.Ignore }); parent.Add(entry);
         }
     }
 
@@ -64,6 +67,12 @@ namespace DragLab.Runtime
         internal CarInspection Inspection { get; }
         internal CarInspection HealthyReference { get; }
         internal TorqueUnit Units { get; }
+        internal Rect PlotRect => new Rect(Left,Top,contentRect.width-Left-Right,contentRect.height-Top-Bottom);
+        internal double? HoverRpm { get; private set; }
+        internal InspectionCurvePoint? HoverCurrent { get; private set; }
+        internal InspectionCurvePoint? HoverHealthy { get; private set; }
+        readonly VisualElement hoverCard;
+        readonly Label hoverRpm, hoverCurrent, hoverHealthy;
         readonly double maxRpm, maxHp, maxTorque;
         const float Left = 38, Right = 46, Top = 20, Bottom = 26;
         static readonly CustomStyleProperty<Color> TorqueProperty = new CustomStyleProperty<Color>("--dyno-torque");
@@ -75,7 +84,7 @@ namespace DragLab.Runtime
 
         internal NativeDynoPlot(CarInspection stats,CarInspection healthy,TorqueUnit units)
         {
-            name = "ownedDynoPlot"; pickingMode = PickingMode.Ignore; AddToClassList("car-dyno-plot");
+            name = "ownedDynoPlot"; focusable = false; tabIndex = -1; AddToClassList("car-dyno-plot");
             Inspection = stats; HealthyReference = healthy; Units = units;
             maxRpm = stats.source.build.spec.redlineRpm;
             maxHp = Math.Max(1,Math.Max(stats.peakHp,healthy?.peakHp??0))*1.08;
@@ -84,11 +93,52 @@ namespace DragLab.Runtime
             Axis("dynoTorqueScale",DisplayUnits.Torque(maxTorque,units).ToString("F0"),false,true);
             Axis("dynoHpZero","0",true,false);
             Axis("dynoTorqueZero","0",false,false);
-            var ticks = new VisualElement(); ticks.AddToClassList("dyno-rpm-ticks"); Add(ticks);
-            ticks.Add(new Label("0")); ticks.Add(new Label((maxRpm/2).ToString("F0")+" RPM")); ticks.Add(new Label(maxRpm.ToString("F0")));
-            RegisterCallback<GeometryChangedEvent>(_=>MarkDirtyRepaint());
+            var ticks = new VisualElement { pickingMode = PickingMode.Ignore }; ticks.AddToClassList("dyno-rpm-ticks"); Add(ticks);
+            ticks.Add(new Label("0") { pickingMode = PickingMode.Ignore }); ticks.Add(new Label((maxRpm/2).ToString("F0")+" RPM") { pickingMode = PickingMode.Ignore }); ticks.Add(new Label(maxRpm.ToString("F0")) { pickingMode = PickingMode.Ignore });
+            hoverCard = new VisualElement { name = "dynoHoverValues", pickingMode = PickingMode.Ignore }; hoverCard.AddToClassList("dyno-hover-card"); hoverCard.AddToClassList("hidden"); Add(hoverCard);
+            hoverRpm = new Label { name = "dynoHoverRpm", pickingMode = PickingMode.Ignore };
+            hoverCurrent = new Label { name = "dynoHoverCurrent", pickingMode = PickingMode.Ignore };
+            hoverHealthy = new Label { name = "dynoHoverNoWear", pickingMode = PickingMode.Ignore };
+            hoverCard.Add(hoverRpm); hoverCard.Add(hoverCurrent); if(healthy!=null)hoverCard.Add(hoverHealthy);
+            RegisterCallback<PointerMoveEvent>(evt=>UpdateHover(evt.localPosition));
+            RegisterCallback<PointerLeaveEvent>(_=>ClearHover());
+            RegisterCallback<GeometryChangedEvent>(_=>{ClearHover();MarkDirtyRepaint();});
             RegisterCallback<CustomStyleResolvedEvent>(_=>MarkDirtyRepaint());
             generateVisualContent += Draw;
+        }
+        void UpdateHover(Vector2 point)
+        {
+            var plot=PlotRect;
+            if(plot.width<=0 || plot.height<=0 || !plot.Contains(point)){ClearHover();return;}
+            double rpm=(point.x-plot.xMin)/plot.width*maxRpm;
+            HoverRpm=rpm; HoverCurrent=Sample(Inspection,rpm); HoverHealthy=Sample(HealthyReference,rpm);
+            hoverRpm.text=rpm.ToString("F0")+" RPM";
+            hoverCurrent.text="Current  "+Values(HoverCurrent);
+            hoverHealthy.text="No wear  "+Values(HoverHealthy);
+            hoverCard.RemoveFromClassList("hidden");
+            float width=Math.Min(220,Math.Max(0,contentRect.width*.5f-16)),height=HealthyReference==null?48:68;
+            hoverCard.style.width=width;
+            float x=point.x+12;
+            if(x+width>contentRect.width)x=point.x-width-12;
+            hoverCard.style.left=Mathf.Clamp(x,0,Math.Max(0,contentRect.width-width));
+            hoverCard.style.top=Mathf.Clamp(point.y+12,0,Math.Max(0,contentRect.height-height));
+            MarkDirtyRepaint();
+        }
+        string Values(InspectionCurvePoint? sample)=>sample.HasValue?sample.Value.hp.ToString("F1")+" HP · "+DisplayUnits.Torque(sample.Value.torque,Units).ToString("F1")+" "+DisplayUnits.TorqueLabel(Units):"— HP · — "+DisplayUnits.TorqueLabel(Units);
+        void ClearHover()
+        {
+            if(!HoverRpm.HasValue)return;
+            HoverRpm=null;HoverCurrent=null;HoverHealthy=null;hoverCard.AddToClassList("hidden");MarkDirtyRepaint();
+        }
+        static InspectionCurvePoint? Sample(CarInspection stats,double rpm)
+        {
+            if(stats==null || stats.curve.Count==0 || rpm<stats.curve[0].rpm || rpm>stats.curve[stats.curve.Count-1].rpm)return null;
+            for(int i=1;i<stats.curve.Count;i++) {
+                var a=stats.curve[i-1];var b=stats.curve[i];if(rpm>b.rpm)continue;
+                double f=(rpm-a.rpm)/(b.rpm-a.rpm);
+                return new InspectionCurvePoint {rpm=rpm,hp=a.hp+(b.hp-a.hp)*f,torque=a.torque+(b.torque-a.torque)*f};
+            }
+            return stats.curve[0];
         }
         void Axis(string id,string text,bool left,bool top)
         {
@@ -98,7 +148,7 @@ namespace DragLab.Runtime
         }
         void Draw(MeshGenerationContext context)
         {
-            var plot = new Rect(Left,Top,contentRect.width-Left-Right,contentRect.height-Top-Bottom);
+            var plot = PlotRect;
             if (plot.width<=0 || plot.height<=0) return;
             var painter = context.painter2D;
             painter.fillColor = new Color32(15,20,25,150); painter.BeginPath();
@@ -110,6 +160,21 @@ namespace DragLab.Runtime
             }
             if (HealthyReference!=null) { Curve(painter,HealthyReference,plot,true,true); Curve(painter,HealthyReference,plot,false,true); }
             Curve(painter,Inspection,plot,true,false); Curve(painter,Inspection,plot,false,false);
+            if(HoverRpm.HasValue) {
+                float x=plot.xMin+(float)(HoverRpm.Value/maxRpm)*plot.width;
+                painter.lineWidth=1.2f;painter.strokeColor=new Color32(236,238,241,220);painter.BeginPath();painter.MoveTo(new Vector2(x,plot.yMin));painter.LineTo(new Vector2(x,plot.yMax));painter.Stroke();
+                HoverDots(painter,HoverHealthy,plot,x,true);HoverDots(painter,HoverCurrent,plot,x,false);
+            }
+        }
+        void HoverDots(Painter2D painter,InspectionCurvePoint? sample,Rect plot,float x,bool healthy)
+        {
+            if(!sample.HasValue)return;
+            var point=sample.Value;
+            foreach(bool hp in new[] {true,false}) {
+                float y=plot.yMax-(float)(hp?point.hp/maxHp:point.torque/maxTorque)*plot.height;
+                painter.fillColor=CurveColor(this,hp,healthy);painter.strokeColor=new Color32(15,20,25,255);painter.lineWidth=1.2f;
+                painter.BeginPath();painter.Arc(new Vector2(x,y),3.5f,Angle.Degrees(0),Angle.Degrees(360));painter.ClosePath();painter.Fill();painter.Stroke();
+            }
         }
         void Curve(Painter2D painter,CarInspection stats,Rect plot,bool hp,bool dashed)
         {

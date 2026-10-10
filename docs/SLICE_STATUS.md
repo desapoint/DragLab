@@ -2,7 +2,7 @@
 
 **2A–2L and 3A–3H developer acceptance are complete.** See [phase plan](IMPLEMENTATION_PHASES.md), [full Slice 3 audit](../reports/SLICE_3_AUDIT.md), [career](CAREER_PROGRESSION.md), [garage business](GARAGE_BUSINESS.md) and [economy balance](ECONOMY_BALANCE.md).
 
-**Slice 4: 4D.5 details dyno ready for review (2026-10-10).** The first details row has the car preview, concise facts and a right-side HP/torque dyno using the inspected applied build/condition. The legend explicitly identifies HP/Torque and gives each dashed no-wear curve a separate color. Retain prior maintenance and condition-color corrections. See [checks/review](../reports/phases/4d/08-DETAILS-DYNO.md). 4D is not complete; human acceptance is pending.
+**Slice 4: 4D.5 details dyno ready for review (2026-10-10).** The first details row has the car preview, concise facts and a right-side HP/torque dyno using the inspected applied build/condition. Neutral Current/No wear legend containers show their peak figures aligned with the plot; hover exposes a visible RPM cursor line, intersection dots and interpolated values. The details scrollbar aligns with Settings. Retain prior maintenance and condition-color corrections. See [checks/review](../reports/phases/4d/08-DETAILS-DYNO.md). 4D is not complete; human acceptance is pending.
 
 Source of scope: [objective.md](objective.md), section 58. The eight-car roster includes the requested pickup, three-cylinder hatch, AWD turbo sedan, inline-six GT and supercharged V8. The four new mechanical configurations reuse existing layered placeholder bodies. Mechanics and editable data take priority over finished graphics or menus.
 

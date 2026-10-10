@@ -1,6 +1,6 @@
 # Slice 2, Slice 3 and Slice 4 implementation phases
 
-Current UI checkpoint (2026-10-10): **4D.5 details dyno** on the right of the first row. Applied engine curves reuse authoritative inspection, retained wear and torque units, with a detached no-wear reference when relevant. Preserve existing details/maintenance and stop for visual validation. See [dyno report](../reports/phases/4d/08-DETAILS-DYNO.md).
+Current UI checkpoint (2026-10-10): **4D.5 details dyno** on the right of the first row. Applied engine curves reuse authoritative inspection, retained wear and torque units, with a detached no-wear reference, grouped peak figures and cursor inspection. See [latest refinement](../reports/phases/4d/10-DYNO-INSPECTION.md). Preserve existing details/maintenance and stop for visual validation. See [dyno report](../reports/phases/4d/08-DETAILS-DYNO.md).
 
 Additional catalog foundation (2026-10-08): [part-owned tuning permissions and 128 new hardware choices](../reports/part-hardware/CHANGES.md), integrated with shared race/physical-bench resolution. Preserve physical turbo-size swaps, fixed/adjustable controller and pulley distinctions, supported final-drive gearsets, saved-value enforcement and unrestricted raw acoustic experiments during remaining phases. Physical capture model was v12; the approved service/fluids extension uses v13. This records the original catalog extension; final integration acceptance is in the completion record below.
 

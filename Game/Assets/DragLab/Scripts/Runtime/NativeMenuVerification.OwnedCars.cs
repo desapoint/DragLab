@@ -68,6 +68,18 @@ namespace DragLab.Runtime
                 Check(dyno.HealthyReference!=null&&dyno.HealthyReference.peakHp>dyno.Inspection.peakHp&&worn.condition.health==.25f,"Details dyno shows reduced worn output and a detached no-wear reference without healing");
                 Check(shell.Root.Q("ownedCarDyno").worldBound.xMin>=shell.Root.Q("ownedCarDetails").Q(className:"car-summary").worldBound.xMax&&shell.Root.Q("ownedCarDyno").worldBound.xMax<=shell.Root.Q("ownedDetailsTopRow").worldBound.xMax+1,"Dyno fits to the right of preview/stats in the first details row");
                 shell.Refresh();Check(ReferenceEquals(dyno,shell.Root.Q<NativeDynoPlot>("ownedDynoPlot")),"Unchanged details frames retain the computed dyno without running another simulation");
+                Check(shell.Root.Q("dynoCurrentLegend").Query<Label>().ToList().First().text=="Current"&&shell.Root.Q("dynoNoWearLegend").Query<Label>().ToList().First().text=="No wear"&&shell.Root.Q("dynoNoWearLegend").Query<Label>().ToList().Last().text.Contains(DisplayUnits.Torque(dyno.HealthyReference.peakTorque,dyno.Units).ToString("F0")),"Dyno legend has separate neutral Current/No wear groups with peak figures");
+                var detailBar=shell.Root.Q<ScrollView>("ownedDetailScroll").verticalScroller;
+                Check(Mathf.Abs(shell.Root.Q(className:"car-details-frame").worldBound.xMax-detailBar.worldBound.xMax-10)<1&&detailBar.ClassListContains("settings-scrollbar"),"Details scrollbar shares Settings styling and its ten-point right inset");
+                var plot=dyno.PlotRect;var point=dyno.LocalToWorld(new Vector2(plot.center.x,plot.yMin+plot.height*.2f));
+                input.MoveMouseAt((int)point.x,(int)point.y);yield return new WaitForSecondsRealtime(.2f);
+                double middleRpm=expectedSource.build.spec.redlineRpm*.5;var midpoint=expectedDyno.curve.OrderBy(p=>Math.Abs(p.rpm-middleRpm)).First();
+                Check(dyno.HoverRpm.HasValue&&Math.Abs(dyno.HoverRpm.Value-middleRpm)<30&&dyno.HoverCurrent.HasValue&&Math.Abs(dyno.HoverCurrent.Value.hp-midpoint.hp)<2&&Math.Abs(dyno.HoverCurrent.Value.torque-midpoint.torque)<2&&dyno.HoverHealthy.HasValue,"Real pointer hover interpolates current/no-wear figures at the cursor RPM");
+                var readout=shell.Root.Q("dynoHoverValues");Check(!readout.ClassListContains("hidden")&&readout.worldBound.xMin>=dyno.worldBound.xMin&&readout.worldBound.xMax<=dyno.worldBound.xMax+1,"Hover figures are visible and clamped inside the dyno sheet");
+                yield return Capture("owned-car-dyno-hover");
+                point=dyno.LocalToWorld(new Vector2(plot.xMin+2,plot.center.y));input.MoveMouseAt((int)point.x,(int)point.y);yield return new WaitForSecondsRealtime(.1f);
+                Check(dyno.HoverRpm.HasValue&&!dyno.HoverCurrent.HasValue&&!dyno.HoverHealthy.HasValue,"Hover below the first curve sample does not fabricate idle/output figures");
+                input.MoveMouseAt(10,100);yield return new WaitForSecondsRealtime(.1f);Check(!dyno.HoverRpm.HasValue&&readout.ClassListContains("hidden"),"Leaving the plot removes cursor line, intersections and readout");
                 yield return Key(input,0x77);Check(!shell.Visible,"F8 compares the whole Garage details page");
                 yield return Key(input,0x77);Check(shell.OwnedDetailsOpen,"Returning from F8 retains inspected car details");
                 yield return Key(input,0x50);Check(game.ScreenName=="Garage" && JsonUtility.ToJson(game.Profile)==baseline,"Details block practice shortcut without altering car state");
@@ -93,6 +105,10 @@ namespace DragLab.Runtime
                         var chart=shell.Root.Q("ownedCarDyno");
                         Check(chart.worldBound.width>250&&chart.worldBound.xMax<=shell.Root.Q("ownedDetailsTopRow").worldBound.xMax+1,"Details dyno remains readable and within its first row at "+width);
                         yield return Capture("owned-car-details-"+width);
+                        var sizedPlot=shell.Root.Q<NativeDynoPlot>("ownedDynoPlot");var sizedPoint=sizedPlot.LocalToWorld(sizedPlot.PlotRect.center);
+                        input.MoveMouseAt((int)sizedPoint.x,(int)sizedPoint.y);yield return new WaitForSecondsRealtime(.15f);
+                        var sizedReadout=shell.Root.Q("dynoHoverValues");Check(sizedPlot.HoverRpm.HasValue&&sizedReadout.worldBound.xMax<=sizedPlot.worldBound.xMax+1&&sizedReadout.worldBound.yMax<=sizedPlot.worldBound.yMax+1,"Hover readout fits the dyno sheet at "+width);
+                        yield return Capture("owned-car-dyno-hover-"+width);
                         yield return Click(input,"ownedBack");
                     }
                 }

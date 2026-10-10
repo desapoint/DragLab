@@ -157,21 +157,22 @@
 .car-rename-button { min-width: 36px; width: 36px; padding: 0; margin-left: 12px; flex-shrink: 0; }
 .car-rename-button .filled-icon { width: 18px; height: 18px; margin: 0; }
 .modal-content .car-name-fallback { font-size: 16px; color: var(--racing-muted); }
-.car-details-frame { flex-grow: 1; min-height: 0; padding: 22px; border-radius: 12px; overflow: hidden; }
-.car-details-scroll { flex-grow: 1; min-height: 0; }
-.car-details-content { padding-right: 16px; }
+.car-details-frame { flex-grow: 1; min-height: 0; border-radius: 12px; overflow: hidden; }
+.car-details-scroll { flex-grow: 1; min-height: 0; padding: 22px 10px 22px 22px; }
 .car-details-content .car-card-body { min-height: 180px; }
 .car-details-top .car-visual { width: 28%; flex-shrink: 0; }
 .car-details-top .car-summary { margin-right: 16px; }
 .car-dyno { width: 44%; flex-shrink: 0; }
-.car-dyno-legend { flex-direction: row; flex-wrap: wrap; align-items: center; }
-.dyno-legend-entry { width: 50%; flex-direction: row; align-items: center; margin-bottom: 4px; }
+.car-dyno-legend { flex-direction: row; margin-left: 38px; margin-right: 46px; }
+.dyno-legend-group { flex-grow: 1; flex-basis: 0; min-width: 0; padding: 6px 8px; background-color: rgba(15,20,25,0.4); border-width: 1px; border-color: rgba(138,148,157,0.25); border-radius: 6px; }
+.dyno-legend-current { margin-right: 6px; }
+.dyno-legend-entry { flex-direction: row; align-items: center; }
+.dyno-legend-entry Label { flex-shrink: 1; min-width: 0; white-space: normal; }
+.dyno-legend-title { color: var(--racing-muted); }
 .dyno-line-sample { width: 26px; height: 8px; margin-right: 6px; flex-shrink: 0; }
-.car-dyno-legend Label { font-size: 17px; margin: 0; padding: 0; }
-.dyno-hp { color: var(--racing-accent); }
-.dyno-torque { color: var(--dyno-torque); }
-.dyno-hp-reference { color: var(--dyno-hp-reference); }
-.dyno-torque-reference { color: var(--dyno-torque-reference); }
+.car-dyno-legend Label { font-size: 16px; margin: 0; padding: 0; }
+.dyno-hover-card { position: absolute; padding: 4px 8px; background-color: #151c23; border-width: 1px; border-color: #606c78; border-radius: 6px; }
+.dyno-hover-card Label { font-size: 15px; margin: 0; padding: 0; }
 .car-dyno-plot { height: 180px; }
 .dyno-axis { position: absolute; font-size: 14px; color: var(--racing-muted); margin: 0; padding: 0; }
 .dyno-axis-left { left: 0; width: 34px; -unity-text-align: middle-right; }
