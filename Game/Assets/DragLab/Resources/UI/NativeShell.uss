@@ -126,7 +126,7 @@
 
 .owned-cars-scroll { flex-grow: 1; min-height: 0; }
 .owned-cars-grid { flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; padding: 2px; }
-.owned-car-card { width: 49%; min-height: 238px; margin-bottom: 16px; padding: 14px 16px; border-radius: 0; overflow: hidden; }
+.owned-car-card { width: 49%; min-height: 238px; margin-bottom: 16px; padding: 14px 16px; border-radius: 12px; overflow: hidden; }
 .car-card-heading { flex-direction: row; align-items: center; }
 .car-card-title { flex-grow: 1; font-size: 23px; margin: 0; padding: 0; -unity-text-align: middle-left; translate: 0 -1px; }
 .car-current { color: var(--racing-text); font-size: 14px; -unity-text-align: middle-right; }

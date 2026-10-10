@@ -65,7 +65,7 @@ namespace DragLab.Runtime
             var probes = new List<Tuple<string,InspectionBuild,CarSimulation>>();
             foreach (var car in profile.cars) {
                 var card = new VisualElement { name = "ownedCar:"+car.instanceId, tooltip = car.instanceId, pickingMode = PickingMode.Ignore };
-                card.AddToClassList("owned-car-card"); card.AddToClassList("neutral-panel"); ownedGrid.Add(card);
+                card.AddToClassList("owned-car-card"); ownedGrid.Add(card);
                 AddSurface(card,RacingSurface.Kind.Panel); ownedSurfaces.Add(surfaces[surfaces.Count-1]);
                 var heading = new VisualElement(); heading.AddToClassList("car-card-heading"); card.Add(heading);
                 var title = new Label(profile.catalog.Spec(car.vehicleId).displayName); title.AddToClassList("car-card-title"); heading.Add(title);

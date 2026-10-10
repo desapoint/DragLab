@@ -23,7 +23,7 @@ namespace DragLab.Runtime
             var corners=new[] { new Vector2(left+(kind==Kind.FirstTab?0:lean),top),new Vector2(right,top),new Vector2(right-lean,bottom),new Vector2(left,bottom) };
             for(int i=0;i<4;i++)
             {
-                float radius=kind==Kind.Panel?(owner.ClassListContains("neutral-panel")?0:11):kind==Kind.Primary?1.8f:4;
+                float radius=kind==Kind.Panel?11:kind==Kind.Primary?1.8f:4;
                 if(kind==Kind.ChoiceMiddle || kind==Kind.ChoiceFirst&&(i==1||i==2) || kind==Kind.ChoiceLast&&(i==0||i==3)) radius=0;
                 Vector2 corner=corners[i],incoming=(corners[(i+3)%4]-corner).normalized,outgoing=(corners[(i+1)%4]-corner).normalized;
                 if(radius==0) { contour.Add(corner);continue; }
@@ -68,7 +68,7 @@ namespace DragLab.Runtime
         Color BorderColor(Vector2 p,float w,float h,bool red,bool panel)
         {
             Color neutral=Color.Lerp(C(.48f,.51f,.55f,.9f),C(.19f,.22f,.26f,.9f),p.y/h);
-            if(panel && !owner.ClassListContains("neutral-panel"))
+            if(panel)
             {
                 float corner=Mathf.Min(p.x+p.y,w-p.x+h-p.y);
                 float accent=Mathf.Pow(Mathf.Clamp01(1-corner/80),.65f);

@@ -1,6 +1,6 @@
 # Slice 2, Slice 3 and Slice 4 implementation phases
 
-Current UI checkpoint (2026-10-10): **4D.1 card-layout correction** — two neutral rectangular cards per row, preview left and concise specs/condition right. See [correction report](../reports/phases/4d/02-CARD-LAYOUT.md). Preserve actual owned identities, read-only state, shared Settings/theme and F8. Search/filtering, sorting, selection/actions, dealership and drawer remain separately reviewed controls; stop for human visual validation.
+Current UI checkpoint (2026-10-10): **4D.1 card-corner restoration** — keep two elongated cards per row, preview left and concise specs/condition right; restore original rounded corners and fading red accents after the user's clarification. See [correction report](../reports/phases/4d/03-RESTORE-CORNERS.md). Preserve actual owned identities, read-only state, Settings/theme and F8. Further Garage controls require separate instructions; stop for visual review.
 
 Additional catalog foundation (2026-10-08): [part-owned tuning permissions and 128 new hardware choices](../reports/part-hardware/CHANGES.md), integrated with shared race/physical-bench resolution. Preserve physical turbo-size swaps, fixed/adjustable controller and pulley distinctions, supported final-drive gearsets, saved-value enforcement and unrestricted raw acoustic experiments during remaining phases. Physical capture model was v12; the approved service/fluids extension uses v13. This records the original catalog extension; final integration acceptance is in the completion record below.
 
