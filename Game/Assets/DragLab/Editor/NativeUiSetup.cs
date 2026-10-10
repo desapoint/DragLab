@@ -3,6 +3,7 @@ using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.TextCore.Text;
 
 namespace DragLab.Editor
 {
@@ -28,6 +29,9 @@ namespace DragLab.Editor
         }
         public static void PrepareShell()
         {
+            PrepareFont("BarlowCondensed-BoldItalic");
+            PrepareFont("BarlowCondensed-Medium");
+            AssetDatabase.ImportAsset("Assets/DragLab/Resources/UI/NativeShell.uss", ImportAssetOptions.ForceUpdate);
             const string path = "Assets/DragLab/Resources/UI/NativePanel.asset";
             var panel = AssetDatabase.LoadAssetAtPath<PanelSettings>(path);
             if (panel == null)
@@ -46,6 +50,21 @@ namespace DragLab.Editor
                 AssetDatabase.FindAssets("", new[] { "Assets/UI Toolkit" }).Length == 2)
                 AssetDatabase.DeleteAsset("Assets/UI Toolkit");
             Debug.Log("Native panel ready: " + path);
+        }
+        static void PrepareFont(string name)
+        {
+            string source = "Assets/DragLab/Resources/UI/Fonts/" + name;
+            if (AssetDatabase.LoadAssetAtPath<FontAsset>(source + ".asset") != null) return;
+            var font = AssetDatabase.LoadAssetAtPath<Font>(source + ".ttf");
+            if (font == null) throw new System.InvalidOperationException("Missing native UI font: " + source);
+            var asset = FontAsset.CreateFontAsset(font);
+            asset.name = name;
+            AssetDatabase.CreateAsset(asset, source + ".asset");
+            if (asset.material != null) AssetDatabase.AddObjectToAsset(asset.material, asset);
+            foreach (var texture in asset.atlasTextures)
+                if (texture != null) AssetDatabase.AddObjectToAsset(texture, asset);
+            EditorUtility.SetDirty(asset);
+            AssetDatabase.SaveAssets();
         }
     }
 }

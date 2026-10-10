@@ -1,66 +1,54 @@
 .shell {
     flex-grow: 1;
-    background-color: #18191c;
-    color: #ececef;
-    font-size: 15px;
+    background-color: #181c21;
+    color: #eceef1;
+    font-size: 16px;
+    -unity-font-definition: url("project://database/Assets/DragLab/Resources/UI/Fonts/BarlowCondensed-Medium.asset");
 }
 .shell.hidden, .settings-tabs.hidden { display: none; }
-.nav-bar {
-    flex-direction: row;
-    height: 64px;
-    flex-shrink: 0;
-    align-items: center;
-    background-color: #26272b;
-}
-.brand { font-size: 17px; -unity-font-style: bold; margin-left: 18px; margin-right: 22px; color: #f14a4e; }
-.destinations { flex-direction: row; align-items: center; }
+.racing-surface { position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; border-radius: 3px; }
+.nav-bar { flex-direction: row; height: 64px; flex-shrink: 0; align-items: stretch; background-color: #17191c; overflow: hidden; }
+.brand { -unity-font-definition: url("project://database/Assets/DragLab/Resources/UI/Fonts/BarlowCondensed-BoldItalic.asset"); font-size: 22px; margin-left: 18px; margin-right: 18px; color: #e7454d; -unity-text-align: middle-left; }
+.destinations { flex-direction: row; align-items: stretch; }
 .nav-button, .category-button, .settings-button {
-    margin: 0 4px 0 0;
-    padding: 8px 11px;
-    background-color: #323339;
-    color: #d8d9de;
+    margin: 0;
+    padding: 8px 12px;
+    background-color: transparent;
+    color: #dadddf;
     border-width: 1px;
-    border-left-color: #494a51;
-    border-right-color: #494a51;
-    border-top-color: #565760;
-    border-bottom-color: #202125;
-    border-radius: 5px;
+    border-left-color: #53565d;
+    border-right-color: #272c32;
+    border-top-color: #74767d;
+    border-bottom-color: #0b0d10;
+    border-radius: 4px;
+    overflow: hidden;
     -unity-text-align: middle-center;
     flex-shrink: 0;
 }
-.nav-button { flex-direction: row; align-items: center; }
-.nav-button:hover, .category-button:hover, .settings-button:hover { background-color: #46474f; color: white; }
-.nav-button:focus, .category-button:focus, .settings-button:focus { border-color: #f17a7d; }
-.nav-button:active, .category-button:active, .settings-button:active { background-color: #232428; }
-.nav-button.selected, .category-button.selected, .settings-button.selected { background-color: #c82e36; color: white; border-top-color: #f2656a; border-bottom-color: #7b1b22; }
-.nav-button.selected:hover, .category-button.selected:hover, .settings-button.selected:hover { background-color: #e23c44; }
-.resources { flex-direction: row; flex-grow: 1; justify-content: flex-end; align-items: center; margin-left: 14px; }
+.nav-button { flex-direction: row; align-items: center; border-radius: 0; border-width: 0; font-size: 17px; -unity-font-definition: url("project://database/Assets/DragLab/Resources/UI/Fonts/BarlowCondensed-BoldItalic.asset"); }
+.nav-button:hover, .category-button:hover, .settings-button:hover { background-color: rgba(255, 255, 255, 0.025); color: white; }
+.nav-button:focus, .category-button:focus, .settings-button:focus { border-color: #bd626a; color: white; }
+.nav-button:active, .category-button:active, .settings-button:active { background-color: rgba(0, 0, 0, 0.05); }
+.nav-button.selected, .category-button.selected, .settings-button.selected { background-color: transparent; color: white; border-top-color: #8d545b; border-bottom-color: #a62c39; }
+.nav-button.selected:hover, .category-button.selected:hover, .settings-button.selected:hover { background-color: rgba(255, 255, 255, 0.025); }
+.resources { flex-direction: row; flex-grow: 1; justify-content: flex-end; align-items: center; margin-left: 12px; }
 .resource { flex-direction: row; align-items: center; margin-left: 16px; }
-.resource Label { font-size: 14px; }
+.resource Label { font-size: 16px; }
 .filled-icon { width: 22px; height: 22px; flex-shrink: 0; margin-right: 7px; }
 .resource .filled-icon { width: 17px; height: 17px; margin-right: 6px; }
 .inspection-space { width: 42px; flex-shrink: 0; }
-.settings-button { width: 64px; height: 100%; margin-right: 0; border-radius: 0; border-top-width: 0; border-bottom-width: 0; border-right-width: 0; justify-content: center; align-items: center; }
+.settings-button { width: 64px; height: 100%; border-radius: 0; border-top-width: 0; border-bottom-width: 0; border-right-width: 0; justify-content: center; align-items: center; background-color: #a32b35; }
 .settings-button .filled-icon { width: 26px; height: 26px; margin-right: 0; }
 .workspace { flex-grow: 1; padding: 32px; }
-.page-heading { margin-bottom: 24px; }
-.eyebrow { color: #a4a5ac; font-size: 12px; margin-bottom: 5px; }
-.page-title { font-size: 34px; -unity-font-style: bold; margin-bottom: 8px; }
-.description { color: #b7b8c0; white-space: normal; max-width: 760px; }
 .settings-tabs { flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; }
-.category-button { margin-bottom: 6px; margin-right: 8px; padding: 10px 16px; }
-.panel-shadow { background-color: #101114; border-radius: 8px; max-width: 980px; padding-bottom: 4px; }
-.content-panel { padding: 28px; background-color: #25262b; border-width: 1px; border-top-color: #484950; border-left-color: #36373e; border-right-color: #36373e; border-bottom-color: #202126; border-radius: 7px; min-height: 180px; }
-.content-title { font-size: 21px; -unity-font-style: bold; margin-bottom: 12px; }
-.car-label { margin-top: 26px; font-size: 14px; color: #dedfe5; white-space: normal; }
-.footer { height: 36px; flex-shrink: 0; flex-direction: row; align-items: center; padding-left: 20px; padding-right: 20px; border-top-width: 1px; border-top-color: #303137; background-color: #1c1d21; }
-.footer-hint { color: #a8a9b0; flex-grow: 1; font-size: 12px; }
-.comparison-label { color: #b6575d; font-size: 11px; margin-right: 140px; }
+.category-button { flex-direction: row; align-items: center; justify-content: center; margin-bottom: 6px; margin-right: 8px; padding: 9px 17px; font-size: 17px; }
+.footer { height: 30px; flex-shrink: 0; flex-direction: row; align-items: center; padding-left: 20px; border-top-width: 1px; border-top-color: #3a4149; background-color: #17191c; overflow: hidden; }
+.footer-hint { color: #afb5be; flex-grow: 1; font-size: 13px; }
 .compact .brand { display: none; }
 .compact .nav-bar { padding-left: 8px; }
-.compact .nav-button { padding-left: 7px; padding-right: 7px; font-size: 13px; }
+.compact .nav-button { padding-left: 8px; padding-right: 8px; font-size: 16px; }
 .compact .resource { margin-left: 10px; }
-.compact .resource Label { font-size: 12px; }
+.compact .resource Label { font-size: 14px; }
 .compact .inspection-space { width: 12px; }
 .compact .resources { margin-left: 4px; }
 .compact .workspace { padding: 20px; }

@@ -1,0 +1,102 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: F8 displays native Garage shell on unchanged route
+PASS: Navigation anchored top/full width at 1280x720
+PASS: Settings anchored right/full bar height: nav (x:0.00, y:0.00, width:1280.00, height:64.00), settings (x:1216.00, y:0.00, width:64.00, height:64.00)
+PASS: navGarage visible without overlapping Settings
+PASS: navBuild visible without overlapping Settings
+PASS: navTuning visible without overlapping Settings
+PASS: navRace visible without overlapping Settings
+PASS: navBusiness visible without overlapping Settings
+PASS: navData visible without overlapping Settings
+PASS: cashGroup visible without overlapping Settings
+PASS: fuelGroup visible without overlapping Settings
+PASS: repGroup visible without overlapping Settings
+PASS: Settings filled icon keeps aspect ratio and padding
+PASS: Rendered selected-tab red glow fades upward and sideways from its bottom center
+PASS: Selected navigation/tabs replace redundant titles, subtitles and placeholder descriptions
+PASS: Navigation uses bundled condensed bold italic racing font
+PASS: Settings uses bundled readable condensed medium font
+PASS: Layered button surface cannot intercept clicks
+PASS: Hover provides visual feedback without duplicating visible button labels in the footer
+PASS: Hover starts timed shine sweep
+PASS: Shine progresses across successive rendered frames
+PASS: Shine finishes instead of running a perpetual hover animation
+PASS: Stationary hovered button keeps cached geometry after shine
+PASS: Real keyboard Tab provides focus shine without clicking
+PASS: Native click selects navBuild and stays New
+PASS: Native click selects navTuning and stays New
+PASS: Native click selects navRace and stays New
+PASS: Native click selects navBusiness and stays New
+PASS: Native click selects navData and stays New
+PASS: Native click selects navGarage and stays New
+PASS: Gear opens fullscreen native Settings
+PASS: Active native pointer gesture blocks F8
+PASS: Settings category Difficulty selected
+PASS: Settings category Sound selected
+PASS: Settings category Units selected
+PASS: Settings category Controls selected
+PASS: Settings category General selected
+PASS: F8 restores original Settings on same route
+PASS: F8 retains native Settings category
+PASS: Navigation/categories/F8 do not publish player preferences or resources
+PASS: Shell actions do not save preferences
+PASS: Resize retains Settings presentation/category
+PASS: Navigation anchored top/full width at 1024x768
+PASS: Settings anchored right/full bar height: nav (x:0.00, y:0.00, width:1024.00, height:64.00), settings (x:960.00, y:0.00, width:64.00, height:64.00)
+PASS: navGarage visible without overlapping Settings
+PASS: navBuild visible without overlapping Settings
+PASS: navTuning visible without overlapping Settings
+PASS: navRace visible without overlapping Settings
+PASS: navBusiness visible without overlapping Settings
+PASS: navData visible without overlapping Settings
+PASS: cashGroup visible without overlapping Settings
+PASS: fuelGroup visible without overlapping Settings
+PASS: repGroup visible without overlapping Settings
+PASS: Settings filled icon keeps aspect ratio and padding
+PASS: Resize retains Settings presentation/category
+PASS: Navigation anchored top/full width at 1920x1080
+PASS: Settings anchored right/full bar height: nav (x:0.00, y:0.00, width:1920.00, height:64.00), settings (x:1856.00, y:0.00, width:64.00, height:64.00)
+PASS: navGarage visible without overlapping Settings
+PASS: navBuild visible without overlapping Settings
+PASS: navTuning visible without overlapping Settings
+PASS: navRace visible without overlapping Settings
+PASS: navBusiness visible without overlapping Settings
+PASS: navData visible without overlapping Settings
+PASS: cashGroup visible without overlapping Settings
+PASS: fuelGroup visible without overlapping Settings
+PASS: repGroup visible without overlapping Settings
+PASS: Settings filled icon keeps aspect ratio and padding
+PASS: Resize retains Settings presentation/category
+LIMIT: requested 3840x2160; platform rendered 3360x2160
+PASS: Navigation anchored top/full width at 3360x2160
+PASS: Settings anchored right/full bar height: nav (x:0.00, y:0.00, width:1920.00, height:64.00), settings (x:1856.00, y:0.00, width:64.00, height:64.00)
+PASS: navGarage visible without overlapping Settings
+PASS: navBuild visible without overlapping Settings
+PASS: navTuning visible without overlapping Settings
+PASS: navRace visible without overlapping Settings
+PASS: navBusiness visible without overlapping Settings
+PASS: navData visible without overlapping Settings
+PASS: cashGroup visible without overlapping Settings
+PASS: fuelGroup visible without overlapping Settings
+PASS: repGroup visible without overlapping Settings
+PASS: Settings filled icon keeps aspect ratio and padding
+PASS: True 3840x2160 render target uses shared 2x scale
+PASS: Fullscreen transition preserves Settings category
+PASS: Navigation anchored top/full width at 1920x1080
+PASS: Settings anchored right/full bar height: nav (x:0.00, y:0.00, width:1920.00, height:64.00), settings (x:1856.00, y:0.00, width:64.00, height:64.00)
+PASS: navGarage visible without overlapping Settings
+PASS: navBuild visible without overlapping Settings
+PASS: navTuning visible without overlapping Settings
+PASS: navRace visible without overlapping Settings
+PASS: navBusiness visible without overlapping Settings
+PASS: navData visible without overlapping Settings
+PASS: cashGroup visible without overlapping Settings
+PASS: fuelGroup visible without overlapping Settings
+PASS: repGroup visible without overlapping Settings
+PASS: Settings filled icon keeps aspect ratio and padding
+PASS: Windowed mode/default fixture size restored
+PASS: Resolution changes preserve actual player state
+PASS: Empty garage does not fabricate fuel/tank
+PASS: Sparse shell does not add unnecessary car identity text
+Checks: 99 / runtime errors: 0

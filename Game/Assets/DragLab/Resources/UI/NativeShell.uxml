@@ -20,11 +20,6 @@
       <ui:Button name="settingsButton" class="settings-button" tooltip="Settings" />
     </ui:VisualElement>
     <ui:ScrollView class="workspace">
-      <ui:VisualElement class="page-heading">
-        <ui:Label name="pageEyebrow" class="eyebrow" text="VEHICLE MANAGEMENT" />
-        <ui:Label name="pageTitle" class="page-title" text="Garage" />
-        <ui:Label name="pageDescription" class="description" />
-      </ui:VisualElement>
       <ui:VisualElement name="settingsTabs" class="settings-tabs">
         <ui:Button name="tabDifficulty" text="Difficulty / Driving" class="category-button" />
         <ui:Button name="tabSound" text="Sound" class="category-button" />
@@ -32,17 +27,9 @@
         <ui:Button name="tabControls" text="Controls" class="category-button" />
         <ui:Button name="tabGeneral" text="General" class="category-button" />
       </ui:VisualElement>
-      <ui:VisualElement class="panel-shadow">
-        <ui:VisualElement class="content-panel">
-          <ui:Label name="contentTitle" class="content-title" />
-          <ui:Label name="contentDescription" class="description" />
-          <ui:Label name="selectedCar" class="car-label" />
-        </ui:VisualElement>
-      </ui:VisualElement>
     </ui:ScrollView>
-    <ui:VisualElement class="footer">
-      <ui:Label name="interactionHint" class="footer-hint" text="F8 · Compare with current interface" />
-      <ui:Label text="NEW INTERFACE" class="comparison-label" />
+    <ui:VisualElement name="footerBar" class="footer">
+      <ui:Label name="interactionHint" class="footer-hint" text="F8 · Old / New" />
     </ui:VisualElement>
   </ui:VisualElement>
 </ui:UXML>

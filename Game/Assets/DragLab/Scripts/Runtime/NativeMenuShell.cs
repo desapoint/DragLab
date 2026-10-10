@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -15,6 +16,7 @@ namespace DragLab.Runtime
         UIDocument document;
         PanelSettings panel;
         VisualElement root;
+        readonly List<RacingSurface> surfaces = new List<RacingSurface>();
         int category;
         string renderedRoute;
         internal VisualElement Root => root;
@@ -34,18 +36,22 @@ namespace DragLab.Runtime
             document.visualTreeAsset = Resources.Load<VisualTreeAsset>("UI/NativeShell");
             root = document.rootVisualElement.Q("shell");
             root.AddToClassList("hidden");
+            AddSurface(root.Q("navBar"), RacingSurface.Kind.Bar);
+            AddSurface(root.Q("footerBar"), RacingSurface.Kind.Bar);
             for (int i = 0; i < routes.Length; i++)
             {
                 int index = i;
                 var button = root.Q<Button>("nav" + names[i]);
                 button.text = "";
                 button.Insert(0, new FilledMenuIcon(names[i]));
-                button.Add(new Label(names[i]) { pickingMode = PickingMode.Ignore });
+                button.Add(new Label(names[i].ToUpperInvariant()) { pickingMode = PickingMode.Ignore });
+                AddSurface(button, RacingSurface.Kind.Navigation);
                 button.clicked += () => game.QueueNativeNavigation(routes[index]);
                 Hint(button, names[i]);
             }
             var settingsButton = root.Q<Button>("settingsButton");
             settingsButton.Add(new FilledMenuIcon("Settings"));
+            AddSurface(settingsButton, RacingSurface.Kind.Primary);
             settingsButton.clicked += () => game.QueueNativeNavigation("Settings");
             Hint(settingsButton, "Settings");
             foreach (string resource in new[] { "cash", "fuel", "rep" })
@@ -54,21 +60,27 @@ namespace DragLab.Runtime
             {
                 int index = i;
                 var tab = root.Q<Button>("tab" + categoryIds[i]);
+                string label = tab.text;
+                tab.text = "";
+                tab.Add(new Label(label) { pickingMode = PickingMode.Ignore });
+                AddSurface(tab, RacingSurface.Kind.Button);
                 tab.clicked += () => { category = index; renderedRoute = null; Refresh(); };
                 Hint(tab, categories[i]);
             }
         }
 
+        void AddSurface(VisualElement owner, RacingSurface.Kind kind)
+        { var surface = new RacingSurface(owner, kind); owner.Insert(0, surface); surfaces.Add(surface); }
+
         void Hint(Button button, string text)
         {
             button.tooltip = text;
-            button.RegisterCallback<PointerEnterEvent>(_ => root.Q<Label>("interactionHint").text = text);
-            button.RegisterCallback<PointerLeaveEvent>(_ => ResetHint());
-            button.RegisterCallback<FocusInEvent>(_ => root.Q<Label>("interactionHint").text = text);
-            button.RegisterCallback<FocusOutEvent>(_ => ResetHint());
         }
-        void ResetHint() => root.Q<Label>("interactionHint").text = "F8 · Compare with current interface";
-        void LateUpdate() => Refresh();
+        void LateUpdate()
+        {
+            Refresh();
+            foreach (var surface in surfaces) surface.Tick(Visible);
+        }
         internal void Refresh()
         {
             if (root == null || game.Profile == null) return;
@@ -84,7 +96,6 @@ namespace DragLab.Runtime
             SetText("cash", "$" + profile.cash.ToString("N0"));
             SetText("fuel", car == null ? "— L" : car.fuel.litres.ToString("F1") + " / " + profile.catalog.Spec(car.vehicleId).fuel.capacityLitres.ToString("F0") + " L");
             SetText("progression", "REP " + profile.reputation);
-            SetText("selectedCar", car == null ? "No car selected" : profile.catalog.Spec(car.vehicleId).displayName);
             if (renderedRoute == route) return;
             renderedRoute = route;
             bool settings = route == "Settings";
@@ -92,13 +103,6 @@ namespace DragLab.Runtime
             root.Q<Button>("settingsButton").EnableInClassList("selected", settings);
             root.Q("settingsTabs").EnableInClassList("hidden", !settings);
             for (int i = 0; i < categoryIds.Length; i++) root.Q<Button>("tab" + categoryIds[i]).EnableInClassList("selected", i == category);
-            SetText("pageEyebrow", settings ? "PREFERENCES" : "VEHICLE MANAGEMENT");
-            SetText("pageTitle", settings ? "Settings" : names[Array.IndexOf(routes, route)]);
-            SetText("pageDescription", settings ? "Driving, sound and preferences in one place." : "Your garage, build and racing operation.");
-            SetText("contentTitle", settings ? categories[category] : "Workspace");
-            SetText("contentDescription", settings
-                ? "Settings controls will be added one at a time. Changes will take effect only after Save and confirmation. Use F8 to access current settings."
-                : "This workspace is ready for its next controls. Use F8 to access the current interface.");
         }
         void SetText(string id, string value) { var label = root.Q<Label>(id); if (label.text != value) label.text = value; }
         void OnDestroy() { if (panel != null) Destroy(panel); }

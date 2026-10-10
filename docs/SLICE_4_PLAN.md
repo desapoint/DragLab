@@ -2,6 +2,8 @@
 
 Revised 2026-10-09 after Slice 3H and the approved audio, performance, shop and shared-inventory refinements. **4A source coverage is retained; its web layouts were declined. 4B.1 supplies F8 comparison; 4B.2/4C.0 supplies the native navigation/Settings shell for review.** Individual preference controls and further migration remain pending; new bench presentation is deferred. The user directs native layouts one control at a time. Slice 2/3 developer acceptance remains complete; human driving, listening and economy review remain separate.
 
+
+The current shell's user-requested style revision follows the supplied racing reference: condensed italic navigation, dark carbon bar, circular bottom selection glow, restrained shaded buttons and brief shine. Concise UI copy and a static solid page background are required. See [style revision](../reports/phases/4b/06-RACING-STYLE.md). This is a correction within the current checkpoint; visual acceptance is still pending.
 ## Goal and boundaries
 
 Make the existing mechanics, ownership, economy and development tools usable through scalable interfaces and keyboard, controller and touch input. Migrate one workflow at a time without rewriting the simulation or silently simplifying advanced options. Finish functional layout, navigation, feedback and readability here; original vehicle artwork, extensive content and final visual/audio finish remain Slice 5. Storefront integration and commercial hardening remain Slice 6.

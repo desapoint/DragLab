@@ -86,10 +86,42 @@ namespace DragLab.Runtime
                 yield return Key(input, 0x77);
                 Check(shell.Visible && game.ScreenName == "Garage", "F8 displays native Garage shell on unchanged route");
                 yield return Capture("garage-1280"); LayoutCheck();
+                yield return new WaitForEndOfFrame();
+                var glowImage = ScreenCapture.CaptureScreenshotAsTexture();
+                var activeBounds = shell.Root.Q("navGarage").worldBound;
+                Color bottomGlow = glowImage.GetPixel((int)activeBounds.center.x,Screen.height-(int)(activeBounds.yMax-10)-1);
+                Color topGlow = glowImage.GetPixel((int)activeBounds.center.x,Screen.height-(int)(activeBounds.yMin+6)-1);
+                Color edgeGlow = glowImage.GetPixel((int)(activeBounds.xMin+3),Screen.height-(int)(activeBounds.yMax-10)-1);
+                Check(bottomGlow.r-bottomGlow.g > topGlow.r-topGlow.g+.12f && bottomGlow.r-bottomGlow.g > edgeGlow.r-edgeGlow.g+.08f,
+                    "Rendered selected-tab red glow fades upward and sideways from its bottom center");
+                Destroy(glowImage);
+                Check(shell.Root.Q("pageTitle") == null && shell.Root.Q("pageDescription") == null && shell.Root.Q("contentTitle") == null && shell.Root.Q("contentDescription") == null,
+                    "Selected navigation/tabs replace redundant titles, subtitles and placeholder descriptions");
+                Check(shell.Root.Q<Button>("navBuild").Q<Label>().resolvedStyle.unityFontDefinition.fontAsset.name == "BarlowCondensed-BoldItalic",
+                    "Navigation uses bundled condensed bold italic racing font");
+                Check(shell.Root.Q<Button>("tabSound").Q<Label>().resolvedStyle.unityFontDefinition.fontAsset.name == "BarlowCondensed-Medium",
+                    "Settings uses bundled readable condensed medium font");
                 var hover = shell.Root.Q<Button>("navBuild"); var normalColor = hover.resolvedStyle.backgroundColor;
+                var surface = hover.Q<RacingSurface>();
+                Check(surface != null && surface.pickingMode == PickingMode.Ignore, "Layered button surface cannot intercept clicks");
                 input.MoveMouseAt((int)hover.worldBound.center.x, (int)hover.worldBound.center.y);
                 yield return new WaitForSecondsRealtime(.2f);
-                Check(shell.Root.Q<Label>("interactionHint").text == "Build" && hover.resolvedStyle.backgroundColor != normalColor, "Hover supplies label and visual feedback");
+                Check(shell.Root.Q<Label>("interactionHint").text == "F8 · Old / New" && hover.resolvedStyle.backgroundColor != normalColor, "Hover provides visual feedback without duplicating visible button labels in the footer");
+                Check(surface.ShineActive && surface.ShineProgress > 0 && surface.ShineProgress < 1, "Hover starts timed shine sweep");
+                float firstShine = surface.ShineProgress;
+                yield return Capture("button-shine-a");
+                Check(surface.ShineProgress > firstShine, "Shine progresses across successive rendered frames");
+                yield return Capture("button-shine-b");
+                yield return new WaitForSecondsRealtime(.8f);
+                Check(!surface.ShineActive, "Shine finishes instead of running a perpetual hover animation");
+                int idlePaint = surface.PaintCount;
+                yield return new WaitForSecondsRealtime(.3f);
+                Check(surface.PaintCount == idlePaint, "Stationary hovered button keeps cached geometry after shine");
+                input.MoveMouseAt(1100, 500);
+                yield return new WaitForSecondsRealtime(.2f);
+                yield return Key(input, 0x09);
+                var focusedButton = shell.Root.focusController.focusedElement as Button;
+                Check(focusedButton != null && focusedButton.Q<RacingSurface>().ShineActive, "Real keyboard Tab provides focus shine without clicking");
                 foreach (var destination in new[] { new[] {"navBuild", "Parts"}, new[] {"navTuning", "Tuning"}, new[] {"navRace", "Race setup"}, new[] {"navBusiness", "Business"}, new[] {"navData", "Stats"}, new[] {"navGarage", "Garage"} })
                 {
                     yield return Click(input, destination[0]);
@@ -151,7 +183,7 @@ namespace DragLab.Runtime
                 var cars = game.Profile.cars; game.Profile.cars = new System.Collections.Generic.List<DragLab.Domain.OwnedCar>();
                 shell.Refresh();
                 Check(shell.Root.Q<Label>("fuel").text == "— L", "Empty garage does not fabricate fuel/tank");
-                Check(shell.Root.Q<Label>("selectedCar").text == "No car selected", "Car identity refreshes without route/category changes");
+                Check(shell.Root.Q<Label>("selectedCar") == null, "Sparse shell does not add unnecessary car identity text");
                 game.Profile.cars = cars;
                 shell.Refresh();
                 yield return Capture("settings-restored");
