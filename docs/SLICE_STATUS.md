@@ -2,7 +2,7 @@
 
 **2A–2L and 3A–3H developer acceptance are complete.** See [phase plan](IMPLEMENTATION_PHASES.md), [full Slice 3 audit](../reports/SLICE_3_AUDIT.md), [career](CAREER_PROGRESSION.md), [garage business](GARAGE_BUSINESS.md) and [economy balance](ECONOMY_BALANCE.md).
 
-**Slice 4A: ready for user review (2026-10-09); 4B–4Q not started.** [Annotated layouts and coverage](ui/4a/README.md) preserve existing player/bench controls and propose uGUI/Input System. Browser/static checks validate these review artifacts; Unity interfaces/packages, gameplay and saves are unchanged. [Evidence](../reports/phases/4a/CHANGES.md). Stop here for explicit user validation before 4B.
+**Slice 4: user-directed native control checkpoints (2026-10-09).** The user declined the 4A web layouts; its source coverage remains a historical baseline. 4B.1 supplies only the requested F8 Old ↔ New/empty main-interface comparison, including both benches, and is ready for review: Windows build and 48 native checks passed. [Evidence and review steps](../reports/phases/4b/01-COMPARISON.md). The remainder of 4B and 4C–4Q are not started. Stop after every requested button/slider or infrastructure step for review; do not migrate a whole screen. [Current contract](SLICE_4_PLAN.md).
 
 Source of scope: [objective.md](objective.md), section 58. The eight-car roster includes the requested pickup, three-cylinder hatch, AWD turbo sedan, inline-six GT and supercharged V8. The four new mechanical configurations reuse existing layered placeholder bodies. Mechanics and editable data take priority over finished graphics or menus.
 

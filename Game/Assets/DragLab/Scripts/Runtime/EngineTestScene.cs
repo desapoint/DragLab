@@ -45,6 +45,8 @@ namespace DragLab.Runtime
         bool pendingConfig, mouseGas, mouseClutch, mouseBrake;
         float lastEdit;
         bool automated, editingText, showDyno = true, clearGuiFocus, guiGasW, guiGasSpace;
+        readonly InterfaceComparison interfaceComparison = new InterfaceComparison();
+        internal const string ComparisonRoute = "Sound bench";
         internal bool verificationKeyboard;
         internal string verificationFocusField;
         internal bool IsEditingText => editingText;
@@ -74,6 +76,7 @@ namespace DragLab.Runtime
             filePath = Path.GetFullPath(Path.Combine(Application.dataPath, "../EngineBenchConfigs/config.json"));
             SelectVehicle(0);
             EngineBenchRuntimeVerification.AttachIfRequested(this);
+            InterfaceComparisonVerification.AttachIfRequested();
         }
         public void SelectVehicle(int index)
         {
@@ -219,7 +222,7 @@ namespace DragLab.Runtime
                 if (Input.GetKeyDown(KeyCode.F5)) RunScenario(config, scenario);
                 if (Input.GetKeyDown(KeyCode.F6)) RepeatScenario();
                 if (Input.GetKeyDown(KeyCode.F7)) RunScenario(SlotA, scenario);
-                if (Input.GetKeyDown(KeyCode.F8)) RunScenario(SlotB, scenario);
+                if (Input.GetKeyDown(KeyCode.F8) && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))) RunScenario(SlotB, scenario);
                 if (Input.GetKeyDown(KeyCode.N)) config.controls.gear = 0;
                 if (Input.GetKeyDown(KeyCode.E)) config.controls.gear = Math.Min(Bench.spec.gears.Length, Bench.state.gear + 1);
                 if (Input.GetKeyDown(KeyCode.Q)) config.controls.gear = Math.Max(0, Bench.state.gear - 1);
@@ -263,18 +266,20 @@ namespace DragLab.Runtime
             view.Animate(Bench.state,!Paused,true);
             Audio.Render(Bench.state, !Paused && Bench.state.rpm > 0, PlayingMusic ? music.GainAt(Math.Max(0, MusicTick - 1)) : 1, Bench.audioLoad);
         }
-        void OnApplicationFocus(bool focus) { if (!focus) { guiGasW = guiGasSpace = false; if (!automated && Audio != null) Pause(true); } }
+        void OnApplicationFocus(bool focus) { if (!focus) { interfaceComparison.ReleaseShortcut(); guiGasW = guiGasSpace = false; if (!automated && Audio != null) Pause(true); } }
         void OnDisable() { guiGasW = guiGasSpace = false; if (Audio != null) Audio.Silence(); }
         void OnDestroy() { dynoView.Dispose(); }
         void OnGUI()
         {
             if (Bench == null) return;
-            RuntimeGuiRect.BeginFrame();
-            float scale = Mathf.Min(Screen.width / 1280f, Screen.height / 720f);
-            GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1));
-            // IMGUI text focus can own the initial OS key event before legacy
-            // Input polling sees it. Claim gas here before drawing any fields,
-            // and retain its down/up state so that first press is not lost.
+            bool replacement = interfaceComparison.BeginGUI(ComparisonRoute, editingText);
+            // Keep the existing gas event bridge active even with all fields hidden.
+            if (replacement) { mouseGas = mouseClutch = mouseBrake = false; GasGUIEvents(); }
+            else DrawLegacyGUI();
+            interfaceComparison.DrawStatus(ComparisonRoute);
+        }
+        void GasGUIEvents()
+        {
             if ((!automated || verificationKeyboard) && (Event.current.type == EventType.KeyDown || Event.current.type == EventType.KeyUp))
             {
                 bool down = Event.current.type == EventType.KeyDown;
@@ -284,6 +289,15 @@ namespace DragLab.Runtime
                 if (gas && down && (Controls.Source != EngineBenchControlSource.Keyboard || Paused)) KeyboardControl();
                 if (gas) { GUI.FocusControl(null); editingText = false; Event.current.Use(); }
             }
+        }
+        void DrawLegacyGUI()
+        {
+            if (Bench == null) return;
+            RuntimeGuiRect.BeginFrame();
+            float scale = Mathf.Min(Screen.width / 1280f, Screen.height / 720f);
+            GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1));
+            // Keep gas event ownership independent of presentation.
+            GasGUIEvents();
             if (clearGuiFocus) { GUI.FocusControl(null); clearGuiFocus = false; }
             if (Controls.Source == EngineBenchControlSource.Keyboard && !fields.HasTextFocus(GUI.GetNameOfFocusedControl()) && GUI.GetNameOfFocusedControl() != "bench-file-path" && (Event.current.type == EventType.KeyDown || Event.current.type == EventType.KeyUp)) Event.current.Use();
             if (title == null) title = new GUIStyle(GUI.skin.label) { fontSize = 20, fontStyle = FontStyle.Bold };
@@ -395,7 +409,7 @@ namespace DragLab.Runtime
             mouseBrake = GUILayout.RepeatButton("Hold brake / S", GUILayout.Height(45));
             if ((mouseGas || mouseClutch || mouseBrake) && Controls.Source != EngineBenchControlSource.Keyboard) KeyboardControl();
             GUILayout.EndHorizontal();
-            GUILayout.Label("F: fixed RPM   [ / ]: target ±100 RPM   Up/Down: load   B: tire spin\nF5: run current   F6: repeat captured   F7/F8: run A/B\nManual tests run endlessly; fixed RPM is a dynamometer override.");
+            GUILayout.Label("F: fixed RPM   [ / ]: target ±100 RPM   Up/Down: load   B: tire spin\nF5: run current   F6: repeat captured   F7: run A / Shift+F8: run B / F8: compare UI\nManual tests run endlessly; fixed RPM is a dynamometer override.");
             GUILayout.BeginHorizontal();
             if (GUILayout.Button(showDyno ? "Show car / wheels" : "Show live dyno")) showDyno = !showDyno;
             if (GUILayout.Button(PlayingMusic ? "Stop concert / restore" : "Dyno concert / random classic")) { if (PlayingMusic) StopMusic(); else PlayRandomMusic(); }
@@ -453,7 +467,7 @@ namespace DragLab.Runtime
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Run A / F7")) RunScenario(SlotA, scenario);
-            if (GUILayout.Button("Run B / F8")) RunScenario(SlotB, scenario);
+            if (GUILayout.Button("Run B / Shift+F8")) RunScenario(SlotB, scenario);
             GUILayout.EndHorizontal();
             if (GUILayout.Button("Return to manual controls")) Manual();
             if (GUILayout.Button("Enable controls + 3500 RPM two-step"))

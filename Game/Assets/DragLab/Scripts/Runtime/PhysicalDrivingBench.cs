@@ -31,6 +31,8 @@ namespace DragLab.Runtime
         List<TickInput> timeline;
         bool replay, neutral = true, staging = true, upPending, downPending, mouseGas, mouseClutch, mouseBrake;
         bool clearGuiFocus;
+        readonly InterfaceComparison interfaceComparison = new InterfaceComparison();
+        internal const string ComparisonRoute = "Physical bench";
         bool audioSettings;
         bool showDiagnostics;
         string continuationFolder;
@@ -64,6 +66,7 @@ namespace DragLab.Runtime
             if (transferred == null) SelectVehicle(0);
             else { config = PhysicalDrivingSession.Copy(transferred); config.driving.throttleAssist = false; selected = Array.FindIndex(vehicles, v => v.spec.id == config.vehicle.id); ResetBench(); }
             DrivingBenchRuntimeVerification.AttachIfRequested(this);
+            InterfaceComparisonVerification.AttachIfRequested();
         }
         public void SelectVehicle(int index)
         {
@@ -234,7 +237,16 @@ namespace DragLab.Runtime
             return clicked;
         }
         void OnGUI()
-        { using (FramePacingProbe.Measure(5)) DrawMeasuredGUI(); }
+        {
+            if (Session == null) return;
+            using (FramePacingProbe.Measure(5))
+            {
+                bool replacement = interfaceComparison.BeginGUI(ComparisonRoute);
+                if (replacement) mouseGas = mouseClutch = mouseBrake = false;
+                else DrawMeasuredGUI();
+                interfaceComparison.DrawStatus(ComparisonRoute);
+            }
+        }
         void DrawMeasuredGUI()
         {
             if (Session == null) return;
@@ -435,7 +447,7 @@ namespace DragLab.Runtime
             ServiceFaultControls(part,d,live);
             GUILayout.Label("Assign before drive engagement or pause first. Assigning resets this test; pedal source is kept.");
         }
-        void OnApplicationFocus(bool focused) { if (!focused && !DrivingBenchRuntimeVerification.Active && Session != null) SetPaused(true); }
+        void OnApplicationFocus(bool focused) { if (!focused) interfaceComparison.ReleaseShortcut(); if (!focused && !DrivingBenchRuntimeVerification.Active && Session != null) SetPaused(true); }
         void OnDestroy() { traceView.Dispose(); }
     }
 }

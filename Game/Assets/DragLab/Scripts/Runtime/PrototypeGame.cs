@@ -25,6 +25,8 @@ namespace DragLab.Runtime
         DragStripView strip;
         EngineAudio engineAudio, opponentAudio;
         readonly RaceInputAdapter controls = new RaceInputAdapter();
+        readonly InterfaceComparison interfaceComparison = new InterfaceComparison();
+        internal string ComparisonRoute => screen == "Race" ? audioSettingsOpen ? "Race settings" : paused ? "Pause" : race != null && race.phase == RacePhase.Finished ? "Results" : "Race" : screen;
         Action pendingAction;
         float saveDelay;
         string screen = "Garage";
@@ -107,6 +109,7 @@ namespace DragLab.Runtime
             ShowGarageCar();
             notice = ProfileStore.Status;
             RuntimeVerification.AttachIfRequested(this);
+            InterfaceComparisonVerification.AttachIfRequested();
         }
         void ShowGarageCar()
         {
@@ -189,7 +192,7 @@ namespace DragLab.Runtime
             if (race.phase == RacePhase.Finished)
             {
                 if(!awarded)FinishRace();
-                controls.Poll(); controls.ConsumePause();
+                controls.Poll(!InterfaceComparison.IsReplacement(ComparisonRoute)); controls.ConsumePause();
                 accumulator += Math.Min(Time.unscaledDeltaTime, .1f);
                 while (accumulator >= DragMath.FixedStep)
                 {
@@ -199,7 +202,7 @@ namespace DragLab.Runtime
                 }
                 SaveLiveRunIfDue();RenderRace(); return;
             }
-            controls.Poll();
+            controls.Poll(!InterfaceComparison.IsReplacement(ComparisonRoute));
             if (controls.ConsumePause()) { SetPaused(true); return; }
             accumulator += Math.Min(Time.unscaledDeltaTime, .1f);
             while (accumulator >= DragMath.FixedStep)
@@ -245,7 +248,7 @@ namespace DragLab.Runtime
             if (opponentAudio != null) opponentAudio.Silence();
             if(value&&profile!=null&&race!=null)SyncRaceWear();
         }
-        void OnApplicationFocus(bool focused) { if (!focused && screen == "Race" && !RuntimeVerification.Active) SetPaused(true); }
+        void OnApplicationFocus(bool focused) { if (!focused) interfaceComparison.ReleaseShortcut(); if (!focused && screen == "Race" && !RuntimeVerification.Active) SetPaused(true); }
         void SaveLiveRunIfDue()
         {
             if(liveRunClosed)return;
@@ -278,7 +281,15 @@ namespace DragLab.Runtime
         internal string AuditMouseEvents = "";
         internal Rect warmupLineLockRect;
         void OnGUI()
-        { using (FramePacingProbe.Measure(4)) DrawMeasuredGUI(); }
+        {
+            if (profile == null) return;
+            using (FramePacingProbe.Measure(4))
+            {
+                bool replacement = interfaceComparison.BeginGUI(ComparisonRoute, resetGameConfirm || (screen == "Valuation" && valuationQuote != null && saleConfirmation == valuationQuote.Id) || pendingAction != null);
+                if (!replacement) DrawMeasuredGUI();
+                interfaceComparison.DrawStatus(ComparisonRoute);
+            }
+        }
         void DrawMeasuredGUI()
         {
             if (RuntimeVerification.Active && (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseUp)) AuditMouseEvents += Event.current.type + "@" + Event.current.mousePosition + ";";

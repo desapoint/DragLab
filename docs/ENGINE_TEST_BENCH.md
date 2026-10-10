@@ -31,7 +31,7 @@ Concert mode temporarily bypasses limiter/two-step/anti-lag cuts and mutes acces
 | Static RPM | F or fixedRpm toggle; set targetRpm; brackets adjust ±100 RPM |
 | Dyno load | Up/Down arrows or load slider |
 | Tire spin | B toggles slip with 40 km/h rollers; roadSpeedKmh/tireSlip sliders give finer control |
-| Repeatable tests | F5 current / F6 captured repeat / F7 A / F8 B |
+| Repeatable tests | F5 current / F6 captured repeat / F7 A / Shift+F8 B; plain F8 compares Old ↔ New/empty interface |
 
 Throttle holds remain independent of shift/clutch input. Numeric text fields allow precise values as well as sliders. **W/Space always claims driving control**, even after a numeric field retained focus. Other shortcuts remain suppressed while entering numbers; Enter leaves text editing. Mouse/keyboard pedal input interrupts a running scenario and returns to manual testing. Focus loss pauses sound.
 

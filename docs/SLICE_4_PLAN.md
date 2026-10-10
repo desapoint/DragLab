@@ -1,6 +1,6 @@
 # Slice 4 — Interface migration, input and platform validation
 
-Revised 2026-10-09 after Slice 3H and the approved audio, performance, shop and shared-inventory refinements. **4A is ready for user review; 4B–4Q are not started.** [Layout review and source coverage](ui/4a/README.md). Slice 2/3 developer acceptance remains complete; human driving, listening and economy review remain separate.
+Revised 2026-10-09 after Slice 3H and the approved audio, performance, shop and shared-inventory refinements. **4A source coverage is retained; its web layouts were declined. 4B.1 implements only the requested F8 comparison foundation.** The remainder of 4B and 4C–4Q are not started. The user directs native layouts one control at a time. Slice 2/3 developer acceptance remains complete; human driving, listening and economy review remain separate.
 
 ## Goal and boundaries
 
@@ -11,6 +11,7 @@ The old five-line Slice 4 outline is superseded by this contract and the ordered
 ## Review and stop rule
 
 - Work on **one lettered phase at a time**. Complete relevant checks, update its report and commit it locally before presenting it for review.
+- Within each lettered phase, deliver **one button, slider or expressly requested infrastructure step per checkpoint**, then wait for validation. Never treat a request for one control as approval of a whole screen. The earlier HTML layouts are archived proposals; they do not govern new screen design.
 - **Stop at every phase handoff and wait for the user's explicit validation before starting the next phase.** Automated passing checks, elapsed time and silence are not visual/usability approval. A request to fix the current screen stays within that checkpoint; after fixes, present it again.
 - 4A delivers layouts and a coverage map for review. 4B onward delivers a runnable Windows checkpoint, screenshots of the changed screens, a brief click-through checklist, known limits and the commit hash. Screenshots show representative populated, empty, worn/failed, locked and narrow-layout states where relevant; they are local evidence, not tracked raw media.
 - Record implementation/checks and user validation separately: `not started → implementing → ready for user review → accepted`. Do not call a phase accepted before both its technical gate and the user's review pass.
@@ -18,6 +19,10 @@ The old five-line Slice 4 outline is superseded by this contract and the ordered
 - If a phase's wireframes expose a material scope or behavior choice, settle that choice in its review before dependent implementation. Do not introduce a new mechanic or change approved behavior to make a layout easier.
 
 ## Proposed layout and implementation approach
+
+The user superseded the web layout proposal with incremental native review. **4B.1** adds F8 to compare the current main interface as a whole: Old ↔ New/empty. It retains the same route, panel selections, drafts, cart, test configuration, input owner and running simulation. Each main route remembers its presentation during the session; no comparison preference enters saves. Replacement screens may remain empty until a specific control is requested. F8 returns to the old interface without needing separate subpanel toggles. A small status badge and empty-view message provide the return shortcut. Existing world/car rendering and audio continue.
+
+F8 must not start the sound bench's former scenario-B binding; that action moves to **Shift+F8**, retaining its button. Text focus, active pointer gestures and confirmations block presentation switches. Hidden legacy race hitboxes cannot accept mouse/touch commands; held keyboard gas and shifts continue. This step uses the existing runtime presentation/input stack solely as a development switch; it does not install uGUI/Input System or approve a shell design. Later controls may use an agreed new framework and retain legacy controls alongside them.
 
 4A validates this structure before any UI framework/package changes:
 
@@ -96,4 +101,6 @@ Keyboard/slider ownership is local to bench operating controls, not a lock on th
 
 ## Current handoff
 
-**4A delivered for user review:** [clickable annotated layouts](ui/4a/index.html), [workflow/framework review](ui/4a/README.md) and [source index](ui/4a/SOURCE_INDEX.md). Framework recommendation remains uGUI/Input System, subject to approval; no Unity packages, runtime interfaces, simulation parameters or saves were changed. Technical evidence and limits are in [the 4A report](../reports/phases/4a/CHANGES.md). **Wait for explicit user validation before 4B.**
+**Current authorization: F8 comparison foundation only (4B.1).** The user declined the web presentation and will specify layouts/controls along the way. The [4A source index](ui/4a/SOURCE_INDEX.md) and [historical report](../reports/phases/4a/CHANGES.md) retain their original baseline; subsequent control changes get their own native evidence. Complete and commit this requested toggle, then stop before any new button, slider, package work or further 4B scope. Approval of the toggle does not approve a whole interface.
+
+4B.1 technical handoff: updated Windows player built; 48 real-input/rendering checks passed with zero runtime errors. [Report and native review checklist](../reports/phases/4b/01-COMPARISON.md). Human validation is pending. No further control is selected or implemented by this handoff.

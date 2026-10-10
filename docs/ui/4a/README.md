@@ -1,6 +1,6 @@
 # Slice 4A — Layout and control coverage review
 
-**Ready for user review; not accepted yet.** Source baseline: `1fe619b`, runtime baseline `e5eed86`. No Unity UI, input packages, scenes, physics, game data or saves are changed. The existing Windows player remains the runnable game checkpoint.
+**Historical review proposal: web layouts declined by the user.** Source baseline: `1fe619b`, runtime baseline `e5eed86`. This archived artifact and its source hashes describe that checkpoint, not later runtime changes. The user now directs native layouts one control at a time; see [the current contract](../../SLICE_4_PLAN.md). No Unity UI, input packages, scenes, physics, game data or saves were changed by 4A.
 
 Open [the clickable review](index.html) in a browser. It works locally without installation or a server. The top controls select 16 screen layouts, five representative ownership/condition states, compact width and annotation visibility. Buttons demonstrate navigation, draft labels, dialogs and local presentation changes only. **Every price, curve, car measurement and timer is illustrative**, not a simulation result. The preview does not play audio, execute jobs/transactions or reproduce Unity input.
 

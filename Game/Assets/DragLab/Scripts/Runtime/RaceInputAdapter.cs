@@ -22,11 +22,12 @@ namespace DragLab.Runtime
         {
             contacts.Clear(); launch = up = down = pause = false; keyboardGas = keyboardClutch = keyboardBrake = 0; blockPointers = true;
         }
-        public void Poll()
+        public void Poll(bool pointerControlsVisible = true)
         {
             SubmitKeyboard(Input.GetKey(KeyCode.W), Input.GetKey(KeyCode.Space), Input.GetKey(KeyCode.LeftShift), Input.GetKey(KeyCode.S),
                 Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter),
                 Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.UpArrow), Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.DownArrow));
+            if (!pointerControlsVisible) { contacts.Clear(); blockPointers = true; return; }
             // Ignore the click that entered/resumed a race, without suppressing held keyboard pedals.
             if (blockPointers)
             {
