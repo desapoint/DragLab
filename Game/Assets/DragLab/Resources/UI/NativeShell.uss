@@ -247,3 +247,11 @@
 .owned-query-range .setting-number { width: 90px; margin-left: 0; margin-right: 10px; }
 
 .car-summary > .car-identity { white-space: normal; }
+
+.garage-pages { flex-direction: row; width: 310px; flex-shrink: 0; margin-bottom: 12px; }
+.garage-pages .choice-button { font-size: 18px; }
+.dealer-price { font-size: 22px; color: var(--racing-text); margin: 0 0 0 12px; padding: 0; -unity-text-align: middle-right; flex-shrink: 0; }
+.dealer-specs { margin-top: 20px; max-width: 720px; }
+.dealer-specs .car-fact { min-height: 34px; border-bottom-width: 1px; border-bottom-color: rgba(138,148,157,0.13); }
+.dealer-specs .car-fact-label { min-width: 180px; }
+.dealer-includes { margin-top: 16px; white-space: normal; color: var(--racing-muted); font-size: 18px; }

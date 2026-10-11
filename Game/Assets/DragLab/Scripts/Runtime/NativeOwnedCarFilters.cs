@@ -11,8 +11,11 @@ namespace DragLab.Runtime
 {
     internal sealed partial class NativeMenuShell
     {
-        readonly OwnedCarQuery ownedQuery=new OwnedCarQuery();
+        readonly OwnedCarQuery savedOwnedQuery=new OwnedCarQuery(),dealerQuery=new OwnedCarQuery();
+        OwnedCarQuery ownedQuery=>dealerMode?dealerQuery:savedOwnedQuery;
         readonly Dictionary<string,OwnedCarEntry> ownedEntries=new Dictionary<string,OwnedCarEntry>();
+        Dictionary<string,OwnedCarEntry> BrowsingEntries=>dealerMode?dealerEntries:ownedEntries;
+        string QuerySortName(OwnedCarSort sort)=>dealerMode&&sort==OwnedCarSort.OwnedOrder?"Model order":SortName(sort);
         VisualElement ownedToolbar;
         TextField ownedSearch;
         Label ownedCount,ownedNoMatches;
@@ -56,24 +59,26 @@ namespace DragLab.Runtime
         {
             if(ownedGrid==null)return;
             OwnedQueryRefreshCount++;
-            var entries=ownedEntries.Values.ToList();entries.Sort(ownedQuery.Compare);
+            var entries=BrowsingEntries.Values.ToList();entries.Sort(ownedQuery.Compare);
+            var grid=dealerMode?dealerGrid:ownedGrid;var noMatches=dealerMode?dealerNoMatches:ownedNoMatches;
+            if(grid==null||noMatches==null)return;
             int visible=0;
             foreach(var entry in entries) {
-                var card=ownedGrid.Q("ownedCar:"+entry.Id);if(card==null)continue;
+                var card=grid.Q((dealerMode?"dealerCar:":"ownedCar:")+entry.Id);if(card==null)continue;
                 bool matches=ownedQuery.Matches(entry);card.EnableInClassList("hidden",!matches);if(matches)visible++;
                 card.BringToFront();
             }
-            ownedNoMatches.EnableInClassList("hidden",visible>0||ownedEntries.Count==0);
-            ownedCount.text=visible+" / "+ownedEntries.Count;
-            bool waiting=ownedEntries.Values.Any(e=>e.RatingPending);
+            noMatches.EnableInClassList("hidden",visible>0||BrowsingEntries.Count==0);
+            ownedCount.text=visible+" / "+BrowsingEntries.Count;
+            bool waiting=BrowsingEntries.Values.Any(e=>e.RatingPending);
             bool ratingFiltered=ownedQuery.Rank!="All"||ownedQuery.Minimum[0].HasValue||ownedQuery.Maximum[0].HasValue;
-            ownedNoMatches.text=waiting&&ratingFiltered?"Calculating ratings…":"No matching cars";
-            ownedCount.tooltip=waiting?"Class and PP estimates are calculating on copied builds. Unknown values remain unavailable; filtered results update when ready.":"Matching / owned cars";
+            noMatches.text=waiting&&ratingFiltered?"Calculating ratings…":"No matching cars";
+            ownedCount.tooltip=waiting?"Class and PP estimates are calculating on copied builds. Unknown values remain unavailable; filtered results update when ready.":dealerMode?"Matching / dealership models":"Matching / owned cars";
             ownedFilter.Q<Label>().text="Filters"+(ownedQuery.FilterCount>0?" · "+ownedQuery.FilterCount:"");ownedFilter.EnableInClassList("selected",ownedQuery.FilterCount>0);
-            ownedSort.Q<Label>().text=SortName(ownedQuery.Sort)+(ownedQuery.Sort==OwnedCarSort.OwnedOrder&&!ownedQuery.Descending?"":ownedQuery.Descending?" ↓":" ↑");
+            ownedSort.Q<Label>().text=QuerySortName(ownedQuery.Sort)+(ownedQuery.Sort==OwnedCarSort.OwnedOrder&&!ownedQuery.Descending?"":ownedQuery.Descending?" ↓":" ↑");
             ownedSort.EnableInClassList("selected",ownedQuery.Sort!=OwnedCarSort.OwnedOrder||ownedQuery.Descending);
             ownedClear.SetEnabled(!string.IsNullOrWhiteSpace(ownedQuery.Search)||ownedQuery.FilterCount>0||ownedQuery.Sort!=OwnedCarSort.OwnedOrder||ownedQuery.Descending);
-            if(resetScroll)ownedScroll.scrollOffset=Vector2.zero;
+            if(resetScroll)(dealerMode?dealerScroll:ownedScroll).scrollOffset=Vector2.zero;
         }
         void QueryChoices(VisualElement parent,string id,string label,string[] options,Func<string> get,Action<string> set,int perRow=5)
         {
@@ -97,7 +102,7 @@ namespace DragLab.Runtime
             OpenDialog("Sort cars",null,new[] {new DialogAction("Cancel",CloseDialog),new DialogAction("Apply",()=>{
                 ownedQuery.Sort=draft.Sort;ownedQuery.Descending=draft.Descending;CloseDialog();ApplyOwnedQuery(true);
             },true)},populate:content=> {
-                QueryChoices(content,"ownedSortBy","Sort by",Enum.GetValues(typeof(OwnedCarSort)).Cast<OwnedCarSort>().Select(SortName).ToArray(),()=>SortName(draft.Sort),value=>draft.Sort=Enum.GetValues(typeof(OwnedCarSort)).Cast<OwnedCarSort>().First(s=>SortName(s)==value),3);
+                QueryChoices(content,"ownedSortBy","Sort by",Enum.GetValues(typeof(OwnedCarSort)).Cast<OwnedCarSort>().Select(QuerySortName).ToArray(),()=>QuerySortName(draft.Sort),value=>draft.Sort=Enum.GetValues(typeof(OwnedCarSort)).Cast<OwnedCarSort>().First(s=>QuerySortName(s)==value),3);
                 QueryChoices(content,"ownedSortDirection","Order",new[] {"Ascending","Descending"},()=>draft.Descending?"Descending":"Ascending",value=>draft.Descending=value=="Descending");
             });
         }
@@ -117,7 +122,7 @@ namespace DragLab.Runtime
                         error.text="Enter valid ranges: minimum ≤ maximum.";root.Q<Button>("dialogApply").SetEnabled(false);return false;
                     }
                 }
-                error.text="";preview.text=ownedEntries.Values.Count(draft.Matches)+" / "+ownedEntries.Count+" cars";root.Q<Button>("dialogApply").SetEnabled(true);return true;
+                error.text="";preview.text=BrowsingEntries.Values.Count(draft.Matches)+" / "+BrowsingEntries.Count+" cars";root.Q<Button>("dialogApply").SetEnabled(true);return true;
             }
             OpenDialog("Filter cars",null,new[] {
                 new DialogAction("Reset",()=>{CloseDialog();OpenOwnedCarFilters(new OwnedCarQuery {Search=ownedQuery.Search,Sort=ownedQuery.Sort,Descending=ownedQuery.Descending});}),
@@ -131,7 +136,7 @@ namespace DragLab.Runtime
                 QueryChoices(content,"ownedFilterType","Type",new[] {"All","Hatchback","Coupe","Sedan","Pickup","SUV","Wagon","Van","Roadster","Unspecified"},()=>draft.Type,value=>{draft.Type=value;Validate();});
                 QueryChoices(content,"ownedFilterGearbox","Transmission",new[] {"All","Manual","Sequential","DCT","Automatic","CVT"},()=>draft.Gearbox,value=>{draft.Gearbox=value;Validate();},3);
                 QueryChoices(content,"ownedFilterInduction","Induction",new[] {"All","NA","Turbo","Supercharged","Twincharged"},()=>draft.Induction,value=>{draft.Induction=value;Validate();});
-                QueryChoices(content,"ownedFilterStatus","Availability",new[] {"All","Ready","Needs service","Reserved","Unavailable","No fuel"},()=>draft.Status,value=>{draft.Status=value;Validate();},3);
+                QueryChoices(content,"ownedFilterStatus","Availability",dealerMode?new[] {"All","Available","Locked","Unaffordable","Unavailable"}:new[] {"All","Ready","Needs service","Reserved","Unavailable","No fuel"},()=>draft.Status,value=>{draft.Status=value;Validate();},3);
                 string[] names={"PP","HP","Torque · "+DisplayUnits.TorqueLabel(SharedUnitSettings.Current.torque),"Weight · kg","Condition · %"};
                 for(int i=0;i<5;i++) {
                     var row=new VisualElement();row.AddToClassList("owned-query-range");content.Add(row);var title=new Label(names[i]);title.AddToClassList("owned-query-range-title");row.Add(title);

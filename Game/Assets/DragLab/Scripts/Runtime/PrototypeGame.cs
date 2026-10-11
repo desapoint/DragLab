@@ -189,7 +189,7 @@ namespace DragLab.Runtime
             if (profile == null) return;
             if (pendingAction != null) { var action = pendingAction; pendingAction = null; action(); }
             if (saveDelay > 0 && GUIUtility.hotControl == 0 && !Input.GetMouseButton(0) && !Input.GetMouseButton(1)) { ProfileStore.Save(profile); saveDelay = 0; }
-            if (screen == "Garage" && !(nativeMenu != null && (nativeMenu.ModalOpen || nativeMenu.OwnedDetailsOpen)) && Input.GetKeyDown(KeyCode.P)) StartPractice();
+            if (screen == "Garage" && !(nativeMenu != null && (nativeMenu.ModalOpen || nativeMenu.OwnedDetailsOpen || nativeMenu.DealerPageOpen || nativeMenu.EditingText)) && Input.GetKeyDown(KeyCode.P)) StartPractice();
             if (screen != "Race" || race == null) return;
             if ((race.phase == RacePhase.Finished || paused) && Input.GetKeyDown(KeyCode.G)) { ReturnToGarage(); return; }
             if (race.phase == RacePhase.Finished && Input.GetKeyDown(KeyCode.R)) { StartRace(activeEvent, practiceRun); return; }

@@ -63,15 +63,19 @@ namespace DragLab.Runtime
             }
             var toggle=root.Q<Toggle>("heatManagement");scroll.ScrollTo(toggle);yield return new WaitForSecondsRealtime(.2f);
             var decoration=toggle.Q<SwitchSurface>();float initial=decoration.Progress;bool initialValue=toggle.value;
-            void Tap() {var b=toggle.worldBound;input.MouseButtonAt((int)b.center.x,(int)b.center.y,true);input.MouseButtonAt((int)b.center.x,(int)b.center.y,false);}
-            Tap();yield return new WaitForSecondsRealtime(.055f);
+            // Keep down/up on separate frames so the native input poll observes both edges.
+            IEnumerator Tap() {var b=toggle.worldBound;input.MouseButtonAt((int)b.center.x,(int)b.center.y,true);yield return null;input.MouseButtonAt((int)b.center.x,(int)b.center.y,false);yield return null;}
+            yield return Tap();yield return new WaitForSecondsRealtime(.055f);
             Check(toggle.value!=initialValue && decoration.Progress>0 && decoration.Progress<1 && decoration.Animating,"Real toggle click animates thumb and track through intermediate state");
-            float halfway=decoration.Progress;Tap();yield return new WaitForSecondsRealtime(.02f);
-            Check(toggle.value==initialValue && Mathf.Abs(decoration.Progress-halfway)<.3f,"Rapid toggle reversal continues from the current thumb position");
+            // Measure at the actual input event; OS delivery/frame latency makes the pre-click sample stale.
+            float reversedFrom=float.NaN;
+            EventCallback<ChangeEvent<bool>> reversed=evt=>{if(evt.newValue==initialValue)reversedFrom=decoration.Progress;};
+            toggle.RegisterValueChangedCallback(reversed);yield return Tap();yield return new WaitForSecondsRealtime(.02f);toggle.UnregisterValueChangedCallback(reversed);
+            Check(toggle.value==initialValue && reversedFrom>0 && reversedFrom<1 && (initialValue?decoration.Progress>=reversedFrom:decoration.Progress<=reversedFrom),"Rapid toggle reverses from its intermediate position and moves toward the original endpoint");
             yield return new WaitForSecondsRealtime(.25f);Check(decoration.Progress==initial && !decoration.Animating,"Toggle settles exactly at original state after reversal");
-            Tap();yield return new WaitForSecondsRealtime(.06f);yield return Capture("polished-switch-transition");
+            yield return Tap();yield return new WaitForSecondsRealtime(.06f);yield return Capture("polished-switch-transition");
             Check(decoration.Progress==(initialValue?0:1),"Toggle reaches opposite endpoint without continual animation");
-            yield return Capture("polished-switch-opposite");Tap();yield return new WaitForSecondsRealtime(.25f);
+            yield return Capture("polished-switch-opposite");yield return Tap();yield return new WaitForSecondsRealtime(.25f);
             input.MoveMouseAt(400,650);yield return new WaitForSecondsRealtime(.2f);int paints=decoration.PaintCount;
             yield return new WaitForSecondsRealtime(.3f);Check(decoration.PaintCount==paints,"Settled switch geometry stays cached");
             yield return Click(input,"revertSettings");scroll.scrollOffset=Vector2.zero;

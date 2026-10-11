@@ -1,4 +1,4 @@
-param([string]$FixtureName = 'native-menu-shell')
+param([string]$FixtureName = 'native-menu-shell', [switch]$DealershipOnly)
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $taskFixture = [IO.Path]::GetFullPath((Join-Path $taskRoot ('reports/player-fixtures/' + $FixtureName)))
@@ -6,6 +6,7 @@ if (-not $taskFixture.StartsWith((Join-Path $taskRoot 'reports/player-fixtures/'
 New-Item -ItemType Directory -Path $taskFixture -Force | Out-Null
 $taskPlayer = Join-Path $taskRoot 'Game/Builds/Windows/DragLab.exe'
 $taskArgs = @('-screen-fullscreen','0','-screen-width','1280','-screen-height','720','-logFile',('"' + (Join-Path $taskFixture 'player.log') + '"'),'--draglab-verify',('"' + $taskFixture + '"'),'--draglab-native-menu-verify')
+if ($DealershipOnly) { $taskArgs += '--draglab-dealership-only-verify' }
 # Real native events require the interactive player window, not a hidden helper.
 $taskProcess = Start-Process -FilePath $taskPlayer -ArgumentList $taskArgs -WindowStyle Normal -PassThru
 $taskProcess.WaitForExit()

@@ -27,7 +27,7 @@ namespace DragLab.Runtime
         long ownedDetailRevision;
         VisualElement ownedDetails, ownedDetailContent;
         Button ownedUse;
-        internal bool OwnedDetailsOpen => ownedDetailId != null && game.ScreenName == "Garage" && Visible;
+        internal bool OwnedDetailsOpen => !dealerMode && ownedDetailId != null && game.ScreenName == "Garage" && Visible;
         readonly List<RacingSurface> ownedSurfaces = new List<RacingSurface>();
         internal int OwnedGridBuildCount { get; private set; }
         internal void InvalidateOwnedGrid() => ownedRevision = -1;
@@ -60,9 +60,9 @@ namespace DragLab.Runtime
         }
         void RefreshOwnedCars(string route)
         {
-            ownedToolbar.EnableInClassList("hidden",route!="Garage"||ownedDetailId!=null);
-            ownedScroll.EnableInClassList("hidden", route != "Garage" || ownedDetailId != null);
-            ownedDetails.EnableInClassList("hidden", route != "Garage" || ownedDetailId == null);
+            ownedToolbar.EnableInClassList("hidden",route!="Garage"||(dealerMode?dealerDetailId!=null:ownedDetailId!=null));
+            ownedScroll.EnableInClassList("hidden", route != "Garage" || dealerMode || ownedDetailId != null);
+            ownedDetails.EnableInClassList("hidden", route != "Garage" || dealerMode || ownedDetailId == null);
             if (route != "Garage") return;
             var profile = game.Profile;
             TorqueUnit units = SharedUnitSettings.Current.torque;
@@ -158,7 +158,7 @@ namespace DragLab.Runtime
         }
         void OpenOwnedCar(string id)
         {
-            if (ModalOpen || game.ScreenName != "Garage") return;
+            if (ModalOpen || dealerMode || game.ScreenName != "Garage") return;
             if (!game.Profile.cars.Exists(car => car.instanceId == id)) return;
             ownedReturnScroll = ownedScroll.scrollOffset;
             ownedDetailId = id;
@@ -206,7 +206,7 @@ namespace DragLab.Runtime
             var profile = game.Profile;
             var car = profile.cars.Find(item => item.instanceId == ownedDetailId);
             var card = ownedGrid.Q("ownedCar:"+ownedDetailId);
-            if (car == null || card == null) { ownedDetailId = null; ClearOwnedDetailContent(); ownedDetails.AddToClassList("hidden"); if(game.ScreenName=="Garage")ownedScroll.RemoveFromClassList("hidden"); return; }
+            if (car == null || card == null) { ownedDetailId = null; ClearOwnedDetailContent(); ownedDetails.AddToClassList("hidden"); if(game.ScreenName=="Garage"&&!dealerMode)ownedScroll.RemoveFromClassList("hidden"); return; }
             ownedDetailRevision = profile.revision;
             root.Q<Label>("ownedDetailTitle").text = VehicleCollection.DisplayName(profile.catalog,car);
             root.Q<Label>("carSelectionError").text = "";

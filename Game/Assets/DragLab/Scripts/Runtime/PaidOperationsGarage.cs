@@ -30,6 +30,15 @@ namespace DragLab.Runtime
             var request = JsonUtility.FromJson<PaymentRequest>(quote.RequestJson);
             return CommitParts(quote.Revision, p => PaidEconomy.Pay(p, p.catalog, Costs, PricingPolicy, quote, DateTime.UtcNow.Ticks, request.kind == PaymentKind.Car ? AuthoredOffer(request.offer.model) : null));
         }
+        internal bool BuyNativeCar(PaymentQuote quote)
+        {
+            try {
+                if(screen!="Garage"||pendingAction!=null)throw new InvalidOperationException("Garage is no longer available.");
+                if(quote==null||JsonUtility.FromJson<PaymentRequest>(quote.RequestJson)?.kind!=PaymentKind.Car)throw new InvalidOperationException("Request a dealership quote first.");
+                if(!PayNow(quote))return false;
+                ShowGarageCar();notice="Car purchased and selected.";return true;
+            }catch(Exception error){notice=error.Message;return false;}
+        }
         internal bool CommitNativeMaintenance(PaymentRequest request, long revision, string snapshot, int shownCost, string replacedPartId = null)
         {
             try {

@@ -84,6 +84,7 @@ namespace DragLab.Runtime
                 Hint(tab, categories[i]);
             }
             InitializeOwnedCars();
+            InitializeDealership();
             InitializeSettings();
             ExcludeTabTraversal();
         }
@@ -110,7 +111,7 @@ namespace DragLab.Runtime
         void LateUpdate()
         {
             Refresh();
-            if (Visible && Input.GetKeyDown(KeyCode.Escape)) { if (ModalOpen) CloseDialog(); else if (OwnedDetailsOpen) BackToOwnedCars(); }
+            if (Visible && Input.GetKeyDown(KeyCode.Escape)) { if (ModalOpen) CloseDialog(); else if (DealerDetailsOpen) BackToDealer(); else if (OwnedDetailsOpen) BackToOwnedCars(); }
             foreach (var surface in surfaces) surface.Tick(Visible);
             foreach (var surface in switchSurfaces) surface.Tick(Visible);
         }
@@ -131,6 +132,7 @@ namespace DragLab.Runtime
             SetText("fuel", car == null ? "— L" : car.fuel.litres.ToString("F1") + " / " + profile.catalog.Spec(car.vehicleId).fuel.capacityLitres.ToString("F0") + " L");
             SetText("progression", "REP " + profile.reputation);
             RefreshOwnedCars(route);
+            RefreshDealership(route);
             if (renderedRoute == route) return;
             renderedRoute = route;
             bool settings = route == "Settings";
@@ -143,7 +145,7 @@ namespace DragLab.Runtime
             for (int i = 0; i < categoryIds.Length; i++) root.Q<Button>("tab" + categoryIds[i]).EnableInClassList("selected", i == category);
         }
         void SetText(string id, string value) { var label = root.Q<Label>(id); if (label.text != value) label.text = value; }
-        void OnDestroy() { ownedCancellation?.Cancel(); ownedCancellation?.Dispose(); if (panel != null) Destroy(panel); }
+        void OnDestroy() { ownedCancellation?.Cancel(); ownedCancellation?.Dispose(); dealerCancellation?.Cancel(); dealerCancellation?.Dispose(); if (panel != null) Destroy(panel); }
     }
 
     // Filled, procedurally tessellated shapes stay sharp at native display resolution.

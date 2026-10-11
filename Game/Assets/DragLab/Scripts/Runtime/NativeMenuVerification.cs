@@ -81,6 +81,10 @@ namespace DragLab.Runtime
             using (var input = new WindowsKeyboardProbe())
             {
                 Check(ProfileStore.FilePath == Path.Combine(folder, "profile-v1.json"), "Profile isolated from player assets");
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-dealership-only-verify")>=0) {
+                    Check(File.Exists(ProfileStore.FilePath)||ProfileStore.TrySave(game.Profile),"Focused dealership probe has a durable isolated baseline");
+                    yield return Key(input,0x77);yield return DealershipChecks(input);yield break;
+                }
                 MoneyFormattingChecks();
                 var baseline = JsonUtility.ToJson(game.Profile);
                 string disk = File.Exists(ProfileStore.FilePath) ? File.ReadAllText(ProfileStore.FilePath) : null;
@@ -239,6 +243,7 @@ namespace DragLab.Runtime
                 yield return Capture("settings-restored");
                 yield return SettingsChecks(input);
                 yield return OwnedCarChecks(input);
+                yield return DealershipChecks(input);
             }
 #else
             throw new InvalidOperationException("Native probe requires a Windows development player.");
