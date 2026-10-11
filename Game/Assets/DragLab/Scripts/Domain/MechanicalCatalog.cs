@@ -27,7 +27,7 @@ namespace DragLab.Domain.Mechanics
         public BlowOffType valve = BlowOffType.Factory;
         public int turboUnits, superchargerUnits;
         public FuelDeliveryHardware fuelDelivery;
-        public bool supportsInjection;
+        public bool supportsInjection, supportsDiesel;
         public int injectionControlMetadataVersion;
         public int controllerCylinderCapacity;
         public float injectionIdleControl = .95f, injectionMixtureVariation = .04f;
@@ -90,6 +90,7 @@ namespace DragLab.Domain.Mechanics
         {
             // The two injected four-cylinder engines share a fuel/control connector, not their piston geometry.
             if (category == PartCategory.Controls) return "controls-v1";
+            if (category == PartCategory.FuelSystem && spec.combustion.fuelKind==FuelKind.Diesel) return CombustionHardware.Family(spec)+"/diesel-commonrail";
             if (category == PartCategory.FuelSystem && (spec.fuelSystemConverted ? spec.originalFueling : spec.engineBehavior.fueling) == FuelSystem.Injection) return spec.sound.cylinders == 4 ? "efi-gasoline-v1" : "efi-gasoline-" + spec.sound.cylinders + "-v1";
             if (category == PartCategory.Ignition && spec.sound.cylinders == 4) return "coil-four-v1";
             return (EngineSlot(category)?CombustionHardware.Family(spec):CombustionHardware.Chassis(spec)) + "/" + category;
@@ -112,7 +113,7 @@ namespace DragLab.Domain.Mechanics
                         rpmLimit = spec.redlineRpm * (level == 0 ? 1.08f : 1.2f), torqueLimitNm = peak * (level == 0 ? 1.55f : 2.6f) };
                     if (category == PartCategory.Pistons || category == PartCategory.Rods || category == PartCategory.Crankshaft)
                     {
-                        bool forged = level > 0 || spec.id == "sport-coupe";
+                        bool forged = level > 0 || spec.id == "sport-coupe" || spec.factoryForgedInternals;
                         p.quality = forged ? "Forged" : "Cast / standard"; p.name += " / " + p.quality;
                         if (forged) p.torqueLimitNm = peak * 2.6f;
                         if (level == 0 && forged) p.price = 420;
@@ -158,6 +159,7 @@ namespace DragLab.Domain.Mechanics
             CatalogVariants.Add(this, spec);
             FuelingHardware.AddConversions(this, spec);
             ServiceHardware.Add(this,spec);ClutchHardware.Add(this,spec);CombustionVariants.Add(this,spec);
+            foreach(var p in parts.Where(p=>p.id.StartsWith(spec.id+"/"))){p.fuelKind=spec.combustion.fuelKind;if(p.category==PartCategory.Controls&&CombustionHardware.Diesel(spec)){p.supportsDiesel=true;p.supportsInjection=false;p.controllerCylinderCapacity=spec.sound.cylinders;p.name="common-rail fuel controller";}if(p.category==PartCategory.FuelSystem&&CombustionHardware.Diesel(spec))p.name=p.stage==0?"Touring common-rail injector and high-pressure pump set":"high-flow common-rail injector and pump set";}
         }
         public Dictionary<PartCategory, string> Recipe(string model, Tune legacy = null)
         {
@@ -185,6 +187,8 @@ namespace DragLab.Domain.Mechanics
             if(part==null || !Slots(spec).Contains(part.category) || part.fitment!=Interface(spec,part.category) || part.boreMm!=0 && Math.Abs(part.boreMm-Bore(spec))>=.01)return false;
             if(EngineSlot(part.category)&&part.category!=PartCategory.Controls&&part.fuelKind!=spec.combustion.fuelKind)return false;
             if(part.category!=PartCategory.Controls)return true;
+            if(CombustionHardware.Diesel(spec))return part.supportsDiesel&&part.controllerCylinderCapacity>=spec.sound.cylinders;
+            if(part.supportsDiesel)return false;
             if(part.supportsInjection && part.controllerCylinderCapacity<spec.sound.cylinders)return false;
             return spec.engineBehavior.fueling!=FuelSystem.Injection || FuelingHardware.ControllerSupports(part,spec);
         }
@@ -244,6 +248,7 @@ namespace DragLab.Domain.Mechanics
 
             if (result.spec.engineBehavior.fueling == FuelSystem.Carburetor) { result.spec.engineBehavior.cut = result.spec.engineBehavior.launchCut = CutMethod.Ignition; t.limiterCut = t.twoStepCut = CutMethod.Ignition; }
             else {
+                if(CombustionHardware.Diesel(result.spec)){result.spec.engineBehavior.cut=result.spec.engineBehavior.launchCut=CutMethod.Fuel;result.spec.engineBehavior.antiLag=result.spec.engineBehavior.launchPreload=false;t.limiterCut=t.twoStepCut=CutMethod.Fuel;}
                 string controllerId; var controller = installed.TryGetValue(PartCategory.Controls, out controllerId) ? Find(controllerId) : null;
                 if (controller != null && !FuelingHardware.ControllerSupports(controller, result.spec)) result.errors.Add("EFI requires injection-capable Controls compatible with this engine's cylinder count: install the fixed EFI controller or programmable engine controller.");
             }

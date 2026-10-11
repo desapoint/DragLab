@@ -13,6 +13,8 @@ namespace DragLab.Domain.Mechanics
         public static bool ControllerSupports(PartDefinition controller, VehicleSpec spec)
         {
             if(controller==null || controller.category!=PartCategory.Controls)return false;
+            if(CombustionHardware.Diesel(spec))return controller.supportsDiesel&&controller.controllerCylinderCapacity>=spec.sound.cylinders;
+            if(controller.supportsDiesel)return false;
             // Older replay definitions predate controller capability metadata. They supported
             // every factory injected engine; preserve that behavior for those captures only.
             if(controller.injectionControlMetadataVersion==0)return spec.engineBehavior.fueling==FuelSystem.Injection;

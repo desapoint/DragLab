@@ -14,3 +14,5 @@ Sources used for calibration boundaries: [DOE engine basics](https://www.energy.
 Technical progress and final balance evidence will be recorded per checkpoint. Existing 4D differences-only UI checkpoint remains delivered; this does not authorize another unrelated menu or later phase.
 
 Checkpoint 1 technically delivered: see [mechanical changes and checks](../reports/variety/01-MECHANICAL.md). User acceptance of the complete expansion remains pending; checkpoints 2–4 are still being implemented.
+
+Checkpoint 2 technically delivered: [trims and diesel evidence](../reports/variety/02-VEHICLES.md), 48 passing checks including all 13 healthy factory passes. Stock and career acceptance remain pending.

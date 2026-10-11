@@ -27,6 +27,7 @@ namespace DragLab.Domain
             s.extraEngineFrictionNm=Loss(car,PartCategory.Bearings)*(4+s.rpm*.0015);
             EngineElements.Prepare(car);
             CombustionHardware.Prepare(car);
+            if(CombustionHardware.Diesel(car.spec)){double heaters=Health(car,PartCategory.GlowPlugs);double compression=DragMath.Clamp((car.spec.combustion.compressionRatio-12)/5,0,1);s.dieselColdFactor=s.engineTemperature+(1-s.engineTemperature)*(.55+.35*heaters)*compression;}else s.dieselColdFactor=1;
             double oilFraction=s.fluids.oilLitres/f.oilMinimumLitres;
             double pickup=DragMath.Clamp(oilFraction,0,1);
             // Excess oil after fitting a smaller pan can aerate under crank windage.
@@ -64,6 +65,7 @@ namespace DragLab.Domain
                     bool waterPart=d.category==PartCategory.CoolantPump||d.category==PartCategory.CoolingCap||d.category==PartCategory.CoolingHoses;
                     c.temperatureC=waterPart?(car.mechanics.Part(PartCategory.Cooling)==null?20:car.mechanics.Part(PartCategory.Cooling).condition.temperatureC):s.fluids.oilTemperatureC;
                     rate+=Math.Pow(Math.Max(0,c.temperatureC/d.thermalLimitC-1),2)/d.overloadSeconds*car.driver.WearRate;
+                    if(d.category==PartCategory.GlowPlugs)rate=.00000008*(1-s.engineTemperature)*car.driver.WearRate;
                     rate*=3000000000/Math.Max(1,d.wearEnergyJ);
                     EngineElements.Wear(p,rate*dt);c.serviceWearRemainder+=rate*dt; if(c.serviceWearRemainder>=.000001){c.health=(float)Math.Max(0,c.health-c.serviceWearRemainder);c.serviceWearRemainder=0;} c.runningSeconds+=dt;
                     if(c.health<=0){c.failed=true;c.failureReason=s.lubricationFactor<.4?"Oil starvation damage":s.valveFloat>.05?"Valve float / valve contact":"Mechanical wear depleted";}

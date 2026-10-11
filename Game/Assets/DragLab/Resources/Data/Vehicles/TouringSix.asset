@@ -16,6 +16,24 @@ MonoBehaviour:
     id: touring-six
     displayName: Meridian GT 3.0
     artId: coupe
+    engineFamily: touring-six
+    chassisFamily: touring-six
+    trim: Standard
+    modelFamily: Meridian
+    factoryForgedInternals: 0
+    combustion:
+      fuelKind: 0
+      referenceCompression: 10.3
+      compressionRatio: 10.3
+      referenceCrownCc: 0
+      crownCc: 0
+      octaneRon: 95
+      cetane: 50
+      referenceValveClearanceMm: 1.8
+      valveReliefMm: 2.3
+      valveClearanceMm: 1.8
+      crown: 0
+      separateSparkPlugs: 0
     bodyType: 2
     dataProvenance: Fictional, modeled values; not manufacturer specifications.
     drive: 1
@@ -82,6 +100,7 @@ MonoBehaviour:
       camTimingDegrees: 0
       springSafeRpm: 8500
       profileDemandRpm: 7500
+      springMaxLiftMm: 9.2
       timingAdjustable: 0
     nitrousCompatibility:
       wetSystemCompatible: 1

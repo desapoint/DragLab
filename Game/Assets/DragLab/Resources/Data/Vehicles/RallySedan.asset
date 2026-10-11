@@ -16,6 +16,24 @@ MonoBehaviour:
     id: rally-sedan
     displayName: Tempest AWD 2.0T
     artId: coupe
+    engineFamily: rally-sedan
+    chassisFamily: rally-sedan
+    trim: Standard
+    modelFamily: Tempest
+    factoryForgedInternals: 0
+    combustion:
+      fuelKind: 0
+      referenceCompression: 10.3
+      compressionRatio: 10.3
+      referenceCrownCc: 0
+      crownCc: 0
+      octaneRon: 95
+      cetane: 50
+      referenceValveClearanceMm: 1.8
+      valveReliefMm: 2.3
+      valveClearanceMm: 1.8
+      crown: 0
+      separateSparkPlugs: 0
     bodyType: 3
     dataProvenance: Fictional, modeled values; not manufacturer specifications.
     drive: 2
@@ -82,6 +100,7 @@ MonoBehaviour:
       camTimingDegrees: 0
       springSafeRpm: 8500
       profileDemandRpm: 7500
+      springMaxLiftMm: 9.2
       timingAdjustable: 0
     nitrousCompatibility:
       wetSystemCompatible: 1

@@ -16,11 +16,31 @@ MonoBehaviour:
     id: utility-pickup
     displayName: Timber Utility 4.2
     artId: pickup
+    engineFamily: utility-pickup
+    chassisFamily: utility-pickup
+    trim: Standard
+    modelFamily: Timber
+    factoryForgedInternals: 0
+    combustion:
+      fuelKind: 0
+      referenceCompression: 10.3
+      compressionRatio: 10.3
+      referenceCrownCc: 0
+      crownCc: 0
+      octaneRon: 95
+      cetane: 50
+      referenceValveClearanceMm: 1.8
+      valveReliefMm: 2.3
+      valveClearanceMm: 1.8
+      crown: 0
+      separateSparkPlugs: 0
     bodyType: 4
     dataProvenance: Fictional, modeled values; not manufacturer specifications.
     drive: 2
     awd:
       mode: 3
+      torqueBiasRatio: 3
+      centerPreloadNm: 35
       frontBias: 0.5
       minimumFront: 0.15
       maximumFront: 0.85
@@ -33,6 +53,62 @@ MonoBehaviour:
       freeShaftInertiaKgM2: 0.03
       freeShaftDragNm: 0.25
       freeShaftViscousDrag: 0.001
+    hasInstalledParts: 0
+    fuelSystemConverted: 0
+    originalFueling: 0
+    partMassDeltaKg: 0
+    fuelPowerCapacityHp: 0
+    ignitionPowerCapacityHp: 0
+    frontDifferential:
+      kind: 0
+      torqueBiasRatio: 1
+      preloadNm: 0
+    rearDifferential:
+      kind: 0
+      torqueBiasRatio: 1
+      preloadNm: 0
+    ignitionTopology: 0
+    valvesPerCylinder: 0
+    interferenceEngine: 1
+    fuel:
+      version: 1
+      capacityLitres: 50
+      densityKgPerLitre: 0.745
+      positionFromFrontAxleM: 1.8
+      heightM: 0.4
+      idleLitresPerHour: 0.8
+      bsfcKgPerKwh: 0.3
+      provenance: Fictional calibration.
+    fluids:
+      oilCapacityLitres: 5
+      oilMinimumLitres: 2.5
+      coolantCapacityLitres: 7.5
+      recoveryCapacityLitres: 0.75
+      referenceOilLitres: 5
+      referenceCoolantLitres: 7.5
+      capPressureBar: 1.1
+      pumpFlowScale: 1
+      oilPumpScale: 1
+      oilCoolerWattsPerC: 0
+      oilPanBaffling: 0.3
+    valvetrain:
+      liftMm: 8
+      durationAt050Degrees: 200
+      overlapDegrees: 10
+      lobeSeparationDegrees: 114
+      camTorqueBias: 0
+      camTimingDegrees: 0
+      springSafeRpm: 8500
+      profileDemandRpm: 7500
+      springMaxLiftMm: 9.2
+      timingAdjustable: 0
+    nitrousCompatibility:
+      wetSystemCompatible: 1
+      drySystemRequiresInjection: 1
+      provenance: Future nitrous support; no fitted system.
+    partLongitudinalMomentKgM: 0
+    partVerticalMomentKgM: 0
+    hasStructuralBody: 1
     massKg: 1920
     wheelRadiusM: 0.35
     wheelbaseM: 3.15
@@ -49,6 +125,7 @@ MonoBehaviour:
     engineInertiaKgM2: 0
     clutchCapacityNm: 0
     brakeDecelerationMps2: 0
+    frontBrakeBias: 0.65
     limiterDropRpm: 0
     sound:
       version: 1
@@ -65,9 +142,13 @@ MonoBehaviour:
       turboGain: 0.24
       superchargerGain: 0.28
       blowOffGain: 0.55
+      idleBoostDb: 6
       exhaustBassGain: 1
       exhaustBrightness: 1
       rawPulseGain: 1
+      exhaustPopGain: 1
+      exhaustPopSharpness: 1
+      exhaustPopDecay: 1
       exhaustSystem:
         version: 1
         parts:
@@ -107,6 +188,7 @@ MonoBehaviour:
       volumetricEfficiency: 0.9
       maxBoostBar: 2
     displacementLitres: 4.2
+    engineBoreMm: 0
     engineBehavior:
       version: 1
       fueling: 1
@@ -138,6 +220,9 @@ MonoBehaviour:
     transmission:
       version: 1
       type: 2
+      manualDownshiftInterlock: 0
+      manualLayout: 0
+      sequentialShiftScale: 0.45
       dctShiftSeconds: 0.085
       dctTorqueRetention: 0.65
       automaticShiftSeconds: 0.22
@@ -158,6 +243,7 @@ MonoBehaviour:
       massKg: 14
       outerRadiusM: 0.17
       innerRadiusM: 0.025
+    fittedParts: []
     gears:
     - 3.8
     - 2.25

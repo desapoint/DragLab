@@ -4,7 +4,7 @@ namespace DragLab.Domain {
  public static class FuelDynamics {
   public static double Flow(CarSimulation car) {
    var s=car.state;var fuel=car.spec.fuel;if(s.engineFailed||s.stalled||!s.engineSupplyAvailable||s.fuelLitres<=0||s.rpm<car.spec.idleRpm*.4)return 0;
-   bool injection=car.engine.data.fueling==FuelSystem.Injection;
+   bool injection=car.engine.data.fueling!=FuelSystem.Carburetor;
    if(injection&&s.throttle<.01&&s.rpm>car.spec.idleRpm*1.6&&!s.antiLagActive)return 0;
    double fraction=s.activeCutMethod==CutMethod.Fuel?s.combustionFraction:1;
    double request=InductionDynamics.Torque(car.induction,s,s.rpm,s.throttle),kw=Math.Max(0,request*s.rpm/FlywheelDynamics.RpmPerRadian)/1000;

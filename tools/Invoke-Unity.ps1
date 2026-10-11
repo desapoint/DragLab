@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('VarietyMechanicalVerify','Prepare','InventoryCommerceVerify','CartVerify','MenuPreviewVerify','RacePresentationVerify','TireSoundBaseline','TireSoundVerify','CheckpointVerify','TireFeedbackDiagnose','TireFeedbackVerify','ThermalVerify','CareerExpandedVerify','BusinessVerify','BalanceVerify','EconomyIntegrationVerify','PaidVerify','ValuationVerify','AssemblyVerify','CollectionVerify','Verify','RecoveryVerify','IntegratedVerify','BenchVerify','AxleVerify','PartsEffectsVerify','DurabilityAudit','SliceTwoAudit','MassVerify','ContactVerify','DrivingContactVerify','LaunchVerify','AwdContactVerify','FuelVerify','FuelingConversionVerify','ServiceVerify','IndividualEngineVerify','TireVerify','TireFailureVerify','CareerVerify','SceneCheck','UnitsVisualVerify','ManualGearboxVerify','PartHardwareVerify','BuildWindows','BuildPlayerOnly','Open')]
+    [ValidateSet('VehicleVarietyVerify','VehicleVarietyPrepare','VarietyMechanicalVerify','Prepare','InventoryCommerceVerify','CartVerify','MenuPreviewVerify','RacePresentationVerify','TireSoundBaseline','TireSoundVerify','CheckpointVerify','TireFeedbackDiagnose','TireFeedbackVerify','ThermalVerify','CareerExpandedVerify','BusinessVerify','BalanceVerify','EconomyIntegrationVerify','PaidVerify','ValuationVerify','AssemblyVerify','CollectionVerify','Verify','RecoveryVerify','IntegratedVerify','BenchVerify','AxleVerify','PartsEffectsVerify','DurabilityAudit','SliceTwoAudit','MassVerify','ContactVerify','DrivingContactVerify','LaunchVerify','AwdContactVerify','FuelVerify','FuelingConversionVerify','ServiceVerify','IndividualEngineVerify','TireVerify','TireFailureVerify','CareerVerify','SceneCheck','UnitsVisualVerify','ManualGearboxVerify','PartHardwareVerify','BuildWindows','BuildPlayerOnly','Open')]
     [string]$Action = 'Prepare',
     [string]$EditorPath = 'C:\Program Files\Unity\Hub\Editor\6000.6.4f1\Editor\Unity.exe'
 )
@@ -25,6 +25,8 @@ $taskMethod = switch ($Action) {
     'TireFeedbackVerify' { 'DragLab.Editor.TireFeedbackVerification.VerifyEffects' }
     'TireFeedbackDiagnose' { 'DragLab.Editor.TireFeedbackVerification.Diagnose' }
     'VarietyMechanicalVerify' { 'DragLab.Editor.VarietyMechanicalVerification.RunStandalone' }
+    'VehicleVarietyPrepare' { 'DragLab.Editor.VehicleVarietySetup.Prepare' }
+    'VehicleVarietyVerify' { 'DragLab.Editor.VehicleVarietyVerification.RunStandalone' }
     'Prepare' { 'DragLab.Editor.ProjectSetup.Prepare' }
     'AssemblyVerify' { 'DragLab.Editor.AssemblySetupVerification.RunStandalone' }
     'PaidVerify' { 'DragLab.Editor.PaidOperationsVerification.RunStandalone' }

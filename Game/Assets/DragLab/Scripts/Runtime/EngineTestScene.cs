@@ -343,6 +343,8 @@ namespace DragLab.Runtime
                 GUILayout.Label("Calculated flywheel inertia: " + FlywheelDynamics.Inertia(config.vehicle, config.tune).ToString("F4") + " kg m² / total: " + config.vehicle.RotationalInertia(config.tune).ToString("F4"));
                 GUILayout.Label("Fueling / cam / warmup / limiter / launch control");
                 dirty |= fields.Draw(config.vehicle.engineBehavior, "behavior");
+                dirty |= fields.Draw(config.vehicle.combustion,"combustion","fuelKind","separateSparkPlugs");
+                config.vehicle.combustion.fuelKind=config.vehicle.engineBehavior.fueling==FuelSystem.Diesel?DragLab.Domain.Mechanics.FuelKind.Diesel:DragLab.Domain.Mechanics.FuelKind.Petrol;
                 GUILayout.Label("Upgrades / adjustable launch and limiter settings");
                 dirty |= fields.Draw(config.tune, "tune");
             }

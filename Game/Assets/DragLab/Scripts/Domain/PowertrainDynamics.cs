@@ -5,7 +5,7 @@ namespace DragLab.Domain
     public enum EquipmentSetting { Factory, Off, On }
     public enum LimiterStyle { Factory, Hard, Soft, None }
     public enum CutMethod { Factory, Fuel, Ignition }
-    public enum FuelSystem { Injection, Carburetor }
+    public enum FuelSystem { Injection, Carburetor, Diesel }
     public enum TransmissionType { Manual, DCT, Automatic, CVT }
     public enum ManualGearboxLayout { HPattern, Sequential }
     public enum TransmissionUpgrade { Factory, Manual, DCT, Automatic, CVT }
@@ -117,13 +117,14 @@ namespace DragLab.Domain
             bool adjustableTwoStep = tune.partsResolved ? tune.partTwoStepAdjustable : upgraded;
             twoStep = Resolve(tune.twoStep, data.twoStep, adjustableTwoStep);
             preload = Resolve(tune.launchPreload, data.launchPreload, upgraded);
-            antiLag = Resolve(tune.antiLag, data.antiLag, upgraded);
+            antiLag = data.fueling!=FuelSystem.Diesel && Resolve(tune.antiLag, data.antiLag, upgraded);
             limiter = adjustableLimiter && tune.limiter != LimiterStyle.Factory ? tune.limiter : data.limiter;
             cut = adjustableLimiter && tune.limiterCut != CutMethod.Factory ? tune.limiterCut : data.cut;
             launchLimiter = adjustableTwoStep && tune.twoStepStyle != LimiterStyle.Factory ? tune.twoStepStyle : data.launchLimiter;
             launchCut = adjustableTwoStep && tune.twoStepCut != CutMethod.Factory ? tune.twoStepCut : data.launchCut;
             // Modeled carburetors cannot meter a high-frequency injector fuel cut.
             if (data.fueling == FuelSystem.Carburetor) cut = launchCut = CutMethod.Ignition;
+            else if(data.fueling==FuelSystem.Diesel){cut=launchCut=CutMethod.Fuel;preload=false;}
             else { if (cut == CutMethod.Factory) cut = CutMethod.Fuel; if (launchCut == CutMethod.Factory) launchCut = CutMethod.Fuel; }
             launchRpm = tune.partsResolved && !adjustableTwoStep ? Math.Min(3500, spec.redlineRpm - 200) : tune.launchRpm;
             limitRpm = adjustableLimiter && tune.revLimitRpm > 0 ? tune.revLimitRpm : spec.redlineRpm;
@@ -153,7 +154,9 @@ namespace DragLab.Domain
             s.previousGas = gas;
             s.fuelHesitation *= Math.Exp(-dt / d.hesitationSeconds); s.intakeGulp *= Math.Exp(-dt / .3);
             double roughPulse = Math.Sin(s.engineTime * 17) * .65 + Math.Sin(s.engineTime * 29) * .35;
+            if(d.fueling==FuelSystem.Diesel)s.idleRoughness=(1-s.engineTemperature)*(1-s.dieselColdFactor)*.35;
             s.fuelingTorqueFactor = DragMath.Clamp(1 - s.fuelHesitation * .7 - s.idleRoughness * .18 * (1 + roughPulse), .2, 1);
+            if(d.fueling==FuelSystem.Diesel)s.fuelingTorqueFactor*=s.dieselColdFactor;
             s.launchControlActive = staging && profile.twoStep && gas > .5 && !s.stalled && !s.engineFailed;
             s.activeLimitRpm = s.launchControlActive ? Math.Min(profile.launchRpm, profile.limitRpm) : profile.limitRpm;
             var style = s.launchControlActive ? profile.launchLimiter : profile.limiter;

@@ -196,6 +196,7 @@ namespace DragLab.Domain
             pop.Configure(sampleRate);
             if (frame.popId != lastPop) { lastPop = frame.popId; pop.Trigger(frame.popStrength, frame.twoStep); }
             bool carbVoice = profile.fueling == FuelSystem.Carburetor;
+            bool dieselVoice=profile.fueling==FuelSystem.Diesel;
             bool largeVoice = profile.cylinders >= 8;
             // Exhaust character persists at high RPM; true firing rate remains unchanged.
             double depth = carbVoice ? .42 : largeVoice ? .55 : .75;
@@ -256,6 +257,7 @@ namespace DragLab.Domain
                 pulse += carb * (.025 + profile.camOverlap * .04) * Math.Sin(phase) * (1 - frame.fuelHesitation * .7);
                 if(frame.cylinderContribution!=null&&frame.cylinderContribution.Length==profile.cylinders){int firingIndex=Math.Min(profile.cylinders-1,(int)(crankPhase*profile.cylinders));double contribution=frame.cylinderContribution[Mechanics.EngineElements.FiringOrder(profile.cylinders)[firingIndex]];cylinderPulseGain+=(contribution-cylinderPulseGain)*(1-Math.Exp(-1.0/(sampleRate*.001)));pulse*=cylinderPulseGain;}
                 double noise = Noise(); // Engine air noise is confined to brief valve events; tire DSP is separate.
+                if(dieselVoice)pulse += (.08+.11*frame.load)*Math.Sin(phase*4)*Math.Pow(.5+.5*Math.Cos(phase),6)+.22*Math.Sin(Tau*crankPhase);
                 low += voiceFilter * (pulse - low);
                 double value = low * gain * (1 + profile.exhaust * .16);
                 gulpPhase = Advance(gulpPhase, 90 + frame.throttle * 75, sampleRate);
@@ -266,7 +268,7 @@ namespace DragLab.Domain
                 clatterPhase = Advance(clatterPhase, Math.Min(1900 + rpm * .04, sampleRate * .2), sampleRate);
                 outsideExhaust += Math.Sin(Tau * clatterPhase) * Math.Pow(Math.Max(0, Math.Cos(Tau * crankPhase * 2)), 12) * profile.mechanicalClatter * .004 * frame.volume;
                 if (frame.overrun && carb > 0) value += Math.Sin(phase) * Math.Pow(.5 + .5 * Math.Sin(Tau * crankPhase), 2) * .06 * profile.mixtureVariation * frame.volume * combustionColorGain;
-                value += pop.Sample() * .3 * frame.volume;
+                value += pop.Sample() * (dieselVoice?0:.3) * frame.volume;
                 value = exhaustFilter.Process(value) + outsideExhaust;
                 if (profile.turboCount > 0)
                 {
@@ -285,7 +287,7 @@ namespace DragLab.Domain
                     double scFraction = frame.superchargerBoost > 0 ? frame.superchargerBoost / Math.Max(.1, profile.boostBar) : profile.turboCount == 0 ? frame.boost / Math.Max(.1, profile.boostBar) : 0;
                     value += whine * .15 * profile.chargerGain * (.06 + .6 * scFraction + .3 * frame.chargerLoad) * frame.volume;
                 }
-                if (releaseAge < 1.2 && profile.turboCount > 0)
+                if (!dieselVoice && releaseAge < 1.2 && profile.turboCount > 0)
                 {
                     double envelope = Math.Min(1, releaseAge / .006) * Math.Exp(-releaseAge * (profile.valve == BlowOffType.Recirculated ? 9 : 6));
                     double releaseHz = Math.Max(600, (profile.valve == BlowOffType.Chirp ? 4500 : 2200) - releaseAge * 2600);

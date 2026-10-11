@@ -30,6 +30,7 @@ namespace DragLab.Domain
         public string displayName = "Juniper 1.6";
         public string artId = "hatch";
         public string engineFamily, chassisFamily, trim, modelFamily;
+        public bool factoryForgedInternals;
         public Mechanics.CombustionSpec combustion=new Mechanics.CombustionSpec();
         public CarBodyType bodyType;
         public string dataProvenance = "Fictional, modeled values; not manufacturer specifications.";
@@ -470,7 +471,7 @@ namespace DragLab.Domain
         public double[] cylinderContribution=new double[0], cylinderFuelDelivery=new double[0];
         public double cylinderCombustionFactor=1, cylinderFuelFactor=1, individualValveFloat, crankCycles;
         public double clutchViscousDragNm, clutchOilFactor=1;
-        public double knockSeverity, valveBind, valveContact;
+        public double knockSeverity, valveBind, valveContact, dieselColdFactor=1;
         public CarState Copy() { var copy = (CarState)MemberwiseClone(); copy.cylinderContribution=cylinderContribution==null?new double[0]:(double[])cylinderContribution.Clone();copy.cylinderFuelDelivery=cylinderFuelDelivery==null?new double[0]:(double[])cylinderFuelDelivery.Clone();copy.fluids=fluids==null?new Mechanics.FluidState():fluids.Copy(); copy.contact = contact == null ? new WheelContactState() : contact.Copy(); copy.splits = splits == null ? new Dictionary<double, double>() : new Dictionary<double, double>(splits); return copy; }
     }
 

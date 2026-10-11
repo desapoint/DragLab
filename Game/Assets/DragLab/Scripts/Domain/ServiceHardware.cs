@@ -15,6 +15,7 @@ namespace DragLab.Domain.Mechanics
                 bool upgraded=n>0;var p=new PartDefinition{id=catalog.Id(spec.id,c,n),category=c,stage=n,fitment=MechanicalCatalog.Interface(spec,c),quality=upgraded?"Aftermarket":"OEM",price=upgraded?700:200,massKg=1,positionFromFrontAxleM=spec.wheelbaseM*.15f,heightM=.4f,thermalLimitC=170,heatCapacityJPerC=10000,coolingWattsPerC=15,wearEnergyJ=3000000000f,overloadSeconds=60};
                 p.fuelKind=spec.combustion.fuelKind;
                 p.followerInterface=spec.engineBehavior.fueling==FuelSystem.Carburetor?"flat-tappet":"roller";
+                if(CombustionHardware.Diesel(spec)&&c!=PartCategory.GlowPlugs)p.wearEnergyJ*=1.25f;
                 string label="";
                 switch(c){
                     case PartCategory.SparkPlugs:label=upgraded?"iridium spark-plug set":"copper spark-plug set";p.massKg=.25f;p.price=upgraded?120:35;p.wearEnergyJ=upgraded?9000000000f:3000000000f;p.description="Wearing spark plugs; replace a complete matched set or one cylinder through individual service. Wear/fouling weakens combustion and wastes fuel; coils remain separate.";break;
@@ -38,6 +39,7 @@ namespace DragLab.Domain.Mechanics
                     case PartCategory.CoolingHoses:label=upgraded?"reinforced cooling hose/seal set":"factory cooling hose/seal set";p.massKg=1.5f;p.description="Contains coolant. Wear/seal damage can leak under pressure or while parked. Resealing fixes a serviceable leak; topping up only replaces lost coolant.";break;
                     case PartCategory.OilCooler:label=upgraded?"competition oil cooler":"street oil cooler";p.coolingWattsPerC=upgraded?100:50;p.massKg=upgraded?3:2;p.description="Optional heat rejection from engine oil to ambient air. Improves hot-oil control, adds weight; it cannot repair low oil, leaks or existing engine damage.";break;
                 }
+                if(CombustionHardware.Diesel(spec)&&c==PartCategory.Camshaft){p.camLiftMm=8+n;p.camOverlapDegrees=5+n*10;p.camDurationDegrees=190+n*14;}
                 if(c==PartCategory.ValveSprings)p.springMaxLiftMm=upgraded?14.5f:9.2f;
                 if(upgraded){p.wearEnergyJ*=1.5f;p.thermalLimitC+=15;}
                 p.name=spec.displayName+" / "+label;catalog.parts.Add(p);

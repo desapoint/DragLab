@@ -1,0 +1,268 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c62104b2da42a0f498eaf636d9198541, type: 3}
+  m_Name: timber-diesel-tow
+  m_EditorClassIdentifier: Assembly-CSharp::DragLab.Data.VehicleDefinition
+  spec:
+    id: timber-diesel-tow
+    displayName: Timber 2.8D Tow
+    artId: pickup
+    engineFamily: irontrail-28d
+    chassisFamily: utility-pickup
+    trim: Tow
+    modelFamily: Timber
+    factoryForgedInternals: 1
+    combustion:
+      fuelKind: 1
+      referenceCompression: 17.5
+      compressionRatio: 17.5
+      referenceCrownCc: 12
+      crownCc: 12
+      octaneRon: 95
+      cetane: 50
+      referenceValveClearanceMm: 1.8
+      valveReliefMm: 2.3
+      valveClearanceMm: 1.8
+      crown: 3
+      separateSparkPlugs: 0
+    bodyType: 4
+    dataProvenance: Fictional, modeled values; not manufacturer specifications.
+    drive: 2
+    awd:
+      mode: 3
+      torqueBiasRatio: 3
+      centerPreloadNm: 35
+      frontBias: 0.5
+      minimumFront: 0.15
+      maximumFront: 0.85
+      primaryFront: 0
+      isolateFailedAxle: 1
+      maximumSecondary: 0.5
+      responseSeconds: 0.2
+      slipThreshold: 0.05
+      preload: 0.1
+      freeShaftInertiaKgM2: 0.03
+      freeShaftDragNm: 0.25
+      freeShaftViscousDrag: 0.001
+    hasInstalledParts: 0
+    fuelSystemConverted: 0
+    originalFueling: 0
+    partMassDeltaKg: 0
+    fuelPowerCapacityHp: 0
+    ignitionPowerCapacityHp: 0
+    frontDifferential:
+      kind: 0
+      torqueBiasRatio: 1
+      preloadNm: 0
+    rearDifferential:
+      kind: 0
+      torqueBiasRatio: 1
+      preloadNm: 0
+    ignitionTopology: 0
+    valvesPerCylinder: 4
+    interferenceEngine: 1
+    fuel:
+      version: 1
+      capacityLitres: 65
+      densityKgPerLitre: 0.835
+      positionFromFrontAxleM: 1.8
+      heightM: 0.4
+      idleLitresPerHour: 0.65
+      bsfcKgPerKwh: 0.235
+      provenance: Fictional calibration.
+    fluids:
+      oilCapacityLitres: 5
+      oilMinimumLitres: 2.5
+      coolantCapacityLitres: 7.5
+      recoveryCapacityLitres: 0.75
+      referenceOilLitres: 5
+      referenceCoolantLitres: 7.5
+      capPressureBar: 1.1
+      pumpFlowScale: 1
+      oilPumpScale: 1
+      oilCoolerWattsPerC: 0
+      oilPanBaffling: 0.3
+    valvetrain:
+      liftMm: 8
+      durationAt050Degrees: 200
+      overlapDegrees: 10
+      lobeSeparationDegrees: 114
+      camTorqueBias: 0
+      camTimingDegrees: 0
+      springSafeRpm: 8500
+      profileDemandRpm: 7500
+      springMaxLiftMm: 9.2
+      timingAdjustable: 0
+    nitrousCompatibility:
+      wetSystemCompatible: 1
+      drySystemRequiresInjection: 1
+      provenance: Future nitrous support; no fitted system.
+    partLongitudinalMomentKgM: 0
+    partVerticalMomentKgM: 0
+    hasStructuralBody: 1
+    massKg: 2130
+    wheelRadiusM: 0.35
+    wheelbaseM: 3.15
+    centerOfGravityM: 0.67
+    frontWeightFraction: 0.56
+    dragAreaM2: 1.02
+    rollingResistance: 0.013
+    drivetrainEfficiency: 0.84
+    tireFriction: 1
+    idleRpm: 750
+    redlineRpm: 4500
+    finalDrive: 4.1
+    shiftSeconds: 0.32
+    engineInertiaKgM2: 0
+    clutchCapacityNm: 0
+    brakeDecelerationMps2: 0
+    frontBrakeBias: 0.65
+    limiterDropRpm: 0
+    sound:
+      version: 1
+      cylinders: 4
+      displacementLitres: 2.8
+      layout: 0
+      induction: 0
+      blowOff: 1
+      exhaust: 0
+      boostBar: 0.6
+      spoolSeconds: 0.5
+      superchargerRatio: 18
+      engineGain: 0.8
+      turboGain: 0.24
+      superchargerGain: 0.28
+      blowOffGain: 0.55
+      idleBoostDb: 6
+      exhaustBassGain: 1
+      exhaustBrightness: 1
+      rawPulseGain: 1
+      exhaustPopGain: 1
+      exhaustPopSharpness: 1
+      exhaustPopDecay: 1
+      exhaustSystem:
+        version: 1
+        parts:
+        - kind: 1
+          amount: 1
+          attenuationDb: 5
+          lowPassHz: 2200
+          pulseSoftening: 0.45
+          resonanceHz: 180
+          resonanceGainDb: 0
+          resonanceQ: 1
+    induction:
+      version: 2
+      factory: 1
+      factoryValve: 1
+      torqueCurveIncludesFactoryInduction: 1
+      ambientPressureBar: 1.013
+      ambientTemperatureK: 298
+      turboBoostBar: 1.15
+      turboThresholdRpm: 1800
+      turboFullBoostRpm: 3600
+      turboSpoolSeconds: 0.65
+      turboCoastSeconds: 0.55
+      turboUnitFlowKgS: 0.44099995
+      turboEfficiency: 0.72
+      turboBackpressureLoss: 0.025
+      twinTurboSpoolFactor: 0.72
+      superchargerBoostBar: 0.5
+      superchargerFullBoostRpm: 1600
+      superchargerUnitFlowKgS: 0.44099995
+      superchargerEfficiency: 0.68
+      superchargerFrictionNm: 5
+      superchargerResponseSeconds: 0.025
+      manifoldFillSeconds: 0.075
+      valveReleaseSeconds: 0.045
+      intercoolerEffectiveness: 0.72
+      volumetricEfficiency: 0.9
+      maxBoostBar: 2
+    displacementLitres: 2.8
+    engineBoreMm: 94
+    engineBehavior:
+      version: 1
+      fueling: 2
+      limiter: 2
+      cut: 1
+      launchCut: 1
+      twoStep: 0
+      launchPreload: 0
+      antiLag: 0
+      launchLimiter: 1
+      launchDropRpm: 350
+      softBandRpm: 350
+      launchCutFrequencyHz: 36
+      launchRetard: 0.6
+      antiLagStrength: 0.55
+      antiLagMaxSeconds: 2
+      exhaustCoolSeconds: 12
+      antiLagWearPerSecond: 0.002
+      safeRpmMultiplier: 1.08
+      overrevFailureSeconds: 1.6
+      camOverlap: 0.02
+      idleControl: 0.2
+      mixtureVariation: 0.2
+      acceleratorPump: 0.8
+      hesitationSeconds: 0.22
+      warmupSeconds: 50
+      coldRoughness: 0.35
+      mechanicalClatter: 0.12
+    transmission:
+      version: 1
+      type: 2
+      manualDownshiftInterlock: 0
+      manualLayout: 0
+      sequentialShiftScale: 0.45
+      dctShiftSeconds: 0.085
+      dctTorqueRetention: 0.65
+      automaticShiftSeconds: 0.22
+      automaticTorqueRetention: 0.35
+      converterStallRpm: 1900
+      converterMultiplication: 1.9
+      converterLockSpeedMps: 16
+      cvtMinRatio: 0.65
+      cvtMaxRatio: 3.8
+      cvtRatePerSecond: 3
+      cvtTargetRpm: 3500
+      cvtTorqueCapacityNm: 350
+    wheels:
+      assemblyMassKg: 18
+      inertiaFactor: 0.65
+    flywheel:
+      version: 1
+      massKg: 14
+      outerRadiusM: 0.17
+      innerRadiusM: 0.025
+    fittedParts: []
+    gears:
+    - 3.8
+    - 2.25
+    - 1.5
+    - 1
+    - 0.78
+    torque:
+    - rpm: 750
+      torqueNm: 160
+    - rpm: 1500
+      torqueNm: 440
+    - rpm: 2200
+      torqueNm: 480
+    - rpm: 3000
+      torqueNm: 460
+    - rpm: 3800
+      torqueNm: 330
+    - rpm: 4500
+      torqueNm: 230
+  defaultPaint: {r: 0.74, g: 0.57, b: 0.51, a: 1}
+  purchasePrice: 8900
+  reputationRequired: 4

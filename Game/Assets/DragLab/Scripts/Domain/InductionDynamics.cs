@@ -91,7 +91,7 @@ namespace DragLab.Domain
             gas = DragMath.Clamp(gas, 0, 1); load = DragMath.Clamp(load, 0, 1);
             var d = profile.data;
             double priorBoost = state.turboBoostBar;
-            bool released = (state.inductionLastThrottle - gas > .25 || shifting && !state.inductionWasShifting) && priorBoost > .1 && profile.turboCount > 0;
+            bool released = profile.vehicle.engineBehavior.fueling!=FuelSystem.Diesel && (state.inductionLastThrottle - gas > .25 || shifting && !state.inductionWasShifting) && priorBoost > .1 && profile.turboCount > 0;
             if (released)
             {
                 state.boostReleaseCount++; state.boostReleaseStrength = DragMath.Clamp(priorBoost / Math.Max(.1, d.turboBoostBar * profile.boostSetting), 0, 1);
@@ -183,7 +183,7 @@ namespace DragLab.Domain
             double density = ratio * d.ambientTemperatureK / temperature;
             double baseFlow = profile.BaseAirflow(rpm); airflow = baseFlow * density;
             double flowCap = double.MaxValue;
-            if (profile.turboCount > 0 && turbo > .001) flowCap = d.turboUnitFlowKgS * profile.size * profile.turboCount;
+            if (profile.vehicle.engineBehavior.fueling!=FuelSystem.Diesel && profile.turboCount > 0 && turbo > .001) flowCap = d.turboUnitFlowKgS * profile.size * profile.turboCount;
             if (profile.superchargerCount > 0 && sc > .001) flowCap = Math.Min(flowCap, d.superchargerUnitFlowKgS * profile.pulley * profile.superchargerCount);
             // An undersized compressor cannot increase charge mass beyond its capacity; it never suppresses the base engine below NA here.
             density = Math.Min(density, Math.Max(1, flowCap / Math.Max(.0001, baseFlow))); airflow = baseFlow * density;

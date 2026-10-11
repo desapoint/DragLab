@@ -1,0 +1,49 @@
+PASS 13 unique authored vehicles/trims
+PASS city-three stock hardware resolves
+PASS city-three full-wear factory quarter mile survives
+PASS juniper-club stock hardware resolves
+PASS juniper-club full-wear factory quarter mile survives
+PASS juniper-economy stock hardware resolves
+PASS juniper-economy full-wear factory quarter mile survives
+PASS kestrel-track stock hardware resolves
+PASS kestrel-track full-wear factory quarter mile survives
+PASS rally-sedan stock hardware resolves
+PASS rally-sedan full-wear factory quarter mile survives
+PASS sport-coupe stock hardware resolves
+PASS sport-coupe full-wear factory quarter mile survives
+PASS starter-hatch stock hardware resolves
+PASS starter-hatch full-wear factory quarter mile survives
+PASS super-v8 stock hardware resolves
+PASS super-v8 full-wear factory quarter mile survives
+PASS timber-diesel stock hardware resolves
+PASS timber-diesel full-wear factory quarter mile survives
+PASS timber-diesel diesel heaters and injectors replace spark equipment
+PASS timber-diesel compression ignition prevents gasoline exhaust-retard controls
+PASS timber-diesel tune cannot fabricate spark hardware
+PASS timber-diesel failed glow heaters worsen cold combustion only
+PASS timber-diesel warm diesel does not need spark/heater firing
+PASS timber-diesel diesel fuel mass and metering
+PASS timber-diesel diesel lift has no throttle-plate blow-off event
+PASS timber-diesel finite distinct diesel sound
+PASS timber-diesel petrol hardware not interchangeable with diesel
+PASS timber-diesel-tow stock hardware resolves
+PASS timber-diesel-tow full-wear factory quarter mile survives
+PASS timber-diesel-tow diesel heaters and injectors replace spark equipment
+PASS timber-diesel-tow compression ignition prevents gasoline exhaust-retard controls
+PASS timber-diesel-tow tune cannot fabricate spark hardware
+PASS timber-diesel-tow failed glow heaters worsen cold combustion only
+PASS timber-diesel-tow warm diesel does not need spark/heater firing
+PASS timber-diesel-tow diesel fuel mass and metering
+PASS timber-diesel-tow diesel lift has no throttle-plate blow-off event
+PASS timber-diesel-tow finite distinct diesel sound
+PASS timber-diesel-tow petrol hardware not interchangeable with diesel
+PASS touring-six stock hardware resolves
+PASS touring-six full-wear factory quarter mile survives
+PASS utility-pickup stock hardware resolves
+PASS utility-pickup full-wear factory quarter mile survives
+PASS v8-muscle stock hardware resolves
+PASS v8-muscle full-wear factory quarter mile survives
+PASS same-engine hatch trims share actual piston family
+PASS different bore/family economy internals excluded
+PASS Track trim retains complete factory recipe
+TOTAL 48

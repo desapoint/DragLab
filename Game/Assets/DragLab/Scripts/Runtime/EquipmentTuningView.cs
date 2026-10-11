@@ -83,6 +83,7 @@ namespace DragLab.Runtime
         }
         static bool Cut(string name, ref CutMethod value, FuelSystem fuel)
         {
+            if(fuel==FuelSystem.Diesel){Label(name+": fuel cut (compression ignition has no spark to cut)");return false;}
             if (fuel == FuelSystem.Carburetor) { Label(name + ": ignition cut (carb cannot electronically stop fuel flow)"); return false; }
             Label(name); var next = (CutMethod)GUILayout.SelectionGrid((int)value, new[] { "Module default", "Fuel cut", "Ignition cut" }, 3);
             bool changed = next != value; if (changed) value = next; return changed;

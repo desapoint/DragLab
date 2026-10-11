@@ -1,0 +1,7 @@
+# Trims and diesel checkpoint — 2026-10-11
+
+Roster expands from eight to thirteen: Juniper 1.4 Economy and 1.6 Club, Kestrel 2.0T Track, Timber 2.8D Work and Tow. Trims retain explicit engine/chassis families and bore metadata. Club shares compatible 1.6 internals; Economy has a distinct bore/family. Track has lighter mass, tires, DCT and forged OEM internals. Diesel trims share an authored common-rail family with appropriate gearing, low redline, fuel density/consumption and piston bowls. Existing vehicle identities/art remain.
+
+Compression ignition removes spark plugs/coils, uses injector/ECU capacity and optional glow heaters. Failed heaters impair cold operation without disabling a warm engine; heater wear follows cold usage. Diesel tuning always uses fuel cut and cannot grant spark-retard exhaust anti-lag. Loaded converter operation still develops boost through normal exhaust energy. Lift has no gasoline throttle-plate blow-off event. Distinct harmonic diesel pulse/rattle voice uses existing exhaust filtering and shared volumes. The engine bench loads all trims and exposes combustion geometry.
+
+Unity VehicleVarietyPrepare and VehicleVarietyVerify passed: **48 checks**, including all thirteen full-wear factory quarter miles, diesel cold/warm failures, hostile control overrides, fuel properties, finite distinct sound and physical trim compatibility. A test found missing explicit bore data on cloned trims; fixed and rerun. No claim of manufacturer data or full combustion modeling. Used stock/new-game and career calibration remain pending.
