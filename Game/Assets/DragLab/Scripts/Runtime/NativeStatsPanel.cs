@@ -10,9 +10,13 @@ namespace DragLab.Runtime
     {
         internal NativeStatsSnapshot Current { get; }
         internal NativeStatsSnapshot Proposed { get; }
+        readonly VisualElement helpBubble;
+        readonly Label helpText;
+        Rect helpAnchor;
         internal Action<string> GroupOpened;
         internal void SetDrivingInspection(CarInspection inspection,UnitPreferences units,Action<NativeStatDefinition> info,CarInspection proposed=null)
         {
+            HideHelp();
             Current.DrivingInspection=inspection;
             if(Proposed!=null&&proposed!=null)Proposed.DrivingInspection=proposed;
             var body=this.Q("statsBody:Performance");
@@ -27,6 +31,34 @@ namespace DragLab.Runtime
             AddToClassList("native-stats");
             if(Proposed!=null)AddToClassList("native-stats-comparison");
             foreach(var group in groups) AddGroup(this,group,units,collapsed,info,decorate);
+            helpBubble=new VisualElement {name="statHelpBubble",pickingMode=PickingMode.Ignore};helpBubble.AddToClassList("stat-help-bubble");helpBubble.AddToClassList("hidden");
+            helpText=new Label {name="statHelpText",enableRichText=false,pickingMode=PickingMode.Ignore};helpBubble.Add(helpText);Add(helpBubble);decorate(helpBubble,RacingSurface.Kind.Panel);
+            helpBubble.RegisterCallback<GeometryChangedEvent>(_=>PositionHelp());
+            RegisterCallback<GeometryChangedEvent>(_=>HideHelp());
+            RegisterCallback<WheelEvent>(_=>HideHelp());
+        }
+        void HideHelp()=>helpBubble?.AddToClassList("hidden");
+        void PositionHelp()
+        {
+            if(helpBubble.ClassListContains("hidden"))return;
+            var viewport=this.GetFirstAncestorOfType<ScrollView>()?.contentViewport.worldBound??worldBound;
+            float width=float.IsNaN(helpBubble.resolvedStyle.width)?360:helpBubble.resolvedStyle.width;
+            float height=float.IsNaN(helpBubble.resolvedStyle.height)?0:helpBubble.resolvedStyle.height;
+            float left=Mathf.Max(worldBound.xMin,viewport.xMin),right=Mathf.Min(worldBound.xMax,viewport.xMax);
+            float top=helpAnchor.yMax+6;
+            if(top+height>viewport.yMax)top=helpAnchor.yMin-height-6;
+            var point=this.WorldToLocal(new Vector2(Mathf.Clamp(helpAnchor.xMin,left,Mathf.Max(left,right-width)),
+                Mathf.Clamp(top,viewport.yMin,Mathf.Max(viewport.yMin,viewport.yMax-height))));
+            helpBubble.style.left=point.x;helpBubble.style.top=point.y;
+        }
+        void HelpHint(VisualElement target,string text)
+        {
+            target.tooltip=text;
+            target.RegisterCallback<PointerEnterEvent>(_=>{
+                helpText.text=text;helpAnchor=target.worldBound;
+                helpBubble.RemoveFromClassList("hidden");helpBubble.BringToFront();PositionHelp();
+            });
+            target.RegisterCallback<PointerLeaveEvent>(_=>HideHelp());target.RegisterCallback<DetachFromPanelEvent>(_=>HideHelp());
         }
         void AddGroup(VisualElement parent,NativeStatGroup group,UnitPreferences units,IDictionary<string,bool> collapsed,
             Action<NativeStatDefinition> info,Action<VisualElement,RacingSurface.Kind> decorate)
@@ -50,7 +82,9 @@ namespace DragLab.Runtime
             var line=new VisualElement();line.AddToClassList("stat-line");row.Add(line);
             var caption=new VisualElement();caption.AddToClassList("stat-caption");line.Add(caption);
             var label=new Label(definition.Label) {enableRichText=false};caption.Add(label);
-            var help=new Button(()=>info(definition)) {name="statInfo:"+definition.Id,text="i",tooltip=definition.Label,tabIndex=-1,focusable=false};help.AddToClassList("info-button");caption.Add(help);
+            string explanation=definition.InfoExplanation(Current,Proposed);
+            var help=new Button(()=>{HideHelp();info(definition);}) {name="statInfo:"+definition.Id,text="i",tooltip=definition.Label,tabIndex=-1,focusable=false};help.AddToClassList("info-button");caption.Add(help);
+            if(Proposed!=null)HelpHint(help,explanation);
             string current=definition.Value(Current,units),value=Proposed==null?current:current+" → "+definition.Value(Proposed,units);
             var number=new Label(value) {name="statValue:"+definition.Id,enableRichText=false,tooltip=value};number.AddToClassList("stat-value");line.Add(number);
             if(definition.Text!=null)row.AddToClassList("stat-text-row");
@@ -65,11 +99,13 @@ namespace DragLab.Runtime
             if(Proposed!=null) {
                 var change=new VisualElement();change.AddToClassList("stat-bar-change");change.AddToClassList("stat-"+effect.ToLowerInvariant());
                 change.style.left=Length.Percent((float)Math.Min(a,b)*100);change.style.width=Length.Percent((float)Math.Abs(b-a)*100);bar.Add(change);
+                if(effect=="Tradeoff")HelpHint(change,explanation);
             }
             var bounds=new VisualElement();bounds.AddToClassList("stat-range");row.Add(bounds);
             bounds.Add(new Label(definition.Convert(minimum,units).ToString("0.##")+" "+definition.UnitLabel(units)));
             if(Proposed!=null) {
-                var difference=new Label(definition.Convert(delta,units).ToString("+0.##;-0.##;0")+" "+definition.UnitLabel(units)+" · "+effect);difference.AddToClassList("stat-delta");difference.AddToClassList("stat-"+effect.ToLowerInvariant());bounds.Add(difference);
+                var difference=new Label(definition.Convert(delta,units).ToString("+0.##;-0.##;0")+" "+definition.UnitLabel(units)+" · "+effect) {name="statDelta:"+definition.Id};difference.AddToClassList("stat-delta");difference.AddToClassList("stat-"+effect.ToLowerInvariant());bounds.Add(difference);
+                if(effect=="Tradeoff")HelpHint(difference,explanation);
             }
             bounds.Add(new Label(definition.Convert(maximum,units).ToString("0.##")+" "+definition.UnitLabel(units)));
             return row;

@@ -1,5 +1,7 @@
 # Slice 2, Slice 3 and Slice 4 implementation phases
 
+**4D.10 comparison info refinement (2026-10-11):** one concise general explanation in the ⓘ dialog and matching orange Tradeoff hover hint; differences remain on the rows/bars. Windows build and focused native checks pass **113 / 0 runtime errors**, including visible-viewport placement and read-only state. The previous full 631/0 regression remains a historical baseline, not a rerun. Ready for user review; no later phase advanced. [Checks/review](../reports/phases/4d/19-COMPARISON-INFO.md).
+
 **Requested 4D.10 checkpoint (2026-10-11):** inline comparisons with the selected car are technically delivered for review on dealership and other owned-car details: paired summaries, shared dyno hover and every grouped stat. Windows build passes; focused native checks pass 107/0 and full native regression checks pass 631/0. Comparison is read-only. User acceptance remains separate and 4D is not complete. [Checks/review](../reports/phases/4d/18-CAR-COMPARISON.md).
 
 **Requested 4D.9 refinement (2026-10-11):** dealership Filters now includes independent cash-based Affordability choices, with draft Apply/Cancel/Reset. Windows build passes; focused native checks pass 66/0 and full native regression checks pass 590/0. Technical completion and user review remain separate; later Garage work is gated. [Checks/review](../reports/phases/4d/17-AFFORDABILITY-FILTER.md).

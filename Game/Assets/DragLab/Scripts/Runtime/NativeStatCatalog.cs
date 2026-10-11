@@ -41,6 +41,12 @@ namespace DragLab.Runtime
         internal Func<NativeStatsSnapshot,string> Text;
         internal Func<NativeStatsSnapshot,string> Detail;
         internal string Explanation(NativeStatsSnapshot snapshot)=>Detail==null?Help:Detail(snapshot);
+        internal string InfoExplanation(NativeStatsSnapshot current,NativeStatsSnapshot proposed=null)
+        {
+            if(proposed==null)return Explanation(current);
+            if(!Id.StartsWith("warning:",StringComparison.Ordinal))return Help;
+            return string.Join("\n\n",new[] {Explanation(current),Explanation(proposed)}.Where(text=>!string.IsNullOrWhiteSpace(text)).Distinct());
+        }
         internal double Convert(double value,UnitPreferences units)=>Unit=="Nm"?DisplayUnits.Torque(value,units.torque):Unit=="bar"?DisplayUnits.Pressure(value,units.pressure):Unit=="m/s"?DisplayUnits.Speed(value,units.speed):value;
         internal string UnitLabel(UnitPreferences units)=>Unit=="Nm"?DisplayUnits.TorqueLabel(units.torque):Unit=="bar"?DisplayUnits.PressureLabel(units.pressure):Unit=="m/s"?DisplayUnits.SpeedLabel(units.speed):Unit;
         internal string Value(NativeStatsSnapshot snapshot,UnitPreferences units)

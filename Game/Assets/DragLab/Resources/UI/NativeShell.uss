@@ -220,6 +220,8 @@
 .native-stats-comparison .stat-line { flex-wrap: wrap; }
 .native-stats-comparison .stat-value { max-width: 100%; flex-shrink: 1; white-space: normal; }
 .car-comparison-heading { margin: 0 0 12px 0; padding: 0; white-space: normal; color: var(--racing-muted); }
+.stat-help-bubble { position: absolute; width: 360px; max-width: 100%; padding: 12px; border-radius: 8px; }
+.stat-help-bubble Label { font-size: 17px; margin: 0; padding: 0; white-space: normal; }
 .car-details-top .car-fact-value { flex-shrink: 1; white-space: normal; }
 .stat-grid > .stat-group { width: 100%; flex-shrink: 0; margin-top: 8px; }
 .stat-bar { height: 5px; margin-top: 6px; border-radius: 3px; background-color: #293039; overflow: hidden; }

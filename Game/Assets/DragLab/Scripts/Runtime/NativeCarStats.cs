@@ -28,7 +28,7 @@ namespace DragLab.Runtime
             button.SetEnabled(inspection!=null);
             if(inspection==null)return;
             var units=SharedUnitSettings.Current;
-            void Info(NativeStatDefinition definition)=>OpenDialog(definition.Label,(panel.Proposed==null?definition.Explanation(panel.Current):"Selected\n"+definition.Explanation(panel.Current)+"\n\nViewed\n"+definition.Explanation(panel.Proposed))+(definition.Number!=null?"\nBar endpoints are display ranges, not safe operating limits.":""),new[] {new DialogAction("Close",CloseDialog)});
+            void Info(NativeStatDefinition definition)=>OpenDialog(definition.Label,definition.InfoExplanation(panel.Current,panel.Proposed)+(panel.Proposed==null&&definition.Number!=null?"\nBar endpoints are display ranges, not safe operating limits.":""),new[] {new DialogAction("Close",CloseDialog)});
             panel=new NativeStatsPanel(comparedTo??inspection,units,NativeStatCatalog.Groups(comparedTo??inspection,comparedTo==null?null:inspection),collapsed,Info,decorate,comparedTo==null?null:inspection) {name=panelName};
             content.Add(panel);
             bool estimateStarted=false;
