@@ -206,6 +206,7 @@
 .car-stats-button { align-self: flex-start; margin-left: 0; margin-top: 10px; min-width: 100px; padding: 0 12px; }
 .car-stats-button .filled-icon { width: 16px; height: 16px; margin-right: 8px; }
 .native-stats { margin-top: 20px; flex-shrink: 0; }
+.stat-filter { align-self: flex-start; margin-left: 0; margin-bottom: 8px; }
 .stat-group { border-radius: 8px; overflow: hidden; padding: 8px 12px; }
 .stat-group-toggle { justify-content: flex-start; margin: 0; width: 100%; padding: 0 8px; }
 .stat-group-toggle .filled-icon { width: 14px; height: 14px; margin-right: 10px; }

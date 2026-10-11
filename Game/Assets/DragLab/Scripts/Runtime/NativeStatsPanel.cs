@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using DragLab.Domain;
@@ -13,6 +14,12 @@ namespace DragLab.Runtime
         readonly VisualElement helpBubble;
         readonly Label helpText;
         Rect helpAnchor;
+        readonly NativeStatGroup[] groups;
+        readonly Dictionary<NativeStatGroup,VisualElement> groupFrames=new Dictionary<NativeStatGroup,VisualElement>();
+        readonly Button differencesButton;
+        readonly Label noDifferences;
+        internal bool DifferencesOnly {get;private set;}
+        internal Action<bool> DifferencesOnlyChanged;
         internal Action<string> GroupOpened;
         internal void SetDrivingInspection(CarInspection inspection,UnitPreferences units,Action<NativeStatDefinition> info,CarInspection proposed=null)
         {
@@ -20,22 +27,48 @@ namespace DragLab.Runtime
             Current.DrivingInspection=inspection;
             if(Proposed!=null&&proposed!=null)Proposed.DrivingInspection=proposed;
             var body=this.Q("statsBody:Performance");
-            if(body==null||body.childCount==0)return;
-            body.Clear();
-            foreach(var definition in NativeStatCatalog.Performance(Current.Driving,Proposed?.Driving).Definitions)body.Add(StatRow(definition,units,info));
+            if(body!=null&&body.childCount>0) {
+                body.Clear();
+                foreach(var definition in NativeStatCatalog.Performance(Current.Driving,Proposed?.Driving).Definitions)body.Add(StatRow(definition,units,info));
+            }
+            ApplyDifferenceFilter();
         }
         internal NativeStatsPanel(CarInspection current,UnitPreferences units,IEnumerable<NativeStatGroup> groups,
-            IDictionary<string,bool> collapsed,Action<NativeStatDefinition> info,Action<VisualElement,RacingSurface.Kind> decorate,CarInspection proposed=null)
+            IDictionary<string,bool> collapsed,Action<NativeStatDefinition> info,Action<VisualElement,RacingSurface.Kind> decorate,CarInspection proposed=null,bool differencesOnly=false)
         {
             Current=new NativeStatsSnapshot(current);Proposed=proposed==null?null:new NativeStatsSnapshot(proposed);
+            this.groups=groups.ToArray();DifferencesOnly=proposed!=null&&differencesOnly;
             AddToClassList("native-stats");
-            if(Proposed!=null)AddToClassList("native-stats-comparison");
-            foreach(var group in groups) AddGroup(this,group,units,collapsed,info,decorate);
+            if(Proposed!=null) {
+                AddToClassList("native-stats-comparison");
+                differencesButton=new Button(()=>SetDifferencesOnly(!DifferencesOnly)) {name="statsDifferencesOnly",text="Differences only",tabIndex=-1,focusable=false};
+                differencesButton.AddToClassList("action-button");differencesButton.AddToClassList("stat-filter");Add(differencesButton);decorate(differencesButton,RacingSurface.Kind.SecondaryAction);
+                noDifferences=new Label("No differing stats") {name="statsNoDifferences",enableRichText=false};noDifferences.AddToClassList("hidden");Add(noDifferences);
+            }
+            foreach(var group in this.groups) AddGroup(this,group,units,collapsed,info,decorate);
             helpBubble=new VisualElement {name="statHelpBubble",pickingMode=PickingMode.Ignore};helpBubble.AddToClassList("stat-help-bubble");helpBubble.AddToClassList("hidden");
             helpText=new Label {name="statHelpText",enableRichText=false,pickingMode=PickingMode.Ignore};helpBubble.Add(helpText);Add(helpBubble);decorate(helpBubble,RacingSurface.Kind.Panel);
             helpBubble.RegisterCallback<GeometryChangedEvent>(_=>PositionHelp());
             RegisterCallback<GeometryChangedEvent>(_=>HideHelp());
             RegisterCallback<WheelEvent>(_=>HideHelp());
+            ApplyDifferenceFilter();
+        }
+        internal void SetDifferencesOnly(bool value)
+        {
+            DifferencesOnly=Proposed!=null&&value;HideHelp();ApplyDifferenceFilter();DifferencesOnlyChanged?.Invoke(DifferencesOnly);
+        }
+        bool GroupDiffers(NativeStatGroup group)
+            =>(group.Id=="Performance"?NativeStatCatalog.Performance(Current.Driving,Proposed.Driving).Definitions:group.Definitions).Any(d=>d.Differs(Current,Proposed))||group.Children.Any(GroupDiffers);
+        void ApplyDifferenceFilter()
+        {
+            if(Proposed==null)return;
+            differencesButton.EnableInClassList("selected",DifferencesOnly);
+            differencesButton.tooltip=DifferencesOnly?"Show all comparison stats":"Hide unchanged comparison stats";
+            foreach(var row in this.Query<VisualElement>(className:"stat-row").ToList())row.EnableInClassList("hidden",DifferencesOnly&&!((NativeStatDefinition)row.userData).Differs(Current,Proposed));
+            foreach(var pair in groupFrames)pair.Value.EnableInClassList("hidden",DifferencesOnly&&!GroupDiffers(pair.Key));
+            bool empty=DifferencesOnly&&!groups.Any(GroupDiffers);
+            noDifferences.text=Current.DrivingPending||Proposed.DrivingPending?"Comparing performance…":"No differing stats";
+            noDifferences.EnableInClassList("hidden",!empty);
         }
         void HideHelp()=>helpBubble?.AddToClassList("hidden");
         void PositionHelp()
@@ -64,7 +97,7 @@ namespace DragLab.Runtime
             Action<NativeStatDefinition> info,Action<VisualElement,RacingSurface.Kind> decorate)
         {
                 var container=new VisualElement {name="statsGroupFrame:"+group.Id};container.AddToClassList("stat-group");
-                parent.Add(container);
+                parent.Add(container);groupFrames[group]=container;
                 decorate(container,RacingSurface.Kind.Panel);
                 var body=new VisualElement {name="statsBody:"+group.Id};body.AddToClassList("stat-grid");
                 bool closed=collapsed.TryGetValue(group.Id,out var saved)?saved:group.InitiallyCollapsed,built=false;
@@ -74,11 +107,11 @@ namespace DragLab.Runtime
                     if(!closed&&!built){built=true;var rows=group.Id=="Performance"?NativeStatCatalog.Performance(Current.Driving,Proposed?.Driving).Definitions:group.Definitions;foreach(var definition in rows)body.Add(StatRow(definition,units,info));foreach(var child in group.Children)AddGroup(body,child,units,collapsed,info,decorate);}
                     body.EnableInClassList("hidden",closed);arrow.EnableInClassList("collapsed",closed);toggle.tooltip=closed?"Expand "+group.Title:"Collapse "+group.Title;
                 }
-                toggle.clicked+=()=>{closed=!closed;collapsed[group.Id]=closed;UpdateGroup();if(!closed)GroupOpened?.Invoke(group.Id);};UpdateGroup();container.Add(body);
+                toggle.clicked+=()=>{closed=!closed;collapsed[group.Id]=closed;UpdateGroup();ApplyDifferenceFilter();if(!closed)GroupOpened?.Invoke(group.Id);};UpdateGroup();container.Add(body);
         }
         VisualElement StatRow(NativeStatDefinition definition,UnitPreferences units,Action<NativeStatDefinition> info)
         {
-            var row=new VisualElement {name="stat:"+definition.Id};row.AddToClassList("stat-row");
+            var row=new VisualElement {name="stat:"+definition.Id,userData=definition};row.AddToClassList("stat-row");
             var line=new VisualElement();line.AddToClassList("stat-line");row.Add(line);
             var caption=new VisualElement();caption.AddToClassList("stat-caption");line.Add(caption);
             var label=new Label(definition.Label) {enableRichText=false};caption.Add(label);

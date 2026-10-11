@@ -10,6 +10,7 @@ namespace DragLab.Runtime
 {
     internal sealed partial class NativeMenuShell
     {
+        bool comparisonDifferencesOnly;
         readonly HashSet<string> ownedStatsShown=new HashSet<string>();
         readonly Dictionary<string,bool> ownedStatsCollapsed=new Dictionary<string,bool>();
         readonly List<RacingSurface> ownedStatsSurfaces=new List<RacingSurface>();
@@ -29,7 +30,7 @@ namespace DragLab.Runtime
             if(inspection==null)return;
             var units=SharedUnitSettings.Current;
             void Info(NativeStatDefinition definition)=>OpenDialog(definition.Label,definition.InfoExplanation(panel.Current,panel.Proposed)+(panel.Proposed==null&&definition.Number!=null?"\nBar endpoints are display ranges, not safe operating limits.":""),new[] {new DialogAction("Close",CloseDialog)});
-            panel=new NativeStatsPanel(comparedTo??inspection,units,NativeStatCatalog.Groups(comparedTo??inspection,comparedTo==null?null:inspection),collapsed,Info,decorate,comparedTo==null?null:inspection) {name=panelName};
+            panel=new NativeStatsPanel(comparedTo??inspection,units,NativeStatCatalog.Groups(comparedTo??inspection,comparedTo==null?null:inspection),collapsed,Info,decorate,comparedTo==null?null:inspection,comparisonDifferencesOnly) {name=panelName};
             content.Add(panel);
             bool estimateStarted=false;
             void StartEstimate()
@@ -52,6 +53,8 @@ namespace DragLab.Runtime
                 }
                 Complete();if(!completed||!nextCompleted)polling=panel.schedule.Execute(Complete).Every(100);
             }
+            panel.DifferencesOnlyChanged=value=>{comparisonDifferencesOnly=value;if(value)StartEstimate();};
+            if(panel.DifferencesOnly)StartEstimate();
             panel.GroupOpened=id=>{if(id=="Performance")StartEstimate();};
             if(!panel.Q("statsBody:Performance").ClassListContains("hidden"))StartEstimate();
             void UpdateVisibility(){bool visible=shown.Contains(id);panel.EnableInClassList("hidden",!visible);button.EnableInClassList("selected",visible);button.tooltip=visible?"Hide car stats":"Show car stats";}

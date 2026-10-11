@@ -47,6 +47,13 @@ namespace DragLab.Runtime
             if(!Id.StartsWith("warning:",StringComparison.Ordinal))return Help;
             return string.Join("\n\n",new[] {Explanation(current),Explanation(proposed)}.Where(text=>!string.IsNullOrWhiteSpace(text)).Distinct());
         }
+        internal bool Differs(NativeStatsSnapshot current,NativeStatsSnapshot proposed)
+        {
+            if(proposed==null)return false;
+            if(Text!=null)return !string.Equals(Text(current),Text(proposed),StringComparison.Ordinal);
+            var a=Number(current);var b=Number(proposed);
+            return a.HasValue!=b.HasValue||a.HasValue&&Math.Abs(a.Value-b.Value)>=.00001;
+        }
         internal double Convert(double value,UnitPreferences units)=>Unit=="Nm"?DisplayUnits.Torque(value,units.torque):Unit=="bar"?DisplayUnits.Pressure(value,units.pressure):Unit=="m/s"?DisplayUnits.Speed(value,units.speed):value;
         internal string UnitLabel(UnitPreferences units)=>Unit=="Nm"?DisplayUnits.TorqueLabel(units.torque):Unit=="bar"?DisplayUnits.PressureLabel(units.pressure):Unit=="m/s"?DisplayUnits.SpeedLabel(units.speed):Unit;
         internal string Value(NativeStatsSnapshot snapshot,UnitPreferences units)
