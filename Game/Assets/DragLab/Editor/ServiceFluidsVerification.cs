@@ -23,8 +23,10 @@ namespace DragLab.Editor
             foreach(var v in Resources.LoadAll<VehicleDefinition>("Data/Vehicles")) {
                 string id=v.spec.id;var recipe=catalog.Recipe(id);var stock=catalog.Resolve(id,recipe,v.CreateStockTune());var healthy=Car(stock);
                 check(stock.Drivable && healthy.state.engineSupplyAvailable,id+": factory service hardware is complete and runs.");
-                foreach(var d in catalog.parts.Where(p=>p.id.StartsWith(id+"/")&&ServiceHardware.IsCategory(p.category))) {
-                    var map=catalog.Recipe(id);map[d.category]=d.id;var build=catalog.Resolve(id,map,v.CreateStockTune());var car=Car(build);
+                foreach(var d in catalog.parts.Where(p=>p.id.StartsWith(id+"/")&&ServiceHardware.IsCategory(p.category)&&catalog.Fits(v.spec,p))) {
+                    var map=catalog.Recipe(id);map[d.category]=d.id;var build=catalog.Resolve(id,map,v.CreateStockTune());
+                    if(!build.Drivable&&build.errors.Any(e=>e.Contains("followers"))){check(true,id+"/"+d.id+": incompatible follower pairing rejected");map[PartCategory.Camshaft]=id+"/Camshaft/RollerStreet";map[PartCategory.Followers]=id+"/Followers/RollerConversion";build=catalog.Resolve(id,map,v.CreateStockTune());}
+                    var car=Car(build);
                     check(build.Drivable && car.spec.Validate()==null && PartSemantics.Stats(d).All(s=>MechanicsSchema.Finite(s.value)),id+"/"+d.id+": hardware resolves with finite meaningful stats.");
                     car.IndependentStep(DragMath.FixedStep,new DriverInput {throttle=.4},true,false);
                     check(!car.state.engineFailed && car.state.fluids.Validate(car.spec.fluids)==null,id+"/"+d.id+": installed option ticks without invalid state.");

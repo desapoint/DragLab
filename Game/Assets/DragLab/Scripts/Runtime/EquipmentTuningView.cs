@@ -31,7 +31,7 @@ namespace DragLab.Runtime
         }
         static bool HardwareSlider(string label, ref float value, float min, float max, float defaultValue)
         {
-            Label(label + ": " + value.ToString("F2")); return TuningSlider.Draw(ref value, min, max, Mathf.Clamp(defaultValue, min, max));
+            GUILayout.Label(new GUIContent(label + ": " + value.ToString("F2"), label.StartsWith("Cam timing") ? "Advance (+) favors lower-RPM filling; retard (-) shifts filling upward. Neither is a universal gain. Timing offsets reduce estimated piston-to-valve clearance; match cam lift, springs and piston reliefs before applying." : "")); return TuningSlider.Draw(ref value, min, max, Mathf.Clamp(defaultValue, min, max));
         }
         public static bool Draw(VehicleSpec spec, Tune installed, Tune draft)
         {

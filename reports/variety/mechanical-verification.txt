@@ -1,0 +1,75 @@
+PASS city-three valid stock assembly
+PASS city-three healthy stock pass avoids combustion/clearance damage
+PASS city-three crown volume changes compression in both directions
+PASS city-three compression changes dyno torque
+PASS city-three loaded high-compression knock causes retained wear
+PASS city-three wear difficulty remains authoritative
+PASS city-three cam travel mismatch explained
+PASS city-three matched spring travel clears binding warning
+PASS rally-sedan valid stock assembly
+PASS rally-sedan healthy stock pass avoids combustion/clearance damage
+PASS rally-sedan crown volume changes compression in both directions
+PASS rally-sedan compression changes dyno torque
+PASS rally-sedan loaded high-compression knock causes retained wear
+PASS rally-sedan wear difficulty remains authoritative
+PASS rally-sedan cam travel mismatch explained
+PASS rally-sedan matched spring travel clears binding warning
+PASS sport-coupe valid stock assembly
+PASS sport-coupe healthy stock pass avoids combustion/clearance damage
+PASS sport-coupe crown volume changes compression in both directions
+PASS sport-coupe compression changes dyno torque
+PASS sport-coupe loaded high-compression knock causes retained wear
+PASS sport-coupe wear difficulty remains authoritative
+PASS sport-coupe cam travel mismatch explained
+PASS sport-coupe matched spring travel clears binding warning
+PASS starter-hatch valid stock assembly
+PASS starter-hatch healthy stock pass avoids combustion/clearance damage
+PASS starter-hatch crown volume changes compression in both directions
+PASS starter-hatch compression changes dyno torque
+PASS starter-hatch loaded high-compression knock causes retained wear
+PASS starter-hatch wear difficulty remains authoritative
+PASS starter-hatch cam travel mismatch explained
+PASS starter-hatch matched spring travel clears binding warning
+PASS super-v8 valid stock assembly
+PASS super-v8 healthy stock pass avoids combustion/clearance damage
+PASS super-v8 crown volume changes compression in both directions
+PASS super-v8 compression changes dyno torque
+PASS super-v8 loaded high-compression knock causes retained wear
+PASS super-v8 wear difficulty remains authoritative
+PASS super-v8 cam travel mismatch explained
+PASS super-v8 matched spring travel clears binding warning
+PASS touring-six valid stock assembly
+PASS touring-six healthy stock pass avoids combustion/clearance damage
+PASS touring-six crown volume changes compression in both directions
+PASS touring-six compression changes dyno torque
+PASS touring-six loaded high-compression knock causes retained wear
+PASS touring-six wear difficulty remains authoritative
+PASS touring-six cam travel mismatch explained
+PASS touring-six matched spring travel clears binding warning
+PASS utility-pickup valid stock assembly
+PASS utility-pickup healthy stock pass avoids combustion/clearance damage
+PASS utility-pickup crown volume changes compression in both directions
+PASS utility-pickup compression changes dyno torque
+PASS utility-pickup loaded high-compression knock causes retained wear
+PASS utility-pickup wear difficulty remains authoritative
+PASS utility-pickup cam travel mismatch explained
+PASS utility-pickup matched spring travel clears binding warning
+PASS utility-pickup mismatched roller actuation rejected
+PASS utility-pickup matched roller conversion runs
+PASS v8-muscle valid stock assembly
+PASS v8-muscle healthy stock pass avoids combustion/clearance damage
+PASS v8-muscle crown volume changes compression in both directions
+PASS v8-muscle compression changes dyno torque
+PASS v8-muscle loaded high-compression knock causes retained wear
+PASS v8-muscle wear difficulty remains authoritative
+PASS v8-muscle cam travel mismatch explained
+PASS v8-muscle matched spring travel clears binding warning
+PASS v8-muscle mismatched roller actuation rejected
+PASS v8-muscle matched roller conversion runs
+PASS legacy plugs retain exact identity, wear and fault
+PASS legacy split retains separate coils
+PASS migration idempotent
+PASS single spark plug cheaper than a set
+PASS normalization never recreates removed plugs
+PASS fictional model-independent brands preserve catalog identities
+TOTAL 74

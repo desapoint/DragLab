@@ -27,9 +27,10 @@ namespace DragLab.Domain.Mechanics
     {
         public float liftMm=8, durationAt050Degrees=200, overlapDegrees=10, lobeSeparationDegrees=114;
         public float camTorqueBias, camTimingDegrees, springSafeRpm=8500, profileDemandRpm=7500;
+        public float springMaxLiftMm=9.2f;
         public bool timingAdjustable;
         public ValvetrainSpec Copy(){return (ValvetrainSpec)MemberwiseClone();}
-        public string Validate(){return EngineBehaviorSpec.Range(liftMm,1,30)&&EngineBehaviorSpec.Range(durationAt050Degrees,80,360)&&EngineBehaviorSpec.Range(overlapDegrees,0,180)&&EngineBehaviorSpec.Range(lobeSeparationDegrees,60,140)&&EngineBehaviorSpec.Range(camTorqueBias,-.5,.5)&&EngineBehaviorSpec.Range(camTimingDegrees,-6,6)&&EngineBehaviorSpec.Range(springSafeRpm,500,25000)&&EngineBehaviorSpec.Range(profileDemandRpm,500,25000)?null:"Invalid valvetrain profile.";}
+        public string Validate(){return EngineBehaviorSpec.Range(springMaxLiftMm,1,30)&&EngineBehaviorSpec.Range(liftMm,1,30)&&EngineBehaviorSpec.Range(durationAt050Degrees,80,360)&&EngineBehaviorSpec.Range(overlapDegrees,0,180)&&EngineBehaviorSpec.Range(lobeSeparationDegrees,60,140)&&EngineBehaviorSpec.Range(camTorqueBias,-.5,.5)&&EngineBehaviorSpec.Range(camTimingDegrees,-6,6)&&EngineBehaviorSpec.Range(springSafeRpm,500,25000)&&EngineBehaviorSpec.Range(profileDemandRpm,500,25000)?null:"Invalid valvetrain profile.";}
     }
     // Reserved compatibility metadata only. No nitrous delivery or power bonus is implemented.
     [Serializable] public sealed class NitrousCompatibility

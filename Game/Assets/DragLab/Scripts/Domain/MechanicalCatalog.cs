@@ -7,7 +7,12 @@ namespace DragLab.Domain.Mechanics
     [Serializable]
     public sealed class PartDefinition
     {
-        public string id, name, fitment, quality = "OEM";
+        public string id, name, fitment, brand, quality = "OEM";
+        public FuelKind fuelKind;
+        public PistonCrown pistonCrown;
+        public float crownVolumeCc, valveReliefMm=2.3f, springMaxLiftMm=9.2f;
+        public string followerInterface;
+        public int plugHeatRange=6;
         public PartCategory category;
         public float boreMm, power = 1, grip = 1, massScale = 1, shiftScale = 1, capacityScale = 1, boostScale = 1;
         public float rpmLimit, torqueLimitNm, massKg, inertiaKgM2;
@@ -54,7 +59,7 @@ namespace DragLab.Domain.Mechanics
     // Stable, authored definitions; interchangeable sets are distinct from their owned instances.
     public sealed class MechanicalCatalog
     {
-        public const int Version = 3;
+        public const int Version = 4;
         public readonly List<PartDefinition> parts = new List<PartDefinition>();
         readonly Dictionary<string, VehicleSpec> specs = new Dictionary<string, VehicleSpec>();
         public static readonly PartCategory[] EngineSlots = { PartCategory.Pistons, PartCategory.Rods, PartCategory.Crankshaft, PartCategory.HeadIntake, PartCategory.FuelSystem, PartCategory.Ignition, PartCategory.Cooling, PartCategory.Induction, PartCategory.Exhaust, PartCategory.Flywheel };
@@ -63,6 +68,7 @@ namespace DragLab.Domain.Mechanics
             foreach (var source in vehicles) { var spec=source.Copy(); specs.Add(spec.id,spec.Copy()); Author(spec); }
             // Extra offers unlock independently. Existing ranks remain purchasable directly.
             foreach(var model in specs.Keys){var source=parts.Where(p=>p.id.StartsWith(model+"/")&&p.category==PartCategory.Induction&&p.turboUnits>0).OrderByDescending(p=>p.turboSize).FirstOrDefault();if(source!=null){var extra=source.Copy();extra.id=model+"/Induction/motorsport";extra.name=source.name+" / motorsport compressor";extra.reputationRequired=8;extra.price=checked(source.price+400);extra.boostScale=Math.Min(4,source.boostScale*1.05f);extra.description+=" Independent REP 8 offer; preceding induction ranks are not required. Higher boost needs matching strength, tires and cooling.";parts.Add(extra);}}
+            PartBrands.Apply(this);
             if(applyOverrides)PartCatalogOverrides.Apply(this,PartCatalogOverrides.Load());
         }
         public VehicleSpec Spec(string id) { return specs[id].Copy(); }
@@ -75,6 +81,7 @@ namespace DragLab.Domain.Mechanics
         {
             foreach (PartCategory category in Enum.GetValues(typeof(PartCategory)))
             {
+                if(category==PartCategory.SparkPlugs&&CombustionHardware.Diesel(spec)||category==PartCategory.GlowPlugs&&!CombustionHardware.Diesel(spec)||category==PartCategory.Ignition&&CombustionHardware.Diesel(spec))continue;
                 if (!DriveBranch(category) || spec.drive == DriveType.AWD || category == PartCategory.FrontAxle && spec.drive == DriveType.FWD || category == PartCategory.RearAxle && spec.drive == DriveType.RWD) yield return category;
             }
         }
@@ -85,7 +92,7 @@ namespace DragLab.Domain.Mechanics
             if (category == PartCategory.Controls) return "controls-v1";
             if (category == PartCategory.FuelSystem && (spec.fuelSystemConverted ? spec.originalFueling : spec.engineBehavior.fueling) == FuelSystem.Injection) return spec.sound.cylinders == 4 ? "efi-gasoline-v1" : "efi-gasoline-" + spec.sound.cylinders + "-v1";
             if (category == PartCategory.Ignition && spec.sound.cylinders == 4) return "coil-four-v1";
-            return spec.id + "/" + category;
+            return (EngineSlot(category)?CombustionHardware.Family(spec):CombustionHardware.Chassis(spec)) + "/" + category;
         }
         public string Id(string model, PartCategory category, int stage = 0) { return model + "/" + category + "/" + stage; }
         void Author(VehicleSpec spec)
@@ -101,6 +108,7 @@ namespace DragLab.Domain.Mechanics
                         name = spec.displayName + " / " + category + " / " + (level == 0 ? "OEM" : "option " + level),
                         fitment = Interface(spec, category), price = level == 0 ? 180 : 600 * level,
                         boreMm = category == PartCategory.Pistons ? Bore(spec) : 0,
+                        fuelKind=spec.combustion.fuelKind, crownVolumeCc=category==PartCategory.Pistons?spec.combustion.referenceCrownCc:0, pistonCrown=spec.combustion.crown,
                         rpmLimit = spec.redlineRpm * (level == 0 ? 1.08f : 1.2f), torqueLimitNm = peak * (level == 0 ? 1.55f : 2.6f) };
                     if (category == PartCategory.Pistons || category == PartCategory.Rods || category == PartCategory.Crankshaft)
                     {
@@ -149,7 +157,7 @@ namespace DragLab.Domain.Mechanics
             foreach (var part in parts.Where(p => p.id.StartsWith(spec.id + "/") && p.description == null)) PartSemantics.Author(part, spec);
             CatalogVariants.Add(this, spec);
             FuelingHardware.AddConversions(this, spec);
-            ServiceHardware.Add(this,spec);ClutchHardware.Add(this,spec);
+            ServiceHardware.Add(this,spec);ClutchHardware.Add(this,spec);CombustionVariants.Add(this,spec);
         }
         public Dictionary<PartCategory, string> Recipe(string model, Tune legacy = null)
         {
@@ -175,6 +183,7 @@ namespace DragLab.Domain.Mechanics
         public bool Fits(VehicleSpec spec, PartDefinition part)
         {
             if(part==null || !Slots(spec).Contains(part.category) || part.fitment!=Interface(spec,part.category) || part.boreMm!=0 && Math.Abs(part.boreMm-Bore(spec))>=.01)return false;
+            if(EngineSlot(part.category)&&part.category!=PartCategory.Controls&&part.fuelKind!=spec.combustion.fuelKind)return false;
             if(part.category!=PartCategory.Controls)return true;
             if(part.supportsInjection && part.controllerCylinderCapacity<spec.sound.cylinders)return false;
             return spec.engineBehavior.fueling!=FuelSystem.Injection || FuelingHardware.ControllerSupports(part,spec);
@@ -183,6 +192,7 @@ namespace DragLab.Domain.Mechanics
         {
             var result = new BuildResolution { spec = Spec(model), tune = adjustments == null ? new Tune { finalDrive = specs[model].finalDrive, shiftRpm = specs[model].redlineRpm - 200 } : adjustments.Copy(), safeRpm = float.MaxValue, safeTorqueNm = float.MaxValue };
             var factoryRecipe = Recipe(model);
+            result.spec.combustion.separateSparkPlugs=!CombustionHardware.Diesel(result.spec);
             var t = result.tune; t.partsResolved = true;
             result.spec.partMassDeltaKg = result.spec.partLongitudinalMomentKgM = result.spec.partVerticalMomentKgM = 0; result.spec.fuelPowerCapacityHp = result.spec.ignitionPowerCapacityHp = 0; t.partGearCapacity = 1; t.partPower = t.partGrip = t.partMass = t.partShift = t.partCapacity = t.partBoost = 1;
             t.partLimiterAdjustable = t.partTwoStepAdjustable = t.partShiftLight = t.partShiftLightAdjustable = false;
@@ -239,6 +249,7 @@ namespace DragLab.Domain.Mechanics
             }
             result.spec.valvetrain.camTimingDegrees=result.spec.valvetrain.timingAdjustable?(float)DragMath.Clamp(t.camTimingDegrees,-6,6):0;
             t.camTimingDegrees=result.spec.valvetrain.camTimingDegrees;
+            CombustionHardware.ValidateCombination(result,installed,this);
             t.ClampTo(result.spec);
             // Preserve authored factory calibration; fitted boost headroom is independent of old engine ranks.
             if (result.safeRpm == float.MaxValue) result.safeRpm = result.spec.redlineRpm * 1.08f;

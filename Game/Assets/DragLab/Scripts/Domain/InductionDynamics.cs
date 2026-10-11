@@ -1,4 +1,5 @@
 using System;
+using DragLab.Domain.Mechanics;
 
 namespace DragLab.Domain
 {
@@ -140,7 +141,7 @@ namespace DragLab.Domain
         }
         static double BaseTorque(InductionProfile profile, double rpm)
         {
-            double torque = DragMath.AuthoredTorque(profile.vehicle, rpm)*ServiceDynamics.CamMultiplier(profile.vehicle,rpm);
+            double torque = DragMath.AuthoredTorque(profile.vehicle, rpm)*ServiceDynamics.CamMultiplier(profile.vehicle,rpm)*CombustionHardware.CompressionMultiplier(profile.vehicle);
             if (profile.data.torqueCurveIncludesFactoryInduction && profile.data.factory != InductionType.NaturallyAspirated)
             {
                 var stock = profile.factoryReference;
@@ -157,7 +158,7 @@ namespace DragLab.Domain
         public static double SteadyTorque(VehicleSpec spec, Tune tune, double rpm)
         {
             if ((spec.induction == null || spec.induction.factory == InductionType.NaturallyAspirated) &&
-                (!tune.partsResolved && tune.engineLevel == 0 || tune.inductionUpgrade == EngineUpgradeInduction.Factory)) return DragMath.AuthoredTorque(spec, rpm) * tune.PowerMultiplier*ServiceDynamics.CamMultiplier(spec,rpm);
+                (!tune.partsResolved && tune.engineLevel == 0 || tune.inductionUpgrade == EngineUpgradeInduction.Factory)) return DragMath.AuthoredTorque(spec, rpm) * tune.PowerMultiplier*ServiceDynamics.CamMultiplier(spec,rpm)*CombustionHardware.CompressionMultiplier(spec);
             var profile = new InductionProfile(spec, tune);
             return SteadyOutput(profile, rpm).engineTorqueNm;
         }

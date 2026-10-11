@@ -13,7 +13,7 @@ namespace DragLab.Domain.Mechanics
     }
     public static class MechanicsOwnership
     {
-        public const int SaveVersion = 5;
+        public const int SaveVersion = 6;
         public static string NewId(string kind) { return kind + "-" + Guid.NewGuid().ToString("N"); }
         public static void Ensure(PlayerProfile profile, MechanicalCatalog catalog)
         {
@@ -34,7 +34,7 @@ namespace DragLab.Domain.Mechanics
                 if(car.engineRebuild!=null&&!car.engineRebuild.active)car.engineRebuild=null;
                 if(car.fluids==null||car.serviceHardwareVersion==0)car.fluids=FluidState.Full(catalog.Spec(car.vehicleId).fluids);
                 if(!string.IsNullOrEmpty(car.instanceId)&&car.serviceHardwareVersion==0) {
-                    foreach(var category in MechanicalCatalog.Slots(catalog.Spec(car.vehicleId)).Where(c=>ServiceHardware.IsCategory(c)&&c!=PartCategory.OilCooler)) {
+                    foreach(var category in MechanicalCatalog.Slots(catalog.Spec(car.vehicleId)).Where(c=>ServiceHardware.IsCategory(c)&&c!=PartCategory.OilCooler&&c!=PartCategory.SparkPlugs&&c!=PartCategory.GlowPlugs)) {
                         if(car.installed.slots.Exists(s=>s.slot==category.ToString()))continue;
                         var item=new PartInstance{instanceId=NewId("part"),definitionId=catalog.Id(car.vehicleId,category),location=PartLocation.Assembly,ownerId=car.engineAssemblyId,slot=category.ToString()};
                         profile.parts.Add(item);car.installed.slots.Add(new SlotBinding{slot=item.slot,partInstanceId=item.instanceId});
@@ -86,6 +86,7 @@ namespace DragLab.Domain.Mechanics
             }
             // Resolve an owner's hardware once per normalization, rather than once
             // per part. Multi-car checkpoints must not re-resolve hundreds of builds.
+            SparkPlugMigration.Apply(profile,catalog);
             var ownerById=new Dictionary<string,OwnedCar>();
             foreach(var car in profile.cars){ownerById[car.instanceId]=car;if(!string.IsNullOrEmpty(car.engineAssemblyId))ownerById[car.engineAssemblyId]=car;}
             var resolvedOwners=new Dictionary<string,VehicleSpec>();

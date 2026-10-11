@@ -12,7 +12,8 @@ namespace DragLab.Domain
             foreach(var required in new[]{PartCategory.Camshaft,PartCategory.Valves,PartCategory.Followers,PartCategory.ValveSprings,PartCategory.TimingDrive,PartCategory.CylinderBlock,PartCategory.Bearings,PartCategory.OilPan,PartCategory.OilPump})if(car.mechanics.Part(required)==null||(required==PartCategory.ValveSprings||required==PartCategory.Followers)&&Health(car,required)<=0){s.engineSupplyAvailable=false;s.stalled=true;}
             double sealing=DragMath.Clamp(1-.22*Loss(car,PartCategory.PistonRings)-.18*Loss(car,PartCategory.CylinderBlock)-.12*Loss(car,PartCategory.Valves),.4,1);
             var ignition=car.mechanics.Part(PartCategory.Ignition);double deposits=ignition==null?0:ignition.condition.deposits;
-            double spark=1-.12*Loss(car,PartCategory.Ignition)-.1*deposits*car.driver.ConditionSeverity;
+            var plugs=car.mechanics.Part(PartCategory.SparkPlugs);
+            double spark=CombustionHardware.Diesel(car.spec)?1:1-.12*Loss(car,PartCategory.Ignition)-.1*deposits*car.driver.ConditionSeverity-(plugs==null?0:(1-plugs.condition.health)*.1*car.driver.ConditionSeverity+plugs.condition.deposits*.1*car.driver.ConditionSeverity);
             s.conditionCombustionEfficiency=sealing*spark;
             var fuel=car.mechanics.Part(PartCategory.FuelSystem);
             s.fuelMeteringWaste=(fuel==null?0:fuel.condition.deposits*.12+fuel.condition.leakSeverity*.25)*car.driver.ConditionSeverity;
@@ -25,6 +26,7 @@ namespace DragLab.Domain
             s.mechanicalPowerFactor*=breathing*s.conditionCombustionEfficiency*(1-camWear*.18-followerWear*.1)*(1-adjustment*.1*car.driver.ConditionSeverity)*(1-s.valveFloat);
             s.extraEngineFrictionNm=Loss(car,PartCategory.Bearings)*(4+s.rpm*.0015);
             EngineElements.Prepare(car);
+            CombustionHardware.Prepare(car);
             double oilFraction=s.fluids.oilLitres/f.oilMinimumLitres;
             double pickup=DragMath.Clamp(oilFraction,0,1);
             // Excess oil after fitting a smaller pan can aerate under crank windage.
@@ -50,6 +52,7 @@ namespace DragLab.Domain
         public static void Tick(CarSimulation car,double dt)
         {
             var s=car.state;if(car.driver.WearRate<=0)return;
+            CombustionHardware.Tick(car,dt);
             bool running=!s.stalled&&!s.engineFailed&&s.rpm>car.spec.idleRpm*.4;
             foreach(var p in car.mechanics.parts) {
                 var d=car.mechanics.Definition(p);var c=p.condition;if(c.failed)continue;
@@ -65,7 +68,7 @@ namespace DragLab.Domain
                     EngineElements.Wear(p,rate*dt);c.serviceWearRemainder+=rate*dt; if(c.serviceWearRemainder>=.000001){c.health=(float)Math.Max(0,c.health-c.serviceWearRemainder);c.serviceWearRemainder=0;} c.runningSeconds+=dt;
                     if(c.health<=0){c.failed=true;c.failureReason=s.lubricationFactor<.4?"Oil starvation damage":s.valveFloat>.05?"Valve float / valve contact":"Mechanical wear depleted";}
                 }
-                if(running&&(d.category==PartCategory.FuelSystem||d.category==PartCategory.Ignition||d.category==PartCategory.HeadIntake||d.category==PartCategory.OilFilter))c.deposits=DragMath.Clamp(c.deposits+dt*(d.category==PartCategory.OilFilter?.0000007/Math.Max(1,d.wearEnergyJ/3000000000):.0000001)*car.driver.WearRate,0,1);
+                if(running&&(d.category==PartCategory.FuelSystem||d.category==PartCategory.Ignition||d.category==PartCategory.SparkPlugs||d.category==PartCategory.HeadIntake||d.category==PartCategory.OilFilter))c.deposits=DragMath.Clamp(c.deposits+dt*(d.category==PartCategory.OilFilter?.0000007/Math.Max(1,d.wearEnergyJ/3000000000):.0000001)*car.driver.WearRate,0,1);
                 if(running&&(d.category==PartCategory.Followers||d.category==PartCategory.TimingDrive))c.adjustmentError=DragMath.Clamp(c.adjustmentError+dt*.00000008*car.driver.WearRate,0,1);
             }
         }

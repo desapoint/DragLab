@@ -15,7 +15,7 @@ namespace DragLab.Domain.Mechanics {
    foreach(var f in typeof(PartDefinition).GetFields()){
     object value=f.GetValue(draft);
     if(!Editable(f.Name)&&!Equals(value,f.GetValue(original)))return "Stable identity/fitment cannot change: "+f.Name;
-    if(f.FieldType==typeof(float)){double n=(float)value;if(!MechanicsSchema.Finite(n)||Math.Abs(n)>1e12)return "Invalid number: "+f.Name;if(n<0&&f.Name!="camTorqueBias"&&f.Name!="positionFromFrontAxleM")return "Negative number: "+f.Name;}
+    if(f.FieldType==typeof(float)){double n=(float)value;if(!MechanicsSchema.Finite(n)||Math.Abs(n)>1e12)return "Invalid number: "+f.Name;if(n<0&&f.Name!="camTorqueBias"&&f.Name!="positionFromFrontAxleM"&&f.Name!="crownVolumeCc")return "Negative number: "+f.Name;}
     if(f.FieldType==typeof(int)&&((int)value<0||(int)value>10000000))return "Invalid integer: "+f.Name;
     if(f.FieldType.IsEnum&&(f.Name=="tuning"?(((int)(PartTuningOptions)value&~255)!=0):!Enum.IsDefined(f.FieldType,value)))return "Invalid option: "+f.Name;
    }

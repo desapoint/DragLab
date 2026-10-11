@@ -29,6 +29,8 @@ namespace DragLab.Domain
         public string id = "starter-hatch";
         public string displayName = "Juniper 1.6";
         public string artId = "hatch";
+        public string engineFamily, chassisFamily, trim, modelFamily;
+        public Mechanics.CombustionSpec combustion=new Mechanics.CombustionSpec();
         public CarBodyType bodyType;
         public string dataProvenance = "Fictional, modeled values; not manufacturer specifications.";
         public DriveType drive = DriveType.FWD;
@@ -94,6 +96,7 @@ namespace DragLab.Domain
         public VehicleSpec Copy()
         {
             var copy = (VehicleSpec)MemberwiseClone();
+            copy.combustion=combustion==null?new Mechanics.CombustionSpec():combustion.Copy();
             copy.fuel = fuel == null ? new Mechanics.FuelSpec() : fuel.Copy();
             copy.fluids=fluids==null?new Mechanics.FluidSpec():fluids.Copy();
             copy.valvetrain=valvetrain==null?new Mechanics.ValvetrainSpec():valvetrain.Copy();
@@ -121,6 +124,7 @@ namespace DragLab.Domain
             if (!Finite(engineBoreMm) || engineBoreMm < 0 || engineBoreMm > 160 || engineBoreMm > 0 && engineBoreMm < 40) return "Invalid engine bore (0 = legacy fitment).";
             if(!Enum.IsDefined(typeof(Mechanics.IgnitionTopology),ignitionTopology))return "Invalid ignition architecture.";
             if(valvesPerCylinder!=0&&(valvesPerCylinder<2||valvesPerCylinder>8||valvesPerCylinder%2!=0))return "Invalid valves per cylinder.";
+            if(combustion!=null&&combustion.Validate()!=null)return combustion.Validate();
             if (fuel == null || fuel.Validate() != null) return "Invalid fuel specification.";
             if(fluids!=null&&fluids.Validate()!=null)return fluids.Validate();
             if(valvetrain!=null&&valvetrain.Validate()!=null)return valvetrain.Validate();
@@ -466,6 +470,7 @@ namespace DragLab.Domain
         public double[] cylinderContribution=new double[0], cylinderFuelDelivery=new double[0];
         public double cylinderCombustionFactor=1, cylinderFuelFactor=1, individualValveFloat, crankCycles;
         public double clutchViscousDragNm, clutchOilFactor=1;
+        public double knockSeverity, valveBind, valveContact;
         public CarState Copy() { var copy = (CarState)MemberwiseClone(); copy.cylinderContribution=cylinderContribution==null?new double[0]:(double[])cylinderContribution.Clone();copy.cylinderFuelDelivery=cylinderFuelDelivery==null?new double[0]:(double[])cylinderFuelDelivery.Clone();copy.fluids=fluids==null?new Mechanics.FluidState():fluids.Copy(); copy.contact = contact == null ? new WheelContactState() : contact.Copy(); copy.splits = splits == null ? new Dictionary<double, double>() : new Dictionary<double, double>(splits); return copy; }
     }
 

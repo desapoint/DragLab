@@ -98,7 +98,11 @@ namespace DragLab.Runtime
             N("camDuration","Cam duration @ 0.050 in",s=>s.Spec.valvetrain.durationAt050Degrees,"°","F0",80,360,"Crank degrees of valve opening measured at 0.050-inch lift. Longer duration shifts the useful RPM band and changes idle/fuel behavior."),
             N("camOverlap","Valve overlap",s=>s.Spec.valvetrain.overlapDegrees,"°","F0",0,180,"Crank degrees with intake and exhaust valves open together. Overlap affects idle, mixture behavior and the torque curve."),
             N("camSeparation","Lobe separation",s=>s.Spec.valvetrain.lobeSeparationDegrees,"°","F0",60,140,"Angle between cam lobe centers. This is a profile choice with tradeoffs, rather than a higher-is-better rating."),
-            N("camTiming","Cam timing",s=>s.Spec.valvetrain.camTimingDegrees,"°","F1",-6,6,"Applied cam timing after installed hardware permissions. Fixed hardware cannot gain adjustment by opening this read-only page.")
+            N("compression","Compression ratio",s=>s.Spec.combustion.compressionRatio,":1","F2",5,25,"Piston crown volume changes effective compression. Higher compression can improve efficiency but increases petrol knock risk under load/boost."),
+            T("crown","Piston crown",s=>s.Spec.combustion.crown.ToString(),"Dish volume lowers compression; dome volume raises it. Diesel bowls support compression ignition."),
+            N("valveClearance","Estimated valve clearance",s=>s.Spec.combustion.valveClearanceMm,"mm","F2",-1,5,"Estimated clearance from fitted lift, piston relief depth and cam timing. Low clearance can cause interference contact."),
+            N("springTravel","Spring travel",s=>s.Spec.valvetrain.springMaxLiftMm,"mm","F1",5,20,"Maximum fitted spring travel. Greater cam lift causes coil bind; RPM control rating is a separate limit."),
+            N("camTiming","Cam timing",s=>s.Spec.valvetrain.camTimingDegrees,"°","F1",-6,6,"Advance (+) favors low-RPM filling; retard (-) shifts filling upward. Offsets reduce estimated valve clearance. Match cam lift, spring travel and piston reliefs; fixed timing hardware remains fixed.")
         );
     }
 }

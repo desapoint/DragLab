@@ -52,7 +52,7 @@ namespace DragLab.Domain
             s.rearDifferentialHealth = DifferentialHealth(s,spec.drive == DriveType.RWD ? PartCategory.Differential : PartCategory.RearDifferential);
             if (!Healthy(PartCategory.Pistons) || !Healthy(PartCategory.Rods) || !Healthy(PartCategory.Crankshaft)) { s.engineFailed = true; s.engineDamage = 1; }
             PartInstance controller; bySlot.TryGetValue(PartCategory.Controls.ToString(), out controller);
-            s.engineSupplyAvailable = Healthy(PartCategory.FuelSystem) && Healthy(PartCategory.Ignition) && (spec.engineBehavior.fueling == FuelSystem.Carburetor || Healthy(PartCategory.Controls) && FuelingHardware.ControllerSupports(controller == null ? null : Definition(controller), spec));
+            s.engineSupplyAvailable = Healthy(PartCategory.FuelSystem) && Healthy(PartCategory.Ignition) && (!spec.combustion.separateSparkPlugs || Healthy(PartCategory.SparkPlugs)) && (spec.engineBehavior.fueling == FuelSystem.Carburetor || Healthy(PartCategory.Controls) && FuelingHardware.ControllerSupports(controller == null ? null : Definition(controller), spec));
             if (!s.engineSupplyAvailable) s.stalled = true;
             s.deliveryPowerCapacityHp = 0;
             foreach (var category in new[] { PartCategory.FuelSystem, PartCategory.Ignition }) {

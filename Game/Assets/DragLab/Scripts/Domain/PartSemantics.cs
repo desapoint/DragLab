@@ -190,6 +190,7 @@ namespace DragLab.Domain.Mechanics
         {
             ApplyMassDelta(spec, p, p.massKg - (stock == null ? 0 : stock.massKg));
             ServiceHardware.Apply(p,spec,tune);
+            if(p.category==PartCategory.Pistons)CombustionHardware.ApplyPistons(p,spec);
             if (p.category == PartCategory.FuelSystem) spec.fuelPowerCapacityHp = p.maxPowerHp;
             FuelingHardware.Apply(spec, p);
             if (p.category == PartCategory.Ignition) spec.ignitionPowerCapacityHp = p.maxPowerHp;
@@ -218,6 +219,7 @@ namespace DragLab.Domain.Mechanics
                 yield return new PartStat("radiator", "Radiator heat rejection", p.coolingWattsPerC, "W/°C", 1, "Heat rejected per degree above ambient before road airflow.");
                 yield return new PartStat("thermalmass", "Coolant thermal capacity", p.heatCapacityJPerC / 1000, "kJ/°C", 1, "More capacity slows temperature changes; does not eliminate heat.");
             }
+            if(p.category==PartCategory.Pistons){yield return new PartStat("crownvolume","Crown volume",p.crownVolumeCc,"cc",0,"Positive dish volume lowers compression; negative dome volume raises it. Compare effective compression on the complete build.");yield return new PartStat("relief","Valve relief depth",p.valveReliefMm,"mm",1,"Provides valve clearance, subject to cam lift and timing.");}
             if (p.category == PartCategory.FuelSystem || p.category == PartCategory.Ignition) yield return new PartStat("powerlimit", "Supported engine power", p.maxPowerHp, "hp", 1, "Output beyond this delivery capacity is capped; below it there is no free HP.");
             if (p.category == PartCategory.Controls && p.supportsInjection) yield return new PartStat("injectorcylinders", "Supported engine cylinders", p.controllerCylinderCapacity, "cylinders", 0, "Authored engine/calibration compatibility, not the number of physical injectors. A throttle-body kit can feed multiple cylinders with shared injectors. Fueling capability does not imply programmable launch/limiter access.");
             if (p.category == PartCategory.FuelSystem && p.fuelDelivery != FuelDeliveryHardware.Factory) {

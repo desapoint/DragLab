@@ -11,7 +11,7 @@ namespace DragLab.Domain {
    kw/=Math.Max(.05,s.cylinderCombustionFactor*EngineElements.Ripple(s));
    double idle=fuel.IdleLitresPerHour*Math.Max(.5,car.spec.DisplacementLitres/2)/3600;
    double efficiency=Math.Max(.35,s.conditionCombustionEfficiency);
-   double load=(kw+s.extraEngineFrictionNm*s.rpm/FlywheelDynamics.RpmPerRadian/1000)*fuel.BsfcKgPerKwh/efficiency/fuel.densityKgPerLitre/3600;
+   double load=(kw+s.extraEngineFrictionNm*s.rpm/FlywheelDynamics.RpmPerRadian/1000)*fuel.BsfcKgPerKwh/Math.Max(.8,CombustionHardware.CompressionMultiplier(car.spec))/efficiency/fuel.densityKgPerLitre/3600;
    double neutralPumping=s.gear==0?s.throttle*s.rpm/car.spec.redlineRpm*idle*4:0;
    return Math.Max(0,(idle+load+neutralPumping)*(1+s.fuelMeteringWaste)*(1+car.spec.valvetrain.camTorqueBias*Math.Max(0,1-s.rpm/car.spec.redlineRpm)*.3)*(injection?1:1.15)*(s.antiLagActive?1.35:1)*fraction)*car.driver.FuelUsageRate*s.cylinderFuelFactor;
   }

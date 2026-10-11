@@ -12,3 +12,5 @@ Mechanical distinctions: diesel has no spark plugs or ignition-cut exhaust anti-
 Sources used for calibration boundaries: [DOE engine basics](https://www.energy.gov/cmei/vehicles/articles/internal-combustion-engine-basics), [DOE diesel vehicle systems](https://afdc.energy.gov/vehicles/how-do-diesel-cars-work), [COMP Cams spring selection](https://www.compcams.com/valve-springs-101/), [COMP Cams installation/clearance instructions](https://www.compcams.com/amfile/file/download/file/705/product/32827/), [MAHLE piston/component damage guide](https://www.mahle-aftermarket.com/media/homepage/facelift/media-center/workshop/damage-brochure/mah-schadensbroschuere-motorenteile-en-241108-screen.pdf).
 
 Technical progress and final balance evidence will be recorded per checkpoint. Existing 4D differences-only UI checkpoint remains delivered; this does not authorize another unrelated menu or later phase.
+
+Checkpoint 1 technically delivered: see [mechanical changes and checks](../reports/variety/01-MECHANICAL.md). User acceptance of the complete expansion remains pending; checkpoints 2–4 are still being implemented.

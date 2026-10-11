@@ -6,15 +6,19 @@ namespace DragLab.Domain.Mechanics
     public static class ServiceHardware
     {
         public static bool IsCategory(PartCategory c){return c>=PartCategory.Camshaft;}
-        public static bool Optional(PartCategory c){return c==PartCategory.OilCooler||c==PartCategory.CoolingCap||c==PartCategory.CoolingHoses||c==PartCategory.CoolantPump;}
+        public static bool Optional(PartCategory c){return c==PartCategory.GlowPlugs||c==PartCategory.OilCooler||c==PartCategory.CoolingCap||c==PartCategory.CoolingHoses||c==PartCategory.CoolantPump;}
         public static bool Wears(PartCategory c){return IsCategory(c)&&c!=PartCategory.OilPan;}
         public static bool CoreFailure(PartCategory c){return c==PartCategory.Camshaft||c==PartCategory.Valves||c==PartCategory.TimingDrive||c==PartCategory.CylinderBlock||c==PartCategory.Bearings;}
         public static void Add(MechanicalCatalog catalog,VehicleSpec spec)
         {
             foreach(PartCategory c in Enum.GetValues(typeof(PartCategory)).Cast<PartCategory>().Where(IsCategory))for(int n=0;n<(c==PartCategory.Camshaft?3:2);n++) {
                 bool upgraded=n>0;var p=new PartDefinition{id=catalog.Id(spec.id,c,n),category=c,stage=n,fitment=MechanicalCatalog.Interface(spec,c),quality=upgraded?"Aftermarket":"OEM",price=upgraded?700:200,massKg=1,positionFromFrontAxleM=spec.wheelbaseM*.15f,heightM=.4f,thermalLimitC=170,heatCapacityJPerC=10000,coolingWattsPerC=15,wearEnergyJ=3000000000f,overloadSeconds=60};
+                p.fuelKind=spec.combustion.fuelKind;
+                p.followerInterface=spec.engineBehavior.fueling==FuelSystem.Carburetor?"flat-tappet":"roller";
                 string label="";
                 switch(c){
+                    case PartCategory.SparkPlugs:label=upgraded?"iridium spark-plug set":"copper spark-plug set";p.massKg=.25f;p.price=upgraded?120:35;p.wearEnergyJ=upgraded?9000000000f:3000000000f;p.description="Wearing spark plugs; replace a complete matched set or one cylinder through individual service. Wear/fouling weakens combustion and wastes fuel; coils remain separate.";break;
+                    case PartCategory.GlowPlugs:label=upgraded?"fast-heating glow-plug set":"standard glow-plug set";p.massKg=.3f;p.price=upgraded?180:90;p.description="Diesel cold-start heaters; not spark ignition and not required to keep a warm engine firing. Individual heater wear affects cold operation.";break;
                     case PartCategory.Camshaft:
                         label=new[]{"factory camshaft set","street performance camshaft set","race camshaft set"}[n];p.camLiftMm=8+n*1.5f;p.camDurationDegrees=200+n*22;p.camOverlapDegrees=10+n*20;p.camLobeSeparation=114-n*3;p.camTorqueBias=n==0?0:n==1?.07f:.16f;p.valvetrainRpm=spec.redlineRpm*(1+n*.06f);p.massKg=4;
                         p.description="Complete cam set matched to this engine family. Lift/duration/overlap reshape cylinder filling: high-RPM gain trades low-RPM torque, idle quality and fuel efficiency. Requires appropriate springs and followers; no free universal power multiplier.";break;
@@ -34,6 +38,7 @@ namespace DragLab.Domain.Mechanics
                     case PartCategory.CoolingHoses:label=upgraded?"reinforced cooling hose/seal set":"factory cooling hose/seal set";p.massKg=1.5f;p.description="Contains coolant. Wear/seal damage can leak under pressure or while parked. Resealing fixes a serviceable leak; topping up only replaces lost coolant.";break;
                     case PartCategory.OilCooler:label=upgraded?"competition oil cooler":"street oil cooler";p.coolingWattsPerC=upgraded?100:50;p.massKg=upgraded?3:2;p.description="Optional heat rejection from engine oil to ambient air. Improves hot-oil control, adds weight; it cannot repair low oil, leaks or existing engine damage.";break;
                 }
+                if(c==PartCategory.ValveSprings)p.springMaxLiftMm=upgraded?14.5f:9.2f;
                 if(upgraded){p.wearEnergyJ*=1.5f;p.thermalLimitC+=15;}
                 p.name=spec.displayName+" / "+label;catalog.parts.Add(p);
             }
@@ -42,7 +47,7 @@ namespace DragLab.Domain.Mechanics
         {
             var v=spec.valvetrain;var f=spec.fluids;
             if(p.category==PartCategory.Camshaft){v.liftMm=p.camLiftMm;v.durationAt050Degrees=p.camDurationDegrees;v.overlapDegrees=p.camOverlapDegrees;v.lobeSeparationDegrees=p.camLobeSeparation;v.camTorqueBias=p.camTorqueBias;v.profileDemandRpm=p.valvetrainRpm;if(p.stage>0)spec.engineBehavior.camOverlap=Math.Min(1,Math.Max(spec.engineBehavior.camOverlap+p.camTorqueBias*.8f,p.camOverlapDegrees/90f));}
-            if(p.category==PartCategory.ValveSprings)v.springSafeRpm=p.valvetrainRpm;
+            if(p.category==PartCategory.ValveSprings){v.springSafeRpm=p.valvetrainRpm;v.springMaxLiftMm=p.springMaxLiftMm;}
             if(p.category==PartCategory.TimingDrive)v.timingAdjustable=p.camTimingAdjustable;
             if(p.category==PartCategory.OilPan){f.oilCapacityLitres=p.fluidCapacityLitres;f.oilMinimumLitres=p.fluidMinimumLitres;f.oilPanBaffling=p.baffling;}
             if(p.category==PartCategory.OilPump)f.oilPumpScale=p.pumpFlowScale;
@@ -53,6 +58,7 @@ namespace DragLab.Domain.Mechanics
         }
         public static IEnumerable<PartStat> Stats(PartDefinition p)
         {
+            if(p.category==PartCategory.ValveSprings)yield return new PartStat("springlift","Maximum spring travel",p.springMaxLiftMm,"mm",1,"Cam lift beyond this travel causes coil bind; spring RPM rating alone is insufficient.");
             if(p.category==PartCategory.OilCooler)yield return new PartStat("oilcooling","Oil heat rejection",p.coolingWattsPerC,"W/°C",1,"Extra cooling helps sustained load, with fluid quantity and airflow still required.");
             if(p.category==PartCategory.OilFilter)yield return new PartStat("filtercapacity","Contamination capacity",p.wearEnergyJ/3000000000,"×",1,"Slows deposit buildup; a used filter is retained when replaced.");
             if(ServiceHardware.Wears(p.category))yield return new PartStat("servicelife","Service-life resistance",p.wearEnergyJ/3000000000,"×",1,"Relative deterministic wear resistance under equal usage; heat/starvation can still damage it.");

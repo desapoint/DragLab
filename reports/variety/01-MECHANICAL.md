@@ -1,0 +1,9 @@
+# Mechanical variety checkpoint — 2026-10-11
+
+Added fictional specialist suppliers with model-independent product labels and stable IDs. Added flat/dished/domed forged piston sets with crown-volume compression and relief-clearance effects; compression changes torque/consumption while loaded petrol knock reduces power and damages pistons/rings. Lift exceeding spring travel causes bind wear; clearance and RPM-control warnings distinguish valve contact and float from knock. Carb roller conversion requires matching followers. Inspection exposes geometry and travel; cam timing has adjustment help. Wear assistance remains authoritative.
+
+Spark plugs are now distinct wearing, purchasable sets and individual elements. Explicit once-only migration splits existing composite ignition records, retaining element IDs, faults, health, service/history and seller/loose references. Saved configurations acquire the corresponding plug requirement; removed hardware is never restored during routine normalization. Glow-plug contracts reserve diesel support for the next checkpoint.
+
+Checks run: Unity PartHardwareVerify **3153**, ServiceVerify **1140**, VarietyMechanicalVerify **74**, all passing. Initial service harness assumed every single swap was drivable; updated it to assert rejection of mismatched actuation and then run the matched pair. Existing archived matrices retained; focused evidence is mechanical-verification.txt. Unity compilation passed; a refreshed player build follows the integrated expansion. No UI migration phase advanced.
+
+Calibration limits: deterministic lumped compression/knock/clearance estimates, not a cylinder-pressure or complete valve-motion solver. The catalog is fictional; matching warning thresholds are authored gameplay data. Diesel operation, stock and career calibration remain pending checkpoints.

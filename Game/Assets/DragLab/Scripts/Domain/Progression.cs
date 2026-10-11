@@ -97,6 +97,7 @@ namespace DragLab.Domain
         public int saveVersion = 1;
         public int drivelineVersion;
         public int equipmentVersion;
+        public int ignitionHardwareVersion;
         public int cash = 1200;
         public int reputation;
         public int garageLevel = 1;
