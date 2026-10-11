@@ -1,0 +1,109 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Focused dealership probe has a durable isolated baseline
+PASS: Dealership fixture starts with valid retained ownership and economy state
+PASS: Dealership has one card per authored model and hides the owned grid
+PASS: Garage grouping and catalog count show the active dealership
+PASS: Dealer models retain the two-per-row rounded accented grid
+PASS: Dealer price uses existing economy and money formatting: city-three
+PASS: Factory model has a layered preview: city-three
+PASS: Dealer price uses existing economy and money formatting: rally-sedan
+PASS: Factory model has a layered preview: rally-sedan
+PASS: Dealer price uses existing economy and money formatting: sport-coupe
+PASS: Factory model has a layered preview: sport-coupe
+PASS: Dealer price uses existing economy and money formatting: starter-hatch
+PASS: Factory model has a layered preview: starter-hatch
+PASS: Dealer price uses existing economy and money formatting: super-v8
+PASS: Factory model has a layered preview: super-v8
+PASS: Dealer price uses existing economy and money formatting: touring-six
+PASS: Factory model has a layered preview: touring-six
+PASS: Dealer price uses existing economy and money formatting: utility-pickup
+PASS: Factory model has a layered preview: utility-pickup
+PASS: Dealer price uses existing economy and money formatting: v8-muscle
+PASS: Factory model has a layered preview: v8-muscle
+PASS: Copied OEM quarter-mile ratings finish without selecting or saving player cars
+PASS: Real keyboard search filters dealership models: pic / dealerCar:utility-pickup
+PASS: Switching back restores independent owned-car query state
+PASS: Returning to dealership retains its independent search
+PASS: Shared dealership filters use actual model body metadata
+PASS: Affordability choice remains a draft until Apply
+PASS: Affordable draft preview uses actual dealer prices and includes exact cash equality
+PASS: Cancel discards the affordability draft
+PASS: Applied Affordable filter matches the inclusive cash budget and counts as one criterion
+PASS: Affordable results refresh when cash drops below the cheapest price
+PASS: Reopened filters retain the applied affordability choice
+PASS: Unaffordable is the strictly over-budget complement for valid prices
+PASS: Owned cars retain independent filters without a purchase-budget control
+PASS: Switching back retains the dealership affordability filter
+PASS: Toolbar reset clears affordability with the other criteria
+PASS: Affordable combines independently with reputation Locked, without treating those models as purchasable
+PASS: Dialog Reset clears affordability only in the draft
+PASS: Cancelling Reset preserves the previous affordability choice
+PASS: Applying Reset clears all dealership filters
+PASS: Affordability browsing changes no player assets, saved bytes or cached simulation probes
+PASS: Copied queries retain affordability and unknown prices never count as affordable
+PASS: Unknown prices never count as unaffordable
+PASS: Dealer model opens a full details page with stock dyno, not a modal
+PASS: OEM preview starts with factory parts and included full fuel, independent of worn owned parts
+PASS: F8 retains the inspected dealer model
+PASS: Settings Cancel returns to the same dealer details
+PASS: Dealer Compare opens inline selected-to-viewed stats without changing selection
+PASS: Comparison dyno overlays the same actual-condition inspections used by full stats
+PASS: Selected comparison baseline uses retained hardware, tune and wear rather than a healthy OEM estimate
+PASS: Basic comparison shows both values: HP
+PASS: Basic comparison shows both values: Torque
+PASS: Basic comparison shows both values: Weight
+PASS: Basic comparison shows both values: Condition
+PASS: Comparison contains every reusable detailed stat group
+PASS: Detailed power values match the selected and viewed curves
+PASS: Comparison dyno hover follows both curves on the shared RPM axis
+PASS: Compared Transmission rows retain both saved values
+PASS: Compared Components rows retain both saved values
+PASS: Performance resolves independent copied-build driving estimates for both compared cars: False / False /  /
+PASS: Completed performance refresh retains both comparison columns
+PASS: Comparison info explains both sides through the shared modal
+PASS: F8 and Settings Cancel retain car comparison mode
+PASS: Second Compare click restores the normal dyno and single-car stats
+PASS: Repeated comparison uses cached snapshots and stock estimates rather than rerunning on gestures
+PASS: Compare, hover, stats and info leave selection, money, parts, wear, resources and saved bytes unchanged
+PASS: Comparison controls preserve no Tab navigation
+PASS: Buy opens a shared purchase confirmation:
+PASS: Purchase confirmation formats current and resulting cash balances
+PASS: Browsing, filters, stock inspections and cancelled purchase retain exact live/disk assets and cached probes
+PASS: Insufficient funds keep model inspectable but disable Buy with a cash shortfall
+PASS: Locked model details show actual REP requirement and cannot be bought
+PASS: Changed live balance without revision invalidates confirmation and cannot publish a partial purchase
+PASS: Changed authored offer invalidates its quote even if the price floor is unchanged
+PASS: Failed durable save rolls back cash, car and every new part; error stays visible
+PASS: Successful confirmation commits one priced purchase and opens the new current owned car
+PASS: Purchase creates an independent valid car/engine/component identity and selects it
+PASS: Existing car names, tunes, fuel, fluids, parts and wear survive buying unchanged
+PASS: Replayed stale purchase cannot charge or grant another car
+PASS: A fresh second confirmation buys another distinct copy of the same model
+PASS: Currently selected owned car hides the unnecessary Compare button
+PASS: Owned Compare opens inline selected-to-viewed stats without changing selection
+PASS: Comparison dyno overlays the same actual-condition inspections used by full stats
+PASS: Selected comparison baseline uses retained hardware, tune and wear rather than a healthy OEM estimate
+PASS: Basic comparison shows both values: HP
+PASS: Basic comparison shows both values: Torque
+PASS: Basic comparison shows both values: Weight
+PASS: Basic comparison shows both values: Condition
+PASS: Comparison contains every reusable detailed stat group
+PASS: Detailed power values match the selected and viewed curves
+PASS: Comparison dyno hover follows both curves on the shared RPM axis
+PASS: Compared Transmission rows retain both saved values
+PASS: Compared Components rows retain both saved values
+PASS: Performance resolves independent copied-build driving estimates for both compared cars: False / False /  /
+PASS: Completed performance refresh retains both comparison columns
+PASS: Comparison info explains both sides through the shared modal
+PASS: F8 and Settings Cancel retain car comparison mode
+PASS: Second Compare click restores the normal dyno and single-car stats
+PASS: Repeated comparison uses cached snapshots and stock estimates rather than rerunning on gestures
+PASS: Compare, hover, stats and info leave selection, money, parts, wear, resources and saved bytes unchanged
+PASS: Comparison controls preserve no Tab navigation
+PASS: Search/filter/sort/count anchors fit without overlap at 1024
+PASS: Search/filter/sort/count anchors fit without overlap at 1920
+PASS: Dealer grid reflows under grouped navigation on the true 4K render target
+PASS: Escape goes back from dealer model details without buying
+PASS: Dealer controls preserve the approved no-Tab-navigation contract
+Checks: 107 / runtime errors: 0

@@ -1,5 +1,7 @@
 # Slice 2, Slice 3 and Slice 4 implementation phases
 
+**Requested 4D.10 checkpoint (2026-10-11):** inline comparisons with the selected car are technically delivered for review on dealership and other owned-car details: paired summaries, shared dyno hover and every grouped stat. Windows build passes; focused native checks pass 107/0 and full native regression checks pass 631/0. Comparison is read-only. User acceptance remains separate and 4D is not complete. [Checks/review](../reports/phases/4d/18-CAR-COMPARISON.md).
+
 **Requested 4D.9 refinement (2026-10-11):** dealership Filters now includes independent cash-based Affordability choices, with draft Apply/Cancel/Reset. Windows build passes; focused native checks pass 66/0 and full native regression checks pass 590/0. Technical completion and user review remain separate; later Garage work is gated. [Checks/review](../reports/phases/4d/17-AFFORDABILITY-FILTER.md).
 
 Current UI checkpoint (2026-10-11): **4D.9 native dealership** is technically delivered for review. Garage grouping, stock grid/browsing, model details/dyno and explicit purchase confirmation reuse current simulation/pricing/atomic-save rules. Windows build/full native checks pass 573/0; focused dealership checks pass 49/0. Owned inspection and maintenance remain available. Paint, drawer and later migrations remain separately requested; 4D is not complete. See [current checks/review](../reports/phases/4d/16-DEALERSHIP.md).

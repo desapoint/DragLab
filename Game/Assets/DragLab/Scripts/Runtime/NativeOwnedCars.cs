@@ -57,6 +57,7 @@ namespace DragLab.Runtime
                 BackToOwnedCars();
             }) { name = "ownedUseCar", text = "Use this car" };
             ownedUse.AddToClassList("action-button"); ownedUse.AddToClassList("primary-action"); actions.Add(ownedUse); AddSurface(ownedUse,RacingSurface.Kind.Action);
+            ownedCompare=CarCompareButton(actions,"ownedCompareCar",ToggleOwnedComparison);
         }
         void RefreshOwnedCars(string route)
         {
@@ -82,6 +83,10 @@ namespace DragLab.Runtime
                     }
                 }
                 ApplyOwnedQuery();
+                if(ownedDetailId!=null&&comparingOwnedId==ownedDetailId) {
+                    var panel=ownedDetailContent.Q<NativeStatsPanel>("ownedCarStats");
+                    if(panel?.Proposed!=null&&ownedEntries.TryGetValue(ownedDetailId,out var entry))ComparisonSummary(ownedDetailContent.Q(className:"car-summary"),panel.Current.Inspection,panel.Proposed.Inspection,entry);
+                }
             } catch (Exception) {
                 ownedGrid.Query<Label>(className:"car-class").ForEach(label => label.text = "Class unavailable · PP —");
                 foreach(var entry in ownedEntries.Values)entry.RatingPending=false;ApplyOwnedQuery();
@@ -195,6 +200,7 @@ namespace DragLab.Runtime
         }
         void BackToOwnedCars()
         {
+            comparingOwnedId=null;
             ownedDetailId = null; ClearOwnedDetailContent();
             root.Q<Label>("carSelectionError").text = "";
             Refresh();
@@ -212,14 +218,20 @@ namespace DragLab.Runtime
             root.Q<Label>("carSelectionError").text = "";
             ClearOwnedDetailContent(); ownedDetailContent.tooltip = car.instanceId;
             var identity = new Label("#"+car.instanceId.Substring(Math.Max(0,car.instanceId.Length-6))); identity.AddToClassList("car-identity"); ownedDetailContent.Add(identity);
+            bool current=car.instanceId==profile.selectedOwnedVehicleId;
+            var selected=InspectOwned(profile.SelectedCar)?.Stats;
+            bool comparing=!current&&comparingOwnedId==ownedDetailId&&selected!=null&&InspectOwned(car)!=null;
+            ownedCompare.EnableInClassList("hidden",current);ownedCompare.SetEnabled(!current&&selected!=null&&InspectOwned(car)!=null);ownedCompare.EnableInClassList("selected",comparing);
+            ownedCompare.tooltip=ownedCompare.enabledSelf?"Compare with the selected car":"Comparison unavailable: engine or build data missing";
+            if(comparing)ComparisonHeading(ownedDetailContent,VehicleCollection.DisplayName(profile.catalog,car));
             var body = new VisualElement { name = "ownedDetailsTopRow" }; body.AddToClassList("car-card-body"); body.AddToClassList("car-details-top"); ownedDetailContent.Add(body);
             var visual = new VisualElement(); visual.AddToClassList("car-visual"); body.Add(visual);
             visual.Add(CarPreview(MechanicsOwnership.Resolve(profile,car,profile.catalog),car.paintHex));
             body.Add(CopyCarSummary(card.Q("carSummary")));
-            body.Add(OwnedCarDyno(car));
-            BuildOwnedStats(body,car);
+            if(comparing)ComparisonSummary(body.Q(className:"car-summary"),selected,InspectOwned(car).Stats,ownedEntries[car.instanceId]);
+            body.Add(OwnedCarDyno(car,comparing?selected:null));
+            BuildOwnedStats(body,car,comparing?selected:null);
             BuildOwnedMaintenance(car);
-            bool current = car.instanceId == profile.selectedOwnedVehicleId;
             ownedUse.SetEnabled(!current); ownedUse.tooltip = current ? "Already the current car" : "Use this owned car";
             ExcludeTabTraversal();
         }

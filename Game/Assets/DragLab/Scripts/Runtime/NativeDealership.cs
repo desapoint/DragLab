@@ -31,6 +31,9 @@ namespace DragLab.Runtime
         readonly Dictionary<string,OwnedCarEntry> dealerEntries=new Dictionary<string,OwnedCarEntry>();
         readonly Dictionary<string,DealerModel> dealerModels=new Dictionary<string,DealerModel>();
         readonly List<RacingSurface> dealerSurfaces=new List<RacingSurface>();
+        readonly List<RacingSurface> dealerStatsSurfaces=new List<RacingSurface>();
+        readonly HashSet<string> dealerStatsShown=new HashSet<string>();
+        readonly Dictionary<string,bool> dealerStatsCollapsed=new Dictionary<string,bool>();
         MechanicalCatalog dealerCatalog;
         PlayerProfile dealerProfile;
         long dealerRevision=-1;
@@ -65,6 +68,7 @@ namespace DragLab.Runtime
             var actions=new VisualElement();actions.AddToClassList("car-details-actions");dealerDetails.Add(actions);
             dealerError=new Label {name="dealerPurchaseError"};dealerError.AddToClassList("car-critical");dealerError.AddToClassList("car-selection-error");actions.Add(dealerError);
             dealerBuy=new Button(OpenDealerPurchase) {name="dealerBuy",text="Buy",tabIndex=-1,focusable=false};dealerBuy.AddToClassList("action-button");dealerBuy.AddToClassList("primary-action");actions.Add(dealerBuy);AddSurface(dealerBuy,RacingSurface.Kind.Action);
+            dealerCompare=CarCompareButton(actions,"dealerCompareCar",ToggleDealerComparison);
         }
         void SwitchGaragePage(bool dealer)
         {
@@ -89,7 +93,13 @@ namespace DragLab.Runtime
                 model.Entry.Rating=pair.Value!=null&&pair.Value.completed?Benchmark.Rating(pair.Value.elapsed,pair.Value.trapMps*3.6):null;
                 var label=dealerGrid.Q<Label>("dealerClass:"+pair.Key);if(label!=null)label.text=DealerRating(model);
             }}catch(Exception){foreach(var model in dealerModels.Values){model.Entry.RatingPending=false;model.Entry.Rating=null;}}
-            ApplyOwnedQuery();RefreshDealerDetails();
+            ApplyOwnedQuery();
+            if(dealerDetailId!=null&&dealerModels.TryGetValue(dealerDetailId,out var viewed)) {
+                var panel=dealerContent.Q<NativeStatsPanel>("dealerCarStats");
+                if(panel?.Proposed!=null)ComparisonSummary(dealerContent.Q(className:"car-summary"),panel.Current.Inspection,panel.Proposed.Inspection,viewed.Entry);
+                else {var rating=dealerContent.Q<Label>("dealerClass:"+dealerDetailId);if(rating!=null)rating.text=DealerRating(viewed);}
+                var estimate=dealerContent.Q<Label>("dealerQuarterEstimate");if(estimate!=null)estimate.text=DealerEstimate(viewed);
+            }
         }
         void PrepareDealerModels()
         {
@@ -118,6 +128,7 @@ namespace DragLab.Runtime
             });
         }
         string DealerRating(DealerModel model)=>model.Entry.RatingPending?"Class …":model.Entry.Rating==null?"Class unavailable · PP —":"Class "+model.Entry.Rating.performanceClass+" · PP "+model.Entry.Rating.points;
+        string DealerEstimate(DealerModel model)=>model.Entry.RatingPending?"…":model.Driving?.completed==true?model.Driving.elapsed.ToString("F2")+" s · "+DisplayUnits.Speed(model.Driving.trapMps,SharedUnitSettings.Current.speed).ToString("F0")+" "+DisplayUnits.SpeedLabel(SharedUnitSettings.Current.speed):"—";
         string DealerBlocker(DealerModel model)
         {
             if(model.Stats==null||model.Price<=0)return "Stock build unavailable";
@@ -162,22 +173,30 @@ namespace DragLab.Runtime
         }
         void BackToDealer()
         {
+            comparingDealerId=null;
             dealerDetailId=null;ClearDealerDetails();dealerError.text="";Refresh();dealerScroll.schedule.Execute(()=>dealerScroll.scrollOffset=dealerReturnScroll);
         }
-        void ClearDealerDetails()=>dealerContent.Clear();
+        void ClearDealerDetails(){foreach(var surface in dealerStatsSurfaces)surfaces.Remove(surface);dealerStatsSurfaces.Clear();dealerContent.Clear();}
+        void DecorateDealerStats(VisualElement element,RacingSurface.Kind kind){AddSurface(element,kind);dealerStatsSurfaces.Add(element.Q<RacingSurface>());}
         void RefreshDealerDetails()
         {
             if(dealerDetailId==null)return;
             if(!dealerModels.TryGetValue(dealerDetailId,out var model)){BackToDealer();return;}
             ClearDealerDetails();root.Q<Label>("dealerDetailTitle").text=model.Entry.Name;
+            var selected=InspectOwned(game.Profile.SelectedCar)?.Stats;
+            bool comparing=comparingDealerId==dealerDetailId&&selected!=null&&model.Stats!=null;
+            dealerCompare.SetEnabled(selected!=null&&model.Stats!=null);dealerCompare.EnableInClassList("selected",comparing);dealerCompare.tooltip=dealerCompare.enabledSelf?"Compare with the selected car":"Comparison unavailable: engine or build data missing";
+            if(comparing)ComparisonHeading(dealerContent,model.Entry.Name);
             var body=new VisualElement();body.AddToClassList("car-card-body");body.AddToClassList("car-details-top");dealerContent.Add(body);
             var visual=new VisualElement();visual.AddToClassList("car-visual");body.Add(visual);if(model.Stats!=null)visual.Add(CarPreview(model.Stats.source.build,model.Offer.paint));body.Add(DealerSummary(model));
-            if(model.Stats!=null){var dyno=new VisualElement();dyno.AddToClassList("car-dyno");body.Add(dyno);dyno.Add(new NativeDynoPanel(new[] {new NativeDynoSeries("Stock","Stock",model.Stats,NativeDynoStyle.Primary)},dealerTorque,"dealerDynoPlot"));
+            if(comparing)ComparisonSummary(body.Q(className:"car-summary"),selected,model.Stats,model.Entry);
+            if(model.Stats!=null){var dyno=new VisualElement();dyno.AddToClassList("car-dyno");body.Add(dyno);dyno.Add(comparing?ComparisonDyno(selected,model.Stats,"dealerDynoPlot"):new NativeDynoPanel(new[] {new NativeDynoSeries("Stock","Stock",model.Stats,NativeDynoStyle.Primary)},dealerTorque,"dealerDynoPlot"));
+                BuildInspectionStats(body,dealerContent,model.Stats,comparing?selected:null,model.Offer.model,"dealerStatsToggle","dealerCarStats",dealerStatsShown,dealerStatsCollapsed,DecorateDealerStats,()=>DealerDriving(model),()=>OwnedDriving(game.Profile.SelectedCar));
                 var specs=new VisualElement();specs.AddToClassList("dealer-specs");dealerContent.Add(specs);var spec=model.Stats.source.build.spec;
                 CarFact(specs,"Engine",spec.DisplacementLitres.ToString("F1")+" L · "+spec.sound.cylinders+" cylinders · "+model.Stats.fueling);
                 CarFact(specs,"Induction",model.Entry.Induction);CarFact(specs,"Fuel included",model.Stats.source.startingFuel.litres.ToString("F1")+" L");
                 CarFact(specs,"Oil / coolant included",model.Stats.source.startingFluids.oilLitres.ToString("F1")+" / "+model.Stats.source.startingFluids.coolantLitres.ToString("F1")+" L");
-                if(model.Entry.Rating!=null)CarFact(specs,"Estimated ¼ mile",model.Driving.elapsed.ToString("F2")+" s · "+DisplayUnits.Speed(model.Driving.trapMps,SharedUnitSettings.Current.speed).ToString("F0")+" "+DisplayUnits.SpeedLabel(SharedUnitSettings.Current.speed));
+                CarFact(specs,"Estimated ¼ mile",DealerEstimate(model));specs.Children().Last().Q<Label>(className:"car-fact-value").name="dealerQuarterEstimate";
                 foreach(var warning in model.Stats.warnings){var label=new Label(warning.title+" · "+warning.suggestion);label.AddToClassList("car-reason");dealerContent.Add(label);}
             }
             dealerBuy.Q<Label>().text="Buy · "+(model.Price>0?DisplayUnits.Money(model.Price):"Unavailable");dealerBuy.SetEnabled(model.Blocker==null);dealerBuy.tooltip=model.Blocker??"Buy a new OEM car; selects it after purchase";ExcludeTabTraversal();

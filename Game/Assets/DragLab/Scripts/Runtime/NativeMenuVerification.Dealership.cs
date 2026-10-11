@@ -95,6 +95,8 @@ namespace DragLab.Runtime
                 Check(curve.source.components.All(p=>p.condition.health==1&&!p.condition.failed)&&curve.source.startingFuel.litres==fixture.catalog.Spec(id).fuel.capacityLitres,"OEM preview starts with factory parts and included full fuel, independent of worn owned parts");
                 yield return Capture("dealer-details");yield return Key(input,0x77);yield return Key(input,0x77);Check(shell.DealerDetailsOpen,"F8 retains the inspected dealer model");
                 yield return Click(input,"settingsButton");yield return Click(input,"cancelSettings");Check(shell.DealerDetailsOpen,"Settings Cancel returns to the same dealer details");
+                yield return Click(input,"dealerBack");yield return DealerCardClick(input,game.vehicles.First(v=>v.spec.bodyType==CarBodyType.Pickup).spec.id);
+                yield return ComparisonChecks(input,true);yield return Click(input,"dealerBack");yield return DealerCardClick(input,id);
                 yield return Click(input,"dealerBuy");Check(shell.ModalOpen&&shell.Root.Q<Button>("dialogConfirm").enabledInHierarchy,"Buy opens a shared purchase confirmation: "+shell.Root.Q<Label>("dealerPurchaseError").text);
                 Check(shell.Root.Q("modalContent").Query<Label>().ToList().Any(l=>l.text==DisplayUnits.Money(fixture.cash))&&shell.Root.Q("modalContent").Query<Label>().ToList().Any(l=>l.text==DisplayUnits.Money((long)fixture.cash-cost)),"Purchase confirmation formats current and resulting cash balances");
                 yield return Capture("dealer-confirmation");yield return Click(input,"dialogCancel");
@@ -121,6 +123,10 @@ namespace DragLab.Runtime
                 string committed=File.ReadAllText(ProfileStore.FilePath);Check(!game.BuyNativeCar(stale)&&File.ReadAllText(ProfileStore.FilePath)==committed,"Replayed stale purchase cannot charge or grant another car");
                 yield return Click(input,"ownedBack");yield return Click(input,"garageDealer");yield return DealerCardClick(input,id);yield return Click(input,"dealerBuy");yield return Click(input,"dialogConfirm");
                 Check(game.Profile.cars.Count==count+2&&game.Profile.cars.Where(c=>c.vehicleId==id).Select(c=>c.instanceId).Distinct().Count()==game.Profile.cars.Count(c=>c.vehicleId==id),"A fresh second confirmation buys another distinct copy of the same model");
+                Check(shell.Root.Q<Button>("ownedCompareCar").ClassListContains("hidden"),"Currently selected owned car hides the unnecessary Compare button");
+                yield return Click(input,"ownedBack");shell.ResetOwnedQuery();string comparedId=game.Profile.cars.First(c=>c.instanceId!=game.Profile.selectedOwnedVehicleId).instanceId;
+                shell.Root.Q<ScrollView>("ownedCars").ScrollTo(shell.Root.Q("ownedCar:"+comparedId));yield return new WaitForSecondsRealtime(.1f);yield return Click(input,"ownedCar:"+comparedId);
+                yield return ComparisonChecks(input,false);
                 yield return Click(input,"ownedBack");yield return Click(input,"garageDealer");
                 Screen.SetResolution(1024,768,false);yield return new WaitForSecondsRealtime(.5f);CarFilterToolbarLayout(1024);yield return Capture("dealer-compact");
                 Screen.SetResolution(1920,1080,false);yield return new WaitForSecondsRealtime(.5f);CarFilterToolbarLayout(1920);yield return Capture("dealer-1080p");

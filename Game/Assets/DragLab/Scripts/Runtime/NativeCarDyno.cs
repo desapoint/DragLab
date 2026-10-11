@@ -8,7 +8,7 @@ namespace DragLab.Runtime
 {
     internal sealed partial class NativeMenuShell
     {
-        VisualElement OwnedCarDyno(OwnedCar car)
+        VisualElement OwnedCarDyno(OwnedCar car,CarInspection comparedTo=null)
         {
             var panel = new VisualElement { name = "ownedCarDyno", pickingMode = PickingMode.Ignore };
             panel.AddToClassList("car-dyno");
@@ -16,10 +16,11 @@ namespace DragLab.Runtime
                 var missing = new Label("No engine attached"); missing.AddToClassList("car-warning"); panel.Add(missing); return panel;
             }
             try {
-                var source = InspectionBuild.Capture(game.Profile,car);
-                var stats = CarInspection.CalculatePrepared(source,CarInspection.PrepareCar(source),false);
-                var healthySource = InspectionBuild.Capture(game.Profile,car,healthy:true);
-                var healthy = CarInspection.CalculatePrepared(healthySource,CarInspection.PrepareCar(healthySource),false);
+                var cached=InspectOwned(car);if(cached==null)throw new InvalidOperationException("Inspection unavailable");
+                var stats=cached.Stats;
+                if(comparedTo!=null){panel.Add(ComparisonDyno(comparedTo,stats,"ownedDynoPlot"));return panel;}
+                if(cached.Healthy==null){var healthySource=InspectionBuild.Capture(game.Profile,car,healthy:true);cached.Healthy=CarInspection.CalculatePrepared(healthySource,CarInspection.PrepareCar(healthySource),false);}
+                var healthy=cached.Healthy;
                 TorqueUnit units = SharedUnitSettings.Current.torque;
                 panel.Add(new NativeDynoPanel(new[] {
                     new NativeDynoSeries("Current","Current",stats,NativeDynoStyle.Primary),

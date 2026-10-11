@@ -11,19 +11,21 @@ namespace DragLab.Runtime
         internal NativeStatsSnapshot Current { get; }
         internal NativeStatsSnapshot Proposed { get; }
         internal Action<string> GroupOpened;
-        internal void SetDrivingInspection(CarInspection inspection,UnitPreferences units,Action<NativeStatDefinition> info)
+        internal void SetDrivingInspection(CarInspection inspection,UnitPreferences units,Action<NativeStatDefinition> info,CarInspection proposed=null)
         {
             Current.DrivingInspection=inspection;
+            if(Proposed!=null&&proposed!=null)Proposed.DrivingInspection=proposed;
             var body=this.Q("statsBody:Performance");
             if(body==null||body.childCount==0)return;
             body.Clear();
-            foreach(var definition in NativeStatCatalog.Performance(inspection,null).Definitions)body.Add(StatRow(definition,units,info));
+            foreach(var definition in NativeStatCatalog.Performance(Current.Driving,Proposed?.Driving).Definitions)body.Add(StatRow(definition,units,info));
         }
         internal NativeStatsPanel(CarInspection current,UnitPreferences units,IEnumerable<NativeStatGroup> groups,
             IDictionary<string,bool> collapsed,Action<NativeStatDefinition> info,Action<VisualElement,RacingSurface.Kind> decorate,CarInspection proposed=null)
         {
             Current=new NativeStatsSnapshot(current);Proposed=proposed==null?null:new NativeStatsSnapshot(proposed);
             AddToClassList("native-stats");
+            if(Proposed!=null)AddToClassList("native-stats-comparison");
             foreach(var group in groups) AddGroup(this,group,units,collapsed,info,decorate);
         }
         void AddGroup(VisualElement parent,NativeStatGroup group,UnitPreferences units,IDictionary<string,bool> collapsed,

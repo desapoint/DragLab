@@ -32,7 +32,7 @@ namespace DragLab.Runtime
         void Log(string message, string trace, LogType type)
         { if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert) { errors++; report.AppendLine(message); } }
         void Check(bool ok, string label) { checks++; if (!ok) throw new InvalidOperationException(label); report.AppendLine("PASS: " + label); }
-        void Update() { if (started > 0 && Time.realtimeSinceStartup - started > 240) Finish(new TimeoutException("Native shell probe timeout")); }
+        void Update() { if (started > 0 && Time.realtimeSinceStartup - started > 360) Finish(new TimeoutException("Native shell probe timeout")); }
         void Finish(Exception exception = null)
         {
             report.AppendLine("Checks: " + checks + " / runtime errors: " + errors);
