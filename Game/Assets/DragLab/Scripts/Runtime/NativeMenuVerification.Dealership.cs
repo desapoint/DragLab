@@ -17,6 +17,42 @@ namespace DragLab.Runtime
         VisualElement[] VisibleDealerCards()=>shell.Root.Q("dealerCarGrid").Children().Where(c=>c.ClassListContains("owned-car-card")&&!c.ClassListContains("hidden")).ToArray();
         IEnumerator DealerCardClick(WindowsKeyboardProbe input,string model)
         {shell.Root.Q<ScrollView>("dealerCars").ScrollTo(shell.Root.Q("dealerCar:"+model));yield return new WaitForSecondsRealtime(.1f);yield return Click(input,"dealerCar:"+model);}
+        IEnumerator DealerAffordabilityChecks(WindowsKeyboardProbe input,PlayerProfile fixture)
+        {
+            int cash=fixture.cash,rep=fixture.reputation;
+            var prices=game.vehicles.ToDictionary(v=>v.spec.id,v=>PaidEconomy.DealerPrice(fixture.catalog,game.Costs,game.PricingPolicy,game.AuthoredOffer(v.spec.id)));
+            int boundary=prices.Values.Min();fixture.cash=boundary;fixture.reputation=0;shell.InvalidateDealer();shell.Refresh();
+            string state=JsonUtility.ToJson(fixture);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);int probes=shell.DealerProbeCount;
+            yield return Click(input,"ownedCarFilters");yield return CarFilterClick(input,"ownedFilterAffordability:Affordable");
+            Check(shell.OwnedQuery.Affordability=="All"&&VisibleDealerCards().Length==prices.Count,"Affordability choice remains a draft until Apply");
+            Check(shell.Root.Q<Label>("ownedFilterPreview").text==prices.Count(p=>p.Value<=boundary)+" / "+prices.Count+" cars","Affordable draft preview uses actual dealer prices and includes exact cash equality");
+            yield return Capture("dealer-affordability-filter");yield return Click(input,"dialogCancel");
+            Check(shell.OwnedQuery.Affordability=="All"&&VisibleDealerCards().Length==prices.Count,"Cancel discards the affordability draft");
+            yield return Click(input,"ownedCarFilters");yield return CarFilterClick(input,"ownedFilterAffordability:Affordable");yield return Click(input,"dialogApply");
+            Check(VisibleDealerCards().Select(c=>c.name.Substring("dealerCar:".Length)).OrderBy(s=>s).SequenceEqual(prices.Where(p=>p.Value<=boundary).Select(p=>p.Key).OrderBy(s=>s))&&shell.OwnedQuery.FilterCount==1,"Applied Affordable filter matches the inclusive cash budget and counts as one criterion");
+            fixture.cash=boundary-1;shell.InvalidateDealer();shell.Refresh();Check(VisibleDealerCards().Length==0,"Affordable results refresh when cash drops below the cheapest price");
+            fixture.cash=boundary;shell.InvalidateDealer();shell.Refresh();
+            yield return Click(input,"ownedCarFilters");Check(shell.Root.Q<Button>("ownedFilterAffordability:Affordable").ClassListContains("selected"),"Reopened filters retain the applied affordability choice");
+            yield return CarFilterClick(input,"ownedFilterAffordability:Unaffordable");yield return Click(input,"dialogApply");
+            Check(VisibleDealerCards().Select(c=>c.name.Substring("dealerCar:".Length)).OrderBy(s=>s).SequenceEqual(prices.Where(p=>p.Value>boundary).Select(p=>p.Key).OrderBy(s=>s)),"Unaffordable is the strictly over-budget complement for valid prices");
+            yield return Click(input,"garageOwned");yield return Click(input,"ownedCarFilters");
+            Check(shell.OwnedQuery.Affordability=="All"&&shell.Root.Q("ownedFilterAffordability:Affordable")==null,"Owned cars retain independent filters without a purchase-budget control");yield return Click(input,"dialogCancel");
+            yield return Click(input,"garageDealer");Check(shell.OwnedQuery.Affordability=="Unaffordable","Switching back retains the dealership affordability filter");
+            yield return Click(input,"ownedCarClear");Check(shell.OwnedQuery.Affordability=="All"&&VisibleDealerCards().Length==prices.Count,"Toolbar reset clears affordability with the other criteria");
+            fixture.cash=cash;shell.InvalidateDealer();shell.Refresh();
+            yield return Click(input,"ownedCarFilters");yield return CarFilterClick(input,"ownedFilterAffordability:Affordable");yield return CarFilterClick(input,"ownedFilterStatus:Locked");yield return Click(input,"dialogApply");
+            Check(VisibleDealerCards().Length>0&&VisibleDealerCards().Length==game.vehicles.Count(v=>v.reputationRequired>0)&&shell.OwnedQuery.FilterCount==2,"Affordable combines independently with reputation Locked, without treating those models as purchasable");
+            yield return Click(input,"ownedCarFilters");yield return Click(input,"dialogReset");
+            Check(shell.OwnedQuery.Affordability=="Affordable"&&shell.Root.Q<Button>("ownedFilterAffordability:All").ClassListContains("selected"),"Dialog Reset clears affordability only in the draft");yield return Click(input,"dialogCancel");
+            Check(shell.OwnedQuery.Affordability=="Affordable","Cancelling Reset preserves the previous affordability choice");
+            yield return Click(input,"ownedCarFilters");yield return Click(input,"dialogReset");yield return Click(input,"dialogApply");
+            Check(shell.OwnedQuery.FilterCount==0&&VisibleDealerCards().Length==prices.Count,"Applying Reset clears all dealership filters");
+            fixture.cash=boundary;
+            Check(JsonUtility.ToJson(fixture)==state&&File.ReadAllBytes(ProfileStore.FilePath).SequenceEqual(disk)&&shell.DealerProbeCount==probes,"Affordability browsing changes no player assets, saved bytes or cached simulation probes");
+            var query=new OwnedCarQuery {Affordability="Affordable"};Check(query.Copy().Affordability=="Affordable"&&!query.Matches(new OwnedCarEntry {Affordable=null}),"Copied queries retain affordability and unknown prices never count as affordable");
+            query.Affordability="Unaffordable";Check(!query.Matches(new OwnedCarEntry {Affordable=null}),"Unknown prices never count as unaffordable");
+            fixture.cash=cash;fixture.reputation=rep;shell.InvalidateDealer();shell.Refresh();
+        }
         IEnumerator DealershipChecks(WindowsKeyboardProbe input)
         {
             var original=game.Profile;var field=typeof(PrototypeGame).GetField("profile",BindingFlags.Instance|BindingFlags.NonPublic);
@@ -51,6 +87,7 @@ namespace DragLab.Runtime
                 yield return Click(input,"ownedCarClear");yield return Click(input,"ownedCarFilters");yield return CarFilterClick(input,"ownedFilterType:Coupe");yield return Click(input,"dialogApply");
                 Check(VisibleDealerCards().Length==game.vehicles.Count(v=>v.spec.bodyType==CarBodyType.Coupe),"Shared dealership filters use actual model body metadata");
                 yield return Click(input,"ownedCarClear");
+                yield return DealerAffordabilityChecks(input,fixture);
                 string id=game.vehicles[0].spec.id;var offer=game.AuthoredOffer(id);int cost=PaidEconomy.DealerPrice(fixture.catalog,game.Costs,game.PricingPolicy,offer);
                 yield return DealerCardClick(input,id);
                 Check(shell.DealerDetailsOpen&&!shell.ModalOpen&&shell.Root.Q("dealerCars").ClassListContains("hidden")&&shell.Root.Q<NativeDynoPlot>("dealerDynoPlot")!=null,"Dealer model opens a full details page with stock dyno, not a modal");

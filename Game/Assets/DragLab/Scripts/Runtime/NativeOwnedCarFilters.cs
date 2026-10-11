@@ -50,7 +50,7 @@ namespace DragLab.Runtime
         }
         internal void ResetOwnedQuery()
         {
-            ownedQuery.Search="";ownedQuery.Rank=ownedQuery.Drive=ownedQuery.Type=ownedQuery.Gearbox=ownedQuery.Induction=ownedQuery.Status="All";
+            ownedQuery.Search="";ownedQuery.Rank=ownedQuery.Drive=ownedQuery.Type=ownedQuery.Gearbox=ownedQuery.Induction=ownedQuery.Status=ownedQuery.Affordability="All";
             ownedQuery.Minimum=new double?[5];ownedQuery.Maximum=new double?[5];ownedQuery.Sort=OwnedCarSort.OwnedOrder;ownedQuery.Descending=false;
             ownedSearch.SetValueWithoutNotify("");ownedSearch.Q("ownedCarSearchHint").RemoveFromClassList("hidden");ApplyOwnedQuery(true);
             ownedSearch.Blur();
@@ -128,6 +128,7 @@ namespace DragLab.Runtime
                 new DialogAction("Reset",()=>{CloseDialog();OpenOwnedCarFilters(new OwnedCarQuery {Search=ownedQuery.Search,Sort=ownedQuery.Sort,Descending=ownedQuery.Descending});}),
                 new DialogAction("Cancel",CloseDialog),new DialogAction("Apply",()=> {
                     if(!Validate())return;ownedQuery.Rank=draft.Rank;ownedQuery.Drive=draft.Drive;ownedQuery.Type=draft.Type;ownedQuery.Gearbox=draft.Gearbox;ownedQuery.Induction=draft.Induction;ownedQuery.Status=draft.Status;
+                    ownedQuery.Affordability=draft.Affordability;
                     ownedQuery.Minimum=draft.Minimum;ownedQuery.Maximum=draft.Maximum;CloseDialog();ApplyOwnedQuery(true);
                 },true)
             },populate:content=> {
@@ -136,6 +137,7 @@ namespace DragLab.Runtime
                 QueryChoices(content,"ownedFilterType","Type",new[] {"All","Hatchback","Coupe","Sedan","Pickup","SUV","Wagon","Van","Roadster","Unspecified"},()=>draft.Type,value=>{draft.Type=value;Validate();});
                 QueryChoices(content,"ownedFilterGearbox","Transmission",new[] {"All","Manual","Sequential","DCT","Automatic","CVT"},()=>draft.Gearbox,value=>{draft.Gearbox=value;Validate();},3);
                 QueryChoices(content,"ownedFilterInduction","Induction",new[] {"All","NA","Turbo","Supercharged","Twincharged"},()=>draft.Induction,value=>{draft.Induction=value;Validate();});
+                if(dealerMode)QueryChoices(content,"ownedFilterAffordability","Affordability",new[] {"All","Affordable","Unaffordable"},()=>draft.Affordability,value=>{draft.Affordability=value;Validate();});
                 QueryChoices(content,"ownedFilterStatus","Availability",dealerMode?new[] {"All","Available","Locked","Unaffordable","Unavailable"}:new[] {"All","Ready","Needs service","Reserved","Unavailable","No fuel"},()=>draft.Status,value=>{draft.Status=value;Validate();},3);
                 string[] names={"PP","HP","Torque · "+DisplayUnits.TorqueLabel(SharedUnitSettings.Current.torque),"Weight · kg","Condition · %"};
                 for(int i=0;i<5;i++) {

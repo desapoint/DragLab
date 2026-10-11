@@ -133,6 +133,7 @@ namespace DragLab.Runtime
             foreach(var pair in dealerModels) {
                 string id=pair.Key;var model=pair.Value;
                 try{model.Price=PaidEconomy.DealerPrice(dealerCatalog,game.Costs,game.PricingPolicy,model.Offer);}catch(Exception){model.Price=-1;}
+                model.Entry.Affordable=model.Price>0?(bool?)(model.Price<=game.Profile.cash):null;
                 model.Blocker=DealerBlocker(model);model.Entry.Status=model.Blocker==null?"Available":game.Profile.reputation<model.Offer.reputation?"Locked":model.Price>game.Profile.cash?"Unaffordable":"Unavailable";
                 var card=new Button(()=>OpenDealerModel(id)) {name="dealerCar:"+id,tooltip=model.Entry.Name,tabIndex=-1,focusable=false};card.AddToClassList("owned-car-card");card.AddToClassList("clickable-panel");dealerGrid.Add(card);AddSurface(card,RacingSurface.Kind.Panel);dealerSurfaces.Add(card.Q<RacingSurface>());
                 var heading=new VisualElement();heading.AddToClassList("car-card-heading");card.Add(heading);var title=new Label(model.Entry.Name);title.AddToClassList("car-card-title");heading.Add(title);
