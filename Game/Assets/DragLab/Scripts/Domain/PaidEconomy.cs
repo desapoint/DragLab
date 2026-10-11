@@ -96,14 +96,19 @@ namespace DragLab.Domain.Mechanics
             double engineOffer = values.buyers.Max(b => engine * b.parts * Math.Max(1, b.engine) * (model == null ? 1 : model.engineDemand));
             double chassisOffer = values.buyers.Max(b => (road * b.parts + bare) * Math.Max(1, b.chassis) * (model == null ? 1 : model.chassisDemand));
             double carOffer = values.buyers.Max(b => ((engine + road) * b.parts + bare) * Math.Max(1, b.car) * (model == null ? 1 : model.carDemand));
-            double suppliedFluids = spec.fuel.capacityLitres * costs.fuelPerLitre + spec.fluids.oilCapacityLitres * costs.oilPerLitre + spec.fluids.coolantCapacityLitres * costs.coolantPerLitre;
+            if(offer.parts!=null&&offer.parts.Count>0){
+                engineOffer=chassisOffer=carOffer=0;
+                foreach(var buyer in values.buyers){double e=0,r=0;foreach(var p in offer.parts){var d=catalog.Find(p.definitionId);double value=Valuations.PartValue(p,d,values,buyer,new List<ValuationLine>());if(MechanicalCatalog.EngineSlot(d.category))e+=value;else r+=value;}
+                    engineOffer=Math.Max(engineOffer,e*Math.Max(1,buyer.engine)*(model?.engineDemand??1));chassisOffer=Math.Max(chassisOffer,(r+bare)*Math.Max(1,buyer.chassis)*(model?.chassisDemand??1));carOffer=Math.Max(carOffer,(e+r+bare)*Math.Max(1,buyer.car)*(model?.carDemand??1));}
+            }
+            double suppliedFluids = (offer.parts!=null&&offer.parts.Count>0?offer.fuel.litres:spec.fuel.capacityLitres) * costs.fuelPerLitre + (offer.parts!=null&&offer.parts.Count>0?offer.fluids.oilLitres:spec.fluids.oilCapacityLitres) * costs.oilPerLitre + (offer.parts!=null&&offer.parts.Count>0?offer.fluids.coolantLitres:spec.fluids.coolantCapacityLitres) * costs.coolantPerLitre;
             return Money(Math.Max(offer.price, Math.Max(engineOffer + chassisOffer, carOffer) * (1 + costs.dealerSpread) + suppliedFluids));
         }
         public static PaymentAmounts Preview(PlayerProfile p, MechanicalCatalog cat, OperatingPolicy policy, ValuationPolicy prices, PaymentRequest request, long now)
         {
             policy.Validate(); if (request == null || !Enum.IsDefined(typeof(PaymentKind), request.kind)) throw new InvalidOperationException("Invalid payment request.");
             var a = new PaymentAmounts { description = request.kind.ToString() };
-            if (request.kind == PaymentKind.Car) { a.cost = DealerPrice(cat, policy, prices, request.offer); a.fuel = cat.Spec(request.offer.model).fuel.capacityLitres; a.oil = cat.Spec(request.offer.model).fluids.oilCapacityLitres; a.coolant = cat.Spec(request.offer.model).fluids.coolantCapacityLitres; return a; }
+            if (request.kind == PaymentKind.Car) { VehicleListings.RequireCurrent(p,request.offer);a.cost = DealerPrice(cat, policy, prices, request.offer); a.fuel = request.offer.parts!=null&&request.offer.parts.Count>0?request.offer.fuel.litres:cat.Spec(request.offer.model).fuel.capacityLitres; a.oil = request.offer.parts!=null&&request.offer.parts.Count>0?request.offer.fluids.oilLitres:cat.Spec(request.offer.model).fluids.oilCapacityLitres; a.coolant = request.offer.parts!=null&&request.offer.parts.Count>0?request.offer.fluids.coolantLitres:cat.Spec(request.offer.model).fluids.coolantCapacityLitres; return a; }
             var car = Car(p, request.carId); var build = MechanicsOwnership.Resolve(p, car, cat);
             if (request.kind == PaymentKind.Part) { var d = cat.Find(request.targetId); if (d == null || !cat.Fits(cat.Spec(car.vehicleId), d) || d.price < 0 || p.reputation<d.reputationRequired) throw new InvalidOperationException("Incompatible/unavailable part purchase; check reputation requirement."); a.cost = d.price; return a; }
             if (request.kind == PaymentKind.Fuel) { a.fuel = Quantity(request.litres, cat.Spec(car.vehicleId).fuel.capacityLitres - car.fuel.litres); a.cost = Money(a.fuel * policy.fuelPerLitre); return a; }
@@ -121,11 +126,11 @@ namespace DragLab.Domain.Mechanics
             if (request.kind == PaymentKind.ElementNew || request.kind == PaymentKind.ElementReuse) { if (!item.condition.elements.Any(e => e.id == request.auxiliaryId)) throw new InvalidOperationException("Individual element changed."); a.cost = request.kind == PaymentKind.ElementNew ? EngineElementService.Price(definition, item.condition) : 0; }
             return a;
         }
-        static string Hash(PlayerProfile p, MechanicalCatalog cat, OperatingPolicy policy, ValuationPolicy values, PaymentRequest r,string profileJson=null)
+        static string Hash(PlayerProfile p, MechanicalCatalog cat, OperatingPolicy policy, ValuationPolicy values, PaymentRequest r,string profileJson=null,string requestJson=null)
         {
-            string extra = JsonUtility.ToJson(r);
+            string extra = requestJson??JsonUtility.ToJson(r);
             if (r.kind == PaymentKind.Part) extra += JsonUtility.ToJson(cat.Find(r.targetId));
-            if (r.kind == PaymentKind.Car) { extra += JsonUtility.ToJson(cat.Spec(r.offer.model)); foreach (var slot in cat.Recipe(r.offer.model, r.offer.stock)) extra += JsonUtility.ToJson(cat.Find(slot.Value)); }
+            if (r.kind == PaymentKind.Car) { extra += JsonUtility.ToJson(cat.Spec(r.offer.model)); foreach (var id in (r.offer.parts==null||r.offer.parts.Count==0?cat.Recipe(r.offer.model,r.offer.stock).Values:r.offer.parts.Select(i=>i.definitionId)))extra+=JsonUtility.ToJson(cat.Find(id)); }
             using (var sha = SHA256.Create()) return Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(Valuations.Fingerprint(p, cat, values,profileJson) + JsonUtility.ToJson(policy) + extra)));
         }
         public static PaymentQuote Quote(PlayerProfile p, MechanicalCatalog cat, OperatingPolicy policy, ValuationPolicy values, PaymentRequest request, long now)
@@ -137,8 +142,8 @@ namespace DragLab.Domain.Mechanics
         {
             if (q == null) throw new InvalidOperationException("Request a payment quote first."); Guard(p, now, q.Id);
             if (p.revision != q.Revision || now < q.Issued || now >= q.Expires) throw new InvalidOperationException("Payment quote stale/expired.");
-            var r = JsonUtility.FromJson<PaymentRequest>(q.RequestJson); if (r.kind == PaymentKind.Car) { if (currentOffer == null) throw new InvalidOperationException("Refresh the authored dealership offer."); r.offer = currentOffer; }
-            if (!SnapshotEquality.Profile(q.ProfileJson,p,cat)||Hash(p, cat, policy, values, r,q.ProfileJson) != q.StateHash) throw new InvalidOperationException("Payment assets/quantity/catalogue/policy changed. Refresh.");
+            var r = JsonUtility.FromJson<PaymentRequest>(q.RequestJson); if (r.kind == PaymentKind.Car) { if (currentOffer == null) throw new InvalidOperationException("Refresh the authored dealership offer.");if(!SnapshotEquality.Serialized(JsonUtility.ToJson(r.offer),currentOffer))throw new InvalidOperationException("Dealership listing contents changed. Refresh."); r.offer = currentOffer; }
+            if (!SnapshotEquality.Profile(q.ProfileJson,p,cat)||Hash(p, cat, policy, values, r,q.ProfileJson,q.RequestJson) != q.StateHash) throw new InvalidOperationException("Payment assets/quantity/catalogue/policy changed. Refresh.");
             var amounts = Preview(p, cat, policy, values, r, now); if (amounts.cost != q.Cost || p.cash < q.Cost) throw new InvalidOperationException("Insufficient cash or changed price; nothing changed.");
             if ((r.kind == PaymentKind.Fuel && q.Fuel <= 0) || (r.kind == PaymentKind.Fluids && q.Oil + q.Coolant <= 0)) throw new InvalidOperationException("No free capacity / quantity to purchase.");
             int before = p.cash;

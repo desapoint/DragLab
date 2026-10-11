@@ -131,6 +131,7 @@ namespace DragLab.Runtime
             SetText("cash", DisplayUnits.Money(profile.cash));
             SetText("fuel", car == null ? "— L" : car.fuel.litres.ToString("F1") + " / " + profile.catalog.Spec(car.vehicleId).fuel.capacityLitres.ToString("F0") + " L");
             SetText("progression", "REP " + profile.reputation);
+            StartDealership();
             RefreshOwnedCars(route);
             RefreshDealership(route);
             if (renderedRoute == route) return;

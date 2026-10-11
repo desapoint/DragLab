@@ -10,7 +10,7 @@ namespace DragLab.Runtime
     internal enum OwnedCarSort { OwnedOrder, Name, Rank, PP, HP, Torque, Weight, Condition, Drivetrain, Type, Transmission }
     internal sealed class OwnedCarEntry
     {
-        internal string Id, Name, Model, Drive, Type, Gearbox, Induction, Status;
+        internal string Id, Name, Model, Drive, Type, Gearbox, Induction, Status, StockCondition;
         internal int Order;
         internal double? Hp, Torque, Weight, Condition;
         internal BenchmarkResult Rating;
@@ -23,16 +23,16 @@ namespace DragLab.Runtime
     }
     internal sealed class OwnedCarQuery
     {
-        internal string Search="", Rank="All", Drive="All", Type="All", Gearbox="All", Induction="All", Status="All", Affordability="All";
+        internal string Search="", Rank="All", Drive="All", Type="All", Gearbox="All", Induction="All", Status="All", Affordability="All",StockCondition="All";
         internal double?[] Minimum=new double?[5],Maximum=new double?[5]; // PP, HP, Nm, kg, %.
         internal OwnedCarSort Sort;
         internal bool Descending;
-        internal OwnedCarQuery Copy()=>new OwnedCarQuery {Search=Search,Rank=Rank,Drive=Drive,Type=Type,Gearbox=Gearbox,Induction=Induction,Status=Status,Affordability=Affordability,Minimum=(double?[])Minimum.Clone(),Maximum=(double?[])Maximum.Clone(),Sort=Sort,Descending=Descending};
-        internal int FilterCount=>new[] {Rank,Drive,Type,Gearbox,Induction,Status,Affordability}.Count(s=>s!="All")+Enumerable.Range(0,5).Count(i=>Minimum[i].HasValue||Maximum[i].HasValue);
+        internal OwnedCarQuery Copy()=>new OwnedCarQuery {Search=Search,Rank=Rank,Drive=Drive,Type=Type,Gearbox=Gearbox,Induction=Induction,Status=Status,Affordability=Affordability,StockCondition=StockCondition,Minimum=(double?[])Minimum.Clone(),Maximum=(double?[])Maximum.Clone(),Sort=Sort,Descending=Descending};
+        internal int FilterCount=>new[] {Rank,Drive,Type,Gearbox,Induction,Status,Affordability,StockCondition}.Count(s=>s!="All")+Enumerable.Range(0,5).Count(i=>Minimum[i].HasValue||Maximum[i].HasValue);
         static bool Choice(string filter,string value)=>filter=="All"||filter==value;
         internal bool Matches(OwnedCarEntry car)
         {
-            if(!Choice(Rank,car.Rating?.performanceClass)||!Choice(Type,car.Type)||!Choice(Gearbox,car.Gearbox)||!Choice(Induction,car.Induction)||!Choice(Status,car.Status))return false;
+            if(!Choice(StockCondition,car.StockCondition)||!Choice(Rank,car.Rating?.performanceClass)||!Choice(Type,car.Type)||!Choice(Gearbox,car.Gearbox)||!Choice(Induction,car.Induction)||!Choice(Status,car.Status))return false;
             if(Affordability!="All"&&(!car.Affordable.HasValue||car.Affordable.Value!=(Affordability=="Affordable")))return false;
             if(Drive!="All"&&(Drive=="4×4"?!car.LockedCenter:Drive!=car.Drive))return false;
             string haystack=string.Join(" ",car.Name,car.Model,car.Id,car.Type,car.Drive,car.LockedCenter?"4x4 4×4 4WD":"",car.Gearbox,car.Induction);

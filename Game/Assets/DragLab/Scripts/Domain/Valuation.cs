@@ -104,7 +104,7 @@ namespace DragLab.Domain.Mechanics
             return Clamp(h * (1 - .25 * Clamp(c.deposits, 0, 1)) * (1 - .25 * Clamp(c.leakSeverity, 0, 1)) * (1 - .15 * Clamp(c.adjustmentError, 0, 1)), 0, 1);
         }
         static double Change(List<ValuationLine> lines, string asset, string label, double value, double factor, string why) { double after = value * factor; lines.Add(new ValuationLine(asset, label, value, after, why + " / ×" + factor.ToString("F3"))); return after; }
-        static double PartValue(PartInstance part, PartDefinition def, ValuationPolicy policy, BuyerPolicy buyer, List<ValuationLine> lines)
+        internal static double PartValue(PartInstance part, PartDefinition def, ValuationPolicy policy, BuyerPolicy buyer, List<ValuationLine> lines)
         {
             var c = part.condition; double value = def.price * policy.usedPartFraction;
             lines.Add(new ValuationLine(part.instanceId, def.name, 0, value, "Catalogue " + DisplayUnits.Money(def.price) + " × used-market " + policy.usedPartFraction.ToString("P0") + "; actual item " + part.instanceId));

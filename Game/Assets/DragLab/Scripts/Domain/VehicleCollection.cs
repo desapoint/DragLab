@@ -4,7 +4,9 @@ namespace DragLab.Domain.Mechanics
 {
     [Serializable] public sealed class VehicleOffer
     {
-        public string model, paint;
+        public string model, paint, listingId;
+        public bool used;public double mileageKm;
+        public System.Collections.Generic.List<PartInstance> parts;public FuelState fuel;public FluidState fluids;
         public int price, reputation;
         public Tune stock;
     }
@@ -37,11 +39,20 @@ namespace DragLab.Domain.Mechanics
             if (profile.cash < offer.price) throw new InvalidOperationException("Insufficient cash for this car.");
             if (profile.reputation < offer.reputation) throw new InvalidOperationException("Earn the required reputation first.");
             if (profile.runCheckpoints.Any(r => !r.settled)) throw new InvalidOperationException("Close the active run before buying a car.");
+            VehicleListings.RequireCurrent(profile,offer);
             var spec = catalog.Spec(offer.model);
+            if(offer.parts!=null&&offer.parts.Count>0){var bought=InstallExact(profile,catalog,offer);profile.cash-=offer.price;VehicleListings.Consume(profile,catalog,offer);MechanicsOwnership.Ensure(profile,catalog);Select(profile,bought.instanceId);return bought.instanceId;}
             var car = new OwnedCar { vehicleId = offer.model, tune = offer.stock.Copy(), paintHex = offer.paint ?? "#58C7BA" };
             car.tune.ClampTo(spec); profile.cash -= offer.price; profile.cars.Add(car);
             MechanicsOwnership.Ensure(profile, catalog); Select(profile, car.instanceId);
             return car.instanceId;
+        }
+        public static PlayerProfile Preview(MechanicalCatalog catalog,VehicleOffer offer){var p=new PlayerProfile{catalog=catalog,cash=int.MaxValue,reputation=int.MaxValue,vehicleStock=new VehicleStockState{version=1,seed=1},ignitionHardwareVersion=1};var car=InstallExact(p,catalog,offer);MechanicsOwnership.Ensure(p,catalog);Select(p,car.instanceId);return p;}
+        static OwnedCar InstallExact(PlayerProfile p,MechanicalCatalog c,VehicleOffer offer){
+            var car=new OwnedCar{instanceId=MechanicsOwnership.NewId("vehicle"),chassisId=MechanicsOwnership.NewId("chassis"),engineAssemblyId=MechanicsOwnership.NewId("engine"),vehicleId=offer.model,tune=offer.stock.Copy(),paintHex=offer.paint,mileageKm=offer.mileageKm,fuel=offer.fuel.Copy(),fluids=offer.fluids.Copy(),fuelInitialized=true,massVersion=1,serviceHardwareVersion=1};
+            car.installed=new InstalledBuild{instanceId=car.instanceId,vehicleDefinitionId=car.vehicleId};p.engines.Add(new EngineAssemblyInstance{instanceId=car.engineAssemblyId,parentVehicleId=car.instanceId,vehicleDefinitionId=car.vehicleId});
+            foreach(var source in offer.parts){var part=source.Copy();var d=c.Find(part.definitionId);part.location=MechanicalCatalog.EngineSlot(d.category)?PartLocation.Assembly:PartLocation.Vehicle;part.ownerId=MechanicalCatalog.EngineSlot(d.category)?car.engineAssemblyId:car.instanceId;part.slot=d.category.ToString();part.storageId="";p.parts.Add(part);car.installed.slots.Add(new SlotBinding{slot=part.slot,partInstanceId=part.instanceId});}
+            p.cars.Add(car);return car;
         }
         public static string Label(MechanicalCatalog catalog, OwnedCar car)
         { return DisplayName(catalog,car) + " / " + car.instanceId.Substring(Math.Max(0, car.instanceId.Length - 6)); }

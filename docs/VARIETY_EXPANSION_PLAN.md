@@ -16,3 +16,5 @@ Technical progress and final balance evidence will be recorded per checkpoint. E
 Checkpoint 1 technically delivered: see [mechanical changes and checks](../reports/variety/01-MECHANICAL.md). User acceptance of the complete expansion remains pending; checkpoints 2–4 are still being implemented.
 
 Checkpoint 2 technically delivered: [trims and diesel evidence](../reports/variety/02-VEHICLES.md), 48 passing checks including all 13 healthy factory passes. Stock and career acceptance remain pending.
+
+Checkpoint 3 implementation and evidence: [saved new/used vehicle market](../reports/variety/03-MARKET.md). Checkpoint 3 technically delivered with 160 native checks / zero runtime errors; checkpoint 4 career calibration is next.

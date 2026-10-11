@@ -1,0 +1,43 @@
+PASS fresh game starts without gifted hardware/car
+PASS three fixed used starters, no reputation restriction
+PASS fixed opening selection repeats exactly
+STARTER starter-hatch price=4012 reserve=688
+PASS starter-hatch budget leaves maintenance reserve
+PASS starter-hatch exact paid starter selects owned car
+PASS starter-hatch seller component identities/condition retained exactly
+PASS starter-hatch retained fuel/fluids/mileage
+PASS starter-hatch normal new/used market unlocked:  stock 20
+PASS starter-hatch save/reload retains listings and ownership
+PASS starter-hatch normalization never rerolls listings
+PASS starter-hatch worn starter survives a proper factory pass
+STARTER juniper-economy price=3952 reserve=748
+PASS juniper-economy budget leaves maintenance reserve
+PASS juniper-economy exact paid starter selects owned car
+PASS juniper-economy seller component identities/condition retained exactly
+PASS juniper-economy retained fuel/fluids/mileage
+PASS juniper-economy normal new/used market unlocked:  stock 20
+PASS juniper-economy save/reload retains listings and ownership
+PASS juniper-economy normalization never rerolls listings
+PASS juniper-economy worn starter survives a proper factory pass
+STARTER juniper-club price=3841 reserve=859
+PASS juniper-club budget leaves maintenance reserve
+PASS juniper-club exact paid starter selects owned car
+PASS juniper-club seller component identities/condition retained exactly
+PASS juniper-club retained fuel/fluids/mileage
+PASS juniper-club normal new/used market unlocked:  stock 20
+PASS juniper-club save/reload retains listings and ownership
+PASS juniper-club normalization never rerolls listings
+PASS juniper-club worn starter survives a proper factory pass
+PASS two runs advance refresh counter without swapping stock
+PASS third completed paid/free run refreshes stock
+PASS same persisted seed and run count reproduce refresh exactly
+PASS normal market contains new and used variants
+PASS new stock always has unused healthy components
+PASS used cars have individually varied part condition
+PASS changed listing cannot authorize an old payment
+PASS rejected purchase changes no assets/cash
+PASS used listing consumed once
+PASS sold listing cannot duplicate its components
+PASS reset returns to fixed starter selection while clearing progression
+PASS reset preserves driving preferences
+TOTAL 39

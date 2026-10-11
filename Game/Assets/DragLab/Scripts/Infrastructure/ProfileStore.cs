@@ -89,7 +89,7 @@ namespace DragLab.Infrastructure
             }
             if (File.Exists(FilePath) || File.Exists(FilePath + ".bak")) writeBlocked = true;
             Status = writeBlocked ? "Save could not be recovered; originals preserved and writing disabled." : "New garage.";
-            var fresh = PlayerProfile.New(now); MechanicsOwnership.Ensure(fresh, MechanicsTransactions.Catalog()); return fresh;
+            var fresh = PlayerProfile.NewGame(now); MechanicsOwnership.Ensure(fresh, MechanicsTransactions.Catalog()); if(!writeBlocked&&!TrySave(fresh))Status="New game retained in memory; "+Status; return fresh;
         }
         public static void Save(PlayerProfile profile)
         {

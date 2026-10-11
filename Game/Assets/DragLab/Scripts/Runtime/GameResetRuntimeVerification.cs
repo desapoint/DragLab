@@ -64,19 +64,18 @@ namespace DragLab.Runtime
                 yield return ClickReset(mouse, "request"); yield return ClickReset(mouse, "confirm");
             }
             var fresh = game.Profile;
-            require(!ReferenceEquals(fresh, original) && fresh.cash == 1200 && fresh.reputation == 0 && fresh.garageLevel == 1 && fresh.careerWins.Count == 0, "Actual Reset progression starts fresh cash, career and garage business.");
-            require(fresh.cars.Count == 1 && fresh.SelectedCar.vehicleId == "starter-hatch" && fresh.parts.Count == fresh.catalog.Recipe("starter-hatch").Count && fresh.parts.All(p => p.location != PartLocation.Inventory) && fresh.SelectedCar.instanceId != original.SelectedCar.instanceId, "Old cars and purchased inventory are replaced by one new OEM starter build.");
-            require(fresh.SelectedCar.presets.Count == 0 && fresh.SelectedCar.lastPass == null && fresh.SelectedCar.completedRuns == 0 && fresh.bestQuarterSeconds == 0 && fresh.SelectedCar.tune.finalDrive != 5 && fresh.SelectedCar.paintHex != "#111111", "Car tunes, presets, paint and race records are cleared.");
-            require(fresh.savedSetups.Count == 0 && fresh.engines.Count == 1 && fresh.engines.All(e => !string.IsNullOrEmpty(e.parentVehicleId)), "Actual progression reset clears saved configurations and detached engines.");
+            require(!ReferenceEquals(fresh, original) && fresh.cash == 4700 && fresh.reputation == 0 && fresh.garageLevel == 1 && fresh.careerWins.Count == 0, "Actual Reset progression starts fresh cash, career and garage business.");
+            require(fresh.cars.Count==0&&fresh.parts.Count==0&&fresh.engines.Count==0&&fresh.firstPurchasePending&&fresh.vehicleStock.listings.Count==3,"Reset opens dealership with fixed choices and no gifted ownership.");
+            require(fresh.savedSetups.Count==0&&fresh.bestQuarterSeconds==0,"Saved setups and race records cleared.");
             require(JsonUtility.ToJson(game.settings) == prefs && ReferenceEquals(game.settings, fresh.driving) && fresh.difficulty == 2, "Live driving settings and AI difficulty remain bound to the preserved copy.");
             require(SharedAudioSettings.MasterVolume == .42f && File.ReadAllText(SharedAudioSettings.FilePath) == audio, "Live volume and its persisted settings are unchanged.");
             require(game.Race == null && fresh.runCheckpoints.Count == 0 && fresh.PendingIdle(DateTime.UtcNow.Ticks) == 0, "Old race state, run settlements and banked offline income are cleared.");
             var reloaded = ProfileStore.Load();
-            require(reloaded.SelectedCar.instanceId == fresh.SelectedCar.instanceId && reloaded.cash == 1200 && JsonUtility.ToJson(reloaded.driving) == prefs && reloaded.difficulty == 2, "Reload retains the reset garage and both driving preferences.");
+            require(reloaded.firstPurchasePending&&reloaded.cars.Count==0 && reloaded.cash == 4700 && JsonUtility.ToJson(reloaded.driving) == prefs && reloaded.difficulty == 2, "Reload retains the reset garage and both driving preferences.");
             SharedAudioSettings.Reload(); require(SharedAudioSettings.MasterVolume == .42f, "Reload retains the shared master volume.");
             require(!game.CommitGameReset(original.revision) && ReferenceEquals(game.Profile, fresh), "Double or stale reset action cannot create another identity tree.");
             yield return Capture("reset-complete");
-            game.StartPractice();
+            VehicleCollection.Buy(fresh,fresh.catalog,fresh.vehicleStock.listings.First(o=>o.model=="starter-hatch"));ProfileStore.Save(fresh);game.ReturnToGarage();game.StartPractice();
             require(game.ScreenName == "Race" && game.Race.player.state.gear == 0 && game.Race.player.driver.shifting == ShiftMode.ManualClutch, "The fresh starter can enter neutral practice with preserved manual settings.");
             require(!game.CommitGameReset(fresh.revision), "Reset is blocked during a race.");
             game.ReturnToGarage();

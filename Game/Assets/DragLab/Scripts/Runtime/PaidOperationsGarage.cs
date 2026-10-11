@@ -13,7 +13,7 @@ namespace DragLab.Runtime
         internal PaymentRequest Payment(PaymentKind kind, double oil = 0, double coolant = 0, string target = null, ServiceAction service = ServiceAction.Clean)
         { return new PaymentRequest { kind = kind, carId = Build?.instanceId, litres = oil, coolantLitres = coolant, targetId = target, service = service }; }
         internal VehicleOffer AuthoredOffer(string model)
-        { var v = Array.Find(vehicles, a => a.spec.id == model); return v == null ? null : new VehicleOffer { model = model, price = v.purchasePrice, reputation = v.reputationRequired, stock = v.CreateStockTune(), paint = "#" + ColorUtility.ToHtmlStringRGB(v.defaultPaint) }; }
+        { var existing=VehicleListings.Find(profile,model);if(existing!=null)return existing;var v = Array.Find(vehicles, a => a.spec.id == model); return v == null ? null : new VehicleOffer { model = model, price = v.purchasePrice, reputation = v.reputationRequired, stock = v.CreateStockTune(), paint = "#" + ColorUtility.ToHtmlStringRGB(v.defaultPaint) }; }
         readonly System.Collections.Generic.Dictionary<string,int> paymentCosts=new System.Collections.Generic.Dictionary<string,int>();
         PlayerProfile paymentCostsProfile;long paymentCostsRevision=-1;
         internal int PaymentCost(PaymentRequest request)
@@ -28,7 +28,7 @@ namespace DragLab.Runtime
         {
             if (quote == null) return false;
             var request = JsonUtility.FromJson<PaymentRequest>(quote.RequestJson);
-            return CommitParts(quote.Revision, p => PaidEconomy.Pay(p, p.catalog, Costs, PricingPolicy, quote, DateTime.UtcNow.Ticks, request.kind == PaymentKind.Car ? AuthoredOffer(request.offer.model) : null));
+            return CommitParts(quote.Revision, p => PaidEconomy.Pay(p, p.catalog, Costs, PricingPolicy, quote, DateTime.UtcNow.Ticks, request.kind == PaymentKind.Car ? string.IsNullOrEmpty(request.offer.listingId)?AuthoredOffer(request.offer.model):VehicleListings.Find(p,request.offer.listingId) : null));
         }
         internal bool BuyNativeCar(PaymentQuote quote)
         {

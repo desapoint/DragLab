@@ -50,7 +50,7 @@ namespace DragLab.Runtime
         }
         internal void ResetOwnedQuery()
         {
-            ownedQuery.Search="";ownedQuery.Rank=ownedQuery.Drive=ownedQuery.Type=ownedQuery.Gearbox=ownedQuery.Induction=ownedQuery.Status=ownedQuery.Affordability="All";
+            ownedQuery.Search="";ownedQuery.Rank=ownedQuery.Drive=ownedQuery.Type=ownedQuery.Gearbox=ownedQuery.Induction=ownedQuery.Status=ownedQuery.Affordability=ownedQuery.StockCondition="All";
             ownedQuery.Minimum=new double?[5];ownedQuery.Maximum=new double?[5];ownedQuery.Sort=OwnedCarSort.OwnedOrder;ownedQuery.Descending=false;
             ownedSearch.SetValueWithoutNotify("");ownedSearch.Q("ownedCarSearchHint").RemoveFromClassList("hidden");ApplyOwnedQuery(true);
             ownedSearch.Blur();
@@ -128,10 +128,11 @@ namespace DragLab.Runtime
                 new DialogAction("Reset",()=>{CloseDialog();OpenOwnedCarFilters(new OwnedCarQuery {Search=ownedQuery.Search,Sort=ownedQuery.Sort,Descending=ownedQuery.Descending});}),
                 new DialogAction("Cancel",CloseDialog),new DialogAction("Apply",()=> {
                     if(!Validate())return;ownedQuery.Rank=draft.Rank;ownedQuery.Drive=draft.Drive;ownedQuery.Type=draft.Type;ownedQuery.Gearbox=draft.Gearbox;ownedQuery.Induction=draft.Induction;ownedQuery.Status=draft.Status;
-                    ownedQuery.Affordability=draft.Affordability;
+                    ownedQuery.Affordability=draft.Affordability;ownedQuery.StockCondition=draft.StockCondition;
                     ownedQuery.Minimum=draft.Minimum;ownedQuery.Maximum=draft.Maximum;CloseDialog();ApplyOwnedQuery(true);
                 },true)
             },populate:content=> {
+                if(dealerMode)QueryChoices(content,"dealerCondition","Condition",new[]{"All","New","Used"},()=>draft.StockCondition,value=>{draft.StockCondition=value;Validate();});
                 QueryChoices(content,"ownedFilterRank","Rank",new[] {"All","F","E","D","C","B","A","S"},()=>draft.Rank,value=>{draft.Rank=value;Validate();},8);
                 QueryChoices(content,"ownedFilterDrive","Drivetrain",new[] {"All","FWD","RWD","AWD","4×4"},()=>draft.Drive,value=>{draft.Drive=value;Validate();});
                 QueryChoices(content,"ownedFilterType","Type",new[] {"All","Hatchback","Coupe","Sedan","Pickup","SUV","Wagon","Van","Roadster","Unspecified"},()=>draft.Type,value=>{draft.Type=value;Validate();});

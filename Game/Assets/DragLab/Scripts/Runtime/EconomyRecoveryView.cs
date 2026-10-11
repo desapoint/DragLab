@@ -19,7 +19,7 @@ namespace DragLab.Runtime
                 if(failed.Length>0)GUILayout.Label("Failed packs: "+string.Join("; ",failed.Select(i=>profile.catalog.Find(i.definitionId).name))+". Reuse compatible inventory first, replace individual elements where applicable, or repair/rebuild supported faults. Replacement prices are shown in Parts; failures do not all disable the engine.");
                 var b=MechanicsOwnership.Resolve(profile,Build,profile.catalog);if(!b.Drivable)GUILayout.Label("Current blockers: "+string.Join("; ",b.errors));
             }else GUILayout.Label("Empty garage: retained engines/parts can still be sold. Recovery and capped idle income need no car; dealership purchases provide a new paid package.");
-            var offers=vehicles.Where(v=>v.reputationRequired<=profile.reputation&&v.purchasePrice>0).Select(v=>new{v,price=PaidEconomy.DealerPrice(profile.catalog,Costs,PricingPolicy,AuthoredOffer(v.spec.id))}).OrderBy(v=>v.price).ToArray();
+            var offers=profile.vehicleStock.listings.Where(o=>o.reputation<=profile.reputation).Select(o=>new{v=vehicles.First(v=>v.spec.id==o.model),price=PaidEconomy.DealerPrice(profile.catalog,Costs,PricingPolicy,o)}).OrderBy(v=>v.price).ToArray();
             if(offers.Length>0){var cheapest=offers[0];int shortfall=Math.Max(0,cheapest.price-profile.cash);int jobs=(int)Math.Ceiling(shortfall/(double)Costs.recoveryReward);GUILayout.Label("Cheapest unlocked replacement: "+cheapest.v.spec.displayName+" / " + DisplayUnits.Money(cheapest.price)+" / shortfall " + DisplayUnits.Money(shortfall)+" / about "+jobs+" recovery claims (before idle income or asset sales). Work requires cash below " + DisplayUnits.Money(Costs.recoveryCashLimit)+".");}
         }
     }

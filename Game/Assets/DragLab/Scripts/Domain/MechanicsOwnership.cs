@@ -13,7 +13,7 @@ namespace DragLab.Domain.Mechanics
     }
     public static class MechanicsOwnership
     {
-        public const int SaveVersion = 6;
+        public const int SaveVersion = 7;
         public static string NewId(string kind) { return kind + "-" + Guid.NewGuid().ToString("N"); }
         public static void Ensure(PlayerProfile profile, MechanicalCatalog catalog)
         {
@@ -107,6 +107,7 @@ namespace DragLab.Domain.Mechanics
             var selected = profile.SelectedCar ?? profile.cars.FirstOrDefault();
             profile.selectedVehicleId = selected?.vehicleId ?? ""; profile.selectedOwnedVehicleId = selected?.instanceId ?? "";
             GarageBusiness.UpgradeLegacySnapshots(profile);
+            VehicleListings.Ensure(profile,catalog);
             string error = Validate(profile, catalog); if (error != null) throw new InvalidOperationException(error);
         }
         public static Dictionary<PartCategory, string> Definitions(PlayerProfile profile, OwnedCar car)
@@ -177,6 +178,7 @@ namespace DragLab.Domain.Mechanics
         {
             if (profile.saveVersion != SaveVersion || profile.mechanicsVersion != MechanicsSchema.Version || profile.revision < 0 || profile.cash < 0) return "Invalid profile version/revision/cash.";
             if(profile.cars.Count == 0 ? !string.IsNullOrEmpty(profile.selectedOwnedVehicleId) || !string.IsNullOrEmpty(profile.selectedVehicleId) : !profile.cars.Any(c=>c.instanceId==profile.selectedOwnedVehicleId&&c.vehicleId==profile.selectedVehicleId))return "Invalid selected owned vehicle reference.";
+            string stockError=VehicleListings.Validate(profile,catalog);if(stockError!=null)return stockError;
             string economyError = PaidEconomy.ValidateState(profile); if (economyError != null) return economyError;
             string careerError = CareerProgression.Validate(profile); if (careerError != null) return careerError;
             string businessError=GarageBusiness.Validate(profile);if(businessError!=null)return businessError;
@@ -184,6 +186,7 @@ namespace DragLab.Domain.Mechanics
             Func<string, bool> unique = id => !string.IsNullOrEmpty(id) && identities.Add(id);
             foreach (var car in profile.cars)
             {
+                if(!MechanicsSchema.Finite(car.mileageKm)||car.mileageKm<0)return "Invalid owned mileage.";
                 if (MassDynamics.ValidateInputs(catalog.Spec(car.vehicleId),car.tune) != null) return "Invalid owned mass/placement inputs.";
                 if(car.serviceHardwareVersion!=1||car.fluids==null||car.fluids.Validate(catalog.Spec(car.vehicleId).fluids)!=null)return "Invalid owned fluids/service migration.";
                 if(car.thermalUtcTicks<0||car.thermalUtcTicks>DateTime.MaxValue.Ticks)return "Invalid owned thermal clock.";

@@ -91,6 +91,7 @@ namespace DragLab.Domain.Mechanics
     public sealed class FuelState
     {
         public double litres, cumulativeUsedLitres, flowLitresPerSecond;
+        public FuelState Copy(){return (FuelState)MemberwiseClone();}
         public double MassKg(FuelSpec spec) { return litres * spec.densityKgPerLitre; }
         public string Validate(FuelSpec spec)
         {

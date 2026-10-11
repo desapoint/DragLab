@@ -59,7 +59,7 @@ namespace DragLab.Domain
             if(valid){c.Record(race);if(Math.Abs(race.distance-402.336)<.01&&(p.bestQuarterSeconds<=0||race.player.state.elapsed<p.bestQuarterSeconds))p.bestQuarterSeconds=race.player.state.elapsed;
                 if(!r.practice){bool first=race.playerWon&&!string.IsNullOrEmpty(r.eventId)&&!p.careerWins.Contains(r.eventId);p.cash=checked(p.cash+(race.playerWon?r.winCash:r.lossCash)+(first?r.firstBonus:0));if(first){p.careerWins.Add(r.eventId);p.reputation=checked(p.reputation+r.reputation);}}
             }
-            r.complete=true;
+            r.complete=true;if(valid&&!r.practice)VehicleListings.AfterRace(p,p.catalog);
         }
         public static void Interrupted(PlayerProfile p,string id){var r=p.careerRuns.Find(t=>t.runId==id);if(r!=null&&!r.complete){r.complete=true;r.outcome="Interrupted / no payout";}}
         public static string Validate(PlayerProfile p)

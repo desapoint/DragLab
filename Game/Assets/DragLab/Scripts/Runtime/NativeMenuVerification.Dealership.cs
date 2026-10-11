@@ -59,6 +59,7 @@ namespace DragLab.Runtime
             byte[] disk=File.ReadAllBytes(ProfileStore.FilePath),backup=File.Exists(ProfileStore.FilePath+".bak")?File.ReadAllBytes(ProfileStore.FilePath+".bak"):null;
             var fixture=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(original));fixture.catalog=original.catalog;fixture.cash=1000000;fixture.reputation=1000;
             MechanicsOwnership.Ensure(fixture,fixture.catalog); // Canonicalize empty inline objects introduced by JsonUtility in this isolated copy.
+            fixture.vehicleStock.listings.RemoveAll(o=>o.used);
             fixture.parts.First(p=>p.slot=="Pistons").condition.health=.35f;
             Check(MechanicsOwnership.Validate(fixture,fixture.catalog)==null,"Dealership fixture starts with valid retained ownership and economy state");
             string[] oldCars=fixture.cars.Select(JsonUtility.ToJson).ToArray(),oldParts=fixture.parts.Select(JsonUtility.ToJson).ToArray();
@@ -81,9 +82,9 @@ namespace DragLab.Runtime
                 yield return Capture("dealer-grid");int probes=shell.DealerProbeCount;
                 yield return Click(input,"ownedCarSearch");yield return Key(input,0x50);yield return Key(input,0x49);yield return Key(input,0x43);
                 yield return Capture("dealer-search");
-                Check(VisibleDealerCards().Length==1&&VisibleDealerCards()[0].name.Contains("pickup"),"Real keyboard search filters dealership models: "+shell.Root.Q<TextField>("ownedCarSearch").value+" / "+string.Join(",",VisibleDealerCards().Select(c=>c.name)));
+                Check(VisibleDealerCards().Length==game.vehicles.Count(v=>v.spec.bodyType==CarBodyType.Pickup),"Real keyboard search filters dealership models: "+shell.Root.Q<TextField>("ownedCarSearch").value+" / "+string.Join(",",VisibleDealerCards().Select(c=>c.name)));
                 yield return Click(input,"garageOwned");Check(shell.OwnedQuery.Search=="","Switching back restores independent owned-car query state");
-                yield return Click(input,"garageDealer");Check(shell.OwnedQuery.Search.ToLowerInvariant()=="pic"&&VisibleDealerCards().Length==1,"Returning to dealership retains its independent search");
+                yield return Click(input,"garageDealer");Check(shell.OwnedQuery.Search.ToLowerInvariant()=="pic"&&VisibleDealerCards().Length==game.vehicles.Count(v=>v.spec.bodyType==CarBodyType.Pickup),"Returning to dealership retains its independent search");
                 yield return Click(input,"ownedCarClear");yield return Click(input,"ownedCarFilters");yield return CarFilterClick(input,"ownedFilterType:Coupe");yield return Click(input,"dialogApply");
                 Check(VisibleDealerCards().Length==game.vehicles.Count(v=>v.spec.bodyType==CarBodyType.Coupe),"Shared dealership filters use actual model body metadata");
                 yield return Click(input,"ownedCarClear");
@@ -92,7 +93,7 @@ namespace DragLab.Runtime
                 yield return DealerCardClick(input,id);
                 Check(shell.DealerDetailsOpen&&!shell.ModalOpen&&shell.Root.Q("dealerCars").ClassListContains("hidden")&&shell.Root.Q<NativeDynoPlot>("dealerDynoPlot")!=null,"Dealer model opens a full details page with stock dyno, not a modal");
                 var curve=shell.Root.Q<NativeDynoPlot>("dealerDynoPlot").Series[0].Inspection;
-                Check(curve.source.components.All(p=>p.condition.health==1&&!p.condition.failed)&&curve.source.startingFuel.litres==fixture.catalog.Spec(id).fuel.capacityLitres,"OEM preview starts with factory parts and included full fuel, independent of worn owned parts");
+                Check(curve.source.components.All(p=>p.condition.health==1&&!p.condition.failed)&&curve.source.startingFuel.litres==offer.fuel.litres,"OEM preview uses saved new listing parts and included fuel independently: fuel "+curve.source.startingFuel.litres+" / "+offer.fuel.litres+" worn "+string.Join(",",curve.source.components.Where(p=>p.condition.health!=1||p.condition.failed).Select(p=>p.slot+":"+p.condition.health))+"");
                 yield return Capture("dealer-details");yield return Key(input,0x77);yield return Key(input,0x77);Check(shell.DealerDetailsOpen,"F8 retains the inspected dealer model");
                 yield return Click(input,"settingsButton");yield return Click(input,"cancelSettings");Check(shell.DealerDetailsOpen,"Settings Cancel returns to the same dealer details");
                 yield return Click(input,"dealerBack");yield return DealerCardClick(input,game.vehicles.First(v=>v.spec.bodyType==CarBodyType.Pickup).spec.id);
@@ -108,8 +109,8 @@ namespace DragLab.Runtime
                 yield return Click(input,"dealerBuy");fixture.cash--;string changed=JsonUtility.ToJson(fixture);yield return Click(input,"dialogConfirm");
                 Check(shell.ModalOpen&&!shell.Root.Q<Button>("dialogConfirm").enabledInHierarchy&&!string.IsNullOrEmpty(shell.Root.Q<Label>("dealerConfirmationError").text)&&JsonUtility.ToJson(game.Profile)==changed,"Changed live balance without revision invalidates confirmation and cannot publish a partial purchase");
                 yield return Click(input,"dialogCancel");fixture.cash++;shell.InvalidateDealer();shell.Refresh();
-                yield return Click(input,"dealerBuy");var vehicleAsset=game.vehicles[0];int authored=vehicleAsset.purchasePrice;
-                try{vehicleAsset.purchasePrice++;yield return Click(input,"dialogConfirm");Check(shell.ModalOpen&&game.Profile.cars.Count==fixture.cars.Count&&File.ReadAllBytes(ProfileStore.FilePath).SequenceEqual(disk),"Changed authored offer invalidates its quote even if the price floor is unchanged");}finally{vehicleAsset.purchasePrice=authored;}
+                yield return Click(input,"dealerBuy");var vehicleOffer=VehicleListings.Find(fixture,id);int authored=vehicleOffer.price;
+                try{vehicleOffer.price++;yield return Click(input,"dialogConfirm");Check(shell.ModalOpen&&game.Profile.cars.Count==fixture.cars.Count&&File.ReadAllBytes(ProfileStore.FilePath).SequenceEqual(disk),"Changed saved offer invalidates its exact quote");}finally{vehicleOffer.price=authored;}
                 yield return Click(input,"dialogCancel");yield return Click(input,"dealerBuy");
                 using(var fileLock=new FileStream(ProfileStore.FilePath,FileMode.Open,FileAccess.Read,FileShare.Read)) {
                     yield return Click(input,"dialogConfirm");Check(shell.ModalOpen&&!string.IsNullOrEmpty(shell.Root.Q<Label>("dealerConfirmationError").text)&&JsonUtility.ToJson(game.Profile)==baseline,"Failed durable save rolls back cash, car and every new part; error stays visible");
@@ -128,6 +129,7 @@ namespace DragLab.Runtime
                 shell.Root.Q<ScrollView>("ownedCars").ScrollTo(shell.Root.Q("ownedCar:"+comparedId));yield return new WaitForSecondsRealtime(.1f);yield return Click(input,"ownedCar:"+comparedId);
                 yield return ComparisonChecks(input,false);
                 yield return Click(input,"ownedBack");yield return Click(input,"garageDealer");
+                shell.Root.Q<ScrollView>("dealerCars").scrollOffset=Vector2.zero;yield return new WaitForSecondsRealtime(.2f);
                 Screen.SetResolution(1024,768,false);yield return new WaitForSecondsRealtime(.5f);CarFilterToolbarLayout(1024);yield return Capture("dealer-compact");
                 Screen.SetResolution(1920,1080,false);yield return new WaitForSecondsRealtime(.5f);CarFilterToolbarLayout(1920);yield return Capture("dealer-1080p");
                 var target=new RenderTexture(3840,2160,24);target.Create();shell.Panel.targetTexture=target;shell.Refresh();yield return new WaitForSecondsRealtime(.3f);

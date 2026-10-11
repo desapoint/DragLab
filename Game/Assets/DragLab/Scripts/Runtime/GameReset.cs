@@ -69,7 +69,7 @@ namespace DragLab.Runtime
             freeDistance = 402.336f; freeOpponent = 0; partCategory = 0;
             resetGameConfirm = false; resetRects.Clear(); partRects.Clear();
             scroll = resultScroll = Vector2.zero; controls.Clear();
-            screen = "Settings"; ShowGarageCar(); notice = ProfileStore.Status;
+            screen = "Garage";InterfaceComparison.SetReplacement("Garage",true); ShowGarageCar(); notice = ProfileStore.Status;
             PhysicalBenchTransfer.Take();
             return true;
         }

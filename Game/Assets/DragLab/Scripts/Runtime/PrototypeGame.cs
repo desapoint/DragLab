@@ -91,7 +91,7 @@ namespace DragLab.Runtime
                 profile.selectedVehicleId = vehicles[0].spec.id;
                 if (profile.SelectedCar == null) profile.cars.Add(new OwnedCar { vehicleId = profile.selectedVehicleId, tune = vehicles[0].CreateStockTune() });
             }
-            if (Build != null) Build.tune.ClampTo(Selected.spec); else screen = "Collection";
+            if (Build != null) Build.tune.ClampTo(Selected.spec); else {screen = "Garage";if(profile.firstPurchasePending)InterfaceComparison.SetReplacement("Garage",true);}
             raceCamera = Camera.main;
             if (raceCamera == null)
             {
@@ -336,7 +336,7 @@ namespace DragLab.Runtime
             GUI.enabled = true;
             GUILayout.EndHorizontal();
             scroll = GUILayout.BeginScrollView(scroll);
-            if (screen == "Garage") { if (Build == null) RecoveryGUI(); else GarageGUI(); }
+            if (screen == "Garage") { if (Build == null) CollectionGUI(); else GarageGUI(); }
             if (screen == "Parts") PartsGUI();
             if (screen == "Tuning") TuningGUI();
             if (screen == "Stats") GUILayout.Label("Full saved car statistics are shown alongside. Choose Tuning or preview a part to compare changes.");

@@ -81,14 +81,15 @@ namespace DragLab.Runtime
             using (var input = new WindowsKeyboardProbe())
             {
                 Check(ProfileStore.FilePath == Path.Combine(folder, "profile-v1.json"), "Profile isolated from player assets");
+                if(game.Profile.firstPurchasePending)yield return StarterPurchaseChecks(input);
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-dealership-only-verify")>=0) {
                     Check(File.Exists(ProfileStore.FilePath)||ProfileStore.TrySave(game.Profile),"Focused dealership probe has a durable isolated baseline");
-                    yield return Key(input,0x77);yield return DealershipChecks(input);yield break;
+                    if(!shell.Visible)yield return Key(input,0x77);yield return DealershipChecks(input);yield break;
                 }
                 MoneyFormattingChecks();
                 var baseline = JsonUtility.ToJson(game.Profile);
                 string disk = File.Exists(ProfileStore.FilePath) ? File.ReadAllText(ProfileStore.FilePath) : null;
-                yield return Key(input, 0x77);
+                if(!shell.Visible)yield return Key(input, 0x77);
                 Check(shell.Visible && game.ScreenName == "Garage", "F8 displays native Garage shell on unchanged route");
                 yield return Capture("garage-1280"); LayoutCheck();
                 yield return new WaitForEndOfFrame();

@@ -62,6 +62,7 @@ namespace DragLab.Runtime
         IEnumerator Run()
         {
             yield return null;
+            if(game.Profile.firstPurchasePending){VehicleCollection.Buy(game.Profile,game.Profile.catalog,game.Profile.vehicleStock.listings.First(o=>o.model=="starter-hatch"));ProfileStore.Save(game.Profile);InterfaceComparison.SetReplacement("Garage",false);game.ReturnToGarage();}
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-pacing-only")>=0){yield return PacingRun();yield break;}
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-tire-feedback-only")>=0){yield return TireFeedbackRun();yield break;}
             yield return Capture("garage");

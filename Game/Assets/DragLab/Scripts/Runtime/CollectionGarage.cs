@@ -45,14 +45,14 @@ namespace DragLab.Runtime
                 if (PartButton("car-quote:" + id, "Value this exact car / buyer comparison")) pendingAction = () => OpenValuation(ValuationKind.Car, id);
             }
             GUILayout.Space(10); GUILayout.Label("DEALERSHIP / buy another copy / provisional prices", stat);
-            foreach (var vehicle in vehicles)
+            foreach (var offer in profile.vehicleStock.listings.ToArray())
             {
-                var offer = new VehicleOffer { model = vehicle.spec.id, stock = vehicle.CreateStockTune(), price = vehicle.purchasePrice, reputation = vehicle.reputationRequired, paint = "#" + ColorUtility.ToHtmlStringRGB(vehicle.defaultPaint) };
+                var vehicle=vehicles.First(v=>v.spec.id==offer.model);
                 int price = PaidEconomy.DealerPrice(profile.catalog, Costs, PricingPolicy, offer);
                 GUILayout.Label(vehicle.spec.displayName + " / " + vehicle.spec.sound.cylinders + " cylinders / " + vehicle.spec.DisplacementLitres.ToString("F1") + " L / " + vehicle.spec.drive + " / owned " + profile.cars.Count(c => c.vehicleId == offer.model));
-                GUILayout.Label("OEM package includes initial fuel/oil/coolant. Component-value floor prevents an immediate stock part-out profit.");
+                GUILayout.Label((offer.used?"Used · "+offer.mileageKm.ToString("N0")+" km · fitted parts and wear retained":"New · factory fitted package"));
                 GUI.enabled = profile.cash >= price && profile.reputation >= offer.reputation;
-                if (PartButton("car-buy:" + offer.model, "Buy another / " + DisplayUnits.Money(price) + " / REP " + offer.reputation)) QueuePayment(new PaymentRequest { kind = PaymentKind.Car, offer = offer });
+                if (PartButton("car-buy:" + offer.listingId, "Buy another / " + DisplayUnits.Money(price) + " / REP " + offer.reputation)) QueuePayment(new PaymentRequest { kind = PaymentKind.Car, offer = offer });
                 GUI.enabled = true;
             }
             if (PartButton("collection-garage", "Garage / selected owned car")) pendingAction = ReturnToGarage;

@@ -47,12 +47,13 @@ namespace DragLab.Domain
         public double bestQuarterSeconds, bestSixtyFootSeconds, bestEighthSeconds, bestTrapKmh;
         public double bestReactionSeconds = -1;
         public int completedRuns;
+        public double mileageKm;
         public PassRecord lastPass;
         public void Record(RaceSimulation race)
         {
             var s = race.player.state;
             if (!s.finished || s.disqualified) return;
-            completedRuns++;
+            completedRuns++;mileageKm+=race.distance/1000;
             lastPass = PassRecord.Capture(race);
             if (bestReactionSeconds < 0 || s.reaction < bestReactionSeconds) bestReactionSeconds = s.reaction;
             bestTrapKmh = Math.Max(bestTrapKmh, s.trapSpeed);
@@ -98,6 +99,8 @@ namespace DragLab.Domain
         public int drivelineVersion;
         public int equipmentVersion;
         public int ignitionHardwareVersion;
+        public bool firstPurchasePending;
+        public VehicleStockState vehicleStock;
         public int cash = 1200;
         public int reputation;
         public int garageLevel = 1;
@@ -116,9 +119,10 @@ namespace DragLab.Domain
             p.cars.Add(new OwnedCar { vehicleId = "starter-hatch" });
             return p;
         }
+        public static PlayerProfile NewGame(long utcTicks){var p=New(utcTicks);p.cars.Clear();p.selectedVehicleId=p.selectedOwnedVehicleId="";p.saveVersion=MechanicsOwnership.SaveVersion;p.cash=4700;p.firstPurchasePending=true;return p;}
         public PlayerProfile RestartKeepingPreferences(long utcTicks)
         {
-            var fresh = New(utcTicks);
+            var fresh = NewGame(utcTicks);
             fresh.driving = driving == null ? new DriverSettings() : driving.Copy();
             fresh.difficulty = difficulty;
             // Old queued inventory actions must remain stale after the reset.
