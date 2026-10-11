@@ -63,7 +63,7 @@ PASS: Affordability browsing changes no player assets, saved bytes or cached sim
 PASS: Copied queries retain affordability and unknown prices never count as affordable
 PASS: Unknown prices never count as unaffordable
 PASS: Dealer model opens a full details page with stock dyno, not a modal
-PASS: OEM preview uses saved new listing parts and included fuel independently: fuel 40 / 40 worn 
+PASS: OEM preview uses saved new listing parts and included fuel independently: fuel 40 / 40 worn
 PASS: F8 retains the inspected dealer model
 PASS: Settings Cancel returns to the same dealer details
 PASS: Dealer Compare opens inline selected-to-viewed stats without changing selection
@@ -78,7 +78,7 @@ PASS: Detailed power values match the selected and viewed curves
 PASS: Comparison dyno hover follows both curves on the shared RPM axis
 PASS: Compared Transmission rows retain both saved values
 PASS: Compared Components rows retain both saved values
-PASS: Performance resolves independent copied-build driving estimates for both compared cars: False / False /  / 
+PASS: Performance resolves independent copied-build driving estimates for both compared cars: False / False /  /
 PASS: Completed performance refresh retains both comparison columns
 PASS: Comparison info shows one general explanation without duplicated values or Selected/Viewed sections
 PASS: Orange Tradeoff hover shows the useful general explanation in a native bubble
@@ -103,7 +103,7 @@ PASS: Re-entering comparison retains the UI-session filter choice
 PASS: Repeated comparison uses cached snapshots and stock estimates rather than rerunning on gestures
 PASS: Compare, hover, stats and info leave selection, money, parts, wear, resources and saved bytes unchanged
 PASS: Comparison controls preserve no Tab navigation
-PASS: Buy opens a shared purchase confirmation: 
+PASS: Buy opens a shared purchase confirmation:
 PASS: Purchase confirmation formats current and resulting cash balances
 PASS: Browsing, filters, stock inspections and cancelled purchase retain exact live/disk assets and cached probes
 PASS: Insufficient funds keep model inspectable but disable Buy with a cash shortfall
@@ -129,7 +129,7 @@ PASS: Detailed power values match the selected and viewed curves
 PASS: Comparison dyno hover follows both curves on the shared RPM axis
 PASS: Compared Transmission rows retain both saved values
 PASS: Compared Components rows retain both saved values
-PASS: Performance resolves independent copied-build driving estimates for both compared cars: False / False /  / 
+PASS: Performance resolves independent copied-build driving estimates for both compared cars: False / False /  /
 PASS: Completed performance refresh retains both comparison columns
 PASS: Comparison info shows one general explanation without duplicated values or Selected/Viewed sections
 PASS: Orange Tradeoff hover shows the useful general explanation in a native bubble
