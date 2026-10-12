@@ -51,30 +51,31 @@ namespace DragLab.Runtime
             if(offer.Source=="New"||offer.Source=="Used"){OpenPartPurchase(offer);return;}
             game.StageNativePart(offer,install,offer.Position);partsStateKey=null;
         }
-        void OpenPartPurchase(NativePartEntry offer)
+        void OpenPartPurchase(NativePartEntry offer,PartCartLine editing=null)
         {
             var d=offer.Definition;var car=game.Profile.SelectedCar;bool fresh=offer.Source=="New";
-            var draft=fresh?PurchaseDraft(offer):null;
+            var draft=fresh?PurchaseDraft(offer):null;string expected=editing==null?null:JsonUtility.ToJson(editing),carId=car.instanceId;
             var roles=fresh?InventoryUnits.Roles(game.Profile,car,d):offer.Unit!=null?new[]{offer.Unit.element.role}:new string[0];
             int setSize=InventoryUnits.Count(game.Profile,car,d);
-            bool individual=fresh?draft.Individual:offer.Unit!=null,install=fresh&&draft.Install;
-            string role=fresh?draft.Role:offer.Unit?.element.role;int quantity=fresh?draft.Quantity:1;
+            bool individual=editing!=null?editing.action==CartAction.NewUnits||editing.action==CartAction.BuyUsed&&offer.Unit!=null:fresh?draft.Individual:offer.Unit!=null,install=editing?.install??(fresh&&draft.Install);
+            string role=editing?.role??(fresh?draft.Role:offer.Unit?.element.role);int quantity=editing?.quantity??(fresh?draft.Quantity:1);
             var binding=car.installed.slots.Find(s=>s.slot==d.category.ToString());
             var fitted=binding==null?null:game.Profile.parts.Find(p=>p.instanceId==binding.partInstanceId);
             bool matches=fitted?.definitionId==d.id;
             string[] all=fitted==null?new string[0]:d.category==PartCategory.Tires?Enumerable.Range(0,4).Select(i=>"tire:"+i).ToArray():fitted.condition.elements.Select(e=>e.id).ToArray();
-            var selected=new HashSet<string>(fresh?draft.Positions:Enumerable.Empty<string>());
+            var selected=new HashSet<string>(editing!=null?editing.positions:fresh?draft.Positions:Enumerable.Empty<string>());
             var rows=new List<Tuple<Button,string>>();var groups=new List<VisualElement>();
             VisualElement positionsArea=null,roleGroup=null;Label summary=null,error=null,quantityLabel=null,unitPrice=null,notice=null;FloatField number=null;Button minus=null,plus=null;Action update=null;
-            OpenDialog("Purchase",null,new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Add to cart",()=>{
+            OpenDialog(editing==null?"Purchase":"Edit purchase",null,new[]{new DialogAction("Cancel",CloseDialog),new DialogAction(editing==null?"Add to cart":"Apply",()=>{
                 var targets=all.Where(selected.Contains).ToList();
-                if(fresh){if(!game.StageNativePurchase(d.id,individual?role:null,quantity,install,individual&&install?targets:null)){error.text=game.NativeNotice;return;}
+                if(editing!=null){if(!game.EditNativeCartPurchase(editing,expected,carId,individual,role,quantity,install,targets)){error.text=game.NativeNotice;return;}}
+                else if(fresh){if(!game.StageNativePurchase(d.id,individual?role:null,quantity,install,individual&&install?targets:null)){error.text=game.NativeNotice;return;}
                     draft.Individual=individual;draft.Install=install;draft.Role=role;draft.Quantity=quantity;draft.Positions=individual&&install?targets:new List<string>();
                 }else{
                     game.StageNativePart(offer,install,individual&&install?targets.Single():null);
                     if(!game.CartLines.Any(l=>l.assetId==offer.AssetId)){error.text=game.NativeNotice;return;}
                 }
-                CloseDialog();partsStateKey=null;
+                CloseDialog();partsStateKey=null;if(editing!=null){cartPageKey=null;RefreshNativeCart("Parts");}
             },true)},populate:content=>{
                 content.Add(new Label(d.name){enableRichText=false});
                 if(!fresh){var condition=new Label("Used · "+((offer.Unit?.element.health??offer.Part?.condition.health??0)*100).ToString("0.#")+"% condition"){name="partPurchaseCondition"};condition.AddToClassList("car-warning");content.Add(condition);}
@@ -134,7 +135,7 @@ namespace DragLab.Runtime
                     summary.tooltip=individual?string.Join("\n",all.Where(selected.Contains).Select(p=>InventoryUnits.PositionLabel(game.Profile,car,d.id,p))):"";
                     if(individual&&selected.Count>4)replacements=selected.Count+" "+(role??"units")+" units";
                     summary.text="Buy "+buy+" · "+DisplayUnits.Money(each*quantity)+(install?"\nReplace "+(individual&&selected.Count==0?"— select positions":replacements)+" · Keep removed parts":"")+"\nStore "+stored+(individual?stored==1?" unit":" units":setSize>1?stored==1?" set":" sets":stored==1?" part":" parts");
-                    root.Q<Button>("dialogAddtocart")?.SetEnabled(problem.Length==0&&(!install||!individual||selected.Count>0&&selected.Count<=quantity));
+                    root.Q<Button>(editing==null?"dialogAddtocart":"dialogApply")?.SetEnabled(problem.Length==0&&(!install||!individual||selected.Count>0&&selected.Count<=quantity));
                 };
             });
             summary.RemoveFromHierarchy();error.RemoveFromHierarchy();

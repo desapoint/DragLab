@@ -65,7 +65,7 @@ namespace DragLab.Runtime
         }
         void RefreshParts(string route)
         {
-            partsPage.EnableInClassList("hidden",route!="Parts");if(route!="Parts")return;
+            partsPage.EnableInClassList("hidden",route!="Parts"||cartPageOpen);if(route!="Parts"||cartPageOpen)return;
             var p=game.Profile;game.PrepareNativeCart();var car=p.SelectedCar;
             root.Q<Label>("partsCarName").text=car==null?"No car":VehicleCollection.DisplayName(p.catalog,car);
             partsCart.Q<Label>().text="Cart · "+game.CartCount;partsCart.SetEnabled(car!=null);

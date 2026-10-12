@@ -362,3 +362,28 @@
 .modal-content .part-position-choice .position-fault { font-size: 16px; color: var(--racing-accent); margin-top: 3px; }
 
 .modal-content .part-position-choice.selected .position-fault { color: var(--racing-text); }
+
+.cart-page { flex-grow: 1; min-height: 0; }
+.cart-columns { flex-grow: 1; min-height: 0; flex-direction: row; }
+.cart-list-frame { flex-grow: 1; flex-basis: 0; min-width: 0; margin-right: 20px; border-radius: 12px; overflow: hidden; }
+.cart-preview-frame { flex-grow: 1; flex-basis: 0; min-width: 0; border-radius: 12px; overflow: hidden; }
+.cart-list-scroll, .cart-preview-scroll { flex-grow: 1; min-height: 0; padding: 16px 10px 16px 16px; }
+.cart-row { padding: 0 4px 14px 0; margin-bottom: 14px; border-bottom-width: 1px; border-bottom-color: rgba(138,148,157,0.18); flex-shrink: 0; }
+.cart-row-heading { flex-direction: row; align-items: flex-start; }
+.cart-row-name { flex-grow: 1; flex-basis: 0; min-width: 0; white-space: normal; font-size: 20px; margin: 0 14px 6px 0; }
+.cart-row-price { flex-shrink: 0; font-size: 20px; margin: 0; }
+.cart-row-summary { color: var(--racing-muted); font-size: 17px; white-space: normal; margin: 2px 0; }
+.cart-row-controls { flex-direction: row; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+.cart-row-controls .setting-number { width: 62px; margin-right: 12px; }
+.cart-row-controls .action-button { height: 30px; margin: 0 8px 0 0; min-width: 78px; }
+.cart-row-controls .filled-icon { width: 16px; height: 16px; }
+.cart-footer { flex-shrink: 0; padding-top: 12px; }
+.cart-totals { flex-direction: row; flex-wrap: wrap; }
+.cart-total-cell { flex-grow: 1; flex-basis: 0; min-width: 100px; margin-right: 12px; }
+.cart-total-cell Label { font-size: 16px; color: var(--racing-muted); margin: 0; }
+.cart-total-cell .cart-total-value { font-size: 23px; color: var(--racing-text); }
+.cart-page .car-critical { white-space: normal; font-size: 17px; margin: 6px 0 0 0; }
+.cart-page .car-details-actions { margin-top: 8px; }
+.cart-preview-frame .car-dyno-plot { height: 180px; }
+.compact .cart-list-frame { margin-right: 14px; }
+.compact .cart-list-scroll, .compact .cart-preview-scroll { padding-left: 12px; }

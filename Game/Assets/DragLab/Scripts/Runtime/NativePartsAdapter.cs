@@ -52,6 +52,33 @@ namespace DragLab.Runtime
             if(unit)unitOffers[definition]=role;else unitOffers.Remove(definition);
             notice="";CartChanged();return true;
         }
+        internal int NativeCartLinePrice(PartCartLine line)
+        {
+            var d=profile.catalog.Find(line.definitionId);
+            if(line.action==CartAction.SellPart||line.action==CartAction.SellUnit)return -NativeSalePrice(line.assetId,line.action==CartAction.SellUnit);
+            if(line.action==CartAction.Move)return 0;
+            if(line.action==CartAction.BuyUsed){var stock=profile.inventory.dealer.Find(s=>s.Id==line.assetId);if(stock==null)throw new InvalidOperationException("Used stock unavailable.");return NativeUsedPrice(stock);}
+            if(d==null)throw new InvalidOperationException("Offer unavailable.");
+            return checked((line.action==CartAction.NewUnits?InventoryPricing.NewUnit(d,InventoryUnits.Count(profile,Build,d)):InventoryPricing.NewSet(d))*line.quantity);
+        }
+        internal bool EditNativeCartPurchase(PartCartLine current,string expected,string carId,bool individual,string role,int quantity,bool install,IEnumerable<string> targets)
+        {
+            if(Build==null||Build.instanceId!=carId){notice="Selected car changed; review the cart again.";return false;}
+            PrepareNativeCart();
+            if(!cart.Contains(current)||UnityEngine.JsonUtility.ToJson(current)!=expected){notice="Cart changed; review the row again.";return false;}
+            var d=profile.catalog.Find(current.definitionId);bool fresh=current.action==CartAction.NewSet||current.action==CartAction.NewUnits;
+            if(d==null||!profile.catalog.Fits(Selected.spec,d)||profile.reputation<d.reputationRequired||quantity<1||quantity>99||!fresh&&current.action!=CartAction.BuyUsed){notice="Offer or quantity unavailable.";return false;}
+            var stock=fresh?null:profile.inventory.dealer.Find(s=>s.Id==current.assetId);
+            if(!fresh&&(stock==null||stock.DefinitionId!=d.id||quantity!=1||individual!=(stock.unit!=null)||individual&&role!=stock.unit.element.role)){notice="Used stock changed; review it again.";return false;}
+            var candidate=current.Copy();candidate.action=fresh?individual?CartAction.NewUnits:CartAction.NewSet:CartAction.BuyUsed;candidate.role=individual?role:null;candidate.quantity=quantity;candidate.install=install;candidate.positions=individual&&install?targets.Distinct().ToList():new List<string>();
+            if(individual&&!InventoryUnits.Roles(profile,Build,d).Contains(role)){notice="Individual role unavailable.";return false;}
+            if(cart.Any(l=>l!=current&&l.action==candidate.action&&l.definitionId==d.id&&l.role==candidate.role&&fresh)){notice="Another row already buys this offer and role. Edit that row or remove it first.";return false;}
+            if(install&&NativeBlockPreparationPending(d)){notice="Prepare a complete engine installation before installing this block.";return false;}
+            if(individual&&install&&!ValidateNativeUnitPlan(current,d,role,quantity,candidate.positions))return false;
+            if(install&&!individual&&cart.Any(l=>l!=current&&(l.install||l.action==CartAction.Move&&l.destination==InventoryKind.Car&&l.destinationId==carId)&&profile.catalog.Find(l.definitionId)?.category==d.category)){notice="Another row installs in this slot. Store or remove it first.";return false;}
+            current.action=candidate.action;current.role=candidate.role;current.quantity=candidate.quantity;current.install=candidate.install;current.positions=candidate.positions;
+            notice="";CartChanged();return true;
+        }
         internal void StageNativePart(NativePartEntry entry,bool install,string position=null)
         {
             PrepareNativeCart();

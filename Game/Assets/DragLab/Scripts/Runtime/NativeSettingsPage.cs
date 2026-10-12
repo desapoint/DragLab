@@ -112,6 +112,7 @@ namespace DragLab.Runtime
         void Navigate(string route)
         {
             if (ModalOpen) return;
+            if(route=="Parts"&&game.ScreenName=="Parts"&&cartPageOpen){BackFromNativeCart();return;}
             if (game.ScreenName == "Settings" && route != "Settings" && SettingsDirty)
             {
                 OpenDialog("Unsaved settings", "Apply changes before leaving?", new[] {

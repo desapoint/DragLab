@@ -1,0 +1,445 @@
+Integrated PartsOnly: native-cart-page-02 (before final Settings/used/owner coverage and null-car guard)
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: All mechanical categories map to the five Build sections
+PASS: Projected HP gain uses the authoritative selected-car build
+PASS: HP-gain filter accepts measured gains
+PASS: HP-loss filter rejects measured gains
+PASS: Minimum gain magnitude is enforced
+PASS: Subcategory selections combine with OR inside the category filter
+PASS: Foreign hardware has no fabricated performance gain or zero measurement
+PASS: Unavailable values do not match unchanged-performance filters
+PASS: Unknown sort values stay last even in descending order
+PASS: Affordability includes equality and uses actual offer price
+PASS: Planned reference accounts for pending installs when evaluating a downgrade
+PASS: Invalid planned builds stay unavailable instead of falling back to installed parts
+PASS: Installed-item comparisons preserve exact wear and mass
+PASS: Individual purchase preview matches the authoritative selected-position operation / one 86,3455790119773 / two 87,9024304296666 / expected 87,9024304296666 /
+PASS: Individual purchase uses the shared per-unit pricing calculation
+PASS: Model evaluation never edits supplies, identities, wear, money or fitted parts
+PASS: Spring-travel and potential engine-damage warnings remain visible in Compatible
+PASS: Planned-build fit compatibility also includes parts carrying operating risks
+PASS: Cam/follower dependency is distinguished from mounting incompatibility
+PASS: Pending matching followers satisfy the cam dependency
+PASS: A fitting wheel remains compatible on an engine-less chassis without an invented dyno
+PASS: A physically fitting loose unit stays in Compatible even when complete-set installation is required first
+PASS: Matched individual-unit preview is available:
+PASS: Individual-unit preview follows the chosen cylinder condition without healing any actual element
+PASS: Candidate fits and compares across all five systems: city-three / HeadIntake
+PASS: Candidate fits and compares across all five systems: city-three / Cooling
+PASS: Candidate fits and compares across all five systems: city-three / Gearbox
+PASS: Candidate fits and compares across all five systems: city-three / Tires
+PASS: Candidate fits and compares across all five systems: city-three / Interior
+PASS: Set topology and role pricing: city-three / Pistons
+PASS: Set topology and role pricing: city-three / Valves
+PASS: Set topology and role pricing: city-three / Ignition
+PASS: Set topology and role pricing: city-three / SparkPlugs
+PASS: Set topology and role pricing: city-three / GlowPlugs
+PASS: Set topology and role pricing: city-three / Tires
+PASS: Set topology and role pricing: city-three / Wheels
+PASS: Corner hardware remains a set without fictitious individual specifications: city-three / Wheels
+PASS: Set topology and role pricing: city-three / Brakes
+PASS: Corner hardware remains a set without fictitious individual specifications: city-three / Brakes
+PASS: Varied-car previews preserve applied condition/resources: city-three
+PASS: Candidate fits and compares across all five systems: juniper-club / HeadIntake
+PASS: Candidate fits and compares across all five systems: juniper-club / Cooling
+PASS: Candidate fits and compares across all five systems: juniper-club / Gearbox
+PASS: Candidate fits and compares across all five systems: juniper-club / Tires
+PASS: Candidate fits and compares across all five systems: juniper-club / Interior
+PASS: Set topology and role pricing: juniper-club / Pistons
+PASS: Set topology and role pricing: juniper-club / Valves
+PASS: Set topology and role pricing: juniper-club / Ignition
+PASS: Set topology and role pricing: juniper-club / SparkPlugs
+PASS: Set topology and role pricing: juniper-club / GlowPlugs
+PASS: Set topology and role pricing: juniper-club / Tires
+PASS: Set topology and role pricing: juniper-club / Wheels
+PASS: Corner hardware remains a set without fictitious individual specifications: juniper-club / Wheels
+PASS: Set topology and role pricing: juniper-club / Brakes
+PASS: Corner hardware remains a set without fictitious individual specifications: juniper-club / Brakes
+PASS: Varied-car previews preserve applied condition/resources: juniper-club
+PASS: Candidate fits and compares across all five systems: juniper-economy / HeadIntake
+PASS: Candidate fits and compares across all five systems: juniper-economy / Cooling
+PASS: Candidate fits and compares across all five systems: juniper-economy / Gearbox
+PASS: Candidate fits and compares across all five systems: juniper-economy / Tires
+PASS: Candidate fits and compares across all five systems: juniper-economy / Interior
+PASS: Set topology and role pricing: juniper-economy / Pistons
+PASS: Set topology and role pricing: juniper-economy / Valves
+PASS: Set topology and role pricing: juniper-economy / Ignition
+PASS: Set topology and role pricing: juniper-economy / SparkPlugs
+PASS: Set topology and role pricing: juniper-economy / GlowPlugs
+PASS: Set topology and role pricing: juniper-economy / Tires
+PASS: Set topology and role pricing: juniper-economy / Wheels
+PASS: Corner hardware remains a set without fictitious individual specifications: juniper-economy / Wheels
+PASS: Set topology and role pricing: juniper-economy / Brakes
+PASS: Corner hardware remains a set without fictitious individual specifications: juniper-economy / Brakes
+PASS: Varied-car previews preserve applied condition/resources: juniper-economy
+PASS: Candidate fits and compares across all five systems: kestrel-track / HeadIntake
+PASS: Candidate fits and compares across all five systems: kestrel-track / Cooling
+PASS: Candidate fits and compares across all five systems: kestrel-track / Gearbox
+PASS: Candidate fits and compares across all five systems: kestrel-track / Tires
+PASS: Candidate fits and compares across all five systems: kestrel-track / Interior
+PASS: Set topology and role pricing: kestrel-track / Pistons
+PASS: Set topology and role pricing: kestrel-track / Valves
+PASS: Set topology and role pricing: kestrel-track / Ignition
+PASS: Set topology and role pricing: kestrel-track / SparkPlugs
+PASS: Set topology and role pricing: kestrel-track / GlowPlugs
+PASS: Set topology and role pricing: kestrel-track / Tires
+PASS: Set topology and role pricing: kestrel-track / Wheels
+PASS: Corner hardware remains a set without fictitious individual specifications: kestrel-track / Wheels
+PASS: Set topology and role pricing: kestrel-track / Brakes
+PASS: Corner hardware remains a set without fictitious individual specifications: kestrel-track / Brakes
+PASS: Varied-car previews preserve applied condition/resources: kestrel-track
+PASS: Candidate fits and compares across all five systems: rally-sedan / HeadIntake
+PASS: Candidate fits and compares across all five systems: rally-sedan / Cooling
+PASS: Candidate fits and compares across all five systems: rally-sedan / Gearbox
+PASS: Candidate fits and compares across all five systems: rally-sedan / Tires
+PASS: Candidate fits and compares across all five systems: rally-sedan / Interior
+PASS: Set topology and role pricing: rally-sedan / Pistons
+PASS: Set topology and role pricing: rally-sedan / Valves
+PASS: Set topology and role pricing: rally-sedan / Ignition
+PASS: Set topology and role pricing: rally-sedan / SparkPlugs
+PASS: Set topology and role pricing: rally-sedan / GlowPlugs
+PASS: Set topology and role pricing: rally-sedan / Tires
+PASS: Set topology and role pricing: rally-sedan / Wheels
+PASS: Corner hardware remains a set without fictitious individual specifications: rally-sedan / Wheels
+PASS: Set topology and role pricing: rally-sedan / Brakes
+PASS: Corner hardware remains a set without fictitious individual specifications: rally-sedan / Brakes
+PASS: Varied-car previews preserve applied condition/resources: rally-sedan
+PASS: Candidate fits and compares across all five systems: sport-coupe / HeadIntake
+PASS: Candidate fits and compares across all five systems: sport-coupe / Cooling
+PASS: Candidate fits and compares across all five systems: sport-coupe / Gearbox
+PASS: Candidate fits and compares across all five systems: sport-coupe / Tires
+PASS: Candidate fits and compares across all five systems: sport-coupe / Interior
+PASS: Set topology and role pricing: sport-coupe / Pistons
+PASS: Set topology and role pricing: sport-coupe / Valves
+PASS: Set topology and role pricing: sport-coupe / Ignition
+PASS: Set topology and role pricing: sport-coupe / SparkPlugs
+PASS: Set topology and role pricing: sport-coupe / GlowPlugs
+PASS: Set topology and role pricing: sport-coupe / Tires
+PASS: Set topology and role pricing: sport-coupe / Wheels
+PASS: Corner hardware remains a set without fictitious individual specifications: sport-coupe / Wheels
+PASS: Set topology and role pricing: sport-coupe / Brakes
+PASS: Corner hardware remains a set without fictitious individual specifications: sport-coupe / Brakes
+PASS: Varied-car previews preserve applied condition/resources: sport-coupe
+PASS: Candidate fits and compares across all five systems: starter-hatch / HeadIntake
+PASS: Candidate fits and compares across all five systems: starter-hatch / Cooling
+PASS: Candidate fits and compares across all five systems: starter-hatch / Gearbox
+PASS: Candidate fits and compares across all five systems: starter-hatch / Tires
+PASS: Candidate fits and compares across all five systems: starter-hatch / Interior
+PASS: Set topology and role pricing: starter-hatch / Pistons
+PASS: Set topology and role pricing: starter-hatch / Valves
+PASS: Set topology and role pricing: starter-hatch / Ignition
+PASS: Set topology and role pricing: starter-hatch / SparkPlugs
+PASS: Set topology and role pricing: starter-hatch / GlowPlugs
+PASS: Set topology and role pricing: starter-hatch / Tires
+PASS: Set topology and role pricing: starter-hatch / Wheels
+PASS: Corner hardware remains a set without fictitious individual specifications: starter-hatch / Wheels
+PASS: Set topology and role pricing: starter-hatch / Brakes
+PASS: Corner hardware remains a set without fictitious individual specifications: starter-hatch / Brakes
+PASS: Varied-car previews preserve applied condition/resources: starter-hatch
+PASS: Candidate fits and compares across all five systems: super-v8 / HeadIntake
+PASS: Candidate fits and compares across all five systems: super-v8 / Cooling
+PASS: Candidate fits and compares across all five systems: super-v8 / Gearbox
+PASS: Candidate fits and compares across all five systems: super-v8 / Tires
+PASS: Candidate fits and compares across all five systems: super-v8 / Interior
+PASS: Set topology and role pricing: super-v8 / Pistons
+PASS: Set topology and role pricing: super-v8 / Valves
+PASS: Set topology and role pricing: super-v8 / Ignition
+PASS: Set topology and role pricing: super-v8 / SparkPlugs
+PASS: Set topology and role pricing: super-v8 / GlowPlugs
+PASS: Set topology and role pricing: super-v8 / Tires
+PASS: Set topology and role pricing: super-v8 / Wheels
+PASS: Corner hardware remains a set without fictitious individual specifications: super-v8 / Wheels
+PASS: Set topology and role pricing: super-v8 / Brakes
+PASS: Corner hardware remains a set without fictitious individual specifications: super-v8 / Brakes
+PASS: Varied-car previews preserve applied condition/resources: super-v8
+PASS: Candidate fits and compares across all five systems: timber-diesel / HeadIntake
+PASS: Candidate fits and compares across all five systems: timber-diesel / Cooling
+PASS: Candidate fits and compares across all five systems: timber-diesel / Gearbox
+PASS: Candidate fits and compares across all five systems: timber-diesel / Tires
+PASS: Candidate fits and compares across all five systems: timber-diesel / Interior
+PASS: Set topology and role pricing: timber-diesel / Pistons
+PASS: Set topology and role pricing: timber-diesel / Valves
+PASS: Set topology and role pricing: timber-diesel / Ignition
+PASS: Set topology and role pricing: timber-diesel / SparkPlugs
+PASS: Set topology and role pricing: timber-diesel / GlowPlugs
+PASS: Set topology and role pricing: timber-diesel / Tires
+PASS: Set topology and role pricing: timber-diesel / Wheels
+PASS: Corner hardware remains a set without fictitious individual specifications: timber-diesel / Wheels
+PASS: Set topology and role pricing: timber-diesel / Brakes
+PASS: Corner hardware remains a set without fictitious individual specifications: timber-diesel / Brakes
+PASS: Varied-car previews preserve applied condition/resources: timber-diesel
+PASS: Candidate fits and compares across all five systems: timber-diesel-tow / HeadIntake
+PASS: Candidate fits and compares across all five systems: timber-diesel-tow / Cooling
+PASS: Candidate fits and compares across all five systems: timber-diesel-tow / Gearbox
+PASS: Candidate fits and compares across all five systems: timber-diesel-tow / Tires
+PASS: Candidate fits and compares across all five systems: timber-diesel-tow / Interior
+PASS: Set topology and role pricing: timber-diesel-tow / Pistons
+PASS: Set topology and role pricing: timber-diesel-tow / Valves
+PASS: Set topology and role pricing: timber-diesel-tow / Ignition
+PASS: Set topology and role pricing: timber-diesel-tow / SparkPlugs
+PASS: Set topology and role pricing: timber-diesel-tow / GlowPlugs
+PASS: Set topology and role pricing: timber-diesel-tow / Tires
+PASS: Set topology and role pricing: timber-diesel-tow / Wheels
+PASS: Corner hardware remains a set without fictitious individual specifications: timber-diesel-tow / Wheels
+PASS: Set topology and role pricing: timber-diesel-tow / Brakes
+PASS: Corner hardware remains a set without fictitious individual specifications: timber-diesel-tow / Brakes
+PASS: Varied-car previews preserve applied condition/resources: timber-diesel-tow
+PASS: Candidate fits and compares across all five systems: touring-six / HeadIntake
+PASS: Candidate fits and compares across all five systems: touring-six / Cooling
+PASS: Candidate fits and compares across all five systems: touring-six / Gearbox
+PASS: Candidate fits and compares across all five systems: touring-six / Tires
+PASS: Candidate fits and compares across all five systems: touring-six / Interior
+PASS: Set topology and role pricing: touring-six / Pistons
+PASS: Set topology and role pricing: touring-six / Valves
+PASS: Set topology and role pricing: touring-six / Ignition
+PASS: Set topology and role pricing: touring-six / SparkPlugs
+PASS: Set topology and role pricing: touring-six / GlowPlugs
+PASS: Set topology and role pricing: touring-six / Tires
+PASS: Set topology and role pricing: touring-six / Wheels
+PASS: Corner hardware remains a set without fictitious individual specifications: touring-six / Wheels
+PASS: Set topology and role pricing: touring-six / Brakes
+PASS: Corner hardware remains a set without fictitious individual specifications: touring-six / Brakes
+PASS: Varied-car previews preserve applied condition/resources: touring-six
+PASS: Candidate fits and compares across all five systems: utility-pickup / HeadIntake
+PASS: Candidate fits and compares across all five systems: utility-pickup / Cooling
+PASS: Candidate fits and compares across all five systems: utility-pickup / Gearbox
+PASS: Candidate fits and compares across all five systems: utility-pickup / Tires
+PASS: Candidate fits and compares across all five systems: utility-pickup / Interior
+PASS: Set topology and role pricing: utility-pickup / Pistons
+PASS: Set topology and role pricing: utility-pickup / Valves
+PASS: Set topology and role pricing: utility-pickup / Ignition
+PASS: Set topology and role pricing: utility-pickup / SparkPlugs
+PASS: Set topology and role pricing: utility-pickup / GlowPlugs
+PASS: Set topology and role pricing: utility-pickup / Tires
+PASS: Set topology and role pricing: utility-pickup / Wheels
+PASS: Corner hardware remains a set without fictitious individual specifications: utility-pickup / Wheels
+PASS: Set topology and role pricing: utility-pickup / Brakes
+PASS: Corner hardware remains a set without fictitious individual specifications: utility-pickup / Brakes
+PASS: Varied-car previews preserve applied condition/resources: utility-pickup
+PASS: Candidate fits and compares across all five systems: v8-muscle / HeadIntake
+PASS: Candidate fits and compares across all five systems: v8-muscle / Cooling
+PASS: Candidate fits and compares across all five systems: v8-muscle / Gearbox
+PASS: Candidate fits and compares across all five systems: v8-muscle / Tires
+PASS: Candidate fits and compares across all five systems: v8-muscle / Interior
+PASS: Set topology and role pricing: v8-muscle / Pistons
+PASS: Set topology and role pricing: v8-muscle / Valves
+PASS: Set topology and role pricing: v8-muscle / Ignition
+PASS: Set topology and role pricing: v8-muscle / SparkPlugs
+PASS: Set topology and role pricing: v8-muscle / GlowPlugs
+PASS: Set topology and role pricing: v8-muscle / Tires
+PASS: Set topology and role pricing: v8-muscle / Wheels
+PASS: Corner hardware remains a set without fictitious individual specifications: v8-muscle / Wheels
+PASS: Set topology and role pricing: v8-muscle / Brakes
+PASS: Corner hardware remains a set without fictitious individual specifications: v8-muscle / Brakes
+PASS: Varied-car previews preserve applied condition/resources: v8-muscle
+PASS: Bounded part calculations finish without a race probe / route Parts visible True builds 1 pending 0
+Engine-group preview wait: 5,40 s / 871 offers
+PASS: Build displays the native shared part browser
+PASS: Build has five broad category tabs
+PASS: Parts use a two-column card grid
+PASS: Part category tabs have a complete unclipped control height
+PASS: Filter Cancel discards multi-select changes
+PASS: Bounded part calculations finish without a race probe / route Parts visible True builds 1 pending 0
+Engine-group preview wait: 0,00 s / 871 offers
+PASS: Filter Apply commits local subcategory and HP criteria
+PASS: Visible cards respect combined filters
+PASS: Part details reuse the shared dyno and full comparison stats
+PASS: Detail Back uses the existing shared 40-by-34 style and title gutter
+PASS: Details omit Shop/Inventory/Installed and browsing tools
+PASS: Description, key specifications and physical fit status are visible
+PASS: Main description omits duplicated supplier and internal fitment boilerplate
+PASS: Facts and dyno use a bounded side-by-side first row
+PASS: Four summary bars and detailed comparisons follow the first row at full width
+PASS: Price and cart actions remain outside content scrolling
+PASS: Detail Back uses the existing shared 40-by-34 style and title gutter
+PASS: Details omit Shop/Inventory/Installed and browsing tools
+PASS: Description, key specifications and physical fit status are visible
+PASS: Main description omits duplicated supplier and internal fitment boilerplate
+PASS: Facts and dyno use a bounded side-by-side first row
+PASS: Four summary bars and detailed comparisons follow the first row at full width
+PASS: Price and cart actions remain outside content scrolling
+PASS: Detail Back uses the existing shared 40-by-34 style and title gutter
+PASS: Details omit Shop/Inventory/Installed and browsing tools
+PASS: Description, key specifications and physical fit status are visible
+PASS: Main description omits duplicated supplier and internal fitment boilerplate
+PASS: Facts and dyno use a bounded side-by-side first row
+PASS: Four summary bars and detailed comparisons follow the first row at full width
+PASS: Price and cart actions remain outside content scrolling
+PASS: Detail Back uses the existing shared 40-by-34 style and title gutter
+PASS: Details omit Shop/Inventory/Installed and browsing tools
+PASS: Description, key specifications and physical fit status are visible
+PASS: Main description omits duplicated supplier and internal fitment boilerplate
+PASS: Facts and dyno use a bounded side-by-side first row
+PASS: Four summary bars and detailed comparisons follow the first row at full width
+PASS: Price and cart actions remain outside content scrolling
+PASS: Part details retain shared crisp 4K scaling
+PASS: Expanded detail content cannot move the checkout actions
+PASS: Compact part information action opens the shared specifications dialog
+PASS: Returning from details retains browsing criteria
+PASS: Sort supports magnitude and direction
+PASS: Searching, filters, sorting and comparisons do not save or rebuild the source model
+PASS: Planning installation stages one complete set without touching the car
+PASS: Compatibility reference switches to the same pending cart plan
+PASS: F8 exposes the legacy parts interface with the same staged cart
+PASS: F8 returns to native Build without losing filters or plan
+PASS: Cart page shows cumulative actual-condition and no-wear curves
+PASS: Failed durable checkout keeps the cart and applied assets intact
+PASS: Confirmed checkout uses the atomic shared transaction and installs the quoted set
+PASS: Checkout preserves valid ownership and exact component identities
+PASS: Installed source contains only actual fitted components
+PASS: Replaced OEM set remains accessible in retained inventory
+PASS: Bounded part calculations finish without a race probe / route Parts visible True builds 6 pending 0
+Engine-group preview wait: 0,00 s / 2 offers
+PASS: Native position choice previews the explicitly selected cylinder
+PASS: Returning to the grid refreshes the unit card's selected-position condition delta
+PASS: Build category selection works: 1
+PASS: Build category selection works: 2
+PASS: Build category selection works: 3
+PASS: Build category selection works: 4
+PASS: Build category selection works: 0
+PASS: Tabs and browser tools fit the compact viewport
+PASS: Build uses shared crisp 4K scaling and anchored tabs
+PASS: Bounded part calculations finish without a race probe / route Parts visible True builds 7 pending 0
+Engine-group preview wait: 6,06 s / 871 offers
+PASS: Details have one purchase action without duplicated mode, destination or quantity controls
+PASS: Unified dialog defaults to a complete set and storage
+PASS: Set size and price are explicit; storage needs no cylinder selection
+PASS: Dialog quantity and exact total update together
+PASS: X discards unconfirmed buying choices and leaves the cart empty
+PASS: Complete installation shows actual member numbers and wear with all positions selected
+PASS: Actual fitted specification and faults appear in the same dialog
+PASS: Three sets stage with one installed; car and resources stay unchanged before checkout
+PASS: F8 retains the last confirmed purchase and shared cart
+PASS: Clicking a matching member switches to its explicit single replacement
+PASS: Summary separates purchased count, exact replacements, spare units and retained originals
+PASS: Cancel retains the previous confirmed draft instead of publishing changes
+PASS: Worn shortcut selects members with at least 50 percent actual wear
+PASS: Failed shortcut selects only failed members; a repairable leak is not fabricated as a failed part
+PASS: All selects actual matched units and expands quantity to cover them
+PASS: An empty individual installation cannot stage
+PASS: Quantity cannot drop below one
+PASS: Quantity caps at 99
+PASS: Fractions are rejected without silently rounding a purchase
+PASS: Non-finite quantities are rejected
+PASS: Real keyboard numeric entry commits a whole quantity in the shared dialog
+PASS: Reducing quantity prunes excess targets in actual position order
+PASS: Dialog editing/cancel never changes car/resources/files or rebuilds comparisons
+PASS: Confirmation stages exact targets and purchased extras through the shared cart
+PASS: Invalid merged quantity and stale positions are rejected before cart mutation
+PASS: Checkout renews only selected pistons and retains all other condition
+PASS: Checkout retains two purchased extras and two original members with valid identities
+PASS: Individual storage purchase needs no installed positions after replacements changed their identities
+PASS: Existing cart position editing remains draft-only and cancellation preserves storage plan
+PASS: Bounded part calculations finish without a race probe / route Parts visible True builds 13 pending 0
+Engine-group preview wait: 5,84 s / 871 offers
+PASS: A differing individual specification can be bought as a spare without requiring a fitted position
+PASS: Individual mixing is blocked only for installation, with a clear matched-set requirement
+PASS: Complete matched-set replacement remains available for a new specification
+PASS: Bounded part calculations finish without a race probe / route Parts visible True builds 13 pending 0
+Engine-group preview wait: 0,00 s / 871 offers
+PASS: Valve groups use real cylinders and only the selected intake/exhaust role
+PASS: Exact purchase summary stays outside member scrolling
+PASS: Dialog quantities, scroll and fixed actions fit the compact viewport
+PASS: Long member lists cannot hide or overlap the purchase summary and actions
+PASS: Unified dialog retains bounded crisp 4K scaling
+PASS: Tires use the same purchase flow with exact corners grouped by axle
+PASS: A tire purchase stages only its selected corner
+PASS: Bounded part calculations finish without a race probe / route Parts visible True builds 15 pending 0
+Engine-group preview wait: 5,80 s / 871 offers
+PASS: Used individual is one exact asset at the actual dealer price, not a new bundle
+PASS: Incoming used-unit condition is identified separately from the fitted member wear
+PASS: Used install stages the exact retained asset and explicit target without healing it
+PASS: Used checkout preserves its physical identity and wear when replacing the selected member
+PASS: Bounded part calculations finish without a race probe / route Parts visible True builds 18 pending 0
+Engine-group preview wait: 5,71 s / 870 offers
+PASS: Used sets remain exact retained kits instead of inventing splittable seller stock
+PASS: Closing the purchase removes its fixed review without leaking it into other dialogs
+PASS: Cart replaces Build content as a full page with persistent navigation
+PASS: Cart uses the original compact shared Back control
+PASS: All existing rows and cumulative dyno/four-stat preview are retained on the cart page
+PASS: Purchases, sale credits, net total and remaining cash use actual shared pricing
+PASS: Idle cart does not recalculate previews or evaluate hidden shop offers
+PASS: F8 preserves the complete cart page and the same transaction plan
+PASS: Cart Edit initializes the shared replacement dialog from the row, not the last shop draft
+PASS: Cart edit X discards mode, quantity and cylinder changes without applying or adding purchases
+PASS: Apply converts the same kit row into exact individual replacements and extras without duplicate charges
+PASS: Reopened cart editing retains the exact selected position and quantity
+PASS: Inline quantity replaces its row count and preserves selected replacements
+PASS: Non-finite inline quantities are rejected
+PASS: Fractional inline quantities are rejected
+PASS: Inline quantities respect the 99-unit limit
+PASS: Other repeated components expose role/cylinder selection and keep uninstalled extras
+PASS: Stale row signatures cannot overwrite subsequent cart edits
+PASS: Stale replacement positions cannot publish a cart edit
+PASS: Converting into another row's offer/role is rejected without merging or losing either row
+PASS: Cart editing can convert a tire kit into one exact corner replacement
+PASS: Store clears only that row's installation targets and preserves its purchased quantity
+PASS: Clear cancellation retains purchases, sales and installation targets
+PASS: Compact cart keeps scrolling rows, preview and fixed totals/actions inside the viewport
+PASS: Cart uses shared crisp 4K scaling and bounded footer anchors
+PASS: All cart edits/removals/previews remain isolated from actual assets, resources and save files
+PASS: Cancelling checkout returns to the same full cart without losing its plan
+PASS: Remove affects only the targeted row
+PASS: Confirmed Clear leaves an honest empty cart and disabled checkout
+PASS: Back restores the previous Build content without touching the car
+PASS: Build retains the no-Tab contract with no runtime errors
+Checks: 398 / runtime errors: 0
+
+Final packaged CartOnly: native-cart-page-final-guard (focused excerpt; gate includes the same thirteen-car baseline)
+PASS: Cart replaces Build content as a full page with persistent navigation
+PASS: Cart uses the original compact shared Back control
+PASS: All existing rows and cumulative dyno/four-stat preview are retained on the cart page
+PASS: Purchases, sale credits, net total and remaining cash use actual shared pricing
+PASS: Idle cart does not recalculate previews or evaluate hidden shop offers
+PASS: F8 preserves the complete cart page and the same transaction plan
+PASS: Build navigation from cart Settings still protects unapplied preferences
+PASS: Settings cancellation returns to the same cart without changing its plan
+PASS: Cart Edit initializes the shared replacement dialog from the row, not the last shop draft
+PASS: Cart edit X discards mode, quantity and cylinder changes without applying or adding purchases
+PASS: Apply converts the same kit row into exact individual replacements and extras without duplicate charges
+PASS: Reopened cart editing retains the exact selected position and quantity
+PASS: Inline quantity replaces its row count and preserves selected replacements
+PASS: Non-finite inline quantities are rejected
+PASS: Fractional inline quantities are rejected
+PASS: Inline quantities respect the 99-unit limit
+PASS: Other repeated components expose role/cylinder selection and keep uninstalled extras
+PASS: Stale row signatures cannot overwrite subsequent cart edits
+PASS: Stale replacement positions cannot publish a cart edit
+PASS: Edits cannot cross the selected car owner
+PASS: Converting into another row's offer/role is rejected without merging or losing either row
+PASS: Cart editing can convert a tire kit into one exact corner replacement
+PASS: Store clears only that row's installation targets and preserves its purchased quantity
+PASS: Used cart editing retains its exact quantity and incoming condition
+PASS: A used component can change replacement position without converting into new stock or healing wear
+PASS: Clear cancellation retains purchases, sales and installation targets
+PASS: Compact cart keeps scrolling rows, preview and fixed totals/actions inside the viewport
+PASS: Cart uses shared crisp 4K scaling and bounded footer anchors
+PASS: All cart edits/removals/previews remain isolated from actual assets, resources and save files
+PASS: Cancelling checkout returns to the same full cart without losing its plan
+PASS: Remove affects only the targeted row
+PASS: Confirmed Clear leaves an honest empty cart and disabled checkout
+PASS: Back restores the previous Build content without touching the car
+Checks: 289 / runtime errors: 0

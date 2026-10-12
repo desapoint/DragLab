@@ -49,27 +49,11 @@ namespace DragLab.Runtime
                 QueryChoices(content,"partSortDirection","Order",new[]{"Ascending","Descending"},()=>query.Descending?"Descending":"Ascending",v=>query.Descending=v=="Descending");
             });
         }
-        void OpenNativeCart()
-        {
-            ClearPartCartSwitches();RefreshParts("Parts");
-            string problem=null;int total=0;try{total=game.NativeCartTotal();if(game.CartLines.Any(l=>l.install&&game.NativeBlockPreparationPending(game.Profile.catalog.Find(l.definitionId))))problem="Prepare a complete engine installation before installing this block.";}catch(Exception error){problem=error.Message;}
-            var actions=game.CartCount==0?new[]{new DialogAction("Close",CloseDialog)}:new[]{new DialogAction("Clear",()=>{game.ClearNativeCart();partsStateKey=null;OpenNativeCart();}),new DialogAction("Close",CloseDialog),new DialogAction("Checkout",ConfirmNativeCart,true)};
-            OpenDialog("Cart",(problem??("Total "+DisplayUnits.Money(total)+" · Cash "+DisplayUnits.Money(game.Profile.cash))),actions,populate:content=>{
-                foreach(var line in game.CartLines.ToArray()){
-                    var d=game.Profile.catalog.Find(line.definitionId);var block=new VisualElement();block.AddToClassList("owned-query-group");content.Add(block);block.Add(new Label((d?.name??line.assetId)+" × "+line.quantity){enableRichText=false});
-                    block.Add(new Label(line.action==CartAction.Move?"Move → "+line.destination:line.action==CartAction.SellPart||line.action==CartAction.SellUnit?"Sale":line.role==null?"Complete set":"Individual "+line.role));
-                    if(line.action==CartAction.NewSet||line.action==CartAction.NewUnits||line.action==CartAction.BuyUsed){var row=new VisualElement();row.AddToClassList("cart-install");row.Add(new Label("Install"));block.Add(row);var toggle=new Toggle{name="cartInstall:"+(line.assetId??line.definitionId)+":"+line.role,value=line.install};toggle.AddToClassList("setting-toggle");toggle.SetEnabled(!game.NativeBlockPreparationPending(d)||line.install);row.Add(toggle);var s=new SwitchSurface(toggle);toggle.Q(className:"unity-toggle__input").Add(s);switchSurfaces.Add(s);partCartSwitches.Add(s);s.SetValue(line.install);toggle.RegisterValueChangedCallback(e=>{if(e.newValue&&line.action==CartAction.NewUnits){ChooseCartUnitPositions(line);return;}game.SetNativeCartInstall(line,e.newValue);partsStateKey=null;OpenNativeCart();});}
-                    if(line.action==CartAction.NewUnits&&line.install)block.Add(new Label(string.Join(" · ",line.positions.Select(p=>InventoryUnits.PositionLabel(game.Profile,game.Profile.SelectedCar,line.definitionId,p)))+" · "+(line.quantity-line.positions.Count)+" in storage"){enableRichText=false});
-                    var remove=new Button(()=>{game.RemoveNativeCartLine(line);partsStateKey=null;OpenNativeCart();}){text="Remove",name="cartRemove:"+(line.assetId??line.definitionId),focusable=false,tabIndex=-1};remove.AddToClassList("action-button");block.Add(remove);AddSurface(remove,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(remove.Q<RacingSurface>());
-                }
-                if(partsBrowser?.Plan!=null&&partsBrowser.Current!=null)content.Add(new NativeDynoPanel(new[]{new NativeDynoSeries("Current","Current",partsBrowser.Current,NativeDynoStyle.Primary),new NativeDynoSeries("Plan","Planned",partsBrowser.Plan,NativeDynoStyle.Alternative),new NativeDynoSeries("NoWear","No wear",OwnedHealthy(game.Profile.SelectedCar),NativeDynoStyle.Reference)},SharedUnitSettings.Current.torque,"cartDyno"));
-            });root.Q<Button>("dialogCheckout")?.SetEnabled(problem==null&&game.CartCount>0&&total<=game.Profile.cash);
-        }
         void ConfirmNativeCart()
         {
-            PartCartQuote quote;try{quote=game.QuoteNativeCart();}catch(Exception error){partsNotice.text=error.Message;return;}
+            PartCartQuote quote;try{quote=game.QuoteNativeCart();}catch(Exception error){if(cartPageOpen)cartError.text=error.Message;else partsNotice.text=error.Message;return;}
             string signature=UnityEngine.JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()});
-            OpenDialog("Checkout?","Total "+DisplayUnits.Money(quote.total)+" · Cash "+DisplayUnits.Money(game.Profile.cash),new[]{new DialogAction("Cancel",OpenNativeCart),new DialogAction("Confirm",()=>{
+            OpenDialog("Checkout?","Total "+DisplayUnits.Money(quote.total)+" · Cash "+DisplayUnits.Money(game.Profile.cash),new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Confirm",()=>{
                 if(signature!=UnityEngine.JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()})){root.Q<ScrollView>("modalContent").Add(new Label("Cart changed; review it again."));return;}
                 if(game.CommitNativeCart(quote)){CloseDialog();partsStateKey=null;partsNotice.text="";}else root.Q<ScrollView>("modalContent").Add(new Label(game.NativeNotice){enableRichText=false});
             },true)});
