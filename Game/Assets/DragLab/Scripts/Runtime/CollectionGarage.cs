@@ -51,6 +51,10 @@ namespace DragLab.Runtime
                 int price = PaidEconomy.DealerPrice(profile.catalog, Costs, PricingPolicy, offer);
                 GUILayout.Label(vehicle.spec.displayName + " / " + vehicle.spec.sound.cylinders + " cylinders / " + vehicle.spec.DisplacementLitres.ToString("F1") + " L / " + vehicle.spec.drive + " / owned " + profile.cars.Count(c => c.vehicleId == offer.model));
                 GUILayout.Label((offer.used?"Used · "+offer.mileageKm.ToString("N0")+" km · fitted parts and wear retained":"New · factory fitted package"));
+                if(offer.used){GUILayout.Label((offer.reportedCondition*100).ToString("F0")+"% condition / "+(offer.engineRuns?"Engine runs":"Engine does not run")+" / "+(offer.drives?"Drives":"Does not drive"));
+                    if(!VehicleInspection.Known(offer))PaidButton("car-inspect:"+offer.listingId,"Inspect this listing",new PaymentRequest{kind=PaymentKind.VehicleInspection,offer=offer});
+                    else {GUILayout.Label("Inspected / "+string.Join("; ",offer.historyNotes));GUILayout.Label("Fuel "+offer.fuel.litres.ToString("F1")+" L / oil "+offer.fluids.oilLitres.ToString("F1")+" L / coolant "+offer.fluids.coolantLitres.ToString("F1")+" L");foreach(var part in offer.parts.Where(p=>p.condition.failed||p.condition.leakSeverity>0||p.condition.elements.Any(e=>e.fault!=ElementFault.None)))GUILayout.Label(profile.catalog.Find(part.definitionId).name+" / "+(part.condition.failed?part.condition.failureReason:"Service faults"));}
+                }
                 GUI.enabled = profile.cash >= price && profile.reputation >= offer.reputation;
                 if (PartButton("car-buy:" + offer.listingId, "Buy another / " + DisplayUnits.Money(price) + " / REP " + offer.reputation)) QueuePayment(new PaymentRequest { kind = PaymentKind.Car, offer = offer });
                 GUI.enabled = true;

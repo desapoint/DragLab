@@ -232,6 +232,7 @@ namespace DragLab.Runtime
             body.Add(OwnedCarDyno(car,comparing?selected:null));
             BuildOwnedStats(body,car,comparing?selected:null);
             BuildOwnedMaintenance(car);
+            if(car.usedHistory.Count>0){var history=new Button(()=>OpenDialog("Previous history",string.Join("\n",car.usedHistory),new[]{new DialogAction("Close",CloseDialog)})){name="ownedHistory",text="History",tabIndex=-1,focusable=false};history.AddToClassList("action-button");history.AddToClassList("car-stats-button");history.Add(new FilledMenuIcon("Data"));body.Q(className:"car-summary").Add(history);DecorateOwnedStats(history,RacingSurface.Kind.SecondaryAction);}
             ownedUse.SetEnabled(!current); ownedUse.tooltip = current ? "Already the current car" : "Use this owned car";
             ExcludeTabTraversal();
         }

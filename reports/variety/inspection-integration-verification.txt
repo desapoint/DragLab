@@ -1,0 +1,811 @@
+PASS: city-three: durable transaction /
+PASS: city-three: paid duplicate model has independent ownership
+PASS: city-three: durable transaction /
+PASS: city-three: durable transaction /
+PASS: city-three: durable transaction /
+PASS: city-three: durable transaction /
+PASS: city-three: partial tanks, individual wear, duplicate models and missing kit ownership valid
+PASS: city-three: partial tanks, individual wear, duplicate models and missing kit exact state apart from JSON double spelling
+PASS: city-three: missing required kit remains non-drivable without manufactured OEM
+PASS: city-three: durable transaction /
+PASS: city-three: durable transaction /
+PASS: city-three: durable transaction /
+PASS: city-three: durable transaction /
+PASS: city-three: simultaneous display and rebuild reservations ownership valid
+PASS: city-three: simultaneous display and rebuild reservations exact state apart from JSON double spelling
+PASS: city-three: both reservations block entry
+PASS: city-three: assigned engine cannot detach / Car and installed components reserved by garage job; claim or cancel it first.
+PASS: city-three: rebuild engine cannot detach / Engine reserved at rebuild shop; collect it before modifying/racing this car.
+PASS: city-three: early job claim rejects atomically / Job is still running.
+PASS: city-three: early rebuild collection rejects atomically / Rebuild is still in progress.
+PASS: city-three: failed job save publishes no payout/release / Save failed; operation rolled back.
+PASS: city-three: durable transaction /
+PASS: city-three: offline job pays captured reward
+PASS: city-three: repeat job claim rejected / Job already released or missing.
+PASS: city-three: failed rebuild save retains paid reservation / Save failed; operation rolled back.
+PASS: city-three: durable transaction /
+PASS: city-three: collection charges no second payment and retains failed original
+PASS: city-three: released jobs and retained failed originals ownership valid
+PASS: city-three: released jobs and retained failed originals exact state apart from JSON double spelling
+PASS: city-three: durable transaction /
+PASS: city-three: durable transaction /
+PASS: city-three: mid-career interruption ownership valid
+PASS: city-three: interruption retains fuel, fee and no reward
+PASS: city-three: repeat interrupted recovery ownership valid
+PASS: city-three: interruption recovery is idempotent
+PASS: city-three: durable transaction /
+PASS: city-three: real shared race completes
+PASS: city-three: failed result save retains unsettled reward/resources / Save failed; operation rolled back.
+PASS: city-three: durable transaction /
+PASS: city-three: duplicate result cannot pay twice / Race already settled.
+PASS: city-three: finish saved before shutdown closure ownership valid
+PASS: city-three: restart preserves paid finish and closes only resources
+PASS: city-three: failed salvage save retains tree and cash / Save failed; operation rolled back.
+PASS: city-three: durable transaction /
+PASS: city-three: partial chassis salvage / retained engine ownership valid
+PASS: city-three: partial chassis salvage / retained engine exact state apart from JSON double spelling
+PASS: city-three: salvage keeps actual stored engine and loose failed parts
+PASS: city-three: durable transaction /
+PASS: city-three: sold engine descendants / surviving blueprint ownership valid
+PASS: city-three: sold engine descendants / surviving blueprint exact state apart from JSON double spelling
+PASS: city-three: sold descendants never respawn; blueprint remains virtual
+PASS: city-three: repeat assembly sale rejected / Operation already settled.
+PASS: city-three: sold configuration previews paid missing components
+PASS: city-three: missing-part setup cannot fabricate unbought hardware / Missing parts: preview and use Buy missing + apply.
+PASS: city-three: durable transaction /
+PASS: city-three: explicit setup apply buys missing parts once
+PASS: city-three: rehydrated configuration with paid new identities ownership valid
+PASS: city-three: rehydrated configuration with paid new identities exact state apart from JSON double spelling
+PASS: city-three: matching backup is durable
+PASS: city-three: corrupt primary recovers matching cash/resources/ownership/jobs
+PASS: city-three: recovered backup can be republished
+PASS: city-three: future-schema fallback never overwrites original
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: paid duplicate model has independent ownership
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: partial tanks, individual wear, duplicate models and missing kit ownership valid
+PASS: juniper-club: partial tanks, individual wear, duplicate models and missing kit exact state apart from JSON double spelling
+PASS: juniper-club: missing required kit remains non-drivable without manufactured OEM
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: simultaneous display and rebuild reservations ownership valid
+PASS: juniper-club: simultaneous display and rebuild reservations exact state apart from JSON double spelling
+PASS: juniper-club: both reservations block entry
+PASS: juniper-club: assigned engine cannot detach / Car and installed components reserved by garage job; claim or cancel it first.
+PASS: juniper-club: rebuild engine cannot detach / Engine reserved at rebuild shop; collect it before modifying/racing this car.
+PASS: juniper-club: early job claim rejects atomically / Job is still running.
+PASS: juniper-club: early rebuild collection rejects atomically / Rebuild is still in progress.
+PASS: juniper-club: failed job save publishes no payout/release / Save failed; operation rolled back.
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: offline job pays captured reward
+PASS: juniper-club: repeat job claim rejected / Job already released or missing.
+PASS: juniper-club: failed rebuild save retains paid reservation / Save failed; operation rolled back.
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: collection charges no second payment and retains failed original
+PASS: juniper-club: released jobs and retained failed originals ownership valid
+PASS: juniper-club: released jobs and retained failed originals exact state apart from JSON double spelling
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: mid-career interruption ownership valid
+PASS: juniper-club: interruption retains fuel, fee and no reward
+PASS: juniper-club: repeat interrupted recovery ownership valid
+PASS: juniper-club: interruption recovery is idempotent
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: real shared race completes
+PASS: juniper-club: failed result save retains unsettled reward/resources / Save failed; operation rolled back.
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: duplicate result cannot pay twice / Race already settled.
+PASS: juniper-club: finish saved before shutdown closure ownership valid
+PASS: juniper-club: restart preserves paid finish and closes only resources
+PASS: juniper-club: failed salvage save retains tree and cash / Save failed; operation rolled back.
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: partial chassis salvage / retained engine ownership valid
+PASS: juniper-club: partial chassis salvage / retained engine exact state apart from JSON double spelling
+PASS: juniper-club: salvage keeps actual stored engine and loose failed parts
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: sold engine descendants / surviving blueprint ownership valid
+PASS: juniper-club: sold engine descendants / surviving blueprint exact state apart from JSON double spelling
+PASS: juniper-club: sold descendants never respawn; blueprint remains virtual
+PASS: juniper-club: repeat assembly sale rejected / Operation already settled.
+PASS: juniper-club: sold configuration previews paid missing components
+PASS: juniper-club: missing-part setup cannot fabricate unbought hardware / Missing parts: preview and use Buy missing + apply.
+PASS: juniper-club: durable transaction /
+PASS: juniper-club: explicit setup apply buys missing parts once
+PASS: juniper-club: rehydrated configuration with paid new identities ownership valid
+PASS: juniper-club: rehydrated configuration with paid new identities exact state apart from JSON double spelling
+PASS: juniper-club: matching backup is durable
+PASS: juniper-club: corrupt primary recovers matching cash/resources/ownership/jobs
+PASS: juniper-club: recovered backup can be republished
+PASS: juniper-club: future-schema fallback never overwrites original
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: paid duplicate model has independent ownership
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: partial tanks, individual wear, duplicate models and missing kit ownership valid
+PASS: juniper-economy: partial tanks, individual wear, duplicate models and missing kit exact state apart from JSON double spelling
+PASS: juniper-economy: missing required kit remains non-drivable without manufactured OEM
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: simultaneous display and rebuild reservations ownership valid
+PASS: juniper-economy: simultaneous display and rebuild reservations exact state apart from JSON double spelling
+PASS: juniper-economy: both reservations block entry
+PASS: juniper-economy: assigned engine cannot detach / Car and installed components reserved by garage job; claim or cancel it first.
+PASS: juniper-economy: rebuild engine cannot detach / Engine reserved at rebuild shop; collect it before modifying/racing this car.
+PASS: juniper-economy: early job claim rejects atomically / Job is still running.
+PASS: juniper-economy: early rebuild collection rejects atomically / Rebuild is still in progress.
+PASS: juniper-economy: failed job save publishes no payout/release / Save failed; operation rolled back.
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: offline job pays captured reward
+PASS: juniper-economy: repeat job claim rejected / Job already released or missing.
+PASS: juniper-economy: failed rebuild save retains paid reservation / Save failed; operation rolled back.
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: collection charges no second payment and retains failed original
+PASS: juniper-economy: released jobs and retained failed originals ownership valid
+PASS: juniper-economy: released jobs and retained failed originals exact state apart from JSON double spelling
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: mid-career interruption ownership valid
+PASS: juniper-economy: interruption retains fuel, fee and no reward
+PASS: juniper-economy: repeat interrupted recovery ownership valid
+PASS: juniper-economy: interruption recovery is idempotent
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: real shared race completes
+PASS: juniper-economy: failed result save retains unsettled reward/resources / Save failed; operation rolled back.
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: duplicate result cannot pay twice / Race already settled.
+PASS: juniper-economy: finish saved before shutdown closure ownership valid
+PASS: juniper-economy: restart preserves paid finish and closes only resources
+PASS: juniper-economy: failed salvage save retains tree and cash / Save failed; operation rolled back.
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: partial chassis salvage / retained engine ownership valid
+PASS: juniper-economy: partial chassis salvage / retained engine exact state apart from JSON double spelling
+PASS: juniper-economy: salvage keeps actual stored engine and loose failed parts
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: sold engine descendants / surviving blueprint ownership valid
+PASS: juniper-economy: sold engine descendants / surviving blueprint exact state apart from JSON double spelling
+PASS: juniper-economy: sold descendants never respawn; blueprint remains virtual
+PASS: juniper-economy: repeat assembly sale rejected / Operation already settled.
+PASS: juniper-economy: sold configuration previews paid missing components
+PASS: juniper-economy: missing-part setup cannot fabricate unbought hardware / Missing parts: preview and use Buy missing + apply.
+PASS: juniper-economy: durable transaction /
+PASS: juniper-economy: explicit setup apply buys missing parts once
+PASS: juniper-economy: rehydrated configuration with paid new identities ownership valid
+PASS: juniper-economy: rehydrated configuration with paid new identities exact state apart from JSON double spelling
+PASS: juniper-economy: matching backup is durable
+PASS: juniper-economy: corrupt primary recovers matching cash/resources/ownership/jobs
+PASS: juniper-economy: recovered backup can be republished
+PASS: juniper-economy: future-schema fallback never overwrites original
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: paid duplicate model has independent ownership
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: partial tanks, individual wear, duplicate models and missing kit ownership valid
+PASS: kestrel-track: partial tanks, individual wear, duplicate models and missing kit exact state apart from JSON double spelling
+PASS: kestrel-track: missing required kit remains non-drivable without manufactured OEM
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: simultaneous display and rebuild reservations ownership valid
+PASS: kestrel-track: simultaneous display and rebuild reservations exact state apart from JSON double spelling
+PASS: kestrel-track: both reservations block entry
+PASS: kestrel-track: assigned engine cannot detach / Car and installed components reserved by garage job; claim or cancel it first.
+PASS: kestrel-track: rebuild engine cannot detach / Engine reserved at rebuild shop; collect it before modifying/racing this car.
+PASS: kestrel-track: early job claim rejects atomically / Job is still running.
+PASS: kestrel-track: early rebuild collection rejects atomically / Rebuild is still in progress.
+PASS: kestrel-track: failed job save publishes no payout/release / Save failed; operation rolled back.
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: offline job pays captured reward
+PASS: kestrel-track: repeat job claim rejected / Job already released or missing.
+PASS: kestrel-track: failed rebuild save retains paid reservation / Save failed; operation rolled back.
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: collection charges no second payment and retains failed original
+PASS: kestrel-track: released jobs and retained failed originals ownership valid
+PASS: kestrel-track: released jobs and retained failed originals exact state apart from JSON double spelling
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: mid-career interruption ownership valid
+PASS: kestrel-track: interruption retains fuel, fee and no reward
+PASS: kestrel-track: repeat interrupted recovery ownership valid
+PASS: kestrel-track: interruption recovery is idempotent
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: real shared race completes
+PASS: kestrel-track: failed result save retains unsettled reward/resources / Save failed; operation rolled back.
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: duplicate result cannot pay twice / Race already settled.
+PASS: kestrel-track: finish saved before shutdown closure ownership valid
+PASS: kestrel-track: restart preserves paid finish and closes only resources
+PASS: kestrel-track: failed salvage save retains tree and cash / Save failed; operation rolled back.
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: partial chassis salvage / retained engine ownership valid
+PASS: kestrel-track: partial chassis salvage / retained engine exact state apart from JSON double spelling
+PASS: kestrel-track: salvage keeps actual stored engine and loose failed parts
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: sold engine descendants / surviving blueprint ownership valid
+PASS: kestrel-track: sold engine descendants / surviving blueprint exact state apart from JSON double spelling
+PASS: kestrel-track: sold descendants never respawn; blueprint remains virtual
+PASS: kestrel-track: repeat assembly sale rejected / Operation already settled.
+PASS: kestrel-track: sold configuration previews paid missing components
+PASS: kestrel-track: missing-part setup cannot fabricate unbought hardware / Missing parts: preview and use Buy missing + apply.
+PASS: kestrel-track: durable transaction /
+PASS: kestrel-track: explicit setup apply buys missing parts once
+PASS: kestrel-track: rehydrated configuration with paid new identities ownership valid
+PASS: kestrel-track: rehydrated configuration with paid new identities exact state apart from JSON double spelling
+PASS: kestrel-track: matching backup is durable
+PASS: kestrel-track: corrupt primary recovers matching cash/resources/ownership/jobs
+PASS: kestrel-track: recovered backup can be republished
+PASS: kestrel-track: future-schema fallback never overwrites original
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: paid duplicate model has independent ownership
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: partial tanks, individual wear, duplicate models and missing kit ownership valid
+PASS: rally-sedan: partial tanks, individual wear, duplicate models and missing kit exact state apart from JSON double spelling
+PASS: rally-sedan: missing required kit remains non-drivable without manufactured OEM
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: simultaneous display and rebuild reservations ownership valid
+PASS: rally-sedan: simultaneous display and rebuild reservations exact state apart from JSON double spelling
+PASS: rally-sedan: both reservations block entry
+PASS: rally-sedan: assigned engine cannot detach / Car and installed components reserved by garage job; claim or cancel it first.
+PASS: rally-sedan: rebuild engine cannot detach / Engine reserved at rebuild shop; collect it before modifying/racing this car.
+PASS: rally-sedan: early job claim rejects atomically / Job is still running.
+PASS: rally-sedan: early rebuild collection rejects atomically / Rebuild is still in progress.
+PASS: rally-sedan: failed job save publishes no payout/release / Save failed; operation rolled back.
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: offline job pays captured reward
+PASS: rally-sedan: repeat job claim rejected / Job already released or missing.
+PASS: rally-sedan: failed rebuild save retains paid reservation / Save failed; operation rolled back.
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: collection charges no second payment and retains failed original
+PASS: rally-sedan: released jobs and retained failed originals ownership valid
+PASS: rally-sedan: released jobs and retained failed originals exact state apart from JSON double spelling
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: mid-career interruption ownership valid
+PASS: rally-sedan: interruption retains fuel, fee and no reward
+PASS: rally-sedan: repeat interrupted recovery ownership valid
+PASS: rally-sedan: interruption recovery is idempotent
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: real shared race completes
+PASS: rally-sedan: failed result save retains unsettled reward/resources / Save failed; operation rolled back.
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: duplicate result cannot pay twice / Race already settled.
+PASS: rally-sedan: finish saved before shutdown closure ownership valid
+PASS: rally-sedan: restart preserves paid finish and closes only resources
+PASS: rally-sedan: failed salvage save retains tree and cash / Save failed; operation rolled back.
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: partial chassis salvage / retained engine ownership valid
+PASS: rally-sedan: partial chassis salvage / retained engine exact state apart from JSON double spelling
+PASS: rally-sedan: salvage keeps actual stored engine and loose failed parts
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: sold engine descendants / surviving blueprint ownership valid
+PASS: rally-sedan: sold engine descendants / surviving blueprint exact state apart from JSON double spelling
+PASS: rally-sedan: sold descendants never respawn; blueprint remains virtual
+PASS: rally-sedan: repeat assembly sale rejected / Operation already settled.
+PASS: rally-sedan: sold configuration previews paid missing components
+PASS: rally-sedan: missing-part setup cannot fabricate unbought hardware / Missing parts: preview and use Buy missing + apply.
+PASS: rally-sedan: durable transaction /
+PASS: rally-sedan: explicit setup apply buys missing parts once
+PASS: rally-sedan: rehydrated configuration with paid new identities ownership valid
+PASS: rally-sedan: rehydrated configuration with paid new identities exact state apart from JSON double spelling
+PASS: rally-sedan: matching backup is durable
+PASS: rally-sedan: corrupt primary recovers matching cash/resources/ownership/jobs
+PASS: rally-sedan: recovered backup can be republished
+PASS: rally-sedan: future-schema fallback never overwrites original
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: paid duplicate model has independent ownership
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: partial tanks, individual wear, duplicate models and missing kit ownership valid
+PASS: sport-coupe: partial tanks, individual wear, duplicate models and missing kit exact state apart from JSON double spelling
+PASS: sport-coupe: missing required kit remains non-drivable without manufactured OEM
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: simultaneous display and rebuild reservations ownership valid
+PASS: sport-coupe: simultaneous display and rebuild reservations exact state apart from JSON double spelling
+PASS: sport-coupe: both reservations block entry
+PASS: sport-coupe: assigned engine cannot detach / Car and installed components reserved by garage job; claim or cancel it first.
+PASS: sport-coupe: rebuild engine cannot detach / Engine reserved at rebuild shop; collect it before modifying/racing this car.
+PASS: sport-coupe: early job claim rejects atomically / Job is still running.
+PASS: sport-coupe: early rebuild collection rejects atomically / Rebuild is still in progress.
+PASS: sport-coupe: failed job save publishes no payout/release / Save failed; operation rolled back.
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: offline job pays captured reward
+PASS: sport-coupe: repeat job claim rejected / Job already released or missing.
+PASS: sport-coupe: failed rebuild save retains paid reservation / Save failed; operation rolled back.
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: collection charges no second payment and retains failed original
+PASS: sport-coupe: released jobs and retained failed originals ownership valid
+PASS: sport-coupe: released jobs and retained failed originals exact state apart from JSON double spelling
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: mid-career interruption ownership valid
+PASS: sport-coupe: interruption retains fuel, fee and no reward
+PASS: sport-coupe: repeat interrupted recovery ownership valid
+PASS: sport-coupe: interruption recovery is idempotent
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: real shared race completes
+PASS: sport-coupe: failed result save retains unsettled reward/resources / Save failed; operation rolled back.
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: duplicate result cannot pay twice / Race already settled.
+PASS: sport-coupe: finish saved before shutdown closure ownership valid
+PASS: sport-coupe: restart preserves paid finish and closes only resources
+PASS: sport-coupe: failed salvage save retains tree and cash / Save failed; operation rolled back.
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: partial chassis salvage / retained engine ownership valid
+PASS: sport-coupe: partial chassis salvage / retained engine exact state apart from JSON double spelling
+PASS: sport-coupe: salvage keeps actual stored engine and loose failed parts
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: sold engine descendants / surviving blueprint ownership valid
+PASS: sport-coupe: sold engine descendants / surviving blueprint exact state apart from JSON double spelling
+PASS: sport-coupe: sold descendants never respawn; blueprint remains virtual
+PASS: sport-coupe: repeat assembly sale rejected / Operation already settled.
+PASS: sport-coupe: sold configuration previews paid missing components
+PASS: sport-coupe: missing-part setup cannot fabricate unbought hardware / Missing parts: preview and use Buy missing + apply.
+PASS: sport-coupe: durable transaction /
+PASS: sport-coupe: explicit setup apply buys missing parts once
+PASS: sport-coupe: rehydrated configuration with paid new identities ownership valid
+PASS: sport-coupe: rehydrated configuration with paid new identities exact state apart from JSON double spelling
+PASS: sport-coupe: matching backup is durable
+PASS: sport-coupe: corrupt primary recovers matching cash/resources/ownership/jobs
+PASS: sport-coupe: recovered backup can be republished
+PASS: sport-coupe: future-schema fallback never overwrites original
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: paid duplicate model has independent ownership
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: partial tanks, individual wear, duplicate models and missing kit ownership valid
+PASS: starter-hatch: partial tanks, individual wear, duplicate models and missing kit exact state apart from JSON double spelling
+PASS: starter-hatch: missing required kit remains non-drivable without manufactured OEM
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: simultaneous display and rebuild reservations ownership valid
+PASS: starter-hatch: simultaneous display and rebuild reservations exact state apart from JSON double spelling
+PASS: starter-hatch: both reservations block entry
+PASS: starter-hatch: assigned engine cannot detach / Car and installed components reserved by garage job; claim or cancel it first.
+PASS: starter-hatch: rebuild engine cannot detach / Engine reserved at rebuild shop; collect it before modifying/racing this car.
+PASS: starter-hatch: early job claim rejects atomically / Job is still running.
+PASS: starter-hatch: early rebuild collection rejects atomically / Rebuild is still in progress.
+PASS: starter-hatch: failed job save publishes no payout/release / Save failed; operation rolled back.
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: offline job pays captured reward
+PASS: starter-hatch: repeat job claim rejected / Job already released or missing.
+PASS: starter-hatch: failed rebuild save retains paid reservation / Save failed; operation rolled back.
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: collection charges no second payment and retains failed original
+PASS: starter-hatch: released jobs and retained failed originals ownership valid
+PASS: starter-hatch: released jobs and retained failed originals exact state apart from JSON double spelling
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: mid-career interruption ownership valid
+PASS: starter-hatch: interruption retains fuel, fee and no reward
+PASS: starter-hatch: repeat interrupted recovery ownership valid
+PASS: starter-hatch: interruption recovery is idempotent
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: real shared race completes
+PASS: starter-hatch: failed result save retains unsettled reward/resources / Save failed; operation rolled back.
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: duplicate result cannot pay twice / Race already settled.
+PASS: starter-hatch: finish saved before shutdown closure ownership valid
+PASS: starter-hatch: restart preserves paid finish and closes only resources
+PASS: starter-hatch: failed salvage save retains tree and cash / Save failed; operation rolled back.
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: partial chassis salvage / retained engine ownership valid
+PASS: starter-hatch: partial chassis salvage / retained engine exact state apart from JSON double spelling
+PASS: starter-hatch: salvage keeps actual stored engine and loose failed parts
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: sold engine descendants / surviving blueprint ownership valid
+PASS: starter-hatch: sold engine descendants / surviving blueprint exact state apart from JSON double spelling
+PASS: starter-hatch: sold descendants never respawn; blueprint remains virtual
+PASS: starter-hatch: repeat assembly sale rejected / Operation already settled.
+PASS: starter-hatch: sold configuration previews paid missing components
+PASS: starter-hatch: missing-part setup cannot fabricate unbought hardware / Missing parts: preview and use Buy missing + apply.
+PASS: starter-hatch: durable transaction /
+PASS: starter-hatch: explicit setup apply buys missing parts once
+PASS: starter-hatch: rehydrated configuration with paid new identities ownership valid
+PASS: starter-hatch: rehydrated configuration with paid new identities exact state apart from JSON double spelling
+PASS: starter-hatch: matching backup is durable
+PASS: starter-hatch: corrupt primary recovers matching cash/resources/ownership/jobs
+PASS: starter-hatch: recovered backup can be republished
+PASS: starter-hatch: future-schema fallback never overwrites original
+PASS: super-v8: durable transaction /
+PASS: super-v8: paid duplicate model has independent ownership
+PASS: super-v8: durable transaction /
+PASS: super-v8: durable transaction /
+PASS: super-v8: durable transaction /
+PASS: super-v8: durable transaction /
+PASS: super-v8: partial tanks, individual wear, duplicate models and missing kit ownership valid
+PASS: super-v8: partial tanks, individual wear, duplicate models and missing kit exact state apart from JSON double spelling
+PASS: super-v8: missing required kit remains non-drivable without manufactured OEM
+PASS: super-v8: durable transaction /
+PASS: super-v8: durable transaction /
+PASS: super-v8: durable transaction /
+PASS: super-v8: durable transaction /
+PASS: super-v8: simultaneous display and rebuild reservations ownership valid
+PASS: super-v8: simultaneous display and rebuild reservations exact state apart from JSON double spelling
+PASS: super-v8: both reservations block entry
+PASS: super-v8: assigned engine cannot detach / Car and installed components reserved by garage job; claim or cancel it first.
+PASS: super-v8: rebuild engine cannot detach / Engine reserved at rebuild shop; collect it before modifying/racing this car.
+PASS: super-v8: early job claim rejects atomically / Job is still running.
+PASS: super-v8: early rebuild collection rejects atomically / Rebuild is still in progress.
+PASS: super-v8: failed job save publishes no payout/release / Save failed; operation rolled back.
+PASS: super-v8: durable transaction /
+PASS: super-v8: offline job pays captured reward
+PASS: super-v8: repeat job claim rejected / Job already released or missing.
+PASS: super-v8: failed rebuild save retains paid reservation / Save failed; operation rolled back.
+PASS: super-v8: durable transaction /
+PASS: super-v8: collection charges no second payment and retains failed original
+PASS: super-v8: released jobs and retained failed originals ownership valid
+PASS: super-v8: released jobs and retained failed originals exact state apart from JSON double spelling
+PASS: super-v8: durable transaction /
+PASS: super-v8: durable transaction /
+PASS: super-v8: mid-career interruption ownership valid
+PASS: super-v8: interruption retains fuel, fee and no reward
+PASS: super-v8: repeat interrupted recovery ownership valid
+PASS: super-v8: interruption recovery is idempotent
+PASS: super-v8: durable transaction /
+PASS: super-v8: real shared race completes
+PASS: super-v8: failed result save retains unsettled reward/resources / Save failed; operation rolled back.
+PASS: super-v8: durable transaction /
+PASS: super-v8: duplicate result cannot pay twice / Race already settled.
+PASS: super-v8: finish saved before shutdown closure ownership valid
+PASS: super-v8: restart preserves paid finish and closes only resources
+PASS: super-v8: failed salvage save retains tree and cash / Save failed; operation rolled back.
+PASS: super-v8: durable transaction /
+PASS: super-v8: partial chassis salvage / retained engine ownership valid
+PASS: super-v8: partial chassis salvage / retained engine exact state apart from JSON double spelling
+PASS: super-v8: salvage keeps actual stored engine and loose failed parts
+PASS: super-v8: durable transaction /
+PASS: super-v8: sold engine descendants / surviving blueprint ownership valid
+PASS: super-v8: sold engine descendants / surviving blueprint exact state apart from JSON double spelling
+PASS: super-v8: sold descendants never respawn; blueprint remains virtual
+PASS: super-v8: repeat assembly sale rejected / Operation already settled.
+PASS: super-v8: sold configuration previews paid missing components
+PASS: super-v8: missing-part setup cannot fabricate unbought hardware / Missing parts: preview and use Buy missing + apply.
+PASS: super-v8: durable transaction /
+PASS: super-v8: explicit setup apply buys missing parts once
+PASS: super-v8: rehydrated configuration with paid new identities ownership valid
+PASS: super-v8: rehydrated configuration with paid new identities exact state apart from JSON double spelling
+PASS: super-v8: matching backup is durable
+PASS: super-v8: corrupt primary recovers matching cash/resources/ownership/jobs
+PASS: super-v8: recovered backup can be republished
+PASS: super-v8: future-schema fallback never overwrites original
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: paid duplicate model has independent ownership
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: partial tanks, individual wear, duplicate models and missing kit ownership valid
+PASS: timber-diesel: partial tanks, individual wear, duplicate models and missing kit exact state apart from JSON double spelling
+PASS: timber-diesel: missing required kit remains non-drivable without manufactured OEM
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: simultaneous display and rebuild reservations ownership valid
+PASS: timber-diesel: simultaneous display and rebuild reservations exact state apart from JSON double spelling
+PASS: timber-diesel: both reservations block entry
+PASS: timber-diesel: assigned engine cannot detach / Car and installed components reserved by garage job; claim or cancel it first.
+PASS: timber-diesel: rebuild engine cannot detach / Engine reserved at rebuild shop; collect it before modifying/racing this car.
+PASS: timber-diesel: early job claim rejects atomically / Job is still running.
+PASS: timber-diesel: early rebuild collection rejects atomically / Rebuild is still in progress.
+PASS: timber-diesel: failed job save publishes no payout/release / Save failed; operation rolled back.
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: offline job pays captured reward
+PASS: timber-diesel: repeat job claim rejected / Job already released or missing.
+PASS: timber-diesel: failed rebuild save retains paid reservation / Save failed; operation rolled back.
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: collection charges no second payment and retains failed original
+PASS: timber-diesel: released jobs and retained failed originals ownership valid
+PASS: timber-diesel: released jobs and retained failed originals exact state apart from JSON double spelling
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: mid-career interruption ownership valid
+PASS: timber-diesel: interruption retains fuel, fee and no reward
+PASS: timber-diesel: repeat interrupted recovery ownership valid
+PASS: timber-diesel: interruption recovery is idempotent
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: real shared race completes
+PASS: timber-diesel: failed result save retains unsettled reward/resources / Save failed; operation rolled back.
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: duplicate result cannot pay twice / Race already settled.
+PASS: timber-diesel: finish saved before shutdown closure ownership valid
+PASS: timber-diesel: restart preserves paid finish and closes only resources
+PASS: timber-diesel: failed salvage save retains tree and cash / Save failed; operation rolled back.
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: partial chassis salvage / retained engine ownership valid
+PASS: timber-diesel: partial chassis salvage / retained engine exact state apart from JSON double spelling
+PASS: timber-diesel: salvage keeps actual stored engine and loose failed parts
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: sold engine descendants / surviving blueprint ownership valid
+PASS: timber-diesel: sold engine descendants / surviving blueprint exact state apart from JSON double spelling
+PASS: timber-diesel: sold descendants never respawn; blueprint remains virtual
+PASS: timber-diesel: repeat assembly sale rejected / Operation already settled.
+PASS: timber-diesel: sold configuration previews paid missing components
+PASS: timber-diesel: missing-part setup cannot fabricate unbought hardware / Missing parts: preview and use Buy missing + apply.
+PASS: timber-diesel: durable transaction /
+PASS: timber-diesel: explicit setup apply buys missing parts once
+PASS: timber-diesel: rehydrated configuration with paid new identities ownership valid
+PASS: timber-diesel: rehydrated configuration with paid new identities exact state apart from JSON double spelling
+PASS: timber-diesel: matching backup is durable
+PASS: timber-diesel: corrupt primary recovers matching cash/resources/ownership/jobs
+PASS: timber-diesel: recovered backup can be republished
+PASS: timber-diesel: future-schema fallback never overwrites original
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: paid duplicate model has independent ownership
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: partial tanks, individual wear, duplicate models and missing kit ownership valid
+PASS: timber-diesel-tow: partial tanks, individual wear, duplicate models and missing kit exact state apart from JSON double spelling
+PASS: timber-diesel-tow: missing required kit remains non-drivable without manufactured OEM
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: simultaneous display and rebuild reservations ownership valid
+PASS: timber-diesel-tow: simultaneous display and rebuild reservations exact state apart from JSON double spelling
+PASS: timber-diesel-tow: both reservations block entry
+PASS: timber-diesel-tow: assigned engine cannot detach / Car and installed components reserved by garage job; claim or cancel it first.
+PASS: timber-diesel-tow: rebuild engine cannot detach / Engine reserved at rebuild shop; collect it before modifying/racing this car.
+PASS: timber-diesel-tow: early job claim rejects atomically / Job is still running.
+PASS: timber-diesel-tow: early rebuild collection rejects atomically / Rebuild is still in progress.
+PASS: timber-diesel-tow: failed job save publishes no payout/release / Save failed; operation rolled back.
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: offline job pays captured reward
+PASS: timber-diesel-tow: repeat job claim rejected / Job already released or missing.
+PASS: timber-diesel-tow: failed rebuild save retains paid reservation / Save failed; operation rolled back.
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: collection charges no second payment and retains failed original
+PASS: timber-diesel-tow: released jobs and retained failed originals ownership valid
+PASS: timber-diesel-tow: released jobs and retained failed originals exact state apart from JSON double spelling
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: mid-career interruption ownership valid
+PASS: timber-diesel-tow: interruption retains fuel, fee and no reward
+PASS: timber-diesel-tow: repeat interrupted recovery ownership valid
+PASS: timber-diesel-tow: interruption recovery is idempotent
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: real shared race completes
+PASS: timber-diesel-tow: failed result save retains unsettled reward/resources / Save failed; operation rolled back.
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: duplicate result cannot pay twice / Race already settled.
+PASS: timber-diesel-tow: finish saved before shutdown closure ownership valid
+PASS: timber-diesel-tow: restart preserves paid finish and closes only resources
+PASS: timber-diesel-tow: failed salvage save retains tree and cash / Save failed; operation rolled back.
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: partial chassis salvage / retained engine ownership valid
+PASS: timber-diesel-tow: partial chassis salvage / retained engine exact state apart from JSON double spelling
+PASS: timber-diesel-tow: salvage keeps actual stored engine and loose failed parts
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: sold engine descendants / surviving blueprint ownership valid
+PASS: timber-diesel-tow: sold engine descendants / surviving blueprint exact state apart from JSON double spelling
+PASS: timber-diesel-tow: sold descendants never respawn; blueprint remains virtual
+PASS: timber-diesel-tow: repeat assembly sale rejected / Operation already settled.
+PASS: timber-diesel-tow: sold configuration previews paid missing components
+PASS: timber-diesel-tow: missing-part setup cannot fabricate unbought hardware / Missing parts: preview and use Buy missing + apply.
+PASS: timber-diesel-tow: durable transaction /
+PASS: timber-diesel-tow: explicit setup apply buys missing parts once
+PASS: timber-diesel-tow: rehydrated configuration with paid new identities ownership valid
+PASS: timber-diesel-tow: rehydrated configuration with paid new identities exact state apart from JSON double spelling
+PASS: timber-diesel-tow: matching backup is durable
+PASS: timber-diesel-tow: corrupt primary recovers matching cash/resources/ownership/jobs
+PASS: timber-diesel-tow: recovered backup can be republished
+PASS: timber-diesel-tow: future-schema fallback never overwrites original
+PASS: touring-six: durable transaction /
+PASS: touring-six: paid duplicate model has independent ownership
+PASS: touring-six: durable transaction /
+PASS: touring-six: durable transaction /
+PASS: touring-six: durable transaction /
+PASS: touring-six: durable transaction /
+PASS: touring-six: partial tanks, individual wear, duplicate models and missing kit ownership valid
+PASS: touring-six: partial tanks, individual wear, duplicate models and missing kit exact state apart from JSON double spelling
+PASS: touring-six: missing required kit remains non-drivable without manufactured OEM
+PASS: touring-six: durable transaction /
+PASS: touring-six: durable transaction /
+PASS: touring-six: durable transaction /
+PASS: touring-six: durable transaction /
+PASS: touring-six: simultaneous display and rebuild reservations ownership valid
+PASS: touring-six: simultaneous display and rebuild reservations exact state apart from JSON double spelling
+PASS: touring-six: both reservations block entry
+PASS: touring-six: assigned engine cannot detach / Car and installed components reserved by garage job; claim or cancel it first.
+PASS: touring-six: rebuild engine cannot detach / Engine reserved at rebuild shop; collect it before modifying/racing this car.
+PASS: touring-six: early job claim rejects atomically / Job is still running.
+PASS: touring-six: early rebuild collection rejects atomically / Rebuild is still in progress.
+PASS: touring-six: failed job save publishes no payout/release / Save failed; operation rolled back.
+PASS: touring-six: durable transaction /
+PASS: touring-six: offline job pays captured reward
+PASS: touring-six: repeat job claim rejected / Job already released or missing.
+PASS: touring-six: failed rebuild save retains paid reservation / Save failed; operation rolled back.
+PASS: touring-six: durable transaction /
+PASS: touring-six: collection charges no second payment and retains failed original
+PASS: touring-six: released jobs and retained failed originals ownership valid
+PASS: touring-six: released jobs and retained failed originals exact state apart from JSON double spelling
+PASS: touring-six: durable transaction /
+PASS: touring-six: durable transaction /
+PASS: touring-six: mid-career interruption ownership valid
+PASS: touring-six: interruption retains fuel, fee and no reward
+PASS: touring-six: repeat interrupted recovery ownership valid
+PASS: touring-six: interruption recovery is idempotent
+PASS: touring-six: durable transaction /
+PASS: touring-six: real shared race completes
+PASS: touring-six: failed result save retains unsettled reward/resources / Save failed; operation rolled back.
+PASS: touring-six: durable transaction /
+PASS: touring-six: duplicate result cannot pay twice / Race already settled.
+PASS: touring-six: finish saved before shutdown closure ownership valid
+PASS: touring-six: restart preserves paid finish and closes only resources
+PASS: touring-six: failed salvage save retains tree and cash / Save failed; operation rolled back.
+PASS: touring-six: durable transaction /
+PASS: touring-six: partial chassis salvage / retained engine ownership valid
+PASS: touring-six: partial chassis salvage / retained engine exact state apart from JSON double spelling
+PASS: touring-six: salvage keeps actual stored engine and loose failed parts
+PASS: touring-six: durable transaction /
+PASS: touring-six: sold engine descendants / surviving blueprint ownership valid
+PASS: touring-six: sold engine descendants / surviving blueprint exact state apart from JSON double spelling
+PASS: touring-six: sold descendants never respawn; blueprint remains virtual
+PASS: touring-six: repeat assembly sale rejected / Operation already settled.
+PASS: touring-six: sold configuration previews paid missing components
+PASS: touring-six: missing-part setup cannot fabricate unbought hardware / Missing parts: preview and use Buy missing + apply.
+PASS: touring-six: durable transaction /
+PASS: touring-six: explicit setup apply buys missing parts once
+PASS: touring-six: rehydrated configuration with paid new identities ownership valid
+PASS: touring-six: rehydrated configuration with paid new identities exact state apart from JSON double spelling
+PASS: touring-six: matching backup is durable
+PASS: touring-six: corrupt primary recovers matching cash/resources/ownership/jobs
+PASS: touring-six: recovered backup can be republished
+PASS: touring-six: future-schema fallback never overwrites original
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: paid duplicate model has independent ownership
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: partial tanks, individual wear, duplicate models and missing kit ownership valid
+PASS: utility-pickup: partial tanks, individual wear, duplicate models and missing kit exact state apart from JSON double spelling
+PASS: utility-pickup: missing required kit remains non-drivable without manufactured OEM
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: simultaneous display and rebuild reservations ownership valid
+PASS: utility-pickup: simultaneous display and rebuild reservations exact state apart from JSON double spelling
+PASS: utility-pickup: both reservations block entry
+PASS: utility-pickup: assigned engine cannot detach / Car and installed components reserved by garage job; claim or cancel it first.
+PASS: utility-pickup: rebuild engine cannot detach / Engine reserved at rebuild shop; collect it before modifying/racing this car.
+PASS: utility-pickup: early job claim rejects atomically / Job is still running.
+PASS: utility-pickup: early rebuild collection rejects atomically / Rebuild is still in progress.
+PASS: utility-pickup: failed job save publishes no payout/release / Save failed; operation rolled back.
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: offline job pays captured reward
+PASS: utility-pickup: repeat job claim rejected / Job already released or missing.
+PASS: utility-pickup: failed rebuild save retains paid reservation / Save failed; operation rolled back.
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: collection charges no second payment and retains failed original
+PASS: utility-pickup: released jobs and retained failed originals ownership valid
+PASS: utility-pickup: released jobs and retained failed originals exact state apart from JSON double spelling
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: mid-career interruption ownership valid
+PASS: utility-pickup: interruption retains fuel, fee and no reward
+PASS: utility-pickup: repeat interrupted recovery ownership valid
+PASS: utility-pickup: interruption recovery is idempotent
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: real shared race completes
+PASS: utility-pickup: failed result save retains unsettled reward/resources / Save failed; operation rolled back.
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: duplicate result cannot pay twice / Race already settled.
+PASS: utility-pickup: finish saved before shutdown closure ownership valid
+PASS: utility-pickup: restart preserves paid finish and closes only resources
+PASS: utility-pickup: failed salvage save retains tree and cash / Save failed; operation rolled back.
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: partial chassis salvage / retained engine ownership valid
+PASS: utility-pickup: partial chassis salvage / retained engine exact state apart from JSON double spelling
+PASS: utility-pickup: salvage keeps actual stored engine and loose failed parts
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: sold engine descendants / surviving blueprint ownership valid
+PASS: utility-pickup: sold engine descendants / surviving blueprint exact state apart from JSON double spelling
+PASS: utility-pickup: sold descendants never respawn; blueprint remains virtual
+PASS: utility-pickup: repeat assembly sale rejected / Operation already settled.
+PASS: utility-pickup: sold configuration previews paid missing components
+PASS: utility-pickup: missing-part setup cannot fabricate unbought hardware / Missing parts: preview and use Buy missing + apply.
+PASS: utility-pickup: durable transaction /
+PASS: utility-pickup: explicit setup apply buys missing parts once
+PASS: utility-pickup: rehydrated configuration with paid new identities ownership valid
+PASS: utility-pickup: rehydrated configuration with paid new identities exact state apart from JSON double spelling
+PASS: utility-pickup: matching backup is durable
+PASS: utility-pickup: corrupt primary recovers matching cash/resources/ownership/jobs
+PASS: utility-pickup: recovered backup can be republished
+PASS: utility-pickup: future-schema fallback never overwrites original
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: paid duplicate model has independent ownership
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: partial tanks, individual wear, duplicate models and missing kit ownership valid
+PASS: v8-muscle: partial tanks, individual wear, duplicate models and missing kit exact state apart from JSON double spelling
+PASS: v8-muscle: missing required kit remains non-drivable without manufactured OEM
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: simultaneous display and rebuild reservations ownership valid
+PASS: v8-muscle: simultaneous display and rebuild reservations exact state apart from JSON double spelling
+PASS: v8-muscle: both reservations block entry
+PASS: v8-muscle: assigned engine cannot detach / Car and installed components reserved by garage job; claim or cancel it first.
+PASS: v8-muscle: rebuild engine cannot detach / Engine reserved at rebuild shop; collect it before modifying/racing this car.
+PASS: v8-muscle: early job claim rejects atomically / Job is still running.
+PASS: v8-muscle: early rebuild collection rejects atomically / Rebuild is still in progress.
+PASS: v8-muscle: failed job save publishes no payout/release / Save failed; operation rolled back.
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: offline job pays captured reward
+PASS: v8-muscle: repeat job claim rejected / Job already released or missing.
+PASS: v8-muscle: failed rebuild save retains paid reservation / Save failed; operation rolled back.
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: collection charges no second payment and retains failed original
+PASS: v8-muscle: released jobs and retained failed originals ownership valid
+PASS: v8-muscle: released jobs and retained failed originals exact state apart from JSON double spelling
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: mid-career interruption ownership valid
+PASS: v8-muscle: interruption retains fuel, fee and no reward
+PASS: v8-muscle: repeat interrupted recovery ownership valid
+PASS: v8-muscle: interruption recovery is idempotent
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: real shared race completes
+PASS: v8-muscle: failed result save retains unsettled reward/resources / Save failed; operation rolled back.
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: duplicate result cannot pay twice / Race already settled.
+PASS: v8-muscle: finish saved before shutdown closure ownership valid
+PASS: v8-muscle: restart preserves paid finish and closes only resources
+PASS: v8-muscle: failed salvage save retains tree and cash / Save failed; operation rolled back.
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: partial chassis salvage / retained engine ownership valid
+PASS: v8-muscle: partial chassis salvage / retained engine exact state apart from JSON double spelling
+PASS: v8-muscle: salvage keeps actual stored engine and loose failed parts
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: sold engine descendants / surviving blueprint ownership valid
+PASS: v8-muscle: sold engine descendants / surviving blueprint exact state apart from JSON double spelling
+PASS: v8-muscle: sold descendants never respawn; blueprint remains virtual
+PASS: v8-muscle: repeat assembly sale rejected / Operation already settled.
+PASS: v8-muscle: sold configuration previews paid missing components
+PASS: v8-muscle: missing-part setup cannot fabricate unbought hardware / Missing parts: preview and use Buy missing + apply.
+PASS: v8-muscle: durable transaction /
+PASS: v8-muscle: explicit setup apply buys missing parts once
+PASS: v8-muscle: rehydrated configuration with paid new identities ownership valid
+PASS: v8-muscle: rehydrated configuration with paid new identities exact state apart from JSON double spelling
+PASS: v8-muscle: matching backup is durable
+PASS: v8-muscle: corrupt primary recovers matching cash/resources/ownership/jobs
+PASS: v8-muscle: recovered backup can be republished
+PASS: v8-muscle: future-schema fallback never overwrites original
+PASS: legacy earned profile migrates and retains original
+PASS: legacy repeat load preserves IDs and earned cash
+PASS: schema4 gains career/business contracts without invented payouts
+PASS: schema4 migration is repeatable
+Checks: 810

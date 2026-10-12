@@ -10,13 +10,14 @@ namespace DragLab.Domain.Mechanics
     {
         public string id = "prototype-operating-costs"; public int version = 1, quoteSeconds = 300;
         public double fuelPerLitre = 2, oilPerLitre = 6, coolantPerLitre = 3, clutchOilPerLitre = 6;
+        public int vehicleInspectionFee=50;
         public int repairLabour = 15, oilChangeLabour = 25, coolantFlushLabour = 20;
         public int rebuildBaseLabour=150,rebuildPerCylinder=25;
         public double repairPriceFraction = .08, dealerSpread = .1;
         public int recoverySeconds = 60, recoveryReward = 250, recoveryCashLimit = 10000;
         public void Validate()
         {
-            if (string.IsNullOrWhiteSpace(id) || version < 1 || quoteSeconds < 1 || quoteSeconds > 86400 || repairLabour < 0 || oilChangeLabour < 0 || coolantFlushLabour < 0 || rebuildBaseLabour<0||rebuildPerCylinder<0||recoverySeconds < 1 || recoveryReward < 1 || recoveryCashLimit < 1) throw new InvalidOperationException("Invalid operating policy.");
+            if (string.IsNullOrWhiteSpace(id) || version < 1 || quoteSeconds < 1 || quoteSeconds > 86400 || vehicleInspectionFee<0 || repairLabour < 0 || oilChangeLabour < 0 || coolantFlushLabour < 0 || rebuildBaseLabour<0||rebuildPerCylinder<0||recoverySeconds < 1 || recoveryReward < 1 || recoveryCashLimit < 1) throw new InvalidOperationException("Invalid operating policy.");
             foreach (double v in new[] { fuelPerLitre, oilPerLitre, coolantPerLitre, clutchOilPerLitre, repairPriceFraction, dealerSpread }) if (!MechanicsSchema.Finite(v) || v < 0 || v > 1000) throw new InvalidOperationException("Invalid operating price/factor.");
         }
     }
@@ -28,7 +29,7 @@ namespace DragLab.Domain.Mechanics
     }
     [Serializable] public sealed class RecoveryWork
     { public string id; public long startedUtcTicks, readyUtcTicks; public int reward; }
-    public enum PaymentKind { Fuel, Fluids, OilChange, CoolantFlush, Repair, ClutchOil, Part, Car, ElementNew, ElementReuse, Rebuild }
+    public enum PaymentKind { Fuel, Fluids, OilChange, CoolantFlush, Repair, ClutchOil, Part, Car, ElementNew, ElementReuse, Rebuild, VehicleInspection }
     [Serializable] public sealed class PaymentRequest
     {
         public PaymentKind kind; public string carId, targetId, auxiliaryId, spareId; public bool install;
@@ -109,6 +110,7 @@ namespace DragLab.Domain.Mechanics
             policy.Validate(); if (request == null || !Enum.IsDefined(typeof(PaymentKind), request.kind)) throw new InvalidOperationException("Invalid payment request.");
             var a = new PaymentAmounts { description = request.kind.ToString() };
             if (request.kind == PaymentKind.Car) { VehicleListings.RequireCurrent(p,request.offer);a.cost = DealerPrice(cat, policy, prices, request.offer); a.fuel = request.offer.parts!=null&&request.offer.parts.Count>0?request.offer.fuel.litres:cat.Spec(request.offer.model).fuel.capacityLitres; a.oil = request.offer.parts!=null&&request.offer.parts.Count>0?request.offer.fluids.oilLitres:cat.Spec(request.offer.model).fluids.oilCapacityLitres; a.coolant = request.offer.parts!=null&&request.offer.parts.Count>0?request.offer.fluids.coolantLitres:cat.Spec(request.offer.model).fluids.coolantCapacityLitres; return a; }
+            if(request.kind==PaymentKind.VehicleInspection){VehicleListings.RequireCurrent(p,request.offer);if(string.IsNullOrEmpty(request.offer.listingId)||VehicleInspection.Known(request.offer))throw new InvalidOperationException("This listing is already fully disclosed.");a.cost=policy.vehicleInspectionFee;a.description="Inspect used vehicle";return a;}
             var car = Car(p, request.carId); var build = MechanicsOwnership.Resolve(p, car, cat);
             if (request.kind == PaymentKind.Part) { var d = cat.Find(request.targetId); if (d == null || !cat.Fits(cat.Spec(car.vehicleId), d) || d.price < 0 || p.reputation<d.reputationRequired) throw new InvalidOperationException("Incompatible/unavailable part purchase; check reputation requirement."); a.cost = d.price; return a; }
             if (request.kind == PaymentKind.Fuel) { a.fuel = Quantity(request.litres, cat.Spec(car.vehicleId).fuel.capacityLitres - car.fuel.litres); a.cost = Money(a.fuel * policy.fuelPerLitre); return a; }
@@ -130,7 +132,7 @@ namespace DragLab.Domain.Mechanics
         {
             string extra = requestJson??JsonUtility.ToJson(r);
             if (r.kind == PaymentKind.Part) extra += JsonUtility.ToJson(cat.Find(r.targetId));
-            if (r.kind == PaymentKind.Car) { extra += JsonUtility.ToJson(cat.Spec(r.offer.model)); foreach (var id in (r.offer.parts==null||r.offer.parts.Count==0?cat.Recipe(r.offer.model,r.offer.stock).Values:r.offer.parts.Select(i=>i.definitionId)))extra+=JsonUtility.ToJson(cat.Find(id)); }
+            if (r.kind == PaymentKind.Car || r.kind==PaymentKind.VehicleInspection) { extra += JsonUtility.ToJson(cat.Spec(r.offer.model)); foreach (var id in (r.offer.parts==null||r.offer.parts.Count==0?cat.Recipe(r.offer.model,r.offer.stock).Values:r.offer.parts.Select(i=>i.definitionId)))extra+=JsonUtility.ToJson(cat.Find(id)); }
             using (var sha = SHA256.Create()) return Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(Valuations.Fingerprint(p, cat, values,profileJson) + JsonUtility.ToJson(policy) + extra)));
         }
         public static PaymentQuote Quote(PlayerProfile p, MechanicalCatalog cat, OperatingPolicy policy, ValuationPolicy values, PaymentRequest request, long now)
@@ -142,13 +144,14 @@ namespace DragLab.Domain.Mechanics
         {
             if (q == null) throw new InvalidOperationException("Request a payment quote first."); Guard(p, now, q.Id);
             if (p.revision != q.Revision || now < q.Issued || now >= q.Expires) throw new InvalidOperationException("Payment quote stale/expired.");
-            var r = JsonUtility.FromJson<PaymentRequest>(q.RequestJson); if (r.kind == PaymentKind.Car) { if (currentOffer == null) throw new InvalidOperationException("Refresh the authored dealership offer.");if(!SnapshotEquality.Serialized(JsonUtility.ToJson(r.offer),currentOffer))throw new InvalidOperationException("Dealership listing contents changed. Refresh."); r.offer = currentOffer; }
+            var r = JsonUtility.FromJson<PaymentRequest>(q.RequestJson); if (r.kind == PaymentKind.Car || r.kind==PaymentKind.VehicleInspection) { if (currentOffer == null) throw new InvalidOperationException("Refresh the authored dealership offer.");if(!SnapshotEquality.Serialized(JsonUtility.ToJson(r.offer),currentOffer))throw new InvalidOperationException("Dealership listing contents changed. Refresh."); r.offer = currentOffer; }
             if (!SnapshotEquality.Profile(q.ProfileJson,p,cat)||Hash(p, cat, policy, values, r,q.ProfileJson,q.RequestJson) != q.StateHash) throw new InvalidOperationException("Payment assets/quantity/catalogue/policy changed. Refresh.");
             var amounts = Preview(p, cat, policy, values, r, now); if (amounts.cost != q.Cost || p.cash < q.Cost) throw new InvalidOperationException("Insufficient cash or changed price; nothing changed.");
             if ((r.kind == PaymentKind.Fuel && q.Fuel <= 0) || (r.kind == PaymentKind.Fluids && q.Oil + q.Coolant <= 0)) throw new InvalidOperationException("No free capacity / quantity to purchase.");
             int before = p.cash;
             // Some earlier operations already pay their component cost; charge only their new labour/liquids remainder.
             switch (r.kind) {
+                case PaymentKind.VehicleInspection: VehicleInspection.Reveal(p,r.offer);break;
                 case PaymentKind.Fuel: FuelDynamics.Refuel(Car(p, r.carId).fuel, cat.Spec(Car(p, r.carId).vehicleId).fuel, q.Fuel); break;
                 case PaymentKind.Fluids: ServiceOperations.TopUp(p, r.carId, true, q.Oil); ServiceOperations.TopUp(p, r.carId, false, q.Coolant); break;
                 case PaymentKind.OilChange: ServiceOperations.ChangeOil(p, r.carId); break;
@@ -162,7 +165,7 @@ namespace DragLab.Domain.Mechanics
                 case PaymentKind.Rebuild: EngineRebuilds.Start(p, r.carId, now,policy); p.cars.Find(c => c.instanceId == r.carId).engineRebuild.paidPrice = q.Cost; break;
                 default: throw new InvalidOperationException("Unsupported paid operation.");
             }
-            p.cash = checked(before - q.Cost); Record(p, q.Id, r.kind.ToString(), r.carId ?? r.offer?.model, before, now, q.Fuel, q.Oil, q.Coolant);
+            p.cash = checked(before - q.Cost); Record(p, q.Id, r.kind.ToString(), r.carId ?? (r.kind==PaymentKind.VehicleInspection?r.offer?.listingId:r.offer?.model), before, now, q.Fuel, q.Oil, q.Coolant);
         }
         public static void Sell(PlayerProfile p, MechanicalCatalog cat, ValuationPolicy policy, ValuationQuote q, long now)
         {

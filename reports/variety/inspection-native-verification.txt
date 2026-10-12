@@ -1,0 +1,36 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Uninspected used car retains estimated stats and two dyno curves
+PASS: Uninspected view has no exact parts/settings or wheelspin/drivetrain warnings
+PASS: History, causes and exact liquids cannot leak through basic text
+PASS: Estimate disclosure and true run/drive status are explicit
+PASS: Comparison retains basic estimate/dyno but cannot bypass inspection
+PASS: Paid inspection uses the shared confirmation dialog
+PASS: Cancelling inspection changes neither knowledge nor cash nor disk
+PASS: Legacy/F8 dealership offers the same paid inspection instead of revealing hidden data
+PASS: Inspection remains visible/actionable after legacy / visible=True / details=True / route=Garage / enabled=True / rect=(x:830.00, y:632.00, width:150.00, height:34.00)
+PASS: Returning from legacy keeps native inspection actionable
+PASS: Confirm charges the configured fee exactly once and reveals this listing / modal=False / known=True / cash=99950 / fee=50 / error= / notice=Inspection saved.
+PASS: Inspecting one listing does not reveal other used cars
+PASS: Inspection replaces the estimate with actual failed output, full stats and warnings
+PASS: Paid history is visible and a second inspection charge is unavailable
+PASS: Revealing information cannot repair/refill/reroll the car
+PASS: Inspection knowledge survives actual disk reload
+PASS: Fitted-parts report identifies the actual hidden failure cause
+PASS: Buying an inspected broken car retains actual damage and history in the owned page
+PASS: Purchase preserves the exact low liquids shown by inspection
+PASS: Owned weight matches the inspected stripped car without invented trim
+PASS: Owned history is available through a reusable info dialog
+PASS: Inspection commerce and owned broken-car state remain valid with no runtime errors
+Checks: 34 / runtime errors: 0

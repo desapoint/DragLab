@@ -28,7 +28,13 @@ namespace DragLab.Runtime
         {
             if (quote == null) return false;
             var request = JsonUtility.FromJson<PaymentRequest>(quote.RequestJson);
-            return CommitParts(quote.Revision, p => PaidEconomy.Pay(p, p.catalog, Costs, PricingPolicy, quote, DateTime.UtcNow.Ticks, request.kind == PaymentKind.Car ? string.IsNullOrEmpty(request.offer.listingId)?AuthoredOffer(request.offer.model):VehicleListings.Find(p,request.offer.listingId) : null));
+            return CommitParts(quote.Revision, p => PaidEconomy.Pay(p, p.catalog, Costs, PricingPolicy, quote, DateTime.UtcNow.Ticks, (request.kind == PaymentKind.Car || request.kind==PaymentKind.VehicleInspection) ? string.IsNullOrEmpty(request.offer.listingId)?AuthoredOffer(request.offer.model):VehicleListings.Find(p,request.offer.listingId) : null));
+        }
+        internal bool InspectNativeCar(PaymentQuote quote)
+        {
+            try{if(screen!="Garage"||pendingAction!=null||quote==null||JsonUtility.FromJson<PaymentRequest>(quote.RequestJson)?.kind!=PaymentKind.VehicleInspection)throw new InvalidOperationException("Reopen the dealership inspection.");
+                if(!PayNow(quote))return false;notice="Inspection saved.";return true;
+            }catch(Exception error){notice=error.Message;return false;}
         }
         internal bool BuyNativeCar(PaymentQuote quote)
         {

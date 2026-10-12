@@ -1,0 +1,14 @@
+model,cars,engines,parts,career_records,jobs,cash,remaining_car_fuel_l,revision
+city-three,1,1,43,2,0,97728,40,20
+juniper-club,1,1,43,2,0,97674,50,20
+juniper-economy,1,1,43,2,0,97674,50,20
+kestrel-track,1,1,44,2,0,96758,50,20
+rally-sedan,1,1,50,2,0,95812,50,20
+sport-coupe,1,1,44,2,0,96981,50,20
+starter-hatch,1,1,43,2,0,97638,50,20
+super-v8,1,1,44,2,0,92943,65,20
+timber-diesel,1,1,48,2,0,95805,65,20
+timber-diesel-tow,1,1,48,2,0,94105,65,20
+touring-six,1,1,43,2,0,96610,60,20
+utility-pickup,1,1,48,2,0,96856,50,20
+v8-muscle,1,1,42,2,0,95919,50,20

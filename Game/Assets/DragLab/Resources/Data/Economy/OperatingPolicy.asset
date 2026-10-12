@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DragLab.Data.OperatingPolicyDefinition
   policy:
     id: balanced-3g-operating-costs
-    version: 2
+    version: 3
     quoteSeconds: 300
     fuelPerLitre: 2
     oilPerLitre: 6
     coolantPerLitre: 3
     clutchOilPerLitre: 6
+    vehicleInspectionFee: 50
     repairLabour: 15
     oilChangeLabour: 25
     coolantFlushLabour: 20

@@ -33,6 +33,7 @@ namespace DragLab.Domain.Mechanics
             SharedInventory.Ensure(profile);
             foreach (var car in profile.cars)
             {
+                if(car.usedHistory==null)car.usedHistory=new List<string>();
                 if(car.engineRebuild!=null&&!car.engineRebuild.active)car.engineRebuild=null;
                 if(car.fluids==null||car.serviceHardwareVersion==0)car.fluids=FluidState.Full(catalog.Spec(car.vehicleId).fluids);
                 if(!string.IsNullOrEmpty(car.instanceId)&&car.serviceHardwareVersion==0) {
@@ -188,6 +189,7 @@ namespace DragLab.Domain.Mechanics
             Func<string, bool> unique = id => !string.IsNullOrEmpty(id) && identities.Add(id);
             foreach (var car in profile.cars)
             {
+                if(car.usedHistory==null||car.usedHistory.Count>16||car.usedHistory.Any(n=>string.IsNullOrWhiteSpace(n)||n.Length>160||n.Any(char.IsControl)))return "Invalid owned history.";
                 if(!MechanicsSchema.Finite(car.mileageKm)||car.mileageKm<0)return "Invalid owned mileage.";
                 if (MassDynamics.ValidateInputs(catalog.Spec(car.vehicleId),car.tune) != null) return "Invalid owned mass/placement inputs.";
                 if(car.serviceHardwareVersion!=1||car.fluids==null||car.fluids.Validate(catalog.Spec(car.vehicleId).fluids)!=null)return "Invalid owned fluids/service migration.";

@@ -76,7 +76,7 @@ namespace DragLab.Runtime
             var heading=new Label("Selected: "+VehicleCollection.DisplayName(game.Profile.catalog,game.Profile.SelectedCar)+" → "+viewed) {name="carComparisonHeading",enableRichText=false};
             heading.AddToClassList("car-comparison-heading");content.Add(heading);
         }
-        void ComparisonSummary(VisualElement summary,CarInspection selected,CarInspection viewed,OwnedCarEntry entry)
+        void ComparisonSummary(VisualElement summary,CarInspection selected,CarInspection viewed,OwnedCarEntry entry,double? viewedCondition=null)
         {
             var values=summary.Q(className:"car-card-stats");if(values==null)return;values.Clear();
             var units=SharedUnitSettings.Current;
@@ -87,16 +87,16 @@ namespace DragLab.Runtime
                 if(Math.Abs(after-before)>.00001)number.AddToClassList((after-before)*benefit>0?"car-ready":"car-critical");
             }
             Fact("HP","HP",selected.peakHp,viewed.peakHp,"",1);Fact("Torque","Torque",selected.peakTorque,viewed.peakTorque,"Nm",1);
-            Fact("Weight","Weight",selected.vehicleMassKg,viewed.vehicleMassKg,"kg",-1);Fact("Condition","Condition",selected.condition*100,viewed.condition*100,"%",1);
+            Fact("Weight","Weight",selected.vehicleMassKg,viewed.vehicleMassKg,"kg",-1);Fact("Condition","Condition",selected.condition*100,(viewedCondition??viewed.condition)*100,"%",1);
             if(ownedEntries.TryGetValue(game.Profile.selectedOwnedVehicleId,out var baseline)) {
                 string Rating(OwnedCarEntry car)=>car.Rating==null?car.RatingPending?"…":"—":car.Rating.performanceClass+" / "+car.Rating.points;
                 var rating=summary.Q<Label>(className:"car-class");if(rating!=null)rating.text="Class / PP "+Rating(baseline)+" → "+Rating(entry);
             }
         }
-        NativeDynoPanel ComparisonDyno(CarInspection selected,CarInspection viewed,string plotName)
+        NativeDynoPanel ComparisonDyno(CarInspection selected,CarInspection viewed,string plotName,string viewedLabel="Viewed")
             =>new NativeDynoPanel(new[] {
                 new NativeDynoSeries("Selected","Selected",selected,NativeDynoStyle.Primary),
-                new NativeDynoSeries("Viewed","Viewed",viewed,NativeDynoStyle.Alternative)
+                new NativeDynoSeries("Viewed",viewedLabel,viewed,NativeDynoStyle.Alternative)
             },SharedUnitSettings.Current.torque,plotName);
     }
 }

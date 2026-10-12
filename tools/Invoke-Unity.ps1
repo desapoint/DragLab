@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('VerifyRemainingSimulation','VerifyRemaining','CareerVarietyVerify','ResetVerify','VehicleMarketVerify','VehicleVarietyVerify','VehicleVarietyPrepare','VarietyMechanicalVerify','Prepare','InventoryCommerceVerify','CartVerify','MenuPreviewVerify','RacePresentationVerify','TireSoundBaseline','TireSoundVerify','CheckpointVerify','TireFeedbackDiagnose','TireFeedbackVerify','ThermalVerify','CareerExpandedVerify','BusinessVerify','BalanceVerify','EconomyIntegrationVerify','PaidVerify','ValuationVerify','AssemblyVerify','CollectionVerify','Verify','RecoveryVerify','IntegratedVerify','BenchVerify','AxleVerify','PartsEffectsVerify','DurabilityAudit','SliceTwoAudit','MassVerify','ContactVerify','DrivingContactVerify','LaunchVerify','AwdContactVerify','FuelVerify','FuelingConversionVerify','ServiceVerify','IndividualEngineVerify','TireVerify','TireFailureVerify','CareerVerify','SceneCheck','UnitsVisualVerify','ManualGearboxVerify','PartHardwareVerify','BuildWindows','BuildPlayerOnly','Open')]
+    [ValidateSet('UsedInspectionVerify','VerifyRemainingSimulation','VerifyRemaining','CareerVarietyVerify','ResetVerify','VehicleMarketVerify','VehicleVarietyVerify','VehicleVarietyPrepare','VarietyMechanicalVerify','Prepare','InventoryCommerceVerify','CartVerify','MenuPreviewVerify','RacePresentationVerify','TireSoundBaseline','TireSoundVerify','CheckpointVerify','TireFeedbackDiagnose','TireFeedbackVerify','ThermalVerify','CareerExpandedVerify','BusinessVerify','BalanceVerify','EconomyIntegrationVerify','PaidVerify','ValuationVerify','AssemblyVerify','CollectionVerify','Verify','RecoveryVerify','IntegratedVerify','BenchVerify','AxleVerify','PartsEffectsVerify','DurabilityAudit','SliceTwoAudit','MassVerify','ContactVerify','DrivingContactVerify','LaunchVerify','AwdContactVerify','FuelVerify','FuelingConversionVerify','ServiceVerify','IndividualEngineVerify','TireVerify','TireFailureVerify','CareerVerify','SceneCheck','UnitsVisualVerify','ManualGearboxVerify','PartHardwareVerify','BuildWindows','BuildPlayerOnly','Open')]
     [string]$Action = 'Prepare',
     [string]$EditorPath = 'C:\Program Files\Unity\Hub\Editor\6000.6.4f1\Editor\Unity.exe'
 )
@@ -27,6 +27,7 @@ $taskMethod = switch ($Action) {
     'VarietyMechanicalVerify' { 'DragLab.Editor.VarietyMechanicalVerification.RunStandalone' }
     'VehicleVarietyPrepare' { 'DragLab.Editor.VehicleVarietySetup.Prepare' }
     'VehicleVarietyVerify' { 'DragLab.Editor.VehicleVarietyVerification.RunStandalone' }
+    'UsedInspectionVerify' { 'DragLab.Editor.UsedVehicleInspectionVerification.RunStandalone' }
     'CareerVarietyVerify' { 'DragLab.Editor.CareerVarietyVerification.RunStandalone' }
     'ResetVerify' { 'DragLab.Editor.GameResetVerification.RunStandalone' }
     'VehicleMarketVerify' { 'DragLab.Editor.VehicleMarketVerification.RunStandalone' }

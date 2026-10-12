@@ -41,6 +41,7 @@ namespace DragLab.Domain
         public int massVersion;
         public string vehicleId;
         public string customName;
+        public List<string> usedHistory=new List<string>();
         public Tune tune = new Tune();
         public string paintHex = "#58C7BA";
         public List<Tune> presets = new List<Tune>();

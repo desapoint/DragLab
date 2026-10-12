@@ -86,6 +86,7 @@ namespace DragLab.Runtime
                     Check(File.Exists(ProfileStore.FilePath)||ProfileStore.TrySave(game.Profile),"Focused dealership probe has a durable isolated baseline");
                     if(!shell.Visible)yield return Key(input,0x77);yield return DealershipChecks(input);yield break;
                 }
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-inspection-only-verify")>=0){if(!shell.Visible)yield return Key(input,0x77);yield return UsedInspectionChecks(input);yield break;}
                 MoneyFormattingChecks();
                 var baseline = JsonUtility.ToJson(game.Profile);
                 string disk = File.Exists(ProfileStore.FilePath) ? File.ReadAllText(ProfileStore.FilePath) : null;
@@ -246,6 +247,7 @@ namespace DragLab.Runtime
                 if(game.Profile.firstPurchasePending){game.QueueNativeNavigation("Garage");yield return new WaitForSecondsRealtime(.4f);yield return StarterPurchaseChecks(input);}
                 yield return OwnedCarChecks(input);
                 yield return DealershipChecks(input);
+                yield return UsedInspectionChecks(input);
             }
 #else
             throw new InvalidOperationException("Native probe requires a Windows development player.");
