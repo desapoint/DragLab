@@ -1,0 +1,38 @@
+Final local Windows player: Test-NativeMenu.ps1 -FixtureName native-combined-warnings-final -WarningsOnly
+
+Preceding shared starter/fit/topology/preview checks also passed across all thirteen authored cars and five component systems. Below is the focused warning-check extract; final count includes those preceding shared checks.
+
+PASS: Warnings identify introduced, remaining and resolved issues without merging different generic component messages
+PASS: Introduced issues precede remaining issues and resolved history
+PASS: Changed measurements and severity stay one matched issue
+PASS: Exact duplicate reports collapse and current-only inspection excludes planned-only issues
+PASS: Related systems come from authoritative issue titles/messages
+PASS: A healthy inspection has a valid empty overview
+PASS: Owned cards have a compact filled warning icon with its own hit area
+PASS: Card warning click opens its dialog without selecting the car or opening its details
+PASS: Owned warning dialog shows actual component faults, related parts and inspection scope
+PASS: Current warnings include existing actionable suggestions
+PASS: X preserves the grid, scroll and cached inspection without new simulation work
+PASS: Nonselected engine-less car reports its own unavailable build without leaking the selected car's faults or switching ownership
+PASS: Normal card click still opens the car details
+PASS: Details reuse exactly the car list's current warning overview
+PASS: Dialog Close returns to the same car details
+PASS: Car warning browsing never repairs, edits resources or saves player state
+PASS: Bounded part calculations finish without a race probe / route Parts visible True builds 2 pending 0
+Engine-group preview wait: 5,84 s / 872 offers
+PASS: Real complete-set cart preview resolves the damaged piston fault
+PASS: Cart exposes resolved faults together with any remaining warnings
+PASS: Cart button counts all combined issues, including resolved ones
+PASS: Read-only warning browsing reuses the cumulative plan and leaves valid checkout available
+PASS: Shared dialog presents all three sections and preserves changes in severity and measurements
+PASS: Warnings scroll while Close/X remain reachable at 1024
+PASS: Warning labels wrap within the shared dialog at 1024
+PASS: Warnings scroll while Close/X remain reachable at 1920
+PASS: Warning labels wrap within the shared dialog at 1920
+PASS: Shared warnings retain crisp 4K scaling, bounded content and reachable actions
+PASS: Unavailable planned builds retain current issues without falsely resolving them
+PASS: Empty inspection uses a concise no-warnings state
+PASS: F8 preserves cart state and the actual combined warnings
+PASS: Warning dialogs, resizing and F8 never modify the applied car, cart or disk or recapture previews
+PASS: Warnings retain the shared mouse-only button navigation rules
+Checks: 288 / runtime errors: 0

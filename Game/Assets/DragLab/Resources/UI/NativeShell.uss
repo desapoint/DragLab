@@ -390,3 +390,14 @@
 
 .cart-detailed-stats { margin-top: 16px; }
 .cart-detailed-stats .stat-row { width: 100%; margin-right: 0; }
+
+.warning-icon-button { min-width: 30px; width: 30px; height: 28px; padding: 0; margin: 0 0 0 8px; flex-shrink: 0; align-items: center; justify-content: center; }
+.warning-icon-button .filled-icon { width: 18px; height: 18px; margin: 0; }
+.cart-page .warning-header-button { margin: 0 0 0 16px; align-self: center; }
+.warning-clear { color: var(--racing-muted); }
+.warning-group { margin: 4px 0 16px 0; }
+.warning-item { padding: 10px 0; border-top-width: 1px; border-top-color: rgba(138,148,157,0.18); }
+.modal-content .warning-title { font-size: 20px; margin-bottom: 4px; }
+.modal-content .warning-item Label { font-size: 17px; white-space: normal; }
+.modal-content .warning-item .warning-title { font-size: 20px; }
+.modal-content .warning-suggestion { color: var(--racing-muted); margin-bottom: 0; }

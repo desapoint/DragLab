@@ -1,0 +1,51 @@
+Final local Windows player: Test-NativeMenu.ps1 -FixtureName native-cart-warning-regression -CartOnly
+
+Preceding shared starter/fit/topology/preview checks also passed. Below is the cart regression extract; final count includes those preceding shared checks and overlaps the warnings-only run.
+
+PASS: Cart replaces Build content as a full page with persistent navigation
+PASS: Cart uses the original compact shared Back control
+PASS: All existing rows and cumulative dyno/four-stat preview are retained on the cart page
+PASS: Cart exposes the eight shared full-stat groups including components, fluids, gearing and performance
+PASS: Full cart groups start collapsed below the unchanged four-stat summary
+PASS: Full comparison reads actual Current and Planned values from the shared snapshot
+PASS: Shared change bars and positive/negative interpretation remain visible
+PASS: Cart info uses the same concise general/tradeoff explanation without repeated figures
+PASS: Nested applied/proposed tuning and actual component groups are available in the cart
+PASS: Differences only hides unchanged full-list values using the common comparison rules
+PASS: Full-list filtering leaves the four summary stats visible
+PASS: Expanded groups scroll without moving or obscuring totals and checkout
+PASS: F8 preserves the same full-stat panel and disclosure/filter state
+PASS: Full-stat browsing, filtering and info never recapture, edit, heal or save the build/cart
+PASS: Purchases, sale credits, net total and remaining cash use actual shared pricing
+PASS: Idle cart does not recalculate previews or evaluate hidden shop offers
+PASS: F8 preserves the complete cart page and the same transaction plan
+PASS: Build navigation from cart Settings still protects unapplied preferences
+PASS: Settings cancellation returns to the same cart without changing its plan
+PASS: Cart Edit initializes the shared replacement dialog from the row, not the last shop draft
+PASS: Cart edit X discards mode, quantity and cylinder changes without applying or adding purchases
+PASS: Apply converts the same kit row into exact individual replacements and extras without duplicate charges
+PASS: Reopened cart editing retains the exact selected position and quantity
+PASS: A changed cart preview retains expanded full-stat groups
+PASS: Inline quantity replaces its row count and preserves selected replacements
+PASS: Non-finite inline quantities are rejected
+PASS: Fractional inline quantities are rejected
+PASS: Inline quantities respect the 99-unit limit
+PASS: Other repeated components expose role/cylinder selection and keep uninstalled extras
+PASS: Stale row signatures cannot overwrite subsequent cart edits
+PASS: Stale replacement positions cannot publish a cart edit
+PASS: Edits cannot cross the selected car owner
+PASS: Converting into another row's offer/role is rejected without merging or losing either row
+PASS: Cart editing can convert a tire kit into one exact corner replacement
+PASS: Store clears only that row's installation targets and preserves its purchased quantity
+PASS: Used cart editing retains its exact quantity and incoming condition
+PASS: A used component can change replacement position without converting into new stock or healing wear
+PASS: Clear cancellation retains purchases, sales and installation targets
+PASS: Compact cart keeps scrolling rows, preview and fixed totals/actions inside the viewport
+PASS: Cart uses shared crisp 4K scaling and bounded footer anchors
+PASS: All cart edits/removals/previews remain isolated from actual assets, resources and save files
+PASS: Cancelling checkout returns to the same full cart without losing its plan
+PASS: Remove affects only the targeted row
+PASS: Confirmed Clear leaves an honest empty cart and disabled checkout
+PASS: An empty cart compares Current to itself and shows no differing stats honestly
+PASS: Back restores the previous Build content without touching the car
+Checks: 302 / runtime errors: 0

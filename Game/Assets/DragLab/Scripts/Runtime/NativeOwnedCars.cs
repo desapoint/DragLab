@@ -101,7 +101,7 @@ namespace DragLab.Runtime
             ownedSurfaces.Clear();
             Vector2 scroll = ownedScroll.scrollOffset; ownedGrid.Clear();ownedEntries.Clear();
             ownedProfile = profile; ownedRevision = profile.revision; ownedSelection = profile.selectedOwnedVehicleId; ownedTorque = units;
-            OwnedGridBuildCount++;
+            OwnedGridBuildCount++;ownedWarningSnapshots.Clear();warningProfile=profile;warningRevision=profile.revision;
             var probes = new List<Tuple<string,InspectionBuild,CarSimulation>>();
             foreach (var car in profile.cars) {
                 string id = car.instanceId;
@@ -122,6 +122,7 @@ namespace DragLab.Runtime
                     var source = InspectionBuild.Capture(profile,car);
                     var simulation = CarInspection.PrepareCar(source);
                     var stats = CarInspection.CalculatePrepared(source,simulation,false);
+                    ownedWarningSnapshots[car.instanceId]=stats.warnings.ToArray();
                     entry.Hp=stats.peakHp;entry.Torque=stats.peakTorque;entry.Weight=stats.vehicleMassKg;entry.Condition=stats.condition*100;entry.Drive=build.spec.drive.ToString();entry.Type=BodyName(build.spec.bodyType);entry.Gearbox=OwnedCarEntry.GearboxName(TransmissionDynamics.Configuration(build.spec,build.tune));entry.Induction=InductionName(new InductionProfile(build.spec,build.tune).type);entry.LockedCenter=build.spec.drive==DriveType.AWD&&AxleDriveDynamics.Configuration(build.spec,build.tune).mode==AwdMode.LockedCenter;
                     var values = new VisualElement(); values.AddToClassList("car-card-stats"); info.Add(values);
                     CarFact(values,"HP",stats.peakHp.ToString("F0"));
@@ -145,7 +146,9 @@ namespace DragLab.Runtime
                     entry.RatingPending=false;
                     var unavailable = new Label("Build data unavailable"); unavailable.AddToClassList("car-critical"); info.Add(unavailable);
                 }
+                var warningButton=WarningButton(heading,"ownedWarnings:"+id,CurrentOwnedWarnings(car),()=>OpenOwnedWarnings(id),(element,kind)=>{AddSurface(element,kind);ownedSurfaces.Add(element.Q<RacingSurface>());},true);
                 card.Query<VisualElement>().ForEach(element => { if (element != card) element.pickingMode = PickingMode.Ignore; });
+                warningButton.pickingMode=PickingMode.Position;
             }
             if (profile.cars.Count == 0) { var empty = new Label("No owned cars"); empty.AddToClassList("car-empty"); ownedGrid.Add(empty); }
             ApplyOwnedQuery();ownedScroll.scrollOffset = scroll; RefreshOwnedDetails(); ExcludeTabTraversal();
@@ -231,6 +234,7 @@ namespace DragLab.Runtime
             if(comparing)ComparisonSummary(body.Q(className:"car-summary"),selected,InspectOwned(car).Stats,ownedEntries[car.instanceId]);
             body.Add(OwnedCarDyno(car,comparing?selected:null));
             BuildOwnedStats(body,car,comparing?selected:null);
+            WarningButton(body.Q(className:"car-summary"),"ownedDetailWarnings",CurrentOwnedWarnings(car),()=>OpenOwnedWarnings(car.instanceId),DecorateOwnedStats);
             BuildOwnedMaintenance(car);
             if(car.usedHistory.Count>0){var history=new Button(()=>OpenDialog("Previous history",string.Join("\n",car.usedHistory),new[]{new DialogAction("Close",CloseDialog)})){name="ownedHistory",text="History",tabIndex=-1,focusable=false};history.AddToClassList("action-button");history.AddToClassList("car-stats-button");history.Add(new FilledMenuIcon("Data"));body.Q(className:"car-summary").Add(history);DecorateOwnedStats(history,RacingSurface.Kind.SecondaryAction);}
             ownedUse.SetEnabled(!current); ownedUse.tooltip = current ? "Already the current car" : "Use this owned car";

@@ -17,7 +17,9 @@ namespace DragLab.Runtime
         VisualElement cartPage,cartRows,cartPreview;
         ScrollView cartScroll,cartPreviewScroll;
         Label cartError,cartEmpty;
-        Button cartCheckout,cartClear;
+        Button cartCheckout,cartClear,cartWarnings;
+        SetupWarning[] cartCurrentWarnings=Array.Empty<SetupWarning>(),cartPlannedWarnings;
+        string cartWarningUnavailable;
         readonly Dictionary<string,Dictionary<string,bool>> cartStatGroups=new Dictionary<string,Dictionary<string,bool>>();
         readonly Dictionary<string,bool> cartStatDifferences=new Dictionary<string,bool>();
         readonly List<RacingSurface> cartPageSurfaces=new List<RacingSurface>();
@@ -35,6 +37,8 @@ namespace DragLab.Runtime
             var heading=new VisualElement();heading.AddToClassList("car-details-heading");cartPage.Add(heading);
             var back=new Button(BackFromNativeCart){name="cartBack",focusable=false,tabIndex=-1};back.AddToClassList("action-button");back.AddToClassList("car-back-button");heading.Add(back);AddSurface(back,RacingSurface.Kind.SecondaryAction);back.Add(new FilledMenuIcon("Back"));back.tooltip="Back to parts";
             var title=new Label("Cart");title.AddToClassList("car-detail-title");heading.Add(title);
+            cartWarnings=WarningButton(heading,"cartWarnings",cartCurrentWarnings,()=>OpenCombinedWarnings(cartCurrentWarnings,cartPlannedWarnings,true,"Warnings",cartWarningUnavailable),(element,kind)=>AddSurface(element,kind));
+            cartWarnings.AddToClassList("warning-header-button");
             var columns=new VisualElement{name="cartColumns"};columns.AddToClassList("cart-columns");cartPage.Add(columns);
             var list=new VisualElement();list.AddToClassList("cart-list-frame");columns.Add(list);AddSurface(list,RacingSurface.Kind.Panel);
             cartScroll=new ScrollView{name="cartScroll",horizontalScrollerVisibility=ScrollerVisibility.Hidden};cartScroll.AddToClassList("cart-list-scroll");list.Add(cartScroll);
@@ -98,7 +102,13 @@ namespace DragLab.Runtime
             root.Q<Label>("cartPurchases").text=DisplayUnits.Money(purchases);root.Q<Label>("cartCredits").text=DisplayUnits.Money(credits);
             root.Q<Label>("cartTotal").text=problem==null?DisplayUnits.Money(total):"Unavailable";root.Q<Label>("cartBalance").text=problem==null?DisplayUnits.Money((long)p.cash-total):"—";
             cartError.text=problem??(total>p.cash?"Insufficient cash.":"");cartCheckout.SetEnabled(problem==null&&game.CartCount>0&&total<=p.cash);
+            cartWarnings.SetEnabled(car!=null);
+            if(car==null){cartCurrentWarnings=Array.Empty<SetupWarning>();cartPlannedWarnings=null;cartWarningUnavailable="No selected car";SetWarningButton(cartWarnings,cartCurrentWarnings);cartWarnings.tooltip=cartWarningUnavailable;}
             if(car!=null){var model=new NativePartBrowser(p,game.CartLines,false,"Cart",game.NativeUsedPrice,game.NativeSalePrice);CartPreviewBuildCount++;
+                var currentWarnings=model.Current?.warnings.ToArray()??CurrentOwnedWarnings(car);var nextWarnings=model.Plan?.warnings.ToArray()??(game.CartCount==0?currentWarnings:null);
+                cartCurrentWarnings=currentWarnings;cartPlannedWarnings=nextWarnings;cartWarningUnavailable=nextWarnings==null?"Planned inspection unavailable · "+(model.PlanError??"Check the installation plan."):null;SetWarningButton(cartWarnings,nextWarnings??currentWarnings);
+                var combined=NativeWarningOverview.Combine(currentWarnings,nextWarnings,nextWarnings!=null);cartWarnings.Q<Label>().text="Warnings · "+combined.Length;
+                cartWarnings.tooltip=combined.Length==0?"No warnings reported":string.Join(" · ",combined.GroupBy(w=>w.State).Select(g=>g.Count()+" "+g.Key.ToLowerInvariant()));
                 if(model.Current!=null){var planned=model.Plan??(game.CartCount==0?model.Current:null);
                     if(planned!=null){cartPreview.Add(new NativeDynoPanel(new[]{new NativeDynoSeries("Current","Current",model.Current,NativeDynoStyle.Primary),new NativeDynoSeries("Plan","Planned",planned,NativeDynoStyle.Alternative),new NativeDynoSeries("NoWear","No wear",OwnedHealthy(car),NativeDynoStyle.Reference)},SharedUnitSettings.Current.torque,"cartDyno"));
                         NativeStatsPanel stats=null;stats=new NativeStatsPanel(model.Current,SharedUnitSettings.Current,new[]{NativeStatCatalog.TuningSummary()},new Dictionary<string,bool>(),d=>OpenDialog(d.Label,d.InfoExplanation(stats.Current,stats.Proposed),new[]{new DialogAction("Close",CloseDialog)}),CartSurface,planned){name="cartQuickStats"};stats.AddToClassList("part-quick-stats");stats.Q<Button>("statsDifferencesOnly").name="cartQuickDifferences";cartPreview.Add(stats);
