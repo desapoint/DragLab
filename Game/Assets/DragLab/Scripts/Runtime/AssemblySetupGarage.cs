@@ -85,7 +85,7 @@ namespace DragLab.Runtime
             }
             foreach (var engine in profile.engines.Where(e => string.IsNullOrEmpty(e.parentVehicleId)).ToArray()) {
                 string id = engine.instanceId;
-                GUILayout.Space(8); GUILayout.Label(profile.catalog.Spec(engine.vehicleDefinitionId).displayName + " engine / " + id.Substring(id.Length - 6) + " / " + engine.slots.Count + " fitted parts");
+                GUILayout.Space(8); GUILayout.Label(AssemblyOperations.DisplayName(profile,engine) + " / " + id.Substring(id.Length - 6) + " / " + engine.slots.Count + " fitted parts");
                 var missing = AssemblyOperations.Missing(profile, engine);
                 GUILayout.Label(missing.Length == 0 ? "Complete OEM-required engine slots" : "Incomplete: " + string.Join(", ", missing));
                 GUILayout.Label("Oil " + engine.fluids.oilLitres.ToString("F2") + " L / coolant " + engine.fluids.coolantLitres.ToString("F2") + " L / worn or failed items remain unchanged");

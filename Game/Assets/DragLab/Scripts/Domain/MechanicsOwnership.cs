@@ -5,7 +5,7 @@ using System.Linq;
 namespace DragLab.Domain.Mechanics
 {
     [Serializable] public sealed class EngineAssemblyInstance {
-        public string instanceId, parentVehicleId, vehicleDefinitionId, storageId;
+        public string instanceId, parentVehicleId, vehicleDefinitionId, storageId, customName;
         // Attached bindings/fluids live only in the car. Detached descendants live only here.
         public List<SlotBinding> slots = new List<SlotBinding>();
         public FluidState fluids;
@@ -213,6 +213,7 @@ namespace DragLab.Domain.Mechanics
                 }
             }
             foreach (var engine in profile.engines) {
+                if(engine.customName!=null&&(engine.customName.Length>VehicleCollection.NameLimit||engine.customName.Any(char.IsControl)))return "Invalid engine name.";
                 if(!unique(engine.instanceId)||engine.slots==null||engine.tune==null)return "Invalid/duplicate engine assembly.";
                 if(!string.IsNullOrEmpty(engine.parentVehicleId)) { if(!profile.cars.Any(c=>c.instanceId==engine.parentVehicleId&&c.engineAssemblyId==engine.instanceId))return "Orphan attached engine assembly."; continue; }
                 if(engine.fluids==null||engine.fluids.Validate(catalog.Spec(engine.vehicleDefinitionId).fluids)!=null)return "Invalid stored engine fluids.";

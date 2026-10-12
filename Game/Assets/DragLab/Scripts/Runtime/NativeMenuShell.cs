@@ -88,6 +88,7 @@ namespace DragLab.Runtime
             InitializeTuning();
             InitializeParts();
             InitializeNativeCart();
+            InitializeNativeEngines();
             InitializeSettings();
             ExcludeTabTraversal();
         }
@@ -140,6 +141,7 @@ namespace DragLab.Runtime
             RefreshTuning(route);
             RefreshNativeCart(route);
             RefreshParts(route);
+            RefreshEngines(route);
             if (renderedRoute == route) return;
             renderedRoute = route;
             bool settings = route == "Settings";

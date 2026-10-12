@@ -7,6 +7,8 @@ namespace DragLab.Domain.Mechanics
     // A stored engine owns its real descendants. Blueprints never own physical items.
     public static class AssemblyOperations
     {
+        public static string DisplayName(PlayerProfile p,EngineAssemblyInstance engine)=>string.IsNullOrWhiteSpace(engine.customName)?p.catalog.Spec(engine.vehicleDefinitionId).displayName+" engine":engine.customName;
+        public static void Rename(PlayerProfile p,string id,string name){if(p.runCheckpoints.Any(r=>!r.settled))throw new InvalidOperationException("Close the active run before renaming an engine.");var engine=p.engines.Find(e=>e.instanceId==id)??throw new InvalidOperationException("Engine no longer exists.");engine.customName=VehicleCollection.NormalizeName(name);}
         public static OwnedCar MutableCar(PlayerProfile p, string id)
         {
             var car = p.cars.Find(c => c.instanceId == id) ?? throw new InvalidOperationException("Owned car no longer exists.");

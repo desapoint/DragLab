@@ -37,6 +37,7 @@ namespace DragLab.Runtime
             partsPage=new VisualElement{name="partsPage"};partsPage.AddToClassList("parts-page");partsPage.AddToClassList("hidden");root.Q(className:"workspace").Add(partsPage);
             var heading=new VisualElement();heading.AddToClassList("car-details-heading");partsPage.Add(heading);var name=new Label{name="partsCarName",enableRichText=false};name.AddToClassList("car-detail-title");heading.Add(name);
             partsCart=PartButton(heading,"partsCart","Cart",OpenNativeCart);partsCart.Insert(1,new FilledMenuIcon("Business"));
+            PartButton(heading,"partsEngines","Engines",()=>{enginePageOpen=true;engineDetailId=null;engineViewKey=null;Refresh();}).Insert(1,new FilledMenuIcon("Build"));
             var sources=new VisualElement();sources.AddToClassList("owned-query-choices");sources.AddToClassList("choice-group");partsPage.Add(sources);
             sources.AddToClassList("parts-sources");
             PartChoices(sources,"partsSource",new[]{"Installed","Inventory","Shop"},()=>game.PartsPage,v=>{game.SelectPartsPage(v);partsDetailId=null;partsStateKey=null;});
@@ -65,7 +66,7 @@ namespace DragLab.Runtime
         }
         void RefreshParts(string route)
         {
-            partsPage.EnableInClassList("hidden",route!="Parts"||cartPageOpen);if(route!="Parts"||cartPageOpen)return;
+            partsPage.EnableInClassList("hidden",route!="Parts"||cartPageOpen||enginePageOpen);if(route!="Parts"||cartPageOpen||enginePageOpen)return;
             var p=game.Profile;game.PrepareNativeCart();var car=p.SelectedCar;
             root.Q<Label>("partsCarName").text=car==null?"No car":VehicleCollection.DisplayName(p.catalog,car);
             partsCart.Q<Label>().text="Cart · "+game.CartCount;partsCart.SetEnabled(car!=null);

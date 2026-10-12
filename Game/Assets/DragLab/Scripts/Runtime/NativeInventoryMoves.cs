@@ -14,7 +14,7 @@ namespace DragLab.Runtime
         {
             var p=game.Profile;var storage=p.inventory.storage.Find(s=>s.id==id);if(storage!=null)return "Storage · "+storage.name;
             var car=p.cars.Find(c=>c.instanceId==id||c.engineAssemblyId==id);if(car!=null)return "Car · "+VehicleCollection.DisplayName(p.catalog,car);
-            var engine=p.engines.Find(e=>e.instanceId==id);return engine==null?id:"Engine · "+p.catalog.Spec(engine.vehicleDefinitionId).displayName+" · #"+id.Substring(Math.Max(0,id.Length-6));
+            var engine=p.engines.Find(e=>e.instanceId==id);return engine==null?id:"Engine · "+AssemblyOperations.DisplayName(p,engine)+" · #"+id.Substring(Math.Max(0,id.Length-6));
         }
         void OpenInventoryMove(NativePartEntry entry)
         {

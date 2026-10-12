@@ -1,0 +1,136 @@
+Final packaged Workshop run (fixture name is not user acceptance). Shared starter/fit/topology and Move checks precede the following engine matrix/UI extract. Counts overlap other runs.
+
+PASS: Named stored engine retains its real parts and liquids: city-three
+PASS: Copied swap retains the old engine without editing the live profile: city-three
+PASS: Failed swap persistence rolls back identities, fluids and condition: city-three
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: city-three
+PASS: Engine liquids move while old-engine supplies remain retained: city-three
+PASS: Stale or invalid engine naming rejects without publication: city-three
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: city-three
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: city-three
+PASS: Incomplete engine preview reports missing hardware without recreating it: city-three
+PASS: Named stored engine retains its real parts and liquids: juniper-club
+PASS: Copied swap retains the old engine without editing the live profile: juniper-club
+PASS: Failed swap persistence rolls back identities, fluids and condition: juniper-club
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: juniper-club
+PASS: Engine liquids move while old-engine supplies remain retained: juniper-club
+PASS: Stale or invalid engine naming rejects without publication: juniper-club
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: juniper-club
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: juniper-club
+PASS: Incomplete engine preview reports missing hardware without recreating it: juniper-club
+PASS: Named stored engine retains its real parts and liquids: juniper-economy
+PASS: Copied swap retains the old engine without editing the live profile: juniper-economy
+PASS: Failed swap persistence rolls back identities, fluids and condition: juniper-economy
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: juniper-economy
+PASS: Engine liquids move while old-engine supplies remain retained: juniper-economy
+PASS: Stale or invalid engine naming rejects without publication: juniper-economy
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: juniper-economy
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: juniper-economy
+PASS: Incomplete engine preview reports missing hardware without recreating it: juniper-economy
+PASS: Named stored engine retains its real parts and liquids: kestrel-track
+PASS: Copied swap retains the old engine without editing the live profile: kestrel-track
+PASS: Failed swap persistence rolls back identities, fluids and condition: kestrel-track
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: kestrel-track
+PASS: Engine liquids move while old-engine supplies remain retained: kestrel-track
+PASS: Stale or invalid engine naming rejects without publication: kestrel-track
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: kestrel-track
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: kestrel-track
+PASS: Incomplete engine preview reports missing hardware without recreating it: kestrel-track
+PASS: Named stored engine retains its real parts and liquids: rally-sedan
+PASS: Copied swap retains the old engine without editing the live profile: rally-sedan
+PASS: Failed swap persistence rolls back identities, fluids and condition: rally-sedan
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: rally-sedan
+PASS: Engine liquids move while old-engine supplies remain retained: rally-sedan
+PASS: Stale or invalid engine naming rejects without publication: rally-sedan
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: rally-sedan
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: rally-sedan
+PASS: Incomplete engine preview reports missing hardware without recreating it: rally-sedan
+PASS: Named stored engine retains its real parts and liquids: sport-coupe
+PASS: Copied swap retains the old engine without editing the live profile: sport-coupe
+PASS: Failed swap persistence rolls back identities, fluids and condition: sport-coupe
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: sport-coupe
+PASS: Engine liquids move while old-engine supplies remain retained: sport-coupe
+PASS: Stale or invalid engine naming rejects without publication: sport-coupe
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: sport-coupe
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: sport-coupe
+PASS: Incomplete engine preview reports missing hardware without recreating it: sport-coupe
+PASS: Named stored engine retains its real parts and liquids: starter-hatch
+PASS: Copied swap retains the old engine without editing the live profile: starter-hatch
+PASS: Failed swap persistence rolls back identities, fluids and condition: starter-hatch
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: starter-hatch
+PASS: Engine liquids move while old-engine supplies remain retained: starter-hatch
+PASS: Stale or invalid engine naming rejects without publication: starter-hatch
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: starter-hatch
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: starter-hatch
+PASS: Incomplete engine preview reports missing hardware without recreating it: starter-hatch
+PASS: Named stored engine retains its real parts and liquids: super-v8
+PASS: Copied swap retains the old engine without editing the live profile: super-v8
+PASS: Failed swap persistence rolls back identities, fluids and condition: super-v8
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: super-v8
+PASS: Engine liquids move while old-engine supplies remain retained: super-v8
+PASS: Stale or invalid engine naming rejects without publication: super-v8
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: super-v8
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: super-v8
+PASS: Incomplete engine preview reports missing hardware without recreating it: super-v8
+PASS: Named stored engine retains its real parts and liquids: timber-diesel
+PASS: Copied swap retains the old engine without editing the live profile: timber-diesel
+PASS: Failed swap persistence rolls back identities, fluids and condition: timber-diesel
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: timber-diesel
+PASS: Engine liquids move while old-engine supplies remain retained: timber-diesel
+PASS: Stale or invalid engine naming rejects without publication: timber-diesel
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: timber-diesel
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: timber-diesel
+PASS: Incomplete engine preview reports missing hardware without recreating it: timber-diesel
+PASS: Named stored engine retains its real parts and liquids: timber-diesel-tow
+PASS: Copied swap retains the old engine without editing the live profile: timber-diesel-tow
+PASS: Failed swap persistence rolls back identities, fluids and condition: timber-diesel-tow
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: timber-diesel-tow
+PASS: Engine liquids move while old-engine supplies remain retained: timber-diesel-tow
+PASS: Stale or invalid engine naming rejects without publication: timber-diesel-tow
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: timber-diesel-tow
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: timber-diesel-tow
+PASS: Incomplete engine preview reports missing hardware without recreating it: timber-diesel-tow
+PASS: Named stored engine retains its real parts and liquids: touring-six
+PASS: Copied swap retains the old engine without editing the live profile: touring-six
+PASS: Failed swap persistence rolls back identities, fluids and condition: touring-six
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: touring-six
+PASS: Engine liquids move while old-engine supplies remain retained: touring-six
+PASS: Stale or invalid engine naming rejects without publication: touring-six
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: touring-six
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: touring-six
+PASS: Incomplete engine preview reports missing hardware without recreating it: touring-six
+PASS: Named stored engine retains its real parts and liquids: utility-pickup
+PASS: Copied swap retains the old engine without editing the live profile: utility-pickup
+PASS: Failed swap persistence rolls back identities, fluids and condition: utility-pickup
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: utility-pickup
+PASS: Engine liquids move while old-engine supplies remain retained: utility-pickup
+PASS: Stale or invalid engine naming rejects without publication: utility-pickup
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: utility-pickup
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: utility-pickup
+PASS: Incomplete engine preview reports missing hardware without recreating it: utility-pickup
+PASS: Named stored engine retains its real parts and liquids: v8-muscle
+PASS: Copied swap retains the old engine without editing the live profile: v8-muscle
+PASS: Failed swap persistence rolls back identities, fluids and condition: v8-muscle
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: v8-muscle
+PASS: Engine liquids move while old-engine supplies remain retained: v8-muscle
+PASS: Stale or invalid engine naming rejects without publication: v8-muscle
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: v8-muscle
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: v8-muscle
+PASS: Incomplete engine preview reports missing hardware without recreating it: v8-muscle
+PASS: Engines replace Build content with the shared full-screen frame
+PASS: Engine naming cancel keeps the exact attached engine and disk
+PASS: Unicode engine name is saved and replaces its displayed heading
+PASS: Confirmed detach stores exact engine descendants without changing the selected car
+PASS: Stored-engine singular replacement retains the actual worn/faulty original as a spare
+PASS: Swap previews the receiving car using shared dyno and stat comparison controls
+PASS: Swap cancellation retains both engines, resources and saved bytes
+PASS: Idle engine details reuse cached inspection and UI without rebuilding
+PASS: Compact engine view retains scrolling content and fixed actions
+PASS: F8 retains the named engine detail context
+PASS: One confirmed swap installs the named engine and retains the old assembly in storage
+PASS: Named assemblies return to the owned-engine grid
+PASS: Shared Back returns to Build after the engine grid
+PASS: An edited cart invalidates the captured swap without losing its pending purchases
+PASS: Combined paid cart and engine-swap save failure leaves the original profile untouched
+PASS: Combined confirmation charges the pending basket once, swaps and retains the removed engine
+Checks: 397 / runtime errors: 0

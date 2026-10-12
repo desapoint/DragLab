@@ -20,7 +20,18 @@ namespace DragLab.Domain.Mechanics
         {if(c.elements==null||c.elements.Length==0)return;c.health=c.elements.Average(e=>e.health);c.failed=c.elements.All(e=>e.Failed);c.failureReason=c.failed?"All individual components unavailable":"";}
         public static void Replace(PlayerProfile p,string carId,string partId,string elementId,string spareId=null)
         {
-            var car=p.cars.Find(c=>c.instanceId==carId);var item=Installed(p,car,partId);var old=item.condition.elements.FirstOrDefault(e=>e.id==elementId);if(old==null)throw new InvalidOperationException("Individual component changed; refresh the quote.");
+            var car=p.cars.Find(c=>c.instanceId==carId);var item=Installed(p,car,partId);ReplacePack(p,item,elementId,spareId);
+        }
+        public static void ReplaceStored(PlayerProfile p,string engineId,string partId,string elementId,string spareId=null)
+        {
+            var engine=AssemblyOperations.Stored(p,engineId);var item=p.parts.Find(i=>i.instanceId==partId);
+            if(item==null||!engine.slots.Any(s=>s.partInstanceId==partId)||item.condition.elements.Length==0)throw new InvalidOperationException("Stored component changed; refresh the quote.");
+            if(item.condition.failed)foreach(var e in item.condition.elements)e.health=0;
+            ReplacePack(p,item,elementId,spareId);
+        }
+        static void ReplacePack(PlayerProfile p,PartInstance item,string elementId,string spareId)
+        {
+            var old=item.condition.elements.FirstOrDefault(e=>e.id==elementId);if(old==null)throw new InvalidOperationException("Individual component changed; refresh the quote.");
             var d=p.catalog.Find(item.definitionId);EngineElement replacement;
             if(spareId==null){int price=Price(d,item.condition);if(p.cash<price)throw new InvalidOperationException("Insufficient cash for this individual component.");p.cash-=price;replacement=new EngineElement{id=MechanicsOwnership.NewId("element"),role=old.role,cylinder=old.cylinder,valve=old.valve};}
             else {var loose=p.looseEngineElements.Find(e=>e.element.id==spareId);var source=loose==null?null:p.catalog.Find(loose.definitionId);if(source==null||source.category!=d.category||source.fitment!=d.fitment||source.id!=d.id||loose.element.role!=old.role||loose.element.Failed)throw new InvalidOperationException("Spare needs the same matched specification and role; mixed piston masses/profiles require a complete matched kit.");replacement=loose.element.Copy();replacement.cylinder=old.cylinder;replacement.valve=old.valve;p.looseEngineElements.Remove(loose);}

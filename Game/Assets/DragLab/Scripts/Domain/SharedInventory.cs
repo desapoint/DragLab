@@ -53,7 +53,7 @@ namespace DragLab.Domain.Mechanics
         {
             foreach(var s in p.inventory.storage) yield return s;
             foreach(var car in p.cars) yield return new InventoryContainer {kind=InventoryKind.Car,id=car.instanceId,name=VehicleCollection.Label(p.catalog,car)+" / fitted"};
-            foreach(var engine in p.engines) yield return new InventoryContainer {kind=InventoryKind.Engine,id=engine.instanceId,name=p.catalog.Spec(engine.vehicleDefinitionId).displayName+" / engine "+engine.instanceId.Substring(Math.Max(0,engine.instanceId.Length-6))};
+            foreach(var engine in p.engines) yield return new InventoryContainer {kind=InventoryKind.Engine,id=engine.instanceId,name=AssemblyOperations.DisplayName(p,engine)+" / #"+engine.instanceId.Substring(Math.Max(0,engine.instanceId.Length-6))};
             yield return new InventoryContainer {kind=InventoryKind.Seller,id=Seller,name="Parts dealer"};
             yield return new InventoryContainer {kind=InventoryKind.Cart,id="cart",name="Planned transactions"};
         }
@@ -67,7 +67,7 @@ namespace DragLab.Domain.Mechanics
             foreach(var part in parts.Where(i=>i!=null)) yield return new InventoryEntry {id=part.instanceId,definitionId=part.definitionId,label=p.catalog.Find(part.definitionId).name,part=part,installed=part.location!=PartLocation.Inventory};
             var units=kind==InventoryKind.Storage?p.looseEngineElements.Where(u=>StorageOf(u.storageId)==id):kind==InventoryKind.Seller?p.inventory.dealer.Where(s=>s.unit!=null).Select(s=>s.unit):Enumerable.Empty<LooseEngineElement>();
             foreach(var unit in units) yield return new InventoryEntry {id=unit.element.id,definitionId=unit.definitionId,label=unit.element.role,unit=unit};
-            if(kind==InventoryKind.Storage)foreach(var e in p.engines.Where(e=>string.IsNullOrEmpty(e.parentVehicleId)&&StorageOf(e.storageId)==id))yield return new InventoryEntry {id=e.instanceId,label=p.catalog.Spec(e.vehicleDefinitionId).displayName+" engine assembly",engine=e};
+            if(kind==InventoryKind.Storage)foreach(var e in p.engines.Where(e=>string.IsNullOrEmpty(e.parentVehicleId)&&StorageOf(e.storageId)==id))yield return new InventoryEntry {id=e.instanceId,label=AssemblyOperations.DisplayName(p,e),engine=e};
         }
         public static void Move(PlayerProfile p,string assetId,InventoryKind target,string targetId)
         {
