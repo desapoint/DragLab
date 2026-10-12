@@ -170,6 +170,10 @@ namespace DragLab.Runtime
                 if(game.NativeBlockPreparationPending(e.Definition)){var notice=new Label("Prepare a complete engine installation before installing this block.");notice.AddToClassList("part-description");facts.Add(notice);}
             }else PartButton(actions,"partPlanRemove","Plan removal",()=>{game.StageInventory(new PartCartLine{action=CartAction.Move,assetId=e.AssetId,definitionId=e.Definition.id,destination=InventoryKind.Storage,destinationId=SharedInventory.Garage});partsStateKey=null;},detail:true);
             if(e.Source=="Owned"&&(e.Unit!=null||e.Part?.location==PartLocation.Inventory))PartButton(actions,"partPlanSale","Add sale",()=>{game.StageInventory(new PartCartLine{action=e.Unit==null?CartAction.SellPart:CartAction.SellUnit,assetId=e.AssetId,definitionId=e.Definition.id});partsStateKey=null;},detail:true);
+            if(e.Source=="Owned"||e.Source=="Installed"){
+                PartDetailFact(facts,"Location",InventoryLocation(e.Location));
+                PartButton(actions,"partMove","Move",()=>OpenInventoryMove(e),detail:true).SetEnabled(game.Profile.SelectedCar!=null);
+            }
             if(e.Proposed!=null&&partsBrowser.Reference!=null){
                 NativeStatsPanel quick=null;
                 quick=new NativeStatsPanel(partsBrowser.Reference,SharedUnitSettings.Current,new[]{NativeStatCatalog.TuningSummary()},new Dictionary<string,bool>(),d=>OpenDialog(d.Label,d.InfoExplanation(quick.Current,quick.Proposed),new[]{new DialogAction("Close",CloseDialog)}),DecoratePartDetail,e.Proposed){name="partQuickStats"};quick.AddToClassList("part-quick-stats");quick.Q<Button>("statsDifferencesOnly").name="partQuickDifferences";

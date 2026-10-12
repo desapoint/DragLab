@@ -1,0 +1,11 @@
+Shared thirteen-car fit/topology checks passed; focused Move extract follows.
+
+PASS: Move starts as an unselected, nonmutating destination draft
+PASS: Storage destination preview is valid without staging or saving
+PASS: Move cancellation preserves exact ownership, condition, resources and disk
+PASS: Confirmed Move stages an exact destination without applying it
+PASS: Atomic cart checkout moves the retained part without replacing its identity
+PASS: Bounded part calculations finish without a race probe / route Parts visible True builds 6 pending 0
+Engine-group preview wait: 0,04 s / 2 offers
+PASS: Inventory location filter selects the exact storage container
+Checks: 264 / runtime errors: 0

@@ -26,6 +26,12 @@ namespace DragLab.Runtime
                 QueryChoices(content,"partCompatibility","Compatibility",new[]{"All","Compatible","Requires supporting changes","Incompatible","Unavailable"},()=>query.Compatibility,v=>query.Compatibility=v,2);
                 QueryChoices(content,"partAvailability","Availability",new[]{"All","Owned","Affordable","Unaffordable"},()=>query.Availability,v=>query.Availability=v);
                 if(game.PartsPage=="Shop")QueryChoices(content,"partCondition","Shop stock",new[]{"All","New","Used"},()=>query.Condition,v=>query.Condition=v);
+                if(game.PartsPage=="Inventory"){
+                    var group=new VisualElement();group.AddToClassList("owned-query-group");content.Add(group);group.Add(new Label("Location"));
+                    foreach(string id in new[]{"All"}.Concat(partsBrowser.Entries.Select(e=>e.Location).Distinct())){
+                        string location=id;var b=new Button(()=>{query.Container=location;foreach(var choice in group.Query<Button>().ToList())choice.EnableInClassList("selected",choice.name=="partContainer:"+location);}){name="partContainer:"+id,text=id=="All"?"All":InventoryLocation(id),focusable=false,tabIndex=-1};b.AddToClassList("action-button");b.EnableInClassList("selected",query.Container==id);group.Add(b);AddSurface(b,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(b.Q<RacingSurface>());
+                    }
+                }
                 QueryChoices(content,"partTuning","Tuning",new[]{"All","Adjustable","Fixed"},()=>query.Tuning,v=>query.Tuning=v);
                 var categories=Enum.GetValues(typeof(PartCategory)).Cast<PartCategory>().Where(c=>NativePartBrowser.Section(c)==partsSection).ToArray();
                 var block=new VisualElement();block.AddToClassList("owned-query-group");content.Add(block);block.Add(new Label("Subcategories"));

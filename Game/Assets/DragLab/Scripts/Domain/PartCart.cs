@@ -43,6 +43,7 @@ namespace DragLab.Domain.Mechanics
             var lines=source.ToArray();if(lines.Length==0||lines.Length>100)throw new InvalidOperationException("Cart needs 1–100 distinct offers.");
             policy=policy??ValuationPolicy.Defaults();if(now==0)now=DateTime.UtcNow.Ticks;
             var ids=new HashSet<string>();var assets=new HashSet<string>();var positions=new HashSet<string>();var slots=new HashSet<PartCategory>();int total=0;PlayerProfile movePreview=null;
+            var moveSlots=new HashSet<string>();
             foreach(var line in lines) {
                 var d=line==null?null:p.catalog.Find(line.definitionId);
                 if(line==null||!Enum.IsDefined(typeof(CartAction),line.action)||line.quantity<1||line.quantity>99)throw new InvalidOperationException("Invalid cart action or quantity.");
@@ -54,6 +55,7 @@ namespace DragLab.Domain.Mechanics
                     if(line.quantity!=1||!assets.Add(line.assetId))throw new InvalidOperationException("Duplicate move or invalid quantity.");
                     if(movePreview==null){movePreview=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(p));MechanicsOwnership.Ensure(movePreview,p.catalog);}SharedInventory.Move(movePreview,line.assetId,line.destination,line.destinationId);
                     var moved=p.parts.Find(i=>i.instanceId==line.assetId);if(moved!=null&&line.destination==InventoryKind.Car&&line.destinationId==carId&&!slots.Add(p.catalog.Find(moved.definitionId).category))throw new InvalidOperationException("Conflicting slot installations.");
+                    if(moved!=null&&line.destination!=InventoryKind.Storage&&!moveSlots.Add(line.destination+"/"+line.destinationId+"/"+p.catalog.Find(moved.definitionId).category))throw new InvalidOperationException("Conflicting destination slot installations.");
                     continue;
                 }
                 if(d==null||d.price<0||!p.catalog.Fits(p.catalog.Spec(car.vehicleId),d)||p.reputation<d.reputationRequired)throw new InvalidOperationException("Unavailable/incompatible cart offer or reputation.");

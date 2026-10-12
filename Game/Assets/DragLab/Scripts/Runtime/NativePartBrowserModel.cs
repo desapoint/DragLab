@@ -10,7 +10,7 @@ namespace DragLab.Runtime
     internal enum NativePartSection { Engine, Induction, Drivetrain, WheelsBrakes, BodyChassis }
     internal sealed class NativePartQuery
     {
-        internal string Search="",Compatibility="Compatible",Availability="All",Condition="All",Tuning="All",Sort="Name";
+        internal string Search="",Compatibility="Compatible",Availability="All",Condition="All",Tuning="All",Sort="Name",Container="All";
         internal bool Descending;
         internal HashSet<PartCategory> Categories=new HashSet<PartCategory>();
         internal string[] Direction=Enumerable.Repeat("Any",7).ToArray();
@@ -19,6 +19,7 @@ namespace DragLab.Runtime
         internal bool Matches(NativePartEntry e,int cash)
         {
             if(Categories.Count>0&&!Categories.Contains(e.Definition.category))return false;
+            if(Container!="All"&&e.Location!=Container)return false;
             if(!string.IsNullOrWhiteSpace(Search)&&!(e.Definition.name+" "+e.Definition.brand+" "+e.Definition.category+" "+e.AssetId+" "+e.Location).ToLowerInvariant().Contains(Search.Trim().ToLowerInvariant()))return false;
             if(Compatibility!="All"&&e.Compatibility!=Compatibility)return false;
             if(Availability=="Owned"&&!e.Owned||Availability=="Affordable"&&(!e.Price.HasValue||e.Price>cash)||Availability=="Unaffordable"&&(!e.Price.HasValue||e.Price<=cash))return false;
