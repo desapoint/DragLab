@@ -261,4 +261,12 @@
 .dealer-specs { margin-top: 20px; max-width: 720px; }
 .dealer-specs .car-fact { min-height: 34px; border-bottom-width: 1px; border-bottom-color: rgba(138,148,157,0.13); }
 .dealer-specs .car-fact-label { min-width: 180px; }
+.fitted-parts-button { margin-bottom: 8px; }
+.fitted-parts-list > .stat-group { margin-bottom: 10px; }
+.fitted-part { padding: 8px 0; border-bottom-width: 1px; border-bottom-color: rgba(138,148,157,0.13); }
+.fitted-part .car-fact-label { flex-grow: 1; flex-shrink: 1; flex-basis: 65%; margin-right: 12px; }
+.fitted-part .car-fact-value { flex-shrink: 1; flex-basis: 35%; }
+.modal-content .fitted-part Label { font-size: 17px; margin-bottom: 0; }
+.modal-content .fitted-part-slot { font-size: 14px; color: var(--racing-muted); }
+.modal-content .fitted-part-fault { color: var(--racing-accent); margin-top: 4px; }
 .dealer-includes { margin-top: 16px; white-space: normal; color: var(--racing-muted); font-size: 18px; }

@@ -13,6 +13,29 @@ namespace DragLab.Runtime
     internal sealed partial class NativeMenuVerification
     {
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
+        IEnumerator FittedPartsChecks(WindowsKeyboardProbe input,VehicleOffer offer,string capture)
+        {
+            var control=shell.Root.Q<Button>("dealerFittedParts");
+            Check(control.worldBound.width<200&&control.worldBound.width<control.parent.worldBound.width*.5f&&Math.Abs(control.worldBound.x-control.parent.worldBound.x)<2,"Fitted parts is a compact left-aligned action rather than a full-width fact row");
+            Check(control.Q<FilledMenuIcon>()!=null&&!control.focusable&&control.tabIndex==-1,"Fitted parts reuses the filled-icon button with no keyboard traversal");
+            yield return Capture(capture+"-control");
+            string before=JsonUtility.ToJson(game.Profile);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);
+            yield return Click(input,"dealerFittedParts");yield return new WaitForSecondsRealtime(.1f);
+            var list=shell.Root.Q("fittedPartsList");var rows=list.Query(className:"fitted-part").ToList();
+            Check(rows.Count==offer.parts.Count&&rows.Select(r=>r.name).Distinct().Count()==rows.Count&&offer.parts.All(p=>rows.Any(r=>r.name=="fittedPart:"+p.instanceId)),"Grouped fitted list shows every actual part exactly once with retained identity");
+            Check(rows.All(r=>r.parent.name=="fittedPartsBody:"+NativeMenuShell.FittedPartGroup((PartCategory)r.userData)),"All part rows belong to their component system, including cooling, electronics and drivetrain");
+            Check(Enum.GetValues(typeof(PartCategory)).Cast<PartCategory>().All(c=>NativeMenuShell.FittedPartGroup(c)!="Other"),"Every current component category has a named system, including diesel and AWD hardware");
+            Check(new[]{"Engine","Cooling & lubrication","Drivetrain","Wheels & brakes"}.All(g=>list.Q("fittedPartsGroup:"+g)!=null),"Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections");
+            Check(list.Query<Button>().ToList().All(b=>list.Q("fittedPartsBody:"+b.name.Substring("fittedPartsGroup:".Length)).ClassListContains("hidden")),"Dialog starts with a concise collapsed system overview");
+            yield return Capture(capture+"-overview");yield return Click(input,"fittedPartsGroup:Engine");yield return new WaitForSecondsRealtime(.1f);
+            Check(list.Q("fittedPartsBody:Engine").Children().All(r=>r.Query<Label>().ToList().All(l=>l.worldBound.xMax<=r.worldBound.xMax+2)),"Part names and failure values wrap within the dialog width");
+            yield return Capture(capture+"-groups");
+            yield return Click(input,"fittedPartsGroup:Engine");
+            Check(list.Q("fittedPartsBody:Engine").ClassListContains("hidden")&&list.Q<Button>("fittedPartsGroup:Drivetrain").worldBound.yMax<shell.Root.Q("modalActions").worldBound.yMin,"Collapsing Engine restores access to the other system headers");
+            yield return Capture(capture+"-collapsed");yield return Click(input,"fittedPartsGroup:Engine");
+            Check(!list.Q("fittedPartsBody:Engine").ClassListContains("hidden")&&rows.Count==list.Query(className:"fitted-part").ToList().Count,"Reopening Engine retains all captured part rows");
+            Check(before==JsonUtility.ToJson(game.Profile)&&File.ReadAllBytes(ProfileStore.FilePath).SequenceEqual(disk),"Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes");
+        }
         IEnumerator UsedInspectionChecks(WindowsKeyboardProbe input)
         {
             var original=game.Profile;var field=typeof(PrototypeGame).GetField("profile",BindingFlags.Instance|BindingFlags.NonPublic);
@@ -53,8 +76,9 @@ namespace DragLab.Runtime
                 Check(SnapshotEquality.Serialized(parts,current.parts)&&SnapshotEquality.Serialized(liquids,current.fluids)&&SnapshotEquality.Serialized(fuel,current.fuel),"Revealing information cannot repair/refill/reroll the car");
                 var reloaded=ProfileStore.Load();Check(VehicleListings.Find(reloaded,id).inspected,"Inspection knowledge survives actual disk reload");
                 double inspectedWeight=dyno.Series[0].Inspection.vehicleMassKg;yield return Capture("used-inspected");
-                shell.Root.Q<ScrollView>("dealerDetailScroll").ScrollTo(content.Q("dealerFittedParts"));yield return new WaitForSecondsRealtime(.1f);yield return Click(input,"dealerFittedParts");
-                Check(shell.Root.Q("modalContent").Query<Label>().ToList().Any(l=>l.text.Contains("Inspection fixture seizure")),"Fitted-parts report identifies the actual hidden failure cause");yield return Click(input,"dialogClose");
+                shell.Root.Q<ScrollView>("dealerDetailScroll").ScrollTo(content.Q("dealerFittedParts"));yield return new WaitForSecondsRealtime(.1f);yield return FittedPartsChecks(input,current,"used-fitted");
+                Check(shell.Root.Q("modalContent").Query<Label>().ToList().Any(l=>l.text.Contains("Inspection fixture seizure")),"Fitted-parts report identifies the actual hidden failure cause");
+                Check(shell.Root.Q("fittedPart:"+failed.instanceId).Query(className:"fitted-part-fault").ToList().Count==failed.condition.elements.Length,"Per-cylinder seized elements stay attached to their failed piston set");yield return Click(input,"dialogClose");
                 yield return Click(input,"dealerBuy");yield return Click(input,"dialogConfirm");
                 Check(shell.OwnedDetailsOpen&&game.Profile.parts.Single(p=>p.instanceId==failed.instanceId).condition.failed&&game.Profile.SelectedCar.usedHistory.Contains("Inspection fixture overheating"),"Buying an inspected broken car retains actual damage and history in the owned page");
                 Check(SnapshotEquality.Serialized(liquids,game.Profile.SelectedCar.fluids)&&SnapshotEquality.Serialized(fuel,game.Profile.SelectedCar.fuel),"Purchase preserves the exact low liquids shown by inspection");

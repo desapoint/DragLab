@@ -21,7 +21,7 @@ namespace DragLab.Runtime {
  yield return DealerCardClick(input,listing.listingId);
  var dyno=shell.Root.Q<NativeDynoPlot>("dealerDynoPlot");
  Check(dyno.Series.Count==2&&dyno.Series[0].Inspection.source.components.Any(p=>p.condition.health<1),"Used details show actual worn and no-wear dyno curves");
- shell.Root.Q<UnityEngine.UIElements.ScrollView>("dealerDetailScroll").ScrollTo(shell.Root.Q("dealerFittedParts"));yield return new WaitForSecondsRealtime(.1f);yield return Click(input,"dealerFittedParts");Check(shell.ModalOpen,"Actual fitted hardware opens reusable information dialog");yield return Click(input,"dialogClose");
+ shell.Root.Q<UnityEngine.UIElements.ScrollView>("dealerDetailScroll").ScrollTo(shell.Root.Q("dealerFittedParts"));yield return new WaitForSecondsRealtime(.1f);yield return FittedPartsChecks(input,listing,"starter-fitted");Check(shell.ModalOpen,"Actual fitted hardware opens reusable information dialog");yield return Click(input,"dialogClose");
  yield return Click(input,"dealerBuy");yield return Click(input,"dialogCancel");
  Check(JsonUtility.ToJson(game.Profile)==before&&File.ReadAllBytes(ProfileStore.FilePath).SequenceEqual(disk),"Filtering, inspecting and cancelling first purchase leave saved assets unchanged");
  yield return Click(input,"dealerBuy");yield return Click(input,"dialogConfirm");

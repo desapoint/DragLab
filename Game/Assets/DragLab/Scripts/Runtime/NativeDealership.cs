@@ -214,13 +214,54 @@ namespace DragLab.Runtime
                 CarFact(specs,"Engine",spec.DisplacementLitres.ToString("F1")+" L · "+spec.sound.cylinders+" cylinders · "+model.Stats.fueling);
                 CarFact(specs,"Induction",model.Entry.Induction);if(model.Known){CarFact(specs,"Fuel included",model.Stats.source.startingFuel.litres.ToString("F1")+" L");
                 CarFact(specs,"Oil / coolant included",model.Stats.source.startingFluids.oilLitres.ToString("F1")+" / "+model.Stats.source.startingFluids.coolantLitres.ToString("F1")+" L");
-                var partsInfo=new Button(()=>OpenDialog("Fitted parts",null,new[]{new DialogAction("Close",CloseDialog)},populate:content=>{foreach(var p in model.Offer.parts){var d=dealerCatalog.Find(p.definitionId);CarFact(content,d.name,p.condition.failed?"Failed · "+p.condition.failureReason:p.condition.health.ToString("P0"));foreach(var e in p.condition.elements.Where(e=>e.fault!=ElementFault.None))CarFact(content,"Cylinder "+(e.cylinder+1)+" · "+e.role,e.fault.ToString());}})){name="dealerFittedParts",text="Fitted parts",tabIndex=-1,focusable=false};partsInfo.AddToClassList("action-button");specs.Add(partsInfo);DecorateDealerStats(partsInfo,RacingSurface.Kind.SecondaryAction);
+                var partsInfo=new Button(()=>OpenFittedParts(model)){name="dealerFittedParts",text="Fitted parts",tabIndex=-1,focusable=false};
+                partsInfo.AddToClassList("action-button");partsInfo.AddToClassList("car-stats-button");partsInfo.AddToClassList("fitted-parts-button");partsInfo.Add(new FilledMenuIcon("Build"));specs.Add(partsInfo);DecorateDealerStats(partsInfo,RacingSurface.Kind.SecondaryAction);
                 if(model.Offer.historyNotes.Count>0)CarFact(specs,"History",string.Join(" · ",model.Offer.historyNotes));}
                 CarFact(specs,"Estimated ¼ mile",DealerEstimate(model));specs.Children().Last().Q<Label>(className:"car-fact-value").name="dealerQuarterEstimate";
                 if(model.Known)foreach(var warning in model.Stats.warnings){var label=new Label(warning.title+" · "+warning.suggestion);label.AddToClassList("car-reason");dealerContent.Add(label);}
             }
             dealerInspect.EnableInClassList("hidden",!model.Offer.used||model.Known);dealerInspect.Q<Label>().text="Inspect · "+DisplayUnits.Money(game.Costs.vehicleInspectionFee);dealerInspect.SetEnabled(!model.Known&&game.Profile.cash>=game.Costs.vehicleInspectionFee);dealerInspect.tooltip="Reveal this listing's exact condition and history";
             dealerBuy.Q<Label>().text="Buy · "+(model.Price>0?DisplayUnits.Money(model.Price):"Unavailable");dealerBuy.SetEnabled(model.Blocker==null);dealerBuy.tooltip=model.Blocker??"Buy this exact listing; selects it after purchase";ExcludeTabTraversal();
+        }
+        internal static string FittedPartGroup(PartCategory category)
+        {
+            switch(category) {
+                case PartCategory.Cooling:case PartCategory.OilPan:case PartCategory.OilPump:case PartCategory.OilFilter:
+                case PartCategory.CoolantPump:case PartCategory.CoolingCap:case PartCategory.CoolingHoses:case PartCategory.OilCooler:return "Cooling & lubrication";
+                case PartCategory.Clutch:case PartCategory.Flywheel:case PartCategory.Gearbox:case PartCategory.Differential:
+                case PartCategory.Driveshaft:case PartCategory.FrontAxle:case PartCategory.RearAxle:case PartCategory.FrontDriveshaft:
+                case PartCategory.RearDriveshaft:case PartCategory.FrontDifferential:case PartCategory.RearDifferential:case PartCategory.TransferCase:return "Drivetrain";
+                case PartCategory.Wheels:case PartCategory.Tires:case PartCategory.Brakes:return "Wheels & brakes";
+                case PartCategory.Controls:case PartCategory.RevLimiter:case PartCategory.ShiftLight:case PartCategory.TwoStep:return "Electronics";
+                case PartCategory.Body:case PartCategory.Interior:case PartCategory.Accessories:return "Body & interior";
+                default:return MechanicalCatalog.EngineSlot(category)?"Engine":"Other";
+            }
+        }
+        void OpenFittedParts(DealerModel model)
+        {
+            if(!model.Known)return;
+            OpenDialog("Fitted parts",null,new[]{new DialogAction("Close",CloseDialog)},populate:content=>{
+                var list=new VisualElement{name="fittedPartsList"};list.AddToClassList("fitted-parts-list");content.Add(list);
+                var parts=model.Offer.parts.Select(p=>new {Part=p,Definition=dealerCatalog.Find(p.definitionId)}).ToArray();
+                foreach(string title in new[]{"Engine","Cooling & lubrication","Drivetrain","Wheels & brakes","Body & interior","Electronics","Other"}) {
+                    var entries=parts.Where(p=>FittedPartGroup(p.Definition.category)==title).OrderBy(p=>(int)p.Definition.category).ToArray();if(entries.Length==0)continue;
+                    var frame=new VisualElement();frame.AddToClassList("stat-group");list.Add(frame);
+                    var body=new VisualElement{name="fittedPartsBody:"+title};body.AddToClassList("hidden");var arrow=new FilledMenuIcon("Expand");arrow.AddToClassList("stat-chevron");arrow.AddToClassList("collapsed");
+                    Button toggle=null;
+                    void ToggleGroup(){bool closed=!body.ClassListContains("hidden");body.EnableInClassList("hidden",closed);arrow.EnableInClassList("collapsed",closed);toggle.tooltip=(closed?"Expand ":"Collapse ")+title;}
+                    toggle=new Button(ToggleGroup){name="fittedPartsGroup:"+title,text=title+" · "+entries.Length,tooltip="Expand "+title,focusable=false,tabIndex=-1};
+                    toggle.AddToClassList("action-button");toggle.AddToClassList("stat-group-toggle");toggle.Add(arrow);frame.Add(toggle);
+                    AddSurface(toggle,RacingSurface.Kind.Button);dialogSurfaces.Add(toggle.Q<RacingSurface>());frame.Add(body);
+                    foreach(var entry in entries) {
+                        var p=entry.Part;var row=new VisualElement{name="fittedPart:"+p.instanceId,userData=entry.Definition.category};row.AddToClassList("fitted-part");body.Add(row);
+                        CarFact(row,entry.Definition.name,p.condition.failed?"Failed · "+p.condition.failureReason:p.condition.health.ToString("P0"));
+                        var slot=new Label(PartSemantics.Friendly(entry.Definition.category.ToString()));slot.AddToClassList("fitted-part-slot");row.Add(slot);
+                        foreach(var element in p.condition.elements.Where(e=>e.fault!=ElementFault.None)) {
+                            var fault=new Label((element.cylinder>=0?"Cylinder "+(element.cylinder+1)+" · ":"")+element.role+(element.valve>=0?" "+(element.valve+1):"")+" · "+element.fault);fault.AddToClassList("fitted-part-fault");row.Add(fault);
+                        }
+                    }
+                }
+            });
         }
         void OpenDealerInspection()
         {
