@@ -300,3 +300,16 @@
 .tuning-page .car-selection-error { font-size: 17px; }
 .compact .tuning-editor { margin-right: 14px; }
 .compact .tuning-tabs .category-button { padding: 0 10px; font-size: 17px; }
+
+.parts-page { flex-grow: 1; min-height: 0; }
+.parts-sources { width: 420px; margin-bottom: 12px; flex-shrink: 0; }
+.parts-tabs { margin-bottom: 4px; flex-shrink: 0; min-height: 42px; }
+.parts-tabs .category-button { min-width: 0; padding: 0 14px; }
+.part-card { min-height: 180px; }
+.parts-page .car-details-heading, .parts-page .tuning-readout { flex-shrink: 0; }
+.part-card-fact { font-size: 17px; margin: 2px 0; white-space: normal; }
+.parts-page .car-card-title { white-space: normal; }
+.parts-page .car-details-actions { flex-wrap: wrap; }
+.parts-page .car-details-actions .action-button { margin-bottom: 6px; }
+.cart-install { flex-direction: row; align-items: center; }
+.cart-install .setting-toggle { width: 56px; margin-left: 12px; }

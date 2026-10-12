@@ -191,6 +191,7 @@ namespace DragLab.Runtime
         }
         void CloseDialog()
         {
+            ClearPartCartSwitches();
             var cancel = dismissDialog; dismissDialog = null; cancel?.Invoke();
             root.Q("modalLayer").AddToClassList("hidden");
             dialogRoute = null; root.Q(className:"workspace").SetEnabled(true);

@@ -1,0 +1,107 @@
+using System;
+using System.Collections;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using UnityEngine;
+using UnityEngine.UIElements;
+using DragLab.Domain;
+using DragLab.Domain.Mechanics;
+using DragLab.Infrastructure;
+
+namespace DragLab.Runtime
+{
+    internal sealed partial class NativeMenuVerification
+    {
+#if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
+        IEnumerator PartDialogClick(WindowsKeyboardProbe input,string id){var view=shell.Root.Q<ScrollView>("modalContent");view.ScrollTo(shell.Root.Q(id));yield return new WaitForSecondsRealtime(.15f);yield return Click(input,id);}
+        IEnumerator WaitParts()
+        {
+            float begin=Time.realtimeSinceStartup,until=begin+45;while(shell.PartBrowser.Entries.Any(e=>NativePartBrowser.Section(e.Definition.category)==NativePartSection.Engine&&!e.Ready)&&Time.realtimeSinceStartup<until)yield return null;
+            Check(!shell.PartBrowser.Entries.Any(e=>NativePartBrowser.Section(e.Definition.category)==NativePartSection.Engine&&!e.Ready),"Bounded part calculations finish without a race probe / route "+game.ScreenName+" visible "+shell.Visible+" builds "+shell.PartBrowserBuildCount+" pending "+shell.PartBrowser.Entries.Count(e=>NativePartBrowser.Section(e.Definition.category)==NativePartSection.Engine&&!e.Ready));
+            report.AppendLine("Engine-group preview wait: "+(Time.realtimeSinceStartup-begin).ToString("F2")+" s / "+shell.PartBrowser.Entries.Count(e=>NativePartBrowser.Section(e.Definition.category)==NativePartSection.Engine)+" offers");
+        }
+        void PartsModelChecks(PlayerProfile p)
+        {
+            string before=JsonUtility.ToJson(p);var car=p.SelectedCar;var catalog=p.catalog;
+            Check(Enum.GetValues(typeof(PartCategory)).Cast<PartCategory>().All(c=>Enum.IsDefined(typeof(NativePartSection),NativePartBrowser.Section(c))),"All mechanical categories map to the five Build sections");
+            var model=new NativePartBrowser(p,new PartCartLine[0],false,"Shop",s=>100,(id,u)=>100);
+            var head=model.Entries.First(e=>e.Definition.id==catalog.Id(car.vehicleId,PartCategory.HeadIntake,1));model.Evaluate(head);
+            Check(head.Proposed!=null&&head.Compatibility=="Compatible"&&head.Change[0]>0,"Projected HP gain uses the authoritative selected-car build");
+            var query=new NativePartQuery();query.Direction[0]="Increase";Check(query.Matches(head,p.cash),"HP-gain filter accepts measured gains");query.Direction[0]="Decrease";Check(!query.Matches(head,p.cash),"HP-loss filter rejects measured gains");query.Direction[0]="Any";query.Minimum[0]=head.Change[0]+1;Check(!query.Matches(head,p.cash),"Minimum gain magnitude is enforced");query.Minimum[0]=null;
+            query.Categories.Add(PartCategory.HeadIntake);query.Categories.Add(PartCategory.Camshaft);Check(query.Matches(head,p.cash),"Subcategory selections combine with OR inside the category filter");query.Categories.Clear();
+            var foreign=model.Entries.First(e=>!catalog.Fits(catalog.Spec(car.vehicleId),e.Definition));model.Evaluate(foreign);Check(foreign.Compatibility=="Incompatible"&&foreign.Proposed==null&&foreign.Change.All(v=>!v.HasValue),"Foreign hardware has no fabricated performance gain or zero measurement");query.Direction[0]="Unchanged";Check(!query.Matches(foreign,p.cash),"Unavailable values do not match unchanged-performance filters");query.Direction[0]="Any";
+            query.Sort="HP change";query.Descending=true;Check(query.Compare(head,foreign)<0,"Unknown sort values stay last even in descending order");query.Availability="Affordable";Check(query.Matches(head,head.Price.Value)&&!query.Matches(head,head.Price.Value-1),"Affordability includes equality and uses actual offer price");
+            var current=model.Entries.First(e=>e.Definition.id==catalog.Id(car.vehicleId,PartCategory.HeadIntake,0));model.Evaluate(current);
+            var plan=new[]{new PartCartLine{definitionId=head.Definition.id,install=true}};var planned=new NativePartBrowser(p,plan,true,"Shop",s=>100,(id,u)=>100);var replacement=planned.Entries.First(e=>e.Id==current.Id);planned.Evaluate(replacement);
+            Check(planned.Plan!=null&&planned.Reference.peakHp>model.Reference.peakHp&&replacement.Change[0]<0,"Planned reference accounts for pending installs when evaluating a downgrade");
+            var invalid=new NativePartBrowser(p,new[]{new PartCartLine{definitionId="missing-offer",install=true}},true,"Shop",s=>100,(id,u)=>100);var invalidItem=invalid.Entries.First();invalid.Evaluate(invalidItem);Check(invalid.PlanError!=null&&invalid.Reference==null&&invalidItem.Compatibility=="Unavailable","Invalid planned builds stay unavailable instead of falling back to installed parts");
+            var installed=new NativePartBrowser(p,new PartCartLine[0],false,"Installed",s=>100,(id,u)=>100);foreach(var e in installed.Entries)installed.Evaluate(e);
+            Check(installed.Entries.Where(e=>e.Proposed!=null).All(e=>Math.Abs(e.Change[0]??0)<.001&&Math.Abs(e.Change[2]??0)<.001),"Installed-item comparisons preserve exact wear and mass");
+            Check(before==JsonUtility.ToJson(p),"Model evaluation never edits supplies, identities, wear, money or fitted parts");
+            var riskProfile=JsonUtility.FromJson<PlayerProfile>(before);riskProfile.catalog=new MechanicalCatalog(game.vehicles.Select(v=>v.spec));
+            var riskCam=riskProfile.catalog.Find(riskProfile.catalog.Id(car.vehicleId,PartCategory.Camshaft,1));riskCam.camLiftMm=30;
+            var risky=new NativePartBrowser(riskProfile,new PartCartLine[0],false,"Shop",s=>100,(id,u)=>100);var riskyItem=risky.Entries.First(e=>e.Definition.id==riskCam.id);risky.Evaluate(riskyItem);
+            var fitsQuery=new NativePartQuery{Compatibility="Compatible"};
+            Check(riskyItem.Compatibility=="Compatible"&&riskyItem.Reason.Contains("spring travel")&&fitsQuery.Matches(riskyItem,p.cash),"Spring-travel and potential engine-damage warnings remain visible in Compatible");
+            var springs=riskProfile.catalog.Find(riskProfile.catalog.Id(car.vehicleId,PartCategory.ValveSprings,1));springs.springMaxLiftMm=1;
+            var riskyPlan=new NativePartBrowser(riskProfile,new[]{new PartCartLine{definitionId=springs.id,install=true}},true,"Shop",s=>100,(id,u)=>100);riskyItem=riskyPlan.Entries.First(e=>e.Definition.id==riskCam.id);riskyPlan.Evaluate(riskyItem);
+            Check(riskyItem.Compatibility=="Compatible"&&riskyItem.Reason.Contains("spring travel")&&fitsQuery.Matches(riskyItem,p.cash),"Planned-build fit compatibility also includes parts carrying operating risks");
+            var clone=JsonUtility.FromJson<PlayerProfile>(before);clone.catalog=new MechanicalCatalog(game.vehicles.Select(v=>v.spec));var cam=clone.catalog.Find(clone.catalog.Id(car.vehicleId,PartCategory.Camshaft,1));cam.followerInterface="probe-roller";var followers=clone.catalog.Find(clone.catalog.Id(car.vehicleId,PartCategory.Followers,1));followers.followerInterface="probe-roller";
+            var a=new NativePartBrowser(clone,new PartCartLine[0],false,"Shop",s=>100,(id,u)=>100);var c=a.Entries.First(e=>e.Definition.id==cam.id);a.Evaluate(c);Check(c.Compatibility=="Requires supporting changes"&&c.Proposed==null,"Cam/follower dependency is distinguished from mounting incompatibility");
+            var b=new NativePartBrowser(clone,new[]{new PartCartLine{definitionId=followers.id,install=true}},true,"Shop",s=>100,(id,u)=>100);c=b.Entries.First(e=>e.Definition.id==cam.id);b.Evaluate(c);Check(c.Compatibility=="Compatible"&&c.Proposed!=null,"Pending matching followers satisfy the cam dependency");
+            var detached=JsonUtility.FromJson<PlayerProfile>(before);detached.catalog=catalog;AssemblyOperations.Detach(detached,detached.SelectedCar.instanceId);var bare=new NativePartBrowser(detached,new PartCartLine[0],false,"Shop",s=>100,(id,u)=>100);var wheel=bare.Entries.First(e=>e.Definition.id==catalog.Id(car.vehicleId,PartCategory.Wheels,1));bare.Evaluate(wheel);Check(wheel.Compatibility=="Compatible"&&wheel.Proposed==null&&fitsQuery.Matches(wheel,p.cash),"A fitting wheel remains compatible on an engine-less chassis without an invented dyno");
+            var unitProfile=JsonUtility.FromJson<PlayerProfile>(before);unitProfile.catalog=catalog;var pistons=catalog.Id(car.vehicleId,PartCategory.Pistons,1);var role=InventoryUnits.Roles(unitProfile,unitProfile.SelectedCar,catalog.Find(pistons))[0];var unit=InventoryUnits.Buy(unitProfile,car.instanceId,pistons,role);
+            var spares=new NativePartBrowser(unitProfile,new PartCartLine[0],false,"Inventory",s=>100,(id,u)=>100);var spare=spares.Entries.First(e=>e.AssetId==unit.element.id);spares.Evaluate(spare);Check(spare.Compatibility=="Compatible"&&spare.Position==null&&spare.Proposed==null&&fitsQuery.Matches(spare,p.cash),"A physically fitting loose unit stays in Compatible even when complete-set installation is required first");
+            var pack=unitProfile.componentsPart(PartCategory.Pistons);pack.condition.elements[0].health=.1f;pack.condition.elements[1].health=.9f;pack.condition.health=.1f;var replacementUnit=InventoryUnits.Buy(unitProfile,car.instanceId,pack.definitionId,role);
+            spares=new NativePartBrowser(unitProfile,new PartCartLine[0],false,"Inventory",s=>100,(id,u)=>100);spare=spares.Entries.First(e=>e.AssetId==replacementUnit.element.id);spares.Evaluate(spare);Check(spare.Change[3].HasValue,"Matched individual-unit preview is available: "+spare.Reason);double first=spare.Change[3].Value;spare.Position=pack.condition.elements[1].id;spare.Ready=false;spares.Evaluate(spare);
+            Check(Math.Abs(first-90)<.001&&Math.Abs(spare.Change[3].Value-10)<.001&&pack.condition.elements[0].health==.1f,"Individual-unit preview follows the chosen cylinder condition without healing any actual element");
+            foreach(var vehicle in game.vehicles){var carProfile=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(carProfile,catalog);carProfile.cash=1000000;carProfile.reputation=1000;VehicleCollection.Buy(carProfile,catalog,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});
+                var matrix=new NativePartBrowser(carProfile,new PartCartLine[0],false,"Shop",s=>100,(id,u)=>100);string immutable=JsonUtility.ToJson(carProfile);
+                foreach(var category in new[]{PartCategory.HeadIntake,PartCategory.Cooling,PartCategory.Gearbox,PartCategory.Tires,PartCategory.Interior}){var item=matrix.Entries.First(e=>e.Definition.id==catalog.Id(vehicle.spec.id,category,1));matrix.Evaluate(item);Check(item.Compatibility=="Compatible"&&item.Proposed!=null,"Candidate fits and compares across all five systems: "+vehicle.spec.id+" / "+category);}
+                Check(immutable==JsonUtility.ToJson(carProfile),"Varied-car previews preserve applied condition/resources: "+vehicle.spec.id);
+            }
+        }
+        IEnumerator NativePartsChecks(WindowsKeyboardProbe input)
+        {
+            var original=game.Profile;var profileField=typeof(PrototypeGame).GetField("profile",BindingFlags.Instance|BindingFlags.NonPublic);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath),backup=File.Exists(ProfileStore.FilePath+".bak")?File.ReadAllBytes(ProfileStore.FilePath+".bak"):null;
+            var fixture=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(original));fixture.catalog=original.catalog;fixture.cash=1000000;fixture.reputation=1000;
+            var pistonPack=fixture.componentsPart(PartCategory.Pistons);pistonPack.condition.elements[0].health=.3f;pistonPack.condition.elements[1].health=.8f;EngineElementService.RefreshAggregate(pistonPack.condition);var pistonRole=pistonPack.condition.elements[0].role;var spareUnit=InventoryUnits.Buy(fixture,fixture.SelectedCar.instanceId,pistonPack.definitionId,pistonRole);
+            try{
+                PartsModelChecks(fixture);profileField.SetValue(game,fixture);ProfileStore.Save(fixture);game.ClearNativeCart();if(!shell.Visible)yield return Key(input,0x77);yield return Click(input,"navBuild");yield return new WaitForSecondsRealtime(.2f);yield return Capture("parts-loading");yield return WaitParts();
+                Check(game.ScreenName=="Parts"&&!shell.Root.Q("partsPage").ClassListContains("hidden"),"Build displays the native shared part browser");
+                Check(shell.Root.Q("partsTabs").Query<Button>().ToList().Count==5,"Build has five broad category tabs");
+                var cards=shell.Root.Q("partsGrid").Query<Button>(className:"part-card").ToList().Where(b=>!b.ClassListContains("hidden")).ToList();Check(cards.Count>20&&cards[0].worldBound.yMin==cards[1].worldBound.yMin&&cards[2].worldBound.yMin>cards[0].worldBound.yMin,"Parts use a two-column card grid");yield return Capture("parts-grid");
+                Check(shell.Root.Q("partsTabs").worldBound.height>=42&&shell.Root.Q("partsToolbar").worldBound.yMin>=shell.Root.Q("partsTabs").worldBound.yMax,"Part category tabs have a complete unclipped control height");
+                int builds=shell.PartBrowserBuildCount;string before=JsonUtility.ToJson(game.Profile);byte[] saved=File.ReadAllBytes(ProfileStore.FilePath);
+                yield return Click(input,"partsFilters");yield return PartDialogClick(input,"partCategory:HeadIntake");yield return PartDialogClick(input,"partCategory:Camshaft");yield return Click(input,"dialogCancel");Check(shell.PartQuery.Categories.Count==0,"Filter Cancel discards multi-select changes");
+                yield return Click(input,"partsFilters");yield return PartDialogClick(input,"partCategory:HeadIntake");yield return PartDialogClick(input,"partDirection0:Increase");yield return Click(input,"dialogApply");yield return WaitParts();
+                Check(shell.PartQuery.Categories.Contains(PartCategory.HeadIntake)&&shell.PartQuery.Direction[0]=="Increase","Filter Apply commits local subcategory and HP criteria");
+                cards=shell.Root.Q("partsGrid").Query<Button>(className:"part-card").ToList().Where(b=>!b.ClassListContains("hidden")).ToList();Check(cards.Count>0&&cards.All(b=>shell.PartBrowser.Entries.First(e=>"partCard:"+e.Id==b.name).Change[0]>0),"Visible cards respect combined filters");
+                string head="new:"+fixture.catalog.Id(fixture.SelectedCar.vehicleId,PartCategory.HeadIntake,1);shell.Root.Q<ScrollView>("partsScroll").ScrollTo(shell.Root.Q("partCard:"+head));yield return new WaitForSecondsRealtime(.15f);yield return Click(input,"partCard:"+head);Check(!shell.Root.Q("partsDetail").ClassListContains("hidden")&&shell.Root.Q<NativeDynoPlot>("partDyno")!=null&&shell.Root.Q<NativeStatsPanel>("partStats")!=null,"Part details reuse the shared dyno and full comparison stats");yield return Capture("part-comparison");
+                yield return Click(input,"partBack");Check(shell.PartQuery.Categories.Contains(PartCategory.HeadIntake)&&shell.PartQuery.Direction[0]=="Increase","Returning from details retains browsing criteria");yield return Click(input,"partsSort");yield return PartDialogClick(input,"partSortBy:HP change");yield return PartDialogClick(input,"partSortDirection:Descending");yield return Click(input,"dialogApply");Check(shell.PartQuery.Sort=="HP change"&&shell.PartQuery.Descending,"Sort supports magnitude and direction");
+                Check(before==JsonUtility.ToJson(game.Profile)&&saved.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath))&&shell.PartBrowserBuildCount==builds,"Searching, filters, sorting and comparisons do not save or rebuild the source model");
+                shell.Root.Q<ScrollView>("partsScroll").ScrollTo(shell.Root.Q("partCard:"+head));yield return new WaitForSecondsRealtime(.15f);yield return Click(input,"partCard:"+head);yield return Click(input,"partPlanInstall");yield return new WaitForSecondsRealtime(.2f);
+                Check(game.CartCount==1&&before==JsonUtility.ToJson(game.Profile),"Planning installation stages one complete set without touching the car");yield return Click(input,"partBack");yield return Click(input,"partsFilters");yield return PartDialogClick(input,"partReference:Planned build");yield return Click(input,"dialogApply");yield return new WaitForSecondsRealtime(.2f);Check(shell.PartsPlanned&&shell.PartBrowser.Plan!=null,"Compatibility reference switches to the same pending cart plan");
+                yield return Key(input,0x77);Check(!shell.Visible&&game.CartCount==1,"F8 exposes the legacy parts interface with the same staged cart");yield return Key(input,0x77);Check(shell.Visible&&game.CartCount==1&&shell.PartsPlanned,"F8 returns to native Build without losing filters or plan");
+                yield return Click(input,"partsCart");Check(shell.ModalOpen&&shell.Root.Q<NativeDynoPlot>("cartDyno")!=null,"Cart shows cumulative actual-condition and no-wear curves");yield return Capture("parts-cart");yield return Click(input,"dialogCheckout");
+                string failed=JsonUtility.ToJson(game.Profile);using(var locked=new FileStream(ProfileStore.FilePath,FileMode.Open,FileAccess.Read,FileShare.Read)){yield return Click(input,"dialogConfirm");Check(shell.ModalOpen&&game.CartCount==1&&failed==JsonUtility.ToJson(game.Profile),"Failed durable checkout keeps the cart and applied assets intact");}
+                yield return Click(input,"dialogConfirm");yield return new WaitForSecondsRealtime(.2f);Check(game.CartCount==0&&!shell.ModalOpen&&MechanicsOwnership.Definitions(game.Profile,game.Profile.SelectedCar)[PartCategory.HeadIntake]==fixture.catalog.Id(fixture.SelectedCar.vehicleId,PartCategory.HeadIntake,1),"Confirmed checkout uses the atomic shared transaction and installs the quoted set");
+                Check(MechanicsOwnership.Validate(game.Profile,game.Profile.catalog)==null,"Checkout preserves valid ownership and exact component identities");
+                yield return Click(input,"partsSource:Installed");yield return new WaitForSecondsRealtime(.2f);Check(shell.PartBrowser.Entries.All(e=>e.Source=="Installed"),"Installed source contains only actual fitted components");
+                yield return Click(input,"partsSource:Inventory");yield return new WaitForSecondsRealtime(.2f);Check(shell.PartBrowser.Entries.Any(e=>e.Part?.definitionId==fixture.catalog.Id(fixture.SelectedCar.vehicleId,PartCategory.HeadIntake,0)),"Replaced OEM set remains accessible in retained inventory");
+                yield return WaitParts();shell.Root.Q<ScrollView>("partsScroll").ScrollTo(shell.Root.Q("partCard:"+spareUnit.element.id));yield return new WaitForSecondsRealtime(.15f);yield return Click(input,"partCard:"+spareUnit.element.id);yield return Click(input,"partPosition");yield return PartDialogClick(input,"partUnitPosition:Cylinder 2 / "+pistonRole);yield return Click(input,"dialogApply");
+                var chosen=shell.PartBrowser.Entries.First(e=>e.AssetId==spareUnit.element.id);Check(Math.Abs(chosen.Change[3].Value-20)<.001,"Native position choice previews the explicitly selected cylinder");yield return Click(input,"partBack");Check(shell.Root.Q("partCard:"+spareUnit.element.id).Query<Label>().ToList().Any(l=>l.text.Contains("+20 pp")),"Returning to the grid refreshes the unit card's selected-position condition delta");
+                foreach(string index in new[]{"1","2","3","4","0"}){yield return Click(input,"partsTab"+index);Check(shell.Root.Q<Button>("partsTab"+index).ClassListContains("selected"),"Build category selection works: "+index);}
+                Screen.SetResolution(1024,768,false);yield return new WaitForSecondsRealtime(.4f);Check(shell.Root.Q("partsTabs").worldBound.xMax<=shell.Root.worldBound.xMax&&shell.Root.Q("partsToolbar").worldBound.xMax<=shell.Root.worldBound.xMax,"Tabs and browser tools fit the compact viewport");yield return Capture("parts-compact");
+                Screen.SetResolution(1920,1080,false);yield return new WaitForSecondsRealtime(.4f);yield return Capture("parts-1080p");
+                var target=new RenderTexture(3840,2160,24);target.Create();shell.Panel.targetTexture=target;shell.Refresh();yield return new WaitForSecondsRealtime(.3f);Check(shell.Panel.scale==2&&shell.Root.Q("partsTabs").worldBound.xMax<=shell.Root.worldBound.xMax,"Build uses shared crisp 4K scaling and anchored tabs");
+                var previous=RenderTexture.active;RenderTexture.active=target;var image=new Texture2D(3840,2160,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,3840,2160),0,0);image.Apply();File.WriteAllBytes(Path.Combine(folder,"parts-4k.png"),image.EncodeToPNG());RenderTexture.active=previous;shell.Panel.targetTexture=null;target.Release();Destroy(target);Destroy(image);
+                Check(shell.Root.Query<VisualElement>().ToList().All(e=>e.tabIndex==-1)&&errors==0,"Build retains the no-Tab contract with no runtime errors");
+            }finally{
+                if(shell.ModalOpen)typeof(NativeMenuShell).GetMethod("CloseDialog",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shell,null);profileField.SetValue(game,original);game.settings=original.driving;game.ClearNativeCart();game.DiscardPreviews();File.WriteAllBytes(ProfileStore.FilePath,disk);if(backup!=null)File.WriteAllBytes(ProfileStore.FilePath+".bak",backup);game.QueueNativeNavigation("Garage");Screen.SetResolution(1280,720,false);
+            }
+        }
+#endif
+    }
+}

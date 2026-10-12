@@ -1,4 +1,4 @@
-param([string]$FixtureName = 'native-menu-shell', [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly)
+param([string]$FixtureName = 'native-menu-shell', [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly)
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $taskFixture = [IO.Path]::GetFullPath((Join-Path $taskRoot ('reports/player-fixtures/' + $FixtureName)))
@@ -10,6 +10,7 @@ if ($InspectionOnly) { $taskArgs += '--draglab-inspection-only-verify' }
 if ($DealershipOnly) { $taskArgs += '--draglab-dealership-only-verify' }
 if ($TuningOnly) { $taskArgs += '--draglab-tuning-only-verify' }
 if ($ShineOnly) { $taskArgs += '--draglab-shine-only-verify' }
+if ($PartsOnly) { $taskArgs += '--draglab-parts-only-verify' }
 # Real native events require the interactive player window, not a hidden helper.
 $taskProcess = Start-Process -FilePath $taskPlayer -ArgumentList $taskArgs -WindowStyle Normal -PassThru
 $taskProcess.WaitForExit()

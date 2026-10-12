@@ -111,9 +111,13 @@ namespace DragLab.Domain.Mechanics
         }
         public static InspectionBuild Preview(PlayerProfile p,OwnedCar car,IEnumerable<PartCartLine> lines)
         {
-            var copy=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(p));MechanicsOwnership.Ensure(copy,p.catalog);copy.cash=int.MaxValue/2;
-            Apply(copy,car.instanceId,lines,true);MechanicsOwnership.Ensure(copy,p.catalog);
+            var copy=PreviewProfile(p,car,lines);
             return InspectionBuild.Capture(copy,copy.cars.Find(c=>c.instanceId==car.instanceId));
+        }
+        public static PlayerProfile PreviewProfile(PlayerProfile p,OwnedCar car,IEnumerable<PartCartLine> lines)
+        {
+            var copy=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(p));MechanicsOwnership.Ensure(copy,p.catalog);copy.cash=int.MaxValue/2;
+            Apply(copy,car.instanceId,lines,true);MechanicsOwnership.Ensure(copy,p.catalog);return copy;
         }
     }
 }

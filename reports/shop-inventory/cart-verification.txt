@@ -5,6 +5,27 @@ PASS: city-three one save and receipt publish whole cart /
 PASS: city-three displaced original retains real identity and wear
 PASS: city-three combined installed stats match preview
 PASS: city-three insufficient funds never write or partially buy
+PASS: juniper-club combined preview installs checked entries only
+PASS: juniper-club cart preview does not spend, assign identities or heal
+PASS: juniper-club failed checkout save rolls back entire cart
+PASS: juniper-club one save and receipt publish whole cart /
+PASS: juniper-club displaced original retains real identity and wear
+PASS: juniper-club combined installed stats match preview
+PASS: juniper-club insufficient funds never write or partially buy
+PASS: juniper-economy combined preview installs checked entries only
+PASS: juniper-economy cart preview does not spend, assign identities or heal
+PASS: juniper-economy failed checkout save rolls back entire cart
+PASS: juniper-economy one save and receipt publish whole cart /
+PASS: juniper-economy displaced original retains real identity and wear
+PASS: juniper-economy combined installed stats match preview
+PASS: juniper-economy insufficient funds never write or partially buy
+PASS: kestrel-track combined preview installs checked entries only
+PASS: kestrel-track cart preview does not spend, assign identities or heal
+PASS: kestrel-track failed checkout save rolls back entire cart
+PASS: kestrel-track one save and receipt publish whole cart /
+PASS: kestrel-track displaced original retains real identity and wear
+PASS: kestrel-track combined installed stats match preview
+PASS: kestrel-track insufficient funds never write or partially buy
 PASS: rally-sedan combined preview installs checked entries only
 PASS: rally-sedan cart preview does not spend, assign identities or heal
 PASS: rally-sedan failed checkout save rolls back entire cart
@@ -33,6 +54,20 @@ PASS: super-v8 one save and receipt publish whole cart /
 PASS: super-v8 displaced original retains real identity and wear
 PASS: super-v8 combined installed stats match preview
 PASS: super-v8 insufficient funds never write or partially buy
+PASS: timber-diesel combined preview installs checked entries only
+PASS: timber-diesel cart preview does not spend, assign identities or heal
+PASS: timber-diesel failed checkout save rolls back entire cart
+PASS: timber-diesel one save and receipt publish whole cart /
+PASS: timber-diesel displaced original retains real identity and wear
+PASS: timber-diesel combined installed stats match preview
+PASS: timber-diesel insufficient funds never write or partially buy
+PASS: timber-diesel-tow combined preview installs checked entries only
+PASS: timber-diesel-tow cart preview does not spend, assign identities or heal
+PASS: timber-diesel-tow failed checkout save rolls back entire cart
+PASS: timber-diesel-tow one save and receipt publish whole cart /
+PASS: timber-diesel-tow displaced original retains real identity and wear
+PASS: timber-diesel-tow combined installed stats match preview
+PASS: timber-diesel-tow insufficient funds never write or partially buy
 PASS: touring-six combined preview installs checked entries only
 PASS: touring-six cart preview does not spend, assign identities or heal
 PASS: touring-six failed checkout save rolls back entire cart
@@ -65,4 +100,4 @@ PASS: Replayed checkout cannot spend twice or duplicate parts
 PASS: Quantity bound rejects 0
 PASS: Quantity bound rejects 100
 PASS: Old wheel checkpoints safely acquire diagnostic arrays without altering physics
-Checks: 67
+Checks: 102

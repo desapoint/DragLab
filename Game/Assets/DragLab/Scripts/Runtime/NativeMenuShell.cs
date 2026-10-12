@@ -86,6 +86,7 @@ namespace DragLab.Runtime
             InitializeOwnedCars();
             InitializeDealership();
             InitializeTuning();
+            InitializeParts();
             InitializeSettings();
             ExcludeTabTraversal();
         }
@@ -112,7 +113,7 @@ namespace DragLab.Runtime
         void LateUpdate()
         {
             Refresh();
-            if (Visible && Input.GetKeyDown(KeyCode.Escape)) { if (ModalOpen) CloseDialog(); else if (DealerDetailsOpen) BackToDealer(); else if (OwnedDetailsOpen) BackToOwnedCars(); }
+            if (Visible && Input.GetKeyDown(KeyCode.Escape)) { if (ModalOpen) CloseDialog(); else if (game.ScreenName=="Parts" && partsDetailId!=null) BackToParts(); else if (DealerDetailsOpen) BackToDealer(); else if (OwnedDetailsOpen) BackToOwnedCars(); }
             foreach (var surface in surfaces) surface.Tick(Visible);
             foreach (var surface in switchSurfaces) surface.Tick(Visible);
         }
@@ -136,6 +137,7 @@ namespace DragLab.Runtime
             RefreshOwnedCars(route);
             RefreshDealership(route);
             RefreshTuning(route);
+            RefreshParts(route);
             if (renderedRoute == route) return;
             renderedRoute = route;
             bool settings = route == "Settings";
