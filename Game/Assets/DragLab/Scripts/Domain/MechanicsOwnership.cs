@@ -21,6 +21,8 @@ namespace DragLab.Domain.Mechanics
             if (profile.parts == null) profile.parts = new List<PartInstance>();
             if (profile.engines == null) profile.engines = new List<EngineAssemblyInstance>();
             if (profile.runCheckpoints == null) profile.runCheckpoints = new List<RunCheckpoint>();
+            // Older schemas never contained seller stock; JsonUtility may create an empty inline object for an absent field.
+            if(profile.saveVersion<7&&profile.vehicleStock!=null&&profile.vehicleStock.seed==0&&profile.vehicleStock.generation==0&&profile.vehicleStock.purchases==0&&profile.vehicleStock.completedRuns==0&&(profile.vehicleStock.listings==null||profile.vehicleStock.listings.Count==0))profile.vehicleStock=null;
             profile.catalog = catalog;
             CareerProgression.Ensure(profile);
             GarageBusiness.Ensure(profile);

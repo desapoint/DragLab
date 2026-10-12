@@ -16,6 +16,58 @@ MonoBehaviour:
   displayName: D Rival
   rivalName: Ash
   opponent: {fileID: 11400000, guid: 42818352e704b6542933d9f7df7697e2, type: 2}
+  rival:
+    authoringVersion: 5
+    authored: 1
+    style: 1
+    seed: 605817273
+    health: 0.968
+    mileageKm: 18921
+    reactionSeconds: 0.22
+    throttle: 1
+    shiftFraction: 1
+    hesitationInterval: 0
+    hesitationSeconds: 0
+    hesitationThrottle: 0.3
+    parts:
+    - category: 0
+      definitionId: sport-coupe/Pistons/1
+      health: 0.968
+    - category: 1
+      definitionId: sport-coupe/Rods/1
+      health: 0.968
+    - category: 2
+      definitionId: sport-coupe/Crankshaft/1
+      health: 0.968
+    - category: 9
+      definitionId: sport-coupe/Clutch/1
+      health: 0.968
+    - category: 6
+      definitionId: sport-coupe/Cooling/1
+      health: 0.968
+    - category: 4
+      definitionId: sport-coupe/FuelSystem/1
+      health: 0.968
+    - category: 5
+      definitionId: sport-coupe/Ignition/1
+      health: 0.968
+    driverId: Ash
+    limiterHoldSeconds: 0.41
+    riskWhenBehind: 0
+    flatShiftWhenRisking: 0
+    riskBehindMeters: 27
+    riskLimiterHoldSeconds: 0.65
+    confidenceFromBuild: 0
+    confidenceRatio: 1.75
+    openingThrottle: 0.825
+    openingUntilMeters: 115
+    openingEmergencyGap: 35
+    confidenceReactionDelay: 0.35
+    reactionJitterSeconds: 0.1
+    shiftJitterRpm: 100
+    shiftDelayMin: 0.02
+    shiftDelayMax: 0.12
+    throttleWander: 0.018
   opponentTune:
     camTimingDegrees: 0
     driverMassKg: 75

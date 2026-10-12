@@ -1,0 +1,386 @@
+scenario,step,action,elapsed_minutes,cash_before,cash_after,delta,fuel_before,fuel_after,parts,failed_packs,garage_level,rep
+fresh-career,1,"Pay Car / $4012",0.000,4700,688,-4012,0.000000,17.500000,39,0,1,0
+fresh-career,2,"Enter first-pass",0.000,688,688,0,17.500000,17.500000,39,0,1,0
+fresh-career,3,"Settle first-pass / win",0.375,688,1188,500,17.500000,17.324094,39,0,1,2
+fresh-career,4,"Shutdown / garage",0.446,1188,1188,0,17.324094,17.323915,39,0,1,2
+fresh-career,5,"Pay Part / $600",0.446,1188,588,-600,17.323915,17.323915,40,0,1,2
+fresh-career,6,"Enter first-pass",0.446,588,588,0,17.323915,17.323915,40,0,1,2
+fresh-career,7,"Settle first-pass / win",0.821,588,1088,500,17.323915,17.147772,40,0,1,2
+fresh-career,8,"Shutdown / garage",0.890,1088,1088,0,17.147772,17.147603,40,0,1,2
+fresh-career,9,"Pay Part / $600",0.890,1088,488,-600,17.147603,17.147603,41,0,1,2
+fresh-career,10,"Enter first-pass",0.890,488,488,0,17.147603,17.147603,41,0,1,2
+fresh-career,11,"Settle first-pass / win",1.264,488,988,500,17.147603,16.956338,41,0,1,2
+fresh-career,12,"Shutdown / garage",1.318,988,988,0,16.956338,16.956119,41,0,1,2
+fresh-career,13,"Enter first-pass",1.318,988,988,0,16.956119,16.956119,41,0,1,2
+fresh-career,14,"Settle first-pass / win",1.693,988,1488,500,16.956119,16.764643,41,0,1,2
+fresh-career,15,"Shutdown / garage",1.747,1488,1488,0,16.764643,16.764426,41,0,1,2
+fresh-career,16,"Enter first-pass",1.747,1488,1488,0,16.764426,16.764426,41,0,1,2
+fresh-career,17,"Settle first-pass / win",2.122,1488,1988,500,16.764426,16.571919,41,0,1,2
+fresh-career,18,"Shutdown / garage",2.177,1988,1988,0,16.571919,16.571701,41,0,1,2
+fresh-career,19,"Enter first-pass",2.177,1988,1988,0,16.571701,16.571701,41,0,1,2
+fresh-career,20,"Settle first-pass / win",2.552,1988,2488,500,16.571701,16.378054,41,0,1,2
+fresh-career,21,"Shutdown / garage",2.608,2488,2488,0,16.378054,16.377834,41,0,1,2
+fresh-career,22,"Enter first-pass",2.608,2488,2488,0,16.377834,16.377834,41,0,1,2
+fresh-career,23,"Settle first-pass / win",2.983,2488,2988,500,16.377834,16.182988,41,0,1,2
+fresh-career,24,"Shutdown / garage",3.040,2988,2988,0,16.182988,16.182768,41,0,1,2
+fresh-career,25,"Enter first-pass",3.040,2988,2988,0,16.182768,16.182768,41,0,1,2
+fresh-career,26,"Settle first-pass / win",3.415,2988,3488,500,16.182768,15.986816,41,0,1,2
+fresh-career,27,"Shutdown / garage",3.473,3488,3488,0,15.986816,15.986647,41,0,1,2
+fresh-career,28,"Enter first-pass",3.473,3488,3488,0,15.986647,15.986647,41,0,1,2
+fresh-career,29,"Settle first-pass / win",3.848,3488,3988,500,15.986647,15.790465,41,0,1,2
+fresh-career,30,"Shutdown / garage",3.906,3988,3988,0,15.790465,15.790296,41,0,1,2
+fresh-career,31,"Enter first-pass",3.906,3988,3988,0,15.790296,15.790296,41,0,1,2
+fresh-career,32,"Settle first-pass / win",4.281,3988,4488,500,15.790296,15.593821,41,0,1,2
+fresh-career,33,"Shutdown / garage",4.340,4488,4488,0,15.593821,15.593650,41,0,1,2
+fresh-career,34,"Enter first-pass",4.340,4488,4488,0,15.593650,15.593650,41,0,1,2
+fresh-career,35,"Settle first-pass / win",4.715,4488,4988,500,15.593650,15.396967,41,0,1,2
+fresh-career,36,"Shutdown / garage",4.775,4988,4988,0,15.396967,15.396797,41,0,1,2
+fresh-career,37,"Enter first-pass",4.775,4988,4988,0,15.396797,15.396797,41,0,1,2
+fresh-career,38,"Settle first-pass / win",5.149,4988,5488,500,15.396797,15.199897,41,0,1,2
+fresh-career,39,"Shutdown / garage",5.209,5488,5488,0,15.199897,15.199728,41,0,1,2
+fresh-career,40,"Enter first-pass",5.209,5488,5488,0,15.199728,15.199728,41,0,1,2
+fresh-career,41,"Settle first-pass / win",5.584,5488,5988,500,15.199728,15.002540,41,0,1,2
+fresh-career,42,"Shutdown / garage",5.645,5988,5988,0,15.002540,15.002371,41,0,1,2
+fresh-career,43,"Enter first-pass",5.645,5988,5988,0,15.002371,15.002371,41,0,1,2
+fresh-career,44,"Settle first-pass / win",6.020,5988,6488,500,15.002371,14.804975,41,0,1,2
+fresh-career,45,"Shutdown / garage",6.081,6488,6488,0,14.804975,14.804805,41,0,1,2
+fresh-career,46,"Enter first-pass",6.081,6488,6488,0,14.804805,14.804805,41,0,1,2
+fresh-career,47,"Settle first-pass / win",6.456,6488,6988,500,14.804805,14.607130,41,0,1,2
+fresh-career,48,"Shutdown / garage",6.518,6988,6988,0,14.607130,14.606960,41,0,1,2
+fresh-career,49,"Enter first-pass",6.518,6988,6988,0,14.606960,14.606960,41,0,1,2
+fresh-career,50,"Settle first-pass / win",6.893,6988,7488,500,14.606960,14.409077,41,0,1,2
+fresh-career,51,"Shutdown / garage",6.955,7488,7488,0,14.409077,14.408907,41,0,1,2
+fresh-career,52,"Enter first-pass",6.955,7488,7488,0,14.408907,14.408907,41,0,1,2
+fresh-career,53,"Settle first-pass / win",7.330,7488,7988,500,14.408907,14.210732,41,0,1,2
+fresh-career,54,"Shutdown / garage",7.393,7988,7988,0,14.210732,14.210563,41,0,1,2
+fresh-career,55,"Enter first-pass",7.393,7988,7988,0,14.210563,14.210563,41,0,1,2
+fresh-career,56,"Settle first-pass / win",7.768,7988,8488,500,14.210563,14.012123,41,0,1,2
+fresh-career,57,"Shutdown / garage",7.832,8488,8488,0,14.012123,14.011952,41,0,1,2
+fresh-career,58,"Pay Part / $600",7.832,8488,7888,-600,14.011952,14.011952,42,0,1,2
+fresh-career,59,"Pay Part / $1800",7.832,7888,6088,-1800,14.011952,14.011952,43,0,1,2
+fresh-career,60,"Pay Part / $1800",7.832,6088,4288,-1800,14.011952,14.011952,44,0,1,2
+fresh-career,61,"Pay Part / $1800",7.832,4288,2488,-1800,14.011952,14.011952,45,0,1,2
+fresh-career,62,"Pay Part / $1800",7.832,2488,688,-1800,14.011952,14.011952,46,0,1,2
+fresh-career,63,"Apply tested starter gearing / launch",7.832,688,688,0,14.011952,14.011952,46,0,1,2
+fresh-career,64,"Enter club-run",7.832,688,688,0,14.011952,14.011952,46,0,1,2
+fresh-career,65,"Settle club-run / win",8.177,688,1388,700,14.011952,13.756506,46,0,1,4
+fresh-career,66,"Shutdown / garage",8.238,1388,1388,0,13.756506,13.756285,46,0,1,4
+fresh-career,67,"Enter coupe-rival",8.238,1388,1388,0,13.756285,13.756285,46,0,1,4
+fresh-career,68,"Settle coupe-rival / win",8.571,1388,2388,1000,13.756285,13.500553,46,0,1,8
+fresh-career,69,"Shutdown / garage",8.644,2388,2388,0,13.500553,13.500332,46,0,1,8
+fresh-career,70,"Enter club-run",8.644,2388,2388,0,13.500332,13.500332,46,0,1,8
+fresh-career,71,"Settle club-run / win",8.989,2388,3088,700,13.500332,13.244344,46,0,1,8
+fresh-career,72,"Shutdown / garage",9.051,3088,3088,0,13.244344,13.244123,46,0,1,8
+fresh-career,73,"Enter club-run",9.051,3088,3088,0,13.244123,13.244123,46,0,1,8
+fresh-career,74,"Settle club-run / win",9.396,3088,3788,700,13.244123,12.987768,46,0,1,8
+fresh-career,75,"Shutdown / garage",9.459,3788,3788,0,12.987768,12.987547,46,0,1,8
+fresh-career,76,"Enter club-run",9.459,3788,3788,0,12.987547,12.987547,46,0,1,8
+fresh-career,77,"Settle club-run / win",9.803,3788,4488,700,12.987547,12.730930,46,0,1,8
+fresh-career,78,"Shutdown / garage",9.866,4488,4488,0,12.730930,12.730708,46,0,1,8
+fresh-career,79,"Enter club-run",9.866,4488,4488,0,12.730708,12.730708,46,0,1,8
+fresh-career,80,"Settle club-run / win",10.211,4488,5188,700,12.730708,12.473810,46,0,1,8
+fresh-career,81,"Shutdown / garage",10.275,5188,5188,0,12.473810,12.473588,46,0,1,8
+fresh-career,82,"Enter club-run",10.275,5188,5188,0,12.473588,12.473588,46,0,1,8
+fresh-career,83,"Settle club-run / win",10.619,5188,5888,700,12.473588,12.216330,46,0,1,8
+fresh-career,84,"Shutdown / garage",10.683,5888,5888,0,12.216330,12.216108,46,0,1,8
+fresh-career,85,"Enter club-run",10.683,5888,5888,0,12.216108,12.216108,46,0,1,8
+fresh-career,86,"Settle club-run / win",11.028,5888,6588,700,12.216108,11.958601,46,0,1,8
+fresh-career,87,"Shutdown / garage",11.092,6588,6588,0,11.958601,11.958380,46,0,1,8
+fresh-career,88,"Enter club-run",11.092,6588,6588,0,11.958380,11.958380,46,0,1,8
+fresh-career,89,"Settle club-run / win",11.437,6588,7288,700,11.958380,11.700485,46,0,1,8
+fresh-career,90,"Shutdown / garage",11.502,7288,7288,0,11.700485,11.700263,46,0,1,8
+fresh-career,91,"Enter club-run",11.502,7288,7288,0,11.700263,11.700263,46,0,1,8
+fresh-career,92,"Settle club-run / win",11.847,7288,7988,700,11.700263,11.442115,46,0,1,8
+fresh-career,93,"Shutdown / garage",11.912,7988,7988,0,11.442115,11.441896,46,0,1,8
+fresh-career,94,"Enter club-run",11.912,7988,7988,0,11.441896,11.441896,46,0,1,8
+fresh-career,95,"Settle club-run / win",12.257,7988,8688,700,11.441896,11.183475,46,0,1,8
+fresh-career,96,"Shutdown / garage",12.323,8688,8688,0,11.183475,11.183255,46,0,1,8
+fresh-career,97,"Enter club-run",12.323,8688,8688,0,11.183255,11.183255,46,0,1,8
+fresh-career,98,"Settle club-run / win",12.667,8688,9388,700,11.183255,10.924478,46,0,1,8
+fresh-career,99,"Shutdown / garage",12.734,9388,9388,0,10.924478,10.924258,46,0,1,8
+fresh-career,100,"Pay Car / $7500",12.734,9388,1888,-7500,10.924258,60.924258,84,0,1,8
+fresh-career,101,"Pay Part / $600",12.734,1888,1288,-600,60.924258,60.924258,85,0,1,8
+fresh-career,102,"Pay Part / $600",12.734,1288,688,-600,60.924258,60.924258,86,0,1,8
+fresh-career,103,"Enter local-final",12.734,688,688,0,60.924258,60.924258,86,0,1,8
+fresh-career,104,"Settle local-final / win",13.035,688,2288,1600,60.924258,60.444170,86,0,1,12
+fresh-career,105,"Shutdown / garage",13.119,2288,2288,0,60.444170,60.440971,86,0,1,12
+fresh-career,106,"Pay Part / $1200",13.119,2288,1088,-1200,60.440971,60.440971,87,0,1,12
+fresh-career,107,"Enter ladder-f-qualifier",13.119,1088,1038,-50,60.440971,60.440971,87,0,1,12
+fresh-career,108,"Settle ladder-f-qualifier / win",13.493,1038,2038,1000,60.440971,59.966374,87,0,1,16
+fresh-career,109,"Shutdown / garage",13.499,2038,2038,0,59.966374,59.966156,87,0,1,16
+fresh-career,110,"Enter ladder-f-rival",13.499,2038,1988,-50,59.966156,59.966156,87,0,1,16
+fresh-career,111,"Settle ladder-f-rival / win",13.874,1988,2988,1000,59.966156,59.491545,87,0,1,20
+fresh-career,112,"Shutdown / garage",13.879,2988,2988,0,59.491545,59.491375,87,0,1,20
+fresh-career,113,"Enter ladder-e-qualifier",13.879,2988,2913,-75,59.491375,59.491375,87,0,1,20
+fresh-career,114,"Settle ladder-e-qualifier / win",14.239,2913,4213,1300,59.491375,59.017158,87,0,1,24
+fresh-career,115,"Shutdown / garage",14.259,4213,4213,0,59.017158,59.016402,87,0,1,24
+fresh-career,116,"Enter ladder-e-rival",14.259,4213,4138,-75,59.016402,59.016402,87,0,1,24
+fresh-career,117,"Settle ladder-e-rival / win",14.627,4138,5438,1300,59.016402,58.541681,87,0,1,28
+fresh-career,118,"Shutdown / garage",14.640,5438,5438,0,58.541681,58.541191,87,0,1,28
+fresh-career,119,"Enter ladder-d-qualifier",14.640,5438,5338,-100,58.541191,58.541191,87,0,1,28
+fresh-career,120,"Settle ladder-d-qualifier / win",14.973,5338,6938,1600,58.541191,58.067831,87,0,1,32
+fresh-career,121,"Shutdown / garage",15.020,6938,6938,0,58.067831,58.066021,87,0,1,32
+fresh-career,122,"Enter ladder-d-rival",15.020,6938,6838,-100,58.066021,58.066021,87,0,1,32
+fresh-career,123,"Settle ladder-d-rival / win",15.338,6838,8438,1600,58.066021,57.593300,87,0,1,36
+fresh-career,124,"Shutdown / garage",15.400,8438,8438,0,57.593300,57.590893,87,0,1,36
+fresh-career,125,"Enter ladder-c-qualifier",15.400,8438,8313,-125,57.590893,57.590893,87,0,1,36
+fresh-career,126,"Settle ladder-c-qualifier / win",15.731,8313,10213,1900,57.590893,57.117464,87,0,1,40
+fresh-career,127,"Shutdown / garage",15.781,10213,10213,0,57.117464,57.115531,87,0,1,40
+fresh-career,128,"Enter ladder-c-rival",15.781,10213,10088,-125,57.115531,57.115531,87,0,1,40
+fresh-career,129,"Settle ladder-c-rival / win",16.106,10088,11988,1900,57.115531,56.642331,87,0,1,44
+fresh-career,130,"Shutdown / garage",16.162,11988,11988,0,56.642331,56.640207,87,0,1,44
+fresh-career,131,"Pay Part / $600",16.162,11988,11388,-600,56.640207,56.640207,88,0,1,44
+fresh-career,132,"Pay Part / $600",16.162,11388,10788,-600,56.640207,56.640207,89,0,1,44
+fresh-career,133,"Pay Part / $600",16.162,10788,10188,-600,56.640207,56.640207,90,0,1,44
+fresh-career,134,"Pay Part / $600",16.162,10188,9588,-600,56.640207,56.640207,91,0,1,44
+fresh-career,135,"Pay Part / $600",16.162,9588,8988,-600,56.640207,56.640207,92,0,1,44
+fresh-career,136,"Pay Part / $600",16.162,8988,8388,-600,56.640207,56.640207,93,0,1,44
+fresh-career,137,"Pay Part / $1800",16.162,8388,6588,-1800,56.640207,56.640207,94,0,1,44
+fresh-career,138,"Pay Part / $1800",16.162,6588,4788,-1800,56.640207,56.640207,95,0,1,44
+fresh-career,139,"Pay Part / $1800",16.162,4788,2988,-1800,56.640207,56.640207,96,0,1,44
+fresh-career,140,"Pay Part / $1800",16.162,2988,1188,-1800,56.640207,56.640207,97,0,1,44
+fresh-career,141,"Strip optional interior/accessories; retain originals",16.162,1188,1188,0,56.640207,56.640207,97,0,1,44
+fresh-career,142,"Enter ladder-b-qualifier",16.162,1188,1038,-150,56.640207,56.640207,97,0,1,44
+fresh-career,143,"Settle ladder-b-qualifier / win",16.469,1038,3238,2200,56.640207,56.068196,97,0,1,48
+fresh-career,144,"Shutdown / garage",16.532,3238,3238,0,56.068196,56.065774,97,0,1,48
+fresh-career,145,"Enter ladder-b-rival",16.532,3238,3088,-150,56.065774,56.065774,97,0,1,48
+fresh-career,146,"Settle ladder-b-rival / win",16.822,3088,5288,2200,56.065774,55.493785,97,0,1,52
+fresh-career,147,"Shutdown / garage",16.903,5288,5288,0,55.493785,55.490691,97,0,1,52
+fresh-career,148,"Enter ladder-a-qualifier",16.903,5288,5113,-175,55.490691,55.490691,97,0,1,52
+fresh-career,149,"Settle ladder-a-qualifier / win",17.202,5113,7613,2500,55.490691,54.918165,97,0,1,56
+fresh-career,150,"Shutdown / garage",17.274,7613,7613,0,54.918165,54.915413,97,0,1,56
+fresh-career,151,"Enter ladder-a-rival",17.274,7613,7438,-175,54.915413,54.915413,97,0,1,56
+fresh-career,152,"Settle ladder-a-rival / win",17.559,7438,9938,2500,54.915413,54.343148,97,0,1,60
+fresh-career,153,"Shutdown / garage",17.645,9938,9938,0,54.343148,54.339863,97,0,1,60
+fresh-career,154,"Enter ladder-s-qualifier",17.645,9938,9738,-200,54.339863,54.339863,97,0,1,60
+fresh-career,155,"Settle ladder-s-qualifier / win",17.953,9738,12538,2800,54.339863,53.766498,97,0,1,64
+fresh-career,156,"Shutdown / garage",18.016,12538,12538,0,53.766498,53.764076,97,0,1,64
+fresh-career,157,"Enter ladder-s-rival",18.016,12538,12338,-200,53.764076,53.764076,97,0,1,64
+fresh-career,158,"Settle ladder-s-rival / win",18.294,12338,15138,2800,53.764076,53.191596,97,0,1,68
+fresh-career,159,"Shutdown / garage",18.387,15138,15138,0,53.191596,53.188008,97,0,1,68
+fresh-career,160,"Pay Fuel / $16",18.387,15138,15122,-16,53.188008,60.924258,97,0,1,68
+repeated-loss,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,39,0,1,0
+repeated-loss,2,"Settle first-pass / loss",0.383,1200,1300,100,50.000000,49.818458,39,0,1,0
+repeated-loss,3,"Shutdown / garage",0.465,1300,1300,0,49.818458,49.818226,39,0,1,0
+repeated-loss,4,"Enter first-pass",0.465,1300,1300,0,49.818226,49.818226,39,0,1,0
+repeated-loss,5,"Settle first-pass / loss",0.848,1300,1400,100,49.818226,49.636695,39,0,1,0
+repeated-loss,6,"Shutdown / garage",0.931,1400,1400,0,49.636695,49.636463,39,0,1,0
+repeated-loss,7,"Enter first-pass",0.931,1400,1400,0,49.636463,49.636463,39,0,1,0
+repeated-loss,8,"Settle first-pass / loss",1.314,1400,1500,100,49.636463,49.454917,39,0,1,0
+repeated-loss,9,"Shutdown / garage",1.396,1500,1500,0,49.454917,49.454685,39,0,1,0
+repeated-loss,10,"Enter first-pass",1.396,1500,1500,0,49.454685,49.454685,39,0,1,0
+repeated-loss,11,"Settle first-pass / loss",1.779,1500,1600,100,49.454685,49.273061,39,0,1,0
+repeated-loss,12,"Shutdown / garage",1.861,1600,1600,0,49.273061,49.272828,39,0,1,0
+repeated-loss,13,"Enter first-pass",1.861,1600,1600,0,49.272828,49.272828,39,0,1,0
+repeated-loss,14,"Settle first-pass / loss",2.244,1600,1700,100,49.272828,49.091207,39,0,1,0
+repeated-loss,15,"Shutdown / garage",2.327,1700,1700,0,49.091207,49.090973,39,0,1,0
+repeated-loss,16,"Enter first-pass",2.327,1700,1700,0,49.090973,49.090973,39,0,1,0
+repeated-loss,17,"Settle first-pass / loss",2.710,1700,1800,100,49.090973,48.909336,39,0,1,0
+repeated-loss,18,"Shutdown / garage",2.792,1800,1800,0,48.909336,48.909103,39,0,1,0
+repeated-loss,19,"Enter first-pass",2.792,1800,1800,0,48.909103,48.909103,39,0,1,0
+repeated-loss,20,"Settle first-pass / loss",3.176,1800,1900,100,48.909103,48.727476,39,0,1,0
+repeated-loss,21,"Shutdown / garage",3.258,1900,1900,0,48.727476,48.727242,39,0,1,0
+repeated-loss,22,"Enter first-pass",3.258,1900,1900,0,48.727242,48.727242,39,0,1,0
+repeated-loss,23,"Settle first-pass / loss",3.641,1900,2000,100,48.727242,48.545605,39,0,1,0
+repeated-loss,24,"Shutdown / garage",3.723,2000,2000,0,48.545605,48.545372,39,0,1,0
+low-fuel-recovery,1,"Start recovery",0.000,0,0,0,0.000000,0.000000,39,0,1,0
+low-fuel-recovery,2,"Claim recovery",1.000,0,250,250,0.000000,0.000000,39,0,1,0
+low-fuel-recovery,3,"Pay Fuel / $2",1.000,250,248,-2,0.000000,1.000000,39,0,1,0
+low-fuel-recovery,4,"Enter first-pass",1.000,248,248,0,1.000000,1.000000,39,0,1,0
+low-fuel-recovery,5,"Settle first-pass / win",1.375,248,748,500,1.000000,0.836042,39,0,1,2
+low-fuel-recovery,6,"Shutdown / garage",1.418,748,748,0,0.836042,0.835807,39,0,1,2
+abuse-repair,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,39,0,1,0
+abuse-repair,2,"Settle first-pass / DNF",0.375,1200,1200,0,50.000000,49.999966,39,1,1,0
+abuse-repair,3,"Shutdown / garage",0.375,1200,1200,0,49.999966,49.999966,39,1,1,0
+abuse-repair,4,"Pay Part / $180",0.375,1200,1020,-180,49.999966,49.999966,40,1,1,0
+abuse-repair,5,"Enter first-pass",0.375,1020,1020,0,49.999966,49.999966,40,1,1,0
+abuse-repair,6,"Settle first-pass / win",0.750,1020,1520,500,49.999966,49.834627,40,1,1,2
+abuse-repair,7,"Shutdown / garage",0.793,1520,1520,0,49.834627,49.834395,40,1,1,2
+downgrade-reuse,1,"Pay Part / $600",0.000,1200,600,-600,50.000000,50.000000,40,0,1,0
+downgrade-reuse,2,"Reuse original OEM intake",0.000,600,600,0,50.000000,50.000000,40,0,1,0
+profitable-rebuild-sale,1,"Pay Rebuild / $485",0.000,1200,715,-485,50.000000,50.000000,39,1,1,0
+profitable-rebuild-sale,2,"Collect timed paid rebuild",6.000,715,715,0,50.000000,50.000000,41,1,1,0
+profitable-rebuild-sale,3,"Sell rebuilt assembly",6.000,715,3880,3165,50.000000,50.000000,15,1,1,0
+idle-reinvestment,1,"Claim capped overnight income",480.000,0,800,800,50.000000,50.000000,39,0,1,0
+idle-reinvestment,2,"Pay Part / $600",480.000,800,200,-600,50.000000,50.000000,40,0,1,0
+salvage-recovery,1,"Salvage chassis / retain full engine",0.000,1200,1730,530,50.000000,0.000000,26,0,1,0
+salvage-recovery,2,"Start recovery",0.000,0,0,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,3,"Claim recovery",1.000,0,250,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,4,"Start recovery",1.000,250,250,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,5,"Claim recovery",2.000,250,500,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,6,"Start recovery",2.000,500,500,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,7,"Claim recovery",3.000,500,750,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,8,"Start recovery",3.000,750,750,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,9,"Claim recovery",4.000,750,1000,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,10,"Start recovery",4.000,1000,1000,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,11,"Claim recovery",5.000,1000,1250,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,12,"Start recovery",5.000,1250,1250,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,13,"Claim recovery",6.000,1250,1500,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,14,"Start recovery",6.000,1500,1500,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,15,"Claim recovery",7.000,1500,1750,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,16,"Start recovery",7.000,1750,1750,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,17,"Claim recovery",8.000,1750,2000,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,18,"Start recovery",8.000,2000,2000,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,19,"Claim recovery",9.000,2000,2250,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,20,"Start recovery",9.000,2250,2250,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,21,"Claim recovery",10.000,2250,2500,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,22,"Start recovery",10.000,2500,2500,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,23,"Claim recovery",11.000,2500,2750,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,24,"Start recovery",11.000,2750,2750,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,25,"Claim recovery",12.000,2750,3000,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,26,"Start recovery",12.000,3000,3000,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,27,"Claim recovery",13.000,3000,3250,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,28,"Start recovery",13.000,3250,3250,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,29,"Claim recovery",14.000,3250,3500,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,30,"Start recovery",14.000,3500,3500,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,31,"Claim recovery",15.000,3500,3750,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,32,"Start recovery",15.000,3750,3750,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,33,"Claim recovery",16.000,3750,4000,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,34,"Start recovery",16.000,4000,4000,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,35,"Claim recovery",17.000,4000,4250,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,36,"Start recovery",17.000,4250,4250,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,37,"Claim recovery",18.000,4250,4500,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,38,"Start recovery",18.000,4500,4500,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,39,"Claim recovery",19.000,4500,4750,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,40,"Start recovery",19.000,4750,4750,0,0.000000,0.000000,26,0,1,0
+salvage-recovery,41,"Claim recovery",20.000,4750,5000,250,0.000000,0.000000,26,0,1,0
+salvage-recovery,42,"Pay Car / $4990",20.000,5000,10,-4990,0.000000,40.000000,65,0,1,0
+fuel-city-three-Realistic,1,"Enter first-pass",0.000,1200,1200,0,40.000000,40.000000,39,0,1,0
+fuel-city-three-Realistic,2,"Settle first-pass / win",0.375,1200,1700,500,40.000000,39.876018,39,0,1,2
+fuel-city-three-Realistic,3,"Shutdown / garage",0.431,1700,1700,0,39.876018,39.875881,39,0,1,2
+fuel-city-three-Reduced,1,"Enter first-pass",0.000,1200,1200,0,40.000000,40.000000,39,0,1,0
+fuel-city-three-Reduced,2,"Settle first-pass / win",0.375,1200,1700,500,40.000000,39.969004,39,0,1,2
+fuel-city-three-Reduced,3,"Shutdown / garage",0.431,1700,1700,0,39.969004,39.968970,39,0,1,2
+fuel-city-three-None,1,"Enter first-pass",0.000,1200,1200,0,40.000000,40.000000,39,0,1,0
+fuel-city-three-None,2,"Settle first-pass / win",0.375,1200,1700,500,40.000000,40.000000,39,0,1,2
+fuel-city-three-None,3,"Shutdown / garage",0.431,1700,1700,0,40.000000,40.000000,39,0,1,2
+fuel-juniper-club-Realistic,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,39,0,1,0
+fuel-juniper-club-Realistic,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.831707,39,0,1,2
+fuel-juniper-club-Realistic,3,"Shutdown / garage",0.413,1700,1700,0,49.831707,49.831477,39,0,1,2
+fuel-juniper-club-Reduced,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,39,0,1,0
+fuel-juniper-club-Reduced,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.957927,39,0,1,2
+fuel-juniper-club-Reduced,3,"Shutdown / garage",0.413,1700,1700,0,49.957927,49.957870,39,0,1,2
+fuel-juniper-club-None,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,39,0,1,0
+fuel-juniper-club-None,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,50.000000,39,0,1,2
+fuel-juniper-club-None,3,"Shutdown / garage",0.413,1700,1700,0,50.000000,50.000000,39,0,1,2
+fuel-juniper-economy-Realistic,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,39,0,1,0
+fuel-juniper-economy-Realistic,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.843689,39,0,1,2
+fuel-juniper-economy-Realistic,3,"Shutdown / garage",0.419,1700,1700,0,49.843689,49.843495,39,0,1,2
+fuel-juniper-economy-Reduced,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,39,0,1,0
+fuel-juniper-economy-Reduced,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.960908,39,0,1,2
+fuel-juniper-economy-Reduced,3,"Shutdown / garage",0.419,1700,1700,0,49.960908,49.960859,39,0,1,2
+fuel-juniper-economy-None,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,39,0,1,0
+fuel-juniper-economy-None,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,50.000000,39,0,1,2
+fuel-juniper-economy-None,3,"Shutdown / garage",0.419,1700,1700,0,50.000000,50.000000,39,0,1,2
+fuel-kestrel-track-Realistic,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,40,0,1,0
+fuel-kestrel-track-Realistic,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.740865,40,0,1,2
+fuel-kestrel-track-Realistic,3,"Shutdown / garage",0.385,1700,1700,0,49.740865,49.740730,40,0,1,2
+fuel-kestrel-track-Reduced,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,40,0,1,0
+fuel-kestrel-track-Reduced,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.935216,40,0,1,2
+fuel-kestrel-track-Reduced,3,"Shutdown / garage",0.385,1700,1700,0,49.935216,49.935182,40,0,1,2
+fuel-kestrel-track-None,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,40,0,1,0
+fuel-kestrel-track-None,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,50.000000,40,0,1,2
+fuel-kestrel-track-None,3,"Shutdown / garage",0.385,1700,1700,0,50.000000,50.000000,40,0,1,2
+fuel-rally-sedan-Realistic,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,46,0,1,0
+fuel-rally-sedan-Realistic,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.696553,46,0,1,2
+fuel-rally-sedan-Realistic,3,"Shutdown / garage",0.378,1700,1700,0,49.696553,49.696511,46,0,1,2
+fuel-rally-sedan-Reduced,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,46,0,1,0
+fuel-rally-sedan-Reduced,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.924138,46,0,1,2
+fuel-rally-sedan-Reduced,3,"Shutdown / garage",0.378,1700,1700,0,49.924138,49.924128,46,0,1,2
+fuel-rally-sedan-None,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,46,0,1,0
+fuel-rally-sedan-None,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,50.000000,46,0,1,2
+fuel-rally-sedan-None,3,"Shutdown / garage",0.378,1700,1700,0,50.000000,50.000000,46,0,1,2
+fuel-sport-coupe-Realistic,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,40,0,1,0
+fuel-sport-coupe-Realistic,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.736561,40,0,1,2
+fuel-sport-coupe-Realistic,3,"Shutdown / garage",0.390,1700,1700,0,49.736561,49.736360,40,0,1,2
+fuel-sport-coupe-Reduced,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,40,0,1,0
+fuel-sport-coupe-Reduced,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.934144,40,0,1,2
+fuel-sport-coupe-Reduced,3,"Shutdown / garage",0.390,1700,1700,0,49.934144,49.934093,40,0,1,2
+fuel-sport-coupe-None,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,40,0,1,0
+fuel-sport-coupe-None,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,50.000000,40,0,1,2
+fuel-sport-coupe-None,3,"Shutdown / garage",0.390,1700,1700,0,50.000000,50.000000,40,0,1,2
+fuel-starter-hatch-Realistic,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,39,0,1,0
+fuel-starter-hatch-Realistic,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.834659,39,0,1,2
+fuel-starter-hatch-Realistic,3,"Shutdown / garage",0.418,1700,1700,0,49.834659,49.834427,39,0,1,2
+fuel-starter-hatch-Reduced,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,39,0,1,0
+fuel-starter-hatch-Reduced,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.958665,39,0,1,2
+fuel-starter-hatch-Reduced,3,"Shutdown / garage",0.418,1700,1700,0,49.958665,49.958607,39,0,1,2
+fuel-starter-hatch-None,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,39,0,1,0
+fuel-starter-hatch-None,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,50.000000,39,0,1,2
+fuel-starter-hatch-None,3,"Shutdown / garage",0.418,1700,1700,0,50.000000,50.000000,39,0,1,2
+fuel-super-v8-Realistic,1,"Enter first-pass",0.000,1200,1200,0,65.000000,65.000000,40,0,1,0
+fuel-super-v8-Realistic,2,"Settle first-pass / win",0.375,1200,1700,500,65.000000,64.544756,40,0,1,2
+fuel-super-v8-Realistic,3,"Shutdown / garage",0.383,1700,1700,0,64.544756,64.544507,40,0,1,2
+fuel-super-v8-Reduced,1,"Enter first-pass",0.000,1200,1200,0,65.000000,65.000000,40,0,1,0
+fuel-super-v8-Reduced,2,"Settle first-pass / win",0.375,1200,1700,500,65.000000,64.886189,40,0,1,2
+fuel-super-v8-Reduced,3,"Shutdown / garage",0.383,1700,1700,0,64.886189,64.886127,40,0,1,2
+fuel-super-v8-None,1,"Enter first-pass",0.000,1200,1200,0,65.000000,65.000000,40,0,1,0
+fuel-super-v8-None,2,"Settle first-pass / win",0.375,1200,1700,500,65.000000,65.000000,40,0,1,2
+fuel-super-v8-None,3,"Shutdown / garage",0.383,1700,1700,0,65.000000,65.000000,40,0,1,2
+fuel-timber-diesel-Realistic,1,"Enter first-pass",0.000,1200,1200,0,65.000000,65.000000,44,0,1,0
+fuel-timber-diesel-Realistic,2,"Settle first-pass / win",0.375,1200,1700,500,65.000000,64.823467,44,0,1,2
+fuel-timber-diesel-Realistic,3,"Shutdown / garage",0.433,1700,1700,0,64.823467,64.822834,44,0,1,2
+fuel-timber-diesel-Reduced,1,"Enter first-pass",0.000,1200,1200,0,65.000000,65.000000,44,0,1,0
+fuel-timber-diesel-Reduced,2,"Settle first-pass / win",0.375,1200,1700,500,65.000000,64.955867,44,0,1,2
+fuel-timber-diesel-Reduced,3,"Shutdown / garage",0.433,1700,1700,0,64.955867,64.955709,44,0,1,2
+fuel-timber-diesel-None,1,"Enter first-pass",0.000,1200,1200,0,65.000000,65.000000,44,0,1,0
+fuel-timber-diesel-None,2,"Settle first-pass / win",0.375,1200,1700,500,65.000000,65.000000,44,0,1,2
+fuel-timber-diesel-None,3,"Shutdown / garage",0.433,1700,1700,0,65.000000,65.000000,44,0,1,2
+fuel-timber-diesel-tow-Realistic,1,"Enter first-pass",0.000,1200,1200,0,65.000000,65.000000,44,0,1,0
+fuel-timber-diesel-tow-Realistic,2,"Settle first-pass / win",0.375,1200,1700,500,65.000000,64.809041,44,0,1,2
+fuel-timber-diesel-tow-Realistic,3,"Shutdown / garage",0.430,1700,1700,0,64.809041,64.808307,44,0,1,2
+fuel-timber-diesel-tow-Reduced,1,"Enter first-pass",0.000,1200,1200,0,65.000000,65.000000,44,0,1,0
+fuel-timber-diesel-tow-Reduced,2,"Settle first-pass / win",0.375,1200,1700,500,65.000000,64.952260,44,0,1,2
+fuel-timber-diesel-tow-Reduced,3,"Shutdown / garage",0.430,1700,1700,0,64.952260,64.952077,44,0,1,2
+fuel-timber-diesel-tow-None,1,"Enter first-pass",0.000,1200,1200,0,65.000000,65.000000,44,0,1,0
+fuel-timber-diesel-tow-None,2,"Settle first-pass / win",0.375,1200,1700,500,65.000000,65.000000,44,0,1,2
+fuel-timber-diesel-tow-None,3,"Shutdown / garage",0.430,1700,1700,0,65.000000,65.000000,44,0,1,2
+fuel-touring-six-Realistic,1,"Enter first-pass",0.000,1200,1200,0,60.000000,60.000000,39,0,1,0
+fuel-touring-six-Realistic,2,"Settle first-pass / win",0.375,1200,1700,500,60.000000,59.728157,39,0,1,2
+fuel-touring-six-Realistic,3,"Shutdown / garage",0.395,1700,1700,0,59.728157,59.727763,39,0,1,2
+fuel-touring-six-Reduced,1,"Enter first-pass",0.000,1200,1200,0,60.000000,60.000000,39,0,1,0
+fuel-touring-six-Reduced,2,"Settle first-pass / win",0.375,1200,1700,500,60.000000,59.932023,39,0,1,2
+fuel-touring-six-Reduced,3,"Shutdown / garage",0.395,1700,1700,0,59.932023,59.931924,39,0,1,2
+fuel-touring-six-None,1,"Enter first-pass",0.000,1200,1200,0,60.000000,60.000000,39,0,1,0
+fuel-touring-six-None,2,"Settle first-pass / win",0.375,1200,1700,500,60.000000,60.000000,39,0,1,2
+fuel-touring-six-None,3,"Shutdown / garage",0.395,1700,1700,0,60.000000,60.000000,39,0,1,2
+fuel-utility-pickup-Realistic,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,44,0,1,0
+fuel-utility-pickup-Realistic,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.601681,44,0,1,2
+fuel-utility-pickup-Realistic,3,"Shutdown / garage",0.402,1700,1700,0,49.601681,49.600823,44,0,1,2
+fuel-utility-pickup-Reduced,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,44,0,1,0
+fuel-utility-pickup-Reduced,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.900420,44,0,1,2
+fuel-utility-pickup-Reduced,3,"Shutdown / garage",0.402,1700,1700,0,49.900420,49.900206,44,0,1,2
+fuel-utility-pickup-None,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,44,0,1,0
+fuel-utility-pickup-None,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,50.000000,44,0,1,2
+fuel-utility-pickup-None,3,"Shutdown / garage",0.402,1700,1700,0,50.000000,50.000000,44,0,1,2
+fuel-v8-muscle-Realistic,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,38,0,1,0
+fuel-v8-muscle-Realistic,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.562366,38,0,1,2
+fuel-v8-muscle-Realistic,3,"Shutdown / garage",0.393,1700,1700,0,49.562366,49.561679,38,0,1,2
+fuel-v8-muscle-Reduced,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,38,0,1,0
+fuel-v8-muscle-Reduced,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,49.890592,38,0,1,2
+fuel-v8-muscle-Reduced,3,"Shutdown / garage",0.393,1700,1700,0,49.890592,49.890420,38,0,1,2
+fuel-v8-muscle-None,1,"Enter first-pass",0.000,1200,1200,0,50.000000,50.000000,38,0,1,0
+fuel-v8-muscle-None,2,"Settle first-pass / win",0.375,1200,1700,500,50.000000,50.000000,38,0,1,2
+fuel-v8-muscle-None,3,"Shutdown / garage",0.393,1700,1700,0,50.000000,50.000000,38,0,1,2
+fresh-career,161,"Assign previously raced build",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,162,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,163,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,164,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,165,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,166,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,167,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,168,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,169,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,170,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,171,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,172,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,173,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,174,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,175,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,176,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,177,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,178,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,179,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,180,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,181,"Independent save/transaction while job active",18.387,15122,15122,0,60.924258,60.924258,97,0,1,68
+fresh-career,182,"Claim previously raced reserved build",18.887,15122,15142,20,60.924258,60.924258,97,0,1,68

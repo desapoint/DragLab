@@ -53,12 +53,18 @@ namespace DragLab.Editor
                 {
                     var map = catalog.Recipe(v.spec.id); map[p.category] = p.id;
                     var build = catalog.Resolve(v.spec.id, map, v.CreateStockTune());
-                    if(p.fuelDelivery!=FuelDeliveryHardware.Factory&&!build.Drivable){
+                    if(!CombustionHardware.Diesel(v.spec)&&p.fuelDelivery!=FuelDeliveryHardware.Factory&&!build.Drivable){
                         check(build.errors.Any(e=>e.Contains("injection-capable")),"EFI alone requires a compatible controller: "+p.id);
                         map[PartCategory.Controls]=v.spec.id+"/Controls/EfiStreet";
                         build=catalog.Resolve(v.spec.id,map,v.CreateStockTune());
                     }
-                    check(build.Drivable, "Compatible single-part replacement resolves: " + v.spec.id + " / " + p.id);
+                    if(!build.Drivable&&build.errors.Any(e=>e.Contains("followers"))){
+                        check(true,"Mismatched cam/followers are explicitly rejected: "+v.spec.id+" / "+p.id);
+                        map[PartCategory.Camshaft]=v.spec.id+"/Camshaft/RollerStreet";
+                        map[PartCategory.Followers]=v.spec.id+"/Followers/RollerConversion";
+                        build=catalog.Resolve(v.spec.id,map,v.CreateStockTune());
+                    }
+                    check(build.Drivable, "Compatible replacement or required matched pair resolves: " + v.spec.id + " / " + p.id);
                     check(!p.name.Contains("option "), "Part has an explicit functional name: " + p.id);
                     double hp = Enumerable.Range(0, 31).Select(i => { double rpm = build.spec.idleRpm + (build.spec.redlineRpm - build.spec.idleRpm) * i / 30; return DragMath.Torque(build.spec, build.tune, rpm) * rpm / 7127; }).Max();
                     partRows.AppendLine(string.Join(",", v.spec.id, p.id, Csv(p.name), p.category, Csv(p.quality), Csv(string.Join(";", PartSemantics.Stats(p).Select(s => s.label + "=" + F(s.value) + s.unit))), build.Drivable, F(hp), F(build.safeTorqueNm), F(build.safeRpm)));

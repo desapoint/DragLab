@@ -16,6 +16,37 @@ MonoBehaviour:
   displayName: B Qualification
   rivalName: Rowan
   opponent: {fileID: 11400000, guid: b1e9f1cdfa4ff8f489d6670e8c1805d0, type: 2}
+  rival:
+    authoringVersion: 5
+    authored: 1
+    style: 4
+    seed: 78675391
+    health: 0.977
+    mileageKm: 52039
+    reactionSeconds: 0.3
+    throttle: 0.96
+    shiftFraction: 0.93
+    hesitationInterval: 0
+    hesitationSeconds: 0
+    hesitationThrottle: 0.3
+    parts: []
+    driverId: Rowan
+    limiterHoldSeconds: 0
+    riskWhenBehind: 0
+    flatShiftWhenRisking: 0
+    riskBehindMeters: 25
+    riskLimiterHoldSeconds: 0.45
+    confidenceFromBuild: 1
+    confidenceRatio: 1.75
+    openingThrottle: 0.775
+    openingUntilMeters: 145
+    openingEmergencyGap: 35
+    confidenceReactionDelay: 0.35
+    reactionJitterSeconds: 0.1
+    shiftJitterRpm: 100
+    shiftDelayMin: 0.02
+    shiftDelayMax: 0.12
+    throttleWander: 0.018
   opponentTune:
     camTimingDegrees: 0
     driverMassKg: 75

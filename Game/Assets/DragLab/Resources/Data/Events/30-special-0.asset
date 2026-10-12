@@ -16,6 +16,37 @@ MonoBehaviour:
   displayName: Front-drive club / under 2 litres
   rivalName: Reed
   opponent: {fileID: 11400000, guid: 913887ae81f6cc5459b418b2b912bc0b, type: 2}
+  rival:
+    authoringVersion: 5
+    authored: 1
+    style: 1
+    seed: 1767973301
+    health: 0.977
+    mileageKm: 24949
+    reactionSeconds: 0.22
+    throttle: 1
+    shiftFraction: 1
+    hesitationInterval: 0
+    hesitationSeconds: 0
+    hesitationThrottle: 0.3
+    parts: []
+    driverId: Reed
+    limiterHoldSeconds: 0
+    riskWhenBehind: 0
+    flatShiftWhenRisking: 0
+    riskBehindMeters: 23
+    riskLimiterHoldSeconds: 0.45
+    confidenceFromBuild: 0
+    confidenceRatio: 1.75
+    openingThrottle: 0.775
+    openingUntilMeters: 115
+    openingEmergencyGap: 35
+    confidenceReactionDelay: 0.35
+    reactionJitterSeconds: 0.1
+    shiftJitterRpm: 100
+    shiftDelayMin: 0.02
+    shiftDelayMax: 0.12
+    throttleWander: 0.018
   opponentTune:
     camTimingDegrees: 0
     driverMassKg: 75

@@ -1,5 +1,7 @@
 # Mechanics-first game plan
 
+Authorized variety expansion (2026-10-11) pauses later Slice 4 UI migration: paid multi-choice used starters, seeded new/used stock, 13 cars/trims including diesel, specialist fictional parts, compression/cam compatibility and serviceable spark plugs, plus authored/variable human rivals. Follow [implementation checkpoints](VARIETY_EXPANSION_PLAN.md). The first race is winnable, never a guaranteed victory; current starting inventory and funded-route evidence supersede historical free-starter fixtures.
+
 ## Product direction
 
 Car inspection and parts/tuning previews show a verbose settled dyno/stat view, numeric deltas, tradeoffs and bounded shared-model setup warnings. Tuning and preset previews are drafts until explicitly applied; leaving discards them, while shop/inventory hardware transactions commit deliberately. Shared pressure/speed preferences and outer tire radius in inches make physical effects readable. See [car stats and applied tuning](CAR_STATS_AND_TUNING.md) for the implemented workflow and diagnostic limits.

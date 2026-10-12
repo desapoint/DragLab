@@ -16,6 +16,37 @@ MonoBehaviour:
   displayName: Turbo coupe showcase
   rivalName: Reed
   opponent: {fileID: 11400000, guid: 42818352e704b6542933d9f7df7697e2, type: 2}
+  rival:
+    authoringVersion: 5
+    authored: 1
+    style: 4
+    seed: 1751195683
+    health: 0.965
+    mileageKm: 22330
+    reactionSeconds: 0.16
+    throttle: 1
+    shiftFraction: 1
+    hesitationInterval: 0
+    hesitationSeconds: 0
+    hesitationThrottle: 0.3
+    parts: []
+    driverId: Reed
+    limiterHoldSeconds: 0
+    riskWhenBehind: 0
+    flatShiftWhenRisking: 0
+    riskBehindMeters: 37
+    riskLimiterHoldSeconds: 0.65
+    confidenceFromBuild: 1
+    confidenceRatio: 1.75
+    openingThrottle: 0.825
+    openingUntilMeters: 145
+    openingEmergencyGap: 35
+    confidenceReactionDelay: 0.35
+    reactionJitterSeconds: 0.1
+    shiftJitterRpm: 100
+    shiftDelayMin: 0.02
+    shiftDelayMax: 0.12
+    throttleWander: 0.018
   opponentTune:
     camTimingDegrees: 0
     driverMassKg: 75

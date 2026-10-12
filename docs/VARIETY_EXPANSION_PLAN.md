@@ -18,3 +18,9 @@ Checkpoint 1 technically delivered: see [mechanical changes and checks](../repor
 Checkpoint 2 technically delivered: [trims and diesel evidence](../reports/variety/02-VEHICLES.md), 48 passing checks including all 13 healthy factory passes. Stock and career acceptance remain pending.
 
 Checkpoint 3 implementation and evidence: [saved new/used vehicle market](../reports/variety/03-MARKET.md). Checkpoint 3 technically delivered with 160 native checks / zero runtime errors; checkpoint 4 career calibration is next.
+
+First-career outcome clarification (2026-10-11): every fixed starter must offer a viable route, not a guaranteed first-attempt victory. Outcomes remain actual reaction/elapsed-time/disqualification results, with no forced win, first-race protection or qualification/first-win bonus on a loss. Calibration checks both competent wins and moderate/poor-driving losses.
+
+Additional driver requirements (2026-10-11): driver-specific limiter dwelling, gap-triggered risk/flat shifting, cocky early restraint based on opponent-versus-player actual output/weight, and bounded per-attempt reaction/shift/throttle variation. Capture each attempt seed and actual planned inputs at entry for repeatable diagnostics. NPC starting hardware/condition/resources remain authored and identical; no rule guarantees either participant a victory.
+
+Checkpoint 4 technically delivered: [career and integrated acceptance](../reports/variety/04-CAREER-ACCEPTANCE.md), including 101 rival checks, the paid funded route, Windows build and 706 native checks / zero errors. All four expansion checkpoints are delivered for user review; full monolithic stress sweep was interrupted and is not claimed. The newly requested paid used-car inspection/risk system is a separate next checkpoint, not a later unrelated UI phase.

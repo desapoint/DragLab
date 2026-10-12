@@ -149,11 +149,13 @@ namespace DragLab.Runtime
             var opponent = evt != null ? evt.opponent : practiceRun ? Selected : vehicles[freeOpponent];
             Tune enemyTune = evt != null ? JsonUtility.FromJson<Tune>(JsonUtility.ToJson(evt.opponentTune)) : opponent.CreateStockTune();
             var enemyDriver = new DriverSettings { reactionSeconds = difficulty < .5 ? .45 : difficulty < 1.5 ? .22 : .08 };
+            var rivalCapture=evt==null?null:CareerOpponents.Capture(evt,profile.catalog,difficulty,Guid.NewGuid().GetHashCode());
             var playerDriver = JsonUtility.FromJson<DriverSettings>(JsonUtility.ToJson(settings));
             race?.CloseOpponentWorker();
-            race = RaceSessionFactory.Create(resolved.spec, resolved.tune, playerDriver,
-                opponent.spec, enemyTune, enemyDriver, evt != null ? evt.distanceM : practiceRun ? 402.336 : freeDistance,
-                profile.parts.FindAll(p => p.ownerId == Build.instanceId || p.ownerId == Build.engineAssemblyId));
+            race = rivalCapture==null?RaceSessionFactory.Create(resolved.spec, resolved.tune, playerDriver,
+                opponent.spec, enemyTune, enemyDriver, practiceRun ? 402.336 : freeDistance,
+                profile.parts.FindAll(p => p.ownerId == Build.instanceId || p.ownerId == Build.engineAssemblyId)):
+                RaceSessionFactory.CreateCaptured(resolved.spec,resolved.tune,playerDriver,rivalCapture,evt.distanceM,profile.parts.FindAll(p=>p.ownerId==Build.instanceId||p.ownerId==Build.engineAssemblyId));
             #if !UNITY_WEBGL
             race.EnableOpponentWorker();
 #endif
@@ -161,11 +163,12 @@ namespace DragLab.Runtime
             race.player.state.fuelUsedLitres = Build.fuel.cumulativeUsedLitres;
             race.player.SetFluids(Build.fluids);
             race.player.ApplyRaceTemperatures(playerDriver.raceTemperatures,Build.thermalUtcTicks,DateTime.UtcNow.Ticks);
+            race.RefreshOpponentStrategy();
             if(playerDriver.warmupBeforeRace)race.BeginWarmup();
             liveRunId=MechanicsOwnership.NewId("run");liveRunOwner=Build.instanceId;liveRunTick=0;savedRunTick=-1;savedRunFailures=RunPersistence.FailureCount(race.player);liveRunClosed=false;
             PlayerProfile entered;string entrySaveError;
             var initial=RunPersistence.Capture(liveRunId,liveRunOwner,0,race.player);
-            if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{CareerProgression.Enter(p,liveRunId,liveRunOwner,evt,practiceRun);MechanicsTransactions.ApplyCheckpoint(p,initial);},ProfileStore.TrySave,out entered,out entrySaveError)){notice=entrySaveError;race.CloseOpponentWorker();race=null;return;}
+            if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{CareerProgression.Enter(p,liveRunId,liveRunOwner,evt,practiceRun,rivalCapture?.Entry(race));MechanicsTransactions.ApplyCheckpoint(p,initial);},ProfileStore.TrySave,out entered,out entrySaveError)){notice=entrySaveError;race.CloseOpponentWorker();race=null;return;}
             profile=entered;settings=profile.driving;savedRunTick=0;saveDelay=0;
             RaceCheckpointStore.Prepare();
             aiView.gameObject.SetActive(true);
@@ -437,6 +440,7 @@ namespace DragLab.Runtime
             DifficultyGUI();
             foreach(var evt in career){
                 GUILayout.Label(evt.tier+" / "+evt.eventKind+" / "+evt.displayName+" / "+evt.rivalName);
+                if(evt.rival!=null&&evt.rival.authored)GUILayout.Label(evt.opponent.spec.displayName+" · "+evt.rival.style+" · "+evt.rival.health.ToString("P0")+" base condition");
                 string error=CareerProgression.EntryError(profile,Build,evt);
                 GUILayout.Label("REP "+evt.reputationRequired+" / entry " + DisplayUnits.Money(evt.entryFee)+" / win " + DisplayUnits.Money(evt.cashWin)+" / completed loss " + DisplayUnits.Money(evt.cashLoss)+" / first bonus " + DisplayUnits.Money(evt.firstWinBonus)+" / "+evt.reputationWin+" REP");
                 if(error!=null)GUILayout.Label(error);

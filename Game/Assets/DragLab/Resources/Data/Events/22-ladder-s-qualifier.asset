@@ -16,6 +16,37 @@ MonoBehaviour:
   displayName: S Qualification
   rivalName: Morgan
   opponent: {fileID: 11400000, guid: b1e9f1cdfa4ff8f489d6670e8c1805d0, type: 2}
+  rival:
+    authoringVersion: 5
+    authored: 1
+    style: 4
+    seed: 1617207397
+    health: 0.968
+    mileageKm: 60396
+    reactionSeconds: 0.34
+    throttle: 1
+    shiftFraction: 0.94
+    hesitationInterval: 6
+    hesitationSeconds: 0.09
+    hesitationThrottle: 0.3
+    parts: []
+    driverId: Morgan
+    limiterHoldSeconds: 0
+    riskWhenBehind: 0
+    flatShiftWhenRisking: 0
+    riskBehindMeters: 31
+    riskLimiterHoldSeconds: 0.55
+    confidenceFromBuild: 1
+    confidenceRatio: 1.75
+    openingThrottle: 0.8
+    openingUntilMeters: 115
+    openingEmergencyGap: 35
+    confidenceReactionDelay: 0.35
+    reactionJitterSeconds: 0.1
+    shiftJitterRpm: 100
+    shiftDelayMin: 0.02
+    shiftDelayMax: 0.12
+    throttleWander: 0.018
   opponentTune:
     camTimingDegrees: 0
     driverMassKg: 75

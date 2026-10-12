@@ -24,7 +24,7 @@ namespace DragLab.Editor
                 foreach (var p in catalog.parts.Where(p => catalog.Fits(v.spec,p))) {
                     check(!string.IsNullOrWhiteSpace(PartTuning.Summary(p)) && PartSemantics.Stats(p).All(s => MechanicsSchema.Finite(s.value)), id + "/" + p.id + ": tuning permissions and stats are explicit and finite.");
                     var m = catalog.Recipe(id); m[p.category] = p.id; var b = catalog.Resolve(id,m,v.CreateStockTune());
-                    if(p.fuelDelivery!=FuelDeliveryHardware.Factory) { m[PartCategory.Controls]=id+"/Controls/EfiStreet"; b=catalog.Resolve(id,m,v.CreateStockTune()); }
+                    if(!CombustionHardware.Diesel(v.spec)&&p.fuelDelivery!=FuelDeliveryHardware.Factory) { m[PartCategory.Controls]=id+"/Controls/EfiStreet"; b=catalog.Resolve(id,m,v.CreateStockTune()); }
                     if(!b.Drivable&&b.errors.Any(e=>e.Contains("followers"))){check(true,id+"/"+p.id+": mismatched cam/followers rejected explicitly.");continue;}
                     var car = new CarSimulation(b.spec,b.tune,new DriverSettings { wearMode = WearMode.None, throttleAssist = false }); car.Launch(0);
                     for (int t = 0; t < 360; t++) car.Step(DragMath.FixedStep,new DriverInput { throttle = 1 });

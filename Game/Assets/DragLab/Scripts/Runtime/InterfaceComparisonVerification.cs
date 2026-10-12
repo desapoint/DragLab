@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DragLab.Domain;
 using DragLab.Domain.Mechanics;
 using DragLab.Infrastructure;
 
@@ -69,6 +70,10 @@ namespace DragLab.Runtime
             {
                 var game = FindFirstObjectByType<PrototypeGame>();
                 Check(game != null && ProfileStore.FilePath == Path.Combine(folder, "profile-v1.json"), "Real player uses an isolated profile fixture");
+                // Fresh-dealership behavior is verified by NativeMenuVerification.Market.
+                // This historical whole-interface probe needs an owned car for tuning/race routes.
+                if(game.Profile.firstPurchasePending){VehicleCollection.Buy(game.Profile,game.Profile.catalog,game.Profile.vehicleStock.listings.First(o=>o.model=="starter-hatch"));ProfileStore.Save(game.Profile);game.ReturnToGarage();}
+                InterfaceComparison.SetReplacement("Garage",false);
                 var profile = game.Profile; var saved = JsonUtility.ToJson(profile);
                 string disk = File.Exists(ProfileStore.FilePath) ? File.ReadAllText(ProfileStore.FilePath) : null;
                 foreach (string route in new[] { "Garage", "Settings", "Driving", "Parts", "Tuning", "Stats", "Race setup", "Career", "Business", "Collection", "Setups", "Assemblies", "Recovery" })

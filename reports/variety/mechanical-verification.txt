@@ -6,6 +6,30 @@ PASS city-three loaded high-compression knock causes retained wear
 PASS city-three wear difficulty remains authoritative
 PASS city-three cam travel mismatch explained
 PASS city-three matched spring travel clears binding warning
+PASS juniper-club valid stock assembly
+PASS juniper-club healthy stock pass avoids combustion/clearance damage
+PASS juniper-club crown volume changes compression in both directions
+PASS juniper-club compression changes dyno torque
+PASS juniper-club loaded high-compression knock causes retained wear
+PASS juniper-club wear difficulty remains authoritative
+PASS juniper-club cam travel mismatch explained
+PASS juniper-club matched spring travel clears binding warning
+PASS juniper-economy valid stock assembly
+PASS juniper-economy healthy stock pass avoids combustion/clearance damage
+PASS juniper-economy crown volume changes compression in both directions
+PASS juniper-economy compression changes dyno torque
+PASS juniper-economy loaded high-compression knock causes retained wear
+PASS juniper-economy wear difficulty remains authoritative
+PASS juniper-economy cam travel mismatch explained
+PASS juniper-economy matched spring travel clears binding warning
+PASS kestrel-track valid stock assembly
+PASS kestrel-track healthy stock pass avoids combustion/clearance damage
+PASS kestrel-track crown volume changes compression in both directions
+PASS kestrel-track compression changes dyno torque
+PASS kestrel-track loaded high-compression knock causes retained wear
+PASS kestrel-track wear difficulty remains authoritative
+PASS kestrel-track cam travel mismatch explained
+PASS kestrel-track matched spring travel clears binding warning
 PASS rally-sedan valid stock assembly
 PASS rally-sedan healthy stock pass avoids combustion/clearance damage
 PASS rally-sedan crown volume changes compression in both directions
@@ -38,6 +62,10 @@ PASS super-v8 loaded high-compression knock causes retained wear
 PASS super-v8 wear difficulty remains authoritative
 PASS super-v8 cam travel mismatch explained
 PASS super-v8 matched spring travel clears binding warning
+PASS timber-diesel valid stock assembly
+PASS timber-diesel healthy stock pass avoids combustion/clearance damage
+PASS timber-diesel-tow valid stock assembly
+PASS timber-diesel-tow healthy stock pass avoids combustion/clearance damage
 PASS touring-six valid stock assembly
 PASS touring-six healthy stock pass avoids combustion/clearance damage
 PASS touring-six crown volume changes compression in both directions
@@ -72,4 +100,4 @@ PASS migration idempotent
 PASS single spark plug cheaper than a set
 PASS normalization never recreates removed plugs
 PASS fictional model-independent brands preserve catalog identities
-TOTAL 74
+TOTAL 102

@@ -16,6 +16,58 @@ MonoBehaviour:
   displayName: B Rival
   rivalName: Rowan
   opponent: {fileID: 11400000, guid: b1e9f1cdfa4ff8f489d6670e8c1805d0, type: 2}
+  rival:
+    authoringVersion: 5
+    authored: 1
+    style: 3
+    seed: 1873464651
+    health: 0.968
+    mileageKm: 72651
+    reactionSeconds: 0.3
+    throttle: 0.96
+    shiftFraction: 0.93
+    hesitationInterval: 0
+    hesitationSeconds: 0
+    hesitationThrottle: 0.3
+    parts:
+    - category: 0
+      definitionId: v8-muscle/Pistons/1
+      health: 0.968
+    - category: 1
+      definitionId: v8-muscle/Rods/1
+      health: 0.968
+    - category: 2
+      definitionId: v8-muscle/Crankshaft/1
+      health: 0.968
+    - category: 9
+      definitionId: v8-muscle/Clutch/1
+      health: 0.968
+    - category: 6
+      definitionId: v8-muscle/Cooling/1
+      health: 0.968
+    - category: 4
+      definitionId: v8-muscle/FuelSystem/1
+      health: 0.968
+    - category: 5
+      definitionId: v8-muscle/Ignition/1
+      health: 0.968
+    driverId: Rowan
+    limiterHoldSeconds: 0.27
+    riskWhenBehind: 0
+    flatShiftWhenRisking: 0
+    riskBehindMeters: 21
+    riskLimiterHoldSeconds: 0.45
+    confidenceFromBuild: 0
+    confidenceRatio: 1.75
+    openingThrottle: 0.775
+    openingUntilMeters: 145
+    openingEmergencyGap: 35
+    confidenceReactionDelay: 0.35
+    reactionJitterSeconds: 0.1
+    shiftJitterRpm: 100
+    shiftDelayMin: 0.02
+    shiftDelayMax: 0.12
+    throttleWander: 0.018
   opponentTune:
     camTimingDegrees: 0
     driverMassKg: 75

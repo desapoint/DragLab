@@ -16,6 +16,37 @@ MonoBehaviour:
   displayName: E Qualification
   rivalName: Jules
   opponent: {fileID: 11400000, guid: 913887ae81f6cc5459b418b2b912bc0b, type: 2}
+  rival:
+    authoringVersion: 5
+    authored: 1
+    style: 2
+    seed: 2065917659
+    health: 0.974
+    mileageKm: 25658
+    reactionSeconds: 0.16
+    throttle: 1
+    shiftFraction: 1
+    hesitationInterval: 0
+    hesitationSeconds: 0
+    hesitationThrottle: 0.3
+    parts: []
+    driverId: Jules
+    limiterHoldSeconds: 0
+    riskWhenBehind: 1
+    flatShiftWhenRisking: 1
+    riskBehindMeters: 29
+    riskLimiterHoldSeconds: 0.75
+    confidenceFromBuild: 0
+    confidenceRatio: 1.75
+    openingThrottle: 0.85
+    openingUntilMeters: 145
+    openingEmergencyGap: 35
+    confidenceReactionDelay: 0.35
+    reactionJitterSeconds: 0.1
+    shiftJitterRpm: 100
+    shiftDelayMin: 0.02
+    shiftDelayMax: 0.12
+    throttleWander: 0.018
   opponentTune:
     camTimingDegrees: 0
     driverMassKg: 75

@@ -40,7 +40,7 @@ namespace DragLab.Editor
                     check(repeated.state.distance>=402.336 && !repeated.state.engineFailed && repeated.mechanics.parts.All(p=>!p.condition.failed),id+": stock repeated quarter-mile pass "+pass+" survives with physical thermals and retained condition. "+string.Join(";",repeated.mechanics.parts.Where(p=>p.condition.failed).Select(p=>p.slot+":"+p.condition.failureReason)));
                     repeated.CoolDown(60);row(repeated,id,"stock-pass-"+pass);
                 }
-                foreach(var category in new[]{PartCategory.PistonRings,PartCategory.CylinderBlock,PartCategory.Valves,PartCategory.Camshaft,PartCategory.Followers,PartCategory.TimingDrive,PartCategory.Bearings,PartCategory.Ignition}) {
+                foreach(var category in new[]{PartCategory.PistonRings,PartCategory.CylinderBlock,PartCategory.Valves,PartCategory.Camshaft,PartCategory.Followers,PartCategory.TimingDrive,PartCategory.Bearings,PartCategory.Ignition}.Where(c=>c!=PartCategory.Ignition||!CombustionHardware.Diesel(v.spec))) {
                     var worn=Car(stock);worn.state.rpm=4000;worn.state.throttle=.7;var part=worn.mechanics.Part(category);part.condition.health=.55f;Refresh(worn);
                     check(!worn.state.engineFailed && worn.state.mechanicalPowerFactor<healthy.state.mechanicalPowerFactor || category==PartCategory.Bearings&&worn.state.extraEngineFrictionNm>0,id+"/"+category+": wear changes output/friction before failure.");
                     row(worn,id,"worn-"+category);double full=worn.state.mechanicalPowerFactor;worn.driver.conditionEffects=ConditionEffectMode.Reduced;worn.state.conditionSeverity=worn.driver.ConditionSeverity;Refresh(worn);

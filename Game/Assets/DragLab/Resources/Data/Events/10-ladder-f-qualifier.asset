@@ -16,6 +16,37 @@ MonoBehaviour:
   displayName: F Qualification
   rivalName: Mika
   opponent: {fileID: 11400000, guid: 913887ae81f6cc5459b418b2b912bc0b, type: 2}
+  rival:
+    authoringVersion: 5
+    authored: 1
+    style: 3
+    seed: 1891923691
+    health: 0.968
+    mileageKm: 51691
+    reactionSeconds: 0.3
+    throttle: 0.96
+    shiftFraction: 0.93
+    hesitationInterval: 0
+    hesitationSeconds: 0
+    hesitationThrottle: 0.3
+    parts: []
+    driverId: Mika
+    limiterHoldSeconds: 0
+    riskWhenBehind: 0
+    flatShiftWhenRisking: 0
+    riskBehindMeters: 37
+    riskLimiterHoldSeconds: 0.45
+    confidenceFromBuild: 0
+    confidenceRatio: 1.75
+    openingThrottle: 0.775
+    openingUntilMeters: 145
+    openingEmergencyGap: 35
+    confidenceReactionDelay: 0.35
+    reactionJitterSeconds: 0.1
+    shiftJitterRpm: 100
+    shiftDelayMin: 0.02
+    shiftDelayMax: 0.12
+    throttleWander: 0.018
   opponentTune:
     camTimingDegrees: 0
     driverMassKg: 75

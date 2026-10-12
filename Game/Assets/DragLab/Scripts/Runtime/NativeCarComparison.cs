@@ -50,7 +50,7 @@ namespace DragLab.Runtime
         {
             if(model.Driving!=null)return Task.FromResult(model.Driving);
             if(dealerRatings==null)return Task.FromException<CarInspection>(new InvalidOperationException("Stock driving estimate unavailable"));
-            return dealerRatings.ContinueWith(task=>task.GetAwaiter().GetResult().TryGetValue(model.Offer.model,out var value)&&value!=null?value:throw new InvalidOperationException("Stock driving estimate unavailable"));
+            return dealerRatings.ContinueWith(task=>task.GetAwaiter().GetResult().TryGetValue(model.Offer.listingId,out var value)&&value!=null?value:throw new InvalidOperationException("Stock driving estimate unavailable"));
         }
         Button CarCompareButton(VisualElement actions,string id,Action toggle)
         {

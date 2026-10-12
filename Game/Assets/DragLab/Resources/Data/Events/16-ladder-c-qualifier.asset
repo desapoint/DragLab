@@ -16,6 +16,37 @@ MonoBehaviour:
   displayName: C Qualification
   rivalName: Reed
   opponent: {fileID: 11400000, guid: 4006bab4212a26249a9968afc48a6194, type: 2}
+  rival:
+    authoringVersion: 5
+    authored: 1
+    style: 0
+    seed: 513197717
+    health: 0.977
+    mileageKm: 19364
+    reactionSeconds: 0.34
+    throttle: 1
+    shiftFraction: 0.94
+    hesitationInterval: 6
+    hesitationSeconds: 0.09
+    hesitationThrottle: 0.3
+    parts: []
+    driverId: Reed
+    limiterHoldSeconds: 0
+    riskWhenBehind: 0
+    flatShiftWhenRisking: 0
+    riskBehindMeters: 23
+    riskLimiterHoldSeconds: 0.55
+    confidenceFromBuild: 0
+    confidenceRatio: 1.75
+    openingThrottle: 0.8
+    openingUntilMeters: 115
+    openingEmergencyGap: 35
+    confidenceReactionDelay: 0.35
+    reactionJitterSeconds: 0.18
+    shiftJitterRpm: 220
+    shiftDelayMin: 0.02
+    shiftDelayMax: 0.22
+    throttleWander: 0.04
   opponentTune:
     camTimingDegrees: 0
     driverMassKg: 75

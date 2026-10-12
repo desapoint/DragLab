@@ -1,0 +1,116 @@
+OEM durability / full wear, simulated thermals, multiplier 1 / shared race and bench model.
+PASS: city-three / ten-quarter-miles / passes 10 / lowest health 99,05 ٪ /
+PASS: city-three / two-minute-pull / passes 0 / lowest health 99,83 ٪ /
+PASS: city-three / five-minute-idle / passes 0 / lowest health 100,00 ٪ /
+PASS: juniper-club / ten-quarter-miles / passes 10 / lowest health 98,85 ٪ /
+PASS: juniper-club / two-minute-pull / passes 0 / lowest health 99,74 ٪ /
+PASS: juniper-club / five-minute-idle / passes 0 / lowest health 100,00 ٪ /
+PASS: juniper-economy / ten-quarter-miles / passes 10 / lowest health 98,90 ٪ /
+PASS: juniper-economy / two-minute-pull / passes 0 / lowest health 99,74 ٪ /
+PASS: juniper-economy / five-minute-idle / passes 0 / lowest health 100,00 ٪ /
+PASS: kestrel-track / ten-quarter-miles / passes 10 / lowest health 97,88 ٪ /
+PASS: kestrel-track / two-minute-pull / passes 0 / lowest health 99,57 ٪ /
+PASS: kestrel-track / five-minute-idle / passes 0 / lowest health 100,00 ٪ /
+PASS: rally-sedan / ten-quarter-miles / passes 10 / lowest health 96,69 ٪ /
+PASS: rally-sedan / two-minute-pull / passes 0 / lowest health 99,49 ٪ /
+PASS: rally-sedan / five-minute-idle / passes 0 / lowest health 100,00 ٪ /
+PASS: sport-coupe / ten-quarter-miles / passes 10 / lowest health 98,16 ٪ /
+PASS: sport-coupe / two-minute-pull / passes 0 / lowest health 99,57 ٪ /
+PASS: sport-coupe / five-minute-idle / passes 0 / lowest health 100,00 ٪ /
+PASS: starter-hatch / ten-quarter-miles / passes 10 / lowest health 98,72 ٪ /
+PASS: starter-hatch / two-minute-pull / passes 0 / lowest health 99,74 ٪ /
+PASS: starter-hatch / five-minute-idle / passes 0 / lowest health 100,00 ٪ /
+PASS: super-v8 / ten-quarter-miles / passes 10 / lowest health 94,81 ٪ /
+PASS: super-v8 / two-minute-pull / passes 0 / lowest health 98,46 ٪ /
+PASS: super-v8 / five-minute-idle / passes 0 / lowest health 100,00 ٪ /
+PASS: timber-diesel / ten-quarter-miles / passes 10 / lowest health 96,58 ٪ /
+PASS: timber-diesel / two-minute-pull / passes 0 / lowest health 99,40 ٪ /
+PASS: timber-diesel / five-minute-idle / passes 0 / lowest health 100,00 ٪ /
+PASS: timber-diesel-tow / ten-quarter-miles / passes 10 / lowest health 96,06 ٪ /
+PASS: timber-diesel-tow / two-minute-pull / passes 0 / lowest health 99,44 ٪ /
+PASS: timber-diesel-tow / five-minute-idle / passes 0 / lowest health 100,00 ٪ /
+PASS: touring-six / ten-quarter-miles / passes 10 / lowest health 96,30 ٪ /
+PASS: touring-six / two-minute-pull / passes 0 / lowest health 99,49 ٪ /
+PASS: touring-six / five-minute-idle / passes 0 / lowest health 100,00 ٪ /
+PASS: utility-pickup / ten-quarter-miles / passes 10 / lowest health 96,01 ٪ /
+PASS: utility-pickup / two-minute-pull / passes 0 / lowest health 99,20 ٪ /
+PASS: utility-pickup / five-minute-idle / passes 0 / lowest health 100,00 ٪ /
+PASS: v8-muscle / ten-quarter-miles / passes 10 / lowest health 94,70 ٪ /
+PASS: v8-muscle / two-minute-pull / passes 0 / lowest health 99,32 ٪ /
+PASS: v8-muscle / five-minute-idle / passes 0 / lowest health 100,00 ٪ /
+PASS: Disconnected neutral clears prior coupling heat and gearbox cools: city-three
+PASS: Staging cannot retain a previous coupling heat sample: city-three
+PASS: Race turnaround cools a gearbox without repairing it: city-three
+PASS: Parked turnaround burns no fuel, adds no liquid, and cools oil: city-three
+PASS: Turnaround cools each retained tire: city-three
+PASS: Disconnected neutral clears prior coupling heat and gearbox cools: juniper-club
+PASS: Staging cannot retain a previous coupling heat sample: juniper-club
+PASS: Race turnaround cools a gearbox without repairing it: juniper-club
+PASS: Parked turnaround burns no fuel, adds no liquid, and cools oil: juniper-club
+PASS: Turnaround cools each retained tire: juniper-club
+PASS: Disconnected neutral clears prior coupling heat and gearbox cools: juniper-economy
+PASS: Staging cannot retain a previous coupling heat sample: juniper-economy
+PASS: Race turnaround cools a gearbox without repairing it: juniper-economy
+PASS: Parked turnaround burns no fuel, adds no liquid, and cools oil: juniper-economy
+PASS: Turnaround cools each retained tire: juniper-economy
+PASS: Disconnected neutral clears prior coupling heat and gearbox cools: kestrel-track
+PASS: Staging cannot retain a previous coupling heat sample: kestrel-track
+PASS: Race turnaround cools a gearbox without repairing it: kestrel-track
+PASS: Parked turnaround burns no fuel, adds no liquid, and cools oil: kestrel-track
+PASS: Turnaround cools each retained tire: kestrel-track
+PASS: Disconnected neutral clears prior coupling heat and gearbox cools: rally-sedan
+PASS: Staging cannot retain a previous coupling heat sample: rally-sedan
+PASS: Race turnaround cools a gearbox without repairing it: rally-sedan
+PASS: Parked turnaround burns no fuel, adds no liquid, and cools oil: rally-sedan
+PASS: Turnaround cools each retained tire: rally-sedan
+PASS: Disconnected neutral clears prior coupling heat and gearbox cools: sport-coupe
+PASS: Staging cannot retain a previous coupling heat sample: sport-coupe
+PASS: Race turnaround cools a gearbox without repairing it: sport-coupe
+PASS: Parked turnaround burns no fuel, adds no liquid, and cools oil: sport-coupe
+PASS: Turnaround cools each retained tire: sport-coupe
+PASS: Disconnected neutral clears prior coupling heat and gearbox cools: starter-hatch
+PASS: Staging cannot retain a previous coupling heat sample: starter-hatch
+PASS: Race turnaround cools a gearbox without repairing it: starter-hatch
+PASS: Parked turnaround burns no fuel, adds no liquid, and cools oil: starter-hatch
+PASS: Turnaround cools each retained tire: starter-hatch
+PASS: Disconnected neutral clears prior coupling heat and gearbox cools: super-v8
+PASS: Staging cannot retain a previous coupling heat sample: super-v8
+PASS: Race turnaround cools a gearbox without repairing it: super-v8
+PASS: Parked turnaround burns no fuel, adds no liquid, and cools oil: super-v8
+PASS: Turnaround cools each retained tire: super-v8
+PASS: Disconnected neutral clears prior coupling heat and gearbox cools: timber-diesel
+PASS: Staging cannot retain a previous coupling heat sample: timber-diesel
+PASS: Race turnaround cools a gearbox without repairing it: timber-diesel
+PASS: Parked turnaround burns no fuel, adds no liquid, and cools oil: timber-diesel
+PASS: Turnaround cools each retained tire: timber-diesel
+PASS: Disconnected neutral clears prior coupling heat and gearbox cools: timber-diesel-tow
+PASS: Staging cannot retain a previous coupling heat sample: timber-diesel-tow
+PASS: Race turnaround cools a gearbox without repairing it: timber-diesel-tow
+PASS: Parked turnaround burns no fuel, adds no liquid, and cools oil: timber-diesel-tow
+PASS: Turnaround cools each retained tire: timber-diesel-tow
+PASS: Disconnected neutral clears prior coupling heat and gearbox cools: touring-six
+PASS: Staging cannot retain a previous coupling heat sample: touring-six
+PASS: Race turnaround cools a gearbox without repairing it: touring-six
+PASS: Parked turnaround burns no fuel, adds no liquid, and cools oil: touring-six
+PASS: Turnaround cools each retained tire: touring-six
+PASS: Disconnected neutral clears prior coupling heat and gearbox cools: utility-pickup
+PASS: Staging cannot retain a previous coupling heat sample: utility-pickup
+PASS: Race turnaround cools a gearbox without repairing it: utility-pickup
+PASS: Parked turnaround burns no fuel, adds no liquid, and cools oil: utility-pickup
+PASS: Turnaround cools each retained tire: utility-pickup
+PASS: Disconnected neutral clears prior coupling heat and gearbox cools: v8-muscle
+PASS: Staging cannot retain a previous coupling heat sample: v8-muscle
+PASS: Race turnaround cools a gearbox without repairing it: v8-muscle
+PASS: Parked turnaround burns no fuel, adds no liquid, and cools oil: v8-muscle
+PASS: Turnaround cools each retained tire: v8-muscle
+PASS: Prior physics recordings are rejected instead of silently changing their repeatable results.
+PASS: Pre-thermal-integration v15 recordings require a new capture.
+PASS: Brake heat is bounded by actual body plus independent wheel energy loss and applied brake work.
+PASS: Published road brake work is the same heat consumed by shared component stress.
+PASS: Holding brakes stationary does not heat or wear them.
+PASS: Truly overheated worn brakes can still fail; OEM calibration does not disable thermal damage.
+PASS: Manual-gearbox handover keeps rotating and preserves input; only automatic driver lifts: Automatic
+PASS: Automatic handover reapplies held gas without re-pressing the input.
+PASS: Manual-gearbox handover keeps rotating and preserves input; only automatic driver lifts: Sequential
+PASS: Classic V8 retains no limiter and still fails under sustained manual neutral overrev.
+Checks: 114

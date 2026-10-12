@@ -16,6 +16,58 @@ MonoBehaviour:
   displayName: C Rival
   rivalName: Reed
   opponent: {fileID: 11400000, guid: 4006bab4212a26249a9968afc48a6194, type: 2}
+  rival:
+    authoringVersion: 5
+    authored: 1
+    style: 0
+    seed: 582784661
+    health: 0.965
+    mileageKm: 22660
+    reactionSeconds: 0.34
+    throttle: 1
+    shiftFraction: 0.94
+    hesitationInterval: 6
+    hesitationSeconds: 0.09
+    hesitationThrottle: 0.3
+    parts:
+    - category: 0
+      definitionId: utility-pickup/Pistons/1
+      health: 0.965
+    - category: 1
+      definitionId: utility-pickup/Rods/1
+      health: 0.965
+    - category: 2
+      definitionId: utility-pickup/Crankshaft/1
+      health: 0.965
+    - category: 9
+      definitionId: utility-pickup/Clutch/1
+      health: 0.965
+    - category: 6
+      definitionId: utility-pickup/Cooling/1
+      health: 0.965
+    - category: 4
+      definitionId: utility-pickup/FuelSystem/1
+      health: 0.965
+    - category: 5
+      definitionId: utility-pickup/Ignition/1
+      health: 0.965
+    driverId: Reed
+    limiterHoldSeconds: 0
+    riskWhenBehind: 0
+    flatShiftWhenRisking: 0
+    riskBehindMeters: 23
+    riskLimiterHoldSeconds: 0.45
+    confidenceFromBuild: 0
+    confidenceRatio: 1.75
+    openingThrottle: 0.775
+    openingUntilMeters: 115
+    openingEmergencyGap: 35
+    confidenceReactionDelay: 0.35
+    reactionJitterSeconds: 0.18
+    shiftJitterRpm: 220
+    shiftDelayMin: 0.02
+    shiftDelayMax: 0.22
+    throttleWander: 0.04
   opponentTune:
     camTimingDegrees: 0
     driverMassKg: 75

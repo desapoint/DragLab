@@ -23,7 +23,7 @@ namespace DragLab.Domain.Mechanics {
  static double Next(ref uint seed){seed^=seed<<13;seed^=seed>>17;seed^=seed<<5;return seed/(double)uint.MaxValue;}
  static void Generate(PlayerProfile p,MechanicalCatalog c){
  var stock=p.vehicleStock;stock.listings.Clear();var cars=Resources.LoadAll<VehicleDefinition>("Data/Vehicles").OrderBy(v=>v.spec.id,StringComparer.Ordinal).ToArray();uint seed=(uint)stock.seed^(uint)(stock.generation+1)*2654435761u;if(seed==0)seed=1;
- if(p.firstPurchasePending){for(int i=0;i<starters.Length;i++){var v=cars.Single(a=>a.spec.id==starters[i]);uint fixedSeed=(uint)(101+i);var offer=Create(c,v,"starter:"+v.spec.id,true,new[]{.96,.97,.93}[i],new[]{55000.0,32000,76000}[i],0,0,stock.seed,ref fixedSeed,true);offer.reputation=0;stock.listings.Add(offer);}return;}
+ if(p.firstPurchasePending){for(int i=0;i<starters.Length;i++){var v=cars.Single(a=>a.spec.id==starters[i]);uint fixedSeed=(uint)(101+i);var offer=Create(c,v,"starter:"+v.spec.id,true,new[]{.96,.97,.96}[i],new[]{55000.0,32000,76000}[i],0,0,stock.seed,ref fixedSeed,true);offer.reputation=0;stock.listings.Add(offer);}return;}
  foreach(var v in cars)stock.listings.Add(Create(c,v,v.spec.id,false,1,0,stock.generation,stock.purchases,stock.seed,ref seed));
  for(int i=0;i<7;i++){var v=cars[(int)(Next(ref seed)*cars.Length)%cars.Length];double health=.58+Next(ref seed)*.39;double km=10000+Next(ref seed)*180000;stock.listings.Add(Create(c,v,"used:"+stock.generation+":"+i,true,health,km,stock.generation,stock.purchases,stock.seed,ref seed));}
  }

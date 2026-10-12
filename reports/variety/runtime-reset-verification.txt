@@ -1,0 +1,23 @@
+Settings Reset game / actual Windows mouse / isolated save.
+PASS: Actual Arcade button applies shared no-wear/no-fuel-usage, optimal-temperature and driver-assist rules.
+PASS: Actual Balanced button selects 25% wear/fuel and simulated heat without changing shift/launch, AI or volume preferences.
+PASS: Actual fuel setting independently selects None and marks difficulty Custom.
+PASS: Actual fuel setting independently selects Reduced and marks difficulty Custom.
+PASS: Actual fuel setting independently selects Realistic and marks difficulty Custom.
+PASS: Real practice race receives the selected Reduced fuel rule.
+PASS: Opening reset confirmation does not change or save progression.
+PASS: Actual Cancel keeps all progress, inventory and tunes.
+PASS: An old confirmation cannot reset from Garage or an active race.
+PASS: Actual Reset progression starts fresh cash, career and garage business.
+PASS: Reset opens dealership with fixed choices and no gifted ownership.
+PASS: Saved setups and race records cleared.
+PASS: Live driving settings and AI difficulty remain bound to the preserved copy.
+PASS: Live volume and its persisted settings are unchanged.
+PASS: Old race state, run settlements and banked offline income are cleared.
+PASS: Reload retains the reset garage and both driving preferences.
+PASS: Reload retains the shared master volume.
+PASS: Double or stale reset action cannot create another identity tree.
+PASS: The fresh starter can enter neutral practice with preserved manual settings.
+PASS: Reset is blocked during a race.
+PASS: Reset Settings UI and fresh garage have no runtime/GUI errors.
+Runtime errors: 0

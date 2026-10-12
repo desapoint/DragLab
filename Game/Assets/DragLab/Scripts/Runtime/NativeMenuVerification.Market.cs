@@ -12,7 +12,7 @@ namespace DragLab.Runtime {
  yield return new WaitForSecondsRealtime(.4f);
  Check(shell.Visible&&game.ScreenName=="Garage"&&game.Profile.cars.Count==0&&VisibleDealerCards().Length==3,"Fresh game opens fixed three-choice used dealership without a gifted car");
  string before=JsonUtility.ToJson(game.Profile);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);
- yield return Capture("starter-selection");
+ yield return Capture("starter-selection");yield return Key(input,0x77);Check(!shell.Visible&&game.Profile.cars.Count==0,"F8 exposes legacy empty-garage dealership without gifting assets");yield return Key(input,0x77);Check(shell.Visible&&VisibleDealerCards().Length==3,"F8 restores fixed starter selection");
  yield return Click(input,"ownedCarFilters");yield return CarFilterClick(input,"dealerCondition:New");
  Check(VisibleDealerCards().Length==3,"New/used choice stays a draft");yield return Click(input,"dialogCancel");
  yield return Click(input,"ownedCarFilters");yield return CarFilterClick(input,"dealerCondition:New");yield return Click(input,"dialogApply");

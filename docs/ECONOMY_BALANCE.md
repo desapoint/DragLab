@@ -1,5 +1,7 @@
 # Economy scenarios and recovery (3G)
 
+Current starting route (2026-10-11): fresh/reset games begin with $4,700, empty ownership and three fixed used dealership choices. Buying transfers exact seller components/condition/liquids. All 13 new trims plus seven seeded used offers follow; stock refreshes after three completed non-practice runs. The funded route buys an actual starter, then tires/head improvements and service using real win/loss income. Existing earned saves are retained. This supersedes the original free-starter fixture for fresh-game acceptance. [Market](../reports/variety/03-MARKET.md) and [current career evidence](../reports/variety/04-CAREER-ACCEPTANCE.md).
+
 The prototype economy now has recorded funded routes through the main career, repeated losses, worn-component replacement, downgrade/reuse, timed rebuild/assembly sale, chassis salvage/empty-garage recovery and idle reinvestment. `DragLab > Verify Full Economy Scenarios` / `tools/Invoke-Unity.ps1 -Action BalanceVerify` produces cash/fuel/ownership ledgers, market margins and fuel-mode matrices. Each operation uses the same owned ledger, paid quotes and shared race simulation as the player. Each run preserves fuel, liquids, condition, records and shutdown. Fixture clock advances and starting damage are explicitly test data; simulated race/cooldown durations are not measured human play times.
 
 Current calibration:

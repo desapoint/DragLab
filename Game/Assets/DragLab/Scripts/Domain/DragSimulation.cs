@@ -774,10 +774,12 @@ namespace DragLab.Domain
     {
         OpponentWorker opponentWorker;
         readonly Action opponentTick;
-        double opponentDt, opponentGreenTime;
+        double opponentDt, opponentGreenTime;DriverInput opponentInput;
         public void EnableOpponentWorker() { if (opponentWorker == null) opponentWorker = new OpponentWorker(); }
         public void CloseOpponentWorker() { if (opponentWorker != null) { opponentWorker.Dispose(); opponentWorker = null; } }
-        void AdvanceOpponent() { Advance(opponent, new DriverInput { throttle = 1 }, opponentDt, opponentGreenTime); }
+        public readonly RivalBehavior opponentBehavior;
+        DriverInput RivalInput(double greenTime,double dt)=>opponentBehavior==null?new DriverInput{throttle=1}:opponentBehavior.DriveInput(opponent,greenTime,player.state.distance-opponent.state.distance,dt);
+        void AdvanceOpponent() { Advance(opponent, opponentInput, opponentDt, opponentGreenTime); }
         public const double GreenAt = 3;
         public readonly CarSimulation player;
         public readonly CarSimulation opponent;
@@ -798,13 +800,16 @@ namespace DragLab.Domain
         public readonly RaceTelemetry telemetry = new RaceTelemetry();
         static readonly double[] Markers = { 18.288, 201.168, 402.336, 804.672, 1609.344 };
 
-        public RaceSimulation(CarSimulation player, CarSimulation opponent, double distance)
+        public RaceSimulation(CarSimulation player, CarSimulation opponent, double distance, RivalBehavior behavior=null)
         {
             if (double.IsNaN(distance) || distance <= 0 || distance > 1609.345) throw new ArgumentOutOfRangeException("distance");
-            this.player = player; this.opponent = opponent; this.distance = distance;
+            this.player = player; this.opponent = opponent; this.distance = distance;opponentBehavior=behavior==null?null:UnityEngine.JsonUtility.FromJson<RivalBehavior>(UnityEngine.JsonUtility.ToJson(behavior));
+            opponentBehavior?.PlanAgainst(opponent,player);
             opponentTick = AdvanceOpponent;
             phase = RacePhase.Countdown;
         }
+
+        public void RefreshOpponentStrategy(){if(time!=0)throw new InvalidOperationException("Rival strategy is captured before countdown.");opponentBehavior?.PlanAgainst(opponent,player,true);}
 
         public void Step(DriverInput input, double dt = DragMath.FixedStep)
         {
@@ -839,10 +844,12 @@ namespace DragLab.Domain
             if (player.driver.launch == LaunchMode.Automatic && greenTime >= player.driver.reactionSeconds) player.Launch(greenTime);
             else if (player.driver.launch != LaunchMode.Automatic && launchRequested && previousTime >= GreenAt) player.Launch(greenTime);
             if (greenTime >= opponent.driver.reactionSeconds) opponent.Launch(greenTime);
-            DriverInput ai = new DriverInput { throttle = 1 };
+            // Capture the observable gap/input before either car advances. The worker
+            // consumes that same value and never reads concurrently changing player state.
+            DriverInput ai = RivalInput(greenTime,dt);
             // Launch is timestamped at this tick's end. Drive begins on the following interval.
             if (opponentWasLaunched && opponentWorker != null) {
-                opponentDt = dt; opponentGreenTime = greenTime; opponentWorker.Begin(opponentTick);
+                opponentDt = dt; opponentGreenTime = greenTime;opponentInput=ai; opponentWorker.Begin(opponentTick);
                 try { if (playerWasLaunched) Advance(player, input, dt, greenTime); }
                 finally { opponentWorker.Join(); }
             } else {

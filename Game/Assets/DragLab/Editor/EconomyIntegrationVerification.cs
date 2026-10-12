@@ -71,12 +71,11 @@ namespace DragLab.Editor
             public RaceSimulation Race(string carId, CareerEventDefinition e)
             {
                 var c = p.cars.Find(v => v.instanceId == carId); var b = MechanicsOwnership.Resolve(p, c, cat);
-                var race = RaceSessionFactory.Create(b.spec, b.tune, p.driving.Copy(), e.opponent.spec, e.opponentTune,
-                    new DriverSettings { reactionSeconds = .22 }, e.distanceM,
+                var race = RaceSessionFactory.CreateCaptured(b.spec, b.tune, p.driving.Copy(), CareerOpponents.Capture(e,cat), e.distanceM,
                     p.parts.FindAll(i => i.ownerId == c.instanceId || i.ownerId == c.engineAssemblyId));
                 race.player.SetFluids(c.fluids);
                 race.player.SetMassInputs(b.tune.driverMassKg, b.tune.payloadMassKg, b.tune.payloadPositionM, b.tune.payloadHeightM, c.fuel.litres);
-                race.player.state.fuelUsedLitres = c.fuel.cumulativeUsedLitres; return race;
+                race.player.state.fuelUsedLitres = c.fuel.cumulativeUsedLitres;race.RefreshOpponentStrategy(); return race;
             }
         }
         [MenuItem("DragLab/Verify Economy Save Integration")]

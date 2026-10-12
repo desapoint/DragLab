@@ -20,6 +20,8 @@ PASS timber-diesel full-wear factory quarter mile survives
 PASS timber-diesel diesel heaters and injectors replace spark equipment
 PASS timber-diesel compression ignition prevents gasoline exhaust-retard controls
 PASS timber-diesel tune cannot fabricate spark hardware
+PASS timber-diesel one failed glow heater reduces cold support without disabling other cylinders
+PASS timber-diesel individual heater fault cannot remove a warm combustion event
 PASS timber-diesel failed glow heaters worsen cold combustion only
 PASS timber-diesel warm diesel does not need spark/heater firing
 PASS timber-diesel diesel fuel mass and metering
@@ -31,6 +33,8 @@ PASS timber-diesel-tow full-wear factory quarter mile survives
 PASS timber-diesel-tow diesel heaters and injectors replace spark equipment
 PASS timber-diesel-tow compression ignition prevents gasoline exhaust-retard controls
 PASS timber-diesel-tow tune cannot fabricate spark hardware
+PASS timber-diesel-tow one failed glow heater reduces cold support without disabling other cylinders
+PASS timber-diesel-tow individual heater fault cannot remove a warm combustion event
 PASS timber-diesel-tow failed glow heaters worsen cold combustion only
 PASS timber-diesel-tow warm diesel does not need spark/heater firing
 PASS timber-diesel-tow diesel fuel mass and metering
@@ -46,4 +50,4 @@ PASS v8-muscle full-wear factory quarter mile survives
 PASS same-engine hatch trims share actual piston family
 PASS different bore/family economy internals excluded
 PASS Track trim retains complete factory recipe
-TOTAL 48
+TOTAL 52

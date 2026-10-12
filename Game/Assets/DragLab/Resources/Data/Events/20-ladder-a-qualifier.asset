@@ -16,6 +16,37 @@ MonoBehaviour:
   displayName: A Qualification
   rivalName: Vale
   opponent: {fileID: 11400000, guid: b1e9f1cdfa4ff8f489d6670e8c1805d0, type: 2}
+  rival:
+    authoringVersion: 5
+    authored: 1
+    style: 2
+    seed: 1834764911
+    health: 0.974
+    mileageKm: 46558
+    reactionSeconds: 0.16
+    throttle: 1
+    shiftFraction: 1
+    hesitationInterval: 0
+    hesitationSeconds: 0
+    hesitationThrottle: 0.3
+    parts: []
+    driverId: Vale
+    limiterHoldSeconds: 0
+    riskWhenBehind: 1
+    flatShiftWhenRisking: 1
+    riskBehindMeters: 41
+    riskLimiterHoldSeconds: 0.45
+    confidenceFromBuild: 0
+    confidenceRatio: 1.75
+    openingThrottle: 0.775
+    openingUntilMeters: 145
+    openingEmergencyGap: 35
+    confidenceReactionDelay: 0.35
+    reactionJitterSeconds: 0.1
+    shiftJitterRpm: 100
+    shiftDelayMin: 0.02
+    shiftDelayMax: 0.12
+    throttleWander: 0.018
   opponentTune:
     camTimingDegrees: 0
     driverMassKg: 75

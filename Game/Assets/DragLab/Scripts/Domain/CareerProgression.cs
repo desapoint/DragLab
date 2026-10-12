@@ -10,11 +10,12 @@ namespace DragLab.Domain
         public string runId, carId, eventId, outcome;
         public int winCash, lossCash, reputation, firstBonus, fee;
         public bool practice, complete;
+        public RivalEntry rival;
     }
     public static class CareerProgression
     {
         public static void Ensure(PlayerProfile p)
-        { if(p.careerRuns==null)p.careerRuns=new List<CareerRun>(); }
+        { if(p.careerRuns==null)p.careerRuns=new List<CareerRun>();foreach(var r in p.careerRuns)if(r?.rival!=null&&string.IsNullOrEmpty(r.rival.model)&&(r.rival.hardware==null||r.rival.hardware.Count==0))r.rival=null; }
         public static string EntryError(PlayerProfile p, OwnedCar car, CareerEventDefinition e)
         {
             if(car==null)return "Select an owned car.";
@@ -40,12 +41,13 @@ namespace DragLab.Domain
             if(!string.IsNullOrEmpty(e.requiredModel)&&car.vehicleId!=e.requiredModel)return "Requires model "+e.requiredModel+".";
             return null;
         }
-        public static void Enter(PlayerProfile p,string runId,string carId,CareerEventDefinition e,bool practice)
+        public static void Enter(PlayerProfile p,string runId,string carId,CareerEventDefinition e,bool practice,RivalEntry rival=null)
         {
             Ensure(p);var c=p.cars.Find(v=>v.instanceId==carId);string error=EntryError(p,c,e);if(error!=null)throw new InvalidOperationException(error);
+            if(CareerOpponents.ValidateEntry(rival)!=null)throw new InvalidOperationException(CareerOpponents.ValidateEntry(rival));
             if(string.IsNullOrWhiteSpace(runId)||p.careerRuns.Any(r=>r.runId==runId))throw new InvalidOperationException("Duplicate/invalid entry.");
             int fee=e==null?0:e.entryFee;p.cash=checked(p.cash-fee);
-            p.careerRuns.Add(new CareerRun{runId=runId,carId=carId,eventId=e?.stableId,practice=practice,fee=fee,winCash=e==null?120:e.cashWin,lossCash=e==null?40:e.cashLoss,reputation=e==null?0:e.reputationWin,firstBonus=e==null?0:e.firstWinBonus});
+            p.careerRuns.Add(new CareerRun{rival=rival,runId=runId,carId=carId,eventId=e?.stableId,practice=practice,fee=fee,winCash=e==null?120:e.cashWin,lossCash=e==null?40:e.cashLoss,reputation=e==null?0:e.reputationWin,firstBonus=e==null?0:e.firstWinBonus});
             while(p.careerRuns.Count>256){var old=p.careerRuns.Find(r=>r.complete);if(old==null)throw new InvalidOperationException("Too many active entries.");p.careerRuns.Remove(old);}
         }
         public static void Settle(PlayerProfile p,string runId,RaceSimulation race)
@@ -65,7 +67,7 @@ namespace DragLab.Domain
         public static string Validate(PlayerProfile p)
         {
             if(p.careerRuns==null||p.careerRuns.Count>256)return "Invalid career ledger.";
-            var ids=new HashSet<string>();foreach(var r in p.careerRuns)if(r==null||string.IsNullOrEmpty(r.runId)||!ids.Add(r.runId)||string.IsNullOrEmpty(r.carId)||r.winCash<0||r.lossCash<0||r.reputation<0||r.firstBonus<0||r.fee<0||!r.complete&&!p.cars.Any(c=>c.instanceId==r.carId))return "Invalid career entry.";return null;
+            var ids=new HashSet<string>();foreach(var r in p.careerRuns)if(r==null||string.IsNullOrEmpty(r.runId)||!ids.Add(r.runId)||string.IsNullOrEmpty(r.carId)||r.winCash<0||r.lossCash<0||r.reputation<0||r.firstBonus<0||r.fee<0||!r.complete&&!p.cars.Any(c=>c.instanceId==r.carId))return "Invalid career entry.";foreach(var r in p.careerRuns)if(CareerOpponents.ValidateEntry(r.rival)!=null)return CareerOpponents.ValidateEntry(r.rival);return null;
         }
     }
 }

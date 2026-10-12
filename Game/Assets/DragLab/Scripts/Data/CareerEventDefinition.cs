@@ -10,6 +10,7 @@ namespace DragLab.Data
         public string displayName;
         public string rivalName;
         public VehicleDefinition opponent;
+        public RivalSetup rival=new RivalSetup();
         public Tune opponentTune = new Tune();
         public float distanceM = 402.336f;
         public int reputationRequired;

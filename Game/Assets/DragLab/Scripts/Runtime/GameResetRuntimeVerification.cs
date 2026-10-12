@@ -88,11 +88,22 @@ namespace DragLab.Runtime
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
         IEnumerator ClickFuelUsage(WindowsKeyboardProbe mouse, FuelUsageMode mode)
         {
-            yield return new WaitForEndOfFrame(); Rect rect = SimulationSettingsView.fuelUsageRect;
+            yield return ScrollSettingsControl(()=>SimulationSettingsView.fuelUsageRect);
+            Rect rect = SimulationSettingsView.fuelUsageRect;
             if (rect.center.y < 125 || rect.center.y >= Screen.height - 60) throw new InvalidOperationException("Fuel setting is not visible.");
             int choice = mode == FuelUsageMode.None ? 0 : mode == FuelUsageMode.Reduced ? 1 : 2;
             int x = (int)(rect.x + rect.width * (choice + .5f) / 3), y = (int)rect.center.y;
             mouse.MouseButtonAt(x,y,true);yield return new WaitForSecondsRealtime(.06f);mouse.MouseButtonAt(x,y,false);yield return new WaitForSecondsRealtime(.25f);
+        }
+        IEnumerator ScrollSettingsControl(Func<Rect> control)
+        {
+            var field=typeof(PrototypeGame).GetField("scroll",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            for(int attempt=0;attempt<5;attempt++){
+                yield return new WaitForEndOfFrame();var rect=control();
+                if(rect.height>0&&rect.center.y>=125&&rect.center.y<Screen.height-60)yield break;
+                var value=(Vector2)field.GetValue(game);value.y=Mathf.Max(0,value.y+rect.center.y-Screen.height*.5f);field.SetValue(game,value);
+                yield return new WaitForSecondsRealtime(.1f);
+            }
         }
         IEnumerator ClickSimulation(WindowsKeyboardProbe mouse, string key)
         {

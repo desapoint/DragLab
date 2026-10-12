@@ -1,0 +1,8 @@
+3E actual Windows career buttons / shared simulation / settlement.
+PASS: All 21 authored events load in the player.
+PASS: Real first/repeat result pays once and preserves first-win REP.
+PASS: Reload retains captured outcome and actual consumed fuel.
+PASS: Real first/repeat result pays once and preserves first-win REP.
+PASS: Reload retains captured outcome and actual consumed fuel.
+PASS: No runtime / GUI / audio errors.
+Runtime errors: 0

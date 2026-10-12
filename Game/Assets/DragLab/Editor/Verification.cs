@@ -359,11 +359,42 @@ namespace DragLab.Editor
             count += PowertrainVerification.Run(root);
             count += ManualGearboxVerification.Run(root);
             count += PartHardwareVerification.Run(root);
+            count += RemainingChecks(root);
+            File.WriteAllText(Path.Combine(root, "reports/tune-comparisons.csv"), TuneExperiments.Csv(trials));
+            File.WriteAllText(Path.Combine(root, "reports/career-path.txt"), VerifyCareer(ref count));
+            File.WriteAllText(Path.Combine(root, "reports/balance-matrix.csv"), DragWorkbench.BalanceCsv());
+            File.WriteAllText(Path.Combine(root, "reports/unity-verification.txt"), "PASS: " + count + " foundation checks.\nEditor: " + Application.unityVersion + "\nUTC: " + DateTime.UtcNow.ToString("O") + "\n");
+            Debug.Log("DRAGLAB VERIFICATION PASS: " + count + " checks.");
+        }
+        // Resume the shared tail after a successful foundation prefix; report its scope explicitly.
+        public static void RunRemaining()
+        {
+            string root=Path.GetFullPath(Path.Combine(Application.dataPath,"../.."));
+            int count=RemainingChecks(root);
+            File.WriteAllText(Path.Combine(root,"reports/variety/foundation-remaining-verification.txt"),"PASS: "+count+" remaining foundation checks. Prefix is recorded separately, not rerun here.\n",new UTF8Encoding(false));
+            Debug.Log("DRAGLAB REMAINING VERIFICATION PASS: "+count+" checks.");
+        }
+        public static void RunRemainingSimulation()
+        {
+            string root=Path.GetFullPath(Path.Combine(Application.dataPath,"../.."));
+            int count=RemainingSimulationChecks(root);
+            File.WriteAllText(Path.Combine(root,"reports/variety/foundation-simulation-verification.txt"),"PASS: "+count+" remaining simulation checks. Completed hardware/service/recovery/tools gates are recorded separately, not rerun here.\n",new UTF8Encoding(false));
+            Debug.Log("DRAGLAB REMAINING SIMULATION PASS: "+count+" checks.");
+        }
+        static int RemainingChecks(string root)
+        {
+            int count=0;
             count += FuelingConversionVerification.Run(root);
             count += ServiceFluidsVerification.Run(root);
             count += IndividualEngineVerification.Run(root);
             count += MechanicalRecoveryVerification.Run(root);
             count += IntegratedToolsVerification.Run(root);
+            count += RemainingSimulationChecks(root);
+            return count;
+        }
+        static int RemainingSimulationChecks(string root)
+        {
+            int count=0;
             count += SliceTwoAudit.RunVerified();
             count += InductionVerification.Run(root);
             count += EngineBenchVerification.Run(root);
@@ -389,11 +420,7 @@ namespace DragLab.Editor
             count += AwdContactVerification.Run(root);
             count += FuelVerification.Run(root);
             count += TireVerification.Run(root);
-            File.WriteAllText(Path.Combine(root, "reports/tune-comparisons.csv"), TuneExperiments.Csv(trials));
-            File.WriteAllText(Path.Combine(root, "reports/career-path.txt"), VerifyCareer(ref count));
-            File.WriteAllText(Path.Combine(root, "reports/balance-matrix.csv"), DragWorkbench.BalanceCsv());
-            File.WriteAllText(Path.Combine(root, "reports/unity-verification.txt"), "PASS: " + count + " foundation checks.\nEditor: " + Application.unityVersion + "\nUTC: " + DateTime.UtcNow.ToString("O") + "\n");
-            Debug.Log("DRAGLAB VERIFICATION PASS: " + count + " checks.");
+            return count;
         }
         static void Require(bool pass, string label, ref int count)
         {

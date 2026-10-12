@@ -19,7 +19,7 @@ PASS juniper-economy normal new/used market unlocked:  stock 20
 PASS juniper-economy save/reload retains listings and ownership
 PASS juniper-economy normalization never rerolls listings
 PASS juniper-economy worn starter survives a proper factory pass
-STARTER juniper-club price=3841 reserve=859
+STARTER juniper-club price=3924 reserve=776
 PASS juniper-club budget leaves maintenance reserve
 PASS juniper-club exact paid starter selects owned car
 PASS juniper-club seller component identities/condition retained exactly
@@ -34,10 +34,13 @@ PASS same persisted seed and run count reproduce refresh exactly
 PASS normal market contains new and used variants
 PASS new stock always has unused healthy components
 PASS used cars have individually varied part condition
+PASS Legacy absent-stock migration preserves existing owned condition and cash
+PASS Modern corrupt stock is rejected instead of silently rerolled
+PASS Same used model can offer different seeded deals across stock generations
 PASS changed listing cannot authorize an old payment
 PASS rejected purchase changes no assets/cash
 PASS used listing consumed once
 PASS sold listing cannot duplicate its components
 PASS reset returns to fixed starter selection while clearing progression
 PASS reset preserves driving preferences
-TOTAL 39
+TOTAL 42

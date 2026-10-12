@@ -37,7 +37,7 @@ namespace DragLab.Runtime
                 if (!shell.Visible) yield return Key(input,0x77);
                 shell.InvalidateOwnedGrid(); shell.Refresh(); yield return new WaitForSecondsRealtime(.3f);
                 string baseline = JsonUtility.ToJson(fixture);
-                Check(shell.Root.Query(className:"owned-car-card").ToList().Count==fixture.cars.Count,"Grid shows every owned instance, including duplicate models");
+                Check(shell.Root.Q("ownedCarGrid").Query(className:"owned-car-card").ToList().Count==fixture.cars.Count,"Grid shows every owned instance, including duplicate models");
                 Check(shell.Root.Query(className:"car-current").ToList().Count==1,"Only the actual current owned instance is marked");
                 foreach (var car in fixture.cars) {
                     var card = shell.Root.Q("ownedCar:"+car.instanceId);
@@ -118,7 +118,7 @@ namespace DragLab.Runtime
                 foreach (int width in new[] {1024,1920}) {
                     Screen.SetResolution(width,width==1024?768:1080,false); yield return new WaitForSecondsRealtime(.4f);shell.Refresh();yield return new WaitForEndOfFrame();
                     var viewport=shell.Root.Q<ScrollView>("ownedCars").contentViewport.worldBound;
-                    var cards=shell.Root.Query(className:"owned-car-card").ToList();
+                    var cards=shell.Root.Q("ownedCarGrid").Query(className:"owned-car-card").ToList();
                     Check(cards.All(card=>card.worldBound.xMin>=viewport.xMin-1 && card.worldBound.xMax<=viewport.xMax+1),"Grid reflows without horizontal overflow at "+width);
                     Check(cards.All(card=>card.tabIndex==-1),"Cards do not introduce Tab traversal at "+width);
                     Check(cards.Count(card=>Mathf.Abs(card.worldBound.yMin-cards[0].worldBound.yMin)<1)==2,"Garage keeps exactly two cards per row at "+width);
@@ -149,8 +149,8 @@ namespace DragLab.Runtime
                 shell.Panel.targetTexture = target; yield return new WaitForSecondsRealtime(.4f); yield return new WaitForEndOfFrame();
                 CarFilterToolbarLayout(3840);
                 var viewport4k = shell.Root.Q<ScrollView>("ownedCars").contentViewport.worldBound;
-                Check(shell.Panel.scale==2 && shell.Root.Query(className:"owned-car-card").ToList().All(card=>card.worldBound.xMax<=viewport4k.xMax+1),"Owned grid fits true 4K target with shared two-times scale");
-                var cards4k=shell.Root.Query(className:"owned-car-card").ToList();
+                Check(shell.Panel.scale==2 && shell.Root.Q("ownedCarGrid").Query(className:"owned-car-card").ToList().All(card=>card.worldBound.xMax<=viewport4k.xMax+1),"Owned grid fits true 4K target with shared two-times scale");
+                var cards4k=shell.Root.Q("ownedCarGrid").Query(className:"owned-car-card").ToList();
                 Check(cards4k.Count(card=>Mathf.Abs(card.worldBound.yMin-cards4k[0].worldBound.yMin)<1)==2,"Garage keeps exactly two cards per row at 4K");
                 Check(cards4k.All(card=>card.Q("carSummary").worldBound.xMin>=card.Q("carPreview").worldBound.xMax && card.Q("carSummary").worldBound.xMax<=card.worldBound.xMax),"Right-side car summaries fit at 4K");
                 var previous = RenderTexture.active; RenderTexture.active=target;
@@ -198,7 +198,7 @@ namespace DragLab.Runtime
                 fixture=game.Profile;
                 saved=File.ReadAllText(ProfileStore.FilePath);
                 fixture.cars.Clear();shell.InvalidateOwnedGrid();shell.Refresh();yield return Capture("owned-cars-empty");
-                Check(shell.Root.Query(className:"owned-car-card").ToList().Count==0 && shell.Root.Q<Label>(className:"car-empty").text=="No owned cars","Empty garage shows no fabricated car");
+                Check(shell.Root.Q("ownedCarGrid").Query(className:"owned-car-card").ToList().Count==0 && shell.Root.Q<Label>(className:"car-empty").text=="No owned cars","Empty garage shows no fabricated car");
                 Check(File.ReadAllText(ProfileStore.FilePath)==saved,"Empty-state browsing does not write another save");
             } finally {
                 if(shell.OwnedDetailsOpen)typeof(NativeMenuShell).GetMethod("BackToOwnedCars",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shell,null);

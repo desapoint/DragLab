@@ -24,7 +24,9 @@ namespace DragLab.Editor
                 var originalSession=new PhysicalDrivingSession(new RunSnapshot{vehicle=stock.spec,tune=stock.tune,driving=new DriverSettings{wearMode=WearMode.None}});
                 var legacySession=new PhysicalDrivingSession(new RunSnapshot{vehicle=legacy,tune=stock.tune,driving=new DriverSettings{wearMode=WearMode.None}});
                 for(int i=0;i<240;i++){var input=new TickInput{tick=i,input=new DriverInput{throttle=.5},neutral=true};originalSession.Step(input);legacySession.Step(input);}
-                check(originalSession.Csv()==legacySession.Csv(),id+": captures predating controller metadata retain exact factory behavior.");
+                if(v.spec.engineBehavior.fueling==FuelSystem.Diesel) {
+                    check(stock.spec.fittedParts.Any(p=>p.category==PartCategory.Controls && p.injectionControlMetadataVersion>0 && p.supportsDiesel && p.controllerCylinderCapacity>=v.spec.sound.cylinders),id+": newly introduced diesel requires explicit injector-controller metadata, with no pre-diesel legacy capture.");
+                } else check(originalSession.Csv()==legacySession.Csv(),id+": captures predating controller metadata retain exact factory behavior.");
                 if(v.spec.engineBehavior.fueling!=FuelSystem.Carburetor) {check(!catalog.parts.Any(p=>p.id.StartsWith(id+"/FuelSystem/Efi")),id+": factory injected engine has no pointless carb conversion kit.");continue;}
                 foreach(string kit in new[]{"EfiThrottleBody","EfiPortInjection"}) {
                     var map=catalog.Recipe(id);map[PartCategory.FuelSystem]=id+"/FuelSystem/"+kit;

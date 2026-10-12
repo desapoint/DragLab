@@ -1,0 +1,12 @@
+2026-10-11 variety checkpoint 4 regression evidence
+Broad monolithic sweep was interrupted; no complete foundation/audit result is claimed. Completed prefix gates are retained; final vehicle/rival/market/economy and native gates run separately.
+Sustained factory durability: PASS 114
+Fitted hardware matrix: PASS 8155
+Fuel conversion / legacy controller compatibility: PASS 149
+Service and fluids: PASS 1839
+Individual engine faults and clutch types: PASS 853
+Interrupted physical recovery: PASS 481
+Integrated replay and authoring tools: PASS 2458
+Current expanded career: PASS 308
+Current funded economy: PASS 2304
+Current economy integration: PASS 810

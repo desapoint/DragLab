@@ -16,6 +16,37 @@ MonoBehaviour:
   displayName: D Qualification
   rivalName: Ash
   opponent: {fileID: 11400000, guid: 42818352e704b6542933d9f7df7697e2, type: 2}
+  rival:
+    authoringVersion: 5
+    authored: 1
+    style: 1
+    seed: 2103521733
+    health: 0.968
+    mileageKm: 18381
+    reactionSeconds: 0.22
+    throttle: 1
+    shiftFraction: 1
+    hesitationInterval: 0
+    hesitationSeconds: 0
+    hesitationThrottle: 0.3
+    parts: []
+    driverId: Ash
+    limiterHoldSeconds: 0.41
+    riskWhenBehind: 0
+    flatShiftWhenRisking: 0
+    riskBehindMeters: 39
+    riskLimiterHoldSeconds: 0.65
+    confidenceFromBuild: 0
+    confidenceRatio: 1.75
+    openingThrottle: 0.825
+    openingUntilMeters: 115
+    openingEmergencyGap: 35
+    confidenceReactionDelay: 0.35
+    reactionJitterSeconds: 0.1
+    shiftJitterRpm: 100
+    shiftDelayMin: 0.02
+    shiftDelayMax: 0.12
+    throttleWander: 0.018
   opponentTune:
     camTimingDegrees: 0
     driverMassKg: 75

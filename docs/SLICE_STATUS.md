@@ -1,5 +1,7 @@
 # Prototype implementation status
 
+**Vehicle/mechanical variety expansion (2026-10-11):** further Slice 4 migration is paused for the authorized four-checkpoint expansion. Thirteen authored vehicles/trims include diesel; fictional specialist hardware, piston/compression and cam/spring compatibility, separate wearing spark plugs, paid fixed used starters and persistent new/used stock are implemented. All 21 career rivals use captured fixed hardware/condition with driver habits, behind-gap risk and output-based confidence; recorded per-attempt reaction/shift/throttle variation can change close-race outcomes without guaranteeing wins. Existing ownership is retained. Windows build and 706 native checks / zero errors passed; full monolithic stress-sweep completion is not claimed. Technical acceptance evidence and user review are tracked in [the current report](../reports/variety/04-CAREER-ACCEPTANCE.md); no later UI page is advanced.
+
 **4D.10 differences-only stats (2026-10-11):** the shared comparison filter hides unchanged numeric/text rows and empty nested groups, preserves disclosure state and refreshes after performance estimates. Windows build and focused native checks pass **141 / 0 runtime errors**. Prior full 631/0 regression is retained, not rerun. Ready for user review; later steps remain gated. [Checks/review](../reports/phases/4d/20-COMPARISON-DIFFERENCES.md).
 
 **4D.10 comparison info refinement (2026-10-11):** one concise general explanation in the ⓘ dialog and matching orange Tradeoff hover hint; differences remain on the rows/bars. Windows build and focused native checks pass **113 / 0 runtime errors**, including visible-viewport placement and read-only state. The previous full 631/0 regression remains a historical baseline, not a rerun. Ready for user review; no later phase advanced. [Checks/review](../reports/phases/4d/19-COMPARISON-INFO.md).
@@ -14,7 +16,7 @@
 
 **Currency correction (2026-10-10):** shared locale-aware money formatting now covers native popups/navigation and legacy prices, carts, sale/maintenance confirmations, rewards and balances. Windows build/native probe passed 399 checks with zero runtime errors. Currency checks remain included in the later stat-group probe. See [currency checks/review](../reports/phases/4d/13-MONEY-FORMATTING.md).
 
-Source of scope: [objective.md](objective.md), section 58. The eight-car roster includes the requested pickup, three-cylinder hatch, AWD turbo sedan, inline-six GT and supercharged V8. The four new mechanical configurations reuse existing layered placeholder bodies. Mechanics and editable data take priority over finished graphics or menus.
+Source of scope: [objective.md](objective.md), section 58. The current thirteen-model/trim roster includes the requested pickup, three-cylinder hatch, AWD turbo sedan, inline-six GT, supercharged V8 and two diesel work/tow trims. Trims and mechanical configurations reuse the eight existing layered placeholder bodies. Mechanics and editable data take priority over finished graphics or menus.
 
 Native UI direction is recorded in [NATIVE_UI_DESIGN.md](NATIVE_UI_DESIGN.md). The shaded grey/red shell, top navigation/resources and Settings tabs are now implemented; draft Apply/confirmation and help/reset dialogs are implemented for menu Settings. Current legacy settings remain available through F8 and retain their existing behavior.
 
@@ -22,13 +24,13 @@ Additional requirements: recognizable icons, info dialogs for secondary details,
 
 Latest selections: filled icons; clear 1080p/sharp 4K presentation with current windowed defaults and mostly stable logical element sizes; Garage/Build/Tuning/Race/Business/Data navigation; future current-car slide-in inspection overlay left of Settings. New bench navigation/presentation is deferred while legacy tools remain. Both design replies in the user-opened reference chat have now been read; [reference candidates](NATIVE_UI_REFERENCE_NOTES.md) are not blanket approval of its layouts or additional mechanics. No runtime change in this note.
 
-Current Slice 3 progress: eight-car collection, retained engine assemblies, saved configurations, immutable paid quotes/salvage, 21 career events, exact reserved garage jobs and captured offline accrual are implemented. Full-loop funded scenarios preserve actual fuel/fluids/wear and viable recovery. Prices are calibrated prototype values, with human pacing review still required. 3H passed the integrated interruption/migration/save gate and complete domain/Windows reruns; see [ordered phases](IMPLEMENTATION_PHASES.md).
+Current collection/progression foundation: thirteen-model/trim collection, retained engine assemblies, saved configurations, immutable paid quotes/salvage, 21 career events, exact reserved garage jobs and captured offline accrual are implemented. Full-loop funded scenarios preserve actual fuel/fluids/wear and viable recovery. Prices are calibrated prototype values, with human pacing review still required. 3H passed the integrated interruption/migration/save gate and complete domain/Windows reruns; see [ordered phases](IMPLEMENTATION_PHASES.md).
 
 ## Implemented milestone
 
 | Objective requirement | Current implementation |
 | --- | --- |
-| Cars and one strip | Eight fictional definitions; one side-on strip; separately animated wheel/rotor sprites and fixed calipers |
+| Cars and one strip | Thirteen fictional model/trim definitions; eight shared placeholder bodies; one side-on strip; separately animated wheel/rotor sprites and fixed calipers |
 | Quarter-mile race | 402.336 m; eighth and half mile also selectable in free races |
 | Torque and gears | Interpolated Nm curve; derived HP; separate core/calculated flywheel inertia, stored energy and neutral decay; bounded clutch synchronization; individual ratios/final drive; timed shaft disconnection |
 | Forced induction | Single/twin turbo, single/twin supercharger and turbo-plus-supercharger; transient spool/manifold charge, flow limits, heat/intercooling, blower drive losses and mixed-system bypass affect actual engine output |
@@ -40,9 +42,9 @@ Current Slice 3 progress: eight-car collection, retained engine assemblies, save
 | Manual/automatic shifting | Automatic, sequential and manual clutch; hardware/controller-based downshift protection shared by race and bench; unprotected manuals can mechanically overrev |
 | Manual/automatic launch | Automatic/assisted staging holds tuned RPM until pedal override; W/Space raises revs in any mode; E / shift-up engages first (CVT Drive) for assisted/manual; Enter remains an alternate; manual clutch remains independent of transmission selection |
 | Staging | Explicit neutral (N), automatic brake hold, free revs without clutch input, zero wheel torque/creep; valid launch engages first and releases staging brakes |
-| AI and timing | Same physics for both cars; reaction difficulty presets; red lights; reaction plus ET; splits and trap speed |
+| AI and timing | Same physics for both cars; fixed authored rival hardware/wear with recorded variable reaction/shift/throttle inputs, limiter/risk/confidence strategies; difficulty presets; red lights; reaction plus ET; splits and trap speed |
 | Braking and shutdown | Grip-limited analog brake; immediate braking after each car finishes; automatic or manual shutdown; finish times and rewards remain fixed |
-| Garage and upgrades | Eight-car OEM recipes and fitted component definitions; compatible buy/install/remove/reuse/sell/donor controls; direct upgrades/downgrades without rank prerequisites; installed output replaces legacy rank authority; paint and adjustment presets |
+| Garage and upgrades | Thirteen-model/trim OEM recipes and fitted component definitions; compatible buy/install/remove/reuse/sell/donor controls; direct upgrades/downgrades without rank prerequisites; installed output replaces legacy rank authority; paint and adjustment presets |
 | Asset valuations / quotes | Separate actual loose pack/element, engine, chassis and car offers; authored buyer/model/quality/history factors, shared condition/individual faults and required completeness; retained/missing assets excluded; immutable expiring quotes reject changed/reserved states; confirmed quote-backed disposal, operating receipts and policy/matrix tooling |
 | Car inspection / part previews | Saved and proposed shared-model dyno curves; verbose numeric stats with min/max bars, right-aligned current → proposed, green improvements/red drawbacks/amber tradeoffs; condition-aware shop/inventory/donor/removal previews and expandable setup advice |
 | Applied tuning / display units | Isolated draft adjustments, presets and paint; explicit atomic Apply/Revert and discard on exit/race entry; shared km/h/mph/m/s and bar/psi/kPa preferences, outer tire radius in inches and boost bar/psi |

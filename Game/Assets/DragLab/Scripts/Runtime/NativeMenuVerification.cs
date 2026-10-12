@@ -243,6 +243,7 @@ namespace DragLab.Runtime
                 shell.Refresh();
                 yield return Capture("settings-restored");
                 yield return SettingsChecks(input);
+                if(game.Profile.firstPurchasePending){game.QueueNativeNavigation("Garage");yield return new WaitForSecondsRealtime(.4f);yield return StarterPurchaseChecks(input);}
                 yield return OwnedCarChecks(input);
                 yield return DealershipChecks(input);
             }

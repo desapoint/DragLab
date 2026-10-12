@@ -1,0 +1,131 @@
+PASS first-pass repeatable driver and per-part hardware/wear
+PASS first-pass complete matched rival survives its normal habit-driven pass
+PASS club-run repeatable driver and per-part hardware/wear
+PASS club-run complete matched rival survives its normal habit-driven pass
+PASS coupe-rival repeatable driver and per-part hardware/wear
+PASS coupe-rival complete matched rival survives its normal habit-driven pass
+PASS local-final repeatable driver and per-part hardware/wear
+PASS local-final complete matched rival survives its normal habit-driven pass
+PASS ladder-f-qualifier repeatable driver and per-part hardware/wear
+PASS ladder-f-qualifier complete matched rival survives its normal habit-driven pass
+PASS ladder-f-rival repeatable driver and per-part hardware/wear
+PASS ladder-f-rival complete matched rival survives its normal habit-driven pass
+PASS ladder-e-qualifier repeatable driver and per-part hardware/wear
+PASS ladder-e-qualifier complete matched rival survives its normal habit-driven pass
+PASS ladder-e-rival repeatable driver and per-part hardware/wear
+PASS ladder-e-rival complete matched rival survives its normal habit-driven pass
+PASS ladder-d-qualifier repeatable driver and per-part hardware/wear
+PASS ladder-d-qualifier complete matched rival survives its normal habit-driven pass
+PASS ladder-d-rival repeatable driver and per-part hardware/wear
+PASS ladder-d-rival complete matched rival survives its normal habit-driven pass
+PASS ladder-c-qualifier repeatable driver and per-part hardware/wear
+PASS ladder-c-qualifier complete matched rival survives its normal habit-driven pass
+PASS ladder-c-rival repeatable driver and per-part hardware/wear
+PASS ladder-c-rival complete matched rival survives its normal habit-driven pass
+PASS ladder-b-qualifier repeatable driver and per-part hardware/wear
+PASS ladder-b-qualifier complete matched rival survives its normal habit-driven pass
+PASS ladder-b-rival repeatable driver and per-part hardware/wear
+PASS ladder-b-rival complete matched rival survives its normal habit-driven pass
+PASS ladder-a-qualifier repeatable driver and per-part hardware/wear
+PASS ladder-a-qualifier complete matched rival survives its normal habit-driven pass
+PASS ladder-a-rival repeatable driver and per-part hardware/wear
+PASS ladder-a-rival complete matched rival survives its normal habit-driven pass
+PASS ladder-s-qualifier repeatable driver and per-part hardware/wear
+PASS ladder-s-qualifier complete matched rival survives its normal habit-driven pass
+PASS ladder-s-rival repeatable driver and per-part hardware/wear
+PASS ladder-s-rival complete matched rival survives its normal habit-driven pass
+PASS special-0 repeatable driver and per-part hardware/wear
+PASS special-0 complete matched rival survives its normal habit-driven pass
+PASS special-1 repeatable driver and per-part hardware/wear
+PASS special-1 complete matched rival survives its normal habit-driven pass
+PASS special-2 repeatable driver and per-part hardware/wear
+PASS special-2 complete matched rival survives its normal habit-driven pass
+PASS Entry freezes actual hardware condition and tune independently of the live rival
+PASS Invalid authored rival health rejected before creating a race
+PASS Invalid authored rival duplicate rejected before creating a race
+PASS Invalid authored rival behavior rejected before creating a race
+PASS Corrupt saved rival behavior rejected
+PASS Drivers author distinct limiter habits and willingness to risk damage
+PASS Limiter habit waits physically at the cut rather than auto shifting
+PASS Habit upshifts after its bounded limiter dwell
+PASS Behind driver may flat shift with full throttle and ordinary physical risks
+PASS Recovered gap restores normal manual lift with hysteresis
+PASS Real race lead activates risk and actual limiter dwelling
+PASS Risk response never guarantees the trailing rival a victory
+PASS Adaptive driver uses the same pre-tick gap in worker and synchronous simulation
+PASS Cocky stronger build gives an early lead then physically catches up and wins / confidence=True / hp ratio=2,68736627133881 / torque ratio=2,9209018900338 / weight ratio=1,73888405792511 / early lead=True / pushed=True / player won=False / npc failed=False / npc ET=15,1703881372522 / npc distance=449,786510071117 / npc finished=True / drive failed=False / player ET=16,9877681357192 / npc reaction=0,791666666666656 / player reaction=0,183333333333325
+PASS Excessively cocky strategy can lose despite greater output
+PASS Equal-output matchup does not activate build-based confidence
+PASS Hydrated fuel/fluids strategy refresh does not accumulate reaction delays
+PASS Attempts vary driver response while authored hardware/wear stay identical
+PASS starter-hatch controlled launch/proper lifted shifts win
+PASS starter-hatch ordinary first-pass hardware survives
+PASS starter-hatch normal first-race margin remains close
+PASS starter-hatch authored driver/physics worker parity
+PASS starter-hatch poor launch/early shifts lose
+PASS starter-hatch ordinary first-pass hardware survives
+PASS starter-hatch moderately early shifts and delayed launch lose
+PASS starter-hatch first actual career attempt can lose without qualification or first-win bonus
+PASS starter-hatch purchased starter earns first career progress with captured rival wear
+PASS Career settlement refresh counter advances once
+PASS Repeated settlement cannot pay or refresh again
+PASS Captured rival and purchased ownership ledger remain valid
+PASS Purchased/career/rival snapshot reload retains state
+PASS Identical borderline player inputs can win or lose against different driver attempt seeds
+PASS Recorded driving seed reproduces human variation exactly in both execution modes
+seed,player_total,rival_total,won
+1,19.463,19.493,True
+2,19.463,19.432,False
+3,19.463,19.391,False
+4,19.463,19.474,True
+5,19.463,19.522,True
+6,19.463,19.544,True
+7,19.463,19.428,False
+8,19.463,19.416,False
+9,19.463,19.458,False
+10,19.463,19.414,False
+11,19.463,19.415,False
+12,19.463,19.469,True
+13,19.463,19.575,True
+14,19.463,19.483,True
+15,19.463,19.496,True
+16,19.463,19.445,False
+
+PASS juniper-economy controlled launch/proper lifted shifts win
+PASS juniper-economy ordinary first-pass hardware survives
+PASS juniper-economy normal first-race margin remains close
+PASS juniper-economy authored driver/physics worker parity
+PASS juniper-economy poor launch/early shifts lose
+PASS juniper-economy ordinary first-pass hardware survives
+PASS juniper-economy moderately early shifts and delayed launch lose
+PASS juniper-economy first actual career attempt can lose without qualification or first-win bonus
+PASS juniper-economy purchased starter earns first career progress with captured rival wear
+PASS Career settlement refresh counter advances once
+PASS Repeated settlement cannot pay or refresh again
+PASS Captured rival and purchased ownership ledger remain valid
+PASS Purchased/career/rival snapshot reload retains state
+PASS juniper-club controlled launch/proper lifted shifts win
+PASS juniper-club ordinary first-pass hardware survives
+PASS juniper-club normal first-race margin remains close
+PASS juniper-club authored driver/physics worker parity
+PASS juniper-club poor launch/early shifts lose
+PASS juniper-club ordinary first-pass hardware survives
+PASS juniper-club moderately early shifts and delayed launch lose
+PASS juniper-club first actual career attempt can lose without qualification or first-win bonus
+PASS juniper-club purchased starter earns first career progress with captured rival wear
+PASS Career settlement refresh counter advances once
+PASS Repeated settlement cannot pay or refresh again
+PASS Captured rival and purchased ownership ledger remain valid
+PASS Purchased/career/rival snapshot reload retains state
+starter,behavior,player_total,rival_total,won,failed
+starter-hatch,good,19.079,19.484,True,False
+starter-hatch,poor,33.067,19.484,False,False
+starter-hatch,timing-errors,20.191,19.484,False,False
+juniper-economy,good,18.523,19.484,True,False
+juniper-economy,poor,31.047,19.484,False,False
+juniper-economy,timing-errors,19.650,19.484,False,False
+juniper-club,good,18.592,19.484,True,False
+juniper-club,poor,31.890,19.484,False,False
+juniper-club,timing-errors,19.701,19.484,False,False
+
+TOTAL 101

@@ -5,6 +5,15 @@ namespace DragLab.Domain
     public static class ServiceDynamics
     {
         public static double Health(CarSimulation car,PartCategory slot){var p=car.mechanics.Part(slot);return p==null?0:p.condition.failed?0:DragMath.Clamp(p.condition.health,0,1);}
+        static double HeaterHealth(CarSimulation car)
+        {
+            var p=car.mechanics.Part(PartCategory.GlowPlugs);
+            if(p==null||p.condition.failed)return 0;
+            var elements=p.condition.elements;
+            if(elements==null||elements.Length==0)return Health(car,PartCategory.GlowPlugs);
+            double total=0;foreach(var e in elements)total+=e.Failed?0:DragMath.Clamp(e.health,0,1);
+            return total/elements.Length;
+        }
         static double Loss(CarSimulation car,PartCategory slot){return (1-Health(car,slot))*car.driver.ConditionSeverity;}
         public static void Prepare(CarSimulation car)
         {
@@ -27,7 +36,7 @@ namespace DragLab.Domain
             s.extraEngineFrictionNm=Loss(car,PartCategory.Bearings)*(4+s.rpm*.0015);
             EngineElements.Prepare(car);
             CombustionHardware.Prepare(car);
-            if(CombustionHardware.Diesel(car.spec)){double heaters=Health(car,PartCategory.GlowPlugs);double compression=DragMath.Clamp((car.spec.combustion.compressionRatio-12)/5,0,1);s.dieselColdFactor=s.engineTemperature+(1-s.engineTemperature)*(.55+.35*heaters)*compression;}else s.dieselColdFactor=1;
+            if(CombustionHardware.Diesel(car.spec)){double heaters=HeaterHealth(car);double compression=DragMath.Clamp((car.spec.combustion.compressionRatio-12)/5,0,1);s.dieselColdFactor=s.engineTemperature+(1-s.engineTemperature)*(.55+.35*heaters)*compression;}else s.dieselColdFactor=1;
             double oilFraction=s.fluids.oilLitres/f.oilMinimumLitres;
             double pickup=DragMath.Clamp(oilFraction,0,1);
             // Excess oil after fitting a smaller pan can aerate under crank windage.
