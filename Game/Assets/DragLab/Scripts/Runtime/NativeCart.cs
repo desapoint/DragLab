@@ -18,6 +18,8 @@ namespace DragLab.Runtime
         ScrollView cartScroll,cartPreviewScroll;
         Label cartError,cartEmpty;
         Button cartCheckout,cartClear;
+        readonly Dictionary<string,Dictionary<string,bool>> cartStatGroups=new Dictionary<string,Dictionary<string,bool>>();
+        readonly Dictionary<string,bool> cartStatDifferences=new Dictionary<string,bool>();
         readonly List<RacingSurface> cartPageSurfaces=new List<RacingSurface>();
         internal bool CartPageOpen=>cartPageOpen;
         internal int CartPreviewBuildCount {get;private set;}
@@ -99,7 +101,12 @@ namespace DragLab.Runtime
             if(car!=null){var model=new NativePartBrowser(p,game.CartLines,false,"Cart",game.NativeUsedPrice,game.NativeSalePrice);CartPreviewBuildCount++;
                 if(model.Current!=null){var planned=model.Plan??(game.CartCount==0?model.Current:null);
                     if(planned!=null){cartPreview.Add(new NativeDynoPanel(new[]{new NativeDynoSeries("Current","Current",model.Current,NativeDynoStyle.Primary),new NativeDynoSeries("Plan","Planned",planned,NativeDynoStyle.Alternative),new NativeDynoSeries("NoWear","No wear",OwnedHealthy(car),NativeDynoStyle.Reference)},SharedUnitSettings.Current.torque,"cartDyno"));
-                        NativeStatsPanel stats=null;stats=new NativeStatsPanel(model.Current,SharedUnitSettings.Current,new[]{NativeStatCatalog.TuningSummary()},new Dictionary<string,bool>(),d=>OpenDialog(d.Label,d.InfoExplanation(stats.Current,stats.Proposed),new[]{new DialogAction("Close",CloseDialog)}),CartSurface,planned){name="cartQuickStats"};stats.AddToClassList("part-quick-stats");cartPreview.Add(stats);
+                        NativeStatsPanel stats=null;stats=new NativeStatsPanel(model.Current,SharedUnitSettings.Current,new[]{NativeStatCatalog.TuningSummary()},new Dictionary<string,bool>(),d=>OpenDialog(d.Label,d.InfoExplanation(stats.Current,stats.Proposed),new[]{new DialogAction("Close",CloseDialog)}),CartSurface,planned){name="cartQuickStats"};stats.AddToClassList("part-quick-stats");stats.Q<Button>("statsDifferencesOnly").name="cartQuickDifferences";cartPreview.Add(stats);
+                        if(!cartStatGroups.TryGetValue(car.instanceId,out var collapsed)){collapsed=new Dictionary<string,bool>();cartStatGroups[car.instanceId]=collapsed;}
+                        var groups=NativeStatCatalog.Groups(model.Current,planned).Select(g=>new NativeStatGroup(g.Id,g.Title,g.Definitions.ToArray()){InitiallyCollapsed=true,Children=g.Children});
+                        NativeStatsPanel details=null;details=new NativeStatsPanel(model.Current,SharedUnitSettings.Current,groups,collapsed,d=>OpenDialog(d.Label,d.InfoExplanation(details.Current,details.Proposed),new[]{new DialogAction("Close",CloseDialog)}),CartSurface,planned,cartStatDifferences.TryGetValue(car.instanceId,out bool only)&&only){name="cartStats"};
+                        details.AddToClassList("cart-detailed-stats");details.Q<Button>("statsDifferencesOnly").name="cartDifferencesOnly";
+                        details.DifferencesOnlyChanged=value=>cartStatDifferences[car.instanceId]=value;details.GroupOpened=_=>ExcludeTabTraversal();cartPreview.Add(details);
                     }else cartPreview.Add(new Label(model.PlanError??"Preview unavailable."){enableRichText=false});
                 }else cartPreview.Add(new Label("Engine preview unavailable."));
             }

@@ -387,3 +387,6 @@
 .cart-preview-frame .car-dyno-plot { height: 180px; }
 .compact .cart-list-frame { margin-right: 14px; }
 .compact .cart-list-scroll, .compact .cart-preview-scroll { padding-left: 12px; }
+
+.cart-detailed-stats { margin-top: 16px; }
+.cart-detailed-stats .stat-row { width: 100%; margin-right: 0; }

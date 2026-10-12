@@ -15,6 +15,26 @@ namespace DragLab.Runtime
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
         IEnumerator CartClick(WindowsKeyboardProbe input,string id)
         {shell.Root.Q<ScrollView>("cartScroll").ScrollTo(shell.Root.Q(id));yield return new WaitForSecondsRealtime(.15f);yield return Click(input,id);}
+        IEnumerator CartStatClick(WindowsKeyboardProbe input,string id)
+        {shell.Root.Q<ScrollView>("cartPreviewScroll").ScrollTo(shell.Root.Q<NativeStatsPanel>("cartStats").Q(id));yield return new WaitForSecondsRealtime(.15f);yield return Click(input,id);}
+        IEnumerator NativeCartStatChecks(WindowsKeyboardProbe input)
+        {
+            var panel=shell.Root.Q<NativeStatsPanel>("cartStats");var expected=NativeStatCatalog.Groups(panel.Current.Inspection,panel.Proposed.Inspection);
+            Check(expected.All(g=>panel.Q("statsGroup:"+g.Id)!=null)&&expected.Count==8,"Cart exposes the eight shared full-stat groups including components, fluids, gearing and performance");
+            Check(expected.All(g=>panel.Q("statsBody:"+g.Id).ClassListContains("hidden")),"Full cart groups start collapsed below the unchanged four-stat summary");
+            int builds=shell.CartPreviewBuildCount;string before=JsonUtility.ToJson(game.Profile),lines=JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()});byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);float footer=shell.Root.Q("cartFooter").worldBound.yMin;
+            yield return CartStatClick(input,"statsGroup:Engine");var hp=NativeStatCatalog.Engine.Definitions.First(d=>d.Id=="peakHp");
+            Check(panel.Q<Label>("statValue:peakHp").text==hp.Value(panel.Current,SharedUnitSettings.Current)+" → "+hp.Value(panel.Proposed,SharedUnitSettings.Current),"Full comparison reads actual Current and Planned values from the shared snapshot");
+            Check(panel.Q("stat:peakHp").Q(className:"stat-bar-change")!=null&&panel.Q<Label>("statDelta:peakHp").text.Contains("Better"),"Shared change bars and positive/negative interpretation remain visible");
+            yield return CartStatClick(input,"statInfo:peakHp");Check(shell.ModalOpen&&shell.Root.Q<ScrollView>("modalContent").Query<Label>().ToList().Any(l=>l.text==hp.InfoExplanation(panel.Current,panel.Proposed)),"Cart info uses the same concise general/tradeoff explanation without repeated figures");yield return Click(input,"modalClose");
+            yield return CartStatClick(input,"statsGroup:Components");yield return CartStatClick(input,"statsGroup:SavedTuning");Check(panel.Q("statsBody:SavedTuning").childCount>0,"Nested applied/proposed tuning and actual component groups are available in the cart");
+            yield return CartStatClick(input,"cartDifferencesOnly");Check(panel.DifferencesOnly&&panel.Query<VisualElement>(className:"stat-row").ToList().All(row=>row.ClassListContains("hidden")==!((NativeStatDefinition)row.userData).Differs(panel.Current,panel.Proposed)),"Differences only hides unchanged full-list values using the common comparison rules");
+            Check(shell.Root.Q<NativeStatsPanel>("cartQuickStats").Q("stat:tuningWeight")!=null&&!shell.Root.Q<NativeStatsPanel>("cartQuickStats").Q("stat:tuningWeight").ClassListContains("hidden"),"Full-list filtering leaves the four summary stats visible");
+            Check(Math.Abs(footer-shell.Root.Q("cartFooter").worldBound.yMin)<1&&shell.Root.Q("cartPreviewScroll").worldBound.yMax<=shell.Root.Q("cartFooter").worldBound.yMin,"Expanded groups scroll without moving or obscuring totals and checkout");yield return CartStatClick(input,"statsGroup:Engine");yield return CartStatClick(input,"statsGroup:Engine");yield return Capture("cart-full-stats");
+            yield return Key(input,0x77);yield return Key(input,0x77);Check(panel==shell.Root.Q<NativeStatsPanel>("cartStats")&&panel.DifferencesOnly&&!panel.Q("statsBody:Engine").ClassListContains("hidden"),"F8 preserves the same full-stat panel and disclosure/filter state");
+            Check(builds==shell.CartPreviewBuildCount&&before==JsonUtility.ToJson(game.Profile)&&lines==JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()})&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Full-stat browsing, filtering and info never recapture, edit, heal or save the build/cart");
+            yield return CartStatClick(input,"cartDifferencesOnly");shell.Root.Q<ScrollView>("cartPreviewScroll").scrollOffset=Vector2.zero;
+        }
         IEnumerator NativeCartChecks(WindowsKeyboardProbe input)
         {
             game.ClearNativeCart();yield return new WaitForSecondsRealtime(.2f);
@@ -27,6 +47,7 @@ namespace DragLab.Runtime
             Check(shell.CartPageOpen&&!shell.ModalOpen&&shell.Root.Q("partsPage").ClassListContains("hidden"),"Cart replaces Build content as a full page with persistent navigation");
             Check(shell.Root.Q("cartBack").ClassListContains("car-back-button")&&shell.Root.Q("cartBack").worldBound.width==40&&shell.Root.Q("cartBack").worldBound.height==34,"Cart uses the original compact shared Back control");
             Check(shell.Root.Q("cartRows").childCount==4&&shell.Root.Q<NativeDynoPlot>("cartDyno")!=null&&shell.Root.Q<NativeStatsPanel>("cartQuickStats")!=null,"All existing rows and cumulative dyno/four-stat preview are retained on the cart page");
+            yield return NativeCartStatChecks(input);
             int expected=game.NativeCartTotal();Check(shell.Root.Q<Label>("cartTotal").text==DisplayUnits.Money(expected)&&shell.Root.Q<Label>("cartBalance").text==DisplayUnits.Money((long)p.cash-expected)&&shell.Root.Q<Label>("cartCredits").text==DisplayUnits.Money(game.NativeSalePrice(spare.element.id,true)),"Purchases, sale credits, net total and remaining cash use actual shared pricing");
             int captures=shell.CartPreviewBuildCount,models=shell.PartBrowserBuildCount;yield return new WaitForSecondsRealtime(.5f);Check(shell.CartPreviewBuildCount==captures&&shell.PartBrowserBuildCount==models,"Idle cart does not recalculate previews or evaluate hidden shop offers");yield return Capture("cart-page");
             yield return Key(input,0x77);yield return Key(input,0x77);Check(shell.CartPageOpen&&game.CartLines.Count==4,"F8 preserves the complete cart page and the same transaction plan");
@@ -38,6 +59,7 @@ namespace DragLab.Runtime
             yield return CartClick(input,"cartEdit:"+NativeMenuShell.NativeCartRowKey(line));yield return PartDialogClick(input,"partPurchaseMode:Individual");yield return PartDialogClick(input,"purchasePosition:"+second);yield return PartDialogClick(input,"partQuantityPlus");yield return Click(input,"dialogApply");
             Check(game.CartLines.Count==4&&line.action==CartAction.NewUnits&&line.quantity==2&&line.positions.SequenceEqual(new[]{second})&&before==JsonUtility.ToJson(p),"Apply converts the same kit row into exact individual replacements and extras without duplicate charges");
             yield return CartClick(input,"cartEdit:"+NativeMenuShell.NativeCartRowKey(line));Check(shell.Root.Q<Button>("purchasePosition:"+second).ClassListContains("selected")&&shell.Root.Q<FloatField>("partQuantity").value==2,"Reopened cart editing retains the exact selected position and quantity");yield return Click(input,"dialogCancel");
+            Check(!shell.Root.Q<NativeStatsPanel>("cartStats").Q("statsBody:Engine").ClassListContains("hidden"),"A changed cart preview retains expanded full-stat groups");
             var number=shell.Root.Q<FloatField>("cartQuantity:"+NativeMenuShell.NativeCartRowKey(line));number.value=4;yield return new WaitForSecondsRealtime(.2f);Check(line.quantity==4&&line.positions.SequenceEqual(new[]{second})&&game.CartLines.Count==4,"Inline quantity replaces its row count and preserves selected replacements");
             number=shell.Root.Q<FloatField>("cartQuantity:"+NativeMenuShell.NativeCartRowKey(line));number.value=float.NaN;Check(line.quantity==4&&number.value==4,"Non-finite inline quantities are rejected");number.value=2.5f;Check(line.quantity==4&&number.value==4,"Fractional inline quantities are rejected");number.value=100;Check(line.quantity==4&&number.value==4,"Inline quantities respect the 99-unit limit");
             var valveLine=game.CartLines.First(l=>l.definitionId==valves.definitionId);yield return CartClick(input,"cartEdit:"+NativeMenuShell.NativeCartRowKey(valveLine));yield return PartDialogClick(input,"partPurchaseDestination:Install");yield return PartDialogClick(input,"partPurchaseRole:"+InventoryUnits.Roles(p,car,p.catalog.Find(valves.definitionId))[0]);
@@ -54,6 +76,7 @@ namespace DragLab.Runtime
             Check(before==JsonUtility.ToJson(p)&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"All cart edits/removals/previews remain isolated from actual assets, resources and save files");
             yield return Click(input,"cartCheckout");yield return Click(input,"dialogCancel");Check(shell.CartPageOpen&&!shell.ModalOpen&&game.CartLines.Count==5,"Cancelling checkout returns to the same full cart without losing its plan");
             yield return CartClick(input,"cartRemove:"+NativeMenuShell.NativeCartRowKey(tire));Check(!game.CartLines.Contains(tire),"Remove affects only the targeted row");yield return Click(input,"cartClear");yield return Click(input,"dialogClear");Check(shell.CartPageOpen&&game.CartCount==0&&!shell.Root.Q<Button>("cartCheckout").enabledInHierarchy,"Confirmed Clear leaves an honest empty cart and disabled checkout");
+            shell.Root.Q<NativeStatsPanel>("cartStats").SetDifferencesOnly(true);Check(!shell.Root.Q<NativeStatsPanel>("cartStats").Q("statsNoDifferences").ClassListContains("hidden"),"An empty cart compares Current to itself and shows no differing stats honestly");
             yield return Click(input,"cartBack");Check(!shell.CartPageOpen&&!shell.Root.Q("partsPage").ClassListContains("hidden"),"Back restores the previous Build content without touching the car");
         }
 #endif
