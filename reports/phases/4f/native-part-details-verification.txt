@@ -1,0 +1,193 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: All mechanical categories map to the five Build sections
+PASS: Projected HP gain uses the authoritative selected-car build
+PASS: HP-gain filter accepts measured gains
+PASS: HP-loss filter rejects measured gains
+PASS: Minimum gain magnitude is enforced
+PASS: Subcategory selections combine with OR inside the category filter
+PASS: Foreign hardware has no fabricated performance gain or zero measurement
+PASS: Unavailable values do not match unchanged-performance filters
+PASS: Unknown sort values stay last even in descending order
+PASS: Affordability includes equality and uses actual offer price
+PASS: Planned reference accounts for pending installs when evaluating a downgrade
+PASS: Invalid planned builds stay unavailable instead of falling back to installed parts
+PASS: Installed-item comparisons preserve exact wear and mass
+PASS: Model evaluation never edits supplies, identities, wear, money or fitted parts
+PASS: Spring-travel and potential engine-damage warnings remain visible in Compatible
+PASS: Planned-build fit compatibility also includes parts carrying operating risks
+PASS: Cam/follower dependency is distinguished from mounting incompatibility
+PASS: Pending matching followers satisfy the cam dependency
+PASS: A fitting wheel remains compatible on an engine-less chassis without an invented dyno
+PASS: A physically fitting loose unit stays in Compatible even when complete-set installation is required first
+PASS: Matched individual-unit preview is available:
+PASS: Individual-unit preview follows the chosen cylinder condition without healing any actual element
+PASS: Candidate fits and compares across all five systems: city-three / HeadIntake
+PASS: Candidate fits and compares across all five systems: city-three / Cooling
+PASS: Candidate fits and compares across all five systems: city-three / Gearbox
+PASS: Candidate fits and compares across all five systems: city-three / Tires
+PASS: Candidate fits and compares across all five systems: city-three / Interior
+PASS: Varied-car previews preserve applied condition/resources: city-three
+PASS: Candidate fits and compares across all five systems: juniper-club / HeadIntake
+PASS: Candidate fits and compares across all five systems: juniper-club / Cooling
+PASS: Candidate fits and compares across all five systems: juniper-club / Gearbox
+PASS: Candidate fits and compares across all five systems: juniper-club / Tires
+PASS: Candidate fits and compares across all five systems: juniper-club / Interior
+PASS: Varied-car previews preserve applied condition/resources: juniper-club
+PASS: Candidate fits and compares across all five systems: juniper-economy / HeadIntake
+PASS: Candidate fits and compares across all five systems: juniper-economy / Cooling
+PASS: Candidate fits and compares across all five systems: juniper-economy / Gearbox
+PASS: Candidate fits and compares across all five systems: juniper-economy / Tires
+PASS: Candidate fits and compares across all five systems: juniper-economy / Interior
+PASS: Varied-car previews preserve applied condition/resources: juniper-economy
+PASS: Candidate fits and compares across all five systems: kestrel-track / HeadIntake
+PASS: Candidate fits and compares across all five systems: kestrel-track / Cooling
+PASS: Candidate fits and compares across all five systems: kestrel-track / Gearbox
+PASS: Candidate fits and compares across all five systems: kestrel-track / Tires
+PASS: Candidate fits and compares across all five systems: kestrel-track / Interior
+PASS: Varied-car previews preserve applied condition/resources: kestrel-track
+PASS: Candidate fits and compares across all five systems: rally-sedan / HeadIntake
+PASS: Candidate fits and compares across all five systems: rally-sedan / Cooling
+PASS: Candidate fits and compares across all five systems: rally-sedan / Gearbox
+PASS: Candidate fits and compares across all five systems: rally-sedan / Tires
+PASS: Candidate fits and compares across all five systems: rally-sedan / Interior
+PASS: Varied-car previews preserve applied condition/resources: rally-sedan
+PASS: Candidate fits and compares across all five systems: sport-coupe / HeadIntake
+PASS: Candidate fits and compares across all five systems: sport-coupe / Cooling
+PASS: Candidate fits and compares across all five systems: sport-coupe / Gearbox
+PASS: Candidate fits and compares across all five systems: sport-coupe / Tires
+PASS: Candidate fits and compares across all five systems: sport-coupe / Interior
+PASS: Varied-car previews preserve applied condition/resources: sport-coupe
+PASS: Candidate fits and compares across all five systems: starter-hatch / HeadIntake
+PASS: Candidate fits and compares across all five systems: starter-hatch / Cooling
+PASS: Candidate fits and compares across all five systems: starter-hatch / Gearbox
+PASS: Candidate fits and compares across all five systems: starter-hatch / Tires
+PASS: Candidate fits and compares across all five systems: starter-hatch / Interior
+PASS: Varied-car previews preserve applied condition/resources: starter-hatch
+PASS: Candidate fits and compares across all five systems: super-v8 / HeadIntake
+PASS: Candidate fits and compares across all five systems: super-v8 / Cooling
+PASS: Candidate fits and compares across all five systems: super-v8 / Gearbox
+PASS: Candidate fits and compares across all five systems: super-v8 / Tires
+PASS: Candidate fits and compares across all five systems: super-v8 / Interior
+PASS: Varied-car previews preserve applied condition/resources: super-v8
+PASS: Candidate fits and compares across all five systems: timber-diesel / HeadIntake
+PASS: Candidate fits and compares across all five systems: timber-diesel / Cooling
+PASS: Candidate fits and compares across all five systems: timber-diesel / Gearbox
+PASS: Candidate fits and compares across all five systems: timber-diesel / Tires
+PASS: Candidate fits and compares across all five systems: timber-diesel / Interior
+PASS: Varied-car previews preserve applied condition/resources: timber-diesel
+PASS: Candidate fits and compares across all five systems: timber-diesel-tow / HeadIntake
+PASS: Candidate fits and compares across all five systems: timber-diesel-tow / Cooling
+PASS: Candidate fits and compares across all five systems: timber-diesel-tow / Gearbox
+PASS: Candidate fits and compares across all five systems: timber-diesel-tow / Tires
+PASS: Candidate fits and compares across all five systems: timber-diesel-tow / Interior
+PASS: Varied-car previews preserve applied condition/resources: timber-diesel-tow
+PASS: Candidate fits and compares across all five systems: touring-six / HeadIntake
+PASS: Candidate fits and compares across all five systems: touring-six / Cooling
+PASS: Candidate fits and compares across all five systems: touring-six / Gearbox
+PASS: Candidate fits and compares across all five systems: touring-six / Tires
+PASS: Candidate fits and compares across all five systems: touring-six / Interior
+PASS: Varied-car previews preserve applied condition/resources: touring-six
+PASS: Candidate fits and compares across all five systems: utility-pickup / HeadIntake
+PASS: Candidate fits and compares across all five systems: utility-pickup / Cooling
+PASS: Candidate fits and compares across all five systems: utility-pickup / Gearbox
+PASS: Candidate fits and compares across all five systems: utility-pickup / Tires
+PASS: Candidate fits and compares across all five systems: utility-pickup / Interior
+PASS: Varied-car previews preserve applied condition/resources: utility-pickup
+PASS: Candidate fits and compares across all five systems: v8-muscle / HeadIntake
+PASS: Candidate fits and compares across all five systems: v8-muscle / Cooling
+PASS: Candidate fits and compares across all five systems: v8-muscle / Gearbox
+PASS: Candidate fits and compares across all five systems: v8-muscle / Tires
+PASS: Candidate fits and compares across all five systems: v8-muscle / Interior
+PASS: Varied-car previews preserve applied condition/resources: v8-muscle
+PASS: Bounded part calculations finish without a race probe / route Parts visible True builds 1 pending 0
+Engine-group preview wait: 5,23 s / 869 offers
+PASS: Build displays the native shared part browser
+PASS: Build has five broad category tabs
+PASS: Parts use a two-column card grid
+PASS: Part category tabs have a complete unclipped control height
+PASS: Filter Cancel discards multi-select changes
+PASS: Bounded part calculations finish without a race probe / route Parts visible True builds 1 pending 0
+Engine-group preview wait: 0,00 s / 869 offers
+PASS: Filter Apply commits local subcategory and HP criteria
+PASS: Visible cards respect combined filters
+PASS: Part details reuse the shared dyno and full comparison stats
+PASS: Detail Back is a compact filled icon with a separate title gutter
+PASS: Details omit Shop/Inventory/Installed and browsing tools
+PASS: Description, key specifications and physical fit status are visible
+PASS: Main description omits duplicated supplier and internal fitment boilerplate
+PASS: Facts and dyno use a bounded side-by-side first row
+PASS: Four summary bars and detailed comparisons follow the first row at full width
+PASS: Price and cart actions remain outside content scrolling
+PASS: Detail Back is a compact filled icon with a separate title gutter
+PASS: Details omit Shop/Inventory/Installed and browsing tools
+PASS: Description, key specifications and physical fit status are visible
+PASS: Main description omits duplicated supplier and internal fitment boilerplate
+PASS: Facts and dyno use a bounded side-by-side first row
+PASS: Four summary bars and detailed comparisons follow the first row at full width
+PASS: Price and cart actions remain outside content scrolling
+PASS: Detail Back is a compact filled icon with a separate title gutter
+PASS: Details omit Shop/Inventory/Installed and browsing tools
+PASS: Description, key specifications and physical fit status are visible
+PASS: Main description omits duplicated supplier and internal fitment boilerplate
+PASS: Facts and dyno use a bounded side-by-side first row
+PASS: Four summary bars and detailed comparisons follow the first row at full width
+PASS: Price and cart actions remain outside content scrolling
+PASS: Detail Back is a compact filled icon with a separate title gutter
+PASS: Details omit Shop/Inventory/Installed and browsing tools
+PASS: Description, key specifications and physical fit status are visible
+PASS: Main description omits duplicated supplier and internal fitment boilerplate
+PASS: Facts and dyno use a bounded side-by-side first row
+PASS: Four summary bars and detailed comparisons follow the first row at full width
+PASS: Price and cart actions remain outside content scrolling
+PASS: Part details retain shared crisp 4K scaling
+PASS: Expanded detail content cannot move the checkout actions
+PASS: Compact part information action opens the shared specifications dialog
+PASS: Returning from details retains browsing criteria
+PASS: Sort supports magnitude and direction
+PASS: Searching, filters, sorting and comparisons do not save or rebuild the source model
+PASS: Planning installation stages one complete set without touching the car
+PASS: Compatibility reference switches to the same pending cart plan
+PASS: F8 exposes the legacy parts interface with the same staged cart
+PASS: F8 returns to native Build without losing filters or plan
+PASS: Cart shows cumulative actual-condition and no-wear curves
+PASS: Failed durable checkout keeps the cart and applied assets intact
+PASS: Confirmed checkout uses the atomic shared transaction and installs the quoted set
+PASS: Checkout preserves valid ownership and exact component identities
+PASS: Installed source contains only actual fitted components
+PASS: Replaced OEM set remains accessible in retained inventory
+PASS: Bounded part calculations finish without a race probe / route Parts visible True builds 6 pending 0
+Engine-group preview wait: 0,00 s / 2 offers
+PASS: Native position choice previews the explicitly selected cylinder
+PASS: Returning to the grid refreshes the unit card's selected-position condition delta
+PASS: Build category selection works: 1
+PASS: Build category selection works: 2
+PASS: Build category selection works: 3
+PASS: Build category selection works: 4
+PASS: Build category selection works: 0
+PASS: Tabs and browser tools fit the compact viewport
+PASS: Build uses shared crisp 4K scaling and anchored tabs
+PASS: Build retains the no-Tab contract with no runtime errors
+Checks: 188 / runtime errors: 0
