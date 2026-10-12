@@ -316,7 +316,6 @@
 .part-detail-heading { flex-direction: row; align-items: center; margin-bottom: 12px; flex-shrink: 0; }
 .part-detail-title { flex-grow: 1; white-space: normal; }
 .part-info-button { min-width: 34px; width: 34px; padding: 0; margin-left: 12px; }
-.parts-page .car-back-button { min-width: 36px; width: 36px; height: 32px; margin-right: 16px; }
 .parts-page .car-details-scroll { padding: 2px 10px 12px 2px; }
 .part-detail-top { flex-direction: row; align-items: flex-start; margin-bottom: 16px; }
 .part-detail-facts { flex-basis: 34%; flex-shrink: 0; min-width: 0; padding: 14px; margin-right: 18px; border-radius: 12px; overflow: hidden; }

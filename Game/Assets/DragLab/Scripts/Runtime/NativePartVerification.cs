@@ -24,7 +24,7 @@ namespace DragLab.Runtime
         void PartDetailLayoutChecks()
         {
             var root=shell.Root;var view=root.Q<ScrollView>("partsDetailScroll");var back=root.Q("partBack");var title=root.Q("partDetailTitle");var actions=root.Q("partDetailActions");
-            Check(back.worldBound.width<=40&&title.worldBound.xMin-back.worldBound.xMax>=15,"Detail Back is a compact filled icon with a separate title gutter");
+            Check(Math.Abs(back.worldBound.width-40)<.1&&Math.Abs(back.worldBound.height-34)<.1&&title.worldBound.xMin-back.worldBound.xMax>=15,"Detail Back uses the existing shared 40-by-34 style and title gutter");
             Check(root.Q(className:"parts-sources").ClassListContains("hidden")&&root.Q("partsToolbar").ClassListContains("hidden"),"Details omit Shop/Inventory/Installed and browsing tools");
             Check(!string.IsNullOrWhiteSpace(root.Q<Label>("partDescription").text)&&root.Q("partKeySpecs").childCount>0&&root.Q("partDetailFacts").Query<Label>().ToList().Any(l=>l.text=="Compatible"),"Description, key specifications and physical fit status are visible");
             Check(!root.Q<Label>("partDescription").text.Contains("Supplier:")&&!root.Q<Label>("partDescription").text.Contains("Fitment:"),"Main description omits duplicated supplier and internal fitment boilerplate");
