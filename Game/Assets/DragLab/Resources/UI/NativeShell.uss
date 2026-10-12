@@ -339,3 +339,16 @@
 .part-queued { font-size: 17px; color: var(--racing-muted); margin: 0 16px; }
 .part-detail-actions .action-button { margin-left: 10px; }
 .compact .part-detail-facts { margin-right: 12px; padding: 12px; }
+
+.part-purchase { flex-shrink: 0; margin-bottom: 12px; }
+.part-purchase-row { flex-direction: row; align-items: center; flex-wrap: wrap; }
+.part-purchase-choice { flex-direction: row; flex-shrink: 0; height: 32px; margin-right: 24px; margin-bottom: 4px; min-width: 240px; }
+.part-purchase-choice .choice-button { min-width: 100px; }
+.part-purchase-quantity { flex-direction: row; align-items: center; margin-bottom: 4px; }
+.part-purchase-quantity > Label { margin-right: 12px; min-width: 46px; }
+.part-purchase-quantity .setting-number { width: 62px; margin: 0 4px; }
+.part-quantity-step { min-width: 32px; width: 32px; height: 28px; padding: 0; margin: 0; }
+.part-purchase-error { font-size: 16px; margin: 0; }
+.part-position-choice { margin: 8px 0 0 0; min-width: 180px; }
+
+.part-purchase-roles .part-purchase-choice { min-width: 340px; }

@@ -169,3 +169,6 @@ Use Engine, Induction, Drivetrain, Wheels & brakes and Body & chassis. Installed
 
 
 Requested detail refinement (2026-10-12): improve the shared shop part detail view only, including the user's compact/separated Back, hidden source submenu, visible description and compatibility, right-side dyno and full-width specifications/comparisons underneath. Keep the existing cart, fit semantics, atomic confirmations, native theme and F8. Technical delivery is a control-sized checkpoint; 4F/G/H completion and visual acceptance are not inferred. [Review/evidence](../reports/phases/4f/02-PART-DETAILS.md).
+
+
+Shop purchase controls (2026-10-12): the user approved the next small checkpoint: complete-set defaults, optional modeled individual roles, integer quantity and formatted total in part details. Use the shared joined choices, number input and shaded steppers. Storage buying requires no fitted position; individual Add & install explicitly selects matching positions, with extras staying loose. Existing cart Install for new units must use the same picker and show its selected positions. Keep draft editing/staging read-only, actual part condition, atomic checkout, F8, no Tab/focus decoration and the original Back visual. Do not complete the cart-page redesign or later controls without user review. [Delivery/checks](../reports/phases/4h/02-PURCHASE-CONTROLS.md).

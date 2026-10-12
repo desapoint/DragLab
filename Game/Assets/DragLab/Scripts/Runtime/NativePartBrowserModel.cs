@@ -102,6 +102,18 @@ namespace DragLab.Runtime
         internal static CarInspection Inspect(InspectionBuild b)=>CarInspection.CalculatePrepared(b,CarInspection.PrepareCar(b),false);
         internal string[] Positions(NativePartEntry e)=>e.Unit==null?new string[0]:InventoryUnits.Positions(reference,referenceCar,e.Definition.id,e.Unit.element.role);
         internal string PositionLabel(NativePartEntry e,string position)=>InventoryUnits.PositionLabel(reference,referenceCar,e.Definition.id,position);
+        internal NativePartEntry PreviewNewUnit(NativePartEntry offer,string role,IEnumerable<string> selection)
+        {
+            var e=new NativePartEntry{Id=offer.Id,Source="New",Definition=offer.Definition,Owned=offer.Owned,Price=InventoryPricing.NewUnit(offer.Definition,InventoryUnits.Count(actual,actualCar,offer.Definition))};
+            e.Unit=new LooseEngineElement{definitionId=e.Definition.id,element=new EngineElement{id="native-offer-unit",role=role,cylinder=-1,valve=-1},tireUnit=e.Definition.category==PartCategory.Tires,tire=e.Definition.category==PartCategory.Tires?new TireCondition():null};
+            var available=InventoryUnits.Positions(reference,referenceCar,e.Definition.id,role);var selected=selection.Where(available.Contains).Distinct().ToArray();
+            if(selected.Length==0&&available.Length>0)selected=new[]{available[0]};e.Position=selected.FirstOrDefault();Evaluate(e);
+            if(selected.Length>1&&e.Proposed!=null){
+                var copy=PartCart.PreviewProfile(reference,referenceCar,new[]{new PartCartLine{action=CartAction.NewUnits,definitionId=e.Definition.id,role=role,quantity=selected.Length,install=true,positions=selected.ToList()}});
+                e.Proposed=Inspect(InspectionBuild.Capture(copy,copy.SelectedCar));
+            }
+            return e;
+        }
         internal void Evaluate(NativePartEntry e)
         {
             if(e.Ready)return;e.Ready=true;var d=e.Definition;

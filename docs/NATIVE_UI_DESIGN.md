@@ -204,3 +204,6 @@ Part detail layout refinement (2026-10-12): the user requested improving shop de
 
 
 Back-button visual standard (2026-10-12): the existing Garage/Dealership Back button is the target, including the shared 40×34 dimensions, 20-point filled arrow, 16-point title gutter, grey metal surface, angled hover shine and pressed feedback. Part details inherit `car-back-button` directly; do not override its dimensions/style per screen. This supersedes the 36-point part-detail variant. [Checks/review](../reports/phases/4f/03-SHARED-BACK.md).
+
+
+Shop purchase controls (2026-10-12): the user approved the next small checkpoint: complete-set defaults, optional modeled individual roles, integer quantity and formatted total in part details. Use the shared joined choices, number input and shaded steppers. Storage buying requires no fitted position; individual Add & install explicitly selects matching positions, with extras staying loose. Existing cart Install for new units must use the same picker and show its selected positions. Keep draft editing/staging read-only, actual part condition, atomic checkout, F8, no Tab/focus decoration and the original Back visual. Do not complete the cart-page redesign or later controls without user review. [Delivery/checks](../reports/phases/4h/02-PURCHASE-CONTROLS.md).

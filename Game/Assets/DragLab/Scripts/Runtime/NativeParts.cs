@@ -103,7 +103,7 @@ namespace DragLab.Runtime
             foreach(var e in list){if(!cards.TryGetValue("partCard:"+e.Id,out var card))continue;bool match=PartsQuery.Matches(e,game.Profile.cash);card.EnableInClassList("hidden",!match);if(match)matches++;if(reorder)card.BringToFront();}
             partsCount.text=matches+" / "+list.Count;partsEmpty.text=game.Profile.SelectedCar==null?"Select a car in Garage.":list.Any(e=>!e.Ready)?"Calculating part changes…":"No matching parts";partsEmpty.EnableInClassList("hidden",matches>0);partsSort.Q<Label>().text=PartsQuery.Sort+(PartsQuery.Descending?" ↓":" ↑");
         }
-        void ClearPartDetails(){foreach(var s in partDetailSurfaces)surfaces.Remove(s);partDetailSurfaces.Clear();foreach(var child in partsDetail.Children().Where(c=>c!=partsDetailScroll).ToArray())child.RemoveFromHierarchy();partsDetailScroll.Clear();}
+        void ClearPartDetails(){foreach(var s in partDetailSurfaces)surfaces.Remove(s);partDetailSurfaces.Clear();foreach(var child in partsDetail.Children().Where(c=>c!=partsDetailScroll&&c!=partPurchaseControls).ToArray())child.RemoveFromHierarchy();partsDetailScroll.Clear();}
         void DecoratePartDetail(VisualElement element,RacingSurface.Kind kind){AddSurface(element,kind);partDetailSurfaces.Add(element.Q<RacingSurface>());}
         string PartStatText(PartStat stat)=>stat.label+": "+(stat.unit=="Nm"?SharedUnitSettings.Torque(stat.value,"0.##"):stat.unit=="bar"?SharedUnitSettings.Pressure(stat.value):stat.value.ToString("0.##")+" "+stat.unit);
         string PartDescription(PartDefinition definition){string text=definition.description??"";int supplier=text.IndexOf(" Supplier: ",StringComparison.Ordinal);return SharedUnitSettings.TorqueText(supplier<0?text:text.Substring(0,supplier));}
@@ -125,13 +125,14 @@ namespace DragLab.Runtime
         void OpenPartDetail(string id,bool remember=true)
         {
             var e=partsBrowser.Entries.Find(p=>p.Id==id);if(e==null){partsDetailId=null;RenderPartGrid();return;}
-            partsBrowser.Evaluate(e);if(remember)partsReturnScroll=partsScroll.scrollOffset;
+            partsBrowser.Evaluate(e);var offer=e;e=PurchasePreview(offer);if(remember)partsReturnScroll=partsScroll.scrollOffset;
             var offset=remember?Vector2.zero:partsDetailScroll.scrollOffset;
             partsDetailId=id;ShowPartsBrowsing(false);ClearPartDetails();partsScroll.AddToClassList("hidden");partsDetail.RemoveFromClassList("hidden");
             var heading=new VisualElement{name="partDetailHeading"};heading.AddToClassList("part-detail-heading");partsDetail.Insert(0,heading);
             var back=PartButton(heading,"partBack","",BackToParts,detail:true);back.AddToClassList("car-back-button");back.Add(new FilledMenuIcon("Back"));back.tooltip="Back to parts";
             var title=new Label(e.Definition.name){name="partDetailTitle",enableRichText=false};title.AddToClassList("car-detail-title");title.AddToClassList("part-detail-title");heading.Add(title);
             var info=PartButton(heading,"partInfo","i",()=>OpenDialog(e.Definition.name,SharedUnitSettings.TorqueText(e.Definition.description+"\n"+PartTuning.Summary(e.Definition)+"\n"+e.Reason+"\n"+string.Join("\n",PartSemantics.Stats(e.Definition).Select(PartStatText))),new[]{new DialogAction("Close",CloseDialog)}),detail:true);info.AddToClassList("part-info-button");info.tooltip="All part specifications";
+            BuildPurchaseControls(offer);
             var top=new VisualElement{name="partDetailTop"};top.AddToClassList("part-detail-top");partsDetailScroll.Add(top);
             var facts=new VisualElement{name="partDetailFacts"};facts.AddToClassList("part-detail-facts");top.Add(facts);top.EnableInClassList("part-preview-unavailable",e.Proposed==null);DecoratePartDetail(facts,RacingSurface.Kind.Panel);
             PartDetailFact(facts,"Compatibility",e.Compatibility,e.Compatibility=="Compatible"?"car-ready":"car-warning");
@@ -154,16 +155,17 @@ namespace DragLab.Runtime
             }
             bool fitting=e.Compatibility=="Compatible"||e.Compatibility=="Requires supporting changes";
             bool actualPosition=e.Unit==null||InventoryUnits.Positions(game.Profile,game.Profile.SelectedCar,e.Definition.id,e.Unit.element.role).Contains(e.Position);
-            if(e.Unit!=null&&e.Position!=null){PartDetailFact(facts,"Position",partsBrowser.PositionLabel(e,e.Position));PartButton(facts,"partPosition","Change position",()=>ChoosePartPosition(e),detail:true);if(!actualPosition){var notice=new Label("Apply the matching complete set before replacing this unit.");notice.AddToClassList("part-description");facts.Add(notice);}}
+            if(e.Source!="New"&&e.Unit!=null&&e.Position!=null){PartDetailFact(facts,"Position",partsBrowser.PositionLabel(e,e.Position));PartButton(facts,"partPosition","Change position",()=>ChoosePartPosition(e),detail:true);if(!actualPosition){var notice=new Label("Apply the matching complete set before replacing this unit.");notice.AddToClassList("part-description");facts.Add(notice);}}
+            if(e.Source=="New"&&e.Unit!=null&&e.Position!=null)PartDetailFact(facts,"Preview",string.Join(" · ",PurchaseDraft(offer).Positions.Count>0?PurchaseDraft(offer).Positions.Select(p=>InventoryUnits.PositionLabel(game.Profile,game.Profile.SelectedCar,e.Definition.id,p)):new[]{partsBrowser.PositionLabel(e,e.Position)}));
             var actions=new VisualElement{name="partDetailActions"};actions.AddToClassList("car-details-actions");actions.AddToClassList("part-detail-actions");partsDetail.Add(actions);
             var price=new Label(e.Price.HasValue?DisplayUnits.Money(e.Price.Value):""){name="partDetailPrice",enableRichText=false};price.AddToClassList("part-detail-price");actions.Add(price);
-            int queued=game.CartLines.Where(l=>e.Source=="New"?l.action==CartAction.NewSet&&l.definitionId==e.Definition.id:l.assetId==e.AssetId).Sum(l=>l.quantity);
-            if(queued>0){var queue=new Label("Queued × "+queued){name="partQueued"};queue.AddToClassList("part-queued");actions.Add(queue);}
+            int queued=game.CartLines.Where(l=>e.Source=="New"?l.definitionId==e.Definition.id&&l.action==(e.Unit==null?CartAction.NewSet:CartAction.NewUnits)&&l.role==e.Unit?.element.role:l.assetId==e.AssetId).Sum(l=>l.quantity);
+            if(queued>0||e.Source=="New"){var queue=new Label(queued>0?"Queued × "+queued:""){name="partQueued"};queue.AddToClassList("part-queued");actions.Add(queue);}
             if(game.PartsPage!="Installed"){
-                if(e.Source=="New"||e.Source=="Used")PartButton(actions,"partAdd","Add to cart",()=>{game.StageNativePart(e,false);partsStateKey=null;},detail:true).SetEnabled(fitting&&game.Profile.reputation>=e.Definition.reputationRequired);
+                if(e.Source=="New"||e.Source=="Used")PartButton(actions,"partAdd","Add to cart",()=>StagePurchase(offer,false),detail:true).SetEnabled(fitting&&game.Profile.reputation>=e.Definition.reputationRequired);
                 var fit=PartButton(actions,"partPlanInstall",e.Unit!=null&&e.Source=="Owned"?"Install unit":e.Source=="New"||e.Source=="Used"?"Add & install":"Plan install",()=>{
                     if(e.Unit!=null&&e.Source=="Owned"){long revision=game.Profile.revision;OpenDialog("Install unit?",partsBrowser.PositionLabel(e,e.Position),new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Install",()=>{if(game.InstallNativeUnit(e.Unit.element.id,e.Position,revision)){CloseDialog();partsStateKey=null;}else root.Q<ScrollView>("modalContent").Add(new Label(game.NativeNotice));},true)});}
-                    else {game.StageNativePart(e,true,e.Position);partsStateKey=null;}
+                    else StagePurchase(offer,true);
                 },true,true);fit.tooltip=e.Unit!=null&&e.Source=="Owned"?"Replace the selected unit after confirmation.":"Adds an installation plan to the cart; apply it at checkout.";fit.SetEnabled(fitting&&actualPosition&&!game.NativeBlockPreparationPending(e.Definition)&&(e.Unit==null||e.Position!=null)&&game.Profile.reputation>=e.Definition.reputationRequired);
                 if(game.NativeBlockPreparationPending(e.Definition)){var notice=new Label("Prepare a complete engine installation before installing this block.");notice.AddToClassList("part-description");facts.Add(notice);}
             }else PartButton(actions,"partPlanRemove","Plan removal",()=>{game.StageInventory(new PartCartLine{action=CartAction.Move,assetId=e.AssetId,definitionId=e.Definition.id,destination=InventoryKind.Storage,destinationId=SharedInventory.Garage});partsStateKey=null;},detail:true);
@@ -178,6 +180,7 @@ namespace DragLab.Runtime
                 NativeStatsPanel panel=null;
                 panel=new NativeStatsPanel(partsBrowser.Reference,SharedUnitSettings.Current,groups,collapsed,d=>OpenDialog(d.Label,d.InfoExplanation(panel.Current,panel.Proposed),new[]{new DialogAction("Close",CloseDialog)}),DecoratePartDetail,e.Proposed,partDetailDifferences.TryGetValue(id,out bool only)&&only){name="partStats"};panel.Q<Button>("statsDifferencesOnly").name="partDifferencesOnly";panel.DifferencesOnlyChanged=value=>partDetailDifferences[id]=value;partsDetailScroll.Add(panel);
             }
+            if(offer.Source=="New")RefreshPurchasePrice(offer);
             ExcludeTabTraversal();partsDetailScroll.schedule.Execute(()=>{if(partsDetailId==id)partsDetailScroll.scrollOffset=offset;});
         }
     }
