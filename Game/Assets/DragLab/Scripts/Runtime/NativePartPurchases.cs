@@ -14,6 +14,7 @@ namespace DragLab.Runtime
         sealed class PartPurchaseDraft
         {
             internal bool Individual;
+            internal bool Install;
             internal string Role;
             internal int Quantity=1;
             internal List<string> Positions=new List<string>();
@@ -22,9 +23,6 @@ namespace DragLab.Runtime
             internal NativePartEntry Preview;
         }
         readonly Dictionary<string,PartPurchaseDraft> partPurchases=new Dictionary<string,PartPurchaseDraft>();
-        readonly List<RacingSurface> partPurchaseSurfaces=new List<RacingSurface>();
-        VisualElement partPurchaseControls;
-        string partPurchaseControlsKey;
         PartPurchaseDraft PurchaseDraft(NativePartEntry offer)
         {
             string key=game.Profile.SelectedCar.instanceId+"/"+offer.Id;
@@ -42,56 +40,6 @@ namespace DragLab.Runtime
             if(draft.PreviewModel!=partsBrowser||draft.PreviewKey!=key){draft.Preview=partsBrowser.PreviewNewUnit(offer,draft.Role,draft.Positions);draft.PreviewKey=key;draft.PreviewModel=partsBrowser;}
             return draft.Preview;
         }
-        void ClearPurchaseControls()
-        {
-            partPurchaseControls?.RemoveFromHierarchy();partPurchaseControls=null;partPurchaseControlsKey=null;
-            foreach(var s in partPurchaseSurfaces)surfaces.Remove(s);partPurchaseSurfaces.Clear();
-        }
-        void PurchaseSurface(VisualElement element,RacingSurface.Kind kind){AddSurface(element,kind);partPurchaseSurfaces.Add(element.Q<RacingSurface>());}
-        void PurchaseChoices(VisualElement parent,string id,string[] labels,Func<string> get,Action<string> set)
-        {
-            var group=new VisualElement();group.AddToClassList("choice-group");group.AddToClassList("part-purchase-choice");parent.Add(group);
-            for(int i=0;i<labels.Length;i++){
-                string value=labels[i];
-                var b=new Button(()=>{set(value);OpenPartDetail(partsDetailId,false);}){name=id+":"+value,text=value,focusable=false,tabIndex=-1};
-                b.AddToClassList("choice-button");b.AddToClassList(i==0?"choice-first":i==labels.Length-1?"choice-last":"choice-middle");group.Add(b);
-                PurchaseSurface(b,i==0?RacingSurface.Kind.ChoiceFirst:i==labels.Length-1?RacingSurface.Kind.ChoiceLast:RacingSurface.Kind.ChoiceMiddle);
-                b.userData=(Action)(()=>b.EnableInClassList("selected",get()==value));
-            }
-        }
-        void BuildPurchaseControls(NativePartEntry offer)
-        {
-            if(offer.Source!="New"){ClearPurchaseControls();return;}
-            var draft=PurchaseDraft(offer);var roles=InventoryUnits.Roles(game.Profile,game.Profile.SelectedCar,offer.Definition);
-            int count=InventoryUnits.Count(game.Profile,game.Profile.SelectedCar,offer.Definition);
-            string key=game.Profile.SelectedCar.instanceId+"/"+offer.Id+"/"+count+"/"+string.Join("/",roles);
-            if(partPurchaseControlsKey!=key){
-                ClearPurchaseControls();partPurchaseControlsKey=key;partPurchaseControls=new VisualElement{name="partPurchase"};partPurchaseControls.AddToClassList("part-purchase");
-                var row=new VisualElement();row.AddToClassList("part-purchase-row");partPurchaseControls.Add(row);
-                if(roles.Length>0)PurchaseChoices(row,"partPurchaseMode",new[]{"Complete set","Individual"},()=>draft.Individual?"Individual":"Complete set",v=>{draft.Individual=v=="Individual";draft.Positions.Clear();});
-                var quantity=new VisualElement();quantity.AddToClassList("part-purchase-quantity");row.Add(quantity);
-                quantity.Add(new Label{name="partQuantityLabel"});
-                Action<int> assign=value=>{draft.Quantity=Mathf.Clamp(value,1,99);if(draft.Positions.Count>draft.Quantity){draft.Positions=draft.Positions.Take(draft.Quantity).ToList();OpenPartDetail(partsDetailId,false);}RefreshPurchaseControls(offer);};
-                var minus=new Button(()=>assign(draft.Quantity-1)){name="partQuantityMinus",text="−",focusable=false,tabIndex=-1};minus.AddToClassList("action-button");minus.AddToClassList("part-quantity-step");quantity.Add(minus);PurchaseSurface(minus,RacingSurface.Kind.SecondaryAction);
-                var number=new FloatField{name="partQuantity",isDelayed=true,formatString="0"};number.AddToClassList("setting-number");quantity.Add(number);
-                number.RegisterValueChangedCallback(e=>{float value=e.newValue;if(float.IsNaN(value)||float.IsInfinity(value)||value!=Mathf.Floor(value)){number.SetValueWithoutNotify(draft.Quantity);partPurchaseControls.Q<Label>("partPurchaseError").text="Enter a whole quantity.";return;}assign((int)Mathf.Clamp(value,1,99));});
-                var plus=new Button(()=>assign(draft.Quantity+1)){name="partQuantityPlus",text="+",focusable=false,tabIndex=-1};plus.AddToClassList("action-button");plus.AddToClassList("part-quantity-step");quantity.Add(plus);PurchaseSurface(plus,RacingSurface.Kind.SecondaryAction);
-                var roleRow=new VisualElement{name="partPurchaseRoles"};roleRow.AddToClassList("part-purchase-row");roleRow.AddToClassList("part-purchase-roles");partPurchaseControls.Add(roleRow);
-                if(roles.Length>1){roleRow.Add(new Label("Type"));PurchaseChoices(roleRow,"partPurchaseRole",roles,()=>draft.Role,v=>{draft.Role=v;draft.Positions.Clear();});}
-                var error=new Label{name="partPurchaseError",enableRichText=false};error.AddToClassList("car-critical");error.AddToClassList("part-purchase-error");partPurchaseControls.Add(error);
-            }
-            partsDetail.Insert(1,partPurchaseControls);RefreshPurchaseControls(offer);
-        }
-        void RefreshPurchaseControls(NativePartEntry offer)
-        {
-            if(partPurchaseControls==null)return;var draft=PurchaseDraft(offer);
-            foreach(var b in partPurchaseControls.Query<Button>(className:"choice-button").ToList())(b.userData as Action)?.Invoke();
-            partPurchaseControls.Q("partPurchaseRoles").EnableInClassList("hidden",!draft.Individual||InventoryUnits.Roles(game.Profile,game.Profile.SelectedCar,offer.Definition).Length<2);
-            partPurchaseControls.Q<Label>("partQuantityLabel").text=draft.Individual?"Units":InventoryUnits.Count(game.Profile,game.Profile.SelectedCar,offer.Definition)>1?"Sets":"Quantity";
-            partPurchaseControls.Q<FloatField>("partQuantity").SetValueWithoutNotify(draft.Quantity);
-            partPurchaseControls.Q<Button>("partQuantityMinus").SetEnabled(draft.Quantity>1);partPurchaseControls.Q<Button>("partQuantityPlus").SetEnabled(draft.Quantity<99);
-            partPurchaseControls.Q<Label>("partPurchaseError").text="";RefreshPurchasePrice(offer);
-        }
         void RefreshPurchasePrice(NativePartEntry offer)
         {
             var draft=PurchaseDraft(offer);int each=draft.Individual?InventoryPricing.NewUnit(offer.Definition,InventoryUnits.Count(game.Profile,game.Profile.SelectedCar,offer.Definition)):InventoryPricing.NewSet(offer.Definition);
@@ -100,55 +48,98 @@ namespace DragLab.Runtime
         }
         void StagePurchase(NativePartEntry offer,bool install)
         {
-            if(offer.Source!="New"){game.StageNativePart(offer,install,offer.Position);partsStateKey=null;return;}
-            var draft=PurchaseDraft(offer);
-            if(install&&draft.Individual){ChoosePurchasePositions(offer,draft);return;}
-            if(install&&InventoryUnits.Roles(game.Profile,game.Profile.SelectedCar,offer.Definition).Length>0){ChooseSetReplacement(offer,draft);return;}
-            if(game.StageNativePurchase(offer.Definition.id,draft.Individual?draft.Role:null,draft.Quantity,install))partsStateKey=null;
-            else partPurchaseControls.Q<Label>("partPurchaseError").text=game.NativeNotice;
+            if(offer.Source=="New"||offer.Source=="Used"){OpenPartPurchase(offer);return;}
+            game.StageNativePart(offer,install,offer.Position);partsStateKey=null;
         }
-        void ChooseSetReplacement(NativePartEntry offer,PartPurchaseDraft draft)
+        void OpenPartPurchase(NativePartEntry offer)
         {
-            var d=offer.Definition;var car=game.Profile.SelectedCar;var binding=car.installed.slots.Find(s=>s.slot==d.category.ToString());
+            var d=offer.Definition;var car=game.Profile.SelectedCar;bool fresh=offer.Source=="New";
+            var draft=fresh?PurchaseDraft(offer):null;
+            var roles=fresh?InventoryUnits.Roles(game.Profile,car,d):offer.Unit!=null?new[]{offer.Unit.element.role}:new string[0];
+            int setSize=InventoryUnits.Count(game.Profile,car,d);
+            bool individual=fresh?draft.Individual:offer.Unit!=null,install=fresh&&draft.Install;
+            string role=fresh?draft.Role:offer.Unit?.element.role;int quantity=fresh?draft.Quantity:1;
+            var binding=car.installed.slots.Find(s=>s.slot==d.category.ToString());
             var fitted=binding==null?null:game.Profile.parts.Find(p=>p.instanceId==binding.partInstanceId);
-            var roles=InventoryUnits.Roles(game.Profile,car,d);string role=draft.Role??roles[0];bool individual=false;
             bool matches=fitted?.definitionId==d.id;
             string[] all=fitted==null?new string[0]:d.category==PartCategory.Tires?Enumerable.Range(0,4).Select(i=>"tire:"+i).ToArray():fitted.condition.elements.Select(e=>e.id).ToArray();
-            var selected=new HashSet<string>();var rows=new List<Tuple<Button,string>>();Label summary=null;Action update=null;
-            OpenDialog("Replace components",null,new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Add",()=>{
-                var targets=all.Where(selected.Contains).ToList();int quantity=individual?targets.Count:draft.Quantity;
-                if(!game.StageNativePurchase(d.id,individual?role:null,quantity,true,individual?targets:null)){root.Q<Label>("setReplacementError").text=game.NativeNotice;return;}
-                if(individual){draft.Individual=true;draft.Role=role;draft.Quantity=quantity;draft.Positions=targets;}
+            var selected=new HashSet<string>(fresh?draft.Positions:Enumerable.Empty<string>());
+            var rows=new List<Tuple<Button,string>>();var groups=new List<VisualElement>();
+            VisualElement positionsArea=null,roleGroup=null;Label summary=null,error=null,quantityLabel=null,unitPrice=null,notice=null;FloatField number=null;Button minus=null,plus=null;Action update=null;
+            OpenDialog("Purchase",null,new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Add to cart",()=>{
+                var targets=all.Where(selected.Contains).ToList();
+                if(fresh){if(!game.StageNativePurchase(d.id,individual?role:null,quantity,install,individual&&install?targets:null)){error.text=game.NativeNotice;return;}
+                    draft.Individual=individual;draft.Install=install;draft.Role=role;draft.Quantity=quantity;draft.Positions=individual&&install?targets:new List<string>();
+                }else{
+                    game.StageNativePart(offer,install,individual&&install?targets.Single():null);
+                    if(!game.CartLines.Any(l=>l.assetId==offer.AssetId)){error.text=game.NativeNotice;return;}
+                }
                 CloseDialog();partsStateKey=null;
             },true)},populate:content=>{
                 content.Add(new Label(d.name){enableRichText=false});
-                QueryChoices(content,"setReplacementMode","Replace",new[]{"Complete set","Individual"},()=>individual?"Individual":"Complete set",value=>{individual=value=="Individual";selected.Clear();update();},2);
-                content.Q<Button>("setReplacementMode:Complete set").parent.parent.Q<Label>().RemoveFromHierarchy();
-                QueryChoices(content,"setReplacementRole","Type",roles,()=>role,value=>{role=value;selected.Clear();update();},2);
-                var roleGroup=content.Q<Button>("setReplacementRole:"+roles[0]).parent.parent;roleGroup.name="setReplacementRoles";
-                summary=new Label{name="setReplacementSummary"};content.Add(summary);
-                if(!matches){var notice=new Label("Individual replacements require the fitted specification.");notice.AddToClassList("car-warning");content.Add(notice);}
-                foreach(string position in all){string target=position;var row=ReplacementPositionRow(content,d,target,"setReplacementPosition:"+target,()=>{if(!matches)return;if(!individual){individual=true;selected.Clear();}if(!selected.Remove(target))selected.Add(target);update();});rows.Add(Tuple.Create(row,target));}
-                if(all.Length==0)content.Add(new Label("No fitted units"));
-                var error=new Label{name="setReplacementError"};error.AddToClassList("car-critical");content.Add(error);
+                if(!fresh){var condition=new Label("Used · "+((offer.Unit?.element.health??offer.Part?.condition.health??0)*100).ToString("0.#")+"% condition"){name="partPurchaseCondition"};condition.AddToClassList("car-warning");content.Add(condition);}
+                if(fresh&&roles.Length>0)QueryChoices(content,"partPurchaseMode","Buy",new[]{"Complete set","Individual"},()=>individual?"Individual":"Complete set",value=>{individual=value=="Individual";quantity=1;selected.Clear();update();},2);
+                QueryChoices(content,"partPurchaseDestination","Destination",new[]{"Store","Install"},()=>install?"Install":"Store",value=>{install=value=="Install";update();},2);
+                QueryChoices(content,"partPurchaseRole","Type",roles,()=>role,value=>{role=value;selected.Clear();update();},2);
+                roleGroup=content.Children().Last();
+                var q=new VisualElement{name="partPurchaseQuantity"};q.AddToClassList("part-purchase-quantity");content.Add(q);
+                quantityLabel=new Label();q.Add(quantityLabel);
+                void Assign(int value){quantity=Mathf.Clamp(value,1,99);if(selected.Count>quantity){var keep=all.Where(selected.Contains).Take(quantity).ToArray();selected.Clear();selected.UnionWith(keep);}error.text="";update();}
+                minus=new Button(()=>Assign(quantity-1)){name="partQuantityMinus",text="−",focusable=false,tabIndex=-1};minus.AddToClassList("action-button");minus.AddToClassList("part-quantity-step");q.Add(minus);AddSurface(minus,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(minus.Q<RacingSurface>());
+                number=new FloatField{name="partQuantity",isDelayed=true,formatString="0"};number.AddToClassList("setting-number");q.Add(number);
+                number.RegisterValueChangedCallback(e=>{float value=e.newValue;if(float.IsNaN(value)||float.IsInfinity(value)||value!=Mathf.Floor(value)){number.SetValueWithoutNotify(quantity);error.text="Enter a whole quantity.";return;}Assign((int)Mathf.Clamp(value,1,99));});
+                plus=new Button(()=>Assign(quantity+1)){name="partQuantityPlus",text="+",focusable=false,tabIndex=-1};plus.AddToClassList("action-button");plus.AddToClassList("part-quantity-step");q.Add(plus);AddSurface(plus,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(plus.Q<RacingSurface>());
+                unitPrice=new Label{name="partPurchaseUnitPrice"};content.Add(unitPrice);
+                notice=new Label{name="partPurchaseNotice"};notice.AddToClassList("car-warning");content.Add(notice);
+                positionsArea=new VisualElement{name="partPurchasePositions"};content.Add(positionsArea);
+                var shortcuts=new VisualElement{name="partPurchaseShortcuts"};shortcuts.AddToClassList("part-purchase-shortcuts");positionsArea.Add(shortcuts);
+                foreach(string choice in new[]{"All","Failed","Worn","Clear"}){
+                    string action=choice;var button=new Button(()=>{
+                        individual=true;selected.Clear();var available=InventoryUnits.Positions(game.Profile,car,d.id,role);
+                        foreach(string target in available){var member=fitted?.condition.elements.FirstOrDefault(e=>e.id==target);var tire=target.StartsWith("tire:")?fitted?.condition.tires[int.Parse(target.Substring(5))]:null;
+                            if(action=="All"||action=="Failed"&&(member?.Failed==true||tire?.failed==true)||action=="Worn"&&(member?.health<=.5||tire?.health<=.5))selected.Add(target);
+                        }
+                        quantity=Math.Max(quantity,selected.Count);update();
+                    }){name="partSelect"+choice,text=choice,focusable=false,tabIndex=-1};button.AddToClassList("action-button");button.AddToClassList("part-selection-shortcut");shortcuts.Add(button);AddSurface(button,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(button.Q<RacingSurface>());
+                    if(choice=="Worn")button.tooltip="At least 50% wear used.";
+                }
+                foreach(var group in all.GroupBy(position=>position.StartsWith("tire:")?int.Parse(position.Substring(5))<2?"Front axle":"Rear axle":fitted.condition.elements.First(e=>e.id==position).cylinder<0?"Engine":"Cylinder "+(fitted.condition.elements.First(e=>e.id==position).cylinder+1))){
+                    var block=new VisualElement();block.AddToClassList("part-replacement-group");positionsArea.Add(block);groups.Add(block);
+                    if(d.category!=PartCategory.Pistons)block.Add(new Label(group.Key){name="replacementGroup:"+group.Key});
+                    foreach(string position in group){string target=position;var row=ReplacementPositionRow(block,d,target,"purchasePosition:"+target,()=>{
+                        if(!individual){if(!fresh||!matches)return;individual=true;quantity=1;selected.Clear();}
+                        if(!selected.Remove(target)){if(!fresh)selected.Clear();selected.Add(target);quantity=Math.Max(quantity,selected.Count);}update();
+                    });rows.Add(Tuple.Create(row,target));}
+                }
+                if(all.Length==0)positionsArea.Add(new Label("No fitted units"));
+                summary=new Label{name="partPurchaseSummary",enableRichText=false};summary.AddToClassList("part-purchase-summary");content.Add(summary);
+                error=new Label{name="partPurchaseError"};error.AddToClassList("car-critical");content.Add(error);
                 update=()=>{
-                    var available=InventoryUnits.Positions(game.Profile,car,d.id,role);selected.RemoveWhere(p=>!available.Contains(p));
+                    var available=role==null?new string[0]:InventoryUnits.Positions(game.Profile,car,d.id,role);selected.RemoveWhere(p=>!available.Contains(p));
                     roleGroup.EnableInClassList("hidden",!individual||roles.Length<2);
-                    foreach(var button in content.Query<Button>().ToList().Where(b=>b.name.StartsWith("setReplacementMode:")))button.EnableInClassList("selected",button.name=="setReplacementMode:"+(individual?"Individual":"Complete set"));
-                    content.Q<Button>("setReplacementMode:Individual").SetEnabled(matches);
-                    foreach(var pair in rows){bool valid=available.Contains(pair.Item2);pair.Item1.EnableInClassList("hidden",individual&&!valid);pair.Item1.EnableInClassList("selected",!individual||selected.Contains(pair.Item2));pair.Item1.SetEnabled(matches&&(!individual||valid));}
-                    long price=individual?(long)InventoryPricing.NewUnit(d,InventoryUnits.Count(game.Profile,car,d))*selected.Count:(long)InventoryPricing.NewSet(d)*draft.Quantity;
-                    summary.text=(individual?selected.Count+" individual "+(selected.Count==1?"replacement":"replacements"):draft.Quantity+" complete "+(draft.Quantity==1?"set":"sets")+" · "+InventoryUnits.Count(game.Profile,car,d)+" units per set")+" · "+DisplayUnits.Money(price)+(individual||draft.Quantity<=1?"":" · "+(draft.Quantity-1)+" sets in storage");
-                    root.Q<Button>("dialogAdd")?.SetEnabled(!individual||selected.Count>0);
+                    positionsArea.EnableInClassList("hidden",!install||all.Length==0);
+                    shortcuts.EnableInClassList("hidden",!fresh||!individual||!matches);
+                    foreach(var button in content.Query<Button>().ToList().Where(b=>b.name.StartsWith("partPurchaseMode:")))button.EnableInClassList("selected",button.name=="partPurchaseMode:"+(individual?"Individual":"Complete set"));
+                    content.Q<Button>("partPurchaseMode:Individual")?.SetEnabled(!install||matches);
+                    content.Q<Button>("partPurchaseDestination:Install").SetEnabled(!game.NativeBlockPreparationPending(d));
+                    foreach(var pair in rows){bool valid=available.Contains(pair.Item2);pair.Item1.EnableInClassList("hidden",individual&&!valid);pair.Item1.EnableInClassList("selected",!individual||selected.Contains(pair.Item2));pair.Item1.SetEnabled(matches&&(fresh||individual)&&(!individual||valid));}
+                    foreach(var group in groups)group.EnableInClassList("hidden",group.Query<Button>().ToList().All(b=>b.ClassListContains("hidden")));
+                    quantityLabel.text=individual?"Units":setSize>1?"Sets":"Quantity";number.SetValueWithoutNotify(quantity);number.SetEnabled(fresh);minus.SetEnabled(fresh&&quantity>1);plus.SetEnabled(fresh&&quantity<99);
+                    long each=fresh?individual?InventoryPricing.NewUnit(d,setSize):InventoryPricing.NewSet(d):offer.Price??0;
+                    unitPrice.text=(individual?"1 unit":setSize>1?"1 set · "+setSize+" units":"1 part")+" · "+DisplayUnits.Money(each);
+                    string problem=install&&game.NativeBlockPreparationPending(d)?"Prepare a complete engine installation before installing this block.":install&&individual&&!matches?"Individual replacements require the fitted specification.":"";notice.text=problem;notice.EnableInClassList("hidden",problem.Length==0);
+                    int stored=install?individual?quantity-selected.Count:quantity-1:quantity;
+                    string buy=quantity+(individual?quantity==1?" unit":" units":setSize>1?quantity==1?" set":" sets":quantity==1?" part":" parts");
+                    string replacements=individual?string.Join(", ",all.Where(selected.Contains).Select(p=>d.category==PartCategory.Pistons?"piston "+(fitted.condition.elements.First(e=>e.id==p).cylinder+1):InventoryUnits.PositionLabel(game.Profile,car,d.id,p))):setSize>1?"complete set":"part";
+                    summary.tooltip=individual?string.Join("\n",all.Where(selected.Contains).Select(p=>InventoryUnits.PositionLabel(game.Profile,car,d.id,p))):"";
+                    if(individual&&selected.Count>4)replacements=selected.Count+" "+(role??"units")+" units";
+                    summary.text="Buy "+buy+" · "+DisplayUnits.Money(each*quantity)+(install?"\nReplace "+(individual&&selected.Count==0?"— select positions":replacements)+" · Keep removed parts":"")+"\nStore "+stored+(individual?stored==1?" unit":" units":setSize>1?stored==1?" set":" sets":stored==1?" part":" parts");
+                    root.Q<Button>("dialogAddtocart")?.SetEnabled(problem.Length==0&&(!install||!individual||selected.Count>0&&selected.Count<=quantity));
                 };
-            });update();
-        }
-        void ChoosePurchasePositions(NativePartEntry offer,PartPurchaseDraft draft)
-        {
-            OpenPurchasePositions(offer.Definition,draft.Role,draft.Quantity,draft.Positions,selected=>{
-                if(!game.StageNativePurchase(offer.Definition.id,draft.Role,draft.Quantity,true,selected))return false;
-                draft.Positions=selected.ToList();return true;
-            },()=>partsStateKey=null);
+            });
+            summary.RemoveFromHierarchy();error.RemoveFromHierarchy();
+            var review=new VisualElement{name="partPurchaseReview"};review.AddToClassList("part-purchase-review");review.Add(summary);review.Add(error);
+            var actions=root.Q("modalActions");actions.parent.Insert(actions.parent.IndexOf(actions),review);update();
         }
         void ChooseCartUnitPositions(PartCartLine line)
         {

@@ -170,6 +170,7 @@ namespace DragLab.Runtime
         }
         void OpenDialog(string title, string text, DialogAction[] actions, Action dismiss = null, Action<VisualElement> populate = null)
         {
+            root.Q("partPurchaseReview")?.RemoveFromHierarchy();
             returnFocus = root.focusController.focusedElement as VisualElement;
             dismissDialog = dismiss;
             dialogRoute = game.ScreenName;
@@ -191,6 +192,7 @@ namespace DragLab.Runtime
         }
         void CloseDialog()
         {
+            root.Q("partPurchaseReview")?.RemoveFromHierarchy();
             ClearPartCartSwitches();
             var cancel = dismissDialog; dismissDialog = null; cancel?.Invoke();
             root.Q("modalLayer").AddToClassList("hidden");
