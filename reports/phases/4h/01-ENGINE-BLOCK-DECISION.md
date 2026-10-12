@@ -1,0 +1,7 @@
+# Engine-block workflow decision — 2026-10-12
+
+Status: deferred by the user; documentation only. The next shop/cart interface review should support ordinary Buy and Buy + install, with installation of the block inside the current engine. Marking it for installation prompts fitting-owned-parts, manual selection or required stock/OEM sets. A draft cannot dismantle the fitted engine; applying requires a complete compatible reviewed plan. Preserve actual identities/condition/resources and retain removed parts. See [the decision contract](../../../docs/ENGINE_BLOCK_PURCHASES.md).
+
+The uncommitted experiment was archived locally and removed from active source. Existing source, tools, native styling and historical cart evidence were restored to the prior checkpoint. Experimental player fixtures, screenshots and the archive remain local/ignored. Their checks are not acceptance evidence for the deferred design. No new engine assembly mode or choice dialog is delivered.
+
+Checks: UTF-8, documentation links and staged whitespace are checked for this decision. The Windows checkpoint restoration build succeeded after removing the experiment. Runtime source/tools/styles match the prior approved checkpoint; no simulation rerun was needed for this documentation-only result. Prior 728/0 native and inspection/domain gates remain historical evidence, not rerun for documentation. No later UI phase is advanced; future control implementation needs the user's next instruction.
