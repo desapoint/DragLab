@@ -275,8 +275,20 @@
 .tuning-editor { flex-grow: 1; flex-basis: 0; min-width: 0; margin-right: 22px; }
 .tuning-tabs { margin-top: 16px; margin-bottom: 8px; }
 .tuning-tabs .category-button { min-width: 0; padding: 0 14px; margin-right: 6px; }
-.tuning-control-frame { flex-grow: 1; min-height: 0; border-radius: 12px; overflow: hidden; padding: 18px; }
-.tuning-control-area { flex-grow: 1; }
+.tuning-control-frame { flex-grow: 1; min-height: 0; border-radius: 12px; overflow: hidden; }
+.tuning-control-area { flex-grow: 1; min-height: 0; padding: 12px 10px 12px 18px; }
+.tuning-input { padding: 8px 0; border-bottom-width: 1px; border-bottom-color: rgba(138,148,157,0.13); }
+.tuning-input-caption { flex-direction: row; align-items: center; margin-bottom: 4px; }
+.tuning-input-caption Label { font-size: 18px; margin: 0; padding: 0; }
+.tuning-input-row { flex-direction: row; align-items: center; min-height: 30px; }
+.tuning-input-row .setting-number { width: 80px; }
+.tuning-unit { width: 34px; margin: 0 0 0 6px; font-size: 16px; }
+.tuning-choice .choice-button { flex-grow: 1; flex-basis: 0; min-width: 0; padding: 0 7px; font-size: 17px; }
+.tuning-choice { flex-direction: row; min-height: 32px; flex-shrink: 0; }
+.tuning-input > .setting-toggle { width: 56px; align-self: flex-start; }
+.tuning-readout { color: var(--racing-muted); font-size: 17px; margin: 8px 0; white-space: normal; }
+.tuning-wheel-preview { margin: 8px 0; }
+.tuning-unavailable .car-empty { margin: 18px; }
 .tuning-unavailable { justify-content: center; }
 .tuning-unavailable .tuning-control-area { display: none; }
 .tuning-preview { flex-grow: 1; flex-basis: 0; min-width: 0; border-radius: 12px; overflow: hidden; }

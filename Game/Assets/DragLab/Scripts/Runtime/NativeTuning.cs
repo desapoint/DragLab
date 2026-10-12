@@ -36,7 +36,7 @@ namespace DragLab.Runtime
                 int index=i;var tab=new Button(()=>{tuningCategory=index;ShowTuningCategory();}){name="tuningTab"+labels[i],text=labels[i],focusable=false,tabIndex=-1};tab.AddToClassList("category-button");tabs.Add(tab);AddSurface(tab,i==0?RacingSurface.Kind.FirstTab:RacingSurface.Kind.Tab);tuningTabs[i]=tab;
             }
             tuningControls=new VisualElement{name="tuningControls"};tuningControls.AddToClassList("tuning-control-frame");left.Add(tuningControls);AddSurface(tuningControls,RacingSurface.Kind.Panel);
-            foreach(string label in labels){var area=new VisualElement{name="tuningArea"+label};area.AddToClassList("tuning-control-area");tuningControls.Add(area);}
+            foreach(string label in labels){var area=new ScrollView{name="tuningArea"+label,horizontalScrollerVisibility=ScrollerVisibility.Hidden};area.AddToClassList("tuning-control-area");tuningControls.Add(area);}
             tuningEmpty=new Label{name="tuningUnavailable",enableRichText=false};tuningEmpty.AddToClassList("car-empty");tuningControls.Add(tuningEmpty);
             var right=new VisualElement{name="tuningPreview"};right.AddToClassList("tuning-preview");columns.Add(right);AddSurface(right,RacingSurface.Kind.Panel);
             var scroll=new ScrollView{name="tuningPreviewScroll",horizontalScrollerVisibility=ScrollerVisibility.Hidden};scroll.AddToClassList("tuning-preview-scroll");right.Add(scroll);
@@ -61,6 +61,7 @@ namespace DragLab.Runtime
             tuningPage.EnableInClassList("hidden",route!="Tuning");if(route!="Tuning")return;
             var profile=game.Profile;var car=profile.SelectedCar;game.EnsureTuneDraft();
             bool available=car!=null&&!string.IsNullOrEmpty(car.engineAssemblyId),dirty=available&&game.DraftDirty;
+            RefreshTuningInputs(available);
             tuningName.text=car==null?"No car":VehicleCollection.DisplayName(profile.catalog,car);
             foreach(var tab in tuningTabs)tab.SetEnabled(available);
             tuningControls.EnableInClassList("tuning-unavailable",!available);
@@ -68,12 +69,15 @@ namespace DragLab.Runtime
             tuningState.text=dirty?"Unapplied changes":"";tuningEmpty.text=car==null?"Select a car in Garage.":"Attach an engine to preview tuning.";tuningEmpty.EnableInClassList("hidden",available);
             string key=profile.revision+"/"+car?.instanceId+"/"+car?.engineAssemblyId+"/"+JsonUtility.ToJson(game.DraftValues)+"/"+JsonUtility.ToJson(SharedUnitSettings.Current);
             if(tuningProfile==profile&&tuningKey==key)return;
+            if(tuningRanges.Any(r=>r.Dragging)&&Time.unscaledTime-tuningLastPreview<.1f)return;
+            tuningLastPreview=Time.unscaledTime;
             tuningProfile=profile;tuningKey=key;ClearTuningPreview();
             if(!available)return;
             try{
                 var current=InspectOwned(car)?.Stats;if(current==null)throw new InvalidOperationException("Inspection unavailable.");
                 var proposed=current;
                 if(dirty){var source=InspectionBuild.Capture(profile,car,game.DraftValues);proposed=CarInspection.CalculatePrepared(source,CarInspection.PrepareCar(source),false);TuningPreviewCaptureCount++;}
+                RefreshTuningWheelPreview(proposed.source.build);
                 tuningPreviewContent.Add(new NativeDynoPanel(new[]{new NativeDynoSeries("Current","Current",current,NativeDynoStyle.Primary),new NativeDynoSeries("Proposed","Proposed",proposed,NativeDynoStyle.Alternative),new NativeDynoSeries("NoWear","No wear",OwnedHealthy(car),NativeDynoStyle.Reference)},SharedUnitSettings.Current.torque,"tuningDynoPlot"));
                 var groups=new List<NativeStatGroup>{NativeStatCatalog.TuningSummary()};
                 foreach(var group in NativeStatCatalog.Groups(current,proposed))groups.Add(new NativeStatGroup(group.Id,group.Title,group.Definitions.ToArray()){InitiallyCollapsed=true,Children=group.Children});

@@ -1,0 +1,396 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Tuning navigation displays its native page frame
+PASS: Summary and dyno reuse identical Current/Proposed inspections
+PASS: Existing no-wear reference remains visible without refilling real or reference supplies
+PASS: Unchanged tune has disabled Apply/Revert
+PASS: Tuning tabs contain stepped sliders and matching numeric inputs
+PASS: Tuning columns and anchored actions fit at 1280 / scale 1
+PASS: All category tabs fit the left column
+PASS: Shared dyno fits inside the comparison viewport
+PASS: Tuning reuses the no-Tab navigation contract
+PASS: Category switches locally: Induction
+PASS: Joined choices retain usable rendered dimensions: Induction
+PASS: Category switches locally: Drivetrain
+PASS: Joined choices retain usable rendered dimensions: Drivetrain
+PASS: Category switches locally: Wheels
+PASS: Joined choices retain usable rendered dimensions: Wheels
+PASS: Category switches locally: Engine
+PASS: Joined choices retain usable rendered dimensions: Engine
+PASS: Category browsing does not recalculate previews, apply tunes or save
+PASS: Real left slider uses 100 RPM increments and synchronizes the draft number
+PASS: Right-down preserves the current value and captures fine adjustment
+PASS: Real right-drag uses relative 10 RPM increments and releases ownership
+PASS: Middle-click resets the launch field to its car default
+PASS: Frame refresh preserves delayed typed text without changing the draft
+PASS: Real numeric entry commits a precise value on Enter
+PASS: Non-finite input is rejected and restored without corrupting the tune
+PASS: Numeric input clamps to the permitted maximum
+PASS: Stock limiter and fixed timing hardware keep unsupported tuning locked
+PASS: Locked hardware retains its accessible explanation dialog
+PASS: Right-click alone preserves an unaligned converted factory radius without rounding or jumping
+PASS: Outer tire radius converts inches into the physical wheel scale
+PASS: Draft outer radius visibly changes the rendered layered wheel proportions
+PASS: Ballast numeric entry supports its half-kilogram fine increment
+PASS: All real slider, fine-drag, reset and numeric gestures leave applied assets and disk bytes untouched
+PASS: Revert clears every gesture edit in the shared draft
+PASS: F8 exposes legacy tuning on the same route
+PASS: F8 preserves the single authoritative draft and enables explicit Apply
+PASS: Draft driver mass produces a real comparison difference
+PASS: Preview respects the fixed OEM gearset even when the draft requests another ratio
+PASS: Proposed snapshots retain all fitted identities, wear/faults and actual liquids
+PASS: Draft comparison changes no live or saved assets
+PASS: Shared dyno keeps pointer inspection/intersection markers
+PASS: Summary info opens the shared read-only explanation dialog
+PASS: Info dialog retains draft ownership
+PASS: Revert restores applied values without saving
+PASS: Failed durable Apply retains profile and editable draft, displaying the error
+PASS: Explicit Apply commits the existing authoritative transaction once
+PASS: Applied tune survives real disk reload
+PASS: Successful Apply clears errors and returns to a clean preview
+PASS: Leaving the page discards unapplied changes
+PASS: Settings Cancel returns to Tuning with its category retained
+PASS: Tuning columns and anchored actions fit at 1024 / scale 1
+PASS: All category tabs fit the left column
+PASS: Shared dyno fits inside the comparison viewport
+PASS: Tuning reuses the no-Tab navigation contract
+PASS: Tuning columns and anchored actions fit at 1920 / scale 1
+PASS: All category tabs fit the left column
+PASS: Shared dyno fits inside the comparison viewport
+PASS: Tuning reuses the no-Tab navigation contract
+PASS: Tuning uses shared crisp 4K scaling
+PASS: Tuning columns and anchored actions fit at 1920 / scale 2
+PASS: All category tabs fit the left column
+PASS: Shared dyno fits inside the comparison viewport
+PASS: Tuning reuses the no-Tab navigation contract
+PASS: Stock tuning controls preserve the complete build: city-three
+PASS: Installed induction/gearset/timing capabilities project into controls: city-three / TwinTurbo
+PASS: Programmable equipment unlocks limiter, shift light and two-step: city-three
+PASS: Cut editing respects carburetor/diesel/injection hardware: city-three
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinTurbo
+PASS: Anti-lag editing follows installed fueling capability: city-three
+PASS: Installed induction/gearset/timing capabilities project into controls: city-three / TwinSupercharger
+PASS: Programmable equipment unlocks limiter, shift light and two-step: city-three
+PASS: Cut editing respects carburetor/diesel/injection hardware: city-three
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinSupercharger
+PASS: Installed induction/gearset/timing capabilities project into controls: city-three / Twincharged
+PASS: Programmable equipment unlocks limiter, shift light and two-step: city-three
+PASS: Cut editing respects carburetor/diesel/injection hardware: city-three
+PASS: Only fitted compressor types expose pulley and pressure-release controls: Twincharged
+PASS: Anti-lag editing follows installed fueling capability: city-three
+PASS: Hardware-enabled fields produce a valid draft preview: city-three
+PASS: Changing display units preserves physical tune values: city-three
+PASS: Bar conversion is silent and physically equivalent: city-three
+PASS: kPa conversion retains the same physical pressure: city-three
+PASS: Stock tuning controls preserve the complete build: juniper-club
+PASS: Installed induction/gearset/timing capabilities project into controls: juniper-club / TwinTurbo
+PASS: Programmable equipment unlocks limiter, shift light and two-step: juniper-club
+PASS: Cut editing respects carburetor/diesel/injection hardware: juniper-club
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinTurbo
+PASS: Anti-lag editing follows installed fueling capability: juniper-club
+PASS: Installed induction/gearset/timing capabilities project into controls: juniper-club / TwinSupercharger
+PASS: Programmable equipment unlocks limiter, shift light and two-step: juniper-club
+PASS: Cut editing respects carburetor/diesel/injection hardware: juniper-club
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinSupercharger
+PASS: Installed induction/gearset/timing capabilities project into controls: juniper-club / Twincharged
+PASS: Programmable equipment unlocks limiter, shift light and two-step: juniper-club
+PASS: Cut editing respects carburetor/diesel/injection hardware: juniper-club
+PASS: Only fitted compressor types expose pulley and pressure-release controls: Twincharged
+PASS: Anti-lag editing follows installed fueling capability: juniper-club
+PASS: Hardware-enabled fields produce a valid draft preview: juniper-club
+PASS: Changing display units preserves physical tune values: juniper-club
+PASS: Bar conversion is silent and physically equivalent: juniper-club
+PASS: kPa conversion retains the same physical pressure: juniper-club
+PASS: Stock tuning controls preserve the complete build: juniper-economy
+PASS: Installed induction/gearset/timing capabilities project into controls: juniper-economy / TwinTurbo
+PASS: Programmable equipment unlocks limiter, shift light and two-step: juniper-economy
+PASS: Cut editing respects carburetor/diesel/injection hardware: juniper-economy
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinTurbo
+PASS: Anti-lag editing follows installed fueling capability: juniper-economy
+PASS: Installed induction/gearset/timing capabilities project into controls: juniper-economy / TwinSupercharger
+PASS: Programmable equipment unlocks limiter, shift light and two-step: juniper-economy
+PASS: Cut editing respects carburetor/diesel/injection hardware: juniper-economy
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinSupercharger
+PASS: Installed induction/gearset/timing capabilities project into controls: juniper-economy / Twincharged
+PASS: Programmable equipment unlocks limiter, shift light and two-step: juniper-economy
+PASS: Cut editing respects carburetor/diesel/injection hardware: juniper-economy
+PASS: Only fitted compressor types expose pulley and pressure-release controls: Twincharged
+PASS: Anti-lag editing follows installed fueling capability: juniper-economy
+PASS: Hardware-enabled fields produce a valid draft preview: juniper-economy
+PASS: Changing display units preserves physical tune values: juniper-economy
+PASS: Bar conversion is silent and physically equivalent: juniper-economy
+PASS: kPa conversion retains the same physical pressure: juniper-economy
+PASS: Stock tuning controls preserve the complete build: kestrel-track
+PASS: Installed induction/gearset/timing capabilities project into controls: kestrel-track / TwinTurbo
+PASS: Programmable equipment unlocks limiter, shift light and two-step: kestrel-track
+PASS: Cut editing respects carburetor/diesel/injection hardware: kestrel-track
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinTurbo
+PASS: Anti-lag editing follows installed fueling capability: kestrel-track
+PASS: Installed induction/gearset/timing capabilities project into controls: kestrel-track / TwinSupercharger
+PASS: Programmable equipment unlocks limiter, shift light and two-step: kestrel-track
+PASS: Cut editing respects carburetor/diesel/injection hardware: kestrel-track
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinSupercharger
+PASS: Installed induction/gearset/timing capabilities project into controls: kestrel-track / Twincharged
+PASS: Programmable equipment unlocks limiter, shift light and two-step: kestrel-track
+PASS: Cut editing respects carburetor/diesel/injection hardware: kestrel-track
+PASS: Only fitted compressor types expose pulley and pressure-release controls: Twincharged
+PASS: Anti-lag editing follows installed fueling capability: kestrel-track
+PASS: Hardware-enabled fields produce a valid draft preview: kestrel-track
+PASS: Changing display units preserves physical tune values: kestrel-track
+PASS: Bar conversion is silent and physically equivalent: kestrel-track
+PASS: kPa conversion retains the same physical pressure: kestrel-track
+PASS: Stock tuning controls preserve the complete build: rally-sedan
+PASS: Installed induction/gearset/timing capabilities project into controls: rally-sedan / TwinTurbo
+PASS: Programmable equipment unlocks limiter, shift light and two-step: rally-sedan
+PASS: Cut editing respects carburetor/diesel/injection hardware: rally-sedan
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinTurbo
+PASS: Anti-lag editing follows installed fueling capability: rally-sedan
+PASS: Installed induction/gearset/timing capabilities project into controls: rally-sedan / TwinSupercharger
+PASS: Programmable equipment unlocks limiter, shift light and two-step: rally-sedan
+PASS: Cut editing respects carburetor/diesel/injection hardware: rally-sedan
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinSupercharger
+PASS: Installed induction/gearset/timing capabilities project into controls: rally-sedan / Twincharged
+PASS: Programmable equipment unlocks limiter, shift light and two-step: rally-sedan
+PASS: Cut editing respects carburetor/diesel/injection hardware: rally-sedan
+PASS: Only fitted compressor types expose pulley and pressure-release controls: Twincharged
+PASS: Anti-lag editing follows installed fueling capability: rally-sedan
+PASS: Hardware-enabled fields produce a valid draft preview: rally-sedan
+PASS: AWD mode builds its controls and authoritative preview: FixedSplit / rally-sedan / configured True / actual FixedSplit / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: FixedSplit
+PASS: AWD mode builds its controls and authoritative preview: OpenCenter / rally-sedan / configured True / actual OpenCenter / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: OpenCenter
+PASS: AWD mode builds its controls and authoritative preview: LockedCenter / rally-sedan / configured True / actual LockedCenter / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: LockedCenter
+PASS: AWD mode builds its controls and authoritative preview: OnDemand / rally-sedan / configured True / actual OnDemand / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: OnDemand
+PASS: AWD mode builds its controls and authoritative preview: ActiveBias / rally-sedan / configured True / actual ActiveBias / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: ActiveBias
+PASS: Active AWD front-share bounds remain ordered under conflicting numeric edits
+PASS: AWD mode builds its controls and authoritative preview: LimitedSlipCenter / rally-sedan / configured True / actual LimitedSlipCenter / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: LimitedSlipCenter
+PASS: Upgraded center hardware fixes its AWD topology
+PASS: Changing display units preserves physical tune values: rally-sedan
+PASS: Bar conversion is silent and physically equivalent: rally-sedan
+PASS: kPa conversion retains the same physical pressure: rally-sedan
+PASS: Stock tuning controls preserve the complete build: sport-coupe
+PASS: Installed induction/gearset/timing capabilities project into controls: sport-coupe / TwinTurbo
+PASS: Programmable equipment unlocks limiter, shift light and two-step: sport-coupe
+PASS: Cut editing respects carburetor/diesel/injection hardware: sport-coupe
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinTurbo
+PASS: Anti-lag editing follows installed fueling capability: sport-coupe
+PASS: Installed induction/gearset/timing capabilities project into controls: sport-coupe / TwinSupercharger
+PASS: Programmable equipment unlocks limiter, shift light and two-step: sport-coupe
+PASS: Cut editing respects carburetor/diesel/injection hardware: sport-coupe
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinSupercharger
+PASS: Installed induction/gearset/timing capabilities project into controls: sport-coupe / Twincharged
+PASS: Programmable equipment unlocks limiter, shift light and two-step: sport-coupe
+PASS: Cut editing respects carburetor/diesel/injection hardware: sport-coupe
+PASS: Only fitted compressor types expose pulley and pressure-release controls: Twincharged
+PASS: Anti-lag editing follows installed fueling capability: sport-coupe
+PASS: Hardware-enabled fields produce a valid draft preview: sport-coupe
+PASS: Changing display units preserves physical tune values: sport-coupe
+PASS: Bar conversion is silent and physically equivalent: sport-coupe
+PASS: kPa conversion retains the same physical pressure: sport-coupe
+PASS: Stock tuning controls preserve the complete build: starter-hatch
+PASS: Installed induction/gearset/timing capabilities project into controls: starter-hatch / TwinTurbo
+PASS: Programmable equipment unlocks limiter, shift light and two-step: starter-hatch
+PASS: Cut editing respects carburetor/diesel/injection hardware: starter-hatch
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinTurbo
+PASS: Anti-lag editing follows installed fueling capability: starter-hatch
+PASS: Installed induction/gearset/timing capabilities project into controls: starter-hatch / TwinSupercharger
+PASS: Programmable equipment unlocks limiter, shift light and two-step: starter-hatch
+PASS: Cut editing respects carburetor/diesel/injection hardware: starter-hatch
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinSupercharger
+PASS: Installed induction/gearset/timing capabilities project into controls: starter-hatch / Twincharged
+PASS: Programmable equipment unlocks limiter, shift light and two-step: starter-hatch
+PASS: Cut editing respects carburetor/diesel/injection hardware: starter-hatch
+PASS: Only fitted compressor types expose pulley and pressure-release controls: Twincharged
+PASS: Anti-lag editing follows installed fueling capability: starter-hatch
+PASS: Hardware-enabled fields produce a valid draft preview: starter-hatch
+PASS: Changing display units preserves physical tune values: starter-hatch
+PASS: Bar conversion is silent and physically equivalent: starter-hatch
+PASS: kPa conversion retains the same physical pressure: starter-hatch
+PASS: Stock tuning controls preserve the complete build: super-v8
+PASS: Installed induction/gearset/timing capabilities project into controls: super-v8 / TwinTurbo
+PASS: Programmable equipment unlocks limiter, shift light and two-step: super-v8
+PASS: Cut editing respects carburetor/diesel/injection hardware: super-v8
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinTurbo
+PASS: Anti-lag editing follows installed fueling capability: super-v8
+PASS: Installed induction/gearset/timing capabilities project into controls: super-v8 / TwinSupercharger
+PASS: Programmable equipment unlocks limiter, shift light and two-step: super-v8
+PASS: Cut editing respects carburetor/diesel/injection hardware: super-v8
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinSupercharger
+PASS: Installed induction/gearset/timing capabilities project into controls: super-v8 / Twincharged
+PASS: Programmable equipment unlocks limiter, shift light and two-step: super-v8
+PASS: Cut editing respects carburetor/diesel/injection hardware: super-v8
+PASS: Only fitted compressor types expose pulley and pressure-release controls: Twincharged
+PASS: Anti-lag editing follows installed fueling capability: super-v8
+PASS: Hardware-enabled fields produce a valid draft preview: super-v8
+PASS: Changing display units preserves physical tune values: super-v8
+PASS: Bar conversion is silent and physically equivalent: super-v8
+PASS: kPa conversion retains the same physical pressure: super-v8
+PASS: Stock tuning controls preserve the complete build: timber-diesel
+PASS: Installed induction/gearset/timing capabilities project into controls: timber-diesel / TwinTurbo
+PASS: Programmable equipment unlocks limiter, shift light and two-step: timber-diesel
+PASS: Cut editing respects carburetor/diesel/injection hardware: timber-diesel
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinTurbo
+PASS: Anti-lag editing follows installed fueling capability: timber-diesel
+PASS: Installed induction/gearset/timing capabilities project into controls: timber-diesel / TwinSupercharger
+PASS: Programmable equipment unlocks limiter, shift light and two-step: timber-diesel
+PASS: Cut editing respects carburetor/diesel/injection hardware: timber-diesel
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinSupercharger
+PASS: Installed induction/gearset/timing capabilities project into controls: timber-diesel / Twincharged
+PASS: Programmable equipment unlocks limiter, shift light and two-step: timber-diesel
+PASS: Cut editing respects carburetor/diesel/injection hardware: timber-diesel
+PASS: Only fitted compressor types expose pulley and pressure-release controls: Twincharged
+PASS: Anti-lag editing follows installed fueling capability: timber-diesel
+PASS: Hardware-enabled fields produce a valid draft preview: timber-diesel
+PASS: AWD mode builds its controls and authoritative preview: FixedSplit / timber-diesel / configured True / actual FixedSplit / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: FixedSplit
+PASS: AWD mode builds its controls and authoritative preview: OpenCenter / timber-diesel / configured True / actual OpenCenter / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: OpenCenter
+PASS: AWD mode builds its controls and authoritative preview: LockedCenter / timber-diesel / configured True / actual LockedCenter / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: LockedCenter
+PASS: AWD mode builds its controls and authoritative preview: OnDemand / timber-diesel / configured True / actual OnDemand / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: OnDemand
+PASS: AWD mode builds its controls and authoritative preview: ActiveBias / timber-diesel / configured True / actual ActiveBias / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: ActiveBias
+PASS: Active AWD front-share bounds remain ordered under conflicting numeric edits
+PASS: AWD mode builds its controls and authoritative preview: LimitedSlipCenter / timber-diesel / configured True / actual LimitedSlipCenter / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: LimitedSlipCenter
+PASS: Upgraded center hardware fixes its AWD topology
+PASS: Changing display units preserves physical tune values: timber-diesel
+PASS: Bar conversion is silent and physically equivalent: timber-diesel
+PASS: kPa conversion retains the same physical pressure: timber-diesel
+PASS: Stock tuning controls preserve the complete build: timber-diesel-tow
+PASS: Installed induction/gearset/timing capabilities project into controls: timber-diesel-tow / TwinTurbo
+PASS: Programmable equipment unlocks limiter, shift light and two-step: timber-diesel-tow
+PASS: Cut editing respects carburetor/diesel/injection hardware: timber-diesel-tow
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinTurbo
+PASS: Anti-lag editing follows installed fueling capability: timber-diesel-tow
+PASS: Installed induction/gearset/timing capabilities project into controls: timber-diesel-tow / TwinSupercharger
+PASS: Programmable equipment unlocks limiter, shift light and two-step: timber-diesel-tow
+PASS: Cut editing respects carburetor/diesel/injection hardware: timber-diesel-tow
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinSupercharger
+PASS: Installed induction/gearset/timing capabilities project into controls: timber-diesel-tow / Twincharged
+PASS: Programmable equipment unlocks limiter, shift light and two-step: timber-diesel-tow
+PASS: Cut editing respects carburetor/diesel/injection hardware: timber-diesel-tow
+PASS: Only fitted compressor types expose pulley and pressure-release controls: Twincharged
+PASS: Anti-lag editing follows installed fueling capability: timber-diesel-tow
+PASS: Hardware-enabled fields produce a valid draft preview: timber-diesel-tow
+PASS: AWD mode builds its controls and authoritative preview: FixedSplit / timber-diesel-tow / configured True / actual FixedSplit / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: FixedSplit
+PASS: AWD mode builds its controls and authoritative preview: OpenCenter / timber-diesel-tow / configured True / actual OpenCenter / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: OpenCenter
+PASS: AWD mode builds its controls and authoritative preview: LockedCenter / timber-diesel-tow / configured True / actual LockedCenter / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: LockedCenter
+PASS: AWD mode builds its controls and authoritative preview: OnDemand / timber-diesel-tow / configured True / actual OnDemand / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: OnDemand
+PASS: AWD mode builds its controls and authoritative preview: ActiveBias / timber-diesel-tow / configured True / actual ActiveBias / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: ActiveBias
+PASS: Active AWD front-share bounds remain ordered under conflicting numeric edits
+PASS: AWD mode builds its controls and authoritative preview: LimitedSlipCenter / timber-diesel-tow / configured True / actual LimitedSlipCenter / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: LimitedSlipCenter
+PASS: Upgraded center hardware fixes its AWD topology
+PASS: Changing display units preserves physical tune values: timber-diesel-tow
+PASS: Bar conversion is silent and physically equivalent: timber-diesel-tow
+PASS: kPa conversion retains the same physical pressure: timber-diesel-tow
+PASS: Stock tuning controls preserve the complete build: touring-six
+PASS: Installed induction/gearset/timing capabilities project into controls: touring-six / TwinTurbo
+PASS: Programmable equipment unlocks limiter, shift light and two-step: touring-six
+PASS: Cut editing respects carburetor/diesel/injection hardware: touring-six
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinTurbo
+PASS: Anti-lag editing follows installed fueling capability: touring-six
+PASS: Installed induction/gearset/timing capabilities project into controls: touring-six / TwinSupercharger
+PASS: Programmable equipment unlocks limiter, shift light and two-step: touring-six
+PASS: Cut editing respects carburetor/diesel/injection hardware: touring-six
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinSupercharger
+PASS: Installed induction/gearset/timing capabilities project into controls: touring-six / Twincharged
+PASS: Programmable equipment unlocks limiter, shift light and two-step: touring-six
+PASS: Cut editing respects carburetor/diesel/injection hardware: touring-six
+PASS: Only fitted compressor types expose pulley and pressure-release controls: Twincharged
+PASS: Anti-lag editing follows installed fueling capability: touring-six
+PASS: Hardware-enabled fields produce a valid draft preview: touring-six
+PASS: Changing display units preserves physical tune values: touring-six
+PASS: Bar conversion is silent and physically equivalent: touring-six
+PASS: kPa conversion retains the same physical pressure: touring-six
+PASS: Stock tuning controls preserve the complete build: utility-pickup
+PASS: Installed induction/gearset/timing capabilities project into controls: utility-pickup / TwinTurbo
+PASS: Programmable equipment unlocks limiter, shift light and two-step: utility-pickup
+PASS: Cut editing respects carburetor/diesel/injection hardware: utility-pickup
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinTurbo
+PASS: Anti-lag editing follows installed fueling capability: utility-pickup
+PASS: Installed induction/gearset/timing capabilities project into controls: utility-pickup / TwinSupercharger
+PASS: Programmable equipment unlocks limiter, shift light and two-step: utility-pickup
+PASS: Cut editing respects carburetor/diesel/injection hardware: utility-pickup
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinSupercharger
+PASS: Installed induction/gearset/timing capabilities project into controls: utility-pickup / Twincharged
+PASS: Programmable equipment unlocks limiter, shift light and two-step: utility-pickup
+PASS: Cut editing respects carburetor/diesel/injection hardware: utility-pickup
+PASS: Only fitted compressor types expose pulley and pressure-release controls: Twincharged
+PASS: Anti-lag editing follows installed fueling capability: utility-pickup
+PASS: Hardware-enabled fields produce a valid draft preview: utility-pickup
+PASS: AWD mode builds its controls and authoritative preview: FixedSplit / utility-pickup / configured True / actual FixedSplit / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: FixedSplit
+PASS: AWD mode builds its controls and authoritative preview: OpenCenter / utility-pickup / configured True / actual OpenCenter / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: OpenCenter
+PASS: AWD mode builds its controls and authoritative preview: LockedCenter / utility-pickup / configured True / actual LockedCenter / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: LockedCenter
+PASS: AWD mode builds its controls and authoritative preview: OnDemand / utility-pickup / configured True / actual OnDemand / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: OnDemand
+PASS: AWD mode builds its controls and authoritative preview: ActiveBias / utility-pickup / configured True / actual ActiveBias / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: ActiveBias
+PASS: Active AWD front-share bounds remain ordered under conflicting numeric edits
+PASS: AWD mode builds its controls and authoritative preview: LimitedSlipCenter / utility-pickup / configured True / actual LimitedSlipCenter / enabled True / error
+PASS: Topology-specific AWD controls match installed draft mode: LimitedSlipCenter
+PASS: Upgraded center hardware fixes its AWD topology
+PASS: Changing display units preserves physical tune values: utility-pickup
+PASS: Bar conversion is silent and physically equivalent: utility-pickup
+PASS: kPa conversion retains the same physical pressure: utility-pickup
+PASS: Stock tuning controls preserve the complete build: v8-muscle
+PASS: Installed induction/gearset/timing capabilities project into controls: v8-muscle / TwinTurbo
+PASS: Programmable equipment unlocks limiter, shift light and two-step: v8-muscle
+PASS: Cut editing respects carburetor/diesel/injection hardware: v8-muscle
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinTurbo
+PASS: Anti-lag editing follows installed fueling capability: v8-muscle
+PASS: Installed induction/gearset/timing capabilities project into controls: v8-muscle / TwinSupercharger
+PASS: Programmable equipment unlocks limiter, shift light and two-step: v8-muscle
+PASS: Cut editing respects carburetor/diesel/injection hardware: v8-muscle
+PASS: Only fitted compressor types expose pulley and pressure-release controls: TwinSupercharger
+PASS: Installed induction/gearset/timing capabilities project into controls: v8-muscle / Twincharged
+PASS: Programmable equipment unlocks limiter, shift light and two-step: v8-muscle
+PASS: Cut editing respects carburetor/diesel/injection hardware: v8-muscle
+PASS: Only fitted compressor types expose pulley and pressure-release controls: Twincharged
+PASS: Anti-lag editing follows installed fueling capability: v8-muscle
+PASS: Hardware-enabled fields produce a valid draft preview: v8-muscle
+PASS: Changing display units preserves physical tune values: v8-muscle
+PASS: Bar conversion is silent and physically equivalent: v8-muscle
+PASS: kPa conversion retains the same physical pressure: v8-muscle
+PASS: Hardware matrix never saves its experimental purchases or tunes
+PASS: Engine-less chassis shows an honest unavailable preview with no invented curve
+PASS: Unavailable inspection cannot fabricate an engine or refill the car
+PASS: Empty garage remains empty and directs selection through Garage
+PASS: Native Tuning checkpoint has no runtime errors
+Checks: 394 / runtime errors: 0
