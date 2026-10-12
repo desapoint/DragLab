@@ -9,7 +9,7 @@ namespace DragLab.Domain.Mechanics
         public int disclosureVersion,estimateSeed;public bool inspected,firstStarter,engineRuns,drives;public double reportedCondition;
         public System.Collections.Generic.List<string> historyNotes=new System.Collections.Generic.List<string>();
         public System.Collections.Generic.List<PartInstance> parts;public FuelState fuel;public FluidState fluids;
-        public int price, reputation;
+        public int price, reputation, cataloguePrice;
         public Tune stock;
     }
     public static class VehicleCollection
@@ -36,16 +36,18 @@ namespace DragLab.Domain.Mechanics
             profile.selectedVehicleId = car.vehicleId; profile.selectedOwnedVehicleId = car.instanceId;
         }
         public static string Buy(PlayerProfile profile, MechanicalCatalog catalog, VehicleOffer offer)
+        { return Buy(profile,catalog,offer,offer?.price??0); }
+        internal static string Buy(PlayerProfile profile, MechanicalCatalog catalog, VehicleOffer offer,int chargedPrice)
         {
-            if (offer == null || offer.stock == null || offer.price <= 0 || offer.reputation < 0) throw new InvalidOperationException("Invalid dealership offer.");
-            if (profile.cash < offer.price) throw new InvalidOperationException("Insufficient cash for this car.");
+            if (offer == null || offer.stock == null || offer.price <= 0 || chargedPrice<offer.price || offer.reputation < 0) throw new InvalidOperationException("Invalid dealership offer.");
+            if (profile.cash < chargedPrice) throw new InvalidOperationException("Insufficient cash for this car.");
             if (profile.reputation < offer.reputation) throw new InvalidOperationException("Earn the required reputation first.");
             if (profile.runCheckpoints.Any(r => !r.settled)) throw new InvalidOperationException("Close the active run before buying a car.");
             VehicleListings.RequireCurrent(profile,offer);
             var spec = catalog.Spec(offer.model);
-            if(offer.parts!=null&&offer.parts.Count>0){var bought=InstallExact(profile,catalog,offer);profile.cash-=offer.price;VehicleListings.Consume(profile,catalog,offer);MechanicsOwnership.Ensure(profile,catalog);Select(profile,bought.instanceId);return bought.instanceId;}
+            if(offer.parts!=null&&offer.parts.Count>0){var bought=InstallExact(profile,catalog,offer);profile.cash-=chargedPrice;VehicleListings.Consume(profile,catalog,offer);MechanicsOwnership.Ensure(profile,catalog);Select(profile,bought.instanceId);return bought.instanceId;}
             var car = new OwnedCar { vehicleId = offer.model, tune = offer.stock.Copy(), paintHex = offer.paint ?? "#58C7BA" };
-            car.tune.ClampTo(spec); profile.cash -= offer.price; profile.cars.Add(car);
+            car.tune.ClampTo(spec); profile.cash -= chargedPrice; profile.cars.Add(car);
             MechanicsOwnership.Ensure(profile, catalog); Select(profile, car.instanceId);
             return car.instanceId;
         }

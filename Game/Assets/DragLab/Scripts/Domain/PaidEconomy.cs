@@ -14,11 +14,13 @@ namespace DragLab.Domain.Mechanics
         public int repairLabour = 15, oilChangeLabour = 25, coolantFlushLabour = 20;
         public int rebuildBaseLabour=150,rebuildPerCylinder=25;
         public double repairPriceFraction = .08, dealerSpread = .1;
+        public double newVehiclePremium = .5;
         public int recoverySeconds = 60, recoveryReward = 250, recoveryCashLimit = 10000;
         public void Validate()
         {
             if (string.IsNullOrWhiteSpace(id) || version < 1 || quoteSeconds < 1 || quoteSeconds > 86400 || vehicleInspectionFee<0 || repairLabour < 0 || oilChangeLabour < 0 || coolantFlushLabour < 0 || rebuildBaseLabour<0||rebuildPerCylinder<0||recoverySeconds < 1 || recoveryReward < 1 || recoveryCashLimit < 1) throw new InvalidOperationException("Invalid operating policy.");
             foreach (double v in new[] { fuelPerLitre, oilPerLitre, coolantPerLitre, clutchOilPerLitre, repairPriceFraction, dealerSpread }) if (!MechanicsSchema.Finite(v) || v < 0 || v > 1000) throw new InvalidOperationException("Invalid operating price/factor.");
+            if(!MechanicsSchema.Finite(newVehiclePremium)||newVehiclePremium<0||newVehiclePremium>10)throw new InvalidOperationException("Invalid new-vehicle premium.");
         }
     }
     [Serializable] public sealed class EconomyReceipt
@@ -83,7 +85,7 @@ namespace DragLab.Domain.Mechanics
         { if (!MechanicsSchema.Finite(requested) || requested < 0) throw new InvalidOperationException("Quantity must be finite and nonnegative."); return Math.Min(requested, Math.Max(0, free)); }
         public static int DealerPrice(MechanicalCatalog catalog, OperatingPolicy costs, ValuationPolicy values, VehicleOffer offer)
         {
-            costs.Validate(); values.Validate(); if (offer == null || offer.price <= 0 || offer.stock == null || offer.reputation < 0) throw new InvalidOperationException("Invalid dealership offer.");
+            costs.Validate(); values.Validate(); if (offer == null || offer.price <= 0 || offer.cataloguePrice<0 || offer.stock == null || offer.reputation < 0) throw new InvalidOperationException("Invalid dealership offer.");
             var spec = catalog.Spec(offer.model); var model = values.models.Find(m => m.model == offer.model);
             double bare = model == null ? values.defaultBareChassis : model.bareChassis;
             double engine = 0, road = 0;
@@ -103,7 +105,11 @@ namespace DragLab.Domain.Mechanics
                     engineOffer=Math.Max(engineOffer,e*Math.Max(1,buyer.engine)*(model?.engineDemand??1));chassisOffer=Math.Max(chassisOffer,(r+bare)*Math.Max(1,buyer.chassis)*(model?.chassisDemand??1));carOffer=Math.Max(carOffer,(e+r+bare)*Math.Max(1,buyer.car)*(model?.carDemand??1));}
             }
             double suppliedFluids = (offer.parts!=null&&offer.parts.Count>0?offer.fuel.litres:spec.fuel.capacityLitres) * costs.fuelPerLitre + (offer.parts!=null&&offer.parts.Count>0?offer.fluids.oilLitres:spec.fluids.oilCapacityLitres) * costs.oilPerLitre + (offer.parts!=null&&offer.parts.Count>0?offer.fluids.coolantLitres:spec.fluids.coolantCapacityLitres) * costs.coolantPerLitre;
-            return Money(Math.Max(offer.price, Math.Max(engineOffer + chassisOffer, carOffer) * (1 + costs.dealerSpread) + suppliedFluids));
+            double packageFloor=Math.Max(engineOffer + chassisOffer, carOffer) * (1 + costs.dealerSpread) + suppliedFluids;
+            // Prior ownership remains used even after every component has been replaced.
+            // Keep MSRP separate from the saved ask so repeated quotes cannot compound the premium.
+            if(!offer.used)packageFloor=Math.Max(offer.cataloguePrice>0?offer.cataloguePrice:offer.price,packageFloor)*(1+costs.newVehiclePremium);
+            return Money(Math.Max(offer.price,packageFloor));
         }
         public static PaymentAmounts Preview(PlayerProfile p, MechanicalCatalog cat, OperatingPolicy policy, ValuationPolicy prices, PaymentRequest request, long now)
         {
@@ -159,7 +165,7 @@ namespace DragLab.Domain.Mechanics
                 case PaymentKind.Repair: ServiceOperations.Repair(p, r.carId, r.targetId, r.service); break;
                 case PaymentKind.ClutchOil: var item = Installed(p, Car(p, r.carId), r.targetId); item.condition.clutchOilLitres = cat.Find(item.definitionId).clutchOilCapacityLitres; item.condition.clutchOilCondition = 1; item.condition.serviceCount++; item.condition.lastService = "Wet clutch oil service"; break;
                 case PaymentKind.Part: PartOperations.Buy(p, cat, r.carId, r.targetId, r.install); break;
-                case PaymentKind.Car: var offer = JsonUtility.FromJson<VehicleOffer>(JsonUtility.ToJson(r.offer)); offer.price = q.Cost; VehicleCollection.Buy(p, cat, offer); break;
+                case PaymentKind.Car: VehicleCollection.Buy(p, cat, r.offer, q.Cost); break;
                 case PaymentKind.ElementNew: EngineElementService.Replace(p, r.carId, r.targetId, r.auxiliaryId); break;
                 case PaymentKind.ElementReuse: EngineElementService.Replace(p, r.carId, r.targetId, r.auxiliaryId, r.spareId); break;
                 case PaymentKind.Rebuild: EngineRebuilds.Start(p, r.carId, now,policy); p.cars.Find(c => c.instanceId == r.carId).engineRebuild.paidPrice = q.Cost; break;

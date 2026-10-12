@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using UnityEditor;
 using UnityEngine;
 using DragLab.Data;
 using DragLab.Domain;
@@ -9,7 +10,41 @@ using DragLab.Domain.Mechanics;
 using DragLab.Infrastructure;
 namespace DragLab.Editor {
  public static class VehicleMarketVerification {
+ public static void PreparePricing(){PaidOperationsVerification.Prepare();var asset=Resources.Load<OperatingPolicyDefinition>("Data/Economy/OperatingPolicy");if(asset.policy.version<4){asset.policy.newVehiclePremium=.5;asset.policy.version=4;EditorUtility.SetDirty(asset);AssetDatabase.SaveAssets();}}
+ static void PricingChecks(PlayerProfile market,MechanicalCatalog cat,long now,Action<bool,string> check){
+ var costs=VehicleListings.Costs;var values=VehicleListings.Values;var oldCosts=JsonUtility.FromJson<OperatingPolicy>(JsonUtility.ToJson(costs));oldCosts.newVehiclePremium=0;
+ var matrix=new StringBuilder("model,previous_new_price,new_price,restored_used_100_percent_max_spread,used_mileage_km\n");
+ foreach(var source in market.vehicleStock.listings.Where(o=>!o.used)){
+ var reference=JsonUtility.FromJson<VehicleOffer>(JsonUtility.ToJson(source));reference.price=reference.cataloguePrice;
+ int before=PaidEconomy.DealerPrice(cat,oldCosts,values,reference),price=PaidEconomy.DealerPrice(cat,costs,values,source);
+ check(price==(int)Math.Ceiling(before*(1+costs.newVehiclePremium)-1e-9),source.model+" new premium applies once above MSRP/package floor");
+ var restored=JsonUtility.FromJson<VehicleOffer>(JsonUtility.ToJson(source));restored.used=true;restored.mileageKm=100000;restored.historyNotes.Clear();restored.price=(int)Math.Ceiling(before*1.26);restored.inspected=true;
+ foreach(var p in restored.parts){p.condition=new ComponentCondition();EngineElements.Ensure(cat.Spec(source.model),cat.Find(p.definitionId),p);ClutchHardware.Ensure(cat.Find(p.definitionId),p.condition);if(cat.Find(p.definitionId).category==PartCategory.Tires)TireDynamics.Ensure(p.condition);}
+ int used=PaidEconomy.DealerPrice(cat,costs,values,restored);
+ check(restored.parts.All(p=>p.condition.health==1&&!p.condition.failed)&&used<price,source.model+" used car with all brand-new parts and top seeded spread stays cheaper than equivalent new");
+ restored.mileageKm=1;check(PaidEconomy.DealerPrice(cat,costs,values,restored)==used,source.model+" prior ownership remains used even at low mileage; new premium is not condition based");
+ string snapshot=JsonUtility.ToJson(source);check(Enumerable.Range(0,5).All(_=>PaidEconomy.DealerPrice(cat,costs,values,source)==price)&&snapshot==JsonUtility.ToJson(source),source.model+" repeated prices cannot compound or mutate the listing");
+ matrix.AppendLine(source.model+","+before+","+price+","+used+",100000");
+ }
+ var legacy=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(market));legacy.catalog=cat;legacy.cash=1000000;legacy.reputation=1000;
+ foreach(var o in legacy.vehicleStock.listings.Where(o=>!o.used)){o.price=o.cataloguePrice;o.price=PaidEconomy.DealerPrice(cat,oldCosts,values,o);o.cataloguePrice=0;}
+ string owned=JsonUtility.ToJson(legacy.cars),parts=JsonUtility.ToJson(legacy.parts),usedStock=JsonUtility.ToJson(legacy.vehicleStock.listings.Where(o=>o.used).ToArray());
+ var savedAsks=legacy.vehicleStock.listings.ToDictionary(o=>o.listingId,o=>o.price);var ids=legacy.vehicleStock.listings.SelectMany(o=>o.parts.Select(p=>p.instanceId)).ToArray();
+ MechanicsOwnership.Ensure(legacy,cat);
+ check(legacy.vehicleStock.listings.Where(o=>!o.used).All(o=>o.cataloguePrice==Resources.LoadAll<VehicleDefinition>("Data/Vehicles").Single(v=>v.spec.id==o.model).purchasePrice),"Old new-stock saves gain MSRP metadata without resetting the market");
+ check(owned==JsonUtility.ToJson(legacy.cars)&&parts==JsonUtility.ToJson(legacy.parts)&&usedStock==JsonUtility.ToJson(legacy.vehicleStock.listings.Where(o=>o.used).ToArray())&&legacy.vehicleStock.listings.All(o=>savedAsks[o.listingId]==o.price)&&ids.SequenceEqual(legacy.vehicleStock.listings.SelectMany(o=>o.parts.Select(p=>p.instanceId))),"Price migration preserves owned assets, used stock, saved asks and seller identities");
+ string migrated=JsonUtility.ToJson(legacy.vehicleStock);MechanicsOwnership.Ensure(legacy,cat);check(migrated==JsonUtility.ToJson(legacy.vehicleStock),"Price metadata migration is idempotent");
+ var offer=legacy.vehicleStock.listings.First(o=>!o.used);int expected=PaidEconomy.DealerPrice(cat,costs,values,offer);var quote=PaidEconomy.Quote(legacy,cat,costs,values,new PaymentRequest{kind=PaymentKind.Car,offer=offer},now);int cash=legacy.cash;
+ check(quote.Cost==expected&&quote.Cost>offer.price,"Existing saved new offer displays/quotes the higher current-policy price");
+ PlayerProfile committed;string error;check(MechanicsTransactions.Try(legacy,cat,legacy.revision,p=>PaidEconomy.Pay(p,cat,costs,values,quote,now,VehicleListings.Find(p,offer.listingId)),p=>true,out committed,out error),"Repriced old new-stock purchase settles against its original identity: "+error);
+ check(committed.cash==cash-expected&&offer.parts.All(p=>committed.parts.Any(q=>q.instanceId==p.instanceId))&&committed.SelectedCar.mileageKm==0,"Repriced checkout charges once and retains the exact zero-mile package");
+ check(MechanicsOwnership.Validate(committed,cat)==null&&PaidEconomy.DealerPrice(cat,costs,values,VehicleListings.Find(committed,offer.model))==expected,"Replacement new stock has stable premium pricing and valid ownership");
+ var changing=PaidEconomy.Quote(committed,cat,costs,values,new PaymentRequest{kind=PaymentKind.Car,offer=VehicleListings.Find(committed,offer.model)},now);string state=JsonUtility.ToJson(committed);var changedCosts=JsonUtility.FromJson<OperatingPolicy>(JsonUtility.ToJson(costs));changedCosts.newVehiclePremium+=.1;bool rejected=false;try{PaidEconomy.Pay(committed,cat,changedCosts,values,changing,now,VehicleListings.Find(committed,offer.model));}catch(InvalidOperationException){rejected=true;}check(rejected&&state==JsonUtility.ToJson(committed),"Changing the new premium invalidates an old quote without charging");
+ foreach(double invalid in new[]{double.NaN,double.PositiveInfinity,-.1,11}){var policy=JsonUtility.FromJson<OperatingPolicy>(JsonUtility.ToJson(costs));policy.newVehiclePremium=invalid;bool denied=false;try{policy.Validate();}catch(InvalidOperationException){denied=true;}check(denied,"Invalid new-car premium rejected: "+invalid);}
+ var folder=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/variety"));Directory.CreateDirectory(folder);File.WriteAllText(Path.Combine(folder,"new-car-pricing-matrix.csv"),matrix.ToString(),new UTF8Encoding(false));
+ }
  public static void RunStandalone(){
+ PreparePricing();
  int checks=0;var log=new StringBuilder();Action<bool,string> check=(ok,label)=>{if(!ok)throw new InvalidOperationException(label);checks++;log.AppendLine("PASS "+label);};var cat=MechanicsTransactions.Catalog();long now=DateTime.UtcNow.Ticks;
  Func<PlayerProfile> fresh=()=>{var p=PlayerProfile.NewGame(now);VehicleListings.Initialize(p,cat,12345);MechanicsOwnership.Ensure(p,cat);return p;};
  var initial=fresh();check(initial.cars.Count==0&&initial.SelectedCar==null&&initial.firstPurchasePending,"fresh game starts without gifted hardware/car");check(initial.vehicleStock.listings.Count==3&&initial.vehicleStock.listings.All(o=>o.used&&o.reputation==0),"three fixed used starters, no reputation restriction");
@@ -21,6 +56,7 @@ namespace DragLab.Editor {
  var owned=fresh();var selected=owned.vehicleStock.listings[0];VehicleCollection.Buy(owned,cat,selected);var clone=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(owned));MechanicsOwnership.Ensure(clone,cat);string current=JsonUtility.ToJson(owned.vehicleStock);VehicleListings.AfterRace(owned,cat);VehicleListings.AfterRace(owned,cat);check(current!=JsonUtility.ToJson(owned.vehicleStock)&&owned.vehicleStock.generation==1,"two runs advance refresh counter without swapping stock");string held=string.Join("|",owned.vehicleStock.listings.Select(JsonUtility.ToJson));VehicleListings.AfterRace(owned,cat);check(held!=string.Join("|",owned.vehicleStock.listings.Select(JsonUtility.ToJson))&&owned.vehicleStock.generation==2,"third completed paid/free run refreshes stock");for(int i=0;i<3;i++)VehicleListings.AfterRace(clone,cat);check(JsonUtility.ToJson(owned.vehicleStock)==JsonUtility.ToJson(clone.vehicleStock),"same persisted seed and run count reproduce refresh exactly");
  check(owned.vehicleStock.listings.Count(o=>o.used)==7&&owned.vehicleStock.listings.Count(o=>!o.used)==13,"normal market contains new and used variants");check(owned.vehicleStock.listings.Where(o=>!o.used).SelectMany(o=>o.parts).All(p=>p.condition.health==1&&!p.condition.failed),"new stock always has unused healthy components");
  check(owned.vehicleStock.listings.Where(o=>o.used).SelectMany(o=>o.parts).Select(o=>o.condition.health).Distinct().Count()>3,"used cars have individually varied part condition");
+ PricingChecks(owned,cat,now,check);
  var legacy=PlayerProfile.New(now);MechanicsOwnership.Ensure(legacy,cat);legacy.parts[0].condition.health=.71f;string retained=JsonUtility.ToJson(legacy.parts);int balance=legacy.cash;legacy.saveVersion=5;legacy.vehicleStock=new VehicleStockState();MechanicsOwnership.Ensure(legacy,cat);check(legacy.vehicleStock.seed!=0&&legacy.cars.Count==1&&legacy.cash==balance&&retained==JsonUtility.ToJson(legacy.parts),"Legacy absent-stock migration preserves existing owned condition and cash");
  var corrupt=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(owned));corrupt.vehicleStock.seed=0;bool stockRejected=false;try{MechanicsOwnership.Ensure(corrupt,cat);}catch(InvalidOperationException){stockRejected=true;}check(stockRejected&&corrupt.vehicleStock.seed==0,"Modern corrupt stock is rejected instead of silently rerolled");
  var variants=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(owned));var deals=new System.Collections.Generic.Dictionary<string,System.Collections.Generic.HashSet<int>>();for(int generation=0;generation<6;generation++){foreach(var o in variants.vehicleStock.listings.Where(o=>o.used)){if(!deals.ContainsKey(o.model))deals[o.model]=new System.Collections.Generic.HashSet<int>();deals[o.model].Add(PaidEconomy.DealerPrice(cat,VehicleListings.Costs,VehicleListings.Values,o));}for(int race=0;race<3;race++)VehicleListings.AfterRace(variants,cat);}check(deals.Values.Any(prices=>prices.Count>1),"Same used model can offer different seeded deals across stock generations");

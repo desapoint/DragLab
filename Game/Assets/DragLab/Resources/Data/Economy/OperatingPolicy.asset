@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DragLab.Data.OperatingPolicyDefinition
   policy:
     id: balanced-3g-operating-costs
-    version: 3
+    version: 4
     quoteSeconds: 300
     fuelPerLitre: 2
     oilPerLitre: 6
@@ -28,6 +28,7 @@ MonoBehaviour:
     rebuildPerCylinder: 25
     repairPriceFraction: 0.08
     dealerSpread: 0.1
+    newVehiclePremium: 0.5
     recoverySeconds: 60
     recoveryReward: 250
     recoveryCashLimit: 10000
