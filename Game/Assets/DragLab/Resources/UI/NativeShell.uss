@@ -352,3 +352,13 @@
 .part-position-choice { margin: 8px 0 0 0; min-width: 180px; }
 
 .part-purchase-roles .part-purchase-choice { min-width: 340px; }
+
+.modal-content .part-position-choice { flex-direction: column; align-items: stretch; justify-content: center; height: auto; min-height: 64px; flex-shrink: 0; padding: 8px 14px; }
+.position-heading { flex-direction: row; align-items: center; }
+.modal-content .part-position-choice Label { height: auto; white-space: normal; margin: 0; translate: 0 0; -unity-text-align: middle-left; }
+.modal-content .part-position-choice .position-title { flex-grow: 1; font-size: 18px; }
+.modal-content .part-position-choice .position-wear { font-size: 17px; margin-left: 12px; -unity-text-align: middle-right; flex-shrink: 0; }
+.modal-content .part-position-choice .position-spec { font-size: 16px; color: var(--racing-muted); margin-top: 3px; }
+.modal-content .part-position-choice .position-fault { font-size: 16px; color: var(--racing-accent); margin-top: 3px; }
+
+.modal-content .part-position-choice.selected .position-fault { color: var(--racing-text); }

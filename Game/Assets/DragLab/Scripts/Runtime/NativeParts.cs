@@ -112,9 +112,10 @@ namespace DragLab.Runtime
         void ChoosePartPosition(NativePartEntry entry)
         {
             var positions=partsBrowser.Positions(entry);string selected=entry.Position;
-            var labels=positions.Select(p=>partsBrowser.PositionLabel(entry,p)).ToArray();
-            OpenDialog("Replacement position",null,new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Apply",()=>{entry.Position=selected;entry.Ready=false;entry.Proposed=null;entry.Change=new double?[7];partsBrowser.Evaluate(entry);UpdatePartCard(entry);CloseDialog();OpenPartDetail(entry.Id,false);})},populate:content=>
-                QueryChoices(content,"partUnitPosition","Position",labels,()=>partsBrowser.PositionLabel(entry,selected),v=>selected=positions[Array.IndexOf(labels,v)],2));
+            OpenDialog("Replacement position",null,new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Apply",()=>{entry.Position=selected;entry.Ready=false;entry.Proposed=null;entry.Change=new double?[7];partsBrowser.Evaluate(entry);UpdatePartCard(entry);CloseDialog();OpenPartDetail(entry.Id,false);})},populate:content=>{
+                var rows=new List<Tuple<Button,string>>();
+                foreach(string position in positions){string target=position;var button=ReplacementPositionRow(content,entry.Definition,target,"partUnitPosition:"+partsBrowser.PositionLabel(entry,target),()=>{selected=target;foreach(var pair in rows)pair.Item1.EnableInClassList("selected",pair.Item2==selected);});button.EnableInClassList("selected",selected==target);rows.Add(Tuple.Create(button,target));}
+            });
         }
         void PartDetailFact(VisualElement parent,string label,string value,string state=null)
         {
