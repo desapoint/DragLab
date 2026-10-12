@@ -83,23 +83,28 @@ namespace DragLab.Runtime
                 }
                 Grain(w,h,Mathf.Min(2400,(int)(w*h/6)),0x23df917u,.032f);
                 if (ShineActive)
-                {
-                    // Existing navigation sweep; contoured controls use their own clipped mesh.
-                    for(int i=0;i<64;i++)
-                    {
-                        float u=i/64f, v=(i+1)/64f;
-                        float center=Mathf.Lerp(-.3f,1.3f,ShineProgress);
-                        float a=Mathf.Exp(-Mathf.Pow((u-center)/.11f,2))*.14f;
-                        float b=Mathf.Exp(-Mathf.Pow((v-center)/.11f,2))*.14f;
-                        Quad(new Vector2(u*w,0),new Vector2(v*w,0),new Vector2(v*w,h),new Vector2(u*w,h),C(1,1,1,a),C(1,1,1,b),C(1,1,1,b),C(1,1,1,a));
-                    }
-                }
+                    DrawShine(w,h,.14f);
                 if (pressed) Face(0,0,w,h,C(0,0,0,.22f));
             }
             var mesh = context.Allocate(vertices.Count,indices.Count);
             foreach (var vertex in vertices) mesh.SetNextVertex(vertex);
             foreach (var index in indices) mesh.SetNextIndex(index);
             if (!UsesContour && kind != Kind.Header && kind != Kind.Footer) DrawDither(context,w,h);
+        }
+        void DrawShine(float w,float h,float alpha)
+        {
+            float halfLean=h*Mathf.Tan(25*Mathf.Deg2Rad)*.5f;
+            float low=-halfLean,high=w+halfLean,sigma=w*.1f;
+            float center=Mathf.Lerp(low-3*sigma,high+3*sigma,ShineProgress);
+            bool priorClip=clipContour;
+            if(!priorClip){contour.Clear();contour.Add(Vector2.zero);contour.Add(new Vector2(w,0));contour.Add(new Vector2(w,h));contour.Add(new Vector2(0,h));clipContour=true;}
+            for(int i=0;i<64;i++)
+            {
+                float a=Mathf.Lerp(low,high,i/64f),b=Mathf.Lerp(low,high,(i+1)/64f);
+                float ca=Mathf.Exp(-Mathf.Pow((a-center)/sigma,2))*alpha,cb=Mathf.Exp(-Mathf.Pow((b-center)/sigma,2))*alpha;
+                Quad(new Vector2(a+halfLean,0),new Vector2(b+halfLean,0),new Vector2(b-halfLean,h),new Vector2(a-halfLean,h),C(1,1,1,ca),C(1,1,1,cb),C(1,1,1,cb),C(1,1,1,ca));
+            }
+            clipContour=priorClip;
         }
         void DrawDither(MeshGenerationContext context,float w,float h)
         {

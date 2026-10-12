@@ -53,13 +53,7 @@ namespace DragLab.Runtime
                 Face(0,h-7,w,6,C(1,1,1,0),C(1,1,1,.022f));
                 if(hovered) Face(0,0,w,h,C(1,1,1,.045f));
                 if(ShineActive)
-                    for(int i=0;i<48;i++)
-                    {
-                        float u=i/48f,v=(i+1)/48f,center=Mathf.Lerp(-.3f,1.3f,ShineProgress);
-                        float a=Mathf.Exp(-Mathf.Pow((u-center)/.10f,2))*.13f,b=Mathf.Exp(-Mathf.Pow((v-center)/.10f,2))*.13f;
-                        float lean=kind==Kind.Primary?18:kind==Kind.Tab||kind==Kind.FirstTab?10:6;
-                        Quad(new Vector2(u*w+lean,0),new Vector2(v*w+lean,0),new Vector2(v*w,h),new Vector2(u*w,h),C(1,1,1,a),C(1,1,1,b),C(1,1,1,b),C(1,1,1,a));
-                    }
+                    DrawShine(w,h,.13f);
                 if(pressed) Face(0,0,w,h,C(0,0,0,.16f));
             }
             clipContour=false;
