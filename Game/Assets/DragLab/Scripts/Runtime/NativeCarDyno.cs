@@ -19,8 +19,7 @@ namespace DragLab.Runtime
                 var cached=InspectOwned(car);if(cached==null)throw new InvalidOperationException("Inspection unavailable");
                 var stats=cached.Stats;
                 if(comparedTo!=null){panel.Add(ComparisonDyno(comparedTo,stats,"ownedDynoPlot"));return panel;}
-                if(cached.Healthy==null){var healthySource=InspectionBuild.Capture(game.Profile,car,healthy:true);cached.Healthy=CarInspection.CalculatePrepared(healthySource,CarInspection.PrepareCar(healthySource),false);}
-                var healthy=cached.Healthy;
+                var healthy=OwnedHealthy(car);
                 TorqueUnit units = SharedUnitSettings.Current.torque;
                 panel.Add(new NativeDynoPanel(new[] {
                     new NativeDynoSeries("Current","Current",stats,NativeDynoStyle.Primary),

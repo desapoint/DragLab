@@ -264,5 +264,10 @@ namespace DragLab.Runtime
             var transmission=Group(TransmissionGroup.Id,TransmissionGroup.Title,TransmissionGroup.Definitions.ToArray());transmission.Children=Array.AsReadOnly(new[] {Gearing(current,proposed)});
             return Array.AsReadOnly(new[] {Engine,induction,transmission,TiresGroup,WeightGroup,CoolingGroup,Components(current,proposed),Performance(current,proposed)});
         }
+        internal static NativeStatGroup TuningSummary()=>new NativeStatGroup("TuneSummary","Changes",
+            N("tuningHp","HP",s=>s.Inspection.peakHp,"HP","F0",0,500,"Estimated full-load power with the captured tune, installed hardware, wear and supplies.",1),
+            N("tuningTorque","Torque",s=>s.Inspection.peakTorque,"Nm","F0",0,1000,"Engine torque before gearing. Higher torque can need stronger components and better traction.",1),
+            N("tuningWeight","Weight",s=>s.Inspection.vehicleMassKg,"kg","F1",0,3500,"Physical vehicle mass, including driver, payload, fitted hardware and retained fuel/fluids.",-1),
+            N("tuningCondition","Condition",s=>s.Inspection.condition*100,"%","F0",0,100,"Captured fitted-part condition. Previewing a tune does not repair components.",1));
     }
 }

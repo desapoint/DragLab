@@ -1,0 +1,812 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Tuning navigation displays its native page frame
+PASS: Summary and dyno reuse identical Current/Proposed inspections
+PASS: Existing no-wear reference remains visible without refilling real or reference supplies
+PASS: Unchanged tune has disabled Apply/Revert
+PASS: First checkpoint adds no tuning sliders or inputs
+PASS: Tuning columns and anchored actions fit at 1280 / scale 1
+PASS: All category tabs fit the left column
+PASS: Shared dyno fits inside the comparison viewport
+PASS: Tuning reuses the no-Tab navigation contract
+PASS: Category switches locally: Induction
+PASS: Category switches locally: Drivetrain
+PASS: Category switches locally: Wheels
+PASS: Category switches locally: Engine
+PASS: Category browsing does not recalculate previews, apply tunes or save
+PASS: F8 exposes legacy tuning on the same route
+PASS: F8 preserves the single authoritative draft and enables explicit Apply
+PASS: Draft driver mass produces a real comparison difference
+PASS: Preview respects the fixed OEM gearset even when the draft requests another ratio
+PASS: Proposed snapshots retain all fitted identities, wear/faults and actual liquids
+PASS: Draft comparison changes no live or saved assets
+PASS: Shared dyno keeps pointer inspection/intersection markers
+PASS: Summary info opens the shared read-only explanation dialog
+PASS: Info dialog retains draft ownership
+PASS: Revert restores applied values without saving
+PASS: Failed durable Apply retains profile and editable draft, displaying the error
+PASS: Explicit Apply commits the existing authoritative transaction once
+PASS: Applied tune survives real disk reload
+PASS: Successful Apply clears errors and returns to a clean preview
+PASS: Leaving the page discards unapplied changes
+PASS: Settings Cancel returns to Tuning with its category retained
+PASS: Tuning columns and anchored actions fit at 1024 / scale 1
+PASS: All category tabs fit the left column
+PASS: Shared dyno fits inside the comparison viewport
+PASS: Tuning reuses the no-Tab navigation contract
+PASS: Tuning columns and anchored actions fit at 1920 / scale 1
+PASS: All category tabs fit the left column
+PASS: Shared dyno fits inside the comparison viewport
+PASS: Tuning reuses the no-Tab navigation contract
+PASS: Tuning uses shared crisp 4K scaling
+PASS: Tuning columns and anchored actions fit at 1920 / scale 2
+PASS: All category tabs fit the left column
+PASS: Shared dyno fits inside the comparison viewport
+PASS: Tuning reuses the no-Tab navigation contract
+PASS: Engine-less chassis shows an honest unavailable preview with no invented curve
+PASS: Unavailable inspection cannot fabricate an engine or refill the car
+PASS: Empty garage remains empty and directs selection through Garage
+PASS: Native Tuning checkpoint has no runtime errors
+PASS: Money groups thousands using en-US separators
+PASS: Money preserves cents for detailed values and fuel rates in en-US
+PASS: Money signs precede currency and zero is neutral in en-US
+PASS: Money displays wide intermediate cart totals without overflow in en-US
+PASS: Money groups thousands using fr-CA separators
+PASS: Money preserves cents for detailed values and fuel rates in fr-CA
+PASS: Money signs precede currency and zero is neutral in fr-CA
+PASS: Money displays wide intermediate cart totals without overflow in fr-CA
+PASS: Money groups thousands using fr-FR separators
+PASS: Money preserves cents for detailed values and fuel rates in fr-FR
+PASS: Money signs precede currency and zero is neutral in fr-FR
+PASS: Money displays wide intermediate cart totals without overflow in fr-FR
+PASS: F8 displays native Garage shell on unchanged route
+PASS: Navigation anchored top/full width at 1280x720
+PASS: Settings has twelve-point right inset/full bar height: nav (x:0.00, y:0.00, width:1280.00, height:64.00), settings (x:1188.00, y:0.00, width:80.00, height:64.00)
+PASS: navGarage visible without overlapping Settings
+PASS: navBuild visible without overlapping Settings
+PASS: navTuning visible without overlapping Settings
+PASS: navRace visible without overlapping Settings
+PASS: navBusiness visible without overlapping Settings
+PASS: navData visible without overlapping Settings
+PASS: cashGroup visible without overlapping Settings
+PASS: fuelGroup visible without overlapping Settings
+PASS: repGroup visible without overlapping Settings
+PASS: Settings filled icon keeps aspect ratio and padding
+PASS: Rendered selected-tab red glow fades upward and sideways from its bottom center
+PASS: Rendered Settings red plate has two slanted sides rather than a rectangular fill
+PASS: Header has red bottom accents on both ends with a neutral center
+PASS: Footer red trim keeps its metal center break and raised corner details
+PASS: Selected navigation/tabs replace redundant titles, subtitles and placeholder descriptions
+PASS: Navigation uses bundled condensed bold italic racing font
+PASS: Settings uses bundled readable condensed medium font
+PASS: Layered button surface cannot intercept clicks
+PASS: Hover provides visual feedback without duplicating visible button labels in the footer
+PASS: Hover starts timed shine sweep
+PASS: Shine progresses across successive rendered frames
+PASS: Shine finishes instead of running a perpetual hover animation
+PASS: Stationary hovered button keeps cached geometry after shine
+PASS: Static metal/noise backdrop ignores input and keeps cached geometry without ongoing repaint
+PASS: Real Tab does not navigate or start focus shine
+PASS: Real Shift+Tab does not navigate or change destination
+PASS: Button focus does not add highlight, start shine or repaint decoration
+PASS: Mouse down retains visible pressed shading on the selected navigation button: 0,2641177 → 0,2083569
+PASS: Mouse down does not restart finished hover shine
+PASS: Mouse up restores normal selected/hover shading without persistent focus highlight
+PASS: Native click selects navBuild and stays New
+PASS: Native click selects navTuning and stays New
+PASS: Native click selects navRace and stays New
+PASS: Native click selects navBusiness and stays New
+PASS: Native click selects navData and stays New
+PASS: Native click selects navGarage and stays New
+PASS: Settings retains its full-height hit area including the clear corner outside the slanted face
+PASS: Gear opens fullscreen native Settings
+PASS: Active native pointer gesture blocks F8
+PASS: Settings category Difficulty selected
+PASS: Settings category Sound selected
+PASS: Settings category Units selected
+PASS: Settings category Controls selected
+PASS: Settings category General selected
+PASS: F8 restores original Settings on same route
+PASS: F8 retains native Settings category
+PASS: Navigation/categories/F8 do not publish player preferences or resources
+PASS: Shell actions do not save preferences
+PASS: Resize retains Settings presentation/category
+PASS: Navigation anchored top/full width at 1024x768
+PASS: Settings has twelve-point right inset/full bar height: nav (x:0.00, y:0.00, width:1024.00, height:64.00), settings (x:932.00, y:0.00, width:80.00, height:64.00)
+PASS: navGarage visible without overlapping Settings
+PASS: navBuild visible without overlapping Settings
+PASS: navTuning visible without overlapping Settings
+PASS: navRace visible without overlapping Settings
+PASS: navBusiness visible without overlapping Settings
+PASS: navData visible without overlapping Settings
+PASS: cashGroup visible without overlapping Settings
+PASS: fuelGroup visible without overlapping Settings
+PASS: repGroup visible without overlapping Settings
+PASS: Settings filled icon keeps aspect ratio and padding
+PASS: Resize retains Settings presentation/category
+PASS: Navigation anchored top/full width at 1920x1080
+PASS: Settings has twelve-point right inset/full bar height: nav (x:0.00, y:0.00, width:1920.00, height:64.00), settings (x:1828.00, y:0.00, width:80.00, height:64.00)
+PASS: navGarage visible without overlapping Settings
+PASS: navBuild visible without overlapping Settings
+PASS: navTuning visible without overlapping Settings
+PASS: navRace visible without overlapping Settings
+PASS: navBusiness visible without overlapping Settings
+PASS: navData visible without overlapping Settings
+PASS: cashGroup visible without overlapping Settings
+PASS: fuelGroup visible without overlapping Settings
+PASS: repGroup visible without overlapping Settings
+PASS: Settings filled icon keeps aspect ratio and padding
+PASS: Resize retains Settings presentation/category
+LIMIT: requested 3840x2160; platform rendered 3360x2160
+PASS: Navigation anchored top/full width at 3360x2160
+PASS: Settings has twelve-point right inset/full bar height: nav (x:0.00, y:0.00, width:1920.00, height:64.00), settings (x:1828.00, y:0.00, width:80.00, height:64.00)
+PASS: navGarage visible without overlapping Settings
+PASS: navBuild visible without overlapping Settings
+PASS: navTuning visible without overlapping Settings
+PASS: navRace visible without overlapping Settings
+PASS: navBusiness visible without overlapping Settings
+PASS: navData visible without overlapping Settings
+PASS: cashGroup visible without overlapping Settings
+PASS: fuelGroup visible without overlapping Settings
+PASS: repGroup visible without overlapping Settings
+PASS: Settings filled icon keeps aspect ratio and padding
+PASS: True 3840x2160 render target uses shared 2x scale
+PASS: Fullscreen transition preserves Settings category
+PASS: Navigation anchored top/full width at 1920x1080
+PASS: Settings has twelve-point right inset/full bar height: nav (x:0.00, y:0.00, width:1920.00, height:64.00), settings (x:1828.00, y:0.00, width:80.00, height:64.00)
+PASS: navGarage visible without overlapping Settings
+PASS: navBuild visible without overlapping Settings
+PASS: navTuning visible without overlapping Settings
+PASS: navRace visible without overlapping Settings
+PASS: navBusiness visible without overlapping Settings
+PASS: navData visible without overlapping Settings
+PASS: cashGroup visible without overlapping Settings
+PASS: fuelGroup visible without overlapping Settings
+PASS: repGroup visible without overlapping Settings
+PASS: Settings filled icon keeps aspect ratio and padding
+PASS: Windowed mode/default fixture size restored
+PASS: Resolution changes preserve actual player state
+PASS: Empty garage does not fabricate fuel/tank
+PASS: Sparse shell does not add unnecessary car identity text
+PASS: Populated category Difficulty visible
+PASS: Apply/Cancel remain outside scrolling panel: Difficulty
+PASS: Populated category Sound visible
+PASS: Apply/Cancel remain outside scrolling panel: Sound
+PASS: Populated category Units visible
+PASS: Apply/Cancel remain outside scrolling panel: Units
+PASS: Populated category Controls visible
+PASS: Apply/Cancel remain outside scrolling panel: Controls
+PASS: Populated category General visible
+PASS: Reset game is aligned to the right of its General row
+PASS: Reset entry is a subdued action, separate from primary Apply
+PASS: Apply/Cancel remain outside scrolling panel: General
+PASS: Bulk driving/simulation presets share a distinct group separate from individual controls
+PASS: Preset group and individual settings have separate concise visible labels and spacing
+PASS: Compact Settings exposes at least nine full driving rows at 1280x720: 9
+PASS: Page actions use compact matching heights
+PASS: Choice group rounds only its two outer ends
+PASS: Joined choices have no gap between segments
+PASS: Scrollbar has a slim eight-point column and no stock arrow buttons: 8
+PASS: Scrollbar thumb fits its slim column without overflowing
+PASS: Both rounded panel corners visibly render red accents
+PASS: Panel highlights fade locally within the first 80 points, leaving neutral long edges
+PASS: Scrollbar aligns within the frame with a ten-point right gap and symmetric twelve-point ends: (x:48.00, y:133.00, width:1184.00, height:487.00) / (x:1214.00, y:145.00, width:8.00, height:463.00)
+PASS: Native palette stylesheet supplies the shared accent token
+PASS: Shared palette accent reaches native element: navBar
+PASS: Shared palette accent reaches native element: settingsButton
+PASS: Shared palette accent reaches native element: navGarage
+PASS: Shared palette accent reaches native element: settingsBody
+PASS: Shared palette accent reaches native element: tabDifficulty
+PASS: Shared palette accent reaches native element: heatManagement
+PASS: Shared palette accent reaches native element: masterVolume
+PASS: Header wordmark uses the same palette accent as procedural content
+PASS: Hover and shine leave the clear slanted corner unchanged: tabSound
+PASS: Angled outline uses a one-physical-pixel alpha fringe: tabSound
+PASS: Hover and shine leave the clear slanted corner unchanged: settingsButton
+PASS: Angled outline uses a one-physical-pixel alpha fringe: settingsButton
+PASS: Real toggle click animates thumb and track through intermediate state
+PASS: Rapid toggle reverses from its intermediate position and moves toward the original endpoint
+PASS: Toggle settles exactly at original state after reversal
+PASS: Toggle reaches opposite endpoint without continual animation
+PASS: Settled switch geometry stays cached
+PASS: Existing driving preference mapped: shifting
+PASS: Existing driving preference mapped: launch
+PASS: Existing driving preference mapped: throttleAssist
+PASS: Existing driving preference mapped: tractionAssist
+PASS: Existing driving preference mapped: revMatchAssist
+PASS: Existing driving preference mapped: clutchReleaseSeconds
+PASS: Existing driving preference mapped: shutdownBrakeAssist
+PASS: Existing driving preference mapped: wearMode
+PASS: Existing driving preference mapped: fuelUsage
+PASS: Existing driving preference mapped: fluidDepletion
+PASS: Existing driving preference mapped: fluidAging
+PASS: Existing driving preference mapped: conditionEffects
+PASS: Existing driving preference mapped: serviceAssist
+PASS: Existing driving preference mapped: clutchAssist
+PASS: Existing driving preference mapped: stallPrevention
+PASS: Existing driving preference mapped: raceTemperatures
+PASS: Existing driving preference mapped: warmupBeforeRace
+PASS: Existing driving preference mapped: simulationDifficulty
+PASS: Optimal thermals mapped as Heat management
+PASS: Arcade preset edits shared draft
+PASS: Heat management off disables race-start temperature only
+PASS: Re-enabling heat preserves remembered race-start preference
+PASS: Reduced wear/fuel retain approved 25% rates
+PASS: Slider fill has visible track width
+PASS: Numeric entry uses readable dark themed background
+PASS: Slider thumb is vertically centered on the track: (x:536.00, y:185.00, width:576.00, height:6.00) / (x:954.50, y:179.00, width:18.00, height:18.00)
+PASS: Numeric input uses the shared condensed UI font
+PASS: Real volume slider edits draft without publishing audio gain
+PASS: Numeric input and slider stay synchronized without live publication
+PASS: Real keyboard numeric entry edits only sound draft
+PASS: Tab leaves mouse-focused numeric editing and draft value intact: FloatField masterVolumeValue (x:596.00, y:3.00, width:66.00, height:28.00) world rect: (x:1128.00, y:174.00, width:66.00, height:28.00) → FloatField masterVolumeValue (x:596.00, y:3.00, width:66.00, height:28.00) world rect: (x:1128.00, y:174.00, width:66.00, height:28.00) / 32
+PASS: Shift+Tab leaves numeric focus intact
+PASS: Native numeric text focus blocks F8
+PASS: Driving/units/category edits leave applied profile untouched
+PASS: F8 keeps dirty draft while showing legacy Settings
+PASS: F8 restores same dirty Settings draft
+PASS: Apply opens actual-change confirmation
+PASS: Tab and Shift+Tab do not traverse dynamically generated confirmation buttons
+PASS: Confirmation names actual pending changes
+PASS: Confirmation details use the same themed scrollbar
+PASS: Dialog reuses the shared brushed panel surface without a full left accent border
+PASS: Rendered dialog has top-left/bottom-right corner highlights and a neutral middle edge
+PASS: Confirmation blocks F8
+PASS: Mouse hover visibly lights dialog X even while it has modal focus
+PASS: Dialog X retains distinct mouse-down styling before release
+PASS: X dismisses only dialog and keeps draft
+PASS: Leaving dialog X removes hover despite retained focus
+PASS: Dirty navigation asks Apply/Discard/Stay
+PASS: Stay retains draft
+PASS: Confirmed Apply publishes whole driving draft
+PASS: Reduced rules and opponent difficulty persist together
+PASS: Confirmed Apply publishes shared audio gains
+PASS: Audio and all units survive reload
+PASS: Applied driving settings survive profile reload
+PASS: Locked profile rejects settings commit
+PASS: Failed commit never publishes new profile or audio cache
+PASS: Interrupted rollback retains durable recovery journal
+PASS: Incomplete settings write recovers after lock released
+PASS: Recovery restores all three files and profile backup exactly
+PASS: Successful recovery retires journal
+PASS: Clean Cancel returns to prior Garage
+PASS: Dirty Cancel discards draft and returns to actual previous menu
+PASS: Reopened Settings starts from applied preferences
+PASS: Definitive external unit change preserves unrelated local sound draft
+PASS: Definitive external units reconcile into native draft
+PASS: Conflicting definitive preference edit blocks stale Apply
+PASS: Revert loads latest applied settings
+PASS: Reset opens separate destructive dialog
+PASS: Escape cancels reset without changing progression
+PASS: Reset clears progression and retains applied driving preferences
+PASS: Reset keeps applied sound, discards unsaved draft and opens the starter dealership
+PASS: Click and selected-state change continue original hover sweep
+PASS: Pointer leave does not interrupt full hover sweep
+PASS: Sweep ends once after original hover interval
+PASS: Populated Settings actions remain reachable at compact resolution
+PASS: Populated 4K layout retains panel/action separation with shared 2x scale
+PASS: True 4K target keeps its edge fringe at one physical pixel
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Owned-car interaction fixture has valid complete reservation/asset identities
+PASS: Grid shows every owned instance, including duplicate models
+PASS: Only the actual current owned instance is marked
+PASS: Layered preview and exact card ID exist: vehicle-cc1320c954444dcba761513a0a827c75
+PASS: Layered preview and exact card ID exist: vehicle-68bc9dce4fa1444fad673401bfdb47e1
+PASS: Layered preview and exact card ID exist: vehicle-d140b021508941ada5e09c4065628587
+PASS: Layered preview and exact card ID exist: vehicle-4184b8df6198470aa57a64875f654b0f
+PASS: Layered preview and exact card ID exist: vehicle-b8c554c9d845420aa99a139dfb455e32
+PASS: Layered preview and exact card ID exist: vehicle-c40cdb67010049758251607c2179e418
+PASS: Layered preview and exact card ID exist: vehicle-4eebe291b1b54699a6e3438f83b82d46
+PASS: Layered preview and exact card ID exist: vehicle-2c9699ebb528496791d0313af041e8c7
+PASS: Layered preview and exact card ID exist: vehicle-98a87db9bc4041478bbe1faf0abd0ebf
+PASS: Layered preview and exact card ID exist: vehicle-6c01a7ab2a7541b5bb4048ae80741ef8
+PASS: Layered preview and exact card ID exist: vehicle-9942bbab295a4f1aa0b47bb9ad07e541
+PASS: Layered preview and exact card ID exist: vehicle-8378eb04d77f4282a3ebbecd584ed0b4
+PASS: Layered preview and exact card ID exist: vehicle-f90b8a1444ac40df9cb667861ed8a00a
+PASS: Layered preview and exact card ID exist: vehicle-2b25e11631ea4d45b2eb86a966defefe
+PASS: Worn installed component is visible without healing
+PASS: Failed brakes remain a component warning instead of disabling all cars
+PASS: Missing engine remains visibly unavailable
+PASS: Reserved car remains visible with its restriction
+PASS: Empty tank remains visible without refilling
+PASS: Unchanged frames retain cached card geometry and previews
+PASS: Shared background inspection finishes class estimates without UI rebuilding
+PASS: Class results update labels without rebuilding cards
+PASS: Authored body types cover every owned model without deriving type from temporary sprite art
+PASS: Cards show PP from the same completed quarter-mile rating as rank
+PASS: Real keyboard search filters named/model instances as text is entered
+PASS: Clear restores the complete grid without selecting another car
+PASS: Filter dialog choices stay draft until Apply
+PASS: Cancel discards filter draft
+PASS: Body-type Apply shows exact matching instances in stable owned order
+PASS: Settings Cancel retains search/filter state
+PASS: F8 can compare the legacy Garage while a native filter is applied
+PASS: F8 whole-interface comparison retains the native filtered view
+PASS: Reset previews cleared filter criteria without publishing until Apply
+PASS: Real sort controls order the filtered grid by applied HP descending
+PASS: Inverted ranges disable Apply instead of silently exchanging values
+PASS: Non-finite numeric filter input rejects
+PASS: Blank upper bound means unrestricted rather than zero
+PASS: Torque range converts selected display units back to canonical Nm
+PASS: Zero matches show a recoverable filter state without fabricating cars or emptying ownership
+PASS: Drivetrain query uses applied coupling semantics: FWD
+PASS: Drivetrain query uses applied coupling semantics: RWD
+PASS: Drivetrain query uses applied coupling semantics: AWD
+PASS: Drivetrain query uses applied coupling semantics: 4×4
+PASS: Readiness filter preserves actual availability: Ready
+PASS: Readiness filter preserves actual availability: Needs service
+PASS: Readiness filter preserves actual availability: Reserved
+PASS: Readiness filter preserves actual availability: Unavailable
+PASS: Readiness filter preserves actual availability: No fuel
+PASS: Sort is consistent with stable ties/unavailable values: OwnedOrder / False
+PASS: Sort is consistent with stable ties/unavailable values: OwnedOrder / True
+PASS: Sort is consistent with stable ties/unavailable values: Name / False
+PASS: Sort is consistent with stable ties/unavailable values: Name / True
+PASS: Sort is consistent with stable ties/unavailable values: Rank / False
+PASS: Sort is consistent with stable ties/unavailable values: Rank / True
+PASS: Sort is consistent with stable ties/unavailable values: PP / False
+PASS: Sort is consistent with stable ties/unavailable values: PP / True
+PASS: Sort is consistent with stable ties/unavailable values: HP / False
+PASS: Sort is consistent with stable ties/unavailable values: HP / True
+PASS: Sort is consistent with stable ties/unavailable values: Torque / False
+PASS: Sort is consistent with stable ties/unavailable values: Torque / True
+PASS: Sort is consistent with stable ties/unavailable values: Weight / False
+PASS: Sort is consistent with stable ties/unavailable values: Weight / True
+PASS: Sort is consistent with stable ties/unavailable values: Condition / False
+PASS: Sort is consistent with stable ties/unavailable values: Condition / True
+PASS: Sort is consistent with stable ties/unavailable values: Drivetrain / False
+PASS: Sort is consistent with stable ties/unavailable values: Drivetrain / True
+PASS: Sort is consistent with stable ties/unavailable values: Type / False
+PASS: Sort is consistent with stable ties/unavailable values: Type / True
+PASS: Sort is consistent with stable ties/unavailable values: Transmission / False
+PASS: Sort is consistent with stable ties/unavailable values: Transmission / True
+PASS: Rank filter uses authoritative completed classification: F
+PASS: Rank filter uses authoritative completed classification: E
+PASS: Rank filter uses authoritative completed classification: D
+PASS: Rank filter uses authoritative completed classification: C
+PASS: Rank filter uses authoritative completed classification: B
+PASS: Rank filter uses authoritative completed classification: A
+PASS: Rank filter uses authoritative completed classification: S
+PASS: Category and numeric filters intersect on the same applied snapshot
+PASS: Unavailable PP stays last and cannot pass a numeric bound: False
+PASS: Unavailable PP stays last and cannot pass a numeric bound: True
+PASS: Locked-center 4×4 is an explicit searchable subset of the modeled AWD family
+PASS: Drivetrain sorting distinguishes locked-center 4×4 from other AWD setups
+PASS: Search/filter/sort gestures reuse cards and ratings without new inspection runs
+PASS: Search/filter/sort/cancel/clear preserve player assets, selected car and save file
+PASS: New browsing controls preserve no Tab traversal
+PASS: Search/filter/sort/count anchors fit without overlap at 1280
+PASS: Clicking a card replaces the grid with exact-instance details, without a dialog
+PASS: Details reuse layered preview and common HP/torque/weight facts
+PASS: Details dyno resolves the inspected applied build through authoritative inspection
+PASS: Details dyno shows reduced worn output and a detached no-wear reference without healing
+PASS: Dyno fits to the right of preview/stats in the first details row
+PASS: Unchanged details frames retain the computed dyno without running another simulation
+PASS: Dyno legend has separate neutral Current/No wear groups with peak figures
+PASS: Details scrollbar shares Settings styling and its ten-point right inset
+PASS: Real pointer hover interpolates current/no-wear figures at the cursor RPM
+PASS: Hover figures are visible and clamped inside the dyno sheet
+PASS: Hover below the first curve sample does not fabricate idle/output figures
+PASS: Leaving the plot removes cursor line, intersections and readout
+PASS: Stats starts hidden and shares the cached applied dyno inspection without another simulation
+PASS: Stats button reveals inline Engine details without changing route or opening a dialog
+PASS: Engine catalog renders every approved row as read-only content
+PASS: Detailed power and torque match the worn applied dyno and selected units
+PASS: Engine configuration and RPM limits use the inspected instance's resolved hardware
+PASS: Limiter target resolves installed permissions; new controls do not add Tab traversal
+PASS: Individual stat info uses the shared themed dialog
+PASS: Stats info blocks F8 while its modal is open
+PASS: Escape closes only the stat explanation and retains the expanded details page
+PASS: Engine header collapses its rows without hiding maintenance or the graph
+PASS: Whole-interface F8 comparison retains Stats visibility and group state
+PASS: Settings Cancel retains the inspected car and collapsed Engine state
+PASS: Engine rows fit within the details viewport without horizontal overflow
+PASS: Shared rows support current-to-proposed values, converted torque units and favorable delta bars
+PASS: Timing changes are labelled tradeoffs rather than treating every increase as better
+PASS: Unspecified dimensions and absent limiter targets do not fabricate values
+PASS: All seven remaining stat groups start collapsed below the accepted Engine group
+PASS: Collapsed component contents are lazy-built, without thousands of dormant widgets at details creation
+PASS: Induction opens shared read-only stat rows
+PASS: Lazy Induction controls preserve no Tab traversal and introduce no editable tuning fields
+PASS: Induction boost uses authoritative settled pressure and selected units
+PASS: Transmission opens shared read-only stat rows
+PASS: Lazy Transmission controls preserve no Tab traversal and introduce no editable tuning fields
+PASS: Tires opens shared read-only stat rows
+PASS: Lazy Tires controls preserve no Tab traversal and introduce no editable tuning fields
+PASS: Tires show actual external radius in inches and computed assembly mass
+PASS: Weight opens shared read-only stat rows
+PASS: Lazy Weight controls preserve no Tab traversal and introduce no editable tuning fields
+PASS: Weight includes retained fuel without adding it twice
+PASS: Cooling opens shared read-only stat rows
+PASS: Lazy Cooling controls preserve no Tab traversal and introduce no editable tuning fields
+PASS: Cooling displays retained oil rather than fabricating a refill
+PASS: Components opens shared read-only stat rows
+PASS: Lazy Components controls preserve no Tab traversal and introduce no editable tuning fields
+PASS: Performance opens shared read-only stat rows
+PASS: Lazy Performance controls preserve no Tab traversal and introduce no editable tuning fields
+PASS: Background copied-build driving estimate populates without a race or recording
+PASS: Completed estimate uses measured time and slip, with unavailable ET for an incomplete pass
+PASS: Warning info exposes the authoritative suggestion in the shared modal
+PASS: Reopening the Performance group retains its completed estimate without another simulation
+PASS: Saved tuning shows applied targets separately from component service condition
+PASS: Component details use exact installed hardware and retained wear
+PASS: Individual piston details expose condition, fault and severity without replacing the whole set
+PASS: Component info retains the owned instance identity and definition description
+PASS: Settings return retains independent group collapse state
+PASS: Nested stat definitions have unique comparison identities
+PASS: Shared definitions convert pressure and gearing speed without changing reference values
+PASS: All stat groups have finite or explicitly unavailable values: starter-hatch
+PASS: All stat groups have finite or explicitly unavailable values: city-three
+PASS: All stat groups have finite or explicitly unavailable values: juniper-club
+PASS: All stat groups have finite or explicitly unavailable values: juniper-economy
+PASS: All stat groups have finite or explicitly unavailable values: kestrel-track
+PASS: All stat groups have finite or explicitly unavailable values: rally-sedan
+PASS: All stat groups have finite or explicitly unavailable values: sport-coupe
+PASS: All stat groups have finite or explicitly unavailable values: starter-hatch
+PASS: All stat groups have finite or explicitly unavailable values: super-v8
+PASS: All stat groups have finite or explicitly unavailable values: timber-diesel
+PASS: All stat groups have finite or explicitly unavailable values: timber-diesel-tow
+PASS: All stat groups have finite or explicitly unavailable values: touring-six
+PASS: All stat groups have finite or explicitly unavailable values: utility-pickup
+PASS: All stat groups have finite or explicitly unavailable values: v8-muscle
+PASS: Coupling/CVT fields respect actual transmission applicability: Manual
+PASS: Coupling/CVT fields respect actual transmission applicability: DCT
+PASS: Coupling/CVT fields respect actual transmission applicability: Automatic
+PASS: Coupling/CVT fields respect actual transmission applicability: CVT
+PASS: CVT gearing shows two ratio endpoints without invented numbered gears
+PASS: Comparison union shows removed hardware without inventing condition or OEM replacement
+PASS: Failed radiator shows zero effective heat rejection and its own failed state
+PASS: Components omit unrelated deposits/strength and non-wearing interior condition
+PASS: AWD rows honor configured topology and applicability: FixedSplit
+PASS: AWD rows honor configured topology and applicability: OpenCenter
+PASS: AWD rows honor configured topology and applicability: LockedCenter
+PASS: AWD rows honor configured topology and applicability: OnDemand
+PASS: AWD rows honor configured topology and applicability: ActiveBias
+PASS: AWD rows honor configured topology and applicability: LimitedSlipCenter
+PASS: Single piston compression fault retains independent health and severity
+PASS: Rear-left tire details retain its own wear and stored heat
+PASS: Unchanged frames retain the stat panel and captured engine values
+PASS: Stats, explanations, collapse and copied comparisons do not select, save, spend, heal or refill assets
+PASS: Stats closes inline and restores the compact maintenance-first view
+PASS: Shared dyno captures independent labelled series instead of retaining the caller's mutable list
+PASS: Shared legend labels belong to the supplied comparison, without hardcoded Current/No wear headings
+PASS: Comparison axes include every supplied build rather than clipping to the first build's limits
+PASS: Shared comparison converts displayed torque units while retaining Nm inspections
+PASS: Real pointer inspection synchronizes three labelled builds at one RPM
+PASS: Optional proposed curve has a distinct shared palette and dash pattern
+PASS: Shared comparison rendering does not focus, mutate, heal, refill or save player assets
+PASS: Shared comparison clears all series on pointer leave
+PASS: F8 compares the whole Garage details page
+PASS: Returning from F8 retains inspected car details
+PASS: Details block practice shortcut without altering car state
+PASS: Settings Cancel returns to the same inspected car page
+PASS: Back returns to the grid without selecting a car
+PASS: Reading/clicking cards and F8 do not select, save, spend, heal or replace assets
+PASS: Grid reflows without horizontal overflow at 1024
+PASS: Cards do not introduce Tab traversal at 1024
+PASS: Garage keeps exactly two cards per row at 1024
+PASS: HP, torque and weight stay to the right of each preview at 1024
+PASS: Search/filter/sort/count anchors fit without overlap at 1024
+PASS: Car detail actions remain reachable at compact resolution
+PASS: Details dyno remains readable and within its first row at 1024
+PASS: Hover readout fits the dyno sheet at 1024
+PASS: Expanded Engine stats reflow inside the details viewport at 1024
+PASS: Engine values and car actions remain reachable at 1024
+PASS: New unit/text rows fit the native viewport at 1024
+PASS: Long hardware descriptions wrap within the component grid at 1024
+PASS: Grid reflows without horizontal overflow at 1920
+PASS: Cards do not introduce Tab traversal at 1920
+PASS: Garage keeps exactly two cards per row at 1920
+PASS: HP, torque and weight stay to the right of each preview at 1920
+PASS: Search/filter/sort/count anchors fit without overlap at 1920
+PASS: Car detail actions remain reachable at compact resolution
+PASS: Details dyno remains readable and within its first row at 1920
+PASS: Hover readout fits the dyno sheet at 1920
+PASS: Expanded Engine stats reflow inside the details viewport at 1920
+PASS: Engine values and car actions remain reachable at 1920
+PASS: New unit/text rows fit the native viewport at 1920
+PASS: Long hardware descriptions wrap within the component grid at 1920
+PASS: Search/filter/sort/count anchors fit without overlap at 3840
+PASS: Owned grid fits true 4K target with shared two-times scale
+PASS: Garage keeps exactly two cards per row at 4K
+PASS: Right-side car summaries fit at 4K
+PASS: Garage scroll position survives Settings and Cancel
+PASS: Read-only grid and detail scenarios leave durable player assets untouched
+PASS: Back from car details restores the grid scroll position
+PASS: Use this car selects the exact inspected owned instance: Current car saved.
+PASS: Current-car change is saved through one profile transaction
+PASS: Selection preserves all car/part identities, wear, faults, resources, settings and records
+PASS: CURRENT marker moves only to the newly selected exact car
+PASS: Already-current car cannot create a redundant save
+PASS: Escape returns from current-car details without saving
+PASS: Stale selection command rejects the change and retains the current car/save
+PASS: Failed selection save reports an inline error and rolls back the live choice
+PASS: Retry after save failure selects the car while keeping failed brakes failed
+PASS: Incomplete cars remain selectable for management without recreating an engine
+PASS: Existing owned-car data without a custom name falls back to the model name
+PASS: Pencil opens a themed rename form with modal ownership and a bounded editable input
+PASS: Unchanged name cannot create a redundant save
+PASS: Real keyboard text entry edits the name draft
+PASS: F8 cannot bypass a rename draft or confirmation
+PASS: Rename form preserves the no-Tab-navigation policy
+PASS: Cancel discards the typed name without leaving details or saving
+PASS: Rename X discards the draft and retains the details page
+PASS: Escape closes only the rename dialog, without cascading to Back
+PASS: Previewing a changed name does not mutate assets or write saves
+PASS: Confirming a name retains details and updates its heading
+PASS: Trimmed per-instance name survives save deserialization with exactly one transaction
+PASS: Renaming preserves selection, all other names, parts, condition, resources, settings and records
+PASS: Shared legacy ownership labels also identify the renamed build
+PASS: Grid uses the custom name without renaming duplicate models
+PASS: Same-name command is a no-op without a save
+PASS: Stale/missing targets and overlong/multiline names reject without saving
+PASS: Failed rename save retains the draft, reports an inline error and rolls back the name
+PASS: Rename can retry after a save failure
+PASS: Rename input and confirmation fit the compact window
+PASS: Maximum-length headings keep the pencil reachable and render names as plain text
+PASS: Clearing the name explicitly restores the model name
+PASS: Details show fuel, engine oil, coolant and installed wet-clutch oil
+PASS: Quick maintenance exposes only applicable cleaning, adjustment, resealing and reconditioning actions
+PASS: Refill quantity synchronizes the shared slider/numeric input
+PASS: Refill popup total and balance match the navigation currency format after quantity edits
+PASS: Maintenance confirmation blocks F8
+PASS: Maintenance draft/cancel does not spend, refill, repair or save
+PASS: Refill input cannot exceed free tank space
+PASS: Zero-quantity refill cannot create a purchase/save
+PASS: Confirmed refuel charges the quoted amount on the inspected non-current car without selecting it
+PASS: Refill uses the existing exact-car operating receipt
+PASS: Oil top-up preserves aging and leaks
+PASS: Paid oil change renews oil/filter and retains the removed filter in inventory
+PASS: Oil change preserves applied tune and unrelated damage
+PASS: Coolant refill uses the inspected engine's capacity and requested quantity
+PASS: Coolant flush fills installed capacity without repairing a leak
+PASS: Wet-clutch oil service restores its bath without repairing clutch wear
+PASS: Excess-oil drain uses the existing free service without renewing oil or repairing faults
+PASS: Failed maintenance save retains quote/dialog and rolls back cash and repair
+PASS: Retry reseals the radiator while retaining its structural wear
+PASS: Paid cleaning removes deposits
+PASS: Paid adjustment removes timing/clearance error
+PASS: Paid reconditioning uses the existing partial recovery/service limits
+PASS: Buy same replaces the exact piston specification as a complete matched cylinder set
+PASS: Replacement retains old set identity/condition, applied tune and current-car selection
+PASS: Fully failed brakes cannot be repaired by an inapplicable generic service
+PASS: Buy same replaces failed brakes while retaining their fault in inventory and refreshing condition
+PASS: Reserved garage-job cars remain inspectable but cannot be serviced
+PASS: Detached engine does not expose oil/coolant actions or fabricate a dyno curve on its chassis
+PASS: Detached engine disables Stats without inventing an engine configuration
+PASS: Stale maintenance confirmation cannot charge or change the saved car
+PASS: Rebuild quote and large current balance use the shared currency format in confirmation
+PASS: Paid shop rebuild persists a timed reservation and disables service/early collection
+PASS: Premature rebuild collection rejects without changes or another save
+PASS: Collect applies the completed existing rebuild once without changing selected car
+PASS: Unaffordable maintenance formats the shortfall/zero balance and disables publication
+PASS: Maintenance confirmation remains reachable at compact resolution
+PASS: Empty garage shows no fabricated car
+PASS: Empty-state browsing does not write another save
+PASS: Dealership fixture starts with valid retained ownership and economy state
+PASS: Dealership has one card per authored model and hides the owned grid
+PASS: Garage grouping and catalog count show the active dealership
+PASS: Dealer models retain the two-per-row rounded accented grid
+PASS: Dealer price uses existing economy and money formatting: city-three
+PASS: Factory model has a layered preview: city-three
+PASS: Dealer price uses existing economy and money formatting: juniper-club
+PASS: Factory model has a layered preview: juniper-club
+PASS: Dealer price uses existing economy and money formatting: juniper-economy
+PASS: Factory model has a layered preview: juniper-economy
+PASS: Dealer price uses existing economy and money formatting: kestrel-track
+PASS: Factory model has a layered preview: kestrel-track
+PASS: Dealer price uses existing economy and money formatting: rally-sedan
+PASS: Factory model has a layered preview: rally-sedan
+PASS: Dealer price uses existing economy and money formatting: sport-coupe
+PASS: Factory model has a layered preview: sport-coupe
+PASS: Dealer price uses existing economy and money formatting: starter-hatch
+PASS: Factory model has a layered preview: starter-hatch
+PASS: Dealer price uses existing economy and money formatting: super-v8
+PASS: Factory model has a layered preview: super-v8
+PASS: Dealer price uses existing economy and money formatting: timber-diesel
+PASS: Factory model has a layered preview: timber-diesel
+PASS: Dealer price uses existing economy and money formatting: timber-diesel-tow
+PASS: Factory model has a layered preview: timber-diesel-tow
+PASS: Dealer price uses existing economy and money formatting: touring-six
+PASS: Factory model has a layered preview: touring-six
+PASS: Dealer price uses existing economy and money formatting: utility-pickup
+PASS: Factory model has a layered preview: utility-pickup
+PASS: Dealer price uses existing economy and money formatting: v8-muscle
+PASS: Factory model has a layered preview: v8-muscle
+PASS: Copied OEM quarter-mile ratings finish without selecting or saving player cars
+PASS: Real keyboard search filters dealership models: pic / dealerCar:timber-diesel,dealerCar:timber-diesel-tow,dealerCar:utility-pickup
+PASS: Switching back restores independent owned-car query state
+PASS: Returning to dealership retains its independent search
+PASS: Shared dealership filters use actual model body metadata
+PASS: Affordability choice remains a draft until Apply
+PASS: Affordable draft preview uses actual dealer prices and includes exact cash equality
+PASS: Cancel discards the affordability draft
+PASS: Applied Affordable filter matches the inclusive cash budget and counts as one criterion
+PASS: Affordable results refresh when cash drops below the cheapest price
+PASS: Reopened filters retain the applied affordability choice
+PASS: Unaffordable is the strictly over-budget complement for valid prices
+PASS: Owned cars retain independent filters without a purchase-budget control
+PASS: Switching back retains the dealership affordability filter
+PASS: Toolbar reset clears affordability with the other criteria
+PASS: Affordable combines independently with reputation Locked, without treating those models as purchasable
+PASS: Dialog Reset clears affordability only in the draft
+PASS: Cancelling Reset preserves the previous affordability choice
+PASS: Applying Reset clears all dealership filters
+PASS: Affordability browsing changes no player assets, saved bytes or cached simulation probes
+PASS: Copied queries retain affordability and unknown prices never count as affordable
+PASS: Unknown prices never count as unaffordable
+PASS: Dealer model opens a full details page with stock dyno, not a modal
+PASS: OEM preview uses saved new listing parts and included fuel independently: fuel 40 / 40 worn
+PASS: F8 retains the inspected dealer model
+PASS: Settings Cancel returns to the same dealer details
+PASS: Dealer Compare opens inline selected-to-viewed stats without changing selection
+PASS: Comparison dyno overlays the same actual-condition inspections used by full stats
+PASS: Selected comparison baseline uses retained hardware, tune and wear rather than a healthy OEM estimate
+PASS: Basic comparison shows both values: HP
+PASS: Basic comparison shows both values: Torque
+PASS: Basic comparison shows both values: Weight
+PASS: Basic comparison shows both values: Condition
+PASS: Comparison contains every reusable detailed stat group
+PASS: Detailed power values match the selected and viewed curves
+PASS: Comparison dyno hover follows both curves on the shared RPM axis
+PASS: Compared Transmission rows retain both saved values
+PASS: Compared Components rows retain both saved values
+PASS: Performance resolves independent copied-build driving estimates for both compared cars: False / False /  /
+PASS: Completed performance refresh retains both comparison columns
+PASS: Comparison info shows one general explanation without duplicated values or Selected/Viewed sections
+PASS: Orange Tradeoff hover shows the useful general explanation in a native bubble
+PASS: Tradeoff hint remains inside the visible scroll viewport near its bottom edge
+PASS: Tradeoff hint and info dialog share the same concise explanation; opening the dialog hides the hint
+PASS: Differences only is enabled by its native button
+PASS: Filter hides matching text settings and keeps changed numeric stats
+PASS: Shared filter button fits within the stat viewport
+PASS: Filtering covers all built rows, including nested gear stats
+PASS: Identical builds hide empty groups and show No differing stats
+PASS: Completed performance refresh reapplies filtering to new rows and empty-group visibility
+PASS: Unavailable numeric stat differs from a real zero
+PASS: Two unavailable numeric stats match
+PASS: Numeric filter ignores floating-point residue using the delta-bar tolerance
+PASS: Numeric filter keeps a meaningful nonzero delta
+PASS: Turning filtering off restores rows and retains nested disclosure state
+PASS: Stat filtering leaves the dyno series unchanged
+PASS: F8 and Settings Cancel retain car comparison mode and differences filter
+PASS: Second Compare click restores the normal dyno and single-car stats
+PASS: Single-car stats do not expose a comparison-only filter
+PASS: Re-entering comparison retains the UI-session filter choice
+PASS: Repeated comparison uses cached snapshots and stock estimates rather than rerunning on gestures
+PASS: Compare, hover, stats and info leave selection, money, parts, wear, resources and saved bytes unchanged
+PASS: Comparison controls preserve no Tab navigation
+PASS: Buy opens a shared purchase confirmation:
+PASS: Purchase confirmation formats current and resulting cash balances
+PASS: Browsing, filters, stock inspections and cancelled purchase retain exact live/disk assets and cached probes
+PASS: Insufficient funds keep model inspectable but disable Buy with a cash shortfall
+PASS: Locked model details show actual REP requirement and cannot be bought
+PASS: Changed live balance without revision invalidates confirmation and cannot publish a partial purchase
+PASS: Changed saved offer invalidates its exact quote
+PASS: Failed durable save rolls back cash, car and every new part; error stays visible
+PASS: Successful confirmation commits one priced purchase and opens the new current owned car
+PASS: Purchase creates an independent valid car/engine/component identity and selects it
+PASS: Existing car names, tunes, fuel, fluids, parts and wear survive buying unchanged
+PASS: Replayed stale purchase cannot charge or grant another car
+PASS: A fresh second confirmation buys another distinct copy of the same model
+PASS: Currently selected owned car hides the unnecessary Compare button
+PASS: Owned Compare opens inline selected-to-viewed stats without changing selection
+PASS: Comparison dyno overlays the same actual-condition inspections used by full stats
+PASS: Selected comparison baseline uses retained hardware, tune and wear rather than a healthy OEM estimate
+PASS: Basic comparison shows both values: HP
+PASS: Basic comparison shows both values: Torque
+PASS: Basic comparison shows both values: Weight
+PASS: Basic comparison shows both values: Condition
+PASS: Comparison contains every reusable detailed stat group
+PASS: Detailed power values match the selected and viewed curves
+PASS: Comparison dyno hover follows both curves on the shared RPM axis
+PASS: Compared Transmission rows retain both saved values
+PASS: Compared Components rows retain both saved values
+PASS: Performance resolves independent copied-build driving estimates for both compared cars: False / False /  /
+PASS: Completed performance refresh retains both comparison columns
+PASS: Comparison info shows one general explanation without duplicated values or Selected/Viewed sections
+PASS: Orange Tradeoff hover shows the useful general explanation in a native bubble
+PASS: Tradeoff hint remains inside the visible scroll viewport near its bottom edge
+PASS: Tradeoff hint and info dialog share the same concise explanation; opening the dialog hides the hint
+PASS: Differences only is enabled by its native button
+PASS: Filter hides matching text settings and keeps changed numeric stats
+PASS: Shared filter button fits within the stat viewport
+PASS: Filtering covers all built rows, including nested gear stats
+PASS: Identical builds hide empty groups and show No differing stats
+PASS: Completed performance refresh reapplies filtering to new rows and empty-group visibility
+PASS: Unavailable numeric stat differs from a real zero
+PASS: Two unavailable numeric stats match
+PASS: Numeric filter ignores floating-point residue using the delta-bar tolerance
+PASS: Numeric filter keeps a meaningful nonzero delta
+PASS: Turning filtering off restores rows and retains nested disclosure state
+PASS: Stat filtering leaves the dyno series unchanged
+PASS: F8 and Settings Cancel retain car comparison mode and differences filter
+PASS: Second Compare click restores the normal dyno and single-car stats
+PASS: Single-car stats do not expose a comparison-only filter
+PASS: Re-entering comparison retains the UI-session filter choice
+PASS: Repeated comparison uses cached snapshots and stock estimates rather than rerunning on gestures
+PASS: Compare, hover, stats and info leave selection, money, parts, wear, resources and saved bytes unchanged
+PASS: Comparison controls preserve no Tab navigation
+PASS: Search/filter/sort/count anchors fit without overlap at 1024
+PASS: Search/filter/sort/count anchors fit without overlap at 1920
+PASS: Dealer grid reflows under grouped navigation on the true 4K render target
+PASS: Escape goes back from dealer model details without buying
+PASS: Dealer controls preserve the approved no-Tab-navigation contract
+PASS: Uninspected used car retains estimated stats and two dyno curves
+PASS: Uninspected view has no exact parts/settings or wheelspin/drivetrain warnings
+PASS: History, causes and exact liquids cannot leak through basic text
+PASS: Estimate disclosure and true run/drive status are explicit
+PASS: Comparison retains basic estimate/dyno but cannot bypass inspection
+PASS: Paid inspection uses the shared confirmation dialog
+PASS: Cancelling inspection changes neither knowledge nor cash nor disk
+PASS: Legacy/F8 dealership offers the same paid inspection instead of revealing hidden data
+PASS: Inspection remains visible/actionable after legacy / visible=True / details=True / route=Garage / enabled=True / rect=(x:829.00, y:632.00, width:150.00, height:34.00)
+PASS: Returning from legacy keeps native inspection actionable
+PASS: Confirm charges the configured fee exactly once and reveals this listing / modal=False / known=True / cash=99950 / fee=50 / error= / notice=Inspection saved.
+PASS: Inspecting one listing does not reveal other used cars
+PASS: Inspection replaces the estimate with actual failed output, full stats and warnings
+PASS: Paid history is visible and a second inspection charge is unavailable
+PASS: Revealing information cannot repair/refill/reroll the car
+PASS: Inspection knowledge survives actual disk reload
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Fitted-parts report identifies the actual hidden failure cause
+PASS: Per-cylinder seized elements stay attached to their failed piston set
+PASS: Buying an inspected broken car retains actual damage and history in the owned page
+PASS: Purchase preserves the exact low liquids shown by inspection
+PASS: Owned weight matches the inspected stripped car without invented trim
+PASS: Owned history is available through a reusable info dialog
+PASS: Inspection commerce and owned broken-car state remain valid with no runtime errors
+Checks: 809 / runtime errors: 0

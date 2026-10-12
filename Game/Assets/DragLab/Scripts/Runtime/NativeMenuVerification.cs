@@ -82,11 +82,13 @@ namespace DragLab.Runtime
             {
                 Check(ProfileStore.FilePath == Path.Combine(folder, "profile-v1.json"), "Profile isolated from player assets");
                 if(game.Profile.firstPurchasePending)yield return StarterPurchaseChecks(input);
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-tuning-only-verify")>=0){yield return TuningLayoutChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-dealership-only-verify")>=0) {
                     Check(File.Exists(ProfileStore.FilePath)||ProfileStore.TrySave(game.Profile),"Focused dealership probe has a durable isolated baseline");
                     if(!shell.Visible)yield return Key(input,0x77);yield return DealershipChecks(input);yield break;
                 }
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-inspection-only-verify")>=0){if(!shell.Visible)yield return Key(input,0x77);yield return UsedInspectionChecks(input);yield break;}
+                yield return TuningLayoutChecks(input);
                 MoneyFormattingChecks();
                 var baseline = JsonUtility.ToJson(game.Profile);
                 string disk = File.Exists(ProfileStore.FilePath) ? File.ReadAllText(ProfileStore.FilePath) : null;

@@ -270,3 +270,21 @@
 .modal-content .fitted-part-slot { font-size: 14px; color: var(--racing-muted); }
 .modal-content .fitted-part-fault { color: var(--racing-accent); margin-top: 4px; }
 .dealer-includes { margin-top: 16px; white-space: normal; color: var(--racing-muted); font-size: 18px; }
+.tuning-page { flex-grow: 1; min-height: 0; }
+.tuning-columns { flex-grow: 1; min-height: 0; flex-direction: row; }
+.tuning-editor { flex-grow: 1; flex-basis: 0; min-width: 0; margin-right: 22px; }
+.tuning-tabs { margin-top: 16px; margin-bottom: 8px; }
+.tuning-tabs .category-button { min-width: 0; padding: 0 14px; margin-right: 6px; }
+.tuning-control-frame { flex-grow: 1; min-height: 0; border-radius: 12px; overflow: hidden; padding: 18px; }
+.tuning-control-area { flex-grow: 1; }
+.tuning-unavailable { justify-content: center; }
+.tuning-unavailable .tuning-control-area { display: none; }
+.tuning-preview { flex-grow: 1; flex-basis: 0; min-width: 0; border-radius: 12px; overflow: hidden; }
+.tuning-preview-scroll { flex-grow: 1; min-height: 0; padding: 16px 10px 16px 16px; }
+.tuning-preview .native-stats { margin-top: 12px; }
+.tuning-preview .stat-row { width: 100%; margin-right: 0; }
+.tuning-preview .tuning-summary .stat-row { width: 48%; margin-right: 2%; }
+.tuning-page .settings-status { flex-grow: 0; margin-right: 12px; }
+.tuning-page .car-selection-error { font-size: 17px; }
+.compact .tuning-editor { margin-right: 14px; }
+.compact .tuning-tabs .category-button { padding: 0 10px; font-size: 17px; }

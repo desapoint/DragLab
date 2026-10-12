@@ -85,6 +85,7 @@ namespace DragLab.Runtime
             }
             InitializeOwnedCars();
             InitializeDealership();
+            InitializeTuning();
             InitializeSettings();
             ExcludeTabTraversal();
         }
@@ -134,6 +135,7 @@ namespace DragLab.Runtime
             StartDealership();
             RefreshOwnedCars(route);
             RefreshDealership(route);
+            RefreshTuning(route);
             if (renderedRoute == route) return;
             renderedRoute = route;
             bool settings = route == "Settings";

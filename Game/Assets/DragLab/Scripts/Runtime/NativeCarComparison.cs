@@ -46,6 +46,12 @@ namespace DragLab.Runtime
             }
             return cached.Driving;
         }
+        CarInspection OwnedHealthy(OwnedCar car)
+        {
+            var cached=InspectOwned(car);if(cached==null)throw new InvalidOperationException("Inspection unavailable");
+            if(cached.Healthy==null){var source=InspectionBuild.Capture(game.Profile,car,healthy:true);cached.Healthy=CarInspection.CalculatePrepared(source,CarInspection.PrepareCar(source),false);}
+            return cached.Healthy;
+        }
         Task<CarInspection> DealerDriving(DealerModel model)
         {
             if(model.Driving!=null)return Task.FromResult(model.Driving);

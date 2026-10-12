@@ -1,0 +1,72 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Tuning navigation displays its native page frame
+PASS: Summary and dyno reuse identical Current/Proposed inspections
+PASS: Existing no-wear reference remains visible without refilling real or reference supplies
+PASS: Unchanged tune has disabled Apply/Revert
+PASS: First checkpoint adds no tuning sliders or inputs
+PASS: Tuning columns and anchored actions fit at 1280 / scale 1
+PASS: All category tabs fit the left column
+PASS: Shared dyno fits inside the comparison viewport
+PASS: Tuning reuses the no-Tab navigation contract
+PASS: Category switches locally: Induction
+PASS: Category switches locally: Drivetrain
+PASS: Category switches locally: Wheels
+PASS: Category switches locally: Engine
+PASS: Category browsing does not recalculate previews, apply tunes or save
+PASS: F8 exposes legacy tuning on the same route
+PASS: F8 preserves the single authoritative draft and enables explicit Apply
+PASS: Draft driver mass produces a real comparison difference
+PASS: Preview respects the fixed OEM gearset even when the draft requests another ratio
+PASS: Proposed snapshots retain all fitted identities, wear/faults and actual liquids
+PASS: Draft comparison changes no live or saved assets
+PASS: Shared dyno keeps pointer inspection/intersection markers
+PASS: Summary info opens the shared read-only explanation dialog
+PASS: Info dialog retains draft ownership
+PASS: Revert restores applied values without saving
+PASS: Failed durable Apply retains profile and editable draft, displaying the error
+PASS: Explicit Apply commits the existing authoritative transaction once
+PASS: Applied tune survives real disk reload
+PASS: Successful Apply clears errors and returns to a clean preview
+PASS: Leaving the page discards unapplied changes
+PASS: Settings Cancel returns to Tuning with its category retained
+PASS: Tuning columns and anchored actions fit at 1024 / scale 1
+PASS: All category tabs fit the left column
+PASS: Shared dyno fits inside the comparison viewport
+PASS: Tuning reuses the no-Tab navigation contract
+PASS: Tuning columns and anchored actions fit at 1920 / scale 1
+PASS: All category tabs fit the left column
+PASS: Shared dyno fits inside the comparison viewport
+PASS: Tuning reuses the no-Tab navigation contract
+PASS: Tuning uses shared crisp 4K scaling
+PASS: Tuning columns and anchored actions fit at 1920 / scale 2
+PASS: All category tabs fit the left column
+PASS: Shared dyno fits inside the comparison viewport
+PASS: Tuning reuses the no-Tab navigation contract
+PASS: Engine-less chassis shows an honest unavailable preview with no invented curve
+PASS: Unavailable inspection cannot fabricate an engine or refill the car
+PASS: Empty garage remains empty and directs selection through Garage
+PASS: Native Tuning checkpoint has no runtime errors
+Checks: 70 / runtime errors: 0

@@ -16,6 +16,7 @@ namespace DragLab.Runtime
         internal Tune DraftValues { get { return draft == null ? null : draft.values; } }
         internal void ScrollTuningTo(string key) { if (tuneRects.TryGetValue(key, out var rect)) scroll.y = Mathf.Max(0, scroll.y + (rect.center.y - 350) / RaceInputAdapter.Scale(Screen.width, Screen.height)); }
         internal void BeginTuneDraft() { tuneRects.Clear(); draft = new TuneDraft(Build, profile.revision); notice = "Tuning preview: Apply changes to use them in races. Leaving discards edits."; }
+        internal void EnsureTuneDraft() { if(Build!=null&&(draft==null||draft.vehicleInstanceId!=Build.instanceId||draft.revision!=profile.revision))BeginTuneDraft(); }
         internal void OpenTuning() { DiscardPreviews(); screen = "Tuning"; scroll = Vector2.zero; BeginTuneDraft(); }
         internal void DiscardPreviews() { draft = null; previewDefinitionId = previewInstanceId = null; previewRemoval = null; statsKey = null;
             if (playerView != null && profile != null && Build != null) { var visible = MechanicsOwnership.Resolve(profile, Build, profile.catalog); playerView.ApplySetup(visible.spec, visible.tune); Color paint; if (ColorUtility.TryParseHtmlString(Build.paintHex, out paint)) playerView.SetPaint(paint); } }
@@ -43,7 +44,7 @@ namespace DragLab.Runtime
         void TuningGUI()
         {
             if(PartButton("tuning-setups", "Saved configurations / applied tune library")) pendingAction = OpenSetups;
-            if (draft == null || draft.vehicleInstanceId != Build.instanceId || draft.revision != profile.revision) BeginTuneDraft();
+            EnsureTuneDraft();
             var tune = draft.values; var defaults = Selected.CreateStockTune(); defaults.ClampTo(Selected.spec); string resolvedKey=profile.revision+"/"+Build.instanceId+"/"+JsonUtility.ToJson(tune);
             if(tuningResolutionKey!=resolvedKey){tuningResolutionKey=resolvedKey;tuningResolution=profile.catalog.Resolve(Build.vehicleId,MechanicsOwnership.Definitions(profile,Build),tune);}
             var resolved=tuningResolution;
