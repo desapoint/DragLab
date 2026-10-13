@@ -1,0 +1,209 @@
+PASS: Setup preview is complete and read-only: city-three / Engine
+PASS: Setup preview retains actual wear and liquids: city-three / Engine
+PASS: Preview agrees with actual setup application and hardware limits: city-three / Engine
+PASS: Setup search and scope match the saved metadata: city-three / Engine
+PASS: Setup preview is complete and read-only: city-three / WholeCar
+PASS: Setup preview retains actual wear and liquids: city-three / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: city-three / WholeCar
+PASS: Setup search and scope match the saved metadata: city-three / WholeCar
+PASS: Setup preview is complete and read-only: city-three / TuneOnly
+PASS: Setup preview retains actual wear and liquids: city-three / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: city-three / TuneOnly
+PASS: Setup search and scope match the saved metadata: city-three / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: city-three
+PASS: Missing hardware is a priced preview, never a granted asset: city-three
+PASS: Missing-part curve matches the existing buy/apply transaction: city-three
+PASS: Unaffordable setups remain inspectable with an explicit error: city-three
+PASS: Setup preview is complete and read-only: juniper-club / Engine
+PASS: Setup preview retains actual wear and liquids: juniper-club / Engine
+PASS: Preview agrees with actual setup application and hardware limits: juniper-club / Engine
+PASS: Setup search and scope match the saved metadata: juniper-club / Engine
+PASS: Setup preview is complete and read-only: juniper-club / WholeCar
+PASS: Setup preview retains actual wear and liquids: juniper-club / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: juniper-club / WholeCar
+PASS: Setup search and scope match the saved metadata: juniper-club / WholeCar
+PASS: Setup preview is complete and read-only: juniper-club / TuneOnly
+PASS: Setup preview retains actual wear and liquids: juniper-club / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: juniper-club / TuneOnly
+PASS: Setup search and scope match the saved metadata: juniper-club / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: juniper-club
+PASS: Missing hardware is a priced preview, never a granted asset: juniper-club
+PASS: Missing-part curve matches the existing buy/apply transaction: juniper-club
+PASS: Unaffordable setups remain inspectable with an explicit error: juniper-club
+PASS: Setup preview is complete and read-only: juniper-economy / Engine
+PASS: Setup preview retains actual wear and liquids: juniper-economy / Engine
+PASS: Preview agrees with actual setup application and hardware limits: juniper-economy / Engine
+PASS: Setup search and scope match the saved metadata: juniper-economy / Engine
+PASS: Setup preview is complete and read-only: juniper-economy / WholeCar
+PASS: Setup preview retains actual wear and liquids: juniper-economy / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: juniper-economy / WholeCar
+PASS: Setup search and scope match the saved metadata: juniper-economy / WholeCar
+PASS: Setup preview is complete and read-only: juniper-economy / TuneOnly
+PASS: Setup preview retains actual wear and liquids: juniper-economy / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: juniper-economy / TuneOnly
+PASS: Setup search and scope match the saved metadata: juniper-economy / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: juniper-economy
+PASS: Missing hardware is a priced preview, never a granted asset: juniper-economy
+PASS: Missing-part curve matches the existing buy/apply transaction: juniper-economy
+PASS: Unaffordable setups remain inspectable with an explicit error: juniper-economy
+PASS: Setup preview is complete and read-only: kestrel-track / Engine
+PASS: Setup preview retains actual wear and liquids: kestrel-track / Engine
+PASS: Preview agrees with actual setup application and hardware limits: kestrel-track / Engine
+PASS: Setup search and scope match the saved metadata: kestrel-track / Engine
+PASS: Setup preview is complete and read-only: kestrel-track / WholeCar
+PASS: Setup preview retains actual wear and liquids: kestrel-track / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: kestrel-track / WholeCar
+PASS: Setup search and scope match the saved metadata: kestrel-track / WholeCar
+PASS: Setup preview is complete and read-only: kestrel-track / TuneOnly
+PASS: Setup preview retains actual wear and liquids: kestrel-track / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: kestrel-track / TuneOnly
+PASS: Setup search and scope match the saved metadata: kestrel-track / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: kestrel-track
+PASS: Missing hardware is a priced preview, never a granted asset: kestrel-track
+PASS: Missing-part curve matches the existing buy/apply transaction: kestrel-track
+PASS: Unaffordable setups remain inspectable with an explicit error: kestrel-track
+PASS: Setup preview is complete and read-only: rally-sedan / Engine
+PASS: Setup preview retains actual wear and liquids: rally-sedan / Engine
+PASS: Preview agrees with actual setup application and hardware limits: rally-sedan / Engine
+PASS: Setup search and scope match the saved metadata: rally-sedan / Engine
+PASS: Setup preview is complete and read-only: rally-sedan / WholeCar
+PASS: Setup preview retains actual wear and liquids: rally-sedan / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: rally-sedan / WholeCar
+PASS: Setup search and scope match the saved metadata: rally-sedan / WholeCar
+PASS: Setup preview is complete and read-only: rally-sedan / TuneOnly
+PASS: Setup preview retains actual wear and liquids: rally-sedan / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: rally-sedan / TuneOnly
+PASS: Setup search and scope match the saved metadata: rally-sedan / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: rally-sedan
+PASS: Missing hardware is a priced preview, never a granted asset: rally-sedan
+PASS: Missing-part curve matches the existing buy/apply transaction: rally-sedan
+PASS: Unaffordable setups remain inspectable with an explicit error: rally-sedan
+PASS: Setup preview is complete and read-only: sport-coupe / Engine
+PASS: Setup preview retains actual wear and liquids: sport-coupe / Engine
+PASS: Preview agrees with actual setup application and hardware limits: sport-coupe / Engine
+PASS: Setup search and scope match the saved metadata: sport-coupe / Engine
+PASS: Setup preview is complete and read-only: sport-coupe / WholeCar
+PASS: Setup preview retains actual wear and liquids: sport-coupe / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: sport-coupe / WholeCar
+PASS: Setup search and scope match the saved metadata: sport-coupe / WholeCar
+PASS: Setup preview is complete and read-only: sport-coupe / TuneOnly
+PASS: Setup preview retains actual wear and liquids: sport-coupe / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: sport-coupe / TuneOnly
+PASS: Setup search and scope match the saved metadata: sport-coupe / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: sport-coupe
+PASS: Missing hardware is a priced preview, never a granted asset: sport-coupe
+PASS: Missing-part curve matches the existing buy/apply transaction: sport-coupe
+PASS: Unaffordable setups remain inspectable with an explicit error: sport-coupe
+PASS: Setup preview is complete and read-only: starter-hatch / Engine
+PASS: Setup preview retains actual wear and liquids: starter-hatch / Engine
+PASS: Preview agrees with actual setup application and hardware limits: starter-hatch / Engine
+PASS: Setup search and scope match the saved metadata: starter-hatch / Engine
+PASS: Setup preview is complete and read-only: starter-hatch / WholeCar
+PASS: Setup preview retains actual wear and liquids: starter-hatch / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: starter-hatch / WholeCar
+PASS: Setup search and scope match the saved metadata: starter-hatch / WholeCar
+PASS: Setup preview is complete and read-only: starter-hatch / TuneOnly
+PASS: Setup preview retains actual wear and liquids: starter-hatch / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: starter-hatch / TuneOnly
+PASS: Setup search and scope match the saved metadata: starter-hatch / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: starter-hatch
+PASS: Missing hardware is a priced preview, never a granted asset: starter-hatch
+PASS: Missing-part curve matches the existing buy/apply transaction: starter-hatch
+PASS: Unaffordable setups remain inspectable with an explicit error: starter-hatch
+PASS: Setup preview is complete and read-only: super-v8 / Engine
+PASS: Setup preview retains actual wear and liquids: super-v8 / Engine
+PASS: Preview agrees with actual setup application and hardware limits: super-v8 / Engine
+PASS: Setup search and scope match the saved metadata: super-v8 / Engine
+PASS: Setup preview is complete and read-only: super-v8 / WholeCar
+PASS: Setup preview retains actual wear and liquids: super-v8 / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: super-v8 / WholeCar
+PASS: Setup search and scope match the saved metadata: super-v8 / WholeCar
+PASS: Setup preview is complete and read-only: super-v8 / TuneOnly
+PASS: Setup preview retains actual wear and liquids: super-v8 / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: super-v8 / TuneOnly
+PASS: Setup search and scope match the saved metadata: super-v8 / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: super-v8
+PASS: Missing hardware is a priced preview, never a granted asset: super-v8
+PASS: Missing-part curve matches the existing buy/apply transaction: super-v8
+PASS: Unaffordable setups remain inspectable with an explicit error: super-v8
+PASS: Setup preview is complete and read-only: timber-diesel / Engine
+PASS: Setup preview retains actual wear and liquids: timber-diesel / Engine
+PASS: Preview agrees with actual setup application and hardware limits: timber-diesel / Engine
+PASS: Setup search and scope match the saved metadata: timber-diesel / Engine
+PASS: Setup preview is complete and read-only: timber-diesel / WholeCar
+PASS: Setup preview retains actual wear and liquids: timber-diesel / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: timber-diesel / WholeCar
+PASS: Setup search and scope match the saved metadata: timber-diesel / WholeCar
+PASS: Setup preview is complete and read-only: timber-diesel / TuneOnly
+PASS: Setup preview retains actual wear and liquids: timber-diesel / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: timber-diesel / TuneOnly
+PASS: Setup search and scope match the saved metadata: timber-diesel / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: timber-diesel
+PASS: Missing hardware is a priced preview, never a granted asset: timber-diesel
+PASS: Missing-part curve matches the existing buy/apply transaction: timber-diesel
+PASS: Unaffordable setups remain inspectable with an explicit error: timber-diesel
+PASS: Setup preview is complete and read-only: timber-diesel-tow / Engine
+PASS: Setup preview retains actual wear and liquids: timber-diesel-tow / Engine
+PASS: Preview agrees with actual setup application and hardware limits: timber-diesel-tow / Engine
+PASS: Setup search and scope match the saved metadata: timber-diesel-tow / Engine
+PASS: Setup preview is complete and read-only: timber-diesel-tow / WholeCar
+PASS: Setup preview retains actual wear and liquids: timber-diesel-tow / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: timber-diesel-tow / WholeCar
+PASS: Setup search and scope match the saved metadata: timber-diesel-tow / WholeCar
+PASS: Setup preview is complete and read-only: timber-diesel-tow / TuneOnly
+PASS: Setup preview retains actual wear and liquids: timber-diesel-tow / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: timber-diesel-tow / TuneOnly
+PASS: Setup search and scope match the saved metadata: timber-diesel-tow / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: timber-diesel-tow
+PASS: Missing hardware is a priced preview, never a granted asset: timber-diesel-tow
+PASS: Missing-part curve matches the existing buy/apply transaction: timber-diesel-tow
+PASS: Unaffordable setups remain inspectable with an explicit error: timber-diesel-tow
+PASS: Setup preview is complete and read-only: touring-six / Engine
+PASS: Setup preview retains actual wear and liquids: touring-six / Engine
+PASS: Preview agrees with actual setup application and hardware limits: touring-six / Engine
+PASS: Setup search and scope match the saved metadata: touring-six / Engine
+PASS: Setup preview is complete and read-only: touring-six / WholeCar
+PASS: Setup preview retains actual wear and liquids: touring-six / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: touring-six / WholeCar
+PASS: Setup search and scope match the saved metadata: touring-six / WholeCar
+PASS: Setup preview is complete and read-only: touring-six / TuneOnly
+PASS: Setup preview retains actual wear and liquids: touring-six / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: touring-six / TuneOnly
+PASS: Setup search and scope match the saved metadata: touring-six / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: touring-six
+PASS: Missing hardware is a priced preview, never a granted asset: touring-six
+PASS: Missing-part curve matches the existing buy/apply transaction: touring-six
+PASS: Unaffordable setups remain inspectable with an explicit error: touring-six
+PASS: Setup preview is complete and read-only: utility-pickup / Engine
+PASS: Setup preview retains actual wear and liquids: utility-pickup / Engine
+PASS: Preview agrees with actual setup application and hardware limits: utility-pickup / Engine
+PASS: Setup search and scope match the saved metadata: utility-pickup / Engine
+PASS: Setup preview is complete and read-only: utility-pickup / WholeCar
+PASS: Setup preview retains actual wear and liquids: utility-pickup / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: utility-pickup / WholeCar
+PASS: Setup search and scope match the saved metadata: utility-pickup / WholeCar
+PASS: Setup preview is complete and read-only: utility-pickup / TuneOnly
+PASS: Setup preview retains actual wear and liquids: utility-pickup / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: utility-pickup / TuneOnly
+PASS: Setup search and scope match the saved metadata: utility-pickup / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: utility-pickup
+PASS: Missing hardware is a priced preview, never a granted asset: utility-pickup
+PASS: Missing-part curve matches the existing buy/apply transaction: utility-pickup
+PASS: Unaffordable setups remain inspectable with an explicit error: utility-pickup
+PASS: Setup preview is complete and read-only: v8-muscle / Engine
+PASS: Setup preview retains actual wear and liquids: v8-muscle / Engine
+PASS: Preview agrees with actual setup application and hardware limits: v8-muscle / Engine
+PASS: Setup search and scope match the saved metadata: v8-muscle / Engine
+PASS: Setup preview is complete and read-only: v8-muscle / WholeCar
+PASS: Setup preview retains actual wear and liquids: v8-muscle / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: v8-muscle / WholeCar
+PASS: Setup search and scope match the saved metadata: v8-muscle / WholeCar
+PASS: Setup preview is complete and read-only: v8-muscle / TuneOnly
+PASS: Setup preview retains actual wear and liquids: v8-muscle / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: v8-muscle / TuneOnly
+PASS: Setup search and scope match the saved metadata: v8-muscle / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: v8-muscle
+PASS: Missing hardware is a priced preview, never a granted asset: v8-muscle
+PASS: Missing-part curve matches the existing buy/apply transaction: v8-muscle
+PASS: Unaffordable setups remain inspectable with an explicit error: v8-muscle
+Cars: 13; checks: 208; failures: 0

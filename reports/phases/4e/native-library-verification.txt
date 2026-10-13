@@ -1,0 +1,42 @@
+Completed native menu + setup-library verification (2026-10-13)
+Fixture: native-setup-library-final-02; rebuilt current Windows development player.
+Full suite completed; includes overlapping setup/domain/hardware checks. No errors, timeout or focus failure.
+123 fresh captures exported; normal PNGs at review root, alternate sizes in resolution-tests.
+
+PASS: Tuning columns and anchored actions fit at 1280 / scale 1
+PASS: Tuning columns and anchored actions fit at 1024 / scale 1
+PASS: Tuning columns and anchored actions fit at 1920 / scale 1
+PASS: Tuning columns and anchored actions fit at 1920 / scale 2
+PASS: Load setup reuses a filled-icon shared action
+PASS: Load setup replaces Tuning content with the saved-setup library
+PASS: Setup list/comparison columns fit the viewport at 1280 / 1
+PASS: Setup list and preview remain separate anchored columns
+PASS: Setup dyno and full stats share exact Current / Saved snapshots
+PASS: Missing hardware is named with its estimated actual set price
+PASS: Library comparison retains current wear, fuel and liquids
+PASS: Idle and list filtering do not recapture previews
+PASS: Saved-setup dyno retains shared pointer point inspection
+PASS: Setup summary information uses the shared dialog
+PASS: Full setup stats use shared collapsible groups
+PASS: Saved-setup comparisons support Differences only
+PASS: Setup warnings reuse the combined current/proposed dialog
+PASS: F8 retains library selection, comparison and the unapplied tuning draft
+PASS: Setup list/comparison columns fit the viewport at 1024 / 1
+PASS: Setup list and preview remain separate anchored columns
+PASS: Setup list/comparison columns fit the viewport at 1920 / 1
+PASS: Setup list and preview remain separate anchored columns
+PASS: Setup list/comparison columns fit the viewport at 1920 / 2
+PASS: Setup list and preview remain separate anchored columns
+PASS: Setup library uses the shared crisp 4K scale
+PASS: Back restores the same editable tuning draft without applying a setup
+PASS: Settings Cancel returns to the same saved-setup comparison
+PASS: Other-platform setups show a clear unavailable comparison instead of invented figures
+PASS: Every setup-library interaction is read-only for physical assets, resources, blueprints and saves
+PASS: Escape returns from the library to Tuning
+PASS: Engine-less chassis has no fabricated setup dyno
+PASS: Empty setup library removes its obsolete selection/preview
+PASS: Setup library keeps the no-Tab contract and has no runtime errors
+PASS: Native Tuning checkpoint has no runtime errors
+PASS: Inspection commerce and owned broken-car state remain valid with no runtime errors
+
+Checks: 1494 / runtime errors: 0

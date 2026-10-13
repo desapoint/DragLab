@@ -17,6 +17,7 @@ namespace DragLab.Runtime
         string folder;
         int checks, errors;
         float started;
+        float timeoutSeconds=360;
         readonly StringBuilder report = new StringBuilder("Native navigation / Settings shell verification\n");
         internal static void AttachIfRequested(PrototypeGame game, NativeMenuShell shell)
         {
@@ -32,7 +33,7 @@ namespace DragLab.Runtime
         void Log(string message, string trace, LogType type)
         { if (type == LogType.Error || type == LogType.Exception || type == LogType.Assert) { errors++; report.AppendLine(message); } }
         void Check(bool ok, string label) { checks++; if (!ok) throw new InvalidOperationException(label); report.AppendLine("PASS: " + label); }
-        void Update() { if (started > 0 && Time.realtimeSinceStartup - started > 360) Finish(new TimeoutException("Native shell probe timeout")); }
+        void Update() { if (started > 0 && Time.realtimeSinceStartup - started > timeoutSeconds) Finish(new TimeoutException("Native shell probe timeout")); }
         void Finish(Exception exception = null)
         {
             report.AppendLine("Checks: " + checks + " / runtime errors: " + errors);
@@ -44,6 +45,7 @@ namespace DragLab.Runtime
         IEnumerator Start()
         {
             Application.runInBackground=true;
+            timeoutSeconds=Array.Exists(Environment.GetCommandLineArgs(),arg=>arg.EndsWith("-only-verify",StringComparison.Ordinal))?360:720;
             started = Time.realtimeSinceStartup;
             var routines = new System.Collections.Generic.Stack<IEnumerator>(); routines.Push(Run());
             while (routines.Count > 0)
@@ -261,7 +263,7 @@ namespace DragLab.Runtime
         static Color Pixel(Texture2D image,float x,float y) => image.GetPixel((int)x,image.height-(int)y-1);
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
         IEnumerator Key(WindowsKeyboardProbe input, ushort key)
-        { input.Key(key, true); yield return new WaitForSecondsRealtime(.08f); input.Key(key, false); yield return new WaitForSecondsRealtime(.2f); }
+        { input.Key(key, true); yield return null; yield return new WaitForSecondsRealtime(.08f); input.Key(key, false); yield return null; yield return new WaitForSecondsRealtime(.2f); }
         IEnumerator Click(WindowsKeyboardProbe input, string id)
         { return Click(input,shell.Root.Q(id)); }
         IEnumerator Click(WindowsKeyboardProbe input, VisualElement target)
@@ -270,8 +272,11 @@ namespace DragLab.Runtime
             var rect = target.worldBound;
             float scale = NativeMenuShell.DisplayScale(Screen.width, Screen.height);
             input.MouseButtonAt((int)(rect.center.x * scale), (int)(rect.center.y * scale), true);
+            // Keep down/up in separate input updates even during a slow preview frame.
+            yield return null;
             yield return new WaitForSecondsRealtime(.08f);
             input.MouseButtonAt((int)(rect.center.x * scale), (int)(rect.center.y * scale), false);
+            yield return null;
             yield return new WaitForSecondsRealtime(.2f);
         }
 #endif

@@ -72,6 +72,7 @@ namespace DragLab.Runtime
                 Screen.SetResolution(1280,720,false);yield return new WaitForSecondsRealtime(.4f);
                 yield return TuningHardwareChecks(input);
                 yield return SetupSaveChecks(input);
+                yield return SetupLibraryChecks(input);
                 var detached=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(game.Profile));detached.catalog=original.catalog;MechanicsOwnership.Ensure(detached,detached.catalog);AssemblyOperations.Detach(detached,detached.SelectedCar.instanceId);field.SetValue(game,detached);shell.Refresh();yield return new WaitForSecondsRealtime(.2f);
                 string retained=JsonUtility.ToJson(detached);Check(shell.Root.Q<NativeDynoPlot>("tuningDynoPlot")==null&&!shell.Root.Q("tuningUnavailable").ClassListContains("hidden")&&!shell.Root.Q<Button>("tuningApply").enabledSelf,"Engine-less chassis shows an honest unavailable preview with no invented curve");yield return Capture("tuning-no-engine");Check(retained==JsonUtility.ToJson(game.Profile),"Unavailable inspection cannot fabricate an engine or refill the car");
                 var empty=PlayerProfile.NewGame(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(empty,original.catalog);field.SetValue(game,empty);shell.Refresh();yield return new WaitForSecondsRealtime(.2f);Check(shell.Root.Q<Label>("tuningCarName").text=="No car"&&shell.Root.Q<NativeStatsPanel>("tuningStats")==null&&empty.cars.Count==0,"Empty garage remains empty and directs selection through Garage");yield return Capture("tuning-no-car");
@@ -153,7 +154,9 @@ namespace DragLab.Runtime
                     if(spec.drive==DragLab.Domain.DriveType.AWD){
                         yield return Click(input,"tuningTabDrivetrain");
                         foreach(var mode in new[]{AwdMode.FixedSplit,AwdMode.OpenCenter,AwdMode.LockedCenter,AwdMode.OnDemand,AwdMode.ActiveBias,AwdMode.LimitedSlipCenter}){
-                            yield return RevealTune(input,"Drivetrain","awdMode");yield return Click(input,"tuneChoice:awdMode:"+(int)mode);
+                            yield return RevealTune(input,"Drivetrain","awdMode");var modeButton=shell.Root.Q<Button>("tuneChoice:awdMode:"+(int)mode);shell.Root.Q<ScrollView>("tuningAreaDrivetrain").ScrollTo(modeButton);yield return new WaitForSecondsRealtime(.2f);
+                            var picked=shell.Root.panel.Pick(modeButton.worldBound.center);Check(picked==modeButton||modeButton.Contains(picked),"AWD test target is visible and hittable: "+mode+" / "+vehicle.spec.id+" / hit "+picked?.name+" / bounds "+modeButton.worldBound);
+                            yield return Click(input,modeButton);
                             if(vehicle.spec.id=="rally-sedan"&&mode==AwdMode.FixedSplit)yield return Capture("tuning-awd-fixed");
                             Check(game.DraftValues.awdConfigured&&game.DraftValues.awd.mode==mode&&shell.Root.Q("tuningPreviewError")==null,"AWD mode builds its controls and authoritative preview: "+mode+" / "+vehicle.spec.id+" / configured "+game.DraftValues.awdConfigured+" / actual "+game.DraftValues.awd?.mode+" / enabled "+shell.Root.Q<Button>("tuneChoice:awdMode:"+(int)mode).enabledInHierarchy+" / error "+shell.Root.Q<Label>("tuningPreviewError")?.text);
                             Check((shell.Root.Q<Slider>("tuneSlider:shaftInertia")!=null)==(mode==AwdMode.OpenCenter)&&(shell.Root.Q<Slider>("tuneSlider:slipThreshold")!=null)==(mode==AwdMode.OnDemand),"Topology-specific AWD controls match installed draft mode: "+mode);

@@ -45,9 +45,11 @@ namespace DragLab.Runtime
             tuningState=new Label{name="tuningDraftState"};tuningState.AddToClassList("settings-status");actions.Add(tuningState);
             tuningError=new Label{name="tuningError",enableRichText=false};tuningError.AddToClassList("car-critical");tuningError.AddToClassList("car-selection-error");actions.Add(tuningError);
             tuningSaveSetup=new Button(OpenSaveSetup){name="tuningSaveSetup",text="Save setup",focusable=false,tabIndex=-1};tuningSaveSetup.AddToClassList("action-button");actions.Add(tuningSaveSetup);AddSurface(tuningSaveSetup,RacingSurface.Kind.SecondaryAction);tuningSaveSetup.Insert(1,new FilledMenuIcon("Save"));
+            var loadSetup=new Button(OpenSetupLibrary){name="tuningLoadSetup",text="Load setup",focusable=false,tabIndex=-1};loadSetup.AddToClassList("action-button");actions.Add(loadSetup);AddSurface(loadSetup,RacingSurface.Kind.SecondaryAction);loadSetup.Insert(1,new FilledMenuIcon("Business"));
             tuningRevert=new Button(()=>{game.BeginTuneDraft();tuningError.text="";RefreshTuning("Tuning");}){name="tuningRevert",text="Revert",focusable=false,tabIndex=-1};tuningRevert.AddToClassList("action-button");actions.Add(tuningRevert);AddSurface(tuningRevert,RacingSurface.Kind.SecondaryAction);
             tuningApply=new Button(()=>{tuningError.text=game.ApplyTuneDraftNow()?"":game.NativeNotice;RefreshTuning("Tuning");}){name="tuningApply",text="Apply",focusable=false,tabIndex=-1};tuningApply.AddToClassList("action-button");tuningApply.AddToClassList("primary-action");actions.Add(tuningApply);AddSurface(tuningApply,RacingSurface.Kind.Action);
             ShowTuningCategory();
+            InitializeSetupLibrary();
         }
         void ShowTuningCategory()
         {
@@ -59,7 +61,7 @@ namespace DragLab.Runtime
         {foreach(var surface in tuningPreviewSurfaces)surfaces.Remove(surface);tuningPreviewSurfaces.Clear();tuningPreviewContent.Clear();tuningStats=null;}
         void RefreshTuning(string route)
         {
-            tuningPage.EnableInClassList("hidden",route!="Tuning");if(route!="Tuning")return;
+            RefreshSetupLibrary(route);tuningPage.EnableInClassList("hidden",route!="Tuning"||setupLibraryOpen);if(route!="Tuning"||setupLibraryOpen)return;
             var profile=game.Profile;var car=profile.SelectedCar;game.EnsureTuneDraft();
             bool available=car!=null&&!string.IsNullOrEmpty(car.engineAssemblyId),dirty=available&&game.DraftDirty;
             RefreshTuningInputs(available);
