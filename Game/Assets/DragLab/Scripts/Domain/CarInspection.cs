@@ -53,6 +53,7 @@ namespace DragLab.Domain
         public double peakHp, hpRpm, peakTorque, torqueRpm, boostBar, wheelRadiusIn, wheelDiameterIn, wheelMassKg, vehicleMassKg, effectiveMassKg, wheelInertia, flywheelMassKg, flywheelInertia, clutchCapacityNm, shiftSeconds, brakeG, condition, turboSpoolSeconds;
         public double coolingTransferPercent, radiatorWattsPerC, tireRollingLifeKm, tireSlidingLifeMj, tireGripFactor, lowestTireHealth;
         public double[] wheelRadiiIn=new double[4],wheelMassesKg=new double[4],wheelInertias=new double[4],wheelGripFactors=new double[4],wheelRollingLifeKm=new double[4],wheelSlidingLifeMj=new double[4];
+        public double safeOperatingRpm,engineTorqueHeadroomNm;public string rpmLimitPart,torqueLimitPart;
         public MassBreakdown mass;
         public double elapsed, trapMps, maxSlip, maxClutchSlip, slippingSeconds;
         public bool completed, probeFailed, probeComplete;
@@ -72,7 +73,7 @@ namespace DragLab.Domain
         public static CarInspection CalculatePrepared(InspectionBuild source,CarSimulation car,bool runProbe=true)
         {
             var result = new CarInspection { source = source, probeComplete=runProbe }; var b = source.build; var spec = b.spec; var tune = b.tune; var wheels = car.wheels;
-            result.mass = car.mass;
+            result.mass = car.mass;BuildLimits.Capture(car,out result.safeOperatingRpm,out result.rpmLimitPart,out result.engineTorqueHeadroomNm,out result.torqueLimitPart);
             var radiator = car.mechanics.parts.Find(p => p.slot == PartCategory.Cooling.ToString());
             result.coolingTransferPercent = car.state.engineCoolingFactor * 100;
             result.radiatorWattsPerC = radiator == null || radiator.condition.failed ? 0 : car.mechanics.Definition(radiator).coolingWattsPerC * (.4 + .6 * radiator.condition.health);

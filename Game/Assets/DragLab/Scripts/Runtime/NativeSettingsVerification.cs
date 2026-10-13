@@ -236,9 +236,11 @@ namespace DragLab.Runtime
             Screen.SetResolution(1024,768,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.7f);yield return Capture("settings-final-compact");
             Check(root.Q("applySettings").worldBound.xMax<=Screen.width && root.Q("cancelSettings").worldBound.yMax<Screen.height-30,"Populated Settings actions remain reachable at compact resolution");
             Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.7f);
-            var target=new RenderTexture(3840,2160,24);target.Create();shell.Panel.targetTexture=target;
+            var target=new RenderTexture(3840,2160,24);target.Create();shell.Panel.targetTexture=target;shell.Refresh();
             yield return new WaitForSecondsRealtime(.4f);yield return new WaitForEndOfFrame();
-            Check(shell.Panel.scale==2 && root.Q("applySettings").worldBound.xMax<=1920 && root.Q("settingsBody").worldBound.yMax<root.Q("settingsActions").worldBound.yMin,"Populated 4K layout retains panel/action separation with shared 2x scale");
+            float layoutUntil=Time.realtimeSinceStartup+3;
+            while(Time.realtimeSinceStartup<layoutUntil&&(shell.Panel.scale!=2||root.Q("applySettings").worldBound.xMax>1920||root.Q("settingsBody").worldBound.yMax>=root.Q("settingsActions").worldBound.yMin))yield return null;
+            Check(shell.Panel.scale==2 && root.Q("applySettings").worldBound.xMax<=1920 && root.Q("settingsBody").worldBound.yMax<root.Q("settingsActions").worldBound.yMin,"Populated 4K layout retains panel/action separation with shared 2x scale / scale "+shell.Panel.scale+" apply "+root.Q("applySettings").worldBound+" body "+root.Q("settingsBody").worldBound+" actions "+root.Q("settingsActions").worldBound);
             Check(Mathf.Abs(root.Q("settingsBody").Q<RacingSurface>().AntiAliasWidth-.5f)<.01f,"True 4K target keeps its edge fringe at one physical pixel");
             var prior=RenderTexture.active;RenderTexture.active=target;var image=new Texture2D(3840,2160,TextureFormat.RGB24,false);
             image.ReadPixels(new Rect(0,0,3840,2160),0,0);image.Apply();File.WriteAllBytes(Path.Combine(folder,"settings-populated-4k.png"),image.EncodeToPNG());

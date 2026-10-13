@@ -201,7 +201,7 @@ namespace DragLab.Runtime
                 string id="part:"+slot;var rows=new List<NativeStatDefinition>();
                 var hardware=T(id+":hardware","Hardware",s=>slot==PartCategory.Wheels&&s.Has(slot)?WheelDescription(s):slot==PartCategory.Tires&&s.Has(slot)?TireDescription(s):s.Definition(slot)?.name??"Not installed","Installed component, not a replacement recommendation.");
                 hardware.Detail=s=>s.Definition(slot)==null?"No component installed in this slot.":s.Definition(slot).description+"\nDefinition: "+s.Definition(slot).id+"\nOwned instance: "+s.Part(slot).instanceId;rows.Add(hardware);
-                rows.Add(T(id+":quality","Quality",s=>s.Definition(slot)?.quality??"—","Actual construction quality from the installed definition; quality is separate from remaining condition."));
+                rows.Add(T(id+":quality","Quality",s=>slot==PartCategory.Wheels&&s.Spec.cornerWheelDefinitions.Length==4?(s.Spec.cornerWheelDefinitions.Select(d=>d.quality).Distinct().Count()==1?s.Spec.cornerWheelDefinitions[0].quality:"Mixed"):slot==PartCategory.Tires&&s.Spec.cornerTireDefinitions.Length==4?(s.Spec.cornerTireDefinitions.Select(d=>d.quality).Distinct().Count()==1?s.Spec.cornerTireDefinitions[0].quality:"Mixed"):s.Definition(slot)?.quality??"—","Actual construction quality from the installed definition; quality is separate from remaining condition."));
                 rows.Add(T(id+":status","Status",s=>s.Part(slot)==null?"Not installed":PrototypeGame.PartFailed(s.Part(slot))?"Failed":EngineElements.NeedsService(s.Part(slot).condition)?"Element fault":"Installed","A failed brake or drive branch does not imply a failed engine. Inspect the component's failure reason and the Performance warnings."));
                 var reason=T(id+":fault","Failure reason",s=>s.Part(slot)==null?"—":string.IsNullOrEmpty(s.Part(slot).condition.failureReason)?"None":s.Part(slot).condition.failureReason,"Stored component failure explanation. Replacing or repairing requires an explicit maintenance action.");rows.Add(reason);
                 rows.Add(T(id+":tuning","Hardware adjustment",s=>s.Definition(slot)==null?"—":s.Definition(slot).tuning==PartTuningOptions.None?"Fixed":Nice(s.Definition(slot).tuning),"Installed part's declared adjustment permissions; viewing stats does not unlock tuning. Effective applied settings are shown in their relevant groups."));
@@ -213,12 +213,12 @@ namespace DragLab.Runtime
                     if(slot==PartCategory.Followers||slot==PartCategory.TimingDrive)rows.Add(N(id+":adjustment","Adjustment error",s=>s.Part(slot)==null?(double?)null:s.Part(slot).condition.adjustmentError*100,"%","F0",0,100,"Retained clearance/timing error; a service adjustment differs from changing a saved tune.",-1));
                     if(slot==PartCategory.Clutch||slot==PartCategory.Tires)rows.Add(N(id+":work","Accumulated slip work",s=>s.Part(slot)==null?(double?)null:s.Part(slot).condition.slipEnergyJ/1e6,"MJ","F2",0,100,"Stored component friction work, separate from RPM slip and the authored life budget."));
                 }
-                var metrics=slot==PartCategory.Tires?Enumerable.Empty<PartStat>():PartSemantics.Stats(a.Definition(slot)).Concat(PartSemantics.Stats(b?.Definition(slot))).GroupBy(m=>m.key).Select(g=>g.First());
+                var metrics=slot==PartCategory.Tires||slot==PartCategory.Wheels?Enumerable.Empty<PartStat>():PartSemantics.Stats(a.Definition(slot)).Concat(PartSemantics.Stats(b?.Definition(slot))).GroupBy(m=>m.key).Select(g=>g.First());
                 foreach(var metric in metrics) {
                     var key=metric.key;
                     rows.Add(N(id+":rating:"+key,metric.label,s=> {
                         var found=PartSemantics.Stats(s.Definition(slot)).Where(m=>m.key==key).ToArray();return found.Length==0?(double?)null:found[0].value;
-                    },metric.unit,"0.##",0,Math.Max(1,metric.value*1.25),metric.explanation,metric.direction));
+                    },metric.unit,"0.##",Math.Min(0,PartSemantics.Stats(a.Definition(slot)).Concat(PartSemantics.Stats(b?.Definition(slot))).Where(m=>m.key==key).Min(m=>m.value)*1.25),Math.Max(1,PartSemantics.Stats(a.Definition(slot)).Concat(PartSemantics.Stats(b?.Definition(slot))).Where(m=>m.key==key).Max(m=>m.value)*1.25),metric.explanation,metric.direction));
                 }
                 if(slot==PartCategory.Clutch) {
                     rows.Add(N(id+":oil","Clutch oil quantity",s=>s.Definition(slot)?.clutchEnvironment==ClutchEnvironment.Wet?(double?)s.Part(slot).condition.clutchOilLitres:null,"L","F2",0,10,"Actual dedicated wet-clutch oil bath; dry clutches do not receive a fabricated fluid level."));

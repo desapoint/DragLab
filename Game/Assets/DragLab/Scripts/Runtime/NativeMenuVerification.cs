@@ -269,8 +269,13 @@ namespace DragLab.Runtime
         IEnumerator Click(WindowsKeyboardProbe input, VisualElement target)
         {
             if(target==null)throw new InvalidOperationException("Native click target is missing.");
+            // Let layout settle and deliver pointer movement separately from the press.
+            yield return null;
             var rect = target.worldBound;
             float scale = NativeMenuShell.DisplayScale(Screen.width, Screen.height);
+            input.MoveMouseAt((int)(rect.center.x * scale), (int)(rect.center.y * scale));
+            yield return null;yield return new WaitForSecondsRealtime(.08f);
+            rect=target.worldBound;
             input.MouseButtonAt((int)(rect.center.x * scale), (int)(rect.center.y * scale), true);
             // Keep down/up in separate input updates even during a slow preview frame.
             yield return null;

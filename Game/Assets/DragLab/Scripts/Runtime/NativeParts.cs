@@ -203,13 +203,19 @@ namespace DragLab.Runtime
             }
             if(e.Proposed!=null&&partsBrowser.Reference!=null){
                 NativeStatsPanel quick=null;
-                quick=new NativeStatsPanel(partsBrowser.Reference,SharedUnitSettings.Current,new[]{NativeStatCatalog.TuningSummary()},new Dictionary<string,bool>(),d=>OpenDialog(d.Label,d.InfoExplanation(quick.Current,quick.Proposed),new[]{new DialogAction("Close",CloseDialog)}),DecoratePartDetail,e.Proposed){name="partQuickStats"};quick.AddToClassList("part-quick-stats");quick.Q<Button>("statsDifferencesOnly").name="partQuickDifferences";
+                quick=new NativeStatsPanel(partsBrowser.Reference,SharedUnitSettings.Current,new[]{NativeStatCatalog.PartSummary(partsBrowser.Reference,e.Proposed,new[]{e.Definition.category})},new Dictionary<string,bool>(),d=>OpenDialog(d.Label,d.InfoExplanation(quick.Current,quick.Proposed),new[]{new DialogAction("Close",CloseDialog)}),DecoratePartDetail,e.Proposed){name="partQuickStats"};quick.AddToClassList("part-quick-stats");quick.Q<Button>("statsDifferencesOnly").name="partQuickDifferences";
                 var dyno=new VisualElement{name="partDetailDyno"};dyno.AddToClassList("part-detail-dyno");top.Add(dyno);DecoratePartDetail(dyno,RacingSurface.Kind.Panel);
                 dyno.Add(new NativeDynoPanel(new[]{new NativeDynoSeries("Reference",partsPlanned?"Planned build":"Current build",partsBrowser.Reference,NativeDynoStyle.Primary),new NativeDynoSeries("WithPart","With part",e.Proposed,NativeDynoStyle.Alternative),new NativeDynoSeries("NoWear","Current no wear",OwnedHealthy(game.Profile.SelectedCar),NativeDynoStyle.Reference)},SharedUnitSettings.Current.torque,"partDyno"));partsDetailScroll.Insert(1,quick);
                 if(!partDetailCollapsed.TryGetValue(id,out var collapsed)){collapsed=new Dictionary<string,bool>();partDetailCollapsed[id]=collapsed;}
-                var groups=NativeStatCatalog.Groups(partsBrowser.Reference,e.Proposed).Select(g=>new NativeStatGroup(g.Id,g.Title,g.Definitions.ToArray()){InitiallyCollapsed=true,Children=g.Children});
+                var groups=NativeStatCatalog.PartEffects(partsBrowser.Reference,e.Proposed,new[]{e.Definition.category}).Select(g=>new NativeStatGroup(g.Id,g.Title,g.Definitions.ToArray()){InitiallyCollapsed=true,Children=g.Children});
                 NativeStatsPanel panel=null;
                 panel=new NativeStatsPanel(partsBrowser.Reference,SharedUnitSettings.Current,groups,collapsed,d=>OpenDialog(d.Label,d.InfoExplanation(panel.Current,panel.Proposed),new[]{new DialogAction("Close",CloseDialog)}),DecoratePartDetail,e.Proposed,partDetailDifferences.TryGetValue(id,out bool only)&&only){name="partStats"};panel.Q<Button>("statsDifferencesOnly").name="partDifferencesOnly";panel.DifferencesOnlyChanged=value=>partDetailDifferences[id]=value;partsDetailScroll.Add(panel);
+                NativeStatsPanel specific=null;
+                specific=new NativeStatsPanel(partsBrowser.Reference,SharedUnitSettings.Current,NativeStatCatalog.PartSpecific(partsBrowser.Reference,e.Proposed,new[]{e.Definition.category}),collapsed,d=>OpenDialog(d.Label,d.InfoExplanation(specific.Current,specific.Proposed),new[]{new DialogAction("Close",CloseDialog)}),DecoratePartDetail,e.Proposed,panel.DifferencesOnly){name="partSpecificStats"};
+                specific.Q<Button>("statsDifferencesOnly").name="partSpecificDifferences";specific.Q<Button>("partSpecificDifferences").AddToClassList("hidden");
+                specific.DifferencesOnlyChanged=value=>{partDetailDifferences[id]=value;if(panel.DifferencesOnly!=value)panel.SetDifferencesOnly(value);};
+                panel.DifferencesOnlyChanged=value=>{partDetailDifferences[id]=value;if(specific.DifferencesOnly!=value)specific.SetDifferencesOnly(value);};
+                partsDetailScroll.Insert(1,specific);specifications.AddToClassList("hidden");
             }
             if(offer.Source=="New")RefreshPurchasePrice(offer);
             ExcludeTabTraversal();partsDetailScroll.schedule.Execute(()=>{if(partsDetailId==id)partsDetailScroll.scrollOffset=offset;});

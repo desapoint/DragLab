@@ -68,7 +68,8 @@ namespace DragLab.Runtime
             var individual=panel.Q("statsBody:part:Pistons").Query<Button>().ToList().First(b=>b.name.StartsWith("statsGroup:part:Pistons:element:"));
             yield return StatsClick(input,individual.name);
             yield return ViewStats(individual.name.Substring("statsGroup:".Length));
-            Check(panel.Q("statsBody:"+individual.name.Substring("statsGroup:".Length)).Query(className:"stat-row").ToList().Count==3,"Individual piston details expose condition, fault and severity without replacing the whole set");
+            var memberBody=panel.Q("statsBody:"+individual.name.Substring("statsGroup:".Length));string memberPrefix=individual.name.Substring("statsGroup:".Length);
+            Check(new[]{"health","fault","severity","spec"}.All(field=>memberBody.Q("stat:"+memberPrefix+":"+field)!=null),"Individual piston details expose condition, fault, severity and actual specification without replacing the whole set");
             yield return Capture("stats-component-elements");yield return StatsClick(input,"statInfo:part:Pistons:hardware");
             Check(shell.ModalOpen&&shell.Root.Q("modalContent").Query<Label>().ToList().Any(l=>l.text.Contains(piston.instanceId)),"Component info retains the owned instance identity and definition description");yield return Key(input,0x1B);
             yield return StatsClick(input,"statsGroup:Components");
