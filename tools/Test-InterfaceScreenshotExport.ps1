@@ -24,6 +24,9 @@ $alternateHeader=[Convert]::FromBase64String('iVBORw0KGgoAAAANSUhEUgAACAAAAASA')
 [IO.File]::WriteAllBytes((Join-Path $fixture 'header-other.png'),$alternateHeader)
 Complete-InterfaceScreenshotRun $run $true | Out-Null
 if(-not (Test-Path -LiteralPath (Join-Path $run.Gallery 'header-normal-4k.png')) -or -not (Test-Path -LiteralPath (Join-Path $run.Gallery 'resolution-tests/header-other.png'))){throw 'Actual PNG dimensions did not override filename hints.'}
+[IO.File]::WriteAllBytes((Join-Path $fixture 'header-other.png'),$normalHeader)
+Complete-InterfaceScreenshotRun $run $true | Out-Null
+if(-not (Test-Path -LiteralPath (Join-Path $run.Gallery 'header-other.png')) -or (Test-Path -LiteralPath (Join-Path $run.Gallery 'resolution-tests/header-other.png'))){throw 'Changed resolution left a stale duplicate at its previous destination.'}
 $again=Start-InterfaceScreenshotRun $root $fixture 'native-test'
 if ((Test-Path -LiteralPath (Join-Path $run.Gallery 'new.png')) -or (Test-Path -LiteralPath (Join-Path $run.Gallery 'resolution-tests/new-4k.png'))) { throw 'Normal/alternate previous images were not both cleared.' }
 [IO.File]::WriteAllBytes((Join-Path $fixture 'shared.png'),[byte[]]@(1))

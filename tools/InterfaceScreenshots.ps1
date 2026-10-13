@@ -85,6 +85,11 @@ function Complete-InterfaceScreenshotRun {
     foreach($file in $files){
         $alternate=Test-InterfaceScreenshotResolution $file
         $path=Get-InterfaceScreenshotImagePath $Run.Gallery $file.Name -Alternate $alternate
+        $previous=$index | Where-Object { $_.Image -eq $file.Name } | Select-Object -First 1
+        if($previous){
+            $old=if($previous.PSObject.Properties['AlternateResolution']){Get-InterfaceScreenshotImagePath $Run.Gallery $file.Name -Alternate $previous.AlternateResolution}else{Get-InterfaceScreenshotImagePath $Run.Gallery $file.Name}
+            if($old -ne $path -and (Test-Path -LiteralPath $old)){Remove-Item -LiteralPath $old}
+        }
         Copy-Item -LiteralPath $file.FullName -Destination $path -Force
         $index=@($index | Where-Object { $_.Image -ne $file.Name })
         $index+=[pscustomobject]@{Image=$file.Name;Suite=$Run.Suite;Source=$file.FullName;CapturedUtc=$file.LastWriteTimeUtc.ToString('o');AlternateResolution=$alternate}
