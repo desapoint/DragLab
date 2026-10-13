@@ -263,8 +263,11 @@ namespace DragLab.Runtime
         IEnumerator Key(WindowsKeyboardProbe input, ushort key)
         { input.Key(key, true); yield return new WaitForSecondsRealtime(.08f); input.Key(key, false); yield return new WaitForSecondsRealtime(.2f); }
         IEnumerator Click(WindowsKeyboardProbe input, string id)
+        { return Click(input,shell.Root.Q(id)); }
+        IEnumerator Click(WindowsKeyboardProbe input, VisualElement target)
         {
-            var rect = shell.Root.Q(id).worldBound;
+            if(target==null)throw new InvalidOperationException("Native click target is missing.");
+            var rect = target.worldBound;
             float scale = NativeMenuShell.DisplayScale(Screen.width, Screen.height);
             input.MouseButtonAt((int)(rect.center.x * scale), (int)(rect.center.y * scale), true);
             yield return new WaitForSecondsRealtime(.08f);

@@ -16,7 +16,7 @@ namespace DragLab.Runtime
         IEnumerator CartClick(WindowsKeyboardProbe input,string id)
         {shell.Root.Q<ScrollView>("cartScroll").ScrollTo(shell.Root.Q(id));yield return new WaitForSecondsRealtime(.15f);yield return Click(input,id);}
         IEnumerator CartStatClick(WindowsKeyboardProbe input,string id)
-        {shell.Root.Q<ScrollView>("cartPreviewScroll").ScrollTo(shell.Root.Q<NativeStatsPanel>("cartStats").Q(id));yield return new WaitForSecondsRealtime(.15f);yield return Click(input,id);}
+        {var target=shell.Root.Q<NativeStatsPanel>("cartStats").Q(id);shell.Root.Q<ScrollView>("cartPreviewScroll").ScrollTo(target);yield return new WaitForSecondsRealtime(.15f);yield return Click(input,target);}
         IEnumerator NativeCartStatChecks(WindowsKeyboardProbe input)
         {
             var panel=shell.Root.Q<NativeStatsPanel>("cartStats");var expected=NativeStatCatalog.Groups(panel.Current.Inspection,panel.Proposed.Inspection);

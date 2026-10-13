@@ -1,0 +1,45 @@
+Completed native shop/purchase/cart verification (2026-10-13)
+Fixture: native-shop-cache-final-02; current Windows development player after scoped CartStatClick correction.
+Includes shared setup/domain checks; counts overlap the independent 130-check matrix.
+All assertions completed. No foreground or runtime failure. Raw screenshots/logs remain ignored local artifacts.
+
+Browser ready wait: 0,00 s / 2198 offers / 0 full comparisons / 0,00 ms / 0 cache hits
+PASS: Ordinary shop browsing performs no full-part dynos, query churn or card creation while idle
+PASS: Visible shop cards keep their order and position after the page opens
+PASS: The shop builds only matching card controls rather than the whole foreign catalogue
+Shop idle: 170 rendered cards / 2198 offers / 0 full comparisons / 0 cache hits
+Browser ready wait: 0,00 s / 2198 offers / 0 full comparisons / 0,00 ms / 0 cache hits
+PASS: Tire cards expose grip and reference lifespan immediately
+PASS: Part details reuse the category-specific tire summary
+PASS: Single-tire buying remains accessible when a different compound was marked Install
+PASS: Choosing one tire safely switches an unmatched installation to storage
+PASS: One loose tire stages as one unit at its actual unit price
+Browser ready wait: 0,00 s / 2198 offers / 0 full comparisons / 0,00 ms / 5 cache hits
+PASS: Shop browsing, summaries and tire staging do not change the real car or resources
+Browser ready wait: 0,00 s / 2198 offers / 8 full comparisons / 104,04 ms / 5 cache hits
+PASS: Part details retain shared crisp 4K scaling
+Browser ready wait: 0,00 s / 2198 offers / 8 full comparisons / 104,04 ms / 5 cache hits
+PASS: Failed durable checkout keeps the cart and applied assets intact
+PASS: Confirmed checkout uses the atomic shared transaction and installs the quoted set
+Browser ready wait: 0,00 s / 2 offers / 0 full comparisons / 0,00 ms / 24 cache hits
+PASS: Build uses shared crisp 4K scaling and anchored tabs
+Browser ready wait: 0,00 s / 2198 offers / 0 full comparisons / 0,00 ms / 33 cache hits
+Browser ready wait: 0,00 s / 2198 offers / 0 full comparisons / 0,00 ms / 57 cache hits
+Browser ready wait: 0,00 s / 2198 offers / 1 full comparisons / 11,11 ms / 57 cache hits
+PASS: Unified dialog retains bounded crisp 4K scaling
+Browser ready wait: 0,00 s / 2198 offers / 1 full comparisons / 33,72 ms / 63 cache hits
+Browser ready wait: 0,00 s / 2197 offers / 0 full comparisons / 0,00 ms / 69 cache hits
+PASS: Full comparison reads actual Current and Planned values from the shared snapshot
+PASS: Cart info uses the same concise general/tradeoff explanation without repeated figures
+PASS: F8 preserves the same full-stat panel and disclosure/filter state
+PASS: Full-stat browsing, filtering and info never recapture, edit, heal or save the build/cart
+PASS: Idle cart does not recalculate previews or evaluate hidden shop offers
+PASS: Cart editing can convert a tire kit into one exact corner replacement
+PASS: A used component can change replacement position without converting into new stock or healing wear
+PASS: Compact cart keeps scrolling rows, preview and fixed totals/actions inside the viewport
+PASS: Cart uses shared crisp 4K scaling and bounded footer anchors
+PASS: All cart edits/removals/previews remain isolated from actual assets, resources and save files
+PASS: Confirmed Clear leaves an honest empty cart and disabled checkout
+PASS: Build retains the no-Tab contract with no runtime errors
+
+Checks: 558 / runtime errors: 0
