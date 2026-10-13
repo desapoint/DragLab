@@ -18,6 +18,12 @@ if (-not (Test-Path -LiteralPath (Join-Path $fixture 'player.log')) -or -not (Te
 Complete-InterfaceScreenshotRun $run $false | Out-Null
 if (-not (Test-Path -LiteralPath (Join-Path $run.Gallery 'new.png')) -or -not ((Get-Content -LiteralPath $run.StatusFile -Encoding UTF8) -match 'FAILED')) { throw 'Failed-run screenshots/status were not refreshed.' }
 if ((Test-Path -LiteralPath (Join-Path $run.Gallery 'new-4k.png')) -or -not (Test-Path -LiteralPath (Join-Path $run.Gallery 'resolution-tests/new-4k.png'))) { throw 'Alternate-resolution image was not separated.' }
+$normalHeader=[Convert]::FromBase64String('iVBORw0KGgoAAAANSUhEUgAABQAAAALQ')
+$alternateHeader=[Convert]::FromBase64String('iVBORw0KGgoAAAANSUhEUgAACAAAAASA')
+[IO.File]::WriteAllBytes((Join-Path $fixture 'header-normal-4k.png'),$normalHeader)
+[IO.File]::WriteAllBytes((Join-Path $fixture 'header-other.png'),$alternateHeader)
+Complete-InterfaceScreenshotRun $run $true | Out-Null
+if(-not (Test-Path -LiteralPath (Join-Path $run.Gallery 'header-normal-4k.png')) -or -not (Test-Path -LiteralPath (Join-Path $run.Gallery 'resolution-tests/header-other.png'))){throw 'Actual PNG dimensions did not override filename hints.'}
 $again=Start-InterfaceScreenshotRun $root $fixture 'native-test'
 if ((Test-Path -LiteralPath (Join-Path $run.Gallery 'new.png')) -or (Test-Path -LiteralPath (Join-Path $run.Gallery 'resolution-tests/new-4k.png'))) { throw 'Normal/alternate previous images were not both cleared.' }
 [IO.File]::WriteAllBytes((Join-Path $fixture 'shared.png'),[byte[]]@(1))

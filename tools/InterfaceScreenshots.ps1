@@ -38,17 +38,29 @@ function Save-InterfaceScreenshotIndex {
     ConvertTo-Json -InputObject @($Entries) -Depth 4 | Set-Content -LiteralPath (Join-Path $Gallery 'run-info/images.json') -Encoding UTF8
 }
 function Get-InterfaceScreenshotImagePath {
-    param([string]$Gallery, [string]$Name)
+    param([string]$Gallery, [string]$Name, [bool]$Alternate)
     if([IO.Path]::GetFileName($Name) -ne $Name -or [IO.Path]::GetExtension($Name) -ne '.png'){throw 'Invalid screenshot filename.'}
-    $resolution=$Name -match '(?i)(^|[-_])(compact|1080p|4k|2k|1024|1920|3840)([-_.]|$)'
+    $resolution=if($PSBoundParameters.ContainsKey('Alternate')){$Alternate}else{$Name -match '(?i)(^|[-_])(compact|1080p|4k|2k|1024|1920|3840)([-_.]|$)'}
     $folder=if($resolution){Join-Path $Gallery 'resolution-tests'}else{$Gallery}
     return Join-Path $folder $Name
+}
+function Test-InterfaceScreenshotResolution {
+    param([IO.FileInfo]$File)
+    $header=New-Object byte[] 24
+    $stream=[IO.File]::OpenRead($File.FullName)
+    try {$read=$stream.Read($header,0,24)}finally{$stream.Dispose()}
+    if($read -eq 24 -and [Convert]::ToBase64String($header,0,8) -eq 'iVBORw0KGgo='){
+        $width=[int64]$header[16]*16777216+$header[17]*65536+$header[18]*256+$header[19]
+        $height=[int64]$header[20]*16777216+$header[21]*65536+$header[22]*256+$header[23]
+        return $width -ne 1280 -or $height -ne 720
+    }
+    return $File.Name -match '(?i)(^|[-_])(compact|1080p|4k|2k|1024|1920|3840)([-_.]|$)'
 }
 function Clear-OwnedInterfaceScreenshots {
     param([string]$Gallery, [string]$Suite)
     $entries=@(Read-InterfaceScreenshotIndex $Gallery)
     foreach($entry in $entries | Where-Object { $_.Suite -eq $Suite }){
-        $path=Get-InterfaceScreenshotImagePath $Gallery $entry.Image
+        $path=if($entry.PSObject.Properties['AlternateResolution']){Get-InterfaceScreenshotImagePath $Gallery $entry.Image -Alternate $entry.AlternateResolution}else{Get-InterfaceScreenshotImagePath $Gallery $entry.Image}
         if(Test-Path -LiteralPath $path){Remove-Item -LiteralPath $path}
     }
     Save-InterfaceScreenshotIndex $Gallery @($entries | Where-Object { $_.Suite -ne $Suite })
@@ -71,10 +83,11 @@ function Complete-InterfaceScreenshotRun {
     $files=if($PSBoundParameters.ContainsKey('Images')){@($Images)}else{@(Get-ChildItem -LiteralPath $Run.Fixture -File -Filter '*.png' | Sort-Object Name)}
     $index=@(Read-InterfaceScreenshotIndex $Run.Gallery)
     foreach($file in $files){
-        $path=Get-InterfaceScreenshotImagePath $Run.Gallery $file.Name
+        $alternate=Test-InterfaceScreenshotResolution $file
+        $path=Get-InterfaceScreenshotImagePath $Run.Gallery $file.Name -Alternate $alternate
         Copy-Item -LiteralPath $file.FullName -Destination $path -Force
         $index=@($index | Where-Object { $_.Image -ne $file.Name })
-        $index+=[pscustomobject]@{Image=$file.Name;Suite=$Run.Suite;Source=$file.FullName;CapturedUtc=$file.LastWriteTimeUtc.ToString('o')}
+        $index+=[pscustomobject]@{Image=$file.Name;Suite=$Run.Suite;Source=$file.FullName;CapturedUtc=$file.LastWriteTimeUtc.ToString('o');AlternateResolution=$alternate}
     }
     Save-InterfaceScreenshotIndex $Run.Gallery $index
     $status=if($Recorded){'RECORDED successful historical captures; not a fresh full-interface rerun.'}elseif($Passed){'PASS'}else{'FAILED / INCOMPLETE; these images are from this attempt only.'}
