@@ -107,7 +107,7 @@ namespace DragLab.Domain
                     case PartCategory.Driveshaft: case PartCategory.Differential: heat = drivePower * .003; torque = shaftTorque; break;
                     case PartCategory.TransferCase: heat = drivePower * .003; torque = shaftTorque; break;
                     case PartCategory.FrontDriveshaft: case PartCategory.FrontDifferential: case PartCategory.FrontAxle:
-                        torque = s.frontDriveAvailable ? shaftTorque * s.frontTorqueShare * (d.category == PartCategory.FrontAxle ? car.tune.finalDrive : 1) : 0; heat = drivePower * .003 * s.frontTorqueShare; break;
+                        torque = s.frontDriveAvailable ? shaftTorque * s.frontTorqueShare * (d.category == PartCategory.FrontAxle ? car.tune.finalDrive : 1) / car.awd.LockedRatio : 0; heat = drivePower * .003 * s.frontTorqueShare; break;
                     case PartCategory.RearDriveshaft: case PartCategory.RearDifferential: case PartCategory.RearAxle:
                         torque = s.rearDriveAvailable ? shaftTorque * s.rearTorqueShare * (d.category == PartCategory.RearAxle ? car.tune.finalDrive : 1) : 0; heat = drivePower * .003 * s.rearTorqueShare; break;
                     case PartCategory.Pistons: case PartCategory.Rods: case PartCategory.Crankshaft:

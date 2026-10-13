@@ -30,6 +30,37 @@ namespace DragLab.Editor
             var plan=SavedSetups.Preview(applied,car.instanceId,setup.id);check(plan.tires.Count(t=>t.wheel)==2&&plan.tires.Where(t=>t.wheel).All(t=>!t.purchase),"Whole-car setup locates exact owned wheel replacements for front pair: "+car.vehicleId);
             SavedSetups.Apply(applied,car.instanceId,setup.id,applied.revision,false,plan.cost);check(MechanicsOwnership.Validate(applied,p.catalog)==null&&WheelFitments.DefinitionId(rims,0)==id,"Existing blueprint transaction restores real mixed wheel members: "+car.vehicleId);
         }
+        static void CheckCenterRatios(MechanicalCatalog catalog,Action<bool,string> check)
+        {
+            foreach(double q in new[]{.6,.8,1,1.2,1.5,1.8,2.0}){
+                double[] inertia={.7,.9,1.2,1.5};double[] radii={.3,.3,.3*q,.3*q};
+                var matched=new WheelContactState{speed=20,omega=radii.Select(r=>20/r).ToArray()};var mismatch=new WheelContactState{speed=20,omega=radii.Select(r=>20/r).ToArray()};
+                var input=new WheelContactInput{radii=radii,inertias=inertia,lockCenter=true,centerSpeedRatio=q};
+                for(int i=0;i<120;i++)WheelContactDynamics.Step(matched,input,DragMath.FixedStep);
+                double initial=.5*input.massKg*400+Enumerable.Range(0,4).Sum(i=>.5*inertia[i]*Math.Pow(20/radii[i],2));
+                check(Math.Abs(matched.speed-20)<1e-8&&matched.slipWorkJ.Sum()<1e-6&&Math.Abs(matched.KineticEnergy(input.massKg,inertia)+matched.contactWorkJ-initial)<1e-6,"Ratio-matched locked center rolls without forced slip and conserves energy: "+q);
+                input.centerSpeedRatio=1;for(int i=0;i<120;i++)WheelContactDynamics.Step(mismatch,input,DragMath.FixedStep);
+                check(q==1||mismatch.slipWorkJ.Sum()>matched.slipWorkJ.Sum()+1,"Mismatched locked ratio dissipates real tire sliding work: "+q);
+                input.centerSpeedRatio=q;input.frontTorqueNm=500/q;input.rearTorqueNm=500;double before=matched.KineticEnergy(input.massKg,inertia),work=matched.driveWorkJ,loss=matched.contactWorkJ;
+                for(int i=0;i<240;i++)WheelContactDynamics.Step(matched,input,DragMath.FixedStep);
+                check(Math.Abs(matched.KineticEnergy(input.massKg,inertia)-before+matched.contactWorkJ-loss-(matched.driveWorkJ-work))<1e-5&&Math.Abs(matched.omega[0]+matched.omega[1]-q*(matched.omega[2]+matched.omega[3]))<1e-8,"Geared locked center preserves power/energy and actual angular constraint under torque: "+q);
+            }
+            var source=catalog.Spec(catalog.parts.First(p=>PartTuning.Allows(p,PartTuningOptions.CenterRatio)).id.Split('/')[0]);
+            var driver=new DriverSettings();var mismatchTune=new Tune{frontWheelDiameter=.8f,rearWheelDiameter=1.2f,awdConfigured=true,awd=new AwdSpec{mode=AwdMode.LockedCenter},finalDrive=source.finalDrive};var matchedTune=mismatchTune.Copy();matchedTune.awd.centerSpeedRatio=1.5f;
+            var coarse=new CarSimulation(source,mismatchTune,driver);var matchedCar=new CarSimulation(source,matchedTune,driver);coarse.state.speed=matchedCar.state.speed=20;
+            for(int i=0;i<240;i++){coarse.IndependentStep(DragMath.FixedStep,new DriverInput(),true,false);matchedCar.IndependentStep(DragMath.FixedStep,new DriverInput(),true,false);}
+            var coarseTires=coarse.mechanics.parts.First(p=>p.slot=="Tires");var matchedTires=matchedCar.mechanics.parts.First(p=>p.slot=="Tires");
+            check(coarse.state.contact.slipWorkJ.Sum()>matchedCar.state.contact.slipWorkJ.Sum()+1&&coarseTires.condition.tires.Sum(t=>t.consumedLife)>matchedTires.condition.tires.Sum(t=>t.consumedLife)+1e-9,"Forced locked-center scrub causes extra actual tire deterioration in the authoritative car simulation");
+            foreach(var offer in catalog.parts.Where(p=>PartTuning.Allows(p,PartTuningOptions.CenterRatio))){
+                var spec=catalog.Spec(offer.id.Split('/')[0]);var stock=catalog.Recipe(spec.id);var t=new Tune{awdConfigured=true,awd=new AwdSpec{mode=AwdMode.LockedCenter,centerSpeedRatio=1.5f},frontWheelDiameter=.8f,rearWheelDiameter=1.2f};
+                var ordinary=catalog.Resolve(spec.id,stock,t);check(AxleDriveDynamics.Configuration(ordinary.spec,ordinary.tune).LockedRatio==1,"Ordinary transfer case cannot acquire free ratio capability: "+spec.id);
+                int standard=catalog.parts.Where(p=>p.category==PartCategory.TransferCase&&!PartTuning.Allows(p,PartTuningOptions.CenterRatio)&&catalog.Fits(spec,p)).Max(p=>p.price);stock[PartCategory.TransferCase]=offer.id;var built=catalog.Resolve(spec.id,stock,t);
+                check(built.errors.Count==0&&offer.price>standard&&AxleDriveDynamics.Configuration(built.spec,built.tune).LockedRatio==1.5,"Paid specialized hardware preserves the requested ratio: "+spec.id+" / "+string.Join("; ",built.errors));
+                var inspection=CarInspection.CalculatePrepared(new InspectionBuild{build=built,components=new System.Collections.Generic.List<PartInstance>()},new CarSimulation(built.spec,built.tune,new DriverSettings()),false);
+                check(!inspection.warnings.Any(w=>w.title=="AWD tire rolling sizes differ"),"Matched geared AWD does not claim a rolling-size mismatch: "+spec.id);
+                var wheels=new WheelProfile(built.spec,built.tune);check(Math.Abs(wheels.radius-wheels.radii[2])<1e-7,"Matched locked ratio gives the correct input rolling radius: "+spec.id);
+            }
+        }
         public static void Run()
         {
             var log=new StringBuilder();int count=0;
@@ -90,6 +121,7 @@ namespace DragLab.Editor
                 CheckWheelMembers(repaired,check);
             }
 
+            CheckCenterRatios(catalogue,check);
             foreach(bool locked in new[]{false,true})foreach(double frontI in new[]{.2,1.2,4.0})foreach(double rearI in new[]{.4,2.0,8.0}){
                 var input=new WheelContactInput{radii=new[]{.24,.24,.36,.36},inertias=new[]{frontI,frontI,rearI,rearI},lockCenter=locked,frontTorqueNm=100,rearTorqueNm=900};
                 var state=new WheelContactState();for(int tick=0;tick<360;tick++){if(tick==180){input.frontTorqueNm=input.rearTorqueNm=0;input.brakeNm=new[]{600.0,600,600,600};}WheelContactDynamics.Step(state,input,DragMath.FixedStep);}

@@ -84,7 +84,7 @@ namespace DragLab.Domain
         public readonly double[] radii=new double[4],inertias=new double[4],assemblyMasses=new double[4],tireMasses=new double[4],rimMasses=new double[4],gripScales=new double[4];
         public readonly double equivalentRotatingMass;
         public readonly double[] contactInertias=new double[4];
-        public static double DrivenRadius(VehicleSpec spec,Tune tune){var awd=AxleDriveDynamics.Configuration(spec,tune);double f=spec.drive==DriveType.FWD?1:spec.drive==DriveType.RWD?0:awd.mode==AwdMode.OnDemand?(awd.primaryFront?1:0):awd.frontBias;return spec.wheelRadiusM/(f/tune.AxleDiameter(true)+(1-f)/tune.AxleDiameter(false));}
+        public static double DrivenRadius(VehicleSpec spec,Tune tune){var awd=AxleDriveDynamics.Configuration(spec,tune);double f=spec.drive==DriveType.FWD?1:spec.drive==DriveType.RWD?0:awd.mode==AwdMode.OnDemand?(awd.primaryFront?1:0):awd.frontBias;return spec.wheelRadiusM/(f/(tune.AxleDiameter(true)*awd.LockedRatio)+(1-f)/tune.AxleDiameter(false));}
         public double effectiveMass,vehicleMass;
         public WheelProfile(VehicleSpec spec,Tune tune)
         {

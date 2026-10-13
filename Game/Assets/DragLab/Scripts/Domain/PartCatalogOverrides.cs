@@ -17,10 +17,11 @@ namespace DragLab.Domain.Mechanics {
     if(!Editable(f.Name)&&!Equals(value,f.GetValue(original)))return "Stable identity/fitment cannot change: "+f.Name;
     if(f.FieldType==typeof(float)){double n=(float)value;if(!MechanicsSchema.Finite(n)||Math.Abs(n)>1e12)return "Invalid number: "+f.Name;if(n<0&&f.Name!="camTorqueBias"&&f.Name!="positionFromFrontAxleM"&&f.Name!="crownVolumeCc")return "Negative number: "+f.Name;}
     if(f.FieldType==typeof(int)&&((int)value<0||(int)value>10000000))return "Invalid integer: "+f.Name;
-    if(f.FieldType.IsEnum&&(f.Name=="tuning"?(((int)(PartTuningOptions)value&~255)!=0):!Enum.IsDefined(f.FieldType,value)))return "Invalid option: "+f.Name;
+    if(f.FieldType.IsEnum&&(f.Name=="tuning"?(((int)(PartTuningOptions)value&~511)!=0):!Enum.IsDefined(f.FieldType,value)))return "Invalid option: "+f.Name;
    }
    if(string.IsNullOrWhiteSpace(draft.name))return "Name required.";
    if(new[]{draft.power,draft.grip,draft.massScale,draft.shiftScale,draft.capacityScale,draft.boostScale}.Any(n=>n<=0||n>4))return "Hardware multipliers must be >0 and <=4.";
+   if(draft.centerRatioMin<.5||draft.centerRatioMax>2||draft.centerRatioMin>draft.centerRatioMax)return "Invalid center speed ratio range.";
    if(draft.boostMin>draft.boostMax||draft.pulleyMin>draft.pulleyMax||draft.finalDriveMin>draft.finalDriveMax||draft.fluidMinimumLitres>draft.fluidCapacityLitres)return "Invalid minimum/maximum range.";
    if(draft.clutchPlateCount<1||draft.clutchPlateCount>64||draft.clutchOilCapacityLitres>10)return "Invalid clutch plate/bath capacity.";
    if(PartSemantics.Wears(draft.category)&&(draft.heatCapacityJPerC<=0||draft.wearEnergyJ<=0||draft.overloadSeconds<=0||draft.thermalLimitC<=0))return "Wearing parts require positive thermal mass, life and overload tolerance.";

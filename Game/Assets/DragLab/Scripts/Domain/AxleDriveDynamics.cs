@@ -7,6 +7,8 @@ namespace DragLab.Domain
     public sealed class AwdSpec
     {
         public AwdMode mode = AwdMode.FixedSplit;
+        public float centerSpeedRatio; // 0 preserves the legacy 1:1 center. Front wheel speed / rear wheel speed.
+        public double LockedRatio=>mode==AwdMode.LockedCenter?(centerSpeedRatio==0?1:centerSpeedRatio):1;
         public float torqueBiasRatio = 3, centerPreloadNm = 35;
         public float frontBias = .5f, minimumFront = .15f, maximumFront = .85f;
         public bool primaryFront = true, isolateFailedAxle;
@@ -16,6 +18,7 @@ namespace DragLab.Domain
         public string Validate()
         {
             if (!EngineBehaviorSpec.Range(centerPreloadNm, 0, 1000) || !EngineBehaviorSpec.Range(torqueBiasRatio, 1, 10)) return "Invalid center differential torque bias.";
+            if(centerSpeedRatio!=0&&!EngineBehaviorSpec.Range(centerSpeedRatio,.5,2))return "Locked center speed ratio must be 0 (legacy) or 0.5–2.";
             if (!Enum.IsDefined(typeof(AwdMode), mode)) return "Invalid AWD topology.";
             if (mode == AwdMode.OpenCenter && !EngineBehaviorSpec.Range(frontBias, .05, .95)) return "Open-center geometry needs both output shares (5–95% front).";
             if (!EngineBehaviorSpec.Range(freeShaftInertiaKgM2, .005, 2) || !EngineBehaviorSpec.Range(freeShaftDragNm, 0, 100) || !EngineBehaviorSpec.Range(freeShaftViscousDrag, 0, 1)) return "Invalid free-shaft inertia/drag.";
@@ -87,7 +90,7 @@ namespace DragLab.Domain
             }
             double requestedFront = demand * front, requestedRear = demand * (1 - front);
             double centerTorque = demand * car.wheels.radius / car.tune.finalDrive;
-            s.frontShaftTorqueNm = centerTorque * front; s.rearShaftTorqueNm = centerTorque * (1 - front);
+            s.frontShaftTorqueNm = centerTorque * front / data.LockedRatio; s.rearShaftTorqueNm = centerTorque * (1 - front);
             if (s.openCenterFreeBranch)
             {
                 // Open-differential torque shares remain geometric. A disconnected output

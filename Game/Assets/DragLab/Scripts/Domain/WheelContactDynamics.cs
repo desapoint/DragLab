@@ -16,6 +16,7 @@ namespace DragLab.Domain
     public sealed class WheelContactInput
     {
         public double massKg=1200,radiusM=.3,inertiaKgM2=1.1,frontTorqueNm,rearTorqueNm,resistanceN;
+        public double centerSpeedRatio=1;
         public double[] radii,inertias;
         public double[] normalLoadN={300*DragMath.Gravity,300*DragMath.Gravity,300*DragMath.Gravity,300*DragMath.Gravity},friction={1,1,1,1},brakeNm=new double[4];
         public DifferentialSpec frontDifferential=new DifferentialSpec(),rearDifferential=new DifferentialSpec();
@@ -35,7 +36,7 @@ namespace DragLab.Domain
             var mobility=new double[4,4];for(int i=0;i<4;i++)mobility[i,i]=1/inertia[i];
             if(Locked(input.frontDifferential)&&input.frontDifferentialHealth>0)Constrain(mobility,new[]{1.0,-1,0,0});
             if(Locked(input.rearDifferential)&&input.rearDifferentialHealth>0)Constrain(mobility,new[]{0.0,0,1,-1});
-            if(input.lockCenter&&input.frontDifferentialHealth>0&&input.rearDifferentialHealth>0)Constrain(mobility,new[]{.5,.5,-.5,-.5});
+            if(input.lockCenter&&input.frontDifferentialHealth>0&&input.rearDifferentialHealth>0)Constrain(mobility,new[]{.5,.5,-.5*input.centerSpeedRatio,-.5*input.centerSpeedRatio});
             return mobility;
         }
         static void Constrain(double[,] mobility,double[] constraint)
@@ -62,6 +63,7 @@ namespace DragLab.Domain
             foreach(var values in new[]{input.normalLoadN,input.friction,input.brakeNm}){if(values==null||values.Length!=4)throw new ArgumentException("Four contact inputs required.");foreach(double value in values)if(!Mechanics.MechanicsSchema.Finite(value)||value<0)throw new ArgumentException("Invalid contact input.");}
             if(s.Validate()!=null||input.frontDifferential==null||input.rearDifferential==null||input.frontDifferential.Validate()!=null||input.rearDifferential.Validate()!=null)throw new ArgumentException("Invalid wheel/differential state.");
             if(input.massKg<=0||input.radiusM<=0||input.inertiaKgM2<=0||!Mechanics.MechanicsSchema.Finite(dt)||dt<=0||dt>.05)throw new ArgumentException("Invalid wheel contact parameters.");
+            if(!Mechanics.MechanicsSchema.Finite(input.centerSpeedRatio)||input.centerSpeedRatio<.5||input.centerSpeedRatio>2)throw new ArgumentException("Invalid center speed ratio.");
             if(input.centerPreloadNm<0||input.centerTorqueBiasRatio<1||input.centerTorqueBiasRatio>10)throw new ArgumentException("Invalid center LSD parameters.");
             if(s.normalLoadN==null||s.normalLoadN.Length!=4)s.normalLoadN=new double[4];if(s.friction==null||s.friction.Length!=4)s.friction=new double[4];
             var radii=input.radii??new[]{input.radiusM,input.radiusM,input.radiusM,input.radiusM};var inertia=input.inertias??new[]{input.inertiaKgM2,input.inertiaKgM2,input.inertiaKgM2,input.inertiaKgM2};

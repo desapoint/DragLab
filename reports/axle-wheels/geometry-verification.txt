@@ -354,6 +354,44 @@ PASS: Wheel pair replacement retains rear identity and worn front originals: v8-
 PASS: Mixed rims survive profile normalization without losing identities: v8-muscle
 PASS: Whole-car setup locates exact owned wheel replacements for front pair: v8-muscle
 PASS: Existing blueprint transaction restores real mixed wheel members: v8-muscle
+PASS: Ratio-matched locked center rolls without forced slip and conserves energy: 0,6
+PASS: Mismatched locked ratio dissipates real tire sliding work: 0,6
+PASS: Geared locked center preserves power/energy and actual angular constraint under torque: 0,6
+PASS: Ratio-matched locked center rolls without forced slip and conserves energy: 0,8
+PASS: Mismatched locked ratio dissipates real tire sliding work: 0,8
+PASS: Geared locked center preserves power/energy and actual angular constraint under torque: 0,8
+PASS: Ratio-matched locked center rolls without forced slip and conserves energy: 1
+PASS: Mismatched locked ratio dissipates real tire sliding work: 1
+PASS: Geared locked center preserves power/energy and actual angular constraint under torque: 1
+PASS: Ratio-matched locked center rolls without forced slip and conserves energy: 1,2
+PASS: Mismatched locked ratio dissipates real tire sliding work: 1,2
+PASS: Geared locked center preserves power/energy and actual angular constraint under torque: 1,2
+PASS: Ratio-matched locked center rolls without forced slip and conserves energy: 1,5
+PASS: Mismatched locked ratio dissipates real tire sliding work: 1,5
+PASS: Geared locked center preserves power/energy and actual angular constraint under torque: 1,5
+PASS: Ratio-matched locked center rolls without forced slip and conserves energy: 1,8
+PASS: Mismatched locked ratio dissipates real tire sliding work: 1,8
+PASS: Geared locked center preserves power/energy and actual angular constraint under torque: 1,8
+PASS: Ratio-matched locked center rolls without forced slip and conserves energy: 2
+PASS: Mismatched locked ratio dissipates real tire sliding work: 2
+PASS: Geared locked center preserves power/energy and actual angular constraint under torque: 2
+PASS: Forced locked-center scrub causes extra actual tire deterioration in the authoritative car simulation
+PASS: Ordinary transfer case cannot acquire free ratio capability: rally-sedan
+PASS: Paid specialized hardware preserves the requested ratio: rally-sedan /
+PASS: Matched geared AWD does not claim a rolling-size mismatch: rally-sedan
+PASS: Matched locked ratio gives the correct input rolling radius: rally-sedan
+PASS: Ordinary transfer case cannot acquire free ratio capability: timber-diesel
+PASS: Paid specialized hardware preserves the requested ratio: timber-diesel /
+PASS: Matched geared AWD does not claim a rolling-size mismatch: timber-diesel
+PASS: Matched locked ratio gives the correct input rolling radius: timber-diesel
+PASS: Ordinary transfer case cannot acquire free ratio capability: timber-diesel-tow
+PASS: Paid specialized hardware preserves the requested ratio: timber-diesel-tow /
+PASS: Matched geared AWD does not claim a rolling-size mismatch: timber-diesel-tow
+PASS: Matched locked ratio gives the correct input rolling radius: timber-diesel-tow
+PASS: Ordinary transfer case cannot acquire free ratio capability: utility-pickup
+PASS: Paid specialized hardware preserves the requested ratio: utility-pickup /
+PASS: Matched geared AWD does not claim a rolling-size mismatch: utility-pickup
+PASS: Matched locked ratio gives the correct input rolling radius: utility-pickup
 PASS: Unequal-axle torque/braking energy closes: False / 0,2 / 0,4
 PASS: Unequal-axle torque/braking energy closes: False / 0,2 / 2
 PASS: Unequal-axle torque/braking energy closes: False / 0,2 / 8
@@ -381,4 +419,4 @@ PASS: Unequal-axle torque/braking energy closes: True / 4 / 2
 PASS: Locked AWD constrains angular shaft speeds even with mismatched tire diameters
 PASS: Unequal-axle torque/braking energy closes: True / 4 / 8
 PASS: Locked AWD constrains angular shaft speeds even with mismatched tire diameters
-Checks: 383 / failures: 0
+Checks: 421 / failures: 0

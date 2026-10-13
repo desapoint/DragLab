@@ -18,6 +18,7 @@ namespace DragLab.Runtime
         {foreach(string id in ids.Split('|'))entries.Add(id,new Directions(more,less,higher,lower));}
         static NativeStatHelp()
         {
+            Add("centerSpeedRatio|centerratiomin|centerratiomax","The front wheels turn faster relative to the rear wheels. This can match smaller front tires to larger rear tires.","The front wheels turn more slowly relative to the rear wheels. This can match larger front tires to smaller rear tires.","A ratio that does not match the tire sizes makes a locked center scrub the tires, heating and wearing them.","A mismatched ratio makes the tires scrub. This is a speed ratio, not a setting that adds grip.");
             Add("peakHp|tuningHp","More engine power helps the car keep accelerating as speed rises, if the tires and drivetrain can use it.","Less power generally means slower acceleration at speed, but gives the drivetrain less work to handle.","The extra power can increase fuel use, heat and wheelspin. Check grip and component strength; more power alone does not guarantee a quicker run.","Lower power can cost acceleration and finishing speed.");
             Add("peakTorque|tuningTorque","More twisting force from the engine can give a stronger pull. Gears multiply this force before it reaches the tires.","Less twisting force usually gives a gentler pull and puts less strain on the drivetrain.","The stronger pull can overwhelm the clutch, drivetrain or tires, depending on gearing and grip.","Less engine force can make the car slower to pick up speed.");
             Add("hpRpm|torqueRpm","The strongest part of the engine's pull happens later in the rev range. Gearing and shift timing need to keep the engine near that range.","The strongest pull arrives at lower revs, which can help launch and recovery after a shift.","Reaching the useful power band may require more revs or shorter gearing.","The engine may run past its strongest range earlier; check the whole curve before choosing shift points.");
@@ -126,7 +127,8 @@ namespace DragLab.Runtime
         internal static Directions Find(string id)
         {
             if(id==null)return null;
-            if(id=="part:Clutch:oilCondition")id="oilConditionClutch";
+            if(id.Contains(":rimMass:"))id="wheelMass";
+            else if(id=="part:Clutch:oilCondition")id="oilConditionClutch";
             else if(id=="part:Camshaft:rating:valvetrainrpm")id="camcontrolrequirement";
             else if(id.StartsWith("part:",StringComparison.Ordinal)||id.StartsWith("exhaust:",StringComparison.Ordinal)||id.StartsWith("axle:",StringComparison.Ordinal))id=id.Substring(id.LastIndexOf(':')+1);
             else if(id.IndexOf(':')>=0)id=id.Substring(0,id.IndexOf(':'));

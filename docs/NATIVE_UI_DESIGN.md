@@ -241,3 +241,6 @@ Independent axle wheel setup (2026-10-13): the requested Wheels tuning selector 
 
 
 Individual wheel purchase refinement (2026-10-13): Wheels retain four real rim members with per-corner definition/identity/condition and the same set/individual dialog as tires and engine units. Complete set remains the default. Front/Rear presets are reachable directly in the default install view, switch to individual pair buying and update quantity/price. Exact-position cart editing also has axle presets. Preserve outgoing members, actual constituent prices, axle tune and read-only previews; do not relax matched piston/valvetrain rules. [Checks/review](../reports/axle-wheels/04-WHEEL-MEMBERS.md).
+
+
+Geared locked AWD (2026-10-13): an installed ratio-capable transfer case fixes Locked center and unlocks the existing native Drivetrain slider/number control for front/rear angular speed ratio. Keep the ratio separate from torque bias, visible as 1:1 and disabled on ordinary locked hardware. Reuse .010/.001 steps, right-drag, middle default and explicit Apply/Revert. Show actual effective ratio and rolling-size warnings in shared stats. The model generates real scrub work, heat and wear when sizes/ratio mismatch. [Checks/review](../reports/axle-wheels/05-GEARED-LOCK.md).

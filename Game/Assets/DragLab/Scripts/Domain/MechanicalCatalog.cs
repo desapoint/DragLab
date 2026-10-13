@@ -15,6 +15,7 @@ namespace DragLab.Domain.Mechanics
         public int plugHeatRange=6;
         public PartCategory category;
         public float boreMm, power = 1, grip = 1, massScale = 1, shiftScale = 1, capacityScale = 1, boostScale = 1;
+        public float centerRatioMin=.5f,centerRatioMax=2;
         public float rpmLimit, torqueLimitNm, massKg, inertiaKgM2;
         public float positionFromFrontAxleM, heightM = .4f;
         public int price, stage, reputationRequired;
@@ -68,7 +69,7 @@ namespace DragLab.Domain.Mechanics
             foreach (var source in vehicles) { var spec=source.Copy(); specs.Add(spec.id,spec.Copy()); Author(spec); }
             // Extra offers unlock independently. Existing ranks remain purchasable directly.
             foreach(var model in specs.Keys){var source=parts.Where(p=>p.id.StartsWith(model+"/")&&p.category==PartCategory.Induction&&p.turboUnits>0).OrderByDescending(p=>p.turboSize).FirstOrDefault();if(source!=null){var extra=source.Copy();extra.id=model+"/Induction/motorsport";extra.name=source.name+" / motorsport compressor";extra.reputationRequired=8;extra.price=checked(source.price+400);extra.boostScale=Math.Min(4,source.boostScale*1.05f);extra.description+=" Independent REP 8 offer; preceding induction ranks are not required. Higher boost needs matching strength, tires and cooling.";parts.Add(extra);}}
-            PartBrands.Apply(this);
+            PartBrands.Apply(this);LockedCenterHardware.Add(this, specs.Values);
             if(applyOverrides)PartCatalogOverrides.Apply(this,PartCatalogOverrides.Load());
         }
         public VehicleSpec Spec(string id) { return specs[id].Copy(); }
@@ -262,6 +263,7 @@ namespace DragLab.Domain.Mechanics
             result.spec.engineBehavior.safeRpmMultiplier = (float)DragMath.Clamp(result.safeRpm / result.spec.redlineRpm, 1.01, 1.4);
             t.shiftRpm = Math.Min(t.shiftRpm, result.safeRpm - 100);
             if (t.revLimitRpm > result.safeRpm) t.revLimitRpm = result.safeRpm;
+            LockedCenterHardware.Enforce(result,installed,this);
             result.spec.fittedParts = installed.Values.Select(Find).Where(p => p != null).Select(p => p.Copy()).ToArray();
             result.spec.hasInstalledParts = true;
             return result;

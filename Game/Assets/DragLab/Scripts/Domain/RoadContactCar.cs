@@ -18,15 +18,15 @@ namespace DragLab.Domain
             get { if(state.openCenterFreeBranch)return (state.frontShaftRpm*awd.frontBias+state.rearShaftRpm*(1-awd.frontBias))/(tune.finalDrive*FlywheelDynamics.RpmPerRadian);
                 double f=spec.drive==DriveType.FWD?1:spec.drive==DriveType.RWD?0:state.frontTorqueShare;
                 if(spec.drive==DriveType.AWD&&(awd.isolateFailedAxle||awd.mode==AwdMode.LockedCenter)){if(!state.frontDriveAvailable)f=0;else if(!state.rearDriveAvailable)f=1;}
-                return FrontWheelOmega*f+RearWheelOmega*(1-f); }
+                return FrontWheelOmega/awd.LockedRatio*f+RearWheelOmega*(1-f); }
         }
         public double ReflectedWheelInertia(double ratio)
         {
             double f=spec.drive==DriveType.FWD?1:spec.drive==DriveType.RWD?0:state.frontTorqueShare;
             if(spec.drive==DriveType.AWD&&(awd.isolateFailedAxle||awd.mode==AwdMode.LockedCenter)){if(!state.frontDriveAvailable)f=0;else if(!state.rearDriveAvailable)f=1;else if(awd.mode==AwdMode.LockedCenter)f=.5;}
             double frontI=Math.Max(1e-5,wheels.inertias[0]+wheels.inertias[1]),rearI=Math.Max(1e-5,wheels.inertias[2]+wheels.inertias[3]);
-            double mobility=ratio*ratio*(f*f/frontI+(1-f)*(1-f)/rearI);
-            if(spec.drive==DriveType.AWD&&awd.mode==AwdMode.LockedCenter&&state.frontDriveAvailable&&state.rearDriveAvailable)mobility=ratio*ratio/(frontI+rearI);
+            double mobility=ratio*ratio*(f*f/(frontI*awd.LockedRatio*awd.LockedRatio)+(1-f)*(1-f)/rearI);
+            if(spec.drive==DriveType.AWD&&awd.mode==AwdMode.LockedCenter&&state.frontDriveAvailable&&state.rearDriveAvailable)mobility=ratio*ratio/(frontI*awd.LockedRatio*awd.LockedRatio+rearI);
             if(state.openCenterFreeBranch){double gear=ratio/tune.finalDrive;mobility=0;if(state.frontDriveAvailable)mobility+=ratio*ratio*awd.frontBias*awd.frontBias/(frontI);else mobility+=gear*gear*awd.frontBias*awd.frontBias/awd.freeShaftInertiaKgM2;if(state.rearDriveAvailable)mobility+=ratio*ratio*(1-awd.frontBias)*(1-awd.frontBias)/(rearI);else mobility+=gear*gear*(1-awd.frontBias)*(1-awd.frontBias)/awd.freeShaftInertiaKgM2;}
             return 1/Math.Max(1e-12,mobility);
         }
@@ -49,18 +49,18 @@ namespace DragLab.Domain
             double port=shaft*(ratio/tune.finalDrive)*efficiency,frontPort=port*s.frontTorqueShare,rearPort=port*s.rearTorqueShare;
             bool centerLsd=spec.drive==DriveType.AWD&&awd.mode==AwdMode.LimitedSlipCenter;
             if(centerLsd&&s.openCenterFreeBranch){double frontI=s.frontDriveAvailable?(wheels.inertias[0]+wheels.inertias[1])/(tune.finalDrive*tune.finalDrive):awd.freeShaftInertiaKgM2,rearI=s.rearDriveAvailable?(wheels.inertias[2]+wheels.inertias[3])/(tune.finalDrive*tune.finalDrive):awd.freeShaftInertiaKgM2;double cap=awd.centerPreloadNm+Math.Abs(port)*.5*(awd.torqueBiasRatio-1)/(awd.torqueBiasRatio+1);double transfer=DragMath.Clamp((s.frontShaftRpm-s.rearShaftRpm)/FlywheelDynamics.RpmPerRadian/(1/frontI+1/rearI)/dt,-cap,cap);frontPort-=transfer;rearPort+=transfer;}
-            double front=frontPort*tune.finalDrive,rear=rearPort*tune.finalDrive;
+            double front=frontPort*tune.finalDrive/awd.LockedRatio,rear=rearPort*tune.finalDrive;
             double brakeTotal=mass.TranslatingKg*spec.BrakeDeceleration*s.brakeCapacityFactor*s.brake;
             double frontBrakeBias=s.warmupLineLock&&spec.drive!=DriveType.AWD?(spec.drive==DriveType.RWD?1:0):spec.frontBrakeBias;
             bool tires=MassDynamics.Installed(spec,Mechanics.PartCategory.Wheels)&&MassDynamics.Installed(spec,Mechanics.PartCategory.Tires);
             var input=new WheelContactInput { massKg=mass.TranslatingKg,radiusM=wheels.radius,inertiaKgM2=Math.Max(1e-5,wheels.totalInertia*.25),radii=wheels.radii,inertias=wheels.contactInertias,frontTorqueNm=s.frontDriveAvailable?front:0,rearTorqueNm=s.rearDriveAvailable?rear:0,
                 normalLoadN=new[]{s.frontLoadN*.5,s.frontLoadN*.5,s.rearLoadN*.5,s.rearLoadN*.5},friction=new[]{tires?Friction(0)*roadTireGrip[0]*DifferentialDynamics.Grip(tune.frontLeftGrip):0,tires?Friction(1)*roadTireGrip[1]*DifferentialDynamics.Grip(tune.frontRightGrip):0,tires?Friction(2)*roadTireGrip[2]*DifferentialDynamics.Grip(tune.rearLeftGrip):0,tires?Friction(3)*roadTireGrip[3]*DifferentialDynamics.Grip(tune.rearRightGrip):0},
-                brakeNm=new[]{brakeTotal*frontBrakeBias*.5*wheels.radii[0],brakeTotal*frontBrakeBias*.5*wheels.radii[1],brakeTotal*(1-frontBrakeBias)*.5*wheels.radii[2],brakeTotal*(1-frontBrakeBias)*.5*wheels.radii[3]},frontDifferential=spec.frontDifferential,rearDifferential=spec.rearDifferential,frontDifferentialHealth=s.frontDriveAvailable?s.frontDifferentialHealth:0,rearDifferentialHealth=s.rearDriveAvailable?s.rearDifferentialHealth:0,lockCenter=spec.drive==DriveType.AWD&&awd.mode==AwdMode.LockedCenter&&s.frontDriveAvailable&&s.rearDriveAvailable,
+                brakeNm=new[]{brakeTotal*frontBrakeBias*.5*wheels.radii[0],brakeTotal*frontBrakeBias*.5*wheels.radii[1],brakeTotal*(1-frontBrakeBias)*.5*wheels.radii[2],brakeTotal*(1-frontBrakeBias)*.5*wheels.radii[3]},frontDifferential=spec.frontDifferential,rearDifferential=spec.rearDifferential,frontDifferentialHealth=s.frontDriveAvailable?s.frontDifferentialHealth:0,rearDifferentialHealth=s.rearDriveAvailable?s.rearDifferentialHealth:0,centerSpeedRatio=awd.LockedRatio,lockCenter=spec.drive==DriveType.AWD&&awd.mode==AwdMode.LockedCenter&&s.frontDriveAvailable&&s.rearDriveAvailable,
                 centerPreloadNm=centerLsd&&!s.openCenterFreeBranch?awd.centerPreloadNm*tune.finalDrive:0,centerTorqueBiasRatio=centerLsd&&!s.openCenterFreeBranch?awd.torqueBiasRatio:1,
                 resistanceN=.5*1.225*spec.dragAreaM2*s.contact.speed*s.contact.speed+mass.TranslatingKg*DragMath.Gravity*spec.rollingResistance };
             WheelContactDynamics.Step(s.contact,input,dt);
             for(int i=0;i<4;i++){roadForces[i]+=s.contact.force[i]*dt/wholeDt;roadDriveTorque[i]+=s.contact.driveTorqueNm[i]*dt/wholeDt;roadBrakeTorque[i]+=s.contact.brakeTorqueNm[i]*dt/wholeDt;roadContactTorque[i]+=s.contact.contactTorqueNm[i]*dt/wholeDt;}
-            s.frontShaftTorqueNm=frontPort;s.rearShaftTorqueNm=rearPort;
+            s.frontShaftTorqueNm=frontPort/awd.LockedRatio;s.rearShaftTorqueNm=rearPort;
             if(s.openCenterFreeBranch){if(!s.frontDriveAvailable)s.frontShaftRpm=AxleDriveDynamics.AdvanceFreeShaft(awd,s.frontShaftRpm,s.frontShaftTorqueNm,dt);if(!s.rearDriveAvailable)s.rearShaftRpm=AxleDriveDynamics.AdvanceFreeShaft(awd,s.rearShaftRpm,s.rearShaftTorqueNm,dt);}
             AxleDriveDynamics.SyncConnected(this);s.speed=s.contact.speed;
         }
