@@ -1,0 +1,100 @@
+Packaged fixture: native-setup-save-final
+Thirteen platforms and all three scopes; total includes existing native Tuning checks.
+Selected saved-setup evidence; raw images/logs remain local.
+
+PASS: Applied setup snapshot captures the actual scope: city-three / Engine
+PASS: Blueprint save/delete changes no physical assets or resources: city-three / Engine
+PASS: Applied setup snapshot captures the actual scope: city-three / WholeCar
+PASS: Blueprint save/delete changes no physical assets or resources: city-three / WholeCar
+PASS: Applied setup snapshot captures the actual scope: city-three / TuneOnly
+PASS: Blueprint save/delete changes no physical assets or resources: city-three / TuneOnly
+PASS: Applied setup snapshot captures the actual scope: juniper-club / Engine
+PASS: Blueprint save/delete changes no physical assets or resources: juniper-club / Engine
+PASS: Applied setup snapshot captures the actual scope: juniper-club / WholeCar
+PASS: Blueprint save/delete changes no physical assets or resources: juniper-club / WholeCar
+PASS: Applied setup snapshot captures the actual scope: juniper-club / TuneOnly
+PASS: Blueprint save/delete changes no physical assets or resources: juniper-club / TuneOnly
+PASS: Applied setup snapshot captures the actual scope: juniper-economy / Engine
+PASS: Blueprint save/delete changes no physical assets or resources: juniper-economy / Engine
+PASS: Applied setup snapshot captures the actual scope: juniper-economy / WholeCar
+PASS: Blueprint save/delete changes no physical assets or resources: juniper-economy / WholeCar
+PASS: Applied setup snapshot captures the actual scope: juniper-economy / TuneOnly
+PASS: Blueprint save/delete changes no physical assets or resources: juniper-economy / TuneOnly
+PASS: Applied setup snapshot captures the actual scope: kestrel-track / Engine
+PASS: Blueprint save/delete changes no physical assets or resources: kestrel-track / Engine
+PASS: Applied setup snapshot captures the actual scope: kestrel-track / WholeCar
+PASS: Blueprint save/delete changes no physical assets or resources: kestrel-track / WholeCar
+PASS: Applied setup snapshot captures the actual scope: kestrel-track / TuneOnly
+PASS: Blueprint save/delete changes no physical assets or resources: kestrel-track / TuneOnly
+PASS: Applied setup snapshot captures the actual scope: rally-sedan / Engine
+PASS: Blueprint save/delete changes no physical assets or resources: rally-sedan / Engine
+PASS: Applied setup snapshot captures the actual scope: rally-sedan / WholeCar
+PASS: Blueprint save/delete changes no physical assets or resources: rally-sedan / WholeCar
+PASS: Applied setup snapshot captures the actual scope: rally-sedan / TuneOnly
+PASS: Blueprint save/delete changes no physical assets or resources: rally-sedan / TuneOnly
+PASS: Applied setup snapshot captures the actual scope: sport-coupe / Engine
+PASS: Blueprint save/delete changes no physical assets or resources: sport-coupe / Engine
+PASS: Applied setup snapshot captures the actual scope: sport-coupe / WholeCar
+PASS: Blueprint save/delete changes no physical assets or resources: sport-coupe / WholeCar
+PASS: Applied setup snapshot captures the actual scope: sport-coupe / TuneOnly
+PASS: Blueprint save/delete changes no physical assets or resources: sport-coupe / TuneOnly
+PASS: Applied setup snapshot captures the actual scope: starter-hatch / Engine
+PASS: Blueprint save/delete changes no physical assets or resources: starter-hatch / Engine
+PASS: Applied setup snapshot captures the actual scope: starter-hatch / WholeCar
+PASS: Blueprint save/delete changes no physical assets or resources: starter-hatch / WholeCar
+PASS: Applied setup snapshot captures the actual scope: starter-hatch / TuneOnly
+PASS: Blueprint save/delete changes no physical assets or resources: starter-hatch / TuneOnly
+PASS: Applied setup snapshot captures the actual scope: super-v8 / Engine
+PASS: Blueprint save/delete changes no physical assets or resources: super-v8 / Engine
+PASS: Applied setup snapshot captures the actual scope: super-v8 / WholeCar
+PASS: Blueprint save/delete changes no physical assets or resources: super-v8 / WholeCar
+PASS: Applied setup snapshot captures the actual scope: super-v8 / TuneOnly
+PASS: Blueprint save/delete changes no physical assets or resources: super-v8 / TuneOnly
+PASS: Applied setup snapshot captures the actual scope: timber-diesel / Engine
+PASS: Blueprint save/delete changes no physical assets or resources: timber-diesel / Engine
+PASS: Applied setup snapshot captures the actual scope: timber-diesel / WholeCar
+PASS: Blueprint save/delete changes no physical assets or resources: timber-diesel / WholeCar
+PASS: Applied setup snapshot captures the actual scope: timber-diesel / TuneOnly
+PASS: Blueprint save/delete changes no physical assets or resources: timber-diesel / TuneOnly
+PASS: Applied setup snapshot captures the actual scope: timber-diesel-tow / Engine
+PASS: Blueprint save/delete changes no physical assets or resources: timber-diesel-tow / Engine
+PASS: Applied setup snapshot captures the actual scope: timber-diesel-tow / WholeCar
+PASS: Blueprint save/delete changes no physical assets or resources: timber-diesel-tow / WholeCar
+PASS: Applied setup snapshot captures the actual scope: timber-diesel-tow / TuneOnly
+PASS: Blueprint save/delete changes no physical assets or resources: timber-diesel-tow / TuneOnly
+PASS: Applied setup snapshot captures the actual scope: touring-six / Engine
+PASS: Blueprint save/delete changes no physical assets or resources: touring-six / Engine
+PASS: Applied setup snapshot captures the actual scope: touring-six / WholeCar
+PASS: Blueprint save/delete changes no physical assets or resources: touring-six / WholeCar
+PASS: Applied setup snapshot captures the actual scope: touring-six / TuneOnly
+PASS: Blueprint save/delete changes no physical assets or resources: touring-six / TuneOnly
+PASS: Applied setup snapshot captures the actual scope: utility-pickup / Engine
+PASS: Blueprint save/delete changes no physical assets or resources: utility-pickup / Engine
+PASS: Applied setup snapshot captures the actual scope: utility-pickup / WholeCar
+PASS: Blueprint save/delete changes no physical assets or resources: utility-pickup / WholeCar
+PASS: Applied setup snapshot captures the actual scope: utility-pickup / TuneOnly
+PASS: Blueprint save/delete changes no physical assets or resources: utility-pickup / TuneOnly
+PASS: Applied setup snapshot captures the actual scope: v8-muscle / Engine
+PASS: Blueprint save/delete changes no physical assets or resources: v8-muscle / Engine
+PASS: Applied setup snapshot captures the actual scope: v8-muscle / WholeCar
+PASS: Blueprint save/delete changes no physical assets or resources: v8-muscle / WholeCar
+PASS: Applied setup snapshot captures the actual scope: v8-muscle / TuneOnly
+PASS: Blueprint save/delete changes no physical assets or resources: v8-muscle / TuneOnly
+PASS: Setup names reject blank, multiline and overlong input
+PASS: Setup names reject blank, multiline and overlong input
+PASS: Setup names reject blank, multiline and overlong input
+PASS: Setup names reject blank, multiline and overlong input
+PASS: Save setup is an available shared filled-icon action for applied tuning
+PASS: Unapplied tuning cannot be silently saved or applied by Save setup
+PASS: Save setup Cancel leaves blueprints, real assets and disk unchanged
+PASS: Blank name disables confirmation
+PASS: F8 retains the setup name and scope draft
+PASS: Save setup input and fixed actions fit compact windows
+PASS: Save setup dialog uses the shared bounded 4K scale
+PASS: Failed durable blueprint save retains the dialog, applied build and library
+PASS: Explicit Save publishes one named engine blueprint after persistence succeeds
+PASS: Confirmed blueprint save preserves money, physical identities, wear, faults and supplies
+PASS: Named native setup survives a real profile reload
+PASS: All save scopes work and repeated names retain distinct blueprint identities
+PASS: Changes after opening Save setup reject stale confirmation without discarding the draft
+Checks: 490 / runtime errors: 0

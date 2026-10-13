@@ -14,6 +14,8 @@ To transfer an engine, detach it, select another owned car in Collection, detach
 
 ## Setup library
 
+Native first control (2026-10-12): **Tuning → Save setup** captures an applied Engine + controls, Whole car or Tune only blueprint. Apply/Revert pending tuning first. The shared dialog accepts a name of 1–64 characters on one line; Cancel/X and failed saving retain the existing library/build. Same names create separate IDs. Native browsing/loading/deletion remain the next checkpoint; the existing legacy Save/load tools above are retained. [Review/checks](../reports/phases/4e/03-SAVE-SETUP.md).
+
 Enter a name, choose Engine + controls, Whole car or Tune only, then Save. This snapshots the **applied** build; apply edits in Tuning before saving. Names may be reused, but each snapshot has its own ID. Delete removes only the blueprint.
 
 - Engine + controls saves engine-owned hardware plus associated ECU/limiter/two-step/shift-light choices and engine adjustments.

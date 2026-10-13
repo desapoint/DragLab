@@ -182,6 +182,7 @@ namespace DragLab.Runtime
                 case "Expand": polygon(new float[] {4,8,20,8,12,17}); break;
                 case "Back": polygon(new float[] {2,12,11,3,11,8,22,8,22,16,11,16,11,21}); break;
                 case "Pencil": polygon(new float[] {4,15,9,20,20,9,15,4}); polygon(new float[] {3,17,7,21,2,22}); polygon(new float[] {16,3,19,1,23,5,21,8}); break;
+                case "Save": polygon(new float[]{3,2,18,2,22,6,22,22,3,22});p.fillColor=new Color(.15f,.15f,.17f);rect(6,2,11,7);rect(7,13,11,9);p.fillColor=new Color(.9f,.9f,.93f);rect(13,3,2,5);rect(9,15,7,5);break;
                 case "Settings":
                     var gear = new float[64];
                     for (int i = 0; i < 32; i++) { float a = i * Mathf.PI / 16; float r = i % 4 < 2 ? 10 : 7.8f; gear[i*2] = 12 + Mathf.Cos(a)*r; gear[i*2+1] = 12 + Mathf.Sin(a)*r; }

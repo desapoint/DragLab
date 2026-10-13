@@ -33,13 +33,20 @@ namespace DragLab.Domain.Mechanics
     }
     public static class SavedSetups
     {
+        public const int NameLimit=64;
+        public static string NormalizeName(string name)
+        {
+            name=(name??"").Trim();
+            if(name.Length<1||name.Length>NameLimit||name.Any(char.IsControl))throw new InvalidOperationException("Use 1–64 characters on one line.");
+            return name;
+        }
         public static bool InScope(SetupScope scope, PartCategory category)
         { return scope == SetupScope.WholeCar || scope == SetupScope.Engine && (MechanicalCatalog.EngineSlot(category) || category == PartCategory.Controls || category == PartCategory.RevLimiter || category == PartCategory.TwoStep || category == PartCategory.ShiftLight); }
         public static string Save(PlayerProfile p, string carId, string name, SetupScope scope)
         {
             var car = AssemblyOperations.MutableCar(p, carId);
-            name = (name ?? "").Trim();
-            if (name.Length < 1 || name.Length > 64 || !Enum.IsDefined(typeof(SetupScope), scope)) throw new InvalidOperationException("Give the setup a name of 1-64 characters.");
+            name = NormalizeName(name);
+            if (!Enum.IsDefined(typeof(SetupScope), scope)) throw new InvalidOperationException("Choose an available setup scope.");
             var setup = new SavedVehicleSetup { id = MechanicsOwnership.NewId("setup"), name = name, vehicleDefinitionId = car.vehicleId, scope = scope, tune = car.tune.Copy() };
             foreach (var slot in car.installed.slots.Where(s => InScope(scope, AssemblyOperations.Parse(s.slot))))
                 setup.parts.Add(new SetupPart { slot = slot.slot, definitionId = p.parts.Find(i => i.instanceId == slot.partInstanceId).definitionId });

@@ -13,7 +13,7 @@ namespace DragLab.Runtime
     {
         VisualElement tuningPage,tuningControls,tuningPreviewContent;
         Label tuningName,tuningState,tuningEmpty,tuningError;
-        Button tuningApply,tuningRevert;
+        Button tuningApply,tuningRevert,tuningSaveSetup;
         Button[] tuningTabs;
         int tuningCategory;
         string tuningKey;
@@ -44,6 +44,7 @@ namespace DragLab.Runtime
             var actions=new VisualElement{name="tuningActions"};actions.AddToClassList("car-details-actions");tuningPage.Add(actions);
             tuningState=new Label{name="tuningDraftState"};tuningState.AddToClassList("settings-status");actions.Add(tuningState);
             tuningError=new Label{name="tuningError",enableRichText=false};tuningError.AddToClassList("car-critical");tuningError.AddToClassList("car-selection-error");actions.Add(tuningError);
+            tuningSaveSetup=new Button(OpenSaveSetup){name="tuningSaveSetup",text="Save setup",focusable=false,tabIndex=-1};tuningSaveSetup.AddToClassList("action-button");actions.Add(tuningSaveSetup);AddSurface(tuningSaveSetup,RacingSurface.Kind.SecondaryAction);tuningSaveSetup.Insert(1,new FilledMenuIcon("Save"));
             tuningRevert=new Button(()=>{game.BeginTuneDraft();tuningError.text="";RefreshTuning("Tuning");}){name="tuningRevert",text="Revert",focusable=false,tabIndex=-1};tuningRevert.AddToClassList("action-button");actions.Add(tuningRevert);AddSurface(tuningRevert,RacingSurface.Kind.SecondaryAction);
             tuningApply=new Button(()=>{tuningError.text=game.ApplyTuneDraftNow()?"":game.NativeNotice;RefreshTuning("Tuning");}){name="tuningApply",text="Apply",focusable=false,tabIndex=-1};tuningApply.AddToClassList("action-button");tuningApply.AddToClassList("primary-action");actions.Add(tuningApply);AddSurface(tuningApply,RacingSurface.Kind.Action);
             ShowTuningCategory();
@@ -66,6 +67,8 @@ namespace DragLab.Runtime
             foreach(var tab in tuningTabs)tab.SetEnabled(available);
             tuningControls.EnableInClassList("tuning-unavailable",!available);
             tuningApply.SetEnabled(dirty&&car.engineRebuild==null);tuningRevert.SetEnabled(dirty);
+            tuningSaveSetup.SetEnabled(car!=null&&!game.DraftDirty&&car.engineRebuild==null&&string.IsNullOrEmpty(car.garageJobId)&&!profile.runCheckpoints.Any(r=>!r.settled));
+            tuningSaveSetup.tooltip=game.DraftDirty?"Apply or revert tuning before saving a setup.":"Save the applied configuration as a named blueprint.";
             tuningState.text=dirty?"Unapplied changes":"";tuningEmpty.text=car==null?"Select a car in Garage.":"Attach an engine to preview tuning.";tuningEmpty.EnableInClassList("hidden",available);
             string key=profile.revision+"/"+car?.instanceId+"/"+car?.engineAssemblyId+"/"+JsonUtility.ToJson(game.DraftValues)+"/"+JsonUtility.ToJson(SharedUnitSettings.Current);
             if(tuningProfile==profile&&tuningKey==key)return;
