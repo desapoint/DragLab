@@ -50,6 +50,7 @@ namespace DragLab.Runtime
                 item.slot=line.category.ToString();item.ownerId=target.instanceId;item.location=PartLocation.Vehicle;
                 target.installed.slots.Add(new SlotBinding{slot=line.category.ToString(),partInstanceId=item.instanceId});
             }
+            SavedTireFitments.Apply(copy,target,result.Plan,true);
             result.Proposed=NativePartBrowser.Inspect(InspectionBuild.Capture(copy,target,result.Plan.tune));
             return result;
         }

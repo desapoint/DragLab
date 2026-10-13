@@ -33,9 +33,9 @@ namespace DragLab.Domain
         readonly double[] roadTireGrip=new double[4];
         void BeginRoadTick()
         {
-            EnsureWheelContact();roadStartSpeed=state.speed;roadBrakeWork=state.contact.brakeWorkJ;state.contact.speed=state.speed;state.contact.distance=state.distance;Array.Clear(roadForces,0,4);Array.Clear(roadDriveTorque,0,4);Array.Clear(roadBrakeTorque,0,4);Array.Clear(roadContactTorque,0,4); var pack=mechanics.parts.Find(p=>p.slot==Mechanics.PartCategory.Tires.ToString()); for(int i=0;i<4;i++)roadTireGrip[i]=pack==null?0:TireDynamics.Grip(mechanics.Definition(pack),pack.condition.tires[i]);state.clutchFrictionPowerW=0;
+            EnsureWheelContact();roadStartSpeed=state.speed;roadBrakeWork=state.contact.brakeWorkJ;state.contact.speed=state.speed;state.contact.distance=state.distance;Array.Clear(roadForces,0,4);Array.Clear(roadDriveTorque,0,4);Array.Clear(roadBrakeTorque,0,4);Array.Clear(roadContactTorque,0,4); var pack=mechanics.parts.Find(p=>p.slot==Mechanics.PartCategory.Tires.ToString()); for(int i=0;i<4;i++)roadTireGrip[i]=pack==null?0:TireDynamics.Grip(mechanics.TireDefinition(i),pack.condition.tires[i]);state.clutchFrictionPowerW=0;
         }
-        double Friction(int wheel)=>spec.tireFriction*tune.GripMultiplier*(1-Math.Abs(tune.AxlePressure(wheel<2)-26)*.007)*wheels.gripScales[wheel];
+        double Friction(int wheel)=>spec.tireFriction*(mechanics.TireDefinition(wheel)?.grip??tune.GripMultiplier)*(1-Math.Abs(tune.AxlePressure(wheel<2)-26)*.007)*wheels.gripScales[wheel];
         void UpdateTorqueSplit(double dt,double ratio)
         {
             double weight=mass.TranslatingKg*DragMath.Gravity,transfer=mass.TranslatingKg*state.acceleration*mass.centerOfGravityHeightM/spec.wheelbaseM;

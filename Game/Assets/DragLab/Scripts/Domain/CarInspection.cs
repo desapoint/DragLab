@@ -32,6 +32,7 @@ namespace DragLab.Domain
                 foreach(var t in c.tires){t.health=1;t.failed=false;t.consumedLife=0;}
             }
             var resolved = profile.catalog.Resolve(car.vehicleId, map, adjustments ?? car.tune);
+            TireFitments.Capture(resolved.spec,components,profile.catalog);
             if(string.IsNullOrEmpty(car.engineAssemblyId))resolved.errors.Add("No engine attached: stored engines retain their own hardware and liquids.");
             foreach (var p in components) if ((PartSemantics.Wears(profile.catalog.Find(p.definitionId).category) || profile.catalog.Find(p.definitionId).category == PartCategory.Controls && resolved.spec.engineBehavior.fueling == FuelSystem.Injection) && (p.condition.failed || p.condition.health <= 0)) (MechanicalCatalog.DisablingEngineFailure(profile.catalog.Find(p.definitionId).category) || profile.catalog.Find(p.definitionId).category == PartCategory.Controls && resolved.spec.engineBehavior.fueling == FuelSystem.Injection ? resolved.errors : resolved.warnings).Add("Failed " + p.slot + ": " + p.condition.failureReason);
             return new InspectionBuild { build = resolved, components = components, startingFluids=car.fluids.Copy(), startingFuel = new FuelState { litres = car.fuel.litres } };
@@ -74,7 +75,7 @@ namespace DragLab.Domain
             var radiator = car.mechanics.parts.Find(p => p.slot == PartCategory.Cooling.ToString());
             result.coolingTransferPercent = car.state.engineCoolingFactor * 100;
             result.radiatorWattsPerC = radiator == null || radiator.condition.failed ? 0 : car.mechanics.Definition(radiator).coolingWattsPerC * (.4 + .6 * radiator.condition.health);
-            var tirePack=car.mechanics.parts.Find(p=>p.slot=="Tires");if(tirePack!=null){var tireDefinition=car.mechanics.Definition(tirePack);result.tireRollingLifeKm=tireDefinition.tireLifeDistanceM/1000;result.tireSlidingLifeMj=tireDefinition.wearEnergyJ/1e6;result.tireGripFactor=tireDefinition.grip*tirePack.condition.tires.Min(t=>TireDynamics.Grip(tireDefinition,t));result.lowestTireHealth=tirePack.condition.tires.Min(t=>t.health);}
+            var tirePack=car.mechanics.parts.Find(p=>p.slot=="Tires");if(tirePack!=null){var tireDefinition=car.mechanics.Definition(tirePack);result.tireRollingLifeKm=tireDefinition.tireLifeDistanceM/1000;result.tireSlidingLifeMj=tireDefinition.wearEnergyJ/1e6;result.tireGripFactor=Enumerable.Range(0,4).Min(i=>car.mechanics.TireDefinition(i).grip*TireDynamics.Grip(car.mechanics.TireDefinition(i),tirePack.condition.tires[i]));result.lowestTireHealth=tirePack.condition.tires.Min(t=>t.health);}
             result.transmission = car.transmission.type; result.transmissionName = TransmissionDynamics.DisplayName(car.transmission); result.induction = car.induction.type.ToString(); result.fueling = car.engine.data.fueling.ToString();
             result.wheelRadiusIn = wheels.radius / DisplayUnits.MetresPerInch; result.wheelDiameterIn = result.wheelRadiusIn * 2;
             result.wheelMassKg = wheels.assemblyMass; result.vehicleMassKg = wheels.vehicleMass; result.effectiveMassKg = wheels.effectiveMass; result.wheelInertia = wheels.totalInertia;

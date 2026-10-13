@@ -5,6 +5,8 @@ using System.Text;
 using UnityEngine;
 using DragLab.Data;
 using DragLab.Domain;
+using DragLab.Domain.Mechanics;
+using DragLab.Infrastructure;
 
 namespace DragLab.Editor
 {
@@ -33,6 +35,29 @@ namespace DragLab.Editor
                 for(int i=0;i<240;i++)car.Step(DragMath.FixedStep,new DriverInput{throttle=1});
                 check(car.state.contact.Validate()==null&&car.state.speed>0&&car.state.rpm>0,"Shared car simulation runs staggered axle geometry: "+spec.id);
                 check(car.state.frontWheelRadiusM==car.wheels.radii[0]&&car.state.rearWheelRadiusM==car.wheels.radii[2],"Tire sound/smoke feedback receives actual axle radii: "+spec.id);
+            }
+            var catalogue=new MechanicalCatalog(Resources.LoadAll<VehicleDefinition>("Data/Vehicles").Select(v=>v.spec));
+            foreach(var vehicle in Resources.LoadAll<VehicleDefinition>("Data/Vehicles")){
+                var profile=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(profile,catalogue);profile.cash=1000000;profile.reputation=1000;
+                VehicleCollection.Buy(profile,catalogue,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});var owned=profile.SelectedCar;
+                var pack=profile.parts.First(p=>p.instanceId==owned.installed.slots.First(s=>s.slot=="Tires").partInstanceId);TireDynamics.Ensure(pack.condition);
+                foreach(var t in pack.condition.tires)t.id=MechanicsOwnership.NewId("tire");pack.condition.tires[2].health=.65f;pack.condition.tires[2].consumedLife=.35;pack.condition.health=.65f;
+                string front=JsonUtility.ToJson(pack.condition.tires[0]),before=JsonUtility.ToJson(profile);int cash=profile.cash;string definition=catalogue.Id(owned.vehicleId,PartCategory.Tires,3);
+                var lines=new[]{new PartCartLine{action=CartAction.NewUnits,definitionId=definition,role="tire",quantity=2,install=true,positions=new System.Collections.Generic.List<string>{"tire:2","tire:3"}}};
+                var preview=PartCart.Preview(profile,owned,lines);var prepared=CarInspection.PrepareCar(preview);
+                check(before==JsonUtility.ToJson(profile)&&prepared.mechanics.TireDefinition(0).id==pack.definitionId&&prepared.mechanics.TireDefinition(2).id==definition,"Mixed rear-compound cart previews actual corner definitions without changing owned assets: "+vehicle.spec.id);
+                long now=DateTime.UtcNow.Ticks;var quote=PartCart.Quote(profile,owned.instanceId,lines,now,60);string packId=pack.instanceId;int writes=0;PlayerProfile next;string error;
+                bool accepted=MechanicsTransactions.Try(profile,catalogue,profile.revision,p=>PartCart.Checkout(p,quote,now),p=>{writes++;return true;},out next,out error);check(accepted&&writes==1,"Mixed tire cart publishes one transaction: "+vehicle.spec.id+" / "+error);profile=next;owned=profile.SelectedCar;pack=profile.parts.Find(p=>p.instanceId==packId);
+                check(profile.cash==cash-2*InventoryPricing.NewUnit(catalogue.Find(definition),4)&&front==JsonUtility.ToJson(pack.condition.tires[0])&&TireFitments.DefinitionId(pack,2)==definition&&profile.looseEngineElements.Any(u=>u.tireUnit&&u.definitionId==pack.definitionId&&u.tire.health==.65f),"Atomic mixed-compound checkout keeps exact fronts and removed worn originals: "+vehicle.spec.id);
+                var actual=MechanicsOwnership.Resolve(profile,owned,catalogue);var car=new CarSimulation(actual.spec,actual.tune,new DriverSettings(),new[]{pack}.Concat(profile.parts.Where(p=>p.instanceId!=pack.instanceId&&owned.installed.slots.Any(s=>s.partInstanceId==p.instanceId))));
+                check(car.mechanics.TireDefinition(0).grip<car.mechanics.TireDefinition(2).grip&&car.mechanics.TireDefinition(0).tireLifeDistanceM>car.mechanics.TireDefinition(2).tireLifeDistanceM,"Mixed compounds retain independent grip/life ratings in the shared simulation: "+vehicle.spec.id);
+                check(MechanicsOwnership.Validate(profile,catalogue)==null,"Mixed tire identities and condition remain valid: "+vehicle.spec.id+" / "+MechanicsOwnership.Validate(profile,catalogue));
+                var restored=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(profile));MechanicsOwnership.Ensure(restored,catalogue);var restoredPack=restored.parts.Find(p=>p.instanceId==pack.instanceId);
+                check(restoredPack.condition.tires[2].definitionId==definition&&restored.looseEngineElements.Any(u=>u.tireUnit&&u.tire.health==.65f),"Mixed compounds and removed wear survive actual save normalization: "+vehicle.spec.id);
+                SavedSetups.Save(profile,owned.instanceId,"Staggered build",SetupScope.WholeCar);var setup=profile.savedSetups.Last();
+                var originals=profile.looseEngineElements.Where(u=>u.tireUnit&&u.definitionId==pack.definitionId).ToArray();InventoryUnits.Install(profile,owned.instanceId,originals[0].element.id,"tire:2");InventoryUnits.Install(profile,owned.instanceId,originals[1].element.id,"tire:3");
+                var plan=SavedSetups.Preview(profile,owned.instanceId,setup.id);check(plan.tires.Count==2&&plan.tires.All(t=>!t.purchase)&&plan.cost==0,"Whole-car blueprints find exact loose compounds for the saved corners: "+vehicle.spec.id);
+                SavedSetups.Apply(profile,owned.instanceId,setup.id,profile.revision,false,plan.cost);check(TireFitments.DefinitionId(pack,2)==definition&&TireFitments.DefinitionId(pack,3)==definition&&MechanicsOwnership.Validate(profile,catalogue)==null,"Existing setup transaction restores mixed tires without granting replacements: "+vehicle.spec.id);
             }
             foreach(bool locked in new[]{false,true})foreach(double frontI in new[]{.2,1.2,4.0})foreach(double rearI in new[]{.4,2.0,8.0}){
                 var input=new WheelContactInput{radii=new[]{.24,.24,.36,.36},inertias=new[]{frontI,frontI,rearI,rearI},lockCenter=locked,frontTorqueNm=100,rearTorqueNm=900};

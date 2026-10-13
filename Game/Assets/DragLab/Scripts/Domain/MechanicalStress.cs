@@ -24,6 +24,7 @@ namespace DragLab.Domain
             catalog = new MechanicalCatalog(new[] { spec });
             definitions = catalog.parts.ToDictionary(p => p.id);
             foreach (var p in spec.fittedParts) definitions[p.id] = p.Copy();
+            foreach(var d in spec.cornerTireDefinitions??new PartDefinition[0])definitions[d.id]=d.Copy();
             parts = installed == null ? (spec.hasInstalledParts ? spec.fittedParts.ToDictionary(p => p.category, p => p.id) : catalog.Recipe(spec.id, tune)).Select(p => new PartInstance { instanceId = "simulation/" + p.Key, definitionId = p.Value, location = PartLocation.Vehicle, ownerId = "simulation", slot = p.Key.ToString() }).ToList() : installed.Select(p => p.Copy()).ToList();
             foreach(var p in parts){var d=Definition(p);EngineElements.Ensure(spec,d,p);ClutchHardware.Ensure(d,p.condition);}
             bySlot = parts.ToDictionary(p => p.slot);
@@ -31,6 +32,7 @@ namespace DragLab.Domain
         public void RefreshBindings() { bySlot.Clear(); foreach (var p in parts) bySlot.Add(p.slot, p); }
         public PartInstance Part(PartCategory category) { PartInstance part; return bySlot.TryGetValue(category.ToString(),out part)?part:null; }
         public PartDefinition Definition(PartInstance part) { PartDefinition result; return definitions.TryGetValue(part.definitionId, out result) ? result : null; }
+        public PartDefinition TireDefinition(int corner){var pack=Part(PartCategory.Tires);if(pack==null)return null;var id=TireFitments.DefinitionId(pack,corner);if(!definitions.TryGetValue(id,out var d)||d.category!=PartCategory.Tires)throw new InvalidOperationException("Unknown individual tire specification.");return d;}
         public static double TorqueStrength(PartDefinition definition, ComponentCondition condition) { return definition.torqueLimitNm * (.35 + .65 * condition.health); }
         public void Prepare(CarState s)
         {

@@ -95,7 +95,8 @@ namespace DragLab.Domain
             for(int i=0;i<4;i++){
                 bool front=i<2;double size=Math.Pow(tune.AxleDiameter(front),3)*tune.AxleWidth(front);
                 radii[i]=spec.wheelRadiusM*tune.AxleDiameter(front);
-                tireMasses[i]=MassDynamics.Installed(spec,Mechanics.PartCategory.Tires)?referenceTireMassKg*size:0;
+                double tireReference=spec.cornerTireDefinitions!=null&&spec.cornerTireDefinitions.Length==4&&spec.cornerTireDefinitions[i].massKg>0?spec.cornerTireDefinitions[i].massKg*.25:referenceTireMassKg;
+                tireMasses[i]=MassDynamics.Installed(spec,Mechanics.PartCategory.Tires)?tireReference*size:0;
                 rimMasses[i]=MassDynamics.Installed(spec,Mechanics.PartCategory.Wheels)?rimReference*size*tune.WheelMass:0;
                 assemblyMasses[i]=tireMasses[i]+rimMasses[i];
                 inertias[i]=(tireMasses[i]*.9+rimMasses[i]*rimFactor)*radii[i]*radii[i];contactInertias[i]=Math.Max(1e-5,inertias[i]);

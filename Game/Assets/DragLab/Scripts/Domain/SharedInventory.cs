@@ -94,7 +94,7 @@ namespace DragLab.Domain.Mechanics
             foreach(var e in p.engines.Where(e=>string.IsNullOrEmpty(e.parentVehicleId)))if(!containers.Contains(StorageOf(e.storageId)))return "Unknown engine storage.";
             foreach(var stock in p.inventory.dealer){
                 if(stock==null||stock.paidPrice<0||(stock.part==null)==(stock.unit==null))return "Invalid dealer stock.";
-                if(stock.part!=null){var i=stock.part;if(i.location!=PartLocation.Inventory||i.Validate()!=null||p.catalog.Find(i.definitionId)==null||!identities.Add(i.instanceId))return "Invalid/duplicate dealer part.";foreach(var e in i.condition.elements)if(!EngineElements.FaultAllowed(p.catalog.Find(i.definitionId).category,e)||!identities.Add(e.id))return "Invalid/duplicate dealer descendant.";foreach(var t in i.condition.tires)if(!string.IsNullOrEmpty(t.id)&&!identities.Add(t.id))return "Duplicate dealer tire.";}
+                if(stock.part!=null){var i=stock.part;if(i.location!=PartLocation.Inventory||i.Validate()!=null||p.catalog.Find(i.definitionId)==null||!identities.Add(i.instanceId))return "Invalid/duplicate dealer part.";foreach(var e in i.condition.elements)if(!EngineElements.FaultAllowed(p.catalog.Find(i.definitionId).category,e)||!identities.Add(e.id))return "Invalid/duplicate dealer descendant.";foreach(var t in i.condition.tires){if(!string.IsNullOrEmpty(t.id)&&!identities.Add(t.id))return "Duplicate dealer tire.";if(!string.IsNullOrEmpty(t.definitionId)&&(p.catalog.Find(t.definitionId)==null||p.catalog.Find(t.definitionId).category!=PartCategory.Tires))return "Invalid dealer tire specification.";}}
                 else {var u=stock.unit;if(!ValidUnit(p,u)||!identities.Add(u.element.id))return "Invalid/duplicate dealer unit.";}
             }
             return null;
@@ -102,7 +102,7 @@ namespace DragLab.Domain.Mechanics
         static bool ValidUnit(PlayerProfile p,LooseEngineElement u)
         {
             var d=u==null?null:p.catalog.Find(u.definitionId);if(d==null||u.element==null||u.element.Validate()!=null||u.unitPrice<0)return false;
-            if(u.tireUnit)return d.category==PartCategory.Tires&&u.tire!=null&&u.tire.Validate()==null&&Math.Abs(u.element.health-(u.tire.failed?0:Math.Min(u.tire.health,Math.Max(0,1-u.tire.consumedLife))))<1e-6;
+            if(u.tireUnit)return d.category==PartCategory.Tires&&u.tire!=null&&u.tire.Validate()==null&&(string.IsNullOrEmpty(u.tire.definitionId)||u.tire.definitionId==u.definitionId)&&Math.Abs(u.element.health-(u.tire.failed?0:Math.Min(u.tire.health,Math.Max(0,1-u.tire.consumedLife))))<1e-6;
             return EngineElements.Supported(d.category)&&EngineElements.FaultAllowed(d.category,u.element)&&u.tire==null;
         }
     }

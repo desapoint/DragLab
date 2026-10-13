@@ -126,6 +126,7 @@ namespace DragLab.Domain.Mechanics
         public static BuildResolution Resolve(PlayerProfile profile, OwnedCar car, MechanicalCatalog catalog)
         {
             var result = catalog.Resolve(car.vehicleId, Definitions(profile, car), car.tune);
+            TireFitments.Capture(result.spec,car.installed.slots.Select(b=>profile.parts.Find(p=>p.instanceId==b.partInstanceId)).Where(p=>p!=null),catalog);
             if(string.IsNullOrEmpty(car.engineAssemblyId))result.errors.Add("No engine attached. Attach a stored engine in Assemblies.");
             if(car.engineRebuild!=null)result.errors.Add("Engine is reserved at the rebuild shop. Collect it after the quoted time.");
             if(!string.IsNullOrEmpty(car.garageJobId))result.errors.Add("Car and installed components are reserved by a garage job. Claim or cancel to release.");
@@ -232,6 +233,11 @@ namespace DragLab.Domain.Mechanics
             foreach(var part in profile.parts)foreach(var element in part.condition.elements??new EngineElement[0])if(!EngineElements.FaultAllowed(catalog.Find(part.definitionId).category,element)||!unique(element.id))return "Invalid/duplicate engine element identity or fault.";
             foreach(var part in profile.parts)foreach(var tire in part.condition.tires??new TireCondition[0])if(!string.IsNullOrEmpty(tire.id)&&!unique(tire.id))return "Duplicate tire identity.";
             string inventoryError=SharedInventory.Validate(profile,identities);if(inventoryError!=null)return inventoryError;
+            foreach(var item in profile.parts)foreach(var tire in item.condition.tires??new TireCondition[0])if(!string.IsNullOrEmpty(tire.definitionId)){
+                var d=catalog.Find(tire.definitionId);if(d==null||d.category!=PartCategory.Tires)return "Invalid tire specification.";
+                var owner=profile.cars.FirstOrDefault(c=>c.installed.slots.Any(s=>s.partInstanceId==item.instanceId));
+                if(owner!=null&&!catalog.Fits(catalog.Spec(owner.vehicleId),d))return "Incompatible individual tire.";
+            }
             foreach(var car in profile.cars){if(car.engineRebuild!=null&&EngineRebuilds.Validate(profile,car)!=null)return "Invalid engine rebuild reservation.";}
             var runs = new HashSet<string>();
             foreach (var run in profile.runCheckpoints)

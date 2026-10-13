@@ -101,7 +101,7 @@ namespace DragLab.Domain.Mechanics
             double carOffer = values.buyers.Max(b => ((engine + road) * b.parts + bare) * Math.Max(1, b.car) * (model == null ? 1 : model.carDemand));
             if(offer.parts!=null&&offer.parts.Count>0){
                 engineOffer=chassisOffer=carOffer=0;
-                foreach(var buyer in values.buyers){double e=0,r=0;foreach(var p in offer.parts){var d=catalog.Find(p.definitionId);double value=Valuations.PartValue(p,d,values,buyer,new List<ValuationLine>());if(MechanicalCatalog.EngineSlot(d.category))e+=value;else r+=value;}
+                foreach(var buyer in values.buyers){double e=0,r=0;foreach(var p in offer.parts){var d=catalog.Find(p.definitionId);double value=Valuations.PartValue(p,d,values,buyer,new List<ValuationLine>(),catalog);if(MechanicalCatalog.EngineSlot(d.category))e+=value;else r+=value;}
                     engineOffer=Math.Max(engineOffer,e*Math.Max(1,buyer.engine)*(model?.engineDemand??1));chassisOffer=Math.Max(chassisOffer,(r+bare)*Math.Max(1,buyer.chassis)*(model?.chassisDemand??1));carOffer=Math.Max(carOffer,(e+r+bare)*Math.Max(1,buyer.car)*(model?.carDemand??1));}
             }
             double suppliedFluids = (offer.parts!=null&&offer.parts.Count>0?offer.fuel.litres:spec.fuel.capacityLitres) * costs.fuelPerLitre + (offer.parts!=null&&offer.parts.Count>0?offer.fluids.oilLitres:spec.fluids.oilCapacityLitres) * costs.oilPerLitre + (offer.parts!=null&&offer.parts.Count>0?offer.fluids.coolantLitres:spec.fluids.coolantCapacityLitres) * costs.coolantPerLitre;

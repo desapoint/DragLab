@@ -61,7 +61,7 @@ namespace DragLab.Runtime
             string role=editing?.role??(fresh?draft.Role:offer.Unit?.element.role);int quantity=editing?.quantity??(fresh?draft.Quantity:1);
             var binding=car.installed.slots.Find(s=>s.slot==d.category.ToString());
             var fitted=binding==null?null:game.Profile.parts.Find(p=>p.instanceId==binding.partInstanceId);
-            bool matches=fitted?.definitionId==d.id;
+            bool matches=fitted?.definitionId==d.id||d.category==PartCategory.Tires&&fitted!=null&&game.Profile.catalog.Fits(game.Profile.catalog.Spec(car.vehicleId),d);
             string[] all=fitted==null?new string[0]:d.category==PartCategory.Tires?Enumerable.Range(0,4).Select(i=>"tire:"+i).ToArray():fitted.condition.elements.Select(e=>e.id).ToArray();
             var selected=new HashSet<string>(editing!=null?editing.positions:fresh?draft.Positions:Enumerable.Empty<string>());
             var rows=new List<Tuple<Button,string>>();var groups=new List<VisualElement>();
@@ -95,11 +95,11 @@ namespace DragLab.Runtime
                 notice=new Label{name="partPurchaseNotice"};notice.AddToClassList("car-warning");content.Add(notice);
                 positionsArea=new VisualElement{name="partPurchasePositions"};content.Add(positionsArea);
                 var shortcuts=new VisualElement{name="partPurchaseShortcuts"};shortcuts.AddToClassList("part-purchase-shortcuts");positionsArea.Add(shortcuts);
-                foreach(string choice in new[]{"All","Failed","Worn","Clear"}){
+                foreach(string choice in d.category==PartCategory.Tires?new[]{"All","Front","Rear","Failed","Worn","Clear"}:new[]{"All","Failed","Worn","Clear"}){
                     string action=choice;var button=new Button(()=>{
                         individual=true;selected.Clear();var available=InventoryUnits.Positions(game.Profile,car,d.id,role);
                         foreach(string target in available){var member=fitted?.condition.elements.FirstOrDefault(e=>e.id==target);var tire=target.StartsWith("tire:")?fitted?.condition.tires[int.Parse(target.Substring(5))]:null;
-                            if(action=="All"||action=="Failed"&&(member?.Failed==true||tire?.failed==true)||action=="Worn"&&(member?.health<=.5||tire?.health<=.5))selected.Add(target);
+                            if(action=="All"||action=="Front"&&target.StartsWith("tire:")&&int.Parse(target.Substring(5))<2||action=="Rear"&&target.StartsWith("tire:")&&int.Parse(target.Substring(5))>=2||action=="Failed"&&(member?.Failed==true||tire?.failed==true)||action=="Worn"&&(member?.health<=.5||tire?.health<=.5))selected.Add(target);
                         }
                         quantity=Math.Max(quantity,selected.Count);update();
                     }){name="partSelect"+choice,text=choice,focusable=false,tabIndex=-1};button.AddToClassList("action-button");button.AddToClassList("part-selection-shortcut");shortcuts.Add(button);AddSurface(button,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(button.Q<RacingSurface>());
@@ -155,6 +155,7 @@ namespace DragLab.Runtime
             var part=binding==null?null:game.Profile.parts.Find(p=>p.instanceId==binding.partInstanceId);var fitted=part==null?null:game.Profile.catalog.Find(part.definitionId);
             var element=part?.condition.elements.FirstOrDefault(e=>e.id==position);
             TireCondition tire=position.StartsWith("tire:",StringComparison.Ordinal)&&part?.condition.tires!=null?part.condition.tires[int.Parse(position.Substring(5))]:null;
+            if(tire!=null)fitted=game.Profile.catalog.Find(TireFitments.DefinitionId(part,int.Parse(position.Substring(5))));
             double? health=element?.health??tire?.health;bool failed=element?.Failed??tire?.failed??false;
             string title=InventoryUnits.PositionLabel(game.Profile,car,offer.id,position);
             if(element!=null&&offer.category==PartCategory.Pistons)title="Piston "+(element.cylinder+1);

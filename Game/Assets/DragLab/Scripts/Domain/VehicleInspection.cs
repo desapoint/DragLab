@@ -10,7 +10,7 @@ namespace DragLab.Domain.Mechanics
     {
         public static bool Known(VehicleOffer offer)=>!offer.used||offer.inspected||offer.firstStarter;
         public static double Overall(MechanicalCatalog catalog,VehicleOffer offer)=>offer.parts.Where(p=>PartSemantics.Wears(catalog.Find(p.definitionId).category)).Select(p=>(double)p.condition.health).DefaultIfEmpty(1).Average();
-        public static BuildResolution Hardware(MechanicalCatalog catalog,VehicleOffer offer)=>catalog.Resolve(offer.model,offer.parts.ToDictionary(p=>catalog.Find(p.definitionId).category,p=>p.definitionId),offer.stock);
+        public static BuildResolution Hardware(MechanicalCatalog catalog,VehicleOffer offer){var b=catalog.Resolve(offer.model,offer.parts.ToDictionary(p=>catalog.Find(p.definitionId).category,p=>p.definitionId),offer.stock);TireFitments.Capture(b.spec,offer.parts,catalog);return b;}
         public static void Assess(MechanicalCatalog catalog,VehicleOffer offer)
         {
             var build=Hardware(catalog,offer);var car=new CarSimulation(build.spec,build.tune,new DriverSettings{wearMode=WearMode.None,throttleAssist=false},offer.parts);

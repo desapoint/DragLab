@@ -35,7 +35,8 @@ namespace DragLab.Domain.Mechanics
         }
         public static string[] Positions(PlayerProfile p,OwnedCar car,string definition,string role)
         {
-            var d=p.catalog.Find(definition);var pack=car.installed.slots.Select(s=>p.parts.Find(i=>i.instanceId==s.partInstanceId)).FirstOrDefault(i=>i.definitionId==definition);
+            var d=p.catalog.Find(definition);if(d==null||!p.catalog.Fits(p.catalog.Spec(car.vehicleId),d))return new string[0];
+            var pack=car.installed.slots.Select(s=>p.parts.Find(i=>i.instanceId==s.partInstanceId)).FirstOrDefault(i=>d.category==PartCategory.Tires?i.slot==PartCategory.Tires.ToString():i.definitionId==definition);
             if(pack==null)return new string[0];
             if(d.category==PartCategory.Tires)return Enumerable.Range(0,4).Select(i=>"tire:"+i).ToArray();
             return pack.condition.elements.Where(e=>e.role==role).Select(e=>e.id).ToArray();
@@ -49,13 +50,15 @@ namespace DragLab.Domain.Mechanics
         public static void Install(PlayerProfile p,string carId,string unitId,string position)
         {
             var car=AssemblyOperations.MutableCar(p,carId);var unit=p.looseEngineElements.Find(u=>u.element.id==unitId)??throw new InvalidOperationException("Unit no longer owned.");
-            var pack=car.installed.slots.Select(s=>p.parts.Find(i=>i.instanceId==s.partInstanceId)).FirstOrDefault(i=>i.definitionId==unit.definitionId)??throw new InvalidOperationException("Individual replacement needs the same installed specification; use a complete kit to change specification.");
+            var pack=car.installed.slots.Select(s=>p.parts.Find(i=>i.instanceId==s.partInstanceId)).FirstOrDefault(i=>unit.tireUnit?i.slot==PartCategory.Tires.ToString():i.definitionId==unit.definitionId)??throw new InvalidOperationException("Individual replacement needs the same installed specification; use a complete kit to change specification.");
+            var incoming=p.catalog.Find(unit.definitionId);if(incoming==null||!p.catalog.Fits(p.catalog.Spec(car.vehicleId),incoming))throw new InvalidOperationException("Individual part does not fit this car.");
             if(unit.tire==null){EngineElementService.Replace(p,carId,pack.instanceId,position,unitId);return;}
             if(!Positions(p,car,unit.definitionId,"tire").Contains(position))throw new InvalidOperationException("Choose a valid tire position.");
             TireDynamics.Ensure(pack.condition);int index=int.Parse(position.Substring(5));var old=pack.condition.tires[index];
+            string oldDefinition=TireFitments.DefinitionId(pack,index);
             string oldId=string.IsNullOrEmpty(old.id)?MechanicsOwnership.NewId("tire"):old.id;
-            p.looseEngineElements.Add(new LooseEngineElement{definitionId=pack.definitionId,unitPrice=InventoryPricing.NewUnit(p.catalog.Find(pack.definitionId),4),element=new EngineElement{id=oldId,role="tire",cylinder=-1,valve=-1,health=old.failed?0:Math.Min(old.health,(float)Math.Max(0,1-old.consumedLife))},tireUnit=true,tire=old.Copy()});
-            var next=unit.tire.Copy();next.id=unit.element.id;next.lastContactWorkJ=0;pack.condition.tires[index]=next;p.looseEngineElements.Remove(unit);
+            p.looseEngineElements.Add(new LooseEngineElement{definitionId=oldDefinition,unitPrice=InventoryPricing.NewUnit(p.catalog.Find(oldDefinition),4),element=new EngineElement{id=oldId,role="tire",cylinder=-1,valve=-1,health=old.failed?0:Math.Min(old.health,(float)Math.Max(0,1-old.consumedLife))},tireUnit=true,tire=old.Copy()});
+            var next=unit.tire.Copy();next.id=unit.element.id;next.definitionId=unit.definitionId;next.lastContactWorkJ=0;pack.condition.tires[index]=next;p.looseEngineElements.Remove(unit);
             pack.condition.health=pack.condition.tires.Min(t=>t.health);pack.condition.failed=pack.condition.tires.Any(t=>t.failed);pack.condition.failureReason=pack.condition.failed?"Tire unavailable":"";
             pack.condition.serviceCount++;pack.condition.lastService="Individual tire replaced / "+PositionLabel(p,car,pack.definitionId,position);
         }

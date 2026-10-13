@@ -94,9 +94,11 @@ namespace DragLab.Domain
             }
         }
         public float[] gears = { 3.45f, 2.05f, 1.43f, 1.10f, .88f };
+        public Mechanics.PartDefinition[] cornerTireDefinitions=new Mechanics.PartDefinition[0];
         public VehicleSpec Copy()
         {
             var copy = (VehicleSpec)MemberwiseClone();
+            copy.cornerTireDefinitions=cornerTireDefinitions==null?new Mechanics.PartDefinition[0]:Array.ConvertAll(cornerTireDefinitions,p=>p.Copy());
             copy.combustion=combustion==null?new Mechanics.CombustionSpec():combustion.Copy();
             copy.fuel = fuel == null ? new Mechanics.FuelSpec() : fuel.Copy();
             copy.fluids=fluids==null?new Mechanics.FluidSpec():fluids.Copy();

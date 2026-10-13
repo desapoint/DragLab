@@ -104,10 +104,12 @@ namespace DragLab.Domain.Mechanics
             return Clamp(h * (1 - .25 * Clamp(c.deposits, 0, 1)) * (1 - .25 * Clamp(c.leakSeverity, 0, 1)) * (1 - .15 * Clamp(c.adjustmentError, 0, 1)), 0, 1);
         }
         static double Change(List<ValuationLine> lines, string asset, string label, double value, double factor, string why) { double after = value * factor; lines.Add(new ValuationLine(asset, label, value, after, why + " / ×" + factor.ToString("F3"))); return after; }
-        internal static double PartValue(PartInstance part, PartDefinition def, ValuationPolicy policy, BuyerPolicy buyer, List<ValuationLine> lines)
+        internal static double PartValue(PartInstance part, PartDefinition def, ValuationPolicy policy, BuyerPolicy buyer, List<ValuationLine> lines,MechanicalCatalog catalog=null)
         {
-            var c = part.condition; double value = def.price * policy.usedPartFraction;
-            lines.Add(new ValuationLine(part.instanceId, def.name, 0, value, "Catalogue " + DisplayUnits.Money(def.price) + " × used-market " + policy.usedPartFraction.ToString("P0") + "; actual item " + part.instanceId));
+            var c = part.condition;double cataloguePrice=def.price;
+            if(def.category==PartCategory.Tires&&c.tires.Length==4&&catalog!=null)cataloguePrice=Enumerable.Range(0,4).Sum(i=>catalog.Find(TireFitments.DefinitionId(part,i)).price*.25);
+            double value = cataloguePrice * policy.usedPartFraction;
+            lines.Add(new ValuationLine(part.instanceId, def.name, 0, value, "Catalogue " + DisplayUnits.Money(cataloguePrice) + " × used-market " + policy.usedPartFraction.ToString("P0") + "; actual item " + part.instanceId));
             var quality = policy.qualities.Find(q => q.quality == def.quality);
             value = Change(lines, part.instanceId, "Quality demand / " + def.quality, value, quality == null ? 1 : quality.factor, "Price already reflects construction; this is secondary buyer demand");
             value = Change(lines, part.instanceId, "Wear / individual condition", value, policy.minimumWearFactor + (1 - policy.minimumWearFactor) * Health(c), "Pack health, individual cylinder/valve/tire life and deposits/leaks/adjustment");
@@ -157,7 +159,7 @@ namespace DragLab.Domain.Mechanics
             if (kept.Any(id => !items.Any(i => i.instanceId == id))) throw new InvalidOperationException("Retained IDs must be actual parts inside the quoted asset.");
             foreach (var item in items.Where(i => !kept.Contains(i.instanceId)).OrderBy(i => i.instanceId, StringComparer.Ordinal)) {
                 var d = catalog.Find(item.definitionId); if (d.price < 0) throw new InvalidOperationException("Invalid catalogue price.");
-                loose += PartValue(item, d, policy, buyer, lines); ids.AddRange(item.ItemIds); faulty |= Fault(item.condition);
+                loose += PartValue(item, d, policy, buyer, lines,catalog); ids.AddRange(item.ItemIds); faulty |= Fault(item.condition);
             }
             if (spec != null) {
                 var defs = items.Where(i => !kept.Contains(i.instanceId)).ToDictionary(i => catalog.Find(i.definitionId).category, i => i.definitionId);
