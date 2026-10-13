@@ -7,7 +7,7 @@ namespace DragLab.Domain.Mechanics
     public enum ElementFault { None, Disabled, CompressionLeak, WeakSpring, StuckOpen, DroppedValve, Seized }
     [Serializable] public sealed class EngineElement
     {
-        public string id, role;
+        public string id, role, definitionId;
         public int cylinder, valve;
         public float health=1, severity; public double wearRemainder;
         public ElementFault fault;
@@ -20,8 +20,8 @@ namespace DragLab.Domain.Mechanics
     public static class EngineElements
     {
         public static int ValveCount(VehicleSpec v){return v.valvesPerCylinder>0?v.valvesPerCylinder:(v.fuelSystemConverted?v.originalFueling:v.engineBehavior.fueling)==FuelSystem.Carburetor?2:4;}
-        public static bool Supported(PartCategory c){return c==PartCategory.Pistons||c==PartCategory.Rods||c==PartCategory.PistonRings||c==PartCategory.Bearings||c==PartCategory.Valves||c==PartCategory.ValveSprings||c==PartCategory.ValveSeals||c==PartCategory.Followers||c==PartCategory.Ignition||c==PartCategory.SparkPlugs||c==PartCategory.GlowPlugs||c==PartCategory.FuelSystem;}
-        public static int Count(VehicleSpec v,PartDefinition d){if(!Supported(d.category))return 0;if(d.category==PartCategory.FuelSystem&&(v.engineBehavior.fueling==FuelSystem.Carburetor||d.fuelDelivery==FuelDeliveryHardware.ThrottleBodyInjection))return 0;return d.category==PartCategory.Ignition&&v.combustion.separateSparkPlugs?CoilCount(v):v.sound.cylinders*(PerValve(d.category)?ValveCount(v):1)+(d.category==PartCategory.Ignition?CoilCount(v):0);}
+        public static bool Supported(PartCategory c){return c==PartCategory.Wheels||c==PartCategory.Pistons||c==PartCategory.Rods||c==PartCategory.PistonRings||c==PartCategory.Bearings||c==PartCategory.Valves||c==PartCategory.ValveSprings||c==PartCategory.ValveSeals||c==PartCategory.Followers||c==PartCategory.Ignition||c==PartCategory.SparkPlugs||c==PartCategory.GlowPlugs||c==PartCategory.FuelSystem;}
+        public static int Count(VehicleSpec v,PartDefinition d){if(!Supported(d.category))return 0;if(d.category==PartCategory.Wheels)return 4;if(d.category==PartCategory.FuelSystem&&(v.engineBehavior.fueling==FuelSystem.Carburetor||d.fuelDelivery==FuelDeliveryHardware.ThrottleBodyInjection))return 0;return d.category==PartCategory.Ignition&&v.combustion.separateSparkPlugs?CoilCount(v):v.sound.cylinders*(PerValve(d.category)?ValveCount(v):1)+(d.category==PartCategory.Ignition?CoilCount(v):0);}
         public static IgnitionTopology Ignition(VehicleSpec v){return v.ignitionTopology!=IgnitionTopology.Auto?v.ignitionTopology:(v.fuelSystemConverted?v.originalFueling:v.engineBehavior.fueling)==FuelSystem.Carburetor?IgnitionTopology.Distributor:IgnitionTopology.CoilOnPlug;}
         static int CoilCount(VehicleSpec v){return Ignition(v)==IgnitionTopology.Distributor?1:Ignition(v)==IgnitionTopology.WastedSpark?(v.sound.cylinders+1)/2:v.sound.cylinders;}
         static bool PerValve(PartCategory c){return c==PartCategory.Valves||c==PartCategory.ValveSprings||c==PartCategory.ValveSeals||c==PartCategory.Followers;}
@@ -33,9 +33,9 @@ namespace DragLab.Domain.Mechanics
             for(int i=0;i<count;i++)p.condition.elements[i]=new EngineElement{id=p.instanceId+"/element/"+i,cylinder=i/valves,valve=PerValve(d.category)?i%valves:-1,role=Role(d.category,i%valves,valves),health=p.condition.failed?0:p.condition.health};
             if(d.category==PartCategory.Ignition)for(int i=v.combustion.separateSparkPlugs?0:v.sound.cylinders;i<count;i++){var e=p.condition.elements[i];e.role="ignition coil";e.cylinder=Ignition(v)==IgnitionTopology.Distributor?-1:i-(v.combustion.separateSparkPlugs?0:v.sound.cylinders);}
         }
-        static string Role(PartCategory c,int valve,int valves){return c==PartCategory.GlowPlugs?"glow plug":c==PartCategory.SparkPlugs||c==PartCategory.Ignition?"spark plug / lead":c==PartCategory.FuelSystem?"injector":c==PartCategory.Bearings?"rod bearing pair":c==PartCategory.PistonRings?"piston ring pack":PerValve(c)?(valve<valves/2?"intake ":"exhaust ")+(c==PartCategory.Valves?"valve / guide":c==PartCategory.ValveSprings?"spring / retainer":c==PartCategory.ValveSeals?"valve seal":"follower / rocker"):PartSemantics.Friendly(c.ToString());}
+        static string Role(PartCategory c,int valve,int valves){return c==PartCategory.Wheels?"wheel":c==PartCategory.GlowPlugs?"glow plug":c==PartCategory.SparkPlugs||c==PartCategory.Ignition?"spark plug / lead":c==PartCategory.FuelSystem?"injector":c==PartCategory.Bearings?"rod bearing pair":c==PartCategory.PistonRings?"piston ring pack":PerValve(c)?(valve<valves/2?"intake ":"exhaust ")+(c==PartCategory.Valves?"valve / guide":c==PartCategory.ValveSprings?"spring / retainer":c==PartCategory.ValveSeals?"valve seal":"follower / rocker"):PartSemantics.Friendly(c.ToString());}
         public static bool NeedsService(ComponentCondition c){return c.elements!=null&&c.elements.Any(e=>e.health<.5||e.fault!=ElementFault.None);}
-        public static bool FaultAllowed(PartCategory c,EngineElement e){if(e.fault==ElementFault.None||e.fault==ElementFault.Disabled)return true;if(e.fault==ElementFault.CompressionLeak)return c==PartCategory.Pistons||c==PartCategory.PistonRings||c==PartCategory.Valves;if(e.fault==ElementFault.WeakSpring)return c==PartCategory.ValveSprings;if(e.fault==ElementFault.StuckOpen||e.fault==ElementFault.DroppedValve)return c==PartCategory.Valves;return c==PartCategory.Pistons||c==PartCategory.Rods||c==PartCategory.Bearings;}
+        public static bool FaultAllowed(PartCategory c,EngineElement e){if(e.fault==ElementFault.None||e.fault==ElementFault.Disabled)return true;if(e.fault==ElementFault.CompressionLeak)return c==PartCategory.Wheels||c==PartCategory.Pistons||c==PartCategory.PistonRings||c==PartCategory.Valves;if(e.fault==ElementFault.WeakSpring)return c==PartCategory.ValveSprings;if(e.fault==ElementFault.StuckOpen||e.fault==ElementFault.DroppedValve)return c==PartCategory.Valves;return c==PartCategory.Wheels||c==PartCategory.Pistons||c==PartCategory.Rods||c==PartCategory.Bearings;}
         public static double Effect(EngineElement e,double severity)
         {
             if(e.Failed)return 0;
@@ -47,7 +47,7 @@ namespace DragLab.Domain.Mechanics
         {
             if(old.elements==null||old.elements.Length==0)return true;
             if(next.elements==null||next.elements.Length!=old.elements.Length)return false;
-            for(int i=0;i<old.elements.Length;i++){var a=old.elements[i];var b=next.elements[i];if(a.id!=b.id||a.cylinder!=b.cylinder||a.valve!=b.valve||a.role!=b.role||b.health>a.health||a.fault!=ElementFault.None&&(b.fault!=a.fault||b.severity<a.severity))return false;}return true;
+            for(int i=0;i<old.elements.Length;i++){var a=old.elements[i];var b=next.elements[i];if(a.id!=b.id||a.definitionId!=b.definitionId||a.cylinder!=b.cylinder||a.valve!=b.valve||a.role!=b.role||b.health>a.health||a.fault!=ElementFault.None&&(b.fault!=a.fault||b.severity<a.severity))return false;}return true;
         }
         public static void Prepare(CarSimulation car)
         {
@@ -55,7 +55,7 @@ namespace DragLab.Domain.Mechanics
             if(s.cylinderContribution==null||s.cylinderContribution.Length!=n){s.cylinderContribution=new double[n];s.cylinderFuelDelivery=new double[n];}
             for(int i=0;i<n;i++){s.cylinderContribution[i]=1;s.cylinderFuelDelivery[i]=1;}
             s.individualValveFloat=0;
-            foreach(var p in car.mechanics.parts){var d=car.mechanics.Definition(p);Ensure(car.spec,d,p);if(p.condition.elements==null)continue;if(p.condition.failed)foreach(var element in p.condition.elements)element.health=0;
+            foreach(var p in car.mechanics.parts){var d=car.mechanics.Definition(p);Ensure(car.spec,d,p);if(p.condition.elements==null||d.category==PartCategory.Wheels)continue;if(p.condition.failed)foreach(var element in p.condition.elements)element.health=0;
                 foreach(var e in p.condition.elements){
                     if(e.cylinder>=n)continue;
                     if(d.category==PartCategory.GlowPlugs)continue;

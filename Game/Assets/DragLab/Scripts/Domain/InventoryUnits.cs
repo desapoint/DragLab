@@ -22,7 +22,7 @@ namespace DragLab.Domain.Mechanics
         public static string SetLabel(PlayerProfile p,OwnedCar car,PartDefinition d) => "Complete set / "+Count(p,car,d)+" units";
         public static string[] Roles(PlayerProfile p,OwnedCar car,PartDefinition d)
         {
-            if(d.category==PartCategory.Tires)return new[]{"tire"};
+            if(d.category==PartCategory.Tires)return new[]{"tire"};if(d.category==PartCategory.Wheels)return new[]{"wheel"};
             return Template(p,car,d).condition.elements.Select(e=>e.role).Distinct().ToArray();
         }
         public static LooseEngineElement Buy(PlayerProfile p,string carId,string definition,string role)
@@ -36,13 +36,15 @@ namespace DragLab.Domain.Mechanics
         public static string[] Positions(PlayerProfile p,OwnedCar car,string definition,string role)
         {
             var d=p.catalog.Find(definition);if(d==null||!p.catalog.Fits(p.catalog.Spec(car.vehicleId),d))return new string[0];
-            var pack=car.installed.slots.Select(s=>p.parts.Find(i=>i.instanceId==s.partInstanceId)).FirstOrDefault(i=>d.category==PartCategory.Tires?i.slot==PartCategory.Tires.ToString():i.definitionId==definition);
+            var pack=car.installed.slots.Select(s=>p.parts.Find(i=>i.instanceId==s.partInstanceId)).FirstOrDefault(i=>d.category==PartCategory.Tires||d.category==PartCategory.Wheels?i.slot==d.category.ToString():i.definitionId==definition);
             if(pack==null)return new string[0];
+            if(d.category==PartCategory.Wheels)return Enumerable.Range(0,4).Select(i=>"wheel:"+i).ToArray();
             if(d.category==PartCategory.Tires)return Enumerable.Range(0,4).Select(i=>"tire:"+i).ToArray();
             return pack.condition.elements.Where(e=>e.role==role).Select(e=>e.id).ToArray();
         }
         public static string PositionLabel(PlayerProfile p,OwnedCar car,string definition,string position)
         {
+            if(position.StartsWith("wheel:",StringComparison.Ordinal))return new[]{"Front left","Front right","Rear left","Rear right"}[int.Parse(position.Substring(6))];
             if(position.StartsWith("tire:",StringComparison.Ordinal))return new[]{"Front left","Front right","Rear left","Rear right"}[int.Parse(position.Substring(5))];
             var e=p.parts.SelectMany(i=>i.condition.elements).FirstOrDefault(i=>i.id==position);
             return e==null?"Missing position":e.cylinder<0?e.role:"Cylinder "+(e.cylinder+1)+" / "+e.role+(e.valve<0?"":" "+(e.valve+1));
@@ -50,6 +52,7 @@ namespace DragLab.Domain.Mechanics
         public static void Install(PlayerProfile p,string carId,string unitId,string position)
         {
             var car=AssemblyOperations.MutableCar(p,carId);var unit=p.looseEngineElements.Find(u=>u.element.id==unitId)??throw new InvalidOperationException("Unit no longer owned.");
+            if(p.catalog.Find(unit.definitionId)?.category==PartCategory.Wheels){WheelFitments.Install(p,car,unit,position);return;}
             var pack=car.installed.slots.Select(s=>p.parts.Find(i=>i.instanceId==s.partInstanceId)).FirstOrDefault(i=>unit.tireUnit?i.slot==PartCategory.Tires.ToString():i.definitionId==unit.definitionId)??throw new InvalidOperationException("Individual replacement needs the same installed specification; use a complete kit to change specification.");
             var incoming=p.catalog.Find(unit.definitionId);if(incoming==null||!p.catalog.Fits(p.catalog.Spec(car.vehicleId),incoming))throw new InvalidOperationException("Individual part does not fit this car.");
             if(unit.tire==null){EngineElementService.Replace(p,carId,pack.instanceId,position,unitId);return;}

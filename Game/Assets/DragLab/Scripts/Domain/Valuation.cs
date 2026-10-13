@@ -108,6 +108,7 @@ namespace DragLab.Domain.Mechanics
         {
             var c = part.condition;double cataloguePrice=def.price;
             if(def.category==PartCategory.Tires&&c.tires.Length==4&&catalog!=null)cataloguePrice=Enumerable.Range(0,4).Sum(i=>catalog.Find(TireFitments.DefinitionId(part,i)).price*.25);
+            if(def.category==PartCategory.Wheels&&WheelFitments.HasOverrides(part)&&catalog!=null)cataloguePrice=Enumerable.Range(0,4).Sum(i=>catalog.Find(WheelFitments.DefinitionId(part,i)).price*.25);
             double value = cataloguePrice * policy.usedPartFraction;
             lines.Add(new ValuationLine(part.instanceId, def.name, 0, value, "Catalogue " + DisplayUnits.Money(cataloguePrice) + " × used-market " + policy.usedPartFraction.ToString("P0") + "; actual item " + part.instanceId));
             var quality = policy.qualities.Find(q => q.quality == def.quality);

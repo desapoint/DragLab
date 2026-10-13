@@ -59,13 +59,15 @@ namespace DragLab.Runtime
         }
         IEnumerator MixedTirePurchaseChecks(WindowsKeyboardProbe input,NativePartEntry offer)
         {
+            bool wheel=offer.Definition.category==PartCategory.Wheels;string role=wheel?"wheel":"tire",slot=wheel?"Wheels":"Tires";
             string before=JsonUtility.ToJson(game.Profile);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);
             yield return Click(input,"partAdd");yield return PartDialogClick(input,"partPurchaseDestination:Install");yield return PartDialogClick(input,"partSelectRear");
-            Check(shell.Root.Q<FloatField>("partQuantity").value==2&&shell.Root.Q<Button>("purchasePosition:tire:2").ClassListContains("selected")&&shell.Root.Q<Button>("purchasePosition:tire:3").ClassListContains("selected")&&!shell.Root.Q<Button>("purchasePosition:tire:0").ClassListContains("selected"),"Rear shortcut selects exactly two rear tires for compatible mixed-compound installation");
-            yield return Capture("purchase-mixed-rear-tires");yield return Click(input,"dialogAddtocart");
-            Check(game.CartLines.Single().action==CartAction.NewUnits&&game.CartLines.Single().quantity==2&&game.CartLines.Single().install&&game.CartLines.Single().positions.SequenceEqual(new[]{"tire:2","tire:3"}),"Native purchase stages the new compound at exact rear positions");
-            var prepared=PartCart.Preview(game.Profile,game.Profile.SelectedCar,game.CartLines);var pack=game.Profile.parts.Find(p=>p.instanceId==game.Profile.SelectedCar.installed.slots.First(s=>s.slot=="Tires").partInstanceId);
-            Check(prepared.build.spec.cornerTireDefinitions[0].id==TireFitments.DefinitionId(pack,0)&&prepared.build.spec.cornerTireDefinitions[2].id==offer.Definition.id&&before==JsonUtility.ToJson(game.Profile)&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Cumulative mixed-tire preview keeps actual fronts and does not buy, heal, save or charge during staging");
+            Check(shell.Root.Q<FloatField>("partQuantity").value==2&&shell.Root.Q<Button>("purchasePosition:"+role+":2").ClassListContains("selected")&&shell.Root.Q<Button>("purchasePosition:"+role+":3").ClassListContains("selected")&&!shell.Root.Q<Button>("purchasePosition:"+role+":0").ClassListContains("selected"),"Rear shortcut selects exactly two rear tires for compatible mixed-compound installation");
+            yield return Capture(wheel?"purchase-mixed-rear-wheels":"purchase-mixed-rear-tires");yield return Click(input,"dialogAddtocart");
+            Check(game.CartLines.Single().action==CartAction.NewUnits&&game.CartLines.Single().quantity==2&&game.CartLines.Single().install&&game.CartLines.Single().positions.SequenceEqual(new[]{role+":2",role+":3"}),"Native purchase stages the new compound at exact rear positions");
+            var prepared=PartCart.Preview(game.Profile,game.Profile.SelectedCar,game.CartLines);var pack=game.Profile.parts.Find(p=>p.instanceId==game.Profile.SelectedCar.installed.slots.First(s=>s.slot==slot).partInstanceId);
+            var defs=wheel?prepared.build.spec.cornerWheelDefinitions:prepared.build.spec.cornerTireDefinitions;
+            Check(defs[0].id==(wheel?WheelFitments.DefinitionId(pack,0):TireFitments.DefinitionId(pack,0))&&defs[2].id==offer.Definition.id&&before==JsonUtility.ToJson(game.Profile)&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Cumulative mixed-tire preview keeps actual fronts and does not buy, heal, save or charge during staging");
             game.ClearNativeCart();yield return new WaitForSecondsRealtime(.2f);
         }
 #endif

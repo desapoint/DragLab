@@ -84,7 +84,8 @@ namespace DragLab.Runtime
                     var offer=matrix.Entries.FirstOrDefault(e=>e.Definition.id==catalog.Id(vehicle.spec.id,category,0));if(offer==null)continue;
                     var roles=InventoryUnits.Roles(carProfile,carProfile.SelectedCar,offer.Definition);int size=InventoryUnits.Count(carProfile,carProfile.SelectedCar,offer.Definition);
                     Check(size>=1&&(category!=PartCategory.Tires&&category!=PartCategory.Wheels&&category!=PartCategory.Brakes||size==4)&&roles.All(role=>InventoryPricing.NewUnit(offer.Definition,size)>0),"Set topology and role pricing: "+vehicle.spec.id+" / "+category);
-                    if(category==PartCategory.Wheels||category==PartCategory.Brakes)Check(roles.Length==0,"Corner hardware remains a set without fictitious individual specifications: "+vehicle.spec.id+" / "+category);
+                    if(category==PartCategory.Wheels)Check(roles.SequenceEqual(new[]{"wheel"})&&InventoryUnits.Positions(carProfile,carProfile.SelectedCar,offer.Definition.id,"wheel").Length==4,"Rims expose four actual individually replaceable corner positions: "+vehicle.spec.id);
+                    if(category==PartCategory.Brakes)Check(roles.Length==0,"Brake hardware retains its existing set topology: "+vehicle.spec.id);
                 }
                 Check(immutable==JsonUtility.ToJson(carProfile),"Varied-car previews preserve applied condition/resources: "+vehicle.spec.id);
             }

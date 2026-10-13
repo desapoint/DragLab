@@ -84,7 +84,7 @@ namespace DragLab.Runtime
             referenceKey=planned&&Plan!=null?planKey:"current";
             referenceCar=reference.SelectedCar;referenceMap=MechanicsOwnership.Definitions(reference,referenceCar);Reference=planned&&PlanError!=null||string.IsNullOrEmpty(referenceCar.engineAssemblyId)?null:ReferenceEquals(reference,profile)?Current:Plan;
             referenceSpec=actual.catalog.Resolve(referenceCar.vehicleId,referenceMap,referenceCar.tune).spec;
-            bool Owns(string id)=>profile.parts.Any(p=>p.condition.tires.Length==4?Enumerable.Range(0,4).Any(i=>TireFitments.DefinitionId(p,i)==id):p.definitionId==id)||profile.looseEngineElements.Any(p=>p.definitionId==id);
+            bool Owns(string id)=>profile.parts.Any(p=>p.condition.tires.Length==4?Enumerable.Range(0,4).Any(i=>TireFitments.DefinitionId(p,i)==id):WheelFitments.HasOverrides(p)?Enumerable.Range(0,4).Any(i=>WheelFitments.DefinitionId(p,i)==id):p.definitionId==id)||profile.looseEngineElements.Any(p=>p.definitionId==id);
             if(page=="Installed")foreach(var slot in actualCar.installed.slots){var p=profile.parts.Find(i=>i.instanceId==slot.partInstanceId);if(p==null)continue;Add(p.instanceId,p.definitionId,"Installed",p,null,true,p.ownerId,null);}
             if(page=="Inventory"){
                 foreach(var p in profile.parts.Where(p=>!actualCar.installed.slots.Any(s=>s.partInstanceId==p.instanceId)))Add(p.instanceId,p.definitionId,"Owned",p,null,true,p.location==PartLocation.Inventory?SharedInventory.StorageOf(p.storageId):p.ownerId,SafePrice(()=>salePrice(p.instanceId,false),p.location==PartLocation.Inventory));
@@ -98,7 +98,7 @@ namespace DragLab.Runtime
         }
         static int? SafePrice(Func<int> get,bool available){if(!available)return null;try{return get();}catch(Exception){return null;}}
         void Add(string id,string definition,string source,PartInstance part,LooseEngineElement unit,bool owned,string location,int? price)
-        {var d=actual.catalog.Find(definition);if(d!=null){var tireParts=TireFitments.HasOverrides(part)?Enumerable.Range(0,4).Select(i=>actual.catalog.Find(TireFitments.DefinitionId(part,i))).ToArray():new PartDefinition[0];Entries.Add(new NativePartEntry{Id=id,AssetId=part?.instanceId??unit?.element.id,Definition=d,DisplayName=tireParts.Length>0?tireParts.Select(t=>t.id).Distinct().Count()>1?"Mixed tires":tireParts[0].name:d.name,SearchExtra=string.Join(" ",tireParts.Select(t=>t.name+" "+t.brand)),Source=source,Part=part,Unit=unit,Owned=owned,Location=location,Price=price});}}
+        {var d=actual.catalog.Find(definition);if(d!=null){var tireParts=TireFitments.HasOverrides(part)?Enumerable.Range(0,4).Select(i=>actual.catalog.Find(TireFitments.DefinitionId(part,i))).ToArray():WheelFitments.HasOverrides(part)?Enumerable.Range(0,4).Select(i=>actual.catalog.Find(WheelFitments.DefinitionId(part,i))).ToArray():new PartDefinition[0];Entries.Add(new NativePartEntry{Id=id,AssetId=part?.instanceId??unit?.element.id,Definition=d,DisplayName=tireParts.Length>0?tireParts.Select(t=>t.id).Distinct().Count()>1?d.category==PartCategory.Wheels?"Mixed wheels":"Mixed tires":tireParts[0].name:d.name,SearchExtra=string.Join(" ",tireParts.Select(t=>t.name+" "+t.brand)),Source=source,Part=part,Unit=unit,Owned=owned,Location=location,Price=price});}}
         internal static NativePartSection Section(PartCategory c)
         {
             if(c==PartCategory.Induction||c==PartCategory.Exhaust)return NativePartSection.Induction;

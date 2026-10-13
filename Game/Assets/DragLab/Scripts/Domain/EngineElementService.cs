@@ -20,7 +20,7 @@ namespace DragLab.Domain.Mechanics
         {if(c.elements==null||c.elements.Length==0)return;c.health=c.elements.Average(e=>e.health);c.failed=c.elements.All(e=>e.Failed);c.failureReason=c.failed?"All individual components unavailable":"";}
         public static void Replace(PlayerProfile p,string carId,string partId,string elementId,string spareId=null)
         {
-            var car=p.cars.Find(c=>c.instanceId==carId);var item=Installed(p,car,partId);ReplacePack(p,item,elementId,spareId);
+            var car=p.cars.Find(c=>c.instanceId==carId);var item=Installed(p,car,partId);if(p.catalog.Find(item.definitionId).category==PartCategory.Wheels){int corner=Array.FindIndex(item.condition.elements,e=>e.id==elementId);if(corner<0)throw new InvalidOperationException("Wheel position changed.");var unit=spareId==null?InventoryUnits.Buy(p,carId,WheelFitments.DefinitionId(item,corner),"wheel"):p.looseEngineElements.Find(u=>u.element.id==spareId);if(unit==null||p.catalog.Find(unit.definitionId)?.category!=PartCategory.Wheels)throw new InvalidOperationException("Choose an owned compatible wheel.");InventoryUnits.Install(p,carId,unit.element.id,"wheel:"+corner);return;}ReplacePack(p,item,elementId,spareId);
         }
         public static void ReplaceStored(PlayerProfile p,string engineId,string partId,string elementId,string spareId=null)
         {

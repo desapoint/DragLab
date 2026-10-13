@@ -61,8 +61,8 @@ namespace DragLab.Runtime
             string role=editing?.role??(fresh?draft.Role:offer.Unit?.element.role);int quantity=editing?.quantity??(fresh?draft.Quantity:1);
             var binding=car.installed.slots.Find(s=>s.slot==d.category.ToString());
             var fitted=binding==null?null:game.Profile.parts.Find(p=>p.instanceId==binding.partInstanceId);
-            bool matches=fitted?.definitionId==d.id||d.category==PartCategory.Tires&&fitted!=null&&game.Profile.catalog.Fits(game.Profile.catalog.Spec(car.vehicleId),d);
-            string[] all=fitted==null?new string[0]:d.category==PartCategory.Tires?Enumerable.Range(0,4).Select(i=>"tire:"+i).ToArray():fitted.condition.elements.Select(e=>e.id).ToArray();
+            bool matches=fitted?.definitionId==d.id||(d.category==PartCategory.Tires||d.category==PartCategory.Wheels)&&fitted!=null&&game.Profile.catalog.Fits(game.Profile.catalog.Spec(car.vehicleId),d);
+            string[] all=fitted==null?new string[0]:d.category==PartCategory.Tires||d.category==PartCategory.Wheels?Enumerable.Range(0,4).Select(i=>(d.category==PartCategory.Tires?"tire:":"wheel:")+i).ToArray():fitted.condition.elements.Select(e=>e.id).ToArray();
             var selected=new HashSet<string>(editing!=null?editing.positions:fresh?draft.Positions:Enumerable.Empty<string>());
             var rows=new List<Tuple<Button,string>>();var groups=new List<VisualElement>();
             VisualElement positionsArea=null,roleGroup=null;Label summary=null,error=null,quantityLabel=null,unitPrice=null,notice=null;FloatField number=null;Button minus=null,plus=null;Action update=null;
@@ -80,7 +80,7 @@ namespace DragLab.Runtime
             },true)},populate:content=>{
                 content.Add(new Label(d.name){enableRichText=false});
                 if(!fresh){var condition=new Label("Used · "+((offer.Unit?.element.health??offer.Part?.condition.health??0)*100).ToString("0.#")+"% condition"){name="partPurchaseCondition"};condition.AddToClassList("car-warning");content.Add(condition);}
-                if(fresh&&roles.Length>0){QueryChoices(content,"partPurchaseMode","Buy",new[]{"Complete set","Individual"},()=>individual?"Individual":"Complete set",value=>{individual=value=="Individual";quantity=1;selected.Clear();if(individual&&!matches)install=false;update();},2);if(d.category==PartCategory.Tires){content.Q<Button>("partPurchaseMode:Complete set").Q<Label>().text="Tire set (4)";content.Q<Button>("partPurchaseMode:Individual").Q<Label>().text="Single tire";}}
+                if(fresh&&roles.Length>0){QueryChoices(content,"partPurchaseMode","Buy",new[]{"Complete set","Individual"},()=>individual?"Individual":"Complete set",value=>{individual=value=="Individual";quantity=1;selected.Clear();if(individual&&!matches)install=false;update();},2);if(d.category==PartCategory.Tires||d.category==PartCategory.Wheels){content.Q<Button>("partPurchaseMode:Complete set").Q<Label>().text=d.category==PartCategory.Tires?"Tire set (4)":"Wheel set (4)";content.Q<Button>("partPurchaseMode:Individual").Q<Label>().text=d.category==PartCategory.Tires?"Single tire":"Single wheel";}}
                 QueryChoices(content,"partPurchaseDestination","Destination",new[]{"Store","Install"},()=>install?"Install":"Store",value=>{install=value=="Install";update();},2);
                 QueryChoices(content,"partPurchaseRole","Type",roles,()=>role,value=>{role=value;selected.Clear();update();},2);
                 roleGroup=content.Children().Last();
@@ -95,17 +95,17 @@ namespace DragLab.Runtime
                 notice=new Label{name="partPurchaseNotice"};notice.AddToClassList("car-warning");content.Add(notice);
                 positionsArea=new VisualElement{name="partPurchasePositions"};content.Add(positionsArea);
                 var shortcuts=new VisualElement{name="partPurchaseShortcuts"};shortcuts.AddToClassList("part-purchase-shortcuts");positionsArea.Add(shortcuts);
-                foreach(string choice in d.category==PartCategory.Tires?new[]{"All","Front","Rear","Failed","Worn","Clear"}:new[]{"All","Failed","Worn","Clear"}){
+                foreach(string choice in d.category==PartCategory.Tires||d.category==PartCategory.Wheels?new[]{"All","Front","Rear","Failed","Worn","Clear"}:new[]{"All","Failed","Worn","Clear"}){
                     string action=choice;var button=new Button(()=>{
                         individual=true;selected.Clear();var available=InventoryUnits.Positions(game.Profile,car,d.id,role);
-                        foreach(string target in available){var member=fitted?.condition.elements.FirstOrDefault(e=>e.id==target);var tire=target.StartsWith("tire:")?fitted?.condition.tires[int.Parse(target.Substring(5))]:null;
-                            if(action=="All"||action=="Front"&&target.StartsWith("tire:")&&int.Parse(target.Substring(5))<2||action=="Rear"&&target.StartsWith("tire:")&&int.Parse(target.Substring(5))>=2||action=="Failed"&&(member?.Failed==true||tire?.failed==true)||action=="Worn"&&(member?.health<=.5||tire?.health<=.5))selected.Add(target);
+                        foreach(string target in available){var member=target.StartsWith("wheel:")?fitted?.condition.elements[int.Parse(target.Substring(6))]:fitted?.condition.elements.FirstOrDefault(e=>e.id==target);var tire=target.StartsWith("tire:")?fitted?.condition.tires[int.Parse(target.Substring(5))]:null;
+                            if(action=="All"||action=="Front"&&(target.StartsWith("tire:")&&int.Parse(target.Substring(5))<2||target.StartsWith("wheel:")&&int.Parse(target.Substring(6))<2)||action=="Rear"&&(target.StartsWith("tire:")&&int.Parse(target.Substring(5))>=2||target.StartsWith("wheel:")&&int.Parse(target.Substring(6))>=2)||action=="Failed"&&(member?.Failed==true||tire?.failed==true)||action=="Worn"&&(member?.health<=.5||tire?.health<=.5))selected.Add(target);
                         }
                         quantity=Math.Max(quantity,selected.Count);update();
                     }){name="partSelect"+choice,text=choice,focusable=false,tabIndex=-1};button.AddToClassList("action-button");button.AddToClassList("part-selection-shortcut");shortcuts.Add(button);AddSurface(button,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(button.Q<RacingSurface>());
                     if(choice=="Worn")button.tooltip="At least 50% wear used.";
                 }
-                foreach(var group in all.GroupBy(position=>position.StartsWith("tire:")?int.Parse(position.Substring(5))<2?"Front axle":"Rear axle":fitted.condition.elements.First(e=>e.id==position).cylinder<0?"Engine":"Cylinder "+(fitted.condition.elements.First(e=>e.id==position).cylinder+1))){
+                foreach(var group in all.GroupBy(position=>position.StartsWith("wheel:")?int.Parse(position.Substring(6))<2?"Front axle":"Rear axle":position.StartsWith("tire:")?int.Parse(position.Substring(5))<2?"Front axle":"Rear axle":fitted.condition.elements.First(e=>e.id==position).cylinder<0?"Engine":"Cylinder "+(fitted.condition.elements.First(e=>e.id==position).cylinder+1))){
                     var block=new VisualElement();block.AddToClassList("part-replacement-group");positionsArea.Add(block);groups.Add(block);
                     if(d.category!=PartCategory.Pistons)block.Add(new Label(group.Key){name="replacementGroup:"+group.Key});
                     foreach(string position in group){string target=position;var row=ReplacementPositionRow(block,d,target,"purchasePosition:"+target,()=>{
@@ -120,7 +120,7 @@ namespace DragLab.Runtime
                     var available=role==null?new string[0]:InventoryUnits.Positions(game.Profile,car,d.id,role);selected.RemoveWhere(p=>!available.Contains(p));
                     roleGroup.EnableInClassList("hidden",!individual||roles.Length<2);
                     positionsArea.EnableInClassList("hidden",!install||all.Length==0);
-                    shortcuts.EnableInClassList("hidden",!fresh||!individual||!matches);
+                    shortcuts.EnableInClassList("hidden",!fresh||!matches);
                     foreach(var button in content.Query<Button>().ToList().Where(b=>b.name.StartsWith("partPurchaseMode:")))button.EnableInClassList("selected",button.name=="partPurchaseMode:"+(individual?"Individual":"Complete set"));
                     foreach(var button in content.Query<Button>().ToList().Where(b=>b.name.StartsWith("partPurchaseDestination:")))button.EnableInClassList("selected",button.name=="partPurchaseDestination:"+(install?"Install":"Store"));
                     content.Q<Button>("partPurchaseMode:Individual")?.SetEnabled(true);
@@ -153,7 +153,8 @@ namespace DragLab.Runtime
         {
             var car=game.Profile.SelectedCar;var binding=car.installed.slots.Find(s=>s.slot==offer.category.ToString());
             var part=binding==null?null:game.Profile.parts.Find(p=>p.instanceId==binding.partInstanceId);var fitted=part==null?null:game.Profile.catalog.Find(part.definitionId);
-            var element=part?.condition.elements.FirstOrDefault(e=>e.id==position);
+            var element=position.StartsWith("wheel:")?part?.condition.elements[int.Parse(position.Substring(6))]:part?.condition.elements.FirstOrDefault(e=>e.id==position);
+            if(position.StartsWith("wheel:")&&part!=null)fitted=game.Profile.catalog.Find(WheelFitments.DefinitionId(part,int.Parse(position.Substring(6))));
             TireCondition tire=position.StartsWith("tire:",StringComparison.Ordinal)&&part?.condition.tires!=null?part.condition.tires[int.Parse(position.Substring(5))]:null;
             if(tire!=null)fitted=game.Profile.catalog.Find(TireFitments.DefinitionId(part,int.Parse(position.Substring(5))));
             double? health=element?.health??tire?.health;bool failed=element?.Failed??tire?.failed??false;
@@ -184,6 +185,7 @@ namespace DragLab.Runtime
                 content.Add(new Label("Match the fitted specification. Extras go to storage."){enableRichText=false});
                 var summary=new Label{name="purchasePositionsSummary"};content.Add(summary);
                 update=()=>{summary.text=selected.Count+" installed · "+Math.Max(0,quantity-selected.Count)+" in storage";foreach(var pair in buttons){pair.Item1.EnableInClassList("selected",selected.Contains(pair.Item2));pair.Item1.SetEnabled(selected.Contains(pair.Item2)||selected.Count<quantity);}root.Q<Button>("dialogAdd")?.SetEnabled(selected.Count>0&&selected.Count<=quantity);};
+                if(definition.category==PartCategory.Tires||definition.category==PartCategory.Wheels){var presets=new VisualElement();presets.AddToClassList("part-purchase-shortcuts");content.Add(presets);foreach(string option in new[]{"All","Front","Rear","Clear"}){string preset=option;var b=new Button(()=>{selected.Clear();foreach(var target in positions.Where((v,i)=>preset=="All"||preset=="Front"&&i<2||preset=="Rear"&&i>=2).Take(quantity))selected.Add(target);update();}){name="positionPreset:"+preset,text=preset,focusable=false,tabIndex=-1};b.AddToClassList("action-button");presets.Add(b);AddSurface(b,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(b.Q<RacingSurface>());}}
                 foreach(var position in positions){string target=position;var b=ReplacementPositionRow(content,definition,target,"purchasePosition:"+target,()=>{if(!selected.Remove(target))selected.Add(target);update();});buttons.Add(Tuple.Create(b,target));}
                 var error=new Label{name="purchasePositionsError"};error.AddToClassList("car-critical");content.Add(error);
             });update();

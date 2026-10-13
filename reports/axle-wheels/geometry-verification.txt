@@ -132,6 +132,12 @@ PASS: Whole-car blueprints find exact loose compounds for the saved corners: cit
 PASS: Existing setup transaction restores mixed tires without granting replacements: city-three
 PASS: Buy same quotes actual mixed constituent costs: city-three
 PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: city-three /
+PASS: Front wheel pair preview lowers only actual front rim mass/inertia: city-three
+PASS: Individual wheel pair uses one valid paid cart transaction: city-three /
+PASS: Wheel pair replacement retains rear identity and worn front originals: city-three
+PASS: Mixed rims survive profile normalization without losing identities: city-three
+PASS: Whole-car setup locates exact owned wheel replacements for front pair: city-three
+PASS: Existing blueprint transaction restores real mixed wheel members: city-three
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: juniper-club
 PASS: Mixed tire cart publishes one transaction: juniper-club /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: juniper-club
@@ -144,6 +150,12 @@ PASS: Whole-car blueprints find exact loose compounds for the saved corners: jun
 PASS: Existing setup transaction restores mixed tires without granting replacements: juniper-club
 PASS: Buy same quotes actual mixed constituent costs: juniper-club
 PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: juniper-club /
+PASS: Front wheel pair preview lowers only actual front rim mass/inertia: juniper-club
+PASS: Individual wheel pair uses one valid paid cart transaction: juniper-club /
+PASS: Wheel pair replacement retains rear identity and worn front originals: juniper-club
+PASS: Mixed rims survive profile normalization without losing identities: juniper-club
+PASS: Whole-car setup locates exact owned wheel replacements for front pair: juniper-club
+PASS: Existing blueprint transaction restores real mixed wheel members: juniper-club
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: juniper-economy
 PASS: Mixed tire cart publishes one transaction: juniper-economy /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: juniper-economy
@@ -156,6 +168,12 @@ PASS: Whole-car blueprints find exact loose compounds for the saved corners: jun
 PASS: Existing setup transaction restores mixed tires without granting replacements: juniper-economy
 PASS: Buy same quotes actual mixed constituent costs: juniper-economy
 PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: juniper-economy /
+PASS: Front wheel pair preview lowers only actual front rim mass/inertia: juniper-economy
+PASS: Individual wheel pair uses one valid paid cart transaction: juniper-economy /
+PASS: Wheel pair replacement retains rear identity and worn front originals: juniper-economy
+PASS: Mixed rims survive profile normalization without losing identities: juniper-economy
+PASS: Whole-car setup locates exact owned wheel replacements for front pair: juniper-economy
+PASS: Existing blueprint transaction restores real mixed wheel members: juniper-economy
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: kestrel-track
 PASS: Mixed tire cart publishes one transaction: kestrel-track /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: kestrel-track
@@ -168,6 +186,12 @@ PASS: Whole-car blueprints find exact loose compounds for the saved corners: kes
 PASS: Existing setup transaction restores mixed tires without granting replacements: kestrel-track
 PASS: Buy same quotes actual mixed constituent costs: kestrel-track
 PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: kestrel-track /
+PASS: Front wheel pair preview lowers only actual front rim mass/inertia: kestrel-track
+PASS: Individual wheel pair uses one valid paid cart transaction: kestrel-track /
+PASS: Wheel pair replacement retains rear identity and worn front originals: kestrel-track
+PASS: Mixed rims survive profile normalization without losing identities: kestrel-track
+PASS: Whole-car setup locates exact owned wheel replacements for front pair: kestrel-track
+PASS: Existing blueprint transaction restores real mixed wheel members: kestrel-track
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: rally-sedan
 PASS: Mixed tire cart publishes one transaction: rally-sedan /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: rally-sedan
@@ -180,6 +204,12 @@ PASS: Whole-car blueprints find exact loose compounds for the saved corners: ral
 PASS: Existing setup transaction restores mixed tires without granting replacements: rally-sedan
 PASS: Buy same quotes actual mixed constituent costs: rally-sedan
 PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: rally-sedan /
+PASS: Front wheel pair preview lowers only actual front rim mass/inertia: rally-sedan
+PASS: Individual wheel pair uses one valid paid cart transaction: rally-sedan /
+PASS: Wheel pair replacement retains rear identity and worn front originals: rally-sedan
+PASS: Mixed rims survive profile normalization without losing identities: rally-sedan
+PASS: Whole-car setup locates exact owned wheel replacements for front pair: rally-sedan
+PASS: Existing blueprint transaction restores real mixed wheel members: rally-sedan
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: sport-coupe
 PASS: Mixed tire cart publishes one transaction: sport-coupe /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: sport-coupe
@@ -192,6 +222,12 @@ PASS: Whole-car blueprints find exact loose compounds for the saved corners: spo
 PASS: Existing setup transaction restores mixed tires without granting replacements: sport-coupe
 PASS: Buy same quotes actual mixed constituent costs: sport-coupe
 PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: sport-coupe /
+PASS: Front wheel pair preview lowers only actual front rim mass/inertia: sport-coupe
+PASS: Individual wheel pair uses one valid paid cart transaction: sport-coupe /
+PASS: Wheel pair replacement retains rear identity and worn front originals: sport-coupe
+PASS: Mixed rims survive profile normalization without losing identities: sport-coupe
+PASS: Whole-car setup locates exact owned wheel replacements for front pair: sport-coupe
+PASS: Existing blueprint transaction restores real mixed wheel members: sport-coupe
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: starter-hatch
 PASS: Mixed tire cart publishes one transaction: starter-hatch /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: starter-hatch
@@ -204,6 +240,12 @@ PASS: Whole-car blueprints find exact loose compounds for the saved corners: sta
 PASS: Existing setup transaction restores mixed tires without granting replacements: starter-hatch
 PASS: Buy same quotes actual mixed constituent costs: starter-hatch
 PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: starter-hatch /
+PASS: Front wheel pair preview lowers only actual front rim mass/inertia: starter-hatch
+PASS: Individual wheel pair uses one valid paid cart transaction: starter-hatch /
+PASS: Wheel pair replacement retains rear identity and worn front originals: starter-hatch
+PASS: Mixed rims survive profile normalization without losing identities: starter-hatch
+PASS: Whole-car setup locates exact owned wheel replacements for front pair: starter-hatch
+PASS: Existing blueprint transaction restores real mixed wheel members: starter-hatch
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: super-v8
 PASS: Mixed tire cart publishes one transaction: super-v8 /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: super-v8
@@ -216,6 +258,12 @@ PASS: Whole-car blueprints find exact loose compounds for the saved corners: sup
 PASS: Existing setup transaction restores mixed tires without granting replacements: super-v8
 PASS: Buy same quotes actual mixed constituent costs: super-v8
 PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: super-v8 /
+PASS: Front wheel pair preview lowers only actual front rim mass/inertia: super-v8
+PASS: Individual wheel pair uses one valid paid cart transaction: super-v8 /
+PASS: Wheel pair replacement retains rear identity and worn front originals: super-v8
+PASS: Mixed rims survive profile normalization without losing identities: super-v8
+PASS: Whole-car setup locates exact owned wheel replacements for front pair: super-v8
+PASS: Existing blueprint transaction restores real mixed wheel members: super-v8
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: timber-diesel
 PASS: Mixed tire cart publishes one transaction: timber-diesel /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: timber-diesel
@@ -228,6 +276,12 @@ PASS: Whole-car blueprints find exact loose compounds for the saved corners: tim
 PASS: Existing setup transaction restores mixed tires without granting replacements: timber-diesel
 PASS: Buy same quotes actual mixed constituent costs: timber-diesel
 PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: timber-diesel /
+PASS: Front wheel pair preview lowers only actual front rim mass/inertia: timber-diesel
+PASS: Individual wheel pair uses one valid paid cart transaction: timber-diesel /
+PASS: Wheel pair replacement retains rear identity and worn front originals: timber-diesel
+PASS: Mixed rims survive profile normalization without losing identities: timber-diesel
+PASS: Whole-car setup locates exact owned wheel replacements for front pair: timber-diesel
+PASS: Existing blueprint transaction restores real mixed wheel members: timber-diesel
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: timber-diesel-tow
 PASS: Mixed tire cart publishes one transaction: timber-diesel-tow /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: timber-diesel-tow
@@ -240,6 +294,12 @@ PASS: Whole-car blueprints find exact loose compounds for the saved corners: tim
 PASS: Existing setup transaction restores mixed tires without granting replacements: timber-diesel-tow
 PASS: Buy same quotes actual mixed constituent costs: timber-diesel-tow
 PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: timber-diesel-tow /
+PASS: Front wheel pair preview lowers only actual front rim mass/inertia: timber-diesel-tow
+PASS: Individual wheel pair uses one valid paid cart transaction: timber-diesel-tow /
+PASS: Wheel pair replacement retains rear identity and worn front originals: timber-diesel-tow
+PASS: Mixed rims survive profile normalization without losing identities: timber-diesel-tow
+PASS: Whole-car setup locates exact owned wheel replacements for front pair: timber-diesel-tow
+PASS: Existing blueprint transaction restores real mixed wheel members: timber-diesel-tow
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: touring-six
 PASS: Mixed tire cart publishes one transaction: touring-six /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: touring-six
@@ -252,6 +312,12 @@ PASS: Whole-car blueprints find exact loose compounds for the saved corners: tou
 PASS: Existing setup transaction restores mixed tires without granting replacements: touring-six
 PASS: Buy same quotes actual mixed constituent costs: touring-six
 PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: touring-six /
+PASS: Front wheel pair preview lowers only actual front rim mass/inertia: touring-six
+PASS: Individual wheel pair uses one valid paid cart transaction: touring-six /
+PASS: Wheel pair replacement retains rear identity and worn front originals: touring-six
+PASS: Mixed rims survive profile normalization without losing identities: touring-six
+PASS: Whole-car setup locates exact owned wheel replacements for front pair: touring-six
+PASS: Existing blueprint transaction restores real mixed wheel members: touring-six
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: utility-pickup
 PASS: Mixed tire cart publishes one transaction: utility-pickup /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: utility-pickup
@@ -264,6 +330,12 @@ PASS: Whole-car blueprints find exact loose compounds for the saved corners: uti
 PASS: Existing setup transaction restores mixed tires without granting replacements: utility-pickup
 PASS: Buy same quotes actual mixed constituent costs: utility-pickup
 PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: utility-pickup /
+PASS: Front wheel pair preview lowers only actual front rim mass/inertia: utility-pickup
+PASS: Individual wheel pair uses one valid paid cart transaction: utility-pickup /
+PASS: Wheel pair replacement retains rear identity and worn front originals: utility-pickup
+PASS: Mixed rims survive profile normalization without losing identities: utility-pickup
+PASS: Whole-car setup locates exact owned wheel replacements for front pair: utility-pickup
+PASS: Existing blueprint transaction restores real mixed wheel members: utility-pickup
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: v8-muscle
 PASS: Mixed tire cart publishes one transaction: v8-muscle /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: v8-muscle
@@ -276,6 +348,12 @@ PASS: Whole-car blueprints find exact loose compounds for the saved corners: v8-
 PASS: Existing setup transaction restores mixed tires without granting replacements: v8-muscle
 PASS: Buy same quotes actual mixed constituent costs: v8-muscle
 PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: v8-muscle /
+PASS: Front wheel pair preview lowers only actual front rim mass/inertia: v8-muscle
+PASS: Individual wheel pair uses one valid paid cart transaction: v8-muscle /
+PASS: Wheel pair replacement retains rear identity and worn front originals: v8-muscle
+PASS: Mixed rims survive profile normalization without losing identities: v8-muscle
+PASS: Whole-car setup locates exact owned wheel replacements for front pair: v8-muscle
+PASS: Existing blueprint transaction restores real mixed wheel members: v8-muscle
 PASS: Unequal-axle torque/braking energy closes: False / 0,2 / 0,4
 PASS: Unequal-axle torque/braking energy closes: False / 0,2 / 2
 PASS: Unequal-axle torque/braking energy closes: False / 0,2 / 8
@@ -303,4 +381,4 @@ PASS: Unequal-axle torque/braking energy closes: True / 4 / 2
 PASS: Locked AWD constrains angular shaft speeds even with mismatched tire diameters
 PASS: Unequal-axle torque/braking energy closes: True / 4 / 8
 PASS: Locked AWD constrains angular shaft speeds even with mismatched tire diameters
-Checks: 305 / failures: 0
+Checks: 383 / failures: 0

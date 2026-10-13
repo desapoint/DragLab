@@ -5,7 +5,7 @@ using System.Linq;
 namespace DragLab.Domain.Mechanics
 {
     public enum SetupScope { Engine, WholeCar, TuneOnly }
-    [Serializable] public sealed class SetupPart { public string slot, definitionId;public string[] tireDefinitions=new string[0]; }
+    [Serializable] public sealed class SetupPart { public string slot, definitionId;public string[] wheelDefinitions=new string[0];public string[] tireDefinitions=new string[0]; }
     [Serializable] public sealed class SavedVehicleSetup
     {
         public string id, name, vehicleDefinitionId;
@@ -50,7 +50,7 @@ namespace DragLab.Domain.Mechanics
             if (!Enum.IsDefined(typeof(SetupScope), scope)) throw new InvalidOperationException("Choose an available setup scope.");
             var setup = new SavedVehicleSetup { id = MechanicsOwnership.NewId("setup"), name = name, vehicleDefinitionId = car.vehicleId, scope = scope, tune = car.tune.Copy() };
             foreach (var slot in car.installed.slots.Where(s => InScope(scope, AssemblyOperations.Parse(s.slot))))
-                {var item=p.parts.Find(i=>i.instanceId==slot.partInstanceId);setup.parts.Add(new SetupPart {slot=slot.slot,definitionId=item.definitionId,tireDefinitions=slot.slot=="Tires"?Enumerable.Range(0,4).Select(i=>item.condition.tires.Length==4?TireFitments.DefinitionId(item,i):item.definitionId).ToArray():new string[0]});}
+                {var item=p.parts.Find(i=>i.instanceId==slot.partInstanceId);setup.parts.Add(new SetupPart {slot=slot.slot,definitionId=item.definitionId,wheelDefinitions=slot.slot=="Wheels"?Enumerable.Range(0,4).Select(i=>item.condition.elements.Length==4?WheelFitments.DefinitionId(item,i):item.definitionId).ToArray():new string[0],tireDefinitions=slot.slot=="Tires"?Enumerable.Range(0,4).Select(i=>item.condition.tires.Length==4?TireFitments.DefinitionId(item,i):item.definitionId).ToArray():new string[0]});}
             p.savedSetups.Add(setup); return setup.id;
         }
         public static void Delete(PlayerProfile p, string id)
@@ -81,7 +81,7 @@ namespace DragLab.Domain.Mechanics
                 var line = new SetupPlanLine { category = d.category, definitionId = d.id, itemId = owned == null ? null : owned.instanceId, installed = owned != null && owned == fitted, purchase = owned == null, cost = owned == null ? d.price : 0 };
                 if(line.purchase && p.reputation<d.reputationRequired)plan.errors.Add(d.name+": requires REP "+d.reputationRequired);
                 plan.cost = checked(plan.cost + line.cost); plan.lines.Add(line);
-                if(d.category==PartCategory.Tires)SavedTireFitments.Plan(p,car,desired,line,plan);
+                if(d.category==PartCategory.Tires||d.category==PartCategory.Wheels)SavedTireFitments.Plan(p,car,desired,line,plan);
                 if (owned != null && owned.condition.health < .95) plan.warnings.Add(d.name + ": reuse at " + owned.condition.health.ToString("P0") + " health; wear is retained.");
             }
             var requested = car.tune.Copy();
@@ -129,6 +129,7 @@ namespace DragLab.Domain.Mechanics
             foreach (var s in setup.parts) {
                 PartCategory category;
                 if (s == null || !Enum.TryParse(s.slot, out category) || !InScope(setup.scope, category) || !slots.Add(s.slot)) return "Invalid saved setup slot.";
+                if(s.wheelDefinitions!=null&&s.wheelDefinitions.Length>0&&(category!=PartCategory.Wheels||s.wheelDefinitions.Length!=4||s.wheelDefinitions.Any(id=>catalog.Find(id)==null||catalog.Find(id).category!=PartCategory.Wheels||!catalog.Fits(spec,catalog.Find(id)))))return "Invalid saved wheel fitment.";
                 if(s.tireDefinitions!=null&&s.tireDefinitions.Length>0&&(category!=PartCategory.Tires||s.tireDefinitions.Length!=4||s.tireDefinitions.Any(id=>catalog.Find(id)==null||catalog.Find(id).category!=PartCategory.Tires||!catalog.Fits(spec,catalog.Find(id)))))return "Invalid saved tire fitment.";
                 var d = catalog.Find(s.definitionId); if (d == null || d.category != category || !catalog.Fits(spec, d)) return "Invalid saved setup part fitment.";
             }

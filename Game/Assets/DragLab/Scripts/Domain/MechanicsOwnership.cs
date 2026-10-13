@@ -105,7 +105,7 @@ namespace DragLab.Domain.Mechanics
                     if(stored!=null){if(!resolvedOwners.TryGetValue(stored.instanceId,out spec)){spec=catalog.Resolve(stored.vehicleDefinitionId,AssemblyOperations.Definitions(profile,stored),stored.tune).spec;resolvedOwners[stored.instanceId]=spec;}EngineElements.Ensure(spec,d,item);}
                 }
                 if(d!=null)ClutchHardware.Ensure(d,item.condition);
-                if(d?.category==PartCategory.Tires)TireDynamics.Ensure(item.condition);
+                if(d?.category==PartCategory.Tires)TireDynamics.Ensure(item.condition);if(d?.category==PartCategory.Wheels)WheelFitments.Ensure(item);
             }
             profile.equipmentVersion = 1; profile.drivelineVersion = 2; profile.mechanicsVersion = MechanicsSchema.Version; profile.saveVersion = SaveVersion;
             var selected = profile.SelectedCar ?? profile.cars.FirstOrDefault();
@@ -239,6 +239,7 @@ namespace DragLab.Domain.Mechanics
                 var owner=profile.cars.FirstOrDefault(c=>c.installed.slots.Any(s=>s.partInstanceId==item.instanceId));
                 if(owner!=null&&!catalog.Fits(catalog.Spec(owner.vehicleId),d))return "Incompatible individual tire.";
             }
+            foreach(var item in profile.parts.Where(i=>catalog.Find(i.definitionId).category==PartCategory.Wheels)){if(item.condition.elements.Length!=4)return "Four wheel members required.";foreach(var e in item.condition.elements){var d=catalog.Find(string.IsNullOrEmpty(e.definitionId)?item.definitionId:e.definitionId);if(d==null||d.category!=PartCategory.Wheels||e.role!="wheel"||e.cylinder<0||e.cylinder>3)return "Invalid individual wheel specification.";var owner=profile.cars.FirstOrDefault(c=>c.installed.slots.Any(s=>s.partInstanceId==item.instanceId));if(owner!=null&&!catalog.Fits(catalog.Spec(owner.vehicleId),d))return "Individual wheel does not fit.";}if(item.condition.elements.Select(e=>e.cylinder).Distinct().Count()!=4)return "Duplicate wheel positions.";}
             foreach(var car in profile.cars){if(car.engineRebuild!=null&&EngineRebuilds.Validate(profile,car)!=null)return "Invalid engine rebuild reservation.";}
             var runs = new HashSet<string>();
             foreach (var run in profile.runCheckpoints)

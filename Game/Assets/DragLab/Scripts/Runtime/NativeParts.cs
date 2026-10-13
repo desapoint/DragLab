@@ -99,6 +99,7 @@ namespace DragLab.Runtime
         {if(!e.Change[metric].HasValue)return e.Ready?"—":"…";double value=e.Change[metric].Value;if(metric==1||metric==4)value=DisplayUnits.Torque(value,SharedUnitSettings.Current.torque);return (value>0?"+":"")+value.ToString(metric==3?"0.#":"0.##")+" "+(metric==0?"HP":metric==1||metric==4?SharedUnitSettings.TorqueLabel:metric==2?"kg":metric==3?"pp":metric==5?"RPM":"W/°C");}
         PartStat[] PartSpecs(NativePartEntry e)
         {
+            if(WheelFitments.HasOverrides(e.Part)){var wheels=Enumerable.Range(0,4).Select(i=>game.Profile.catalog.Find(WheelFitments.DefinitionId(e.Part,i))).ToArray();if(wheels.Select(d=>d.id).Distinct().Count()==1)return partSpecCache.Get(wheels[0]);return new[]{new PartStat("mass","Rim set mass",wheels.Sum(d=>d.massKg*.25),"kg",-1,"Actual four fitted rim specifications, before size scaling."),new PartStat("frontmass","Front rim / reference",(wheels[0].massKg+wheels[1].massKg)*.125,"kg",-1,"Mean front rim mass before size scaling."),new PartStat("rearmass","Rear rim / reference",(wheels[2].massKg+wheels[3].massKg)*.125,"kg",-1,"Mean rear rim mass before size scaling."),new PartStat("massscale","Mean rim mass multiplier",wheels.Average(d=>d.massScale),"×",-1,"Constituent mass multipliers; axle stats show actual sized inertia.")};}
             if(!TireFitments.HasOverrides(e.Part))return partSpecCache.Get(e.Definition);
             var defs=Enumerable.Range(0,4).Select(i=>game.Profile.catalog.Find(TireFitments.DefinitionId(e.Part,i))).ToArray();
             if(defs.Select(d=>d.id).Distinct().Count()==1)return partSpecCache.Get(defs[0]);
@@ -111,7 +112,7 @@ namespace DragLab.Runtime
             var specs=PartSpecs(e);for(int i=0;i<4;i++){labels[i+1].text=i<specs.Length?PartStatText(specs[i]):"";labels[i+1].tooltip=i<specs.Length?specs[i].explanation:"";}
             double health=e.Unit?.element.health??e.Part?.condition.health??1;bool failed=e.Unit!=null?e.Unit.element.Failed:e.Part?.condition.failed??false;
             labels[5].text=e.Source+" · "+PartSemantics.Friendly(e.Definition.category.ToString())+(PartSemantics.Wears(e.Definition.category)?" · "+(failed?"FAILED":health.ToString("P0")):"");labels[5].EnableInClassList("car-critical",failed);
-            labels[6].text=(e.Price.HasValue?DisplayUnits.Money(e.Price.Value):"—")+(e.Definition.category==PartCategory.Tires?e.Unit==null?" / set of 4":" / tire":"")+" · "+(e.Definition.tuning!=PartTuningOptions.None||e.Definition.camTimingAdjustable?"Adjustable":"Fixed");
+            labels[6].text=(e.Price.HasValue?DisplayUnits.Money(e.Price.Value):"—")+(e.Definition.category==PartCategory.Tires||e.Definition.category==PartCategory.Wheels?e.Unit==null?" / set of 4":e.Definition.category==PartCategory.Wheels?" / wheel":" / tire":"")+" · "+(e.Definition.tuning!=PartTuningOptions.None||e.Definition.camTimingAdjustable?"Adjustable":"Fixed");
             labels[7].text=e.Unit!=null&&e.Change[3].HasValue?"Replacement condition "+PartDelta(e,3):"";
 
         }

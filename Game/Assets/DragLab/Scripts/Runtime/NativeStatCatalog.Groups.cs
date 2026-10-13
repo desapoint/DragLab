@@ -22,6 +22,7 @@ namespace DragLab.Runtime
             if(!s.Has(slot)&&!(s.Spec.drive!=DriveType.AWD&&s.Has(PartCategory.Differential)))return "Missing";
             return Nice((front?s.Spec.frontDifferential:s.Spec.rearDifferential).kind);
         }
+        static string WheelDescription(NativeStatsSnapshot s){var parts=s.Spec.cornerWheelDefinitions;return parts!=null&&parts.Length==4?(parts.Select(p=>p.id).Distinct().Count()>1?"Mixed wheels":parts[0].name):s.Definition(PartCategory.Wheels)?.name??"Missing";}
         static string TireDescription(NativeStatsSnapshot s){var parts=s.Spec.cornerTireDefinitions;return parts!=null&&parts.Length==4?(parts.Select(p=>p.id).Distinct().Count()>1?"Mixed tires":parts[0].name):s.Definition(PartCategory.Tires)?.name??"Missing";}
         static readonly NativeStatGroup InductionGroup=Group("Induction","Induction / exhaust",
             T("inductionType","Induction",s=>Nice(s.Induction.type),"Effective installed induction topology. Twincharging combines turbo and supercharger operation; removing the kit returns naturally aspirated operation."),
@@ -197,7 +198,7 @@ namespace DragLab.Runtime
             var a=new NativeStatsSnapshot(current);var b=proposed==null?null:new NativeStatsSnapshot(proposed);
             foreach(var slot in Enum.GetValues(typeof(PartCategory)).Cast<PartCategory>().Where(slot=>a.Has(slot)||b!=null&&b.Has(slot))) {
                 string id="part:"+slot;var rows=new List<NativeStatDefinition>();
-                var hardware=T(id+":hardware","Hardware",s=>slot==PartCategory.Tires&&s.Has(slot)?TireDescription(s):s.Definition(slot)?.name??"Not installed","Installed component, not a replacement recommendation.");
+                var hardware=T(id+":hardware","Hardware",s=>slot==PartCategory.Wheels&&s.Has(slot)?WheelDescription(s):slot==PartCategory.Tires&&s.Has(slot)?TireDescription(s):s.Definition(slot)?.name??"Not installed","Installed component, not a replacement recommendation.");
                 hardware.Detail=s=>s.Definition(slot)==null?"No component installed in this slot.":s.Definition(slot).description+"\nDefinition: "+s.Definition(slot).id+"\nOwned instance: "+s.Part(slot).instanceId;rows.Add(hardware);
                 rows.Add(T(id+":quality","Quality",s=>s.Definition(slot)?.quality??"—","Actual construction quality from the installed definition; quality is separate from remaining condition."));
                 rows.Add(T(id+":status","Status",s=>s.Part(slot)==null?"Not installed":PrototypeGame.PartFailed(s.Part(slot))?"Failed":EngineElements.NeedsService(s.Part(slot).condition)?"Element fault":"Installed","A failed brake or drive branch does not imply a failed engine. Inspect the component's failure reason and the Performance warnings."));
@@ -235,10 +236,16 @@ namespace DragLab.Runtime
             foreach(var element in elements) {
                 string key=element.role+":"+element.cylinder+":"+element.valve,id=prefix+":element:"+key;
                 EngineElement Find(NativeStatsSnapshot s)=>s.Part(slot)?.condition.elements.FirstOrDefault(e=>e.role+":"+e.cylinder+":"+e.valve==key);
-                groups.Add(Group(id,Nice(element.role)+(element.cylinder>=0?" · cylinder "+(element.cylinder+1):"")+(element.valve>=0?" · valve "+(element.valve+1):""),
+                groups.Add(Group(id,slot==PartCategory.Wheels?new[]{"Front left wheel","Front right wheel","Rear left wheel","Rear right wheel"}[element.cylinder]:Nice(element.role)+(element.cylinder>=0?" · cylinder "+(element.cylinder+1):"")+(element.valve>=0?" · valve "+(element.valve+1):""),
                     N(id+":health","Condition",s=>Find(s)==null?(double?)null:Find(s).health*100,"%","F0",0,100,"Condition of this individual owned element, rather than the whole engine/set.",1),
                     T(id+":fault","Fault",s=>Find(s)==null?"Not installed":Nice(Find(s).fault),"Exact retained single-element fault; a failed cylinder/valve can coexist with other working cylinders."),
-                    N(id+":severity","Fault severity",s=>Find(s)==null?(double?)null:Find(s).severity*100,"%","F0",0,100,"Stored severity for the individual compression/ignition/valvetrain fault.",-1)));
+                    N(id+":severity","Fault severity",s=>Find(s)==null?(double?)null:Find(s).severity*100,"%","F0",0,100,"Stored severity for the individual retained fault.",-1),
+                    T(id+":spec","Specification",s=>Find(s)==null?"Not installed":s.Spec.cornerWheelDefinitions.Length==4&&slot==PartCategory.Wheels?s.Spec.cornerWheelDefinitions[Find(s).cylinder].name:s.Definition(slot)?.name??"Not installed","Actual retained member specification.")));
+            }
+            if(slot==PartCategory.Wheels)for(int corner=0;corner<4;corner++){
+                int index=corner;var member=groups.FirstOrDefault(g=>g.Id.Contains(":element:wheel:"+index+":"));if(member==null)continue;
+                var rows=member.Definitions.ToList();rows.Add(N(prefix+":rimMass:"+index,"Actual rim mass",s=>s.Spec.cornerWheelDefinitions.Length==4?(double?)(s.Spec.cornerWheelDefinitions[index].massKg*.25*Math.Pow(s.Tune.AxleDiameter(index<2),3)*s.Tune.AxleWidth(index<2)):null,"kg","F2",0,60,"This fitted rim's actual mass with axle geometry; rubber is separate.",-1));
+                groups[groups.IndexOf(member)]=Group(member.Id,member.Title,rows.ToArray());
             }
             int tires=Math.Max(a.Part(slot)?.condition.tires.Length??0,b?.Part(slot)?.condition.tires.Length??0);
             string[] corners={"Front left","Front right","Rear left","Rear right"};

@@ -12,6 +12,24 @@ namespace DragLab.Editor
 {
     public static class AxleWheelVerification
     {
+        static void CheckWheelMembers(PlayerProfile p,Action<bool,string> check)
+        {
+            var car=p.SelectedCar;var root=p.parts.Find(i=>i.instanceId==car.installed.slots.First(s=>s.slot=="Wheels").partInstanceId);WheelFitments.Ensure(root);
+            root.condition.elements[0].health=.35f;string oldFront=root.condition.elements[0].id,rear=JsonUtility.ToJson(root.condition.elements[2]);var before=MechanicsOwnership.Resolve(p,car,p.catalog);var baseWheels=new WheelProfile(before.spec,before.tune);
+            string id=p.catalog.Id(car.vehicleId,PartCategory.Wheels,1);string unchanged=JsonUtility.ToJson(p);
+            var lines=new[]{new PartCartLine{action=CartAction.NewUnits,definitionId=id,role="wheel",quantity=2,install=true,positions=new System.Collections.Generic.List<string>{"wheel:0","wheel:1"}}};
+            var preview=PartCart.Preview(p,car,lines);var wheels=new WheelProfile(preview.build.spec,preview.build.tune);
+            check(unchanged==JsonUtility.ToJson(p)&&wheels.rimMasses[0]<baseWheels.rimMasses[0]&&wheels.rimMasses[2]==baseWheels.rimMasses[2],"Front wheel pair preview lowers only actual front rim mass/inertia: "+car.vehicleId);
+            long now=DateTime.UtcNow.Ticks;var quote=PartCart.Quote(p,car.instanceId,lines,now,60);PlayerProfile applied;string error;
+            bool ok=MechanicsTransactions.Try(p,p.catalog,p.revision,c=>PartCart.Checkout(c,quote,now),c=>true,out applied,out error);check(ok,"Individual wheel pair uses one valid paid cart transaction: "+car.vehicleId+" / "+error);
+            car=applied.SelectedCar;var rims=applied.parts.Find(i=>i.instanceId==root.instanceId);
+            check(WheelFitments.DefinitionId(rims,0)==id&&WheelFitments.DefinitionId(rims,1)==id&&JsonUtility.ToJson(rims.condition.elements[2])==rear&&applied.looseEngineElements.Any(u=>u.element.id==oldFront&&u.element.health==.35f),"Wheel pair replacement retains rear identity and worn front originals: "+car.vehicleId);
+            var saved=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(applied));MechanicsOwnership.Ensure(saved,p.catalog);check(MechanicsOwnership.Validate(saved,p.catalog)==null&&WheelFitments.DefinitionId(saved.parts.Find(i=>i.instanceId==root.instanceId),0)==id,"Mixed rims survive profile normalization without losing identities: "+car.vehicleId);
+            SavedSetups.Save(applied,car.instanceId,"Mixed wheels",SetupScope.WholeCar);var setup=applied.savedSetups.Last();
+            foreach(int corner in new[]{0,1}){var original=applied.looseEngineElements.First(u=>u.element.role=="wheel"&&u.definitionId==root.definitionId);InventoryUnits.Install(applied,car.instanceId,original.element.id,"wheel:"+corner);}
+            var plan=SavedSetups.Preview(applied,car.instanceId,setup.id);check(plan.tires.Count(t=>t.wheel)==2&&plan.tires.Where(t=>t.wheel).All(t=>!t.purchase),"Whole-car setup locates exact owned wheel replacements for front pair: "+car.vehicleId);
+            SavedSetups.Apply(applied,car.instanceId,setup.id,applied.revision,false,plan.cost);check(MechanicsOwnership.Validate(applied,p.catalog)==null&&WheelFitments.DefinitionId(rims,0)==id,"Existing blueprint transaction restores real mixed wheel members: "+car.vehicleId);
+        }
         public static void Run()
         {
             var log=new StringBuilder();int count=0;
@@ -69,6 +87,7 @@ namespace DragLab.Editor
                 var repairedPack=repaired.parts.Find(p=>p.instanceId==repaired.SelectedCar.installed.slots.First(b=>b.slot=="Tires").partInstanceId);
                 check(repairedOk&&repaired.cash==prior-expected&&TireFitments.DefinitionId(repairedPack,2)==definition&&repairedPack.condition.tires.All(t=>t.health==1)&&repaired.parts.Find(p=>p.instanceId==oldPack).location==PartLocation.Inventory&&JsonUtility.ToJson(repaired.parts.Find(p=>p.instanceId==oldPack).condition)==retained,"Mixed Buy same preserves specifications and worn originals in one paid transaction: "+vehicle.spec.id+" / "+repairError);
 
+                CheckWheelMembers(repaired,check);
             }
 
             foreach(bool locked in new[]{false,true})foreach(double frontI in new[]{.2,1.2,4.0})foreach(double rearI in new[]{.4,2.0,8.0}){
