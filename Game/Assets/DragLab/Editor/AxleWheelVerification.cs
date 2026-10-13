@@ -15,7 +15,7 @@ namespace DragLab.Editor
         public static void Run()
         {
             var log=new StringBuilder();int count=0;
-            Action<bool,string> check=(ok,label)=>{log.AppendLine((ok?"PASS: ":"FAIL: ")+label);if(!ok)throw new InvalidOperationException(label);count++;};
+            Action<bool,string> check=(ok,label)=>{log.AppendLine(((ok?"PASS: ":"FAIL: ")+label).TrimEnd());if(!ok)throw new InvalidOperationException(label);count++;};
             foreach(var vehicle in Resources.LoadAll<VehicleDefinition>("Data/Vehicles")){
                 var spec=vehicle.spec.Copy();var tune=vehicle.CreateStockTune();tune.ClampTo(spec);
                 var original=new WheelProfile(spec,tune);var inherited=tune.Copy();inherited.frontWheelDiameter=inherited.rearWheelDiameter=(float)tune.WheelDiameter;inherited.frontWheelWidth=inherited.rearWheelWidth=(float)tune.WheelWidth;inherited.frontTirePressurePsi=inherited.rearTirePressurePsi=tune.tirePressurePsi;

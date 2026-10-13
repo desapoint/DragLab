@@ -116,106 +116,106 @@ PASS: Separate axle settings survive save JSON: v8-muscle
 PASS: Shared car simulation runs staggered axle geometry: v8-muscle
 PASS: Tire sound/smoke feedback receives actual axle radii: v8-muscle
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: city-three
-PASS: Mixed tire cart publishes one transaction: city-three / 
+PASS: Mixed tire cart publishes one transaction: city-three /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: city-three
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: city-three
-PASS: Mixed tire identities and condition remain valid: city-three / 
+PASS: Mixed tire identities and condition remain valid: city-three /
 PASS: Mixed compounds and removed wear survive actual save normalization: city-three
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: city-three
 PASS: Existing setup transaction restores mixed tires without granting replacements: city-three
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: juniper-club
-PASS: Mixed tire cart publishes one transaction: juniper-club / 
+PASS: Mixed tire cart publishes one transaction: juniper-club /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: juniper-club
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: juniper-club
-PASS: Mixed tire identities and condition remain valid: juniper-club / 
+PASS: Mixed tire identities and condition remain valid: juniper-club /
 PASS: Mixed compounds and removed wear survive actual save normalization: juniper-club
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: juniper-club
 PASS: Existing setup transaction restores mixed tires without granting replacements: juniper-club
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: juniper-economy
-PASS: Mixed tire cart publishes one transaction: juniper-economy / 
+PASS: Mixed tire cart publishes one transaction: juniper-economy /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: juniper-economy
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: juniper-economy
-PASS: Mixed tire identities and condition remain valid: juniper-economy / 
+PASS: Mixed tire identities and condition remain valid: juniper-economy /
 PASS: Mixed compounds and removed wear survive actual save normalization: juniper-economy
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: juniper-economy
 PASS: Existing setup transaction restores mixed tires without granting replacements: juniper-economy
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: kestrel-track
-PASS: Mixed tire cart publishes one transaction: kestrel-track / 
+PASS: Mixed tire cart publishes one transaction: kestrel-track /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: kestrel-track
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: kestrel-track
-PASS: Mixed tire identities and condition remain valid: kestrel-track / 
+PASS: Mixed tire identities and condition remain valid: kestrel-track /
 PASS: Mixed compounds and removed wear survive actual save normalization: kestrel-track
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: kestrel-track
 PASS: Existing setup transaction restores mixed tires without granting replacements: kestrel-track
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: rally-sedan
-PASS: Mixed tire cart publishes one transaction: rally-sedan / 
+PASS: Mixed tire cart publishes one transaction: rally-sedan /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: rally-sedan
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: rally-sedan
-PASS: Mixed tire identities and condition remain valid: rally-sedan / 
+PASS: Mixed tire identities and condition remain valid: rally-sedan /
 PASS: Mixed compounds and removed wear survive actual save normalization: rally-sedan
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: rally-sedan
 PASS: Existing setup transaction restores mixed tires without granting replacements: rally-sedan
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: sport-coupe
-PASS: Mixed tire cart publishes one transaction: sport-coupe / 
+PASS: Mixed tire cart publishes one transaction: sport-coupe /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: sport-coupe
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: sport-coupe
-PASS: Mixed tire identities and condition remain valid: sport-coupe / 
+PASS: Mixed tire identities and condition remain valid: sport-coupe /
 PASS: Mixed compounds and removed wear survive actual save normalization: sport-coupe
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: sport-coupe
 PASS: Existing setup transaction restores mixed tires without granting replacements: sport-coupe
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: starter-hatch
-PASS: Mixed tire cart publishes one transaction: starter-hatch / 
+PASS: Mixed tire cart publishes one transaction: starter-hatch /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: starter-hatch
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: starter-hatch
-PASS: Mixed tire identities and condition remain valid: starter-hatch / 
+PASS: Mixed tire identities and condition remain valid: starter-hatch /
 PASS: Mixed compounds and removed wear survive actual save normalization: starter-hatch
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: starter-hatch
 PASS: Existing setup transaction restores mixed tires without granting replacements: starter-hatch
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: super-v8
-PASS: Mixed tire cart publishes one transaction: super-v8 / 
+PASS: Mixed tire cart publishes one transaction: super-v8 /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: super-v8
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: super-v8
-PASS: Mixed tire identities and condition remain valid: super-v8 / 
+PASS: Mixed tire identities and condition remain valid: super-v8 /
 PASS: Mixed compounds and removed wear survive actual save normalization: super-v8
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: super-v8
 PASS: Existing setup transaction restores mixed tires without granting replacements: super-v8
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: timber-diesel
-PASS: Mixed tire cart publishes one transaction: timber-diesel / 
+PASS: Mixed tire cart publishes one transaction: timber-diesel /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: timber-diesel
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: timber-diesel
-PASS: Mixed tire identities and condition remain valid: timber-diesel / 
+PASS: Mixed tire identities and condition remain valid: timber-diesel /
 PASS: Mixed compounds and removed wear survive actual save normalization: timber-diesel
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: timber-diesel
 PASS: Existing setup transaction restores mixed tires without granting replacements: timber-diesel
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: timber-diesel-tow
-PASS: Mixed tire cart publishes one transaction: timber-diesel-tow / 
+PASS: Mixed tire cart publishes one transaction: timber-diesel-tow /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: timber-diesel-tow
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: timber-diesel-tow
-PASS: Mixed tire identities and condition remain valid: timber-diesel-tow / 
+PASS: Mixed tire identities and condition remain valid: timber-diesel-tow /
 PASS: Mixed compounds and removed wear survive actual save normalization: timber-diesel-tow
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: timber-diesel-tow
 PASS: Existing setup transaction restores mixed tires without granting replacements: timber-diesel-tow
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: touring-six
-PASS: Mixed tire cart publishes one transaction: touring-six / 
+PASS: Mixed tire cart publishes one transaction: touring-six /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: touring-six
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: touring-six
-PASS: Mixed tire identities and condition remain valid: touring-six / 
+PASS: Mixed tire identities and condition remain valid: touring-six /
 PASS: Mixed compounds and removed wear survive actual save normalization: touring-six
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: touring-six
 PASS: Existing setup transaction restores mixed tires without granting replacements: touring-six
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: utility-pickup
-PASS: Mixed tire cart publishes one transaction: utility-pickup / 
+PASS: Mixed tire cart publishes one transaction: utility-pickup /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: utility-pickup
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: utility-pickup
-PASS: Mixed tire identities and condition remain valid: utility-pickup / 
+PASS: Mixed tire identities and condition remain valid: utility-pickup /
 PASS: Mixed compounds and removed wear survive actual save normalization: utility-pickup
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: utility-pickup
 PASS: Existing setup transaction restores mixed tires without granting replacements: utility-pickup
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: v8-muscle
-PASS: Mixed tire cart publishes one transaction: v8-muscle / 
+PASS: Mixed tire cart publishes one transaction: v8-muscle /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: v8-muscle
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: v8-muscle
-PASS: Mixed tire identities and condition remain valid: v8-muscle / 
+PASS: Mixed tire identities and condition remain valid: v8-muscle /
 PASS: Mixed compounds and removed wear survive actual save normalization: v8-muscle
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: v8-muscle
 PASS: Existing setup transaction restores mixed tires without granting replacements: v8-muscle
