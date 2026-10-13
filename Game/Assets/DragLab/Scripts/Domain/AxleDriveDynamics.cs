@@ -43,16 +43,23 @@ namespace DragLab.Domain
         }
         public static double TorqueSplit(CarSimulation car, double demand, double frontGrip, double rearGrip, double dt)
         {
-            var s = car.state; var data = car.awd; double front;
-            var fd = DifferentialDynamics.Solve(car.spec.frontDifferential, 0, frontGrip * .5 * DifferentialDynamics.Grip(car.tune.frontLeftGrip), frontGrip * .5 * DifferentialDynamics.Grip(car.tune.frontRightGrip), car.wheels.radius, s.frontDifferentialHealth);
-            var rd = DifferentialDynamics.Solve(car.spec.rearDifferential, 0, rearGrip * .5 * DifferentialDynamics.Grip(car.tune.rearLeftGrip), rearGrip * .5 * DifferentialDynamics.Grip(car.tune.rearRightGrip), car.wheels.radius, s.rearDifferentialHealth);
-            double originalFront = frontGrip, originalRear = rearGrip;
-            frontGrip = fd.capacity; rearGrip = rd.capacity;
+            var s=car.state;
+            var fd=DifferentialDynamics.Solve(car.spec.frontDifferential,0,frontGrip*.5*DifferentialDynamics.Grip(car.tune.frontLeftGrip),frontGrip*.5*DifferentialDynamics.Grip(car.tune.frontRightGrip),car.wheels.radii[0],s.frontDifferentialHealth);
+            var rd=DifferentialDynamics.Solve(car.spec.rearDifferential,0,rearGrip*.5*DifferentialDynamics.Grip(car.tune.rearLeftGrip),rearGrip*.5*DifferentialDynamics.Grip(car.tune.rearRightGrip),car.wheels.radii[2],s.rearDifferentialHealth);
+            return TorqueSplitFromCapacities(car,fd.capacity*car.wheels.radii[0]*car.awd.LockedRatio,rd.capacity*car.wheels.radii[2],dt);
+        }
+        // Comparable capacity at the center input, not a mix of force and torque.
+        public static double TorqueSplitFromCapacities(CarSimulation car,double frontCapacityNm,double rearCapacityNm,double dt)
+        {
+            var s=car.state;var data=car.awd;double front;
+            double frontGrip=Math.Max(0,frontCapacityNm),rearGrip=Math.Max(0,rearCapacityNm);
             if (car.spec.drive != DriveType.AWD) front = car.spec.drive == DriveType.FWD ? 1 : 0;
             else if (data.mode == AwdMode.OnDemand)
             {
                 double slip = data.primaryFront ? s.frontSlip : s.rearSlip;
-                double request = data.maximumSecondary * DragMath.Clamp(Math.Max(data.preload * s.throttle, (slip - data.slipThreshold) / Math.Max(.01, data.slipThreshold * 3)), 0, 1);
+                double secondaryGrip=data.primaryFront?rearGrip:frontGrip;
+                double preload=data.preload*s.throttle*2*secondaryGrip/Math.Max(1,frontGrip+rearGrip);
+                double request=data.maximumSecondary*DragMath.Clamp(Math.Max(preload,(slip-data.slipThreshold)/Math.Max(.01,data.slipThreshold*3)),0,1);
                 bool primaryAvailable = data.primaryFront ? s.frontDriveAvailable : s.rearDriveAvailable;
                 if (!primaryAvailable && data.isolateFailedAxle && data.maximumSecondary > 0) request = 1;
                 if (data.primaryFront ? !s.rearDriveAvailable : !s.frontDriveAvailable) request = 0;
@@ -62,7 +69,8 @@ namespace DragLab.Domain
             else if (data.mode == AwdMode.ActiveBias || data.mode == AwdMode.LockedCenter)
             {
                 double gripShare = frontGrip / Math.Max(1, frontGrip + rearGrip);
-                double target = data.mode == AwdMode.LockedCenter ? gripShare : DragMath.Clamp(data.frontBias + (s.rearSlip - s.frontSlip) * .5, data.minimumFront, data.maximumFront);
+                double preferred=data.frontBias*frontGrip/Math.Max(1e-9,data.frontBias*frontGrip+(1-data.frontBias)*rearGrip);
+                double target=data.mode==AwdMode.LockedCenter?gripShare:DragMath.Clamp(preferred+(s.rearSlip-s.frontSlip)*.5,data.minimumFront,data.maximumFront);
                 double current = s.frontTorqueShare;
                 front = data.mode == AwdMode.LockedCenter ? target : current + (target - current) * (1 - Math.Exp(-dt / data.responseSeconds));
             }

@@ -62,6 +62,8 @@ namespace DragLab.Domain {
    list.Add(new DrivingTraceChannel("Coupling","Rear shaft Nm",s=>s.rearShaftNm*1));
    list.Add(new DrivingTraceChannel("Coupling","Front shaft kW",s=>s.frontShaftPowerW*0.001));
    list.Add(new DrivingTraceChannel("Coupling","Rear shaft kW",s=>s.rearShaftPowerW*0.001));
+   list.Add(new DrivingTraceChannel("Coupling","AWD slip work kJ",s=>s.awdCouplingWorkJ*.001));
+   list.Add(new DrivingTraceChannel("Coupling","AWD heat kW",s=>s.awdCouplingHeatW*.001));
    list.Add(new DrivingTraceChannel("Mass / fuel","Total kg",s=>s.translatingMassKg*1));
    list.Add(new DrivingTraceChannel("Mass / fuel","Dry kg",s=>s.dryMassKg*1));
    list.Add(new DrivingTraceChannel("Mass / fuel","Driver kg",s=>s.driverMassKg*1));

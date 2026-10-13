@@ -1,5 +1,7 @@
 # Wheel contact model — phase 2G
 
+Current all-mode AWD update (2026-10-13): contact core v5 applies center-clutch impulses after external drive work, with bounded dissipative coupling and a separate center-work ledger included in total contact loss. Independent axle geometry and actual mass/load inform adaptive capacity allocation. [Current verification and limitations](../reports/awd-geometry/CHANGES.md).
+
 The domain solver `WheelContactDynamics` tracks four independent angular speeds/angles, signed slip and longitudinal contact forces. Translational acceleration uses actual carried mass; every wheel has its own rotational inertia. Contact impulses are bounded by surface friction and normal load, with modeled load sensitivity and a sliding-grip curve. Slip is measured from wheel peripheral speed versus body speed; it is never replaced by a demand estimate.
 
 Open axles retain left/right angular freedom. Limited-slip preload and torque bias transfer torque against relative speed and dissipate internal energy. Welded/spool axles constrain their wheel speeds. A locked center constrains front/rear axle **means**, retaining left/right freedom of open axles; it does not weld all four wheels. Impulse projection respects those constraints during contact and braking. Brake work exists only when actual brake torque slows rotation. Contact slip-work is stored separately per wheel; differential loss is tracked separately and included in total dissipated work.

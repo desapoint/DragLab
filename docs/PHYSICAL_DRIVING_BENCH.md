@@ -1,6 +1,6 @@
 # Physical driving bench
 
-See [Component failures and AWD](COMPONENT_FAILURES_AWD.md). Select the pickup for AWD controls; detailed diagnostics show both drive paths, torque shares, delivered axle forces, slip estimates, brake capacity and all installed component conditions. Race and bench share the same behavior. Current physics identity is `draglab-integrated-tools-v15`; rerecord older scenarios. Full selectable channels and developer tools are documented in [integrated tooling](INTEGRATED_TOOLS_CALIBRATION.md).
+See [Component failures and AWD](COMPONENT_FAILURES_AWD.md). Select the pickup for AWD controls; detailed diagnostics show both drive paths, torque shares, delivered axle forces, slip estimates, brake capacity and all installed component conditions. Race and bench share the same behavior. Current physics identity is `draglab-variety-v18`; rerecord older scenarios. Full selectable channels and developer tools are documented in [integrated tooling](INTEGRATED_TOOLS_CALIBRATION.md).
 
 Open **DragLab → Open Physical Driving Test Scene** in Unity and press Play. In the Windows game, use **Physical driving bench / this installed build** in Garage. The sound bench also links to this scene. `tools/Test-WindowsSlice.ps1 -DrivingBenchOnly -ShowPlayer` runs an isolated automated test; it is not the normal play launcher.
 
@@ -76,3 +76,5 @@ Select **Sequential manual gearbox** under isolated Gearbox test parts to use th
 ## Condition, fluids and service extension
 
 Service/fluids originally arrived in model v13; individual cylinders/clutch fluids extended it in v14. Use the current model shown in the bench and record fresh scenarios after a model change. Detailed diagnostics expose isolated oil/coolant quantity, oil condition/temperature, pressures, circulation and losses; graph tabs include oil quantity, coolant quantity, oil temperature, oil pressure, oil condition and valve float. New CSV fields also carry combustion efficiency and individual loss rates. Per-part deposits, leaks and clearance inputs appear where relevant and may be assigned before engagement or while paused. Test top-ups, cooldown and service actions retain driving ownership; wear reset leaves fluid quantities unchanged. Race and bench advance these systems through the same car solver. See [service documentation](WEAR_FLUIDS_AND_SERVICE.md).
+
+AWD geometry update (2026-10-13): all six center modes use the same four-wheel model in races and this bench. Coupling channels add AWD slip work kJ and AWD heat kW; CSV uses that same channel registry. Front bias is the controller/geometric request; measured shaft Nm/kW and axle forces expose the delivered result and any recirculation. See [all-mode validation](../reports/awd-geometry/CHANGES.md).

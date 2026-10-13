@@ -473,7 +473,7 @@ namespace DragLab.Domain
         public double deliveryPowerCapacityHp;
         public double frontDifferentialHealth = 1, rearDifferentialHealth = 1;
         public double frontLeftSlip, frontRightSlip, rearLeftSlip, rearRightSlip, coolingHeatRejectedW;
-        public double frontTorqueShare = .5, rearTorqueShare = .5, awdSecondaryShare;
+        public double frontTorqueShare = .5, rearTorqueShare = .5, awdSecondaryShare, awdCouplingLossPowerW, awdCouplingReferenceTorqueNm;
         public double frontSlip, rearSlip, frontDriveForceN, rearDriveForceN, frontLoadN, rearLoadN;
         public double flywheelInertiaKgM2, engineRotationalInertiaKgM2, flywheelEnergyJ, flywheelAngularMomentum;
         public double turboSpool, turboBoostBar, superchargerBoostBar, superchargerBypass, boostBar;

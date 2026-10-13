@@ -26,7 +26,7 @@ namespace DragLab.Runtime
             Add("exhaustPath",PartCategory.Exhaust);
             Add("transmission|downshiftProtection|finalDrive|shiftSeconds|shiftRetention|clutchType|clutchCapacity|converterStall|converterMultiply|converterLock|cvtMinimum|cvtMaximum|cvtTarget|gearRatio|gearSpeed|shiftLanding|cvtSpeed",PartCategory.Gearbox);
             Add("clutchType|clutchCapacity|shiftSeconds",PartCategory.Clutch);Add("flywheelMass|flywheelInertia|engineInertia",PartCategory.Flywheel);Add("engineInertia",PartCategory.CylinderBlock);
-            Add("frontDifferential|rearDifferential|awdMode|awdFrontBias|awdPrimary|awdMinimumFront|awdMaximumFront|awdSecondary|awdResponse|awdPreload|awdSlipThreshold|awdIsolation|centerSpeedRatio|centerBias|centerPreload|wheelRadius|wheelDiameter",PartCategory.Differential,PartCategory.TransferCase);
+            Add("frontDifferential|rearDifferential|awdMode|awdFrontBias|awdPrimary|awdMinimumFront|awdMaximumFront|awdSecondary|awdResponse|awdPreload|awdSlipThreshold|awdIsolation|centerSpeedRatio|centerBias|centerPreload|wheelRadius|wheelDiameter|gearSpeed|cvtSpeed",PartCategory.Differential,PartCategory.TransferCase);
             Add("frontDifferential",PartCategory.FrontDifferential);Add("rearDifferential",PartCategory.RearDifferential);
             Add("wheelRadius|wheelDiameter|wheelMass|wheelInertia|effectiveMass|wheelWidth|tirePressure|gearSpeed|cvtSpeed",PartCategory.Wheels,PartCategory.Tires);
             Add("tireCompound|tireGrip|tireHealth|rollingLife|slidingLife",PartCategory.Tires);

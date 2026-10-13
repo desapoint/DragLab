@@ -1,0 +1,488 @@
+PASS: Hardware versus adaptive center-capacity distribution: FixedSplit
+PASS: Different rolling sizes retain their own physical angular speed while coasting: FixedSplit
+PASS: A free/open/disengaged center does not invent coupling heat from angular-speed difference: FixedSplit
+PASS: Hardware versus adaptive center-capacity distribution: OpenCenter
+PASS: Different rolling sizes retain their own physical angular speed while coasting: OpenCenter
+PASS: A free/open/disengaged center does not invent coupling heat from angular-speed difference: OpenCenter
+PASS: Hardware versus adaptive center-capacity distribution: LockedCenter
+PASS: Different rolling sizes retain their own physical angular speed while coasting: LockedCenter
+PASS: A free/open/disengaged center does not invent coupling heat from angular-speed difference: LockedCenter
+PASS: Hardware versus adaptive center-capacity distribution: OnDemand
+PASS: Different rolling sizes retain their own physical angular speed while coasting: OnDemand
+PASS: A free/open/disengaged center does not invent coupling heat from angular-speed difference: OnDemand
+PASS: Hardware versus adaptive center-capacity distribution: ActiveBias
+PASS: Different rolling sizes retain their own physical angular speed while coasting: ActiveBias
+PASS: A free/open/disengaged center does not invent coupling heat from angular-speed difference: ActiveBias
+PASS: Hardware versus adaptive center-capacity distribution: LimitedSlipCenter
+PASS: Different rolling sizes retain their own physical angular speed while coasting: LimitedSlipCenter
+PASS: A free/open/disengaged center does not invent coupling heat from angular-speed difference: LimitedSlipCenter
+PASS: Different tire RPM alone cannot engage reactive on-demand AWD: False
+PASS: On-demand engagement responds gradually to actual tire/road slip: False
+PASS: Preemptive on-demand share responds to secondary axle usable torque capacity: False
+PASS: Disabled on-demand secondary decays to disengaged: False
+PASS: Different tire RPM alone cannot engage reactive on-demand AWD: True
+PASS: On-demand engagement responds gradually to actual tire/road slip: True
+PASS: Preemptive on-demand share responds to secondary axle usable torque capacity: True
+PASS: Disabled on-demand secondary decays to disengaged: True
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 0,8 / 0,8 / False
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 0,8 / 0,8 / True
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 0,8 / 1 / False
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 0,8 / 1 / True
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 0,8 / 1,2 / False
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 0,8 / 1,2 / True
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 1 / 0,8 / False
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 1 / 0,8 / True
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 1 / 1 / False
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 1 / 1 / True
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 1 / 1,2 / False
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 1 / 1,2 / True
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 1,2 / 0,8 / False
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 1,2 / 0,8 / True
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 1,2 / 1 / False
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 1,2 / 1 / True
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 1,2 / 1,2 / False
+PASS: Clutch transfer conserves signed work and dissipates real slip energy: 1,2 / 1,2 / True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: FixedSplit / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: FixedSplit / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: FixedSplit / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OpenCenter / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OpenCenter / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OpenCenter / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LockedCenter / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LockedCenter / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LockedCenter / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: OnDemand / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: OnDemand / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: OnDemand / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: ActiveBias / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: ActiveBias / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: ActiveBias / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 0,8 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 0,8 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 0,8 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 0,8 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 0,8 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 0,8 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 0,8 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 0,8 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1 / load 0,7 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1,2 / load 0,3 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1,2 / load 0,3 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1,2 / load 0,3 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1,2 / load 0,3 / grip 1 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1,2 / load 0,7 / grip 0,15 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1,2 / load 0,7 / grip 0,15 / primary True
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1,2 / load 0,7 / grip 1 / primary False
+PASS: Shared powered/shift/lift/brake simulation remains finite with independent geometry and axle loads: LimitedSlipCenter / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Identical varied AWD inputs repeat exactly: LimitedSlipCenter / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Per-tick AWD heat agrees with accumulated coupling work: LimitedSlipCenter / front 1,2 / load 0,7 / grip 1 / primary True
+PASS: Engaged on-demand AWD preserves wheel momentum transfer through an open gearbox clutch
+PASS: Active AWD reacts to actual mass/placement-derived axle loads before power slip is required
+PASS: One lighter rim changes total/axle mass once, without cloning its mass to the opposite corner
+PASS: Actual unequal-speed coupling slip heats the physical transfer case: OnDemand
+PASS: Actual unequal-speed coupling slip heats the physical transfer case: LimitedSlipCenter
+PASS: Rolling mismatch warnings describe actual center hardware rather than treating all AWD as locked: FixedSplit
+PASS: Rolling mismatch warnings describe actual center hardware rather than treating all AWD as locked: OpenCenter
+PASS: Rolling mismatch warnings describe actual center hardware rather than treating all AWD as locked: LockedCenter
+PASS: Rolling mismatch warnings describe actual center hardware rather than treating all AWD as locked: OnDemand
+PASS: Rolling mismatch warnings describe actual center hardware rather than treating all AWD as locked: ActiveBias
+PASS: Rolling mismatch warnings describe actual center hardware rather than treating all AWD as locked: LimitedSlipCenter
+Checks: 487 / failures: 0

@@ -5,11 +5,11 @@ namespace DragLab.Domain
     public sealed class WheelContactState
     {
         // Order FL, FR, RL, RR. Angular speed rad/s, angle rad, forces N, work J.
-        public double speed,distance,acceleration,brakeWorkJ,contactWorkJ,differentialWorkJ,resistanceWorkJ,driveWorkJ;
+        public double speed,distance,acceleration,brakeWorkJ,contactWorkJ,differentialWorkJ,centerCouplingWorkJ,resistanceWorkJ,driveWorkJ;
         public double[] omega=new double[4],angle=new double[4],slip=new double[4],force=new double[4],slipWorkJ=new double[4],driveTorqueNm=new double[4],brakeTorqueNm=new double[4],contactTorqueNm=new double[4];
         public double[] normalLoadN=new double[4], friction=new double[4];
         public WheelContactState Copy(){var s=(WheelContactState)MemberwiseClone();s.normalLoadN=normalLoadN==null||normalLoadN.Length!=4?new double[4]:(double[])normalLoadN.Clone();s.friction=friction==null||friction.Length!=4?new double[4]:(double[])friction.Clone();s.omega=(double[])omega.Clone();s.angle=(double[])angle.Clone();s.slip=(double[])slip.Clone();s.force=(double[])force.Clone();s.slipWorkJ=(double[])slipWorkJ.Clone();s.driveTorqueNm=(double[])driveTorqueNm.Clone();s.brakeTorqueNm=(double[])brakeTorqueNm.Clone();s.contactTorqueNm=(double[])contactTorqueNm.Clone();return s;}
-        public string Validate(){foreach(var values in new[]{omega,angle,slip,force,slipWorkJ,driveTorqueNm,brakeTorqueNm,contactTorqueNm}){if(values==null||values.Length!=4)return "Four wheel values required.";foreach(double value in values)if(!Mechanics.MechanicsSchema.Finite(value))return "Nonfinite wheel state.";}foreach(double value in new[]{speed,distance,acceleration,brakeWorkJ,contactWorkJ,differentialWorkJ,resistanceWorkJ,driveWorkJ})if(!Mechanics.MechanicsSchema.Finite(value))return "Nonfinite contact history.";if(speed<0)return "Invalid forward road speed.";return null;}
+        public string Validate(){foreach(var values in new[]{omega,angle,slip,force,slipWorkJ,driveTorqueNm,brakeTorqueNm,contactTorqueNm}){if(values==null||values.Length!=4)return "Four wheel values required.";foreach(double value in values)if(!Mechanics.MechanicsSchema.Finite(value))return "Nonfinite wheel state.";}foreach(double value in new[]{speed,distance,acceleration,brakeWorkJ,contactWorkJ,differentialWorkJ,centerCouplingWorkJ,resistanceWorkJ,driveWorkJ})if(!Mechanics.MechanicsSchema.Finite(value))return "Nonfinite contact history.";if(speed<0)return "Invalid forward road speed.";return null;}
         public double KineticEnergy(double mass,double inertia)=>KineticEnergy(mass,new[]{inertia,inertia,inertia,inertia});
         public double KineticEnergy(double mass,double[] inertia){double e=.5*mass*speed*speed;for(int i=0;i<4;i++)e+=.5*inertia[i]*omega[i]*omega[i];return e;}
     }
@@ -22,11 +22,12 @@ namespace DragLab.Domain
         public DifferentialSpec frontDifferential=new DifferentialSpec(),rearDifferential=new DifferentialSpec();
         public double frontDifferentialHealth=1,rearDifferentialHealth=1;
         public bool lockCenter;
-        public double centerPreloadNm, centerTorqueBiasRatio = 1;
+        public double centerPreloadNm, centerTorqueBiasRatio = 1, centerClutchCapacityNm;
     }
     public static class WheelContactDynamics
     {
-        public const string Model="draglab-wheel-contact-v4";
+        public const string Model="draglab-wheel-contact-v5";
+        public static double GripLimit(double normal,double friction,double slip=0){double grip=friction*normal*Math.Pow(Math.Max(1,normal)/3000,-.1);if(Math.Abs(slip)>.12)grip*=.8+.2*Math.Exp(-(Math.Abs(slip)-.12)*2);return grip;}
         static double Slip(double wheel,double road){return (wheel-road)/Math.Max(1,Math.Max(Math.Abs(wheel),Math.Abs(road)));}
         static bool Locked(DifferentialSpec d){return d.kind==DifferentialKind.Welded||d.kind==DifferentialKind.Spool;}
         // Orthogonal velocity constraints: axle locks remove left/right freedom;
@@ -59,12 +60,12 @@ namespace DragLab.Domain
         }
         public static void Step(WheelContactState s,WheelContactInput input,double dt)
         {
-            foreach(double value in new[]{input.massKg,input.radiusM,input.inertiaKgM2,input.frontTorqueNm,input.rearTorqueNm,input.resistanceN,input.frontDifferentialHealth,input.rearDifferentialHealth,input.centerPreloadNm,input.centerTorqueBiasRatio})if(!Mechanics.MechanicsSchema.Finite(value))throw new ArgumentException("Nonfinite wheel parameters.");
+            foreach(double value in new[]{input.massKg,input.radiusM,input.inertiaKgM2,input.frontTorqueNm,input.rearTorqueNm,input.resistanceN,input.frontDifferentialHealth,input.rearDifferentialHealth,input.centerPreloadNm,input.centerTorqueBiasRatio,input.centerClutchCapacityNm})if(!Mechanics.MechanicsSchema.Finite(value))throw new ArgumentException("Nonfinite wheel parameters.");
             foreach(var values in new[]{input.normalLoadN,input.friction,input.brakeNm}){if(values==null||values.Length!=4)throw new ArgumentException("Four contact inputs required.");foreach(double value in values)if(!Mechanics.MechanicsSchema.Finite(value)||value<0)throw new ArgumentException("Invalid contact input.");}
             if(s.Validate()!=null||input.frontDifferential==null||input.rearDifferential==null||input.frontDifferential.Validate()!=null||input.rearDifferential.Validate()!=null)throw new ArgumentException("Invalid wheel/differential state.");
             if(input.massKg<=0||input.radiusM<=0||input.inertiaKgM2<=0||!Mechanics.MechanicsSchema.Finite(dt)||dt<=0||dt>.05)throw new ArgumentException("Invalid wheel contact parameters.");
             if(!Mechanics.MechanicsSchema.Finite(input.centerSpeedRatio)||input.centerSpeedRatio<.5||input.centerSpeedRatio>2)throw new ArgumentException("Invalid center speed ratio.");
-            if(input.centerPreloadNm<0||input.centerTorqueBiasRatio<1||input.centerTorqueBiasRatio>10)throw new ArgumentException("Invalid center LSD parameters.");
+            if(input.centerClutchCapacityNm<0||input.centerPreloadNm<0||input.centerTorqueBiasRatio<1||input.centerTorqueBiasRatio>10)throw new ArgumentException("Invalid center LSD parameters.");
             if(s.normalLoadN==null||s.normalLoadN.Length!=4)s.normalLoadN=new double[4];if(s.friction==null||s.friction.Length!=4)s.friction=new double[4];
             var radii=input.radii??new[]{input.radiusM,input.radiusM,input.radiusM,input.radiusM};var inertia=input.inertias??new[]{input.inertiaKgM2,input.inertiaKgM2,input.inertiaKgM2,input.inertiaKgM2};
             foreach(var values in new[]{radii,inertia}){if(values.Length!=4)throw new ArgumentException("Four wheel geometry values required.");foreach(double value in values)if(!Mechanics.MechanicsSchema.Finite(value)||value<=0)throw new ArgumentException("Invalid per-wheel geometry.");}
@@ -73,15 +74,21 @@ namespace DragLab.Domain
             {
                 double subSpeedBefore=s.speed;var previous=(double[])s.omega.Clone();
                 PairTorque(input.frontTorqueNm,input.frontDifferential,input.frontDifferentialHealth,s,0,inertia,h,torque);PairTorque(input.rearTorqueNm,input.rearDifferential,input.rearDifferentialHealth,s,2,inertia,h,torque);
-                if(!input.lockCenter && input.frontDifferentialHealth>0 && input.rearDifferentialHealth>0 && (input.centerPreloadNm>0 || input.centerTorqueBiasRatio>1)) {
-                    double difference=(s.omega[0]+s.omega[1]-s.omega[2]-s.omega[3])*.5;
-                    double limit=input.centerPreloadNm+Math.Abs(input.frontTorqueNm+input.rearTorqueNm)*.5*(input.centerTorqueBiasRatio-1)/(input.centerTorqueBiasRatio+1);
-                    double transfer=DragMath.Clamp(difference/(.25*(1/inertia[0]+1/inertia[1]+1/inertia[2]+1/inertia[3]))/h,-limit,limit);
-                    torque[0]-=transfer*.5;torque[1]-=transfer*.5;torque[2]+=transfer*.5;torque[3]+=transfer*.5;
-                }
                 for(int i=0;i<4;i++){for(int j=0;j<4;j++){s.omega[i]+=mobility[i,j]*torque[j]*h;s.driveTorqueNm[i]+=inertia[i]*mobility[i,j]*torque[j]*h/dt;}}
                 double externalWork=0;for(int i=0;i<4;i++){double source=i<2?(input.frontDifferentialHealth>0?input.frontTorqueNm*.5:0):(input.rearDifferentialHealth>0?input.rearTorqueNm*.5:0);externalWork+=source*(previous[i]+s.omega[i])*.5*h;}
                 double differentialLoss=Math.Max(0,externalWork-(RotatingEnergy(s.omega,inertia)-RotatingEnergy(previous,inertia)));s.driveWorkJ+=externalWork;s.differentialWorkJ+=differentialLoss;s.contactWorkJ+=differentialLoss;
+                if(!input.lockCenter&&input.frontDifferentialHealth>0&&input.rearDifferentialHealth>0){
+                    double cap=input.centerClutchCapacityNm+input.centerPreloadNm+Math.Abs(input.frontTorqueNm+input.rearTorqueNm)*.5*(input.centerTorqueBiasRatio-1)/(input.centerTorqueBiasRatio+1);
+                    if(cap>0){
+                        var c=new[]{.5,.5,-.5,-.5};var response=new double[4];double mobilityAlong=0,difference=0;
+                        for(int i=0;i<4;i++){difference+=c[i]*s.omega[i];for(int j=0;j<4;j++)response[i]+=mobility[i,j]*c[j];mobilityAlong+=c[i]*response[i];}
+                        double impulse=DragMath.Clamp(difference/Math.Max(1e-12,mobilityAlong),-cap*h,cap*h);
+                        double loss=Math.Max(0,impulse*difference-.5*impulse*impulse*mobilityAlong);
+                        for(int i=0;i<4;i++){s.omega[i]-=response[i]*impulse;s.driveTorqueNm[i]-=inertia[i]*response[i]*impulse/dt;}
+                        s.centerCouplingWorkJ+=loss;s.differentialWorkJ+=loss;s.contactWorkJ+=loss;
+                    }
+                }
+
                 for(int i=0;i<4;i++)
                 {
                     double oldEnergy=RotatingEnergy(s.omega,inertia);double brakeImpulse=Math.Sign(s.omega[i])*Math.Min(input.brakeNm[i]*h,Math.Abs(s.omega[i])/mobility[i,i]);
@@ -91,7 +98,7 @@ namespace DragLab.Domain
                 for(int n=0;n<4;n++)
                 {
                     int i=(n+sub)%4;double relative=s.omega[i]*radii[i]-s.speed,slip=Slip(s.omega[i]*radii[i],s.speed),normal=input.normalLoadN[i];
-                    double grip=input.friction[i]*normal*Math.Pow(Math.Max(1,normal)/3000,-.1);if(Math.Abs(slip)>.12)grip*=.8+.2*Math.Exp(-(Math.Abs(slip)-.12)*2);
+                    double grip=GripLimit(normal,input.friction[i],slip);
                     double inverseMass=1/input.massKg+radii[i]*radii[i]*mobility[i,i];double impulse=DragMath.Clamp(relative/inverseMass,-grip*h,grip*h);
                     double loss=Math.Max(0,impulse*relative-.5*impulse*impulse*inverseMass);s.slipWorkJ[i]+=loss;s.contactWorkJ+=loss;s.force[i]+=impulse/dt;s.contactTorqueNm[i]+=impulse*radii[i]/dt;s.speed+=impulse/input.massKg;
                     for(int j=0;j<4;j++)s.omega[j]-=impulse*radii[i]*mobility[j,i];

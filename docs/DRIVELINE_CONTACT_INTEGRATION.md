@@ -1,5 +1,7 @@
 # Shared driveline and measured wheel contact — 2H
 
+Current all-mode AWD update (2026-10-13): contact core v5 applies center-clutch impulses after external drive work, with bounded dissipative coupling and a separate center-work ledger included in total contact loss. Independent axle geometry and actual mass/load inform adaptive capacity allocation. [Current verification and limitations](../reports/awd-geometry/CHANGES.md).
+
 CarSimulation is the sole authoritative model in race, AI input timelines and the physical bench. The engine and flywheel retain finite inertia, feeding the independently rotating four wheels through manual/DCT friction coupling or automatic/CVT converter behavior. Contact applies opposite impulses to actual translating mass and wheel rotation. Equivalent rolling mass remains a useful inspection diagnostic, but is not added to translating mass in the solver.
 
 The coupling/contact integration advances at 960 Hz inside the 120 Hz input/wear tick. Launch clutch assist is bounded by both engine and reflected wheel inertia: it cannot continue applying forward clutch torque after the wheels overtake the engine. Manual handovers retain wheel spin; neutral does not reset rotation. Positive measured slip drives torque reduction when traction assist is enabled without changing the held pedal. Braking heat comes from dissipated wheel-brake work, not road speed alone. Engine drag and back-drive use signed torque; backwards energy transfer accounts for driveline losses.

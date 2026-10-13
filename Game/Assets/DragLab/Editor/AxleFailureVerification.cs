@@ -172,7 +172,7 @@ namespace DragLab.Editor
             var weakSpec = new VehicleSpec { drive = DriveType.AWD }; var localCatalog = new MechanicalCatalog(new[] { weakSpec }); var build = localCatalog.Resolve(weakSpec.id, localCatalog.Recipe(weakSpec.id));
             var weakAxle = build.spec.fittedParts.First(p => p.category == PartCategory.RearAxle); weakAxle.torqueLimitNm = 1;
             build.tune.awdConfigured = true; build.tune.awd = new AwdSpec { isolateFailedAxle = true }; var overloaded = new CarSimulation(build.spec, build.tune, new DriverSettings());
-            overloaded.state.gear = 1; overloaded.state.transmittedTorqueNm = 300; overloaded.state.engineTorqueNm = 300; overloaded.mechanics.Tick(overloaded, DragMath.FixedStep, 0, 0);
+            overloaded.state.gear = 1; overloaded.state.transmittedTorqueNm = 300; overloaded.state.engineTorqueNm = 300;overloaded.state.frontShaftTorqueNm=overloaded.state.rearShaftTorqueNm=300*overloaded.spec.gears[0]*overloaded.spec.drivetrainEfficiency*.5; overloaded.mechanics.Tick(overloaded, DragMath.FixedStep, 0, 0);
             check(overloaded.mechanics.parts.Find(p => p.slot == "RearAxle").condition.failed && !overloaded.state.drivetrainFailed && !overloaded.state.engineFailed && overloaded.state.frontDriveAvailable, "Actual torque overload can break an axle without destroying engine or surviving AWD branch.");
             log.AppendLine("Checks: " + count); File.WriteAllText(Path.Combine(root, "reports/axle-failures/verification.txt"), log.ToString()); File.WriteAllText(Path.Combine(root, "reports/axle-failures/trace.csv"), session.Csv());
             return count;

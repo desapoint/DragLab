@@ -105,11 +105,11 @@ namespace DragLab.Domain
                     case PartCategory.Clutch: heat = frictionClutch ? slipPower : 0; torque = 0; break;
                     case PartCategory.Gearbox: heat = drivePower * .025 + (frictionClutch ? 0 : slipPower); torque = Math.Abs(s.transmittedTorqueNm); break;
                     case PartCategory.Driveshaft: case PartCategory.Differential: heat = drivePower * .003; torque = shaftTorque; break;
-                    case PartCategory.TransferCase: heat = drivePower * .003; torque = shaftTorque; break;
+                    case PartCategory.TransferCase: heat = drivePower * .003+s.awdCouplingLossPowerW; torque = Math.Max(shaftTorque,Math.Max(Math.Abs(s.frontShaftTorqueNm),Math.Abs(s.rearShaftTorqueNm))); break;
                     case PartCategory.FrontDriveshaft: case PartCategory.FrontDifferential: case PartCategory.FrontAxle:
-                        torque = s.frontDriveAvailable ? shaftTorque * s.frontTorqueShare * (d.category == PartCategory.FrontAxle ? car.tune.finalDrive : 1) / car.awd.LockedRatio : 0; heat = drivePower * .003 * s.frontTorqueShare; break;
+                        torque = s.frontDriveAvailable ? Math.Abs(s.frontShaftTorqueNm) * (d.category == PartCategory.FrontAxle ? car.tune.finalDrive : 1) : 0; heat = drivePower * .003 * s.frontTorqueShare; break;
                     case PartCategory.RearDriveshaft: case PartCategory.RearDifferential: case PartCategory.RearAxle:
-                        torque = s.rearDriveAvailable ? shaftTorque * s.rearTorqueShare * (d.category == PartCategory.RearAxle ? car.tune.finalDrive : 1) : 0; heat = drivePower * .003 * s.rearTorqueShare; break;
+                        torque = s.rearDriveAvailable ? Math.Abs(s.rearShaftTorqueNm) * (d.category == PartCategory.RearAxle ? car.tune.finalDrive : 1) : 0; heat = drivePower * .003 * s.rearTorqueShare; break;
                     case PartCategory.Pistons: case PartCategory.Rods: case PartCategory.Crankshaft:
                         enginePart = true; heat = crankPower * .025; torque = Math.Abs(s.engineTorqueNm);
                         overspeed = Math.Max(0, s.rpm / Math.Max(1, d.rpmLimit) - 1); break;
