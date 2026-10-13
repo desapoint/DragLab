@@ -9,20 +9,17 @@ foreach($fixture in Get-ChildItem -LiteralPath (Join-Path $taskRoot 'reports/pla
     if(-not $report){continue}
     $content=Get-Content -LiteralPath $report -Encoding UTF8 -Raw
     if($content -match '(?m)^FAIL:' -or $content -notmatch '(?m)^Checks:' -or $content -match 'runtime errors: [1-9]'){continue}
-    $kind=if($content -match '^Native navigation'){ 'native' }else{'legacy'}
+    $kind='all'
     foreach($file in Get-ChildItem -LiteralPath $fixture.FullName -File -Filter '*.png') {
         if($file.LastWriteTimeUtc -gt (Get-Item -LiteralPath $report).LastWriteTimeUtc){continue}
         $key=$kind+'/'+$file.Name
         if(-not $taskImages.ContainsKey($key) -or $file.LastWriteTimeUtc -gt $taskImages[$key].LastWriteTimeUtc){$taskImages[$key]=$file}
     }
 }
-foreach($kind in @('native','legacy')) {
-    $gallery=Assert-InterfaceScreenshotPath $taskRoot (Join-Path $taskRoot ('reports/interface-screenshots/recorded-'+$kind)) 'reports/interface-screenshots'
-    New-Item -ItemType Directory -Path $gallery -Force | Out-Null
-    Clear-InterfaceScreenshotImages $gallery
-    $files=@($taskImages.Keys | Where-Object { $_.StartsWith($kind+'/') } | Sort-Object | ForEach-Object { $taskImages[$_] })
-    foreach($file in $files){Copy-Item -LiteralPath $file.FullName -Destination (Join-Path $gallery $file.Name) -Force}
-    $files | ForEach-Object { [pscustomobject]@{Image=$_.Name;Source=$_.FullName;CapturedUtc=$_.LastWriteTimeUtc.ToString('o')} } | Export-Csv -LiteralPath (Join-Path $gallery 'images.csv') -NoTypeInformation -Encoding UTF8
-    @('RECORDED snapshots from successful historical test runs; not a fresh full-interface rerun.', 'Each filename uses its newest recorded successful image. See images.csv for source and capture date.', 'Current test suites have separate folders; their next run clears and regenerates their own images.', "Screenshots: $($files.Count)") | Set-Content -LiteralPath (Join-Path $gallery 'RUN.txt') -Encoding UTF8
-    Write-Output "Recorded screenshots: $gallery ($($files.Count))"
-}
+$gallery=Get-InterfaceScreenshotGallery $taskRoot
+$current=@{}
+foreach($entry in Read-InterfaceScreenshotIndex $gallery){if($entry.Suite -ne 'recorded'){$current[$entry.Image]=$entry}}
+Clear-OwnedInterfaceScreenshots $gallery 'recorded'
+$run=[pscustomobject]@{Fixture='Successful historical fixtures';Gallery=$gallery;Suite='recorded';Started=[DateTime]::UtcNow;StatusFile=(Join-Path $gallery 'run-info/recorded.txt')}
+$files=@($taskImages.Values | Where-Object { -not $current.ContainsKey($_.Name) -or $_.LastWriteTimeUtc -gt [DateTime]::Parse($current[$_.Name].CapturedUtc) } | Sort-Object Name)
+Complete-InterfaceScreenshotRun $run $true -Images $files -Recorded

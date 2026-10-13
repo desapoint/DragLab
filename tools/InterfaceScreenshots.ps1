@@ -19,29 +19,68 @@ function Clear-InterfaceScreenshotImages {
         foreach ($file in Get-ChildItem -LiteralPath $Path -File -Filter '*.png') { Remove-Item -LiteralPath $file.FullName }
     }
 }
+function Get-InterfaceScreenshotGallery {
+    param([string]$Root)
+    $info=Assert-InterfaceScreenshotPath $Root (Join-Path $Root 'reports/interface-screenshots/run-info') 'reports/interface-screenshots'
+    $gallery=Split-Path $info -Parent
+    $resolutions=Assert-InterfaceScreenshotPath $Root (Join-Path $gallery 'resolution-tests') 'reports/interface-screenshots'
+    New-Item -ItemType Directory -Path $info,$resolutions -Force | Out-Null
+    return $gallery
+}
+function Read-InterfaceScreenshotIndex {
+    param([string]$Gallery)
+    $path=Join-Path $Gallery 'run-info/images.json'
+    if(Test-Path -LiteralPath $path){return @(Get-Content -LiteralPath $path -Encoding UTF8 -Raw | ConvertFrom-Json)}
+    return @()
+}
+function Save-InterfaceScreenshotIndex {
+    param([string]$Gallery, [object[]]$Entries)
+    ConvertTo-Json -InputObject @($Entries) -Depth 4 | Set-Content -LiteralPath (Join-Path $Gallery 'run-info/images.json') -Encoding UTF8
+}
+function Get-InterfaceScreenshotImagePath {
+    param([string]$Gallery, [string]$Name)
+    if([IO.Path]::GetFileName($Name) -ne $Name -or [IO.Path]::GetExtension($Name) -ne '.png'){throw 'Invalid screenshot filename.'}
+    $resolution=$Name -match '(?i)(^|[-_])(compact|1080p|4k|2k|1024|1920|3840)([-_.]|$)'
+    $folder=if($resolution){Join-Path $Gallery 'resolution-tests'}else{$Gallery}
+    return Join-Path $folder $Name
+}
+function Clear-OwnedInterfaceScreenshots {
+    param([string]$Gallery, [string]$Suite)
+    $entries=@(Read-InterfaceScreenshotIndex $Gallery)
+    foreach($entry in $entries | Where-Object { $_.Suite -eq $Suite }){
+        $path=Get-InterfaceScreenshotImagePath $Gallery $entry.Image
+        if(Test-Path -LiteralPath $path){Remove-Item -LiteralPath $path}
+    }
+    Save-InterfaceScreenshotIndex $Gallery @($entries | Where-Object { $_.Suite -ne $Suite })
+}
 function Start-InterfaceScreenshotRun {
     param([string]$Root, [string]$Fixture, [string]$Suite)
     if ($Suite -notmatch '^[A-Za-z0-9_-]+$') { throw 'Screenshot suite must use letters, digits, hyphens and underscores.' }
     $fixturePath = Assert-InterfaceScreenshotPath $Root $Fixture 'reports/player-fixtures'
-    $gallery = Assert-InterfaceScreenshotPath $Root (Join-Path $Root ('reports/interface-screenshots/' + $Suite)) 'reports/interface-screenshots'
-    New-Item -ItemType Directory -Path $fixturePath, $gallery -Force | Out-Null
+    $gallery=Get-InterfaceScreenshotGallery $Root
+    New-Item -ItemType Directory -Path $fixturePath -Force | Out-Null
     Clear-InterfaceScreenshotImages $fixturePath
-    Clear-InterfaceScreenshotImages $gallery
-    $run = [pscustomobject]@{ Fixture=$fixturePath; Gallery=$gallery; Suite=$Suite; Started=[DateTime]::UtcNow }
-    'Running; previous images cleared. New screenshots will be exported when this run exits.' | Set-Content -LiteralPath (Join-Path $gallery 'RUN.txt') -Encoding UTF8
-    'Latest interface-test screenshots. Each suite folder is replaced by its next run; failed runs are labelled. Historical logs and saves stay in reports/player-fixtures. Open PNG files directly for full resolution.' | Set-Content -LiteralPath (Join-Path (Split-Path $gallery -Parent) 'README.txt') -Encoding UTF8
+    Clear-OwnedInterfaceScreenshots $gallery $Suite
+    $run=[pscustomobject]@{Fixture=$fixturePath;Gallery=$gallery;Suite=$Suite;Started=[DateTime]::UtcNow;StatusFile=(Join-Path $gallery ('run-info/'+$Suite+'.txt'))}
+    'RUNNING; previous images owned by this suite cleared.' | Set-Content -LiteralPath $run.StatusFile -Encoding UTF8
+    'Normal initial-resolution interface tests are at this folder root. Alternate-resolution images are in resolution-tests. run-info contains suite results and image source/date records. Each run replaces its own images and leaves other suites intact. Recorded captures are labelled; they are not a fresh full test.' | Set-Content -LiteralPath (Join-Path $gallery 'README.txt') -Encoding UTF8
     return $run
 }
 function Complete-InterfaceScreenshotRun {
-    param($Run, [bool]$Passed, [string]$Report='')
-    $files = @(Get-ChildItem -LiteralPath $Run.Fixture -File -Filter '*.png' | Sort-Object Name)
-    foreach ($file in $files) { Copy-Item -LiteralPath $file.FullName -Destination (Join-Path $Run.Gallery $file.Name) -Force }
-    $status = if ($Passed) { 'PASS' } else { 'FAILED / INCOMPLETE; these images are from this attempt only.' }
-    $text = @("Suite: $($Run.Suite)", "Status: $status", "Started UTC: $($Run.Started.ToString('o'))", "Fixture: $($Run.Fixture)", "Screenshots: $($files.Count)")
-    if ($Report -and (Test-Path -LiteralPath $Report) -and (Get-Item -LiteralPath $Report).LastWriteTimeUtc -ge $Run.Started) {
-        $text += Get-Content -LiteralPath $Report -Encoding UTF8 | Where-Object { $_ -match '^(Checks:|FAIL:)' } | Select-Object -First 2
+    param($Run, [bool]$Passed, [string]$Report='', [IO.FileInfo[]]$Images, [switch]$Recorded)
+    $files=if($PSBoundParameters.ContainsKey('Images')){@($Images)}else{@(Get-ChildItem -LiteralPath $Run.Fixture -File -Filter '*.png' | Sort-Object Name)}
+    $index=@(Read-InterfaceScreenshotIndex $Run.Gallery)
+    foreach($file in $files){
+        $path=Get-InterfaceScreenshotImagePath $Run.Gallery $file.Name
+        Copy-Item -LiteralPath $file.FullName -Destination $path -Force
+        $index=@($index | Where-Object { $_.Image -ne $file.Name })
+        $index+=[pscustomobject]@{Image=$file.Name;Suite=$Run.Suite;Source=$file.FullName;CapturedUtc=$file.LastWriteTimeUtc.ToString('o')}
     }
-    $text | Set-Content -LiteralPath (Join-Path $Run.Gallery 'RUN.txt') -Encoding UTF8
-    $files | ForEach-Object { [pscustomobject]@{ Image=$_.Name; Source=$_.FullName; CapturedUtc=$_.LastWriteTimeUtc.ToString('o') } } | Export-Csv -LiteralPath (Join-Path $Run.Gallery 'images.csv') -NoTypeInformation -Encoding UTF8
+    Save-InterfaceScreenshotIndex $Run.Gallery $index
+    $status=if($Recorded){'RECORDED successful historical captures; not a fresh full-interface rerun.'}elseif($Passed){'PASS'}else{'FAILED / INCOMPLETE; these images are from this attempt only.'}
+    $text=@("Suite: $($Run.Suite)","Status: $status","Started UTC: $($Run.Started.ToString('o'))","Fixture: $($Run.Fixture)","Screenshots: $($files.Count)")
+    if($Report -and (Test-Path -LiteralPath $Report) -and (Get-Item -LiteralPath $Report).LastWriteTimeUtc -ge $Run.Started){$text+=Get-Content -LiteralPath $Report -Encoding UTF8 | Where-Object { $_ -match '^(Checks:|FAIL:)' } | Select-Object -First 2}
+    $text | Set-Content -LiteralPath $Run.StatusFile -Encoding UTF8
+    $index | Sort-Object Image | Export-Csv -LiteralPath (Join-Path $Run.Gallery 'run-info/images.csv') -NoTypeInformation -Encoding UTF8
     Write-Output "Interface screenshots: $($Run.Gallery)"
 }

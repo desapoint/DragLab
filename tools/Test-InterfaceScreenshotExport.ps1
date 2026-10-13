@@ -14,8 +14,18 @@ $run = Start-InterfaceScreenshotRun $root $fixture 'native-test'
 if ((Test-Path -LiteralPath (Join-Path $fixture 'old.png')) -or (Test-Path -LiteralPath (Join-Path $run.Gallery 'old.png'))) { throw 'Old run screenshots were retained.' }
 if (-not (Test-Path -LiteralPath (Join-Path $fixture 'player.log')) -or -not (Test-Path -LiteralPath (Join-Path $other.Gallery 'preserved.png'))) { throw 'Nonimage history or another suite was removed.' }
 [IO.File]::WriteAllBytes((Join-Path $fixture 'new.png'), [byte[]]@(5,6))
+[IO.File]::WriteAllBytes((Join-Path $fixture 'new-4k.png'), [byte[]]@(7,8))
 Complete-InterfaceScreenshotRun $run $false | Out-Null
-if (-not (Test-Path -LiteralPath (Join-Path $run.Gallery 'new.png')) -or -not ((Get-Content -LiteralPath (Join-Path $run.Gallery 'RUN.txt') -Encoding UTF8) -match 'FAILED')) { throw 'Failed-run screenshots/status were not refreshed.' }
+if (-not (Test-Path -LiteralPath (Join-Path $run.Gallery 'new.png')) -or -not ((Get-Content -LiteralPath $run.StatusFile -Encoding UTF8) -match 'FAILED')) { throw 'Failed-run screenshots/status were not refreshed.' }
+if ((Test-Path -LiteralPath (Join-Path $run.Gallery 'new-4k.png')) -or -not (Test-Path -LiteralPath (Join-Path $run.Gallery 'resolution-tests/new-4k.png'))) { throw 'Alternate-resolution image was not separated.' }
+$again=Start-InterfaceScreenshotRun $root $fixture 'native-test'
+if ((Test-Path -LiteralPath (Join-Path $run.Gallery 'new.png')) -or (Test-Path -LiteralPath (Join-Path $run.Gallery 'resolution-tests/new-4k.png'))) { throw 'Normal/alternate previous images were not both cleared.' }
+[IO.File]::WriteAllBytes((Join-Path $fixture 'shared.png'),[byte[]]@(1))
+Complete-InterfaceScreenshotRun $again $true | Out-Null
+[IO.File]::WriteAllBytes((Join-Path $other.Fixture 'shared.png'),[byte[]]@(2))
+Complete-InterfaceScreenshotRun $other $true | Out-Null
+Start-InterfaceScreenshotRun $root $fixture 'native-test' | Out-Null
+if([IO.File]::ReadAllBytes((Join-Path $run.Gallery 'shared.png'))[0] -ne 2){throw 'Older suite removed a newer shared-name capture.'}
 foreach ($path in @((Join-Path $root 'outside'), (Join-Path $root 'reports/player-fixtures/../outside'))) {
     $rejected = $false
     try { Start-InterfaceScreenshotRun $root $path 'native-test' | Out-Null } catch { $rejected=$true }

@@ -1,0 +1,7 @@
+# Screenshot resolution grouping (2026-10-13)
+
+The user clarified that the review root should hold the full normal initial-resolution image set and only alternate-resolution tests should be in a subfolder. The gallery now publishes normal PNGs directly in `reports/interface-screenshots` and compact/1080p/4K or explicitly named alternate sizes in `resolution-tests`. Suite results and source/capture provenance move into `run-info`; the prior grouped exports are preserved in its `previous-layout` archive.
+
+The shared image ledger records the latest publisher for each name. Repeat runs clear only images still owned by that suite in both normal/resolution locations, plus its immediate fixture PNGs. Shared names published more recently by another suite and nonimage fixtures stay intact. Historical collection fills gaps without downgrading current-run captures. Initial regrouping provided 152 normal and 52 alternate-resolution images.
+
+Noninteractive repeat/failure/path-preservation checks pass, including explicit 4K placement and clearing both destinations. The real native Shine player passed **87/0** and exported 16 captures with alternate-resolution images correctly separated. A newer shared-name publisher remains intact when an older suite reruns. No production UI or Unity rebuild is required for this tooling refinement. Saved-setup implementation remains a separate authorized checkpoint.
