@@ -27,6 +27,9 @@ namespace DragLab.Runtime
             yield return Capture("engine-stats-open");
             yield return Click(input,"statInfo:peakHp");
             Check(shell.ModalOpen&&shell.Root.Q<Label>("modalTitle").text=="Peak power","Individual stat info uses the shared themed dialog");
+            var info=shell.Root.Q("modalContent").Query<Label>().ToList().First(l=>l.text.StartsWith("More: "));
+            Check(info.text.Contains("\n\nLess: ")&&!info.text.Contains("Drawbacks in this comparison:"),"Single-car info explains both directions without a fictional comparison");
+            yield return Capture("stat-help-single-power");
             yield return Key(input,0x77);Check(shell.Visible&&shell.ModalOpen,"Stats info blocks F8 while its modal is open");
             yield return Key(input,0x1B);Check(!shell.ModalOpen&&shell.OwnedDetailsOpen&&!panel.ClassListContains("hidden"),"Escape closes only the stat explanation and retains the expanded details page");
             yield return Click(input,"statsGroup:Engine");Check(panel.Q("statsBody:Engine").ClassListContains("hidden"),"Engine header collapses its rows without hiding maintenance or the graph");

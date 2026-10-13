@@ -52,11 +52,12 @@ namespace DragLab.Runtime
             while((panel.Current.DrivingPending||panel.Proposed.DrivingPending)&&Time.realtimeSinceStartup<deadline)yield return null;
             Check(panel.Current.Driving.probeComplete&&panel.Proposed.Driving.probeComplete&&panel.Current.DrivingError==null&&panel.Proposed.DrivingError==null,"Performance resolves independent copied-build driving estimates for both compared cars: "+panel.Current.DrivingPending+" / "+panel.Proposed.DrivingPending+" / "+panel.Current.DrivingError+" / "+panel.Proposed.DrivingError);
             Check(panel.Q<Label>("statValue:probeStatus").text.Contains(" → ")&&panel.Q<Label>("statValue:quarterTime").text.Contains(" → "),"Completed performance refresh retains both comparison columns");
-            yield return ComparisonClick(input,"statInfo:peakHp",dealer);Check(shell.ModalOpen&&shell.Root.Q("modalContent").Query<Label>().ToList().Any(l=>l.text==NativeStatCatalog.Engine.Definitions.First(d=>d.Id=="peakHp").Help),"Comparison info shows one general explanation without duplicated values or Selected/Viewed sections");yield return Key(input,0x1B);
+            yield return ComparisonClick(input,"statInfo:peakHp",dealer);Check(shell.ModalOpen&&shell.Root.Q("modalContent").Query<Label>().ToList().Any(l=>l.text==NativeStatCatalog.Engine.Definitions.First(d=>d.Id=="peakHp").InfoExplanation(panel.Current,panel.Proposed)),"Comparison info shows More, Less and direction-specific drawbacks without duplicated figures");
+            yield return Capture(dealer?"stat-help-dealer-power":"stat-help-owned-power");yield return Key(input,0x1B);
             var delta=panel.Q<Label>("statDelta:displacement");var scroll=shell.Root.Q<ScrollView>(dealer?"dealerDetailScroll":"ownedDetailScroll");
             scroll.scrollOffset=new Vector2(0,Mathf.Max(0,delta.worldBound.yMin-scroll.contentContainer.worldBound.yMin-100));yield return new WaitForSecondsRealtime(.15f);
             float scale=NativeMenuShell.DisplayScale(Screen.width,Screen.height);input.MoveMouseAt((int)(delta.worldBound.center.x*scale),(int)(delta.worldBound.center.y*scale));yield return new WaitForSecondsRealtime(.15f);
-            string explanation=NativeStatCatalog.Engine.Definitions.First(d=>d.Id=="displacement").Help;
+            string explanation=NativeStatCatalog.Engine.Definitions.First(d=>d.Id=="displacement").InfoExplanation(panel.Current,panel.Proposed);
             Check(delta.ClassListContains("stat-tradeoff")&&!panel.Q("statHelpBubble").ClassListContains("hidden")&&panel.Q<Label>("statHelpText").text==explanation,"Orange Tradeoff hover shows the useful general explanation in a native bubble");
             yield return Capture(dealer?"dealer-tradeoff-info":"owned-tradeoff-info");
             scroll.scrollOffset=new Vector2(0,Mathf.Max(0,delta.worldBound.yMax-scroll.contentContainer.worldBound.yMin-scroll.contentViewport.worldBound.height+12));
@@ -64,7 +65,8 @@ namespace DragLab.Runtime
             input.MoveMouseAt((int)(delta.worldBound.center.x*scale),(int)(delta.worldBound.center.y*scale));yield return new WaitForSecondsRealtime(.15f);
             var bubble=panel.Q("statHelpBubble");var bounds=scroll.contentViewport.worldBound;
             Check(!bubble.ClassListContains("hidden")&&bubble.worldBound.yMin>=bounds.yMin-1&&bubble.worldBound.yMax<=bounds.yMax+1,"Tradeoff hint remains inside the visible scroll viewport near its bottom edge");
-            yield return ComparisonClick(input,"statInfo:displacement",dealer);Check(shell.ModalOpen&&panel.Q("statHelpBubble").ClassListContains("hidden")&&shell.Root.Q("modalContent").Query<Label>().ToList().Any(l=>l.text==explanation),"Tradeoff hint and info dialog share the same concise explanation; opening the dialog hides the hint");yield return Key(input,0x1B);
+            yield return ComparisonClick(input,"statInfo:displacement",dealer);Check(shell.ModalOpen&&panel.Q("statHelpBubble").ClassListContains("hidden")&&shell.Root.Q("modalContent").Query<Label>().ToList().Any(l=>l.text==explanation),"Tradeoff hint and info dialog share More/Less and the comparison drawback; opening the dialog hides the hint");
+            yield return Capture(dealer?"stat-help-dealer-displacement":"stat-help-owned-displacement");yield return Key(input,0x1B);
             yield return DifferenceFilterChecks(input,panel,dealer);
             yield return ComparisonClick(input,"statsGroup:Performance",dealer);
             shell.Root.Q<ScrollView>(dealer?"dealerDetailScroll":"ownedDetailScroll").scrollOffset=Vector2.zero;yield return new WaitForSecondsRealtime(.1f);

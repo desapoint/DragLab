@@ -43,6 +43,7 @@ namespace DragLab.Runtime
         internal string Explanation(NativeStatsSnapshot snapshot)=>Detail==null?Help:Detail(snapshot);
         internal string InfoExplanation(NativeStatsSnapshot current,NativeStatsSnapshot proposed=null)
         {
+            if(Number!=null)return NativeStatHelp.Explain(this,current,proposed);
             if(proposed==null)return Explanation(current);
             if(!Id.StartsWith("warning:",StringComparison.Ordinal))return Help;
             return string.Join("\n\n",new[] {Explanation(current),Explanation(proposed)}.Where(text=>!string.IsNullOrWhiteSpace(text)).Distinct());

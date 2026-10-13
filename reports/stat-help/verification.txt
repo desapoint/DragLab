@@ -1,0 +1,158 @@
+PASS: All catalogue part ratings have directional help, including non-OEM hardware
+PASS: Every numeric stat, nested member and summary has authored direction help: city-three
+PASS: Single-car help has two directional paragraphs and no comparison claims: city-three
+PASS: Identical and unavailable values do not invent drawbacks: city-three
+PASS: Shorter gearing explains the actual upward comparison's speed/shift penalty: city-three
+PASS: Taller gearing explains the downward comparison's launch penalty: city-three
+PASS: Better heat rejection does not fabricate a cooling disadvantage: city-three
+PASS: Reduced cooling explains sustained-load downside: city-three
+PASS: Missing hardware is not treated as a real zero: city-three
+PASS: Categorical hardware descriptions do not invent a numeric ordering: city-three
+PASS: Dynamic clutch, exhaust and gear IDs resolve shared help: city-three
+PASS: Lower cam requirement differs from reduced spring strength: city-three
+PASS: Reading direction help never alters assets, wear, fuel or cash: city-three
+PASS: Every numeric stat, nested member and summary has authored direction help: juniper-club
+PASS: Single-car help has two directional paragraphs and no comparison claims: juniper-club
+PASS: Identical and unavailable values do not invent drawbacks: juniper-club
+PASS: Shorter gearing explains the actual upward comparison's speed/shift penalty: juniper-club
+PASS: Taller gearing explains the downward comparison's launch penalty: juniper-club
+PASS: Better heat rejection does not fabricate a cooling disadvantage: juniper-club
+PASS: Reduced cooling explains sustained-load downside: juniper-club
+PASS: Missing hardware is not treated as a real zero: juniper-club
+PASS: Categorical hardware descriptions do not invent a numeric ordering: juniper-club
+PASS: Dynamic clutch, exhaust and gear IDs resolve shared help: juniper-club
+PASS: Lower cam requirement differs from reduced spring strength: juniper-club
+PASS: Reading direction help never alters assets, wear, fuel or cash: juniper-club
+PASS: Every numeric stat, nested member and summary has authored direction help: juniper-economy
+PASS: Single-car help has two directional paragraphs and no comparison claims: juniper-economy
+PASS: Identical and unavailable values do not invent drawbacks: juniper-economy
+PASS: Shorter gearing explains the actual upward comparison's speed/shift penalty: juniper-economy
+PASS: Taller gearing explains the downward comparison's launch penalty: juniper-economy
+PASS: Better heat rejection does not fabricate a cooling disadvantage: juniper-economy
+PASS: Reduced cooling explains sustained-load downside: juniper-economy
+PASS: Missing hardware is not treated as a real zero: juniper-economy
+PASS: Categorical hardware descriptions do not invent a numeric ordering: juniper-economy
+PASS: Dynamic clutch, exhaust and gear IDs resolve shared help: juniper-economy
+PASS: Lower cam requirement differs from reduced spring strength: juniper-economy
+PASS: Reading direction help never alters assets, wear, fuel or cash: juniper-economy
+PASS: Every numeric stat, nested member and summary has authored direction help: kestrel-track
+PASS: Single-car help has two directional paragraphs and no comparison claims: kestrel-track
+PASS: Identical and unavailable values do not invent drawbacks: kestrel-track
+PASS: Shorter gearing explains the actual upward comparison's speed/shift penalty: kestrel-track
+PASS: Taller gearing explains the downward comparison's launch penalty: kestrel-track
+PASS: Better heat rejection does not fabricate a cooling disadvantage: kestrel-track
+PASS: Reduced cooling explains sustained-load downside: kestrel-track
+PASS: Missing hardware is not treated as a real zero: kestrel-track
+PASS: Categorical hardware descriptions do not invent a numeric ordering: kestrel-track
+PASS: Dynamic clutch, exhaust and gear IDs resolve shared help: kestrel-track
+PASS: Lower cam requirement differs from reduced spring strength: kestrel-track
+PASS: Reading direction help never alters assets, wear, fuel or cash: kestrel-track
+PASS: Every numeric stat, nested member and summary has authored direction help: rally-sedan
+PASS: Single-car help has two directional paragraphs and no comparison claims: rally-sedan
+PASS: Identical and unavailable values do not invent drawbacks: rally-sedan
+PASS: Shorter gearing explains the actual upward comparison's speed/shift penalty: rally-sedan
+PASS: Taller gearing explains the downward comparison's launch penalty: rally-sedan
+PASS: Better heat rejection does not fabricate a cooling disadvantage: rally-sedan
+PASS: Reduced cooling explains sustained-load downside: rally-sedan
+PASS: Missing hardware is not treated as a real zero: rally-sedan
+PASS: Categorical hardware descriptions do not invent a numeric ordering: rally-sedan
+PASS: Dynamic clutch, exhaust and gear IDs resolve shared help: rally-sedan
+PASS: Lower cam requirement differs from reduced spring strength: rally-sedan
+PASS: Reading direction help never alters assets, wear, fuel or cash: rally-sedan
+PASS: Every numeric stat, nested member and summary has authored direction help: sport-coupe
+PASS: Single-car help has two directional paragraphs and no comparison claims: sport-coupe
+PASS: Identical and unavailable values do not invent drawbacks: sport-coupe
+PASS: Shorter gearing explains the actual upward comparison's speed/shift penalty: sport-coupe
+PASS: Taller gearing explains the downward comparison's launch penalty: sport-coupe
+PASS: Better heat rejection does not fabricate a cooling disadvantage: sport-coupe
+PASS: Reduced cooling explains sustained-load downside: sport-coupe
+PASS: Missing hardware is not treated as a real zero: sport-coupe
+PASS: Categorical hardware descriptions do not invent a numeric ordering: sport-coupe
+PASS: Dynamic clutch, exhaust and gear IDs resolve shared help: sport-coupe
+PASS: Lower cam requirement differs from reduced spring strength: sport-coupe
+PASS: Reading direction help never alters assets, wear, fuel or cash: sport-coupe
+PASS: Every numeric stat, nested member and summary has authored direction help: starter-hatch
+PASS: Single-car help has two directional paragraphs and no comparison claims: starter-hatch
+PASS: Identical and unavailable values do not invent drawbacks: starter-hatch
+PASS: Shorter gearing explains the actual upward comparison's speed/shift penalty: starter-hatch
+PASS: Taller gearing explains the downward comparison's launch penalty: starter-hatch
+PASS: Better heat rejection does not fabricate a cooling disadvantage: starter-hatch
+PASS: Reduced cooling explains sustained-load downside: starter-hatch
+PASS: Missing hardware is not treated as a real zero: starter-hatch
+PASS: Categorical hardware descriptions do not invent a numeric ordering: starter-hatch
+PASS: Dynamic clutch, exhaust and gear IDs resolve shared help: starter-hatch
+PASS: Lower cam requirement differs from reduced spring strength: starter-hatch
+PASS: Reading direction help never alters assets, wear, fuel or cash: starter-hatch
+PASS: Every numeric stat, nested member and summary has authored direction help: super-v8
+PASS: Single-car help has two directional paragraphs and no comparison claims: super-v8
+PASS: Identical and unavailable values do not invent drawbacks: super-v8
+PASS: Shorter gearing explains the actual upward comparison's speed/shift penalty: super-v8
+PASS: Taller gearing explains the downward comparison's launch penalty: super-v8
+PASS: Better heat rejection does not fabricate a cooling disadvantage: super-v8
+PASS: Reduced cooling explains sustained-load downside: super-v8
+PASS: Missing hardware is not treated as a real zero: super-v8
+PASS: Categorical hardware descriptions do not invent a numeric ordering: super-v8
+PASS: Dynamic clutch, exhaust and gear IDs resolve shared help: super-v8
+PASS: Lower cam requirement differs from reduced spring strength: super-v8
+PASS: Reading direction help never alters assets, wear, fuel or cash: super-v8
+PASS: Every numeric stat, nested member and summary has authored direction help: timber-diesel
+PASS: Single-car help has two directional paragraphs and no comparison claims: timber-diesel
+PASS: Identical and unavailable values do not invent drawbacks: timber-diesel
+PASS: Shorter gearing explains the actual upward comparison's speed/shift penalty: timber-diesel
+PASS: Taller gearing explains the downward comparison's launch penalty: timber-diesel
+PASS: Better heat rejection does not fabricate a cooling disadvantage: timber-diesel
+PASS: Reduced cooling explains sustained-load downside: timber-diesel
+PASS: Missing hardware is not treated as a real zero: timber-diesel
+PASS: Categorical hardware descriptions do not invent a numeric ordering: timber-diesel
+PASS: Dynamic clutch, exhaust and gear IDs resolve shared help: timber-diesel
+PASS: Lower cam requirement differs from reduced spring strength: timber-diesel
+PASS: Reading direction help never alters assets, wear, fuel or cash: timber-diesel
+PASS: Every numeric stat, nested member and summary has authored direction help: timber-diesel-tow
+PASS: Single-car help has two directional paragraphs and no comparison claims: timber-diesel-tow
+PASS: Identical and unavailable values do not invent drawbacks: timber-diesel-tow
+PASS: Shorter gearing explains the actual upward comparison's speed/shift penalty: timber-diesel-tow
+PASS: Taller gearing explains the downward comparison's launch penalty: timber-diesel-tow
+PASS: Better heat rejection does not fabricate a cooling disadvantage: timber-diesel-tow
+PASS: Reduced cooling explains sustained-load downside: timber-diesel-tow
+PASS: Missing hardware is not treated as a real zero: timber-diesel-tow
+PASS: Categorical hardware descriptions do not invent a numeric ordering: timber-diesel-tow
+PASS: Dynamic clutch, exhaust and gear IDs resolve shared help: timber-diesel-tow
+PASS: Lower cam requirement differs from reduced spring strength: timber-diesel-tow
+PASS: Reading direction help never alters assets, wear, fuel or cash: timber-diesel-tow
+PASS: Every numeric stat, nested member and summary has authored direction help: touring-six
+PASS: Single-car help has two directional paragraphs and no comparison claims: touring-six
+PASS: Identical and unavailable values do not invent drawbacks: touring-six
+PASS: Shorter gearing explains the actual upward comparison's speed/shift penalty: touring-six
+PASS: Taller gearing explains the downward comparison's launch penalty: touring-six
+PASS: Better heat rejection does not fabricate a cooling disadvantage: touring-six
+PASS: Reduced cooling explains sustained-load downside: touring-six
+PASS: Missing hardware is not treated as a real zero: touring-six
+PASS: Categorical hardware descriptions do not invent a numeric ordering: touring-six
+PASS: Dynamic clutch, exhaust and gear IDs resolve shared help: touring-six
+PASS: Lower cam requirement differs from reduced spring strength: touring-six
+PASS: Reading direction help never alters assets, wear, fuel or cash: touring-six
+PASS: Every numeric stat, nested member and summary has authored direction help: utility-pickup
+PASS: Single-car help has two directional paragraphs and no comparison claims: utility-pickup
+PASS: Identical and unavailable values do not invent drawbacks: utility-pickup
+PASS: Shorter gearing explains the actual upward comparison's speed/shift penalty: utility-pickup
+PASS: Taller gearing explains the downward comparison's launch penalty: utility-pickup
+PASS: Better heat rejection does not fabricate a cooling disadvantage: utility-pickup
+PASS: Reduced cooling explains sustained-load downside: utility-pickup
+PASS: Missing hardware is not treated as a real zero: utility-pickup
+PASS: Categorical hardware descriptions do not invent a numeric ordering: utility-pickup
+PASS: Dynamic clutch, exhaust and gear IDs resolve shared help: utility-pickup
+PASS: Lower cam requirement differs from reduced spring strength: utility-pickup
+PASS: Reading direction help never alters assets, wear, fuel or cash: utility-pickup
+PASS: Every numeric stat, nested member and summary has authored direction help: v8-muscle
+PASS: Single-car help has two directional paragraphs and no comparison claims: v8-muscle
+PASS: Identical and unavailable values do not invent drawbacks: v8-muscle
+PASS: Shorter gearing explains the actual upward comparison's speed/shift penalty: v8-muscle
+PASS: Taller gearing explains the downward comparison's launch penalty: v8-muscle
+PASS: Better heat rejection does not fabricate a cooling disadvantage: v8-muscle
+PASS: Reduced cooling explains sustained-load downside: v8-muscle
+PASS: Missing hardware is not treated as a real zero: v8-muscle
+PASS: Categorical hardware descriptions do not invent a numeric ordering: v8-muscle
+PASS: Dynamic clutch, exhaust and gear IDs resolve shared help: v8-muscle
+PASS: Lower cam requirement differs from reduced spring strength: v8-muscle
+PASS: Reading direction help never alters assets, wear, fuel or cash: v8-muscle
+Cars: 13; checks: 157; failures: 0

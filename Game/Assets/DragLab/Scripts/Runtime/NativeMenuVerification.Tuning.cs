@@ -53,7 +53,10 @@ namespace DragLab.Runtime
                 Check(baseline==JsonUtility.ToJson(game.Profile)&&File.ReadAllBytes(ProfileStore.FilePath).SequenceEqual(disk),"Draft comparison changes no live or saved assets");
                 yield return Capture("tuning-draft");
                 var rect=plot.worldBound;input.MoveMouseAt((int)rect.center.x,(int)rect.center.y);yield return new WaitForSecondsRealtime(.2f);Check(plot.HoverRpm.HasValue,"Shared dyno keeps pointer inspection/intersection markers");
-                var before=game.DraftValues;yield return Click(input,"statInfo:tuningWeight");Check(shell.ModalOpen&&shell.Root.Q<Label>("modalTitle").text=="Weight","Summary info opens the shared read-only explanation dialog");yield return Click(input,"dialogClose");Check(ReferenceEquals(before,game.DraftValues),"Info dialog retains draft ownership");
+                var before=game.DraftValues;yield return Click(input,"statInfo:tuningWeight");Check(shell.ModalOpen&&shell.Root.Q<Label>("modalTitle").text=="Weight","Summary info opens the shared read-only explanation dialog");
+                string help=shell.Root.Q("modalContent").Query<Label>().ToList().First(l=>l.text.StartsWith("More: ")).text;
+                Check(help.Contains("\n\nLess: ")&&help.Contains("Drawbacks in this comparison: The compared value is higher.")&&help.Contains("slow acceleration"),"Heavier tuning draft explains both directions and its actual acceleration drawback");
+                yield return Capture("stat-help-tuning-weight");yield return Click(input,"dialogClose");Check(ReferenceEquals(before,game.DraftValues),"Info dialog retains draft ownership");
                 yield return Click(input,"tuningRevert");Check(!game.DraftDirty&&!shell.Root.Q<Button>("tuningApply").enabledSelf&&baseline==JsonUtility.ToJson(game.Profile),"Revert restores applied values without saving");
                 game.DraftValues.driverMassKg+=70;shell.Refresh();yield return new WaitForSecondsRealtime(.1f);string failedBefore=JsonUtility.ToJson(game.Profile);
                 using(var locked=new FileStream(ProfileStore.FilePath,FileMode.Open,FileAccess.Read,FileShare.Read)){

@@ -1,0 +1,15 @@
+Final source: reports/player-fixtures/native-stat-help-final/verification.txt
+Selected evidence from the final full packaged native run; not another independent suite.
+
+PASS: Heavier tuning draft explains both directions and its actual acceleration drawback
+PASS: Single-car info explains both directions without a fictional comparison
+PASS: Stats, explanations, collapse and copied comparisons do not select, save, spend, heal or refill assets
+PASS: Comparison info shows More, Less and direction-specific drawbacks without duplicated figures
+PASS: Tradeoff hint remains inside the visible scroll viewport near its bottom edge
+PASS: Tradeoff hint and info dialog share More/Less and the comparison drawback; opening the dialog hides the hint
+PASS: Compare, hover, stats and info leave selection, money, parts, wear, resources and saved bytes unchanged
+PASS: Comparison info shows More, Less and direction-specific drawbacks without duplicated figures
+PASS: Tradeoff hint remains inside the visible scroll viewport near its bottom edge
+PASS: Tradeoff hint and info dialog share More/Less and the comparison drawback; opening the dialog hides the hint
+PASS: Compare, hover, stats and info leave selection, money, parts, wear, resources and saved bytes unchanged
+Checks: 1496 / runtime errors: 0
