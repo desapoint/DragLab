@@ -283,7 +283,7 @@ namespace DragLab.Domain
             frontLeftGrip = (float)DifferentialDynamics.Grip(frontLeftGrip); frontRightGrip = (float)DifferentialDynamics.Grip(frontRightGrip); rearLeftGrip = (float)DifferentialDynamics.Grip(rearLeftGrip); rearRightGrip = (float)DifferentialDynamics.Grip(rearRightGrip);
             revLimitRpm = revLimitRpm == 0 ? 0 : (float)DragMath.Clamp(revLimitRpm, spec.idleRpm + 1500, spec.redlineRpm * 1.2);
             wheelDiameter = wheelDiameter == 0 ? 0 : (float)DragMath.Clamp(wheelDiameter, .8, 1.6);
-            wheelWidth = wheelWidth == 0 ? 0 : (float)DragMath.Clamp(wheelWidth, .8, 1.6);
+            wheelWidth = wheelWidth == 0 ? 0 : (float)DragMath.Clamp(wheelWidth, .45, 1.6);
             frontWheelDiameter=OptionalWheel(frontWheelDiameter,.8,1.6);rearWheelDiameter=OptionalWheel(rearWheelDiameter,.8,1.6);
             frontWheelWidth=OptionalWheel(frontWheelWidth,.45,1.6);rearWheelWidth=OptionalWheel(rearWheelWidth,.45,1.6);
             frontTirePressurePsi=OptionalWheel(frontTirePressurePsi,18,42);rearTirePressurePsi=OptionalWheel(rearTirePressurePsi,18,42);

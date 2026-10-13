@@ -9,6 +9,10 @@ namespace DragLab.Runtime
 {
     public sealed partial class PrototypeGame
     {
+        internal int WheelTuneAxle;
+        internal float WheelTuneDiameter(Tune tune)=>(float)(WheelTuneAxle==0?(tune.AxleDiameter(true)+tune.AxleDiameter(false))*.5:tune.AxleDiameter(WheelTuneAxle==1));
+        internal float WheelTuneWidth(Tune tune)=>(float)(WheelTuneAxle==0?(tune.AxleWidth(true)+tune.AxleWidth(false))*.5:tune.AxleWidth(WheelTuneAxle==1));
+        internal float WheelTunePressure(Tune tune)=>(float)(WheelTuneAxle==0?(tune.AxlePressure(true)+tune.AxlePressure(false))*.5:tune.AxlePressure(WheelTuneAxle==1));
         TuneDraft draft;
         string tuningResolutionKey; BuildResolution tuningResolution;
         internal readonly Dictionary<string, Rect> tuneRects = new Dictionary<string, Rect>();
@@ -69,10 +73,11 @@ namespace DragLab.Runtime
             dirty |= EquipmentTuningView.Draw(resolved.spec, resolved.tune, tune);
             bool cold = GUILayout.Toggle(tune.coldStart, "Cold-start engine / warmup affects carb idle and hesitation");
             if (cold != tune.coldStart) { tune.coldStart = cold; dirty = true; }
-            float diameter = (float)tune.WheelDiameter, width = (float)tune.WheelWidth, wheelMass = (float)tune.WheelMass;
-            float radiusIn = (float)(Selected.spec.wheelRadiusM * tune.WheelDiameter / DisplayUnits.MetresPerInch);
-            if (TuneSlider("radius", "Outer tire radius (inches, including rubber)", ref radiusIn, (float)(Selected.spec.wheelRadiusM * .8 / DisplayUnits.MetresPerInch), (float)(Selected.spec.wheelRadiusM * 1.6 / DisplayUnits.MetresPerInch), "F2", (float)(Selected.spec.wheelRadiusM / DisplayUnits.MetresPerInch))) { tune.wheelDiameter = (float)(radiusIn * DisplayUnits.MetresPerInch / Selected.spec.wheelRadiusM); dirty = true; }
-            if (TuneSlider("width", "Wheel width multiplier / grip + mass", ref width, .8f, 1.6f, "F2", 1)) { tune.wheelWidth = width; dirty = true; }
+            WheelTuneAxle=GUILayout.Toolbar(WheelTuneAxle,new[]{"Both axles","Front","Rear"});
+            float diameter=WheelTuneDiameter(tune),width=WheelTuneWidth(tune),wheelMass=(float)tune.WheelMass;
+            float radiusIn = (float)(Selected.spec.wheelRadiusM * WheelTuneDiameter(tune) / DisplayUnits.MetresPerInch);
+            if (TuneSlider("radius", "Outer tire radius (inches, including rubber)", ref radiusIn, (float)(Selected.spec.wheelRadiusM * .8 / DisplayUnits.MetresPerInch), (float)(Selected.spec.wheelRadiusM * 1.6 / DisplayUnits.MetresPerInch), "F2", (float)(Selected.spec.wheelRadiusM / DisplayUnits.MetresPerInch))) { tune.SetWheelDiameter(WheelTuneAxle,(float)(radiusIn * DisplayUnits.MetresPerInch / Selected.spec.wheelRadiusM)); dirty = true; }
+            if (TuneSlider("width", "Wheel width multiplier / grip + mass", ref width, .45f, 1.6f, "F2", 1)) { tune.SetWheelWidth(WheelTuneAxle,width); dirty = true; }
             GUILayout.Label("Wheel and flywheel mass come from installed parts; replace them in Parts.");
             GUILayout.Label("Flywheel " + ((resolved.spec.flywheel ?? new FlywheelSpec()).massKg * resolved.tune.FlywheelMass).ToString("F1") + " kg / inertia " + FlywheelDynamics.Inertia(resolved.spec, resolved.tune).ToString("F3") + " kg m² / engine + flywheel " + resolved.spec.RotationalInertia(resolved.tune).ToString("F3"));
             var rolling = new WheelProfile(resolved.spec, tune);
@@ -86,8 +91,8 @@ namespace DragLab.Runtime
                 dirty |= TuneSlider("final", "Final-drive ratio (higher = stronger launch / lower speed per RPM)", ref tune.finalDrive, resolved.tune.partFinalDriveMin, resolved.tune.partFinalDriveMax, "F2", defaults.finalDrive);
             else GUILayout.Label("Fixed final-drive gearset: " + resolved.tune.finalDrive.ToString("F2") + ":1. Install a gearbox with interchangeable gearsets in Parts to adjust it.");
             dirty |= TuneSlider("shift", "Auto shift RPM", ref tune.shiftRpm, Selected.spec.idleRpm + 1500, Selected.spec.redlineRpm - 100, "F0", defaults.shiftRpm);
-            var units = SharedUnitSettings.Current; float pressure = (float)DisplayUnits.Pressure(tune.tirePressurePsi / DisplayUnits.PsiPerBar, units.pressure);
-            if (TuneSlider("pressure", "Tire pressure " + DisplayUnits.PressureLabel(units.pressure), ref pressure, (float)DisplayUnits.Pressure(18 / DisplayUnits.PsiPerBar, units.pressure), (float)DisplayUnits.Pressure(42 / DisplayUnits.PsiPerBar, units.pressure), "F2", (float)DisplayUnits.Pressure(defaults.tirePressurePsi / DisplayUnits.PsiPerBar, units.pressure))) { tune.tirePressurePsi = (float)(DisplayUnits.ToBar(pressure, units.pressure) * DisplayUnits.PsiPerBar); dirty = true; }
+            var units = SharedUnitSettings.Current; float pressure = (float)DisplayUnits.Pressure(WheelTunePressure(tune) / DisplayUnits.PsiPerBar, units.pressure);
+            if (TuneSlider("pressure", "Tire pressure " + DisplayUnits.PressureLabel(units.pressure), ref pressure, (float)DisplayUnits.Pressure(18 / DisplayUnits.PsiPerBar, units.pressure), (float)DisplayUnits.Pressure(42 / DisplayUnits.PsiPerBar, units.pressure), "F2", (float)DisplayUnits.Pressure(defaults.tirePressurePsi / DisplayUnits.PsiPerBar, units.pressure))) { tune.SetTirePressure(WheelTuneAxle,(float)(DisplayUnits.ToBar(pressure, units.pressure) * DisplayUnits.PsiPerBar)); dirty = true; }
             if (inductionHardware.turboCount > 0)
             {
                 GUILayout.Label("Installed turbo size: " + resolved.tune.TurboSize.ToString("F2") + "× reference per unit. Physical size is changed by replacing the kit in Parts.");

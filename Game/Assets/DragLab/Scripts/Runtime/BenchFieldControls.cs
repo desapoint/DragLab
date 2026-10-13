@@ -57,7 +57,9 @@ namespace DragLab.Runtime
                     if (target is FlywheelSpec && field.Name == "massKg") { low = .5f; high = 35; }
                     float factor = 1; string label = field.Name; var units = SharedUnitSettings.Current;
                     if (field.Name.EndsWith("Bar", StringComparison.OrdinalIgnoreCase)) { factor = (float)DisplayUnits.Pressure(1, units.pressure); label += " (" + DisplayUnits.PressureLabel(units.pressure) + ")"; }
-                    if (field.Name == "tirePressurePsi") { factor = (float)DisplayUnits.Pressure(1 / DisplayUnits.PsiPerBar, units.pressure); label = "Tire pressure (" + DisplayUnits.PressureLabel(units.pressure) + ")"; }
+                    if (field.Name.EndsWith("TirePressurePsi", StringComparison.OrdinalIgnoreCase)) { factor = (float)DisplayUnits.Pressure(1 / DisplayUnits.PsiPerBar, units.pressure); label = (field.Name.StartsWith("front")?"Front ":field.Name.StartsWith("rear")?"Rear ":"")+"tire pressure (" + DisplayUnits.PressureLabel(units.pressure) + ")"+(field.Name=="tirePressurePsi"?"":" · 0 inherits Both"); }
+                    if (field.Name=="frontWheelDiameter"||field.Name=="rearWheelDiameter") label=(field.Name.StartsWith("front")?"Front":"Rear")+" outer radius × reference · 0 inherits Both";
+                    if (field.Name=="frontWheelWidth"||field.Name=="rearWheelWidth") label=(field.Name.StartsWith("front")?"Front":"Rear")+" width × reference · 0 inherits Both";
                     if (field.Name == "roadSpeedKmh") { factor = (float)DisplayUnits.Speed(1 / 3.6, units.speed); label = "Roller speed (" + DisplayUnits.SpeedLabel(units.speed) + ")"; }
                     if (field.Name == "converterLockSpeedMps") { factor = (float)DisplayUnits.Speed(1, units.speed); label = "Converter lock speed (" + DisplayUnits.SpeedLabel(units.speed) + ")"; }
                     if (field.Name == "wheelRadiusM") { factor = (float)(1 / DisplayUnits.MetresPerInch); label = "Outer tire radius (in)"; }
@@ -133,6 +135,8 @@ namespace DragLab.Runtime
             if (name.EndsWith("Ratio")) { low = .1f; high = Mathf.Max(6, value * 2); }
             switch (name)
             {
+                case "frontWheelDiameter": case "rearWheelDiameter": case "frontWheelWidth": case "rearWheelWidth": low=0;high=1.6f;break;
+                case "frontTirePressurePsi": case "rearTirePressurePsi": low=0;high=42;break;
                 case "sequentialShiftScale": low = .1f; high = .95f; break;
                 case "cylinders": low = 1; high = 16; break;
                 case "engineLevel": case "tireLevel": case "weightLevel": case "gearboxLevel": case "exhaustLevel": case "exhaust": high = 3; break;

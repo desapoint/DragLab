@@ -30,6 +30,7 @@ PASS: Skinny front/wide tall rear changes actual independent mass and geometry: 
 PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: kestrel-track
 PASS: Front-only reduction removes dead mass without changing rear gearing: kestrel-track
 PASS: Removing front mass shifts real static weight distribution rearward: kestrel-track
+PASS: Lighter non-driven fronts improve a real RWD launch without extra HP: kestrel-track
 PASS: Apply/Copy/Clamp preserve separate axle settings: kestrel-track
 PASS: Separate axle settings survive save JSON: kestrel-track
 PASS: Shared car simulation runs staggered axle geometry: kestrel-track
@@ -48,6 +49,7 @@ PASS: Skinny front/wide tall rear changes actual independent mass and geometry: 
 PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: sport-coupe
 PASS: Front-only reduction removes dead mass without changing rear gearing: sport-coupe
 PASS: Removing front mass shifts real static weight distribution rearward: sport-coupe
+PASS: Lighter non-driven fronts improve a real RWD launch without extra HP: sport-coupe
 PASS: Apply/Copy/Clamp preserve separate axle settings: sport-coupe
 PASS: Separate axle settings survive save JSON: sport-coupe
 PASS: Shared car simulation runs staggered axle geometry: sport-coupe
@@ -66,6 +68,7 @@ PASS: Skinny front/wide tall rear changes actual independent mass and geometry: 
 PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: super-v8
 PASS: Front-only reduction removes dead mass without changing rear gearing: super-v8
 PASS: Removing front mass shifts real static weight distribution rearward: super-v8
+PASS: Lighter non-driven fronts improve a real RWD launch without extra HP: super-v8
 PASS: Apply/Copy/Clamp preserve separate axle settings: super-v8
 PASS: Separate axle settings survive save JSON: super-v8
 PASS: Shared car simulation runs staggered axle geometry: super-v8
@@ -93,6 +96,7 @@ PASS: Skinny front/wide tall rear changes actual independent mass and geometry: 
 PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: touring-six
 PASS: Front-only reduction removes dead mass without changing rear gearing: touring-six
 PASS: Removing front mass shifts real static weight distribution rearward: touring-six
+PASS: Lighter non-driven fronts improve a real RWD launch without extra HP: touring-six
 PASS: Apply/Copy/Clamp preserve separate axle settings: touring-six
 PASS: Separate axle settings survive save JSON: touring-six
 PASS: Shared car simulation runs staggered axle geometry: touring-six
@@ -111,6 +115,7 @@ PASS: Skinny front/wide tall rear changes actual independent mass and geometry: 
 PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: v8-muscle
 PASS: Front-only reduction removes dead mass without changing rear gearing: v8-muscle
 PASS: Removing front mass shifts real static weight distribution rearward: v8-muscle
+PASS: Lighter non-driven fronts improve a real RWD launch without extra HP: v8-muscle
 PASS: Apply/Copy/Clamp preserve separate axle settings: v8-muscle
 PASS: Separate axle settings survive save JSON: v8-muscle
 PASS: Shared car simulation runs staggered axle geometry: v8-muscle
@@ -119,106 +124,158 @@ PASS: Mixed rear-compound cart previews actual corner definitions without changi
 PASS: Mixed tire cart publishes one transaction: city-three /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: city-three
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: city-three
+PASS: Optimal starts use each actual compound's own temperature: city-three
+PASS: Equal controlled use wears rear drag compound sooner than front road compound: city-three
 PASS: Mixed tire identities and condition remain valid: city-three /
 PASS: Mixed compounds and removed wear survive actual save normalization: city-three
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: city-three
 PASS: Existing setup transaction restores mixed tires without granting replacements: city-three
+PASS: Buy same quotes actual mixed constituent costs: city-three
+PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: city-three /
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: juniper-club
 PASS: Mixed tire cart publishes one transaction: juniper-club /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: juniper-club
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: juniper-club
+PASS: Optimal starts use each actual compound's own temperature: juniper-club
+PASS: Equal controlled use wears rear drag compound sooner than front road compound: juniper-club
 PASS: Mixed tire identities and condition remain valid: juniper-club /
 PASS: Mixed compounds and removed wear survive actual save normalization: juniper-club
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: juniper-club
 PASS: Existing setup transaction restores mixed tires without granting replacements: juniper-club
+PASS: Buy same quotes actual mixed constituent costs: juniper-club
+PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: juniper-club /
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: juniper-economy
 PASS: Mixed tire cart publishes one transaction: juniper-economy /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: juniper-economy
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: juniper-economy
+PASS: Optimal starts use each actual compound's own temperature: juniper-economy
+PASS: Equal controlled use wears rear drag compound sooner than front road compound: juniper-economy
 PASS: Mixed tire identities and condition remain valid: juniper-economy /
 PASS: Mixed compounds and removed wear survive actual save normalization: juniper-economy
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: juniper-economy
 PASS: Existing setup transaction restores mixed tires without granting replacements: juniper-economy
+PASS: Buy same quotes actual mixed constituent costs: juniper-economy
+PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: juniper-economy /
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: kestrel-track
 PASS: Mixed tire cart publishes one transaction: kestrel-track /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: kestrel-track
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: kestrel-track
+PASS: Optimal starts use each actual compound's own temperature: kestrel-track
+PASS: Equal controlled use wears rear drag compound sooner than front road compound: kestrel-track
 PASS: Mixed tire identities and condition remain valid: kestrel-track /
 PASS: Mixed compounds and removed wear survive actual save normalization: kestrel-track
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: kestrel-track
 PASS: Existing setup transaction restores mixed tires without granting replacements: kestrel-track
+PASS: Buy same quotes actual mixed constituent costs: kestrel-track
+PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: kestrel-track /
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: rally-sedan
 PASS: Mixed tire cart publishes one transaction: rally-sedan /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: rally-sedan
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: rally-sedan
+PASS: Optimal starts use each actual compound's own temperature: rally-sedan
+PASS: Equal controlled use wears rear drag compound sooner than front road compound: rally-sedan
 PASS: Mixed tire identities and condition remain valid: rally-sedan /
 PASS: Mixed compounds and removed wear survive actual save normalization: rally-sedan
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: rally-sedan
 PASS: Existing setup transaction restores mixed tires without granting replacements: rally-sedan
+PASS: Buy same quotes actual mixed constituent costs: rally-sedan
+PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: rally-sedan /
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: sport-coupe
 PASS: Mixed tire cart publishes one transaction: sport-coupe /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: sport-coupe
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: sport-coupe
+PASS: Optimal starts use each actual compound's own temperature: sport-coupe
+PASS: Equal controlled use wears rear drag compound sooner than front road compound: sport-coupe
 PASS: Mixed tire identities and condition remain valid: sport-coupe /
 PASS: Mixed compounds and removed wear survive actual save normalization: sport-coupe
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: sport-coupe
 PASS: Existing setup transaction restores mixed tires without granting replacements: sport-coupe
+PASS: Buy same quotes actual mixed constituent costs: sport-coupe
+PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: sport-coupe /
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: starter-hatch
 PASS: Mixed tire cart publishes one transaction: starter-hatch /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: starter-hatch
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: starter-hatch
+PASS: Optimal starts use each actual compound's own temperature: starter-hatch
+PASS: Equal controlled use wears rear drag compound sooner than front road compound: starter-hatch
 PASS: Mixed tire identities and condition remain valid: starter-hatch /
 PASS: Mixed compounds and removed wear survive actual save normalization: starter-hatch
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: starter-hatch
 PASS: Existing setup transaction restores mixed tires without granting replacements: starter-hatch
+PASS: Buy same quotes actual mixed constituent costs: starter-hatch
+PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: starter-hatch /
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: super-v8
 PASS: Mixed tire cart publishes one transaction: super-v8 /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: super-v8
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: super-v8
+PASS: Optimal starts use each actual compound's own temperature: super-v8
+PASS: Equal controlled use wears rear drag compound sooner than front road compound: super-v8
 PASS: Mixed tire identities and condition remain valid: super-v8 /
 PASS: Mixed compounds and removed wear survive actual save normalization: super-v8
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: super-v8
 PASS: Existing setup transaction restores mixed tires without granting replacements: super-v8
+PASS: Buy same quotes actual mixed constituent costs: super-v8
+PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: super-v8 /
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: timber-diesel
 PASS: Mixed tire cart publishes one transaction: timber-diesel /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: timber-diesel
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: timber-diesel
+PASS: Optimal starts use each actual compound's own temperature: timber-diesel
+PASS: Equal controlled use wears rear drag compound sooner than front road compound: timber-diesel
 PASS: Mixed tire identities and condition remain valid: timber-diesel /
 PASS: Mixed compounds and removed wear survive actual save normalization: timber-diesel
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: timber-diesel
 PASS: Existing setup transaction restores mixed tires without granting replacements: timber-diesel
+PASS: Buy same quotes actual mixed constituent costs: timber-diesel
+PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: timber-diesel /
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: timber-diesel-tow
 PASS: Mixed tire cart publishes one transaction: timber-diesel-tow /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: timber-diesel-tow
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: timber-diesel-tow
+PASS: Optimal starts use each actual compound's own temperature: timber-diesel-tow
+PASS: Equal controlled use wears rear drag compound sooner than front road compound: timber-diesel-tow
 PASS: Mixed tire identities and condition remain valid: timber-diesel-tow /
 PASS: Mixed compounds and removed wear survive actual save normalization: timber-diesel-tow
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: timber-diesel-tow
 PASS: Existing setup transaction restores mixed tires without granting replacements: timber-diesel-tow
+PASS: Buy same quotes actual mixed constituent costs: timber-diesel-tow
+PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: timber-diesel-tow /
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: touring-six
 PASS: Mixed tire cart publishes one transaction: touring-six /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: touring-six
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: touring-six
+PASS: Optimal starts use each actual compound's own temperature: touring-six
+PASS: Equal controlled use wears rear drag compound sooner than front road compound: touring-six
 PASS: Mixed tire identities and condition remain valid: touring-six /
 PASS: Mixed compounds and removed wear survive actual save normalization: touring-six
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: touring-six
 PASS: Existing setup transaction restores mixed tires without granting replacements: touring-six
+PASS: Buy same quotes actual mixed constituent costs: touring-six
+PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: touring-six /
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: utility-pickup
 PASS: Mixed tire cart publishes one transaction: utility-pickup /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: utility-pickup
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: utility-pickup
+PASS: Optimal starts use each actual compound's own temperature: utility-pickup
+PASS: Equal controlled use wears rear drag compound sooner than front road compound: utility-pickup
 PASS: Mixed tire identities and condition remain valid: utility-pickup /
 PASS: Mixed compounds and removed wear survive actual save normalization: utility-pickup
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: utility-pickup
 PASS: Existing setup transaction restores mixed tires without granting replacements: utility-pickup
+PASS: Buy same quotes actual mixed constituent costs: utility-pickup
+PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: utility-pickup /
 PASS: Mixed rear-compound cart previews actual corner definitions without changing owned assets: v8-muscle
 PASS: Mixed tire cart publishes one transaction: v8-muscle /
 PASS: Atomic mixed-compound checkout keeps exact fronts and removed worn originals: v8-muscle
 PASS: Mixed compounds retain independent grip/life ratings in the shared simulation: v8-muscle
+PASS: Optimal starts use each actual compound's own temperature: v8-muscle
+PASS: Equal controlled use wears rear drag compound sooner than front road compound: v8-muscle
 PASS: Mixed tire identities and condition remain valid: v8-muscle /
 PASS: Mixed compounds and removed wear survive actual save normalization: v8-muscle
 PASS: Whole-car blueprints find exact loose compounds for the saved corners: v8-muscle
 PASS: Existing setup transaction restores mixed tires without granting replacements: v8-muscle
+PASS: Buy same quotes actual mixed constituent costs: v8-muscle
+PASS: Mixed Buy same preserves specifications and worn originals in one paid transaction: v8-muscle /
 PASS: Unequal-axle torque/braking energy closes: False / 0,2 / 0,4
 PASS: Unequal-axle torque/braking energy closes: False / 0,2 / 2
 PASS: Unequal-axle torque/braking energy closes: False / 0,2 / 8
@@ -246,4 +303,4 @@ PASS: Unequal-axle torque/braking energy closes: True / 4 / 2
 PASS: Locked AWD constrains angular shaft speeds even with mismatched tire diameters
 PASS: Unequal-axle torque/braking energy closes: True / 4 / 8
 PASS: Locked AWD constrains angular shaft speeds even with mismatched tire diameters
-Checks: 248 / failures: 0
+Checks: 305 / failures: 0

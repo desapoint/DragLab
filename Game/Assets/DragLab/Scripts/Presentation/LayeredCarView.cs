@@ -22,6 +22,7 @@ namespace DragLab.Presentation
         public int FrontSmokeEmitted=>smoke==null?0:smoke.FrontEmitted;
         public int RearSmokeEmitted=>smoke==null?0:smoke.RearEmitted;
         public float TireSizeScale { get; private set; } = 1;
+        public float FrontTireSizeScale {get;private set;}=1;public float RearTireSizeScale {get;private set;}=1;
         readonly List<WheelBinding> rotating = new List<WheelBinding>();
         readonly List<SpriteRenderer> paintLayers = new List<SpriteRenderer>();
         [Serializable] class Manifest { public CanvasInfo canvas; public AnchorSet anchors; public Layer[] layers; }
@@ -86,9 +87,10 @@ namespace DragLab.Presentation
         {
             drive=spec.drive;
             if (nominalRadiusM <= 0) nominalRadiusM = spec.wheelRadiusM;
-            TireSizeScale = (float)(spec.wheelRadiusM * tune.WheelDiameter / nominalRadiusM);
+            FrontTireSizeScale=(float)(spec.wheelRadiusM*tune.AxleDiameter(true)/nominalRadiusM);RearTireSizeScale=(float)(spec.wheelRadiusM*tune.AxleDiameter(false)/nominalRadiusM);
+            TireSizeScale=(FrontTireSizeScale+RearTireSizeScale)*.5f;
             if (float.IsNaN(TireSizeScale) || float.IsInfinity(TireSizeScale) || TireSizeScale <= 0) TireSizeScale = 1;
-            float lift = artworkRadius * (TireSizeScale - 1);
+            float frontLift=artworkRadius*(FrontTireSizeScale-1),rearLift=artworkRadius*(RearTireSizeScale-1);
             bool wheels = true, brakes = true, body = true;
             if (tune.partsResolved) {
                 wheels = HasPart(spec, PartCategory.Wheels) && HasPart(spec, PartCategory.Tires);
@@ -98,14 +100,17 @@ namespace DragLab.Presentation
             foreach (var part in geometry) {
                 bool wheel = part.id.EndsWith("-wheel", StringComparison.Ordinal);
                 bool brake = part.id.EndsWith("-rotor", StringComparison.Ordinal) || part.id.EndsWith("-caliper", StringComparison.Ordinal);
-                part.transform.localScale = wheel ? part.scale * TireSizeScale : part.scale;
-                // Lift body and axle centers equally, leaving the contact patch and shadow on the ground.
+                bool front=part.id.StartsWith("front-",StringComparison.Ordinal);float localScale=front?FrontTireSizeScale:RearTireSizeScale;
+                part.transform.localScale=wheel?part.scale*localScale:part.scale;
+                float fraction=Mathf.Clamp01((part.position.x-frontWheel.x)/(rearWheel.x-frontWheel.x));float lift=wheel||brake?(front?frontLift:rearLift):Mathf.Lerp(frontLift,rearLift,fraction);
+                if(!wheel&&!brake&&part.id!="shadow")part.transform.localRotation=Quaternion.Euler(0,0,Mathf.Atan((rearLift-frontLift)/(rearWheel.x-frontWheel.x))*Mathf.Rad2Deg);
+                // Each axle retains ground contact; the body follows the staggered ride height.
                 part.transform.localPosition = part.position + (part.id == "shadow" ? Vector3.zero : Vector3.up * lift);
                 part.renderer.enabled = wheel ? wheels : brake ? brakes : part.id == "shadow" || body;
             }
             UpdateSmokeContacts();
         }
-        void UpdateSmokeContacts(){if(smoke!=null){var offset=Vector3.up*(artworkRadius*(TireSizeScale-1)-artworkRadius*TireSizeScale);smoke.SetContacts(frontWheel+offset,rearWheel+offset);}}
+        void UpdateSmokeContacts(){if(smoke!=null){smoke.SetContacts(frontWheel-Vector3.up*artworkRadius,rearWheel-Vector3.up*artworkRadius);}}
         public void ClearSlipEffects(){if(smoke!=null)smoke.Clear();}
         static bool HasPart(VehicleSpec spec, PartCategory category)
         { return spec.fittedParts != null && Array.Exists(spec.fittedParts, part => part.category == category); }

@@ -22,6 +22,7 @@ namespace DragLab.Runtime
             if(!s.Has(slot)&&!(s.Spec.drive!=DriveType.AWD&&s.Has(PartCategory.Differential)))return "Missing";
             return Nice((front?s.Spec.frontDifferential:s.Spec.rearDifferential).kind);
         }
+        static string TireDescription(NativeStatsSnapshot s){var parts=s.Spec.cornerTireDefinitions;return parts!=null&&parts.Length==4?(parts.Select(p=>p.id).Distinct().Count()>1?"Mixed tires":parts[0].name):s.Definition(PartCategory.Tires)?.name??"Missing";}
         static readonly NativeStatGroup InductionGroup=Group("Induction","Induction / exhaust",
             T("inductionType","Induction",s=>Nice(s.Induction.type),"Effective installed induction topology. Twincharging combines turbo and supercharger operation; removing the kit returns naturally aspirated operation."),
             N("turboCount","Turbochargers",s=>s.Induction.turboCount,"","F0",0,2,"Number of installed turbo units, not the number of exhaust outlets."),
@@ -71,18 +72,29 @@ namespace DragLab.Runtime
             N("brakeG","Effective brake rating",s=>s.Inspection.brakeG,"g","F2",0,2,"Captured stopping capacity before tire-grip limits. Brake failures do not automatically disable the engine.",1)
         );
         static readonly NativeStatGroup TiresGroup=Group("Tires","Tires / wheels",
-            T("tireCompound","Tire compound",s=>s.Definition(PartCategory.Tires)?.name??"Missing","Exact installed tire definition; compound grip and rolling/sliding lifespan are independent properties."),
-            N("wheelRadius","Tire outer radius",s=>s.Has(PartCategory.Tires)&&s.Has(PartCategory.Wheels)?(double?)s.Inspection.wheelRadiusIn:null,"in","F2",8,24,"External tire radius, including sidewall. This is not the rim diameter. A taller tire changes gearing and rotating load."),
-            N("wheelDiameter","Tire outer diameter",s=>s.Has(PartCategory.Tires)&&s.Has(PartCategory.Wheels)?(double?)s.Inspection.wheelDiameterIn:null,"in","F2",16,48,"Twice the external radius, not a wheel-rim size."),
-            N("wheelWidth","Width multiplier",s=>s.Has(PartCategory.Tires)?(double?)s.Tune.WheelWidth:null,"× reference","F2",.5,2,"Applied width relative to this model's reference. The current model has no authored absolute section width, so millimeters are not invented."),
-            N("tirePressure","Tire pressure",s=>s.Has(PartCategory.Tires)?(double?)(s.Tune.tirePressurePsi/DisplayUnits.PsiPerBar):null,"bar","F2",0,60/DisplayUnits.PsiPerBar,"Applied tire pressure in the selected pressure unit. Grip/life depend on pressure; higher is not always better."),
-            N("wheelMass","Assembly mass / wheel",s=>s.Has(PartCategory.Wheels)&&s.Has(PartCategory.Tires)?(double?)s.Inspection.wheelMassKg:null,"kg","F2",0,60,"Mass of one modeled wheel plus tire after geometry/material scaling. Four assemblies contribute to vehicle weight.",-1),
+            T("tireCompound","Tire compound",s=>TireDescription(s),"Installed tire assembly; individual corner specs appear in Components. Compound grip and rolling/sliding lifespan are independent properties."),
+            N("wheelRadius","Driven rolling radius",s=>s.Has(PartCategory.Tires)&&s.Has(PartCategory.Wheels)?(double?)s.Inspection.wheelRadiusIn:null,"in","F2",8,24,"External tire radius, including sidewall. This is not the rim diameter. A taller tire changes gearing and rotating load."),
+            N("wheelDiameter","Driven outer diameter",s=>s.Has(PartCategory.Tires)&&s.Has(PartCategory.Wheels)?(double?)s.Inspection.wheelDiameterIn:null,"in","F2",16,48,"Twice the external radius, not a wheel-rim size."),
+            N("wheelWidth","Legacy all-wheel width",s=>s.Has(PartCategory.Tires)?(double?)s.Tune.WheelWidth:null,"× reference","F2",.5,2,"Applied width relative to this model's reference. The current model has no authored absolute section width, so millimeters are not invented."),
+            N("tirePressure","Legacy all-wheel pressure",s=>s.Has(PartCategory.Tires)?(double?)(s.Tune.tirePressurePsi/DisplayUnits.PsiPerBar):null,"bar","F2",0,60/DisplayUnits.PsiPerBar,"Applied tire pressure in the selected pressure unit. Grip/life depend on pressure; higher is not always better."),
+            N("wheelMass","Average assembly mass / wheel",s=>s.Has(PartCategory.Wheels)&&s.Has(PartCategory.Tires)?(double?)s.Inspection.wheelMassKg:null,"kg","F2",0,60,"Mass of one modeled wheel plus tire after geometry/material scaling. Four assemblies contribute to vehicle weight.",-1),
             N("wheelInertia","All-wheel inertia",s=>s.Inspection.wheelInertia,"kg m²","F2",0,30,"Total resistance to changing wheel rotation. Inertia affects acceleration and synchronization but is not an additional gravitational mass."),
-            N("tireGrip","Captured compound grip",s=>s.Has(PartCategory.Tires)?(double?)s.Inspection.tireGripFactor:null,"×","F2",0,3,"Installed compound friction factor after captured tire condition/temperature; live grip also depends on contact, load, pressure and width.",1),
+            N("tireGrip","Lowest captured compound grip",s=>s.Has(PartCategory.Tires)?(double?)s.Inspection.tireGripFactor:null,"×","F2",0,3,"Installed compound friction factor after captured tire condition/temperature; live grip also depends on contact, load, pressure and width.",1),
             N("tireHealth","Lowest tire condition",s=>s.Has(PartCategory.Tires)?(double?)(s.Inspection.lowestTireHealth*100):null,"%","F0",0,100,"Worst individual tire condition, not average life. Expand Components → Tires for each corner's condition, heat and sliding work.",1),
-            N("rollingLife","Reference rolling life",s=>s.Has(PartCategory.Tires)?(double?)s.Inspection.tireRollingLifeKm:null,"km","F0",0,80000,"Authored life at reference load, not remaining mileage. Pressure, load and driving behavior alter wear.",1),
-            N("slidingLife","Sliding-work budget / tire",s=>s.Has(PartCategory.Tires)?(double?)s.Inspection.tireSlidingLifeMj:null,"MJ","F1",0,1000,"Authored friction-work life per tire. A grippier compound does not necessarily have a larger life budget.",1)
+            N("rollingLife","Lowest reference rolling life",s=>s.Has(PartCategory.Tires)?(double?)s.Inspection.tireRollingLifeKm:null,"km","F0",0,80000,"Authored life at reference load, not remaining mileage. Pressure, load and driving behavior alter wear.",1),
+            N("slidingLife","Lowest sliding-work budget",s=>s.Has(PartCategory.Tires)?(double?)s.Inspection.tireSlidingLifeMj:null,"MJ","F1",0,1000,"Authored friction-work life per tire. A grippier compound does not necessarily have a larger life budget.",1)
         );
+        static NativeStatGroup AxleWheels(bool front)
+        {
+            int i=front?0:2;string id="axle:"+(front?"Front":"Rear");
+            return Group(front?"FrontWheels":"RearWheels",front?"Front wheels":"Rear wheels",
+                N(id+":wheelRadius","Tire outer radius",s=>s.Has(PartCategory.Tires)&&s.Has(PartCategory.Wheels)?(double?)s.Inspection.wheelRadiiIn[i]:null,"in","F2",8,24,"Outer radius including rubber on this axle. Taller driven tires change gearing."),
+                N(id+":wheelWidth","Width",s=>s.Has(PartCategory.Tires)?(double?)s.Tune.AxleWidth(front):null,"× reference","F2",.45,1.6,"Width on this axle relative to the authored reference; no absolute millimeters are invented."),
+                N(id+":tirePressure","Pressure",s=>s.Has(PartCategory.Tires)?(double?)(s.Tune.AxlePressure(front)/DisplayUnits.PsiPerBar):null,"bar","F2",18/DisplayUnits.PsiPerBar,42/DisplayUnits.PsiPerBar,"Actual axle pressure, in the selected unit."),
+                N(id+":wheelMass","Assembly mass / wheel",s=>s.Has(PartCategory.Wheels)?(double?)s.Inspection.wheelMassesKg[i]:null,"kg","F2",0,60,"Actual rotating assembly mass on this axle.",-1),
+                N(id+":wheelInertia","Axle rotating inertia",s=>s.Inspection.wheelInertias[i]+s.Inspection.wheelInertias[i+1],"kg m²","F3",0,20,"Actual resistance to spinning both wheels on this axle."),
+                N(id+":tireGrip","Lowest contact grip",s=>s.Has(PartCategory.Tires)?(double?)Math.Min(s.Inspection.wheelGripFactors[i],s.Inspection.wheelGripFactors[i+1]):null,"×","F2",0,4,"This axle's lower corner friction factor including compound, condition, pressure, width and captured temperature; surface and load still affect live grip.",1));
+        }
         static readonly NativeStatGroup WeightGroup=Group("Weight","Weight / balance",
             N("vehicleMass","Translating mass",s=>s.Inspection.vehicleMassKg,"kg","F1",0,3500,"Current physical vehicle mass including driver, payload, actual fuel/fluids and installed hardware. Used for load and grip.",-1),
             N("effectiveMass","Acceleration-equivalent mass",s=>s.Inspection.effectiveMassKg,"kg","F1",0,4000,"Translating mass plus the equivalent wheel rotational load; this is not a scale weight.",-1),
@@ -185,7 +197,7 @@ namespace DragLab.Runtime
             var a=new NativeStatsSnapshot(current);var b=proposed==null?null:new NativeStatsSnapshot(proposed);
             foreach(var slot in Enum.GetValues(typeof(PartCategory)).Cast<PartCategory>().Where(slot=>a.Has(slot)||b!=null&&b.Has(slot))) {
                 string id="part:"+slot;var rows=new List<NativeStatDefinition>();
-                var hardware=T(id+":hardware","Hardware",s=>s.Definition(slot)?.name??"Not installed","Installed component, not a replacement recommendation.");
+                var hardware=T(id+":hardware","Hardware",s=>slot==PartCategory.Tires&&s.Has(slot)?TireDescription(s):s.Definition(slot)?.name??"Not installed","Installed component, not a replacement recommendation.");
                 hardware.Detail=s=>s.Definition(slot)==null?"No component installed in this slot.":s.Definition(slot).description+"\nDefinition: "+s.Definition(slot).id+"\nOwned instance: "+s.Part(slot).instanceId;rows.Add(hardware);
                 rows.Add(T(id+":quality","Quality",s=>s.Definition(slot)?.quality??"—","Actual construction quality from the installed definition; quality is separate from remaining condition."));
                 rows.Add(T(id+":status","Status",s=>s.Part(slot)==null?"Not installed":PrototypeGame.PartFailed(s.Part(slot))?"Failed":EngineElements.NeedsService(s.Part(slot).condition)?"Element fault":"Installed","A failed brake or drive branch does not imply a failed engine. Inspect the component's failure reason and the Performance warnings."));
@@ -199,7 +211,7 @@ namespace DragLab.Runtime
                     if(slot==PartCategory.Followers||slot==PartCategory.TimingDrive)rows.Add(N(id+":adjustment","Adjustment error",s=>s.Part(slot)==null?(double?)null:s.Part(slot).condition.adjustmentError*100,"%","F0",0,100,"Retained clearance/timing error; a service adjustment differs from changing a saved tune.",-1));
                     if(slot==PartCategory.Clutch||slot==PartCategory.Tires)rows.Add(N(id+":work","Accumulated slip work",s=>s.Part(slot)==null?(double?)null:s.Part(slot).condition.slipEnergyJ/1e6,"MJ","F2",0,100,"Stored component friction work, separate from RPM slip and the authored life budget."));
                 }
-                var metrics=PartSemantics.Stats(a.Definition(slot)).Concat(PartSemantics.Stats(b?.Definition(slot))).GroupBy(m=>m.key).Select(g=>g.First());
+                var metrics=slot==PartCategory.Tires?Enumerable.Empty<PartStat>():PartSemantics.Stats(a.Definition(slot)).Concat(PartSemantics.Stats(b?.Definition(slot))).GroupBy(m=>m.key).Select(g=>g.First());
                 foreach(var metric in metrics) {
                     var key=metric.key;
                     rows.Add(N(id+":rating:"+key,metric.label,s=> {
@@ -233,7 +245,13 @@ namespace DragLab.Runtime
             for(int i=0;i<tires;i++) {
                 int corner=i;string id=prefix+":tire:"+i;TireCondition Find(NativeStatsSnapshot s)=>corner<(s.Part(slot)?.condition.tires.Length??0)?s.Part(slot).condition.tires[corner]:null;
                 groups.Add(Group(id,corner<4?corners[corner]:"Tire "+(corner+1),
+                    N(id+":heat","Heat tolerance",s=>Find(s)==null?(double?)null:(s.Spec.cornerTireDefinitions.Length==4?s.Spec.cornerTireDefinitions[corner]:s.Definition(PartCategory.Tires)).thermalLimitC,"°C","F0",0,200,"This corner compound's actual thermal limit.",1),
+                    N(id+":tireoptimal","Best-grip temperature",s=>Find(s)==null?(double?)null:(s.Spec.cornerTireDefinitions.Length==4?s.Spec.cornerTireDefinitions[corner]:s.Definition(PartCategory.Tires)).tireOptimalC,"°C","F0",0,120,"Preferred operating temperature for this corner's actual compound."),
+                    T(id+":hardware","Specification",s=>s.Spec.cornerTireDefinitions!=null&&s.Spec.cornerTireDefinitions.Length==4?s.Spec.cornerTireDefinitions[corner].name:s.Definition(PartCategory.Tires)?.name??"Not installed","Actual fitted tire specification at this corner; compatible compounds may differ between wheels."),
                     N(id+":health","Condition",s=>Find(s)==null?(double?)null:Find(s).health*100,"%","F0",0,100,"Retained condition for this tire corner.",1),
+                    N(id+":grip","Contact grip",s=>Find(s)==null?(double?)null:s.Inspection.wheelGripFactors[corner],"×","F2",0,4,"Actual corner friction factor including compound, geometry, pressure and captured condition.",1),
+                    N(id+":rollinglife","Reference rolling life",s=>Find(s)==null?(double?)null:s.Inspection.wheelRollingLifeKm[corner],"km","F0",0,80000,"This corner's compound reference life, not guaranteed remaining distance.",1),
+                    N(id+":slidinglife","Sliding-work life",s=>Find(s)==null?(double?)null:s.Inspection.wheelSlidingLifeMj[corner],"MJ","F1",0,100,"This corner's own compound friction-work budget.",1),
                     T(id+":failed","Status",s=>Find(s)==null?"Not installed":Find(s).failed?"Failed":"Installed","A failed tire's condition is retained until an explicit repair/replacement transaction."),
                     N(id+":temperature","Stored temperature",s=>Find(s)?.temperatureC,"°C","F1",-50,200,"Captured corner temperature before race-start cooling or tire warm-up."),
                     N(id+":work","Sliding work",s=>Find(s)==null?(double?)null:Find(s).slipEnergyJ/1e6,"MJ","F2",0,100,"Accumulated friction work for this tire; not the whole axle."),
@@ -262,7 +280,8 @@ namespace DragLab.Runtime
         {
             var induction=Group(InductionGroup.Id,InductionGroup.Title,InductionGroup.Definitions.ToArray());induction.Children=Array.AsReadOnly(new[] {Exhaust(current,proposed)});
             var transmission=Group(TransmissionGroup.Id,TransmissionGroup.Title,TransmissionGroup.Definitions.ToArray());transmission.Children=Array.AsReadOnly(new[] {Gearing(current,proposed)});
-            return Array.AsReadOnly(new[] {Engine,induction,transmission,TiresGroup,WeightGroup,CoolingGroup,Components(current,proposed),Performance(current,proposed)});
+            var tires=Group(TiresGroup.Id,TiresGroup.Title,TiresGroup.Definitions.Where(d=>d.Id!="wheelWidth"&&d.Id!="tirePressure").ToArray());tires.Children=Array.AsReadOnly(new[]{AxleWheels(true),AxleWheels(false)});
+            return Array.AsReadOnly(new[] {Engine,induction,transmission,tires,WeightGroup,CoolingGroup,Components(current,proposed),Performance(current,proposed)});
         }
         internal static NativeStatGroup TuningSummary()=>new NativeStatGroup("TuneSummary","Changes",
             N("tuningHp","HP",s=>s.Inspection.peakHp,"HP","F0",0,500,"Estimated full-load power with the captured tune, installed hardware, wear and supplies.",1),

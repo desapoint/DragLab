@@ -21,7 +21,7 @@ namespace DragLab.Runtime
         {
             if(Categories.Count>0&&!Categories.Contains(e.Definition.category))return false;
             if(Container!="All"&&e.Location!=Container)return false;
-            if(!string.IsNullOrWhiteSpace(Search)&&!(e.Definition.name+" "+e.Definition.brand+" "+e.Definition.category+" "+e.AssetId+" "+e.Location).ToLowerInvariant().Contains(Search.Trim().ToLowerInvariant()))return false;
+            if(!string.IsNullOrWhiteSpace(Search)&&!((e.DisplayName??e.Definition.name)+" "+e.SearchExtra+" "+e.Definition.brand+" "+e.Definition.category+" "+e.AssetId+" "+e.Location).ToLowerInvariant().Contains(Search.Trim().ToLowerInvariant()))return false;
             if(Compatibility!="All"&&e.Compatibility!=Compatibility)return false;
             if(Availability=="Owned"&&!e.Owned||Availability=="Affordable"&&(!e.Price.HasValue||e.Price>cash)||Availability=="Unaffordable"&&(!e.Price.HasValue||e.Price<=cash))return false;
             if(Condition=="New"&&e.Source!="New"||Condition=="Used"&&e.Source=="New")return false;
@@ -40,7 +40,7 @@ namespace DragLab.Runtime
         {
             int metric=Array.IndexOf(NativePartBrowser.MetricNames,Sort);double? av=Sort=="Price"?a.Price:metric>=0?a.Change[metric]:null,bv=Sort=="Price"?b.Price:metric>=0?b.Change[metric]:null;
             int result;
-            if(Sort=="Name")result=string.Compare(a.Definition.name,b.Definition.name,StringComparison.OrdinalIgnoreCase);
+            if(Sort=="Name")result=string.Compare(a.DisplayName??a.Definition.name,b.DisplayName??b.Definition.name,StringComparison.OrdinalIgnoreCase);
             else {if(av.HasValue!=bv.HasValue)return av.HasValue?-1:1;result=av.HasValue?av.Value.CompareTo(bv.Value):0;}
             if(Descending)result=-result;return result!=0?result:string.CompareOrdinal(a.Id,b.Id);
         }
@@ -49,6 +49,7 @@ namespace DragLab.Runtime
     {
         internal string Id,AssetId,Source,Location,Compatibility="Calculating…",Reason="",Position;
         internal PartDefinition Definition;
+        internal string DisplayName,SearchExtra="";
         internal PartInstance Part;
         internal LooseEngineElement Unit;
         internal bool Owned,Ready;
@@ -83,7 +84,7 @@ namespace DragLab.Runtime
             referenceKey=planned&&Plan!=null?planKey:"current";
             referenceCar=reference.SelectedCar;referenceMap=MechanicsOwnership.Definitions(reference,referenceCar);Reference=planned&&PlanError!=null||string.IsNullOrEmpty(referenceCar.engineAssemblyId)?null:ReferenceEquals(reference,profile)?Current:Plan;
             referenceSpec=actual.catalog.Resolve(referenceCar.vehicleId,referenceMap,referenceCar.tune).spec;
-            bool Owns(string id)=>profile.parts.Any(p=>p.definitionId==id)||profile.looseEngineElements.Any(p=>p.definitionId==id);
+            bool Owns(string id)=>profile.parts.Any(p=>p.condition.tires.Length==4?Enumerable.Range(0,4).Any(i=>TireFitments.DefinitionId(p,i)==id):p.definitionId==id)||profile.looseEngineElements.Any(p=>p.definitionId==id);
             if(page=="Installed")foreach(var slot in actualCar.installed.slots){var p=profile.parts.Find(i=>i.instanceId==slot.partInstanceId);if(p==null)continue;Add(p.instanceId,p.definitionId,"Installed",p,null,true,p.ownerId,null);}
             if(page=="Inventory"){
                 foreach(var p in profile.parts.Where(p=>!actualCar.installed.slots.Any(s=>s.partInstanceId==p.instanceId)))Add(p.instanceId,p.definitionId,"Owned",p,null,true,p.location==PartLocation.Inventory?SharedInventory.StorageOf(p.storageId):p.ownerId,SafePrice(()=>salePrice(p.instanceId,false),p.location==PartLocation.Inventory));
@@ -97,7 +98,7 @@ namespace DragLab.Runtime
         }
         static int? SafePrice(Func<int> get,bool available){if(!available)return null;try{return get();}catch(Exception){return null;}}
         void Add(string id,string definition,string source,PartInstance part,LooseEngineElement unit,bool owned,string location,int? price)
-        {var d=actual.catalog.Find(definition);if(d!=null)Entries.Add(new NativePartEntry{Id=id,AssetId=part?.instanceId??unit?.element.id,Definition=d,Source=source,Part=part,Unit=unit,Owned=owned,Location=location,Price=price});}
+        {var d=actual.catalog.Find(definition);if(d!=null){var tireParts=TireFitments.HasOverrides(part)?Enumerable.Range(0,4).Select(i=>actual.catalog.Find(TireFitments.DefinitionId(part,i))).ToArray():new PartDefinition[0];Entries.Add(new NativePartEntry{Id=id,AssetId=part?.instanceId??unit?.element.id,Definition=d,DisplayName=tireParts.Length>0?tireParts.Select(t=>t.id).Distinct().Count()>1?"Mixed tires":tireParts[0].name:d.name,SearchExtra=string.Join(" ",tireParts.Select(t=>t.name+" "+t.brand)),Source=source,Part=part,Unit=unit,Owned=owned,Location=location,Price=price});}}
         internal static NativePartSection Section(PartCategory c)
         {
             if(c==PartCategory.Induction||c==PartCategory.Exhaust)return NativePartSection.Induction;

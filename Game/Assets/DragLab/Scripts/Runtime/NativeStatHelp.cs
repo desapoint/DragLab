@@ -128,7 +128,7 @@ namespace DragLab.Runtime
             if(id==null)return null;
             if(id=="part:Clutch:oilCondition")id="oilConditionClutch";
             else if(id=="part:Camshaft:rating:valvetrainrpm")id="camcontrolrequirement";
-            else if(id.StartsWith("part:",StringComparison.Ordinal)||id.StartsWith("exhaust:",StringComparison.Ordinal))id=id.Substring(id.LastIndexOf(':')+1);
+            else if(id.StartsWith("part:",StringComparison.Ordinal)||id.StartsWith("exhaust:",StringComparison.Ordinal)||id.StartsWith("axle:",StringComparison.Ordinal))id=id.Substring(id.LastIndexOf(':')+1);
             else if(id.IndexOf(':')>=0)id=id.Substring(0,id.IndexOf(':'));
             return entries.TryGetValue(id,out var value)?value:null;
         }

@@ -105,6 +105,7 @@ namespace DragLab.Domain.Mechanics
                     if(stored!=null){if(!resolvedOwners.TryGetValue(stored.instanceId,out spec)){spec=catalog.Resolve(stored.vehicleDefinitionId,AssemblyOperations.Definitions(profile,stored),stored.tune).spec;resolvedOwners[stored.instanceId]=spec;}EngineElements.Ensure(spec,d,item);}
                 }
                 if(d!=null)ClutchHardware.Ensure(d,item.condition);
+                if(d?.category==PartCategory.Tires)TireDynamics.Ensure(item.condition);
             }
             profile.equipmentVersion = 1; profile.drivelineVersion = 2; profile.mechanicsVersion = MechanicsSchema.Version; profile.saveVersion = SaveVersion;
             var selected = profile.SelectedCar ?? profile.cars.FirstOrDefault();

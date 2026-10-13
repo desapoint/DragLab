@@ -93,15 +93,22 @@ namespace DragLab.Runtime
         void CreatePartCard(NativePartEntry e)
         {
             string id=e.Id;var card=new Button(()=>OpenPartDetail(id)){name="partCard:"+id,focusable=false,tabIndex=-1,tooltip=e.Definition.name};card.AddToClassList("owned-car-card");card.AddToClassList("part-card");card.AddToClassList("clickable-panel");partsGrid.Add(card);AddSurface(card,RacingSurface.Kind.Panel);partGridSurfaces.Add(card.Q<RacingSurface>());partCards[id]=card;PartCardBuildCount++;
-            var title=new Label(e.Definition.name){enableRichText=false,pickingMode=PickingMode.Ignore};title.AddToClassList("car-card-title");card.Add(title);var labels=new Label[8];var specifications=new VisualElement();specifications.AddToClassList("part-card-specifications");for(int i=0;i<labels.Length;i++){labels[i]=new Label{enableRichText=false,pickingMode=PickingMode.Ignore};labels[i].AddToClassList(i==0?"car-condition":"part-card-fact");if(i==1)card.Add(specifications);if(i>=1&&i<=4)specifications.Add(labels[i]);else card.Add(labels[i]);}partCardLabels[id]=labels;UpdatePartCard(e);
+            var title=new Label(e.DisplayName??e.Definition.name){enableRichText=false,pickingMode=PickingMode.Ignore};title.AddToClassList("car-card-title");card.Add(title);var labels=new Label[8];var specifications=new VisualElement();specifications.AddToClassList("part-card-specifications");for(int i=0;i<labels.Length;i++){labels[i]=new Label{enableRichText=false,pickingMode=PickingMode.Ignore};labels[i].AddToClassList(i==0?"car-condition":"part-card-fact");if(i==1)card.Add(specifications);if(i>=1&&i<=4)specifications.Add(labels[i]);else card.Add(labels[i]);}partCardLabels[id]=labels;UpdatePartCard(e);
         }
         string PartDelta(NativePartEntry e,int metric)
         {if(!e.Change[metric].HasValue)return e.Ready?"—":"…";double value=e.Change[metric].Value;if(metric==1||metric==4)value=DisplayUnits.Torque(value,SharedUnitSettings.Current.torque);return (value>0?"+":"")+value.ToString(metric==3?"0.#":"0.##")+" "+(metric==0?"HP":metric==1||metric==4?SharedUnitSettings.TorqueLabel:metric==2?"kg":metric==3?"pp":metric==5?"RPM":"W/°C");}
+        PartStat[] PartSpecs(NativePartEntry e)
+        {
+            if(!TireFitments.HasOverrides(e.Part))return partSpecCache.Get(e.Definition);
+            var defs=Enumerable.Range(0,4).Select(i=>game.Profile.catalog.Find(TireFitments.DefinitionId(e.Part,i))).ToArray();
+            if(defs.Select(d=>d.id).Distinct().Count()==1)return partSpecCache.Get(defs[0]);
+            return new[]{new PartStat("grip","Lowest grip factor",defs.Min(d=>d.grip),"×",1,"Lowest authored compound grip; inspect the actual corners below."),new PartStat("rollinglife","Shortest reference life",defs.Min(d=>d.tireLifeDistanceM/1000),"km",1,"Shortest constituent reference lifespan, not remaining distance."),new PartStat("slidinglife","Lowest slip-life budget",defs.Min(d=>d.wearEnergyJ/1e6),"MJ",1,"Lowest constituent sliding-work budget."),new PartStat("tireoptimal","Highest grip target",defs.Max(d=>d.tireOptimalC),"°C",0,"Hottest preferred temperature among the constituent tires.")};
+        }
         void UpdatePartCard(NativePartEntry e)
         {
             if(!partCardLabels.TryGetValue(e.Id,out var labels))return;
             labels[0].text=e.Compatibility;
-            var specs=partSpecCache.Get(e.Definition);for(int i=0;i<4;i++){labels[i+1].text=i<specs.Length?PartStatText(specs[i]):"";labels[i+1].tooltip=i<specs.Length?specs[i].explanation:"";}
+            var specs=PartSpecs(e);for(int i=0;i<4;i++){labels[i+1].text=i<specs.Length?PartStatText(specs[i]):"";labels[i+1].tooltip=i<specs.Length?specs[i].explanation:"";}
             double health=e.Unit?.element.health??e.Part?.condition.health??1;bool failed=e.Unit!=null?e.Unit.element.Failed:e.Part?.condition.failed??false;
             labels[5].text=e.Source+" · "+PartSemantics.Friendly(e.Definition.category.ToString())+(PartSemantics.Wears(e.Definition.category)?" · "+(failed?"FAILED":health.ToString("P0")):"");labels[5].EnableInClassList("car-critical",failed);
             labels[6].text=(e.Price.HasValue?DisplayUnits.Money(e.Price.Value):"—")+(e.Definition.category==PartCategory.Tires?e.Unit==null?" / set of 4":" / tire":"")+" · "+(e.Definition.tuning!=PartTuningOptions.None||e.Definition.camTimingAdjustable?"Adjustable":"Fixed");
@@ -150,7 +157,7 @@ namespace DragLab.Runtime
             partsDetailId=id;ShowPartsBrowsing(false);ClearPartDetails();partsScroll.AddToClassList("hidden");partsDetail.RemoveFromClassList("hidden");
             var heading=new VisualElement{name="partDetailHeading"};heading.AddToClassList("part-detail-heading");partsDetail.Insert(0,heading);
             var back=PartButton(heading,"partBack","",BackToParts,detail:true);back.AddToClassList("car-back-button");back.Add(new FilledMenuIcon("Back"));back.tooltip="Back to parts";
-            var title=new Label(e.Definition.name){name="partDetailTitle",enableRichText=false};title.AddToClassList("car-detail-title");title.AddToClassList("part-detail-title");heading.Add(title);
+            var title=new Label(e.DisplayName??e.Definition.name){name="partDetailTitle",enableRichText=false};title.AddToClassList("car-detail-title");title.AddToClassList("part-detail-title");heading.Add(title);
             var info=PartButton(heading,"partInfo","i",()=>OpenDialog(e.Definition.name,SharedUnitSettings.TorqueText(e.Definition.description+"\n"+PartTuning.Summary(e.Definition)+"\n"+e.Reason+"\n"+string.Join("\n",PartSemantics.Stats(e.Definition).Select(PartStatText))),new[]{new DialogAction("Close",CloseDialog)}),detail:true);info.AddToClassList("part-info-button");info.tooltip="All part specifications";
             var top=new VisualElement{name="partDetailTop"};top.AddToClassList("part-detail-top");partsDetailScroll.Add(top);
             var facts=new VisualElement{name="partDetailFacts"};facts.AddToClassList("part-detail-facts");top.Add(facts);top.EnableInClassList("part-preview-unavailable",e.Proposed==null);DecoratePartDetail(facts,RacingSurface.Kind.Panel);
@@ -166,7 +173,7 @@ namespace DragLab.Runtime
             PartDetailFact(facts,"Adjustment",e.Definition.tuning!=PartTuningOptions.None||e.Definition.camTimingAdjustable?"Adjustable":"Fixed");
             var description=new Label(PartDescription(e.Definition)){name="partDescription",enableRichText=false};description.AddToClassList("part-description");facts.Add(description);description.EnableInClassList("hidden",string.IsNullOrWhiteSpace(description.text));
             var specifications=new VisualElement{name="partKeySpecs"};specifications.AddToClassList("part-key-specs");partsDetailScroll.Add(specifications);
-            foreach(var stat in partSpecCache.Get(e.Definition))PartDetailFact(specifications,stat.label,PartStatText(stat).Substring(stat.label.Length+2));
+            foreach(var stat in PartSpecs(e))PartDetailFact(specifications,stat.label,PartStatText(stat).Substring(stat.label.Length+2));
             if(!string.IsNullOrWhiteSpace(e.Reason)){
                 var reasons=e.Reason.Split('\n').Where(r=>!string.IsNullOrWhiteSpace(r)).Distinct().ToArray();
                 if(e.Proposed==null){var reason=new Label(SharedUnitSettings.TorqueText(e.Reason)){name="partAvailability",enableRichText=false};reason.AddToClassList("part-description");reason.AddToClassList("car-warning");facts.Add(reason);}

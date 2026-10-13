@@ -80,7 +80,7 @@ namespace DragLab.Editor
                 string fixture = Path.Combine(root, "reports/simulation-rules/legacy-settings"); Directory.CreateDirectory(fixture);
                 ProfileStore.VerificationPath = Path.Combine(fixture, "profile-v1.json");
                 foreach (string suffix in new[] { "", ".bak" }) if (File.Exists(ProfileStore.FilePath + suffix)) File.Delete(ProfileStore.FilePath + suffix);
-                var legacy = ProfileStore.Load(); string oldId = legacy.SelectedCar.instanceId;
+                var legacy = PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(legacy,new MechanicalCatalog(Resources.LoadAll<VehicleDefinition>("Data/Vehicles").Select(v=>v.spec))); string oldId = legacy.SelectedCar.instanceId;
                 string oldJson = JsonUtility.ToJson(legacy);
                 foreach (string field in new[] { "wearMode", "wearMultiplier", "simulationDifficulty", "optimalThermals", "clutchAssist", "stallPrevention" })
                     oldJson = System.Text.RegularExpressions.Regex.Replace(oldJson, ",?\"" + field + "\":[^,}]+", "");

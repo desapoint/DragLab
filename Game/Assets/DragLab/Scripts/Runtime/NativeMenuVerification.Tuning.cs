@@ -27,7 +27,9 @@ namespace DragLab.Runtime
             var original=game.Profile;var field=typeof(PrototypeGame).GetField("profile",BindingFlags.Instance|BindingFlags.NonPublic);
             byte[] disk=File.ReadAllBytes(ProfileStore.FilePath),backup=File.Exists(ProfileStore.FilePath+".bak")?File.ReadAllBytes(ProfileStore.FilePath+".bak"):null;
             try{
+                if(!shell.Visible)yield return Key(input,0x77);
                 yield return Click(input,"navTuning");yield return new WaitForSecondsRealtime(.2f);
+                if(!shell.Visible)yield return Key(input,0x77);
                 string baseline=JsonUtility.ToJson(game.Profile);int captures=shell.TuningPreviewCaptureCount;
                 var panel=shell.Root.Q<NativeStatsPanel>("tuningStats");var plot=shell.Root.Q<NativeDynoPlot>("tuningDynoPlot");
                 Check(shell.Visible&&!shell.Root.Q("tuningPage").ClassListContains("hidden")&&shell.Root.Q<Button>("navTuning").ClassListContains("selected"),"Tuning navigation displays its native page frame");
@@ -42,6 +44,7 @@ namespace DragLab.Runtime
                 }
                 Check(shell.TuningPreviewCaptureCount==captures&&baseline==JsonUtility.ToJson(game.Profile)&&File.ReadAllBytes(ProfileStore.FilePath).SequenceEqual(disk),"Category browsing does not recalculate previews, apply tunes or save");
                 yield return TuningGestureChecks(input);
+                yield return AxleTuningChecks(input);
                 var current=InspectionBuild.Capture(game.Profile,game.Profile.SelectedCar);string fluids=JsonUtility.ToJson(current.startingFluids),parts=JsonUtility.ToJson(current.components);
                 yield return Key(input,0x77);Check(!shell.Visible&&game.ScreenName=="Tuning","F8 exposes legacy tuning on the same route");
                 game.DraftValues.driverMassKg+=70;game.DraftValues.finalDrive*=.85f;var pending=game.DraftValues;yield return Key(input,0x77);

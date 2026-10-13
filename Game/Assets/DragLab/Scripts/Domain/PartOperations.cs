@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace DragLab.Domain.Mechanics
 {
@@ -24,7 +25,8 @@ namespace DragLab.Domain.Mechanics
         {
             var item = Item(profile, itemId);
             if (item.location != PartLocation.Inventory) throw new InvalidOperationException("Remove the installed part before selling it.");
-            profile.cash = checked(profile.cash + SaleValue(catalog.Find(item.definitionId), item.condition)); profile.parts.Remove(item);
+            int sale=TireFitments.HasOverrides(item)?(int)Math.Floor(System.Linq.Enumerable.Range(0,4).Sum(i=>catalog.Find(TireFitments.DefinitionId(item,i)).price*.25*.45*item.condition.tires[i].health*(item.condition.tires[i].failed?.1:1))):SaleValue(catalog.Find(item.definitionId),item.condition);
+            profile.cash = checked(profile.cash + sale); profile.parts.Remove(item);
         }
         public static void Transfer(PlayerProfile profile, MechanicalCatalog catalog, string donorVehicleId, string targetVehicleId, PartCategory category)
         {

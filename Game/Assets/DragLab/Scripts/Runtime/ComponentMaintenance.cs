@@ -77,8 +77,8 @@ namespace DragLab.Runtime
                 GUILayout.BeginHorizontal();
                 if (PartButton("repair-preview:" + oldId, "Preview new / stats")) PreviewPart(definitionId);
                 bool enabled = GUI.enabled; GUI.enabled = enabled && profile.cash >= definition.price;
-                if (PartButton("repair-buy:" + oldId, "Buy same + replace / " + DisplayUnits.Money(definition.price))) QueuePayment(new PaymentRequest {
-                    kind = PaymentKind.Part, carId = carId, targetId = definitionId, install = true
+                if (PartButton("repair-buy:" + oldId, definition.category==PartCategory.Tires?"Buy same + replace":"Buy same + replace / "+DisplayUnits.Money(definition.price))) QueuePayment(new PaymentRequest {
+                    kind = PaymentKind.Part, carId = carId, targetId = definitionId, install = true, preserveTireFitments=definition.category==PartCategory.Tires
                 });
                 GUI.enabled = enabled;
                 GUILayout.EndHorizontal();

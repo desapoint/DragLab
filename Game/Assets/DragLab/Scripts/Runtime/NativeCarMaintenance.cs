@@ -63,7 +63,7 @@ namespace DragLab.Runtime
                 foreach(var action in ServiceOperations.Available(d,item.condition))
                     MaintenanceAction(actions,"maintenanceRepair:"+action+":"+item.instanceId,action.ToString(),new PaymentRequest {kind=PaymentKind.Repair,carId=car.instanceId,targetId=item.instanceId,service=action},ServiceOperations.Description(action),available);
                 int count=Math.Max(item.condition.elements.Length,item.condition.tires.Length);
-                MaintenanceAction(actions,"maintenanceReplace:"+item.instanceId,"Buy same",new PaymentRequest {kind=PaymentKind.Part,carId=car.instanceId,targetId=item.definitionId,install=true},d.name+(count>1?" · matched set of "+count:"")+"\nBuy and install the same specification. The removed part/set stays in inventory with its condition; saved tuning stays.",available,item.instanceId);
+                MaintenanceAction(actions,"maintenanceReplace:"+item.instanceId,"Buy same",new PaymentRequest {kind=PaymentKind.Part,carId=car.instanceId,targetId=item.definitionId,install=true,preserveTireFitments=d.category==PartCategory.Tires},(d.category==PartCategory.Tires&&TireFitments.HasOverrides(item)?"Current mixed tire specifications":d.name)+(count>1?(d.category==PartCategory.Tires?" · set of ":" · matched set of ")+count:"")+"\nBuy and install the same specification. The removed part/set stays in inventory with its condition; saved tuning stays.",available,item.instanceId);
             }
             if(!string.IsNullOrEmpty(car.engineAssemblyId)) {
                 var engine=new VisualElement();engine.AddToClassList("maintenance-engine");section.Add(engine);

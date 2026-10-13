@@ -41,7 +41,7 @@ namespace DragLab.Domain
             double weight=mass.TranslatingKg*DragMath.Gravity,transfer=mass.TranslatingKg*state.acceleration*mass.centerOfGravityHeightM/spec.wheelbaseM;
             state.frontLoadN=DragMath.Clamp(mass.frontNormalLoadN-transfer,0,weight);state.rearLoadN=weight-state.frontLoadN;
             double demand=InductionDynamics.Torque(induction,state,state.rpm,state.throttle)*ratio*spec.drivetrainEfficiency/wheels.radius;
-            AxleDriveDynamics.TorqueSplit(this,demand,state.frontLoadN*Friction(0),state.rearLoadN*Friction(2),dt);
+            AxleDriveDynamics.TorqueSplit(this,demand,state.frontLoadN*.5*(Friction(0)*roadTireGrip[0]+Friction(1)*roadTireGrip[1]),state.rearLoadN*.5*(Friction(2)*roadTireGrip[2]+Friction(3)*roadTireGrip[3]),dt);
         }
         void AdvanceContact(double dt,double wholeDt,double shaft,double ratio)
         {

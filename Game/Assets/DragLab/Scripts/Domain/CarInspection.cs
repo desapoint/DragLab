@@ -52,6 +52,7 @@ namespace DragLab.Domain
         public readonly List<SetupWarning> warnings = new List<SetupWarning>();
         public double peakHp, hpRpm, peakTorque, torqueRpm, boostBar, wheelRadiusIn, wheelDiameterIn, wheelMassKg, vehicleMassKg, effectiveMassKg, wheelInertia, flywheelMassKg, flywheelInertia, clutchCapacityNm, shiftSeconds, brakeG, condition, turboSpoolSeconds;
         public double coolingTransferPercent, radiatorWattsPerC, tireRollingLifeKm, tireSlidingLifeMj, tireGripFactor, lowestTireHealth;
+        public double[] wheelRadiiIn=new double[4],wheelMassesKg=new double[4],wheelInertias=new double[4],wheelGripFactors=new double[4],wheelRollingLifeKm=new double[4],wheelSlidingLifeMj=new double[4];
         public MassBreakdown mass;
         public double elapsed, trapMps, maxSlip, maxClutchSlip, slippingSeconds;
         public bool completed, probeFailed, probeComplete;
@@ -75,9 +76,10 @@ namespace DragLab.Domain
             var radiator = car.mechanics.parts.Find(p => p.slot == PartCategory.Cooling.ToString());
             result.coolingTransferPercent = car.state.engineCoolingFactor * 100;
             result.radiatorWattsPerC = radiator == null || radiator.condition.failed ? 0 : car.mechanics.Definition(radiator).coolingWattsPerC * (.4 + .6 * radiator.condition.health);
-            var tirePack=car.mechanics.parts.Find(p=>p.slot=="Tires");if(tirePack!=null){var tireDefinition=car.mechanics.Definition(tirePack);result.tireRollingLifeKm=tireDefinition.tireLifeDistanceM/1000;result.tireSlidingLifeMj=tireDefinition.wearEnergyJ/1e6;result.tireGripFactor=Enumerable.Range(0,4).Min(i=>car.mechanics.TireDefinition(i).grip*TireDynamics.Grip(car.mechanics.TireDefinition(i),tirePack.condition.tires[i]));result.lowestTireHealth=tirePack.condition.tires.Min(t=>t.health);}
+            var tirePack=car.mechanics.parts.Find(p=>p.slot=="Tires");if(tirePack!=null){var tireDefinition=car.mechanics.Definition(tirePack);result.tireRollingLifeKm=Enumerable.Range(0,4).Min(i=>car.mechanics.TireDefinition(i).tireLifeDistanceM/1000);result.tireSlidingLifeMj=Enumerable.Range(0,4).Min(i=>car.mechanics.TireDefinition(i).wearEnergyJ/1e6);result.tireGripFactor=Enumerable.Range(0,4).Min(i=>car.mechanics.TireDefinition(i).grip*TireDynamics.Grip(car.mechanics.TireDefinition(i),tirePack.condition.tires[i]));result.lowestTireHealth=tirePack.condition.tires.Min(t=>t.health);}
             result.transmission = car.transmission.type; result.transmissionName = TransmissionDynamics.DisplayName(car.transmission); result.induction = car.induction.type.ToString(); result.fueling = car.engine.data.fueling.ToString();
             result.wheelRadiusIn = wheels.radius / DisplayUnits.MetresPerInch; result.wheelDiameterIn = result.wheelRadiusIn * 2;
+            for(int i=0;i<4;i++){result.wheelRadiiIn[i]=wheels.radii[i]/DisplayUnits.MetresPerInch;result.wheelMassesKg[i]=wheels.assemblyMasses[i];result.wheelInertias[i]=wheels.inertias[i];var d=car.mechanics.TireDefinition(i);if(d!=null){result.wheelGripFactors[i]=spec.tireFriction*d.grip*TireDynamics.Grip(d,tirePack.condition.tires[i])*(1-Math.Abs(tune.AxlePressure(i<2)-26)*.007)*wheels.gripScales[i];result.wheelRollingLifeKm[i]=d.tireLifeDistanceM/1000;result.wheelSlidingLifeMj[i]=d.wearEnergyJ/1e6;}}
             result.wheelMassKg = wheels.assemblyMass; result.vehicleMassKg = wheels.vehicleMass; result.effectiveMassKg = wheels.effectiveMass; result.wheelInertia = wheels.totalInertia;
             result.flywheelMassKg = MassDynamics.Installed(spec,PartCategory.Flywheel) ? spec.flywheel.massKg * tune.FlywheelMass : 0; result.flywheelInertia = FlywheelDynamics.Inertia(spec, tune);
             result.clutchCapacityNm = spec.ClutchCapacity * tune.CapacityMultiplier * car.state.clutchCapacityFactor;
@@ -143,7 +145,7 @@ namespace DragLab.Domain
             if (peakTorque > clutchCapacityNm && (transmission == TransmissionType.Manual || transmission == TransmissionType.DCT) || slippingSeconds > .5 && (transmission == TransmissionType.Manual || transmission == TransmissionType.DCT))
                 warnings.Add(new SetupWarning("Clutch may slip instead of accelerating", "Engine peak " + peakTorque.ToString("F0") + " Nm versus current clutch capacity " + clutchCapacityNm.ToString("F0") + " Nm. Sustained slip in the unassisted probe: " + slippingSeconds.ToString("F1") + " s.", "Fit a stronger/healthier clutch, allow it to cool, reduce boost/power or engage it more gently."));
             if (maxSlip > .15) warnings.Add(new SetupWarning("Excessive wheelspin is likely", "Unassisted full-throttle probe reached " + (maxSlip * 100).ToString("F0") + "% measured wheel slip from independent wheel rotation and tire contact.", "Lower launch RPM/boost, use gentler throttle, improve tire grip or enable traction control."));
-            if (tune.WheelDiameter > 1.25 || effectiveMassKg / Math.Max(1, car.spec.massKg) > 1.25)
+            if (Math.Max(tune.AxleDiameter(true),tune.AxleDiameter(false)) > 1.25 || effectiveMassKg / Math.Max(1, car.spec.massKg) > 1.25)
                 warnings.Add(new SetupWarning("Large/heavy tires can make launches sluggish", "Taller tires reduce force at the road and increase rotating load. Effective acceleration mass is " + effectiveMassKg.ToString("F0") + " kg.", "Try a smaller outer radius/lighter wheel assembly or a higher final-drive ratio. In a manual, release the clutch gradually to avoid bogging/stalling."));
             foreach (var p in source.components)
             {
@@ -158,6 +160,7 @@ namespace DragLab.Domain
                 if ((engine || input || output) && demand > strength)
                     warnings.Add(new SetupWarning(d.category + " torque headroom is low", "Estimated peak demand " + demand.ToString("F0") + " Nm exceeds the current condition-adjusted rating (" + strength.ToString("F0") + " Nm).", "Reduce boost/power or replace this part with a compatible stronger/healthier version."));
             }
+            if(b.spec.drive==DriveType.AWD&&Math.Abs(car.wheels.radii[0]-car.wheels.radii[2])/Math.Max(car.wheels.radii[0],car.wheels.radii[2])>.005)warnings.Add(new SetupWarning("AWD tire rolling sizes differ","Front radius "+wheelRadiiIn[0].ToString("F2")+" in / rear "+wheelRadiiIn[2].ToString("F2")+" in. Different road-speed wheel RPM can cause coupling slip; a locked center forces tire scrub.","Match front/rear outer tire radius for AWD. Width/pressure may still be adjusted separately; inspect coupling heat and wheel slip."));
             if(lowestTireHealth<.5)warnings.Add(new SetupWarning("Tire condition limits traction", "Lowest tire life "+lowestTireHealth.ToString("P1")+". A failed tire retains only a small residual grip.","Install a compatible healthy tire pack. Keep the removed pack's actual wear when reusing or selling it."));
             if (radiatorWattsPerC == 0) warnings.Add(new SetupWarning("No active cooling", "Engine can start, but only residual air cooling remains.", "Fit a compatible radiator/pump before sustained load."));
             if (condition < .5) warnings.Add(new SetupWarning("A fitted component is heavily worn", "Lowest fitted-part health is " + (condition * 100).ToString("F0") + "%. Replacement does not repair the removed original.", "Inspect the component list and replace or swap the worn part before hard driving."));

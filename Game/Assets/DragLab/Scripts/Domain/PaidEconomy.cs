@@ -34,6 +34,7 @@ namespace DragLab.Domain.Mechanics
     public enum PaymentKind { Fuel, Fluids, OilChange, CoolantFlush, Repair, ClutchOil, Part, Car, ElementNew, ElementReuse, Rebuild, VehicleInspection }
     [Serializable] public sealed class PaymentRequest
     {
+        public bool preserveTireFitments;
         public PaymentKind kind; public string carId, targetId, auxiliaryId, spareId; public bool install;
         public double litres, coolantLitres; public ServiceAction service; public VehicleOffer offer;
     }
@@ -118,7 +119,7 @@ namespace DragLab.Domain.Mechanics
             if (request.kind == PaymentKind.Car) { VehicleListings.RequireCurrent(p,request.offer);a.cost = DealerPrice(cat, policy, prices, request.offer); a.fuel = request.offer.parts!=null&&request.offer.parts.Count>0?request.offer.fuel.litres:cat.Spec(request.offer.model).fuel.capacityLitres; a.oil = request.offer.parts!=null&&request.offer.parts.Count>0?request.offer.fluids.oilLitres:cat.Spec(request.offer.model).fluids.oilCapacityLitres; a.coolant = request.offer.parts!=null&&request.offer.parts.Count>0?request.offer.fluids.coolantLitres:cat.Spec(request.offer.model).fluids.coolantCapacityLitres; return a; }
             if(request.kind==PaymentKind.VehicleInspection){VehicleListings.RequireCurrent(p,request.offer);if(string.IsNullOrEmpty(request.offer.listingId)||VehicleInspection.Known(request.offer))throw new InvalidOperationException("This listing is already fully disclosed.");a.cost=policy.vehicleInspectionFee;a.description="Inspect used vehicle";return a;}
             var car = Car(p, request.carId); var build = MechanicsOwnership.Resolve(p, car, cat);
-            if (request.kind == PaymentKind.Part) { var d = cat.Find(request.targetId); if (d == null || !cat.Fits(cat.Spec(car.vehicleId), d) || d.price < 0 || p.reputation<d.reputationRequired) throw new InvalidOperationException("Incompatible/unavailable part purchase; check reputation requirement."); a.cost = d.price; return a; }
+            if (request.kind == PaymentKind.Part) { var d = cat.Find(request.targetId); if (d == null || !cat.Fits(cat.Spec(car.vehicleId), d) || d.price < 0 || p.reputation<d.reputationRequired) throw new InvalidOperationException("Incompatible/unavailable part purchase; check reputation requirement."); a.cost = request.preserveTireFitments&&request.install&&d.category==PartCategory.Tires?TireFitments.ReplacementCost(p,car,d.id):d.price; return a; }
             if (request.kind == PaymentKind.Fuel) { a.fuel = Quantity(request.litres, cat.Spec(car.vehicleId).fuel.capacityLitres - car.fuel.litres); a.cost = Money(a.fuel * policy.fuelPerLitre); return a; }
             if (request.kind == PaymentKind.Fluids || request.kind == PaymentKind.OilChange || request.kind == PaymentKind.CoolantFlush) {
                 if (string.IsNullOrEmpty(car.engineAssemblyId)) throw new InvalidOperationException("No attached engine to service.");
@@ -137,7 +138,7 @@ namespace DragLab.Domain.Mechanics
         static string Hash(PlayerProfile p, MechanicalCatalog cat, OperatingPolicy policy, ValuationPolicy values, PaymentRequest r,string profileJson=null,string requestJson=null)
         {
             string extra = requestJson??JsonUtility.ToJson(r);
-            if (r.kind == PaymentKind.Part) extra += JsonUtility.ToJson(cat.Find(r.targetId));
+            if (r.kind == PaymentKind.Part) {extra += JsonUtility.ToJson(cat.Find(r.targetId));if(r.preserveTireFitments){var car=Car(p,r.carId);var b=car.installed.slots.Find(s=>s.slot=="Tires");var pack=b==null?null:p.parts.Find(i=>i.instanceId==b.partInstanceId);if(pack!=null&&pack.condition.tires.Length==4)for(int i=0;i<4;i++)extra+=JsonUtility.ToJson(cat.Find(TireFitments.DefinitionId(pack,i)));}}
             if (r.kind == PaymentKind.Car || r.kind==PaymentKind.VehicleInspection) { extra += JsonUtility.ToJson(cat.Spec(r.offer.model)); foreach (var id in (r.offer.parts==null||r.offer.parts.Count==0?cat.Recipe(r.offer.model,r.offer.stock).Values:r.offer.parts.Select(i=>i.definitionId)))extra+=JsonUtility.ToJson(cat.Find(id)); }
             using (var sha = SHA256.Create()) return Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(Valuations.Fingerprint(p, cat, values,profileJson) + JsonUtility.ToJson(policy) + extra)));
         }
@@ -164,7 +165,7 @@ namespace DragLab.Domain.Mechanics
                 case PaymentKind.CoolantFlush: ServiceOperations.FlushCoolant(p, r.carId); break;
                 case PaymentKind.Repair: ServiceOperations.Repair(p, r.carId, r.targetId, r.service); break;
                 case PaymentKind.ClutchOil: var item = Installed(p, Car(p, r.carId), r.targetId); item.condition.clutchOilLitres = cat.Find(item.definitionId).clutchOilCapacityLitres; item.condition.clutchOilCondition = 1; item.condition.serviceCount++; item.condition.lastService = "Wet clutch oil service"; break;
-                case PaymentKind.Part: PartOperations.Buy(p, cat, r.carId, r.targetId, r.install); break;
+                case PaymentKind.Part: if(r.preserveTireFitments&&r.install&&cat.Find(r.targetId).category==PartCategory.Tires)TireFitments.ReplaceSame(p,Car(p,r.carId),r.targetId);else PartOperations.Buy(p, cat, r.carId, r.targetId, r.install); break;
                 case PaymentKind.Car: VehicleCollection.Buy(p, cat, r.offer, q.Cost); break;
                 case PaymentKind.ElementNew: EngineElementService.Replace(p, r.carId, r.targetId, r.auxiliaryId); break;
                 case PaymentKind.ElementReuse: EngineElementService.Replace(p, r.carId, r.targetId, r.auxiliaryId, r.spareId); break;

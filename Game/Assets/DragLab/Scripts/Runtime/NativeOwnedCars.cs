@@ -267,14 +267,15 @@ namespace DragLab.Runtime
                 if (layers.Length == 0) return preview;
                 Bounds bounds = layers[0].bounds; foreach (var layer in layers) bounds.Encapsulate(layer.bounds);
                 foreach (var layer in layers) {
-                    var box = layer.bounds;
+                    var box=layer.bounds;var center=layer.transform.TransformPoint(layer.sprite.bounds.center);var size=Vector3.Scale(layer.sprite.bounds.size,layer.transform.lossyScale);
                     var image = new Image { sprite = layer.sprite, tintColor = layer.color, scaleMode = ScaleMode.StretchToFill, pickingMode = PickingMode.Ignore };
                     image.style.position = Position.Absolute;
-                    image.style.left = Length.Percent((box.min.x-bounds.min.x)/bounds.size.x*100);
-                    image.style.top = Length.Percent((bounds.max.y-box.max.y)/bounds.size.y*100);
-                    image.style.width = Length.Percent(box.size.x/bounds.size.x*100);
-                    image.style.height = Length.Percent(box.size.y/bounds.size.y*100);
-                    preview.Add(image);
+                    image.style.left = Length.Percent((center.x-size.x*.5f-bounds.min.x)/bounds.size.x*100);
+                    image.style.top = Length.Percent((bounds.max.y-center.y-size.y*.5f)/bounds.size.y*100);
+                    image.style.width = Length.Percent(size.x/bounds.size.x*100);
+                    image.style.height = Length.Percent(size.y/bounds.size.y*100);
+                    image.style.rotate=new Rotate(new Angle(-layer.transform.eulerAngles.z,AngleUnit.Degree));
+                    image.name="carLayer:"+layer.gameObject.name;preview.Add(image);
                 }
                 float aspect = bounds.size.y/bounds.size.x;
                 preview.RegisterCallback<GeometryChangedEvent>(evt => {
