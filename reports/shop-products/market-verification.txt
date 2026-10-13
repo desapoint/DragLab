@@ -90,7 +90,7 @@ PASS Old new-stock saves gain MSRP metadata without resetting the market
 PASS Price migration preserves owned assets, used stock, saved asks and seller identities
 PASS Price metadata migration is idempotent
 PASS Existing saved new offer displays/quotes the higher current-policy price
-PASS Repriced old new-stock purchase settles against its original identity: 
+PASS Repriced old new-stock purchase settles against its original identity:
 PASS Repriced checkout charges once and retains the exact zero-mile package
 PASS Replacement new stock has stable premium pricing and valid ownership
 PASS Changing the new premium invalidates an old quote without charging
