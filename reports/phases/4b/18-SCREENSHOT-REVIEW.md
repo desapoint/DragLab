@@ -1,0 +1,7 @@
+# Current-run interface screenshots (2026-10-13)
+
+The user requested an accessible review folder for test interfaces and replacement of old images on every scripted click run. Shared export now integrates native menu, Windows/bench gameplay and interface-comparison entry scripts. Each suite has a stable folder in `reports/interface-screenshots`, separate from fixture names. Before launch, only immediate PNGs in that fixture/review folder are removed; logs, saves, other suites and historical fixtures stay intact. PASS/RUNNING/FAILED labels and per-image provenance prevent stale successes or images from posing as the current attempt. Report freshness is checked. No recursive deletion; resolved paths and directory-link guards constrain removal.
+
+The collection command initially assembled **188 recorded native and 16 recorded legacy images** from successful historical runs, explicitly labelled as recorded rather than freshly rerun. The live native Shine test passed **87/0**, exported 16 images, then passed **87/0** on the same fixture/suite with deliberately inserted obsolete PNGs removed from both places. Shared noninteractive checks passed for repeat cleanup, fresh/failure export, preserved logs/other suites and rejected path escapes. No Unity build was needed for this tooling-only checkpoint; the existing player was used unchanged. [Usage](../../../docs/INTERFACE_SCREENSHOT_REVIEW.md).
+
+This completes only the requested screenshot infrastructure. The separately authorized saved-setup browser/preview follows; no other UI phase advances here.

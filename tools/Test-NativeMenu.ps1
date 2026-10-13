@@ -1,9 +1,12 @@
 param([string]$FixtureName = 'native-menu-shell', [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly)
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
+. (Join-Path $PSScriptRoot 'InterfaceScreenshots.ps1')
 $taskFixture = [IO.Path]::GetFullPath((Join-Path $taskRoot ('reports/player-fixtures/' + $FixtureName)))
 if (-not $taskFixture.StartsWith((Join-Path $taskRoot 'reports/player-fixtures/'), [StringComparison]::OrdinalIgnoreCase)) { throw 'Fixture must stay inside reports/player-fixtures.' }
-New-Item -ItemType Directory -Path $taskFixture -Force | Out-Null
+$taskSuite = @($PSBoundParameters.Keys | Where-Object { $_ -like '*Only' -and $PSBoundParameters[$_] } | Sort-Object)
+$taskScreenshotSuite = if ($taskSuite.Count) { 'native-' + ($taskSuite -join '-') } else { 'native-menus' }
+$taskScreenshots = Start-InterfaceScreenshotRun $taskRoot $taskFixture $taskScreenshotSuite
 $taskPlayer = Join-Path $taskRoot 'Game/Builds/Windows/DragLab.exe'
 $taskArgs = @('-screen-fullscreen','0','-screen-width','1280','-screen-height','720','-logFile',('"' + (Join-Path $taskFixture 'player.log') + '"'),'--draglab-verify',('"' + $taskFixture + '"'),'--draglab-native-menu-verify')
 if ($InspectionOnly) { $taskArgs += '--draglab-inspection-only-verify' }
@@ -17,8 +20,12 @@ if ($WarningsOnly) { $taskArgs += '--draglab-warnings-only-verify' }
 if ($CartOnly) { $taskArgs += '--draglab-cart-only-verify' }
 if ($PurchaseOnly) { $taskArgs += '--draglab-purchase-only-verify' }
 # Real native events require the interactive player window, not a hidden helper.
-$taskProcess = Start-Process -FilePath $taskPlayer -ArgumentList $taskArgs -WindowStyle Normal -PassThru
-$taskProcess.WaitForExit()
 $taskReport = Join-Path $taskFixture 'verification.txt'
-if (Test-Path -LiteralPath $taskReport) { Get-Content -LiteralPath $taskReport -Encoding UTF8 }
-if ($taskProcess.ExitCode -ne 0 -or -not (Test-Path -LiteralPath $taskReport)) { throw "Native menu check failed; inspect $taskFixture/player.log" }
+$taskPassed = $false
+try {
+    $taskProcess = Start-Process -FilePath $taskPlayer -ArgumentList $taskArgs -WindowStyle Normal -PassThru
+    $taskProcess.WaitForExit()
+    if (Test-Path -LiteralPath $taskReport) { Get-Content -LiteralPath $taskReport -Encoding UTF8 }
+    $taskPassed = $taskProcess.ExitCode -eq 0 -and (Test-Path -LiteralPath $taskReport) -and (Get-Item -LiteralPath $taskReport).LastWriteTimeUtc -ge $taskScreenshots.Started
+    if (-not $taskPassed) { throw "Native menu check failed; inspect $taskFixture/player.log" }
+} finally { Complete-InterfaceScreenshotRun $taskScreenshots $taskPassed $taskReport }

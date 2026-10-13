@@ -3,10 +3,13 @@ $ErrorActionPreference = 'Stop'
 if ($BusinessResume -and -not $BusinessOnly) { throw 'BusinessResume requires BusinessOnly and the original FixtureName.' }
 if ($PaidResume -and -not $PaidOnly) { throw 'PaidResume requires PaidOnly and the same FixtureName used for the paid first process.' }
 $taskRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
+. (Join-Path $PSScriptRoot 'InterfaceScreenshots.ps1')
 $taskPlayer = Join-Path $taskRoot 'Game/Builds/Windows/DragLab.exe'
 if (-not (Test-Path -LiteralPath $taskPlayer)) { throw 'Build the Windows player first with Invoke-Unity.ps1 -Action BuildWindows.' }
 $taskFixtures = Join-Path $taskRoot ('reports/player-fixtures/' + $FixtureName)
-New-Item -ItemType Directory -Path $taskFixtures -Force | Out-Null
+$taskSuite = @($PSBoundParameters.Keys | Where-Object { $_ -notin @('FixtureName','ShowPlayer','FrameProbe') -and $PSBoundParameters[$_] } | Sort-Object)
+$taskScreenshotSuite = if ($taskSuite.Count) { 'legacy-' + ($taskSuite -join '-') } else { 'legacy-gameplay' }
+$taskScreenshots = Start-InterfaceScreenshotRun $taskRoot $taskFixtures $taskScreenshotSuite
 $taskFixtures = (Resolve-Path -LiteralPath $taskFixtures).Path
 $taskLog = Join-Path $taskFixtures 'player.log'
 Write-Output "Player verification fixtures: $taskFixtures"
@@ -52,8 +55,11 @@ if ($InductionOnly) { $taskArgs += '--draglab-induction-only' }
 if ($PowertrainOnly) { $taskArgs += '--draglab-powertrain-only' }
 # ShowPlayer opens the interactive game for a visible rendering review.
 $taskStyle = if ($ShowPlayer) { 'Normal' } else { 'Hidden' }
-$taskProcess = Start-Process -FilePath $taskPlayer -ArgumentList $taskArgs -WindowStyle $taskStyle -PassThru -Wait
-if ($taskProcess.ExitCode -ne 0) { throw "Player verification failed ($($taskProcess.ExitCode)). Read $taskLog" }
+$taskPassed = $false
 $taskReport = Join-Path $taskFixtures 'runtime-verification.txt'
-if (-not (Test-Path -LiteralPath $taskReport)) { throw "Player exited without a verification report. Read $taskLog" }
-Get-Content -LiteralPath $taskReport
+try {
+    $taskProcess = Start-Process -FilePath $taskPlayer -ArgumentList $taskArgs -WindowStyle $taskStyle -PassThru -Wait
+    $taskPassed = $taskProcess.ExitCode -eq 0 -and (Test-Path -LiteralPath $taskReport) -and (Get-Item -LiteralPath $taskReport).LastWriteTimeUtc -ge $taskScreenshots.Started
+    if (-not $taskPassed) { throw "Player verification failed or exited without a current report. Read $taskLog" }
+    Get-Content -LiteralPath $taskReport -Encoding UTF8
+} finally { Complete-InterfaceScreenshotRun $taskScreenshots $taskPassed $taskReport }

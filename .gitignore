@@ -60,6 +60,8 @@ Thumbs.db
 /reports/**/resume-progress.txt
 /reports/player-fixtures/
 /reports/scene-fixtures/
+/reports/interface-screenshots/
+/reports/screenshot-tool-fixture/
 
 # Required static migration fixture and its recorded initial baseline.
 !/reports/phases/2a/before/legacy-earned-profile-v1.json
