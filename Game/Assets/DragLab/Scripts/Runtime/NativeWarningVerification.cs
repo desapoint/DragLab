@@ -41,7 +41,16 @@ namespace DragLab.Runtime
             var scroll=shell.Root.Q<ScrollView>("ownedCars");scroll.ScrollTo(shell.Root.Q("ownedCar:"+car.instanceId));yield return new WaitForSecondsRealtime(.15f);
             int grids=shell.OwnedGridBuildCount,ratings=shell.OwnedRatingRunCount,captures=shell.InspectionCaptureCount;var offset=scroll.scrollOffset;
             var icon=shell.Root.Q<Button>("ownedWarnings:"+car.instanceId);
-            Check(icon!=null&&icon.Q<FilledMenuIcon>()!=null&&icon.worldBound.width==30&&icon.pickingMode==PickingMode.Position,"Owned cards have a compact filled warning icon with its own hit area");
+            Check(icon!=null&&icon.Q<FilledMenuIcon>()!=null&&icon.worldBound.width==40&&icon.pickingMode==PickingMode.Position,"Owned cards have a wider filled warning icon with its own hit area");
+            var glyph=icon.Q<FilledMenuIcon>();Check(glyph.worldBound.xMin-icon.worldBound.xMin>=10&&icon.worldBound.xMax-glyph.worldBound.xMax>=10,"Warning glyph is centered with breathing room inside the slanted button");
+            var set=typeof(NativeMenuShell).GetMethod("SetWarningButton",BindingFlags.Instance|BindingFlags.NonPublic);var originalIssues=(SetupWarning[])typeof(NativeMenuShell).GetMethod("CurrentOwnedWarnings",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shell,new object[]{car});
+            foreach(string severity in new[]{"critical","attention","clear"}){
+                var issues=severity=="clear"?Array.Empty<SetupWarning>():new[]{new SetupWarning("Visual fixture","","",severity=="critical")};set.Invoke(shell,new object[]{icon,issues,true});yield return new WaitForSecondsRealtime(.15f);
+                Color expectedColor=severity=="critical"?RacingPalette.Accent(icon):severity=="attention"?(Color)new Color32(230,191,128,255):RacingPalette.Read(icon,new CustomStyleProperty<Color>("--racing-muted"),Color.gray);
+                Check(((Vector4)glyph.resolvedStyle.color-(Vector4)expectedColor).sqrMagnitude<.0001f,"Warning glyph shows its actual severity color: "+severity);
+                input.MoveMouseAt((int)icon.worldBound.center.x,(int)icon.worldBound.center.y);yield return new WaitForSecondsRealtime(.15f);Check(((Vector4)glyph.resolvedStyle.color-(Vector4)expectedColor).sqrMagnitude<.0001f,"Hover preserves warning severity: "+severity);yield return Capture("warning-icon-"+severity);
+            }
+            set.Invoke(shell,new object[]{icon,originalIssues,true});yield return new WaitForSecondsRealtime(.15f);
             yield return Click(input,icon.name);
             Check(shell.ModalOpen&&!shell.OwnedDetailsOpen&&p.SelectedCar==car,"Card warning click opens its dialog without selecting the car or opening its details");
             string actual=WarningText();Check(actual.Contains("Individual Pistons fault")&&actual.Contains("compression")&&actual.Contains("Pistons")&&actual.Contains("Static inspection"),"Owned warning dialog shows actual component faults, related parts and inspection scope");

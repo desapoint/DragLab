@@ -391,8 +391,11 @@
 .cart-detailed-stats { margin-top: 16px; }
 .cart-detailed-stats .stat-row { width: 100%; margin-right: 0; }
 
-.warning-icon-button { min-width: 30px; width: 30px; height: 28px; padding: 0; margin: 0 0 0 8px; flex-shrink: 0; align-items: center; justify-content: center; }
+.warning-icon-button { min-width: 40px; width: 40px; height: 28px; padding: 0; margin: 0 0 0 8px; flex-shrink: 0; align-items: center; justify-content: center; }
 .warning-icon-button .filled-icon { width: 18px; height: 18px; margin: 0; }
+.warning-button.car-critical .filled-icon { color: var(--racing-accent); }
+.warning-button.car-warning .filled-icon { color: #e6bf80; }
+.warning-button.warning-clear .filled-icon { color: var(--racing-muted); }
 .cart-page .warning-header-button { margin: 0 0 0 16px; align-self: center; }
 .warning-clear { color: var(--racing-muted); }
 .warning-group { margin: 4px 0 16px 0; }

@@ -65,7 +65,7 @@ namespace DragLab.Runtime
         }
         Button WarningButton(VisualElement parent,string id,SetupWarning[] warnings,Action open,Action<VisualElement,RacingSurface.Kind> decorate,bool iconOnly=false)
         {
-            var b=new Button(open){name=id,text=iconOnly?"":"Warnings · "+warnings.Length,tabIndex=-1,focusable=false};b.AddToClassList("action-button");b.AddToClassList(iconOnly?"warning-icon-button":"car-stats-button");
+            var b=new Button(open){name=id,text=iconOnly?"":"Warnings · "+warnings.Length,tabIndex=-1,focusable=false};b.AddToClassList("action-button");b.AddToClassList("warning-button");b.AddToClassList(iconOnly?"warning-icon-button":"car-stats-button");
             parent.Add(b);decorate(b,RacingSurface.Kind.SecondaryAction);b.Insert(1,new FilledMenuIcon("Warning"));
             SetWarningButton(b,warnings,iconOnly);
             b.RegisterCallback<PointerDownEvent>(e=>e.StopPropagation());b.RegisterCallback<PointerUpEvent>(e=>e.StopPropagation());b.RegisterCallback<ClickEvent>(e=>e.StopPropagation());return b;

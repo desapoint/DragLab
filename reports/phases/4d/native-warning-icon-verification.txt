@@ -1,0 +1,14 @@
+Packaged fixture: native-warning-icon-final
+Selected icon evidence; total includes the existing shared warning/parts matrix.
+
+PASS: Owned cards have a wider filled warning icon with its own hit area
+PASS: Warning glyph is centered with breathing room inside the slanted button
+PASS: Warning glyph shows its actual severity color: critical
+PASS: Hover preserves warning severity: critical
+PASS: Warning glyph shows its actual severity color: attention
+PASS: Hover preserves warning severity: attention
+PASS: Warning glyph shows its actual severity color: clear
+PASS: Hover preserves warning severity: clear
+PASS: Owned warning dialog shows actual component faults, related parts and inspection scope
+PASS: Warning dialogs, resizing and F8 never modify the applied car, cart or disk or recapture previews
+Checks: 295 / runtime errors: 0
