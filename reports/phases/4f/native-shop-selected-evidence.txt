@@ -1,0 +1,31 @@
+Selected evidence: native-shop-cache-03 (2026-10-13)
+Partial run: 464 checks / 0 runtime errors before own-window foreground guard aborted later cart checks.
+All new UI checks below passed. This is not a full-suite pass. Screenshots are local ignored artifacts.
+Headless cache/singular-tire matrix and cart transaction regression completed independently.
+
+Browser ready wait: 0,00 s / 2198 offers / 0 full comparisons / 0,00 ms / 0 cache hits
+PASS: Ordinary shop browsing performs no full-part dynos, query churn or card creation while idle
+PASS: Visible shop cards keep their order and position after the page opens
+PASS: The shop builds only matching card controls rather than the whole foreign catalogue
+Shop idle: 170 rendered cards / 2198 offers / 0 full comparisons / 0 cache hits
+Browser ready wait: 0,00 s / 2198 offers / 0 full comparisons / 0,00 ms / 0 cache hits
+PASS: Tire cards expose grip and reference lifespan immediately
+PASS: Part details reuse the category-specific tire summary
+PASS: Single-tire buying remains accessible when a different compound was marked Install
+PASS: Choosing one tire safely switches an unmatched installation to storage
+PASS: One loose tire stages as one unit at its actual unit price
+Browser ready wait: 0,00 s / 2198 offers / 0 full comparisons / 0,00 ms / 5 cache hits
+PASS: Shop browsing, summaries and tire staging do not change the real car or resources
+Browser ready wait: 0,00 s / 2198 offers / 8 full comparisons / 102,63 ms / 5 cache hits
+PASS: Part details retain shared crisp 4K scaling
+Browser ready wait: 0,00 s / 2198 offers / 8 full comparisons / 102,63 ms / 5 cache hits
+Browser ready wait: 0,00 s / 2 offers / 0 full comparisons / 0,00 ms / 24 cache hits
+PASS: Tabs and browser tools fit the compact viewport
+PASS: Build uses shared crisp 4K scaling and anchored tabs
+Browser ready wait: 0,00 s / 2198 offers / 0 full comparisons / 0,00 ms / 33 cache hits
+Browser ready wait: 0,00 s / 2198 offers / 0 full comparisons / 0,00 ms / 57 cache hits
+Browser ready wait: 0,00 s / 2198 offers / 1 full comparisons / 14,03 ms / 57 cache hits
+PASS: Dialog quantities, scroll and fixed actions fit the compact viewport
+PASS: Unified dialog retains bounded crisp 4K scaling
+Browser ready wait: 0,00 s / 2198 offers / 1 full comparisons / 35,21 ms / 63 cache hits
+Browser ready wait: 0,00 s / 2197 offers / 0 full comparisons / 0,00 ms / 69 cache hits

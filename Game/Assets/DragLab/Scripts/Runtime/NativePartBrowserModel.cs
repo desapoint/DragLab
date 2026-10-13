@@ -16,7 +16,8 @@ namespace DragLab.Runtime
         internal string[] Direction=Enumerable.Repeat("Any",7).ToArray();
         internal double?[] Minimum=new double?[7];
         internal NativePartQuery Copy(){var c=(NativePartQuery)MemberwiseClone();c.Categories=new HashSet<PartCategory>(Categories);c.Direction=(string[])Direction.Clone();c.Minimum=(double?[])Minimum.Clone();return c;}
-        internal bool Matches(NativePartEntry e,int cash)
+        internal bool RequiresChanges=>Array.IndexOf(NativePartBrowser.MetricNames,Sort)>=0||Direction.Any(v=>v!="Any")||Minimum.Any(v=>v.HasValue);
+        internal bool Matches(NativePartEntry e,int cash,bool changes=true)
         {
             if(Categories.Count>0&&!Categories.Contains(e.Definition.category))return false;
             if(Container!="All"&&e.Location!=Container)return false;
@@ -26,6 +27,7 @@ namespace DragLab.Runtime
             if(Condition=="New"&&e.Source!="New"||Condition=="Used"&&e.Source=="New")return false;
             bool tunable=e.Definition.tuning!=PartTuningOptions.None||e.Definition.camTimingAdjustable;
             if(Tuning=="Adjustable"&&!tunable||Tuning=="Fixed"&&tunable)return false;
+            if(!changes)return true;
             for(int i=0;i<Direction.Length;i++){
                 if(Direction[i]=="Any"&&!Minimum[i].HasValue)continue;
                 var v=e.Change[i];if(!v.HasValue)return false;double tolerance=i==3?.01:.001;
@@ -62,18 +64,24 @@ namespace DragLab.Runtime
         internal CarInspection Current,Reference,Plan;
         internal string PlanError;
         readonly bool plannedReference;
+        readonly NativePartPreviewCache cache;readonly string referenceKey;
+        internal int EvaluationCount {get;private set;}
+        internal double EvaluationMilliseconds {get;private set;}
         readonly PlayerProfile actual,reference;
         readonly OwnedCar actualCar,referenceCar;
         readonly Dictionary<PartCategory,string> referenceMap;
         readonly VehicleSpec referenceSpec;
-        internal NativePartBrowser(PlayerProfile profile,IEnumerable<PartCartLine> lines,bool planned,string page,Func<DealerStock,int> usedPrice,Func<string,bool,int> salePrice)
+        internal NativePartBrowser(PlayerProfile profile,IEnumerable<PartCartLine> lines,bool planned,string page,Func<DealerStock,int> usedPrice,Func<string,bool,int> salePrice,NativePartPreviewCache cache=null)
         {
-            actual=profile;actualCar=profile.SelectedCar;plannedReference=planned;
+            actual=profile;actualCar=profile.SelectedCar;plannedReference=planned;this.cache=cache;
             if(actualCar==null)return;
-            Current=string.IsNullOrEmpty(actualCar.engineAssemblyId)?null:Inspect(InspectionBuild.Capture(profile,actualCar));reference=profile;
+            cache?.Bind(profile,actualCar);
+            Current=string.IsNullOrEmpty(actualCar.engineAssemblyId)?null:cache==null?Inspect(InspectionBuild.Capture(profile,actualCar)):cache.Inspection("current",()=>Inspect(InspectionBuild.Capture(profile,actualCar)));reference=profile;
             var cart=lines.Select(l=>l.Copy()).ToArray();
-            if(cart.Length>0)try {PartCart.Total(profile,actualCar.instanceId,cart);var copy=PartCart.PreviewProfile(profile,actualCar,cart);Plan=Inspect(InspectionBuild.Capture(copy,copy.SelectedCar));if(planned)reference=copy;}catch(Exception e){PlanError=e.Message;}
-            referenceCar=reference.SelectedCar;referenceMap=MechanicsOwnership.Definitions(reference,referenceCar);Reference=planned&&PlanError!=null||string.IsNullOrEmpty(referenceCar.engineAssemblyId)?null:Inspect(InspectionBuild.Capture(reference,referenceCar));
+            string planKey="plan/"+NativePartPreviewCache.Fingerprint(JsonUtility.ToJson(new PartCart.Lines{entries=cart.ToList()})+(cart.Length==0?"":JsonUtility.ToJson(profile)+string.Join("/",cart.Select(l=>JsonUtility.ToJson(profile.catalog.Find(l.definitionId))))));
+            if(cart.Length>0)try {PartCart.Total(profile,actualCar.instanceId,cart);var copy=cache==null?PartCart.PreviewProfile(profile,actualCar,cart):cache.Plan(planKey,()=>PartCart.PreviewProfile(profile,actualCar,cart));Plan=cache==null?Inspect(InspectionBuild.Capture(copy,copy.SelectedCar)):cache.Inspection(planKey,()=>Inspect(InspectionBuild.Capture(copy,copy.SelectedCar)));if(planned)reference=copy;}catch(Exception e){PlanError=e.Message;}
+            referenceKey=planned&&Plan!=null?planKey:"current";
+            referenceCar=reference.SelectedCar;referenceMap=MechanicsOwnership.Definitions(reference,referenceCar);Reference=planned&&PlanError!=null||string.IsNullOrEmpty(referenceCar.engineAssemblyId)?null:ReferenceEquals(reference,profile)?Current:Plan;
             referenceSpec=actual.catalog.Resolve(referenceCar.vehicleId,referenceMap,referenceCar.tune).spec;
             bool Owns(string id)=>profile.parts.Any(p=>p.definitionId==id)||profile.looseEngineElements.Any(p=>p.definitionId==id);
             if(page=="Installed")foreach(var slot in actualCar.installed.slots){var p=profile.parts.Find(i=>i.instanceId==slot.partInstanceId);if(p==null)continue;Add(p.instanceId,p.definitionId,"Installed",p,null,true,p.ownerId,null);}
@@ -85,9 +93,7 @@ namespace DragLab.Runtime
                 foreach(var d in profile.catalog.parts)Add("new:"+d.id,d.id,"New",null,null,Owns(d.id),"New",InventoryPricing.NewSet(d));
                 foreach(var d in profile.inventory.dealer)Add("used:"+d.Id,d.DefinitionId,"Used",d.part,d.unit,Owns(d.DefinitionId),"Dealer",usedPrice(d));
             }
-            // Foreign interfaces need no engine curve. Classify them before building
-            // the view, keeping expensive selected-build previews on a bounded budget.
-            if(Reference!=null)foreach(var entry in Entries.Where(e=>!actual.catalog.Fits(referenceSpec,e.Definition)))Evaluate(entry);
+            foreach(var entry in Entries){Classify(entry);if(!entry.Ready&&cache!=null&&cache.HasComparisons)cache.Restore(NativePartPreviewCache.Key(referenceKey,entry),entry);}
         }
         static int? SafePrice(Func<int> get,bool available){if(!available)return null;try{return get();}catch(Exception){return null;}}
         void Add(string id,string definition,string source,PartInstance part,LooseEngineElement unit,bool owned,string location,int? price)
@@ -115,9 +121,18 @@ namespace DragLab.Runtime
             }
             return e;
         }
+        void Classify(NativePartEntry e)
+        {
+            if(plannedReference&&PlanError!=null){e.Ready=true;e.Compatibility="Unavailable";e.Reason=PlanError;return;}
+            if(!actual.catalog.Fits(referenceSpec,e.Definition)){e.Ready=true;e.Compatibility="Incompatible";e.Reason="Mounting, bore, fuel type or controller interface does not fit this build.";return;}
+            e.Compatibility="Compatible";
+            if(e.Definition.category==PartCategory.Camshaft||e.Definition.category==PartCategory.Followers){var map=new Dictionary<PartCategory,string>(referenceMap){[e.Definition.category]=e.Definition.id};var result=actual.catalog.Resolve(referenceCar.vehicleId,map,referenceCar.tune);if(result.errors.Any(error=>error.Contains("cannot mate")))e.Compatibility="Requires supporting changes";}
+            if(Reference==null){e.Ready=true;e.Reason="Attach an engine to compare performance.";}
+        }
         internal void Evaluate(NativePartEntry e)
         {
-            if(e.Ready)return;e.Ready=true;var d=e.Definition;
+            if(e.Ready)return;string key=cache==null?null:NativePartPreviewCache.Key(referenceKey,e);if(cache!=null&&cache.Restore(key,e))return;
+            var clock=System.Diagnostics.Stopwatch.StartNew();EvaluationCount++;e.Ready=true;var d=e.Definition;
             if(plannedReference&&PlanError!=null){e.Compatibility="Unavailable";e.Reason=PlanError;return;}
             if(!actual.catalog.Fits(referenceSpec,d)){e.Compatibility="Incompatible";e.Reason="Mounting, bore, fuel type or controller interface does not fit this build.";return;}
             if(Reference==null){e.Compatibility="Compatible";e.Reason="Attach an engine to compare performance.";return;}
@@ -145,7 +160,8 @@ namespace DragLab.Runtime
                 if(PartSemantics.TorqueRated(d.category)&&prior!=null)e.Change[4]=d.torqueLimitNm-prior.torqueLimitNm;
                 if(PartSemantics.EngineInternal(d.category)&&prior!=null)e.Change[5]=d.rpmLimit-prior.rpmLimit;
                 e.Change[6]=b.radiatorWattsPerC-a.radiatorWattsPerC;
-            }catch(Exception error){e.Compatibility="Compatible";e.Reason="Performance estimate unavailable: "+error.Message;}
+            }catch(Exception error){e.Reason="Performance estimate unavailable: "+error.Message;}
+            finally{EvaluationMilliseconds+=clock.Elapsed.TotalMilliseconds;if(cache!=null)cache.Store(key,e);}
         }
     }
     internal static class NativePartReference

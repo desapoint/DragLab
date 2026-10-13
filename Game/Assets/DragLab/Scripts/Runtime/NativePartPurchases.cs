@@ -80,7 +80,7 @@ namespace DragLab.Runtime
             },true)},populate:content=>{
                 content.Add(new Label(d.name){enableRichText=false});
                 if(!fresh){var condition=new Label("Used · "+((offer.Unit?.element.health??offer.Part?.condition.health??0)*100).ToString("0.#")+"% condition"){name="partPurchaseCondition"};condition.AddToClassList("car-warning");content.Add(condition);}
-                if(fresh&&roles.Length>0)QueryChoices(content,"partPurchaseMode","Buy",new[]{"Complete set","Individual"},()=>individual?"Individual":"Complete set",value=>{individual=value=="Individual";quantity=1;selected.Clear();update();},2);
+                if(fresh&&roles.Length>0){QueryChoices(content,"partPurchaseMode","Buy",new[]{"Complete set","Individual"},()=>individual?"Individual":"Complete set",value=>{individual=value=="Individual";quantity=1;selected.Clear();if(individual&&!matches)install=false;update();},2);if(d.category==PartCategory.Tires){content.Q<Button>("partPurchaseMode:Complete set").Q<Label>().text="Tire set (4)";content.Q<Button>("partPurchaseMode:Individual").Q<Label>().text="Single tire";}}
                 QueryChoices(content,"partPurchaseDestination","Destination",new[]{"Store","Install"},()=>install?"Install":"Store",value=>{install=value=="Install";update();},2);
                 QueryChoices(content,"partPurchaseRole","Type",roles,()=>role,value=>{role=value;selected.Clear();update();},2);
                 roleGroup=content.Children().Last();
@@ -122,7 +122,8 @@ namespace DragLab.Runtime
                     positionsArea.EnableInClassList("hidden",!install||all.Length==0);
                     shortcuts.EnableInClassList("hidden",!fresh||!individual||!matches);
                     foreach(var button in content.Query<Button>().ToList().Where(b=>b.name.StartsWith("partPurchaseMode:")))button.EnableInClassList("selected",button.name=="partPurchaseMode:"+(individual?"Individual":"Complete set"));
-                    content.Q<Button>("partPurchaseMode:Individual")?.SetEnabled(!install||matches);
+                    foreach(var button in content.Query<Button>().ToList().Where(b=>b.name.StartsWith("partPurchaseDestination:")))button.EnableInClassList("selected",button.name=="partPurchaseDestination:"+(install?"Install":"Store"));
+                    content.Q<Button>("partPurchaseMode:Individual")?.SetEnabled(true);
                     content.Q<Button>("partPurchaseDestination:Install").SetEnabled(true);
                     foreach(var pair in rows){bool valid=available.Contains(pair.Item2);pair.Item1.EnableInClassList("hidden",individual&&!valid);pair.Item1.EnableInClassList("selected",!individual||selected.Contains(pair.Item2));pair.Item1.SetEnabled(matches&&(fresh||individual)&&(!individual||valid));}
                     foreach(var group in groups)group.EnableInClassList("hidden",group.Query<Button>().ToList().All(b=>b.ClassListContains("hidden")));

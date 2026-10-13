@@ -1,0 +1,131 @@
+PASS: Exact current and candidate snapshots are reused: city-three
+PASS: Fuel changes invalidate cached build mass without a revision bump: city-three
+PASS: Tune changes invalidate cached build data: city-three
+PASS: Wear invalidation agrees with a fresh authoritative inspection: city-three
+PASS: Incoming retained-part condition invalidates only its candidate: city-three
+PASS: Unchanged cart plans reuse their authoritative snapshot: city-three /
+PASS: Cart installation edits invalidate planned snapshots: city-three
+PASS: Definition edits invalidate calculations and match a fresh inspection: city-three
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: city-three
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: city-three
+PASS: Exact current and candidate snapshots are reused: juniper-club
+PASS: Fuel changes invalidate cached build mass without a revision bump: juniper-club
+PASS: Tune changes invalidate cached build data: juniper-club
+PASS: Wear invalidation agrees with a fresh authoritative inspection: juniper-club
+PASS: Incoming retained-part condition invalidates only its candidate: juniper-club
+PASS: Unchanged cart plans reuse their authoritative snapshot: juniper-club /
+PASS: Cart installation edits invalidate planned snapshots: juniper-club
+PASS: Definition edits invalidate calculations and match a fresh inspection: juniper-club
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: juniper-club
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: juniper-club
+PASS: Exact current and candidate snapshots are reused: juniper-economy
+PASS: Fuel changes invalidate cached build mass without a revision bump: juniper-economy
+PASS: Tune changes invalidate cached build data: juniper-economy
+PASS: Wear invalidation agrees with a fresh authoritative inspection: juniper-economy
+PASS: Incoming retained-part condition invalidates only its candidate: juniper-economy
+PASS: Unchanged cart plans reuse their authoritative snapshot: juniper-economy /
+PASS: Cart installation edits invalidate planned snapshots: juniper-economy
+PASS: Definition edits invalidate calculations and match a fresh inspection: juniper-economy
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: juniper-economy
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: juniper-economy
+PASS: Exact current and candidate snapshots are reused: kestrel-track
+PASS: Fuel changes invalidate cached build mass without a revision bump: kestrel-track
+PASS: Tune changes invalidate cached build data: kestrel-track
+PASS: Wear invalidation agrees with a fresh authoritative inspection: kestrel-track
+PASS: Incoming retained-part condition invalidates only its candidate: kestrel-track
+PASS: Unchanged cart plans reuse their authoritative snapshot: kestrel-track /
+PASS: Cart installation edits invalidate planned snapshots: kestrel-track
+PASS: Definition edits invalidate calculations and match a fresh inspection: kestrel-track
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: kestrel-track
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: kestrel-track
+PASS: Exact current and candidate snapshots are reused: rally-sedan
+PASS: Fuel changes invalidate cached build mass without a revision bump: rally-sedan
+PASS: Tune changes invalidate cached build data: rally-sedan
+PASS: Wear invalidation agrees with a fresh authoritative inspection: rally-sedan
+PASS: Incoming retained-part condition invalidates only its candidate: rally-sedan
+PASS: Unchanged cart plans reuse their authoritative snapshot: rally-sedan /
+PASS: Cart installation edits invalidate planned snapshots: rally-sedan
+PASS: Definition edits invalidate calculations and match a fresh inspection: rally-sedan
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: rally-sedan
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: rally-sedan
+PASS: Exact current and candidate snapshots are reused: sport-coupe
+PASS: Fuel changes invalidate cached build mass without a revision bump: sport-coupe
+PASS: Tune changes invalidate cached build data: sport-coupe
+PASS: Wear invalidation agrees with a fresh authoritative inspection: sport-coupe
+PASS: Incoming retained-part condition invalidates only its candidate: sport-coupe
+PASS: Unchanged cart plans reuse their authoritative snapshot: sport-coupe /
+PASS: Cart installation edits invalidate planned snapshots: sport-coupe
+PASS: Definition edits invalidate calculations and match a fresh inspection: sport-coupe
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: sport-coupe
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: sport-coupe
+PASS: Exact current and candidate snapshots are reused: starter-hatch
+PASS: Fuel changes invalidate cached build mass without a revision bump: starter-hatch
+PASS: Tune changes invalidate cached build data: starter-hatch
+PASS: Wear invalidation agrees with a fresh authoritative inspection: starter-hatch
+PASS: Incoming retained-part condition invalidates only its candidate: starter-hatch
+PASS: Unchanged cart plans reuse their authoritative snapshot: starter-hatch /
+PASS: Cart installation edits invalidate planned snapshots: starter-hatch
+PASS: Definition edits invalidate calculations and match a fresh inspection: starter-hatch
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: starter-hatch
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: starter-hatch
+PASS: Exact current and candidate snapshots are reused: super-v8
+PASS: Fuel changes invalidate cached build mass without a revision bump: super-v8
+PASS: Tune changes invalidate cached build data: super-v8
+PASS: Wear invalidation agrees with a fresh authoritative inspection: super-v8
+PASS: Incoming retained-part condition invalidates only its candidate: super-v8
+PASS: Unchanged cart plans reuse their authoritative snapshot: super-v8 /
+PASS: Cart installation edits invalidate planned snapshots: super-v8
+PASS: Definition edits invalidate calculations and match a fresh inspection: super-v8
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: super-v8
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: super-v8
+PASS: Exact current and candidate snapshots are reused: timber-diesel
+PASS: Fuel changes invalidate cached build mass without a revision bump: timber-diesel
+PASS: Tune changes invalidate cached build data: timber-diesel
+PASS: Wear invalidation agrees with a fresh authoritative inspection: timber-diesel
+PASS: Incoming retained-part condition invalidates only its candidate: timber-diesel
+PASS: Unchanged cart plans reuse their authoritative snapshot: timber-diesel /
+PASS: Cart installation edits invalidate planned snapshots: timber-diesel
+PASS: Definition edits invalidate calculations and match a fresh inspection: timber-diesel
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: timber-diesel
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: timber-diesel
+PASS: Exact current and candidate snapshots are reused: timber-diesel-tow
+PASS: Fuel changes invalidate cached build mass without a revision bump: timber-diesel-tow
+PASS: Tune changes invalidate cached build data: timber-diesel-tow
+PASS: Wear invalidation agrees with a fresh authoritative inspection: timber-diesel-tow
+PASS: Incoming retained-part condition invalidates only its candidate: timber-diesel-tow
+PASS: Unchanged cart plans reuse their authoritative snapshot: timber-diesel-tow /
+PASS: Cart installation edits invalidate planned snapshots: timber-diesel-tow
+PASS: Definition edits invalidate calculations and match a fresh inspection: timber-diesel-tow
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: timber-diesel-tow
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: timber-diesel-tow
+PASS: Exact current and candidate snapshots are reused: touring-six
+PASS: Fuel changes invalidate cached build mass without a revision bump: touring-six
+PASS: Tune changes invalidate cached build data: touring-six
+PASS: Wear invalidation agrees with a fresh authoritative inspection: touring-six
+PASS: Incoming retained-part condition invalidates only its candidate: touring-six
+PASS: Unchanged cart plans reuse their authoritative snapshot: touring-six /
+PASS: Cart installation edits invalidate planned snapshots: touring-six
+PASS: Definition edits invalidate calculations and match a fresh inspection: touring-six
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: touring-six
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: touring-six
+PASS: Exact current and candidate snapshots are reused: utility-pickup
+PASS: Fuel changes invalidate cached build mass without a revision bump: utility-pickup
+PASS: Tune changes invalidate cached build data: utility-pickup
+PASS: Wear invalidation agrees with a fresh authoritative inspection: utility-pickup
+PASS: Incoming retained-part condition invalidates only its candidate: utility-pickup
+PASS: Unchanged cart plans reuse their authoritative snapshot: utility-pickup /
+PASS: Cart installation edits invalidate planned snapshots: utility-pickup
+PASS: Definition edits invalidate calculations and match a fresh inspection: utility-pickup
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: utility-pickup
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: utility-pickup
+PASS: Exact current and candidate snapshots are reused: v8-muscle
+PASS: Fuel changes invalidate cached build mass without a revision bump: v8-muscle
+PASS: Tune changes invalidate cached build data: v8-muscle
+PASS: Wear invalidation agrees with a fresh authoritative inspection: v8-muscle
+PASS: Incoming retained-part condition invalidates only its candidate: v8-muscle
+PASS: Unchanged cart plans reuse their authoritative snapshot: v8-muscle /
+PASS: Cart installation edits invalidate planned snapshots: v8-muscle
+PASS: Definition edits invalidate calculations and match a fresh inspection: v8-muscle
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: v8-muscle
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: v8-muscle
+Cars: 13; checks: 130; failures: 0

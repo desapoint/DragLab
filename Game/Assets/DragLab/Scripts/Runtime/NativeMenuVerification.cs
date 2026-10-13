@@ -43,6 +43,7 @@ namespace DragLab.Runtime
         }
         IEnumerator Start()
         {
+            Application.runInBackground=true;
             started = Time.realtimeSinceStartup;
             var routines = new System.Collections.Generic.Stack<IEnumerator>(); routines.Push(Run());
             while (routines.Count > 0)

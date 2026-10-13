@@ -105,7 +105,7 @@ namespace DragLab.Runtime
             cartError.text=problem??(total>p.cash?"Insufficient cash.":"");cartCheckout.SetEnabled(problem==null&&game.CartCount>0&&total<=p.cash);
             cartWarnings.SetEnabled(car!=null);
             if(car==null){cartCurrentWarnings=Array.Empty<SetupWarning>();cartPlannedWarnings=null;cartWarningUnavailable="No selected car";SetWarningButton(cartWarnings,cartCurrentWarnings);cartWarnings.tooltip=cartWarningUnavailable;}
-            if(car!=null){var model=new NativePartBrowser(p,game.CartLines,false,"Cart",game.NativeUsedPrice,game.NativeSalePrice);CartPreviewBuildCount++;
+            if(car!=null){var model=new NativePartBrowser(p,game.CartLines,false,"Cart",game.NativeUsedPrice,game.NativeSalePrice,partPreviewCache);CartPreviewBuildCount++;
                 var currentWarnings=model.Current?.warnings.ToArray()??CurrentOwnedWarnings(car);var nextWarnings=model.Plan?.warnings.ToArray()??(game.CartCount==0?currentWarnings:null);
                 cartCurrentWarnings=currentWarnings;cartPlannedWarnings=nextWarnings;cartWarningUnavailable=nextWarnings==null?"Planned inspection unavailable · "+(model.PlanError??"Check the installation plan."):null;SetWarningButton(cartWarnings,nextWarnings??currentWarnings);
                 var combined=NativeWarningOverview.Combine(currentWarnings,nextWarnings,nextWarnings!=null);cartWarnings.Q<Label>().text="Warnings · "+combined.Length;

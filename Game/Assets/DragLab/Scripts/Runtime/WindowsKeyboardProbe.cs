@@ -49,8 +49,7 @@ namespace DragLab.Runtime
         {
             if (down)
             {
-                GetWindowThreadProcessId(GetForegroundWindow(), out uint foreground);
-                if (foreground != processId) throw new InvalidOperationException("Keyboard probe requires its own player window in foreground.");
+                OwnForeground();
             }
             var input = new InputEvent { type = 1, payload = new Payload { keyboard = new Keyboard { key = key, flags = down ? 0u : 2u } } };
             if (SendInput(1, new[] { input }, Marshal.SizeOf(typeof(InputEvent))) != 1)
@@ -77,10 +76,18 @@ namespace DragLab.Runtime
         }
         public void MoveMouseAt(int x, int y)
         {
-            IntPtr window = GetForegroundWindow(); GetWindowThreadProcessId(window, out uint foreground);
-            if (foreground != processId) throw new InvalidOperationException("Mouse probe requires its own player window in foreground.");
+            IntPtr window = OwnForeground();
             var point = new Point { x = x, y = y };
             if (!ClientToScreen(window, ref point) || !SetCursorPos(point.x, point.y)) throw new InvalidOperationException("Mouse probe could not locate its own client area.");
+        }
+        IntPtr OwnForeground()
+        {
+            IntPtr current=GetForegroundWindow();GetWindowThreadProcessId(current,out uint owner);if(owner==processId)return current;
+            IntPtr own=IntPtr.Zero;EnumWindows((candidate,data)=>{GetWindowThreadProcessId(candidate,out uint pid);if(pid!=processId||!IsWindowVisible(candidate))return true;own=candidate;return false;},IntPtr.Zero);
+            if(own==IntPtr.Zero)throw new InvalidOperationException("Input probe has no visible player window.");
+            uint thread=GetCurrentThreadId(),foregroundThread=GetWindowThreadProcessId(current,out uint unused);bool attached=foregroundThread!=0&&thread!=foregroundThread&&AttachThreadInput(thread,foregroundThread,true);
+            try{BringWindowToTop(own);SetForegroundWindow(own);SetFocus(own);}finally{if(attached)AttachThreadInput(thread,foregroundThread,false);}
+            current=GetForegroundWindow();GetWindowThreadProcessId(current,out owner);if(owner!=processId)throw new InvalidOperationException("Input probe could not focus its own player window; no input sent.");return current;
         }
         public void ScrollAt(int x,int y,int notches)
         {
