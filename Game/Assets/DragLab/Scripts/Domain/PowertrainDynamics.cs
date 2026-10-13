@@ -79,24 +79,33 @@ namespace DragLab.Domain
 
     public sealed class WheelProfile
     {
+        // Legacy summary values are the driven rolling radius and four-wheel averages.
         public readonly double radius, assemblyMass, totalInertia, gripScale, tireMassKg, referenceTireMassKg, rimMassKg;
-        public double effectiveMass, vehicleMass;
-        public WheelProfile(VehicleSpec spec, Tune tune)
+        public readonly double[] radii=new double[4],inertias=new double[4],assemblyMasses=new double[4],tireMasses=new double[4],rimMasses=new double[4],gripScales=new double[4];
+        public readonly double equivalentRotatingMass;
+        public readonly double[] contactInertias=new double[4];
+        public static double DrivenRadius(VehicleSpec spec,Tune tune){var awd=AxleDriveDynamics.Configuration(spec,tune);double f=spec.drive==DriveType.FWD?1:spec.drive==DriveType.RWD?0:awd.mode==AwdMode.OnDemand?(awd.primaryFront?1:0):awd.frontBias;return spec.wheelRadiusM/(f/tune.AxleDiameter(true)+(1-f)/tune.AxleDiameter(false));}
+        public double effectiveMass,vehicleMass;
+        public WheelProfile(VehicleSpec spec,Tune tune)
         {
-            var data = spec.wheels ?? new WheelSpec();
-            radius = spec.wheelRadiusM * tune.WheelDiameter;
-            double size=Math.Pow(tune.WheelDiameter,3)*tune.WheelWidth;
+            var data=spec.wheels??new WheelSpec();
             referenceTireMassKg=Math.Min(6,data.assemblyMassKg*.6);
             double rimReference=data.assemblyMassKg-referenceTireMassKg;
-            tireMassKg=MassDynamics.Installed(spec,Mechanics.PartCategory.Tires)?referenceTireMassKg*size:0;
-            rimMassKg=MassDynamics.Installed(spec,Mechanics.PartCategory.Wheels)?rimReference*size*tune.WheelMass:0;
-            assemblyMass=tireMassKg+rimMassKg;
             double rimFactor=DragMath.Clamp((data.assemblyMassKg*data.inertiaFactor-referenceTireMassKg*.9)/rimReference,.1,1);
-            totalInertia=4*(tireMassKg*.9+rimMassKg*rimFactor)*radius*radius;
-            vehicleMass = MassDynamics.Resolve(spec, tune, this, spec.fuel.capacityLitres).TranslatingKg;
-            effectiveMass = vehicleMass + totalInertia / (radius * radius);
-            // Width is a modest diminishing-return grip adjustment, independent of compound upgrades.
-            gripScale = DragMath.Clamp(1 + .18 * Math.Log(tune.WheelWidth), .93, 1.09);
+            for(int i=0;i<4;i++){
+                bool front=i<2;double size=Math.Pow(tune.AxleDiameter(front),3)*tune.AxleWidth(front);
+                radii[i]=spec.wheelRadiusM*tune.AxleDiameter(front);
+                tireMasses[i]=MassDynamics.Installed(spec,Mechanics.PartCategory.Tires)?referenceTireMassKg*size:0;
+                rimMasses[i]=MassDynamics.Installed(spec,Mechanics.PartCategory.Wheels)?rimReference*size*tune.WheelMass:0;
+                assemblyMasses[i]=tireMasses[i]+rimMasses[i];
+                inertias[i]=(tireMasses[i]*.9+rimMasses[i]*rimFactor)*radii[i]*radii[i];contactInertias[i]=Math.Max(1e-5,inertias[i]);
+                gripScales[i]=DragMath.Clamp(1+.18*Math.Log(tune.AxleWidth(front)),.85,1.09);
+                totalInertia+=inertias[i];equivalentRotatingMass+=inertias[i]/(radii[i]*radii[i]);
+                tireMassKg+=tireMasses[i]*.25;rimMassKg+=rimMasses[i]*.25;gripScale+=gripScales[i]*.25;assemblyMass+=assemblyMasses[i]*.25;
+            }
+            radius=DrivenRadius(spec,tune);
+            vehicleMass=MassDynamics.Resolve(spec,tune,this,spec.fuel.capacityLitres).TranslatingKg;
+            effectiveMass=vehicleMass+equivalentRotatingMass;
         }
     }
 

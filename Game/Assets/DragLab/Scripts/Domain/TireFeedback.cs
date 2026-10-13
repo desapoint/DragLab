@@ -9,12 +9,13 @@ namespace DragLab.Domain
         public static TireFeedback Read(CarState state,int wheel)
         {
             if(state==null||state.contact==null||!state.wheelContactInitialized||wheel<0||wheel>3)return default;
-            double relative=Math.Abs(state.contact.omega[wheel]*state.wheelRadiusM-state.speed);
+            double radius=wheel<2?state.frontWheelRadiusM:state.rearWheelRadiusM;if(radius<=0)radius=state.wheelRadiusM;
+            double relative=Math.Abs(state.contact.omega[wheel]*radius-state.speed);
             double ratio=Math.Abs(state.contact.slip[wheel]);
             double force=Math.Abs(state.contact.force[wheel]);
             if(!Finite(relative)||!Finite(ratio)||!Finite(force)||relative<.3||ratio<.045||force<40)return default;
             double gate=DragMath.Clamp((ratio-.045)/.10,0,1)*DragMath.Clamp((relative-.3)/1.2,0,1);
-            return new TireFeedback{slidingSpeed=relative,slip=ratio,grip=state.contact.friction!=null&&state.contact.friction.Length==4?state.contact.friction[wheel]:1,normalLoadN=state.contact.normalLoadN!=null&&state.contact.normalLoadN.Length==4?state.contact.normalLoadN[wheel]:(wheel<2?state.frontLoadN:state.rearLoadN)*.5,radiusM=state.wheelRadiusM,intensity=gate*DragMath.Clamp(Math.Sqrt(relative*force/24000),0,1)};
+            return new TireFeedback{slidingSpeed=relative,slip=ratio,grip=state.contact.friction!=null&&state.contact.friction.Length==4?state.contact.friction[wheel]:1,normalLoadN=state.contact.normalLoadN!=null&&state.contact.normalLoadN.Length==4?state.contact.normalLoadN[wheel]:(wheel<2?state.frontLoadN:state.rearLoadN)*.5,radiusM=radius,intensity=gate*DragMath.Clamp(Math.Sqrt(relative*force/24000),0,1)};
         }
         static bool Finite(double value){return !double.IsNaN(value)&&!double.IsInfinity(value);}
         public static TireFeedback Authored(CarState state,int wheel,DriveType drive)

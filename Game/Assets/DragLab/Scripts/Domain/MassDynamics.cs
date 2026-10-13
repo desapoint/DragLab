@@ -31,7 +31,8 @@ namespace DragLab.Domain
             double bodyDelta = spec.hasStructuralBody ? bodyReference * (tune.MassMultiplier - 1) : -bodyReference;
             double baseDry = spec.massKg - referenceFuel + bodyDelta;
             double flywheelDelta = spec.flywheel.massKg * ((Installed(spec, Mechanics.PartCategory.Flywheel) ? tune.FlywheelMass : 0) - 1);
-            double wheelDelta = 4 * (wheels.assemblyMass - spec.wheels.assemblyMassKg);
+            double frontWheelDelta=2*(wheels.assemblyMasses[0]-spec.wheels.assemblyMassKg),rearWheelDelta=2*(wheels.assemblyMasses[2]-spec.wheels.assemblyMassKg);
+            double wheelDelta=frontWheelDelta+rearWheelDelta;
             var fluidSpec=spec.fluids??new FluidSpec();var currentFluids=fluids??FluidState.Full(fluidSpec);
             double fluidDelta=(currentFluids.oilLitres-fluidSpec.referenceOilLitres)*.86+(currentFluids.coolantLitres-fluidSpec.referenceCoolantLitres)*1.05;
             double dry = baseDry + spec.partMassDeltaKg + flywheelDelta + wheelDelta + fluidDelta;
@@ -39,8 +40,8 @@ namespace DragLab.Domain
             double baselineHeight = (spec.massKg * spec.centerOfGravityM - referenceFuel * tank.heightM) + bodyDelta * .6;
             double fuel = fuelLitres * tank.densityKgPerLitre;
             double total = dry + tune.driverMassKg + tune.payloadMassKg + fuel;
-            double xMoment = baselineX + fluidDelta*spec.wheelbaseM*.15 + spec.partLongitudinalMomentKgM + flywheelDelta * spec.wheelbaseM * .15 + wheelDelta * spec.wheelbaseM * .5 + tune.driverMassKg * spec.wheelbaseM * .45 + tune.payloadMassKg * tune.payloadPositionM + fuel * tank.positionFromFrontAxleM;
-            double heightMoment = baselineHeight + fluidDelta*.35 + spec.partVerticalMomentKgM + flywheelDelta * .4 + wheelDelta * wheels.radius + tune.driverMassKg * .65 + tune.payloadMassKg * tune.payloadHeightM + fuel * tank.heightM;
+            double xMoment = baselineX + fluidDelta*spec.wheelbaseM*.15 + spec.partLongitudinalMomentKgM + flywheelDelta * spec.wheelbaseM * .15 + rearWheelDelta * spec.wheelbaseM + tune.driverMassKg * spec.wheelbaseM * .45 + tune.payloadMassKg * tune.payloadPositionM + fuel * tank.positionFromFrontAxleM;
+            double heightMoment = baselineHeight + fluidDelta*.35 + spec.partVerticalMomentKgM + flywheelDelta * .4 + frontWheelDelta*wheels.radii[0]+rearWheelDelta*wheels.radii[2] + tune.driverMassKg * .65 + tune.payloadMassKg * tune.payloadHeightM + fuel * tank.heightM;
             double fraction = DragMath.Clamp(1 - xMoment / (total * spec.wheelbaseM), .05, .95);
             return new MassBreakdown { chassisKg = spec.hasStructuralBody ? bodyReference * tune.MassMultiplier : 0, installedComponentKg = dry - (spec.hasStructuralBody ? bodyReference * tune.MassMultiplier : 0), dryInstalledKg = dry, driverKg = tune.driverMassKg, payloadKg = tune.payloadMassKg, fuelKg = fuel, centerOfGravityFromFrontM = xMoment / total, centerOfGravityHeightM = heightMoment / total, frontWeightFraction = fraction, frontNormalLoadN = total * DragMath.Gravity * fraction, rearNormalLoadN = total * DragMath.Gravity * (1 - fraction), engineInertiaKgM2 = spec.RotationalInertia(tune), wheelInertiaKgM2 = wheels.totalInertia };
         }

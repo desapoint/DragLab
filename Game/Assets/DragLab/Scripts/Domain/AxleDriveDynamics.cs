@@ -130,8 +130,8 @@ namespace DragLab.Domain
         public static void SyncConnected(CarSimulation car)
         {
             var s = car.state; double road = s.speed / car.wheels.radius * FlywheelDynamics.RpmPerRadian * car.tune.finalDrive;
-            if (s.frontDriveAvailable) s.frontShaftRpm = s.wheelContactInitialized ? car.FrontWheelOmega * FlywheelDynamics.RpmPerRadian * car.tune.finalDrive : road * (1 + s.frontSlip);
-            if (s.rearDriveAvailable) s.rearShaftRpm = s.wheelContactInitialized ? car.RearWheelOmega * FlywheelDynamics.RpmPerRadian * car.tune.finalDrive : road * (1 + s.rearSlip);
+            if (s.frontDriveAvailable) s.frontShaftRpm = s.wheelContactInitialized ? car.FrontWheelOmega * FlywheelDynamics.RpmPerRadian * car.tune.finalDrive : s.speed/car.wheels.radii[0]*FlywheelDynamics.RpmPerRadian*car.tune.finalDrive*(1+s.frontSlip);
+            if (s.rearDriveAvailable) s.rearShaftRpm = s.wheelContactInitialized ? car.RearWheelOmega * FlywheelDynamics.RpmPerRadian * car.tune.finalDrive : s.speed/car.wheels.radii[2]*FlywheelDynamics.RpmPerRadian*car.tune.finalDrive*(1+s.rearSlip);
         }
         public static double FreeInputRpm(CarSimulation car, double ratio)
         {

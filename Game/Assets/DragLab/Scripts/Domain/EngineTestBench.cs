@@ -35,7 +35,7 @@ namespace DragLab.Domain
             transmission = TransmissionDynamics.Configuration(spec, tune);
             wheels = new WheelProfile(spec, tune);
             state = previous ?? new CarState { rpm = spec.idleRpm, engineTemperature = tune.coldStart ? 0 : 1 };
-            state.cvtRatio = transmission.cvtMaxRatio; state.effectiveRollingMassKg = wheels.effectiveMass; state.wheelRadiusM = wheels.radius;
+            state.cvtRatio = transmission.cvtMaxRatio; state.effectiveRollingMassKg = wheels.effectiveMass; state.wheelRadiusM = wheels.radius;state.frontWheelRadiusM=wheels.radii[0];state.rearWheelRadiusM=wheels.radii[2];
             state.finished = state.disqualified = false; state.distance = 0;
             FlywheelDynamics.Publish(spec, tune, state);
         }

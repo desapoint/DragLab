@@ -1,0 +1,145 @@
+PASS: Legacy all-wheel settings equal explicit equal-axle settings: city-three
+PASS: Skinny front/wide tall rear changes actual independent mass and geometry: city-three
+PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: city-three
+PASS: Front-only reduction removes dead mass without changing rear gearing: city-three
+PASS: Removing front mass shifts real static weight distribution rearward: city-three
+PASS: Apply/Copy/Clamp preserve separate axle settings: city-three
+PASS: Separate axle settings survive save JSON: city-three
+PASS: Shared car simulation runs staggered axle geometry: city-three
+PASS: Tire sound/smoke feedback receives actual axle radii: city-three
+PASS: Legacy all-wheel settings equal explicit equal-axle settings: juniper-club
+PASS: Skinny front/wide tall rear changes actual independent mass and geometry: juniper-club
+PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: juniper-club
+PASS: Front-only reduction removes dead mass without changing rear gearing: juniper-club
+PASS: Removing front mass shifts real static weight distribution rearward: juniper-club
+PASS: Apply/Copy/Clamp preserve separate axle settings: juniper-club
+PASS: Separate axle settings survive save JSON: juniper-club
+PASS: Shared car simulation runs staggered axle geometry: juniper-club
+PASS: Tire sound/smoke feedback receives actual axle radii: juniper-club
+PASS: Legacy all-wheel settings equal explicit equal-axle settings: juniper-economy
+PASS: Skinny front/wide tall rear changes actual independent mass and geometry: juniper-economy
+PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: juniper-economy
+PASS: Front-only reduction removes dead mass without changing rear gearing: juniper-economy
+PASS: Removing front mass shifts real static weight distribution rearward: juniper-economy
+PASS: Apply/Copy/Clamp preserve separate axle settings: juniper-economy
+PASS: Separate axle settings survive save JSON: juniper-economy
+PASS: Shared car simulation runs staggered axle geometry: juniper-economy
+PASS: Tire sound/smoke feedback receives actual axle radii: juniper-economy
+PASS: Legacy all-wheel settings equal explicit equal-axle settings: kestrel-track
+PASS: Skinny front/wide tall rear changes actual independent mass and geometry: kestrel-track
+PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: kestrel-track
+PASS: Front-only reduction removes dead mass without changing rear gearing: kestrel-track
+PASS: Removing front mass shifts real static weight distribution rearward: kestrel-track
+PASS: Apply/Copy/Clamp preserve separate axle settings: kestrel-track
+PASS: Separate axle settings survive save JSON: kestrel-track
+PASS: Shared car simulation runs staggered axle geometry: kestrel-track
+PASS: Tire sound/smoke feedback receives actual axle radii: kestrel-track
+PASS: Legacy all-wheel settings equal explicit equal-axle settings: rally-sedan
+PASS: Skinny front/wide tall rear changes actual independent mass and geometry: rally-sedan
+PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: rally-sedan
+PASS: Front-only reduction removes dead mass without changing rear gearing: rally-sedan
+PASS: Removing front mass shifts real static weight distribution rearward: rally-sedan
+PASS: Apply/Copy/Clamp preserve separate axle settings: rally-sedan
+PASS: Separate axle settings survive save JSON: rally-sedan
+PASS: Shared car simulation runs staggered axle geometry: rally-sedan
+PASS: Tire sound/smoke feedback receives actual axle radii: rally-sedan
+PASS: Legacy all-wheel settings equal explicit equal-axle settings: sport-coupe
+PASS: Skinny front/wide tall rear changes actual independent mass and geometry: sport-coupe
+PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: sport-coupe
+PASS: Front-only reduction removes dead mass without changing rear gearing: sport-coupe
+PASS: Removing front mass shifts real static weight distribution rearward: sport-coupe
+PASS: Apply/Copy/Clamp preserve separate axle settings: sport-coupe
+PASS: Separate axle settings survive save JSON: sport-coupe
+PASS: Shared car simulation runs staggered axle geometry: sport-coupe
+PASS: Tire sound/smoke feedback receives actual axle radii: sport-coupe
+PASS: Legacy all-wheel settings equal explicit equal-axle settings: starter-hatch
+PASS: Skinny front/wide tall rear changes actual independent mass and geometry: starter-hatch
+PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: starter-hatch
+PASS: Front-only reduction removes dead mass without changing rear gearing: starter-hatch
+PASS: Removing front mass shifts real static weight distribution rearward: starter-hatch
+PASS: Apply/Copy/Clamp preserve separate axle settings: starter-hatch
+PASS: Separate axle settings survive save JSON: starter-hatch
+PASS: Shared car simulation runs staggered axle geometry: starter-hatch
+PASS: Tire sound/smoke feedback receives actual axle radii: starter-hatch
+PASS: Legacy all-wheel settings equal explicit equal-axle settings: super-v8
+PASS: Skinny front/wide tall rear changes actual independent mass and geometry: super-v8
+PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: super-v8
+PASS: Front-only reduction removes dead mass without changing rear gearing: super-v8
+PASS: Removing front mass shifts real static weight distribution rearward: super-v8
+PASS: Apply/Copy/Clamp preserve separate axle settings: super-v8
+PASS: Separate axle settings survive save JSON: super-v8
+PASS: Shared car simulation runs staggered axle geometry: super-v8
+PASS: Tire sound/smoke feedback receives actual axle radii: super-v8
+PASS: Legacy all-wheel settings equal explicit equal-axle settings: timber-diesel
+PASS: Skinny front/wide tall rear changes actual independent mass and geometry: timber-diesel
+PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: timber-diesel
+PASS: Front-only reduction removes dead mass without changing rear gearing: timber-diesel
+PASS: Removing front mass shifts real static weight distribution rearward: timber-diesel
+PASS: Apply/Copy/Clamp preserve separate axle settings: timber-diesel
+PASS: Separate axle settings survive save JSON: timber-diesel
+PASS: Shared car simulation runs staggered axle geometry: timber-diesel
+PASS: Tire sound/smoke feedback receives actual axle radii: timber-diesel
+PASS: Legacy all-wheel settings equal explicit equal-axle settings: timber-diesel-tow
+PASS: Skinny front/wide tall rear changes actual independent mass and geometry: timber-diesel-tow
+PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: timber-diesel-tow
+PASS: Front-only reduction removes dead mass without changing rear gearing: timber-diesel-tow
+PASS: Removing front mass shifts real static weight distribution rearward: timber-diesel-tow
+PASS: Apply/Copy/Clamp preserve separate axle settings: timber-diesel-tow
+PASS: Separate axle settings survive save JSON: timber-diesel-tow
+PASS: Shared car simulation runs staggered axle geometry: timber-diesel-tow
+PASS: Tire sound/smoke feedback receives actual axle radii: timber-diesel-tow
+PASS: Legacy all-wheel settings equal explicit equal-axle settings: touring-six
+PASS: Skinny front/wide tall rear changes actual independent mass and geometry: touring-six
+PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: touring-six
+PASS: Front-only reduction removes dead mass without changing rear gearing: touring-six
+PASS: Removing front mass shifts real static weight distribution rearward: touring-six
+PASS: Apply/Copy/Clamp preserve separate axle settings: touring-six
+PASS: Separate axle settings survive save JSON: touring-six
+PASS: Shared car simulation runs staggered axle geometry: touring-six
+PASS: Tire sound/smoke feedback receives actual axle radii: touring-six
+PASS: Legacy all-wheel settings equal explicit equal-axle settings: utility-pickup
+PASS: Skinny front/wide tall rear changes actual independent mass and geometry: utility-pickup
+PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: utility-pickup
+PASS: Front-only reduction removes dead mass without changing rear gearing: utility-pickup
+PASS: Removing front mass shifts real static weight distribution rearward: utility-pickup
+PASS: Apply/Copy/Clamp preserve separate axle settings: utility-pickup
+PASS: Separate axle settings survive save JSON: utility-pickup
+PASS: Shared car simulation runs staggered axle geometry: utility-pickup
+PASS: Tire sound/smoke feedback receives actual axle radii: utility-pickup
+PASS: Legacy all-wheel settings equal explicit equal-axle settings: v8-muscle
+PASS: Skinny front/wide tall rear changes actual independent mass and geometry: v8-muscle
+PASS: Equivalent rolling mass sums each wheel's own radius/inertia once: v8-muscle
+PASS: Front-only reduction removes dead mass without changing rear gearing: v8-muscle
+PASS: Removing front mass shifts real static weight distribution rearward: v8-muscle
+PASS: Apply/Copy/Clamp preserve separate axle settings: v8-muscle
+PASS: Separate axle settings survive save JSON: v8-muscle
+PASS: Shared car simulation runs staggered axle geometry: v8-muscle
+PASS: Tire sound/smoke feedback receives actual axle radii: v8-muscle
+PASS: Unequal-axle torque/braking energy closes: False / 0,2 / 0,4
+PASS: Unequal-axle torque/braking energy closes: False / 0,2 / 2
+PASS: Unequal-axle torque/braking energy closes: False / 0,2 / 8
+PASS: Unequal-axle torque/braking energy closes: False / 1,2 / 0,4
+PASS: Unequal-axle torque/braking energy closes: False / 1,2 / 2
+PASS: Unequal-axle torque/braking energy closes: False / 1,2 / 8
+PASS: Unequal-axle torque/braking energy closes: False / 4 / 0,4
+PASS: Unequal-axle torque/braking energy closes: False / 4 / 2
+PASS: Unequal-axle torque/braking energy closes: False / 4 / 8
+PASS: Unequal-axle torque/braking energy closes: True / 0,2 / 0,4
+PASS: Locked AWD constrains angular shaft speeds even with mismatched tire diameters
+PASS: Unequal-axle torque/braking energy closes: True / 0,2 / 2
+PASS: Locked AWD constrains angular shaft speeds even with mismatched tire diameters
+PASS: Unequal-axle torque/braking energy closes: True / 0,2 / 8
+PASS: Locked AWD constrains angular shaft speeds even with mismatched tire diameters
+PASS: Unequal-axle torque/braking energy closes: True / 1,2 / 0,4
+PASS: Locked AWD constrains angular shaft speeds even with mismatched tire diameters
+PASS: Unequal-axle torque/braking energy closes: True / 1,2 / 2
+PASS: Locked AWD constrains angular shaft speeds even with mismatched tire diameters
+PASS: Unequal-axle torque/braking energy closes: True / 1,2 / 8
+PASS: Locked AWD constrains angular shaft speeds even with mismatched tire diameters
+PASS: Unequal-axle torque/braking energy closes: True / 4 / 0,4
+PASS: Locked AWD constrains angular shaft speeds even with mismatched tire diameters
+PASS: Unequal-axle torque/braking energy closes: True / 4 / 2
+PASS: Locked AWD constrains angular shaft speeds even with mismatched tire diameters
+PASS: Unequal-axle torque/braking energy closes: True / 4 / 8
+PASS: Locked AWD constrains angular shaft speeds even with mismatched tire diameters
+Checks: 144 / failures: 0

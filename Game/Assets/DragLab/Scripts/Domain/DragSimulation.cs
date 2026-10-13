@@ -191,6 +191,14 @@ namespace DragLab.Domain
         public LimiterStyle limiter, twoStepStyle;
         public CutMethod limiterCut, twoStepCut;
         public float revLimitRpm, wheelDiameter, wheelWidth, wheelMass;
+        // Zero inherits the original all-wheel setting, preserving old saves and presets.
+        public float frontWheelDiameter, rearWheelDiameter, frontWheelWidth, rearWheelWidth, frontTirePressurePsi, rearTirePressurePsi;
+        public double AxleDiameter(bool front)=>front?(frontWheelDiameter>0?frontWheelDiameter:WheelDiameter):(rearWheelDiameter>0?rearWheelDiameter:WheelDiameter);
+        public double AxleWidth(bool front)=>front?(frontWheelWidth>0?frontWheelWidth:WheelWidth):(rearWheelWidth>0?rearWheelWidth:WheelWidth);
+        public double AxlePressure(bool front)=>front?(frontTirePressurePsi>0?frontTirePressurePsi:tirePressurePsi):(rearTirePressurePsi>0?rearTirePressurePsi:tirePressurePsi);
+        public void SetWheelDiameter(int axle,float value){if(axle==0){wheelDiameter=value;frontWheelDiameter=rearWheelDiameter=0;}else if(axle==1)frontWheelDiameter=value;else rearWheelDiameter=value;}
+        public void SetWheelWidth(int axle,float value){if(axle==0){wheelWidth=value;frontWheelWidth=rearWheelWidth=0;}else if(axle==1)frontWheelWidth=value;else rearWheelWidth=value;}
+        public void SetTirePressure(int axle,float value){if(axle==0){tirePressurePsi=value;frontTirePressurePsi=rearTirePressurePsi=0;}else if(axle==1)frontTirePressurePsi=value;else rearTirePressurePsi=value;}
         public bool coldStart;
         public TransmissionUpgrade transmissionUpgrade;
         public float flywheelMass;
@@ -239,6 +247,7 @@ namespace DragLab.Domain
             limiter = other.limiter; limiterCut = other.limiterCut; twoStepStyle = other.twoStepStyle; twoStepCut = other.twoStepCut;
             shiftLightRpm = other.shiftLightRpm; revLimitRpm = other.revLimitRpm; coldStart = other.coldStart;
             wheelDiameter = other.wheelDiameter; wheelWidth = other.wheelWidth; turboSize = other.turboSize;
+            frontWheelDiameter=other.frontWheelDiameter;rearWheelDiameter=other.rearWheelDiameter;frontWheelWidth=other.frontWheelWidth;rearWheelWidth=other.rearWheelWidth;frontTirePressurePsi=other.frontTirePressurePsi;rearTirePressurePsi=other.rearTirePressurePsi;
             flywheelMass = other.flywheelMass;
         }
         public void ClampTo(VehicleSpec spec)
@@ -273,6 +282,9 @@ namespace DragLab.Domain
             revLimitRpm = revLimitRpm == 0 ? 0 : (float)DragMath.Clamp(revLimitRpm, spec.idleRpm + 1500, spec.redlineRpm * 1.2);
             wheelDiameter = wheelDiameter == 0 ? 0 : (float)DragMath.Clamp(wheelDiameter, .8, 1.6);
             wheelWidth = wheelWidth == 0 ? 0 : (float)DragMath.Clamp(wheelWidth, .8, 1.6);
+            frontWheelDiameter=OptionalWheel(frontWheelDiameter,.8,1.6);rearWheelDiameter=OptionalWheel(rearWheelDiameter,.8,1.6);
+            frontWheelWidth=OptionalWheel(frontWheelWidth,.45,1.6);rearWheelWidth=OptionalWheel(rearWheelWidth,.45,1.6);
+            frontTirePressurePsi=OptionalWheel(frontTirePressurePsi,18,42);rearTirePressurePsi=OptionalWheel(rearTirePressurePsi,18,42);
             wheelMass = wheelMass == 0 ? 0 : (float)DragMath.Clamp(wheelMass, .6, 3);
             flywheelMass = flywheelMass == 0 ? 0 : (float)DragMath.Clamp(flywheelMass, .25, 2.5);
             if (!Enum.IsDefined(typeof(EngineUpgradeInduction), inductionUpgrade) || !partsResolved && engineLevel == 0) inductionUpgrade = EngineUpgradeInduction.Factory;
@@ -282,6 +294,7 @@ namespace DragLab.Domain
             superchargerPulley = superchargerPulley == 0 ? 0 : (float)DragMath.Clamp(superchargerPulley, .75, 1.3);
             DragLab.Domain.Mechanics.PartTuning.Enforce(this);
         }
+        static float OptionalWheel(float value,double min,double max)=>value==0||float.IsNaN(value)||float.IsInfinity(value)?0:(float)DragMath.Clamp(value,min,max);
     }
 
     public enum RaceTemperatureMode { FullyCooled, Optimal, Live }
@@ -389,7 +402,7 @@ namespace DragLab.Domain
         }
         public static double GearSpeedKmh(VehicleSpec spec, Tune tune, int gear)
         {
-            return spec.redlineRpm / 60 * Math.PI * 2 * spec.wheelRadiusM * tune.WheelDiameter / (spec.gears[gear - 1] * tune.finalDrive) * 3.6;
+            return spec.redlineRpm / 60 * Math.PI * 2 * WheelProfile.DrivenRadius(spec,tune) / (spec.gears[gear - 1] * tune.finalDrive) * 3.6;
         }
     }
 
@@ -440,6 +453,7 @@ namespace DragLab.Domain
         public double translatingMassKg, massCgHeightM, massCgPositionM, fuelLitres, fuelUsedLitres, fuelFlowLitresPerSecond;
         public bool fuelStarved;
         public double exhaustPopStrength, cvtRatio, converterSlipRpm, effectiveRollingMassKg, wheelRadiusM;
+        public double frontWheelRadiusM,rearWheelRadiusM;
         public CutMethod activeCutMethod;
         public bool transmissionTorqueCut;
         public double clutchCapacityFactor = 1, mechanicalPowerFactor = 1;
@@ -504,7 +518,7 @@ namespace DragLab.Domain
             if (!Mechanics.MechanicsSchema.Finite(driverKg) || !Mechanics.MechanicsSchema.Finite(payloadKg) || !Mechanics.MechanicsSchema.Finite(positionM) || !Mechanics.MechanicsSchema.Finite(heightM) || !Mechanics.MechanicsSchema.Finite(fuelLitres) || driverKg < 0 || driverKg > 200 || payloadKg < 0 || payloadKg > 1000 || positionM < -.5 || positionM > spec.wheelbaseM + .5 || heightM < 0 || heightM > 2 || fuelLitres < 0 || fuelLitres > spec.fuel.capacityLitres) throw new ArgumentException("Invalid mass inputs.");
             tune.driverMassKg = (float)driverKg; tune.payloadMassKg = (float)payloadKg; tune.payloadPositionM = (float)positionM; tune.payloadHeightM = (float)heightM; state.fuelLitres = fuelLitres; UpdateMass();
         }
-        void UpdateMass() { mass = MassDynamics.Resolve(spec, tune, wheels, state.fuelLitres, state.fluids); if(mechanics!=null)MassDynamics.ApplyClutchFluids(mass,spec,mechanics.parts,frictionHardware); wheels.vehicleMass = mass.TranslatingKg; wheels.effectiveMass = mass.TranslatingKg + wheels.totalInertia / (wheels.radius * wheels.radius); state.translatingMassKg = mass.TranslatingKg; state.effectiveRollingMassKg = wheels.effectiveMass; state.massCgHeightM = mass.centerOfGravityHeightM; state.massCgPositionM = mass.centerOfGravityFromFrontM; double transfer = mass.TranslatingKg * state.acceleration * mass.centerOfGravityHeightM / spec.wheelbaseM; state.frontLoadN = DragMath.Clamp(mass.frontNormalLoadN - transfer, 0, mass.TranslatingKg * DragMath.Gravity); state.rearLoadN = mass.TranslatingKg * DragMath.Gravity - state.frontLoadN; }
+        void UpdateMass() { mass = MassDynamics.Resolve(spec, tune, wheels, state.fuelLitres, state.fluids); if(mechanics!=null)MassDynamics.ApplyClutchFluids(mass,spec,mechanics.parts,frictionHardware); wheels.vehicleMass = mass.TranslatingKg; wheels.effectiveMass = mass.TranslatingKg + wheels.equivalentRotatingMass; state.translatingMassKg = mass.TranslatingKg; state.effectiveRollingMassKg = wheels.effectiveMass; state.massCgHeightM = mass.centerOfGravityHeightM; state.massCgPositionM = mass.centerOfGravityFromFrontM; double transfer = mass.TranslatingKg * state.acceleration * mass.centerOfGravityHeightM / spec.wheelbaseM; state.frontLoadN = DragMath.Clamp(mass.frontNormalLoadN - transfer, 0, mass.TranslatingKg * DragMath.Gravity); state.rearLoadN = mass.TranslatingKg * DragMath.Gravity - state.frontLoadN; }
         public readonly AwdSpec awd;
         readonly double[] shiftPoints;
         public double ShiftPoint(int gear) { return shiftPoints[Math.Max(0, Math.Min(shiftPoints.Length - 1, gear - 1))]; }
@@ -539,7 +553,7 @@ namespace DragLab.Domain
             mechanics = new MechanicalStress(spec, this.tune, components);var frictionPart=mechanics.Part(Mechanics.PartCategory.Clutch);frictionHardware=frictionPart==null?null:mechanics.Definition(frictionPart);UpdateMass(); mechanics.Prepare(state); TireDynamics.ResetContactReference(state,mechanics.parts);
             state.frontTorqueShare = spec.drive == DriveType.FWD ? 1 : spec.drive == DriveType.RWD ? 0 : awd.mode == AwdMode.OnDemand ? (awd.primaryFront ? 1 : 0) : awd.frontBias;
             state.rearTorqueShare = 1 - state.frontTorqueShare;
-            state.cvtRatio = transmission.cvtMaxRatio; state.effectiveRollingMassKg = wheels.effectiveMass; state.wheelRadiusM = wheels.radius;
+            state.cvtRatio = transmission.cvtMaxRatio; state.effectiveRollingMassKg = wheels.effectiveMass; state.wheelRadiusM = wheels.radius;state.frontWheelRadiusM=wheels.radii[0];state.rearWheelRadiusM=wheels.radii[2];
             state.engineTemperature = this.tune.coldStart ? 0 : 1;
             shiftPoints = new double[spec.gears.Length];
             for (int gear = 1; gear <= shiftPoints.Length; gear++) shiftPoints[gear - 1] = Math.Min(assistedCeiling, DragMath.ShiftPoint(spec, this.tune, gear));
