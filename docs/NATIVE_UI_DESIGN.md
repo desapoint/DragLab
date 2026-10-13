@@ -1,5 +1,7 @@
 # Native interface direction — grey/red and Settings first
 
+Block-preparation checkpoint (2026-10-12): the explicitly authorized inventory/engine/block batch now adds native Reuse / Manual / OEM preparation before installing a different current-engine block. Reuse has no hidden purchases; Manual keeps missing choices as unapplied drafts; OEM quotes actual required sets. Show the cumulative price, shared dyno/summary/info and actual warnings before Add plan. Cart confirmation publishes one complete replacement without changing engine identity, repairing reused parts or refilling fluids. Core edits retain reviewed companions; removal/Store clears its unmodified generated rows. Selected-car block Move reuses the same preparation. Buying alone remains storage. Preserve shared controls, F8 and explicit confirmation; stop after the authorized batch for review. [Delivery/checks](../reports/phases/4h/08-BLOCK-PREPARATION.md).
+
 Recorded 2026-10-09 from the user's instructions. This is the current design contract for new interfaces. **The complete existing menu Settings/Driving controls and draft Apply/confirmation are now implemented for review; the inspection drawer and later screens remain pending.** See the [native shell checkpoint](../reports/phases/4b/05-NATIVE-SHELL.md). The 4A HTML mockups remain historical; the user specifies native controls as development proceeds.
 
 ## Visual language

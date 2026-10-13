@@ -68,6 +68,7 @@ namespace DragLab.Runtime
             VisualElement positionsArea=null,roleGroup=null;Label summary=null,error=null,quantityLabel=null,unitPrice=null,notice=null;FloatField number=null;Button minus=null,plus=null;Action update=null;
             OpenDialog(editing==null?"Purchase":"Edit purchase",null,new[]{new DialogAction("Cancel",CloseDialog),new DialogAction(editing==null?"Add to cart":"Apply",()=>{
                 var targets=all.Where(selected.Contains).ToList();
+                if(install&&game.NativeBlockPreparationPending(d)){OpenBlockPreparation(offer,quantity,editing);return;}
                 if(editing!=null){if(!game.EditNativeCartPurchase(editing,expected,carId,individual,role,quantity,install,targets)){error.text=game.NativeNotice;return;}}
                 else if(fresh){if(!game.StageNativePurchase(d.id,individual?role:null,quantity,install,individual&&install?targets:null)){error.text=game.NativeNotice;return;}
                     draft.Individual=individual;draft.Install=install;draft.Role=role;draft.Quantity=quantity;draft.Positions=individual&&install?targets:new List<string>();
@@ -122,13 +123,13 @@ namespace DragLab.Runtime
                     shortcuts.EnableInClassList("hidden",!fresh||!individual||!matches);
                     foreach(var button in content.Query<Button>().ToList().Where(b=>b.name.StartsWith("partPurchaseMode:")))button.EnableInClassList("selected",button.name=="partPurchaseMode:"+(individual?"Individual":"Complete set"));
                     content.Q<Button>("partPurchaseMode:Individual")?.SetEnabled(!install||matches);
-                    content.Q<Button>("partPurchaseDestination:Install").SetEnabled(!game.NativeBlockPreparationPending(d));
+                    content.Q<Button>("partPurchaseDestination:Install").SetEnabled(true);
                     foreach(var pair in rows){bool valid=available.Contains(pair.Item2);pair.Item1.EnableInClassList("hidden",individual&&!valid);pair.Item1.EnableInClassList("selected",!individual||selected.Contains(pair.Item2));pair.Item1.SetEnabled(matches&&(fresh||individual)&&(!individual||valid));}
                     foreach(var group in groups)group.EnableInClassList("hidden",group.Query<Button>().ToList().All(b=>b.ClassListContains("hidden")));
                     quantityLabel.text=individual?"Units":setSize>1?"Sets":"Quantity";number.SetValueWithoutNotify(quantity);number.SetEnabled(fresh);minus.SetEnabled(fresh&&quantity>1);plus.SetEnabled(fresh&&quantity<99);
                     long each=fresh?individual?InventoryPricing.NewUnit(d,setSize):InventoryPricing.NewSet(d):offer.Price??0;
                     unitPrice.text=(individual?"1 unit":setSize>1?"1 set · "+setSize+" units":"1 part")+" · "+DisplayUnits.Money(each);
-                    string problem=install&&game.NativeBlockPreparationPending(d)?"Prepare a complete engine installation before installing this block.":install&&individual&&!matches?"Individual replacements require the fitted specification.":"";notice.text=problem;notice.EnableInClassList("hidden",problem.Length==0);
+                    string problem=install&&individual&&!matches?"Individual replacements require the fitted specification.":"";notice.text=problem;notice.EnableInClassList("hidden",problem.Length==0);
                     int stored=install?individual?quantity-selected.Count:quantity-1:quantity;
                     string buy=quantity+(individual?quantity==1?" unit":" units":setSize>1?quantity==1?" set":" sets":quantity==1?" part":" parts");
                     string replacements=individual?string.Join(", ",all.Where(selected.Contains).Select(p=>d.category==PartCategory.Pistons?"piston "+(fitted.condition.elements.First(e=>e.id==p).cylinder+1):InventoryUnits.PositionLabel(game.Profile,car,d.id,p))):setSize>1?"complete set":"part";

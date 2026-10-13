@@ -1,0 +1,15 @@
+Final native cart regression: native-cart-workshop-final
+Selected evidence; totals include shared fixture setup.
+
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: Expanded groups scroll without moving or obscuring totals and checkout
+PASS: Full-stat browsing, filtering and info never recapture, edit, heal or save the build/cart
+PASS: Cart Edit initializes the shared replacement dialog from the row, not the last shop draft
+PASS: A used component can change replacement position without converting into new stock or healing wear
+PASS: Compact cart keeps scrolling rows, preview and fixed totals/actions inside the viewport
+PASS: Cart uses shared crisp 4K scaling and bounded footer anchors
+PASS: All cart edits/removals/previews remain isolated from actual assets, resources and save files
+PASS: Cancelling checkout returns to the same full cart without losing its plan
+PASS: Confirmed Clear leaves an honest empty cart and disabled checkout
+Checks: 302 / runtime errors: 0

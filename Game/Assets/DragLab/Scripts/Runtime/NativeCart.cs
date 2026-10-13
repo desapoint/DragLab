@@ -79,7 +79,7 @@ namespace DragLab.Runtime
             var offset=cartScroll.scrollOffset;var previewOffset=cartPreviewScroll.scrollOffset;
             foreach(var s in cartPageSurfaces)surfaces.Remove(s);cartPageSurfaces.Clear();cartRows.Clear();cartPreview.Clear();
             string problem=null;int total=0;long purchases=0,credits=0;
-            try{total=game.NativeCartTotal();if(game.CartLines.Any(l=>l.install&&game.NativeBlockPreparationPending(p.catalog.Find(l.definitionId))))problem="Prepare a complete engine installation before installing this block.";}catch(Exception e){problem=e.Message;}
+            try{total=game.NativeCartTotal();}catch(Exception e){problem=e.Message;}
             foreach(var line in game.CartLines.ToArray()){
                 string id=NativeCartRowKey(line);var d=p.catalog.Find(line.definitionId);int? amount=null;try{amount=game.NativeCartLinePrice(line);if(amount>=0)purchases+=amount.Value;else credits-=amount.Value;}catch(Exception e){problem=problem??e.Message;}
                 var row=new VisualElement{name="cartRow:"+id};row.AddToClassList("cart-row");cartRows.Add(row);
@@ -87,7 +87,8 @@ namespace DragLab.Runtime
                 var price=new Label(amount.HasValue?DisplayUnits.Money(amount.Value):"Unavailable"){name="cartPrice:"+id};price.AddToClassList("cart-row-price");top.Add(price);
                 bool buying=line.action==CartAction.NewSet||line.action==CartAction.NewUnits||line.action==CartAction.BuyUsed,fresh=line.action==CartAction.NewSet||line.action==CartAction.NewUnits;
                 var stock=line.action==CartAction.BuyUsed?p.inventory.dealer.Find(s=>s.Id==line.assetId):null;bool individual=line.action==CartAction.NewUnits||stock?.unit!=null;
-                var summary=new Label(line.action==CartAction.Move?"Move → "+line.destination:line.action==CartAction.SellPart||line.action==CartAction.SellUnit?"Sale":(individual?"Individual · "+line.role:d!=null&&InventoryUnits.Count(p,car,d)>1?"Complete set · "+InventoryUnits.Count(p,car,d)+" units":"Part")+" · "+(line.install?"Install":"Store")){enableRichText=false};summary.AddToClassList("cart-row-summary");row.Add(summary);
+                var summary=new Label(line.action==CartAction.Move?"Move → "+InventoryLocation(line.destinationId):line.action==CartAction.SellPart||line.action==CartAction.SellUnit?"Sale":(individual?"Individual · "+line.role:d!=null&&InventoryUnits.Count(p,car,d)>1?"Complete set · "+InventoryUnits.Count(p,car,d)+" units":"Part")+" · "+(line.install?"Install":"Store")){enableRichText=false};summary.AddToClassList("cart-row-summary");row.Add(summary);
+                if(line.preparationOwner!=null){var prepared=new Label(line.preparedBlock?"Prepared block installation":"Block companion · "+(line.action==CartAction.Move?"Reuse":"Purchase"));prepared.AddToClassList("cart-row-summary");row.Add(prepared);}
                 if(buying&&amount.HasValue){var each=new Label(DisplayUnits.Money(amount.Value/line.quantity)+" each");each.AddToClassList("cart-row-summary");row.Add(each);}
                 if(individual&&line.install){var target=new Label(string.Join(" · ",line.positions.Select(pos=>InventoryUnits.PositionLabel(p,car,line.definitionId,pos)))+" · "+(line.quantity-line.positions.Count)+" in storage"){name="cartTargets:"+id,enableRichText=false};target.AddToClassList("cart-row-summary");row.Add(target);}
                 else if(buying&&line.install&&line.quantity>1){var extras=new Label((line.quantity-1)+" sets in storage");extras.AddToClassList("cart-row-summary");row.Add(extras);}

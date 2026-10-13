@@ -11,6 +11,8 @@ namespace DragLab.Domain.Mechanics
         public string definitionId;
         public int quantity=1;
         public bool install;
+        public bool preparedBlock;
+        public string preparationOwner;
         public CartAction action;
         public string assetId, role, destinationId;
         public InventoryKind destination = InventoryKind.Storage;
@@ -37,7 +39,7 @@ namespace DragLab.Domain.Mechanics
     {
         [Serializable] internal sealed class Lines { public List<PartCartLine> entries=new List<PartCartLine>(); }
         internal static string CatalogSnapshot(MechanicalCatalog catalog,string id,PlayerProfile p) => JsonUtility.ToJson(catalog.Spec(p.cars.Find(c=>c.instanceId==id).vehicleId))+string.Join("/",catalog.parts.Select(d=>JsonUtility.ToJson(d)));
-        public static int Total(PlayerProfile p,string carId,IEnumerable<PartCartLine> source,ValuationPolicy policy=null,long now=0)
+        public static int Total(PlayerProfile p,string carId,IEnumerable<PartCartLine> source,ValuationPolicy policy=null,long now=0,bool validateBlocks=true)
         {
             var car=p.cars.Find(c=>c.instanceId==carId);EngineRebuilds.RequireAvailable(car);
             var lines=source.ToArray();if(lines.Length==0||lines.Length>100)throw new InvalidOperationException("Cart needs 1–100 distinct offers.");
@@ -73,6 +75,10 @@ namespace DragLab.Domain.Mechanics
                 total=checked(total+checked(price*line.quantity));
             }
             foreach(var category in slots)if(lines.Any(l=>l.install&&(l.action==CartAction.NewUnits||l.action==CartAction.BuyUsed&&p.inventory.dealer.Any(s=>s.Id==l.assetId&&s.unit!=null))&&p.catalog.Find(l.definitionId).category==category))throw new InvalidOperationException("Choose a complete set or individual replacements for a slot, not both.");
+            if(validateBlocks){
+                var blocks=lines.Where(l=>p.catalog.Find(l.definitionId)?.category==PartCategory.CylinderBlock&&(l.install||l.action==CartAction.Move&&l.destination==InventoryKind.Car)).Where(l=>{var target=p.cars.Find(c=>c.instanceId==(l.action==CartAction.Move?l.destinationId:carId));return target==null||!MechanicsOwnership.Definitions(p,target).TryGetValue(PartCategory.CylinderBlock,out var old)||old!=l.definitionId;}).ToArray();
+                if(blocks.Length>0){if(blocks.Any(l=>!l.preparedBlock))throw new InvalidOperationException("Prepare the block and its required components before installation.");var preview=PreviewProfile(p,car,lines);foreach(var targetId in blocks.Select(l=>l.action==CartAction.Move?l.destinationId:carId).Distinct()){var result=MechanicsOwnership.Resolve(preview,preview.cars.Find(c=>c.instanceId==targetId),preview.catalog);if(!result.Drivable)throw new InvalidOperationException("Block preparation is incomplete: "+string.Join("; ",result.errors));}}
+            }
             return total;
         }
         public static PartCartQuote Quote(PlayerProfile p,string carId,IEnumerable<PartCartLine> lines,long now,int quoteSeconds,ValuationPolicy policy=null)

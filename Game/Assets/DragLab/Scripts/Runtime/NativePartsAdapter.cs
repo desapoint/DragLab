@@ -8,7 +8,7 @@ namespace DragLab.Runtime
     public sealed partial class PrototypeGame
     {
         internal void PrepareNativeCart(){if(Build!=null)EnsureCartOwner();}
-        internal void RemoveNativeCartLine(PartCartLine line){cart.Remove(line);CartChanged();}
+        internal void RemoveNativeCartLine(PartCartLine line){if(line.preparedBlock&&line.preparationOwner!=null)cart.RemoveAll(l=>l.preparationOwner==line.preparationOwner);else cart.Remove(line);CartChanged();}
         internal void ClearNativeCart(){cart.Clear();CartChanged();}
         internal void SetNativeCartInstall(PartCartLine line,bool install){SetCartInstallation(line,install);}
         internal int NativeCartTotal()=>cart.Count==0?0:PartCart.Total(profile,Build.instanceId,cart,PricingPolicy);
@@ -47,6 +47,7 @@ namespace DragLab.Runtime
             if(existing==null&&cart.Count>=100){notice="Cart holds at most 100 distinct lines.";return false;}
             if(unit&&install&&!ValidateNativeUnitPlan(existing,d,role,quantity,positions))return false;
             var line=existing??new PartCartLine{definitionId=definition,action=action,role=role,quantity=0};
+            if(d.category!=PartCategory.CylinderBlock)line.preparationOwner=null;
             line.quantity+=quantity;if(existing==null)cart.Add(line);
             if(install){if(unit){line.positions=line.positions.Union(positions).ToList();line.install=true;}else SetCartInstallation(line,true);}
             if(unit)unitOffers[definition]=role;else unitOffers.Remove(definition);
@@ -73,10 +74,12 @@ namespace DragLab.Runtime
             var candidate=current.Copy();candidate.action=fresh?individual?CartAction.NewUnits:CartAction.NewSet:CartAction.BuyUsed;candidate.role=individual?role:null;candidate.quantity=quantity;candidate.install=install;candidate.positions=individual&&install?targets.Distinct().ToList():new List<string>();
             if(individual&&!InventoryUnits.Roles(profile,Build,d).Contains(role)){notice="Individual role unavailable.";return false;}
             if(cart.Any(l=>l!=current&&l.action==candidate.action&&l.definitionId==d.id&&l.role==candidate.role&&fresh)){notice="Another row already buys this offer and role. Edit that row or remove it first.";return false;}
-            if(install&&NativeBlockPreparationPending(d)){notice="Prepare a complete engine installation before installing this block.";return false;}
+            if(install&&NativeBlockPreparationPending(d)&&!current.preparedBlock){notice="Prepare a complete engine installation before installing this block.";return false;}
+            if(current.preparedBlock){var review=cart.Where(l=>l!=current&&(install||l.preparationOwner!=current.preparationOwner)).Select(l=>l.Copy()).ToList();review.Add(candidate);try{PartCart.Total(profile,carId,review,PricingPolicy);}catch(Exception e){notice=e.Message;return false;}if(!install){cart.RemoveAll(l=>l!=current&&l.preparationOwner==current.preparationOwner);current.preparedBlock=false;current.preparationOwner=null;}}
             if(individual&&install&&!ValidateNativeUnitPlan(current,d,role,quantity,candidate.positions))return false;
             if(install&&!individual&&cart.Any(l=>l!=current&&(l.install||l.action==CartAction.Move&&l.destination==InventoryKind.Car&&l.destinationId==carId)&&profile.catalog.Find(l.definitionId)?.category==d.category)){notice="Another row installs in this slot. Store or remove it first.";return false;}
             current.action=candidate.action;current.role=candidate.role;current.quantity=candidate.quantity;current.install=candidate.install;current.positions=candidate.positions;
+            if(d.category!=PartCategory.CylinderBlock)current.preparationOwner=null;
             notice="";CartChanged();return true;
         }
         internal void StageNativePart(NativePartEntry entry,bool install,string position=null)

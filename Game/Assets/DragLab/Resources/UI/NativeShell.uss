@@ -402,3 +402,5 @@
 .modal-content .warning-item .warning-title { font-size: 20px; }
 .modal-content .warning-suggestion { color: var(--racing-muted); margin-bottom: 0; }
 .inventory-target { flex-shrink: 0; min-height: 32px; margin: 4px 0; white-space: normal; }
+.block-choice-row { height: auto; min-height: 34px; }
+.block-choice-row Label { white-space: normal; }

@@ -161,7 +161,8 @@ namespace DragLab.Runtime
                 PartsModelChecks(fixture);profileField.SetValue(game,fixture);ProfileStore.Save(fixture);game.ClearNativeCart();if(!shell.Visible)yield return Key(input,0x77);yield return Click(input,"navBuild");yield return new WaitForSecondsRealtime(.2f);yield return Capture("parts-loading");yield return WaitParts();
                 if(Environment.GetCommandLineArgs().Contains("--draglab-cart-only-verify")){yield return NativeCartChecks(input);yield break;}
                 if(Environment.GetCommandLineArgs().Contains("--draglab-warnings-only-verify")){yield return NativeWarningsChecks(input);yield break;}
-                if(Environment.GetCommandLineArgs().Contains("--draglab-workshop-only-verify")){yield return NativeMoveChecks(input);yield return NativeEngineChecks(input);yield break;}
+                if(Environment.GetCommandLineArgs().Contains("--draglab-block-only-verify")){yield return NativeBlockChecks(input);yield break;}
+                if(Environment.GetCommandLineArgs().Contains("--draglab-workshop-only-verify")){yield return NativeMoveChecks(input);yield return NativeEngineChecks(input);yield return NativeBlockChecks(input);yield break;}
                 if(Environment.GetCommandLineArgs().Contains("--draglab-purchase-only-verify")){yield return NativePurchaseChecks(input);yield break;}
                 Check(game.ScreenName=="Parts"&&!shell.Root.Q("partsPage").ClassListContains("hidden"),"Build displays the native shared part browser");
                 Check(shell.Root.Q("partsTabs").Query<Button>().ToList().Count==5,"Build has five broad category tabs");

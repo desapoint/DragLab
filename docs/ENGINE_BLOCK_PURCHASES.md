@@ -1,4 +1,6 @@
-# Deferred engine-block purchase/install workflow
+# Engine-block purchase/install workflow
+
+Delivered for review in the authorized inventory/engine/block batch on 2026-10-12: native Purchase → Install and owned selected-car Plan install/Move now use Reuse / Manual / OEM preparation. Reuse keeps fitting actual parts or proposes loose owned companions, with no automatic missing purchases. Manual missing choices stay unapplied; OEM shows required real sets/counts and cumulative cost. Add plan stages until normal atomic checkout. The current engine identity, actual condition, removed parts and fluids are retained. Prepared edits preserve component choices, and cart validation rejects incomplete different-block installations. [Delivery and limits](../reports/phases/4h/08-BLOCK-PREPARATION.md). The original deferred decision below is historical and superseded by this explicit batch authorization; visual acceptance remains pending.
 
 Decision recorded 2026-10-12. **Deferred to 4H Parts shop/trade cart interface refinement. No runtime implementation is delivered by this decision.** The user postponed this change after clarifying the purchase behavior and objective.
 

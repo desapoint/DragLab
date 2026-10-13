@@ -1,0 +1,96 @@
+Final packaged Workshop fixture: native-workshop-final
+13 authored vehicle/trim platforms; inventory/engine/block batch.
+Selected block evidence below; total includes shared and engine/move checks.
+
+PASS: Unprepared different-block checkout is rejected: city-three
+PASS: Reuse prepares a copied complete engine without automatic companion charges: city-three
+PASS: Manual missing required parts never dismantles the working engine: city-three / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: city-three /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: city-three /
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: city-three /
+PASS: Unprepared different-block checkout is rejected: juniper-club
+PASS: Reuse prepares a copied complete engine without automatic companion charges: juniper-club
+PASS: Manual missing required parts never dismantles the working engine: juniper-club / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: juniper-club /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: juniper-club /
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: juniper-club /
+PASS: Unprepared different-block checkout is rejected: juniper-economy
+PASS: Reuse prepares a copied complete engine without automatic companion charges: juniper-economy
+PASS: Manual missing required parts never dismantles the working engine: juniper-economy / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: juniper-economy /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: juniper-economy /
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: juniper-economy /
+PASS: Unprepared different-block checkout is rejected: kestrel-track
+PASS: Reuse prepares a copied complete engine without automatic companion charges: kestrel-track
+PASS: Manual missing required parts never dismantles the working engine: kestrel-track / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: kestrel-track /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: kestrel-track /
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: kestrel-track /
+PASS: Unprepared different-block checkout is rejected: rally-sedan
+PASS: Reuse prepares a copied complete engine without automatic companion charges: rally-sedan
+PASS: Manual missing required parts never dismantles the working engine: rally-sedan / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: rally-sedan /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: rally-sedan /
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: rally-sedan /
+PASS: Unprepared different-block checkout is rejected: sport-coupe
+PASS: Reuse prepares a copied complete engine without automatic companion charges: sport-coupe
+PASS: Manual missing required parts never dismantles the working engine: sport-coupe / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: sport-coupe /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: sport-coupe /
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: sport-coupe /
+PASS: Unprepared different-block checkout is rejected: starter-hatch
+PASS: Reuse prepares a copied complete engine without automatic companion charges: starter-hatch
+PASS: Manual missing required parts never dismantles the working engine: starter-hatch / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: starter-hatch /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: starter-hatch /
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: starter-hatch /
+PASS: Unprepared different-block checkout is rejected: super-v8
+PASS: Reuse prepares a copied complete engine without automatic companion charges: super-v8
+PASS: Manual missing required parts never dismantles the working engine: super-v8 / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: super-v8 /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: super-v8 /
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: super-v8 /
+PASS: Unprepared different-block checkout is rejected: timber-diesel
+PASS: Reuse prepares a copied complete engine without automatic companion charges: timber-diesel
+PASS: Manual missing required parts never dismantles the working engine: timber-diesel / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: timber-diesel /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: timber-diesel /
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: timber-diesel /
+PASS: Unprepared different-block checkout is rejected: timber-diesel-tow
+PASS: Reuse prepares a copied complete engine without automatic companion charges: timber-diesel-tow
+PASS: Manual missing required parts never dismantles the working engine: timber-diesel-tow / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: timber-diesel-tow /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: timber-diesel-tow /
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: timber-diesel-tow /
+PASS: Unprepared different-block checkout is rejected: touring-six
+PASS: Reuse prepares a copied complete engine without automatic companion charges: touring-six
+PASS: Manual missing required parts never dismantles the working engine: touring-six / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: touring-six /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: touring-six /
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: touring-six /
+PASS: Unprepared different-block checkout is rejected: utility-pickup
+PASS: Reuse prepares a copied complete engine without automatic companion charges: utility-pickup
+PASS: Manual missing required parts never dismantles the working engine: utility-pickup / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: utility-pickup /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: utility-pickup /
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: utility-pickup /
+PASS: Unprepared different-block checkout is rejected: v8-muscle
+PASS: Reuse prepares a copied complete engine without automatic companion charges: v8-muscle
+PASS: Manual missing required parts never dismantles the working engine: v8-muscle / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: v8-muscle /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: v8-muscle /
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: v8-muscle /
+PASS: Block installation opens a valid Reuse/Manual/OEM draft before cart mutation
+PASS: Manual omission blocks staging and explains the missing required component
+PASS: Stat information returns to the retained manual component choices
+PASS: Block choices scroll within fixed actions at compact size
+PASS: Block preparation uses bounded shared 4K scaling
+PASS: Add plan stages the validated block without applying or saving it
+PASS: Prepared block participates in normal cumulative cart comparison and checkout
+PASS: One checkout installs the block inside the retained current engine
+PASS: Owned block Move uses the same preparation before staging
+PASS: Cancelling owned block preparation leaves the current engine intact
+PASS: OEM companions stage as one identified block plan
+PASS: Explicit companion edits become independent cart choices
+PASS: Removing a core clears only its automatic companions without applying the plan
+Checks: 507 / runtime errors: 0

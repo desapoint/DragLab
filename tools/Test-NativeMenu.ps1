@@ -1,4 +1,4 @@
-param([string]$FixtureName = 'native-menu-shell', [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly)
+param([string]$FixtureName = 'native-menu-shell', [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly)
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $taskFixture = [IO.Path]::GetFullPath((Join-Path $taskRoot ('reports/player-fixtures/' + $FixtureName)))
@@ -10,7 +10,8 @@ if ($InspectionOnly) { $taskArgs += '--draglab-inspection-only-verify' }
 if ($DealershipOnly) { $taskArgs += '--draglab-dealership-only-verify' }
 if ($TuningOnly) { $taskArgs += '--draglab-tuning-only-verify' }
 if ($ShineOnly) { $taskArgs += '--draglab-shine-only-verify' }
-if ($PartsOnly -or $PurchaseOnly -or $CartOnly -or $WarningsOnly -or $WorkshopOnly) { $taskArgs += '--draglab-parts-only-verify' }
+if ($PartsOnly -or $PurchaseOnly -or $CartOnly -or $WarningsOnly -or $WorkshopOnly -or $BlockOnly) { $taskArgs += '--draglab-parts-only-verify' }
+if ($BlockOnly) { $taskArgs += '--draglab-block-only-verify' }
 if ($WorkshopOnly) { $taskArgs += '--draglab-workshop-only-verify' }
 if ($WarningsOnly) { $taskArgs += '--draglab-warnings-only-verify' }
 if ($CartOnly) { $taskArgs += '--draglab-cart-only-verify' }
