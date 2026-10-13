@@ -1,0 +1,404 @@
+PASS: Equivalent new products appear once, retaining different specifications: city-three / 2199 definitions -> 1770 products
+PASS: Merged aliases have identical physical fitment: city-three
+PASS: Exact current and candidate snapshots are reused: city-three
+PASS: Fuel changes invalidate cached build mass without a revision bump: city-three
+PASS: Tune changes invalidate cached build data: city-three
+PASS: Wear invalidation agrees with a fresh authoritative inspection: city-three
+PASS: Incoming retained-part condition invalidates only its candidate: city-three
+PASS: Unchanged cart plans reuse their authoritative snapshot: city-three / 
+PASS: Cart installation edits invalidate planned snapshots: city-three
+PASS: Definition edits invalidate calculations and match a fresh inspection: city-three
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: city-three
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: city-three
+PASS: A repeated new offer has one card while every saved/catalog ID remains valid: city-three
+PASS: Grouping preserves the exact fitted ID for individual-member replacement: city-three
+PASS: Same-name new variants retain a separate offer when fitment differs: city-three
+PASS: Same-name new variants retain a separate offer when price differs: city-three
+PASS: Same-name new variants retain a separate offer when reputationRequired differs: city-three
+PASS: Same-name new variants retain a separate offer when tuning differs: city-three
+PASS: Same-name new variants retain a separate offer when power differs: city-three
+PASS: Same-name new variants retain a separate offer when wearEnergyJ differs: city-three
+PASS: Same-name new variants retain a separate offer when thermalLimitC differs: city-three
+PASS: Same-name new variants retain a separate offer when massKg differs: city-three
+PASS: Same-name new variants retain a separate offer when positionFromFrontAxleM differs: city-three
+PASS: Same-name new variants retain a separate offer when boreMm differs: city-three
+PASS: Same-name new variants retain a separate offer when fuelKind differs: city-three
+PASS: Same-name new variants retain a separate offer when turboSize differs: city-three
+PASS: Same-name new variants retain a separate offer when rpmLimit differs: city-three
+PASS: Same-name new variants retain a separate offer when torqueLimitNm differs: city-three
+PASS: Separate used identities remain separate even at equal wear/price; browsing never saves or changes ownership: city-three
+PASS: Planned equivalent hardware keeps its real ID as the grouped purchase representative: city-three
+PASS: Grouped offers still use authoritative exact-ID checkout/installation without rewriting aliases: city-three
+PASS: Equivalent new products appear once, retaining different specifications: juniper-club / 2199 definitions -> 1770 products
+PASS: Merged aliases have identical physical fitment: juniper-club
+PASS: Exact current and candidate snapshots are reused: juniper-club
+PASS: Fuel changes invalidate cached build mass without a revision bump: juniper-club
+PASS: Tune changes invalidate cached build data: juniper-club
+PASS: Wear invalidation agrees with a fresh authoritative inspection: juniper-club
+PASS: Incoming retained-part condition invalidates only its candidate: juniper-club
+PASS: Unchanged cart plans reuse their authoritative snapshot: juniper-club / 
+PASS: Cart installation edits invalidate planned snapshots: juniper-club
+PASS: Definition edits invalidate calculations and match a fresh inspection: juniper-club
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: juniper-club
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: juniper-club
+PASS: A repeated new offer has one card while every saved/catalog ID remains valid: juniper-club
+PASS: Grouping preserves the exact fitted ID for individual-member replacement: juniper-club
+PASS: Same-name new variants retain a separate offer when fitment differs: juniper-club
+PASS: Same-name new variants retain a separate offer when price differs: juniper-club
+PASS: Same-name new variants retain a separate offer when reputationRequired differs: juniper-club
+PASS: Same-name new variants retain a separate offer when tuning differs: juniper-club
+PASS: Same-name new variants retain a separate offer when power differs: juniper-club
+PASS: Same-name new variants retain a separate offer when wearEnergyJ differs: juniper-club
+PASS: Same-name new variants retain a separate offer when thermalLimitC differs: juniper-club
+PASS: Same-name new variants retain a separate offer when massKg differs: juniper-club
+PASS: Same-name new variants retain a separate offer when positionFromFrontAxleM differs: juniper-club
+PASS: Same-name new variants retain a separate offer when boreMm differs: juniper-club
+PASS: Same-name new variants retain a separate offer when fuelKind differs: juniper-club
+PASS: Same-name new variants retain a separate offer when turboSize differs: juniper-club
+PASS: Same-name new variants retain a separate offer when rpmLimit differs: juniper-club
+PASS: Same-name new variants retain a separate offer when torqueLimitNm differs: juniper-club
+PASS: Separate used identities remain separate even at equal wear/price; browsing never saves or changes ownership: juniper-club
+PASS: Planned equivalent hardware keeps its real ID as the grouped purchase representative: juniper-club
+PASS: Grouped offers still use authoritative exact-ID checkout/installation without rewriting aliases: juniper-club
+PASS: Equivalent new products appear once, retaining different specifications: juniper-economy / 2199 definitions -> 1770 products
+PASS: Merged aliases have identical physical fitment: juniper-economy
+PASS: Exact current and candidate snapshots are reused: juniper-economy
+PASS: Fuel changes invalidate cached build mass without a revision bump: juniper-economy
+PASS: Tune changes invalidate cached build data: juniper-economy
+PASS: Wear invalidation agrees with a fresh authoritative inspection: juniper-economy
+PASS: Incoming retained-part condition invalidates only its candidate: juniper-economy
+PASS: Unchanged cart plans reuse their authoritative snapshot: juniper-economy / 
+PASS: Cart installation edits invalidate planned snapshots: juniper-economy
+PASS: Definition edits invalidate calculations and match a fresh inspection: juniper-economy
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: juniper-economy
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: juniper-economy
+PASS: A repeated new offer has one card while every saved/catalog ID remains valid: juniper-economy
+PASS: Grouping preserves the exact fitted ID for individual-member replacement: juniper-economy
+PASS: Same-name new variants retain a separate offer when fitment differs: juniper-economy
+PASS: Same-name new variants retain a separate offer when price differs: juniper-economy
+PASS: Same-name new variants retain a separate offer when reputationRequired differs: juniper-economy
+PASS: Same-name new variants retain a separate offer when tuning differs: juniper-economy
+PASS: Same-name new variants retain a separate offer when power differs: juniper-economy
+PASS: Same-name new variants retain a separate offer when wearEnergyJ differs: juniper-economy
+PASS: Same-name new variants retain a separate offer when thermalLimitC differs: juniper-economy
+PASS: Same-name new variants retain a separate offer when massKg differs: juniper-economy
+PASS: Same-name new variants retain a separate offer when positionFromFrontAxleM differs: juniper-economy
+PASS: Same-name new variants retain a separate offer when boreMm differs: juniper-economy
+PASS: Same-name new variants retain a separate offer when fuelKind differs: juniper-economy
+PASS: Same-name new variants retain a separate offer when turboSize differs: juniper-economy
+PASS: Same-name new variants retain a separate offer when rpmLimit differs: juniper-economy
+PASS: Same-name new variants retain a separate offer when torqueLimitNm differs: juniper-economy
+PASS: Separate used identities remain separate even at equal wear/price; browsing never saves or changes ownership: juniper-economy
+PASS: Planned equivalent hardware keeps its real ID as the grouped purchase representative: juniper-economy
+PASS: Grouped offers still use authoritative exact-ID checkout/installation without rewriting aliases: juniper-economy
+PASS: Equivalent new products appear once, retaining different specifications: kestrel-track / 2199 definitions -> 1770 products
+PASS: Merged aliases have identical physical fitment: kestrel-track
+PASS: Exact current and candidate snapshots are reused: kestrel-track
+PASS: Fuel changes invalidate cached build mass without a revision bump: kestrel-track
+PASS: Tune changes invalidate cached build data: kestrel-track
+PASS: Wear invalidation agrees with a fresh authoritative inspection: kestrel-track
+PASS: Incoming retained-part condition invalidates only its candidate: kestrel-track
+PASS: Unchanged cart plans reuse their authoritative snapshot: kestrel-track / 
+PASS: Cart installation edits invalidate planned snapshots: kestrel-track
+PASS: Definition edits invalidate calculations and match a fresh inspection: kestrel-track
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: kestrel-track
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: kestrel-track
+PASS: A repeated new offer has one card while every saved/catalog ID remains valid: kestrel-track
+PASS: Grouping preserves the exact fitted ID for individual-member replacement: kestrel-track
+PASS: Same-name new variants retain a separate offer when fitment differs: kestrel-track
+PASS: Same-name new variants retain a separate offer when price differs: kestrel-track
+PASS: Same-name new variants retain a separate offer when reputationRequired differs: kestrel-track
+PASS: Same-name new variants retain a separate offer when tuning differs: kestrel-track
+PASS: Same-name new variants retain a separate offer when power differs: kestrel-track
+PASS: Same-name new variants retain a separate offer when wearEnergyJ differs: kestrel-track
+PASS: Same-name new variants retain a separate offer when thermalLimitC differs: kestrel-track
+PASS: Same-name new variants retain a separate offer when massKg differs: kestrel-track
+PASS: Same-name new variants retain a separate offer when positionFromFrontAxleM differs: kestrel-track
+PASS: Same-name new variants retain a separate offer when boreMm differs: kestrel-track
+PASS: Same-name new variants retain a separate offer when fuelKind differs: kestrel-track
+PASS: Same-name new variants retain a separate offer when turboSize differs: kestrel-track
+PASS: Same-name new variants retain a separate offer when rpmLimit differs: kestrel-track
+PASS: Same-name new variants retain a separate offer when torqueLimitNm differs: kestrel-track
+PASS: Separate used identities remain separate even at equal wear/price; browsing never saves or changes ownership: kestrel-track
+PASS: Planned equivalent hardware keeps its real ID as the grouped purchase representative: kestrel-track
+PASS: Grouped offers still use authoritative exact-ID checkout/installation without rewriting aliases: kestrel-track
+PASS: Equivalent new products appear once, retaining different specifications: rally-sedan / 2199 definitions -> 1770 products
+PASS: Merged aliases have identical physical fitment: rally-sedan
+PASS: Exact current and candidate snapshots are reused: rally-sedan
+PASS: Fuel changes invalidate cached build mass without a revision bump: rally-sedan
+PASS: Tune changes invalidate cached build data: rally-sedan
+PASS: Wear invalidation agrees with a fresh authoritative inspection: rally-sedan
+PASS: Incoming retained-part condition invalidates only its candidate: rally-sedan
+PASS: Unchanged cart plans reuse their authoritative snapshot: rally-sedan / 
+PASS: Cart installation edits invalidate planned snapshots: rally-sedan
+PASS: Definition edits invalidate calculations and match a fresh inspection: rally-sedan
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: rally-sedan
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: rally-sedan
+PASS: A repeated new offer has one card while every saved/catalog ID remains valid: rally-sedan
+PASS: Grouping preserves the exact fitted ID for individual-member replacement: rally-sedan
+PASS: Same-name new variants retain a separate offer when fitment differs: rally-sedan
+PASS: Same-name new variants retain a separate offer when price differs: rally-sedan
+PASS: Same-name new variants retain a separate offer when reputationRequired differs: rally-sedan
+PASS: Same-name new variants retain a separate offer when tuning differs: rally-sedan
+PASS: Same-name new variants retain a separate offer when power differs: rally-sedan
+PASS: Same-name new variants retain a separate offer when wearEnergyJ differs: rally-sedan
+PASS: Same-name new variants retain a separate offer when thermalLimitC differs: rally-sedan
+PASS: Same-name new variants retain a separate offer when massKg differs: rally-sedan
+PASS: Same-name new variants retain a separate offer when positionFromFrontAxleM differs: rally-sedan
+PASS: Same-name new variants retain a separate offer when boreMm differs: rally-sedan
+PASS: Same-name new variants retain a separate offer when fuelKind differs: rally-sedan
+PASS: Same-name new variants retain a separate offer when turboSize differs: rally-sedan
+PASS: Same-name new variants retain a separate offer when rpmLimit differs: rally-sedan
+PASS: Same-name new variants retain a separate offer when torqueLimitNm differs: rally-sedan
+PASS: Separate used identities remain separate even at equal wear/price; browsing never saves or changes ownership: rally-sedan
+PASS: Planned equivalent hardware keeps its real ID as the grouped purchase representative: rally-sedan
+PASS: Grouped offers still use authoritative exact-ID checkout/installation without rewriting aliases: rally-sedan
+PASS: Equivalent new products appear once, retaining different specifications: sport-coupe / 2199 definitions -> 1770 products
+PASS: Merged aliases have identical physical fitment: sport-coupe
+PASS: Exact current and candidate snapshots are reused: sport-coupe
+PASS: Fuel changes invalidate cached build mass without a revision bump: sport-coupe
+PASS: Tune changes invalidate cached build data: sport-coupe
+PASS: Wear invalidation agrees with a fresh authoritative inspection: sport-coupe
+PASS: Incoming retained-part condition invalidates only its candidate: sport-coupe
+PASS: Unchanged cart plans reuse their authoritative snapshot: sport-coupe / 
+PASS: Cart installation edits invalidate planned snapshots: sport-coupe
+PASS: Definition edits invalidate calculations and match a fresh inspection: sport-coupe
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: sport-coupe
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: sport-coupe
+PASS: A repeated new offer has one card while every saved/catalog ID remains valid: sport-coupe
+PASS: Grouping preserves the exact fitted ID for individual-member replacement: sport-coupe
+PASS: Same-name new variants retain a separate offer when fitment differs: sport-coupe
+PASS: Same-name new variants retain a separate offer when price differs: sport-coupe
+PASS: Same-name new variants retain a separate offer when reputationRequired differs: sport-coupe
+PASS: Same-name new variants retain a separate offer when tuning differs: sport-coupe
+PASS: Same-name new variants retain a separate offer when power differs: sport-coupe
+PASS: Same-name new variants retain a separate offer when wearEnergyJ differs: sport-coupe
+PASS: Same-name new variants retain a separate offer when thermalLimitC differs: sport-coupe
+PASS: Same-name new variants retain a separate offer when massKg differs: sport-coupe
+PASS: Same-name new variants retain a separate offer when positionFromFrontAxleM differs: sport-coupe
+PASS: Same-name new variants retain a separate offer when boreMm differs: sport-coupe
+PASS: Same-name new variants retain a separate offer when fuelKind differs: sport-coupe
+PASS: Same-name new variants retain a separate offer when turboSize differs: sport-coupe
+PASS: Same-name new variants retain a separate offer when rpmLimit differs: sport-coupe
+PASS: Same-name new variants retain a separate offer when torqueLimitNm differs: sport-coupe
+PASS: Separate used identities remain separate even at equal wear/price; browsing never saves or changes ownership: sport-coupe
+PASS: Planned equivalent hardware keeps its real ID as the grouped purchase representative: sport-coupe
+PASS: Grouped offers still use authoritative exact-ID checkout/installation without rewriting aliases: sport-coupe
+PASS: Equivalent new products appear once, retaining different specifications: starter-hatch / 2199 definitions -> 1770 products
+PASS: Merged aliases have identical physical fitment: starter-hatch
+PASS: Exact current and candidate snapshots are reused: starter-hatch
+PASS: Fuel changes invalidate cached build mass without a revision bump: starter-hatch
+PASS: Tune changes invalidate cached build data: starter-hatch
+PASS: Wear invalidation agrees with a fresh authoritative inspection: starter-hatch
+PASS: Incoming retained-part condition invalidates only its candidate: starter-hatch
+PASS: Unchanged cart plans reuse their authoritative snapshot: starter-hatch / 
+PASS: Cart installation edits invalidate planned snapshots: starter-hatch
+PASS: Definition edits invalidate calculations and match a fresh inspection: starter-hatch
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: starter-hatch
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: starter-hatch
+PASS: A repeated new offer has one card while every saved/catalog ID remains valid: starter-hatch
+PASS: Grouping preserves the exact fitted ID for individual-member replacement: starter-hatch
+PASS: Same-name new variants retain a separate offer when fitment differs: starter-hatch
+PASS: Same-name new variants retain a separate offer when price differs: starter-hatch
+PASS: Same-name new variants retain a separate offer when reputationRequired differs: starter-hatch
+PASS: Same-name new variants retain a separate offer when tuning differs: starter-hatch
+PASS: Same-name new variants retain a separate offer when power differs: starter-hatch
+PASS: Same-name new variants retain a separate offer when wearEnergyJ differs: starter-hatch
+PASS: Same-name new variants retain a separate offer when thermalLimitC differs: starter-hatch
+PASS: Same-name new variants retain a separate offer when massKg differs: starter-hatch
+PASS: Same-name new variants retain a separate offer when positionFromFrontAxleM differs: starter-hatch
+PASS: Same-name new variants retain a separate offer when boreMm differs: starter-hatch
+PASS: Same-name new variants retain a separate offer when fuelKind differs: starter-hatch
+PASS: Same-name new variants retain a separate offer when turboSize differs: starter-hatch
+PASS: Same-name new variants retain a separate offer when rpmLimit differs: starter-hatch
+PASS: Same-name new variants retain a separate offer when torqueLimitNm differs: starter-hatch
+PASS: Separate used identities remain separate even at equal wear/price; browsing never saves or changes ownership: starter-hatch
+PASS: Planned equivalent hardware keeps its real ID as the grouped purchase representative: starter-hatch
+PASS: Grouped offers still use authoritative exact-ID checkout/installation without rewriting aliases: starter-hatch
+PASS: Equivalent new products appear once, retaining different specifications: super-v8 / 2199 definitions -> 1770 products
+PASS: Merged aliases have identical physical fitment: super-v8
+PASS: Exact current and candidate snapshots are reused: super-v8
+PASS: Fuel changes invalidate cached build mass without a revision bump: super-v8
+PASS: Tune changes invalidate cached build data: super-v8
+PASS: Wear invalidation agrees with a fresh authoritative inspection: super-v8
+PASS: Incoming retained-part condition invalidates only its candidate: super-v8
+PASS: Unchanged cart plans reuse their authoritative snapshot: super-v8 / 
+PASS: Cart installation edits invalidate planned snapshots: super-v8
+PASS: Definition edits invalidate calculations and match a fresh inspection: super-v8
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: super-v8
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: super-v8
+PASS: A repeated new offer has one card while every saved/catalog ID remains valid: super-v8
+PASS: Grouping preserves the exact fitted ID for individual-member replacement: super-v8
+PASS: Same-name new variants retain a separate offer when fitment differs: super-v8
+PASS: Same-name new variants retain a separate offer when price differs: super-v8
+PASS: Same-name new variants retain a separate offer when reputationRequired differs: super-v8
+PASS: Same-name new variants retain a separate offer when tuning differs: super-v8
+PASS: Same-name new variants retain a separate offer when power differs: super-v8
+PASS: Same-name new variants retain a separate offer when wearEnergyJ differs: super-v8
+PASS: Same-name new variants retain a separate offer when thermalLimitC differs: super-v8
+PASS: Same-name new variants retain a separate offer when massKg differs: super-v8
+PASS: Same-name new variants retain a separate offer when positionFromFrontAxleM differs: super-v8
+PASS: Same-name new variants retain a separate offer when boreMm differs: super-v8
+PASS: Same-name new variants retain a separate offer when fuelKind differs: super-v8
+PASS: Same-name new variants retain a separate offer when turboSize differs: super-v8
+PASS: Same-name new variants retain a separate offer when rpmLimit differs: super-v8
+PASS: Same-name new variants retain a separate offer when torqueLimitNm differs: super-v8
+PASS: Separate used identities remain separate even at equal wear/price; browsing never saves or changes ownership: super-v8
+PASS: Planned equivalent hardware keeps its real ID as the grouped purchase representative: super-v8
+PASS: Grouped offers still use authoritative exact-ID checkout/installation without rewriting aliases: super-v8
+PASS: Equivalent new products appear once, retaining different specifications: timber-diesel / 2199 definitions -> 1770 products
+PASS: Merged aliases have identical physical fitment: timber-diesel
+PASS: Exact current and candidate snapshots are reused: timber-diesel
+PASS: Fuel changes invalidate cached build mass without a revision bump: timber-diesel
+PASS: Tune changes invalidate cached build data: timber-diesel
+PASS: Wear invalidation agrees with a fresh authoritative inspection: timber-diesel
+PASS: Incoming retained-part condition invalidates only its candidate: timber-diesel
+PASS: Unchanged cart plans reuse their authoritative snapshot: timber-diesel / 
+PASS: Cart installation edits invalidate planned snapshots: timber-diesel
+PASS: Definition edits invalidate calculations and match a fresh inspection: timber-diesel
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: timber-diesel
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: timber-diesel
+PASS: A repeated new offer has one card while every saved/catalog ID remains valid: timber-diesel
+PASS: Grouping preserves the exact fitted ID for individual-member replacement: timber-diesel
+PASS: Same-name new variants retain a separate offer when fitment differs: timber-diesel
+PASS: Same-name new variants retain a separate offer when price differs: timber-diesel
+PASS: Same-name new variants retain a separate offer when reputationRequired differs: timber-diesel
+PASS: Same-name new variants retain a separate offer when tuning differs: timber-diesel
+PASS: Same-name new variants retain a separate offer when power differs: timber-diesel
+PASS: Same-name new variants retain a separate offer when wearEnergyJ differs: timber-diesel
+PASS: Same-name new variants retain a separate offer when thermalLimitC differs: timber-diesel
+PASS: Same-name new variants retain a separate offer when massKg differs: timber-diesel
+PASS: Same-name new variants retain a separate offer when positionFromFrontAxleM differs: timber-diesel
+PASS: Same-name new variants retain a separate offer when boreMm differs: timber-diesel
+PASS: Same-name new variants retain a separate offer when fuelKind differs: timber-diesel
+PASS: Same-name new variants retain a separate offer when turboSize differs: timber-diesel
+PASS: Same-name new variants retain a separate offer when rpmLimit differs: timber-diesel
+PASS: Same-name new variants retain a separate offer when torqueLimitNm differs: timber-diesel
+PASS: Separate used identities remain separate even at equal wear/price; browsing never saves or changes ownership: timber-diesel
+PASS: Planned equivalent hardware keeps its real ID as the grouped purchase representative: timber-diesel
+PASS: Grouped offers still use authoritative exact-ID checkout/installation without rewriting aliases: timber-diesel
+PASS: Equivalent new products appear once, retaining different specifications: timber-diesel-tow / 2199 definitions -> 1770 products
+PASS: Merged aliases have identical physical fitment: timber-diesel-tow
+PASS: Exact current and candidate snapshots are reused: timber-diesel-tow
+PASS: Fuel changes invalidate cached build mass without a revision bump: timber-diesel-tow
+PASS: Tune changes invalidate cached build data: timber-diesel-tow
+PASS: Wear invalidation agrees with a fresh authoritative inspection: timber-diesel-tow
+PASS: Incoming retained-part condition invalidates only its candidate: timber-diesel-tow
+PASS: Unchanged cart plans reuse their authoritative snapshot: timber-diesel-tow / 
+PASS: Cart installation edits invalidate planned snapshots: timber-diesel-tow
+PASS: Definition edits invalidate calculations and match a fresh inspection: timber-diesel-tow
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: timber-diesel-tow
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: timber-diesel-tow
+PASS: A repeated new offer has one card while every saved/catalog ID remains valid: timber-diesel-tow
+PASS: Grouping preserves the exact fitted ID for individual-member replacement: timber-diesel-tow
+PASS: Same-name new variants retain a separate offer when fitment differs: timber-diesel-tow
+PASS: Same-name new variants retain a separate offer when price differs: timber-diesel-tow
+PASS: Same-name new variants retain a separate offer when reputationRequired differs: timber-diesel-tow
+PASS: Same-name new variants retain a separate offer when tuning differs: timber-diesel-tow
+PASS: Same-name new variants retain a separate offer when power differs: timber-diesel-tow
+PASS: Same-name new variants retain a separate offer when wearEnergyJ differs: timber-diesel-tow
+PASS: Same-name new variants retain a separate offer when thermalLimitC differs: timber-diesel-tow
+PASS: Same-name new variants retain a separate offer when massKg differs: timber-diesel-tow
+PASS: Same-name new variants retain a separate offer when positionFromFrontAxleM differs: timber-diesel-tow
+PASS: Same-name new variants retain a separate offer when boreMm differs: timber-diesel-tow
+PASS: Same-name new variants retain a separate offer when fuelKind differs: timber-diesel-tow
+PASS: Same-name new variants retain a separate offer when turboSize differs: timber-diesel-tow
+PASS: Same-name new variants retain a separate offer when rpmLimit differs: timber-diesel-tow
+PASS: Same-name new variants retain a separate offer when torqueLimitNm differs: timber-diesel-tow
+PASS: Separate used identities remain separate even at equal wear/price; browsing never saves or changes ownership: timber-diesel-tow
+PASS: Planned equivalent hardware keeps its real ID as the grouped purchase representative: timber-diesel-tow
+PASS: Grouped offers still use authoritative exact-ID checkout/installation without rewriting aliases: timber-diesel-tow
+PASS: Equivalent new products appear once, retaining different specifications: touring-six / 2199 definitions -> 1770 products
+PASS: Merged aliases have identical physical fitment: touring-six
+PASS: Exact current and candidate snapshots are reused: touring-six
+PASS: Fuel changes invalidate cached build mass without a revision bump: touring-six
+PASS: Tune changes invalidate cached build data: touring-six
+PASS: Wear invalidation agrees with a fresh authoritative inspection: touring-six
+PASS: Incoming retained-part condition invalidates only its candidate: touring-six
+PASS: Unchanged cart plans reuse their authoritative snapshot: touring-six / 
+PASS: Cart installation edits invalidate planned snapshots: touring-six
+PASS: Definition edits invalidate calculations and match a fresh inspection: touring-six
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: touring-six
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: touring-six
+PASS: A repeated new offer has one card while every saved/catalog ID remains valid: touring-six
+PASS: Grouping preserves the exact fitted ID for individual-member replacement: touring-six
+PASS: Same-name new variants retain a separate offer when fitment differs: touring-six
+PASS: Same-name new variants retain a separate offer when price differs: touring-six
+PASS: Same-name new variants retain a separate offer when reputationRequired differs: touring-six
+PASS: Same-name new variants retain a separate offer when tuning differs: touring-six
+PASS: Same-name new variants retain a separate offer when power differs: touring-six
+PASS: Same-name new variants retain a separate offer when wearEnergyJ differs: touring-six
+PASS: Same-name new variants retain a separate offer when thermalLimitC differs: touring-six
+PASS: Same-name new variants retain a separate offer when massKg differs: touring-six
+PASS: Same-name new variants retain a separate offer when positionFromFrontAxleM differs: touring-six
+PASS: Same-name new variants retain a separate offer when boreMm differs: touring-six
+PASS: Same-name new variants retain a separate offer when fuelKind differs: touring-six
+PASS: Same-name new variants retain a separate offer when turboSize differs: touring-six
+PASS: Same-name new variants retain a separate offer when rpmLimit differs: touring-six
+PASS: Same-name new variants retain a separate offer when torqueLimitNm differs: touring-six
+PASS: Separate used identities remain separate even at equal wear/price; browsing never saves or changes ownership: touring-six
+PASS: Planned equivalent hardware keeps its real ID as the grouped purchase representative: touring-six
+PASS: Grouped offers still use authoritative exact-ID checkout/installation without rewriting aliases: touring-six
+PASS: Equivalent new products appear once, retaining different specifications: utility-pickup / 2199 definitions -> 1770 products
+PASS: Merged aliases have identical physical fitment: utility-pickup
+PASS: Exact current and candidate snapshots are reused: utility-pickup
+PASS: Fuel changes invalidate cached build mass without a revision bump: utility-pickup
+PASS: Tune changes invalidate cached build data: utility-pickup
+PASS: Wear invalidation agrees with a fresh authoritative inspection: utility-pickup
+PASS: Incoming retained-part condition invalidates only its candidate: utility-pickup
+PASS: Unchanged cart plans reuse their authoritative snapshot: utility-pickup / 
+PASS: Cart installation edits invalidate planned snapshots: utility-pickup
+PASS: Definition edits invalidate calculations and match a fresh inspection: utility-pickup
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: utility-pickup
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: utility-pickup
+PASS: A repeated new offer has one card while every saved/catalog ID remains valid: utility-pickup
+PASS: Grouping preserves the exact fitted ID for individual-member replacement: utility-pickup
+PASS: Same-name new variants retain a separate offer when fitment differs: utility-pickup
+PASS: Same-name new variants retain a separate offer when price differs: utility-pickup
+PASS: Same-name new variants retain a separate offer when reputationRequired differs: utility-pickup
+PASS: Same-name new variants retain a separate offer when tuning differs: utility-pickup
+PASS: Same-name new variants retain a separate offer when power differs: utility-pickup
+PASS: Same-name new variants retain a separate offer when wearEnergyJ differs: utility-pickup
+PASS: Same-name new variants retain a separate offer when thermalLimitC differs: utility-pickup
+PASS: Same-name new variants retain a separate offer when massKg differs: utility-pickup
+PASS: Same-name new variants retain a separate offer when positionFromFrontAxleM differs: utility-pickup
+PASS: Same-name new variants retain a separate offer when boreMm differs: utility-pickup
+PASS: Same-name new variants retain a separate offer when fuelKind differs: utility-pickup
+PASS: Same-name new variants retain a separate offer when turboSize differs: utility-pickup
+PASS: Same-name new variants retain a separate offer when rpmLimit differs: utility-pickup
+PASS: Same-name new variants retain a separate offer when torqueLimitNm differs: utility-pickup
+PASS: Separate used identities remain separate even at equal wear/price; browsing never saves or changes ownership: utility-pickup
+PASS: Planned equivalent hardware keeps its real ID as the grouped purchase representative: utility-pickup
+PASS: Grouped offers still use authoritative exact-ID checkout/installation without rewriting aliases: utility-pickup
+PASS: Equivalent new products appear once, retaining different specifications: v8-muscle / 2199 definitions -> 1770 products
+PASS: Merged aliases have identical physical fitment: v8-muscle
+PASS: Exact current and candidate snapshots are reused: v8-muscle
+PASS: Fuel changes invalidate cached build mass without a revision bump: v8-muscle
+PASS: Tune changes invalidate cached build data: v8-muscle
+PASS: Wear invalidation agrees with a fresh authoritative inspection: v8-muscle
+PASS: Incoming retained-part condition invalidates only its candidate: v8-muscle
+PASS: Unchanged cart plans reuse their authoritative snapshot: v8-muscle / 
+PASS: Cart installation edits invalidate planned snapshots: v8-muscle
+PASS: Definition edits invalidate calculations and match a fresh inspection: v8-muscle
+PASS: Tire summaries prioritize actual grip and lifespan rather than torque strength: v8-muscle
+PASS: One tire can be bought and replaced while retaining other corners and the worn original: v8-muscle
+PASS: A repeated new offer has one card while every saved/catalog ID remains valid: v8-muscle
+PASS: Grouping preserves the exact fitted ID for individual-member replacement: v8-muscle
+PASS: Same-name new variants retain a separate offer when fitment differs: v8-muscle
+PASS: Same-name new variants retain a separate offer when price differs: v8-muscle
+PASS: Same-name new variants retain a separate offer when reputationRequired differs: v8-muscle
+PASS: Same-name new variants retain a separate offer when tuning differs: v8-muscle
+PASS: Same-name new variants retain a separate offer when power differs: v8-muscle
+PASS: Same-name new variants retain a separate offer when wearEnergyJ differs: v8-muscle
+PASS: Same-name new variants retain a separate offer when thermalLimitC differs: v8-muscle
+PASS: Same-name new variants retain a separate offer when massKg differs: v8-muscle
+PASS: Same-name new variants retain a separate offer when positionFromFrontAxleM differs: v8-muscle
+PASS: Same-name new variants retain a separate offer when boreMm differs: v8-muscle
+PASS: Same-name new variants retain a separate offer when fuelKind differs: v8-muscle
+PASS: Same-name new variants retain a separate offer when turboSize differs: v8-muscle
+PASS: Same-name new variants retain a separate offer when rpmLimit differs: v8-muscle
+PASS: Same-name new variants retain a separate offer when torqueLimitNm differs: v8-muscle
+PASS: Separate used identities remain separate even at equal wear/price; browsing never saves or changes ownership: v8-muscle
+PASS: Planned equivalent hardware keeps its real ID as the grouped purchase representative: v8-muscle
+PASS: Grouped offers still use authoritative exact-ID checkout/installation without rewriting aliases: v8-muscle
+Cars: 13; checks: 403; failures: 0

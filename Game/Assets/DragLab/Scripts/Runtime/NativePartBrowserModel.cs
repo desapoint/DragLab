@@ -91,10 +91,20 @@ namespace DragLab.Runtime
                 foreach(var u in profile.looseEngineElements)Add(u.element.id,u.definitionId,"Owned",null,u,true,SharedInventory.StorageOf(u.storageId),SafePrice(()=>salePrice(u.element.id,true),true));
             }
             if(page=="Shop"){
-                foreach(var d in profile.catalog.parts)Add("new:"+d.id,d.id,"New",null,null,Owns(d.id),"New",InventoryPricing.NewSet(d));
+                var fitted=new HashSet<string>(referenceMap.Values);
+                foreach(var product in profile.catalog.parts.GroupBy(NewProductKey,StringComparer.Ordinal)){
+                    var d=product.OrderBy(p=>fitted.Contains(p.id)?0:p.id.StartsWith(referenceCar.vehicleId+"/",StringComparison.Ordinal)?1:2).ThenBy(p=>p.id,StringComparer.Ordinal).First();
+                    Add("new:"+d.id,d.id,"New",null,null,product.Any(p=>Owns(p.id)),"New",InventoryPricing.NewSet(d));
+                    Entries[Entries.Count-1].SearchExtra=string.Join(" ",product.Select(p=>p.id));
+                }
                 foreach(var d in profile.inventory.dealer)Add("used:"+d.Id,d.DefinitionId,"Used",d.part,d.unit,Owns(d.DefinitionId),"Dealer",usedPrice(d));
             }
             foreach(var entry in Entries){Classify(entry);if(!entry.Ready&&cache!=null&&cache.HasComparisons)cache.Restore(NativePartPreviewCache.Key(referenceKey,entry),entry);}
+        }
+        internal static string NewProductKey(PartDefinition definition)
+        {
+            var specification=definition.Copy();specification.id="";
+            return JsonUtility.ToJson(specification);
         }
         static int? SafePrice(Func<int> get,bool available){if(!available)return null;try{return get();}catch(Exception){return null;}}
         void Add(string id,string definition,string source,PartInstance part,LooseEngineElement unit,bool owned,string location,int? price)
