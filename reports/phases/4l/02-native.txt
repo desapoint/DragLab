@@ -1,0 +1,68 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Native instruments open over the track without the full-screen menu/navigation
+PASS: Staged car shows neutral and its actual running idle
+PASS: Snapshot instruments display exact authoritative RPM, road speed and engaged gear
+PASS: Red band starts at the lowest safe hardware/spec redline, separately from shift/cut settings
+PASS: Analog scale has a partial-circle sweep and headroom above redline
+PASS: New RPM dial contains no suggested shift marker or target
+PASS: Changing RPM repaints the needle without rebuilding the fixed dial geometry
+PASS: Concurrent essential engine, driveline and brake warnings remain visible together
+PASS: Manual neutral remains neutral
+PASS: Manual gear display does not invent CVT stepped gears
+PASS: DCT neutral remains neutral
+PASS: DCT gear display does not invent CVT stepped gears
+PASS: Automatic neutral remains neutral
+PASS: Automatic gear display does not invent CVT stepped gears
+PASS: CVT neutral remains neutral
+PASS: CVT gear display does not invent CVT stepped gears
+PASS: H-pattern shift travels through the neutral crossgate using real handover progress
+PASS: Completed H-pattern shift settles into the correct gate
+PASS: Non-H hardware does not draw a manual H gate: Manual
+PASS: Non-H hardware does not draw a manual H gate: DCT
+PASS: Non-H hardware does not draw a manual H gate: Automatic
+PASS: Non-H hardware does not draw a manual H gate: CVT
+PASS: Dashboard has a shallow instrument-cluster rise rather than a rectangular top
+PASS: Dial and exact readout share applied KilometresPerHour units
+PASS: Dial and exact readout share applied MilesPerHour units
+PASS: Dial and exact readout share applied MetresPerSecond units
+PASS: The same gauge renderer accepts a semicircular scale without changing telemetry
+PASS: Left dials and right shifter stay separated at 1024
+PASS: Low dashboard stays bounded with the instrument cluster overflowing at 1024
+PASS: Left dials and right shifter stay separated at 1920
+PASS: Low dashboard stays bounded with the instrument cluster overflowing at 1920
+PASS: True 4K target uses sharp vector geometry and shared 2× logical scaling
+PASS: Rendering, themes/scales, units and resizing never change assets or save the profile
+PASS: F8 restores the original whole race interface
+PASS: F8 returns to the instruments on the same live race
+PASS: Held W revs the staged authoritative engine and updates the live dial
+PASS: E engages and launches from neutral with the new HUD
+PASS: Keyboard shifting preserves held throttle and rotating engine RPM
+PASS: Hidden legacy shift buttons have no invisible hit targets; held keyboard throttle remains live
+PASS: Pause hides new instruments and retains the existing pause workflow
+PASS: Resuming restores instruments without replacing the race session
+PASS: Leaving the race removes the instrument overlay
+PASS: Finishing a real authoritative pass hides instruments and preserves the existing results workflow
+Checks: 66 / runtime errors: 0

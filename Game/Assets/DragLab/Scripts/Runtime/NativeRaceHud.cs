@@ -14,7 +14,7 @@ namespace DragLab.Runtime
         UIDocument document;
         PanelSettings panel;
         VisualElement root, dials;
-        float pedalInset = -1;
+        internal RaceDashboard Dashboard { get; private set; }
         Label phase, warning;
         CarSimulation boundCar;
         SpeedUnit speedUnit;
@@ -31,13 +31,15 @@ namespace DragLab.Runtime
             game = owner;
             panel = Instantiate(Resources.Load<PanelSettings>("UI/NativePanel"));
             var host = new GameObject("Native race instruments"); host.transform.SetParent(transform);
+            panel.sortingOrder -= 1;
             document = host.AddComponent<UIDocument>(); document.panelSettings = panel;
             root = new VisualElement { name = "raceHud", pickingMode = PickingMode.Ignore };
             root.AddToClassList("shell"); root.AddToClassList("race-hud"); root.AddToClassList("hidden");
             root.styleSheets.Add(Resources.Load<StyleSheet>("UI/NativePalette"));
             root.styleSheets.Add(Resources.Load<StyleSheet>("UI/NativeRaceHud"));
+            Dashboard = new RaceDashboard(); root.Add(Dashboard);
             document.rootVisualElement.Add(root);
-            // The full-screen transparent tree must never intercept existing pedal hit tests.
+            // Only explicit visible controls can receive pointer input.
             document.rootVisualElement.pickingMode = PickingMode.Ignore;
             dials = new VisualElement { name = "raceDials", pickingMode = PickingMode.Ignore };
             dials.AddToClassList("race-dials"); root.Add(dials);
@@ -59,10 +61,6 @@ namespace DragLab.Runtime
             int width = panel.targetTexture == null ? Screen.width : panel.targetTexture.width;
             int height = panel.targetTexture == null ? Screen.height : panel.targetTexture.height;
             panel.scale = NativeMenuShell.DisplayScale(width, height);
-            // Legacy pedals use their own scale until their later reviewed migration.
-            float inset = 91 * RaceInputAdapter.Scale(width, height) / panel.scale + 16;
-            if (Math.Abs(inset - pedalInset) > .01f)
-            { pedalInset = inset; dials.style.bottom = inset; Gear.style.bottom = inset + 5; }
             root.EnableInClassList("compact", width / panel.scale < 1150 || height / panel.scale < 700);
             var car = game.Race.player;
             if (boundCar != car || speedUnit != SharedUnitSettings.Current.speed)
@@ -83,7 +81,7 @@ namespace DragLab.Runtime
             var state = car.state;
             Speed.SetValue(DisplayUnits.Speed(state.speed, speedUnit));
             Rpm.SetValue(state.rpm);
-            Gear.SetState(state.gear, car.transmission.type);
+            Gear.SetState(state.gear, car.transmission, car.spec.gears.Length, state.shiftRemaining, TransmissionDynamics.ShiftSeconds(car.transmission,car.spec,car.tune));
             string signal = game.Race.warmup ? "WARM-UP" : state.disqualified ? "RED LIGHT" : game.Race.time < 1.5 ? "STAGED" : game.Race.time < 2 ? "AMBER 1" : game.Race.time < 2.5 ? "AMBER 2" : game.Race.time < 3 ? "AMBER 3" : "GREEN";
             Set(phase, signal + "  ·  " + state.distance.ToString("F1") + " / " + game.Race.distance.ToString("F1") + " m");
             string faults = state.engineFailed ? "ENGINE FAILED" : state.stalled ? "STALLED · CLUTCH + ENTER" : "";
@@ -237,32 +235,4 @@ namespace DragLab.Runtime
         }
     }
 
-    internal sealed class RaceGearIndicator : GaugeInk
-    {
-        readonly Label gearLabel, typeLabel;
-        internal string Readout => gearLabel.text;
-        internal RaceGearIndicator()
-        {
-            name="raceShifter"; AddToClassList("race-shifter");
-            gearLabel=new Label {name="raceGear",pickingMode=PickingMode.Ignore};gearLabel.AddToClassList("shifter-gear");Add(gearLabel);
-            typeLabel=new Label {name="raceTransmission",pickingMode=PickingMode.Ignore};typeLabel.AddToClassList("shifter-type");Add(typeLabel);
-            generateVisualContent+=Draw;
-        }
-        internal void SetState(int gear, TransmissionType type)
-        {
-            string text=gear==0?"N":type==TransmissionType.CVT?"D":gear.ToString();
-            if(gearLabel.text!=text)gearLabel.text=text;
-            string label=type==TransmissionType.CVT?"CVT":type==TransmissionType.Automatic?"AUTO":type==TransmissionType.DCT?"DCT":"MANUAL";
-            if(typeLabel.text!=label)typeLabel.text=label;
-        }
-        void Draw(MeshGenerationContext context)
-        {
-            float w=contentRect.width;if(w<2)return;var p=context.painter2D;
-            Line(p,new Vector2(w*.5f,75),new Vector2(w*.5f,144),14,rim);
-            Circle(p,new Vector2(w*.5f,151),29,face);Circle(p,new Vector2(w*.5f,151),17,rim);
-            Line(p,new Vector2(w*.5f,79),new Vector2(w*.5f,146),8,face);
-            Circle(p,new Vector2(w*.5f,56),49,rim);Circle(p,new Vector2(w*.5f,56),46,face);
-            p.lineWidth=2;p.strokeColor=accent;p.BeginPath();p.Arc(new Vector2(w*.5f,56),46,Angle.Degrees(205),Angle.Degrees(335));p.Stroke();
-        }
-    }
 }

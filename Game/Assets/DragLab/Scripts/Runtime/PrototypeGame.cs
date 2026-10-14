@@ -208,7 +208,7 @@ namespace DragLab.Runtime
             if (race.phase == RacePhase.Finished)
             {
                 if(!awarded)FinishRace();
-                controls.Poll(!InterfaceComparison.IsReplacement(ComparisonRoute) || NativeRaceHud.Supports(ComparisonRoute)); controls.ConsumePause();
+                controls.Poll(!InterfaceComparison.IsReplacement(ComparisonRoute)); controls.ConsumePause();
                 accumulator += Math.Min(Time.unscaledDeltaTime, .1f);
                 while (accumulator >= DragMath.FixedStep)
                 {
@@ -218,7 +218,7 @@ namespace DragLab.Runtime
                 }
                 SaveLiveRunIfDue();RenderRace(); return;
             }
-            controls.Poll(!InterfaceComparison.IsReplacement(ComparisonRoute) || NativeRaceHud.Supports(ComparisonRoute));
+            controls.Poll(!InterfaceComparison.IsReplacement(ComparisonRoute));
             if (controls.ConsumePause()) { SetPaused(true); return; }
             accumulator += Math.Min(Time.unscaledDeltaTime, .1f);
             while (accumulator >= DragMath.FixedStep)
@@ -586,6 +586,7 @@ namespace DragLab.Runtime
                 if(PartButton("warmup-abort","Return to garage / keep fuel and wear"))pendingAction=ReturnToGarage;
                 GUILayout.EndArea();
             }
+            if (nativeGauges) return; // Driving bindings live in pause settings; hidden buttons have no hit targets.
             string[] labels = { "Gas / W or Space\n" + (held.throttle * 100).ToString("F0") + "%", "Clutch / Shift\n" + (held.clutch * 100).ToString("F0") + "%", "Shift down / Q", state.launched ? "Shift up / E" : "N → 1 / E\nLaunch at green", "Pause", "Brake / S\n" + (held.brake * 100).ToString("F0") + "%" };
             if(race.warmup){labels[RaceInputAdapter.UpControl]="Engage / shift up / E";labels[RaceInputAdapter.DownControl]="Downshift / neutral / Q";}
             if (cvt) { labels[RaceInputAdapter.DownControl] = "CVT / continuous ratio"; labels[RaceInputAdapter.UpControl] = state.launched ? "Drive / CVT" : "N → D / E\nLaunch at green"; }

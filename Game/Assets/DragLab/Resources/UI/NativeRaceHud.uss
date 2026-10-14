@@ -7,7 +7,7 @@
     --gauge-rim: #697078;
     --gauge-tick: #e0e4e7;
 }
-.race-dials { position: absolute; left: 22px; bottom: 110px; flex-direction: row; align-items: flex-end; }
+.race-dials { position: absolute; left: 22px; bottom: 22px; flex-direction: row; align-items: flex-end; }
 .analog-gauge { width: 226px; height: 226px; margin-right: 14px; }
 .rpm-gauge { width: 254px; height: 254px; }
 .gauge-layer { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
@@ -16,13 +16,16 @@
 .gauge-value { position: absolute; left: 25%; right: 25%; top: 63%; height: 36px; font-size: 30px; -unity-text-align: middle-center; }
 .gauge-unit { position: absolute; left: 15%; right: 15%; top: 79%; height: 22px; font-size: 14px; color: var(--racing-muted); -unity-text-align: middle-center; }
 .gauge-factor { position: absolute; left: 25%; right: 25%; top: 31%; height: 20px; font-size: 13px; color: var(--racing-muted); -unity-text-align: middle-center; }
-.race-shifter { position: absolute; left: auto; top: auto; right: 26px; bottom: 115px; width: 146px; height: 205px; }
-.shifter-gear { position: absolute; left: 0; right: 0; top: 10px; height: 92px; font-size: 57px; -unity-text-align: middle-center; }
-.shifter-type { position: absolute; left: 0; right: 0; bottom: 0; height: 24px; font-size: 16px; color: var(--racing-muted); -unity-text-align: middle-center; }
-.race-phase { position: absolute; top: 18px; left: 20%; right: 20%; height: 30px; font-size: 20px; -unity-text-align: middle-center; background-color: rgba(12,16,20,0.8); border-radius: 4px; }
-.race-warning { position: absolute; top: 50px; left: 20%; right: 20%; height: 28px; font-size: 19px; color: var(--racing-accent); -unity-text-align: middle-center; }
+.race-dashboard { position: absolute; top: auto; left: 0; right: 0; bottom: 0; height: 178px; }
+.race-shifter { position: absolute; left: auto; top: auto; right: 24px; bottom: 15px; width: 220px; height: 202px; }
+.shifter-gear { position: absolute; left: 0; right: 0; top: 20px; height: 128px; font-size: 76px; -unity-text-align: middle-center; }
+.h-pattern .shifter-gear, .sequential-selector .shifter-gear { right: auto; top: auto; width: 40px; height: 40px; font-size: 24px; }
+.shifter-type { position: absolute; left: 0; right: 0; bottom: 8px; height: 25px; font-size: 17px; color: var(--racing-muted); -unity-text-align: middle-center; }
+.gate-number { position: absolute; width: 30px; height: 20px; font-size: 15px; color: var(--racing-muted); -unity-text-align: middle-center; }
+.race-phase { position: absolute; bottom: 76px; left: 44%; right: 260px; height: 30px; font-size: 20px; -unity-text-align: middle-center; }
+.race-warning { position: absolute; bottom: 36px; left: 44%; right: 260px; min-height: 28px; font-size: 18px; white-space: normal; color: var(--racing-accent); -unity-text-align: middle-center; }
 .compact .analog-gauge { width: 190px; height: 190px; margin-right: 10px; }
 .compact .rpm-gauge { width: 214px; height: 214px; }
-.compact .race-dials { left: 16px; bottom: 108px; }
+.compact .race-dials { left: 16px; bottom: 22px; }
 .compact .gauge-number { font-size: 16px; }
 .compact .gauge-value { font-size: 27px; height: 31px; }

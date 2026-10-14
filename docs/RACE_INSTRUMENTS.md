@@ -1,5 +1,14 @@
 # Race instruments — approved direction (2026-10-14)
 
+## Dashboard and pause refinement (2026-10-14)
+
+- Replace the blank lower strip with a low, textured car dashboard. Use stable noise/grain, a shallow raised instrument-cluster hood on the left, and a restrained cropped steering-wheel hint. The gauges are expected to overflow above the dash; do not increase its height just to contain them.
+- Move race information into this lower zone. Reuse the native palette and sharp procedural geometry; do not turn the dash into a plain rectangle or a new per-screen control theme.
+- Render installed selector hardware: animate an H-pattern manual through the neutral crossgate, use a fore/aft selector for sequential manual, a framed numeric indicator for DCT, an automatic indicator for automatic, and N/D for CVT. Driving-assist mode must not change physical selector type. Drive animation from the actual engaged gear and shift handover, without changing shift timing or simulating an extra gearbox.
+- Hide the legacy pedal/shift buttons and key-hint row in the new driving interface and disable their invisible pointer targets. Keep legacy comparison available. Bindings belong in the pause settings/controls dialog.
+- Pause must reuse the shared modal surfaces, corner accents, close hover, buttons, scrollbars and sliders. Offer Resume, quick Sound, view Controls and Quit race; quitting needs explicit confirmation and must retain used resources/wear through the existing durable exit.
+- Race settings are contained in that dialog and deliberately limited. Do not open the full normal-menu Settings page, its tabs/save workflow, progression/reset or simulation/difficulty tuning. The initial limited editable choices are master/opponent audio only; controls are read-only. Audio changes remain local drafts until the explicit action in the dialog. Back/X/Escape discard unapplied audio, keep the race paused on child pages, and return to pause; only Resume/main-close resumes.
+
 This records the full requested direction; implementation is deliberately limited to the first speed/RPM/shifter checkpoint. Later gauges and variants require their own reviewed increment.
 
 - Start with analog road-speed and RPM gauges together on the left and a shifter-shaped engaged-gear display on the right. “Speed” on the shifter means the selected gear; road speed stays on its own gauge. Show N in neutral and D for a running CVT instead of invented stepped gears.

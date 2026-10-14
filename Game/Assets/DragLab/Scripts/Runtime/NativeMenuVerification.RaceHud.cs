@@ -47,6 +47,16 @@ namespace DragLab.Runtime
                 hud.Gear.SetState(0,kind); Check(hud.Gear.Readout == "N", kind + " neutral remains neutral");
                 hud.Gear.SetState(2,kind); Check(hud.Gear.Readout == (kind == TransmissionType.CVT ? "D" : "2"), kind + " gear display does not invent CVT stepped gears");
             }
+            hud.enabled=false;
+            var manual=new TransmissionSpec{type=TransmissionType.Manual,manualLayout=ManualGearboxLayout.HPattern};
+            hud.Gear.SetState(2,manual,6,0,1);hud.Gear.SetState(3,manual,6,.5,1);
+            Check(hud.Gear.HPattern&&Math.Abs(hud.Gear.Knob.y-92)<.01&&hud.Gear.Knob.x>hud.Gear.Gate(2).x&&hud.Gear.Knob.x<hud.Gear.Gate(3).x,"H-pattern shift travels through the neutral crossgate using real handover progress");
+            yield return Capture("race-dashboard-h-shift");
+            hud.Gear.SetState(3,manual,6,0,1);Check((hud.Gear.Knob-hud.Gear.Gate(3)).sqrMagnitude<.01,"Completed H-pattern shift settles into the correct gate");
+            foreach(var kind in new[]{TransmissionType.Manual,TransmissionType.DCT,TransmissionType.Automatic,TransmissionType.CVT})
+            {hud.Gear.SetState(2,new TransmissionSpec{type=kind,manualLayout=ManualGearboxLayout.Sequential},6,.1,.3);Check(!hud.Gear.HPattern,"Non-H hardware does not draw a manual H gate: "+kind);yield return Capture("race-dashboard-"+kind);}
+            hud.enabled=true;hud.Refresh();
+            Check(RaceDashboard.Top(260,1280)<RaceDashboard.Top(720,1280)-15,"Dashboard has a shallow instrument-cluster rise rather than a rectangular top");
             var preferences = SharedUnitSettings.Current; var originalUnit = preferences.speed;
             foreach (SpeedUnit unit in Enum.GetValues(typeof(SpeedUnit)))
             {
@@ -64,7 +74,7 @@ namespace DragLab.Runtime
                 Screen.SetResolution(width,width==1024?768:1080,false);yield return new WaitForSecondsRealtime(.4f);hud.Refresh();
                 Check(hud.Speed.worldBound.xMax < hud.Rpm.worldBound.xMin && hud.Rpm.worldBound.xMax < hud.Gear.worldBound.xMin, "Left dials and right shifter stay separated at " + width);
                 float pedalTop = (Screen.height - 91 * RaceInputAdapter.Scale(Screen.width,Screen.height)) / hud.Panel.scale;
-                Check(hud.Rpm.worldBound.yMax < pedalTop && hud.Gear.worldBound.yMax < pedalTop, "Instruments clear the existing pedal/control strip at " + width);
+                Check(hud.Dashboard.worldBound.yMax <= hud.Root.worldBound.yMax && hud.Rpm.worldBound.yMin < hud.Dashboard.worldBound.yMin && hud.Gear.worldBound.yMax <= hud.Root.worldBound.yMax, "Low dashboard stays bounded with the instrument cluster overflowing at " + width);
                 yield return Capture("race-gauges-"+width);
             }
             var target = new RenderTexture(3840,2160,24);target.Create();hud.Panel.targetTexture=target;hud.Refresh();yield return new WaitForSecondsRealtime(.3f);
@@ -84,7 +94,7 @@ namespace DragLab.Runtime
             yield return new WaitForSecondsRealtime(.05f);
             float scale=RaceInputAdapter.Scale(Screen.width,Screen.height);var rect=RaceInputAdapter.ControlRect(RaceInputAdapter.UpControl,Screen.width/scale,Screen.height/scale);
             int oldGear=game.Race.player.state.gear;input.MouseButtonAt((int)(rect.center.x*scale),(int)(rect.center.y*scale),true);yield return new WaitForSecondsRealtime(.1f);input.MouseButtonAt((int)(rect.center.x*scale),(int)(rect.center.y*scale),false);yield return new WaitForSecondsRealtime(.2f);
-            Check(game.Race.player.state.gear>oldGear && game.Race.player.state.throttle>.9,"Existing mouse shift hit tests still work with held keyboard throttle under transparent instruments");
+            Check(game.Race.player.state.gear==oldGear && game.Race.player.state.throttle>.9,"Hidden legacy shift buttons have no invisible hit targets; held keyboard throttle remains live");
             input.Key(0x57,false);yield return Capture("race-gauges-driving");
             yield return Key(input,0x1B);Check(!hud.Visible && game.ComparisonRoute=="Pause","Pause hides new instruments and retains the existing pause workflow");yield return Key(input,0x1B);Check(hud.Visible,"Resuming restores instruments without replacing the race session");
             game.ReturnToGarage();yield return null;Check(!hud.Visible,"Leaving the race removes the instrument overlay");

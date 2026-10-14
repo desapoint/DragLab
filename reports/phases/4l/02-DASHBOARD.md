@@ -1,0 +1,9 @@
+# 4L.2 — low dashboard and installed shifter hardware (2026-10-14)
+
+Requested checkpoint: a shallow grained-vinyl dashboard fills the lower zone with a smooth left cluster rise, subtle metal trim/seam, and a cropped steering-wheel rim. Existing vector gauges overflow above it; concise phase/distance and failure information sit on the dash. Stable procedural grain is generated once without touching gameplay RNG, and stationary dashboard geometry remains cached between layout/theme changes.
+
+The selector now follows actual transmission hardware, independently of player assists. H-pattern shifts travel out of their gate, through the neutral crossgate and into the destination according to the authoritative shift duration/remaining time; sequential manual has a fore/aft motion. DCT has a framed numeric indicator; automatic and CVT have their own truthful neutral/drive/gear display. No shift timing or physics is changed.
+
+The new HUD hides the old pedal/shift strip and keyboard instruction row. Its hidden rectangles no longer consume mouse/touch input; keyboard driving remains active. F8 retains the original interface. Shared pause/settings migration is the next explicitly authorized checkpoint in this same request; it is not claimed in this commit.
+
+Windows BuildPlayerOnly and packaged native **66 checks / 0 runtime errors** pass. [Evidence](02-native.txt). Checks include H-gate cross-travel/settling, separate sequential/DCT/automatic/CVT render modes, shallow dash contour, compact/1080p/true-4K bounds, hidden-pointer rejection with held keyboard gas, existing F8/pause and a complete practice pass. Normal and DCT rendered frames were inspected. Review dash height/texture, cluster overflow, the wheel hint and each selector, including the neutral crossgate. Existing optional gauge/shift-light work remains deferred. Technical completion is separate from visual acceptance.
