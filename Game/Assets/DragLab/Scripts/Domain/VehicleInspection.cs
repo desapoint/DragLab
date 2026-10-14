@@ -44,7 +44,7 @@ namespace DragLab.Domain.Mechanics
         public static string Validate(VehicleOffer offer)
         {
             if(offer.disclosureVersion!=1||!MechanicsSchema.Finite(offer.reportedCondition)||offer.reportedCondition<0||offer.reportedCondition>1||offer.historyNotes==null||offer.historyNotes.Count>16||offer.historyNotes.Any(n=>string.IsNullOrWhiteSpace(n)||n.Length>160||n.Any(char.IsControl)))return "Invalid vehicle disclosure/history.";
-            if(offer.firstStarter&&(!offer.used||!offer.inspected||!offer.engineRuns||!offer.drives||offer.parts.Any(p=>catalog.Find(p.definitionId).category==PartCategory.Tires?TireDynamics.AnyFailed(p.condition)||TireDynamics.LowestHealth(p.condition)<.9:p.condition.failed||p.condition.health<.9||p.condition.elements.Any(e=>e.fault!=ElementFault.None))))return "Invalid starter disclosure or condition.";
+            if(offer.firstStarter&&(!offer.used||!offer.inspected||!offer.engineRuns||!offer.drives||offer.parts.Any(p=>p.condition.tires!=null&&p.condition.tires.Length==4?TireDynamics.AnyFailed(p.condition)||TireDynamics.LowestHealth(p.condition)<.9:p.condition.failed||p.condition.health<.9||p.condition.elements.Any(e=>e.fault!=ElementFault.None))))return "Invalid starter disclosure or condition.";
             return null;
         }
     }
