@@ -26,9 +26,10 @@ namespace DragLab.Domain.Mechanics
         {
             var engine=AssemblyOperations.Stored(p,engineId);var d=p.catalog.Find(definition);
             if(d==null||!MechanicalCatalog.EngineSlot(d.category)||!p.catalog.Fits(p.catalog.Spec(engine.vehicleDefinitionId),d)||p.reputation<d.reputationRequired)throw new InvalidOperationException("Stored engine offer is incompatible or locked.");
-            int price=InventoryPricing.NewSet(d);if(price!=expectedPrice||p.cash<price)throw new InvalidOperationException("Price changed or insufficient cash.");
-            var item=new PartInstance{instanceId=MechanicsOwnership.NewId("part"),definitionId=d.id};p.parts.Add(item);p.cash-=price;AssemblyOperations.InstallPart(p,engineId,item.instanceId);
+            int count=Count(p,engine,d);int price=PartsMarket.Quote(p,d,count).cost;if(price!=expectedPrice||p.cash<price)throw new InvalidOperationException("Price changed or insufficient cash.");
+            var item=new PartInstance{instanceId=MechanicsOwnership.NewId("part"),definitionId=d.id};PartsMarket.Consume(p,d,count);p.parts.Add(item);p.cash-=price;AssemblyOperations.InstallPart(p,engineId,item.instanceId);
         }
+        public static int MissingPrice(PlayerProfile p,EngineAssemblyInstance engine){var ledger=new PartsMarket.Ledger(p);return Missing(p,engine).Sum(id=>{var d=p.catalog.Find(id);return ledger.Take(d,Count(p,engine,d),d.price).cost;});}
         public static PartInstance[] Parts(PlayerProfile p,EngineAssemblyInstance engine)
         {var bindings=string.IsNullOrEmpty(engine.parentVehicleId)?engine.slots:p.cars.Find(c=>c.instanceId==engine.parentVehicleId).installed.slots.Where(s=>MechanicalCatalog.EngineSlot(AssemblyOperations.Parse(s.slot))).ToList();return bindings.Select(s=>p.parts.Find(i=>i.instanceId==s.partInstanceId)).Where(i=>i!=null).ToArray();}
         public static string[] Missing(PlayerProfile p,EngineAssemblyInstance engine)

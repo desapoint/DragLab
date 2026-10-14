@@ -49,7 +49,7 @@ namespace DragLab.Runtime
         string BlockChoiceText(BlockPartChoice choice)
         {
             if(choice.Source=="Missing")return "Missing / no part";if(choice.Source=="Cart")return "Cart · "+game.Profile.catalog.Find(choice.Id)?.name;
-            if(choice.Source=="New"){var d=game.Profile.catalog.Find(choice.Id);return "New · "+d.name+" · "+InventoryUnits.Count(game.Profile,game.Profile.SelectedCar,d)+" units · "+DisplayUnits.Money(InventoryPricing.NewSet(d));}
+            if(choice.Source=="New"){var d=game.Profile.catalog.Find(choice.Id);return "New · "+d.name+" · "+InventoryUnits.Count(game.Profile,game.Profile.SelectedCar,d)+" units · "+DisplayUnits.Money(PartsMarket.Quote(game.Profile,d,InventoryUnits.Count(game.Profile,game.Profile.SelectedCar,d)).cost);}
             var part=game.Profile.parts.Find(i=>i.instanceId==choice.Id);return choice.Source+" · "+game.Profile.catalog.Find(part.definitionId).name+" · "+part.condition.health.ToString("P0")+(part.condition.failed?" · FAILED":"")+" · #"+part.instanceId.Substring(Math.Max(0,part.instanceId.Length-6));
         }
     }

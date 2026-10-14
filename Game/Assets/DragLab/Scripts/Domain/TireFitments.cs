@@ -10,12 +10,14 @@ namespace DragLab.Domain
         public static string DefinitionId(PartInstance pack,int corner)=>string.IsNullOrEmpty(pack.condition.tires[corner].definitionId)?pack.definitionId:pack.condition.tires[corner].definitionId;
         public static bool HasOverrides(PartInstance pack)=>pack!=null&&pack.condition.tires!=null&&pack.condition.tires.Length==4&&Enumerable.Range(0,4).Any(i=>DefinitionId(pack,i)!=pack.definitionId);
         static PartInstance Pack(PlayerProfile p,OwnedCar car,string definition){var b=car.installed.slots.Find(s=>s.slot=="Tires");var pack=b==null?null:p.parts.Find(i=>i.instanceId==b.partInstanceId);if(pack==null||pack.definitionId!=definition)throw new InvalidOperationException("Fitted tire assembly changed.");return pack;}
-        public static int ReplacementCost(PlayerProfile p,OwnedCar car,string definition)
+        public static int ReplacementCost(PlayerProfile p,OwnedCar car,string definition)=>ReplacementSupply(p,car,definition).cost;
+        public static SupplyQuote ReplacementSupply(PlayerProfile p,OwnedCar car,string definition)
         {
-            var pack=Pack(p,car,definition);if(!HasOverrides(pack))return p.catalog.Find(definition).price;
+            var pack=Pack(p,car,definition);if(!HasOverrides(pack))return PartsMarket.Quote(p,p.catalog.Find(definition),4);
             var ids=Enumerable.Range(0,4).Select(i=>DefinitionId(pack,i)).ToArray();
             foreach(var id in ids){var d=p.catalog.Find(id);if(d==null||!p.catalog.Fits(p.catalog.Spec(car.vehicleId),d)||p.reputation<d.reputationRequired)throw new InvalidOperationException("Same tire replacement unavailable; choose compatible alternatives in Shop.");}
-            return ids.Distinct().Count()==1?p.catalog.Find(ids[0]).price:ids.Sum(id=>InventoryPricing.NewUnit(p.catalog.Find(id),4));
+            if(ids.Distinct().Count()==1)return PartsMarket.Quote(p,p.catalog.Find(ids[0]),4);
+            var ledger=new PartsMarket.Ledger(p);var total=new SupplyQuote();foreach(string id in ids){var quote=ledger.Take(p.catalog.Find(id),1,InventoryPricing.NewUnit(p.catalog.Find(id),4));total.cost+=quote.cost;total.fee+=quote.fee;total.localUnits+=quote.localUnits;total.expressUnits+=quote.expressUnits;}return total;
         }
         public static void ReplaceSame(PlayerProfile p,OwnedCar car,string definition)
         {
@@ -24,7 +26,7 @@ namespace DragLab.Domain
             var ids=Enumerable.Range(0,4).Select(i=>DefinitionId(old,i)).ToArray();
             if(ids.Distinct().Count()==1){PartOperations.Buy(p,p.catalog,car.instanceId,ids[0],true);return;}
             var item=new PartInstance{instanceId=MechanicsOwnership.NewId("part"),definitionId=definition,condition=new ComponentCondition{tires=ids.Select(id=>new TireCondition{id=MechanicsOwnership.NewId("tire"),definitionId=id}).ToArray()}};
-            p.parts.Add(item);p.cash-=cost;MechanicsOwnership.Replace(p,car,item,p.catalog);
+            foreach(string id in ids)PartsMarket.Consume(p,p.catalog.Find(id),4,true);p.parts.Add(item);p.cash-=cost;MechanicsOwnership.Replace(p,car,item,p.catalog);
         }
         public static void Capture(VehicleSpec spec,IEnumerable<PartInstance> parts,MechanicalCatalog catalog)
         {

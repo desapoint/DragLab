@@ -10,11 +10,12 @@ namespace DragLab.Domain.Mechanics
         public static string Buy(PlayerProfile profile, MechanicalCatalog catalog, string vehicleId, string definitionId, bool install)
         {
             var car = Car(profile, vehicleId); var part = catalog.Find(definitionId);
-            if(part==null||profile.reputation<part.reputationRequired)throw new InvalidOperationException("Part offer requires REP "+(part==null?0:part.reputationRequired)+"; no preceding rank purchase is required.");
-            if (!catalog.Fits(catalog.Spec(car.vehicleId), part)) throw new InvalidOperationException("Incompatible purchase for selected vehicle.");
-            int price=InventoryPricing.NewSet(part);if (price < 0 || profile.cash < price) throw new InvalidOperationException("Insufficient cash.");
+            if(part==null||!PartsMarket.FitsAny(profile,part)||profile.reputation<part.reputationRequired)throw new InvalidOperationException("Part offer requires REP "+(part==null?0:part.reputationRequired)+"; no preceding rank purchase is required.");
+            if (install && !catalog.Fits(catalog.Spec(car.vehicleId), part)) throw new InvalidOperationException("Incompatible purchase for selected vehicle.");
+            int count=PartsMarket.Count(profile,car,part);int price=PartsMarket.Quote(profile,part,count).cost;if (price < 0 || profile.cash < price) throw new InvalidOperationException("Insufficient cash.");
             var item = new PartInstance { instanceId = MechanicsOwnership.NewId("part"), definitionId = part.id };
-            profile.parts.Add(item); profile.cash -= price;
+            EngineElements.Ensure(catalog.Fits(catalog.Spec(car.vehicleId),part)?InventoryUnits.Spec(profile,car,part):PartsMarket.Reference(profile,part),part,item);
+            PartsMarket.Consume(profile,part,count);profile.parts.Add(item); profile.cash -= price;
             if (install) MechanicsOwnership.Replace(profile, car, item, catalog);
             return item.instanceId;
         }
@@ -26,7 +27,7 @@ namespace DragLab.Domain.Mechanics
             var item = Item(profile, itemId);
             if (item.location != PartLocation.Inventory) throw new InvalidOperationException("Remove the installed part before selling it.");
             int sale=TireFitments.HasOverrides(item)?(int)Math.Floor(System.Linq.Enumerable.Range(0,4).Sum(i=>catalog.Find(TireFitments.DefinitionId(item,i)).price*.25*.45*item.condition.tires[i].health*(item.condition.tires[i].failed?.1:1))):WheelFitments.HasOverrides(item)?(int)Math.Floor(Enumerable.Range(0,4).Sum(i=>catalog.Find(WheelFitments.DefinitionId(item,i)).price*.25*.45*item.condition.elements[i].health*(item.condition.elements[i].Failed?.1:1))):SaleValue(catalog.Find(item.definitionId),item.condition);
-            profile.cash = checked(profile.cash + sale); profile.parts.Remove(item);
+            profile.cash = checked(profile.cash + sale); profile.parts.Remove(item);profile.inventory.dealer.Add(new DealerStock{part=item,paidPrice=sale});
         }
         public static void Transfer(PlayerProfile profile, MechanicalCatalog catalog, string donorVehicleId, string targetVehicleId, PartCategory category)
         {

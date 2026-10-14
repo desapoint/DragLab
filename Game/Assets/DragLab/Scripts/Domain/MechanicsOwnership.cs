@@ -13,16 +13,19 @@ namespace DragLab.Domain.Mechanics
     }
     public static class MechanicsOwnership
     {
-        public const int SaveVersion = 7;
+        public const int SaveVersion = 8;
         public static string NewId(string kind) { return kind + "-" + Guid.NewGuid().ToString("N"); }
         public static void Ensure(PlayerProfile profile, MechanicalCatalog catalog)
         {
+            bool migratePartsMarket=profile.saveVersion<SaveVersion;
+            if(profile.saveVersion>SaveVersion)throw new InvalidOperationException("Unsupported save version.");
             if (profile.mechanicsVersion > MechanicsSchema.Version) throw new InvalidOperationException("Unsupported mechanics version.");
             if (profile.parts == null) profile.parts = new List<PartInstance>();
             if (profile.engines == null) profile.engines = new List<EngineAssemblyInstance>();
             if (profile.runCheckpoints == null) profile.runCheckpoints = new List<RunCheckpoint>();
             // Older schemas never contained seller stock; JsonUtility may create an empty inline object for an absent field.
             if(profile.saveVersion<7&&profile.vehicleStock!=null&&profile.vehicleStock.seed==0&&profile.vehicleStock.generation==0&&profile.vehicleStock.purchases==0&&profile.vehicleStock.completedRuns==0&&(profile.vehicleStock.listings==null||profile.vehicleStock.listings.Count==0))profile.vehicleStock=null;
+            if(profile.driving==null)profile.driving=new DriverSettings();if(migratePartsMarket)profile.driving.guaranteedFittingParts=profile.driving.simulationDifficulty==SimulationDifficulty.Simulation?0:profile.driving.simulationDifficulty==SimulationDifficulty.Arcade?10:profile.difficulty==2?0:profile.difficulty==0?10:5;
             profile.catalog = catalog;
             CareerProgression.Ensure(profile);
             GarageBusiness.Ensure(profile);
@@ -112,6 +115,7 @@ namespace DragLab.Domain.Mechanics
             profile.selectedVehicleId = selected?.vehicleId ?? ""; profile.selectedOwnedVehicleId = selected?.instanceId ?? "";
             GarageBusiness.UpgradeLegacySnapshots(profile);
             VehicleListings.Ensure(profile,catalog);
+            PartsMarket.Ensure(profile,migratePartsMarket);
             string error = Validate(profile, catalog); if (error != null) throw new InvalidOperationException(error);
         }
         public static Dictionary<PartCategory, string> Definitions(PlayerProfile profile, OwnedCar car)
@@ -233,6 +237,8 @@ namespace DragLab.Domain.Mechanics
             foreach(var loose in profile.looseEngineElements)if(loose==null||loose.element==null||loose.element.Validate()!=null||catalog.Find(loose.definitionId)==null||loose.unitPrice<0||!unique(loose.element.id))return "Invalid loose engine element.";
             foreach(var part in profile.parts)foreach(var element in part.condition.elements??new EngineElement[0])if(!EngineElements.FaultAllowed(catalog.Find(part.definitionId).category,element)||!unique(element.id))return "Invalid/duplicate engine element identity or fault.";
             foreach(var part in profile.parts)foreach(var tire in part.condition.tires??new TireCondition[0])if(!string.IsNullOrEmpty(tire.id)&&!unique(tire.id))return "Duplicate tire identity.";
+            if(profile.driving==null||profile.driving.guaranteedFittingParts<0||profile.driving.guaranteedFittingParts>20)return "Invalid market guarantee difficulty.";
+            string marketError=PartsMarket.Validate(profile);if(marketError!=null)return marketError;
             string inventoryError=SharedInventory.Validate(profile,identities);if(inventoryError!=null)return inventoryError;
             foreach(var item in profile.parts)foreach(var tire in item.condition.tires??new TireCondition[0])if(!string.IsNullOrEmpty(tire.definitionId)){
                 var d=catalog.Find(tire.definitionId);if(d==null||d.category!=PartCategory.Tires)return "Invalid tire specification.";

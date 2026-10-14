@@ -103,6 +103,8 @@ namespace DragLab.Runtime
             var presetGroup=root.Q("presetGroup");
             Check(root.Q("drivingPresetRow").parent==presetGroup && root.Q("simulationDifficultyRow").parent==presetGroup && root.Q("shiftingRow").parent!=presetGroup,"Bulk driving/simulation presets share a distinct group separate from individual controls");
             Check(presetGroup.worldBound.yMax<root.Q("shiftingRow").worldBound.yMin && root.Q<Label>("presetHeading").text=="Presets" && root.Q<Label>("individualHeading").text=="Individual settings","Preset group and individual settings have separate concise visible labels and spacing");
+            int marketMinimum=game.settings.guaranteedFittingParts;string stockBefore=JsonUtility.ToJson(game.Profile.inventory);yield return RevealClick(input,"marketAvailability2");Check(shell.DraftDriver.guaranteedFittingParts==0&&game.settings.guaranteedFittingParts==marketMinimum&&stockBefore==JsonUtility.ToJson(game.Profile.inventory),"Hard market difficulty drafts zero guarantees without changing or rerolling live stock");
+            root.Q<Slider>("guaranteedFittingParts").value=7.7f;Check(shell.DraftDriver.guaranteedFittingParts==8&&root.Q<FloatField>("guaranteedFittingPartsValue").value==8,"Market guarantee slider and numeric input use whole offers");yield return Click(input,"revertSettings");Check(shell.DraftDriver.guaranteedFittingParts==marketMinimum&&!shell.SettingsDirty,"Revert restores the saved market rule without changing seller stock");
             yield return ControlStyleChecks(input);
             foreach(var field in typeof(DriverSettings).GetFields())
                 if(field.Name!="reactionSeconds" && field.Name!="soundVolume" && field.Name!="wearMultiplier" && field.Name!="optimalThermals")

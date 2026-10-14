@@ -1,0 +1,110 @@
+PASS fresh game starts without gifted hardware/car
+PASS three fixed used starters, no reputation restriction
+PASS fixed opening selection repeats exactly
+STARTER starter-hatch price=4012 reserve=688
+PASS starter-hatch budget leaves maintenance reserve
+PASS starter-hatch exact paid starter selects owned car
+PASS starter-hatch seller component identities/condition retained exactly
+PASS starter-hatch retained fuel/fluids/mileage
+PASS starter-hatch normal new/used market unlocked:  stock 20
+PASS starter-hatch save/reload retains listings and ownership
+PASS starter-hatch normalization never rerolls listings
+PASS starter-hatch worn starter survives a proper factory pass
+STARTER juniper-economy price=3952 reserve=748
+PASS juniper-economy budget leaves maintenance reserve
+PASS juniper-economy exact paid starter selects owned car
+PASS juniper-economy seller component identities/condition retained exactly
+PASS juniper-economy retained fuel/fluids/mileage
+PASS juniper-economy normal new/used market unlocked:  stock 20
+PASS juniper-economy save/reload retains listings and ownership
+PASS juniper-economy normalization never rerolls listings
+PASS juniper-economy worn starter survives a proper factory pass
+STARTER juniper-club price=3924 reserve=776
+PASS juniper-club budget leaves maintenance reserve
+PASS juniper-club exact paid starter selects owned car
+PASS juniper-club seller component identities/condition retained exactly
+PASS juniper-club retained fuel/fluids/mileage
+PASS juniper-club normal new/used market unlocked:  stock 20
+PASS juniper-club save/reload retains listings and ownership
+PASS juniper-club normalization never rerolls listings
+PASS juniper-club worn starter survives a proper factory pass
+PASS two runs advance refresh counter without swapping stock
+PASS third completed paid/free run refreshes stock
+PASS same persisted seed and run count reproduce refresh exactly
+PASS normal market contains new and used variants
+PASS new stock always has unused healthy components
+PASS used cars have individually varied part condition
+PASS city-three new premium applies once above MSRP/package floor
+PASS city-three used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS city-three prior ownership remains used even at low mileage; new premium is not condition based
+PASS city-three repeated prices cannot compound or mutate the listing
+PASS juniper-club new premium applies once above MSRP/package floor
+PASS juniper-club used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS juniper-club prior ownership remains used even at low mileage; new premium is not condition based
+PASS juniper-club repeated prices cannot compound or mutate the listing
+PASS juniper-economy new premium applies once above MSRP/package floor
+PASS juniper-economy used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS juniper-economy prior ownership remains used even at low mileage; new premium is not condition based
+PASS juniper-economy repeated prices cannot compound or mutate the listing
+PASS kestrel-track new premium applies once above MSRP/package floor
+PASS kestrel-track used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS kestrel-track prior ownership remains used even at low mileage; new premium is not condition based
+PASS kestrel-track repeated prices cannot compound or mutate the listing
+PASS rally-sedan new premium applies once above MSRP/package floor
+PASS rally-sedan used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS rally-sedan prior ownership remains used even at low mileage; new premium is not condition based
+PASS rally-sedan repeated prices cannot compound or mutate the listing
+PASS sport-coupe new premium applies once above MSRP/package floor
+PASS sport-coupe used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS sport-coupe prior ownership remains used even at low mileage; new premium is not condition based
+PASS sport-coupe repeated prices cannot compound or mutate the listing
+PASS starter-hatch new premium applies once above MSRP/package floor
+PASS starter-hatch used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS starter-hatch prior ownership remains used even at low mileage; new premium is not condition based
+PASS starter-hatch repeated prices cannot compound or mutate the listing
+PASS super-v8 new premium applies once above MSRP/package floor
+PASS super-v8 used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS super-v8 prior ownership remains used even at low mileage; new premium is not condition based
+PASS super-v8 repeated prices cannot compound or mutate the listing
+PASS timber-diesel new premium applies once above MSRP/package floor
+PASS timber-diesel used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS timber-diesel prior ownership remains used even at low mileage; new premium is not condition based
+PASS timber-diesel repeated prices cannot compound or mutate the listing
+PASS timber-diesel-tow new premium applies once above MSRP/package floor
+PASS timber-diesel-tow used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS timber-diesel-tow prior ownership remains used even at low mileage; new premium is not condition based
+PASS timber-diesel-tow repeated prices cannot compound or mutate the listing
+PASS touring-six new premium applies once above MSRP/package floor
+PASS touring-six used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS touring-six prior ownership remains used even at low mileage; new premium is not condition based
+PASS touring-six repeated prices cannot compound or mutate the listing
+PASS utility-pickup new premium applies once above MSRP/package floor
+PASS utility-pickup used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS utility-pickup prior ownership remains used even at low mileage; new premium is not condition based
+PASS utility-pickup repeated prices cannot compound or mutate the listing
+PASS v8-muscle new premium applies once above MSRP/package floor
+PASS v8-muscle used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS v8-muscle prior ownership remains used even at low mileage; new premium is not condition based
+PASS v8-muscle repeated prices cannot compound or mutate the listing
+PASS Old new-stock saves gain MSRP metadata without resetting the market
+PASS Price migration preserves owned assets, used stock, saved asks and seller identities
+PASS Price metadata migration is idempotent
+PASS Existing saved new offer displays/quotes the higher current-policy price
+PASS Repriced old new-stock purchase settles against its original identity:
+PASS Repriced checkout charges once and retains the exact zero-mile package
+PASS Replacement new stock has stable premium pricing and valid ownership
+PASS Changing the new premium invalidates an old quote without charging
+PASS Invalid new-car premium rejected: NaN
+PASS Invalid new-car premium rejected: +Infini
+PASS Invalid new-car premium rejected: -0,1
+PASS Invalid new-car premium rejected: 11
+PASS Legacy absent-stock migration preserves existing owned condition and cash
+PASS Modern corrupt stock is rejected instead of silently rerolled
+PASS Same used model can offer different seeded deals across stock generations
+PASS changed listing cannot authorize an old payment
+PASS rejected purchase changes no assets/cash
+PASS used listing consumed once
+PASS sold listing cannot duplicate its components
+PASS reset returns to fixed starter selection while clearing progression
+PASS reset preserves driving preferences
+TOTAL 106

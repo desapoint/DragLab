@@ -23,6 +23,7 @@ namespace DragLab.Domain.Mechanics
     {
         public List<InventoryContainer> storage = new List<InventoryContainer>();
         public List<DealerStock> dealer = new List<DealerStock>();
+        public PartsStockState market;
     }
     public sealed class InventoryEntry
     {

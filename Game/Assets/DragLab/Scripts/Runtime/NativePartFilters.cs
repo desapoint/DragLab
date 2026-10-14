@@ -24,7 +24,7 @@ namespace DragLab.Runtime
             OpenDialog("Filter parts",null,new[]{new DialogAction("Reset",()=>OpenPartFilters(new NativePartQuery())),new DialogAction("Cancel",CloseDialog),new DialogAction("Apply",()=>{if(!Validate())return;partQueries[game.PartsPage+"/"+partsSection]=query;if(partsPlanned!=planned){partsPlanned=planned;partsStateKey=null;}CloseDialog();ApplyPartQuery();})},populate:content=>{
                 QueryChoices(content,"partReference","Compatibility / performance reference",new[]{"Current build","Planned build"},()=>planned?"Planned build":"Current build",v=>planned=v=="Planned build");
                 QueryChoices(content,"partCompatibility","Compatibility",new[]{"All","Compatible","Requires supporting changes","Incompatible","Unavailable"},()=>query.Compatibility,v=>query.Compatibility=v,2);
-                QueryChoices(content,"partAvailability","Availability",new[]{"All","Owned","Affordable","Unaffordable"},()=>query.Availability,v=>query.Availability=v);
+                QueryChoices(content,"partAvailability","Availability",new[]{"All","Owned","Affordable","Unaffordable","In stock","Express"},()=>query.Availability,v=>query.Availability=v);
                 if(game.PartsPage=="Shop")QueryChoices(content,"partCondition","Shop stock",new[]{"All","New","Used"},()=>query.Condition,v=>query.Condition=v);
                 if(game.PartsPage=="Inventory"){
                     var group=new VisualElement();group.AddToClassList("owned-query-group");content.Add(group);group.Add(new Label("Location"));

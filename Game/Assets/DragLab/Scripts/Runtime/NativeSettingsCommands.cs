@@ -11,6 +11,7 @@ namespace DragLab.Runtime
         {
             error = null;
             if (screen != "Settings" || pendingAction != null) { error = "Settings are no longer open."; return false; }
+            if(driver.guaranteedFittingParts<0||driver.guaranteedFittingParts>20){error="Market guarantee must be 0–20 offers.";return false;}
             if (ai < 0 || ai > 2 || float.IsNaN(driver.clutchReleaseSeconds) || float.IsInfinity(driver.clutchReleaseSeconds) || driver.clutchReleaseSeconds < .02f || driver.clutchReleaseSeconds > .6f)
             { error = "Clutch release must be 0.02–0.60 seconds."; return false; }
             foreach (var field in typeof(DriverSettings).GetFields())

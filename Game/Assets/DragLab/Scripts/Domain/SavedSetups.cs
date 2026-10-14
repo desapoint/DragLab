@@ -24,7 +24,7 @@ namespace DragLab.Domain.Mechanics
     {
         public long revision;
         public string carId, setupId;
-        public int cost;
+        public int cost, deliveryFee;
         public readonly List<SetupPlanLine> lines = new List<SetupPlanLine>();
         public readonly List<string> errors = new List<string>(), warnings = new List<string>();
         public Tune tune;
@@ -97,6 +97,10 @@ namespace DragLab.Domain.Mechanics
                 if(!string.IsNullOrEmpty(car.garageJobId))plan.errors.Add("Claim or cancel the assigned garage job first.");
                 if (p.runCheckpoints.Any(r => !r.settled)) plan.errors.Add("Close the active run first.");
             }
+            var supply=new PartsMarket.Ledger(p);plan.cost=0;
+            foreach(var line in plan.lines.Where(l=>l.purchase)){var d=p.catalog.Find(line.definitionId);var quote=supply.Take(d,InventoryUnits.Count(p,car,d),d.price);line.cost=quote.cost;plan.cost=checked(plan.cost+quote.cost);plan.deliveryFee=checked(plan.deliveryFee+quote.fee);}
+            foreach(var line in plan.tires.Where(l=>l.purchase)){var d=p.catalog.Find(line.definitionId);var quote=supply.Take(d,1,InventoryPricing.NewUnit(d,4));line.cost=quote.cost;plan.cost=checked(plan.cost+quote.cost);plan.deliveryFee=checked(plan.deliveryFee+quote.fee);}
+            if(plan.deliveryFee>0)plan.warnings.Add("Express delivery included: "+DisplayUnits.Money(plan.deliveryFee)+" (5–10% on out-of-stock parts).");
             if (p.cash < plan.cost) plan.errors.Add("Insufficient cash: need " + DisplayUnits.Money(plan.cost) + ". No parts or tune will change.");
             return plan;
         }

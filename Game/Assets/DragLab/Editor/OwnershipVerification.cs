@@ -12,6 +12,7 @@ namespace DragLab.Editor
 {
     public static class OwnershipVerification
     {
+        public static void RunStandalone(){Debug.Log("OWNERSHIP PASS "+Run(Directory.GetParent(Application.dataPath).Parent.FullName));}
         public static int Run(string root)
         {
             int count = 0; var log = new StringBuilder();
@@ -38,9 +39,11 @@ namespace DragLab.Editor
             check(!MechanicsTransactions.Try(profile, catalog, profile.revision + 1, p => p.cash += 999, p => true, out committed, out error), "Stale transaction revision rejected.");
             check(!MechanicsTransactions.Try(profile, catalog, profile.revision, p => p.parts.Add(p.parts[0].Copy()), p => true, out committed, out error), "Duplicate instance transaction rejected.");
             check(MechanicsTransactions.Try(profile, catalog, profile.revision, p => p.cash -= 1, p => true, out committed, out error) && committed.revision == profile.revision + 1 && profile.cash == 12345, "Successful transaction publishes only validated candidate.");
+            var inherited=item.condition.Copy();inherited.elements[0].definitionId="";var nullable=item.condition.Copy();nullable.elements[0].definitionId=null;
+            check(EngineElements.CanAdvance(nullable,inherited)&&EngineElements.CanAdvance(inherited,nullable),"Absent and empty per-member specification both inherit the pack across JSON round trips.");inherited.elements[0].definitionId="not-the-same-specification";check(!EngineElements.CanAdvance(nullable,inherited),"A real per-member specification change is still rejected by checkpoint validation.");
             var checkpoint = new RunCheckpoint { runId = "fixture-run", ownedVehicleId = profile.cars[1].instanceId, tick = 120, settled = true };
             var condition = item.Copy(); condition.condition.health = .4f; condition.condition.runningSeconds = 1; checkpoint.components.Add(condition);
-            check(MechanicsTransactions.Try(profile, catalog, profile.revision, p => MechanicsTransactions.ApplyCheckpoint(p, checkpoint), p => true, out committed, out error), "Owned run checkpoint commits condition once.");
+            check(MechanicsTransactions.Try(profile, catalog, profile.revision, p => MechanicsTransactions.ApplyCheckpoint(p, checkpoint), p => true, out committed, out error), "Owned run checkpoint commits condition once: "+error);
             check(!MechanicsTransactions.Try(committed, catalog, committed.revision, p => MechanicsTransactions.ApplyCheckpoint(p, checkpoint), p => true, out _, out error), "Settled checkpoint cannot repeat.");
             checkpoint.runId = "heal-attempt"; checkpoint.components[0].condition.health = 1;
             check(!MechanicsTransactions.Try(committed, catalog, committed.revision, p => MechanicsTransactions.ApplyCheckpoint(p, checkpoint), p => true, out _, out error), "Checkpoint cannot heal or rewind condition.");

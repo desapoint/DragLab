@@ -48,6 +48,7 @@ namespace DragLab.Runtime
             var footer=new VisualElement{name="cartFooter"};footer.AddToClassList("cart-footer");cartPage.Add(footer);
             var totals=new VisualElement{name="cartTotals"};totals.AddToClassList("cart-totals");footer.Add(totals);
             foreach(string id in new[]{"Purchases","Credits","Total","Balance"}){var cell=new VisualElement();cell.AddToClassList("cart-total-cell");totals.Add(cell);cell.Add(new Label(id=="Balance"?"Balance after":id));var value=new Label{name="cart"+id};value.AddToClassList("cart-total-value");cell.Add(value);}
+            var deliveryNote=new Label{name="cartDelivery",enableRichText=false};deliveryNote.AddToClassList("car-warning");deliveryNote.AddToClassList("hidden");footer.Add(deliveryNote);
             cartError=new Label{name="cartError",enableRichText=false};cartError.AddToClassList("car-critical");footer.Add(cartError);
             var actions=new VisualElement{name="cartActions"};actions.AddToClassList("car-details-actions");footer.Add(actions);
             cartClear=new Button(()=>OpenDialog("Clear cart?",null,new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Clear",()=>{game.ClearNativeCart();CloseDialog();partsStateKey=null;cartPageKey=null;RefreshNativeCart("Parts");},true)})){name="cartClear",text="Clear",focusable=false,tabIndex=-1};cartClear.AddToClassList("action-button");actions.Add(cartClear);AddSurface(cartClear,RacingSurface.Kind.SecondaryAction);
@@ -99,6 +100,7 @@ namespace DragLab.Runtime
                     CartButton(controls,"cartEdit:"+id,"Edit",()=>EditCartPurchase(line)).Insert(1,new FilledMenuIcon("Pencil"));}
                 CartButton(controls,"cartRemove:"+id,"Remove",()=>{game.RemoveNativeCartLine(line);partsStateKey=null;cartPageKey=null;});
             }
+            var note=root.Q<Label>("cartDelivery");note.AddToClassList("hidden");if(game.CartCount>0)try{int delivery=PartCart.DeliveryFee(p,car.instanceId,game.CartLines);if(delivery>0){note.text="Express delivery included · "+DisplayUnits.Money(delivery)+" (5–10% on missing stock)";note.RemoveFromClassList("hidden");}}catch(InvalidOperationException){}
             cartEmpty.EnableInClassList("hidden",game.CartCount>0);cartClear.SetEnabled(game.CartCount>0);
             root.Q<Label>("cartPurchases").text=DisplayUnits.Money(purchases);root.Q<Label>("cartCredits").text=DisplayUnits.Money(credits);
             root.Q<Label>("cartTotal").text=problem==null?DisplayUnits.Money(total):"Unavailable";root.Q<Label>("cartBalance").text=problem==null?DisplayUnits.Money((long)p.cash-total):"—";

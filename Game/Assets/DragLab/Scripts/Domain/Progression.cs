@@ -206,6 +206,7 @@ namespace DragLab.Domain
             if(!Enum.IsDefined(typeof(ServiceAssist),driving.serviceAssist))driving.serviceAssist=ServiceAssist.Manual;
             if (!Enum.IsDefined(typeof(SimulationDifficulty), driving.simulationDifficulty)) driving.simulationDifficulty = SimulationDifficulty.Custom;
             driving.wearMultiplier = float.IsNaN(driving.wearMultiplier) || float.IsInfinity(driving.wearMultiplier) ? 1 : (float)DragMath.Clamp(driving.wearMultiplier, 0, 1000);
+            driving.guaranteedFittingParts=Math.Max(0,Math.Min(20,driving.guaranteedFittingParts));
             driving.reactionSeconds = .18;
             driving.clutchReleaseSeconds = (float)DragMath.Clamp(driving.clutchReleaseSeconds, .02, .6);
             driving.soundVolume = (float)DragMath.Clamp(driving.soundVolume, 0, 1);

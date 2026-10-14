@@ -151,7 +151,8 @@ namespace DragLab.Runtime
                         if(coolant)draft.coolantLitres=quantity.value;else draft.litres=quantity.value;
                     }
                     var preview=PaidEconomy.Preview(game.Profile,game.Profile.catalog,game.Costs,game.PricingPolicy,draft,DateTime.UtcNow.Ticks);
-                    price=preview.cost;cost.text="Total " + DisplayUnits.Money(price)+" · Cash " + DisplayUnits.Money(game.Profile.cash);
+                    string delivery="";if(draft.kind==PaymentKind.Part){var d=game.Profile.catalog.Find(draft.targetId);var target=game.Profile.cars.Find(c=>c.instanceId==draft.carId);var supply=draft.preserveTireFitments&&draft.install&&d.category==PartCategory.Tires?TireFitments.ReplacementSupply(game.Profile,target,d.id):PartsMarket.Quote(game.Profile,d,InventoryUnits.Count(game.Profile,target,d));if(supply.fee>0)delivery="\nExpress delivery included · "+DisplayUnits.Money(supply.fee)+" (5–10%)";}
+                    price=preview.cost;cost.text="Total " + DisplayUnits.Money(price)+" · Cash " + DisplayUnits.Money(game.Profile.cash)+delivery;
                     bool enough=game.Profile.cash>=price;error.text=enough?"":"Need " + DisplayUnits.Money((price-game.Profile.cash))+" more";
                     confirm.SetEnabled(enough && (quantity==null || quantity.value>0));
                 }catch(Exception invalid) {price=-1;error.text=invalid.Message;confirm.SetEnabled(false);}

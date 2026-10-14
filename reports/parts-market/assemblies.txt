@@ -1,0 +1,214 @@
+Model draglab-variety-v18 / player schema 8
+PASS: Keep/dispose preview partitions actual descendants: city-three
+PASS: Detach preserves chassis/fuel and blocks missing engine: city-three
+PASS: Stored engine retains liquids and individual faults: city-three
+PASS: Ensure never refills, reattaches or recreates detached descendants: city-three
+PASS: Partial stored engine reports actual missing pistons: city-three
+PASS: Incomplete engine can attach without fabricating missing parts: city-three
+PASS: Stored reassembly keeps exact used part: city-three
+PASS: Transfer changes mounts only, retains engine liquids and target wheel tune: city-three
+PASS: Exclusive ownership validates after complete/partial transfer: city-three
+PASS: Sold setup item produces nonmutating missing purchase quote: city-three
+PASS: Invalid operation rejected without granting hardware.
+PASS: Missing-part apply buys new identity and restores working setup atomically: city-three
+PASS: Tune-only setup restores adjustments without hardware purchase: city-three
+PASS: Setup catalog survives JSON reload without identity changes: city-three
+PASS: Keep/dispose preview partitions actual descendants: juniper-club
+PASS: Detach preserves chassis/fuel and blocks missing engine: juniper-club
+PASS: Stored engine retains liquids and individual faults: juniper-club
+PASS: Ensure never refills, reattaches or recreates detached descendants: juniper-club
+PASS: Partial stored engine reports actual missing pistons: juniper-club
+PASS: Incomplete engine can attach without fabricating missing parts: juniper-club
+PASS: Stored reassembly keeps exact used part: juniper-club
+PASS: Transfer changes mounts only, retains engine liquids and target wheel tune: juniper-club
+PASS: Exclusive ownership validates after complete/partial transfer: juniper-club
+PASS: Sold setup item produces nonmutating missing purchase quote: juniper-club
+PASS: Invalid operation rejected without granting hardware.
+PASS: Missing-part apply buys new identity and restores working setup atomically: juniper-club
+PASS: Tune-only setup restores adjustments without hardware purchase: juniper-club
+PASS: Setup catalog survives JSON reload without identity changes: juniper-club
+PASS: Keep/dispose preview partitions actual descendants: juniper-economy
+PASS: Detach preserves chassis/fuel and blocks missing engine: juniper-economy
+PASS: Stored engine retains liquids and individual faults: juniper-economy
+PASS: Ensure never refills, reattaches or recreates detached descendants: juniper-economy
+PASS: Partial stored engine reports actual missing pistons: juniper-economy
+PASS: Incomplete engine can attach without fabricating missing parts: juniper-economy
+PASS: Stored reassembly keeps exact used part: juniper-economy
+PASS: Transfer changes mounts only, retains engine liquids and target wheel tune: juniper-economy
+PASS: Exclusive ownership validates after complete/partial transfer: juniper-economy
+PASS: Sold setup item produces nonmutating missing purchase quote: juniper-economy
+PASS: Invalid operation rejected without granting hardware.
+PASS: Missing-part apply buys new identity and restores working setup atomically: juniper-economy
+PASS: Tune-only setup restores adjustments without hardware purchase: juniper-economy
+PASS: Setup catalog survives JSON reload without identity changes: juniper-economy
+PASS: Keep/dispose preview partitions actual descendants: kestrel-track
+PASS: Detach preserves chassis/fuel and blocks missing engine: kestrel-track
+PASS: Stored engine retains liquids and individual faults: kestrel-track
+PASS: Ensure never refills, reattaches or recreates detached descendants: kestrel-track
+PASS: Partial stored engine reports actual missing pistons: kestrel-track
+PASS: Incomplete engine can attach without fabricating missing parts: kestrel-track
+PASS: Stored reassembly keeps exact used part: kestrel-track
+PASS: Transfer changes mounts only, retains engine liquids and target wheel tune: kestrel-track
+PASS: Exclusive ownership validates after complete/partial transfer: kestrel-track
+PASS: Sold setup item produces nonmutating missing purchase quote: kestrel-track
+PASS: Invalid operation rejected without granting hardware.
+PASS: Missing-part apply buys new identity and restores working setup atomically: kestrel-track
+PASS: Tune-only setup restores adjustments without hardware purchase: kestrel-track
+PASS: Setup catalog survives JSON reload without identity changes: kestrel-track
+PASS: Keep/dispose preview partitions actual descendants: rally-sedan
+PASS: Detach preserves chassis/fuel and blocks missing engine: rally-sedan
+PASS: Stored engine retains liquids and individual faults: rally-sedan
+PASS: Ensure never refills, reattaches or recreates detached descendants: rally-sedan
+PASS: Partial stored engine reports actual missing pistons: rally-sedan
+PASS: Incomplete engine can attach without fabricating missing parts: rally-sedan
+PASS: Stored reassembly keeps exact used part: rally-sedan
+PASS: Transfer changes mounts only, retains engine liquids and target wheel tune: rally-sedan
+PASS: Exclusive ownership validates after complete/partial transfer: rally-sedan
+PASS: Sold setup item produces nonmutating missing purchase quote: rally-sedan
+PASS: Invalid operation rejected without granting hardware.
+PASS: Missing-part apply buys new identity and restores working setup atomically: rally-sedan
+PASS: Tune-only setup restores adjustments without hardware purchase: rally-sedan
+PASS: Setup catalog survives JSON reload without identity changes: rally-sedan
+PASS: Keep/dispose preview partitions actual descendants: sport-coupe
+PASS: Detach preserves chassis/fuel and blocks missing engine: sport-coupe
+PASS: Stored engine retains liquids and individual faults: sport-coupe
+PASS: Ensure never refills, reattaches or recreates detached descendants: sport-coupe
+PASS: Partial stored engine reports actual missing pistons: sport-coupe
+PASS: Incomplete engine can attach without fabricating missing parts: sport-coupe
+PASS: Stored reassembly keeps exact used part: sport-coupe
+PASS: Transfer changes mounts only, retains engine liquids and target wheel tune: sport-coupe
+PASS: Exclusive ownership validates after complete/partial transfer: sport-coupe
+PASS: Sold setup item produces nonmutating missing purchase quote: sport-coupe
+PASS: Invalid operation rejected without granting hardware.
+PASS: Missing-part apply buys new identity and restores working setup atomically: sport-coupe
+PASS: Tune-only setup restores adjustments without hardware purchase: sport-coupe
+PASS: Setup catalog survives JSON reload without identity changes: sport-coupe
+PASS: Keep/dispose preview partitions actual descendants: starter-hatch
+PASS: Detach preserves chassis/fuel and blocks missing engine: starter-hatch
+PASS: Stored engine retains liquids and individual faults: starter-hatch
+PASS: Ensure never refills, reattaches or recreates detached descendants: starter-hatch
+PASS: Partial stored engine reports actual missing pistons: starter-hatch
+PASS: Incomplete engine can attach without fabricating missing parts: starter-hatch
+PASS: Stored reassembly keeps exact used part: starter-hatch
+PASS: Transfer changes mounts only, retains engine liquids and target wheel tune: starter-hatch
+PASS: Exclusive ownership validates after complete/partial transfer: starter-hatch
+PASS: Sold setup item produces nonmutating missing purchase quote: starter-hatch
+PASS: Invalid operation rejected without granting hardware.
+PASS: Missing-part apply buys new identity and restores working setup atomically: starter-hatch
+PASS: Tune-only setup restores adjustments without hardware purchase: starter-hatch
+PASS: Setup catalog survives JSON reload without identity changes: starter-hatch
+PASS: Keep/dispose preview partitions actual descendants: super-v8
+PASS: Detach preserves chassis/fuel and blocks missing engine: super-v8
+PASS: Stored engine retains liquids and individual faults: super-v8
+PASS: Ensure never refills, reattaches or recreates detached descendants: super-v8
+PASS: Partial stored engine reports actual missing pistons: super-v8
+PASS: Incomplete engine can attach without fabricating missing parts: super-v8
+PASS: Stored reassembly keeps exact used part: super-v8
+PASS: Transfer changes mounts only, retains engine liquids and target wheel tune: super-v8
+PASS: Exclusive ownership validates after complete/partial transfer: super-v8
+PASS: Sold setup item produces nonmutating missing purchase quote: super-v8
+PASS: Invalid operation rejected without granting hardware.
+PASS: Missing-part apply buys new identity and restores working setup atomically: super-v8
+PASS: Tune-only setup restores adjustments without hardware purchase: super-v8
+PASS: Setup catalog survives JSON reload without identity changes: super-v8
+PASS: Keep/dispose preview partitions actual descendants: timber-diesel
+PASS: Detach preserves chassis/fuel and blocks missing engine: timber-diesel
+PASS: Stored engine retains liquids and individual faults: timber-diesel
+PASS: Ensure never refills, reattaches or recreates detached descendants: timber-diesel
+PASS: Partial stored engine reports actual missing pistons: timber-diesel
+PASS: Incomplete engine can attach without fabricating missing parts: timber-diesel
+PASS: Stored reassembly keeps exact used part: timber-diesel
+PASS: Transfer changes mounts only, retains engine liquids and target wheel tune: timber-diesel
+PASS: Exclusive ownership validates after complete/partial transfer: timber-diesel
+PASS: Sold setup item produces nonmutating missing purchase quote: timber-diesel
+PASS: Invalid operation rejected without granting hardware.
+PASS: Missing-part apply buys new identity and restores working setup atomically: timber-diesel
+PASS: Tune-only setup restores adjustments without hardware purchase: timber-diesel
+PASS: Setup catalog survives JSON reload without identity changes: timber-diesel
+PASS: Keep/dispose preview partitions actual descendants: timber-diesel-tow
+PASS: Detach preserves chassis/fuel and blocks missing engine: timber-diesel-tow
+PASS: Stored engine retains liquids and individual faults: timber-diesel-tow
+PASS: Ensure never refills, reattaches or recreates detached descendants: timber-diesel-tow
+PASS: Partial stored engine reports actual missing pistons: timber-diesel-tow
+PASS: Incomplete engine can attach without fabricating missing parts: timber-diesel-tow
+PASS: Stored reassembly keeps exact used part: timber-diesel-tow
+PASS: Transfer changes mounts only, retains engine liquids and target wheel tune: timber-diesel-tow
+PASS: Exclusive ownership validates after complete/partial transfer: timber-diesel-tow
+PASS: Sold setup item produces nonmutating missing purchase quote: timber-diesel-tow
+PASS: Invalid operation rejected without granting hardware.
+PASS: Missing-part apply buys new identity and restores working setup atomically: timber-diesel-tow
+PASS: Tune-only setup restores adjustments without hardware purchase: timber-diesel-tow
+PASS: Setup catalog survives JSON reload without identity changes: timber-diesel-tow
+PASS: Keep/dispose preview partitions actual descendants: touring-six
+PASS: Detach preserves chassis/fuel and blocks missing engine: touring-six
+PASS: Stored engine retains liquids and individual faults: touring-six
+PASS: Ensure never refills, reattaches or recreates detached descendants: touring-six
+PASS: Partial stored engine reports actual missing pistons: touring-six
+PASS: Incomplete engine can attach without fabricating missing parts: touring-six
+PASS: Stored reassembly keeps exact used part: touring-six
+PASS: Transfer changes mounts only, retains engine liquids and target wheel tune: touring-six
+PASS: Exclusive ownership validates after complete/partial transfer: touring-six
+PASS: Sold setup item produces nonmutating missing purchase quote: touring-six
+PASS: Invalid operation rejected without granting hardware.
+PASS: Missing-part apply buys new identity and restores working setup atomically: touring-six
+PASS: Tune-only setup restores adjustments without hardware purchase: touring-six
+PASS: Setup catalog survives JSON reload without identity changes: touring-six
+PASS: Keep/dispose preview partitions actual descendants: utility-pickup
+PASS: Detach preserves chassis/fuel and blocks missing engine: utility-pickup
+PASS: Stored engine retains liquids and individual faults: utility-pickup
+PASS: Ensure never refills, reattaches or recreates detached descendants: utility-pickup
+PASS: Partial stored engine reports actual missing pistons: utility-pickup
+PASS: Incomplete engine can attach without fabricating missing parts: utility-pickup
+PASS: Stored reassembly keeps exact used part: utility-pickup
+PASS: Transfer changes mounts only, retains engine liquids and target wheel tune: utility-pickup
+PASS: Exclusive ownership validates after complete/partial transfer: utility-pickup
+PASS: Sold setup item produces nonmutating missing purchase quote: utility-pickup
+PASS: Invalid operation rejected without granting hardware.
+PASS: Missing-part apply buys new identity and restores working setup atomically: utility-pickup
+PASS: Tune-only setup restores adjustments without hardware purchase: utility-pickup
+PASS: Setup catalog survives JSON reload without identity changes: utility-pickup
+PASS: Keep/dispose preview partitions actual descendants: v8-muscle
+PASS: Detach preserves chassis/fuel and blocks missing engine: v8-muscle
+PASS: Stored engine retains liquids and individual faults: v8-muscle
+PASS: Ensure never refills, reattaches or recreates detached descendants: v8-muscle
+PASS: Partial stored engine reports actual missing pistons: v8-muscle
+PASS: Incomplete engine can attach without fabricating missing parts: v8-muscle
+PASS: Stored reassembly keeps exact used part: v8-muscle
+PASS: Transfer changes mounts only, retains engine liquids and target wheel tune: v8-muscle
+PASS: Exclusive ownership validates after complete/partial transfer: v8-muscle
+PASS: Sold setup item produces nonmutating missing purchase quote: v8-muscle
+PASS: Invalid operation rejected without granting hardware.
+PASS: Missing-part apply buys new identity and restores working setup atomically: v8-muscle
+PASS: Tune-only setup restores adjustments without hardware purchase: v8-muscle
+PASS: Setup catalog survives JSON reload without identity changes: v8-muscle
+PASS: Preview chooses compatible usable worn loose item instead of purchasing.
+PASS: Loading a blueprint never heals reused hardware.
+PASS: Invalid operation rejected without granting hardware.
+PASS: Failed persistence rolls back engine, fluids and descendants.
+PASS: Unaffordable setup changes no cash/hardware/tune.
+PASS: Invalid operation rejected without granting hardware.
+PASS: Invalid operation rejected without granting hardware.
+PASS: Invalid operation rejected without granting hardware.
+PASS: Invalid operation rejected without granting hardware.
+PASS: Blueprint cannot grant a free engine core to an empty chassis.
+PASS: Tune-only preview permits adjustments on retained incomplete chassis, with run warnings.
+PASS: Tune-only apply on missing engine never fabricates hardware/resources.
+PASS: Invalid operation rejected without granting hardware.
+PASS: Invalid operation rejected without granting hardware.
+PASS: Invalid operation rejected without granting hardware.
+PASS: Invalid operation rejected without granting hardware.
+PASS: Optional omission restores stripped build while retaining interior in inventory.
+PASS: Individually disabled piston pack is not silently selected as a usable match.
+PASS: Failed setup persistence rolls back purchased cash, old failed originals and tuning.
+PASS: Invalid operation rejected without granting hardware.
+PASS: Replacing failed matches retains the original damaged pack for service/inventory.
+PASS: Missing EFI controller dependency blocks blueprint apply rather than bypassing hardware.
+PASS: EFI engine blueprint includes its associated chassis ECU purchase.
+PASS: All missing EFI dependencies apply together as a working engine.
+PASS: New loose V8 kits contain the purchased eight members even when another owned chassis has no engine.
+PASS: The eight purchased V8 members remain fitted on their real owner.
+PASS: Four-cylinder injector packs remain shared, but cannot silently supply three/six-cylinder engines.
+PASS: Schema-3 migration persists original IDs and retains original backup.
+PASS: Disk reload retains stored engine, partial chassis and named tune.
+PASS: Progress reset clears configuration blueprints and stored assemblies.
+Checks: 212 / prior ownership/inventory: 39 / total 251

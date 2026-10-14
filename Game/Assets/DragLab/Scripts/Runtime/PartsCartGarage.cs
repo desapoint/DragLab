@@ -27,7 +27,7 @@ namespace DragLab.Runtime
         internal void AddToCart(string id,bool install=false)
         {
             EnsureCartOwner();var d=profile.catalog.Find(id);
-            if(d==null||!profile.catalog.Fits(Selected.spec,d)||profile.reputation<d.reputationRequired){notice="Offer incompatible or locked by reputation.";return;}
+            if(d==null||install&&!profile.catalog.Fits(Selected.spec,d)||profile.reputation<d.reputationRequired){notice="Offer incompatible or locked by reputation.";return;}
             string role=unitOffers.TryGetValue(id,out var chosen)?chosen:null;var action=role==null?CartAction.NewSet:CartAction.NewUnits;
             var line=cart.Find(l=>l.definitionId==id&&l.action==action&&l.role==role);
             if(line==null){if(cart.Count>=100){notice="Cart holds at most 100 distinct lines.";return;}line=new PartCartLine{definitionId=id,action=action,role=role};cart.Add(line);}else line.quantity=Math.Min(99,line.quantity+1);
@@ -61,7 +61,7 @@ namespace DragLab.Runtime
                 if(line.action==CartAction.NewSet)detail+=" / complete set of "+OfferCount(d)+" units";
                 if(IsUnit(line))detail+=" / individual "+line.role;
                 if(line.action==CartAction.Move)detail+=" → "+line.destination+" / "+line.destinationId;
-                long price=line.action==CartAction.NewSet?(long)InventoryPricing.NewSet(d)*line.quantity:line.action==CartAction.NewUnits?(long)InventoryPricing.NewUnit(d,OfferCount(d))*line.quantity:line.action==CartAction.BuyUsed?InventoryPricing.BuyUsed(profile.inventory.dealer.First(s=>s.Id==line.assetId),PricingPolicy):cartSalePrices.TryGetValue(line,out var sale)?sale:0;
+                long price=NativeCartLinePrice(line);
                 detail+=" / "+(price<0?"credit " + DisplayUnits.Money((-price)):"charge " + DisplayUnits.Money(price));
                 GUILayout.Label(line.action+" / "+detail+" × "+line.quantity,partProse);GUILayout.BeginHorizontal();
                 if(line.action==CartAction.NewSet||line.action==CartAction.NewUnits||line.action==CartAction.BuyUsed){bool install=GUILayout.Toggle(line.install,IsUnit(line)?"Install selected units":"Install one complete set");if(install!=line.install)SetCartInstallation(line,install);}
@@ -78,10 +78,10 @@ namespace DragLab.Runtime
         }
         void OfferModeGUI(PartDefinition d)
         {
-            var pack=OfferTemplate(d);int count=OfferCount(d);GUILayout.Label("Price buys "+(count>1?"a complete set of "+count+" units":"one component")+" / " + DisplayUnits.Money(InventoryPricing.NewSet(d)));
+            var pack=OfferTemplate(d);int count=OfferCount(d);GUILayout.Label("Price buys "+(count>1?"a complete set of "+count+" units":"one component")+" / " + DisplayUnits.Money(PartsMarket.Quote(profile,d,count).cost));
             var roles=d.category==PartCategory.Tires?new[]{"tire"}:pack.condition.elements.Select(e=>e.role).Distinct().ToArray();if(roles.Length==0)return;
             GUILayout.BeginHorizontal();if(PartButton("offer-set:"+d.id,unitOffers.ContainsKey(d.id)?"Complete set / default":"[Complete set / "+count+" units]"))unitOffers.Remove(d.id);
-            foreach(var role in roles){bool selected=unitOffers.TryGetValue(d.id,out var value)&&value==role;if(PartButton("offer-unit:"+d.id+":"+role,(selected?"[Individual ":"Individual ")+role+" / " + DisplayUnits.Money(InventoryPricing.NewUnit(d,count))+(selected?"]":"")))unitOffers[d.id]=role;}GUILayout.EndHorizontal();
+            foreach(var role in roles){bool selected=unitOffers.TryGetValue(d.id,out var value)&&value==role;if(PartButton("offer-unit:"+d.id+":"+role,(selected?"[Individual ":"Individual ")+role+" / " + DisplayUnits.Money(PartsMarket.Quote(profile,d,count,true).cost)+(selected?"]":"")))unitOffers[d.id]=role;}GUILayout.EndHorizontal();
         }
         InventoryContainer[] MoveTargets()=>SharedInventory.Containers(profile).Where(c=>c.kind==InventoryKind.Storage||c.kind==InventoryKind.Car||c.kind==InventoryKind.Engine&&profile.engines.Any(e=>e.instanceId==c.id&&string.IsNullOrEmpty(e.parentVehicleId))).ToArray();
         void InventoryDestinationGUI(){GUILayout.BeginHorizontal();foreach(var s in profile.inventory.storage)if(PartButton("inventory-storage:"+s.id,(inventoryStorage==s.id?"[":"")+s.name+(inventoryStorage==s.id?"]":"")))inventoryStorage=s.id;GUILayout.EndHorizontal();var choices=MoveTargets();moveDestination=Math.Min(moveDestination,choices.Length-1);GUILayout.Label("Move / install destination");for(int i=0;i<choices.Length;i++){if(i%2==0)GUILayout.BeginHorizontal();if(PartButton("move-target:"+choices[i].kind+":"+choices[i].id,(moveDestination==i?"[":"")+choices[i].name+(moveDestination==i?"]":"")))moveDestination=i;if(i%2==1||i==choices.Length-1)GUILayout.EndHorizontal();}}

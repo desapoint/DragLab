@@ -44,7 +44,7 @@ namespace DragLab.Domain.Mechanics
             var car=p.cars.Find(c=>c.instanceId==carId);EngineRebuilds.RequireAvailable(car);
             var lines=source.ToArray();if(lines.Length==0||lines.Length>100)throw new InvalidOperationException("Cart needs 1–100 distinct offers.");
             policy=policy??ValuationPolicy.Defaults();if(now==0)now=DateTime.UtcNow.Ticks;
-            var ids=new HashSet<string>();var assets=new HashSet<string>();var positions=new HashSet<string>();var slots=new HashSet<PartCategory>();int total=0;PlayerProfile movePreview=null;
+            var ids=new HashSet<string>();var assets=new HashSet<string>();var positions=new HashSet<string>();var slots=new HashSet<PartCategory>();int total=0;PlayerProfile movePreview=null;var supply=new PartsMarket.Ledger(p);
             var moveSlots=new HashSet<string>();
             foreach(var line in lines) {
                 var d=line==null?null:p.catalog.Find(line.definitionId);
@@ -60,7 +60,7 @@ namespace DragLab.Domain.Mechanics
                     if(moved!=null&&line.destination!=InventoryKind.Storage&&!moveSlots.Add(line.destination+"/"+line.destinationId+"/"+p.catalog.Find(moved.definitionId).category))throw new InvalidOperationException("Conflicting destination slot installations.");
                     continue;
                 }
-                if(d==null||d.price<0||!p.catalog.Fits(p.catalog.Spec(car.vehicleId),d)||p.reputation<d.reputationRequired)throw new InvalidOperationException("Unavailable/incompatible cart offer or reputation.");
+                if(d==null||d.price<0||line.install&&!p.catalog.Fits(p.catalog.Spec(car.vehicleId),d)||p.reputation<d.reputationRequired)throw new InvalidOperationException("Unavailable/incompatible cart offer or reputation.");
                 int price=InventoryPricing.NewSet(d);bool unit=line.action==CartAction.NewUnits;
                 if(line.action==CartAction.BuyUsed) {
                     var stock=p.inventory.dealer.Find(s=>s.Id==line.assetId);
@@ -72,7 +72,7 @@ namespace DragLab.Domain.Mechanics
                     if(line.action==CartAction.NewUnits)price=InventoryPricing.NewUnit(d,InventoryUnits.Count(p,car,d));
                     if(line.install){if(line.positions==null||line.positions.Count==0||line.positions.Count>line.quantity||line.positions.Any(s=>!InventoryUnits.Positions(p,car,d.id,line.role).Contains(s)||!positions.Add(s)))throw new InvalidOperationException("Select unique fitted positions for installed units, matching the fitted specification. Unselected extras remain loose.");}
                 } else if(line.install&&!slots.Add(d.category))throw new InvalidOperationException("Only one cart offer can install in each slot. Other offers may be bought as spares.");
-                total=checked(total+checked(price*line.quantity));
+                total=checked(total+(line.action==CartAction.BuyUsed?checked(price*line.quantity):supply.Take(d,unit?1:InventoryUnits.Count(p,car,d),price,line.quantity).cost));
             }
             foreach(var category in slots)if(lines.Any(l=>l.install&&(l.action==CartAction.NewUnits||l.action==CartAction.BuyUsed&&p.inventory.dealer.Any(s=>s.Id==l.assetId&&s.unit!=null))&&p.catalog.Find(l.definitionId).category==category))throw new InvalidOperationException("Choose a complete set or individual replacements for a slot, not both.");
             if(validateBlocks){
@@ -80,6 +80,11 @@ namespace DragLab.Domain.Mechanics
                 if(blocks.Length>0){if(blocks.Any(l=>!l.preparedBlock))throw new InvalidOperationException("Prepare the block and its required components before installation.");var preview=PreviewProfile(p,car,lines);foreach(var targetId in blocks.Select(l=>l.action==CartAction.Move?l.destinationId:carId).Distinct()){var result=MechanicsOwnership.Resolve(preview,preview.cars.Find(c=>c.instanceId==targetId),preview.catalog);if(!result.Drivable)throw new InvalidOperationException("Block preparation is incomplete: "+string.Join("; ",result.errors));}}
             }
             return total;
+        }
+        public static int DeliveryFee(PlayerProfile p,string carId,IEnumerable<PartCartLine> lines)
+        {
+            var car=p.cars.Find(c=>c.instanceId==carId);var ledger=new PartsMarket.Ledger(p);int fee=0;
+            foreach(var row in lines.Where(l=>l.action==CartAction.NewSet||l.action==CartAction.NewUnits)){var d=p.catalog.Find(row.definitionId);int count=InventoryUnits.Count(p,car,d);bool unit=row.action==CartAction.NewUnits;fee=checked(fee+ledger.Take(d,unit?1:count,unit?InventoryPricing.NewUnit(d,count):d.price,row.quantity).fee);}return fee;
         }
         public static PartCartQuote Quote(PlayerProfile p,string carId,IEnumerable<PartCartLine> lines,long now,int quoteSeconds,ValuationPolicy policy=null)
         {

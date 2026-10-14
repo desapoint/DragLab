@@ -1,0 +1,14 @@
+model,previous_new_price,new_price,restored_used_100_percent_max_spread,used_mileage_km
+city-three,4990,7485,6288,100000
+juniper-club,5032,7548,6341,100000
+juniper-economy,5032,7548,6341,100000
+kestrel-track,6200,9300,7812,100000
+rally-sedan,8000,12000,10080,100000
+sport-coupe,6393,9590,8056,100000
+starter-hatch,5120,7680,6452,100000
+super-v8,11000,16500,13860,100000
+timber-diesel,7200,10800,9072,100000
+timber-diesel-tow,8900,13350,11214,100000
+touring-six,6800,10200,8568,100000
+utility-pickup,6602,9903,8319,100000
+v8-muscle,7500,11250,9450,100000

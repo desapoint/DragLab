@@ -24,10 +24,10 @@ namespace DragLab.Runtime
             using (var mouse = new WindowsKeyboardProbe())
             {
                 string definition = game.Profile.catalog.Id("starter-hatch", PartCategory.Pistons, 1);
-                int startCash = game.Profile.cash;
+                int startCash = game.Profile.cash;var offer=game.Profile.catalog.Find(definition);int purchasePrice=PartsMarket.Quote(game.Profile,offer,InventoryUnits.Count(game.Profile,game.Profile.SelectedCar,offer)).cost;
                 yield return ClickPart(mouse, "fit:" + definition);
                 string forgedId = game.Profile.SelectedCar.installed.slots.Find(s => s.slot == "Pistons").partInstanceId;
-                require(game.Profile.parts.Find(p => p.instanceId == forgedId).definitionId == definition && game.Profile.cash == startCash - game.Profile.catalog.Find(definition).price, "Actual Buy + install purchases forged pistons directly.");
+                require(game.Profile.parts.Find(p => p.instanceId == forgedId).definitionId == definition && game.Profile.cash == startCash - purchasePrice, "Actual Buy + install purchases forged pistons directly.");
                 require(game.Profile.parts.Find(p => p.instanceId == oldId).condition.health == .42f && game.Profile.parts.Find(p => p.instanceId == oldId).location == PartLocation.Inventory, "Original worn pistons remain loose and unhealed.");
                 yield return Capture("parts-forged-installed");
                 yield return ClickPart(mouse, "remove");
@@ -141,7 +141,7 @@ namespace DragLab.Runtime
                 require(serviceSave.SelectedCar.fluids.oilCondition>.99 && serviceSave.parts.Find(p=>p.instanceId==radiator).condition.leakSeverity==0,"Fluid service and repair history persist after race/garage save.");
                 // These faults/deadline are seeded only in the fixture's isolated profile.
                 var elementCar=game.Profile.SelectedCar;string pistonSet=elementCar.installed.slots.Find(b=>b.slot=="Pistons").partInstanceId;var pistonItem=game.Profile.parts.Find(p=>p.instanceId==pistonSet);string element=pistonItem.condition.elements[0].id,other=pistonItem.condition.elements[1].id;pistonItem.condition.elements[0].health=.2f;EngineElementService.RefreshAggregate(pistonItem.condition);game.ShowParts(PartCategory.Pistons);yield return new WaitForSecondsRealtime(.2f);
-                int elementCash=game.Profile.cash,unitCost=EngineElementService.Price(game.Profile.catalog.Find(pistonItem.definitionId),pistonItem.condition);yield return ClickPart(mouse,"element-new:"+element);
+                int elementCash=game.Profile.cash,unitCost=PartsMarket.Quote(game.Profile,game.Profile.catalog.Find(pistonItem.definitionId),pistonItem.condition.elements.Length,true).cost;yield return ClickPart(mouse,"element-new:"+element);
                 var renewed=game.Profile.parts.Find(p=>p.instanceId==pistonSet);require(game.Profile.cash==elementCash-unitCost&&renewed.condition.elements[0].health==1&&renewed.condition.elements[1].id==other,"Actual individual-piston button charges unit cost and retains neighbouring parts.");require(game.Profile.looseEngineElements.Any(p=>p.element.id==element&&p.element.health==.2f),"Removed individual piston retains its identity and wear.");yield return Capture("parts-individual-piston");
                 yield return ClickPart(mouse,"element-sell:"+element);yield return ClickPart(mouse,"quote-sell-preview");yield return ClickPart(mouse,"quote-sell-confirm");game.ShowParts(PartCategory.Clutch);yield return new WaitForSecondsRealtime(.2f);require(!game.Profile.looseEngineElements.Any(p=>p.element.id==element),"Actual individual inventory sale removes one retained piston.");
                 game.ShowParts(PartCategory.Clutch);yield return new WaitForSecondsRealtime(.2f);yield return ClickPart(mouse,"fit:v8-muscle/Clutch/WetMultiOrganic");game.StartPractice();require(game.Race.player.mechanics.Definition(game.Race.player.mechanics.Part(PartCategory.Clutch)).clutchEnvironment==ClutchEnvironment.Wet&&game.Race.player.mechanics.Part(PartCategory.Clutch).condition.clutchOilLitres==2,"Actual wet multi-plate purchase reaches shared race coupling with dedicated oil bath.");game.ReturnToGarage();game.ShowRepairs();yield return new WaitForSecondsRealtime(.2f);yield return ClickPart(mouse,"engine-rebuild-start");

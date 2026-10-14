@@ -22,11 +22,11 @@ namespace DragLab.Runtime
             using (var mouse = new WindowsKeyboardProbe()) {
                 foreach (var module in new[] { PartCategory.RevLimiter, PartCategory.TwoStep, PartCategory.ShiftLight }) {
                     game.ShowParts(module); yield return new WaitForSecondsRealtime(.3f);
-                    string definition = catalog.Id(model, module, 1); int cash = game.Profile.cash;
+                    string definition = catalog.Id(model, module, 1); int cash = game.Profile.cash;int purchasePrice=PartsMarket.Quote(game.Profile,catalog.Find(definition),1).cost;
                     yield return ClickPart(mouse, "preview:" + definition);
                     require(game.ProposedInspection != null && game.Profile.cash == cash, "Actual mouse preview is isolated: " + module);
                     yield return ClickPart(mouse, "fit:" + definition);
-                    require(game.Profile.cash == cash - catalog.Find(definition).price && MechanicsOwnership.Definitions(game.Profile, game.Profile.SelectedCar)[module] == definition, "Actual mouse buys/installs separate module: " + module);
+                    require(game.Profile.cash == cash - purchasePrice && MechanicsOwnership.Definitions(game.Profile, game.Profile.SelectedCar)[module] == definition, "Actual mouse buys/installs separate module: " + module);
                     yield return Capture("shop-" + module);
                 }
                 game.OpenTuning(); yield return new WaitForSecondsRealtime(.3f);

@@ -52,9 +52,10 @@ namespace DragLab.Runtime
                 yield return Capture("maintenance-brake-category");
                 yield return ClickPart(mouse, "repairs-open");
                 game.Profile.cash = 100000; ProfileStore.Save(game.Profile); yield return new WaitForSecondsRealtime(.15f);
+                int replacementPrice=PartsMarket.Quote(game.Profile,catalog.Find(brake.definitionId),4).cost;
                 yield return ClickPart(mouse, "repair-buy:" + brakeId);
                 var repaired = game.Profile.parts.Find(i => i.instanceId == game.Profile.SelectedCar.installed.slots.Find(s => s.slot == "Brakes").partInstanceId);
-                require(repaired.instanceId != brakeId && repaired.definitionId == brake.definitionId && repaired.condition.health == 1 && !repaired.condition.failed && game.Profile.cash == 100000 - catalog.Find(brake.definitionId).price, "Actual Buy same + replace charges the shown price once and fits a new healthy instance of the same component.");
+                require(repaired.instanceId != brakeId && repaired.definitionId == brake.definitionId && repaired.condition.health == 1 && !repaired.condition.failed && game.Profile.cash == 100000 - replacementPrice, "Actual Buy same + replace charges the shown price once and fits a new healthy instance of the same component.");
                 require(game.Profile.parts.Find(i => i.instanceId == brakeId).location == PartLocation.Inventory && game.Profile.parts.Find(i => i.instanceId == brakeId).condition.health == .33f && game.Profile.parts.Find(i => i.instanceId == brakeId).condition.failureReason == "Brake thermal overload fixture", "Removed brakes retain partial health, failure flag and cause rather than becoming repaired stock.");
                 string afterTune = JsonUtility.ToJson(MechanicsOwnership.Resolve(game.Profile, game.Profile.SelectedCar, catalog).tune);
                 File.WriteAllText(Path.Combine(output, "tune-after.json"), afterTune);

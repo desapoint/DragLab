@@ -76,13 +76,14 @@ namespace DragLab.Runtime
                 }
                 GUILayout.BeginHorizontal();
                 if (PartButton("repair-preview:" + oldId, "Preview new / stats")) PreviewPart(definitionId);
-                bool enabled = GUI.enabled; GUI.enabled = enabled && profile.cash >= definition.price;
-                if (PartButton("repair-buy:" + oldId, definition.category==PartCategory.Tires?"Buy same + replace":"Buy same + replace / "+DisplayUnits.Money(definition.price))) QueuePayment(new PaymentRequest {
+                int replacementPrice=definition.category==PartCategory.Tires?TireFitments.ReplacementCost(profile,Build,definitionId):PartsMarket.Quote(profile,definition,InventoryUnits.Count(profile,Build,definition)).cost;
+                bool enabled = GUI.enabled; GUI.enabled = enabled && profile.cash >= replacementPrice;
+                if (PartButton("repair-buy:" + oldId, definition.category==PartCategory.Tires?"Buy same + replace":"Buy same + replace / "+DisplayUnits.Money(replacementPrice))) QueuePayment(new PaymentRequest {
                     kind = PaymentKind.Part, carId = carId, targetId = definitionId, install = true, preserveTireFitments=definition.category==PartCategory.Tires
                 });
                 GUI.enabled = enabled;
                 GUILayout.EndHorizontal();
-                if (profile.cash < definition.price) GUILayout.Label("Need " + DisplayUnits.Money((definition.price - profile.cash)) + " more for this new part. Fit a spare or browse cheaper compatible options.", partProse);
+                if (profile.cash < replacementPrice) GUILayout.Label("Need " + DisplayUnits.Money((replacementPrice - profile.cash)) + " more for this new part. Fit a spare or browse cheaper compatible options.", partProse);
                 if (spare != null) {
                     string spareId = spare.instanceId;
                     GUILayout.Label("Available spare: " + profile.catalog.Find(spare.definitionId).name + " / " + spare.condition.health.ToString("P0"), partProse);

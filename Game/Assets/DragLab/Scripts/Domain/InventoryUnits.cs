@@ -5,10 +5,15 @@ namespace DragLab.Domain.Mechanics
 {
     public static class InventoryUnits
     {
+        public static VehicleSpec Spec(PlayerProfile p,OwnedCar car,PartDefinition d)
+        {
+            if(car==null||!p.catalog.Fits(p.catalog.Spec(car.vehicleId),d))return PartsMarket.Reference(p,d);
+            var map=MechanicsOwnership.Definitions(p,car);map[d.category]=d.id;return p.catalog.Resolve(car.vehicleId,map,car.tune).spec;
+        }
         public static PartInstance Template(PlayerProfile p,OwnedCar car,PartDefinition d)
         {
-            var definitions=MechanicsOwnership.Definitions(p,car);definitions[d.category]=d.id;
-            var spec=p.catalog.Resolve(car.vehicleId,definitions,car.tune).spec;
+            if((car==null||!p.catalog.Fits(p.catalog.Spec(car.vehicleId),d))&&!PartsMarket.FitsAny(p,d))return new PartInstance{instanceId="unavailable-template",definitionId=d.id};
+            var spec=Spec(p,car,d);
             var pack=new PartInstance{instanceId="offer-template",definitionId=d.id};
             EngineElements.Ensure(spec,d,pack);
             if(d.category==PartCategory.Tires)TireDynamics.Ensure(pack.condition);
@@ -28,10 +33,10 @@ namespace DragLab.Domain.Mechanics
         public static LooseEngineElement Buy(PlayerProfile p,string carId,string definition,string role)
         {
             var car=AssemblyOperations.MutableCar(p,carId);var d=p.catalog.Find(definition);
-            if(d==null||!p.catalog.Fits(p.catalog.Spec(car.vehicleId),d)||p.reputation<d.reputationRequired||!Roles(p,car,d).Contains(role))throw new InvalidOperationException("Individual unit incompatible or unavailable.");
-            int price=InventoryPricing.NewUnit(d,Count(p,car,d));if(p.cash<price)throw new InvalidOperationException("Insufficient cash for unit.");
-            var item=new LooseEngineElement{definitionId=d.id,unitPrice=price,element=new EngineElement{id=MechanicsOwnership.NewId("element"),role=role,cylinder=-1,valve=-1},tireUnit=d.category==PartCategory.Tires,tire=d.category==PartCategory.Tires?new TireCondition():null};
-            p.cash-=price;p.looseEngineElements.Add(item);return item;
+            if(d==null||!PartsMarket.FitsAny(p,d)||p.reputation<d.reputationRequired||!Roles(p,car,d).Contains(role))throw new InvalidOperationException("Individual unit incompatible or unavailable.");
+            int count=Count(p,car,d);int price=PartsMarket.Quote(p,d,count,true).cost;if(p.cash<price)throw new InvalidOperationException("Insufficient cash for unit.");
+            var item=new LooseEngineElement{definitionId=d.id,unitPrice=InventoryPricing.NewUnit(d,count),element=new EngineElement{id=MechanicsOwnership.NewId("element"),role=role,cylinder=-1,valve=-1},tireUnit=d.category==PartCategory.Tires,tire=d.category==PartCategory.Tires?new TireCondition():null};
+            PartsMarket.Consume(p,d,count,true);p.cash-=price;p.looseEngineElements.Add(item);return item;
         }
         public static string[] Positions(PlayerProfile p,OwnedCar car,string definition,string role)
         {

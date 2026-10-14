@@ -33,12 +33,12 @@ namespace DragLab.Domain.Mechanics
         {
             var old=item.condition.elements.FirstOrDefault(e=>e.id==elementId);if(old==null)throw new InvalidOperationException("Individual component changed; refresh the quote.");
             var d=p.catalog.Find(item.definitionId);EngineElement replacement;
-            if(spareId==null){int price=Price(d,item.condition);if(p.cash<price)throw new InvalidOperationException("Insufficient cash for this individual component.");p.cash-=price;replacement=new EngineElement{id=MechanicsOwnership.NewId("element"),role=old.role,cylinder=old.cylinder,valve=old.valve};}
+            if(spareId==null){int count=item.condition.elements.Length;int price=PartsMarket.Quote(p,d,count,true).cost;if(p.cash<price)throw new InvalidOperationException("Insufficient cash for this individual component.");PartsMarket.Consume(p,d,count,true);p.cash-=price;replacement=new EngineElement{id=MechanicsOwnership.NewId("element"),role=old.role,cylinder=old.cylinder,valve=old.valve};}
             else {var loose=p.looseEngineElements.Find(e=>e.element.id==spareId);var source=loose==null?null:p.catalog.Find(loose.definitionId);if(source==null||source.category!=d.category||source.fitment!=d.fitment||source.id!=d.id||loose.element.role!=old.role||loose.element.Failed)throw new InvalidOperationException("Spare needs the same matched specification and role; mixed piston masses/profiles require a complete matched kit.");replacement=loose.element.Copy();replacement.cylinder=old.cylinder;replacement.valve=old.valve;p.looseEngineElements.Remove(loose);}
             int index=Array.IndexOf(item.condition.elements,old);p.looseEngineElements.Add(new LooseEngineElement{definitionId=item.definitionId,unitPrice=Price(d,item.condition),element=old.Copy()});item.condition.elements[index]=replacement;RefreshAggregate(item.condition);item.condition.serviceCount++;item.condition.lastService="Individual "+old.role+" replaced / cylinder "+(old.cylinder+1);
         }
         public static int SalePrice(PlayerProfile p,LooseEngineElement e){return (int)Math.Floor(e.unitPrice*.45*e.element.health*(e.element.Failed?.1:1));}
-        public static void Sell(PlayerProfile p,string id){var loose=p.looseEngineElements.Find(e=>e.element.id==id);if(loose==null)throw new InvalidOperationException("Individual spare already sold/moved.");p.cash=checked(p.cash+SalePrice(p,loose));p.looseEngineElements.Remove(loose);}
+        public static void Sell(PlayerProfile p,string id){var loose=p.looseEngineElements.Find(e=>e.element.id==id);if(loose==null)throw new InvalidOperationException("Individual spare already sold/moved.");int price=SalePrice(p,loose);p.cash=checked(p.cash+price);p.looseEngineElements.Remove(loose);p.inventory.dealer.Add(new DealerStock{isUnit=true,unit=loose,paidPrice=price});}
     }
     public static class EngineRebuilds
     {
@@ -50,16 +50,16 @@ namespace DragLab.Domain.Mechanics
             var required=MechanicalCatalog.Slots(p.catalog.Spec(car.vehicleId)).Where(Scope);
             if(required.Any(c=>!car.installed.slots.Any(s=>s.slot==c.ToString())))throw new InvalidOperationException("Assemble missing engine components before requesting a rebuild.");
             var job=new EngineRebuildJob{active=true,id=MechanicsOwnership.NewId("rebuild"),engineId=car.engineAssemblyId,startedUtcTicks=now};
-            costs=costs??new OperatingPolicy();costs.Validate();int work=0;job.paidPrice=checked(costs.rebuildBaseLabour+p.catalog.Spec(car.vehicleId).sound.cylinders*costs.rebuildPerCylinder);
+            costs=costs??new OperatingPolicy();costs.Validate();int work=0;var supply=new PartsMarket.Ledger(p);job.paidPrice=checked(costs.rebuildBaseLabour+p.catalog.Spec(car.vehicleId).sound.cylinders*costs.rebuildPerCylinder);
             foreach(var binding in car.installed.slots){var part=p.parts.Find(i=>i.instanceId==binding.partInstanceId);var d=p.catalog.Find(part.definitionId);if(!Scope(d.category))continue;
                 bool replace=part.condition.failed||part.condition.health<.35||part.condition.elements.Any(e=>e.Failed||e.fault==ElementFault.DroppedValve||e.fault==ElementFault.Seized||e.fault==ElementFault.WeakSpring);
-                job.targets.Add(new EngineRebuildTarget{partId=part.instanceId,definitionId=part.definitionId,replace=replace});job.paidPrice=checked(job.paidPrice+(replace?d.price:(int)Math.Ceiling(d.price*(1-part.condition.health)*.5)));if(replace||part.condition.health<.9||EngineElements.NeedsService(part.condition))work++;
+                job.targets.Add(new EngineRebuildTarget{partId=part.instanceId,definitionId=part.definitionId,replace=replace});job.paidPrice=checked(job.paidPrice+(replace?supply.Take(d,InventoryUnits.Count(p,car,d),d.price).cost:(int)Math.Ceiling(d.price*(1-part.condition.health)*.5)));if(replace||part.condition.health<.9||EngineElements.NeedsService(part.condition))work++;
             }
-            job.paidPrice+=p.catalog.Find(p.catalog.Id(car.vehicleId,PartCategory.OilFilter)).price;
+            var filter=p.catalog.Find(p.catalog.Id(car.vehicleId,PartCategory.OilFilter));job.paidPrice+=supply.Take(filter,1,filter.price).cost;
             job.readyUtcTicks=checked(now+TimeSpan.TicksPerMinute*(5+work));return job;
         }
         public static void Start(PlayerProfile p,string carId,long now,OperatingPolicy costs=null)
-        {var car=p.cars.Find(c=>c.instanceId==carId);var job=Quote(p,car,now,costs);if(p.cash<job.paidPrice)throw new InvalidOperationException("Insufficient cash for quoted rebuild.");p.cash-=job.paidPrice;car.engineRebuild=job;}
+        {var car=p.cars.Find(c=>c.instanceId==carId);var job=Quote(p,car,now,costs);if(p.cash<job.paidPrice)throw new InvalidOperationException("Insufficient cash for quoted rebuild.");foreach(var target in job.targets.Where(t=>t.replace)){var d=p.catalog.Find(target.definitionId);PartsMarket.Consume(p,d,InventoryUnits.Count(p,car,d));}PartsMarket.Consume(p,p.catalog.Find(p.catalog.Id(car.vehicleId,PartCategory.OilFilter)),1);p.cash-=job.paidPrice;car.engineRebuild=job;}
         public static string Validate(PlayerProfile p,OwnedCar car)
         {var j=car.engineRebuild;if(j==null||!j.active)return null;if(string.IsNullOrEmpty(j.id)||j.engineId!=car.engineAssemblyId||j.paidPrice<0||j.startedUtcTicks<=0||j.readyUtcTicks<=j.startedUtcTicks||j.readyUtcTicks>DateTime.MaxValue.Ticks||j.targets==null||j.targets.Count==0||j.targets.Select(t=>t.partId).Distinct().Count()!=j.targets.Count)return "Invalid rebuild quote.";foreach(var t in j.targets)if(!car.installed.slots.Any(s=>s.partInstanceId==t.partId)||!p.parts.Any(i=>i.instanceId==t.partId&&i.definitionId==t.definitionId))return "Rebuild contents changed.";return null;}
         public static void Collect(PlayerProfile p,string carId,string jobId,long now)

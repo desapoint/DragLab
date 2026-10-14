@@ -231,14 +231,14 @@ namespace DragLab.Runtime
             toggle.RegisterValueChangedCallback(evt => { set(evt.newValue); Changed(simulation); });
             updateControls.Add(() => { toggle.SetValueWithoutNotify(get()); surface.SetValue(get()); });
         }
-        void Range(int page, string id, string label, float min, float max, Func<float> get, Action<float> set, bool percent, string help = null)
+        void Range(int page, string id, string label, float min, float max, Func<float> get, Action<float> set, bool percent, string help = null, string unit = null, bool wholeNumbers = false, bool simulation = false)
         {
             var group = Row(page, id, label, help); var slider = new Slider(min, max) { name = id }; slider.AddToClassList("setting-slider"); group.Add(slider);
             var fill = new SliderFill(slider); slider.Q(className: "unity-base-slider__tracker").Add(fill);
             var number = new FloatField { name = id + "Value", isDelayed = true }; number.AddToClassList("setting-number"); group.Add(number);
-            if (percent) group.Add(new Label("%")); else group.Add(new Label("s"));
-            slider.RegisterValueChangedCallback(evt => { set(evt.newValue); Changed(); });
-            number.RegisterValueChangedCallback(evt => { float value = evt.newValue / (percent ? 100 : 1); if (float.IsNaN(value) || float.IsInfinity(value)) { UpdateControls(); return; } set(Mathf.Clamp(value, min, max)); Changed(); });
+            if (percent) group.Add(new Label("%")); else group.Add(new Label(unit??"s"));
+            slider.RegisterValueChangedCallback(evt => { set(wholeNumbers?Mathf.Round(evt.newValue):evt.newValue); Changed(simulation); });
+            number.RegisterValueChangedCallback(evt => { float value = evt.newValue / (percent ? 100 : 1); if (float.IsNaN(value) || float.IsInfinity(value)) { UpdateControls(); return; } set(wholeNumbers?Mathf.Round(Mathf.Clamp(value,min,max)):Mathf.Clamp(value, min, max)); Changed(simulation); });
             updateControls.Add(() => { slider.SetValueWithoutNotify(get()); fill.MarkDirtyRepaint(); number.SetValueWithoutNotify(get() * (percent ? 100 : 1)); });
         }
         void BuildDriving()
@@ -252,6 +252,8 @@ namespace DragLab.Runtime
             Choice(0, "shifting", "Shifting", new[] { "Automatic", "Shift myself", "Manual clutch" }, () => (int)draftDriver.shifting, i => draftDriver.shifting = (ShiftMode)i, "E / Q select gears. Transmission hardware determines shift speed and downshift protection.");
             Choice(0, "launch", "Launch", new[] { "Automatic", "Assisted", "Manual" }, () => (int)draftDriver.launch, i => draftDriver.launch = (LaunchMode)i, "Staging holds neutral and brakes. Hold W / Space to rev. E engages first after green. For manual clutch, hold Shift then release it.");
             Choice(0, "opponentDifficulty", "Opponent", new[] { "Easy", "Normal", "Hard" }, () => draftAi, i => draftAi = i, "Changes opponent reaction time. Both cars use the same physics.");
+            Choice(0,"marketAvailability","Market difficulty",new[]{"Easy · 10","Normal · 5","Hard · 0"},()=>draftDriver.guaranteedFittingParts==10?0:draftDriver.guaranteedFittingParts==5?1:draftDriver.guaranteedFittingParts==0?2:-1,i=>draftDriver.guaranteedFittingParts=new[]{10,5,0}[i],"Minimum fitting offers in each new/used parts pool across your entire garage, not per car. Engines stay random. Takes effect at the next stock refresh.",true);
+            Range(0,"guaranteedFittingParts","Minimum fitting offers",0,20,()=>draftDriver.guaranteedFittingParts,v=>draftDriver.guaranteedFittingParts=(int)v,false,"Shared across all owned cars. Zero disables guarantees; used stock may be empty. Apply does not reroll current stock.","offers",true,true);
             Choice(0, "wearMode", "Mechanical wear", new[] { "None", "Partial · 25%", "Full" }, () => (int)draftDriver.wearMode, i => draftDriver.wearMode = (WearMode)i, "None prevents new wear and abuse damage; it does not repair existing faults. Partial slows wear and abuse damage to 25%; failures remain possible.", true);
             Choice(0, "fuelUsage", "Fuel consumption", new[] { "Realistic", "Reduced · 25%", "None" }, () => (int)draftDriver.fuelUsage, i => draftDriver.fuelUsage = (FuelUsageMode)i, "Fuel quantity still adds weight. Consumption includes idle and anti-lag.", true);
             Choice(0, "fluidDepletion", "Oil / coolant use", new[] { "Realistic", "Reduced · 25%", "None" }, () => (int)draftDriver.fluidDepletion, i => draftDriver.fluidDepletion = (ConsumptionMode)i, "Changes depletion, including leaks. Existing faults remain.", true);

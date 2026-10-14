@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('AwdGeometryVerify','PartComparisonVerify','AxleWheelVerify','StatHelpVerify','SetupPreviewVerify','ShopCacheVerify','UsedInspectionVerify','VerifyRemainingSimulation','VerifyRemaining','CareerVarietyVerify','ResetVerify','VehicleMarketVerify','VehicleVarietyVerify','VehicleVarietyPrepare','VarietyMechanicalVerify','Prepare','InventoryCommerceVerify','CartVerify','MenuPreviewVerify','RacePresentationVerify','TireSoundBaseline','TireSoundVerify','CheckpointVerify','TireFeedbackDiagnose','TireFeedbackVerify','ThermalVerify','CareerExpandedVerify','BusinessVerify','BalanceVerify','EconomyIntegrationVerify','PaidVerify','ValuationVerify','AssemblyVerify','CollectionVerify','Verify','RecoveryVerify','IntegratedVerify','BenchVerify','AxleVerify','PartsEffectsVerify','DurabilityAudit','SliceTwoAudit','MassVerify','ContactVerify','DrivingContactVerify','LaunchVerify','AwdContactVerify','FuelVerify','FuelingConversionVerify','ServiceVerify','IndividualEngineVerify','TireVerify','TireFailureVerify','CareerVerify','SceneCheck','UnitsVisualVerify','ManualGearboxVerify','PartHardwareVerify','BuildWindows','BuildPlayerOnly','Open')]
+    [ValidateSet('OwnershipVerify','PartsMarketRegression','PartsMarketVerify','AwdGeometryVerify','PartComparisonVerify','AxleWheelVerify','StatHelpVerify','SetupPreviewVerify','ShopCacheVerify','UsedInspectionVerify','VerifyRemainingSimulation','VerifyRemaining','CareerVarietyVerify','ResetVerify','VehicleMarketVerify','VehicleVarietyVerify','VehicleVarietyPrepare','VarietyMechanicalVerify','Prepare','InventoryCommerceVerify','CartVerify','MenuPreviewVerify','RacePresentationVerify','TireSoundBaseline','TireSoundVerify','CheckpointVerify','TireFeedbackDiagnose','TireFeedbackVerify','ThermalVerify','CareerExpandedVerify','BusinessVerify','BalanceVerify','EconomyIntegrationVerify','PaidVerify','ValuationVerify','AssemblyVerify','CollectionVerify','Verify','RecoveryVerify','IntegratedVerify','BenchVerify','AxleVerify','PartsEffectsVerify','DurabilityAudit','SliceTwoAudit','MassVerify','ContactVerify','DrivingContactVerify','LaunchVerify','AwdContactVerify','FuelVerify','FuelingConversionVerify','ServiceVerify','IndividualEngineVerify','TireVerify','TireFailureVerify','CareerVerify','SceneCheck','UnitsVisualVerify','ManualGearboxVerify','PartHardwareVerify','BuildWindows','BuildPlayerOnly','Open')]
     [string]$Action = 'Prepare',
     [string]$EditorPath = 'C:\Program Files\Unity\Hub\Editor\6000.6.4f1\Editor\Unity.exe'
 )
@@ -15,6 +15,9 @@ if ($Action -eq 'Open') {
     return
 }
 $taskMethod = switch ($Action) {
+    'OwnershipVerify' { 'DragLab.Editor.OwnershipVerification.RunStandalone' }
+    'PartsMarketRegression' { 'DragLab.Editor.PartsMarketVerification.Regressions' }
+    'PartsMarketVerify' { 'DragLab.Editor.PartsMarketVerification.Run' }
     'InventoryCommerceVerify' { 'DragLab.Editor.InventoryCommerceVerification.Run' }
     'PartComparisonVerify' { 'DragLab.Editor.PartComparisonVerification.Run' }
     'AwdGeometryVerify' { 'DragLab.Editor.AwdGeometryVerification.Run' }

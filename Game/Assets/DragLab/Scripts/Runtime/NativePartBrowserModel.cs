@@ -24,6 +24,7 @@ namespace DragLab.Runtime
             if(!string.IsNullOrWhiteSpace(Search)&&!((e.DisplayName??e.Definition.name)+" "+e.SearchExtra+" "+e.Definition.brand+" "+e.Definition.category+" "+e.AssetId+" "+e.Location).ToLowerInvariant().Contains(Search.Trim().ToLowerInvariant()))return false;
             if(Compatibility!="All"&&e.Compatibility!=Compatibility)return false;
             if(Availability=="Owned"&&!e.Owned||Availability=="Affordable"&&(!e.Price.HasValue||e.Price>cash)||Availability=="Unaffordable"&&(!e.Price.HasValue||e.Price<=cash))return false;
+            if(Availability=="In stock"&&(e.Source!="New"&&e.Source!="Used"||e.Source=="New"&&e.RequiresExpress)||Availability=="Express"&&(e.Source!="New"||!e.RequiresExpress))return false;
             if(Condition=="New"&&e.Source!="New"||Condition=="Used"&&e.Source=="New")return false;
             bool tunable=e.Definition.tuning!=PartTuningOptions.None||e.Definition.camTimingAdjustable;
             if(Tuning=="Adjustable"&&!tunable||Tuning=="Fixed"&&tunable)return false;
@@ -54,6 +55,7 @@ namespace DragLab.Runtime
         internal LooseEngineElement Unit;
         internal bool Owned,Ready;
         internal int? Price;
+        internal int StockUnits;internal bool RequiresExpress;
         internal double?[] Change=new double?[7];
         internal CarInspection Proposed;
     }
@@ -91,10 +93,12 @@ namespace DragLab.Runtime
                 foreach(var u in profile.looseEngineElements)Add(u.element.id,u.definitionId,"Owned",null,u,true,SharedInventory.StorageOf(u.storageId),SafePrice(()=>salePrice(u.element.id,true),true));
             }
             if(page=="Shop"){
-                var fitted=new HashSet<string>(referenceMap.Values);
+                var fitted=new HashSet<string>(referenceMap.Values);var supplyCount=PartsMarket.Counter(profile,actualCar);
                 foreach(var product in profile.catalog.parts.GroupBy(NewProductKey,StringComparer.Ordinal)){
                     var d=product.OrderBy(p=>fitted.Contains(p.id)?0:p.id.StartsWith(referenceCar.vehicleId+"/",StringComparison.Ordinal)?1:2).ThenBy(p=>p.id,StringComparer.Ordinal).First();
-                    Add("new:"+d.id,d.id,"New",null,null,product.Any(p=>Owns(p.id)),"New",InventoryPricing.NewSet(d));
+                    var supply=PartsMarket.Quote(profile,d,supplyCount(d));int available=PartsMarket.Available(profile,d);
+                    Add("new:"+d.id,d.id,"New",null,null,product.Any(p=>Owns(p.id)),"New",supply.cost);
+                    Entries[Entries.Count-1].StockUnits=available;Entries[Entries.Count-1].RequiresExpress=supply.expressUnits>0;
                     Entries[Entries.Count-1].SearchExtra=string.Join(" ",product.Select(p=>p.id));
                 }
                 foreach(var d in profile.inventory.dealer)Add("used:"+d.Id,d.DefinitionId,"Used",d.part,d.unit,Owns(d.DefinitionId),"Dealer",usedPrice(d));
@@ -103,8 +107,7 @@ namespace DragLab.Runtime
         }
         internal static string NewProductKey(PartDefinition definition)
         {
-            var specification=definition.Copy();specification.id="";
-            return JsonUtility.ToJson(specification);
+            return PartsMarket.ProductKey(definition);
         }
         static int? SafePrice(Func<int> get,bool available){if(!available)return null;try{return get();}catch(Exception){return null;}}
         void Add(string id,string definition,string source,PartInstance part,LooseEngineElement unit,bool owned,string location,int? price)
@@ -122,7 +125,7 @@ namespace DragLab.Runtime
         internal string PositionLabel(NativePartEntry e,string position)=>InventoryUnits.PositionLabel(reference,referenceCar,e.Definition.id,position);
         internal NativePartEntry PreviewNewUnit(NativePartEntry offer,string role,IEnumerable<string> selection)
         {
-            var e=new NativePartEntry{Id=offer.Id,Source="New",Definition=offer.Definition,Owned=offer.Owned,Price=InventoryPricing.NewUnit(offer.Definition,InventoryUnits.Count(actual,actualCar,offer.Definition))};
+            var e=new NativePartEntry{Id=offer.Id,Source="New",Definition=offer.Definition,Owned=offer.Owned,Price=PartsMarket.Quote(actual,offer.Definition,InventoryUnits.Count(actual,actualCar,offer.Definition),true).cost};
             e.Unit=new LooseEngineElement{definitionId=e.Definition.id,element=new EngineElement{id="native-offer-unit",role=role,cylinder=-1,valve=-1},tireUnit=e.Definition.category==PartCategory.Tires,tire=e.Definition.category==PartCategory.Tires?new TireCondition():null};
             var available=InventoryUnits.Positions(reference,referenceCar,e.Definition.id,role);var selected=selection.Where(available.Contains).Distinct().ToArray();
             if(selected.Length==0&&available.Length>0)selected=new[]{available[0]};e.Position=selected.FirstOrDefault();Evaluate(e);

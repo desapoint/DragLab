@@ -1,0 +1,503 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: All mechanical categories map to the five Build sections
+PASS: Projected HP gain uses the authoritative selected-car build
+PASS: HP-gain filter accepts measured gains
+PASS: HP-loss filter rejects measured gains
+PASS: Minimum gain magnitude is enforced
+PASS: Subcategory selections combine with OR inside the category filter
+PASS: Foreign hardware has no fabricated performance gain or zero measurement
+PASS: Unavailable values do not match unchanged-performance filters
+PASS: Unknown sort values stay last even in descending order
+PASS: Affordability includes equality and uses actual offer price
+PASS: Planned reference accounts for pending installs when evaluating a downgrade
+PASS: Invalid planned builds stay unavailable instead of falling back to installed parts
+PASS: Installed-item comparisons preserve exact wear and mass
+PASS: Individual purchase preview matches the authoritative selected-position operation / one 86,3455790119773 / two 87,9024304296666 / expected 87,9024304296666 /
+PASS: Individual purchase uses the shared per-unit pricing calculation
+PASS: Model evaluation never edits supplies, identities, wear, money or fitted parts
+PASS: Spring-travel and potential engine-damage warnings remain visible in Compatible
+PASS: Planned-build fit compatibility also includes parts carrying operating risks
+PASS: Cam/follower dependency is distinguished from mounting incompatibility
+PASS: Pending matching followers satisfy the cam dependency
+PASS: A fitting wheel remains compatible on an engine-less chassis without an invented dyno
+PASS: A physically fitting loose unit stays in Compatible even when complete-set installation is required first
+PASS: Matched individual-unit preview is available:
+PASS: Individual-unit preview follows the chosen cylinder condition without healing any actual element
+PASS: Candidate fits and compares across all five systems: city-three / HeadIntake
+PASS: Candidate fits and compares across all five systems: city-three / Cooling
+PASS: Candidate fits and compares across all five systems: city-three / Gearbox
+PASS: Candidate fits and compares across all five systems: city-three / Tires
+PASS: Candidate fits and compares across all five systems: city-three / Interior
+PASS: Set topology and role pricing: city-three / Pistons
+PASS: Set topology and role pricing: city-three / Valves
+PASS: Set topology and role pricing: city-three / Ignition
+PASS: Set topology and role pricing: city-three / SparkPlugs
+PASS: Set topology and role pricing: city-three / Tires
+PASS: Set topology and role pricing: city-three / Wheels
+PASS: Rims expose four actual individually replaceable corner positions: city-three
+PASS: Set topology and role pricing: city-three / Brakes
+PASS: Brake hardware retains its existing set topology: city-three
+PASS: Varied-car previews preserve applied condition/resources: city-three
+PASS: Candidate fits and compares across all five systems: juniper-club / HeadIntake
+PASS: Candidate fits and compares across all five systems: juniper-club / Cooling
+PASS: Candidate fits and compares across all five systems: juniper-club / Gearbox
+PASS: Candidate fits and compares across all five systems: juniper-club / Tires
+PASS: Candidate fits and compares across all five systems: juniper-club / Interior
+PASS: Set topology and role pricing: juniper-club / Pistons
+PASS: Set topology and role pricing: juniper-club / Valves
+PASS: Set topology and role pricing: juniper-club / Ignition
+PASS: Set topology and role pricing: juniper-club / SparkPlugs
+PASS: Set topology and role pricing: juniper-club / Tires
+PASS: Set topology and role pricing: juniper-club / Wheels
+PASS: Rims expose four actual individually replaceable corner positions: juniper-club
+PASS: Set topology and role pricing: juniper-club / Brakes
+PASS: Brake hardware retains its existing set topology: juniper-club
+PASS: Varied-car previews preserve applied condition/resources: juniper-club
+PASS: Candidate fits and compares across all five systems: juniper-economy / HeadIntake
+PASS: Candidate fits and compares across all five systems: juniper-economy / Cooling
+PASS: Candidate fits and compares across all five systems: juniper-economy / Gearbox
+PASS: Candidate fits and compares across all five systems: juniper-economy / Tires
+PASS: Candidate fits and compares across all five systems: juniper-economy / Interior
+PASS: Set topology and role pricing: juniper-economy / Pistons
+PASS: Set topology and role pricing: juniper-economy / Valves
+PASS: Set topology and role pricing: juniper-economy / Ignition
+PASS: Set topology and role pricing: juniper-economy / SparkPlugs
+PASS: Set topology and role pricing: juniper-economy / Tires
+PASS: Set topology and role pricing: juniper-economy / Wheels
+PASS: Rims expose four actual individually replaceable corner positions: juniper-economy
+PASS: Set topology and role pricing: juniper-economy / Brakes
+PASS: Brake hardware retains its existing set topology: juniper-economy
+PASS: Varied-car previews preserve applied condition/resources: juniper-economy
+PASS: Candidate fits and compares across all five systems: kestrel-track / HeadIntake
+PASS: Candidate fits and compares across all five systems: kestrel-track / Cooling
+PASS: Candidate fits and compares across all five systems: kestrel-track / Gearbox
+PASS: Candidate fits and compares across all five systems: kestrel-track / Tires
+PASS: Candidate fits and compares across all five systems: kestrel-track / Interior
+PASS: Set topology and role pricing: kestrel-track / Pistons
+PASS: Set topology and role pricing: kestrel-track / Valves
+PASS: Set topology and role pricing: kestrel-track / Ignition
+PASS: Set topology and role pricing: kestrel-track / SparkPlugs
+PASS: Set topology and role pricing: kestrel-track / Tires
+PASS: Set topology and role pricing: kestrel-track / Wheels
+PASS: Rims expose four actual individually replaceable corner positions: kestrel-track
+PASS: Set topology and role pricing: kestrel-track / Brakes
+PASS: Brake hardware retains its existing set topology: kestrel-track
+PASS: Varied-car previews preserve applied condition/resources: kestrel-track
+PASS: Candidate fits and compares across all five systems: rally-sedan / HeadIntake
+PASS: Candidate fits and compares across all five systems: rally-sedan / Cooling
+PASS: Candidate fits and compares across all five systems: rally-sedan / Gearbox
+PASS: Candidate fits and compares across all five systems: rally-sedan / Tires
+PASS: Candidate fits and compares across all five systems: rally-sedan / Interior
+PASS: Set topology and role pricing: rally-sedan / Pistons
+PASS: Set topology and role pricing: rally-sedan / Valves
+PASS: Set topology and role pricing: rally-sedan / Ignition
+PASS: Set topology and role pricing: rally-sedan / SparkPlugs
+PASS: Set topology and role pricing: rally-sedan / Tires
+PASS: Set topology and role pricing: rally-sedan / Wheels
+PASS: Rims expose four actual individually replaceable corner positions: rally-sedan
+PASS: Set topology and role pricing: rally-sedan / Brakes
+PASS: Brake hardware retains its existing set topology: rally-sedan
+PASS: Varied-car previews preserve applied condition/resources: rally-sedan
+PASS: Candidate fits and compares across all five systems: sport-coupe / HeadIntake
+PASS: Candidate fits and compares across all five systems: sport-coupe / Cooling
+PASS: Candidate fits and compares across all five systems: sport-coupe / Gearbox
+PASS: Candidate fits and compares across all five systems: sport-coupe / Tires
+PASS: Candidate fits and compares across all five systems: sport-coupe / Interior
+PASS: Set topology and role pricing: sport-coupe / Pistons
+PASS: Set topology and role pricing: sport-coupe / Valves
+PASS: Set topology and role pricing: sport-coupe / Ignition
+PASS: Set topology and role pricing: sport-coupe / SparkPlugs
+PASS: Set topology and role pricing: sport-coupe / Tires
+PASS: Set topology and role pricing: sport-coupe / Wheels
+PASS: Rims expose four actual individually replaceable corner positions: sport-coupe
+PASS: Set topology and role pricing: sport-coupe / Brakes
+PASS: Brake hardware retains its existing set topology: sport-coupe
+PASS: Varied-car previews preserve applied condition/resources: sport-coupe
+PASS: Candidate fits and compares across all five systems: starter-hatch / HeadIntake
+PASS: Candidate fits and compares across all five systems: starter-hatch / Cooling
+PASS: Candidate fits and compares across all five systems: starter-hatch / Gearbox
+PASS: Candidate fits and compares across all five systems: starter-hatch / Tires
+PASS: Candidate fits and compares across all five systems: starter-hatch / Interior
+PASS: Set topology and role pricing: starter-hatch / Pistons
+PASS: Set topology and role pricing: starter-hatch / Valves
+PASS: Set topology and role pricing: starter-hatch / Ignition
+PASS: Set topology and role pricing: starter-hatch / SparkPlugs
+PASS: Set topology and role pricing: starter-hatch / Tires
+PASS: Set topology and role pricing: starter-hatch / Wheels
+PASS: Rims expose four actual individually replaceable corner positions: starter-hatch
+PASS: Set topology and role pricing: starter-hatch / Brakes
+PASS: Brake hardware retains its existing set topology: starter-hatch
+PASS: Varied-car previews preserve applied condition/resources: starter-hatch
+PASS: Candidate fits and compares across all five systems: super-v8 / HeadIntake
+PASS: Candidate fits and compares across all five systems: super-v8 / Cooling
+PASS: Candidate fits and compares across all five systems: super-v8 / Gearbox
+PASS: Candidate fits and compares across all five systems: super-v8 / Tires
+PASS: Candidate fits and compares across all five systems: super-v8 / Interior
+PASS: Set topology and role pricing: super-v8 / Pistons
+PASS: Set topology and role pricing: super-v8 / Valves
+PASS: Set topology and role pricing: super-v8 / Ignition
+PASS: Set topology and role pricing: super-v8 / SparkPlugs
+PASS: Set topology and role pricing: super-v8 / Tires
+PASS: Set topology and role pricing: super-v8 / Wheels
+PASS: Rims expose four actual individually replaceable corner positions: super-v8
+PASS: Set topology and role pricing: super-v8 / Brakes
+PASS: Brake hardware retains its existing set topology: super-v8
+PASS: Varied-car previews preserve applied condition/resources: super-v8
+PASS: Candidate fits and compares across all five systems: timber-diesel / HeadIntake
+PASS: Candidate fits and compares across all five systems: timber-diesel / Cooling
+PASS: Candidate fits and compares across all five systems: timber-diesel / Gearbox
+PASS: Candidate fits and compares across all five systems: timber-diesel / Tires
+PASS: Candidate fits and compares across all five systems: timber-diesel / Interior
+PASS: Set topology and role pricing: timber-diesel / Pistons
+PASS: Set topology and role pricing: timber-diesel / Valves
+PASS: Set topology and role pricing: timber-diesel / GlowPlugs
+PASS: Set topology and role pricing: timber-diesel / Tires
+PASS: Set topology and role pricing: timber-diesel / Wheels
+PASS: Rims expose four actual individually replaceable corner positions: timber-diesel
+PASS: Set topology and role pricing: timber-diesel / Brakes
+PASS: Brake hardware retains its existing set topology: timber-diesel
+PASS: Varied-car previews preserve applied condition/resources: timber-diesel
+PASS: Candidate fits and compares across all five systems: timber-diesel-tow / HeadIntake
+PASS: Candidate fits and compares across all five systems: timber-diesel-tow / Cooling
+PASS: Candidate fits and compares across all five systems: timber-diesel-tow / Gearbox
+PASS: Candidate fits and compares across all five systems: timber-diesel-tow / Tires
+PASS: Candidate fits and compares across all five systems: timber-diesel-tow / Interior
+PASS: Set topology and role pricing: timber-diesel-tow / Pistons
+PASS: Set topology and role pricing: timber-diesel-tow / Valves
+PASS: Set topology and role pricing: timber-diesel-tow / GlowPlugs
+PASS: Set topology and role pricing: timber-diesel-tow / Tires
+PASS: Set topology and role pricing: timber-diesel-tow / Wheels
+PASS: Rims expose four actual individually replaceable corner positions: timber-diesel-tow
+PASS: Set topology and role pricing: timber-diesel-tow / Brakes
+PASS: Brake hardware retains its existing set topology: timber-diesel-tow
+PASS: Varied-car previews preserve applied condition/resources: timber-diesel-tow
+PASS: Candidate fits and compares across all five systems: touring-six / HeadIntake
+PASS: Candidate fits and compares across all five systems: touring-six / Cooling
+PASS: Candidate fits and compares across all five systems: touring-six / Gearbox
+PASS: Candidate fits and compares across all five systems: touring-six / Tires
+PASS: Candidate fits and compares across all five systems: touring-six / Interior
+PASS: Set topology and role pricing: touring-six / Pistons
+PASS: Set topology and role pricing: touring-six / Valves
+PASS: Set topology and role pricing: touring-six / Ignition
+PASS: Set topology and role pricing: touring-six / SparkPlugs
+PASS: Set topology and role pricing: touring-six / Tires
+PASS: Set topology and role pricing: touring-six / Wheels
+PASS: Rims expose four actual individually replaceable corner positions: touring-six
+PASS: Set topology and role pricing: touring-six / Brakes
+PASS: Brake hardware retains its existing set topology: touring-six
+PASS: Varied-car previews preserve applied condition/resources: touring-six
+PASS: Candidate fits and compares across all five systems: utility-pickup / HeadIntake
+PASS: Candidate fits and compares across all five systems: utility-pickup / Cooling
+PASS: Candidate fits and compares across all five systems: utility-pickup / Gearbox
+PASS: Candidate fits and compares across all five systems: utility-pickup / Tires
+PASS: Candidate fits and compares across all five systems: utility-pickup / Interior
+PASS: Set topology and role pricing: utility-pickup / Pistons
+PASS: Set topology and role pricing: utility-pickup / Valves
+PASS: Set topology and role pricing: utility-pickup / Ignition
+PASS: Set topology and role pricing: utility-pickup / SparkPlugs
+PASS: Set topology and role pricing: utility-pickup / Tires
+PASS: Set topology and role pricing: utility-pickup / Wheels
+PASS: Rims expose four actual individually replaceable corner positions: utility-pickup
+PASS: Set topology and role pricing: utility-pickup / Brakes
+PASS: Brake hardware retains its existing set topology: utility-pickup
+PASS: Varied-car previews preserve applied condition/resources: utility-pickup
+PASS: Candidate fits and compares across all five systems: v8-muscle / HeadIntake
+PASS: Candidate fits and compares across all five systems: v8-muscle / Cooling
+PASS: Candidate fits and compares across all five systems: v8-muscle / Gearbox
+PASS: Candidate fits and compares across all five systems: v8-muscle / Tires
+PASS: Candidate fits and compares across all five systems: v8-muscle / Interior
+PASS: Set topology and role pricing: v8-muscle / Pistons
+PASS: Set topology and role pricing: v8-muscle / Valves
+PASS: Set topology and role pricing: v8-muscle / Ignition
+PASS: Set topology and role pricing: v8-muscle / SparkPlugs
+PASS: Set topology and role pricing: v8-muscle / Tires
+PASS: Set topology and role pricing: v8-muscle / Wheels
+PASS: Rims expose four actual individually replaceable corner positions: v8-muscle
+PASS: Set topology and role pricing: v8-muscle / Brakes
+PASS: Brake hardware retains its existing set topology: v8-muscle
+PASS: Varied-car previews preserve applied condition/resources: v8-muscle
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1815 offers / 0 full comparisons / 0,00 ms / 0 cache hits
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 2 offers / 0 full comparisons / 0,00 ms / 1 cache hits
+PASS: Move starts as an unselected, nonmutating destination draft
+PASS: Storage destination preview is valid without staging or saving
+PASS: Move cancellation preserves exact ownership, condition, resources and disk
+PASS: Confirmed Move stages an exact destination without applying it
+PASS: Atomic cart checkout moves the retained part without replacing its identity
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 2 offers / 0 full comparisons / 0,00 ms / 8 cache hits
+PASS: Inventory location filter selects the exact storage container
+PASS: Named stored engine retains its real parts and liquids: city-three
+PASS: Copied swap retains the old engine without editing the live profile: city-three
+PASS: Failed swap persistence rolls back identities, fluids and condition: city-three
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: city-three
+PASS: Engine liquids move while old-engine supplies remain retained: city-three
+PASS: Stale or invalid engine naming rejects without publication: city-three
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: city-three
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: city-three
+PASS: Incomplete engine preview reports missing hardware without recreating it: city-three
+PASS: Named stored engine retains its real parts and liquids: juniper-club
+PASS: Copied swap retains the old engine without editing the live profile: juniper-club
+PASS: Failed swap persistence rolls back identities, fluids and condition: juniper-club
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: juniper-club
+PASS: Engine liquids move while old-engine supplies remain retained: juniper-club
+PASS: Stale or invalid engine naming rejects without publication: juniper-club
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: juniper-club
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: juniper-club
+PASS: Incomplete engine preview reports missing hardware without recreating it: juniper-club
+PASS: Named stored engine retains its real parts and liquids: juniper-economy
+PASS: Copied swap retains the old engine without editing the live profile: juniper-economy
+PASS: Failed swap persistence rolls back identities, fluids and condition: juniper-economy
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: juniper-economy
+PASS: Engine liquids move while old-engine supplies remain retained: juniper-economy
+PASS: Stale or invalid engine naming rejects without publication: juniper-economy
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: juniper-economy
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: juniper-economy
+PASS: Incomplete engine preview reports missing hardware without recreating it: juniper-economy
+PASS: Named stored engine retains its real parts and liquids: kestrel-track
+PASS: Copied swap retains the old engine without editing the live profile: kestrel-track
+PASS: Failed swap persistence rolls back identities, fluids and condition: kestrel-track
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: kestrel-track
+PASS: Engine liquids move while old-engine supplies remain retained: kestrel-track
+PASS: Stale or invalid engine naming rejects without publication: kestrel-track
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: kestrel-track
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: kestrel-track
+PASS: Incomplete engine preview reports missing hardware without recreating it: kestrel-track
+PASS: Named stored engine retains its real parts and liquids: rally-sedan
+PASS: Copied swap retains the old engine without editing the live profile: rally-sedan
+PASS: Failed swap persistence rolls back identities, fluids and condition: rally-sedan
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: rally-sedan
+PASS: Engine liquids move while old-engine supplies remain retained: rally-sedan
+PASS: Stale or invalid engine naming rejects without publication: rally-sedan
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: rally-sedan
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: rally-sedan
+PASS: Incomplete engine preview reports missing hardware without recreating it: rally-sedan
+PASS: Named stored engine retains its real parts and liquids: sport-coupe
+PASS: Copied swap retains the old engine without editing the live profile: sport-coupe
+PASS: Failed swap persistence rolls back identities, fluids and condition: sport-coupe
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: sport-coupe
+PASS: Engine liquids move while old-engine supplies remain retained: sport-coupe
+PASS: Stale or invalid engine naming rejects without publication: sport-coupe
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: sport-coupe
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: sport-coupe
+PASS: Incomplete engine preview reports missing hardware without recreating it: sport-coupe
+PASS: Named stored engine retains its real parts and liquids: starter-hatch
+PASS: Copied swap retains the old engine without editing the live profile: starter-hatch
+PASS: Failed swap persistence rolls back identities, fluids and condition: starter-hatch
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: starter-hatch
+PASS: Engine liquids move while old-engine supplies remain retained: starter-hatch
+PASS: Stale or invalid engine naming rejects without publication: starter-hatch
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: starter-hatch
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: starter-hatch
+PASS: Incomplete engine preview reports missing hardware without recreating it: starter-hatch
+PASS: Named stored engine retains its real parts and liquids: super-v8
+PASS: Copied swap retains the old engine without editing the live profile: super-v8
+PASS: Failed swap persistence rolls back identities, fluids and condition: super-v8
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: super-v8
+PASS: Engine liquids move while old-engine supplies remain retained: super-v8
+PASS: Stale or invalid engine naming rejects without publication: super-v8
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: super-v8
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: super-v8
+PASS: Incomplete engine preview reports missing hardware without recreating it: super-v8
+PASS: Named stored engine retains its real parts and liquids: timber-diesel
+PASS: Copied swap retains the old engine without editing the live profile: timber-diesel
+PASS: Failed swap persistence rolls back identities, fluids and condition: timber-diesel
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: timber-diesel
+PASS: Engine liquids move while old-engine supplies remain retained: timber-diesel
+PASS: Stale or invalid engine naming rejects without publication: timber-diesel
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: timber-diesel
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: timber-diesel
+PASS: Incomplete engine preview reports missing hardware without recreating it: timber-diesel
+PASS: Named stored engine retains its real parts and liquids: timber-diesel-tow
+PASS: Copied swap retains the old engine without editing the live profile: timber-diesel-tow
+PASS: Failed swap persistence rolls back identities, fluids and condition: timber-diesel-tow
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: timber-diesel-tow
+PASS: Engine liquids move while old-engine supplies remain retained: timber-diesel-tow
+PASS: Stale or invalid engine naming rejects without publication: timber-diesel-tow
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: timber-diesel-tow
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: timber-diesel-tow
+PASS: Incomplete engine preview reports missing hardware without recreating it: timber-diesel-tow
+PASS: Named stored engine retains its real parts and liquids: touring-six
+PASS: Copied swap retains the old engine without editing the live profile: touring-six
+PASS: Failed swap persistence rolls back identities, fluids and condition: touring-six
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: touring-six
+PASS: Engine liquids move while old-engine supplies remain retained: touring-six
+PASS: Stale or invalid engine naming rejects without publication: touring-six
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: touring-six
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: touring-six
+PASS: Incomplete engine preview reports missing hardware without recreating it: touring-six
+PASS: Named stored engine retains its real parts and liquids: utility-pickup
+PASS: Copied swap retains the old engine without editing the live profile: utility-pickup
+PASS: Failed swap persistence rolls back identities, fluids and condition: utility-pickup
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: utility-pickup
+PASS: Engine liquids move while old-engine supplies remain retained: utility-pickup
+PASS: Stale or invalid engine naming rejects without publication: utility-pickup
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: utility-pickup
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: utility-pickup
+PASS: Incomplete engine preview reports missing hardware without recreating it: utility-pickup
+PASS: Named stored engine retains its real parts and liquids: v8-muscle
+PASS: Copied swap retains the old engine without editing the live profile: v8-muscle
+PASS: Failed swap persistence rolls back identities, fluids and condition: v8-muscle
+PASS: Atomic swap retains singular wear/faults with valid exclusive ownership: v8-muscle
+PASS: Engine liquids move while old-engine supplies remain retained: v8-muscle
+PASS: Stale or invalid engine naming rejects without publication: v8-muscle
+PASS: Stored complete-set buying retains originals and leaves the source preview untouched: v8-muscle
+PASS: Stored singular reuse keeps incoming wear and outgoing actual faults: v8-muscle
+PASS: Incomplete engine preview reports missing hardware without recreating it: v8-muscle
+PASS: Engine shop supports an empty seeded market without inventing an offer
+PASS: Engine shop exposes seeded complete new/used engines
+PASS: Engine purchase cancellation preserves supply, cash and save bytes
+PASS: Engine purchase saves exact used descendants into storage and consumes the offer once
+PASS: Engines replace Build content with the shared full-screen frame
+PASS: Engine naming cancel keeps the exact attached engine and disk
+PASS: Unicode engine name is saved and replaces its displayed heading
+PASS: Confirmed detach stores exact engine descendants without changing the selected car
+PASS: Stored-engine singular replacement retains the actual worn/faulty original as a spare
+PASS: Swap previews the receiving car using shared dyno and stat comparison controls
+PASS: Swap cancellation retains both engines, resources and saved bytes
+PASS: Idle engine details reuse cached inspection and UI without rebuilding
+PASS: Compact engine view retains scrolling content and fixed actions
+PASS: F8 retains the named engine detail context
+PASS: One confirmed swap installs the named engine and retains the old assembly in storage
+PASS: Named assemblies return to the owned-engine grid
+PASS: Shared Back returns to Build after the engine grid
+PASS: An edited cart invalidates the captured swap without losing its pending purchases
+PASS: Combined paid cart and engine-swap save failure leaves the original profile untouched
+PASS: Combined confirmation charges the pending basket once, swaps and retains the removed engine
+PASS: Unprepared different-block checkout is rejected: city-three
+PASS: Reuse prepares a copied complete engine without automatic companion charges: city-three
+PASS: Manual missing required parts never dismantles the working engine: city-three / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: city-three /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: city-three /
+PASS: Failed prepared checkout preserves the complete original engine/resources: city-three
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: city-three /
+PASS: Unprepared different-block checkout is rejected: juniper-club
+PASS: Reuse prepares a copied complete engine without automatic companion charges: juniper-club
+PASS: Manual missing required parts never dismantles the working engine: juniper-club / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: juniper-club /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: juniper-club /
+PASS: Failed prepared checkout preserves the complete original engine/resources: juniper-club
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: juniper-club /
+PASS: Unprepared different-block checkout is rejected: juniper-economy
+PASS: Reuse prepares a copied complete engine without automatic companion charges: juniper-economy
+PASS: Manual missing required parts never dismantles the working engine: juniper-economy / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: juniper-economy /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: juniper-economy /
+PASS: Failed prepared checkout preserves the complete original engine/resources: juniper-economy
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: juniper-economy /
+PASS: Unprepared different-block checkout is rejected: kestrel-track
+PASS: Reuse prepares a copied complete engine without automatic companion charges: kestrel-track
+PASS: Manual missing required parts never dismantles the working engine: kestrel-track / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: kestrel-track /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: kestrel-track /
+PASS: Failed prepared checkout preserves the complete original engine/resources: kestrel-track
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: kestrel-track /
+PASS: Unprepared different-block checkout is rejected: rally-sedan
+PASS: Reuse prepares a copied complete engine without automatic companion charges: rally-sedan
+PASS: Manual missing required parts never dismantles the working engine: rally-sedan / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: rally-sedan /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: rally-sedan /
+PASS: Failed prepared checkout preserves the complete original engine/resources: rally-sedan
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: rally-sedan /
+PASS: Unprepared different-block checkout is rejected: sport-coupe
+PASS: Reuse prepares a copied complete engine without automatic companion charges: sport-coupe
+PASS: Manual missing required parts never dismantles the working engine: sport-coupe / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: sport-coupe /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: sport-coupe /
+PASS: Failed prepared checkout preserves the complete original engine/resources: sport-coupe
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: sport-coupe /
+PASS: Unprepared different-block checkout is rejected: starter-hatch
+PASS: Reuse prepares a copied complete engine without automatic companion charges: starter-hatch
+PASS: Manual missing required parts never dismantles the working engine: starter-hatch / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: starter-hatch /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: starter-hatch /
+PASS: Failed prepared checkout preserves the complete original engine/resources: starter-hatch
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: starter-hatch /
+PASS: Unprepared different-block checkout is rejected: super-v8
+PASS: Reuse prepares a copied complete engine without automatic companion charges: super-v8
+PASS: Manual missing required parts never dismantles the working engine: super-v8 / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: super-v8 /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: super-v8 /
+PASS: Failed prepared checkout preserves the complete original engine/resources: super-v8
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: super-v8 /
+PASS: Unprepared different-block checkout is rejected: timber-diesel
+PASS: Reuse prepares a copied complete engine without automatic companion charges: timber-diesel
+PASS: Manual missing required parts never dismantles the working engine: timber-diesel / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: timber-diesel /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: timber-diesel /
+PASS: Failed prepared checkout preserves the complete original engine/resources: timber-diesel
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: timber-diesel /
+PASS: Unprepared different-block checkout is rejected: timber-diesel-tow
+PASS: Reuse prepares a copied complete engine without automatic companion charges: timber-diesel-tow
+PASS: Manual missing required parts never dismantles the working engine: timber-diesel-tow / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: timber-diesel-tow /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: timber-diesel-tow /
+PASS: Failed prepared checkout preserves the complete original engine/resources: timber-diesel-tow
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: timber-diesel-tow /
+PASS: Unprepared different-block checkout is rejected: touring-six
+PASS: Reuse prepares a copied complete engine without automatic companion charges: touring-six
+PASS: Manual missing required parts never dismantles the working engine: touring-six / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: touring-six /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: touring-six /
+PASS: Failed prepared checkout preserves the complete original engine/resources: touring-six
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: touring-six /
+PASS: Unprepared different-block checkout is rejected: utility-pickup
+PASS: Reuse prepares a copied complete engine without automatic companion charges: utility-pickup
+PASS: Manual missing required parts never dismantles the working engine: utility-pickup / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: utility-pickup /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: utility-pickup /
+PASS: Failed prepared checkout preserves the complete original engine/resources: utility-pickup
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: utility-pickup /
+PASS: Unprepared different-block checkout is rejected: v8-muscle
+PASS: Reuse prepares a copied complete engine without automatic companion charges: v8-muscle
+PASS: Manual missing required parts never dismantles the working engine: v8-muscle / Required components / faults: Missing Crankshaft: build is incomplete.
+PASS: OEM preparation shows its cumulative package and scoped supporting rows: v8-muscle /
+PASS: Reuse stages an actual worn loose companion without a hidden purchase: v8-muscle /
+PASS: Failed prepared checkout preserves the complete original engine/resources: v8-muscle
+PASS: Prepared checkout replaces one block inside the same engine and stores its extra core: v8-muscle /
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1815 offers / 0 full comparisons / 0,00 ms / 10 cache hits
+PASS: Block installation opens a valid Reuse/Manual/OEM draft before cart mutation
+PASS: Manual omission blocks staging and explains the missing required component
+PASS: Stat information returns to the retained manual component choices
+PASS: OEM mode has a complete cumulative price and balance preview
+PASS: Block choices scroll within fixed actions at compact size
+PASS: Block preparation uses bounded shared 4K scaling
+PASS: Cancel retains engine, parts, money, fluids and disk across all preparation modes
+PASS: Add plan stages the validated block without applying or saving it
+PASS: Prepared block participates in normal cumulative cart comparison and checkout
+PASS: Prepared inline quantity edits remain valid and retain the reviewed installation
+PASS: Editing a prepared core reopens component review rather than bypassing it
+PASS: One checkout installs the block inside the retained current engine
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 72 offers / 0 full comparisons / 0,00 ms / 21 cache hits
+PASS: Owned block Move uses the same preparation before staging
+PASS: Cancelling owned block preparation leaves the current engine intact
+PASS: OEM companions stage as one identified block plan
+PASS: Explicit companion edits become independent cart choices
+PASS: Removing a core clears only its automatic companions without applying the plan
+Checks: 496 / runtime errors: 0

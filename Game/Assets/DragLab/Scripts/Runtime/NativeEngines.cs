@@ -11,7 +11,7 @@ namespace DragLab.Runtime
 {
     internal sealed partial class NativeMenuShell
     {
-        bool enginePageOpen;string engineDetailId,engineViewKey,engineReferenceId,engineSearch="";PlayerProfile engineViewProfile;
+        bool engineMarketOpen;bool enginePageOpen;string engineDetailId,engineViewKey,engineReferenceId,engineSearch="";PlayerProfile engineViewProfile;
         VisualElement enginePage,engineContent,engineActions;ScrollView engineScroll;Label engineTitle;Button engineRename;
         readonly List<RacingSurface> engineSurfaces=new List<RacingSurface>();readonly Dictionary<string,bool> engineCollapsed=new Dictionary<string,bool>();
         internal int EngineViewBuildCount{get;private set;}
@@ -34,7 +34,7 @@ namespace DragLab.Runtime
         {
             if(route!="Parts"&&route!="Settings")enginePageOpen=false;
             enginePage.EnableInClassList("hidden",route!="Parts"||!enginePageOpen);if(route!="Parts"||!enginePageOpen)return;
-            string key=game.Profile.revision+"/"+engineDetailId+"/"+engineReferenceId+"/"+JsonUtility.ToJson(SharedUnitSettings.Current)+"/"+JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()});
+            string key=game.Profile.revision+"/"+engineMarketOpen+"/"+engineDetailId+"/"+engineReferenceId+"/"+JsonUtility.ToJson(SharedUnitSettings.Current)+"/"+JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()});
             if(engineViewProfile==game.Profile&&engineViewKey==key)return;engineViewProfile=game.Profile;engineViewKey=key;EngineViewBuildCount++;
             foreach(var s in engineSurfaces)surfaces.Remove(s);engineSurfaces.Clear();var offset=engineScroll.scrollOffset;engineContent.Clear();engineActions.Clear();
             var engine=game.Profile.engines.Find(e=>e.instanceId==engineDetailId);if(engineDetailId!=null&&engine==null)engineDetailId=null;
@@ -43,6 +43,8 @@ namespace DragLab.Runtime
         }
         void BuildEngineGrid()
         {
+            EngineButton(engineContent,"engineMarketToggle",engineMarketOpen?"Owned engines":"Engine shop",()=>{engineMarketOpen=!engineMarketOpen;engineViewKey=null;engineScroll.scrollOffset=Vector2.zero;Refresh();});
+            if(engineMarketOpen){BuildEngineMarket();return;}
             var search=new TextField{name="engineSearch",value=engineSearch,maxLength=128};search.AddToClassList("setting-text");search.AddToClassList("owned-car-search");engineContent.Add(search);search.tooltip="Search engine names / models";
             var grid=new VisualElement{name="engineGrid"};grid.AddToClassList("owned-cars-grid");engineContent.Add(grid);
             foreach(var engine in game.Profile.engines.OrderBy(e=>AssemblyOperations.DisplayName(game.Profile,e),StringComparer.OrdinalIgnoreCase)){
@@ -55,6 +57,40 @@ namespace DragLab.Runtime
             }
             void Filter(){foreach(var e in game.Profile.engines){var name=AssemblyOperations.DisplayName(game.Profile,e)+" "+game.Profile.catalog.Spec(e.vehicleDefinitionId).displayName;grid.Q("engineCard:"+e.instanceId).EnableInClassList("hidden",!name.ToLowerInvariant().Contains(engineSearch.Trim().ToLowerInvariant()));}}
             search.RegisterValueChangedCallback(e=>{engineSearch=e.newValue;Filter();});Filter();if(game.Profile.engines.Count==0)engineContent.Add(new Label("No owned engines"));
+        }
+        void BuildEngineMarket()
+        {
+            var p=game.Profile;
+            engineContent.Add(new Label("Stock refreshes with the dealership · every 3 completed races"));
+            var search=new TextField{name="engineMarketSearch",value=engineSearch,maxLength=128};search.AddToClassList("setting-text");engineContent.Add(search);
+            var grid=new VisualElement{name="engineMarketGrid"};grid.AddToClassList("owned-cars-grid");engineContent.Add(grid);
+            foreach(var offer in p.inventory.market.engines.Where(o=>!o.used||o.quantity>0)){
+                string id=offer.id;var spec=p.catalog.Spec(offer.model);int price=PartsMarket.EnginePrice(offer);
+                var card=new Button(()=>OpenEngineMarketPurchase(id)){name="engineOffer:"+id,focusable=false,tabIndex=-1};card.AddToClassList("owned-car-card");card.AddToClassList("clickable-panel");grid.Add(card);EngineSurface(card,RacingSurface.Kind.Panel);
+                card.Add(new Label(spec.displayName+" · OEM engine"){enableRichText=false});
+                card.Add(new Label((offer.used?"Used":"New")+" · "+offer.parts.Average(i=>i.condition.health).ToString("P0")+" condition · "+offer.parts.Count+" parts"));
+                card.Add(new Label(offer.quantity>0?offer.quantity+" in stock":"Express delivery · +10%"));card.Add(new Label(DisplayUnits.Money(price)));
+                card.tooltip="Buy into storage; swap or prepare later. Chassis compatibility is checked at installation.";
+                card.Query<VisualElement>().ForEach(e=>{if(e!=card)e.pickingMode=PickingMode.Ignore;});
+            }
+            void Filter(){foreach(var o in p.inventory.market.engines){var card=grid.Q("engineOffer:"+o.id);if(card!=null)card.EnableInClassList("hidden",!(p.catalog.Spec(o.model).displayName+" "+(o.used?"used":"new")).ToLowerInvariant().Contains(engineSearch.Trim().ToLowerInvariant()));}}
+            search.RegisterValueChangedCallback(e=>{engineSearch=e.newValue;Filter();});Filter();if(grid.childCount==0)engineContent.Add(new Label("No engines in stock"));
+        }
+        void OpenEngineMarketPurchase(string id)
+        {
+            var offer=game.Profile.inventory.market.engines.Find(o=>o.id==id);if(offer==null)return;
+            long revision=game.Profile.revision;int price=PartsMarket.EnginePrice(offer);string snapshot=JsonUtility.ToJson(offer);
+            var error=new Label{name="enginePurchaseError",enableRichText=false};error.AddToClassList("car-critical");bool valid=true;
+            try{PartsMarket.BuyEngine(EngineWorkshop.Copy(game.Profile),id,price);}catch(Exception e){valid=false;error.text=e.Message;}
+            OpenDialog("Buy engine",DisplayUnits.Money(price)+" · Balance "+DisplayUnits.Money(game.Profile.cash)+(offer.quantity==0?" · Express delivery included (+10%)":""),new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Buy",()=>{
+                if(game.CartCount>0){error.text="Checkout or clear the cart first.";return;}
+                if(!game.CommitEngineAction(revision,p=>{var current=p.inventory.market.engines.Find(o=>o.id==id);if(current==null||!SnapshotEquality.Serialized(snapshot,current))throw new InvalidOperationException("Engine offer changed. Review again.");PartsMarket.BuyEngine(p,id,price);})){error.text=game.NativeNotice;return;}
+                CloseDialog();engineViewKey=null;partsStateKey=null;Refresh();
+            },true)},populate:content=>{
+                content.Add(new Label(game.Profile.catalog.Spec(offer.model).displayName+" · stock configuration · store in garage"){enableRichText=false});
+                content.Add(new Label("Oil "+offer.engine.fluids.oilLitres.ToString("0.##")+" L · coolant "+offer.engine.fluids.coolantLitres.ToString("0.##")+" L"));
+                foreach(var section in offer.parts.GroupBy(i=>NativePartBrowser.Section(game.Profile.catalog.Find(i.definitionId).category))){content.Add(new Label(NativePartBrowser.SectionNames[(int)section.Key]));foreach(var item in section)content.Add(new Label(game.Profile.catalog.Find(item.definitionId).name+" · "+item.condition.health.ToString("P0")){enableRichText=false});}content.Add(error);
+            });root.Q<Button>("dialogBuy").SetEnabled(valid&&game.CartCount==0);ExcludeTabTraversal();
         }
         void OpenEngineRename()
         {
@@ -84,7 +120,7 @@ namespace DragLab.Runtime
             if(reference!=null)engineContent.Add(new Label("Preview in "+VehicleCollection.DisplayName(p.catalog,reference)){enableRichText=false});
             if(error!=null){var unavailable=new Label(error){enableRichText=false};unavailable.AddToClassList("car-critical");engineContent.Add(unavailable);}else EngineComparison(engineContent,current,proposed,"engine",EngineSurface,healthy:healthy);
             if(proposed!=null)WarningButton(actions,"engineWarnings",proposed.warnings.ToArray(),()=>OpenCombinedWarnings(current?.warnings.ToArray()??Array.Empty<SetupWarning>(),proposed.warnings.ToArray(),current!=null),EngineSurface);
-            var missing=EngineWorkshop.Missing(p,engine);if(missing.Length>0){engineContent.Add(new Label("Missing: "+string.Join(" · ",missing.Select(def=>PartSemantics.Friendly(p.catalog.Find(def).category.ToString())))));if(stored){int price=missing.Sum(def=>InventoryPricing.NewSet(p.catalog.Find(def)));EngineButton(engineContent,"engineBuyMissing","Buy missing OEM · "+DisplayUnits.Money(price),()=>ConfirmEngineAction("Buy missing OEM parts",id,q=>{if(EngineWorkshop.Missing(q,q.engines.Find(e=>e.instanceId==id)).Sum(def=>InventoryPricing.NewSet(q.catalog.Find(def)))!=price)throw new InvalidOperationException("Required parts or prices changed.");foreach(string def in missing)EngineWorkshop.BuyPart(q,id,def,InventoryPricing.NewSet(q.catalog.Find(def)));},DisplayUnits.Money(price)+" · Existing parts and fluids are retained."),true);}}
+            var missing=EngineWorkshop.Missing(p,engine);if(missing.Length>0){engineContent.Add(new Label("Missing: "+string.Join(" · ",missing.Select(def=>PartSemantics.Friendly(p.catalog.Find(def).category.ToString())))));if(stored){int price=EngineWorkshop.MissingPrice(p,engine);EngineButton(engineContent,"engineBuyMissing","Buy missing OEM · "+DisplayUnits.Money(price),()=>ConfirmEngineAction("Buy missing OEM parts",id,q=>{if(EngineWorkshop.MissingPrice(q,q.engines.Find(e=>e.instanceId==id))!=price)throw new InvalidOperationException("Required parts or prices changed.");foreach(string def in missing)EngineWorkshop.BuyPart(q,id,def,PartsMarket.Quote(q,q.catalog.Find(def),EngineWorkshop.Count(q,q.engines.Find(e=>e.instanceId==id),q.catalog.Find(def))).cost);},DisplayUnits.Money(price)+" · Existing parts and fluids are retained."),true);}}
             foreach(var section in EngineWorkshop.Parts(p,engine).GroupBy(part=>NativePartBrowser.Section(p.catalog.Find(part.definitionId).category))){
                 var body=new VisualElement();var toggle=EngineButton(engineContent,"engineGroup:"+section.Key,NativePartBrowser.SectionNames[(int)section.Key]+" · "+section.Count(),()=>body.EnableInClassList("hidden",!body.ClassListContains("hidden")));body.AddToClassList("hidden");engineContent.Add(body);
                 foreach(var part in section){string partId=part.instanceId;var row=new VisualElement();row.AddToClassList("warning-item");body.Add(row);row.Add(new Label(p.catalog.Find(part.definitionId).name+" · "+part.condition.health.ToString("P0")+(part.condition.failed?" · FAILED":"")){enableRichText=false});
@@ -130,7 +166,7 @@ namespace DragLab.Runtime
                 foreach(var b in content.Query<Button>().ToList().Where(b=>b.name.StartsWith("enginePartCategory:")))b.Q<Label>().text=PartSemantics.Friendly(b.name.Substring("enginePartCategory:".Length));
                 choices=new VisualElement();content.Add(choices);update=()=>{choices.Clear();
                     foreach(var part in game.Profile.parts.Where(i=>i.location==PartLocation.Inventory&&game.Profile.catalog.Find(i.definitionId).category==category&&game.Profile.catalog.Fits(game.Profile.catalog.Spec(engine.vehicleDefinitionId),game.Profile.catalog.Find(i.definitionId)))){string partId=part.instanceId;var b=new Button(()=>ConfirmEngineAction("Install owned part",id,q=>AssemblyOperations.InstallPart(q,id,partId),game.Profile.catalog.Find(part.definitionId).name+" · "+part.condition.health.ToString("P0")+" · Removed part stays in storage")){name="engineFit:"+partId,text="Owned · "+game.Profile.catalog.Find(part.definitionId).name+" · "+part.condition.health.ToString("P0"),focusable=false,tabIndex=-1};b.AddToClassList("action-button");b.AddToClassList("inventory-target");choices.Add(b);AddSurface(b,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(b.Q<RacingSurface>());}
-                    foreach(var definition in game.Profile.catalog.parts.Where(d=>d.category==category&&game.Profile.catalog.Fits(game.Profile.catalog.Spec(engine.vehicleDefinitionId),d)).OrderBy(d=>d.price)){string def=definition.id;int price=InventoryPricing.NewSet(definition);int count=EngineWorkshop.Count(game.Profile,engine,definition);var b=new Button(()=>ConfirmEngineAction("Buy & install complete set",id,q=>EngineWorkshop.BuyPart(q,id,def,price),definition.name+" · "+count+" units · "+DisplayUnits.Money(price)+" · Removed part stays in storage")){name="engineBuy:"+def,text=definition.name+" · "+count+" units · "+DisplayUnits.Money(price),focusable=false,tabIndex=-1};b.AddToClassList("action-button");b.AddToClassList("inventory-target");b.SetEnabled(game.Profile.cash>=price&&game.Profile.reputation>=definition.reputationRequired);choices.Add(b);AddSurface(b,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(b.Q<RacingSurface>());}
+                    foreach(var definition in game.Profile.catalog.parts.Where(d=>d.category==category&&game.Profile.catalog.Fits(game.Profile.catalog.Spec(engine.vehicleDefinitionId),d)).OrderBy(d=>d.price)){string def=definition.id;int price=PartsMarket.Quote(game.Profile,definition,EngineWorkshop.Count(game.Profile,engine,definition)).cost;int count=EngineWorkshop.Count(game.Profile,engine,definition);var b=new Button(()=>ConfirmEngineAction("Buy & install complete set",id,q=>EngineWorkshop.BuyPart(q,id,def,price),definition.name+" · "+count+" units · "+DisplayUnits.Money(price)+" · Removed part stays in storage")){name="engineBuy:"+def,text=definition.name+" · "+count+" units · "+DisplayUnits.Money(price),focusable=false,tabIndex=-1};b.AddToClassList("action-button");b.AddToClassList("inventory-target");b.SetEnabled(game.Profile.cash>=price&&game.Profile.reputation>=definition.reputationRequired);choices.Add(b);AddSurface(b,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(b.Q<RacingSurface>());}
                 };
             });update();ExcludeTabTraversal();
         }
@@ -138,7 +174,7 @@ namespace DragLab.Runtime
         {
             var part=game.Profile.parts.Find(i=>i.instanceId==partId);OpenDialog("Individual components",null,new[]{new DialogAction("Close",CloseDialog)},populate:content=>{
                 foreach(var element in part.condition.elements){string member=element.id;var row=new VisualElement();row.AddToClassList("warning-item");content.Add(row);row.Add(new Label(InventoryUnits.PositionLabel(game.Profile,null,part.definitionId,member)+" · "+element.health.ToString("P0")+" · "+PartSemantics.Friendly(element.fault.ToString())+" · "+game.Profile.catalog.Find(part.definitionId).name){enableRichText=false});
-                    int price=EngineElementService.Price(game.Profile.catalog.Find(part.definitionId),part.condition);var buy=new Button(()=>ConfirmEngineAction("Replace individual component",engineId,q=>{var pack=q.parts.Find(i=>i.instanceId==partId);if(EngineElementService.Price(q.catalog.Find(pack.definitionId),pack.condition)!=price)throw new InvalidOperationException("Price changed.");EngineElementService.ReplaceStored(q,engineId,partId,member);},InventoryUnits.PositionLabel(game.Profile,null,part.definitionId,member)+" · "+DisplayUnits.Money(price)+" · Retain removed component")){name="engineMemberBuy:"+member,text="Replace · "+DisplayUnits.Money(price),focusable=false,tabIndex=-1};buy.AddToClassList("action-button");row.Add(buy);AddSurface(buy,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(buy.Q<RacingSurface>());
+                    int price=PartsMarket.Quote(game.Profile,game.Profile.catalog.Find(part.definitionId),part.condition.elements.Length,true).cost;var buy=new Button(()=>ConfirmEngineAction("Replace individual component",engineId,q=>{var pack=q.parts.Find(i=>i.instanceId==partId);if(PartsMarket.Quote(q,q.catalog.Find(pack.definitionId),pack.condition.elements.Length,true).cost!=price)throw new InvalidOperationException("Price changed.");EngineElementService.ReplaceStored(q,engineId,partId,member);},InventoryUnits.PositionLabel(game.Profile,null,part.definitionId,member)+" · "+DisplayUnits.Money(price)+" · Retain removed component")){name="engineMemberBuy:"+member,text="Replace · "+DisplayUnits.Money(price),focusable=false,tabIndex=-1};buy.AddToClassList("action-button");row.Add(buy);AddSurface(buy,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(buy.Q<RacingSurface>());
                     foreach(var spare in game.Profile.looseEngineElements.Where(u=>u.definitionId==part.definitionId&&u.element.role==element.role&&!u.element.Failed)){string spareId=spare.element.id;var reuse=new Button(()=>ConfirmEngineAction("Reuse individual component",engineId,q=>EngineElementService.ReplaceStored(q,engineId,partId,member,spareId),spare.element.health.ToString("P0")+" · Retain wear and removed component")){name="engineMemberReuse:"+member+":"+spareId,text="Reuse spare · "+spare.element.health.ToString("P0"),focusable=false,tabIndex=-1};reuse.AddToClassList("action-button");row.Add(reuse);AddSurface(reuse,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(reuse.Q<RacingSurface>());}
                 }
             });ExcludeTabTraversal();

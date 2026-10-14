@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using System.Collections.Concurrent;
 using UnityEngine;
 namespace DragLab.Domain.Mechanics
 {
@@ -8,6 +9,8 @@ namespace DragLab.Domain.Mechanics
     // Compare the captured serialized state rather than a hash of its new decimal spelling.
     public static class SnapshotEquality
     {
+        static readonly ConcurrentDictionary<Type,FieldInfo[]> fields=new ConcurrentDictionary<Type,FieldInfo[]>();
+        static FieldInfo[] Fields(Type type)=>fields.GetOrAdd(type,t=>Array.FindAll(t.GetFields(BindingFlags.Public|BindingFlags.Instance),f=>!Attribute.IsDefined(f,typeof(NonSerializedAttribute))));
         public static bool Profile(string json,PlayerProfile current,MechanicalCatalog catalog)
         {
             if(JsonUtility.ToJson(current)==json)return true;
@@ -24,7 +27,7 @@ namespace DragLab.Domain.Mechanics
             }
             if(type.IsPrimitive||type.IsEnum||type==typeof(string)||type==typeof(decimal))return a.Equals(b);
             if(a is IList al&&b is IList bl){if(al.Count!=bl.Count)return false;for(int i=0;i<al.Count;i++)if(!Same(al[i],bl[i],field))return false;return true;}
-            foreach(var f in type.GetFields(BindingFlags.Public|BindingFlags.Instance))if(!Attribute.IsDefined(f,typeof(NonSerializedAttribute))&&!Same(f.GetValue(a),f.GetValue(b),f.Name))return false;return true;
+            foreach(var f in Fields(type))if(!Same(f.GetValue(a),f.GetValue(b),f.Name))return false;return true;
         }
     }
 }

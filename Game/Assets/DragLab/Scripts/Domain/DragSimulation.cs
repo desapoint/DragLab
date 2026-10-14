@@ -317,6 +317,7 @@ namespace DragLab.Domain
         public bool shutdownBrakeAssist = true;
         public WearMode wearMode = WearMode.Full;
         public FuelUsageMode fuelUsage = FuelUsageMode.Realistic;
+        public int guaranteedFittingParts = 5;
         public Mechanics.ConsumptionMode fluidDepletion=Mechanics.ConsumptionMode.Realistic,fluidAging=Mechanics.ConsumptionMode.Realistic;
         public Mechanics.ConditionEffectMode conditionEffects=Mechanics.ConditionEffectMode.Full;
         public Mechanics.ServiceAssist serviceAssist=Mechanics.ServiceAssist.Manual;
@@ -334,6 +335,7 @@ namespace DragLab.Domain
         {
             simulationDifficulty = preset;
             if (preset == SimulationDifficulty.Custom) return;
+            guaranteedFittingParts=preset==SimulationDifficulty.Arcade?10:preset==SimulationDifficulty.Balanced?5:0;
             wearMode = preset == SimulationDifficulty.Arcade ? WearMode.None : preset == SimulationDifficulty.Balanced ? WearMode.Partial : WearMode.Full;
             fuelUsage = preset == SimulationDifficulty.Arcade ? FuelUsageMode.None : preset == SimulationDifficulty.Balanced ? FuelUsageMode.Reduced : FuelUsageMode.Realistic;
             fluidDepletion=fluidAging=preset==SimulationDifficulty.Arcade?Mechanics.ConsumptionMode.None:preset==SimulationDifficulty.Balanced?Mechanics.ConsumptionMode.Reduced:Mechanics.ConsumptionMode.Realistic;

@@ -49,7 +49,7 @@ namespace DragLab.Editor
                 var binding=setup.SelectedCar.installed.slots.Find(s=>s.slot=="Pistons");string sold=binding.partInstanceId;
                 setup=commit(setup,q=>{PartOperations.Remove(q,carId,PartCategory.Pistons);PartOperations.Sell(q,catalog,sold);});
                 string before=JsonUtility.ToJson(setup);var plan=SavedSetups.Preview(setup,carId,blueprint);
-                check(plan.Missing==1&&plan.cost==catalog.Find(catalog.Id(model,PartCategory.Pistons)).price&&before==JsonUtility.ToJson(setup),"Sold setup item produces nonmutating missing purchase quote: "+model);
+                check(plan.Missing==1&&plan.cost==PartsMarket.Quote(setup,catalog.Find(catalog.Id(model,PartCategory.Pistons)),InventoryUnits.Count(setup,setup.SelectedCar,catalog.Find(catalog.Id(model,PartCategory.Pistons)))).cost&&before==JsonUtility.ToJson(setup),"Sold setup item produces nonmutating missing purchase quote: "+model);
                 rejects(()=>SavedSetups.Apply(setup,carId,blueprint,setup.revision,false));
                 int cash=setup.cash;setup=commit(setup,q=>SavedSetups.Apply(q,carId,blueprint,q.revision,true));
                 check(setup.cash==cash-plan.cost&&setup.parts.All(i=>i.instanceId!=sold)&&MechanicsOwnership.Resolve(setup,setup.SelectedCar,catalog).Drivable,"Missing-part apply buys new identity and restores working setup atomically: "+model);
@@ -94,8 +94,8 @@ namespace DragLab.Editor
             efi=commit(efi,q=>SavedSetups.Apply(q,efiCar,injected,q.revision,true));check(MechanicsOwnership.Resolve(efi,efi.SelectedCar,catalog).spec.engineBehavior.fueling==FuelSystem.Injection&&MechanicsOwnership.Resolve(efi,efi.SelectedCar,catalog).Drivable,"All missing EFI dependencies apply together as a working engine.");
             var looseOwner=fresh("city-three");AssemblyOperations.Detach(looseOwner,looseOwner.SelectedCar.instanceId);looseOwner.cars.Add(new OwnedCar{vehicleId="v8-muscle"});MechanicsOwnership.Ensure(looseOwner,catalog);
             string v8Id=looseOwner.cars.Last().instanceId;string looseV8=PartOperations.Buy(looseOwner,catalog,v8Id,catalog.Id("v8-muscle",PartCategory.Pistons),false);MechanicsOwnership.Ensure(looseOwner,catalog);
-            check((looseOwner.parts.Find(i=>i.instanceId==looseV8).condition.elements??new EngineElement[0]).Length==0,"Loose inventory is not treated as engine-less chassis descendants with the wrong cylinder count.");
-            PartOperations.Install(looseOwner,catalog,v8Id,looseV8);MechanicsOwnership.Ensure(looseOwner,catalog);check(looseOwner.parts.Find(i=>i.instanceId==looseV8).condition.elements.Length==8,"Fresh V8 piston pack initializes eight elements only on its real owner.");
+            check((looseOwner.parts.Find(i=>i.instanceId==looseV8).condition.elements??new EngineElement[0]).Length==8,"New loose V8 kits contain the purchased eight members even when another owned chassis has no engine.");
+            PartOperations.Install(looseOwner,catalog,v8Id,looseV8);MechanicsOwnership.Ensure(looseOwner,catalog);check(looseOwner.parts.Find(i=>i.instanceId==looseV8).condition.elements.Length==8,"The eight purchased V8 members remain fitted on their real owner.");
             check(catalog.Fits(catalog.Spec("sport-coupe"),catalog.Find(catalog.Id("starter-hatch",PartCategory.FuelSystem)))&&!catalog.Fits(catalog.Spec("touring-six"),catalog.Find(catalog.Id("starter-hatch",PartCategory.FuelSystem)))&&!catalog.Fits(catalog.Spec("city-three"),catalog.Find(catalog.Id("starter-hatch",PartCategory.FuelSystem))),"Four-cylinder injector packs remain shared, but cannot silently supply three/six-cylinder engines.");
             // Actual file migration from the accepted 3A schema; no live player profile is read.
             string file=Path.Combine(folder,"migration/profile-v1.json");Directory.CreateDirectory(Path.GetDirectoryName(file));var old=fresh("starter-hatch");old.saveVersion=3;string legacy=JsonUtility.ToJson(old);File.WriteAllText(file,legacy);
@@ -103,10 +103,10 @@ namespace DragLab.Editor
             try {
                 var loaded=ProfileStore.Load();check(loaded.saveVersion==MechanicsOwnership.SaveVersion&&loaded.SelectedCar.instanceId==old.SelectedCar.instanceId&&File.Exists(file+".legacy-v3"),"Schema-3 migration persists original IDs and retains original backup.");
                 string engine=AssemblyOperations.Detach(loaded,loaded.SelectedCar.instanceId);SavedSetups.Save(loaded,loaded.SelectedCar.instanceId,"Partial chassis",SetupScope.TuneOnly);ProfileStore.Save(loaded);var again=ProfileStore.Load();check(again.engines.Find(e=>e.instanceId==engine).slots.Count>0&&again.savedSetups.Count==1&&string.IsNullOrEmpty(again.SelectedCar.engineAssemblyId),"Disk reload retains stored engine, partial chassis and named tune.");
-                var reset=again.RestartKeepingPreferences(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(reset,catalog);check(reset.savedSetups.Count==0&&reset.engines.Count==1&&reset.cars.Count==1,"Progress reset clears configuration blueprints and stored assemblies.");
+                var reset=again.RestartKeepingPreferences(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(reset,catalog);check(reset.savedSetups.Count==0&&reset.engines.Count==0&&reset.cars.Count==0&&reset.firstPurchasePending,"Progress reset clears configuration blueprints and stored assemblies.");
             } finally { ProfileStore.VerificationPath=null; }
             int regressions=OwnershipVerification.Run(root)+InventoryVerification.Run(root);
-            File.WriteAllText(Path.Combine(folder,"verification.txt"),"Model "+MechanicsSchema.Model+" / player schema 4\n"+log+"Checks: "+count+" / prior ownership/inventory: "+regressions+" / total "+(count+regressions)+"\n");Debug.Log("DRAGLAB ASSEMBLY SETUP PASS "+(count+regressions));
+            File.WriteAllText(Path.Combine(folder,"verification.txt"),"Model "+MechanicsSchema.Model+" / player schema "+MechanicsOwnership.SaveVersion+"\n"+log+"Checks: "+count+" / prior ownership/inventory: "+regressions+" / total "+(count+regressions)+"\n");Debug.Log("DRAGLAB ASSEMBLY SETUP PASS "+(count+regressions));
         }
     }
 }

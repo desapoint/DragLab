@@ -61,7 +61,7 @@ namespace DragLab.Domain.Mechanics
             if (engine.slots.Any(s => s.slot == d.category.ToString())) RemovePart(p, engineId, d.category);
             item.location = PartLocation.Assembly; item.ownerId = engineId; item.slot = d.category.ToString();
             engine.slots.Add(new SlotBinding { slot = item.slot, partInstanceId = item.instanceId });
-            EngineElements.Ensure(p.catalog.Spec(engine.vehicleDefinitionId), d, item);
+            EngineElements.Ensure(p.catalog.Resolve(engine.vehicleDefinitionId,Definitions(p,engine),engine.tune).spec, d, item);
         }
         internal static PartCategory Parse(string slot) { return (PartCategory)Enum.Parse(typeof(PartCategory), slot); }
         public static Dictionary<PartCategory, string> Definitions(PlayerProfile p, EngineAssemblyInstance engine)

@@ -60,7 +60,7 @@ namespace DragLab.Editor
                         check(p.looseEngineElements.Count==oldCount+1&&p.looseEngineElements.Last().element.role==role,label+offer.category+" / "+role+" buys independently without a fitted target");
                     }
                 }
-                string state=JsonUtility.ToJson(p);var loaded=JsonUtility.FromJson<PlayerProfile>(state);MechanicsOwnership.Ensure(loaded,cat);check(JsonUtility.ToJson(loaded)==state,label+"Storage/dealer/unit state reloads without healing or rewriting identities");
+                string state=JsonUtility.ToJson(p);var loaded=JsonUtility.FromJson<PlayerProfile>(state);MechanicsOwnership.Ensure(loaded,cat);check(SnapshotEquality.Profile(state,loaded,cat),label+"Storage/dealer/unit state reloads without healing or rewriting identities");Debug.Log("INVENTORY MODEL PASS "+vehicle.spec.id);
             }
             var owner=PlayerProfile.New(now);MechanicsOwnership.Ensure(owner,cat);owner.cash=100000;owner.reputation=100;var target=owner.SelectedCar;
             string expensive=PartOperations.Buy(owner,cat,target.instanceId,cat.Id(target.vehicleId,PartCategory.Pistons,1),false);owner.cash=0;

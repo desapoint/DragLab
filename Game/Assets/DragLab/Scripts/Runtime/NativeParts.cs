@@ -113,7 +113,7 @@ namespace DragLab.Runtime
             double health=e.Unit?.element.health??e.Part?.condition.health??1;bool failed=e.Unit!=null?e.Unit.element.Failed:e.Part?.condition.failed??false;
             labels[5].text=e.Source+" · "+PartSemantics.Friendly(e.Definition.category.ToString())+(PartSemantics.Wears(e.Definition.category)?" · "+(failed?"FAILED":health.ToString("P0")):"");labels[5].EnableInClassList("car-critical",failed);
             labels[6].text=(e.Price.HasValue?DisplayUnits.Money(e.Price.Value):"—")+(e.Definition.category==PartCategory.Tires||e.Definition.category==PartCategory.Wheels?e.Unit==null?" / set of 4":e.Definition.category==PartCategory.Wheels?" / wheel":" / tire":"")+" · "+(e.Definition.tuning!=PartTuningOptions.None||e.Definition.camTimingAdjustable?"Adjustable":"Fixed");
-            labels[7].text=e.Unit!=null&&e.Change[3].HasValue?"Replacement condition "+PartDelta(e,3):"";
+            labels[7].text=e.Source=="New"?e.StockUnits+" units in stock"+(e.RequiresExpress?" · Express":""):e.Unit!=null&&e.Change[3].HasValue?"Replacement condition "+PartDelta(e,3):"";
 
         }
         void ApplyPartQuery()
@@ -171,6 +171,7 @@ namespace DragLab.Runtime
                 double health=e.Unit?.element.health??e.Part?.condition.health??1;bool failed=e.Unit!=null?e.Unit.element.Failed:e.Part?.condition.failed??false;
                 PartDetailFact(facts,"Part condition",failed?"Failed · "+health.ToString("P0"):health.ToString("P0"),failed||health<=.25?"car-critical":health<=.5?"car-warning":"car-ready");
             }
+            if(e.Source=="New"){var supply=PartsMarket.Quote(game.Profile,e.Definition,InventoryUnits.Count(game.Profile,game.Profile.SelectedCar,e.Definition),PurchaseDraft(offer).Individual);PartDetailFact(facts,"Supply",PartsMarket.Available(game.Profile,e.Definition)+" units · "+supply.Summary);}
             PartDetailFact(facts,"Adjustment",e.Definition.tuning!=PartTuningOptions.None||e.Definition.camTimingAdjustable?"Adjustable":"Fixed");
             var description=new Label(PartDescription(e.Definition)){name="partDescription",enableRichText=false};description.AddToClassList("part-description");facts.Add(description);description.EnableInClassList("hidden",string.IsNullOrWhiteSpace(description.text));
             var specifications=new VisualElement{name="partKeySpecs"};specifications.AddToClassList("part-key-specs");partsDetailScroll.Add(specifications);
@@ -189,7 +190,7 @@ namespace DragLab.Runtime
             int queued=game.CartLines.Where(l=>e.Source=="New"?l.definitionId==e.Definition.id&&l.action==(e.Unit==null?CartAction.NewSet:CartAction.NewUnits)&&l.role==e.Unit?.element.role:l.assetId==e.AssetId).Sum(l=>l.quantity);
             if(queued>0||e.Source=="New"){var queue=new Label(queued>0?"Queued × "+queued:""){name="partQueued"};queue.AddToClassList("part-queued");actions.Add(queue);}
             if(game.PartsPage!="Installed"){
-                if(e.Source=="New"||e.Source=="Used")PartButton(actions,"partAdd","Purchase",()=>StagePurchase(offer,false),true,true).SetEnabled(fitting&&game.Profile.reputation>=e.Definition.reputationRequired);
+                if(e.Source=="New"||e.Source=="Used")PartButton(actions,"partAdd","Purchase",()=>StagePurchase(offer,false),true,true).SetEnabled(game.Profile.reputation>=e.Definition.reputationRequired&&PartsMarket.FitsAny(game.Profile,e.Definition));
                 if(e.Source!="New"&&e.Source!="Used"){var fit=PartButton(actions,"partPlanInstall",e.Unit!=null&&e.Source=="Owned"?"Install unit":e.Source=="New"||e.Source=="Used"?"Add & install":"Plan install",()=>{
                     if(game.NativeBlockPreparationPending(e.Definition)){OpenBlockPreparation(e);return;}
                     if(e.Unit!=null&&e.Source=="Owned"){long revision=game.Profile.revision;OpenDialog("Install unit?",partsBrowser.PositionLabel(e,e.Position),new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Install",()=>{if(game.InstallNativeUnit(e.Unit.element.id,e.Position,revision)){CloseDialog();partsStateKey=null;}else root.Q<ScrollView>("modalContent").Add(new Label(game.NativeNotice));},true)});}

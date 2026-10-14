@@ -17,7 +17,7 @@ namespace DragLab.Runtime
             int n=Selected.spec.sound.cylinders;serviceCylinder=Math.Min(serviceCylinder,n-1);serviceCylinder=GUILayout.SelectionGrid(serviceCylinder,Enumerable.Range(1,n).Select(i=>"Cylinder "+i).ToArray(),4);
             foreach(var e in elements.Where(e=>e.cylinder==serviceCylinder||e.cylinder<0)){
                 GUILayout.Label(e.role+(e.valve>=0?" "+(e.valve+1):"")+" / "+e.health.ToString("P0")+" / "+e.fault+(e.fault!=ElementFault.None?" "+e.severity.ToString("P0"):""));
-                string car=Build.instanceId,part=item.instanceId,element=e.id;int cost=EngineElementService.Price(d,item.condition);bool enabled=GUI.enabled;GUI.enabled=enabled&&profile.cash>=cost&&Build.engineRebuild==null;
+                string car=Build.instanceId,part=item.instanceId,element=e.id;int cost=PartsMarket.Quote(profile,d.category==PartCategory.Wheels?profile.catalog.Find(WheelFitments.DefinitionId(item,Array.IndexOf(elements,e))):d,elements.Length,true).cost;bool enabled=GUI.enabled;GUI.enabled=enabled&&profile.cash>=cost&&Build.engineRebuild==null;
                 if(PartButton("element-new:"+element,"Replace this individual component / " + DisplayUnits.Money(cost)+" provisional"))QueuePayment(new PaymentRequest{kind=PaymentKind.ElementNew,carId=car,targetId=part,auxiliaryId=element});GUI.enabled=enabled;
                 foreach(var spare in profile.looseEngineElements.Where(l=>l.definitionId==item.definitionId&&l.element.role==e.role&&!l.element.Failed)) {string id=spare.element.id;if(PartButton("element-spare:"+element+":"+id,"Reuse individual spare / "+spare.element.health.ToString("P0")))QueuePartAction(p=>EngineElementService.Replace(p,car,part,element,id));}
             }
