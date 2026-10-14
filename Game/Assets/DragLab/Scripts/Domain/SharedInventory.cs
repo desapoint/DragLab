@@ -105,7 +105,7 @@ namespace DragLab.Domain.Mechanics
         static bool ValidUnit(PlayerProfile p,LooseEngineElement u)
         {
             var d=u==null?null:p.catalog.Find(u.definitionId);if(d==null||u.element==null||u.element.Validate()!=null||u.unitPrice<0)return false;
-            if(u.tireUnit)return d.category==PartCategory.Tires&&u.tire!=null&&u.tire.Validate()==null&&(string.IsNullOrEmpty(u.tire.definitionId)||u.tire.definitionId==u.definitionId)&&Math.Abs(u.element.health-(u.tire.failed?0:Math.Min(u.tire.health,Math.Max(0,1-u.tire.consumedLife))))<1e-6;
+            if(u.tireUnit)return d.category==PartCategory.Tires&&u.tire!=null&&u.tire.Validate()==null&&(string.IsNullOrEmpty(u.tire.id)||u.tire.id==u.element.id)&&(string.IsNullOrEmpty(u.tire.definitionId)||u.tire.definitionId==u.definitionId)&&Math.Abs(u.element.health-(u.tire.failed?0:Math.Min(u.tire.health,Math.Max(0,1-u.tire.consumedLife))))<1e-6;
             return EngineElements.Supported(d.category)&&EngineElements.FaultAllowed(d.category,u.element)&&u.tire==null&&(string.IsNullOrEmpty(u.element.definitionId)||u.element.definitionId==u.definitionId);
         }
     }
