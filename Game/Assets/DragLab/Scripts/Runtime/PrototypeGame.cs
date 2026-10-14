@@ -327,7 +327,7 @@ namespace DragLab.Runtime
         internal Rect warmupLineLockRect;
         void OnGUI()
         {
-            if (profile == null) return;
+            if (profile == null || resetRequired) return;
             using (FramePacingProbe.Measure(4))
             {
                 bool replacement = interfaceComparison.BeginGUI(ComparisonRoute, resetGameConfirm || (nativeMenu != null && (nativeMenu.ModalOpen || nativeMenu.EditingText)) || (screen == "Valuation" && valuationQuote != null && saleConfirmation == valuationQuote.Id) || pendingAction != null || (nativeMenu != null && nativeMenu.Visible && Input.GetMouseButton(0)));
