@@ -50,6 +50,10 @@ namespace DragLab.Runtime
             var farCar=GameObject.Find("Opponent Car").GetComponent<DragLab.Presentation.LayeredCarView>();
             game.PlaceRaceCars();
             var post=strip.GetComponentsInChildren<SpriteRenderer>(true).First(r=>r.sprite.name=="Start tree housing");
+            var support=post.GetComponentsInChildren<SpriteRenderer>(true).First(r=>r.sprite.name=="Start tree support pole");
+            var poleGround=DragLab.Presentation.DragStripView.Project(-3-strip.Travel,.8f);
+            Check(Math.Abs(support.bounds.min.y-poleGround.y)<.001&&Math.Abs(support.bounds.center.x-poleGround.x)<.001,"Vertical support pole meets the exact projected ground point under the lights");
+            Check(Math.Abs(post.bounds.min.y-poleGround.y-DragLab.Presentation.DragStripView.StartPoleHeight)<.001&&support.bounds.max.y>post.bounds.min.y,"Light housing is raised by the exposed pole height and its support overlaps without a gap");
             Check(post.bounds.size.y>2.5f&&post.bounds.size.x>.6f,"Enlarged start-light housing and lenses remain readable above the narrower road");
             Check(post.GetComponentsInChildren<SpriteRenderer>(true).All(r=>r.sortingOrder<farCar.GetComponentsInChildren<SpriteRenderer>(true).Min(c=>c.sortingOrder)),"Distant start-light post stays behind the car when the compressed lanes overlap");
             Check(Math.Abs(farCar.transform.localScale.x-.82f)<.001,"Rear car uses the same 82-percent scale as its projected lane");
@@ -61,6 +65,8 @@ namespace DragLab.Runtime
             double oldDistance=state.distance,oldTime=game.Race.time;bool oldDq=state.disqualified;
             game.Race.time=2.1;strip.Render(game.Race);yield return Capture("race-lights-amber");
             state.distance=100;state.speed=70;strip.Render(game.Race);
+            var movingPoleGround=DragLab.Presentation.DragStripView.Project(-3-strip.Travel,.8f);
+            Check(Math.Abs(support.bounds.center.x-movingPoleGround.x)<.001&&Math.Abs(support.bounds.min.y-movingPoleGround.y)<.001&&support.bounds.center.x<poleGround.x,"Pole and raised lights scroll as one assembly while their foot stays on the projected road edge");
             Check(Math.Abs(strip.Travel-60)<.001&&strip.SpeedCue>.7f,"High-speed ground travel uses the shared larger distance scale and stronger near-road cues");
             Check(strip.LitLampCount==4,"Countdown illuminates both lanes' reached amber lamps");
             game.Race.time=3.1;strip.Render(game.Race);Check(strip.LitLampCount==2,"Green shows only the paired green lamps");yield return Capture("race-lights-green");

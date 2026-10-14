@@ -41,3 +41,6 @@ The initial instrument checkpoint implemented speed/RPM/shifter. The dashboard/p
 - Presentation reads the authoritative live race, with no duplicated physics, telemetry worker, profile recalculation or save on display updates. Preserve held throttle across keyboard/mouse shifts, neutral staging, F8 comparison and existing warm-up/pause/results controls while those await their own checkpoints.
 
 Technical completion and user visual acceptance remain separate. Do not advance to boost/pedals/optional telemetry/shift lights or later race screens without another request.
+
+
+Raise the start-light housing above its previous edge anchor and add a shaded vertical pole whose foot stays on that exact projected ground point. Pole and housing move together; overlap the joint slightly and keep the assembly behind cars. [Checks/review](../reports/phases/4l/07-LIGHT-POLE.md).

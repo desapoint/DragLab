@@ -1,5 +1,7 @@
 # Prototype implementation status
 
+**4L.7 raised lights/pole ready for review:** Windows build and native **131/0** pass; [checkpoint](../reports/phases/4l/07-LIGHT-POLE.md). The separately reported post-finish save failure is under investigation, not fixed by this visual change.
+
 
 **4L.6 narrow-road/scale calibration ready for review (2026-10-14):** road depth height is 35% of the previous view while sprites remain upright; repeating skew-compensated finish checks replace the stretched pattern. Start lights are enlarged, behind overlapping cars; rear-car size/movement is 82% rather than 68%. Windows build and final packaged native **128/0** pass. [Checks/review](../reports/phases/4l/06-NARROW-ROAD.md). Stop for visual acceptance before further controls.
 

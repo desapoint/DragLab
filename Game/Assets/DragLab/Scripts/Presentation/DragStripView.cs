@@ -9,7 +9,7 @@ namespace DragLab.Presentation
         // One projection for road travel, separation and the finish marker. No speed-dependent
         // integration: pausing, replays and resets all retain the same physical distances.
         public const float MetersToView = .60f;
-        public const float PlayerLane=-2.6f, OpponentLane=-.8f, RoadDepthCompression=.35f, FarCarScale=.82f, StartLightScale=.85f;
+        public const float PlayerLane=-2.6f, OpponentLane=-.8f, RoadDepthCompression=.35f, FarCarScale=.82f, StartLightScale=.85f, StartPoleHeight=1.1f;
         const float Span=76.8f, DepthSlope=(1-FarCarScale)/(OpponentLane-PlayerLane), DepthSkew=1.1f;
         struct Tile { public Transform transform; public Vector3 origin; public float parallax; }
         readonly List<Tile> tiles = new List<Tile>();
@@ -19,7 +19,7 @@ namespace DragLab.Presentation
         Mesh roadMesh, finishMesh, startMesh; Material roadMaterial, finishMaterial, startMaterial; bool linesInitialized;
         readonly Vector3[] finishVertices=new Vector3[50],startVertices=new Vector3[50];
         readonly Vector2[] roadUv=new Vector2[50],finishUv=new Vector2[50];readonly float[] roadU=new float[50];
-        static Sprite asphalt, housing, lens, halo, line, checker;
+        static Sprite asphalt, housing, lens, halo, line, checker, pole;
         static readonly Color Amber = new Color(1,.56f,.045f), Green = new Color(.22f,1,.36f), Red = new Color(1,.08f,.12f);
         public static float DepthScale(float lane) => 1-(lane-PlayerLane)*DepthSlope;
         public static float ScreenLane(float lane) => PlayerLane+(lane-PlayerLane)*RoadDepthCompression;
@@ -43,6 +43,9 @@ namespace DragLab.Presentation
             }
             tree=Make(housing,Vector3.zero,-10).transform;
             tree.localScale=Vector3.one*StartLightScale;
+            var support=Make(pole,Vector3.zero,-11).transform;support.SetParent(tree,false);
+            support.localScale=new Vector3(.14f/(StartLightScale*pole.bounds.size.x),(StartPoleHeight+.08f)/(StartLightScale*pole.bounds.size.y),1);
+            support.localPosition=new Vector3(0,-1.6f-StartPoleHeight/(2*StartLightScale)+.04f/StartLightScale);
             for(int row=0;row<5;row++)for(int column=0;column<2;column++)
             {
                 var pos=new Vector3(column==0?-.185f:.185f,.66f-row*.39f);
@@ -89,7 +92,7 @@ namespace DragLab.Presentation
         {
             tree.gameObject.SetActive(true);finish.gameObject.SetActive(true);start.gameObject.SetActive(true);
             Travel=(float)race.player.state.distance*MetersToView;PositionTiles(Travel);
-            tree.localPosition=Project(-3-Travel,.8f)+Vector3.up*1.6f*StartLightScale;
+            tree.localPosition=Project(-3-Travel,.8f)+Vector3.up*(1.6f*StartLightScale+StartPoleHeight);
             SetLines(2+(float)race.distance*MetersToView-Travel,2-Travel);
             float offset=Mathf.Repeat(Travel,6.4f)/6.4f;
             for(int i=0;i<roadUv.Length;i++)roadUv[i].x=roadU[i]+offset;
@@ -197,6 +200,12 @@ namespace DragLab.Presentation
             checker=Texture("Repeating finish checks",64,64,64,(x,y)=>(x/32+y/32)%2==0?new Color(.88f,.90f,.91f):new Color(.025f,.03f,.035f),true);
             checker.texture.wrapMode=TextureWrapMode.Repeat;
             checker.texture.filterMode=FilterMode.Trilinear;
+            pole=Texture("Start tree support pole",32,256,256,(x,y)=>{
+                float across=x/31f;
+                float shade=.17f+.25f*Mathf.Exp(-Mathf.Pow((across-.36f)/.26f,2));
+                float grain=(Hash((uint)(x+y*32))&15)/1800f;
+                return new Color(shade*.92f+grain,shade+grain,shade*1.07f+grain);
+            });
             housing=Texture("Start tree housing",160,640,200,(x,y)=>{
                 float cornerX=Mathf.Max(Mathf.Abs(x-79.5f)-69.5f,0),cornerY=Mathf.Max(Mathf.Abs(y-319.5f)-309.5f,0);
                 float d=Mathf.Sqrt(cornerX*cornerX+cornerY*cornerY),alpha=Mathf.Clamp01(10-d);

@@ -241,3 +241,6 @@ Maintenance batch controls authorized and implemented (2026-10-13): Garage car d
 
 
 4L.6 requested visual calibration (2026-10-14): reduce visible road height for a narrow, nearly edge-on 2D view; retain trapezoid/skew and fix elongated finish checks through repeating, skew-compensated mapping. Before completion, the user also requested larger start lights and a smaller difference in car scale. Use enlarged housing/lenses and an 82% rear car with matching road/displacement projection, retaining upright sprites/contact anchors and proper distant-post layering. This is one steered visual checkpoint, not authorization for other HUD controls. [Delivery/review](../reports/phases/4l/06-NARROW-ROAD.md). Stop for visual acceptance.
+
+
+4L.7 requested control-sized checkpoint: raise the start lights and add an upright metal pole aligned with their projected ground anchor. Do not alter race timing, road/car scale or other HUD controls. [Checks/review](../reports/phases/4l/07-LIGHT-POLE.md).
