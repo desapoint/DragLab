@@ -20,6 +20,7 @@ namespace DragLab.Domain.Mechanics
                 var plugs=old.condition.elements.Where(e=>e.role=="spark plug / lead").Select(e=>EngineElements.CopyAsCategory(PartCategory.SparkPlugs,e)).ToArray();
                 if(plugs.Length==0)continue;
                 var split=new PartInstance { instanceId=MechanicsOwnership.NewId("part"), definitionId=catalog.Id(spec.id,PartCategory.SparkPlugs,Math.Min(1,d.stage)),location=old.location,ownerId=old.ownerId,slot=old.location==PartLocation.Inventory?"":PartCategory.SparkPlugs.ToString(),storageId=old.storageId,condition=old.condition.Copy() };
+                foreach(var plug in plugs)plug.definitionId=split.definitionId;
                 split.condition.elements=plugs;old.condition.elements=old.condition.elements.Where(e=>e.role!="spark plug / lead").ToArray();
                 var seller=profile.inventory.dealer.FirstOrDefault(s=>s.part==old);
                 if(seller==null)profile.parts.Add(split);else {int paid=seller.paidPrice/6;seller.paidPrice-=paid;profile.inventory.dealer.Add(new DealerStock{part=split,paidPrice=paid});}
