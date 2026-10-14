@@ -1,5 +1,7 @@
 # Prototype implementation status
 
+**Authorized interface batch (2026-10-14):** deliver Sell/Salvage page, valuation/contents, retention choices and confirmation as four separate tested/built/committed checkpoints, then Race selection, then saved-setup rename/delete. 4I.1 page passes 32 native checks and Windows build; [report](../reports/phases/4i/01-PAGE.md). Continue only after each technical checkpoint; user visual acceptance remains distinct.
+
 **Shared dialog correction (2026-10-14):** title/X space is fixed, themed rails align ten points from the right edge, and maintenance rows/quotes remain stable during held slider drags. Windows build and native maintenance **63/0**, Settings **146/0**, warnings **283/0** passed across compact/1080p/4K checks. [Delivery/review](../reports/dialog-scroll/CHANGES.md). This requested correction is ready for user review; no later interface phase advanced.
 
 **SQLite persistence checkpoint (2026-10-14):** player state now uses a versioned transactional database, separate settings, retained legacy import, validated migrations and reset-safe recovery. Authored content and simulation remain in memory/project assets. Native Windows checks and the migration/recovery matrix are recorded in [the delivery report](../reports/sqlite-state/CHANGES.md); [storage contract](SAVE_STORAGE_DIRECTION.md). Android native compilation is complete; device validation is not. This is an infrastructure checkpoint, not acceptance of a later UI phase.
