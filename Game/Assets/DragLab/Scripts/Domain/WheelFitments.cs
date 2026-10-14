@@ -22,6 +22,7 @@ namespace DragLab.Domain.Mechanics
         }
         public static void Install(PlayerProfile p,OwnedCar car,LooseEngineElement unit,string position)
         {
+            if(!EngineElements.MatchesCategory(PartCategory.Wheels,unit.element))throw new InvalidOperationException("Choose a physical wheel member, not another component type.");
             if(!InventoryUnits.Positions(p,car,unit.definitionId,"wheel").Contains(position))throw new InvalidOperationException("Choose a valid wheel position.");
             var slot=car.installed.slots.Find(s=>s.slot=="Wheels");var pack=p.parts.Find(i=>i.instanceId==slot.partInstanceId);Ensure(pack);int corner=int.Parse(position.Substring(6));
             var old=pack.condition.elements[corner];string oldDefinition=DefinitionId(pack,corner);
