@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace DragLab.Domain.Mechanics
 {
     [Flags]
-    public enum PartTuningOptions { None = 0, Boost = 1, Pulley = 2, Valve = 4, FinalDrive = 8, Limiter = 16, TwoStep = 32, ShiftLight = 64, CamTiming = 128, CenterRatio=256 }
+    public enum PartTuningOptions { None = 0, Boost = 1, Pulley = 2, Valve = 4, FinalDrive = 8, Limiter = 16, TwoStep = 32, ShiftLight = 64, CamTiming = 128, CenterRatio=256, AwdCalibration=512 }
 
     // Capabilities belong to definitions, not price, quality or upgrade rank.
     public static class PartTuning
@@ -13,6 +13,7 @@ namespace DragLab.Domain.Mechanics
         public static string Summary(PartDefinition part)
         {
             var labels = new List<string>();
+            if(Allows(part,PartTuningOptions.AwdCalibration))labels.Add(AwdHardware.Summary(part));
             if(part.camTimingAdjustable)labels.Add("cam timing +/-6 crank degrees");
             if(Allows(part,PartTuningOptions.CenterRatio))labels.Add("locked center speed ratio "+part.centerRatioMin.ToString("F2")+"–"+part.centerRatioMax.ToString("F2")+":1");
             if (Allows(part, PartTuningOptions.Boost)) labels.Add("boost target " + part.boostMin.ToString("F2") + "–" + part.boostMax.ToString("F2") + "×");

@@ -86,6 +86,7 @@ namespace DragLab.Runtime
                 Check(ProfileStore.FilePath == Path.Combine(folder, "profile-v1.json"), "Profile isolated from player assets");
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-shine-only-verify")>=0){yield return AngledShineChecks(input);yield break;}
                 if(game.Profile.firstPurchasePending)yield return StarterPurchaseChecks(input);
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-awd-hardware-only-verify")>=0){yield return AwdHardwareInterfaceChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-responsiveness-only-verify")>=0){yield return ResponsivenessChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-maintenance-only-verify")>=0){yield return MaintenanceBatchChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-parts-only-verify")>=0){yield return NativePartsChecks(input);yield break;}

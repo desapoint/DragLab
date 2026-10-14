@@ -19,6 +19,7 @@ namespace DragLab.Runtime
                 case PartCategory.Brakes:priority=new[]{"capacity","heat","life","mass"};break;
                 case PartCategory.Gearbox:priority=new[]{"shift","fixedratio","torque","heat"};break;
                 case PartCategory.Flywheel:priority=new[]{"inertia","mass","rpm"};break;
+                case PartCategory.Differential:case PartCategory.TransferCase:priority=new[]{"bias","preload","awdfront","awdsecondary","awdresponse","awdfixedratio","centerratiomin","torque","mass","heat"};break;
                 case PartCategory.Camshaft:priority=new[]{"camlift","duration","overlap","valvetrainrpm"};break;
                 case PartCategory.ValveSprings:priority=new[]{"springlift","valvetrainrpm","servicelife","mass"};break;
                 case PartCategory.Pistons:priority=new[]{"crownvolume","relief","rpm","torque"};break;

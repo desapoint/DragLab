@@ -1,0 +1,1257 @@
+PASS: Category has a real compatible test platform: Pistons
+PASS: Selected hardware has its own expanded change section: Pistons
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Pistons
+PASS: Unrelated component hardware is absent from general build effects: Pistons
+PASS: Comparison selection and limit inspection are read-only: Pistons
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Pistons
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Pistons
+PASS: Explicit effect domain crown belongs only to fitting part categories: Pistons
+PASS: Explicit effect domain compression belongs only to fitting part categories: Pistons
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Pistons
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Pistons
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Pistons
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Pistons
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Pistons
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Pistons
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Pistons
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Pistons
+PASS: Relevant effect is visible for its part category: Pistons / crown
+PASS: Relevant effect is visible for its part category: Pistons / compression
+PASS: Actual build effect remains visible: Pistons / peakHp
+PASS: Actual build effect remains visible: Pistons / peakTorque
+PASS: Actual build effect remains visible: Pistons / rpmLimitPart
+PASS: Actual build effect remains visible: Pistons / engineTorqueHeadroom
+PASS: Actual build effect remains visible: Pistons / torqueLimitPart
+PASS: Actual build effect remains visible: Pistons / vehicleMass
+PASS: Actual build effect remains visible: Pistons / installedMass
+PASS: Actual build effect remains visible: Pistons / dryInstalledMass
+PASS: Actual build effect remains visible: Pistons / frontWeight
+PASS: Actual build effect remains visible: Pistons / frontLoad
+PASS: Actual build effect remains visible: Pistons / rearLoad
+PASS: Actual build effect remains visible: Pistons / cgPosition
+PASS: Actual build effect remains visible: Pistons / cgHeight
+PASS: Actual build effect remains visible: Pistons / warningCount
+PASS: Category has a real compatible test platform: Rods
+PASS: Selected hardware has its own expanded change section: Rods
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Rods
+PASS: Unrelated component hardware is absent from general build effects: Rods
+PASS: Comparison selection and limit inspection are read-only: Rods
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Rods
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Rods
+PASS: Explicit effect domain crown belongs only to fitting part categories: Rods
+PASS: Explicit effect domain compression belongs only to fitting part categories: Rods
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Rods
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Rods
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Rods
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Rods
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Rods
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Rods
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Rods
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Rods
+PASS: Actual build effect remains visible: Rods / peakHp
+PASS: Actual build effect remains visible: Rods / peakTorque
+PASS: Actual build effect remains visible: Rods / engineTorqueHeadroom
+PASS: Actual build effect remains visible: Rods / torqueLimitPart
+PASS: Actual build effect remains visible: Rods / vehicleMass
+PASS: Actual build effect remains visible: Rods / installedMass
+PASS: Actual build effect remains visible: Rods / dryInstalledMass
+PASS: Actual build effect remains visible: Rods / frontWeight
+PASS: Actual build effect remains visible: Rods / frontLoad
+PASS: Actual build effect remains visible: Rods / rearLoad
+PASS: Actual build effect remains visible: Rods / cgPosition
+PASS: Actual build effect remains visible: Rods / warningCount
+PASS: Category has a real compatible test platform: Crankshaft
+PASS: Selected hardware has its own expanded change section: Crankshaft
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Crankshaft
+PASS: Unrelated component hardware is absent from general build effects: Crankshaft
+PASS: Comparison selection and limit inspection are read-only: Crankshaft
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Crankshaft
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Crankshaft
+PASS: Explicit effect domain crown belongs only to fitting part categories: Crankshaft
+PASS: Explicit effect domain compression belongs only to fitting part categories: Crankshaft
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Crankshaft
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Crankshaft
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Crankshaft
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Crankshaft
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Crankshaft
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Crankshaft
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Crankshaft
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Crankshaft
+PASS: Actual build effect remains visible: Crankshaft / peakHp
+PASS: Actual build effect remains visible: Crankshaft / peakTorque
+PASS: Actual build effect remains visible: Crankshaft / engineTorqueHeadroom
+PASS: Actual build effect remains visible: Crankshaft / torqueLimitPart
+PASS: Actual build effect remains visible: Crankshaft / vehicleMass
+PASS: Actual build effect remains visible: Crankshaft / installedMass
+PASS: Actual build effect remains visible: Crankshaft / dryInstalledMass
+PASS: Actual build effect remains visible: Crankshaft / frontWeight
+PASS: Actual build effect remains visible: Crankshaft / frontLoad
+PASS: Actual build effect remains visible: Crankshaft / rearLoad
+PASS: Actual build effect remains visible: Crankshaft / cgPosition
+PASS: Actual build effect remains visible: Crankshaft / cgHeight
+PASS: Actual build effect remains visible: Crankshaft / warningCount
+PASS: Category has a real compatible test platform: HeadIntake
+PASS: Selected hardware has its own expanded change section: HeadIntake
+PASS: Wheel-only specifications never leak into unrelated part comparisons: HeadIntake
+PASS: Unrelated component hardware is absent from general build effects: HeadIntake
+PASS: Comparison selection and limit inspection are read-only: HeadIntake
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: HeadIntake
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: HeadIntake
+PASS: Explicit effect domain crown belongs only to fitting part categories: HeadIntake
+PASS: Explicit effect domain compression belongs only to fitting part categories: HeadIntake
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: HeadIntake
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: HeadIntake
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: HeadIntake
+PASS: Explicit effect domain camLift belongs only to fitting part categories: HeadIntake
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: HeadIntake
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: HeadIntake
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: HeadIntake
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: HeadIntake
+PASS: Relevant effect is visible for its part category: HeadIntake / compression
+PASS: Actual build effect remains visible: HeadIntake / peakHp
+PASS: Actual build effect remains visible: HeadIntake / peakTorque
+PASS: Actual build effect remains visible: HeadIntake / vehicleMass
+PASS: Actual build effect remains visible: HeadIntake / installedMass
+PASS: Actual build effect remains visible: HeadIntake / dryInstalledMass
+PASS: Actual build effect remains visible: HeadIntake / frontWeight
+PASS: Actual build effect remains visible: HeadIntake / frontLoad
+PASS: Actual build effect remains visible: HeadIntake / rearLoad
+PASS: Actual build effect remains visible: HeadIntake / cgPosition
+PASS: Actual build effect remains visible: HeadIntake / cgHeight
+PASS: Category has a real compatible test platform: FuelSystem
+PASS: Selected hardware has its own expanded change section: FuelSystem
+PASS: Wheel-only specifications never leak into unrelated part comparisons: FuelSystem
+PASS: Unrelated component hardware is absent from general build effects: FuelSystem
+PASS: Comparison selection and limit inspection are read-only: FuelSystem
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: FuelSystem
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: FuelSystem
+PASS: Explicit effect domain crown belongs only to fitting part categories: FuelSystem
+PASS: Explicit effect domain compression belongs only to fitting part categories: FuelSystem
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: FuelSystem
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: FuelSystem
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: FuelSystem
+PASS: Explicit effect domain camLift belongs only to fitting part categories: FuelSystem
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: FuelSystem
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: FuelSystem
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: FuelSystem
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: FuelSystem
+PASS: Actual build effect remains visible: FuelSystem / peakHp
+PASS: Actual build effect remains visible: FuelSystem / peakTorque
+PASS: Actual build effect remains visible: FuelSystem / vehicleMass
+PASS: Actual build effect remains visible: FuelSystem / installedMass
+PASS: Actual build effect remains visible: FuelSystem / dryInstalledMass
+PASS: Actual build effect remains visible: FuelSystem / frontWeight
+PASS: Actual build effect remains visible: FuelSystem / frontLoad
+PASS: Actual build effect remains visible: FuelSystem / rearLoad
+PASS: Actual build effect remains visible: FuelSystem / cgPosition
+PASS: Actual build effect remains visible: FuelSystem / cgHeight
+PASS: Actual build effect remains visible: FuelSystem / warningCount
+PASS: Category has a real compatible test platform: Ignition
+PASS: Selected hardware has its own expanded change section: Ignition
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Ignition
+PASS: Unrelated component hardware is absent from general build effects: Ignition
+PASS: Comparison selection and limit inspection are read-only: Ignition
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Ignition
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Ignition
+PASS: Explicit effect domain crown belongs only to fitting part categories: Ignition
+PASS: Explicit effect domain compression belongs only to fitting part categories: Ignition
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Ignition
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Ignition
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Ignition
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Ignition
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Ignition
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Ignition
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Ignition
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Ignition
+PASS: Actual build effect remains visible: Ignition / peakHp
+PASS: Actual build effect remains visible: Ignition / peakTorque
+PASS: Actual build effect remains visible: Ignition / warningCount
+PASS: Category has a real compatible test platform: Cooling
+PASS: Selected hardware has its own expanded change section: Cooling
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Cooling
+PASS: Unrelated component hardware is absent from general build effects: Cooling
+PASS: Comparison selection and limit inspection are read-only: Cooling
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Cooling
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Cooling
+PASS: Explicit effect domain crown belongs only to fitting part categories: Cooling
+PASS: Explicit effect domain compression belongs only to fitting part categories: Cooling
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Cooling
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Cooling
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Cooling
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Cooling
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Cooling
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Cooling
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Cooling
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Cooling
+PASS: Actual build effect remains visible: Cooling / vehicleMass
+PASS: Actual build effect remains visible: Cooling / installedMass
+PASS: Actual build effect remains visible: Cooling / dryInstalledMass
+PASS: Actual build effect remains visible: Cooling / frontWeight
+PASS: Actual build effect remains visible: Cooling / frontLoad
+PASS: Actual build effect remains visible: Cooling / rearLoad
+PASS: Actual build effect remains visible: Cooling / cgPosition
+PASS: Actual build effect remains visible: Cooling / cgHeight
+PASS: Actual build effect remains visible: Cooling / coolingTransfer
+PASS: Actual build effect remains visible: Cooling / radiatorRejection
+PASS: Actual build effect remains visible: Cooling / coolantCapacity
+PASS: Actual build effect remains visible: Cooling / warningCount
+PASS: Category has a real compatible test platform: Induction
+PASS: Selected hardware has its own expanded change section: Induction
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Induction
+PASS: Unrelated component hardware is absent from general build effects: Induction
+PASS: Comparison selection and limit inspection are read-only: Induction
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Induction
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Induction
+PASS: Explicit effect domain crown belongs only to fitting part categories: Induction
+PASS: Explicit effect domain compression belongs only to fitting part categories: Induction
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Induction
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Induction
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Induction
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Induction
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Induction
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Induction
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Induction
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Induction
+PASS: Relevant effect is visible for its part category: Induction / turboSize
+PASS: Actual build effect remains visible: Induction / peakHp
+PASS: Actual build effect remains visible: Induction / peakTorque
+PASS: Actual build effect remains visible: Induction / warningCount
+PASS: Category has a real compatible test platform: Exhaust
+PASS: Selected hardware has its own expanded change section: Exhaust
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Exhaust
+PASS: Unrelated component hardware is absent from general build effects: Exhaust
+PASS: Comparison selection and limit inspection are read-only: Exhaust
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Exhaust
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Exhaust
+PASS: Explicit effect domain crown belongs only to fitting part categories: Exhaust
+PASS: Explicit effect domain compression belongs only to fitting part categories: Exhaust
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Exhaust
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Exhaust
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Exhaust
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Exhaust
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Exhaust
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Exhaust
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Exhaust
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Exhaust
+PASS: Actual build effect remains visible: Exhaust / peakHp
+PASS: Actual build effect remains visible: Exhaust / peakTorque
+PASS: Actual build effect remains visible: Exhaust / exhaustPath
+PASS: Actual build effect remains visible: Exhaust / exhaust:0:type
+PASS: Actual build effect remains visible: Exhaust / exhaust:0:amount
+PASS: Actual build effect remains visible: Exhaust / exhaust:0:attenuation
+PASS: Actual build effect remains visible: Exhaust / exhaust:0:cutoff
+PASS: Actual build effect remains visible: Exhaust / exhaust:0:pulse
+PASS: Actual build effect remains visible: Exhaust / exhaust:0:resonance
+PASS: Actual build effect remains visible: Exhaust / exhaust:0:gain
+PASS: Actual build effect remains visible: Exhaust / exhaust:0:q
+PASS: Actual build effect remains visible: Exhaust / exhaust:1:type
+PASS: Actual build effect remains visible: Exhaust / exhaust:1:amount
+PASS: Actual build effect remains visible: Exhaust / exhaust:1:attenuation
+PASS: Actual build effect remains visible: Exhaust / exhaust:1:cutoff
+PASS: Actual build effect remains visible: Exhaust / exhaust:1:pulse
+PASS: Actual build effect remains visible: Exhaust / exhaust:1:resonance
+PASS: Actual build effect remains visible: Exhaust / exhaust:1:gain
+PASS: Actual build effect remains visible: Exhaust / exhaust:1:q
+PASS: Actual build effect remains visible: Exhaust / exhaust:2:type
+PASS: Actual build effect remains visible: Exhaust / exhaust:2:amount
+PASS: Actual build effect remains visible: Exhaust / exhaust:2:attenuation
+PASS: Actual build effect remains visible: Exhaust / exhaust:2:cutoff
+PASS: Actual build effect remains visible: Exhaust / exhaust:2:pulse
+PASS: Actual build effect remains visible: Exhaust / exhaust:2:resonance
+PASS: Actual build effect remains visible: Exhaust / exhaust:2:gain
+PASS: Actual build effect remains visible: Exhaust / exhaust:2:q
+PASS: Actual build effect remains visible: Exhaust / vehicleMass
+PASS: Actual build effect remains visible: Exhaust / installedMass
+PASS: Actual build effect remains visible: Exhaust / dryInstalledMass
+PASS: Actual build effect remains visible: Exhaust / frontWeight
+PASS: Actual build effect remains visible: Exhaust / frontLoad
+PASS: Actual build effect remains visible: Exhaust / rearLoad
+PASS: Actual build effect remains visible: Exhaust / cgPosition
+PASS: Actual build effect remains visible: Exhaust / cgHeight
+PASS: Actual build effect remains visible: Exhaust / warningCount
+PASS: Category has a real compatible test platform: Clutch
+PASS: Selected hardware has its own expanded change section: Clutch
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Clutch
+PASS: Unrelated component hardware is absent from general build effects: Clutch
+PASS: Comparison selection and limit inspection are read-only: Clutch
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Clutch
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Clutch
+PASS: Explicit effect domain crown belongs only to fitting part categories: Clutch
+PASS: Explicit effect domain compression belongs only to fitting part categories: Clutch
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Clutch
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Clutch
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Clutch
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Clutch
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Clutch
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Clutch
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Clutch
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Clutch
+PASS: Actual build effect remains visible: Clutch / clutchCapacity
+PASS: Actual build effect remains visible: Clutch / vehicleMass
+PASS: Actual build effect remains visible: Clutch / installedMass
+PASS: Actual build effect remains visible: Clutch / dryInstalledMass
+PASS: Actual build effect remains visible: Clutch / frontWeight
+PASS: Actual build effect remains visible: Clutch / frontLoad
+PASS: Actual build effect remains visible: Clutch / rearLoad
+PASS: Actual build effect remains visible: Clutch / cgPosition
+PASS: Actual build effect remains visible: Clutch / cgHeight
+PASS: Actual build effect remains visible: Clutch / warningCount
+PASS: Category has a real compatible test platform: Flywheel
+PASS: Selected hardware has its own expanded change section: Flywheel
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Flywheel
+PASS: Unrelated component hardware is absent from general build effects: Flywheel
+PASS: Comparison selection and limit inspection are read-only: Flywheel
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Flywheel
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Flywheel
+PASS: Explicit effect domain crown belongs only to fitting part categories: Flywheel
+PASS: Explicit effect domain compression belongs only to fitting part categories: Flywheel
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Flywheel
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Flywheel
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Flywheel
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Flywheel
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Flywheel
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Flywheel
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Flywheel
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Flywheel
+PASS: Relevant effect is visible for its part category: Flywheel / flywheelInertia
+PASS: Actual build effect remains visible: Flywheel / vehicleMass
+PASS: Actual build effect remains visible: Flywheel / installedMass
+PASS: Actual build effect remains visible: Flywheel / dryInstalledMass
+PASS: Actual build effect remains visible: Flywheel / frontWeight
+PASS: Actual build effect remains visible: Flywheel / frontLoad
+PASS: Actual build effect remains visible: Flywheel / rearLoad
+PASS: Actual build effect remains visible: Flywheel / cgPosition
+PASS: Actual build effect remains visible: Flywheel / cgHeight
+PASS: Actual build effect remains visible: Flywheel / flywheelMass
+PASS: Actual build effect remains visible: Flywheel / flywheelInertia
+PASS: Actual build effect remains visible: Flywheel / engineInertia
+PASS: Category has a real compatible test platform: Gearbox
+PASS: Selected hardware has its own expanded change section: Gearbox
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Gearbox
+PASS: Unrelated component hardware is absent from general build effects: Gearbox
+PASS: Comparison selection and limit inspection are read-only: Gearbox
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Gearbox
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Gearbox
+PASS: Explicit effect domain crown belongs only to fitting part categories: Gearbox
+PASS: Explicit effect domain compression belongs only to fitting part categories: Gearbox
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Gearbox
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Gearbox
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Gearbox
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Gearbox
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Gearbox
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Gearbox
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Gearbox
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Gearbox
+PASS: Relevant effect is visible for its part category: Gearbox / gearRatio:0
+PASS: Actual build effect remains visible: Gearbox / shiftSeconds
+PASS: Actual build effect remains visible: Gearbox / vehicleMass
+PASS: Actual build effect remains visible: Gearbox / installedMass
+PASS: Actual build effect remains visible: Gearbox / dryInstalledMass
+PASS: Actual build effect remains visible: Gearbox / frontWeight
+PASS: Actual build effect remains visible: Gearbox / frontLoad
+PASS: Actual build effect remains visible: Gearbox / rearLoad
+PASS: Actual build effect remains visible: Gearbox / cgPosition
+PASS: Actual build effect remains visible: Gearbox / cgHeight
+PASS: Actual build effect remains visible: Gearbox / warningCount
+PASS: Category has a real compatible test platform: Differential
+PASS: Selected hardware has its own expanded change section: Differential
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Differential
+PASS: Unrelated component hardware is absent from general build effects: Differential
+PASS: Comparison selection and limit inspection are read-only: Differential
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Differential
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Differential
+PASS: Explicit effect domain crown belongs only to fitting part categories: Differential
+PASS: Explicit effect domain compression belongs only to fitting part categories: Differential
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Differential
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Differential
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Differential
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Differential
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Differential
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Differential
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Differential
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Differential
+PASS: Actual build effect remains visible: Differential / frontDifferential
+PASS: Actual build effect remains visible: Differential / vehicleMass
+PASS: Actual build effect remains visible: Differential / installedMass
+PASS: Actual build effect remains visible: Differential / dryInstalledMass
+PASS: Actual build effect remains visible: Differential / frontWeight
+PASS: Actual build effect remains visible: Differential / frontLoad
+PASS: Actual build effect remains visible: Differential / cgPosition
+PASS: Actual build effect remains visible: Differential / cgHeight
+PASS: Actual build effect remains visible: Differential / warningCount
+PASS: Category has a real compatible test platform: Wheels
+PASS: Selected hardware has its own expanded change section: Wheels
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Wheels
+PASS: Unrelated component hardware is absent from general build effects: Wheels
+PASS: Comparison selection and limit inspection are read-only: Wheels
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Wheels
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Wheels
+PASS: Explicit effect domain crown belongs only to fitting part categories: Wheels
+PASS: Explicit effect domain compression belongs only to fitting part categories: Wheels
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Wheels
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Wheels
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Wheels
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Wheels
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Wheels
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Wheels
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Wheels
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Wheels
+PASS: Actual build effect remains visible: Wheels / wheelMass
+PASS: Actual build effect remains visible: Wheels / wheelInertia
+PASS: Actual build effect remains visible: Wheels / axle:Front:wheelMass
+PASS: Actual build effect remains visible: Wheels / axle:Front:wheelInertia
+PASS: Actual build effect remains visible: Wheels / axle:Rear:wheelMass
+PASS: Actual build effect remains visible: Wheels / axle:Rear:wheelInertia
+PASS: Actual build effect remains visible: Wheels / vehicleMass
+PASS: Actual build effect remains visible: Wheels / installedMass
+PASS: Actual build effect remains visible: Wheels / dryInstalledMass
+PASS: Actual build effect remains visible: Wheels / frontWeight
+PASS: Actual build effect remains visible: Wheels / frontLoad
+PASS: Actual build effect remains visible: Wheels / rearLoad
+PASS: Actual build effect remains visible: Wheels / cgPosition
+PASS: Actual build effect remains visible: Wheels / cgHeight
+PASS: Category has a real compatible test platform: Tires
+PASS: Selected hardware has its own expanded change section: Tires
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Tires
+PASS: Unrelated component hardware is absent from general build effects: Tires
+PASS: Comparison selection and limit inspection are read-only: Tires
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Tires
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Tires
+PASS: Explicit effect domain crown belongs only to fitting part categories: Tires
+PASS: Explicit effect domain compression belongs only to fitting part categories: Tires
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Tires
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Tires
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Tires
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Tires
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Tires
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Tires
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Tires
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Tires
+PASS: Relevant effect is visible for its part category: Tires / tireCompound
+PASS: Actual build effect remains visible: Tires / tireCompound
+PASS: Actual build effect remains visible: Tires / tireGrip
+PASS: Actual build effect remains visible: Tires / tireHealth
+PASS: Actual build effect remains visible: Tires / rollingLife
+PASS: Actual build effect remains visible: Tires / slidingLife
+PASS: Actual build effect remains visible: Tires / axle:Front:tireGrip
+PASS: Actual build effect remains visible: Tires / axle:Rear:tireGrip
+PASS: Actual build effect remains visible: Tires / warningCount
+PASS: Category has a real compatible test platform: Brakes
+PASS: Selected hardware has its own expanded change section: Brakes
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Brakes
+PASS: Unrelated component hardware is absent from general build effects: Brakes
+PASS: Comparison selection and limit inspection are read-only: Brakes
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Brakes
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Brakes
+PASS: Explicit effect domain crown belongs only to fitting part categories: Brakes
+PASS: Explicit effect domain compression belongs only to fitting part categories: Brakes
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Brakes
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Brakes
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Brakes
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Brakes
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Brakes
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Brakes
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Brakes
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Brakes
+PASS: Relevant effect is visible for its part category: Brakes / brakeG
+PASS: Actual build effect remains visible: Brakes / brakeG
+PASS: Actual build effect remains visible: Brakes / vehicleMass
+PASS: Actual build effect remains visible: Brakes / installedMass
+PASS: Actual build effect remains visible: Brakes / dryInstalledMass
+PASS: Actual build effect remains visible: Brakes / frontWeight
+PASS: Actual build effect remains visible: Brakes / frontLoad
+PASS: Actual build effect remains visible: Brakes / rearLoad
+PASS: Actual build effect remains visible: Brakes / cgPosition
+PASS: Actual build effect remains visible: Brakes / cgHeight
+PASS: Actual build effect remains visible: Brakes / warningCount
+PASS: Category has a real compatible test platform: Body
+PASS: Selected hardware has its own expanded change section: Body
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Body
+PASS: Unrelated component hardware is absent from general build effects: Body
+PASS: Comparison selection and limit inspection are read-only: Body
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Body
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Body
+PASS: Explicit effect domain crown belongs only to fitting part categories: Body
+PASS: Explicit effect domain compression belongs only to fitting part categories: Body
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Body
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Body
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Body
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Body
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Body
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Body
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Body
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Body
+PASS: Actual build effect remains visible: Body / vehicleMass
+PASS: Actual build effect remains visible: Body / chassisMass
+PASS: Actual build effect remains visible: Body / dryInstalledMass
+PASS: Actual build effect remains visible: Body / frontWeight
+PASS: Actual build effect remains visible: Body / frontLoad
+PASS: Actual build effect remains visible: Body / rearLoad
+PASS: Actual build effect remains visible: Body / cgPosition
+PASS: Actual build effect remains visible: Body / cgHeight
+PASS: Category has a real compatible test platform: Controls
+PASS: Selected hardware has its own expanded change section: Controls
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Controls
+PASS: Unrelated component hardware is absent from general build effects: Controls
+PASS: Comparison selection and limit inspection are read-only: Controls
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Controls
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Controls
+PASS: Explicit effect domain crown belongs only to fitting part categories: Controls
+PASS: Explicit effect domain compression belongs only to fitting part categories: Controls
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Controls
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Controls
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Controls
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Controls
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Controls
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Controls
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Controls
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Controls
+PASS: Category has a real compatible test platform: Driveshaft
+PASS: Selected hardware has its own expanded change section: Driveshaft
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Driveshaft
+PASS: Unrelated component hardware is absent from general build effects: Driveshaft
+PASS: Comparison selection and limit inspection are read-only: Driveshaft
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Driveshaft
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Driveshaft
+PASS: Explicit effect domain crown belongs only to fitting part categories: Driveshaft
+PASS: Explicit effect domain compression belongs only to fitting part categories: Driveshaft
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Driveshaft
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Driveshaft
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Driveshaft
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Driveshaft
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Driveshaft
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Driveshaft
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Driveshaft
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Driveshaft
+PASS: Actual build effect remains visible: Driveshaft / vehicleMass
+PASS: Actual build effect remains visible: Driveshaft / installedMass
+PASS: Actual build effect remains visible: Driveshaft / dryInstalledMass
+PASS: Actual build effect remains visible: Driveshaft / frontWeight
+PASS: Actual build effect remains visible: Driveshaft / frontLoad
+PASS: Actual build effect remains visible: Driveshaft / rearLoad
+PASS: Actual build effect remains visible: Driveshaft / cgPosition
+PASS: Actual build effect remains visible: Driveshaft / cgHeight
+PASS: Actual build effect remains visible: Driveshaft / warningCount
+PASS: Category has a real compatible test platform: FrontAxle
+PASS: Selected hardware has its own expanded change section: FrontAxle
+PASS: Wheel-only specifications never leak into unrelated part comparisons: FrontAxle
+PASS: Unrelated component hardware is absent from general build effects: FrontAxle
+PASS: Comparison selection and limit inspection are read-only: FrontAxle
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: FrontAxle
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: FrontAxle
+PASS: Explicit effect domain crown belongs only to fitting part categories: FrontAxle
+PASS: Explicit effect domain compression belongs only to fitting part categories: FrontAxle
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: FrontAxle
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: FrontAxle
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: FrontAxle
+PASS: Explicit effect domain camLift belongs only to fitting part categories: FrontAxle
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: FrontAxle
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: FrontAxle
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: FrontAxle
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: FrontAxle
+PASS: Actual build effect remains visible: FrontAxle / vehicleMass
+PASS: Actual build effect remains visible: FrontAxle / installedMass
+PASS: Actual build effect remains visible: FrontAxle / dryInstalledMass
+PASS: Actual build effect remains visible: FrontAxle / frontWeight
+PASS: Actual build effect remains visible: FrontAxle / frontLoad
+PASS: Actual build effect remains visible: FrontAxle / rearLoad
+PASS: Actual build effect remains visible: FrontAxle / cgPosition
+PASS: Actual build effect remains visible: FrontAxle / cgHeight
+PASS: Actual build effect remains visible: FrontAxle / warningCount
+PASS: Category has a real compatible test platform: RearAxle
+PASS: Selected hardware has its own expanded change section: RearAxle
+PASS: Wheel-only specifications never leak into unrelated part comparisons: RearAxle
+PASS: Unrelated component hardware is absent from general build effects: RearAxle
+PASS: Comparison selection and limit inspection are read-only: RearAxle
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: RearAxle
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: RearAxle
+PASS: Explicit effect domain crown belongs only to fitting part categories: RearAxle
+PASS: Explicit effect domain compression belongs only to fitting part categories: RearAxle
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: RearAxle
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: RearAxle
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: RearAxle
+PASS: Explicit effect domain camLift belongs only to fitting part categories: RearAxle
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: RearAxle
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: RearAxle
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: RearAxle
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: RearAxle
+PASS: Actual build effect remains visible: RearAxle / vehicleMass
+PASS: Actual build effect remains visible: RearAxle / installedMass
+PASS: Actual build effect remains visible: RearAxle / dryInstalledMass
+PASS: Actual build effect remains visible: RearAxle / frontWeight
+PASS: Actual build effect remains visible: RearAxle / rearLoad
+PASS: Actual build effect remains visible: RearAxle / cgPosition
+PASS: Actual build effect remains visible: RearAxle / cgHeight
+PASS: Actual build effect remains visible: RearAxle / warningCount
+PASS: Category has a real compatible test platform: FrontDriveshaft
+PASS: Selected hardware has its own expanded change section: FrontDriveshaft
+PASS: Wheel-only specifications never leak into unrelated part comparisons: FrontDriveshaft
+PASS: Unrelated component hardware is absent from general build effects: FrontDriveshaft
+PASS: Comparison selection and limit inspection are read-only: FrontDriveshaft
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: FrontDriveshaft
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: FrontDriveshaft
+PASS: Explicit effect domain crown belongs only to fitting part categories: FrontDriveshaft
+PASS: Explicit effect domain compression belongs only to fitting part categories: FrontDriveshaft
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: FrontDriveshaft
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: FrontDriveshaft
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: FrontDriveshaft
+PASS: Explicit effect domain camLift belongs only to fitting part categories: FrontDriveshaft
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: FrontDriveshaft
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: FrontDriveshaft
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: FrontDriveshaft
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: FrontDriveshaft
+PASS: Actual build effect remains visible: FrontDriveshaft / vehicleMass
+PASS: Actual build effect remains visible: FrontDriveshaft / installedMass
+PASS: Actual build effect remains visible: FrontDriveshaft / dryInstalledMass
+PASS: Actual build effect remains visible: FrontDriveshaft / frontWeight
+PASS: Actual build effect remains visible: FrontDriveshaft / frontLoad
+PASS: Actual build effect remains visible: FrontDriveshaft / rearLoad
+PASS: Actual build effect remains visible: FrontDriveshaft / cgPosition
+PASS: Actual build effect remains visible: FrontDriveshaft / cgHeight
+PASS: Actual build effect remains visible: FrontDriveshaft / warningCount
+PASS: Category has a real compatible test platform: RearDriveshaft
+PASS: Selected hardware has its own expanded change section: RearDriveshaft
+PASS: Wheel-only specifications never leak into unrelated part comparisons: RearDriveshaft
+PASS: Unrelated component hardware is absent from general build effects: RearDriveshaft
+PASS: Comparison selection and limit inspection are read-only: RearDriveshaft
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: RearDriveshaft
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: RearDriveshaft
+PASS: Explicit effect domain crown belongs only to fitting part categories: RearDriveshaft
+PASS: Explicit effect domain compression belongs only to fitting part categories: RearDriveshaft
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: RearDriveshaft
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: RearDriveshaft
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: RearDriveshaft
+PASS: Explicit effect domain camLift belongs only to fitting part categories: RearDriveshaft
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: RearDriveshaft
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: RearDriveshaft
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: RearDriveshaft
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: RearDriveshaft
+PASS: Actual build effect remains visible: RearDriveshaft / vehicleMass
+PASS: Actual build effect remains visible: RearDriveshaft / installedMass
+PASS: Actual build effect remains visible: RearDriveshaft / dryInstalledMass
+PASS: Actual build effect remains visible: RearDriveshaft / frontWeight
+PASS: Actual build effect remains visible: RearDriveshaft / frontLoad
+PASS: Actual build effect remains visible: RearDriveshaft / rearLoad
+PASS: Actual build effect remains visible: RearDriveshaft / cgPosition
+PASS: Actual build effect remains visible: RearDriveshaft / cgHeight
+PASS: Actual build effect remains visible: RearDriveshaft / warningCount
+PASS: Category has a real compatible test platform: FrontDifferential
+PASS: Selected hardware has its own expanded change section: FrontDifferential
+PASS: Wheel-only specifications never leak into unrelated part comparisons: FrontDifferential
+PASS: Unrelated component hardware is absent from general build effects: FrontDifferential
+PASS: Comparison selection and limit inspection are read-only: FrontDifferential
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: FrontDifferential
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: FrontDifferential
+PASS: Explicit effect domain crown belongs only to fitting part categories: FrontDifferential
+PASS: Explicit effect domain compression belongs only to fitting part categories: FrontDifferential
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: FrontDifferential
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: FrontDifferential
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: FrontDifferential
+PASS: Explicit effect domain camLift belongs only to fitting part categories: FrontDifferential
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: FrontDifferential
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: FrontDifferential
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: FrontDifferential
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: FrontDifferential
+PASS: Actual build effect remains visible: FrontDifferential / frontDifferential
+PASS: Actual build effect remains visible: FrontDifferential / vehicleMass
+PASS: Actual build effect remains visible: FrontDifferential / installedMass
+PASS: Actual build effect remains visible: FrontDifferential / dryInstalledMass
+PASS: Actual build effect remains visible: FrontDifferential / frontWeight
+PASS: Actual build effect remains visible: FrontDifferential / frontLoad
+PASS: Actual build effect remains visible: FrontDifferential / rearLoad
+PASS: Actual build effect remains visible: FrontDifferential / cgPosition
+PASS: Actual build effect remains visible: FrontDifferential / cgHeight
+PASS: Actual build effect remains visible: FrontDifferential / warningCount
+PASS: Category has a real compatible test platform: RearDifferential
+PASS: Selected hardware has its own expanded change section: RearDifferential
+PASS: Wheel-only specifications never leak into unrelated part comparisons: RearDifferential
+PASS: Unrelated component hardware is absent from general build effects: RearDifferential
+PASS: Comparison selection and limit inspection are read-only: RearDifferential
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: RearDifferential
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: RearDifferential
+PASS: Explicit effect domain crown belongs only to fitting part categories: RearDifferential
+PASS: Explicit effect domain compression belongs only to fitting part categories: RearDifferential
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: RearDifferential
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: RearDifferential
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: RearDifferential
+PASS: Explicit effect domain camLift belongs only to fitting part categories: RearDifferential
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: RearDifferential
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: RearDifferential
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: RearDifferential
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: RearDifferential
+PASS: Actual build effect remains visible: RearDifferential / rearDifferential
+PASS: Actual build effect remains visible: RearDifferential / vehicleMass
+PASS: Actual build effect remains visible: RearDifferential / installedMass
+PASS: Actual build effect remains visible: RearDifferential / dryInstalledMass
+PASS: Actual build effect remains visible: RearDifferential / frontWeight
+PASS: Actual build effect remains visible: RearDifferential / rearLoad
+PASS: Actual build effect remains visible: RearDifferential / cgPosition
+PASS: Actual build effect remains visible: RearDifferential / cgHeight
+PASS: Actual build effect remains visible: RearDifferential / warningCount
+PASS: Category has a real compatible test platform: TransferCase
+PASS: Selected hardware has its own expanded change section: TransferCase
+PASS: Wheel-only specifications never leak into unrelated part comparisons: TransferCase
+PASS: Unrelated component hardware is absent from general build effects: TransferCase
+PASS: Comparison selection and limit inspection are read-only: TransferCase
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: TransferCase
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: TransferCase
+PASS: Explicit effect domain crown belongs only to fitting part categories: TransferCase
+PASS: Explicit effect domain compression belongs only to fitting part categories: TransferCase
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: TransferCase
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: TransferCase
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: TransferCase
+PASS: Explicit effect domain camLift belongs only to fitting part categories: TransferCase
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: TransferCase
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: TransferCase
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: TransferCase
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: TransferCase
+PASS: Actual build effect remains visible: TransferCase / awdResponse
+PASS: Actual build effect remains visible: TransferCase / vehicleMass
+PASS: Actual build effect remains visible: TransferCase / installedMass
+PASS: Actual build effect remains visible: TransferCase / dryInstalledMass
+PASS: Actual build effect remains visible: TransferCase / frontWeight
+PASS: Actual build effect remains visible: TransferCase / frontLoad
+PASS: Actual build effect remains visible: TransferCase / rearLoad
+PASS: Actual build effect remains visible: TransferCase / cgPosition
+PASS: Actual build effect remains visible: TransferCase / cgHeight
+PASS: Actual build effect remains visible: TransferCase / warningCount
+PASS: Category has a real compatible test platform: Interior
+PASS: Selected hardware has its own expanded change section: Interior
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Interior
+PASS: Unrelated component hardware is absent from general build effects: Interior
+PASS: Comparison selection and limit inspection are read-only: Interior
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Interior
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Interior
+PASS: Explicit effect domain crown belongs only to fitting part categories: Interior
+PASS: Explicit effect domain compression belongs only to fitting part categories: Interior
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Interior
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Interior
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Interior
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Interior
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Interior
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Interior
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Interior
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Interior
+PASS: Actual build effect remains visible: Interior / vehicleMass
+PASS: Actual build effect remains visible: Interior / installedMass
+PASS: Actual build effect remains visible: Interior / dryInstalledMass
+PASS: Actual build effect remains visible: Interior / frontWeight
+PASS: Actual build effect remains visible: Interior / frontLoad
+PASS: Actual build effect remains visible: Interior / rearLoad
+PASS: Actual build effect remains visible: Interior / cgPosition
+PASS: Actual build effect remains visible: Interior / cgHeight
+PASS: Category has a real compatible test platform: Accessories
+PASS: Selected hardware has its own expanded change section: Accessories
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Accessories
+PASS: Unrelated component hardware is absent from general build effects: Accessories
+PASS: Comparison selection and limit inspection are read-only: Accessories
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Accessories
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Accessories
+PASS: Explicit effect domain crown belongs only to fitting part categories: Accessories
+PASS: Explicit effect domain compression belongs only to fitting part categories: Accessories
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Accessories
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Accessories
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Accessories
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Accessories
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Accessories
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Accessories
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Accessories
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Accessories
+PASS: Actual build effect remains visible: Accessories / vehicleMass
+PASS: Actual build effect remains visible: Accessories / installedMass
+PASS: Actual build effect remains visible: Accessories / dryInstalledMass
+PASS: Actual build effect remains visible: Accessories / frontWeight
+PASS: Actual build effect remains visible: Accessories / frontLoad
+PASS: Actual build effect remains visible: Accessories / rearLoad
+PASS: Actual build effect remains visible: Accessories / cgPosition
+PASS: Actual build effect remains visible: Accessories / cgHeight
+PASS: Category has a real compatible test platform: RevLimiter
+PASS: Selected hardware has its own expanded change section: RevLimiter
+PASS: Wheel-only specifications never leak into unrelated part comparisons: RevLimiter
+PASS: Unrelated component hardware is absent from general build effects: RevLimiter
+PASS: Comparison selection and limit inspection are read-only: RevLimiter
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: RevLimiter
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: RevLimiter
+PASS: Explicit effect domain crown belongs only to fitting part categories: RevLimiter
+PASS: Explicit effect domain compression belongs only to fitting part categories: RevLimiter
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: RevLimiter
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: RevLimiter
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: RevLimiter
+PASS: Explicit effect domain camLift belongs only to fitting part categories: RevLimiter
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: RevLimiter
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: RevLimiter
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: RevLimiter
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: RevLimiter
+PASS: Category has a real compatible test platform: ShiftLight
+PASS: Selected hardware has its own expanded change section: ShiftLight
+PASS: Wheel-only specifications never leak into unrelated part comparisons: ShiftLight
+PASS: Unrelated component hardware is absent from general build effects: ShiftLight
+PASS: Comparison selection and limit inspection are read-only: ShiftLight
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: ShiftLight
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: ShiftLight
+PASS: Explicit effect domain crown belongs only to fitting part categories: ShiftLight
+PASS: Explicit effect domain compression belongs only to fitting part categories: ShiftLight
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: ShiftLight
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: ShiftLight
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: ShiftLight
+PASS: Explicit effect domain camLift belongs only to fitting part categories: ShiftLight
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: ShiftLight
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: ShiftLight
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: ShiftLight
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: ShiftLight
+PASS: Relevant effect is visible for its part category: ShiftLight / shiftLight
+PASS: Actual build effect remains visible: ShiftLight / vehicleMass
+PASS: Actual build effect remains visible: ShiftLight / installedMass
+PASS: Actual build effect remains visible: ShiftLight / dryInstalledMass
+PASS: Actual build effect remains visible: ShiftLight / frontWeight
+PASS: Actual build effect remains visible: ShiftLight / frontLoad
+PASS: Actual build effect remains visible: ShiftLight / rearLoad
+PASS: Actual build effect remains visible: ShiftLight / cgPosition
+PASS: Actual build effect remains visible: ShiftLight / cgHeight
+PASS: Actual build effect remains visible: ShiftLight / shiftLight
+PASS: Actual build effect remains visible: ShiftLight / shiftLightTarget
+PASS: Category has a real compatible test platform: TwoStep
+PASS: Selected hardware has its own expanded change section: TwoStep
+PASS: Wheel-only specifications never leak into unrelated part comparisons: TwoStep
+PASS: Unrelated component hardware is absent from general build effects: TwoStep
+PASS: Comparison selection and limit inspection are read-only: TwoStep
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: TwoStep
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: TwoStep
+PASS: Explicit effect domain crown belongs only to fitting part categories: TwoStep
+PASS: Explicit effect domain compression belongs only to fitting part categories: TwoStep
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: TwoStep
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: TwoStep
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: TwoStep
+PASS: Explicit effect domain camLift belongs only to fitting part categories: TwoStep
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: TwoStep
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: TwoStep
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: TwoStep
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: TwoStep
+PASS: Actual build effect remains visible: TwoStep / vehicleMass
+PASS: Actual build effect remains visible: TwoStep / installedMass
+PASS: Actual build effect remains visible: TwoStep / dryInstalledMass
+PASS: Actual build effect remains visible: TwoStep / frontWeight
+PASS: Actual build effect remains visible: TwoStep / frontLoad
+PASS: Actual build effect remains visible: TwoStep / rearLoad
+PASS: Actual build effect remains visible: TwoStep / cgPosition
+PASS: Actual build effect remains visible: TwoStep / cgHeight
+PASS: Actual build effect remains visible: TwoStep / twoStepEnabled
+PASS: Actual build effect remains visible: TwoStep / twoStepTarget
+PASS: Actual build effect remains visible: TwoStep / twoStepStyle
+PASS: Category has a real compatible test platform: Camshaft
+PASS: Selected hardware has its own expanded change section: Camshaft
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Camshaft
+PASS: Unrelated component hardware is absent from general build effects: Camshaft
+PASS: Comparison selection and limit inspection are read-only: Camshaft
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Camshaft
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Camshaft
+PASS: Explicit effect domain crown belongs only to fitting part categories: Camshaft
+PASS: Explicit effect domain compression belongs only to fitting part categories: Camshaft
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Camshaft
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Camshaft
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Camshaft
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Camshaft
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Camshaft
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Camshaft
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Camshaft
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Camshaft
+PASS: Relevant effect is visible for its part category: Camshaft / camLift
+PASS: Actual build effect remains visible: Camshaft / peakHp
+PASS: Actual build effect remains visible: Camshaft / hpRpm
+PASS: Actual build effect remains visible: Camshaft / peakTorque
+PASS: Actual build effect remains visible: Camshaft / safeOperatingRpm
+PASS: Actual build effect remains visible: Camshaft / rpmLimitPart
+PASS: Actual build effect remains visible: Camshaft / camLift
+PASS: Actual build effect remains visible: Camshaft / camDuration
+PASS: Actual build effect remains visible: Camshaft / camOverlap
+PASS: Actual build effect remains visible: Camshaft / camSeparation
+PASS: Actual build effect remains visible: Camshaft / valveClearance
+PASS: Actual build effect remains visible: Camshaft / warningCount
+PASS: Category has a real compatible test platform: ValveSprings
+PASS: Selected hardware has its own expanded change section: ValveSprings
+PASS: Wheel-only specifications never leak into unrelated part comparisons: ValveSprings
+PASS: Unrelated component hardware is absent from general build effects: ValveSprings
+PASS: Comparison selection and limit inspection are read-only: ValveSprings
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: ValveSprings
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: ValveSprings
+PASS: Explicit effect domain crown belongs only to fitting part categories: ValveSprings
+PASS: Explicit effect domain compression belongs only to fitting part categories: ValveSprings
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: ValveSprings
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: ValveSprings
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: ValveSprings
+PASS: Explicit effect domain camLift belongs only to fitting part categories: ValveSprings
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: ValveSprings
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: ValveSprings
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: ValveSprings
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: ValveSprings
+PASS: Relevant effect is visible for its part category: ValveSprings / springTravel
+PASS: Actual build effect remains visible: ValveSprings / peakHp
+PASS: Actual build effect remains visible: ValveSprings / hpRpm
+PASS: Actual build effect remains visible: ValveSprings / peakTorque
+PASS: Actual build effect remains visible: ValveSprings / safeOperatingRpm
+PASS: Actual build effect remains visible: ValveSprings / rpmLimitPart
+PASS: Actual build effect remains visible: ValveSprings / springTravel
+PASS: Actual build effect remains visible: ValveSprings / warningCount
+PASS: Category has a real compatible test platform: Valves
+PASS: Selected hardware has its own expanded change section: Valves
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Valves
+PASS: Unrelated component hardware is absent from general build effects: Valves
+PASS: Comparison selection and limit inspection are read-only: Valves
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Valves
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Valves
+PASS: Explicit effect domain crown belongs only to fitting part categories: Valves
+PASS: Explicit effect domain compression belongs only to fitting part categories: Valves
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Valves
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Valves
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Valves
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Valves
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Valves
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Valves
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Valves
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Valves
+PASS: Actual build effect remains visible: Valves / peakHp
+PASS: Actual build effect remains visible: Valves / peakTorque
+PASS: Actual build effect remains visible: Valves / warningCount
+PASS: Category has a real compatible test platform: Followers
+PASS: Selected hardware has its own expanded change section: Followers
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Followers
+PASS: Unrelated component hardware is absent from general build effects: Followers
+PASS: Comparison selection and limit inspection are read-only: Followers
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Followers
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Followers
+PASS: Explicit effect domain crown belongs only to fitting part categories: Followers
+PASS: Explicit effect domain compression belongs only to fitting part categories: Followers
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Followers
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Followers
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Followers
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Followers
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Followers
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Followers
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Followers
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Followers
+PASS: Actual build effect remains visible: Followers / peakHp
+PASS: Actual build effect remains visible: Followers / peakTorque
+PASS: Actual build effect remains visible: Followers / warningCount
+PASS: Category has a real compatible test platform: TimingDrive
+PASS: Selected hardware has its own expanded change section: TimingDrive
+PASS: Wheel-only specifications never leak into unrelated part comparisons: TimingDrive
+PASS: Unrelated component hardware is absent from general build effects: TimingDrive
+PASS: Comparison selection and limit inspection are read-only: TimingDrive
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: TimingDrive
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: TimingDrive
+PASS: Explicit effect domain crown belongs only to fitting part categories: TimingDrive
+PASS: Explicit effect domain compression belongs only to fitting part categories: TimingDrive
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: TimingDrive
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: TimingDrive
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: TimingDrive
+PASS: Explicit effect domain camLift belongs only to fitting part categories: TimingDrive
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: TimingDrive
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: TimingDrive
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: TimingDrive
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: TimingDrive
+PASS: Actual build effect remains visible: TimingDrive / peakHp
+PASS: Actual build effect remains visible: TimingDrive / peakTorque
+PASS: Actual build effect remains visible: TimingDrive / warningCount
+PASS: Category has a real compatible test platform: PistonRings
+PASS: Selected hardware has its own expanded change section: PistonRings
+PASS: Wheel-only specifications never leak into unrelated part comparisons: PistonRings
+PASS: Unrelated component hardware is absent from general build effects: PistonRings
+PASS: Comparison selection and limit inspection are read-only: PistonRings
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: PistonRings
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: PistonRings
+PASS: Explicit effect domain crown belongs only to fitting part categories: PistonRings
+PASS: Explicit effect domain compression belongs only to fitting part categories: PistonRings
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: PistonRings
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: PistonRings
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: PistonRings
+PASS: Explicit effect domain camLift belongs only to fitting part categories: PistonRings
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: PistonRings
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: PistonRings
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: PistonRings
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: PistonRings
+PASS: Actual build effect remains visible: PistonRings / peakHp
+PASS: Actual build effect remains visible: PistonRings / peakTorque
+PASS: Actual build effect remains visible: PistonRings / warningCount
+PASS: Category has a real compatible test platform: CylinderBlock
+PASS: Selected hardware has its own expanded change section: CylinderBlock
+PASS: Wheel-only specifications never leak into unrelated part comparisons: CylinderBlock
+PASS: Unrelated component hardware is absent from general build effects: CylinderBlock
+PASS: Comparison selection and limit inspection are read-only: CylinderBlock
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: CylinderBlock
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: CylinderBlock
+PASS: Explicit effect domain crown belongs only to fitting part categories: CylinderBlock
+PASS: Explicit effect domain compression belongs only to fitting part categories: CylinderBlock
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: CylinderBlock
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: CylinderBlock
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: CylinderBlock
+PASS: Explicit effect domain camLift belongs only to fitting part categories: CylinderBlock
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: CylinderBlock
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: CylinderBlock
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: CylinderBlock
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: CylinderBlock
+PASS: Relevant effect is visible for its part category: CylinderBlock / compression
+PASS: Relevant effect is visible for its part category: CylinderBlock / oilCapacity
+PASS: Actual build effect remains visible: CylinderBlock / peakHp
+PASS: Actual build effect remains visible: CylinderBlock / peakTorque
+PASS: Actual build effect remains visible: CylinderBlock / warningCount
+PASS: Category has a real compatible test platform: Bearings
+PASS: Selected hardware has its own expanded change section: Bearings
+PASS: Wheel-only specifications never leak into unrelated part comparisons: Bearings
+PASS: Unrelated component hardware is absent from general build effects: Bearings
+PASS: Comparison selection and limit inspection are read-only: Bearings
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: Bearings
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: Bearings
+PASS: Explicit effect domain crown belongs only to fitting part categories: Bearings
+PASS: Explicit effect domain compression belongs only to fitting part categories: Bearings
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: Bearings
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: Bearings
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: Bearings
+PASS: Explicit effect domain camLift belongs only to fitting part categories: Bearings
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: Bearings
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: Bearings
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: Bearings
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: Bearings
+PASS: Actual build effect remains visible: Bearings / peakHp
+PASS: Actual build effect remains visible: Bearings / peakTorque
+PASS: Actual build effect remains visible: Bearings / warningCount
+PASS: Category has a real compatible test platform: ValveSeals
+PASS: Selected hardware has its own expanded change section: ValveSeals
+PASS: Wheel-only specifications never leak into unrelated part comparisons: ValveSeals
+PASS: Unrelated component hardware is absent from general build effects: ValveSeals
+PASS: Comparison selection and limit inspection are read-only: ValveSeals
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: ValveSeals
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: ValveSeals
+PASS: Explicit effect domain crown belongs only to fitting part categories: ValveSeals
+PASS: Explicit effect domain compression belongs only to fitting part categories: ValveSeals
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: ValveSeals
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: ValveSeals
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: ValveSeals
+PASS: Explicit effect domain camLift belongs only to fitting part categories: ValveSeals
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: ValveSeals
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: ValveSeals
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: ValveSeals
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: ValveSeals
+PASS: Actual build effect remains visible: ValveSeals / warningCount
+PASS: Category has a real compatible test platform: OilPan
+PASS: Selected hardware has its own expanded change section: OilPan
+PASS: Wheel-only specifications never leak into unrelated part comparisons: OilPan
+PASS: Unrelated component hardware is absent from general build effects: OilPan
+PASS: Comparison selection and limit inspection are read-only: OilPan
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: OilPan
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: OilPan
+PASS: Explicit effect domain crown belongs only to fitting part categories: OilPan
+PASS: Explicit effect domain compression belongs only to fitting part categories: OilPan
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: OilPan
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: OilPan
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: OilPan
+PASS: Explicit effect domain camLift belongs only to fitting part categories: OilPan
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: OilPan
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: OilPan
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: OilPan
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: OilPan
+PASS: Relevant effect is visible for its part category: OilPan / oilCapacity
+PASS: Actual build effect remains visible: OilPan / vehicleMass
+PASS: Actual build effect remains visible: OilPan / installedMass
+PASS: Actual build effect remains visible: OilPan / dryInstalledMass
+PASS: Actual build effect remains visible: OilPan / frontWeight
+PASS: Actual build effect remains visible: OilPan / frontLoad
+PASS: Actual build effect remains visible: OilPan / rearLoad
+PASS: Actual build effect remains visible: OilPan / cgPosition
+PASS: Actual build effect remains visible: OilPan / cgHeight
+PASS: Actual build effect remains visible: OilPan / oilCapacity
+PASS: Category has a real compatible test platform: OilPump
+PASS: Selected hardware has its own expanded change section: OilPump
+PASS: Wheel-only specifications never leak into unrelated part comparisons: OilPump
+PASS: Unrelated component hardware is absent from general build effects: OilPump
+PASS: Comparison selection and limit inspection are read-only: OilPump
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: OilPump
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: OilPump
+PASS: Explicit effect domain crown belongs only to fitting part categories: OilPump
+PASS: Explicit effect domain compression belongs only to fitting part categories: OilPump
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: OilPump
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: OilPump
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: OilPump
+PASS: Explicit effect domain camLift belongs only to fitting part categories: OilPump
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: OilPump
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: OilPump
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: OilPump
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: OilPump
+PASS: Actual build effect remains visible: OilPump / warningCount
+PASS: Category has a real compatible test platform: OilFilter
+PASS: Selected hardware has its own expanded change section: OilFilter
+PASS: Wheel-only specifications never leak into unrelated part comparisons: OilFilter
+PASS: Unrelated component hardware is absent from general build effects: OilFilter
+PASS: Comparison selection and limit inspection are read-only: OilFilter
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: OilFilter
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: OilFilter
+PASS: Explicit effect domain crown belongs only to fitting part categories: OilFilter
+PASS: Explicit effect domain compression belongs only to fitting part categories: OilFilter
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: OilFilter
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: OilFilter
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: OilFilter
+PASS: Explicit effect domain camLift belongs only to fitting part categories: OilFilter
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: OilFilter
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: OilFilter
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: OilFilter
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: OilFilter
+PASS: Actual build effect remains visible: OilFilter / warningCount
+PASS: Category has a real compatible test platform: CoolantPump
+PASS: Selected hardware has its own expanded change section: CoolantPump
+PASS: Wheel-only specifications never leak into unrelated part comparisons: CoolantPump
+PASS: Unrelated component hardware is absent from general build effects: CoolantPump
+PASS: Comparison selection and limit inspection are read-only: CoolantPump
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: CoolantPump
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: CoolantPump
+PASS: Explicit effect domain crown belongs only to fitting part categories: CoolantPump
+PASS: Explicit effect domain compression belongs only to fitting part categories: CoolantPump
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: CoolantPump
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: CoolantPump
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: CoolantPump
+PASS: Explicit effect domain camLift belongs only to fitting part categories: CoolantPump
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: CoolantPump
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: CoolantPump
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: CoolantPump
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: CoolantPump
+PASS: Actual build effect remains visible: CoolantPump / coolingTransfer
+PASS: Actual build effect remains visible: CoolantPump / warningCount
+PASS: Category has a real compatible test platform: CoolingCap
+PASS: Selected hardware has its own expanded change section: CoolingCap
+PASS: Wheel-only specifications never leak into unrelated part comparisons: CoolingCap
+PASS: Unrelated component hardware is absent from general build effects: CoolingCap
+PASS: Comparison selection and limit inspection are read-only: CoolingCap
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: CoolingCap
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: CoolingCap
+PASS: Explicit effect domain crown belongs only to fitting part categories: CoolingCap
+PASS: Explicit effect domain compression belongs only to fitting part categories: CoolingCap
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: CoolingCap
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: CoolingCap
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: CoolingCap
+PASS: Explicit effect domain camLift belongs only to fitting part categories: CoolingCap
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: CoolingCap
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: CoolingCap
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: CoolingCap
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: CoolingCap
+PASS: Relevant effect is visible for its part category: CoolingCap / coolingCap
+PASS: Actual build effect remains visible: CoolingCap / coolingCap
+PASS: Actual build effect remains visible: CoolingCap / warningCount
+PASS: Category has a real compatible test platform: CoolingHoses
+PASS: Selected hardware has its own expanded change section: CoolingHoses
+PASS: Wheel-only specifications never leak into unrelated part comparisons: CoolingHoses
+PASS: Unrelated component hardware is absent from general build effects: CoolingHoses
+PASS: Comparison selection and limit inspection are read-only: CoolingHoses
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: CoolingHoses
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: CoolingHoses
+PASS: Explicit effect domain crown belongs only to fitting part categories: CoolingHoses
+PASS: Explicit effect domain compression belongs only to fitting part categories: CoolingHoses
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: CoolingHoses
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: CoolingHoses
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: CoolingHoses
+PASS: Explicit effect domain camLift belongs only to fitting part categories: CoolingHoses
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: CoolingHoses
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: CoolingHoses
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: CoolingHoses
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: CoolingHoses
+PASS: Actual build effect remains visible: CoolingHoses / warningCount
+PASS: Category has a real compatible test platform: OilCooler
+PASS: Selected hardware has its own expanded change section: OilCooler
+PASS: Wheel-only specifications never leak into unrelated part comparisons: OilCooler
+PASS: Unrelated component hardware is absent from general build effects: OilCooler
+PASS: Comparison selection and limit inspection are read-only: OilCooler
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: OilCooler
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: OilCooler
+PASS: Explicit effect domain crown belongs only to fitting part categories: OilCooler
+PASS: Explicit effect domain compression belongs only to fitting part categories: OilCooler
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: OilCooler
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: OilCooler
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: OilCooler
+PASS: Explicit effect domain camLift belongs only to fitting part categories: OilCooler
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: OilCooler
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: OilCooler
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: OilCooler
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: OilCooler
+PASS: Actual build effect remains visible: OilCooler / vehicleMass
+PASS: Actual build effect remains visible: OilCooler / installedMass
+PASS: Actual build effect remains visible: OilCooler / dryInstalledMass
+PASS: Actual build effect remains visible: OilCooler / frontWeight
+PASS: Actual build effect remains visible: OilCooler / frontLoad
+PASS: Actual build effect remains visible: OilCooler / rearLoad
+PASS: Actual build effect remains visible: OilCooler / cgPosition
+PASS: Actual build effect remains visible: OilCooler / cgHeight
+PASS: Category has a real compatible test platform: SparkPlugs
+PASS: Selected hardware has its own expanded change section: SparkPlugs
+PASS: Wheel-only specifications never leak into unrelated part comparisons: SparkPlugs
+PASS: Unrelated component hardware is absent from general build effects: SparkPlugs
+PASS: Comparison selection and limit inspection are read-only: SparkPlugs
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: SparkPlugs
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: SparkPlugs
+PASS: Explicit effect domain crown belongs only to fitting part categories: SparkPlugs
+PASS: Explicit effect domain compression belongs only to fitting part categories: SparkPlugs
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: SparkPlugs
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: SparkPlugs
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: SparkPlugs
+PASS: Explicit effect domain camLift belongs only to fitting part categories: SparkPlugs
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: SparkPlugs
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: SparkPlugs
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: SparkPlugs
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: SparkPlugs
+PASS: Actual build effect remains visible: SparkPlugs / peakHp
+PASS: Actual build effect remains visible: SparkPlugs / peakTorque
+PASS: Actual build effect remains visible: SparkPlugs / warningCount
+PASS: Category has a real compatible test platform: GlowPlugs
+PASS: Selected hardware has its own expanded change section: GlowPlugs
+PASS: Wheel-only specifications never leak into unrelated part comparisons: GlowPlugs
+PASS: Unrelated component hardware is absent from general build effects: GlowPlugs
+PASS: Comparison selection and limit inspection are read-only: GlowPlugs
+PASS: Explicit effect domain brakeG belongs only to fitting part categories: GlowPlugs
+PASS: Explicit effect domain flywheelInertia belongs only to fitting part categories: GlowPlugs
+PASS: Explicit effect domain crown belongs only to fitting part categories: GlowPlugs
+PASS: Explicit effect domain compression belongs only to fitting part categories: GlowPlugs
+PASS: Explicit effect domain gearRatio:0 belongs only to fitting part categories: GlowPlugs
+PASS: Explicit effect domain oilCapacity belongs only to fitting part categories: GlowPlugs
+PASS: Explicit effect domain turboSize belongs only to fitting part categories: GlowPlugs
+PASS: Explicit effect domain camLift belongs only to fitting part categories: GlowPlugs
+PASS: Explicit effect domain springTravel belongs only to fitting part categories: GlowPlugs
+PASS: Explicit effect domain tireCompound belongs only to fitting part categories: GlowPlugs
+PASS: Explicit effect domain coolingCap belongs only to fitting part categories: GlowPlugs
+PASS: Explicit effect domain shiftLight belongs only to fitting part categories: GlowPlugs
+PASS: Actual build effect remains visible: GlowPlugs / warningCount
+PASS: Complete-engine limits use the minimum comparable internal ratings and actual condition: city-three
+PASS: Weak individual spring and installed cam demand can set the lowest safe RPM: city-three
+PASS: Upgrading a non-limiting internal does not falsely raise the full-engine RPM ceiling: city-three
+PASS: Complete-engine limits use the minimum comparable internal ratings and actual condition: juniper-club
+PASS: Weak individual spring and installed cam demand can set the lowest safe RPM: juniper-club
+PASS: Upgrading a non-limiting internal does not falsely raise the full-engine RPM ceiling: juniper-club
+PASS: Complete-engine limits use the minimum comparable internal ratings and actual condition: juniper-economy
+PASS: Weak individual spring and installed cam demand can set the lowest safe RPM: juniper-economy
+PASS: Upgrading a non-limiting internal does not falsely raise the full-engine RPM ceiling: juniper-economy
+PASS: Complete-engine limits use the minimum comparable internal ratings and actual condition: kestrel-track
+PASS: Weak individual spring and installed cam demand can set the lowest safe RPM: kestrel-track
+PASS: Upgrading a non-limiting internal does not falsely raise the full-engine RPM ceiling: kestrel-track
+PASS: Complete-engine limits use the minimum comparable internal ratings and actual condition: rally-sedan
+PASS: Weak individual spring and installed cam demand can set the lowest safe RPM: rally-sedan
+PASS: Upgrading a non-limiting internal does not falsely raise the full-engine RPM ceiling: rally-sedan
+PASS: Complete-engine limits use the minimum comparable internal ratings and actual condition: sport-coupe
+PASS: Weak individual spring and installed cam demand can set the lowest safe RPM: sport-coupe
+PASS: Upgrading a non-limiting internal does not falsely raise the full-engine RPM ceiling: sport-coupe
+PASS: Complete-engine limits use the minimum comparable internal ratings and actual condition: starter-hatch
+PASS: Weak individual spring and installed cam demand can set the lowest safe RPM: starter-hatch
+PASS: Upgrading a non-limiting internal does not falsely raise the full-engine RPM ceiling: starter-hatch
+PASS: Complete-engine limits use the minimum comparable internal ratings and actual condition: super-v8
+PASS: Weak individual spring and installed cam demand can set the lowest safe RPM: super-v8
+PASS: Upgrading a non-limiting internal does not falsely raise the full-engine RPM ceiling: super-v8
+PASS: Complete-engine limits use the minimum comparable internal ratings and actual condition: timber-diesel
+PASS: Weak individual spring and installed cam demand can set the lowest safe RPM: timber-diesel
+PASS: Upgrading a non-limiting internal does not falsely raise the full-engine RPM ceiling: timber-diesel
+PASS: Complete-engine limits use the minimum comparable internal ratings and actual condition: timber-diesel-tow
+PASS: Weak individual spring and installed cam demand can set the lowest safe RPM: timber-diesel-tow
+PASS: Upgrading a non-limiting internal does not falsely raise the full-engine RPM ceiling: timber-diesel-tow
+PASS: Complete-engine limits use the minimum comparable internal ratings and actual condition: touring-six
+PASS: Weak individual spring and installed cam demand can set the lowest safe RPM: touring-six
+PASS: Upgrading a non-limiting internal does not falsely raise the full-engine RPM ceiling: touring-six
+PASS: Complete-engine limits use the minimum comparable internal ratings and actual condition: utility-pickup
+PASS: Weak individual spring and installed cam demand can set the lowest safe RPM: utility-pickup
+PASS: Upgrading a non-limiting internal does not falsely raise the full-engine RPM ceiling: utility-pickup
+PASS: Complete-engine limits use the minimum comparable internal ratings and actual condition: v8-muscle
+PASS: Weak individual spring and installed cam demand can set the lowest safe RPM: v8-muscle
+PASS: Upgrading a non-limiting internal does not falsely raise the full-engine RPM ceiling: v8-muscle
+Checks: 1256 / failures: 0

@@ -17,8 +17,12 @@ namespace DragLab.Domain.Mechanics {
     if(!Editable(f.Name)&&!Equals(value,f.GetValue(original)))return "Stable identity/fitment cannot change: "+f.Name;
     if(f.FieldType==typeof(float)){double n=(float)value;if(!MechanicsSchema.Finite(n)||Math.Abs(n)>1e12)return "Invalid number: "+f.Name;if(n<0&&f.Name!="camTorqueBias"&&f.Name!="positionFromFrontAxleM"&&f.Name!="crownVolumeCc")return "Negative number: "+f.Name;}
     if(f.FieldType==typeof(int)&&((int)value<0||(int)value>10000000))return "Invalid integer: "+f.Name;
-    if(f.FieldType.IsEnum&&(f.Name=="tuning"?(((int)(PartTuningOptions)value&~511)!=0):!Enum.IsDefined(f.FieldType,value)))return "Invalid option: "+f.Name;
+    if(f.FieldType.IsEnum&&(f.Name=="tuning"?(((int)(PartTuningOptions)value&~1023)!=0):!Enum.IsDefined(f.FieldType,value)))return "Invalid option: "+f.Name;
    }
+   if(draft.awdHardware!=null&&(draft.awdHardware.Validate()!=null||draft.category!=PartCategory.Differential&&draft.category!=PartCategory.TransferCase))return "Invalid center-system hardware metadata.";
+   if(draft.awdHardware!=null&&draft.awdHardware.integratedCenter&&draft.category!=PartCategory.TransferCase)return "Integrated center belongs to transfer-case hardware.";
+   if(PartTuning.Allows(draft,PartTuningOptions.AwdCalibration)&&(draft.awdHardware==null||draft.awdHardware.adjustments==AwdAdjustments.None&&(draft.awdHardware.modes&(draft.awdHardware.modes-1))==0))return "AWD calibration needs adjustable or switchable center hardware.";
+   if(PartTuning.Allows(draft,PartTuningOptions.CenterRatio)&&(draft.awdHardware==null||(draft.awdHardware.adjustments&AwdAdjustments.SpeedRatio)==0))return "Center gearset adjustment needs ratio-capable mechanical hardware.";
    if(string.IsNullOrWhiteSpace(draft.name))return "Name required.";
    if(new[]{draft.power,draft.grip,draft.massScale,draft.shiftScale,draft.capacityScale,draft.boostScale}.Any(n=>n<=0||n>4))return "Hardware multipliers must be >0 and <=4.";
    if(draft.centerRatioMin<.5||draft.centerRatioMax>2||draft.centerRatioMin>draft.centerRatioMax)return "Invalid center speed ratio range.";
@@ -33,7 +37,7 @@ namespace DragLab.Domain.Mechanics {
   public static void Apply(MechanicalCatalog catalog,PartCatalogOverrideData data,bool requireAll=false){
    if(data==null||data.version!=1||data.parts==null)throw new ArgumentException("Unsupported part-authoring data.");
    var seen=new HashSet<string>();var pending=new List<PartDefinition>();
-   foreach(var draft in data.parts){if(draft==null||string.IsNullOrEmpty(draft.id)||!seen.Add(draft.id))throw new ArgumentException("Missing/duplicate override identity.");var original=catalog.Find(draft.id);if(original==null){if(requireAll)throw new ArgumentException("Unknown override: "+draft.id);continue;}string error=Validate(original,draft);if(error!=null)throw new ArgumentException(draft.id+": "+error);pending.Add(draft.Copy());}
+   foreach(var draft in data.parts){if(draft==null||string.IsNullOrEmpty(draft.id)||!seen.Add(draft.id))throw new ArgumentException("Missing/duplicate override identity.");var original=catalog.Find(draft.id);if(original==null){if(requireAll)throw new ArgumentException("Unknown override: "+draft.id);continue;}var normalized=draft.Copy();if(normalized.awdHardware==null||normalized.awdHardware.version==0)normalized.awdHardware=original.awdHardware?.Copy();string error=Validate(original,normalized);if(error!=null)throw new ArgumentException(draft.id+": "+error);pending.Add(normalized);}
    foreach(var draft in pending)catalog.parts[catalog.parts.FindIndex(p=>p.id==draft.id)]=draft;catalog.RebuildIndexes();
   }
  }

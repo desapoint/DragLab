@@ -1,0 +1,673 @@
+PASS: city-three: isolated full save
+PASS: city-three: full entered base /
+PASS: city-three: queue copied car-only data /
+PASS: city-three: worker changes neither full save nor live profile
+PASS: city-three: journal overlay preserves ledger/receipt revision invariants
+PASS: city-three: copied fuel/wear/heat survive journal load
+PASS: city-three: no reward/record or unrequested closure
+PASS: city-three: duplicate queued tick rejected
+PASS: city-three: ordered queue 121 /
+PASS: city-three: ordered queue 122 /
+PASS: city-three: ordered queue 123 /
+PASS: city-three: ordered queue 124 /
+PASS: city-three: ordered queue 125 /
+PASS: city-three: ordered queue 126 /
+PASS: city-three: ordered queue 127 /
+PASS: city-three: ordered queue 128 /
+PASS: city-three: ordered queue 129 /
+PASS: city-three: ordered queue 130 /
+PASS: city-three: ordered queue 131 /
+PASS: city-three: ordered queue 132 /
+PASS: city-three: ordered queue 133 /
+PASS: city-three: ordered queue 134 /
+PASS: city-three: ordered queue 135 /
+PASS: city-three: ordered queue 136 /
+PASS: city-three: ordered queue 137 /
+PASS: city-three: ordered queue 138 /
+PASS: city-three: ordered queue 139 /
+PASS: city-three: ordered queue 140 /
+PASS: city-three: ordered queue 141 /
+PASS: city-three: ordered queue 142 /
+PASS: city-three: ordered queue 143 /
+PASS: city-three: ordered queue 144 /
+PASS: city-three: ordered queue 145 /
+PASS: city-three: ordered queue 146 /
+PASS: city-three: ordered queue 147 /
+PASS: city-three: ordered queue 148 /
+PASS: city-three: ordered queue 149 /
+PASS: city-three: ordered queue 150 /
+PASS: city-three: latest coalesced state wins
+PASS: city-three: later queue cannot heal earlier queued wear/refill
+PASS: city-three: journal smaller than one-car ledger
+PASS: city-three: corrupt primary journal falls back to durable backup
+PASS: city-three: interrupted recovery retains resources and closes without payout
+PASS: city-three: full recovery retires journal after durable commit
+PASS: city-three: stale journal cannot reopen settled run
+PASS: city-three: superseded journal cleanup
+PASS: city-three: second entry /
+PASS: city-three: immediate critical failure queue
+PASS: city-three: full exit drains pending failure /
+PASS: city-three: exit cannot be overwritten by older worker
+PASS: city-three: complete validation precedes any ledger mutation
+PASS: juniper-club: isolated full save
+PASS: juniper-club: full entered base /
+PASS: juniper-club: queue copied car-only data /
+PASS: juniper-club: worker changes neither full save nor live profile
+PASS: juniper-club: journal overlay preserves ledger/receipt revision invariants
+PASS: juniper-club: copied fuel/wear/heat survive journal load
+PASS: juniper-club: no reward/record or unrequested closure
+PASS: juniper-club: duplicate queued tick rejected
+PASS: juniper-club: ordered queue 121 /
+PASS: juniper-club: ordered queue 122 /
+PASS: juniper-club: ordered queue 123 /
+PASS: juniper-club: ordered queue 124 /
+PASS: juniper-club: ordered queue 125 /
+PASS: juniper-club: ordered queue 126 /
+PASS: juniper-club: ordered queue 127 /
+PASS: juniper-club: ordered queue 128 /
+PASS: juniper-club: ordered queue 129 /
+PASS: juniper-club: ordered queue 130 /
+PASS: juniper-club: ordered queue 131 /
+PASS: juniper-club: ordered queue 132 /
+PASS: juniper-club: ordered queue 133 /
+PASS: juniper-club: ordered queue 134 /
+PASS: juniper-club: ordered queue 135 /
+PASS: juniper-club: ordered queue 136 /
+PASS: juniper-club: ordered queue 137 /
+PASS: juniper-club: ordered queue 138 /
+PASS: juniper-club: ordered queue 139 /
+PASS: juniper-club: ordered queue 140 /
+PASS: juniper-club: ordered queue 141 /
+PASS: juniper-club: ordered queue 142 /
+PASS: juniper-club: ordered queue 143 /
+PASS: juniper-club: ordered queue 144 /
+PASS: juniper-club: ordered queue 145 /
+PASS: juniper-club: ordered queue 146 /
+PASS: juniper-club: ordered queue 147 /
+PASS: juniper-club: ordered queue 148 /
+PASS: juniper-club: ordered queue 149 /
+PASS: juniper-club: ordered queue 150 /
+PASS: juniper-club: latest coalesced state wins
+PASS: juniper-club: later queue cannot heal earlier queued wear/refill
+PASS: juniper-club: journal smaller than one-car ledger
+PASS: juniper-club: corrupt primary journal falls back to durable backup
+PASS: juniper-club: interrupted recovery retains resources and closes without payout
+PASS: juniper-club: full recovery retires journal after durable commit
+PASS: juniper-club: stale journal cannot reopen settled run
+PASS: juniper-club: superseded journal cleanup
+PASS: juniper-club: second entry /
+PASS: juniper-club: immediate critical failure queue
+PASS: juniper-club: full exit drains pending failure /
+PASS: juniper-club: exit cannot be overwritten by older worker
+PASS: juniper-club: complete validation precedes any ledger mutation
+PASS: juniper-economy: isolated full save
+PASS: juniper-economy: full entered base /
+PASS: juniper-economy: queue copied car-only data /
+PASS: juniper-economy: worker changes neither full save nor live profile
+PASS: juniper-economy: journal overlay preserves ledger/receipt revision invariants
+PASS: juniper-economy: copied fuel/wear/heat survive journal load
+PASS: juniper-economy: no reward/record or unrequested closure
+PASS: juniper-economy: duplicate queued tick rejected
+PASS: juniper-economy: ordered queue 121 /
+PASS: juniper-economy: ordered queue 122 /
+PASS: juniper-economy: ordered queue 123 /
+PASS: juniper-economy: ordered queue 124 /
+PASS: juniper-economy: ordered queue 125 /
+PASS: juniper-economy: ordered queue 126 /
+PASS: juniper-economy: ordered queue 127 /
+PASS: juniper-economy: ordered queue 128 /
+PASS: juniper-economy: ordered queue 129 /
+PASS: juniper-economy: ordered queue 130 /
+PASS: juniper-economy: ordered queue 131 /
+PASS: juniper-economy: ordered queue 132 /
+PASS: juniper-economy: ordered queue 133 /
+PASS: juniper-economy: ordered queue 134 /
+PASS: juniper-economy: ordered queue 135 /
+PASS: juniper-economy: ordered queue 136 /
+PASS: juniper-economy: ordered queue 137 /
+PASS: juniper-economy: ordered queue 138 /
+PASS: juniper-economy: ordered queue 139 /
+PASS: juniper-economy: ordered queue 140 /
+PASS: juniper-economy: ordered queue 141 /
+PASS: juniper-economy: ordered queue 142 /
+PASS: juniper-economy: ordered queue 143 /
+PASS: juniper-economy: ordered queue 144 /
+PASS: juniper-economy: ordered queue 145 /
+PASS: juniper-economy: ordered queue 146 /
+PASS: juniper-economy: ordered queue 147 /
+PASS: juniper-economy: ordered queue 148 /
+PASS: juniper-economy: ordered queue 149 /
+PASS: juniper-economy: ordered queue 150 /
+PASS: juniper-economy: latest coalesced state wins
+PASS: juniper-economy: later queue cannot heal earlier queued wear/refill
+PASS: juniper-economy: journal smaller than one-car ledger
+PASS: juniper-economy: corrupt primary journal falls back to durable backup
+PASS: juniper-economy: interrupted recovery retains resources and closes without payout
+PASS: juniper-economy: full recovery retires journal after durable commit
+PASS: juniper-economy: stale journal cannot reopen settled run
+PASS: juniper-economy: superseded journal cleanup
+PASS: juniper-economy: second entry /
+PASS: juniper-economy: immediate critical failure queue
+PASS: juniper-economy: full exit drains pending failure /
+PASS: juniper-economy: exit cannot be overwritten by older worker
+PASS: juniper-economy: complete validation precedes any ledger mutation
+PASS: kestrel-track: isolated full save
+PASS: kestrel-track: full entered base /
+PASS: kestrel-track: queue copied car-only data /
+PASS: kestrel-track: worker changes neither full save nor live profile
+PASS: kestrel-track: journal overlay preserves ledger/receipt revision invariants
+PASS: kestrel-track: copied fuel/wear/heat survive journal load
+PASS: kestrel-track: no reward/record or unrequested closure
+PASS: kestrel-track: duplicate queued tick rejected
+PASS: kestrel-track: ordered queue 121 /
+PASS: kestrel-track: ordered queue 122 /
+PASS: kestrel-track: ordered queue 123 /
+PASS: kestrel-track: ordered queue 124 /
+PASS: kestrel-track: ordered queue 125 /
+PASS: kestrel-track: ordered queue 126 /
+PASS: kestrel-track: ordered queue 127 /
+PASS: kestrel-track: ordered queue 128 /
+PASS: kestrel-track: ordered queue 129 /
+PASS: kestrel-track: ordered queue 130 /
+PASS: kestrel-track: ordered queue 131 /
+PASS: kestrel-track: ordered queue 132 /
+PASS: kestrel-track: ordered queue 133 /
+PASS: kestrel-track: ordered queue 134 /
+PASS: kestrel-track: ordered queue 135 /
+PASS: kestrel-track: ordered queue 136 /
+PASS: kestrel-track: ordered queue 137 /
+PASS: kestrel-track: ordered queue 138 /
+PASS: kestrel-track: ordered queue 139 /
+PASS: kestrel-track: ordered queue 140 /
+PASS: kestrel-track: ordered queue 141 /
+PASS: kestrel-track: ordered queue 142 /
+PASS: kestrel-track: ordered queue 143 /
+PASS: kestrel-track: ordered queue 144 /
+PASS: kestrel-track: ordered queue 145 /
+PASS: kestrel-track: ordered queue 146 /
+PASS: kestrel-track: ordered queue 147 /
+PASS: kestrel-track: ordered queue 148 /
+PASS: kestrel-track: ordered queue 149 /
+PASS: kestrel-track: ordered queue 150 /
+PASS: kestrel-track: latest coalesced state wins
+PASS: kestrel-track: later queue cannot heal earlier queued wear/refill
+PASS: kestrel-track: journal smaller than one-car ledger
+PASS: kestrel-track: corrupt primary journal falls back to durable backup
+PASS: kestrel-track: interrupted recovery retains resources and closes without payout
+PASS: kestrel-track: full recovery retires journal after durable commit
+PASS: kestrel-track: stale journal cannot reopen settled run
+PASS: kestrel-track: superseded journal cleanup
+PASS: kestrel-track: second entry /
+PASS: kestrel-track: immediate critical failure queue
+PASS: kestrel-track: full exit drains pending failure /
+PASS: kestrel-track: exit cannot be overwritten by older worker
+PASS: kestrel-track: complete validation precedes any ledger mutation
+PASS: rally-sedan: isolated full save
+PASS: rally-sedan: full entered base /
+PASS: rally-sedan: queue copied car-only data /
+PASS: rally-sedan: worker changes neither full save nor live profile
+PASS: rally-sedan: journal overlay preserves ledger/receipt revision invariants
+PASS: rally-sedan: copied fuel/wear/heat survive journal load
+PASS: rally-sedan: no reward/record or unrequested closure
+PASS: rally-sedan: duplicate queued tick rejected
+PASS: rally-sedan: ordered queue 121 /
+PASS: rally-sedan: ordered queue 122 /
+PASS: rally-sedan: ordered queue 123 /
+PASS: rally-sedan: ordered queue 124 /
+PASS: rally-sedan: ordered queue 125 /
+PASS: rally-sedan: ordered queue 126 /
+PASS: rally-sedan: ordered queue 127 /
+PASS: rally-sedan: ordered queue 128 /
+PASS: rally-sedan: ordered queue 129 /
+PASS: rally-sedan: ordered queue 130 /
+PASS: rally-sedan: ordered queue 131 /
+PASS: rally-sedan: ordered queue 132 /
+PASS: rally-sedan: ordered queue 133 /
+PASS: rally-sedan: ordered queue 134 /
+PASS: rally-sedan: ordered queue 135 /
+PASS: rally-sedan: ordered queue 136 /
+PASS: rally-sedan: ordered queue 137 /
+PASS: rally-sedan: ordered queue 138 /
+PASS: rally-sedan: ordered queue 139 /
+PASS: rally-sedan: ordered queue 140 /
+PASS: rally-sedan: ordered queue 141 /
+PASS: rally-sedan: ordered queue 142 /
+PASS: rally-sedan: ordered queue 143 /
+PASS: rally-sedan: ordered queue 144 /
+PASS: rally-sedan: ordered queue 145 /
+PASS: rally-sedan: ordered queue 146 /
+PASS: rally-sedan: ordered queue 147 /
+PASS: rally-sedan: ordered queue 148 /
+PASS: rally-sedan: ordered queue 149 /
+PASS: rally-sedan: ordered queue 150 /
+PASS: rally-sedan: latest coalesced state wins
+PASS: rally-sedan: later queue cannot heal earlier queued wear/refill
+PASS: rally-sedan: journal smaller than one-car ledger
+PASS: rally-sedan: corrupt primary journal falls back to durable backup
+PASS: rally-sedan: interrupted recovery retains resources and closes without payout
+PASS: rally-sedan: full recovery retires journal after durable commit
+PASS: rally-sedan: stale journal cannot reopen settled run
+PASS: rally-sedan: superseded journal cleanup
+PASS: rally-sedan: second entry /
+PASS: rally-sedan: immediate critical failure queue
+PASS: rally-sedan: full exit drains pending failure /
+PASS: rally-sedan: exit cannot be overwritten by older worker
+PASS: rally-sedan: complete validation precedes any ledger mutation
+PASS: sport-coupe: isolated full save
+PASS: sport-coupe: full entered base /
+PASS: sport-coupe: queue copied car-only data /
+PASS: sport-coupe: worker changes neither full save nor live profile
+PASS: sport-coupe: journal overlay preserves ledger/receipt revision invariants
+PASS: sport-coupe: copied fuel/wear/heat survive journal load
+PASS: sport-coupe: no reward/record or unrequested closure
+PASS: sport-coupe: duplicate queued tick rejected
+PASS: sport-coupe: ordered queue 121 /
+PASS: sport-coupe: ordered queue 122 /
+PASS: sport-coupe: ordered queue 123 /
+PASS: sport-coupe: ordered queue 124 /
+PASS: sport-coupe: ordered queue 125 /
+PASS: sport-coupe: ordered queue 126 /
+PASS: sport-coupe: ordered queue 127 /
+PASS: sport-coupe: ordered queue 128 /
+PASS: sport-coupe: ordered queue 129 /
+PASS: sport-coupe: ordered queue 130 /
+PASS: sport-coupe: ordered queue 131 /
+PASS: sport-coupe: ordered queue 132 /
+PASS: sport-coupe: ordered queue 133 /
+PASS: sport-coupe: ordered queue 134 /
+PASS: sport-coupe: ordered queue 135 /
+PASS: sport-coupe: ordered queue 136 /
+PASS: sport-coupe: ordered queue 137 /
+PASS: sport-coupe: ordered queue 138 /
+PASS: sport-coupe: ordered queue 139 /
+PASS: sport-coupe: ordered queue 140 /
+PASS: sport-coupe: ordered queue 141 /
+PASS: sport-coupe: ordered queue 142 /
+PASS: sport-coupe: ordered queue 143 /
+PASS: sport-coupe: ordered queue 144 /
+PASS: sport-coupe: ordered queue 145 /
+PASS: sport-coupe: ordered queue 146 /
+PASS: sport-coupe: ordered queue 147 /
+PASS: sport-coupe: ordered queue 148 /
+PASS: sport-coupe: ordered queue 149 /
+PASS: sport-coupe: ordered queue 150 /
+PASS: sport-coupe: latest coalesced state wins
+PASS: sport-coupe: later queue cannot heal earlier queued wear/refill
+PASS: sport-coupe: journal smaller than one-car ledger
+PASS: sport-coupe: corrupt primary journal falls back to durable backup
+PASS: sport-coupe: interrupted recovery retains resources and closes without payout
+PASS: sport-coupe: full recovery retires journal after durable commit
+PASS: sport-coupe: stale journal cannot reopen settled run
+PASS: sport-coupe: superseded journal cleanup
+PASS: sport-coupe: second entry /
+PASS: sport-coupe: immediate critical failure queue
+PASS: sport-coupe: full exit drains pending failure /
+PASS: sport-coupe: exit cannot be overwritten by older worker
+PASS: sport-coupe: complete validation precedes any ledger mutation
+PASS: starter-hatch: isolated full save
+PASS: starter-hatch: full entered base /
+PASS: starter-hatch: queue copied car-only data /
+PASS: starter-hatch: worker changes neither full save nor live profile
+PASS: starter-hatch: journal overlay preserves ledger/receipt revision invariants
+PASS: starter-hatch: copied fuel/wear/heat survive journal load
+PASS: starter-hatch: no reward/record or unrequested closure
+PASS: starter-hatch: duplicate queued tick rejected
+PASS: starter-hatch: ordered queue 121 /
+PASS: starter-hatch: ordered queue 122 /
+PASS: starter-hatch: ordered queue 123 /
+PASS: starter-hatch: ordered queue 124 /
+PASS: starter-hatch: ordered queue 125 /
+PASS: starter-hatch: ordered queue 126 /
+PASS: starter-hatch: ordered queue 127 /
+PASS: starter-hatch: ordered queue 128 /
+PASS: starter-hatch: ordered queue 129 /
+PASS: starter-hatch: ordered queue 130 /
+PASS: starter-hatch: ordered queue 131 /
+PASS: starter-hatch: ordered queue 132 /
+PASS: starter-hatch: ordered queue 133 /
+PASS: starter-hatch: ordered queue 134 /
+PASS: starter-hatch: ordered queue 135 /
+PASS: starter-hatch: ordered queue 136 /
+PASS: starter-hatch: ordered queue 137 /
+PASS: starter-hatch: ordered queue 138 /
+PASS: starter-hatch: ordered queue 139 /
+PASS: starter-hatch: ordered queue 140 /
+PASS: starter-hatch: ordered queue 141 /
+PASS: starter-hatch: ordered queue 142 /
+PASS: starter-hatch: ordered queue 143 /
+PASS: starter-hatch: ordered queue 144 /
+PASS: starter-hatch: ordered queue 145 /
+PASS: starter-hatch: ordered queue 146 /
+PASS: starter-hatch: ordered queue 147 /
+PASS: starter-hatch: ordered queue 148 /
+PASS: starter-hatch: ordered queue 149 /
+PASS: starter-hatch: ordered queue 150 /
+PASS: starter-hatch: latest coalesced state wins
+PASS: starter-hatch: later queue cannot heal earlier queued wear/refill
+PASS: starter-hatch: journal smaller than one-car ledger
+PASS: starter-hatch: corrupt primary journal falls back to durable backup
+PASS: starter-hatch: interrupted recovery retains resources and closes without payout
+PASS: starter-hatch: full recovery retires journal after durable commit
+PASS: starter-hatch: stale journal cannot reopen settled run
+PASS: starter-hatch: superseded journal cleanup
+PASS: starter-hatch: second entry /
+PASS: starter-hatch: immediate critical failure queue
+PASS: starter-hatch: full exit drains pending failure /
+PASS: starter-hatch: exit cannot be overwritten by older worker
+PASS: starter-hatch: complete validation precedes any ledger mutation
+PASS: super-v8: isolated full save
+PASS: super-v8: full entered base /
+PASS: super-v8: queue copied car-only data /
+PASS: super-v8: worker changes neither full save nor live profile
+PASS: super-v8: journal overlay preserves ledger/receipt revision invariants
+PASS: super-v8: copied fuel/wear/heat survive journal load
+PASS: super-v8: no reward/record or unrequested closure
+PASS: super-v8: duplicate queued tick rejected
+PASS: super-v8: ordered queue 121 /
+PASS: super-v8: ordered queue 122 /
+PASS: super-v8: ordered queue 123 /
+PASS: super-v8: ordered queue 124 /
+PASS: super-v8: ordered queue 125 /
+PASS: super-v8: ordered queue 126 /
+PASS: super-v8: ordered queue 127 /
+PASS: super-v8: ordered queue 128 /
+PASS: super-v8: ordered queue 129 /
+PASS: super-v8: ordered queue 130 /
+PASS: super-v8: ordered queue 131 /
+PASS: super-v8: ordered queue 132 /
+PASS: super-v8: ordered queue 133 /
+PASS: super-v8: ordered queue 134 /
+PASS: super-v8: ordered queue 135 /
+PASS: super-v8: ordered queue 136 /
+PASS: super-v8: ordered queue 137 /
+PASS: super-v8: ordered queue 138 /
+PASS: super-v8: ordered queue 139 /
+PASS: super-v8: ordered queue 140 /
+PASS: super-v8: ordered queue 141 /
+PASS: super-v8: ordered queue 142 /
+PASS: super-v8: ordered queue 143 /
+PASS: super-v8: ordered queue 144 /
+PASS: super-v8: ordered queue 145 /
+PASS: super-v8: ordered queue 146 /
+PASS: super-v8: ordered queue 147 /
+PASS: super-v8: ordered queue 148 /
+PASS: super-v8: ordered queue 149 /
+PASS: super-v8: ordered queue 150 /
+PASS: super-v8: latest coalesced state wins
+PASS: super-v8: later queue cannot heal earlier queued wear/refill
+PASS: super-v8: journal smaller than one-car ledger
+PASS: super-v8: corrupt primary journal falls back to durable backup
+PASS: super-v8: interrupted recovery retains resources and closes without payout
+PASS: super-v8: full recovery retires journal after durable commit
+PASS: super-v8: stale journal cannot reopen settled run
+PASS: super-v8: superseded journal cleanup
+PASS: super-v8: second entry /
+PASS: super-v8: immediate critical failure queue
+PASS: super-v8: full exit drains pending failure /
+PASS: super-v8: exit cannot be overwritten by older worker
+PASS: super-v8: complete validation precedes any ledger mutation
+PASS: timber-diesel: isolated full save
+PASS: timber-diesel: full entered base /
+PASS: timber-diesel: queue copied car-only data /
+PASS: timber-diesel: worker changes neither full save nor live profile
+PASS: timber-diesel: journal overlay preserves ledger/receipt revision invariants
+PASS: timber-diesel: copied fuel/wear/heat survive journal load
+PASS: timber-diesel: no reward/record or unrequested closure
+PASS: timber-diesel: duplicate queued tick rejected
+PASS: timber-diesel: ordered queue 121 /
+PASS: timber-diesel: ordered queue 122 /
+PASS: timber-diesel: ordered queue 123 /
+PASS: timber-diesel: ordered queue 124 /
+PASS: timber-diesel: ordered queue 125 /
+PASS: timber-diesel: ordered queue 126 /
+PASS: timber-diesel: ordered queue 127 /
+PASS: timber-diesel: ordered queue 128 /
+PASS: timber-diesel: ordered queue 129 /
+PASS: timber-diesel: ordered queue 130 /
+PASS: timber-diesel: ordered queue 131 /
+PASS: timber-diesel: ordered queue 132 /
+PASS: timber-diesel: ordered queue 133 /
+PASS: timber-diesel: ordered queue 134 /
+PASS: timber-diesel: ordered queue 135 /
+PASS: timber-diesel: ordered queue 136 /
+PASS: timber-diesel: ordered queue 137 /
+PASS: timber-diesel: ordered queue 138 /
+PASS: timber-diesel: ordered queue 139 /
+PASS: timber-diesel: ordered queue 140 /
+PASS: timber-diesel: ordered queue 141 /
+PASS: timber-diesel: ordered queue 142 /
+PASS: timber-diesel: ordered queue 143 /
+PASS: timber-diesel: ordered queue 144 /
+PASS: timber-diesel: ordered queue 145 /
+PASS: timber-diesel: ordered queue 146 /
+PASS: timber-diesel: ordered queue 147 /
+PASS: timber-diesel: ordered queue 148 /
+PASS: timber-diesel: ordered queue 149 /
+PASS: timber-diesel: ordered queue 150 /
+PASS: timber-diesel: latest coalesced state wins
+PASS: timber-diesel: later queue cannot heal earlier queued wear/refill
+PASS: timber-diesel: journal smaller than one-car ledger
+PASS: timber-diesel: corrupt primary journal falls back to durable backup
+PASS: timber-diesel: interrupted recovery retains resources and closes without payout
+PASS: timber-diesel: full recovery retires journal after durable commit
+PASS: timber-diesel: stale journal cannot reopen settled run
+PASS: timber-diesel: superseded journal cleanup
+PASS: timber-diesel: second entry /
+PASS: timber-diesel: immediate critical failure queue
+PASS: timber-diesel: full exit drains pending failure /
+PASS: timber-diesel: exit cannot be overwritten by older worker
+PASS: timber-diesel: complete validation precedes any ledger mutation
+PASS: timber-diesel-tow: isolated full save
+PASS: timber-diesel-tow: full entered base /
+PASS: timber-diesel-tow: queue copied car-only data /
+PASS: timber-diesel-tow: worker changes neither full save nor live profile
+PASS: timber-diesel-tow: journal overlay preserves ledger/receipt revision invariants
+PASS: timber-diesel-tow: copied fuel/wear/heat survive journal load
+PASS: timber-diesel-tow: no reward/record or unrequested closure
+PASS: timber-diesel-tow: duplicate queued tick rejected
+PASS: timber-diesel-tow: ordered queue 121 /
+PASS: timber-diesel-tow: ordered queue 122 /
+PASS: timber-diesel-tow: ordered queue 123 /
+PASS: timber-diesel-tow: ordered queue 124 /
+PASS: timber-diesel-tow: ordered queue 125 /
+PASS: timber-diesel-tow: ordered queue 126 /
+PASS: timber-diesel-tow: ordered queue 127 /
+PASS: timber-diesel-tow: ordered queue 128 /
+PASS: timber-diesel-tow: ordered queue 129 /
+PASS: timber-diesel-tow: ordered queue 130 /
+PASS: timber-diesel-tow: ordered queue 131 /
+PASS: timber-diesel-tow: ordered queue 132 /
+PASS: timber-diesel-tow: ordered queue 133 /
+PASS: timber-diesel-tow: ordered queue 134 /
+PASS: timber-diesel-tow: ordered queue 135 /
+PASS: timber-diesel-tow: ordered queue 136 /
+PASS: timber-diesel-tow: ordered queue 137 /
+PASS: timber-diesel-tow: ordered queue 138 /
+PASS: timber-diesel-tow: ordered queue 139 /
+PASS: timber-diesel-tow: ordered queue 140 /
+PASS: timber-diesel-tow: ordered queue 141 /
+PASS: timber-diesel-tow: ordered queue 142 /
+PASS: timber-diesel-tow: ordered queue 143 /
+PASS: timber-diesel-tow: ordered queue 144 /
+PASS: timber-diesel-tow: ordered queue 145 /
+PASS: timber-diesel-tow: ordered queue 146 /
+PASS: timber-diesel-tow: ordered queue 147 /
+PASS: timber-diesel-tow: ordered queue 148 /
+PASS: timber-diesel-tow: ordered queue 149 /
+PASS: timber-diesel-tow: ordered queue 150 /
+PASS: timber-diesel-tow: latest coalesced state wins
+PASS: timber-diesel-tow: later queue cannot heal earlier queued wear/refill
+PASS: timber-diesel-tow: journal smaller than one-car ledger
+PASS: timber-diesel-tow: corrupt primary journal falls back to durable backup
+PASS: timber-diesel-tow: interrupted recovery retains resources and closes without payout
+PASS: timber-diesel-tow: full recovery retires journal after durable commit
+PASS: timber-diesel-tow: stale journal cannot reopen settled run
+PASS: timber-diesel-tow: superseded journal cleanup
+PASS: timber-diesel-tow: second entry /
+PASS: timber-diesel-tow: immediate critical failure queue
+PASS: timber-diesel-tow: full exit drains pending failure /
+PASS: timber-diesel-tow: exit cannot be overwritten by older worker
+PASS: timber-diesel-tow: complete validation precedes any ledger mutation
+PASS: touring-six: isolated full save
+PASS: touring-six: full entered base /
+PASS: touring-six: queue copied car-only data /
+PASS: touring-six: worker changes neither full save nor live profile
+PASS: touring-six: journal overlay preserves ledger/receipt revision invariants
+PASS: touring-six: copied fuel/wear/heat survive journal load
+PASS: touring-six: no reward/record or unrequested closure
+PASS: touring-six: duplicate queued tick rejected
+PASS: touring-six: ordered queue 121 /
+PASS: touring-six: ordered queue 122 /
+PASS: touring-six: ordered queue 123 /
+PASS: touring-six: ordered queue 124 /
+PASS: touring-six: ordered queue 125 /
+PASS: touring-six: ordered queue 126 /
+PASS: touring-six: ordered queue 127 /
+PASS: touring-six: ordered queue 128 /
+PASS: touring-six: ordered queue 129 /
+PASS: touring-six: ordered queue 130 /
+PASS: touring-six: ordered queue 131 /
+PASS: touring-six: ordered queue 132 /
+PASS: touring-six: ordered queue 133 /
+PASS: touring-six: ordered queue 134 /
+PASS: touring-six: ordered queue 135 /
+PASS: touring-six: ordered queue 136 /
+PASS: touring-six: ordered queue 137 /
+PASS: touring-six: ordered queue 138 /
+PASS: touring-six: ordered queue 139 /
+PASS: touring-six: ordered queue 140 /
+PASS: touring-six: ordered queue 141 /
+PASS: touring-six: ordered queue 142 /
+PASS: touring-six: ordered queue 143 /
+PASS: touring-six: ordered queue 144 /
+PASS: touring-six: ordered queue 145 /
+PASS: touring-six: ordered queue 146 /
+PASS: touring-six: ordered queue 147 /
+PASS: touring-six: ordered queue 148 /
+PASS: touring-six: ordered queue 149 /
+PASS: touring-six: ordered queue 150 /
+PASS: touring-six: latest coalesced state wins
+PASS: touring-six: later queue cannot heal earlier queued wear/refill
+PASS: touring-six: journal smaller than one-car ledger
+PASS: touring-six: corrupt primary journal falls back to durable backup
+PASS: touring-six: interrupted recovery retains resources and closes without payout
+PASS: touring-six: full recovery retires journal after durable commit
+PASS: touring-six: stale journal cannot reopen settled run
+PASS: touring-six: superseded journal cleanup
+PASS: touring-six: second entry /
+PASS: touring-six: immediate critical failure queue
+PASS: touring-six: full exit drains pending failure /
+PASS: touring-six: exit cannot be overwritten by older worker
+PASS: touring-six: complete validation precedes any ledger mutation
+PASS: utility-pickup: isolated full save
+PASS: utility-pickup: full entered base /
+PASS: utility-pickup: queue copied car-only data /
+PASS: utility-pickup: worker changes neither full save nor live profile
+PASS: utility-pickup: journal overlay preserves ledger/receipt revision invariants
+PASS: utility-pickup: copied fuel/wear/heat survive journal load
+PASS: utility-pickup: no reward/record or unrequested closure
+PASS: utility-pickup: duplicate queued tick rejected
+PASS: utility-pickup: ordered queue 121 /
+PASS: utility-pickup: ordered queue 122 /
+PASS: utility-pickup: ordered queue 123 /
+PASS: utility-pickup: ordered queue 124 /
+PASS: utility-pickup: ordered queue 125 /
+PASS: utility-pickup: ordered queue 126 /
+PASS: utility-pickup: ordered queue 127 /
+PASS: utility-pickup: ordered queue 128 /
+PASS: utility-pickup: ordered queue 129 /
+PASS: utility-pickup: ordered queue 130 /
+PASS: utility-pickup: ordered queue 131 /
+PASS: utility-pickup: ordered queue 132 /
+PASS: utility-pickup: ordered queue 133 /
+PASS: utility-pickup: ordered queue 134 /
+PASS: utility-pickup: ordered queue 135 /
+PASS: utility-pickup: ordered queue 136 /
+PASS: utility-pickup: ordered queue 137 /
+PASS: utility-pickup: ordered queue 138 /
+PASS: utility-pickup: ordered queue 139 /
+PASS: utility-pickup: ordered queue 140 /
+PASS: utility-pickup: ordered queue 141 /
+PASS: utility-pickup: ordered queue 142 /
+PASS: utility-pickup: ordered queue 143 /
+PASS: utility-pickup: ordered queue 144 /
+PASS: utility-pickup: ordered queue 145 /
+PASS: utility-pickup: ordered queue 146 /
+PASS: utility-pickup: ordered queue 147 /
+PASS: utility-pickup: ordered queue 148 /
+PASS: utility-pickup: ordered queue 149 /
+PASS: utility-pickup: ordered queue 150 /
+PASS: utility-pickup: latest coalesced state wins
+PASS: utility-pickup: later queue cannot heal earlier queued wear/refill
+PASS: utility-pickup: journal smaller than one-car ledger
+PASS: utility-pickup: corrupt primary journal falls back to durable backup
+PASS: utility-pickup: interrupted recovery retains resources and closes without payout
+PASS: utility-pickup: full recovery retires journal after durable commit
+PASS: utility-pickup: stale journal cannot reopen settled run
+PASS: utility-pickup: superseded journal cleanup
+PASS: utility-pickup: second entry /
+PASS: utility-pickup: immediate critical failure queue
+PASS: utility-pickup: full exit drains pending failure /
+PASS: utility-pickup: exit cannot be overwritten by older worker
+PASS: utility-pickup: complete validation precedes any ledger mutation
+PASS: v8-muscle: isolated full save
+PASS: v8-muscle: full entered base /
+PASS: v8-muscle: queue copied car-only data /
+PASS: v8-muscle: worker changes neither full save nor live profile
+PASS: v8-muscle: journal overlay preserves ledger/receipt revision invariants
+PASS: v8-muscle: copied fuel/wear/heat survive journal load
+PASS: v8-muscle: no reward/record or unrequested closure
+PASS: v8-muscle: duplicate queued tick rejected
+PASS: v8-muscle: ordered queue 121 /
+PASS: v8-muscle: ordered queue 122 /
+PASS: v8-muscle: ordered queue 123 /
+PASS: v8-muscle: ordered queue 124 /
+PASS: v8-muscle: ordered queue 125 /
+PASS: v8-muscle: ordered queue 126 /
+PASS: v8-muscle: ordered queue 127 /
+PASS: v8-muscle: ordered queue 128 /
+PASS: v8-muscle: ordered queue 129 /
+PASS: v8-muscle: ordered queue 130 /
+PASS: v8-muscle: ordered queue 131 /
+PASS: v8-muscle: ordered queue 132 /
+PASS: v8-muscle: ordered queue 133 /
+PASS: v8-muscle: ordered queue 134 /
+PASS: v8-muscle: ordered queue 135 /
+PASS: v8-muscle: ordered queue 136 /
+PASS: v8-muscle: ordered queue 137 /
+PASS: v8-muscle: ordered queue 138 /
+PASS: v8-muscle: ordered queue 139 /
+PASS: v8-muscle: ordered queue 140 /
+PASS: v8-muscle: ordered queue 141 /
+PASS: v8-muscle: ordered queue 142 /
+PASS: v8-muscle: ordered queue 143 /
+PASS: v8-muscle: ordered queue 144 /
+PASS: v8-muscle: ordered queue 145 /
+PASS: v8-muscle: ordered queue 146 /
+PASS: v8-muscle: ordered queue 147 /
+PASS: v8-muscle: ordered queue 148 /
+PASS: v8-muscle: ordered queue 149 /
+PASS: v8-muscle: ordered queue 150 /
+PASS: v8-muscle: latest coalesced state wins
+PASS: v8-muscle: later queue cannot heal earlier queued wear/refill
+PASS: v8-muscle: journal smaller than one-car ledger
+PASS: v8-muscle: corrupt primary journal falls back to durable backup
+PASS: v8-muscle: interrupted recovery retains resources and closes without payout
+PASS: v8-muscle: full recovery retires journal after durable commit
+PASS: v8-muscle: stale journal cannot reopen settled run
+PASS: v8-muscle: superseded journal cleanup
+PASS: v8-muscle: second entry /
+PASS: v8-muscle: immediate critical failure queue
+PASS: v8-muscle: full exit drains pending failure /
+PASS: v8-muscle: exit cannot be overwritten by older worker
+PASS: v8-muscle: complete validation precedes any ledger mutation
+PASS: I/O fixture entered
+PASS: I/O fixture queued
+PASS: Write failure reported; prior durable base preserved
+PASS: Retry queue after I/O recovery
+PASS: Retry is durable and clears failure
+PASS: Ordinary settings save merges journal without invalidating receipt revision
+PASS: Journal resumes against new full-save base
+PASS: Reset drains and retires live journal
+PASS: Reset retains preferences and cannot restore previous run
+Checks: 672

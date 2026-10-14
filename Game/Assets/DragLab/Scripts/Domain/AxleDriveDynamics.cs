@@ -28,7 +28,7 @@ namespace DragLab.Domain
     }
     public static class AxleDriveDynamics
     {
-        public static AwdSpec Configuration(VehicleSpec spec, Tune tune) { return (tune.awdConfigured && tune.awd != null ? tune.awd : spec.awd ?? new AwdSpec()).Copy(); }
+        public static AwdSpec Configuration(VehicleSpec spec, Tune tune) { return Mechanics.AwdHardware.Constrain(spec,tune.awdConfigured?tune.awd:null); }
         public static bool HasDrivePath(VehicleSpec spec, AwdSpec data, bool front, bool rear)
         {
             if (spec.drive == DriveType.FWD) return front;

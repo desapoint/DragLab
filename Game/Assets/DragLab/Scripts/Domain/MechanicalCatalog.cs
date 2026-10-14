@@ -16,6 +16,7 @@ namespace DragLab.Domain.Mechanics
         public PartCategory category;
         public float boreMm, power = 1, grip = 1, massScale = 1, shiftScale = 1, capacityScale = 1, boostScale = 1;
         public float centerRatioMin=.5f,centerRatioMax=2;
+        public AwdHardwareSpec awdHardware;
         public float rpmLimit, torqueLimitNm, massKg, inertiaKgM2;
         public float positionFromFrontAxleM, heightM = .4f;
         public int price, stage, reputationRequired;
@@ -46,7 +47,7 @@ namespace DragLab.Domain.Mechanics
         public DifferentialKind differential;
         public float torqueBiasRatio = 1, preloadNm, engineHeatTransferScale = 1, maxPowerHp;
         public string provenance = "Fictional part specification; platform interfaces are game-authored, not manufacturer fitment.";
-        public PartDefinition Copy() { return (PartDefinition)MemberwiseClone(); }
+        public PartDefinition Copy() { var copy=(PartDefinition)MemberwiseClone();copy.awdHardware=awdHardware?.Copy();return copy; }
     }
     public sealed class BuildResolution
     {
@@ -60,7 +61,7 @@ namespace DragLab.Domain.Mechanics
     // Stable, authored definitions; interchangeable sets are distinct from their owned instances.
     public sealed class MechanicalCatalog
     {
-        public const int Version = 4;
+        public const int Version = 5;
         public readonly List<PartDefinition> parts = new List<PartDefinition>();
         readonly Dictionary<string, VehicleSpec> specs = new Dictionary<string, VehicleSpec>();
         public static readonly PartCategory[] EngineSlots = { PartCategory.Pistons, PartCategory.Rods, PartCategory.Crankshaft, PartCategory.HeadIntake, PartCategory.FuelSystem, PartCategory.Ignition, PartCategory.Cooling, PartCategory.Induction, PartCategory.Exhaust, PartCategory.Flywheel };
@@ -70,7 +71,7 @@ namespace DragLab.Domain.Mechanics
             foreach (var source in vehicles) { var spec=source.Copy(); specs.Add(spec.id,spec.Copy()); Author(spec); }
             // Extra offers unlock independently. Existing ranks remain purchasable directly.
             foreach(var model in specs.Keys){var source=parts.Where(p=>p.id.StartsWith(model+"/")&&p.category==PartCategory.Induction&&p.turboUnits>0).OrderByDescending(p=>p.turboSize).FirstOrDefault();if(source!=null){var extra=source.Copy();extra.id=model+"/Induction/motorsport";extra.name=source.name+" / motorsport compressor";extra.reputationRequired=8;extra.price=checked(source.price+400);extra.boostScale=Math.Min(4,source.boostScale*1.05f);extra.description+=" Independent REP 8 offer; preceding induction ranks are not required. Higher boost needs matching strength, tires and cooling.";parts.Add(extra);}}
-            PartBrands.Apply(this);LockedCenterHardware.Add(this, specs.Values);
+            PartBrands.Apply(this);LockedCenterHardware.Add(this, specs.Values);AwdHardware.Add(this,specs.Values);
             foreach(var model in specs.Keys)foreach(var category in new[]{PartCategory.Bearings,PartCategory.PistonRings,PartCategory.ValveSeals}){
                 var original=Find(Id(model,category));if(original==null)continue;var spare=original.Copy();spare.id=model+"/"+category+"/ServiceLife";spare.brand="Relay Components";spare.quality="Long-service replacement";spare.name=spare.brand+" long-service "+PartSemantics.Friendly(category.ToString()).ToLowerInvariant();spare.price=(int)Math.Ceiling(original.price*1.2);spare.wearEnergyJ*=1.35f;spare.tuning=PartTuningOptions.None;spare.description="Matched fixed-spec replacement set. Same fit and performance ratings as OEM, with 35% greater wear-energy capacity. Buy into storage for a future rebuild; individual matching replacements remain available.";parts.Add(spare);
             }
@@ -211,6 +212,7 @@ namespace DragLab.Domain.Mechanics
         }
         public bool Fits(VehicleSpec spec, PartDefinition part)
         {
+            if(part?.awdHardware!=null&&part.awdHardware.version==1&&spec.drive!=DriveType.AWD)return false;
             if(part==null || !SupportsSlot(spec,part.category) || part.fitment!=Interface(spec,part.category) || part.boreMm!=0 && Math.Abs(part.boreMm-Bore(spec))>=.01)return false;
             if(EngineSlot(part.category)&&part.category!=PartCategory.Controls&&part.fuelKind!=spec.combustion.fuelKind)return false;
             if(part.category!=PartCategory.Controls)return true;
@@ -289,9 +291,9 @@ namespace DragLab.Domain.Mechanics
             result.spec.engineBehavior.safeRpmMultiplier = (float)DragMath.Clamp(result.safeRpm / result.spec.redlineRpm, 1.01, 1.4);
             t.shiftRpm = Math.Min(t.shiftRpm, result.safeRpm - 100);
             if (t.revLimitRpm > result.safeRpm) t.revLimitRpm = result.safeRpm;
-            LockedCenterHardware.Enforce(result,installed,this);
             result.spec.fittedParts = installed.Values.Select(Find).Where(p => p != null).Select(p => p.Copy()).ToArray();
             result.spec.hasInstalledParts = true;
+            AwdHardware.Enforce(result);
             return result;
         }
     }

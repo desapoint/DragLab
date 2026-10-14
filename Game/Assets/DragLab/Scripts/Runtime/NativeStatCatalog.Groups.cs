@@ -213,6 +213,11 @@ namespace DragLab.Runtime
                     if(slot==PartCategory.Followers||slot==PartCategory.TimingDrive)rows.Add(N(id+":adjustment","Adjustment error",s=>s.Part(slot)==null?(double?)null:s.Part(slot).condition.adjustmentError*100,"%","F0",0,100,"Retained clearance/timing error; a service adjustment differs from changing a saved tune.",-1));
                     if(slot==PartCategory.Clutch||slot==PartCategory.Tires)rows.Add(N(id+":work","Accumulated slip work",s=>s.Part(slot)==null?(double?)null:s.Part(slot).condition.slipEnergyJ/1e6,"MJ","F2",0,100,"Stored component friction work, separate from RPM slip and the authored life budget."));
                 }
+                if(a.Definition(slot)?.awdHardware?.version==1||b?.Definition(slot)?.awdHardware?.version==1){
+                    rows.Add(T(id+":awdHardware","AWD hardware",s=>s.Definition(slot)?.awdHardware==null?"—":slot==PartCategory.TransferCase&&!s.Definition(slot).awdHardware.integratedCenter?"Pass-through transfer housing":string.Join(" / ",Enum.GetValues(typeof(AwdMode)).Cast<AwdMode>().Where(s.Definition(slot).awdHardware.Supports).Select(AwdHardware.Name)),"Modes supported by the actual center assembly. Engine ECU software cannot change its mechanical system."));
+                    rows.Add(T(id+":awdIsolation","Failed-branch isolation",s=>s.Definition(slot)?.awdHardware==null?"—":s.Definition(slot).awdHardware.calibration.isolateFailedAxle?"Supported":"Not provided","Physical disconnect capability in this component. The complete build combines its center assembly and transfer housing."));
+                    rows.Add(T(id+":awdAdjustment","AWD adjustments",s=>AwdHardware.Summary(s.Definition(slot)),"Only the installed hardware/controller's supported calibration is editable; primary axle, fixed geometry and failure-isolation hardware remain specifications."));
+                }
                 var metrics=slot==PartCategory.Tires||slot==PartCategory.Wheels?Enumerable.Empty<PartStat>():PartSemantics.Stats(a.Definition(slot)).Concat(PartSemantics.Stats(b?.Definition(slot))).GroupBy(m=>m.key).Select(g=>g.First());
                 foreach(var metric in metrics) {
                     var key=metric.key;

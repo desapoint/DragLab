@@ -1,6 +1,6 @@
 # Component failures and AWD
 
-Race and physical bench use the same `CarSimulation`, mechanical stress and axle-force solver. Physics identity is `draglab-shared-axles-v4`; older recordings must be recorded again. Existing owned parts keep their condition and identities. A one-time migration adds applicable OEM branch components; intentional removals after migration stay removed.
+Race and physical bench use the same `CarSimulation`, mechanical stress and axle-force solver. Current physics identity is `draglab-variety-v19`; older recordings must be recorded again. Existing owned parts keep their condition and identities. A one-time migration adds applicable OEM branch components; intentional removals after migration stay removed.
 
 | Component | Result |
 | --- | --- |
@@ -43,3 +43,10 @@ Verification: `AxleFailureVerification` covers brake capacity/no-use wear, commo
 Final checkpoint: **925 full-suite checks / 93 focused checks**, rebuilt Windows player, and `reports/player-fixtures/awd-component-failures-v4-protected-final` actual race/shutdown/persistence tests with zero runtime/GUI/DSP errors. The final Windows open-center test installs a suitable limiter, independently of the retained OEM no-limiter overrev-abuse test.
 
 Current update (2026-10-13): [all-mode geometry matrix](../reports/awd-geometry/CHANGES.md). Physics identity `draglab-variety-v18`; re-record prior scenarios. Player saves and retained condition are not reset. The optional premium ratio gearset is still locked-center hardware, not a requirement for other AWD modes to resolve different wheel sizes. Measured Coupling channels include AWD slip work kJ and AWD heat kW.
+
+
+## Installed center systems (2026-10-14)
+
+The common Differential slot represents the AWD center assembly; FrontDifferential and RearDifferential remain independent axle hardware. The ratio-equipped transfer case includes a locked center, while ordinary transfer housings do not convert center type. Center modes and editable calibration are declared by installed hardware and constrained at both resolution and simulation construction. A matching programmable controller is included only in the specified on-demand/active assembly variant; an engine ECU does not create a different center mechanism. Primary axle, failure disconnects and free-shaft properties are fixed specifications. Adjustable bias/preload/response/share and special locked speed ratios cannot exceed hardware bounds. The underlying per-corner geometry, load, grip, slip, stress and loss behavior remains authoritative for every mode. [Delivery and checks](../reports/awd-hardware/CHANGES.md).
+
+Moving from v18 to v19 requires new driving recordings. Recoverable interrupted-run resource journals from v18 remain eligible for the same strict ownership, component, revision and monotonic resource checks when loading; this does not resume obsolete inputs or award race results.

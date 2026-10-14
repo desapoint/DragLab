@@ -26,7 +26,8 @@ namespace DragLab.Runtime
             Add("exhaustPath",PartCategory.Exhaust);
             Add("transmission|downshiftProtection|finalDrive|shiftSeconds|shiftRetention|clutchType|clutchCapacity|converterStall|converterMultiply|converterLock|cvtMinimum|cvtMaximum|cvtTarget|gearRatio|gearSpeed|shiftLanding|cvtSpeed",PartCategory.Gearbox);
             Add("clutchType|clutchCapacity|shiftSeconds",PartCategory.Clutch);Add("flywheelMass|flywheelInertia|engineInertia",PartCategory.Flywheel);Add("engineInertia",PartCategory.CylinderBlock);
-            Add("frontDifferential|rearDifferential|awdMode|awdFrontBias|awdPrimary|awdMinimumFront|awdMaximumFront|awdSecondary|awdResponse|awdPreload|awdSlipThreshold|awdIsolation|centerSpeedRatio|centerBias|centerPreload|wheelRadius|wheelDiameter|gearSpeed|cvtSpeed",PartCategory.Differential,PartCategory.TransferCase);
+            Add("awdMode|awdFrontBias|awdPrimary|awdMinimumFront|awdMaximumFront|awdSecondary|awdResponse|awdPreload|awdSlipThreshold|awdIsolation|centerSpeedRatio|centerBias|centerPreload|gearSpeed|cvtSpeed",PartCategory.Differential,PartCategory.TransferCase);
+            Add("frontDifferential|rearDifferential",PartCategory.Differential);
             Add("frontDifferential",PartCategory.FrontDifferential);Add("rearDifferential",PartCategory.RearDifferential);
             Add("wheelRadius|wheelDiameter|wheelMass|wheelInertia|effectiveMass|wheelWidth|tirePressure|gearSpeed|cvtSpeed",PartCategory.Wheels,PartCategory.Tires);
             Add("tireCompound|tireGrip|tireHealth|rollingLife|slidingLife",PartCategory.Tires);
@@ -63,7 +64,7 @@ namespace DragLab.Runtime
             var set=categories.Distinct().ToArray();
             NativeStatGroup Filter(NativeStatGroup group){
                 if(group.Id=="Components")return null; // Actual selected hardware/members belong in Part changes.
-                var rows=group.Definitions.Where(d=>set.Any(c=>CanAffect(c,d.Id))).ToArray();
+                var rows=group.Definitions.Where(d=>set.Any(c=>CanAffect(c,d.Id)&&!(current.source.build.spec.drive==DriveType.AWD&&c==PartCategory.Differential&&(d.Id=="frontDifferential"||d.Id=="rearDifferential")))).ToArray();
                 var children=group.Children.Select(Filter).Where(g=>g!=null).ToArray();
                 return rows.Length==0&&children.Length==0?null:new NativeStatGroup(group.Id=="Performance"?"PartPerformance":group.Id,group.Title,rows){InitiallyCollapsed=true,Children=Array.AsReadOnly(children)};
             }

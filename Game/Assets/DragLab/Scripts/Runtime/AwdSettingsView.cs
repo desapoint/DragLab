@@ -12,6 +12,7 @@ namespace DragLab.Runtime
         {
             GUILayout.Label("DRIVE LAYOUT / " + vehicle.drive);
             if (vehicle.drive != DriveType.AWD) return false;
+            if(vehicle.hasInstalledParts)return DrawInstalled(vehicle,tune);
             var data = AxleDriveDynamics.Configuration(vehicle, tune); var defaults = vehicle.awd ?? new AwdSpec(); bool changed = false;
             var center = Array.Find(vehicle.fittedParts, p => p.category == DragLab.Domain.Mechanics.PartCategory.Differential && p.stage > 0);
             bool hardwareForced = center != null;
@@ -53,6 +54,26 @@ namespace DragLab.Runtime
             GUILayout.Label("These represent hardware/controller configurations for this prototype, not universal settings every real car offers.");
             if (changed) { tune.awd = data; tune.awdConfigured = true; }
             return changed;
+        }
+        static bool DrawInstalled(VehicleSpec vehicle,Tune tune)
+        {
+            var data=AxleDriveDynamics.Configuration(vehicle,tune);var defaults=DragLab.Domain.Mechanics.AwdHardware.Constrain(vehicle,null);var part=DragLab.Domain.Mechanics.AwdHardware.Installed(vehicle);var modes=DragLab.Domain.Mechanics.AwdHardware.Modes(vehicle);bool changed=false;
+            if(modes.Length>1){int selected=Array.IndexOf(modes,data.mode);int next=GUILayout.SelectionGrid(selected,Array.ConvertAll(modes,DragLab.Domain.Mechanics.AwdHardware.Name),Math.Min(3,modes.Length));if(next!=selected){data.mode=modes[next];changed=true;}}
+            else GUILayout.Label("Center: "+DragLab.Domain.Mechanics.AwdHardware.Name(data.mode));
+            bool Allows(DragLab.Domain.Mechanics.AwdAdjustments option)=>DragLab.Domain.Mechanics.AwdHardware.Allows(vehicle,option);
+            void Value(DragLab.Domain.Mechanics.AwdAdjustments option,string label,ref float value,float min,float max,float reset,string format="F2"){
+                if(Allows(option))changed|=Slider(label,ref value,min,max,format,reset);else GUILayout.Label(label+": "+value.ToString(format));
+            }
+            if(data.mode==AwdMode.LockedCenter){if(Allows(DragLab.Domain.Mechanics.AwdAdjustments.SpeedRatio)){float ratio=(float)data.LockedRatio;changed|=Slider("Front / rear speed ratio",ref ratio,part.centerRatioMin,part.centerRatioMax,"F3",1);data.centerSpeedRatio=ratio;}else GUILayout.Label("Front / rear speed ratio: 1:1");}
+            if(data.mode==AwdMode.FixedSplit||data.mode==AwdMode.OpenCenter||data.mode==AwdMode.ActiveBias)Value(DragLab.Domain.Mechanics.AwdAdjustments.FrontShare,"Front torque target",ref data.frontBias,data.mode==AwdMode.ActiveBias?data.minimumFront:0,data.mode==AwdMode.ActiveBias?data.maximumFront:1,defaults.frontBias,"P0");
+            if(data.mode==AwdMode.LimitedSlipCenter){Value(DragLab.Domain.Mechanics.AwdAdjustments.CenterBias,"Center bias ratio",ref data.torqueBiasRatio,1,part?.torqueBiasRatio??defaults.torqueBiasRatio,defaults.torqueBiasRatio);if(Allows(DragLab.Domain.Mechanics.AwdAdjustments.CenterPreload))changed|=TorqueSlider("Center preload",ref data.centerPreloadNm,0,part.preloadNm,"F0",defaults.centerPreloadNm);else GUILayout.Label("Center preload: "+SharedUnitSettings.Torque(data.centerPreloadNm,"F0"));}
+            if(data.mode==AwdMode.ActiveBias&&Allows(DragLab.Domain.Mechanics.AwdAdjustments.ActiveLimits)){
+                Value(DragLab.Domain.Mechanics.AwdAdjustments.ActiveLimits,"Minimum front share",ref data.minimumFront,part.awdHardware.calibration.minimumFront,data.maximumFront,defaults.minimumFront,"P0");
+                Value(DragLab.Domain.Mechanics.AwdAdjustments.ActiveLimits,"Maximum front share",ref data.maximumFront,data.minimumFront,part.awdHardware.calibration.maximumFront,defaults.maximumFront,"P0");
+            }
+            if(data.mode==AwdMode.OnDemand){GUILayout.Label("Primary axle: "+(data.primaryFront?"Front":"Rear"));Value(DragLab.Domain.Mechanics.AwdAdjustments.Coupling,"Secondary limit",ref data.maximumSecondary,0,part?.awdHardware.calibration.maximumSecondary??defaults.maximumSecondary,defaults.maximumSecondary,"P0");Value(DragLab.Domain.Mechanics.AwdAdjustments.Coupling,"Coupling preload",ref data.preload,0,1,defaults.preload,"P0");Value(DragLab.Domain.Mechanics.AwdAdjustments.Coupling,"Slip threshold",ref data.slipThreshold,.001f,.5f,defaults.slipThreshold,"P1");}
+            if(data.mode==AwdMode.OnDemand&&Allows(DragLab.Domain.Mechanics.AwdAdjustments.Coupling)||data.mode==AwdMode.ActiveBias&&Allows(DragLab.Domain.Mechanics.AwdAdjustments.ActiveLimits))changed|=Slider("Coupling response (s)",ref data.responseSeconds,part.awdHardware.responseMin,part.awdHardware.responseMax,"F2",defaults.responseSeconds);
+            if(changed){tune.awd=DragLab.Domain.Mechanics.AwdHardware.Constrain(vehicle,data);tune.awdConfigured=true;}return changed;
         }
         static bool TorqueSlider(string name, ref float value, float min, float max, string format, float defaultValue)
         {

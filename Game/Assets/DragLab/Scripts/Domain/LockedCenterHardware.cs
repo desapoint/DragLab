@@ -15,13 +15,8 @@ namespace DragLab.Domain.Mechanics
         }
         public static void Enforce(BuildResolution build,IDictionary<PartCategory,string> installed,MechanicalCatalog catalog)
         {
-            if(build.spec.drive!=DriveType.AWD)return;
-            var part=installed.TryGetValue(PartCategory.TransferCase,out var id)?catalog.Find(id):null;
-            if(part!=null&&PartTuning.Allows(part,PartTuningOptions.CenterRatio)){
-                var data=AxleDriveDynamics.Configuration(build.spec,build.tune);data.mode=AwdMode.LockedCenter;data.centerSpeedRatio=(float)DragMath.Clamp(data.LockedRatio,part.centerRatioMin,part.centerRatioMax);build.tune.awd=data;build.tune.awdConfigured=true;
-            }else{
-                build.spec.awd.centerSpeedRatio=0;if(build.tune.awd!=null)build.tune.awd.centerSpeedRatio=0;
-            }
+            build.spec.fittedParts=installed.Values.Select(catalog.Find).Where(p=>p!=null).Select(p=>p.Copy()).ToArray();build.spec.hasInstalledParts=true;
+            AwdHardware.Enforce(build);
         }
     }
 }

@@ -1,0 +1,153 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: OEM center type is an installed specification, not an unrestricted mode picker: rally-sedan
+PASS: Primary axle, free-shaft properties and isolation cannot be changed in physical tuning
+PASS: Engine ECU does not change the OEM center system
+PASS: Actual installed hardware drives the tuning preview: OpenCenter / rally-sedan
+PASS: Only declared hardware/controller capabilities create editable sliders: OpenCenter
+PASS: AWD edits remain drafts without healing, installing, charging or saving: OpenCenter
+PASS: Actual installed hardware drives the tuning preview: OnDemandFixed / rally-sedan
+PASS: Only declared hardware/controller capabilities create editable sliders: OnDemandFixed
+PASS: AWD edits remain drafts without healing, installing, charging or saving: OnDemandFixed
+PASS: Actual installed hardware drives the tuning preview: OnDemandController / rally-sedan
+PASS: Only declared hardware/controller capabilities create editable sliders: OnDemandController
+PASS: Coupling share is clamped to installed 60% capacity
+PASS: AWD edits remain drafts without healing, installing, charging or saving: OnDemandController
+PASS: Actual installed hardware drives the tuning preview: ActiveFixed / rally-sedan
+PASS: Only declared hardware/controller capabilities create editable sliders: ActiveFixed
+PASS: AWD edits remain drafts without healing, installing, charging or saving: ActiveFixed
+PASS: Actual installed hardware drives the tuning preview: ActiveController / rally-sedan
+PASS: Only declared hardware/controller capabilities create editable sliders: ActiveController
+PASS: Conflicting active limits remain ordered within hardware bounds
+PASS: AWD edits remain drafts without healing, installing, charging or saving: ActiveController
+PASS: Actual installed hardware drives the tuning preview: AdjustableLSD / rally-sedan
+PASS: Only declared hardware/controller capabilities create editable sliders: AdjustableLSD
+PASS: Mechanical LSD adjustment respects its installed maximum bias
+PASS: AWD edits remain drafts without healing, installing, charging or saving: AdjustableLSD
+PASS: Actual installed hardware drives the tuning preview: SwitchableLock / rally-sedan
+PASS: Only declared hardware/controller capabilities create editable sliders: SwitchableLock
+PASS: Lockable assembly offers only its two supported modes
+PASS: AWD edits remain drafts without healing, installing, charging or saving: SwitchableLock
+PASS: Ratio-capable transfer hardware previews matched unequal tire sizes
+PASS: F8 preserves the exact hardware-bounded AWD draft
+PASS: Explicit Apply durably stores supported AWD calibration
+PASS: Saved AWD ratio survives compressed-profile reload
+PASS: OEM center type is an installed specification, not an unrestricted mode picker: timber-diesel
+PASS: Primary axle, free-shaft properties and isolation cannot be changed in physical tuning
+PASS: Engine ECU does not change the OEM center system
+PASS: Actual installed hardware drives the tuning preview: OpenCenter / timber-diesel
+PASS: Only declared hardware/controller capabilities create editable sliders: OpenCenter
+PASS: AWD edits remain drafts without healing, installing, charging or saving: OpenCenter
+PASS: Actual installed hardware drives the tuning preview: OnDemandFixed / timber-diesel
+PASS: Only declared hardware/controller capabilities create editable sliders: OnDemandFixed
+PASS: AWD edits remain drafts without healing, installing, charging or saving: OnDemandFixed
+PASS: Actual installed hardware drives the tuning preview: OnDemandController / timber-diesel
+PASS: Only declared hardware/controller capabilities create editable sliders: OnDemandController
+PASS: Coupling share is clamped to installed 60% capacity
+PASS: AWD edits remain drafts without healing, installing, charging or saving: OnDemandController
+PASS: Actual installed hardware drives the tuning preview: ActiveFixed / timber-diesel
+PASS: Only declared hardware/controller capabilities create editable sliders: ActiveFixed
+PASS: AWD edits remain drafts without healing, installing, charging or saving: ActiveFixed
+PASS: Actual installed hardware drives the tuning preview: ActiveController / timber-diesel
+PASS: Only declared hardware/controller capabilities create editable sliders: ActiveController
+PASS: Conflicting active limits remain ordered within hardware bounds
+PASS: AWD edits remain drafts without healing, installing, charging or saving: ActiveController
+PASS: Actual installed hardware drives the tuning preview: AdjustableLSD / timber-diesel
+PASS: Only declared hardware/controller capabilities create editable sliders: AdjustableLSD
+PASS: Mechanical LSD adjustment respects its installed maximum bias
+PASS: AWD edits remain drafts without healing, installing, charging or saving: AdjustableLSD
+PASS: Actual installed hardware drives the tuning preview: SwitchableLock / timber-diesel
+PASS: Only declared hardware/controller capabilities create editable sliders: SwitchableLock
+PASS: Lockable assembly offers only its two supported modes
+PASS: AWD edits remain drafts without healing, installing, charging or saving: SwitchableLock
+PASS: Ratio-capable transfer hardware previews matched unequal tire sizes
+PASS: F8 preserves the exact hardware-bounded AWD draft
+PASS: Explicit Apply durably stores supported AWD calibration
+PASS: Saved AWD ratio survives compressed-profile reload
+PASS: OEM center type is an installed specification, not an unrestricted mode picker: timber-diesel-tow
+PASS: Primary axle, free-shaft properties and isolation cannot be changed in physical tuning
+PASS: Engine ECU does not change the OEM center system
+PASS: Actual installed hardware drives the tuning preview: OpenCenter / timber-diesel-tow
+PASS: Only declared hardware/controller capabilities create editable sliders: OpenCenter
+PASS: AWD edits remain drafts without healing, installing, charging or saving: OpenCenter
+PASS: Actual installed hardware drives the tuning preview: OnDemandFixed / timber-diesel-tow
+PASS: Only declared hardware/controller capabilities create editable sliders: OnDemandFixed
+PASS: AWD edits remain drafts without healing, installing, charging or saving: OnDemandFixed
+PASS: Actual installed hardware drives the tuning preview: OnDemandController / timber-diesel-tow
+PASS: Only declared hardware/controller capabilities create editable sliders: OnDemandController
+PASS: Coupling share is clamped to installed 60% capacity
+PASS: AWD edits remain drafts without healing, installing, charging or saving: OnDemandController
+PASS: Actual installed hardware drives the tuning preview: ActiveFixed / timber-diesel-tow
+PASS: Only declared hardware/controller capabilities create editable sliders: ActiveFixed
+PASS: AWD edits remain drafts without healing, installing, charging or saving: ActiveFixed
+PASS: Actual installed hardware drives the tuning preview: ActiveController / timber-diesel-tow
+PASS: Only declared hardware/controller capabilities create editable sliders: ActiveController
+PASS: Conflicting active limits remain ordered within hardware bounds
+PASS: AWD edits remain drafts without healing, installing, charging or saving: ActiveController
+PASS: Actual installed hardware drives the tuning preview: AdjustableLSD / timber-diesel-tow
+PASS: Only declared hardware/controller capabilities create editable sliders: AdjustableLSD
+PASS: Mechanical LSD adjustment respects its installed maximum bias
+PASS: AWD edits remain drafts without healing, installing, charging or saving: AdjustableLSD
+PASS: Actual installed hardware drives the tuning preview: SwitchableLock / timber-diesel-tow
+PASS: Only declared hardware/controller capabilities create editable sliders: SwitchableLock
+PASS: Lockable assembly offers only its two supported modes
+PASS: AWD edits remain drafts without healing, installing, charging or saving: SwitchableLock
+PASS: Ratio-capable transfer hardware previews matched unequal tire sizes
+PASS: F8 preserves the exact hardware-bounded AWD draft
+PASS: Explicit Apply durably stores supported AWD calibration
+PASS: Saved AWD ratio survives compressed-profile reload
+PASS: OEM center type is an installed specification, not an unrestricted mode picker: utility-pickup
+PASS: Primary axle, free-shaft properties and isolation cannot be changed in physical tuning
+PASS: Engine ECU does not change the OEM center system
+PASS: Actual installed hardware drives the tuning preview: OpenCenter / utility-pickup
+PASS: Only declared hardware/controller capabilities create editable sliders: OpenCenter
+PASS: AWD edits remain drafts without healing, installing, charging or saving: OpenCenter
+PASS: Actual installed hardware drives the tuning preview: OnDemandFixed / utility-pickup
+PASS: Only declared hardware/controller capabilities create editable sliders: OnDemandFixed
+PASS: AWD edits remain drafts without healing, installing, charging or saving: OnDemandFixed
+PASS: Actual installed hardware drives the tuning preview: OnDemandController / utility-pickup
+PASS: Only declared hardware/controller capabilities create editable sliders: OnDemandController
+PASS: Coupling share is clamped to installed 60% capacity
+PASS: AWD edits remain drafts without healing, installing, charging or saving: OnDemandController
+PASS: Actual installed hardware drives the tuning preview: ActiveFixed / utility-pickup
+PASS: Only declared hardware/controller capabilities create editable sliders: ActiveFixed
+PASS: AWD edits remain drafts without healing, installing, charging or saving: ActiveFixed
+PASS: Actual installed hardware drives the tuning preview: ActiveController / utility-pickup
+PASS: Only declared hardware/controller capabilities create editable sliders: ActiveController
+PASS: Conflicting active limits remain ordered within hardware bounds
+PASS: AWD edits remain drafts without healing, installing, charging or saving: ActiveController
+PASS: Actual installed hardware drives the tuning preview: AdjustableLSD / utility-pickup
+PASS: Only declared hardware/controller capabilities create editable sliders: AdjustableLSD
+PASS: Mechanical LSD adjustment respects its installed maximum bias
+PASS: AWD edits remain drafts without healing, installing, charging or saving: AdjustableLSD
+PASS: Actual installed hardware drives the tuning preview: SwitchableLock / utility-pickup
+PASS: Only declared hardware/controller capabilities create editable sliders: SwitchableLock
+PASS: Lockable assembly offers only its two supported modes
+PASS: AWD edits remain drafts without healing, installing, charging or saving: SwitchableLock
+PASS: Ratio-capable transfer hardware previews matched unequal tire sizes
+PASS: F8 preserves the exact hardware-bounded AWD draft
+PASS: Explicit Apply durably stores supported AWD calibration
+PASS: Saved AWD ratio survives compressed-profile reload
+Checks: 151 / runtime errors: 0
