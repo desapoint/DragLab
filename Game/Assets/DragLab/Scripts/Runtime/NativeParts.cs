@@ -171,7 +171,7 @@ namespace DragLab.Runtime
             string set=e.Unit==null?InventoryUnits.SetLabel(game.Profile,game.Profile.SelectedCar,e.Definition):"Individual "+e.Unit.element.role;
             PartDetailFact(facts,"Includes",set.Replace("1 units","1 unit"));
             if(PartSemantics.Wears(e.Definition.category)){
-                double health=e.Unit?.element.health??e.Part?.condition.health??1;bool failed=e.Unit!=null?e.Unit.element.Failed:e.Part?.condition.failed??false;
+                double health=e.Unit?.element.health??(e.Part!=null&&e.Definition.category==PartCategory.Tires?TireDynamics.LowestHealth(e.Part.condition):e.Part?.condition.health)??1;bool failed=e.Unit!=null?e.Unit.element.Failed:e.Part!=null&&e.Definition.category==PartCategory.Tires?TireDynamics.AnyFailed(e.Part.condition):e.Part?.condition.failed??false;
                 PartDetailFact(facts,"Part condition",failed?"Failed · "+health.ToString("P0"):health.ToString("P0"),failed||health<=.25?"car-critical":health<=.5?"car-warning":"car-ready");
             }
             if(e.Source=="New"){var supply=PartsMarket.Quote(game.Profile,e.Definition,InventoryUnits.Count(game.Profile,game.Profile.SelectedCar,e.Definition),PurchaseDraft(offer).Individual);PartDetailFact(facts,"Supply",PartsMarket.Available(game.Profile,e.Definition)+" units · "+supply.Summary);}
