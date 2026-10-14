@@ -10,12 +10,13 @@ namespace DragLab.Runtime
     public sealed partial class PrototypeGame
     {
         bool repairsOnly, includeWornRepairs = true;
-        internal static bool PartFailed(PartInstance part) { return part.condition.failed || part.condition.health <= 0; }
+        internal static bool PartFailed(PartInstance part) { return part.condition.tires!=null&&part.condition.tires.Length==4?TireDynamics.AnyFailed(part.condition):part.condition.failed||part.condition.health<=0; }
+        internal static float PartHealth(PartInstance part) { return part.condition.tires!=null&&part.condition.tires.Length==4?TireDynamics.LowestHealth(part.condition):part.condition.health; }
         internal List<PartInstance> ServiceParts()
         {
             var ids = new HashSet<string>(Build.installed.slots.Select(s => s.partInstanceId));
-            return profile.parts.Where(p => ids.Contains(p.instanceId) && (PartFailed(p) || p.condition.health <= .5f || p.condition.deposits >= .05 || p.condition.leakSeverity >= .01 || p.condition.adjustmentError >= .05 || EngineElements.NeedsService(p.condition)))
-                .OrderByDescending(PartFailed).ThenBy(p => p.condition.health).ThenBy(p => p.slot).ToList();
+            return profile.parts.Where(p => ids.Contains(p.instanceId) && (PartFailed(p) || PartHealth(p) <= .5f || p.condition.deposits >= .05 || p.condition.leakSeverity >= .01 || p.condition.adjustmentError >= .05 || EngineElements.NeedsService(p.condition)))
+                .OrderByDescending(PartFailed).ThenBy(PartHealth).ThenBy(p => p.slot).ToList();
         }
         internal void ShowRepairs() { DiscardPreviews(); repairsOnly = true; screen = "Parts"; scroll = Vector2.zero; partRects.Clear(); }
         void MaintenanceSummary()
@@ -31,13 +32,13 @@ namespace DragLab.Runtime
             var definition = profile.catalog.Find(old.definitionId);
             return profile.parts.Where(p => p.location == PartLocation.Inventory && !PartFailed(p) &&
                 profile.catalog.Find(p.definitionId).category == definition.category && profile.catalog.Fits(Selected.spec, profile.catalog.Find(p.definitionId)))
-                .OrderByDescending(p => p.condition.health).ThenByDescending(p => p.definitionId == old.definitionId).ThenBy(p => p.instanceId).FirstOrDefault();
+                .OrderByDescending(PartHealth).ThenByDescending(p => p.definitionId == old.definitionId).ThenBy(p => p.instanceId).FirstOrDefault();
         }
         static PartInstance RequireServiceItem(PlayerProfile p, string carId, string itemId)
         {
             var car = p.cars.Find(c => c.instanceId == carId);
             var item = p.parts.Find(i => i.instanceId == itemId);
-            if (car == null || item == null || !car.installed.slots.Any(s => s.partInstanceId == itemId) || (!PartFailed(item) && item.condition.health > .5f && item.condition.deposits < .05 && item.condition.leakSeverity < .01 && item.condition.adjustmentError < .05 && !EngineElements.NeedsService(item.condition)))
+            if (car == null || item == null || !car.installed.slots.Any(s => s.partInstanceId == itemId) || (!PartFailed(item) && PartHealth(item) > .5f && item.condition.deposits < .05 && item.condition.leakSeverity < .01 && item.condition.adjustmentError < .05 && !EngineElements.NeedsService(item.condition)))
                 throw new InvalidOperationException("This component no longer needs the displayed replacement. Refresh Repairs.");
             return item;
         }
@@ -63,16 +64,16 @@ namespace DragLab.Runtime
                 bool failedPart = PartFailed(item);
                 GUILayout.BeginVertical(GUI.skin.box);
                 var color = GUI.contentColor; GUI.contentColor = failedPart ? new Color(1, .4f, .35f) : new Color(1, .78f, .35f);
-                GUILayout.Label((failedPart ? "FAILED / " : item.condition.health<=.5?"WORN / ":"SERVICE FAULT / ") + definition.category + " / " + item.condition.health.ToString("P0"), stat);
+                GUILayout.Label((failedPart ? "FAILED / " : PartHealth(item)<=.5?"WORN / ":"SERVICE FAULT / ") + definition.category + " / " + PartHealth(item).ToString("P0"), stat);
                 GUI.contentColor = color;
                 GUILayout.Label(definition.name, partProse);
                 InstalledService(item);
-                if (failedPart) GUILayout.Label("Cause: " + (string.IsNullOrWhiteSpace(item.condition.failureReason) ? "Condition depleted" : item.condition.failureReason), partProse);
+                if (failedPart) GUILayout.Label("Cause: " + (string.IsNullOrWhiteSpace(item.condition.failureReason) ? "Condition depleted" : (item.condition.tires!=null&&item.condition.tires.Length==4?TireDynamics.FailedCorners(item.condition):item.condition.failureReason)), partProse);
                 Rect bar = GUILayoutUtility.GetRect(0, 9, GUILayout.ExpandWidth(true));
                 if (Event.current.type == EventType.Repaint) {
                     var previous = GUI.color; GUI.color = new Color(.22f, .26f, .3f); GUI.DrawTexture(bar, Texture2D.whiteTexture);
                     GUI.color = failedPart ? new Color(.9f, .2f, .18f) : new Color(.9f, .63f, .2f);
-                    GUI.DrawTexture(new Rect(bar.x, bar.y, bar.width * Mathf.Clamp01(item.condition.health), bar.height), Texture2D.whiteTexture); GUI.color = previous;
+                    GUI.DrawTexture(new Rect(bar.x, bar.y, bar.width * Mathf.Clamp01(PartHealth(item)), bar.height), Texture2D.whiteTexture); GUI.color = previous;
                 }
                 GUILayout.BeginHorizontal();
                 if (PartButton("repair-preview:" + oldId, "Preview new / stats")) PreviewPart(definitionId);
@@ -86,7 +87,7 @@ namespace DragLab.Runtime
                 if (profile.cash < replacementPrice) GUILayout.Label("Need " + DisplayUnits.Money((replacementPrice - profile.cash)) + " more for this new part. Fit a spare or browse cheaper compatible options.", partProse);
                 if (spare != null) {
                     string spareId = spare.instanceId;
-                    GUILayout.Label("Available spare: " + profile.catalog.Find(spare.definitionId).name + " / " + spare.condition.health.ToString("P0"), partProse);
+                    GUILayout.Label("Available spare: " + profile.catalog.Find(spare.definitionId).name + " / " + PartHealth(spare).ToString("P0"), partProse);
                     if (PartButton("repair-spare:" + oldId, "Fit this inventory spare / no purchase")) QueuePartAction(p => {
                         RequireServiceItem(p, carId, oldId);
                         var candidate = p.parts.Find(i => i.instanceId == spareId);
