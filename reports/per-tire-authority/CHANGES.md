@@ -1,23 +1,37 @@
-# Per-tire authority refactor — branch checkpoint (2026-10-14)
+# Tire authority and polymorphic component elements (2026-10-14)
 
-Branch: `refactor/per-tire-authority`. **Not validated by Unity / not ready to merge.**
+Branch: `refactor/per-tire-authority`. **Unity compilation and play-mode regression suites have not been run. Do not merge until verified.**
 
 ## Implemented
-- `TireCondition` remains the single authoritative source for each tire's condition, distance, slip work, and temperature.
-- `TireDynamics.Ensure` migrates legacy empty tire arrays once. Existing individual tires no longer inherit stale pack health/failure. A derived compatibility summary replaces aggregate wear authority, and obsolete pack slip/distance/running histories are cleared.
-- Installed tire IDs are assigned during owned-asset normalization, not during read-only preview construction.
-- Queued race checkpoint history checks compare exact tire identities and monotonic individual histories, not pack slip/distance totals. Tire exchanges during an active race are rejected; garage replacements occur between races. Non-tire component history validation is unchanged.
-- Individual tire replacement refreshes the compatibility summary without affecting other tire histories.
-- Maintenance candidates and the owned-car maintenance display list worn tires by corner rather than treating a single bad tire as an independently broken tire pack.
-- Traditional inventory part-sale pricing and detailed buyer valuation use per-tire condition, individual compound, per-tire distance, and failures.
-- Car/build warnings identify failed corners; native Components stats only show tire lifetime usage under individual tire entries.
-- Added targeted regression assertions for a stale former pack, migration from legacy history, per-tire checkpoint growth/rewind and tire identity swaps. Updated valuation fixture to mark an individual tire failed.
 
-## Still required for a full *no tire pack anywhere* architecture
-The ownership/economy schema **still represents installed tires as four `TireCondition` objects held by a `Tires` `PartInstance`**. That container participates in `InstalledBuild`, `MechanicalCatalog` recipes, `TireFitments`, `PartsMarket`, `PartCart`, `SavedSetups`, `PaidEconomy`, `InventoryUnits` and UI adapters. The generic `ComponentCondition` still carries a **derived** summary for compatibility with generic consumers. These are NOT yet removed. A complete elimination requires a versioned four-part ownership/fitment schema and updates to all listed transactions, saves and UIs. This branch does **not** implement that breaking schema migration.
+- Tires, pistons, piston rings, valves and wheels can now use specialized concrete classes via `EngineElement : PartElement`, with `[SerializeReference] ComponentCondition.elements` preserving the runtime type. Other supported engine components continue to use `EngineElement`.
+- Each fitted tire is a `TireCondition` subtype in **the same serialized `condition.elements` array**. `condition.tires` is now a nonserialized, cached typed accessor for existing physics, inspection, inventory and UI code. There is no separate serialized `condition.tires` field.
+- Loose inventory/dealer tire units now persist one typed `element`; `LooseEngineElement.tire` is a nonserialized accessor, not a second tire condition. The individual tire stores its own ID, specification, wear, mileage, slip energy, temperature, running time and failure.
+- Fixed duplicate tire IDs in dealer validation, double tire-fault counting in maintenance and duplicate generic tire/cylinder rows in native stats.
+- The existing per-corner `TireDynamics`, `TireFitments`, race checkpoint protections, compound differences, pricing and stored worn-tire history remain wired to the individual tire type.
+- Inventory supports a single transaction swapping **individual, Front, Rear or All** stored tires. The native selection dialog can preselect a pair or set and allows changes per corner; displaced tires return to inventory. Tests cover worn-asset preservation and rejecting repeated unit IDs.
 
-## Required validation before merging
-Run from the repository on a configured Unity Windows machine:
+## Breaking saves and native UI reset dialog
+
+- **Save version 11** intentionally rejects older part formats instead of attempting automatic migration.
+- When `ProfileStore` cannot load an incompatible save, the game opens DragLab's existing **UI Toolkit `NativeMenuShell` modal** on startup. There is no IMGUI fallback for the reset flow.
+- The modal blocks navigation and cannot be dismissed with Escape/close. **Reset and start new game** is an explicit confirmation.
+- The reset path archives the existing database, backups and journal under unique `.before-reset-<timestamp>` suffixes, then creates a fresh save and reloads the scene. If reset fails, it reports the error and attempts to restore the archived originals.
+- No automatic destructive reset occurs on load.
+
+## Unity regression coverage added (not yet executed)
+
+- `AxleWheelVerification`: typed tire `JsonUtility` serialization/deserialization, polymorphic piston/valve round-trip, typed loose tire JSON with no duplicate condition payload, independent copies, rear-axle worn tire swapping, displaced tire identities and invalid duplicate swap rollback.
+- Existing `TireVerification`, `TireFailureVerification`, checkpoint, valuation, inventory and native menu checks should be rerun.
+
+## Remaining architectural scope
+
+The parent `ComponentCondition` still serializes generic mechanic-level fields (health, deposits, clutch data, etc.), neutralized for tire sets. These are **not** category-specialized yet. Also, tire subtype currently derives from the existing `EngineElement` class to preserve the large installed-element API; this retains generic engine-element fields on tire members. A later broader condition/element API revision would be needed to completely remove those irrelevant fields, and should be undertaken only after Unity verifies the current breaking serialization change.
+
+## Recommended validation
+
+Run on the Unity-configured Windows environment:
+
 ```powershell
 tools/Invoke-Unity.ps1 -Action AxleWheelVerify
 tools/Invoke-Unity.ps1 -Action TireVerify
@@ -28,19 +42,7 @@ tools/Invoke-Unity.ps1 -Action CheckpointVerify
 tools/Invoke-Unity.ps1 -Action RecoveryVerify
 tools/Invoke-Unity.ps1 -Action BuildWindows
 ```
-Also exercise a real existing save and separately verify one-corner replacement, tire inventory transfers, a mixed-compound build, a partially failed set, and race checkpoints before and after a garage tire replacement. Only syntax delimiter balance and GitHub diff metadata were inspected here; Unity compilation, native builds and these regression suites **have not been run**.
 
-## Architecture correction: neutralized fields are NOT removal
+Test both a **fresh profile** and an **incompatible prior profile**: verify the native dialog, refusal to continue until confirmation, archival of old data, successful reset, then one-corner and axle/set swaps with mixed/worn tires, races and checkpoint persistence.
 
-The generic `ComponentCondition` fields in a tire `PartInstance` are currently set to neutral values. This is **only a temporary compatibility approach** and does **not** meet the intended final architecture: the generic mechanical fields remain in serialized tire containers. The proper solution requires a dedicated serialized tire-container payload (four individual `TireCondition` records and structural IDs/fitment only), while preserving `ComponentCondition` for piston/clutch/other mechanical parts. Legacy saves must migrate the four tires into the new payload, and inventory, transactions, checkpoints, simulation, inspection, valuation and UI must switch to it. Do not merge this branch as a completed tire-container removal. Unity compilation and tests remain unrun.
-
-## Multi-tire inventory swap (in this branch)
-
-- Added `InventoryUnits.SwapTires` with an explicit unit ID and corner for each selected tire. Validate 1–4 unique tires and unique corners before applying. It preserves individual wear, slip energy, identity, temperature, definition and mileage; it returns every displaced tire to loose inventory. Call inside `MechanicsTransactions.Try` for a single durable commit.
-- Added a `Swap stored tires` action on the native Parts page. The dialog offers Front, Rear and All presets, allows individual corner choices, warns for failed tires and requires review/confirmation.
-- Added `AxleWheelVerification` assertions for two rear tire swaps, untouched fronts, retained outgoing tire identities, preserved worn histories and rejection of duplicate incoming tire IDs.
-- **Unity compilation and runtime verification have not been run.** This feature remains on a draft branch.
-
-## Tire container serialization — still outstanding
-
-The current `PartInstance.condition` is still a generic `ComponentCondition` and includes legacy `tires` plus generic condition fields. These are neutralized by `TireDynamics.SyncSummary` but have **not been removed from serialized tire parts**. Implementing a separate `TireContainerState` requires adapting every serializer, checkpoint, owned inventory, loose/dealer stock, mixed fitment, editor verification, telemetry, valuation and UI consumer, then explicitly migrating historical `condition.tires` **before** dropping that legacy serialized field. Discarding it earlier would silently erase worn tire inventories in old saves. This remains a blocking task before the branch is considered a complete tire-container cleanup.
+**Verification status:** GitHub source changes committed; static inspection only. No claim of successful Unity compilation, save round-trip or runtime tests.
