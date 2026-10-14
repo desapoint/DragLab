@@ -41,6 +41,7 @@ namespace DragLab.Runtime
             setupGrid=new VisualElement{name="setupLibraryGrid"};setupListScroll.Add(setupGrid);setupEmpty=new Label{name="setupLibraryEmpty"};setupEmpty.AddToClassList("car-empty");setupListScroll.Add(setupEmpty);
             var right=new VisualElement();right.AddToClassList("tuning-preview");columns.Add(right);AddSurface(right,RacingSurface.Kind.Panel);
             setupPreviewScroll=new ScrollView{name="setupLibraryPreview",horizontalScrollerVisibility=ScrollerVisibility.Hidden};setupPreviewScroll.AddToClassList("tuning-preview-scroll");right.Add(setupPreviewScroll);setupPreviewContent=new VisualElement();setupPreviewScroll.Add(setupPreviewContent);
+            InitializeSetupLoad();
         }
         void OpenSetupLibrary(){setupLibraryOpen=true;setupLibraryKey=null;RefreshTuning("Tuning");}
         void BackFromSetupLibrary(){setupLibraryOpen=false;setupPage.AddToClassList("hidden");RefreshTuning("Tuning");}
@@ -49,6 +50,7 @@ namespace DragLab.Runtime
             if(route!="Tuning"&&route!="Settings")setupLibraryOpen=false;
             setupPage.EnableInClassList("hidden",route!="Tuning"||!setupLibraryOpen);if(route!="Tuning"||!setupLibraryOpen)return;
             var p=game.Profile;if(!p.savedSetups.Any(s=>s.id==setupSelectedId))setupSelectedId=null;string key=p.revision+"/"+p.SelectedCar?.instanceId+"/"+setupSelectedId+"/"+JsonUtility.ToJson(SharedUnitSettings.Current);
+            RefreshSetupLoadAction();
             if(setupLibraryProfile==p&&setupLibraryKey==key)return;setupLibraryProfile=p;setupLibraryKey=key;
             foreach(var surface in setupSurfaces)surfaces.Remove(surface);setupSurfaces.Clear();setupGrid.Clear();setupCards.Clear();
             foreach(var saved in p.savedSetups.OrderBy(s=>s.name,StringComparer.OrdinalIgnoreCase).ThenBy(s=>s.id,StringComparer.Ordinal)){
@@ -56,7 +58,7 @@ namespace DragLab.Runtime
                 var name=new Label(saved.name){enableRichText=false};name.AddToClassList("car-card-title");card.Add(name);card.Add(new Label(NativeSetupQuery.ScopeName(saved.scope)){enableRichText=false});card.Add(new Label(p.catalog.Spec(saved.vehicleDefinitionId).displayName){enableRichText=false});card.Add(new Label(saved.parts.Count+" hardware slots"){enableRichText=false});
                 card.Query<VisualElement>().ForEach(e=>{if(e!=card)e.pickingMode=PickingMode.Ignore;});
             }
-            FilterSetupCards();BuildSetupPreview();ExcludeTabTraversal();
+            FilterSetupCards();BuildSetupPreview();RefreshSetupLoadAction();ExcludeTabTraversal();
         }
         void FilterSetupCards()
         {

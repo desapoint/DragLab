@@ -1,0 +1,469 @@
+PASS: Setup preview is complete and read-only: city-three / Engine
+PASS: Setup preview retains actual wear and liquids: city-three / Engine
+PASS: Preview agrees with actual setup application and hardware limits: city-three / Engine
+PASS: Setup search and scope match the saved metadata: city-three / Engine
+PASS: Setup preview is complete and read-only: city-three / WholeCar
+PASS: Setup preview retains actual wear and liquids: city-three / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: city-three / WholeCar
+PASS: Setup search and scope match the saved metadata: city-three / WholeCar
+PASS: Setup preview is complete and read-only: city-three / TuneOnly
+PASS: Setup preview retains actual wear and liquids: city-three / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: city-three / TuneOnly
+PASS: Setup search and scope match the saved metadata: city-three / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: city-three
+PASS: Missing hardware is a priced preview, never a granted asset: city-three
+PASS: Missing-part curve matches the existing buy/apply transaction: city-three
+PASS: Unaffordable setups remain inspectable with an explicit error: city-three
+PASS: Setup preview is complete and read-only: juniper-club / Engine
+PASS: Setup preview retains actual wear and liquids: juniper-club / Engine
+PASS: Preview agrees with actual setup application and hardware limits: juniper-club / Engine
+PASS: Setup search and scope match the saved metadata: juniper-club / Engine
+PASS: Setup preview is complete and read-only: juniper-club / WholeCar
+PASS: Setup preview retains actual wear and liquids: juniper-club / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: juniper-club / WholeCar
+PASS: Setup search and scope match the saved metadata: juniper-club / WholeCar
+PASS: Setup preview is complete and read-only: juniper-club / TuneOnly
+PASS: Setup preview retains actual wear and liquids: juniper-club / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: juniper-club / TuneOnly
+PASS: Setup search and scope match the saved metadata: juniper-club / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: juniper-club
+PASS: Missing hardware is a priced preview, never a granted asset: juniper-club
+PASS: Missing-part curve matches the existing buy/apply transaction: juniper-club
+PASS: Unaffordable setups remain inspectable with an explicit error: juniper-club
+PASS: Setup preview is complete and read-only: juniper-economy / Engine
+PASS: Setup preview retains actual wear and liquids: juniper-economy / Engine
+PASS: Preview agrees with actual setup application and hardware limits: juniper-economy / Engine
+PASS: Setup search and scope match the saved metadata: juniper-economy / Engine
+PASS: Setup preview is complete and read-only: juniper-economy / WholeCar
+PASS: Setup preview retains actual wear and liquids: juniper-economy / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: juniper-economy / WholeCar
+PASS: Setup search and scope match the saved metadata: juniper-economy / WholeCar
+PASS: Setup preview is complete and read-only: juniper-economy / TuneOnly
+PASS: Setup preview retains actual wear and liquids: juniper-economy / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: juniper-economy / TuneOnly
+PASS: Setup search and scope match the saved metadata: juniper-economy / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: juniper-economy
+PASS: Missing hardware is a priced preview, never a granted asset: juniper-economy
+PASS: Missing-part curve matches the existing buy/apply transaction: juniper-economy
+PASS: Unaffordable setups remain inspectable with an explicit error: juniper-economy
+PASS: Setup preview is complete and read-only: kestrel-track / Engine
+PASS: Setup preview retains actual wear and liquids: kestrel-track / Engine
+PASS: Preview agrees with actual setup application and hardware limits: kestrel-track / Engine
+PASS: Setup search and scope match the saved metadata: kestrel-track / Engine
+PASS: Setup preview is complete and read-only: kestrel-track / WholeCar
+PASS: Setup preview retains actual wear and liquids: kestrel-track / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: kestrel-track / WholeCar
+PASS: Setup search and scope match the saved metadata: kestrel-track / WholeCar
+PASS: Setup preview is complete and read-only: kestrel-track / TuneOnly
+PASS: Setup preview retains actual wear and liquids: kestrel-track / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: kestrel-track / TuneOnly
+PASS: Setup search and scope match the saved metadata: kestrel-track / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: kestrel-track
+PASS: Missing hardware is a priced preview, never a granted asset: kestrel-track
+PASS: Missing-part curve matches the existing buy/apply transaction: kestrel-track
+PASS: Unaffordable setups remain inspectable with an explicit error: kestrel-track
+PASS: Setup preview is complete and read-only: rally-sedan / Engine
+PASS: Setup preview retains actual wear and liquids: rally-sedan / Engine
+PASS: Preview agrees with actual setup application and hardware limits: rally-sedan / Engine
+PASS: Setup search and scope match the saved metadata: rally-sedan / Engine
+PASS: Setup preview is complete and read-only: rally-sedan / WholeCar
+PASS: Setup preview retains actual wear and liquids: rally-sedan / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: rally-sedan / WholeCar
+PASS: Setup search and scope match the saved metadata: rally-sedan / WholeCar
+PASS: Setup preview is complete and read-only: rally-sedan / TuneOnly
+PASS: Setup preview retains actual wear and liquids: rally-sedan / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: rally-sedan / TuneOnly
+PASS: Setup search and scope match the saved metadata: rally-sedan / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: rally-sedan
+PASS: Missing hardware is a priced preview, never a granted asset: rally-sedan
+PASS: Missing-part curve matches the existing buy/apply transaction: rally-sedan
+PASS: Unaffordable setups remain inspectable with an explicit error: rally-sedan
+PASS: Setup preview is complete and read-only: sport-coupe / Engine
+PASS: Setup preview retains actual wear and liquids: sport-coupe / Engine
+PASS: Preview agrees with actual setup application and hardware limits: sport-coupe / Engine
+PASS: Setup search and scope match the saved metadata: sport-coupe / Engine
+PASS: Setup preview is complete and read-only: sport-coupe / WholeCar
+PASS: Setup preview retains actual wear and liquids: sport-coupe / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: sport-coupe / WholeCar
+PASS: Setup search and scope match the saved metadata: sport-coupe / WholeCar
+PASS: Setup preview is complete and read-only: sport-coupe / TuneOnly
+PASS: Setup preview retains actual wear and liquids: sport-coupe / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: sport-coupe / TuneOnly
+PASS: Setup search and scope match the saved metadata: sport-coupe / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: sport-coupe
+PASS: Missing hardware is a priced preview, never a granted asset: sport-coupe
+PASS: Missing-part curve matches the existing buy/apply transaction: sport-coupe
+PASS: Unaffordable setups remain inspectable with an explicit error: sport-coupe
+PASS: Setup preview is complete and read-only: starter-hatch / Engine
+PASS: Setup preview retains actual wear and liquids: starter-hatch / Engine
+PASS: Preview agrees with actual setup application and hardware limits: starter-hatch / Engine
+PASS: Setup search and scope match the saved metadata: starter-hatch / Engine
+PASS: Setup preview is complete and read-only: starter-hatch / WholeCar
+PASS: Setup preview retains actual wear and liquids: starter-hatch / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: starter-hatch / WholeCar
+PASS: Setup search and scope match the saved metadata: starter-hatch / WholeCar
+PASS: Setup preview is complete and read-only: starter-hatch / TuneOnly
+PASS: Setup preview retains actual wear and liquids: starter-hatch / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: starter-hatch / TuneOnly
+PASS: Setup search and scope match the saved metadata: starter-hatch / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: starter-hatch
+PASS: Missing hardware is a priced preview, never a granted asset: starter-hatch
+PASS: Missing-part curve matches the existing buy/apply transaction: starter-hatch
+PASS: Unaffordable setups remain inspectable with an explicit error: starter-hatch
+PASS: Setup preview is complete and read-only: super-v8 / Engine
+PASS: Setup preview retains actual wear and liquids: super-v8 / Engine
+PASS: Preview agrees with actual setup application and hardware limits: super-v8 / Engine
+PASS: Setup search and scope match the saved metadata: super-v8 / Engine
+PASS: Setup preview is complete and read-only: super-v8 / WholeCar
+PASS: Setup preview retains actual wear and liquids: super-v8 / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: super-v8 / WholeCar
+PASS: Setup search and scope match the saved metadata: super-v8 / WholeCar
+PASS: Setup preview is complete and read-only: super-v8 / TuneOnly
+PASS: Setup preview retains actual wear and liquids: super-v8 / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: super-v8 / TuneOnly
+PASS: Setup search and scope match the saved metadata: super-v8 / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: super-v8
+PASS: Missing hardware is a priced preview, never a granted asset: super-v8
+PASS: Missing-part curve matches the existing buy/apply transaction: super-v8
+PASS: Unaffordable setups remain inspectable with an explicit error: super-v8
+PASS: Setup preview is complete and read-only: timber-diesel / Engine
+PASS: Setup preview retains actual wear and liquids: timber-diesel / Engine
+PASS: Preview agrees with actual setup application and hardware limits: timber-diesel / Engine
+PASS: Setup search and scope match the saved metadata: timber-diesel / Engine
+PASS: Setup preview is complete and read-only: timber-diesel / WholeCar
+PASS: Setup preview retains actual wear and liquids: timber-diesel / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: timber-diesel / WholeCar
+PASS: Setup search and scope match the saved metadata: timber-diesel / WholeCar
+PASS: Setup preview is complete and read-only: timber-diesel / TuneOnly
+PASS: Setup preview retains actual wear and liquids: timber-diesel / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: timber-diesel / TuneOnly
+PASS: Setup search and scope match the saved metadata: timber-diesel / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: timber-diesel
+PASS: Missing hardware is a priced preview, never a granted asset: timber-diesel
+PASS: Missing-part curve matches the existing buy/apply transaction: timber-diesel
+PASS: Unaffordable setups remain inspectable with an explicit error: timber-diesel
+PASS: Setup preview is complete and read-only: timber-diesel-tow / Engine
+PASS: Setup preview retains actual wear and liquids: timber-diesel-tow / Engine
+PASS: Preview agrees with actual setup application and hardware limits: timber-diesel-tow / Engine
+PASS: Setup search and scope match the saved metadata: timber-diesel-tow / Engine
+PASS: Setup preview is complete and read-only: timber-diesel-tow / WholeCar
+PASS: Setup preview retains actual wear and liquids: timber-diesel-tow / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: timber-diesel-tow / WholeCar
+PASS: Setup search and scope match the saved metadata: timber-diesel-tow / WholeCar
+PASS: Setup preview is complete and read-only: timber-diesel-tow / TuneOnly
+PASS: Setup preview retains actual wear and liquids: timber-diesel-tow / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: timber-diesel-tow / TuneOnly
+PASS: Setup search and scope match the saved metadata: timber-diesel-tow / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: timber-diesel-tow
+PASS: Missing hardware is a priced preview, never a granted asset: timber-diesel-tow
+PASS: Missing-part curve matches the existing buy/apply transaction: timber-diesel-tow
+PASS: Unaffordable setups remain inspectable with an explicit error: timber-diesel-tow
+PASS: Setup preview is complete and read-only: touring-six / Engine
+PASS: Setup preview retains actual wear and liquids: touring-six / Engine
+PASS: Preview agrees with actual setup application and hardware limits: touring-six / Engine
+PASS: Setup search and scope match the saved metadata: touring-six / Engine
+PASS: Setup preview is complete and read-only: touring-six / WholeCar
+PASS: Setup preview retains actual wear and liquids: touring-six / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: touring-six / WholeCar
+PASS: Setup search and scope match the saved metadata: touring-six / WholeCar
+PASS: Setup preview is complete and read-only: touring-six / TuneOnly
+PASS: Setup preview retains actual wear and liquids: touring-six / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: touring-six / TuneOnly
+PASS: Setup search and scope match the saved metadata: touring-six / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: touring-six
+PASS: Missing hardware is a priced preview, never a granted asset: touring-six
+PASS: Missing-part curve matches the existing buy/apply transaction: touring-six
+PASS: Unaffordable setups remain inspectable with an explicit error: touring-six
+PASS: Setup preview is complete and read-only: utility-pickup / Engine
+PASS: Setup preview retains actual wear and liquids: utility-pickup / Engine
+PASS: Preview agrees with actual setup application and hardware limits: utility-pickup / Engine
+PASS: Setup search and scope match the saved metadata: utility-pickup / Engine
+PASS: Setup preview is complete and read-only: utility-pickup / WholeCar
+PASS: Setup preview retains actual wear and liquids: utility-pickup / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: utility-pickup / WholeCar
+PASS: Setup search and scope match the saved metadata: utility-pickup / WholeCar
+PASS: Setup preview is complete and read-only: utility-pickup / TuneOnly
+PASS: Setup preview retains actual wear and liquids: utility-pickup / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: utility-pickup / TuneOnly
+PASS: Setup search and scope match the saved metadata: utility-pickup / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: utility-pickup
+PASS: Missing hardware is a priced preview, never a granted asset: utility-pickup
+PASS: Missing-part curve matches the existing buy/apply transaction: utility-pickup
+PASS: Unaffordable setups remain inspectable with an explicit error: utility-pickup
+PASS: Setup preview is complete and read-only: v8-muscle / Engine
+PASS: Setup preview retains actual wear and liquids: v8-muscle / Engine
+PASS: Preview agrees with actual setup application and hardware limits: v8-muscle / Engine
+PASS: Setup search and scope match the saved metadata: v8-muscle / Engine
+PASS: Setup preview is complete and read-only: v8-muscle / WholeCar
+PASS: Setup preview retains actual wear and liquids: v8-muscle / WholeCar
+PASS: Preview agrees with actual setup application and hardware limits: v8-muscle / WholeCar
+PASS: Setup search and scope match the saved metadata: v8-muscle / WholeCar
+PASS: Setup preview is complete and read-only: v8-muscle / TuneOnly
+PASS: Setup preview retains actual wear and liquids: v8-muscle / TuneOnly
+PASS: Preview agrees with actual setup application and hardware limits: v8-muscle / TuneOnly
+PASS: Setup search and scope match the saved metadata: v8-muscle / TuneOnly
+PASS: Inventory preview projects the exact retained worn part into its slot: v8-muscle
+PASS: Missing hardware is a priced preview, never a granted asset: v8-muscle
+PASS: Missing-part curve matches the existing buy/apply transaction: v8-muscle
+PASS: Unaffordable setups remain inspectable with an explicit error: v8-muscle
+PASS: Review captures the real scope without changing assets: city-three / Engine
+PASS: Failed durable setup publication retains the entire current build: city-three / Engine
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: city-three / Engine /
+PASS: A completed setup quote cannot be replayed: city-three / Engine
+PASS: Review captures the real scope without changing assets: city-three / WholeCar
+PASS: Failed durable setup publication retains the entire current build: city-three / WholeCar
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: city-three / WholeCar /
+PASS: A completed setup quote cannot be replayed: city-three / WholeCar
+PASS: Review captures the real scope without changing assets: city-three / TuneOnly
+PASS: Failed durable setup publication retains the entire current build: city-three / TuneOnly
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: city-three / TuneOnly /
+PASS: A completed setup quote cannot be replayed: city-three / TuneOnly
+PASS: Explicit buy/load charges only missing hardware and retains the worn original: city-three /
+PASS: Review rejects unrevisioned fuel changes: city-three
+PASS: Review rejects unrevisioned tune changes: city-three
+PASS: Review rejects unrevisioned blueprint changes: city-three
+PASS: Review rejects unrevisioned condition changes: city-three
+PASS: Review rejects unrevisioned price changes: city-three
+PASS: Review rejects unrevisioned hardware changes: city-three
+PASS: An unaffordable plan cannot open an actionable load quote: city-three
+PASS: Review captures the real scope without changing assets: juniper-club / Engine
+PASS: Failed durable setup publication retains the entire current build: juniper-club / Engine
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: juniper-club / Engine /
+PASS: A completed setup quote cannot be replayed: juniper-club / Engine
+PASS: Review captures the real scope without changing assets: juniper-club / WholeCar
+PASS: Failed durable setup publication retains the entire current build: juniper-club / WholeCar
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: juniper-club / WholeCar /
+PASS: A completed setup quote cannot be replayed: juniper-club / WholeCar
+PASS: Review captures the real scope without changing assets: juniper-club / TuneOnly
+PASS: Failed durable setup publication retains the entire current build: juniper-club / TuneOnly
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: juniper-club / TuneOnly /
+PASS: A completed setup quote cannot be replayed: juniper-club / TuneOnly
+PASS: Explicit buy/load charges only missing hardware and retains the worn original: juniper-club /
+PASS: Review rejects unrevisioned fuel changes: juniper-club
+PASS: Review rejects unrevisioned tune changes: juniper-club
+PASS: Review rejects unrevisioned blueprint changes: juniper-club
+PASS: Review rejects unrevisioned condition changes: juniper-club
+PASS: Review rejects unrevisioned price changes: juniper-club
+PASS: Review rejects unrevisioned hardware changes: juniper-club
+PASS: An unaffordable plan cannot open an actionable load quote: juniper-club
+PASS: Review captures the real scope without changing assets: juniper-economy / Engine
+PASS: Failed durable setup publication retains the entire current build: juniper-economy / Engine
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: juniper-economy / Engine /
+PASS: A completed setup quote cannot be replayed: juniper-economy / Engine
+PASS: Review captures the real scope without changing assets: juniper-economy / WholeCar
+PASS: Failed durable setup publication retains the entire current build: juniper-economy / WholeCar
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: juniper-economy / WholeCar /
+PASS: A completed setup quote cannot be replayed: juniper-economy / WholeCar
+PASS: Review captures the real scope without changing assets: juniper-economy / TuneOnly
+PASS: Failed durable setup publication retains the entire current build: juniper-economy / TuneOnly
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: juniper-economy / TuneOnly /
+PASS: A completed setup quote cannot be replayed: juniper-economy / TuneOnly
+PASS: Explicit buy/load charges only missing hardware and retains the worn original: juniper-economy /
+PASS: Review rejects unrevisioned fuel changes: juniper-economy
+PASS: Review rejects unrevisioned tune changes: juniper-economy
+PASS: Review rejects unrevisioned blueprint changes: juniper-economy
+PASS: Review rejects unrevisioned condition changes: juniper-economy
+PASS: Review rejects unrevisioned price changes: juniper-economy
+PASS: Review rejects unrevisioned hardware changes: juniper-economy
+PASS: An unaffordable plan cannot open an actionable load quote: juniper-economy
+PASS: Review captures the real scope without changing assets: kestrel-track / Engine
+PASS: Failed durable setup publication retains the entire current build: kestrel-track / Engine
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: kestrel-track / Engine /
+PASS: A completed setup quote cannot be replayed: kestrel-track / Engine
+PASS: Review captures the real scope without changing assets: kestrel-track / WholeCar
+PASS: Failed durable setup publication retains the entire current build: kestrel-track / WholeCar
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: kestrel-track / WholeCar /
+PASS: A completed setup quote cannot be replayed: kestrel-track / WholeCar
+PASS: Review captures the real scope without changing assets: kestrel-track / TuneOnly
+PASS: Failed durable setup publication retains the entire current build: kestrel-track / TuneOnly
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: kestrel-track / TuneOnly /
+PASS: A completed setup quote cannot be replayed: kestrel-track / TuneOnly
+PASS: Explicit buy/load charges only missing hardware and retains the worn original: kestrel-track /
+PASS: Review rejects unrevisioned fuel changes: kestrel-track
+PASS: Review rejects unrevisioned tune changes: kestrel-track
+PASS: Review rejects unrevisioned blueprint changes: kestrel-track
+PASS: Review rejects unrevisioned condition changes: kestrel-track
+PASS: Review rejects unrevisioned price changes: kestrel-track
+PASS: Review rejects unrevisioned hardware changes: kestrel-track
+PASS: An unaffordable plan cannot open an actionable load quote: kestrel-track
+PASS: Review captures the real scope without changing assets: rally-sedan / Engine
+PASS: Failed durable setup publication retains the entire current build: rally-sedan / Engine
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: rally-sedan / Engine /
+PASS: A completed setup quote cannot be replayed: rally-sedan / Engine
+PASS: Review captures the real scope without changing assets: rally-sedan / WholeCar
+PASS: Failed durable setup publication retains the entire current build: rally-sedan / WholeCar
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: rally-sedan / WholeCar /
+PASS: A completed setup quote cannot be replayed: rally-sedan / WholeCar
+PASS: Review captures the real scope without changing assets: rally-sedan / TuneOnly
+PASS: Failed durable setup publication retains the entire current build: rally-sedan / TuneOnly
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: rally-sedan / TuneOnly /
+PASS: A completed setup quote cannot be replayed: rally-sedan / TuneOnly
+PASS: Explicit buy/load charges only missing hardware and retains the worn original: rally-sedan /
+PASS: Review rejects unrevisioned fuel changes: rally-sedan
+PASS: Review rejects unrevisioned tune changes: rally-sedan
+PASS: Review rejects unrevisioned blueprint changes: rally-sedan
+PASS: Review rejects unrevisioned condition changes: rally-sedan
+PASS: Review rejects unrevisioned price changes: rally-sedan
+PASS: Review rejects unrevisioned hardware changes: rally-sedan
+PASS: An unaffordable plan cannot open an actionable load quote: rally-sedan
+PASS: Review captures the real scope without changing assets: sport-coupe / Engine
+PASS: Failed durable setup publication retains the entire current build: sport-coupe / Engine
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: sport-coupe / Engine /
+PASS: A completed setup quote cannot be replayed: sport-coupe / Engine
+PASS: Review captures the real scope without changing assets: sport-coupe / WholeCar
+PASS: Failed durable setup publication retains the entire current build: sport-coupe / WholeCar
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: sport-coupe / WholeCar /
+PASS: A completed setup quote cannot be replayed: sport-coupe / WholeCar
+PASS: Review captures the real scope without changing assets: sport-coupe / TuneOnly
+PASS: Failed durable setup publication retains the entire current build: sport-coupe / TuneOnly
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: sport-coupe / TuneOnly /
+PASS: A completed setup quote cannot be replayed: sport-coupe / TuneOnly
+PASS: Explicit buy/load charges only missing hardware and retains the worn original: sport-coupe /
+PASS: Review rejects unrevisioned fuel changes: sport-coupe
+PASS: Review rejects unrevisioned tune changes: sport-coupe
+PASS: Review rejects unrevisioned blueprint changes: sport-coupe
+PASS: Review rejects unrevisioned condition changes: sport-coupe
+PASS: Review rejects unrevisioned price changes: sport-coupe
+PASS: Review rejects unrevisioned hardware changes: sport-coupe
+PASS: An unaffordable plan cannot open an actionable load quote: sport-coupe
+PASS: Review captures the real scope without changing assets: starter-hatch / Engine
+PASS: Failed durable setup publication retains the entire current build: starter-hatch / Engine
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: starter-hatch / Engine /
+PASS: A completed setup quote cannot be replayed: starter-hatch / Engine
+PASS: Review captures the real scope without changing assets: starter-hatch / WholeCar
+PASS: Failed durable setup publication retains the entire current build: starter-hatch / WholeCar
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: starter-hatch / WholeCar /
+PASS: A completed setup quote cannot be replayed: starter-hatch / WholeCar
+PASS: Review captures the real scope without changing assets: starter-hatch / TuneOnly
+PASS: Failed durable setup publication retains the entire current build: starter-hatch / TuneOnly
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: starter-hatch / TuneOnly /
+PASS: A completed setup quote cannot be replayed: starter-hatch / TuneOnly
+PASS: Explicit buy/load charges only missing hardware and retains the worn original: starter-hatch /
+PASS: Review rejects unrevisioned fuel changes: starter-hatch
+PASS: Review rejects unrevisioned tune changes: starter-hatch
+PASS: Review rejects unrevisioned blueprint changes: starter-hatch
+PASS: Review rejects unrevisioned condition changes: starter-hatch
+PASS: Review rejects unrevisioned price changes: starter-hatch
+PASS: Review rejects unrevisioned hardware changes: starter-hatch
+PASS: An unaffordable plan cannot open an actionable load quote: starter-hatch
+PASS: Review captures the real scope without changing assets: super-v8 / Engine
+PASS: Failed durable setup publication retains the entire current build: super-v8 / Engine
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: super-v8 / Engine /
+PASS: A completed setup quote cannot be replayed: super-v8 / Engine
+PASS: Review captures the real scope without changing assets: super-v8 / WholeCar
+PASS: Failed durable setup publication retains the entire current build: super-v8 / WholeCar
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: super-v8 / WholeCar /
+PASS: A completed setup quote cannot be replayed: super-v8 / WholeCar
+PASS: Review captures the real scope without changing assets: super-v8 / TuneOnly
+PASS: Failed durable setup publication retains the entire current build: super-v8 / TuneOnly
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: super-v8 / TuneOnly /
+PASS: A completed setup quote cannot be replayed: super-v8 / TuneOnly
+PASS: Explicit buy/load charges only missing hardware and retains the worn original: super-v8 /
+PASS: Review rejects unrevisioned fuel changes: super-v8
+PASS: Review rejects unrevisioned tune changes: super-v8
+PASS: Review rejects unrevisioned blueprint changes: super-v8
+PASS: Review rejects unrevisioned condition changes: super-v8
+PASS: Review rejects unrevisioned price changes: super-v8
+PASS: Review rejects unrevisioned hardware changes: super-v8
+PASS: An unaffordable plan cannot open an actionable load quote: super-v8
+PASS: Review captures the real scope without changing assets: timber-diesel / Engine
+PASS: Failed durable setup publication retains the entire current build: timber-diesel / Engine
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: timber-diesel / Engine /
+PASS: A completed setup quote cannot be replayed: timber-diesel / Engine
+PASS: Review captures the real scope without changing assets: timber-diesel / WholeCar
+PASS: Failed durable setup publication retains the entire current build: timber-diesel / WholeCar
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: timber-diesel / WholeCar /
+PASS: A completed setup quote cannot be replayed: timber-diesel / WholeCar
+PASS: Review captures the real scope without changing assets: timber-diesel / TuneOnly
+PASS: Failed durable setup publication retains the entire current build: timber-diesel / TuneOnly
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: timber-diesel / TuneOnly /
+PASS: A completed setup quote cannot be replayed: timber-diesel / TuneOnly
+PASS: Explicit buy/load charges only missing hardware and retains the worn original: timber-diesel /
+PASS: Review rejects unrevisioned fuel changes: timber-diesel
+PASS: Review rejects unrevisioned tune changes: timber-diesel
+PASS: Review rejects unrevisioned blueprint changes: timber-diesel
+PASS: Review rejects unrevisioned condition changes: timber-diesel
+PASS: Review rejects unrevisioned price changes: timber-diesel
+PASS: Review rejects unrevisioned hardware changes: timber-diesel
+PASS: An unaffordable plan cannot open an actionable load quote: timber-diesel
+PASS: Review captures the real scope without changing assets: timber-diesel-tow / Engine
+PASS: Failed durable setup publication retains the entire current build: timber-diesel-tow / Engine
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: timber-diesel-tow / Engine /
+PASS: A completed setup quote cannot be replayed: timber-diesel-tow / Engine
+PASS: Review captures the real scope without changing assets: timber-diesel-tow / WholeCar
+PASS: Failed durable setup publication retains the entire current build: timber-diesel-tow / WholeCar
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: timber-diesel-tow / WholeCar /
+PASS: A completed setup quote cannot be replayed: timber-diesel-tow / WholeCar
+PASS: Review captures the real scope without changing assets: timber-diesel-tow / TuneOnly
+PASS: Failed durable setup publication retains the entire current build: timber-diesel-tow / TuneOnly
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: timber-diesel-tow / TuneOnly /
+PASS: A completed setup quote cannot be replayed: timber-diesel-tow / TuneOnly
+PASS: Explicit buy/load charges only missing hardware and retains the worn original: timber-diesel-tow /
+PASS: Review rejects unrevisioned fuel changes: timber-diesel-tow
+PASS: Review rejects unrevisioned tune changes: timber-diesel-tow
+PASS: Review rejects unrevisioned blueprint changes: timber-diesel-tow
+PASS: Review rejects unrevisioned condition changes: timber-diesel-tow
+PASS: Review rejects unrevisioned price changes: timber-diesel-tow
+PASS: Review rejects unrevisioned hardware changes: timber-diesel-tow
+PASS: An unaffordable plan cannot open an actionable load quote: timber-diesel-tow
+PASS: Review captures the real scope without changing assets: touring-six / Engine
+PASS: Failed durable setup publication retains the entire current build: touring-six / Engine
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: touring-six / Engine /
+PASS: A completed setup quote cannot be replayed: touring-six / Engine
+PASS: Review captures the real scope without changing assets: touring-six / WholeCar
+PASS: Failed durable setup publication retains the entire current build: touring-six / WholeCar
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: touring-six / WholeCar /
+PASS: A completed setup quote cannot be replayed: touring-six / WholeCar
+PASS: Review captures the real scope without changing assets: touring-six / TuneOnly
+PASS: Failed durable setup publication retains the entire current build: touring-six / TuneOnly
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: touring-six / TuneOnly /
+PASS: A completed setup quote cannot be replayed: touring-six / TuneOnly
+PASS: Explicit buy/load charges only missing hardware and retains the worn original: touring-six /
+PASS: Review rejects unrevisioned fuel changes: touring-six
+PASS: Review rejects unrevisioned tune changes: touring-six
+PASS: Review rejects unrevisioned blueprint changes: touring-six
+PASS: Review rejects unrevisioned condition changes: touring-six
+PASS: Review rejects unrevisioned price changes: touring-six
+PASS: Review rejects unrevisioned hardware changes: touring-six
+PASS: An unaffordable plan cannot open an actionable load quote: touring-six
+PASS: Review captures the real scope without changing assets: utility-pickup / Engine
+PASS: Failed durable setup publication retains the entire current build: utility-pickup / Engine
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: utility-pickup / Engine /
+PASS: A completed setup quote cannot be replayed: utility-pickup / Engine
+PASS: Review captures the real scope without changing assets: utility-pickup / WholeCar
+PASS: Failed durable setup publication retains the entire current build: utility-pickup / WholeCar
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: utility-pickup / WholeCar /
+PASS: A completed setup quote cannot be replayed: utility-pickup / WholeCar
+PASS: Review captures the real scope without changing assets: utility-pickup / TuneOnly
+PASS: Failed durable setup publication retains the entire current build: utility-pickup / TuneOnly
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: utility-pickup / TuneOnly /
+PASS: A completed setup quote cannot be replayed: utility-pickup / TuneOnly
+PASS: Explicit buy/load charges only missing hardware and retains the worn original: utility-pickup /
+PASS: Review rejects unrevisioned fuel changes: utility-pickup
+PASS: Review rejects unrevisioned tune changes: utility-pickup
+PASS: Review rejects unrevisioned blueprint changes: utility-pickup
+PASS: Review rejects unrevisioned condition changes: utility-pickup
+PASS: Review rejects unrevisioned price changes: utility-pickup
+PASS: Review rejects unrevisioned hardware changes: utility-pickup
+PASS: An unaffordable plan cannot open an actionable load quote: utility-pickup
+PASS: Review captures the real scope without changing assets: v8-muscle / Engine
+PASS: Failed durable setup publication retains the entire current build: v8-muscle / Engine
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: v8-muscle / Engine /
+PASS: A completed setup quote cannot be replayed: v8-muscle / Engine
+PASS: Review captures the real scope without changing assets: v8-muscle / WholeCar
+PASS: Failed durable setup publication retains the entire current build: v8-muscle / WholeCar
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: v8-muscle / WholeCar /
+PASS: A completed setup quote cannot be replayed: v8-muscle / WholeCar
+PASS: Review captures the real scope without changing assets: v8-muscle / TuneOnly
+PASS: Failed durable setup publication retains the entire current build: v8-muscle / TuneOnly
+PASS: Confirmed owned setup commits once with actual identities, wear and supplies: v8-muscle / TuneOnly /
+PASS: A completed setup quote cannot be replayed: v8-muscle / TuneOnly
+PASS: Explicit buy/load charges only missing hardware and retains the worn original: v8-muscle /
+PASS: Review rejects unrevisioned fuel changes: v8-muscle
+PASS: Review rejects unrevisioned tune changes: v8-muscle
+PASS: Review rejects unrevisioned blueprint changes: v8-muscle
+PASS: Review rejects unrevisioned condition changes: v8-muscle
+PASS: Review rejects unrevisioned price changes: v8-muscle
+PASS: Review rejects unrevisioned hardware changes: v8-muscle
+PASS: An unaffordable plan cannot open an actionable load quote: v8-muscle
+Cars: 13; checks: 468; failures: 0
