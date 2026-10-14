@@ -1,0 +1,222 @@
+PASS city-three broken mode targets a failed set and one disabled cylinder
+PASS city-three under 15% uses remaining per-member condition and excludes the 15% boundary
+PASS city-three batch price equals authoritative set/unit checkout
+PASS city-three threshold/selection/stock preview edits and saves nothing
+PASS city-three one atomic replacement payment commits:
+PASS city-three only selected cylinders change, retaining boundary condition
+PASS city-three removed members retain exact identities, wear and faults
+PASS city-three exact mixed tire compounds replace selected corners only
+PASS city-three replaced full components keep original damage in inventory
+PASS city-three one charge/receipt preserves the independently selected car
+PASS city-three applied tuning, liquids and the other car are unchanged / fluids True / other True
+PASS city-three final ownership validates and original transaction source is unchanged
+PASS city-three absent stock adds only the shared express price
+PASS city-three manual deselection leaves one exact individual replacement
+PASS city-three failed persistence rolls back cash, stock and every replacement
+PASS city-three selecting every matching member buys a complete set
+PASS city-three insufficient funds cannot partly replace components
+PASS juniper-club broken mode targets a failed set and one disabled cylinder
+PASS juniper-club under 15% uses remaining per-member condition and excludes the 15% boundary
+PASS juniper-club batch price equals authoritative set/unit checkout
+PASS juniper-club threshold/selection/stock preview edits and saves nothing
+PASS juniper-club one atomic replacement payment commits:
+PASS juniper-club only selected cylinders change, retaining boundary condition
+PASS juniper-club removed members retain exact identities, wear and faults
+PASS juniper-club exact mixed tire compounds replace selected corners only
+PASS juniper-club replaced full components keep original damage in inventory
+PASS juniper-club one charge/receipt preserves the independently selected car
+PASS juniper-club applied tuning, liquids and the other car are unchanged / fluids True / other True
+PASS juniper-club final ownership validates and original transaction source is unchanged
+PASS juniper-club absent stock adds only the shared express price
+PASS juniper-club manual deselection leaves one exact individual replacement
+PASS juniper-club failed persistence rolls back cash, stock and every replacement
+PASS juniper-club selecting every matching member buys a complete set
+PASS juniper-club insufficient funds cannot partly replace components
+PASS juniper-economy broken mode targets a failed set and one disabled cylinder
+PASS juniper-economy under 15% uses remaining per-member condition and excludes the 15% boundary
+PASS juniper-economy batch price equals authoritative set/unit checkout
+PASS juniper-economy threshold/selection/stock preview edits and saves nothing
+PASS juniper-economy one atomic replacement payment commits:
+PASS juniper-economy only selected cylinders change, retaining boundary condition
+PASS juniper-economy removed members retain exact identities, wear and faults
+PASS juniper-economy exact mixed tire compounds replace selected corners only
+PASS juniper-economy replaced full components keep original damage in inventory
+PASS juniper-economy one charge/receipt preserves the independently selected car
+PASS juniper-economy applied tuning, liquids and the other car are unchanged / fluids True / other True
+PASS juniper-economy final ownership validates and original transaction source is unchanged
+PASS juniper-economy absent stock adds only the shared express price
+PASS juniper-economy manual deselection leaves one exact individual replacement
+PASS juniper-economy failed persistence rolls back cash, stock and every replacement
+PASS juniper-economy selecting every matching member buys a complete set
+PASS juniper-economy insufficient funds cannot partly replace components
+PASS kestrel-track broken mode targets a failed set and one disabled cylinder
+PASS kestrel-track under 15% uses remaining per-member condition and excludes the 15% boundary
+PASS kestrel-track batch price equals authoritative set/unit checkout
+PASS kestrel-track threshold/selection/stock preview edits and saves nothing
+PASS kestrel-track one atomic replacement payment commits:
+PASS kestrel-track only selected cylinders change, retaining boundary condition
+PASS kestrel-track removed members retain exact identities, wear and faults
+PASS kestrel-track exact mixed tire compounds replace selected corners only
+PASS kestrel-track replaced full components keep original damage in inventory
+PASS kestrel-track one charge/receipt preserves the independently selected car
+PASS kestrel-track applied tuning, liquids and the other car are unchanged / fluids True / other True
+PASS kestrel-track final ownership validates and original transaction source is unchanged
+PASS kestrel-track absent stock adds only the shared express price
+PASS kestrel-track manual deselection leaves one exact individual replacement
+PASS kestrel-track failed persistence rolls back cash, stock and every replacement
+PASS kestrel-track selecting every matching member buys a complete set
+PASS kestrel-track insufficient funds cannot partly replace components
+PASS rally-sedan broken mode targets a failed set and one disabled cylinder
+PASS rally-sedan under 15% uses remaining per-member condition and excludes the 15% boundary
+PASS rally-sedan batch price equals authoritative set/unit checkout
+PASS rally-sedan threshold/selection/stock preview edits and saves nothing
+PASS rally-sedan one atomic replacement payment commits:
+PASS rally-sedan only selected cylinders change, retaining boundary condition
+PASS rally-sedan removed members retain exact identities, wear and faults
+PASS rally-sedan exact mixed tire compounds replace selected corners only
+PASS rally-sedan replaced full components keep original damage in inventory
+PASS rally-sedan one charge/receipt preserves the independently selected car
+PASS rally-sedan applied tuning, liquids and the other car are unchanged / fluids True / other True
+PASS rally-sedan final ownership validates and original transaction source is unchanged
+PASS rally-sedan absent stock adds only the shared express price
+PASS rally-sedan manual deselection leaves one exact individual replacement
+PASS rally-sedan failed persistence rolls back cash, stock and every replacement
+PASS rally-sedan selecting every matching member buys a complete set
+PASS rally-sedan insufficient funds cannot partly replace components
+PASS sport-coupe broken mode targets a failed set and one disabled cylinder
+PASS sport-coupe under 15% uses remaining per-member condition and excludes the 15% boundary
+PASS sport-coupe batch price equals authoritative set/unit checkout
+PASS sport-coupe threshold/selection/stock preview edits and saves nothing
+PASS sport-coupe one atomic replacement payment commits:
+PASS sport-coupe only selected cylinders change, retaining boundary condition
+PASS sport-coupe removed members retain exact identities, wear and faults
+PASS sport-coupe exact mixed tire compounds replace selected corners only
+PASS sport-coupe replaced full components keep original damage in inventory
+PASS sport-coupe one charge/receipt preserves the independently selected car
+PASS sport-coupe applied tuning, liquids and the other car are unchanged / fluids True / other True
+PASS sport-coupe final ownership validates and original transaction source is unchanged
+PASS sport-coupe absent stock adds only the shared express price
+PASS sport-coupe manual deselection leaves one exact individual replacement
+PASS sport-coupe failed persistence rolls back cash, stock and every replacement
+PASS sport-coupe selecting every matching member buys a complete set
+PASS sport-coupe insufficient funds cannot partly replace components
+PASS starter-hatch broken mode targets a failed set and one disabled cylinder
+PASS starter-hatch under 15% uses remaining per-member condition and excludes the 15% boundary
+PASS starter-hatch batch price equals authoritative set/unit checkout
+PASS starter-hatch threshold/selection/stock preview edits and saves nothing
+PASS starter-hatch one atomic replacement payment commits:
+PASS starter-hatch only selected cylinders change, retaining boundary condition
+PASS starter-hatch removed members retain exact identities, wear and faults
+PASS starter-hatch exact mixed tire compounds replace selected corners only
+PASS starter-hatch replaced full components keep original damage in inventory
+PASS starter-hatch one charge/receipt preserves the independently selected car
+PASS starter-hatch applied tuning, liquids and the other car are unchanged / fluids True / other True
+PASS starter-hatch final ownership validates and original transaction source is unchanged
+PASS starter-hatch absent stock adds only the shared express price
+PASS starter-hatch manual deselection leaves one exact individual replacement
+PASS starter-hatch failed persistence rolls back cash, stock and every replacement
+PASS starter-hatch selecting every matching member buys a complete set
+PASS starter-hatch insufficient funds cannot partly replace components
+PASS super-v8 broken mode targets a failed set and one disabled cylinder
+PASS super-v8 under 15% uses remaining per-member condition and excludes the 15% boundary
+PASS super-v8 batch price equals authoritative set/unit checkout
+PASS super-v8 threshold/selection/stock preview edits and saves nothing
+PASS super-v8 one atomic replacement payment commits:
+PASS super-v8 only selected cylinders change, retaining boundary condition
+PASS super-v8 removed members retain exact identities, wear and faults
+PASS super-v8 exact mixed tire compounds replace selected corners only
+PASS super-v8 replaced full components keep original damage in inventory
+PASS super-v8 one charge/receipt preserves the independently selected car
+PASS super-v8 applied tuning, liquids and the other car are unchanged / fluids True / other True
+PASS super-v8 final ownership validates and original transaction source is unchanged
+PASS super-v8 absent stock adds only the shared express price
+PASS super-v8 manual deselection leaves one exact individual replacement
+PASS super-v8 failed persistence rolls back cash, stock and every replacement
+PASS super-v8 selecting every matching member buys a complete set
+PASS super-v8 insufficient funds cannot partly replace components
+PASS timber-diesel broken mode targets a failed set and one disabled cylinder
+PASS timber-diesel under 15% uses remaining per-member condition and excludes the 15% boundary
+PASS timber-diesel batch price equals authoritative set/unit checkout
+PASS timber-diesel threshold/selection/stock preview edits and saves nothing
+PASS timber-diesel one atomic replacement payment commits:
+PASS timber-diesel only selected cylinders change, retaining boundary condition
+PASS timber-diesel removed members retain exact identities, wear and faults
+PASS timber-diesel exact mixed tire compounds replace selected corners only
+PASS timber-diesel replaced full components keep original damage in inventory
+PASS timber-diesel one charge/receipt preserves the independently selected car
+PASS timber-diesel applied tuning, liquids and the other car are unchanged / fluids True / other True
+PASS timber-diesel final ownership validates and original transaction source is unchanged
+PASS timber-diesel absent stock adds only the shared express price
+PASS timber-diesel manual deselection leaves one exact individual replacement
+PASS timber-diesel failed persistence rolls back cash, stock and every replacement
+PASS timber-diesel selecting every matching member buys a complete set
+PASS timber-diesel insufficient funds cannot partly replace components
+PASS timber-diesel-tow broken mode targets a failed set and one disabled cylinder
+PASS timber-diesel-tow under 15% uses remaining per-member condition and excludes the 15% boundary
+PASS timber-diesel-tow batch price equals authoritative set/unit checkout
+PASS timber-diesel-tow threshold/selection/stock preview edits and saves nothing
+PASS timber-diesel-tow one atomic replacement payment commits:
+PASS timber-diesel-tow only selected cylinders change, retaining boundary condition
+PASS timber-diesel-tow removed members retain exact identities, wear and faults
+PASS timber-diesel-tow exact mixed tire compounds replace selected corners only
+PASS timber-diesel-tow replaced full components keep original damage in inventory
+PASS timber-diesel-tow one charge/receipt preserves the independently selected car
+PASS timber-diesel-tow applied tuning, liquids and the other car are unchanged / fluids True / other True
+PASS timber-diesel-tow final ownership validates and original transaction source is unchanged
+PASS timber-diesel-tow absent stock adds only the shared express price
+PASS timber-diesel-tow manual deselection leaves one exact individual replacement
+PASS timber-diesel-tow failed persistence rolls back cash, stock and every replacement
+PASS timber-diesel-tow selecting every matching member buys a complete set
+PASS timber-diesel-tow insufficient funds cannot partly replace components
+PASS touring-six broken mode targets a failed set and one disabled cylinder
+PASS touring-six under 15% uses remaining per-member condition and excludes the 15% boundary
+PASS touring-six batch price equals authoritative set/unit checkout
+PASS touring-six threshold/selection/stock preview edits and saves nothing
+PASS touring-six one atomic replacement payment commits:
+PASS touring-six only selected cylinders change, retaining boundary condition
+PASS touring-six removed members retain exact identities, wear and faults
+PASS touring-six exact mixed tire compounds replace selected corners only
+PASS touring-six replaced full components keep original damage in inventory
+PASS touring-six one charge/receipt preserves the independently selected car
+PASS touring-six applied tuning, liquids and the other car are unchanged / fluids True / other True
+PASS touring-six final ownership validates and original transaction source is unchanged
+PASS touring-six absent stock adds only the shared express price
+PASS touring-six manual deselection leaves one exact individual replacement
+PASS touring-six failed persistence rolls back cash, stock and every replacement
+PASS touring-six selecting every matching member buys a complete set
+PASS touring-six insufficient funds cannot partly replace components
+PASS utility-pickup broken mode targets a failed set and one disabled cylinder
+PASS utility-pickup under 15% uses remaining per-member condition and excludes the 15% boundary
+PASS utility-pickup batch price equals authoritative set/unit checkout
+PASS utility-pickup threshold/selection/stock preview edits and saves nothing
+PASS utility-pickup one atomic replacement payment commits:
+PASS utility-pickup only selected cylinders change, retaining boundary condition
+PASS utility-pickup removed members retain exact identities, wear and faults
+PASS utility-pickup exact mixed tire compounds replace selected corners only
+PASS utility-pickup replaced full components keep original damage in inventory
+PASS utility-pickup one charge/receipt preserves the independently selected car
+PASS utility-pickup applied tuning, liquids and the other car are unchanged / fluids True / other True
+PASS utility-pickup final ownership validates and original transaction source is unchanged
+PASS utility-pickup absent stock adds only the shared express price
+PASS utility-pickup manual deselection leaves one exact individual replacement
+PASS utility-pickup failed persistence rolls back cash, stock and every replacement
+PASS utility-pickup selecting every matching member buys a complete set
+PASS utility-pickup insufficient funds cannot partly replace components
+PASS v8-muscle broken mode targets a failed set and one disabled cylinder
+PASS v8-muscle under 15% uses remaining per-member condition and excludes the 15% boundary
+PASS v8-muscle batch price equals authoritative set/unit checkout
+PASS v8-muscle threshold/selection/stock preview edits and saves nothing
+PASS v8-muscle one atomic replacement payment commits:
+PASS v8-muscle only selected cylinders change, retaining boundary condition
+PASS v8-muscle removed members retain exact identities, wear and faults
+PASS v8-muscle exact mixed tire compounds replace selected corners only
+PASS v8-muscle replaced full components keep original damage in inventory
+PASS v8-muscle one charge/receipt preserves the independently selected car
+PASS v8-muscle applied tuning, liquids and the other car are unchanged / fluids True / other True
+PASS v8-muscle final ownership validates and original transaction source is unchanged
+PASS v8-muscle absent stock adds only the shared express price
+PASS v8-muscle manual deselection leaves one exact individual replacement
+PASS v8-muscle failed persistence rolls back cash, stock and every replacement
+PASS v8-muscle selecting every matching member buys a complete set
+PASS v8-muscle insufficient funds cannot partly replace components
+Checks: 221; failures: 0

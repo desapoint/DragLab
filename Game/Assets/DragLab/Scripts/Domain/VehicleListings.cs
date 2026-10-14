@@ -22,7 +22,7 @@ namespace DragLab.Domain.Mechanics {
  if(p.firstPurchasePending){p.firstPurchasePending=false;stock.generation++;Generate(p,c);}
  else if(!offer.used){var v=Resources.LoadAll<VehicleDefinition>("Data/Vehicles").Single(a=>a.spec.id==offer.model);uint seed=1;stock.listings.Add(Create(c,v,offer.model,false,1,0,stock.generation,stock.purchases,stock.seed,ref seed));}
  }
- public static void AfterRace(PlayerProfile p,MechanicalCatalog c){if(p.firstPurchasePending)return;Ensure(p,c);p.vehicleStock.completedRuns++;if(p.vehicleStock.completedRuns%3==0){p.vehicleStock.generation++;Generate(p,c);}}
+ public static void AfterRace(PlayerProfile p,MechanicalCatalog c){if(p.firstPurchasePending)return;Ensure(p,c);p.vehicleStock.completedRuns++;CartReservations.Expire(p);if(p.vehicleStock.completedRuns%3==0){p.vehicleStock.generation++;Generate(p,c);}}
  static double Next(ref uint seed){seed^=seed<<13;seed^=seed>>17;seed^=seed<<5;return seed/(double)uint.MaxValue;}
  static void Generate(PlayerProfile p,MechanicalCatalog c){
  p.catalog=c;PartsMarket.Refresh(p);

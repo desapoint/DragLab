@@ -21,7 +21,7 @@ namespace DragLab.Runtime
         internal int CartCount=>cart.Sum(l=>l.quantity);
         internal IReadOnlyList<PartCartLine> CartLines=>cart;
         internal void SelectPartsPage(string page){partsPage=page;scroll=Vector2.zero;partRects.Clear();PreviewPart();previewCart=cart.Count>0;statsKey=null;}
-        void EnsureCartOwner(){if(cartOwner==Build.instanceId)return;cartOwner=Build.instanceId;cart.Clear();unitOffers.Clear();inventoryStorage=SharedInventory.Garage;moveDestination=0;previewCart=false;statsKey=null;cartPriceKey=null;}
+        void EnsureCartOwner(){if(cartOwner==Build.instanceId)return;cartOwner=Build.instanceId;cart.Clear();var saved=profile.inventory.cart;if(saved!=null&&saved.carId==cartOwner)cart.AddRange(saved.lines.Select(l=>l.Copy()));unitOffers.Clear();inventoryStorage=SharedInventory.Garage;moveDestination=0;previewCart=false;statsKey=null;cartPriceKey=null;}
         PartInstance OfferTemplate(PartDefinition d){string key=Build.instanceId+"/"+profile.revision;if(offerTemplateKey!=key){offerTemplates.Clear();offerTemplateKey=key;}if(!offerTemplates.TryGetValue(d.id,out var pack)){pack=InventoryUnits.Template(profile,Build,d);offerTemplates[d.id]=pack;}return pack;}
         int OfferCount(PartDefinition d){var pack=OfferTemplate(d);return pack.condition.elements.Length>0?pack.condition.elements.Length:d.category==PartCategory.Tires||d.category==PartCategory.Wheels||d.category==PartCategory.Brakes?4:1;}
         internal void AddToCart(string id,bool install=false)
@@ -34,7 +34,8 @@ namespace DragLab.Runtime
             if(install)SetCartInstallation(line,true);CartChanged();
         }
         internal void StageInventory(PartCartLine line){EnsureCartOwner();if(cart.Count>=100&&!cart.Any(l=>l.assetId==line.assetId)){notice="Cart holds at most 100 lines.";return;}cart.RemoveAll(l=>!string.IsNullOrEmpty(line.assetId)&&l.assetId==line.assetId);cart.Add(line);CartChanged();}
-        void CartChanged(){previewCart=true;previewDefinitionId=previewInstanceId=null;previewRemoval=null;statsKey=null;cartPriceKey=null;}
+        void PersistNativeCartReservation(){if(cartOwner!=null)CartReservations.Capture(profile,cartOwner,cart);}
+        void CartChanged(){if(profile.inventory.cart!=null&&cartOwner!=null)PersistNativeCartReservation();previewCart=true;previewDefinitionId=previewInstanceId=null;previewRemoval=null;statsKey=null;cartPriceKey=null;}
         bool IsUnit(PartCartLine line)=>line.action==CartAction.NewUnits||line.action==CartAction.BuyUsed&&profile.inventory.dealer.Any(s=>s.Id==line.assetId&&s.unit!=null);
         void SetCartInstallation(PartCartLine line,bool value)
         {

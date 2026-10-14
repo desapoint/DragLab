@@ -13,11 +13,11 @@ namespace DragLab.Domain.Mechanics
     }
     public static class MechanicsOwnership
     {
-        public const int SaveVersion = 8;
+        public const int SaveVersion = 9;
         public static string NewId(string kind) { return kind + "-" + Guid.NewGuid().ToString("N"); }
         public static void Ensure(PlayerProfile profile, MechanicalCatalog catalog)
         {
-            bool migratePartsMarket=profile.saveVersion<SaveVersion;
+            bool migratePartsMarket=profile.saveVersion<8;
             if(profile.saveVersion>SaveVersion)throw new InvalidOperationException("Unsupported save version.");
             if (profile.mechanicsVersion > MechanicsSchema.Version) throw new InvalidOperationException("Unsupported mechanics version.");
             if (profile.parts == null) profile.parts = new List<PartInstance>();
@@ -115,7 +115,7 @@ namespace DragLab.Domain.Mechanics
             profile.selectedVehicleId = selected?.vehicleId ?? ""; profile.selectedOwnedVehicleId = selected?.instanceId ?? "";
             GarageBusiness.UpgradeLegacySnapshots(profile);
             VehicleListings.Ensure(profile,catalog);
-            PartsMarket.Ensure(profile,migratePartsMarket);
+            PartsMarket.Ensure(profile,migratePartsMarket);CartReservations.Expire(profile);
             string error = Validate(profile, catalog); if (error != null) throw new InvalidOperationException(error);
         }
         public static Dictionary<PartCategory, string> Definitions(PlayerProfile profile, OwnedCar car)

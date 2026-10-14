@@ -143,7 +143,7 @@ namespace DragLab.Runtime
             var resolved = MechanicsOwnership.Resolve(profile, Build, profile.catalog);
             if (!resolved.Drivable) { notice = "Build cannot drive: " + string.Join("; ", resolved.errors); return; }
             if (!AutoTopUp()) return;
-            ProfileStore.Save(profile);
+            PersistNativeCartReservation();ProfileStore.Save(profile);
             activeEvent = evt;
             practiceRun = practice && evt == null; previousPass = Build.lastPass; finishedPass = null;
             var opponent = evt != null ? evt.opponent : practiceRun ? Selected : vehicles[freeOpponent];
@@ -285,7 +285,7 @@ namespace DragLab.Runtime
             profile=next;settings=profile.driving;savedRunTick=liveRunTick;savedRunFailures=RunPersistence.FailureCount(race.player);liveRunClosed=close;return true;
         }
         void OnApplicationPause(bool pause) { if (pause)SetPaused(true); }
-        void OnApplicationQuit() { if (profile != null) { SyncRaceWear(true,"Quit");ProfileStore.Save(profile); } }
+        void OnApplicationQuit() { if (profile != null) { SyncRaceWear(true,"Quit");PersistNativeCartReservation();ProfileStore.Save(profile); } }
 
         internal string AuditMouseEvents = "";
         internal Rect warmupLineLockRect;

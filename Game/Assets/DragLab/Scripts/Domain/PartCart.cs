@@ -44,7 +44,7 @@ namespace DragLab.Domain.Mechanics
             var car=p.cars.Find(c=>c.instanceId==carId);EngineRebuilds.RequireAvailable(car);
             var lines=source.ToArray();if(lines.Length==0||lines.Length>100)throw new InvalidOperationException("Cart needs 1–100 distinct offers.");
             policy=policy??ValuationPolicy.Defaults();if(now==0)now=DateTime.UtcNow.Ticks;
-            var ids=new HashSet<string>();var assets=new HashSet<string>();var positions=new HashSet<string>();var slots=new HashSet<PartCategory>();int total=0;PlayerProfile movePreview=null;var supply=new PartsMarket.Ledger(p);
+            var ids=new HashSet<string>();var assets=new HashSet<string>();var positions=new HashSet<string>();var slots=new HashSet<PartCategory>();int total=0;PlayerProfile movePreview=null;var supply=new PartsMarket.Ledger(p,CartReservations.Matches(p,carId,lines));
             var moveSlots=new HashSet<string>();
             foreach(var line in lines) {
                 var d=line==null?null:p.catalog.Find(line.definitionId);
@@ -83,7 +83,7 @@ namespace DragLab.Domain.Mechanics
         }
         public static int DeliveryFee(PlayerProfile p,string carId,IEnumerable<PartCartLine> lines)
         {
-            var car=p.cars.Find(c=>c.instanceId==carId);var ledger=new PartsMarket.Ledger(p);int fee=0;
+            var car=p.cars.Find(c=>c.instanceId==carId);var ledger=new PartsMarket.Ledger(p,CartReservations.Matches(p,carId,lines));int fee=0;
             foreach(var row in lines.Where(l=>l.action==CartAction.NewSet||l.action==CartAction.NewUnits)){var d=p.catalog.Find(row.definitionId);int count=InventoryUnits.Count(p,car,d);bool unit=row.action==CartAction.NewUnits;fee=checked(fee+ledger.Take(d,unit?1:count,unit?InventoryPricing.NewUnit(d,count):d.price,row.quantity).fee);}return fee;
         }
         public static PartCartQuote Quote(PlayerProfile p,string carId,IEnumerable<PartCartLine> lines,long now,int quoteSeconds,ValuationPolicy policy=null)
@@ -104,7 +104,7 @@ namespace DragLab.Domain.Mechanics
             int before=p.cash;
             // Sales fund the complete basket; all validation precedes mutation on the transaction candidate.
             foreach(var sale in quote.sales){if(sale.Kind==ValuationKind.LoosePart){var item=p.parts.Find(i=>i.instanceId==sale.AssetId);p.parts.Remove(item);p.inventory.dealer.Add(new DealerStock{part=item,paidPrice=sale.Total});}else{var item=p.looseEngineElements.Find(i=>i.element.id==sale.AssetId);p.looseEngineElements.Remove(item);p.inventory.dealer.Add(new DealerStock{isUnit=true,unit=item,paidPrice=sale.Total});}p.cash=checked(p.cash+sale.Total);}
-            Apply(p,quote.carId,lines,policy:policy);
+            bool ownsReservation=CartReservations.SameCart(p,quote.carId,lines);p.inventory.usingCartReservation=CartReservations.Matches(p,quote.carId,lines);try{Apply(p,quote.carId,lines,policy:policy);}finally{p.inventory.usingCartReservation=false;}if(ownsReservation)CartReservations.Clear(p);
             if(p.cash!=checked(before-total))throw new InvalidOperationException("Cart price and actual operations differ.");
             PaidEconomy.Record(p,quote.id,"Parts cart",quote.carId,before,now,disposed:quote.sales.SelectMany(s=>s.IncludedIds).ToArray(),retained:lines.Where(l=>l.action==CartAction.Move).Select(l=>l.assetId).ToArray());
         }
@@ -130,7 +130,7 @@ namespace DragLab.Domain.Mechanics
         public static PlayerProfile PreviewProfile(PlayerProfile p,OwnedCar car,IEnumerable<PartCartLine> lines)
         {
             var copy=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(p));MechanicsOwnership.Ensure(copy,p.catalog);copy.cash=int.MaxValue/2;
-            Apply(copy,car.instanceId,lines,true);MechanicsOwnership.Ensure(copy,p.catalog);return copy;
+            var captured=lines.ToArray();bool ownsReservation=CartReservations.SameCart(copy,car.instanceId,captured);copy.inventory.usingCartReservation=CartReservations.Matches(copy,car.instanceId,captured);try{Apply(copy,car.instanceId,captured,true);}finally{copy.inventory.usingCartReservation=false;}if(ownsReservation)CartReservations.Clear(copy);MechanicsOwnership.Ensure(copy,p.catalog);return copy;
         }
     }
 }

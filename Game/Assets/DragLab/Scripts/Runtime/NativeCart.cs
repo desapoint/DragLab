@@ -104,6 +104,7 @@ namespace DragLab.Runtime
             cartEmpty.EnableInClassList("hidden",game.CartCount>0);cartClear.SetEnabled(game.CartCount>0);
             root.Q<Label>("cartPurchases").text=DisplayUnits.Money(purchases);root.Q<Label>("cartCredits").text=DisplayUnits.Money(credits);
             root.Q<Label>("cartTotal").text=problem==null?DisplayUnits.Money(total):"Unavailable";root.Q<Label>("cartBalance").text=problem==null?DisplayUnits.Money((long)p.cash-total):"—";
+            var reservation=p.inventory.cart;if(reservation!=null&&reservation.carId==car?.instanceId){var status=new Label(CartReservations.Active(p)?(reservation.expiresRun==p.vehicleStock.completedRuns?"Stock reserved · until next race completes":"Stock reserved · "+(reservation.expiresRun-p.vehicleStock.completedRuns)+" races remaining"):"Reservation expired · review stock"){name="cartReservationStatus"};status.AddToClassList("cart-row-summary");cartRows.Insert(0,status);}
             cartError.text=problem??(total>p.cash?"Insufficient cash.":"");cartCheckout.SetEnabled(problem==null&&game.CartCount>0&&total<=p.cash);
             cartWarnings.SetEnabled(car!=null);
             if(car==null){cartCurrentWarnings=Array.Empty<SetupWarning>();cartPlannedWarnings=null;cartWarningUnavailable="No selected car";SetWarningButton(cartWarnings,cartCurrentWarnings);cartWarnings.tooltip=cartWarningUnavailable;}

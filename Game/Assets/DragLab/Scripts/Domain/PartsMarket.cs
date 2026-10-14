@@ -60,7 +60,7 @@ namespace DragLab.Domain.Mechanics
         public static void Refresh(PlayerProfile p) { if(p.inventory!=null)Generate(p,true); }
         static void Generate(PlayerProfile p,bool expire)
         {
-            if(expire)p.inventory.dealer.Clear();
+            if(expire){var retained=p.inventory.dealer.Where(s=>CartReservations.HoldsUsed(p,s.Id)).ToArray();p.inventory.dealer.Clear();p.inventory.dealer.AddRange(retained);}
             var state=new PartsStockState{version=1,seed=p.vehicleStock.seed,generation=p.vehicleStock.generation,guaranteeAtRefresh=p.driving.guaranteedFittingParts};p.inventory.market=state;
             uint random=Stream(state,0x91e10da5u),newQuantity=Stream(state,0x27d4eb2fu),usedRandom=Stream(state,0x165667b1u),usedQuantity=Stream(state,0x85ebca6bu),engineRandom=Stream(state,0xc2b2ae35u),engineQuantity=Stream(state,0xd3a2646cu),coverageRandom=Stream(state,0xfd7046c5u),coverageQuantity=Stream(state,0xb55a4f09u);
             var productKeys=p.catalog.parts.ToDictionary(d=>d.id,ProductKey,StringComparer.Ordinal);
@@ -137,14 +137,14 @@ namespace DragLab.Domain.Mechanics
             readonly PlayerProfile owner;
             readonly Dictionary<string,NewPartStock> stocks=new Dictionary<string,NewPartStock>(StringComparer.Ordinal);
             readonly Dictionary<NewPartStock,int> remaining=new Dictionary<NewPartStock,int>();
-            public Ledger(PlayerProfile p){owner=p;foreach(var s in p.inventory.market.parts){remaining[s]=s.units;foreach(string id in s.definitions)stocks[id]=s;}}
+            public Ledger(PlayerProfile p,bool includeReserved=false){owner=p;bool reserved=CartReservations.Active(p);foreach(var s in p.inventory.market.parts){remaining[s]=s.units;if(reserved){var d=p.catalog.Find(s.definitions[0]);remaining[s]=Math.Max(0,s.units-CartReservations.Held(p,d,true))+(includeReserved?CartReservations.Held(p,d):0);}foreach(string id in s.definitions)stocks[id]=s;}}
             public SupplyQuote Take(PartDefinition d,int units,int basePrice,int quantity=1,bool consume=false)
             {
                 stocks.TryGetValue(d.id,out var stock);if(stock==null)stock=Stock(owner,d);int available=stock==null?0:remaining[stock];var q=Calculate(available,stock?.deliveryPercent??10,units,basePrice,quantity);
                 if(stock!=null){remaining[stock]=available-q.localUnits;if(consume)stock.units=remaining[stock];}return q;
             }
         }
-        static NewPartStock Stock(PlayerProfile p,PartDefinition d)
+        internal static NewPartStock Stock(PlayerProfile p,PartDefinition d)
         {
             var m=p.inventory.market;if(m.index==null){m.index=new Dictionary<string,NewPartStock>(StringComparer.Ordinal);foreach(var s in m.parts)foreach(string id in s.definitions)m.index.Add(id,s);}if(m.index.TryGetValue(d.id,out var stock))return stock;string key=ProductKey(d);stock=m.parts.FirstOrDefault(row=>row.definitions.Any(id=>{var existing=p.catalog.Find(id);return existing!=null&&ProductKey(existing)==key;}));if(stock!=null)m.index[d.id]=stock;return stock;
         }
@@ -153,9 +153,14 @@ namespace DragLab.Domain.Mechanics
             if(available<0||percent<5||percent>10||units<1||basePrice<0||quantity<1||quantity>99)throw new InvalidOperationException("Invalid supply request.");var q=new SupplyQuote();
             for(int i=0;i<quantity;i++){int local=Math.Min(units,available),express=units-local;available-=local;int fee=express==0?0:checked((int)Math.Ceiling(basePrice*(express/(double)units)*percent/100.0));q.localUnits+=local;q.expressUnits+=express;q.fee=checked(q.fee+fee);q.cost=checked(q.cost+basePrice+fee);}return q;
         }
-        public static SupplyQuote Quote(PlayerProfile p,PartDefinition d,int count,bool unit=false,int quantity=1){var stock=Stock(p,d);return Calculate(stock?.units??0,stock?.deliveryPercent??10,unit?1:count,unit?InventoryPricing.NewUnit(d,count):d.price,quantity);}
-        public static SupplyQuote Consume(PlayerProfile p,PartDefinition d,int count,bool unit=false){var q=Quote(p,d,count,unit);var stock=Stock(p,d);if(stock!=null)stock.units-=q.localUnits;return q;}
-        public static int Available(PlayerProfile p,PartDefinition d) => Stock(p,d)?.units??0;
+        public static SupplyQuote Quote(PlayerProfile p,PartDefinition d,int count,bool unit=false,int quantity=1){var stock=Stock(p,d);int available=Available(p,d)+(p.inventory.usingCartReservation?CartReservations.Held(p,d):0);return Calculate(available,stock?.deliveryPercent??10,unit?1:count,unit?InventoryPricing.NewUnit(d,count):d.price,quantity);}
+        public static SupplyQuote Consume(PlayerProfile p,PartDefinition d,int count,bool unit=false)
+        {
+            var q=Quote(p,d,count,unit);var stock=Stock(p,d);int left=q.localUnits;
+            if(p.inventory.usingCartReservation&&CartReservations.Active(p))foreach(var hold in p.inventory.cart.supply.Where(s=>s.definitionId==d.id||stock!=null&&stock.definitions.Contains(s.definitionId)).OrderBy(s=>s.generation)){int take=Math.Min(left,hold.units);hold.units-=take;left-=take;if(stock!=null&&hold.generation==p.inventory.market.generation)stock.units-=take;}
+            if(stock!=null)stock.units-=left;return q;
+        }
+        public static int Available(PlayerProfile p,PartDefinition d) => Math.Max(0,(Stock(p,d)?.units??0)-CartReservations.Held(p,d,true));
         public static int EnginePrice(EngineOffer offer) => checked(offer.price+(offer.quantity==0&&!offer.used?(int)Math.Ceiling(offer.price*.1):0));
         public static string BuyEngine(PlayerProfile p,string id,int expectedPrice)
         {
@@ -175,6 +180,7 @@ namespace DragLab.Domain.Mechanics
             var m=p.inventory.market;
             if(m==null||m.version!=1||m.seed!=p.vehicleStock.seed||m.generation!=p.vehicleStock.generation||m.guaranteeAtRefresh<0||m.guaranteeAtRefresh>20||m.parts==null||m.engines==null)return "Invalid parts market epoch.";
             var ids=new HashSet<string>();foreach(var s in m.parts)if(s==null||s.definitions==null||s.definitions.Count==0||s.units<0||s.units>s.initialUnits||s.initialUnits<0||s.deliveryPercent<5||s.deliveryPercent>10||s.definitions.Any(id=>p.catalog.Find(id)==null||!ids.Add(id)))return "Invalid new-parts stock.";
+            string reservationError=CartReservations.Validate(p);if(reservationError!=null)return reservationError;
             ids=new HashSet<string>(p.parts.SelectMany(i=>i.ItemIds).Concat(p.engines.Select(e=>e.instanceId)).Concat(p.looseEngineElements.Select(u=>u.element.id)).Concat(p.inventory.dealer.SelectMany(s=>s.part!=null?s.part.ItemIds:new[]{s.unit.element.id})).Concat(p.vehicleStock.listings.SelectMany(o=>o.parts.SelectMany(i=>i.ItemIds))));foreach(var o in m.engines){if(o==null||string.IsNullOrWhiteSpace(o.id)||!ids.Add(o.id)||!ids.Add(o.engine?.instanceId??"")||o.quantity<0||o.quantity>3||o.used&&o.quantity>1||o.price<1||o.engine==null||o.engine.vehicleDefinitionId!=o.model||!string.IsNullOrEmpty(o.engine.parentVehicleId)||o.parts==null||o.parts.Count==0||o.engine.slots==null||o.engine.slots.Count!=o.parts.Count)return "Invalid engine stock.";
                 var map=new Dictionary<PartCategory,string>();foreach(var i in o.parts){var d=p.catalog.Find(i.definitionId);if(d==null||!MechanicalCatalog.EngineSlot(d.category)||!p.catalog.Fits(p.catalog.Spec(o.model),d)||i.Validate()!=null||!ids.Add(i.instanceId)||i.ownerId!=o.engine.instanceId||i.location!=PartLocation.Assembly||map.ContainsKey(d.category)||!o.engine.slots.Any(s=>s.partInstanceId==i.instanceId&&s.slot==d.category.ToString()))return "Invalid offered engine component.";map.Add(d.category,d.id);foreach(var e in i.condition.elements)if(!ids.Add(e.id)||!EngineElements.FaultAllowed(d.category,e))return "Invalid offered engine descendant.";}
                 if(p.catalog.Recipe(o.model).Any(v=>MechanicalCatalog.EngineSlot(v.Key)&&!map.ContainsKey(v.Key))||o.engine.fluids==null||o.engine.fluids.Validate(p.catalog.Spec(o.model).fluids)!=null||o.engine.tune==null)return "Incomplete offered engine.";

@@ -60,7 +60,7 @@ namespace DragLab.Runtime
             if(line.action==CartAction.Move)return 0;
             if(line.action==CartAction.BuyUsed){var stock=profile.inventory.dealer.Find(s=>s.Id==line.assetId);if(stock==null)throw new InvalidOperationException("Used stock unavailable.");return NativeUsedPrice(stock);}
             if(d==null)throw new InvalidOperationException("Offer unavailable.");
-            var ledger=new PartsMarket.Ledger(profile);foreach(var row in cart){if(row.action!=CartAction.NewSet&&row.action!=CartAction.NewUnits)continue;var definition=profile.catalog.Find(row.definitionId);int count=InventoryUnits.Count(profile,Build,definition);bool unit=row.action==CartAction.NewUnits;var q=ledger.Take(definition,unit?1:count,unit?InventoryPricing.NewUnit(definition,count):definition.price,row.quantity);if(row==line)return q.cost;}throw new InvalidOperationException("Cart line changed.");
+            var ledger=new PartsMarket.Ledger(profile,CartReservations.Matches(profile,Build.instanceId,cart));foreach(var row in cart){if(row.action!=CartAction.NewSet&&row.action!=CartAction.NewUnits)continue;var definition=profile.catalog.Find(row.definitionId);int count=InventoryUnits.Count(profile,Build,definition);bool unit=row.action==CartAction.NewUnits;var q=ledger.Take(definition,unit?1:count,unit?InventoryPricing.NewUnit(definition,count):definition.price,row.quantity);if(row==line)return q.cost;}throw new InvalidOperationException("Cart line changed.");
         }
         internal bool EditNativeCartPurchase(PartCartLine current,string expected,string carId,bool individual,string role,int quantity,bool install,IEnumerable<string> targets)
         {

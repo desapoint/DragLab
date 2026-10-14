@@ -78,6 +78,7 @@ namespace DragLab.Runtime
             yield return CartClick(input,"cartRemove:"+NativeMenuShell.NativeCartRowKey(tire));Check(!game.CartLines.Contains(tire),"Remove affects only the targeted row");yield return Click(input,"cartClear");yield return Click(input,"dialogClear");Check(shell.CartPageOpen&&game.CartCount==0&&!shell.Root.Q<Button>("cartCheckout").enabledInHierarchy,"Confirmed Clear leaves an honest empty cart and disabled checkout");
             shell.Root.Q<NativeStatsPanel>("cartStats").SetDifferencesOnly(true);Check(!shell.Root.Q<NativeStatsPanel>("cartStats").Q("statsNoDifferences").ClassListContains("hidden"),"An empty cart compares Current to itself and shows no differing stats honestly");
             yield return Click(input,"cartBack");Check(!shell.CartPageOpen&&!shell.Root.Q("partsPage").ClassListContains("hidden"),"Back restores the previous Build content without touching the car");
+            yield return CartReservationInterfaceChecks(input);
         }
 #endif
     }
