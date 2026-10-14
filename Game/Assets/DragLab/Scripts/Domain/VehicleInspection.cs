@@ -11,16 +11,9 @@ namespace DragLab.Domain.Mechanics
         public static bool Known(VehicleOffer offer)=>!offer.used||offer.inspected||offer.firstStarter;
         public static double Overall(MechanicalCatalog catalog,VehicleOffer offer)=>offer.parts.Where(p=>PartSemantics.Wears(catalog.Find(p.definitionId).category)).Select(p=>(double)p.condition.health).DefaultIfEmpty(1).Average();
         public static BuildResolution Hardware(MechanicalCatalog catalog,VehicleOffer offer){var b=catalog.Resolve(offer.model,offer.parts.ToDictionary(p=>catalog.Find(p.definitionId).category,p=>p.definitionId),offer.stock);TireFitments.Capture(b.spec,offer.parts,catalog);return b;}
-        public static void Assess(MechanicalCatalog catalog,VehicleOffer offer)
+        public static void Assess(MechanicalCatalog catalog,VehicleOffer offer,BuildResolution prepared=null)
         {
-            var build=Hardware(catalog,offer);var car=new CarSimulation(build.spec,build.tune,new DriverSettings{wearMode=WearMode.None,throttleAssist=false},offer.parts);
-            car.SetFluids(offer.fluids);car.SetMassInputs(build.tune.driverMassKg,build.tune.payloadMassKg,build.tune.payloadPositionM,build.tune.payloadHeightM,offer.fuel.litres);
-            for(int i=0;i<30;i++)car.IndependentStep(DragMath.FixedStep,new DriverInput(),true,false);
-            offer.engineRuns=!car.state.engineFailed&&!car.state.stalled&&car.state.engineSupplyAvailable&&car.state.rpm>0;
-            if(!offer.engineRuns){offer.drives=false;return;}
-            for(int i=0;i<120;i++)car.Stage(DragMath.FixedStep,new DriverInput{throttle=.35});
-            car.Launch(0);for(int i=0;i<240&&!car.state.engineFailed&&!car.state.drivetrainFailed;i++)car.Step(DragMath.FixedStep,new DriverInput{throttle=.5});
-            offer.drives=car.state.distance>.05&&!car.state.engineFailed&&!car.state.drivetrainFailed;
+            var result=VehicleAssessmentCache.Prepare(catalog,offer,prepared).GetAwaiter().GetResult();offer.engineRuns=result.engineRuns;offer.drives=result.drives;
         }
         public static void Migrate(MechanicalCatalog catalog,VehicleOffer offer,bool firstPurchase)
         {

@@ -13,8 +13,8 @@ namespace DragLab.Domain.Mechanics
         static FieldInfo[] Fields(Type type)=>fields.GetOrAdd(type,t=>Array.FindAll(t.GetFields(BindingFlags.Public|BindingFlags.Instance),f=>!Attribute.IsDefined(f,typeof(NonSerializedAttribute))));
         public static bool Profile(string json,PlayerProfile current,MechanicalCatalog catalog)
         {
-            if(JsonUtility.ToJson(current)==json)return true;
-            var expected=JsonUtility.FromJson<PlayerProfile>(json);MechanicsOwnership.Ensure(expected,catalog);return Same(expected,current);
+            string actual=JsonUtility.ToJson(current);if(actual==json)return true;
+            var expected=JsonUtility.FromJson<PlayerProfile>(json);MechanicsOwnership.Ensure(expected,catalog);return JsonUtility.ToJson(expected)==actual||Same(expected,current);
         }
         public static bool Serialized<T>(string json,T current){return JsonUtility.ToJson(current)==json||Same(JsonUtility.FromJson<T>(json),current);}
         static bool Same(object a,object b,string field="")

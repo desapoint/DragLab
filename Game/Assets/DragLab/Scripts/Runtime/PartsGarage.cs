@@ -25,7 +25,7 @@ namespace DragLab.Runtime
         {
             if (screen == "Race" && race != null && race.phase != RacePhase.Finished) { notice = "Parts are locked during a run."; return false; }
             PlayerProfile candidate; string error;
-            bool ok = MechanicsTransactions.Try(profile, profile.catalog, revision, operation, ProfileStore.TrySave, out candidate, out error);
+            bool ok = MechanicsTransactions.Try(profile, profile.catalog, revision, operation, ProfileStore.TrySaveValidated, out candidate, out error);
             if (!ok) { notice = error; return false; }
             profile = candidate; settings = profile.driving; lastBenchmarkKey = null; saveDelay = 0;
             DiscardPreviews();

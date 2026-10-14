@@ -168,7 +168,7 @@ namespace DragLab.Runtime
                 yield return Click(input,"ownedCar:"+first.instanceId);yield return Click(input,"ownedUseCar");
                 yield return Capture("owned-car-use-result");
                 Check(!shell.OwnedDetailsOpen && game.Profile.selectedOwnedVehicleId==first.instanceId,"Use this car selects the exact inspected owned instance: "+game.NativeNotice);
-                var stored=JsonUtility.FromJson<PlayerProfile>(File.ReadAllText(ProfileStore.FilePath));
+                var stored=JsonUtility.FromJson<PlayerProfile>(ProfileSaveCodec.ReadJson(ProfileStore.FilePath));
                 Check(stored.selectedOwnedVehicleId==first.instanceId && game.Profile.revision==fixture.revision+1,"Current-car change is saved through one profile transaction");
                 var unchanged=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(game.Profile));unchanged.selectedOwnedVehicleId=fixture.selectedOwnedVehicleId;unchanged.selectedVehicleId=fixture.selectedVehicleId;unchanged.revision=fixture.revision;
                 Check(JsonUtility.ToJson(unchanged)==baseline,"Selection preserves all car/part identities, wear, faults, resources, settings and records");
@@ -237,7 +237,7 @@ namespace DragLab.Runtime
             Check(JsonUtility.ToJson(game.Profile)==JsonUtility.ToJson(before) && File.ReadAllText(ProfileStore.FilePath)==saved,"Previewing a changed name does not mutate assets or write saves");
             yield return Click(input,"dialogSave");
             Check(!shell.ModalOpen && shell.OwnedDetailsOpen && shell.Root.Q<Label>("ownedDetailTitle").text=="Track build","Confirming a name retains details and updates its heading");
-            var stored=JsonUtility.FromJson<PlayerProfile>(File.ReadAllText(ProfileStore.FilePath)); stored.catalog=before.catalog;
+            var stored=JsonUtility.FromJson<PlayerProfile>(ProfileSaveCodec.ReadJson(ProfileStore.FilePath)); stored.catalog=before.catalog;
             Check(stored.cars.Find(car=>car.instanceId==id).customName=="Track build" && game.Profile.revision==before.revision+1,"Trimmed per-instance name survives save deserialization with exactly one transaction");
             var unchanged=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(game.Profile));unchanged.revision=before.revision;unchanged.cars.Find(car=>car.instanceId==id).customName=originalName;
             Check(JsonUtility.ToJson(unchanged)==JsonUtility.ToJson(before),"Renaming preserves selection, all other names, parts, condition, resources, settings and records");

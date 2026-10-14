@@ -1,0 +1,58 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: UI audit uses a durable isolated profile
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1822 offers / 0 full comparisons / 0,00 ms / 0 cache hits
+UI segment shop entry frames 625–673
+PASS: Idle shop performs no rebuild, requery or card creation
+UI segment search frames 704–706
+PASS: Part details retain actual dyno and comparison
+UI segment part details frames 713–748
+PASS: Audit stages one fitting cart installation
+PASS: Combined cart retains authoritative preview
+UI segment cart frames 774–810
+UI segment tuning frames 837–899
+UI segment settings frames 899–936
+PASS: fuelUsage orders assisted left to full simulation right
+PASS: fluidDepletion orders assisted left to full simulation right
+PASS: fluidAging orders assisted left to full simulation right
+PASS: conditionEffects orders assisted left to full simulation right
+PASS: Market guarantee slider becomes harder toward the right
+PASS: Left fuel choice maps to None without changing saved enum values
+PASS: Right fuel choice maps to realistic consumption
+PASS: Right condition effects maps to Full
+PASS: Manual fluid service is the harder right choice
+PASS: Repeated native controls reuse identical geometry without changing hover or live state
+PASS: Browsing, searching, cart staging and reverted tuning do not change or save player assets
+UI durable action save validated candidate ms 0,00
+UI durable action save checkpoint merge ms 0,06
+UI durable action save JSON ms 13,12
+UI durable action save compression + UTF-8 ms 19,56
+UI durable action save write + durable flush ms 16,71
+UI durable action save backup + atomic publication ms 7,97
+UI durable transaction total ms 206,36
+PASS: Real runtime purchase publishes once after the durable save succeeds
+PASS: Compressed runtime save reload matches the committed balance
+Checks: 42 / runtime errors: 0

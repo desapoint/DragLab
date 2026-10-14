@@ -9,6 +9,9 @@ namespace DragLab.Infrastructure
 {
     public static class MechanicsTransactions
     {
+        internal static Action<string,double> Measurement;
+        static long Stamp()=>Measurement==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
+        static void Measured(string phase,long stamp){if(stamp!=0)Measurement?.Invoke(phase,(System.Diagnostics.Stopwatch.GetTimestamp()-stamp)*1000.0/System.Diagnostics.Stopwatch.Frequency);}
         public static MechanicalCatalog Catalog() { return new MechanicalCatalog(Resources.LoadAll<VehicleDefinition>("Data/Vehicles").Select(v => v.spec)); }
         public static bool Try(PlayerProfile current, MechanicalCatalog catalog, long expectedRevision, Action<PlayerProfile> operation,
             Func<PlayerProfile, bool> persist, out PlayerProfile committed, out string error)
@@ -17,14 +20,13 @@ namespace DragLab.Infrastructure
             try
             {
                 if (current.revision != expectedRevision) throw new InvalidOperationException("Stale action; refresh the garage.");
-                var candidate = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(current));
-                MechanicsOwnership.Ensure(candidate, catalog);
-                operation(candidate); candidate.revision = current.revision + 1;
+                long stamp=Stamp();var candidate = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(current));Measured("clone",stamp);stamp=Stamp();
+                MechanicsOwnership.Ensure(candidate, catalog);Measured("normalize before operation",stamp);stamp=Stamp();
+                operation(candidate); candidate.revision = current.revision + 1;Measured("operation",stamp);stamp=Stamp();
                 // New purchased packs/vehicles must be initialized before either a real or a test
                 // persister sees the candidate. A later normalization must not change a fresh quote.
-                MechanicsOwnership.Ensure(candidate, catalog);
-                string invalid = MechanicsOwnership.Validate(candidate, catalog); if (invalid != null) throw new InvalidOperationException(invalid);
-                if (!persist(candidate)) throw new InvalidOperationException("Save failed; operation rolled back.");
+                MechanicsOwnership.Ensure(candidate, catalog);Measured("normalize after operation",stamp);stamp=Stamp();
+                if (!persist(candidate)) throw new InvalidOperationException("Save failed; operation rolled back.");Measured("persistence",stamp);
                 committed = candidate; error = null; return true;
             }
             catch (Exception exception) { error = exception.Message; return false; }

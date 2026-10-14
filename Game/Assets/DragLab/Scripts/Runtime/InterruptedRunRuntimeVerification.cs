@@ -27,7 +27,7 @@ namespace DragLab.Runtime
                 // Freeze input/ticks without invoking pause's full-save path, then kill after journal durability.
                 game.enabled=false;RaceCheckpointStore.Drain();
                 var saved=ProfileStore.Load();
-                var baseSave=JsonUtility.FromJson<PlayerProfile>(File.ReadAllText(ProfileStore.FilePath, System.Text.Encoding.UTF8));
+                var baseSave=JsonUtility.FromJson<PlayerProfile>(ProfileSaveCodec.ReadJson(ProfileStore.FilePath));
                 require(saved.runCheckpoints.Count==1&&!saved.runCheckpoints[0].settled&&saved.parts.Any(p=>p.slot=="Driveshaft"&&p.condition.failed),"Critical failure journal retains damaged state before quit callbacks or full save.");
                 require(baseSave.runCheckpoints.Single().tick==0&&!baseSave.parts.Any(p=>p.condition.failed),"Full profile remains at entry; restart must merge the separate journal.");
                 require(saved.SelectedCar.fuel.litres<game.Race.player.spec.fuel.capacityLitres&&saved.cash==1200&&saved.SelectedCar.completedRuns==0,"In-progress practice consumes fuel and adds no reward/record.");

@@ -1,0 +1,18 @@
+PASS: Earned multi-car fixture and recovery backup saved in isolation.
+PASS: Locked primary rejects reset without publishing a fresh in-memory garage.
+PASS: Failed reset preserves original profile and restores original backup.
+PASS: Reset commits a new garage and matching recovery baseline.
+PASS: Cash, reputation, career, business and global records reset to new-game values.
+PASS: Reset clears owned assets and offers fixed starter choices.
+PASS: Seller components cannot alias previous owned identities.
+PASS: Saved tunes and selected-car references are cleared.
+PASS: Old run settlements and accrued idle income are cleared.
+PASS: All driving preferences and difficulty survive as an independent copy.
+PASS: Reset does not rewrite volume preferences or change live master gain.
+PASS: Original object is untouched and old transaction revisions are invalidated.
+PASS: Reload retains the exact new ownership tree and preserved preferences.
+PASS: Backup recovery cannot resurrect pre-reset progression or inventory.
+PASS: Recovered reset baseline can save normally.
+PASS: Persisted mute survives another reset unchanged.
+PASS: Unsupported newer-save write protection also applies to reset.
+Checks: 17

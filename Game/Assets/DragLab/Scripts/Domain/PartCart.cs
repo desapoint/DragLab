@@ -38,7 +38,7 @@ namespace DragLab.Domain.Mechanics
     public static class PartCart
     {
         [Serializable] internal sealed class Lines { public List<PartCartLine> entries=new List<PartCartLine>(); }
-        internal static string CatalogSnapshot(MechanicalCatalog catalog,string id,PlayerProfile p) => JsonUtility.ToJson(catalog.Spec(p.cars.Find(c=>c.instanceId==id).vehicleId))+string.Join("/",catalog.parts.Select(d=>JsonUtility.ToJson(d)));
+        internal static string CatalogSnapshot(MechanicalCatalog catalog,string id,PlayerProfile p) => JsonUtility.ToJson(catalog.Spec(p.cars.Find(c=>c.instanceId==id).vehicleId))+string.Join("/",catalog.parts.Select(MarketCatalogLayout.Json));
         public static int Total(PlayerProfile p,string carId,IEnumerable<PartCartLine> source,ValuationPolicy policy=null,long now=0,bool validateBlocks=true)
         {
             var car=p.cars.Find(c=>c.instanceId==carId);EngineRebuilds.RequireAvailable(car);

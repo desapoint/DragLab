@@ -1,0 +1,482 @@
+PASS: city-three: initial owned run is durable /
+PASS: city-three: physical checkpoint 120 /
+PASS: city-three: physical checkpoint 240 /
+PASS: city-three: physical checkpoint 360 /
+PASS: city-three: physical checkpoint 480 /
+PASS: city-three: physical checkpoint 600 /
+PASS: city-three: physical checkpoint 720 /
+PASS: city-three: physical checkpoint 840 /
+PASS: city-three: physical checkpoint 960 /
+PASS: city-three: physical checkpoint 1080 /
+PASS: city-three: physical checkpoint 1200 /
+PASS: city-three: physical checkpoint 1320 /
+PASS: city-three: physical checkpoint 1440 /
+PASS: city-three: physical checkpoint 1560 /
+PASS: city-three: physical checkpoint 1680 /
+PASS: city-three: physical checkpoint 1800 /
+PASS: city-three: physical checkpoint 1920 /
+PASS: city-three: benign full pull/coast/brake survives.
+PASS: city-three: ordinary save inspection does not close a live run.
+PASS: city-three: interrupted load retains committed fuel/wear without reward or record.
+PASS: city-three: interrupted run closes durably and idempotently.
+PASS: city-three: recovered run cannot commit again.
+PASS: city-three: failed persistence publishes no candidate and cannot discard live wear.
+PASS: city-three: failed write can be retried with the same live checkpoint /
+PASS: city-three: rejects fuel refill checkpoint
+PASS: city-three: rejects fuel history rewind
+PASS: city-three: rejects missing installed state
+PASS: city-three: rejects foreign owner metadata
+PASS: city-three: rejects wrong simulation model
+PASS: city-three: rejects oil refill checkpoint
+PASS: city-three: rejects individual tire healing
+PASS: city-three: same-tick final closure is accepted once /
+PASS: city-three: real shaft overload disconnects drive only.
+PASS: city-three: failed condition persists atomically /
+PASS: city-three: reload retains failed shaft.
+PASS: city-three: compatible replacement restores owned drive /
+PASS: city-three: repair retains original failed identity and cause.
+PASS: juniper-club: initial owned run is durable /
+PASS: juniper-club: physical checkpoint 120 /
+PASS: juniper-club: physical checkpoint 240 /
+PASS: juniper-club: physical checkpoint 360 /
+PASS: juniper-club: physical checkpoint 480 /
+PASS: juniper-club: physical checkpoint 600 /
+PASS: juniper-club: physical checkpoint 720 /
+PASS: juniper-club: physical checkpoint 840 /
+PASS: juniper-club: physical checkpoint 960 /
+PASS: juniper-club: physical checkpoint 1080 /
+PASS: juniper-club: physical checkpoint 1200 /
+PASS: juniper-club: physical checkpoint 1320 /
+PASS: juniper-club: physical checkpoint 1440 /
+PASS: juniper-club: physical checkpoint 1560 /
+PASS: juniper-club: physical checkpoint 1680 /
+PASS: juniper-club: physical checkpoint 1800 /
+PASS: juniper-club: physical checkpoint 1920 /
+PASS: juniper-club: benign full pull/coast/brake survives.
+PASS: juniper-club: ordinary save inspection does not close a live run.
+PASS: juniper-club: interrupted load retains committed fuel/wear without reward or record.
+PASS: juniper-club: interrupted run closes durably and idempotently.
+PASS: juniper-club: recovered run cannot commit again.
+PASS: juniper-club: failed persistence publishes no candidate and cannot discard live wear.
+PASS: juniper-club: failed write can be retried with the same live checkpoint /
+PASS: juniper-club: rejects fuel refill checkpoint
+PASS: juniper-club: rejects fuel history rewind
+PASS: juniper-club: rejects missing installed state
+PASS: juniper-club: rejects foreign owner metadata
+PASS: juniper-club: rejects wrong simulation model
+PASS: juniper-club: rejects oil refill checkpoint
+PASS: juniper-club: rejects individual tire healing
+PASS: juniper-club: same-tick final closure is accepted once /
+PASS: juniper-club: real shaft overload disconnects drive only.
+PASS: juniper-club: failed condition persists atomically /
+PASS: juniper-club: reload retains failed shaft.
+PASS: juniper-club: compatible replacement restores owned drive /
+PASS: juniper-club: repair retains original failed identity and cause.
+PASS: juniper-economy: initial owned run is durable /
+PASS: juniper-economy: physical checkpoint 120 /
+PASS: juniper-economy: physical checkpoint 240 /
+PASS: juniper-economy: physical checkpoint 360 /
+PASS: juniper-economy: physical checkpoint 480 /
+PASS: juniper-economy: physical checkpoint 600 /
+PASS: juniper-economy: physical checkpoint 720 /
+PASS: juniper-economy: physical checkpoint 840 /
+PASS: juniper-economy: physical checkpoint 960 /
+PASS: juniper-economy: physical checkpoint 1080 /
+PASS: juniper-economy: physical checkpoint 1200 /
+PASS: juniper-economy: physical checkpoint 1320 /
+PASS: juniper-economy: physical checkpoint 1440 /
+PASS: juniper-economy: physical checkpoint 1560 /
+PASS: juniper-economy: physical checkpoint 1680 /
+PASS: juniper-economy: physical checkpoint 1800 /
+PASS: juniper-economy: physical checkpoint 1920 /
+PASS: juniper-economy: benign full pull/coast/brake survives.
+PASS: juniper-economy: ordinary save inspection does not close a live run.
+PASS: juniper-economy: interrupted load retains committed fuel/wear without reward or record.
+PASS: juniper-economy: interrupted run closes durably and idempotently.
+PASS: juniper-economy: recovered run cannot commit again.
+PASS: juniper-economy: failed persistence publishes no candidate and cannot discard live wear.
+PASS: juniper-economy: failed write can be retried with the same live checkpoint /
+PASS: juniper-economy: rejects fuel refill checkpoint
+PASS: juniper-economy: rejects fuel history rewind
+PASS: juniper-economy: rejects missing installed state
+PASS: juniper-economy: rejects foreign owner metadata
+PASS: juniper-economy: rejects wrong simulation model
+PASS: juniper-economy: rejects oil refill checkpoint
+PASS: juniper-economy: rejects individual tire healing
+PASS: juniper-economy: same-tick final closure is accepted once /
+PASS: juniper-economy: real shaft overload disconnects drive only.
+PASS: juniper-economy: failed condition persists atomically /
+PASS: juniper-economy: reload retains failed shaft.
+PASS: juniper-economy: compatible replacement restores owned drive /
+PASS: juniper-economy: repair retains original failed identity and cause.
+PASS: kestrel-track: initial owned run is durable /
+PASS: kestrel-track: physical checkpoint 120 /
+PASS: kestrel-track: physical checkpoint 240 /
+PASS: kestrel-track: physical checkpoint 360 /
+PASS: kestrel-track: physical checkpoint 480 /
+PASS: kestrel-track: physical checkpoint 600 /
+PASS: kestrel-track: physical checkpoint 720 /
+PASS: kestrel-track: physical checkpoint 840 /
+PASS: kestrel-track: physical checkpoint 960 /
+PASS: kestrel-track: physical checkpoint 1080 /
+PASS: kestrel-track: physical checkpoint 1200 /
+PASS: kestrel-track: physical checkpoint 1320 /
+PASS: kestrel-track: physical checkpoint 1440 /
+PASS: kestrel-track: physical checkpoint 1560 /
+PASS: kestrel-track: physical checkpoint 1680 /
+PASS: kestrel-track: physical checkpoint 1800 /
+PASS: kestrel-track: physical checkpoint 1920 /
+PASS: kestrel-track: benign full pull/coast/brake survives.
+PASS: kestrel-track: ordinary save inspection does not close a live run.
+PASS: kestrel-track: interrupted load retains committed fuel/wear without reward or record.
+PASS: kestrel-track: interrupted run closes durably and idempotently.
+PASS: kestrel-track: recovered run cannot commit again.
+PASS: kestrel-track: failed persistence publishes no candidate and cannot discard live wear.
+PASS: kestrel-track: failed write can be retried with the same live checkpoint /
+PASS: kestrel-track: rejects fuel refill checkpoint
+PASS: kestrel-track: rejects fuel history rewind
+PASS: kestrel-track: rejects missing installed state
+PASS: kestrel-track: rejects foreign owner metadata
+PASS: kestrel-track: rejects wrong simulation model
+PASS: kestrel-track: rejects oil refill checkpoint
+PASS: kestrel-track: rejects individual tire healing
+PASS: kestrel-track: same-tick final closure is accepted once /
+PASS: kestrel-track: real shaft overload disconnects drive only.
+PASS: kestrel-track: failed condition persists atomically /
+PASS: kestrel-track: reload retains failed shaft.
+PASS: kestrel-track: compatible replacement restores owned drive /
+PASS: kestrel-track: repair retains original failed identity and cause.
+PASS: rally-sedan: initial owned run is durable /
+PASS: rally-sedan: physical checkpoint 120 /
+PASS: rally-sedan: physical checkpoint 240 /
+PASS: rally-sedan: physical checkpoint 360 /
+PASS: rally-sedan: physical checkpoint 480 /
+PASS: rally-sedan: physical checkpoint 600 /
+PASS: rally-sedan: physical checkpoint 720 /
+PASS: rally-sedan: physical checkpoint 840 /
+PASS: rally-sedan: physical checkpoint 960 /
+PASS: rally-sedan: physical checkpoint 1080 /
+PASS: rally-sedan: physical checkpoint 1200 /
+PASS: rally-sedan: physical checkpoint 1320 /
+PASS: rally-sedan: physical checkpoint 1440 /
+PASS: rally-sedan: physical checkpoint 1560 /
+PASS: rally-sedan: physical checkpoint 1680 /
+PASS: rally-sedan: physical checkpoint 1800 /
+PASS: rally-sedan: physical checkpoint 1920 /
+PASS: rally-sedan: benign full pull/coast/brake survives.
+PASS: rally-sedan: ordinary save inspection does not close a live run.
+PASS: rally-sedan: interrupted load retains committed fuel/wear without reward or record.
+PASS: rally-sedan: interrupted run closes durably and idempotently.
+PASS: rally-sedan: recovered run cannot commit again.
+PASS: rally-sedan: failed persistence publishes no candidate and cannot discard live wear.
+PASS: rally-sedan: failed write can be retried with the same live checkpoint /
+PASS: rally-sedan: rejects fuel refill checkpoint
+PASS: rally-sedan: rejects fuel history rewind
+PASS: rally-sedan: rejects missing installed state
+PASS: rally-sedan: rejects foreign owner metadata
+PASS: rally-sedan: rejects wrong simulation model
+PASS: rally-sedan: rejects oil refill checkpoint
+PASS: rally-sedan: rejects individual tire healing
+PASS: rally-sedan: same-tick final closure is accepted once /
+PASS: rally-sedan: real shaft overload disconnects drive only.
+PASS: rally-sedan: failed condition persists atomically /
+PASS: rally-sedan: reload retains failed shaft.
+PASS: rally-sedan: compatible replacement restores owned drive /
+PASS: rally-sedan: repair retains original failed identity and cause.
+PASS: sport-coupe: initial owned run is durable /
+PASS: sport-coupe: physical checkpoint 120 /
+PASS: sport-coupe: physical checkpoint 240 /
+PASS: sport-coupe: physical checkpoint 360 /
+PASS: sport-coupe: physical checkpoint 480 /
+PASS: sport-coupe: physical checkpoint 600 /
+PASS: sport-coupe: physical checkpoint 720 /
+PASS: sport-coupe: physical checkpoint 840 /
+PASS: sport-coupe: physical checkpoint 960 /
+PASS: sport-coupe: physical checkpoint 1080 /
+PASS: sport-coupe: physical checkpoint 1200 /
+PASS: sport-coupe: physical checkpoint 1320 /
+PASS: sport-coupe: physical checkpoint 1440 /
+PASS: sport-coupe: physical checkpoint 1560 /
+PASS: sport-coupe: physical checkpoint 1680 /
+PASS: sport-coupe: physical checkpoint 1800 /
+PASS: sport-coupe: physical checkpoint 1920 /
+PASS: sport-coupe: benign full pull/coast/brake survives.
+PASS: sport-coupe: ordinary save inspection does not close a live run.
+PASS: sport-coupe: interrupted load retains committed fuel/wear without reward or record.
+PASS: sport-coupe: interrupted run closes durably and idempotently.
+PASS: sport-coupe: recovered run cannot commit again.
+PASS: sport-coupe: failed persistence publishes no candidate and cannot discard live wear.
+PASS: sport-coupe: failed write can be retried with the same live checkpoint /
+PASS: sport-coupe: rejects fuel refill checkpoint
+PASS: sport-coupe: rejects fuel history rewind
+PASS: sport-coupe: rejects missing installed state
+PASS: sport-coupe: rejects foreign owner metadata
+PASS: sport-coupe: rejects wrong simulation model
+PASS: sport-coupe: rejects oil refill checkpoint
+PASS: sport-coupe: rejects individual tire healing
+PASS: sport-coupe: same-tick final closure is accepted once /
+PASS: sport-coupe: real shaft overload disconnects drive only.
+PASS: sport-coupe: failed condition persists atomically /
+PASS: sport-coupe: reload retains failed shaft.
+PASS: sport-coupe: compatible replacement restores owned drive /
+PASS: sport-coupe: repair retains original failed identity and cause.
+PASS: starter-hatch: initial owned run is durable /
+PASS: starter-hatch: physical checkpoint 120 /
+PASS: starter-hatch: physical checkpoint 240 /
+PASS: starter-hatch: physical checkpoint 360 /
+PASS: starter-hatch: physical checkpoint 480 /
+PASS: starter-hatch: physical checkpoint 600 /
+PASS: starter-hatch: physical checkpoint 720 /
+PASS: starter-hatch: physical checkpoint 840 /
+PASS: starter-hatch: physical checkpoint 960 /
+PASS: starter-hatch: physical checkpoint 1080 /
+PASS: starter-hatch: physical checkpoint 1200 /
+PASS: starter-hatch: physical checkpoint 1320 /
+PASS: starter-hatch: physical checkpoint 1440 /
+PASS: starter-hatch: physical checkpoint 1560 /
+PASS: starter-hatch: physical checkpoint 1680 /
+PASS: starter-hatch: physical checkpoint 1800 /
+PASS: starter-hatch: physical checkpoint 1920 /
+PASS: starter-hatch: benign full pull/coast/brake survives.
+PASS: starter-hatch: ordinary save inspection does not close a live run.
+PASS: starter-hatch: interrupted load retains committed fuel/wear without reward or record.
+PASS: starter-hatch: interrupted run closes durably and idempotently.
+PASS: starter-hatch: recovered run cannot commit again.
+PASS: starter-hatch: failed persistence publishes no candidate and cannot discard live wear.
+PASS: starter-hatch: failed write can be retried with the same live checkpoint /
+PASS: starter-hatch: rejects fuel refill checkpoint
+PASS: starter-hatch: rejects fuel history rewind
+PASS: starter-hatch: rejects missing installed state
+PASS: starter-hatch: rejects foreign owner metadata
+PASS: starter-hatch: rejects wrong simulation model
+PASS: starter-hatch: rejects oil refill checkpoint
+PASS: starter-hatch: rejects individual tire healing
+PASS: starter-hatch: same-tick final closure is accepted once /
+PASS: starter-hatch: real shaft overload disconnects drive only.
+PASS: starter-hatch: failed condition persists atomically /
+PASS: starter-hatch: reload retains failed shaft.
+PASS: starter-hatch: compatible replacement restores owned drive /
+PASS: starter-hatch: repair retains original failed identity and cause.
+PASS: super-v8: initial owned run is durable /
+PASS: super-v8: physical checkpoint 120 /
+PASS: super-v8: physical checkpoint 240 /
+PASS: super-v8: physical checkpoint 360 /
+PASS: super-v8: physical checkpoint 480 /
+PASS: super-v8: physical checkpoint 600 /
+PASS: super-v8: physical checkpoint 720 /
+PASS: super-v8: physical checkpoint 840 /
+PASS: super-v8: physical checkpoint 960 /
+PASS: super-v8: physical checkpoint 1080 /
+PASS: super-v8: physical checkpoint 1200 /
+PASS: super-v8: physical checkpoint 1320 /
+PASS: super-v8: physical checkpoint 1440 /
+PASS: super-v8: physical checkpoint 1560 /
+PASS: super-v8: physical checkpoint 1680 /
+PASS: super-v8: physical checkpoint 1800 /
+PASS: super-v8: physical checkpoint 1920 /
+PASS: super-v8: benign full pull/coast/brake survives.
+PASS: super-v8: ordinary save inspection does not close a live run.
+PASS: super-v8: interrupted load retains committed fuel/wear without reward or record.
+PASS: super-v8: interrupted run closes durably and idempotently.
+PASS: super-v8: recovered run cannot commit again.
+PASS: super-v8: failed persistence publishes no candidate and cannot discard live wear.
+PASS: super-v8: failed write can be retried with the same live checkpoint /
+PASS: super-v8: rejects fuel refill checkpoint
+PASS: super-v8: rejects fuel history rewind
+PASS: super-v8: rejects missing installed state
+PASS: super-v8: rejects foreign owner metadata
+PASS: super-v8: rejects wrong simulation model
+PASS: super-v8: rejects oil refill checkpoint
+PASS: super-v8: rejects individual tire healing
+PASS: super-v8: same-tick final closure is accepted once /
+PASS: super-v8: real shaft overload disconnects drive only.
+PASS: super-v8: failed condition persists atomically /
+PASS: super-v8: reload retains failed shaft.
+PASS: super-v8: compatible replacement restores owned drive /
+PASS: super-v8: repair retains original failed identity and cause.
+PASS: timber-diesel: initial owned run is durable /
+PASS: timber-diesel: physical checkpoint 120 /
+PASS: timber-diesel: physical checkpoint 240 /
+PASS: timber-diesel: physical checkpoint 360 /
+PASS: timber-diesel: physical checkpoint 480 /
+PASS: timber-diesel: physical checkpoint 600 /
+PASS: timber-diesel: physical checkpoint 720 /
+PASS: timber-diesel: physical checkpoint 840 /
+PASS: timber-diesel: physical checkpoint 960 /
+PASS: timber-diesel: physical checkpoint 1080 /
+PASS: timber-diesel: physical checkpoint 1200 /
+PASS: timber-diesel: physical checkpoint 1320 /
+PASS: timber-diesel: physical checkpoint 1440 /
+PASS: timber-diesel: physical checkpoint 1560 /
+PASS: timber-diesel: physical checkpoint 1680 /
+PASS: timber-diesel: physical checkpoint 1800 /
+PASS: timber-diesel: physical checkpoint 1920 /
+PASS: timber-diesel: benign full pull/coast/brake survives.
+PASS: timber-diesel: ordinary save inspection does not close a live run.
+PASS: timber-diesel: interrupted load retains committed fuel/wear without reward or record.
+PASS: timber-diesel: interrupted run closes durably and idempotently.
+PASS: timber-diesel: recovered run cannot commit again.
+PASS: timber-diesel: failed persistence publishes no candidate and cannot discard live wear.
+PASS: timber-diesel: failed write can be retried with the same live checkpoint /
+PASS: timber-diesel: rejects fuel refill checkpoint
+PASS: timber-diesel: rejects fuel history rewind
+PASS: timber-diesel: rejects missing installed state
+PASS: timber-diesel: rejects foreign owner metadata
+PASS: timber-diesel: rejects wrong simulation model
+PASS: timber-diesel: rejects oil refill checkpoint
+PASS: timber-diesel: rejects individual tire healing
+PASS: timber-diesel: same-tick final closure is accepted once /
+PASS: timber-diesel: real shaft overload disconnects drive only.
+PASS: timber-diesel: failed condition persists atomically /
+PASS: timber-diesel: reload retains failed shaft.
+PASS: timber-diesel: compatible replacement restores owned drive /
+PASS: timber-diesel: repair retains original failed identity and cause.
+PASS: timber-diesel-tow: initial owned run is durable /
+PASS: timber-diesel-tow: physical checkpoint 120 /
+PASS: timber-diesel-tow: physical checkpoint 240 /
+PASS: timber-diesel-tow: physical checkpoint 360 /
+PASS: timber-diesel-tow: physical checkpoint 480 /
+PASS: timber-diesel-tow: physical checkpoint 600 /
+PASS: timber-diesel-tow: physical checkpoint 720 /
+PASS: timber-diesel-tow: physical checkpoint 840 /
+PASS: timber-diesel-tow: physical checkpoint 960 /
+PASS: timber-diesel-tow: physical checkpoint 1080 /
+PASS: timber-diesel-tow: physical checkpoint 1200 /
+PASS: timber-diesel-tow: physical checkpoint 1320 /
+PASS: timber-diesel-tow: physical checkpoint 1440 /
+PASS: timber-diesel-tow: physical checkpoint 1560 /
+PASS: timber-diesel-tow: physical checkpoint 1680 /
+PASS: timber-diesel-tow: physical checkpoint 1800 /
+PASS: timber-diesel-tow: physical checkpoint 1920 /
+PASS: timber-diesel-tow: benign full pull/coast/brake survives.
+PASS: timber-diesel-tow: ordinary save inspection does not close a live run.
+PASS: timber-diesel-tow: interrupted load retains committed fuel/wear without reward or record.
+PASS: timber-diesel-tow: interrupted run closes durably and idempotently.
+PASS: timber-diesel-tow: recovered run cannot commit again.
+PASS: timber-diesel-tow: failed persistence publishes no candidate and cannot discard live wear.
+PASS: timber-diesel-tow: failed write can be retried with the same live checkpoint /
+PASS: timber-diesel-tow: rejects fuel refill checkpoint
+PASS: timber-diesel-tow: rejects fuel history rewind
+PASS: timber-diesel-tow: rejects missing installed state
+PASS: timber-diesel-tow: rejects foreign owner metadata
+PASS: timber-diesel-tow: rejects wrong simulation model
+PASS: timber-diesel-tow: rejects oil refill checkpoint
+PASS: timber-diesel-tow: rejects individual tire healing
+PASS: timber-diesel-tow: same-tick final closure is accepted once /
+PASS: timber-diesel-tow: real shaft overload disconnects drive only.
+PASS: timber-diesel-tow: failed condition persists atomically /
+PASS: timber-diesel-tow: reload retains failed shaft.
+PASS: timber-diesel-tow: compatible replacement restores owned drive /
+PASS: timber-diesel-tow: repair retains original failed identity and cause.
+PASS: touring-six: initial owned run is durable /
+PASS: touring-six: physical checkpoint 120 /
+PASS: touring-six: physical checkpoint 240 /
+PASS: touring-six: physical checkpoint 360 /
+PASS: touring-six: physical checkpoint 480 /
+PASS: touring-six: physical checkpoint 600 /
+PASS: touring-six: physical checkpoint 720 /
+PASS: touring-six: physical checkpoint 840 /
+PASS: touring-six: physical checkpoint 960 /
+PASS: touring-six: physical checkpoint 1080 /
+PASS: touring-six: physical checkpoint 1200 /
+PASS: touring-six: physical checkpoint 1320 /
+PASS: touring-six: physical checkpoint 1440 /
+PASS: touring-six: physical checkpoint 1560 /
+PASS: touring-six: physical checkpoint 1680 /
+PASS: touring-six: physical checkpoint 1800 /
+PASS: touring-six: physical checkpoint 1920 /
+PASS: touring-six: benign full pull/coast/brake survives.
+PASS: touring-six: ordinary save inspection does not close a live run.
+PASS: touring-six: interrupted load retains committed fuel/wear without reward or record.
+PASS: touring-six: interrupted run closes durably and idempotently.
+PASS: touring-six: recovered run cannot commit again.
+PASS: touring-six: failed persistence publishes no candidate and cannot discard live wear.
+PASS: touring-six: failed write can be retried with the same live checkpoint /
+PASS: touring-six: rejects fuel refill checkpoint
+PASS: touring-six: rejects fuel history rewind
+PASS: touring-six: rejects missing installed state
+PASS: touring-six: rejects foreign owner metadata
+PASS: touring-six: rejects wrong simulation model
+PASS: touring-six: rejects oil refill checkpoint
+PASS: touring-six: rejects individual tire healing
+PASS: touring-six: same-tick final closure is accepted once /
+PASS: touring-six: real shaft overload disconnects drive only.
+PASS: touring-six: failed condition persists atomically /
+PASS: touring-six: reload retains failed shaft.
+PASS: touring-six: compatible replacement restores owned drive /
+PASS: touring-six: repair retains original failed identity and cause.
+PASS: utility-pickup: initial owned run is durable /
+PASS: utility-pickup: physical checkpoint 120 /
+PASS: utility-pickup: physical checkpoint 240 /
+PASS: utility-pickup: physical checkpoint 360 /
+PASS: utility-pickup: physical checkpoint 480 /
+PASS: utility-pickup: physical checkpoint 600 /
+PASS: utility-pickup: physical checkpoint 720 /
+PASS: utility-pickup: physical checkpoint 840 /
+PASS: utility-pickup: physical checkpoint 960 /
+PASS: utility-pickup: physical checkpoint 1080 /
+PASS: utility-pickup: physical checkpoint 1200 /
+PASS: utility-pickup: physical checkpoint 1320 /
+PASS: utility-pickup: physical checkpoint 1440 /
+PASS: utility-pickup: physical checkpoint 1560 /
+PASS: utility-pickup: physical checkpoint 1680 /
+PASS: utility-pickup: physical checkpoint 1800 /
+PASS: utility-pickup: physical checkpoint 1920 /
+PASS: utility-pickup: benign full pull/coast/brake survives.
+PASS: utility-pickup: ordinary save inspection does not close a live run.
+PASS: utility-pickup: interrupted load retains committed fuel/wear without reward or record.
+PASS: utility-pickup: interrupted run closes durably and idempotently.
+PASS: utility-pickup: recovered run cannot commit again.
+PASS: utility-pickup: failed persistence publishes no candidate and cannot discard live wear.
+PASS: utility-pickup: failed write can be retried with the same live checkpoint /
+PASS: utility-pickup: rejects fuel refill checkpoint
+PASS: utility-pickup: rejects fuel history rewind
+PASS: utility-pickup: rejects missing installed state
+PASS: utility-pickup: rejects foreign owner metadata
+PASS: utility-pickup: rejects wrong simulation model
+PASS: utility-pickup: rejects oil refill checkpoint
+PASS: utility-pickup: rejects individual tire healing
+PASS: utility-pickup: same-tick final closure is accepted once /
+PASS: utility-pickup: real shaft overload disconnects drive only.
+PASS: utility-pickup: failed condition persists atomically /
+PASS: utility-pickup: reload retains failed shaft.
+PASS: utility-pickup: compatible replacement restores owned drive /
+PASS: utility-pickup: repair retains original failed identity and cause.
+PASS: v8-muscle: initial owned run is durable /
+PASS: v8-muscle: physical checkpoint 120 /
+PASS: v8-muscle: physical checkpoint 240 /
+PASS: v8-muscle: physical checkpoint 360 /
+PASS: v8-muscle: physical checkpoint 480 /
+PASS: v8-muscle: physical checkpoint 600 /
+PASS: v8-muscle: physical checkpoint 720 /
+PASS: v8-muscle: physical checkpoint 840 /
+PASS: v8-muscle: physical checkpoint 960 /
+PASS: v8-muscle: physical checkpoint 1080 /
+PASS: v8-muscle: physical checkpoint 1200 /
+PASS: v8-muscle: physical checkpoint 1320 /
+PASS: v8-muscle: physical checkpoint 1440 /
+PASS: v8-muscle: physical checkpoint 1560 /
+PASS: v8-muscle: physical checkpoint 1680 /
+PASS: v8-muscle: physical checkpoint 1800 /
+PASS: v8-muscle: physical checkpoint 1920 /
+PASS: v8-muscle: benign full pull/coast/brake survives.
+PASS: v8-muscle: ordinary save inspection does not close a live run.
+PASS: v8-muscle: interrupted load retains committed fuel/wear without reward or record.
+PASS: v8-muscle: interrupted run closes durably and idempotently.
+PASS: v8-muscle: recovered run cannot commit again.
+PASS: v8-muscle: failed persistence publishes no candidate and cannot discard live wear.
+PASS: v8-muscle: failed write can be retried with the same live checkpoint /
+PASS: v8-muscle: rejects fuel refill checkpoint
+PASS: v8-muscle: rejects fuel history rewind
+PASS: v8-muscle: rejects missing installed state
+PASS: v8-muscle: rejects foreign owner metadata
+PASS: v8-muscle: rejects wrong simulation model
+PASS: v8-muscle: rejects oil refill checkpoint
+PASS: v8-muscle: rejects individual tire healing
+PASS: v8-muscle: same-tick final closure is accepted once /
+PASS: v8-muscle: real shaft overload disconnects drive only.
+PASS: v8-muscle: failed condition persists atomically /
+PASS: v8-muscle: reload retains failed shaft.
+PASS: v8-muscle: compatible replacement restores owned drive /
+PASS: v8-muscle: repair retains original failed identity and cause.
+Checks: 481

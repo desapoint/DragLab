@@ -12,13 +12,14 @@ namespace DragLab.Editor
 {
     public static class RaceCheckpointVerification
     {
+        public static string OutputFolder;
         public static void RunStandalone()
         {
             string root=Path.GetFullPath(Path.Combine(Application.dataPath,"../.."));
-            string folder=Path.Combine(root,"reports/async-race-saves");Directory.CreateDirectory(folder);
+            string folder=OutputFolder??Path.Combine(root,"reports/async-race-saves");Directory.CreateDirectory(folder);
             string fixtures=Path.Combine(folder,"fixtures",Guid.NewGuid().ToString("N"));
             var report=new StringBuilder();int checks=0;
-            Action<bool,string> check=(ok,label)=>{report.AppendLine(((ok?"PASS: ":"FAIL: ")+label).TrimEnd());File.WriteAllText(Path.Combine(folder,"verification.txt"),report+"Checks: "+checks,new UTF8Encoding(false));if(!ok)throw new InvalidOperationException(label);checks++;};
+            Action<bool,string> check=(ok,label)=>{report.AppendLine(((ok?"PASS: ":"FAIL: ")+label).TrimEnd());if(!ok){File.WriteAllText(Path.Combine(folder,"verification.txt"),report+"Checks: "+checks,new UTF8Encoding(false));throw new InvalidOperationException(label);}checks++;};
             string previous=ProfileStore.VerificationPath;
             try {
                 var catalog=MechanicsTransactions.Catalog();

@@ -1,0 +1,41 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: UI audit uses a durable isolated profile
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1814 offers / 0 full comparisons / 0,00 ms / 0 cache hits
+UI segment shop entry frames 18–64
+PASS: Idle shop performs no rebuild, requery or card creation
+UI segment search frames 94–96
+PASS: Part details retain actual dyno and comparison
+UI segment part details frames 103–135
+PASS: Audit stages one fitting cart installation
+PASS: Combined cart retains authoritative preview
+UI segment cart frames 161–197
+UI segment tuning frames 224–289
+UI segment settings frames 289–327
+PASS: fuelUsage orders assisted left to full simulation right
+PASS: fluidDepletion orders assisted left to full simulation right
+PASS: fluidAging orders assisted left to full simulation right
+PASS: conditionEffects orders assisted left to full simulation right
+PASS: Market guarantee slider becomes harder toward the right
+PASS: Left fuel choice maps to None without changing saved enum values
+PASS: Right fuel choice maps to realistic consumption
+PASS: Right condition effects maps to Full
+PASS: Manual fluid service is the harder right choice
+PASS: Repeated native controls reuse identical geometry without changing hover or live state
+PASS: Browsing, searching, cart staging and reverted tuning do not change or save player assets
+UI transaction clone ms 37,56
+UI transaction normalize before operation ms 11,57
+UI transaction operation ms 45,13
+UI transaction normalize after operation ms 9,33
+UI durable action save validated candidate ms 0,00
+UI durable action save checkpoint merge ms 0,08
+UI durable action save JSON ms 13,19
+UI durable action save compression + UTF-8 ms 12,36
+UI durable action save write + durable flush ms 11,84
+UI durable action save backup + atomic publication ms 7,19
+UI transaction persistence ms 45,08
+UI durable transaction total ms 149,64
+PASS: Real runtime purchase publishes once after the durable save succeeds
+PASS: Compressed runtime save reload matches the committed balance
+Checks: 20 / runtime errors: 0

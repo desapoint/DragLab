@@ -13,6 +13,7 @@ namespace DragLab.Runtime
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
         IEnumerator ResponsivenessChecks(WindowsKeyboardProbe input)
         {
+            if(!shell.Visible)yield return Key(input,0x77);
             var p=game.Profile;p.cash=1000000;p.reputation=1000;p.revision++;Check(ProfileStore.TrySave(p),"UI audit uses a durable isolated profile");string state=JsonUtility.ToJson(p);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);
             int first=Time.frameCount;yield return Click(input,"navBuild");yield return WaitParts();yield return new WaitForSecondsRealtime(.5f);report.AppendLine("UI segment shop entry frames "+first+"–"+Time.frameCount);
             int builds=shell.PartBrowserBuildCount,queries=shell.PartQueryApplyCount,cards=shell.PartCardBuildCount;yield return new WaitForSecondsRealtime(.5f);Check(builds==shell.PartBrowserBuildCount&&queries==shell.PartQueryApplyCount&&cards==shell.PartCardBuildCount,"Idle shop performs no rebuild, requery or card creation");
@@ -27,6 +28,9 @@ namespace DragLab.Runtime
             yield return Capture("responsiveness-settings");yield return Click(input,"cancelSettings");
             Check(RacingSurface.GeometryCacheHits>50,"Repeated native controls reuse identical geometry without changing hover or live state");
             Check(state==JsonUtility.ToJson(game.Profile)&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Browsing, searching, cart staging and reverted tuning do not change or save player assets");
+            game.StageNativePurchase(offer.Definition.id,null,1,false);int expected=game.NativeCartTotal(),cash=game.Profile.cash;var quote=game.QuoteNativeCart();var timer=System.Diagnostics.Stopwatch.StartNew();
+            ProfileStore.SaveMeasurement=(phase,ms)=>report.AppendLine("UI durable action "+phase+" ms "+ms.ToString("F2"));MechanicsTransactions.Measurement=(phase,ms)=>report.AppendLine("UI transaction "+phase+" ms "+ms.ToString("F2"));bool committed;try{committed=game.CommitNativeCart(quote);}finally{ProfileStore.SaveMeasurement=null;MechanicsTransactions.Measurement=null;}
+            report.AppendLine("UI durable transaction total ms "+timer.Elapsed.TotalMilliseconds.ToString("F2"));Check(committed&&game.Profile.cash==cash-expected,"Real runtime purchase publishes once after the durable save succeeds");Check(ProfileStore.Load().cash==game.Profile.cash,"Compressed runtime save reload matches the committed balance");
         }
 #endif
     }

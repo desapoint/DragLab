@@ -1,0 +1,280 @@
+PASS Exact product serialization across 2238 authored definitions
+PASS In-place authored price edits invalidate cached product identity
+PASS Restoring the authored price restores exact product identity
+PASS 12345 city-three none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 city-three Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 city-three Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 city-three Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-club none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-club Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-club Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-club Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 kestrel-track none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 kestrel-track Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 kestrel-track Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 kestrel-track Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 rally-sedan none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 rally-sedan Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 rally-sedan Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 rally-sedan Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 sport-coupe none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 sport-coupe Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 sport-coupe Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 sport-coupe Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 starter-hatch none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 starter-hatch Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 starter-hatch Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 starter-hatch Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 super-v8 none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 super-v8 Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 super-v8 Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 super-v8 Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 timber-diesel none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 timber-diesel Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 timber-diesel Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 timber-diesel Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 timber-diesel-tow none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 timber-diesel-tow Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 timber-diesel-tow Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 timber-diesel-tow Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 touring-six none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 touring-six Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 touring-six Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 touring-six Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 utility-pickup none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 utility-pickup Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 utility-pickup Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 utility-pickup Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 v8-muscle none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 v8-muscle Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 v8-muscle Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 v8-muscle Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 super-v8 none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 super-v8 Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 super-v8 Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 super-v8 Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 juniper-economy Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 v8-muscle none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 v8-muscle Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 v8-muscle Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 v8-muscle Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 utility-pickup none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 utility-pickup Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 utility-pickup Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 utility-pickup Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 kestrel-track none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 kestrel-track Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 kestrel-track Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 12345 kestrel-track Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS Seed 12345 next stock inspections finish before publication
+TIMING parts product keys ms 0,77
+TIMING parts new product selection/quantities ms 1,28
+TIMING parts new fitting guarantee ms 2,23
+TIMING parts used parts/guarantee ms 6,45
+TIMING parts engine offers ms 1,19
+PASS Seed 12345 market refresh reuses every prepared exact inspection
+TIMING seed 12345 warm capture max ms 8,54 / prepared refresh ms 63,63
+PASS -7 city-three none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 city-three Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 city-three Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 city-three Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 juniper-club none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 juniper-club Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 juniper-club Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 juniper-club Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 juniper-economy none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 juniper-economy Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 juniper-economy Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 juniper-economy Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 kestrel-track none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 kestrel-track Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 kestrel-track Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 kestrel-track Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 rally-sedan none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 rally-sedan Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 rally-sedan Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 rally-sedan Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 sport-coupe none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 sport-coupe Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 sport-coupe Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 sport-coupe Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 starter-hatch none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 starter-hatch Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 starter-hatch Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 starter-hatch Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 super-v8 none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 super-v8 Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 super-v8 Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 super-v8 Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel-tow none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel-tow Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel-tow Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel-tow Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 touring-six none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 touring-six Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 touring-six Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 touring-six Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 utility-pickup none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 utility-pickup Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 utility-pickup Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 utility-pickup Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 v8-muscle none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 v8-muscle Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 v8-muscle Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 v8-muscle Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 rally-sedan none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 rally-sedan Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 rally-sedan Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 rally-sedan Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 juniper-economy none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 juniper-economy Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 juniper-economy Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 juniper-economy Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel-tow none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel-tow Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel-tow Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 timber-diesel-tow Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 starter-hatch none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 starter-hatch Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 starter-hatch Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 starter-hatch Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 kestrel-track none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 kestrel-track Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 kestrel-track Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 kestrel-track Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 city-three none isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 city-three Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 city-three Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS -7 city-three Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS Seed -7 next stock inspections finish before publication
+TIMING parts product keys ms 0,86
+TIMING parts new product selection/quantities ms 1,24
+TIMING parts new fitting guarantee ms 2,26
+TIMING parts used parts/guarantee ms 7,41
+TIMING parts engine offers ms 0,74
+PASS Seed -7 market refresh reuses every prepared exact inspection
+TIMING seed -7 warm capture max ms 6,79 / prepared refresh ms 61,58
+PASS 987654 city-three none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 city-three Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 city-three Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 city-three Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 juniper-club none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 juniper-club Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 juniper-club Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 juniper-club Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 juniper-economy none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 juniper-economy Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 juniper-economy Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 juniper-economy Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 kestrel-track none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 kestrel-track Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 kestrel-track Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 kestrel-track Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 rally-sedan none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 rally-sedan Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 rally-sedan Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 rally-sedan Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 sport-coupe none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 sport-coupe Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 sport-coupe Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 sport-coupe Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 starter-hatch none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 starter-hatch Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 starter-hatch Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 starter-hatch Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 super-v8 none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 super-v8 Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 super-v8 Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 super-v8 Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 timber-diesel none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 timber-diesel Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 timber-diesel Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 timber-diesel Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 timber-diesel-tow none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 timber-diesel-tow Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 timber-diesel-tow Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 timber-diesel-tow Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 touring-six none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 touring-six Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 touring-six Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 touring-six Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 utility-pickup none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 utility-pickup Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 utility-pickup Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 utility-pickup Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 utility-pickup none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 utility-pickup Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 utility-pickup Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 utility-pickup Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 starter-hatch none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 starter-hatch Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 starter-hatch Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 starter-hatch Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 utility-pickup none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 utility-pickup Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 utility-pickup Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 utility-pickup Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle none isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle Pistons isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle Clutch isolated worker equals main-thread physical inspection without mutating the offer
+PASS 987654 v8-muscle Brakes isolated worker equals main-thread physical inspection without mutating the offer
+PASS Seed 987654 next stock inspections finish before publication
+TIMING parts product keys ms 0,76
+TIMING parts new product selection/quantities ms 1,24
+TIMING parts new fitting guarantee ms 2,23
+TIMING parts used parts/guarantee ms 4,28
+TIMING parts engine offers ms 3,32
+PASS Seed 987654 market refresh reuses every prepared exact inspection
+TIMING seed 987654 warm capture max ms 6,69 / prepared refresh ms 59,53
+TIMING compression run 0 ms 20,36
+TIMING compression run 1 ms 13,51
+TIMING compression run 2 ms 14,99
+PASS Compressed save roundtrip is exact and less than one third of the original bytes
+PASS Legacy flat JSON remains readable
+PASS Schema-9 migration preserves hardware, custom settings and original backup
+PASS Compressed full save succeeds
+PASS Failed publication reports failure instead of publishing the action
+PASS Failed publication preserves the previous complete save
+PASS Corrupt compressed primary recovers the valid previous save
+PASS Unknown codec cannot be overwritten even when a valid backup can be read
+Save bytes: flat 1337229 / encoded 125109
+Checks: 2494; failures: 0

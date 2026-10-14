@@ -42,7 +42,7 @@ namespace DragLab.Infrastructure
                 if (!File.Exists(path)) continue;
                 try
                 {
-                    string json = File.ReadAllText(path);
+                    string json = ProfileSaveCodec.ReadJson(path);
                     var profile = JsonUtility.FromJson<PlayerProfile>(json);
                     if (profile == null) throw new InvalidDataException("Empty profile.");
                     if (profile.saveVersion > MechanicsOwnership.SaveVersion || profile.mechanicsVersion > MechanicsSchema.Version)
@@ -88,7 +88,7 @@ namespace DragLab.Infrastructure
                     }
                     return profile;
                 }
-                catch (Exception e) { Debug.LogWarning("Could not read " + path + ": " + e.Message); }
+                catch (Exception e) { if(e is NotSupportedException)writeBlocked=true;Debug.LogWarning("Could not read " + path + ": " + e.Message); }
             }
             if (File.Exists(FilePath) || File.Exists(FilePath + ".bak")) writeBlocked = true;
             Status = writeBlocked ? "Save could not be recovered; originals preserved and writing disabled." : "New garage.";
@@ -147,7 +147,8 @@ namespace DragLab.Infrastructure
         {
             using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                long stamp=SaveStamp();var bytes = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(profile, true));SavedPhase("save JSON + UTF-8",stamp);
+                long stamp=SaveStamp();string json=JsonUtility.ToJson(profile, false);SavedPhase("save JSON",stamp);
+                stamp=SaveStamp();var bytes=ProfileSaveCodec.Encode(json,profile.saveVersion);SavedPhase("save compression + UTF-8",stamp);
                 stamp=SaveStamp();stream.Write(bytes, 0, bytes.Length); stream.Flush(true);SavedPhase("save write + durable flush",stamp);
             }
         }
@@ -156,13 +157,16 @@ namespace DragLab.Infrastructure
             if (File.Exists(path)) File.Replace(temp, path, null);
             else File.Move(temp, path);
         }
-        public static bool TrySave(PlayerProfile profile)
+        public static bool TrySave(PlayerProfile profile)=>TrySaveCore(profile,false);
+        // Only transaction candidates already normalized and validated on this main-thread call stack.
+        internal static bool TrySaveValidated(PlayerProfile profile)=>TrySaveCore(profile,true);
+        static bool TrySaveCore(PlayerProfile profile,bool validated)
         {
             RaceCheckpointStore.Drain();
             try
             {
                 if (writeBlocked) throw new InvalidDataException("Save writes blocked because a newer schema was encountered.");
-                long stamp=SaveStamp();MechanicsOwnership.Ensure(profile, profile.catalog ?? MechanicsTransactions.Catalog());SavedPhase("save normalization + validation",stamp);
+                long stamp=SaveStamp();if(!validated)MechanicsOwnership.Ensure(profile, profile.catalog ?? MechanicsTransactions.Catalog());SavedPhase(validated?"save validated candidate":"save normalization + validation",stamp);
                 string checkpointWarning;
                 stamp=SaveStamp();RaceCheckpointStore.Merge(FilePath,profile,false,out checkpointWarning);SavedPhase("save checkpoint merge",stamp);
                 Directory.CreateDirectory(Path.GetDirectoryName(FilePath));

@@ -12,10 +12,11 @@ namespace DragLab.Editor
 {
     public static class MechanicalRecoveryVerification
     {
+        public static string OutputFolder;
         public static void RunStandalone(){string root=Path.GetFullPath(Path.Combine(Application.dataPath,"../.."));Debug.Log("2K RECOVERY PASS: "+(Run(root)+OwnershipVerification.Run(root)+InventoryVerification.Run(root)));}
         public static int Run(string root)
         {
-            string folder=Path.Combine(root,"reports/phases/2k");Directory.CreateDirectory(folder);
+            string folder=OutputFolder??Path.Combine(root,"reports/phases/2k");Directory.CreateDirectory(folder);
             int count=0;var log=new StringBuilder();var rows=new StringBuilder("car,scenario,part_id,definition,health_before,health_after,work_j,stress,temperature_c,failure_tick,cause\n");
             Action<bool,string> check=(ok,label)=>{log.AppendLine((ok?"PASS: ":"FAIL: ")+label);File.WriteAllText(Path.Combine(folder,"recovery-verification.txt"),log+"Checks: "+count);if(!ok)throw new InvalidOperationException(label);count++;};
             var catalog=MechanicsTransactions.Catalog();string previous=ProfileStore.VerificationPath;

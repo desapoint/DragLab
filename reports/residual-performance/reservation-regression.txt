@@ -1,0 +1,49 @@
+PASS Seed 12345 reserves nine eligible races without buying or installing
+PASS Seed 12345 reserved stock is separate from the shelf and still quoted once
+PASS Seed 12345 unrelated purchase preview retains the cart hold
+PASS Seed 12345 unrelated maintenance checkout consumes free supply without releasing or spending the cart hold /
+PASS Seed 12345 clearing a same-epoch cart releases shelf quantities without purchasing
+PASS Seed 12345 retains exact cart through refresh 1
+PASS Seed 12345 retains exact cart through refresh 2
+PASS Seed 12345 retains exact cart through refresh 3
+PASS Seed 12345 reserved used identity, faults and condition are unchanged
+PASS Seed 12345 save roundtrip retains the complete cart and supply
+PASS Seed 12345 next race expires the hold and removes old-epoch used stock
+PASS Seed 12345 an untouched expired cart does not automatically renew
+PASS Seed 12345 failed persistence preserves the reservation, stock and money
+PASS Seed 12345 reserved mixed cart checkout succeeds: none
+PASS Seed 12345 one charge transfers the retained item and releases the lease
+PASS Seed 12345 schema-8 migration retains custom market difficulty
+PASS Seed 8841 reserves nine eligible races without buying or installing
+PASS Seed 8841 reserved stock is separate from the shelf and still quoted once
+PASS Seed 8841 unrelated purchase preview retains the cart hold
+PASS Seed 8841 unrelated maintenance checkout consumes free supply without releasing or spending the cart hold /
+PASS Seed 8841 clearing a same-epoch cart releases shelf quantities without purchasing
+PASS Seed 8841 retains exact cart through refresh 1
+PASS Seed 8841 retains exact cart through refresh 2
+PASS Seed 8841 retains exact cart through refresh 3
+PASS Seed 8841 reserved used identity, faults and condition are unchanged
+PASS Seed 8841 save roundtrip retains the complete cart and supply
+PASS Seed 8841 next race expires the hold and removes old-epoch used stock
+PASS Seed 8841 an untouched expired cart does not automatically renew
+PASS Seed 8841 failed persistence preserves the reservation, stock and money
+PASS Seed 8841 reserved mixed cart checkout succeeds: none
+PASS Seed 8841 one charge transfers the retained item and releases the lease
+PASS Seed 8841 schema-8 migration retains custom market difficulty
+PASS Seed 7337 reserves nine eligible races without buying or installing
+PASS Seed 7337 reserved stock is separate from the shelf and still quoted once
+PASS Seed 7337 unrelated purchase preview retains the cart hold
+PASS Seed 7337 unrelated maintenance checkout consumes free supply without releasing or spending the cart hold /
+PASS Seed 7337 clearing a same-epoch cart releases shelf quantities without purchasing
+PASS Seed 7337 retains exact cart through refresh 1
+PASS Seed 7337 retains exact cart through refresh 2
+PASS Seed 7337 retains exact cart through refresh 3
+PASS Seed 7337 reserved used identity, faults and condition are unchanged
+PASS Seed 7337 save roundtrip retains the complete cart and supply
+PASS Seed 7337 next race expires the hold and removes old-epoch used stock
+PASS Seed 7337 an untouched expired cart does not automatically renew
+PASS Seed 7337 failed persistence preserves the reservation, stock and money
+PASS Seed 7337 reserved mixed cart checkout succeeds: none
+PASS Seed 7337 one charge transfers the retained item and releases the lease
+PASS Seed 7337 schema-8 migration retains custom market difficulty
+Checks: 48; failures: 0
