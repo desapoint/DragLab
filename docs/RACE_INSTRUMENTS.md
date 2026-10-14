@@ -1,5 +1,9 @@
 # Race instruments — approved direction (2026-10-14)
 
+## Trapezoid correction (2026-10-14)
+
+The previous subtle depth view was not accepted. Road geometry itself must be skewed into a trapezoid with a clearly narrower far edge, rather than leaving a rectangular mesh and only modifying texture coordinates. Use one stronger projection for asphalt/markings, diagonal start/finish ribbons and cars. The rear car is 68% scale with matching longitudinal displacement; upright cars are anchored by tire contacts on their own depth planes. At equal physical distance both cars must meet the same skewed finish cross-section in their respective lanes. Keep travel horizontal and retain authoritative physics/timing. [Checks/review](../reports/phases/4l/05-TRAPEZOID.md).
+
 ## Road depth and instrument refinement (2026-10-14)
 
 - Road angle means visible depth/perspective, **not** an uphill road or rotated cars. Keep travel horizontal. Use one foreshortening projection for near/far road detail, lane markers, opponent placement/scale and the cross-track finish line. Near-ground motion is faster than distant detail; visual distance scale is shared by scenery and car separation. Race distances, timings and physics are unchanged.

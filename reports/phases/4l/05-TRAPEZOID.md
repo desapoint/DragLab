@@ -1,0 +1,15 @@
+# 4L.5 — visible trapezoid projection (2026-10-14)
+
+The prior 4L.4 view was not visually accepted: its subtle UV skew and 86% rear-car size did not make the requested depth clear. This correction projects the asphalt mesh vertices themselves into a trapezoid with a substantially narrower far edge and a stronger sideways depth skew. Repeating road paint, asphalt scrolling, start ribbon and finish ribbon share that projection. The finish is diagonal across the lanes as it passes the cars, with its width narrowing in depth. A start ribbon makes the same geometry visible immediately; driving stays horizontal.
+
+The rear car is now 68% of the near car in both dimensions and apparent longitudinal movement. Cars are placed using their actual artwork tire-contact offset, not their sprite center as if it lay on the road. The same simulated distance crosses the same projected finish ribbon in each lane. Start-light placement/size follows its distant road edge, and the repeat pool is wider to cover the narrower far projection. Physical positions, lap/race timing, wheel rotation, drivetrain simulation, input, player resources and saves are unchanged. Cached texture and fixed mesh buffers remain; there is no new worker or per-frame texture generation.
+
+## Checks
+
+Windows BuildPlayerOnly succeeds. Packaged native race integration passes **122 checks / 0 runtime errors**; [named evidence](05-native.txt). New checks inspect actual trapezoid vertices, rear-car scale and ten-metre displacement, tire-contact placement, diagonal/tapered finish vertices, and both rendered cars aligning with the actual finish mesh at equal physical distance. Retained checks in this same run cover held W through shifts, actual instruments/redline/units, fitted-hardware-only shift lighting, compact/1080p/true-4K UI geometry, F8, contained pause/audio/cancel/retry, resource-preserving durable exit and a complete practice pass. Overlapping previous counts are not added.
+
+Reviewed default-resolution start and controlled equal-distance finish alignment frames, plus the diagonal finish approach during the real practice pass. The controlled alignment frame temporarily sets the isolated simulation distances and is not a real race outcome; the approach capture is from the actual running pass. Captures/logs are local in reports/player-fixtures/race-trapezoid-review/ and the refreshed interface gallery, with resolution variants in resolution-tests. Asset metadata/GUID, UTF-8 and whitespace checks pass; only verified whitespace-only Unity font serialization is restored. Full mechanics/economy matrices, Android/controller devices and human motion-feel acceptance are not rerun or claimed.
+
+## Review checkpoint
+
+Use Game/Builds/Windows/DragLab.exe with adjacent data/plugins. Review the smaller rear car against the skewed start ribbon, its movement and the diagonal finish approach. This remains the requested visual correction, not approval to add another HUD control or advance the phase. Technical completion remains separate from visual acceptance.

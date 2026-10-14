@@ -9,19 +9,21 @@ namespace DragLab.Presentation
         // One projection for road travel, separation and the finish marker. No speed-dependent
         // integration: pausing, replays and resets all retain the same physical distances.
         public const float MetersToView = .60f;
-        const float Span = 51.2f;
+        public const float PlayerLane=-2.6f, OpponentLane=-.8f;
+        const float Span=76.8f, DepthSlope=(1-.68f)/(OpponentLane-PlayerLane), DepthSkew=1.1f;
         struct Tile { public Transform transform; public Vector3 origin; public float parallax; }
         readonly List<Tile> tiles = new List<Tile>();
         readonly List<SpriteRenderer> lamps = new List<SpriteRenderer>(), halos = new List<SpriteRenderer>();
         readonly List<SpriteRenderer> streaks = new List<SpriteRenderer>();
-        Transform tree, finish;
-        Mesh roadMesh, finishMesh; Material roadMaterial, finishMaterial; bool finishInitialized;
-        readonly Vector3[] finishVertices=new Vector3[50];
+        Transform tree, finish, start;
+        Mesh roadMesh, finishMesh, startMesh; Material roadMaterial, finishMaterial, startMaterial; bool linesInitialized;
+        readonly Vector3[] finishVertices=new Vector3[50],startVertices=new Vector3[50];
         readonly Vector2[] roadUv=new Vector2[50];readonly float[] roadU=new float[50];
         static Sprite asphalt, housing, lens, halo, line;
         static readonly Color Amber = new Color(1,.56f,.045f), Green = new Color(.22f,1,.36f), Red = new Color(1,.08f,.12f);
-        public static float DepthScale(float lane) => 1-(lane+2)*.08f;
-        public static Vector3 Project(float x,float lane) => new Vector3(2+(x-2)*DepthScale(lane)+(lane+2)*.48f,lane,0);
+        public static float DepthScale(float lane) => 1-(lane-PlayerLane)*DepthSlope;
+        public static Vector3 Project(float x,float lane) => new Vector3(2+(x-2)*DepthScale(lane)+(lane-PlayerLane)*DepthSkew,lane,0);
+        public static Vector3 CarPosition(float x,float lane,float contactHeight) => Project(x,lane)+Vector3.up*contactHeight*DepthScale(lane);
         public float Travel { get; private set; }
         public int LitLampCount { get; private set; }
         public float SpeedCue { get; private set; }
@@ -29,8 +31,8 @@ namespace DragLab.Presentation
         {
             PrepareTextures();
             BuildRoad();
-            for(int i=0;i<40;i++) AddTile(Load("barrier-tile"),new Vector3(i*1.28f,.8f),-40,Vector3.one,1);
-            for(int i=0;i<16;i++)
+            for(int i=0;i<60;i++) AddTile(Load("barrier-tile"),new Vector3(i*1.28f,.8f),-40,Vector3.one,1);
+            for(int i=0;i<24;i++)
             {
                 AddTile(line,new Vector3(i*3.2f,-1.3f),-30,new Vector3(1.25f,.36f,1),1);
                 // A near edge gives the eye an immediate speed reference against the far barrier.
@@ -38,7 +40,8 @@ namespace DragLab.Presentation
                 var streak=AddTile(line,new Vector3(i*3.2f,-3.1f-(i%3)*.15f),-29,new Vector3(.2f,.096f,1),1.12f);
                 streak.color=Color.clear;streaks.Add(streak);
             }
-            tree=Make(housing,new Vector3(-3,1.25f),2000).transform;
+            tree=Make(housing,Vector3.zero,2000).transform;
+            tree.localScale=Vector3.one*DepthScale(.8f);
             for(int row=0;row<5;row++)for(int column=0;column<2;column++)
             {
                 var pos=new Vector3(column==0?-.185f:.185f,.66f-row*.39f);
@@ -53,7 +56,8 @@ namespace DragLab.Presentation
                 stage.transform.localScale=Vector3.one*.11f;stage.color=new Color(.9f,.88f,.65f);
             }
             finish=MakeMesh("Finish line",Load("finish-checker").texture,-20,out finishMesh,out finishMaterial);
-            SetFinish(70);
+            start=MakeMesh("Start line",line.texture,-21,out startMesh,out startMaterial);
+            SetLines(70,2);
             ShowGarage();
         }
         SpriteRenderer AddTile(Sprite sprite,Vector3 origin,int order,Vector3 scale,float parallax)
@@ -69,23 +73,23 @@ namespace DragLab.Presentation
         }
         public void ShowGarage()
         {
-            tree.gameObject.SetActive(false);finish.gameObject.SetActive(false);Travel=SpeedCue=0;
+            tree.gameObject.SetActive(false);finish.gameObject.SetActive(false);start.gameObject.SetActive(false);Travel=SpeedCue=0;
             PositionTiles(0);for(int i=0;i<roadUv.Length;i++)roadUv[i].x=roadU[i];roadMesh.uv=roadUv;foreach(var streak in streaks)streak.color=Color.clear;
         }
         void PositionTiles(float travel)
         {
             foreach(var tile in tiles)
             {
-                float x=Mathf.Repeat(tile.origin.x-travel*tile.parallax+20,Span)-20;
+                float x=Mathf.Repeat(tile.origin.x-travel*tile.parallax+38,Span)-38;
                 tile.transform.localPosition=Project(x,tile.origin.y);
             }
         }
         public void Render(RaceSimulation race)
         {
-            tree.gameObject.SetActive(true);finish.gameObject.SetActive(true);
+            tree.gameObject.SetActive(true);finish.gameObject.SetActive(true);start.gameObject.SetActive(true);
             Travel=(float)race.player.state.distance*MetersToView;PositionTiles(Travel);
-            tree.localPosition=Project(-3-Travel,1.25f);
-            SetFinish(2+(float)race.distance*MetersToView-Travel);
+            tree.localPosition=Project(-3-Travel,.8f)+Vector3.up*1.6f*DepthScale(.8f);
+            SetLines(2+(float)race.distance*MetersToView-Travel,2-Travel);
             float offset=Mathf.Repeat(Travel,6.4f)/6.4f;
             for(int i=0;i<roadUv.Length;i++)roadUv[i].x=roadU[i]+offset;
             roadMesh.uv=roadUv;
@@ -120,9 +124,9 @@ namespace DragLab.Presentation
             var vertices=new Vector3[50];var colors=new Color32[50];
             for(int row=0;row<=24;row++)for(int side=0;side<2;side++)
             {
-                float y=Mathf.Lerp(-4.8f,.82f,row/24f),x=side==0?-30:40;
-                int at=row*2+side;vertices[at]=new Vector3(x,y);
-                roadU[at]=(x-2-(y+2)*.48f)/DepthScale(y)/6.4f;
+                float y=Mathf.Lerp(-4.8f,.82f,row/24f),x=side==0?-48:55;
+                int at=row*2+side;vertices[at]=Project(x,y);
+                roadU[at]=x/6.4f;
                 roadUv[at]=new Vector2(roadU[at],Mathf.Lerp(0,1,row/24f));
                 colors[at]=Color.Lerp(Color.white,new Color(.77f,.79f,.81f),row/24f);
             }
@@ -134,20 +138,25 @@ namespace DragLab.Presentation
             for(int i=0;i<24;i++){int a=i*2,b=i*6;indices[b]=a;indices[b+1]=a+2;indices[b+2]=a+1;indices[b+3]=a+1;indices[b+4]=a+2;indices[b+5]=a+3;}
             return indices;
         }
-        void SetFinish(float x)
+        void SetLines(float finishX,float startX)
         {
             for(int row=0;row<=24;row++)for(int side=0;side<2;side++)
-                finishVertices[row*2+side]=Project(x+(side==0?-.10f:.10f),Mathf.Lerp(-4.4f,.75f,row/24f));
-            finishMesh.vertices=finishVertices;
-            if(!finishInitialized)
+            {
+                float y=Mathf.Lerp(-4.4f,.75f,row/24f);
+                finishVertices[row*2+side]=Project(finishX+(side==0?-.13f:.13f),y);
+                startVertices[row*2+side]=Project(startX+(side==0?-.035f:.035f),y);
+            }
+            finishMesh.vertices=finishVertices;startMesh.vertices=startVertices;
+            if(!linesInitialized)
             {
                 var uv=new Vector2[50];for(int i=0;i<50;i++)uv[i]=new Vector2(i%2,i/2f/24);
-                finishMesh.uv=uv;finishMesh.triangles=StripTriangles();finishMesh.MarkDynamic();finishInitialized=true;
+                finishMesh.uv=uv;finishMesh.triangles=StripTriangles();finishMesh.MarkDynamic();
+                startMesh.uv=uv;startMesh.triangles=StripTriangles();startMesh.MarkDynamic();linesInitialized=true;
             }
-            finishMesh.RecalculateBounds();
+            finishMesh.RecalculateBounds();startMesh.RecalculateBounds();
         }
         void OnDestroy()
-        { if(roadMesh!=null)Destroy(roadMesh);if(finishMesh!=null)Destroy(finishMesh);if(roadMaterial!=null)Destroy(roadMaterial);if(finishMaterial!=null)Destroy(finishMaterial); }
+        { if(startMesh!=null)Destroy(startMesh);if(startMaterial!=null)Destroy(startMaterial);if(roadMesh!=null)Destroy(roadMesh);if(finishMesh!=null)Destroy(finishMesh);if(roadMaterial!=null)Destroy(roadMaterial);if(finishMaterial!=null)Destroy(finishMaterial); }
         // Cached original procedural textures. Local hash noise never consumes the simulation RNG.
         static uint Hash(uint n){n^=n>>16;n*=0x7feb352du;n^=n>>15;n*=0x846ca68bu;return n^(n>>16);}
         static Sprite Texture(string name,int width,int height,float ppu,System.Func<int,int,Color> pixel,bool mipmaps=false)

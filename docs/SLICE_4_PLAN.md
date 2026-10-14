@@ -235,3 +235,6 @@ Maintenance batch controls authorized and implemented (2026-10-13): Garage car d
 
 
 4L.4 requested visual refinement (2026-10-14): improve road depth/asphalt and speed perception, start lights, foreground/lower/thicker steering rim, gauge-number alignment and hardware-gated shift cues as one requested checkpoint. The user clarified that road angle means depth perspective, not an incline: keep horizontal travel, foreshorten the far lane/detail and use a shared projection for cars/finish/markings. Preserve physics, race timing, F8, held input and contained pause. Current single shift-light hardware can supply its lamp; do not invent multi-lamp capabilities or add optional gauges. [Delivery/review](../reports/phases/4l/04-ROAD-DEPTH.md). Stop for visual review after this increment.
+
+
+4L.5 requested perspective correction (2026-10-14): the prior depth treatment was not visually accepted. Make the asphalt mesh itself trapezoidal, with stronger foreshortening/skew; place/scale/move the rear car through the same projection and make start/finish cross-sections visibly diagonal. Anchor upright car artwork by tire contacts. Do not tilt driving or change physics/timing/resources. [Delivery/review](../reports/phases/4l/05-TRAPEZOID.md). Stop after this correction for user review.

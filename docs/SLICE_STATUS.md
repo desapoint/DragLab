@@ -1,6 +1,9 @@
 # Prototype implementation status
 
 
+**4L.5 trapezoid correction ready for review (2026-10-14):** previous subtle depth was not accepted. Asphalt vertices now form a stronger skewed trapezoid; the rear car is 68% size with corresponding movement and tire-contact placement. Start/finish ribbons share the projection and cross the lanes diagonally. Physics/timing remain unchanged. Windows build and packaged native **122/0** pass, including actual mesh/car/finish alignment and the running finish approach. [Checks/review](../reports/phases/4l/05-TRAPEZOID.md). Stop for visual acceptance before further controls.
+
+
 **4L.4 road-depth/instrument refinement ready for review (2026-10-14):** horizontal travel with foreshortened near/far asphalt, car/marker/finish projection and stronger speed feedback; no uphill road. Paired shaded start lamps, lower/thicker foreground steering rim, tick-clearing dial numbers and a fitted-hardware-only single shift lamp. Physics/timing remain authoritative. Final Windows build and integrated native **115/0** pass; [checks/review](../reports/phases/4l/04-ROAD-DEPTH.md). Stop for visual acceptance before further controls.
 
 **4L dashboard/pause requested checkpoint ready for review (2026-10-14):** low grained dash and wider/thicker wheel hint, original large H-pattern knob with lower-pivot rounded shaft, closer 1/3/5 and unchanged 2/4/6. Motion follows actual gearbox handover. New driving buttons are hidden; pause reuses contained shared dialogs for Resume, Sound, Controls and confirmed durable Quit. Only master/opponent audio are editable there; full menu Settings/reset/difficulty are excluded. Windows build and final integrated native **99/0** pass; Race selection **49/0** is retained from an earlier build in this increment. [Checks/review](../reports/phases/4l/03-PAUSE.md). Other HUD instruments and later pages remain separately gated; technical completion is not visual acceptance.

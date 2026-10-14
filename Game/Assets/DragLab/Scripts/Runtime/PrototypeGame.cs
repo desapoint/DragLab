@@ -236,13 +236,13 @@ namespace DragLab.Runtime
             if (race.phase == RacePhase.Finished && !awarded) FinishRace();
         }
 
-        void PlaceRaceCars()
+        internal void PlaceRaceCars()
         {
-            playerView.transform.position = DragStripView.Project(2, -2);
+            playerView.transform.position = DragStripView.CarPosition(2,DragStripView.PlayerLane,playerView.ContactHeight);
             float opponentX=2+(float)(race.opponent.state.distance-race.player.state.distance)*DragStripView.MetersToView;
-            aiView.transform.position = DragStripView.Project(opponentX, -.2f);
+            aiView.transform.position = DragStripView.CarPosition(opponentX,DragStripView.OpponentLane,aiView.ContactHeight);
             var angle=Quaternion.identity;
-            playerView.transform.localScale=Vector3.one;aiView.transform.localScale=Vector3.one*DragStripView.DepthScale(-.2f);
+            playerView.transform.localScale=Vector3.one;aiView.transform.localScale=Vector3.one*DragStripView.DepthScale(DragStripView.OpponentLane);
             playerView.transform.rotation=angle;aiView.transform.rotation=angle;
         }
 

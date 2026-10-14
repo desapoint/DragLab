@@ -39,6 +39,20 @@ namespace DragLab.Runtime
             float nearTravel=DragLab.Presentation.DragStripView.Project(12,-3).x-DragLab.Presentation.DragStripView.Project(2,-3).x;
             float farTravel=DragLab.Presentation.DragStripView.Project(12,.6f).x-DragLab.Presentation.DragStripView.Project(2,.6f).x;
             Check(nearTravel>farTravel&&DragLab.Presentation.DragStripView.DepthScale(-.2f)<1,"Road texture, markings and far car share a foreshortened depth projection with faster near-ground motion");
+            var meshes=strip.GetComponentsInChildren<MeshFilter>(true);
+            var asphalt=meshes.First(f=>f.sharedMesh.name=="Perspective asphalt").sharedMesh;
+            var roadVertices=asphalt.vertices;
+            float nearWidth=(roadVertices[1]-roadVertices[0]).magnitude,farWidth=(roadVertices[49]-roadVertices[48]).magnitude;
+            Check(farWidth<nearWidth*.4f&&roadVertices[48].x>roadVertices[0].x+10,"Asphalt geometry itself is a strongly narrowed and skewed trapezoid, not a rectangular mesh with different UVs");
+            var nearCar=GameObject.Find("Player Car").GetComponent<DragLab.Presentation.LayeredCarView>();
+            var farCar=GameObject.Find("Opponent Car").GetComponent<DragLab.Presentation.LayeredCarView>();
+            game.PlaceRaceCars();
+            Check(Math.Abs(farCar.transform.localScale.x-.68f)<.001,"Rear car uses the same 68-percent scale as its projected lane");
+            Check(Math.Abs(nearCar.transform.position.y-nearCar.ContactHeight-DragLab.Presentation.DragStripView.PlayerLane)<.001&&Math.Abs(farCar.transform.position.y-farCar.ContactHeight*.68f-DragLab.Presentation.DragStripView.OpponentLane)<.001,"Both cars are anchored by tire contacts on their depth plane rather than sprite centers");
+            double oldOpponentDistance=game.Race.opponent.state.distance;
+            float priorFarX=farCar.transform.position.x;game.Race.opponent.state.distance+=10;game.PlaceRaceCars();
+            Check(Math.Abs(farCar.transform.position.x-priorFarX-10*.60f*.68f)<.001,"Actual rear-car displacement for ten physical metres matches its projected road scale");
+            game.Race.opponent.state.distance=oldOpponentDistance;game.PlaceRaceCars();
             double oldDistance=state.distance,oldTime=game.Race.time;bool oldDq=state.disqualified;
             game.Race.time=2.1;strip.Render(game.Race);yield return Capture("race-lights-amber");
             state.distance=100;state.speed=70;strip.Render(game.Race);
@@ -46,7 +60,20 @@ namespace DragLab.Runtime
             Check(strip.LitLampCount==4,"Countdown illuminates both lanes' reached amber lamps");
             game.Race.time=3.1;strip.Render(game.Race);Check(strip.LitLampCount==2,"Green shows only the paired green lamps");yield return Capture("race-lights-green");
             state.disqualified=true;strip.Render(game.Race);Check(strip.LitLampCount==2,"Red light replaces green for a false start");yield return Capture("race-lights-red");
-            state.disqualified=oldDq;game.Race.time=oldTime;state.distance=oldDistance;state.speed=speed;strip.Render(game.Race);
+            state.disqualified=oldDq;game.Race.time=3.1;state.distance=game.Race.distance;game.Race.opponent.state.distance=game.Race.distance;
+            game.PlaceRaceCars();strip.Render(game.Race);
+            var finish=meshes.First(f=>f.sharedMesh.name=="Finish line").sharedMesh.vertices;
+            Check(Math.Abs(finish[48].x-finish[0].x)>4&&Math.Abs(finish[49].x-finish[48].x)<Math.Abs(finish[1].x-finish[0].x)*.4f,"Finish ribbon is visibly diagonal across the road and narrows toward the far edge");
+            foreach(var view in new[]{nearCar,farCar})
+            {
+                float lane=view==nearCar?DragLab.Presentation.DragStripView.PlayerLane:DragLab.Presentation.DragStripView.OpponentLane;
+                float row=(lane-finish[0].y)/(finish[48].y-finish[0].y)*24;int lo=Mathf.FloorToInt(row),hi=Mathf.CeilToInt(row);
+                float lineX=Mathf.Lerp((finish[lo*2].x+finish[lo*2+1].x)*.5f,(finish[hi*2].x+finish[hi*2+1].x)*.5f,row-lo);
+                Check(Math.Abs(view.transform.position.x-lineX)<.001,"Equal physical finish distances align the actual car and skewed finish mesh in its own lane: "+view.name);
+            }
+            hud.Refresh();yield return Capture("race-trapezoid-finish-alignment");
+            state.distance=oldDistance;game.Race.opponent.state.distance=oldOpponentDistance;game.Race.time=oldTime;state.speed=speed;game.PlaceRaceCars();strip.Render(game.Race);
+            hud.Refresh();yield return Capture("race-trapezoid-start");
             var hardware=game.Race.player.tune;var car=game.Race.player;
             bool fitted=hardware.partShiftLight,adjustable=hardware.partShiftLightAdjustable,launched=state.launched;
             float threshold=hardware.shiftLightRpm;double remaining=state.shiftRemaining,oldRpm=state.rpm;int oldGearLight=state.gear;
@@ -151,9 +178,10 @@ namespace DragLab.Runtime
             game.Profile.driving.shifting=ShiftMode.Automatic;game.Profile.driving.launch=LaunchMode.Automatic;
             game.StartPractice();game.verificationInput=()=>new DriverInput{throttle=1};
             float finishDeadline=Time.realtimeSinceStartup+65;
-            bool movingShot=false,fastShot=false;
+            bool movingShot=false,fastShot=false,finishShot=false;
             while(game.Race.phase!=RacePhase.Finished&&Time.realtimeSinceStartup<finishDeadline)
             {
+                if(!finishShot&&game.Race.distance-game.Race.player.state.distance<4){finishShot=true;yield return Capture("race-trapezoid-finish-approach");}
                 if(!movingShot&&game.Race.player.state.speed>=20){movingShot=true;yield return Capture("race-road-72kmh");}
                 if(!fastShot&&game.Race.player.state.speed>=35){fastShot=true;yield return Capture("race-road-126kmh");}
                 yield return null;
