@@ -29,6 +29,7 @@ namespace DragLab.Runtime
         NativeMenuShell nativeMenu;
         internal NativeRaceHud RaceHud { get; private set; }
         internal string SettingsReturnRoute { get; private set; } = "Garage";
+        internal bool NativeRacePause => screen == "Race" && paused && InterfaceComparison.IsReplacement("Race");
         internal string ComparisonRoute => screen == "Race" ? audioSettingsOpen ? "Race settings" : paused ? "Pause" : race != null && race.phase == RacePhase.Finished ? "Results" : "Race" : screen;
         Action pendingAction;
         float saveDelay;
@@ -201,14 +202,14 @@ namespace DragLab.Runtime
             if (saveDelay > 0 && GUIUtility.hotControl == 0 && !Input.GetMouseButton(0) && !Input.GetMouseButton(1)) { if(drivingPreferencesDirty){if(!ProfileStore.TrySavePreferences(profile,out var error))notice="Settings save failed: "+error;drivingPreferencesDirty=false;}else ProfileStore.Save(profile);saveDelay=0; }
             if (screen == "Garage" && !(nativeMenu != null && (nativeMenu.ModalOpen || nativeMenu.OwnedDetailsOpen || nativeMenu.DealerPageOpen || nativeMenu.EditingText)) && Input.GetKeyDown(KeyCode.P)) StartPractice();
             if (screen != "Race" || race == null) return;
-            if ((race.phase == RacePhase.Finished || paused) && Input.GetKeyDown(KeyCode.G)) { ReturnToGarage(); return; }
-            if (race.phase == RacePhase.Finished && Input.GetKeyDown(KeyCode.R)) { StartRace(activeEvent, practiceRun); return; }
-            if (Input.GetKeyDown(KeyCode.Escape)) SetPaused(!paused);
+            if (!NativeRacePause && (race.phase == RacePhase.Finished || paused) && Input.GetKeyDown(KeyCode.G)) { ReturnToGarage(); return; }
+            if (!NativeRacePause && race.phase == RacePhase.Finished && Input.GetKeyDown(KeyCode.R)) { StartRace(activeEvent, practiceRun); return; }
+            if (Input.GetKeyDown(KeyCode.Escape)) { if (NativeRacePause) nativeMenu.EscapeRacePause(); else SetPaused(!paused); }
             if (paused) return;
             if (race.phase == RacePhase.Finished)
             {
                 if(!awarded)FinishRace();
-                controls.Poll(!InterfaceComparison.IsReplacement(ComparisonRoute)); controls.ConsumePause();
+                controls.Poll(!InterfaceComparison.IsReplacement("Race") && !InterfaceComparison.IsReplacement(ComparisonRoute)); controls.ConsumePause();
                 accumulator += Math.Min(Time.unscaledDeltaTime, .1f);
                 while (accumulator >= DragMath.FixedStep)
                 {
@@ -218,7 +219,7 @@ namespace DragLab.Runtime
                 }
                 SaveLiveRunIfDue();RenderRace(); return;
             }
-            controls.Poll(!InterfaceComparison.IsReplacement(ComparisonRoute));
+            controls.Poll(!InterfaceComparison.IsReplacement("Race") && !InterfaceComparison.IsReplacement(ComparisonRoute));
             if (controls.ConsumePause()) { SetPaused(true); return; }
             accumulator += Math.Min(Time.unscaledDeltaTime, .1f);
             while (accumulator >= DragMath.FixedStep)
@@ -302,6 +303,7 @@ namespace DragLab.Runtime
             using (FramePacingProbe.Measure(4))
             {
                 bool replacement = interfaceComparison.BeginGUI(ComparisonRoute, resetGameConfirm || (nativeMenu != null && (nativeMenu.ModalOpen || nativeMenu.EditingText)) || (screen == "Valuation" && valuationQuote != null && saleConfirmation == valuationQuote.Id) || pendingAction != null || (nativeMenu != null && nativeMenu.Visible && Input.GetMouseButton(0)));
+                if (NativeRacePause) return;
                 if (!replacement || NativeRaceHud.Supports(ComparisonRoute)) DrawMeasuredGUI();
                 if (!replacement || !(NativeMenuShell.Supports(ComparisonRoute) || NativeRaceHud.Supports(ComparisonRoute))) interfaceComparison.DrawStatus(ComparisonRoute);
             }
@@ -570,11 +572,11 @@ namespace DragLab.Runtime
                 if (GUILayout.Button("Garage / G", GUILayout.Height(32))) pendingAction = ReturnToGarage;
                 if (GUILayout.Button("Run again / R", GUILayout.Height(32))) pendingAction = () => StartRace(activeEvent, practiceRun);
                 GUILayout.EndArea();
-                GUI.Box(RaceInputAdapter.ControlRect(RaceInputAdapter.BrakeControl, width, height), "Brake / S\n" + (controls.Peek().brake * 100).ToString("F0") + "%", GUI.skin.button);
+                if (!InterfaceComparison.IsReplacement("Race")) GUI.Box(RaceInputAdapter.ControlRect(RaceInputAdapter.BrakeControl, width, height), "Brake / S\n" + (controls.Peek().brake * 100).ToString("F0") + "%", GUI.skin.button);
                 return;
             }
             var held = controls.Peek();
-            if(race.warmup) {
+            if(race.warmup && !nativeGauges) {
                 GUILayout.BeginArea(new Rect(16,16+hudHeight,width-32,175),GUI.skin.box);
                 GUILayout.Label("WARM-UP: W/Space gas; E engage/upshift; Q downshift to neutral; Shift clutch; S brake. Stop before staging.");
                 var tires=race.player.mechanics.Part(DragLab.Domain.Mechanics.PartCategory.Tires);

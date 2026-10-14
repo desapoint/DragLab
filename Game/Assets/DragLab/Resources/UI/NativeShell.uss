@@ -418,3 +418,11 @@
 .inventory-target { flex-shrink: 0; min-height: 32px; margin: 4px 0; white-space: normal; }
 .block-choice-row { height: auto; min-height: 34px; }
 .block-choice-row Label { white-space: normal; }
+
+.shell.race-dialog-only { background-color: transparent; }
+.race-dialog-only > .metal-background, .race-dialog-only > .nav-bar, .race-dialog-only > .workspace, .race-dialog-only > .footer { display: none; }
+.race-pause-options { flex-direction: row; flex-wrap: wrap; }
+.race-pause-options .action-button { margin: 4px 10px 4px 0; flex-grow: 1; }
+.race-audio-range { margin-bottom: 14px; }
+.race-audio-range > Label { font-size: 18px; }
+.race-audio-range .tuning-input-row { margin: 0; min-height: 32px; }

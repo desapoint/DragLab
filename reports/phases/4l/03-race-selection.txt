@@ -1,0 +1,51 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Race opens native full-screen selection with persistent navigation
+PASS: Every authored event is represented without adding or replacing career content
+PASS: Each event shows its authoritative eligibility reason
+PASS: Event search filters the existing roster without recalculating builds
+PASS: Blocked selected events disable Stage and expose the actual reason
+PASS: An eligible selected event enables staging
+PASS: Entry review displays actual captured event fees and rewards
+PASS: Race car picker uses actual owned instance identities
+PASS: Free distance choices configure the existing race distance
+PASS: Free opponent choices retain the actual vehicle definition
+PASS: F8 retains native mode, opponent and distance
+PASS: Settings Cancel returns to the unchanged Race selection
+PASS: Race list and fixed Stage remain bounded at 1024
+PASS: Race list and fixed Stage remain bounded at 1920
+PASS: Race selection uses the shared crisp 4K scale
+PASS: Records show actual car history without a race entry action
+PASS: Browsing, searching, configuration, F8, Settings and records never charge, heal or save
+PASS: Practice remains quarter mile and no payout
+PASS: Stale entry is rejected without money or resource publication
+PASS: Locked durable entry cannot start a race or charge money
+PASS: Actual practice staging uses the authoritative race and captured no-payout entry
+PASS: Repeated Stage cannot create another entry while racing
+PASS: Confirmed Career entry captures its authored terms and charges its fee once
+PASS: Captured career entry survives SQLite reload
+PASS: Practice and Career entries do not overwrite the configured Free race distance
+PASS: Actual Free race receives the configured distance and opponent without becoming Practice
+Checks: 49 / runtime errors: 0

@@ -1,6 +1,7 @@
 .race-hud.hidden { display: none; }
 .race-hud {
     position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+    background-color: transparent;
     color: var(--racing-text);
     -unity-font-definition: url("project://database/Assets/DragLab/Resources/UI/Fonts/BarlowCondensed-Medium.asset");
     --gauge-face: #10161b;
@@ -19,7 +20,7 @@
 .race-dashboard { position: absolute; top: auto; left: 0; right: 0; bottom: 0; height: 178px; }
 .race-shifter { position: absolute; left: auto; top: auto; right: 24px; bottom: 15px; width: 220px; height: 202px; }
 .shifter-gear { position: absolute; left: 0; right: 0; top: 20px; height: 128px; font-size: 76px; -unity-text-align: middle-center; }
-.h-pattern .shifter-gear, .sequential-selector .shifter-gear { right: auto; top: auto; width: 40px; height: 40px; font-size: 24px; }
+.sequential-selector .shifter-gear { right: auto; top: auto; width: 40px; height: 40px; font-size: 24px; }
 .shifter-type { position: absolute; left: 0; right: 0; bottom: 8px; height: 25px; font-size: 17px; color: var(--racing-muted); -unity-text-align: middle-center; }
 .gate-number { position: absolute; width: 30px; height: 20px; font-size: 15px; color: var(--racing-muted); -unity-text-align: middle-center; }
 .race-phase { position: absolute; bottom: 76px; left: 44%; right: 260px; height: 30px; font-size: 20px; -unity-text-align: middle-center; }
@@ -29,3 +30,13 @@
 .compact .race-dials { left: 16px; bottom: 22px; }
 .compact .gauge-number { font-size: 16px; }
 .compact .gauge-value { font-size: 27px; height: 31px; }
+
+.race-pause-button { position: absolute; top: 18px; right: 24px; min-width: 42px; width: 42px; height: 34px; padding: 0; margin: 0; align-items: center; justify-content: center; }
+.race-pause-button .filled-icon { width: 18px; height: 18px; margin: 0; }
+.race-ready-button { position: absolute; top: 18px; right: 80px; min-width: 100px; margin: 0; }
+.race-ready-button.hidden { display: none; }
+
+.race-shifter.h-pattern { height: 230px; }
+.h-pattern .shifter-gear { right: auto; top: auto; width: 92px; height: 92px; font-size: 57px; }
+
+.race-pause-button, .race-pause-button:hover, .race-pause-button:active { background-image: none; }

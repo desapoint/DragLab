@@ -13,8 +13,14 @@ namespace DragLab.Runtime
         TransmissionType type;
         ManualGearboxLayout layout;
         Vector2 knob;
+        double handoverSeconds=1;
         internal string Readout=>gearLabel.text;
         internal Vector2 Knob=>knob;
+        // The visible exit slides within the boot; the true lever pivot is below its surface.
+        internal Vector2 ShaftExit
+        {
+            get { var pivot=new Vector2(110,178);float t=12/Mathf.Max(1,pivot.y-knob.y);return new Vector2(Mathf.LerpUnclamped(pivot.x,knob.x,t),166); }
+        }
         internal bool HPattern=>type==TransmissionType.Manual&&layout==ManualGearboxLayout.HPattern;
         internal RaceGearIndicator()
         {
@@ -30,44 +36,40 @@ namespace DragLab.Runtime
             bool changed=current<0||type!=transmission.type||layout!=transmission.manualLayout||gears!=count;
             if(changed)
             {
-                type=transmission.type;layout=transmission.manualLayout;gears=Math.Max(1,count);current=gear;from=gear;
+                type=transmission.type;layout=transmission.manualLayout;gears=Math.Max(1,count);current=gear;from=gear;handoverSeconds=Math.Max(.001,duration);
                 EnableInClassList("h-pattern",HPattern);EnableInClassList("sequential-selector",type==TransmissionType.Manual&&!HPattern);
                 typeLabel.text=HPattern?"H-PATTERN":type==TransmissionType.Manual?"SEQUENTIAL":type==TransmissionType.DCT?"DCT":type==TransmissionType.CVT?"CVT":"AUTOMATIC";
                 RebuildGateLabels();MarkDirtyRepaint();
             }
-            if(gear!=current){from=current;current=gear;MarkDirtyRepaint();}
+            if(gear!=current){from=current;current=gear;handoverSeconds=Math.Max(.001,duration);MarkDirtyRepaint();}
             string text=gear==0?"N":type==TransmissionType.CVT?"D":gear.ToString();if(gearLabel.text!=text)gearLabel.text=text;
             var next=Gate(gear);
             if(HPattern&&remaining>0)
             {
-                float t=Mathf.Clamp01(1-(float)(remaining/Math.Max(.001,duration)));var origin=Gate(from);
+                float t=Mathf.Clamp01(1-(float)(remaining/handoverSeconds));var origin=Gate(from);
                 next=t<1f/3?Vector2.Lerp(origin,new Vector2(origin.x,92),t*3):t<2f/3?Vector2.Lerp(new Vector2(origin.x,92),new Vector2(next.x,92),(t-1f/3)*3):Vector2.Lerp(new Vector2(next.x,92),next,(t-2f/3)*3);
             }
             else if(type==TransmissionType.Manual&&!HPattern)
             {
-                float t=remaining>0?Mathf.Clamp01(1-(float)(remaining/Math.Max(.001,duration))):1;
+                float t=remaining>0?Mathf.Clamp01(1-(float)(remaining/handoverSeconds)):1;
                 next=new Vector2(110,92+Mathf.Sin(t*Mathf.PI)*(gear>from?28:-28));
             }
             if(knob!=next||changed)
             {
                 knob=next;MarkDirtyRepaint();
-                if(type==TransmissionType.Manual){gearLabel.style.left=knob.x-20;gearLabel.style.top=knob.y-20;}
+                if(type==TransmissionType.Manual){float half=HPattern?46:20;gearLabel.style.left=knob.x-half;gearLabel.style.top=knob.y-half;}
                 else{gearLabel.style.left=StyleKeyword.Null;gearLabel.style.top=StyleKeyword.Null;}
             }
         }
         internal Vector2 Gate(int gear)
         {
             int columns=Math.Max(2,(gears+1)/2);
-            return gear==0?new Vector2(110,92):new Vector2(44+(gear-1)/2*132f/(columns-1),gear%2==1?51:133);
+            return gear==0?new Vector2(110,92):new Vector2(44+(gear-1)/2*132f/(columns-1),gear%2==1?80:133);
         }
         void RebuildGateLabels()
         {
             gateLabels.Clear();
-            if(HPattern)for(int i=1;i<=gears;i++)
-            {
-                var point=Gate(i);var label=new Label(i.ToString()){pickingMode=PickingMode.Ignore};label.AddToClassList("gate-number");label.style.left=point.x-15;label.style.top=point.y+(i%2==1?-31:12);gateLabels.Add(label);
-            }
-            else if(type==TransmissionType.Manual)foreach(var sign in new[]{"−","+"})
+            if(type==TransmissionType.Manual&&!HPattern)foreach(var sign in new[]{"−","+"})
             {var label=new Label(sign){pickingMode=PickingMode.Ignore};label.AddToClassList("gate-number");label.style.left=95;label.style.top=sign=="−"?16:144;gateLabels.Add(label);}
         }
         static void Plate(Painter2D p,float x,float y,float w,float h,Color color)
@@ -77,17 +79,22 @@ namespace DragLab.Runtime
         void Draw(MeshGenerationContext context)
         {
             if(contentRect.width<2)return;var p=context.painter2D;
-            Plate(p,4,4,212,194,new Color(.015f,.02f,.025f));Plate(p,6,6,208,190,rim);Plate(p,8,8,204,186,face);
-            Line(p,new Vector2(18,10),new Vector2(202,10),1,new Color(.7f,.72f,.75f,.5f));
+            if(!HPattern) { Plate(p,4,4,212,194,new Color(.015f,.02f,.025f));Plate(p,6,6,208,190,rim);Plate(p,8,8,204,186,face);
+            Line(p,new Vector2(18,10),new Vector2(202,10),1,new Color(.7f,.72f,.75f,.5f)); }
             if(type==TransmissionType.Manual)
             {
                 if(HPattern)
                 {
-                    int columns=Math.Max(2,(gears+1)/2);
-                    for(int i=0;i<columns;i++){float x=44+i*132f/(columns-1);Line(p,new Vector2(x,51),new Vector2(x,133),9,Color.black);Line(p,new Vector2(x+1,51),new Vector2(x+1,133),2,rim);}
-                    Line(p,new Vector2(44,92),new Vector2(176,92),9,Color.black);
+                    var basePoint=new Vector2(110,166);
+                    Circle(p,basePoint,29,new Color(.015f,.02f,.025f));Circle(p,basePoint,17,rim);
+                    p.lineCap=LineCap.Round;
+                    Line(p,ShaftExit,knob,13,new Color(.02f,.025f,.03f));Line(p,ShaftExit+new Vector2(2,0),knob+new Vector2(2,0),5,rim);
+                    p.lineCap=LineCap.Butt;
+                    Circle(p,knob,49,rim);Circle(p,knob,46,face);
+                    p.lineWidth=2;p.strokeColor=accent;p.BeginPath();p.Arc(knob,46,Angle.Degrees(205),Angle.Degrees(335));p.Stroke();
+                    return;
                 }
-                else {Line(p,new Vector2(110,49),new Vector2(110,136),12,Color.black);Line(p,new Vector2(112,49),new Vector2(112,136),1,rim);}
+                Line(p,new Vector2(110,49),new Vector2(110,136),12,Color.black);Line(p,new Vector2(112,49),new Vector2(112,136),1,rim);
                 // Foreshortened lever and shaded knob. The knob follows the gate, never the driving assist.
                 Line(p,new Vector2(110,155),knob,10,new Color(.02f,.025f,.03f));Line(p,new Vector2(112,155),knob+new Vector2(2,0),3,rim);
                 Circle(p,knob,23,Color.black);Circle(p,knob+new Vector2(0,-2),21,rim);Circle(p,knob+new Vector2(0,-2),18,new Color(.075f,.085f,.10f));

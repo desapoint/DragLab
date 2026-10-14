@@ -16,6 +16,8 @@ namespace DragLab.Runtime
         VisualElement root, dials;
         internal RaceDashboard Dashboard { get; private set; }
         Label phase, warning;
+        Button pauseButton, readyButton;
+        readonly System.Collections.Generic.List<RacingSurface> hudSurfaces = new System.Collections.Generic.List<RacingSurface>();
         CarSimulation boundCar;
         SpeedUnit speedUnit;
         internal AnalogRaceGauge Speed { get; private set; }
@@ -36,6 +38,11 @@ namespace DragLab.Runtime
             root = new VisualElement { name = "raceHud", pickingMode = PickingMode.Ignore };
             root.AddToClassList("shell"); root.AddToClassList("race-hud"); root.AddToClassList("hidden");
             root.styleSheets.Add(Resources.Load<StyleSheet>("UI/NativePalette"));
+            // The UXML has the same Resources basename. Enumerate the typed assets
+            // instead of allowing an ambiguous single-resource lookup to skip the shared skin.
+            var shared = Array.Find(Resources.LoadAll<StyleSheet>("UI"),sheet=>sheet.name=="NativeShell");
+            if(shared==null)throw new InvalidOperationException("Missing shared native UI stylesheet.");
+            root.styleSheets.Add(shared);
             root.styleSheets.Add(Resources.Load<StyleSheet>("UI/NativeRaceHud"));
             Dashboard = new RaceDashboard(); root.Add(Dashboard);
             document.rootVisualElement.Add(root);
@@ -48,20 +55,30 @@ namespace DragLab.Runtime
             Gear = new RaceGearIndicator(); root.Add(Gear);
             phase = new Label { name = "racePhase", pickingMode = PickingMode.Ignore }; phase.AddToClassList("race-phase"); root.Add(phase);
             warning = new Label { name = "raceWarning", pickingMode = PickingMode.Ignore }; warning.AddToClassList("race-warning"); root.Add(warning);
+            pauseButton = HudButton("racePause", "", () => game.PauseRace(true)); pauseButton.AddToClassList("race-pause-button");pauseButton.tooltip="Pause";pauseButton.Add(new FilledMenuIcon("Pause"));
+            readyButton = HudButton("raceReady", "Ready", () => game.Race?.BeginCountdown());readyButton.AddToClassList("race-ready-button");
             InterfaceComparison.SetReplacement("Race", true);
         }
 
-        void LateUpdate() => Refresh();
+        Button HudButton(string id,string caption,Action clicked)
+        {
+            var button=new Button(clicked){name=id,focusable=false,tabIndex=-1};button.AddToClassList("action-button");button.Add(new Label(caption){pickingMode=PickingMode.Ignore});
+            var surface=new RacingSurface(button,RacingSurface.Kind.SecondaryAction);button.Insert(0,surface);hudSurfaces.Add(surface);root.Add(button);return button;
+        }
+        void LateUpdate() { Refresh(); foreach(var surface in hudSurfaces)surface.Tick(Visible); }
         internal void Refresh()
         {
             if (root == null) return;
-            bool show = game.Race != null && Supports(game.ComparisonRoute) && InterfaceComparison.IsReplacement("Race");
+            bool show = game.Race != null && (Supports(game.ComparisonRoute) || game.NativeRacePause) && InterfaceComparison.IsReplacement("Race");
             root.EnableInClassList("hidden", !show);
             if (!show) return;
             int width = panel.targetTexture == null ? Screen.width : panel.targetTexture.width;
             int height = panel.targetTexture == null ? Screen.height : panel.targetTexture.height;
             panel.scale = NativeMenuShell.DisplayScale(width, height);
             root.EnableInClassList("compact", width / panel.scale < 1150 || height / panel.scale < 700);
+            pauseButton.SetEnabled(!game.NativeRacePause);
+            readyButton.EnableInClassList("hidden",!game.Race.warmup||game.NativeRacePause);
+            readyButton.SetEnabled(game.Race.WarmupStopped&&!game.Race.player.state.engineFailed&&!game.Race.player.state.drivetrainFailed);
             var car = game.Race.player;
             if (boundCar != car || speedUnit != SharedUnitSettings.Current.speed)
             {
@@ -82,7 +99,7 @@ namespace DragLab.Runtime
             Speed.SetValue(DisplayUnits.Speed(state.speed, speedUnit));
             Rpm.SetValue(state.rpm);
             Gear.SetState(state.gear, car.transmission, car.spec.gears.Length, state.shiftRemaining, TransmissionDynamics.ShiftSeconds(car.transmission,car.spec,car.tune));
-            string signal = game.Race.warmup ? "WARM-UP" : state.disqualified ? "RED LIGHT" : game.Race.time < 1.5 ? "STAGED" : game.Race.time < 2 ? "AMBER 1" : game.Race.time < 2.5 ? "AMBER 2" : game.Race.time < 3 ? "AMBER 3" : "GREEN";
+            string signal = game.NativeRacePause ? "PAUSED" : game.Race.warmup ? "WARM-UP" : state.disqualified ? "RED LIGHT" : game.Race.time < 1.5 ? "STAGED" : game.Race.time < 2 ? "AMBER 1" : game.Race.time < 2.5 ? "AMBER 2" : game.Race.time < 3 ? "AMBER 3" : "GREEN";
             Set(phase, signal + "  ·  " + state.distance.ToString("F1") + " / " + game.Race.distance.ToString("F1") + " m");
             string faults = state.engineFailed ? "ENGINE FAILED" : state.stalled ? "STALLED · CLUTCH + ENTER" : "";
             if (state.drivetrainFailed) faults += (faults.Length > 0 ? " · " : "") + "NO DRIVE PATH";

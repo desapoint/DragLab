@@ -52,7 +52,18 @@ namespace DragLab.Runtime
             hud.Gear.SetState(2,manual,6,0,1);hud.Gear.SetState(3,manual,6,.5,1);
             Check(hud.Gear.HPattern&&Math.Abs(hud.Gear.Knob.y-92)<.01&&hud.Gear.Knob.x>hud.Gear.Gate(2).x&&hud.Gear.Knob.x<hud.Gear.Gate(3).x,"H-pattern shift travels through the neutral crossgate using real handover progress");
             yield return Capture("race-dashboard-h-shift");
-            hud.Gear.SetState(3,manual,6,0,1);Check((hud.Gear.Knob-hud.Gear.Gate(3)).sqrMagnitude<.01,"Completed H-pattern shift settles into the correct gate");
+            hud.Gear.SetState(3,manual,6,0,1);Check((hud.Gear.Knob-hud.Gear.Gate(3)).sqrMagnitude<.01,"Completed H-pattern shift settles into the correct gate");yield return Capture("race-shifter-upper-row");
+            hud.Gear.SetState(2,manual,6,0,1);float exitLeft=hud.Gear.ShaftExit.x;hud.Gear.SetState(6,manual,6,0,1);
+            Check(exitLeft<110&&hud.Gear.ShaftExit.x>110&&hud.Gear.ShaftExit.y==166,"Shaft exit moves within the boot around a lower pivot as the round knob changes gates");
+            Check(hud.Gear.Gate(1).y==80&&hud.Gear.Gate(3).y==80&&hud.Gear.Gate(5).y==80&&hud.Gear.Gate(2).y==133&&hud.Gear.Gate(4).y==133&&hud.Gear.Gate(6).y==133,"Upper gear row is closer to the boot while lower gear positions stay unchanged");
+            var timingSpec=JsonUtility.FromJson<VehicleSpec>(JsonUtility.ToJson(game.Race.player.spec));
+            timingSpec.shiftSeconds=.6f;double slow=TransmissionDynamics.ShiftSeconds(manual,timingSpec,game.Race.player.tune);
+            hud.Gear.SetState(2,manual,6,0,slow);hud.Gear.SetState(3,manual,6,slow-.08,slow);float slowTravel=(hud.Gear.Knob-hud.Gear.Gate(2)).magnitude;
+            timingSpec.shiftSeconds=.15f;double fast=TransmissionDynamics.ShiftSeconds(manual,timingSpec,game.Race.player.tune);
+            hud.Gear.SetState(2,manual,6,0,fast);hud.Gear.SetState(3,manual,6,Math.Max(0,fast-.08),fast);
+            Check((hud.Gear.Knob-hud.Gear.Gate(2)).magnitude>slowTravel,"The same elapsed shift time advances a fast real gearbox farther than a slow gearbox");
+            Vector2 held=hud.Gear.Knob;hud.Gear.SetState(3,manual,6,Math.Max(0,fast-.08),fast);
+            Check(hud.Gear.Knob==held,"Shifter animation cannot advance when authoritative shift time is frozen");
             foreach(var kind in new[]{TransmissionType.Manual,TransmissionType.DCT,TransmissionType.Automatic,TransmissionType.CVT})
             {hud.Gear.SetState(2,new TransmissionSpec{type=kind,manualLayout=ManualGearboxLayout.Sequential},6,.1,.3);Check(!hud.Gear.HPattern,"Non-H hardware does not draw a manual H gate: "+kind);yield return Capture("race-dashboard-"+kind);}
             hud.enabled=true;hud.Refresh();
@@ -96,7 +107,7 @@ namespace DragLab.Runtime
             int oldGear=game.Race.player.state.gear;input.MouseButtonAt((int)(rect.center.x*scale),(int)(rect.center.y*scale),true);yield return new WaitForSecondsRealtime(.1f);input.MouseButtonAt((int)(rect.center.x*scale),(int)(rect.center.y*scale),false);yield return new WaitForSecondsRealtime(.2f);
             Check(game.Race.player.state.gear==oldGear && game.Race.player.state.throttle>.9,"Hidden legacy shift buttons have no invisible hit targets; held keyboard throttle remains live");
             input.Key(0x57,false);yield return Capture("race-gauges-driving");
-            yield return Key(input,0x1B);Check(!hud.Visible && game.ComparisonRoute=="Pause","Pause hides new instruments and retains the existing pause workflow");yield return Key(input,0x1B);Check(hud.Visible,"Resuming restores instruments without replacing the race session");
+            yield return RacePauseChecks(input);
             game.ReturnToGarage();yield return null;Check(!hud.Visible,"Leaving the race removes the instrument overlay");
             game.Profile.driving.shifting=ShiftMode.Automatic;game.Profile.driving.launch=LaunchMode.Automatic;
             game.StartPractice();game.verificationInput=()=>new DriverInput{throttle=1};
@@ -104,7 +115,10 @@ namespace DragLab.Runtime
             while(game.Race.phase!=RacePhase.Finished&&Time.realtimeSinceStartup<finishDeadline)yield return null;
             game.verificationInput=null;yield return null;
             Check(game.ComparisonRoute=="Results"&&!hud.Visible&&game.Race.player.state.finished,"Finishing a real authoritative pass hides instruments and preserves the existing results workflow");
-            yield return Capture("race-gauges-results");game.ReturnToGarage();
+            yield return Capture("race-gauges-results");
+            var completed=game.Race;yield return Key(input,0x1B);yield return Key(input,0x52);yield return Key(input,0x47);
+            Check(game.NativeRacePause&&game.Race==completed,"Results retry/garage shortcuts cannot bypass an open native pause dialog");
+            yield return Click(input,"dialogResume");game.ReturnToGarage();
         }
 #endif
     }

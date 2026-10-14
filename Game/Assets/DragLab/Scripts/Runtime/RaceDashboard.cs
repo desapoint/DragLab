@@ -40,11 +40,11 @@ namespace DragLab.Runtime
             p.strokeColor=new Color(0,0,0,.75f);p.lineWidth=3;p.BeginPath();p.MoveTo(new Vector2(0,Top(0,w)+5));
             for(int i=1;i<=columns;i++){float x=w*i/columns;p.LineTo(new Vector2(x,Top(x,w)+5));}p.Stroke();
             // Just the near rim/spokes of a wheel, behind the overflowing cluster.
-            var hub=new Vector2(Mathf.Min(270,w*.26f),h+120);
-            p.strokeColor=new Color(.012f,.016f,.02f);p.lineWidth=19;p.BeginPath();p.Arc(hub,158,Angle.Degrees(180),Angle.Degrees(360));p.Stroke();
-            p.strokeColor=new Color(.24f,.26f,.28f);p.lineWidth=2;p.BeginPath();p.Arc(hub,166,Angle.Degrees(198),Angle.Degrees(342));p.Stroke();
-            Line(p,hub+new Vector2(-146,-50),hub+new Vector2(-22,-12),15,new Color(.04f,.045f,.055f));
-            Line(p,hub+new Vector2(146,-50),hub+new Vector2(22,-12),15,new Color(.04f,.045f,.055f));
+            var hub=new Vector2(Mathf.Min(270,w*.26f),h+240);
+            p.strokeColor=new Color(.012f,.016f,.02f);p.lineWidth=34;p.BeginPath();p.Arc(hub,270,Angle.Degrees(180),Angle.Degrees(360));p.Stroke();
+            p.strokeColor=new Color(.24f,.26f,.28f);p.lineWidth=2;p.BeginPath();p.Arc(hub,286,Angle.Degrees(198),Angle.Degrees(342));p.Stroke();
+            Line(p,hub+new Vector2(-246,-72),hub+new Vector2(-22,-12),15,new Color(.04f,.045f,.055f));
+            Line(p,hub+new Vector2(246,-72),hub+new Vector2(22,-12),15,new Color(.04f,.045f,.055f));
             // Small stitched seam, fixed geometry and a subdued red center-console accent.
             for(float x=550;x<w-270;x+=12)Line(p,new Vector2(x,76),new Vector2(x+5,76),1,new Color(.35f,.36f,.37f,.45f));
             Line(p,new Vector2(w-245,h-10),new Vector2(w-28,h-10),2,accent);

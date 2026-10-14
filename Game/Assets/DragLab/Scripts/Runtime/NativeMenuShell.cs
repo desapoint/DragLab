@@ -118,7 +118,7 @@ namespace DragLab.Runtime
         {
             using(FramePacingProbe.Measure(4)){
             Refresh();
-            if (Visible && Input.GetKeyDown(KeyCode.Escape)) { if (ModalOpen) CloseDialog(); else if(game.ScreenName=="Tuning"&&setupLibraryOpen) BackFromSetupLibrary(); else if (game.ScreenName=="Parts" && cartPageOpen) BackFromNativeCart(); else if (game.ScreenName=="Parts" && partsDetailId!=null) BackToParts(); else if (DealerDetailsOpen) BackToDealer(); else if (DisposalOpen) BackFromDisposal(); else if (OwnedDetailsOpen) BackToOwnedCars(); }
+            if (Visible && !game.NativeRacePause && Input.GetKeyDown(KeyCode.Escape)) { if (ModalOpen) CloseDialog(); else if(game.ScreenName=="Tuning"&&setupLibraryOpen) BackFromSetupLibrary(); else if (game.ScreenName=="Parts" && cartPageOpen) BackFromNativeCart(); else if (game.ScreenName=="Parts" && partsDetailId!=null) BackToParts(); else if (DealerDetailsOpen) BackToDealer(); else if (DisposalOpen) BackFromDisposal(); else if (OwnedDetailsOpen) BackToOwnedCars(); }
             foreach (var surface in surfaces) surface.Tick(Visible);
             foreach (var surface in switchSurfaces) surface.Tick(Visible);
             }
@@ -126,6 +126,7 @@ namespace DragLab.Runtime
         internal void Refresh()
         {
             if (root == null || game.Profile == null) return;
+            if (SyncRacePause()) return;
             string route = game.ScreenName;
             SyncSettingsEntry(route);
             bool show = Supports(route) && InterfaceComparison.IsReplacement(route);
@@ -185,6 +186,7 @@ namespace DragLab.Runtime
             Action<float,float,float> circle = (x,y,r) => { p.BeginPath(); p.Arc(new Vector2(x*sx,y*sy), r*sx, Angle.Degrees(0), Angle.Degrees(360)); p.ClosePath(); p.Fill(); };
             switch (kind)
             {
+                case "Pause": rect(5,3,5,18);rect(14,3,5,18);break;
                 case "Warning": p.fillColor=resolvedStyle.color; polygon(new float[]{12,2,23,22,1,22});p.fillColor=new Color(.12f,.14f,.16f);rect(11,8,2,7);rect(11,17,2,2);break;
                 case "Expand": polygon(new float[] {4,8,20,8,12,17}); break;
                 case "Back": polygon(new float[] {2,12,11,3,11,8,22,8,22,16,11,16,11,21}); break;
