@@ -68,7 +68,7 @@ namespace DragLab.Runtime
                 GUI.contentColor = color;
                 GUILayout.Label(definition.name, partProse);
                 InstalledService(item);
-                if (failedPart) GUILayout.Label("Cause: " + (string.IsNullOrWhiteSpace(item.condition.failureReason) ? "Condition depleted" : (item.condition.tires!=null&&item.condition.tires.Length==4?TireDynamics.FailedCorners(item.condition):item.condition.failureReason)), partProse);
+                if (failedPart) GUILayout.Label("Cause: " + (item.condition.tires!=null&&item.condition.tires.Length==4?TireDynamics.FailedCorners(item.condition):string.IsNullOrWhiteSpace(item.condition.failureReason)?"Condition depleted":item.condition.failureReason), partProse);
                 Rect bar = GUILayoutUtility.GetRect(0, 9, GUILayout.ExpandWidth(true));
                 if (Event.current.type == EventType.Repaint) {
                     var previous = GUI.color; GUI.color = new Color(.22f, .26f, .3f); GUI.DrawTexture(bar, Texture2D.whiteTexture);
