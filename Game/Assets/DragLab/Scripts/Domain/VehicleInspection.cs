@@ -9,7 +9,7 @@ namespace DragLab.Domain.Mechanics
     public static class VehicleInspection
     {
         public static bool Known(VehicleOffer offer)=>!offer.used||offer.inspected||offer.firstStarter;
-        public static double Overall(MechanicalCatalog catalog,VehicleOffer offer)=>offer.parts.Where(p=>PartSemantics.Wears(catalog.Find(p.definitionId).category)).Select(p=>(double)p.condition.health).DefaultIfEmpty(1).Average();
+        public static double Overall(MechanicalCatalog catalog,VehicleOffer offer)=>offer.parts.Where(p=>PartSemantics.Wears(catalog.Find(p.definitionId).category)).Select(p=>catalog.Find(p.definitionId).category==PartCategory.Tires?(double)TireDynamics.LowestHealth(p.condition):p.condition.health).DefaultIfEmpty(1).Average();
         public static BuildResolution Hardware(MechanicalCatalog catalog,VehicleOffer offer){var b=catalog.Resolve(offer.model,offer.parts.ToDictionary(p=>catalog.Find(p.definitionId).category,p=>p.definitionId),offer.stock);TireFitments.Capture(b.spec,offer.parts,catalog);return b;}
         public static void Assess(MechanicalCatalog catalog,VehicleOffer offer,BuildResolution prepared=null)
         {
@@ -32,7 +32,7 @@ namespace DragLab.Domain.Mechanics
             view.fluids.oilLitres*=.8;view.fluids.coolantLitres*=.8;
             foreach(var slot in catalog.Recipe(offer.model)){
                 var d=catalog.Find(slot.Value);var p=new PartInstance{instanceId="estimate/"+offer.listingId+"/"+slot.Key,definitionId=d.id,slot=slot.Key.ToString(),condition=new ComponentCondition{health=(float)(PartSemantics.Wears(d.category)?health:1)}};
-                EngineElements.Ensure(build.spec,d,p);ClutchHardware.Ensure(d,p.condition);if(d.category==PartCategory.Tires){TireDynamics.Ensure(p.condition);foreach(var t in p.condition.tires){t.health=p.condition.health;t.consumedLife=1-t.health;}}view.parts.Add(p);
+                EngineElements.Ensure(build.spec,d,p);ClutchHardware.Ensure(d,p.condition);if(d.category==PartCategory.Tires){float estimated=p.condition.health;TireDynamics.Ensure(p.condition);foreach(var t in p.condition.tires){t.health=estimated;t.consumedLife=1-t.health;}TireDynamics.SyncSummary(p.condition);}view.parts.Add(p);
             }
             return view;
         }
@@ -44,7 +44,7 @@ namespace DragLab.Domain.Mechanics
         public static string Validate(VehicleOffer offer)
         {
             if(offer.disclosureVersion!=1||!MechanicsSchema.Finite(offer.reportedCondition)||offer.reportedCondition<0||offer.reportedCondition>1||offer.historyNotes==null||offer.historyNotes.Count>16||offer.historyNotes.Any(n=>string.IsNullOrWhiteSpace(n)||n.Length>160||n.Any(char.IsControl)))return "Invalid vehicle disclosure/history.";
-            if(offer.firstStarter&&(!offer.used||!offer.inspected||!offer.engineRuns||!offer.drives||offer.parts.Any(p=>p.condition.failed||p.condition.health<.9||p.condition.elements.Any(e=>e.fault!=ElementFault.None))))return "Invalid starter disclosure or condition.";
+            if(offer.firstStarter&&(!offer.used||!offer.inspected||!offer.engineRuns||!offer.drives||offer.parts.Any(p=>catalog.Find(p.definitionId).category==PartCategory.Tires?TireDynamics.AnyFailed(p.condition)||TireDynamics.LowestHealth(p.condition)<.9:p.condition.failed||p.condition.health<.9||p.condition.elements.Any(e=>e.fault!=ElementFault.None))))return "Invalid starter disclosure or condition.";
             return null;
         }
     }
