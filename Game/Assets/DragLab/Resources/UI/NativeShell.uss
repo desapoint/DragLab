@@ -73,6 +73,7 @@
 .settings-status { flex-grow: 1; color: var(--racing-accent); font-size: 17px; }
 .info-button, .info-button:focus { width: 18px; height: 18px; min-width: 18px; margin-left: 9px; padding: 0; border-radius: 9px; border-width: 1px; border-color: #63707b; background-color: #222a32; color: #bac2ca; font-size: 13px; }
 .info-button:active { background-color: #171e25; }
+.setting-toggle { width: 56px; flex-shrink: 0; }
 .setting-toggle .unity-toggle__input, .setting-toggle:checked .unity-toggle__input { width: 56px; height: 28px; padding: 0; border-width: 0; background-color: transparent; }
 .setting-toggle .unity-toggle__checkmark { display: none; }
 .switch-surface { position: absolute; top: 0; right: 0; bottom: 0; left: 0; }

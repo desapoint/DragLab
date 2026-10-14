@@ -33,6 +33,7 @@ namespace DragLab.Runtime
             bool available=true;
             try { EngineRebuilds.RequireAvailable(car); }
             catch (InvalidOperationException restriction) { var warning=new Label(restriction.Message); warning.AddToClassList("car-warning"); section.Add(warning); available=false; }
+            ReplacementActions(section,car,available);
             var rows=new VisualElement {name="maintenanceFluids"}; rows.AddToClassList("maintenance-fluids"); section.Add(rows);
             var fuel=FluidRow(rows,"fuel","Fuel",car.fuel.litres,build.spec.fuel.capacityLitres);
             QuantityAction(fuel,"maintenanceFuel", "Refill",new PaymentRequest {kind=PaymentKind.Fuel,carId=car.instanceId},Math.Max(0,build.spec.fuel.capacityLitres-car.fuel.litres),available);

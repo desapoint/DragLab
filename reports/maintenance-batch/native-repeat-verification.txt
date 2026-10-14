@@ -1,0 +1,32 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Batch probe has a durable isolated profile
+PASS: Inspected car exposes separate broken and under-15% actions
+PASS: Threshold defaults to 15% remaining condition with shared precise gestures
+PASS: Default list identifies actual worn positions and excludes exactly 15%
+PASS: Review shows cumulative express fee, total and balance before payment
+PASS: Precise threshold edits synchronize the slider and eligible positions
+PASS: Real left-drag uses whole-percent steps
+PASS: Real right-drag provides finer threshold control
+PASS: Middle-click restores the 15% default and updates the list
+PASS: Replacement switches retain shared 56×28 geometry beside captions at 720p
+PASS: Threshold uses the shared thin track, centered knob and fill at 720p
+PASS: Replacement total stays above fixed actions at 1080p
+PASS: Replacement switches retain shared 56×28 geometry beside captions at 1080p
+PASS: Threshold uses the shared thin track, centered knob and fill at 1080p
+PASS: Replacement review remains bounded at crisp 4K scale
+PASS: Replacement switches retain shared 56×28 geometry beside captions at 4K
+PASS: Threshold uses the shared thin track, centered knob and fill at 4K
+PASS: Threshold gestures, selection previews, resizing and X never apply or save replacements
+PASS: Broken mode lists the failed brake set and defective cylinder without a threshold slider
+PASS: Replacement switches retain shared 56×28 geometry beside captions at broken mode
+PASS: Broken confirmation pays once, retains the failed set and preserves current-car selection
+PASS: Broken replacement keeps the original fault and leaves merely worn cylinders alone
+PASS: Individual deselection updates the reviewed purchase rather than replacing everything
+PASS: Failed batch save preserves exact selection, stock, cash and all components
+PASS: Retry commits only the checked position and keeps excluded part wear/leaks
+PASS: Worn original remains reusable/sellable with valid exclusive ownership
+PASS: Broken shortcut disables when no failed or defective components remain
+PASS: An empty threshold selection cannot create a charge or save
+PASS: Stale batch confirmation rejects before any mutation
+Checks: 30 / runtime errors: 0

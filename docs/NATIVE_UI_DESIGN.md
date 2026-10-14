@@ -253,3 +253,7 @@ Part comparison scope (2026-10-13): relevance is a rule for every category, not 
 
 
 Seeded supply checkpoint (2026-10-13): reuse the current part cards, purchase dialog/cart and engine cards for stock quantities and included express fees. Build → Engines → Engine shop offers complete OEM engines in new/used condition with confirmation into storage. Foreign-platform spares may be purchased into storage, while installation still checks actual fit. Replacement-threshold controls are recorded in the Slice 4 refinement plan, not implemented here.
+
+Maintenance batch controls authorized and implemented (2026-10-13): Garage car details gain Replace broken and Replace under 15% remaining condition, a precise shared threshold control, grouped actual component/corner selection, automatic complete-set grouping when every matching member is selected, and one stock/delivery-inclusive atomic confirmation. Preserve originals, applied tuning, other cars and liquids. This fulfills the market checkpoint's deferred maintenance UI decision; validation is recorded separately in [the batch report](../reports/maintenance-batch/CHANGES.md). No later interface is authorized by this increment.
+
+Maintenance checklist correction (2026-10-14): replacement selections use the existing animated 56 × 28 switch beside the caption, never a stretched full-width track. All `.setting-toggle` controls share the fixed width; the threshold uses the exact existing `NativeTuningRange`, shared thin slider/fill/number styles and precision gestures. No separate maintenance control theme.
