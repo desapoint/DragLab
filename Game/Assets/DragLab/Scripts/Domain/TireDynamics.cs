@@ -6,6 +6,7 @@ namespace DragLab.Domain {
   public bool failed; public double temperatureC=20,slipEnergyJ,distanceM,lastContactWorkJ,consumedLife,runningSeconds; public string failureReason="";
   public TireCondition(){role="tire";cylinder=-1;valve=-1;}
   public new TireCondition Copy(){return (TireCondition)MemberwiseClone();}
+  public override bool Failed {get{return failed||health<=0||consumedLife>=1;}}
   public override string Validate(){if(base.Validate()!=null)return "Invalid individual tire identity/health.";if(!MechanicsSchema.Finite(health)||health<0||health>1||!MechanicsSchema.Finite(temperatureC)||temperatureC< -50||temperatureC>2000||!MechanicsSchema.Finite(slipEnergyJ)||slipEnergyJ<0||!MechanicsSchema.Finite(distanceM)||distanceM<0||!MechanicsSchema.Finite(lastContactWorkJ)||lastContactWorkJ<0||!MechanicsSchema.Finite(consumedLife)||consumedLife<0||!MechanicsSchema.Finite(runningSeconds)||runningSeconds<0)return "Invalid per-wheel tire condition.";return null;}
  }
  public static class TireDynamics {
