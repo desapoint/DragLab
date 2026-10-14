@@ -5,14 +5,14 @@ namespace DragLab.Domain.Mechanics
 {
     public enum IgnitionTopology { Auto, Distributor, CoilOnPlug, WastedSpark }
     public enum ElementFault { None, Disabled, CompressionLeak, WeakSpring, StuckOpen, DroppedValve, Seized }
-    [Serializable] public sealed class EngineElement
+    [Serializable] public class EngineElement : PartElement
     {
-        public string id, role, definitionId;
+        public string role;
         public int cylinder, valve;
-        public float health=1, severity; public double wearRemainder;
+        public float severity; public double wearRemainder;
         public ElementFault fault;
         public EngineElement Copy(){return (EngineElement)MemberwiseClone();}
-        public string Validate(){return string.IsNullOrEmpty(id)||string.IsNullOrEmpty(role)||cylinder< -1||cylinder>15||valve< -1||valve>7||!EngineBehaviorSpec.Range(health,0,1)||!EngineBehaviorSpec.Range(severity,0,1)||!MechanicsSchema.Finite(wearRemainder)||wearRemainder<0||!Enum.IsDefined(typeof(ElementFault),fault)?"Invalid individual engine component.":null;}
+        public override string Validate(){return string.IsNullOrEmpty(id)||string.IsNullOrEmpty(role)||cylinder< -1||cylinder>15||valve< -1||valve>7||!EngineBehaviorSpec.Range(health,0,1)||!EngineBehaviorSpec.Range(severity,0,1)||!MechanicsSchema.Finite(wearRemainder)||wearRemainder<0||!Enum.IsDefined(typeof(ElementFault),fault)?"Invalid individual engine component.":null;}
         public bool Failed {get{return health<=0||fault==ElementFault.Disabled||fault==ElementFault.DroppedValve||fault==ElementFault.Seized;}}
     }
     [Serializable] public sealed class LooseEngineElement
@@ -25,12 +25,23 @@ namespace DragLab.Domain.Mechanics
         public static IgnitionTopology Ignition(VehicleSpec v){return v.ignitionTopology!=IgnitionTopology.Auto?v.ignitionTopology:(v.fuelSystemConverted?v.originalFueling:v.engineBehavior.fueling)==FuelSystem.Carburetor?IgnitionTopology.Distributor:IgnitionTopology.CoilOnPlug;}
         static int CoilCount(VehicleSpec v){return Ignition(v)==IgnitionTopology.Distributor?1:Ignition(v)==IgnitionTopology.WastedSpark?(v.sound.cylinders+1)/2:v.sound.cylinders;}
         static bool PerValve(PartCategory c){return c==PartCategory.Valves||c==PartCategory.ValveSprings||c==PartCategory.ValveSeals||c==PartCategory.Followers;}
+        static EngineElement NewElement(PartCategory category)
+        {
+            switch(category)
+            {
+                case PartCategory.Pistons: return new PistonElement();
+                case PartCategory.PistonRings: return new PistonRingElement();
+                case PartCategory.Valves: return new ValveElement();
+                case PartCategory.Wheels: return new WheelElement();
+                default: return new EngineElement();
+            }
+        }
         public static void Ensure(VehicleSpec v,PartDefinition d,PartInstance p)
         {
             int count=Count(v,d);if(count==0)return;
             if(p.condition.elements!=null&&p.condition.elements.Length>0)return; // Migrate once; never heal existing individual damage.
             p.condition.elements=new EngineElement[count];int valves=PerValve(d.category)?ValveCount(v):1;
-            for(int i=0;i<count;i++)p.condition.elements[i]=new EngineElement{id=p.instanceId+"/element/"+i,cylinder=i/valves,valve=PerValve(d.category)?i%valves:-1,role=Role(d.category,i%valves,valves),health=p.condition.failed?0:p.condition.health};
+            for(int i=0;i<count;i++)p.condition.elements[i]=NewElement(d.category){id=p.instanceId+"/element/"+i,cylinder=i/valves,valve=PerValve(d.category)?i%valves:-1,role=Role(d.category,i%valves,valves),health=p.condition.failed?0:p.condition.health};
             if(d.category==PartCategory.Ignition)for(int i=v.combustion.separateSparkPlugs?0:v.sound.cylinders;i<count;i++){var e=p.condition.elements[i];e.role="ignition coil";e.cylinder=Ignition(v)==IgnitionTopology.Distributor?-1:i-(v.combustion.separateSparkPlugs?0:v.sound.cylinders);}
         }
         static string Role(PartCategory c,int valve,int valves){return c==PartCategory.Wheels?"wheel":c==PartCategory.GlowPlugs?"glow plug":c==PartCategory.SparkPlugs||c==PartCategory.Ignition?"spark plug / lead":c==PartCategory.FuelSystem?"injector":c==PartCategory.Bearings?"rod bearing pair":c==PartCategory.PistonRings?"piston ring pack":PerValve(c)?(valve<valves/2?"intake ":"exhaust ")+(c==PartCategory.Valves?"valve / guide":c==PartCategory.ValveSprings?"spring / retainer":c==PartCategory.ValveSeals?"valve seal":"follower / rocker"):PartSemantics.Friendly(c.ToString());}
