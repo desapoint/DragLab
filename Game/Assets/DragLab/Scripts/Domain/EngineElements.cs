@@ -11,12 +11,31 @@ namespace DragLab.Domain.Mechanics
         public int cylinder, valve;
         public float severity; public double wearRemainder;
         public ElementFault fault;
-        public EngineElement Copy(){return (EngineElement)MemberwiseClone();}
+        public new EngineElement Copy(){return (EngineElement)MemberwiseClone();}
         public override string Validate(){return string.IsNullOrEmpty(id)||string.IsNullOrEmpty(role)||cylinder< -1||cylinder>15||valve< -1||valve>7||!EngineBehaviorSpec.Range(health,0,1)||!EngineBehaviorSpec.Range(severity,0,1)||!MechanicsSchema.Finite(wearRemainder)||wearRemainder<0||!Enum.IsDefined(typeof(ElementFault),fault)?"Invalid individual engine component.":null;}
-        public bool Failed {get{return health<=0||fault==ElementFault.Disabled||fault==ElementFault.DroppedValve||fault==ElementFault.Seized;}}
+        public virtual bool Failed {get{return health<=0||fault==ElementFault.Disabled||fault==ElementFault.DroppedValve||fault==ElementFault.Seized;}}
     }
     [Serializable] public sealed class LooseEngineElement
-    { public string definitionId, storageId; public int unitPrice; public EngineElement element; public bool tireUnit; public TireCondition tire; }
+    {
+        public string definitionId, storageId;
+        public int unitPrice;
+        [UnityEngine.SerializeReference] public EngineElement element;
+        public bool tireUnit;
+
+        // Compatibility accessor for existing inventory and shop callers.
+        // There is no second serialized condition: the tire IS the concrete member.
+        public TireCondition tire
+        {
+            get { return element as TireCondition; }
+            set
+            {
+                if (value == null) return;
+                if (string.IsNullOrEmpty(value.id) && element != null) value.id = element.id;
+                if (string.IsNullOrEmpty(value.definitionId)) value.definitionId = definitionId;
+                element = value;
+            }
+        }
+    }
     public static class EngineElements
     {
         public static int ValveCount(VehicleSpec v){return v.valvesPerCylinder>0?v.valvesPerCylinder:(v.fuelSystemConverted?v.originalFueling:v.engineBehavior.fueling)==FuelSystem.Carburetor?2:4;}
