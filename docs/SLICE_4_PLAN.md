@@ -1,5 +1,7 @@
 # Slice 4 — Interface migration, input and platform validation
 
+**Authorized batch technically complete (2026-10-14):** sale/salvage reached four separate built/committed checkpoints (final native 50/0), Race selection reached its built/committed checkpoint (49/0), and saved-setup rename/delete now passes Windows build and native 48/0. [Setup management/review](../reports/phases/4e/06-SETUP-MANAGEMENT.md). Metadata changes preserve actual assets and rebase pending tuning without losing cart rows. User visual acceptance remains pending; stop before later interfaces.
+
 **4J Race selection delivered (2026-10-14):** native Career/free/practice/records, exact eligibility and captured authoritative entry, owned-car selection, responsive shared controls and no preview saves. Windows build and native 49/0 pass; [checks/review](../reports/phases/4j/01-RACE-SELECTION.md). Visual acceptance remains separate. The remaining authorized batch item is saved-setup rename/delete.
 
 **4I sale/salvage checkpoints delivered (2026-10-14):** four sequential commits deliver the page, actual valuation/contents, retention and durable explicit disposal. Windows build and final native 50/0 pass; [review/checks](../reports/phases/4i/04-CONFIRMATION.md). User visual acceptance remains separate. The explicitly authorized next checkpoint is native Race selection, then saved-setup rename/delete.

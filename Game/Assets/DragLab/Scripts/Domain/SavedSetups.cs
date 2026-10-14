@@ -53,6 +53,8 @@ namespace DragLab.Domain.Mechanics
                 {var item=p.parts.Find(i=>i.instanceId==slot.partInstanceId);setup.parts.Add(new SetupPart {slot=slot.slot,definitionId=item.definitionId,wheelDefinitions=slot.slot=="Wheels"?Enumerable.Range(0,4).Select(i=>item.condition.elements.Length==4?WheelFitments.DefinitionId(item,i):item.definitionId).ToArray():new string[0],tireDefinitions=slot.slot=="Tires"?Enumerable.Range(0,4).Select(i=>item.condition.tires.Length==4?TireFitments.DefinitionId(item,i):item.definitionId).ToArray():new string[0]});}
             p.savedSetups.Add(setup); return setup.id;
         }
+        public static void Rename(PlayerProfile p,string id,string name)
+        { Find(p,id).name=NormalizeName(name); }
         public static void Delete(PlayerProfile p, string id)
         { var setup = Find(p, id); p.savedSetups.Remove(setup); }
         static SavedVehicleSetup Find(PlayerProfile p, string id)

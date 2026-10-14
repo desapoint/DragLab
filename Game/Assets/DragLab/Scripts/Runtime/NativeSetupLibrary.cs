@@ -42,6 +42,7 @@ namespace DragLab.Runtime
             var right=new VisualElement();right.AddToClassList("tuning-preview");columns.Add(right);AddSurface(right,RacingSurface.Kind.Panel);
             setupPreviewScroll=new ScrollView{name="setupLibraryPreview",horizontalScrollerVisibility=ScrollerVisibility.Hidden};setupPreviewScroll.AddToClassList("tuning-preview-scroll");right.Add(setupPreviewScroll);setupPreviewContent=new VisualElement();setupPreviewScroll.Add(setupPreviewContent);
             InitializeSetupLoad();
+            InitializeSetupManagement();
         }
         void OpenSetupLibrary(){setupLibraryOpen=true;setupLibraryKey=null;RefreshTuning("Tuning");}
         void BackFromSetupLibrary(){setupLibraryOpen=false;setupPage.AddToClassList("hidden");RefreshTuning("Tuning");}
@@ -70,7 +71,7 @@ namespace DragLab.Runtime
             setupPreviewContent.Clear();setupPreview=null;
             var p=game.Profile;var saved=p.savedSetups.Find(s=>s.id==setupSelectedId);
             if(saved==null){setupPreviewContent.Add(new Label("Select a setup"));return;}
-            var title=new Label(saved.name){enableRichText=false};title.AddToClassList("car-detail-title");setupPreviewContent.Add(title);
+            var heading=new VisualElement();heading.AddToClassList("car-details-heading");setupPreviewContent.Add(heading);var title=new Label(saved.name){name="setupPreviewTitle",enableRichText=false};title.AddToClassList("car-detail-title");heading.Add(title);heading.Add(SetupRenameButton());
             try{
                 setupPreview=NativeSetupPreview.Capture(p,p.SelectedCar,saved,partPreviewCache);SetupPreviewCaptureCount++;
                 var plan=setupPreview.Plan;

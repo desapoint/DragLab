@@ -1,5 +1,7 @@
 # Native interface direction — grey/red and Settings first
 
+Saved-setup management (2026-10-14): put the shared filled pencil beside the selected setup name and a grey Delete action beside Load. Use shared text/confirmation dialogs with explicit red Save/Delete, concise identity and blueprint-only deletion explanation. Preserve actual assets, tuning drafts and pending cart rows; metadata edits do not require resolving those unrelated drafts. Actual setup loading retains its existing restrictions. [Checks/review](../reports/phases/4e/06-SETUP-MANAGEMENT.md).
+
 Race selection (2026-10-14): reuse joined Career/Free race/Practice/Records choices, actual owned-car picker, tier/search controls, two-column event cards with eligibility and concise captured costs/rewards, shared confirmation and fixed Stage action. Blocked entries remain inspectable. Keep Free configuration independent from other modes; cache eligibility between actual context changes. Records stay actual, unavailable values show a dash. [Checks/review](../reports/phases/4j/01-RACE-SELECTION.md).
 
 Sale/salvage (2026-10-14): use a dedicated owned-car page with shared Back, joined sale/buyer choices, grouped real fitted sets and storage-retention switches, concise actual offer and secondary price-info dialog. Red Review sale opens the exact sold/kept/cash confirmation; no preview spending or mutation. Hide Garage source tabs on this detail workflow. Keep last-car dealership/recovery access. [Delivery](../reports/phases/4i/04-CONFIRMATION.md).

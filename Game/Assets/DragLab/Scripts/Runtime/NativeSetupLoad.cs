@@ -56,6 +56,7 @@ namespace DragLab.Runtime
         }
         void RefreshSetupLoadAction()
         {
+            setupDelete.SetEnabled(game.Profile.savedSetups.Any(s=>s.id==setupSelectedId));
             string reason=game.DraftDirty?"Apply or revert tuning changes first.":game.CartCount>0?"Checkout or clear the cart first.":setupPreview?.Unavailable;
             if(reason==null&&setupPreview?.Plan.errors.Count>0)reason=setupPreview.Plan.errors[0];
             bool selected=setupPreview?.Proposed!=null;setupLoad.SetEnabled(selected&&reason==null);setupLoadStatus.text=reason??"";setupLoad.tooltip=reason??"Review and confirm this saved setup.";
