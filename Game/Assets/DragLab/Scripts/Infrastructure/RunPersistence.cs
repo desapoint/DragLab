@@ -19,14 +19,15 @@ namespace DragLab.Infrastructure
             // races; an active race journal must retain the same four tire IDs.
             bool tires=a.tires!=null&&a.tires.Length==4;
             if(tires) {
-                if(b.tires==null||b.tires.Length!=4||b.serviceCount<a.serviceCount)return false;
+                if(b.tires==null||b.tires.Length!=4)return false;
                 for(int i=0;i<4;i++) {
                     var previous=a.tires[i];var current=b.tires[i];
                     if(previous==null||current==null||previous.id!=current.id
                        ||current.health>previous.health||previous.failed&&!current.failed
                        ||HistoryLess(current.distanceM,previous.distanceM)
                        ||HistoryLess(current.slipEnergyJ,previous.slipEnergyJ)
-                       ||HistoryLess(current.consumedLife,previous.consumedLife))return false;
+                       ||HistoryLess(current.consumedLife,previous.consumedLife)
+                       ||HistoryLess(current.runningSeconds,previous.runningSeconds))return false;
                 }
                 return true;
             }
@@ -37,7 +38,7 @@ namespace DragLab.Infrastructure
         // is for history serialization only; it never permits health/failure repair.
         public static bool HistoryLess(double next,double old){return next<old-Math.Max(1e-10,Math.Abs(old)*1e-12);}
         public static int FailureCount(CarSimulation car)
-        {return car.mechanics.parts.Sum(p=>(p.condition.failed?1:0)+(p.condition.elements==null?0:p.condition.elements.Count(e=>e.Failed)))+(car.state.engineFailed?1:0)+(car.state.drivetrainFailed?1:0);}
+        {return car.mechanics.parts.Sum(p=>p.condition.tires!=null&&p.condition.tires.Length==4?p.condition.tires.Count(t=>t.failed||t.health<=0):((p.condition.failed?1:0)+(p.condition.elements==null?0:p.condition.elements.Count(e=>e.Failed))))+(car.state.engineFailed?1:0)+(car.state.drivetrainFailed?1:0);}
         public static bool RecoverInterrupted(PlayerProfile profile)
         {
             bool changed=false;
