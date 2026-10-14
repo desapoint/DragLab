@@ -43,8 +43,9 @@ namespace DragLab.Domain.Mechanics
             var car=AssemblyOperations.MutableCar(p,carId);var d=p.catalog.Find(definition);
             if(d==null||!PartsMarket.FitsAny(p,d)||p.reputation<d.reputationRequired||!Roles(p,car,d).Contains(role))throw new InvalidOperationException("Individual unit incompatible or unavailable.");
             int count=Count(p,car,d);int price=PartsMarket.Quote(p,d,count,true).cost;if(p.cash<price)throw new InvalidOperationException("Insufficient cash for unit.");
-            var item=new LooseEngineElement{definitionId=d.id,unitPrice=InventoryPricing.NewUnit(d,count),element=new EngineElement{id=MechanicsOwnership.NewId("element"),role=role,cylinder=-1,valve=-1},tireUnit=d.category==PartCategory.Tires,tire=d.category==PartCategory.Tires?new TireCondition():null};
-            if(item.tireUnit){item.tire.id=item.element.id;item.tire.definitionId=d.id;}
+            var element=EngineElements.Create(d.category);
+            element.id=MechanicsOwnership.NewId("element");element.definitionId=d.id;element.role=role;element.cylinder=-1;element.valve=-1;
+            var item=new LooseEngineElement{definitionId=d.id,unitPrice=InventoryPricing.NewUnit(d,count),element=element,tireUnit=d.category==PartCategory.Tires};
             PartsMarket.Consume(p,d,count,true);p.cash-=price;p.looseEngineElements.Add(item);return item;
         }
         public static string[] Positions(PlayerProfile p,OwnedCar car,string definition,string role)
