@@ -111,7 +111,8 @@ namespace DragLab.Runtime
             labels[0].text=e.Compatibility;
             var specs=PartSpecs(e);for(int i=0;i<4;i++){labels[i+1].text=i<specs.Length?PartStatText(specs[i]):"";labels[i+1].tooltip=i<specs.Length?specs[i].explanation:"";}
             double health=e.Unit?.element.health??e.Part?.condition.health??1;bool failed=e.Unit!=null?e.Unit.element.Failed:e.Part?.condition.failed??false;
-            labels[5].text=e.Source+" · "+PartSemantics.Friendly(e.Definition.category.ToString())+(PartSemantics.Wears(e.Definition.category)?" · "+(failed?"FAILED":health.ToString("P0")):"");labels[5].EnableInClassList("car-critical",failed);
+            labels[5].tooltip=string.Join("\n",e.BrandNames.Select(b=>b+": "+PartBrands.Description(b)));
+            labels[5].text=e.Source+" · "+string.Join(" / ",e.BrandNames.Select(PartBrands.Focus).Distinct())+" · "+PartSemantics.Friendly(e.Definition.category.ToString())+(PartSemantics.Wears(e.Definition.category)?" · "+(failed?"FAILED":health.ToString("P0")):"");labels[5].EnableInClassList("car-critical",failed);
             labels[6].text=(e.Price.HasValue?DisplayUnits.Money(e.Price.Value):"—")+(e.Definition.category==PartCategory.Tires||e.Definition.category==PartCategory.Wheels?e.Unit==null?" / set of 4":e.Definition.category==PartCategory.Wheels?" / wheel":" / tire":"")+" · "+(e.Definition.tuning!=PartTuningOptions.None||e.Definition.camTimingAdjustable?"Adjustable":"Fixed");
             labels[7].text=e.Source=="New"?e.StockUnits+" units in stock"+(e.RequiresExpress?" · Express":""):e.Unit!=null&&e.Change[3].HasValue?"Replacement condition "+PartDelta(e,3):"";
 
@@ -160,11 +161,12 @@ namespace DragLab.Runtime
             var heading=new VisualElement{name="partDetailHeading"};heading.AddToClassList("part-detail-heading");partsDetail.Insert(0,heading);
             var back=PartButton(heading,"partBack","",BackToParts,detail:true);back.AddToClassList("car-back-button");back.Add(new FilledMenuIcon("Back"));back.tooltip="Back to parts";
             var title=new Label(e.DisplayName??e.Definition.name){name="partDetailTitle",enableRichText=false};title.AddToClassList("car-detail-title");title.AddToClassList("part-detail-title");heading.Add(title);
-            var info=PartButton(heading,"partInfo","i",()=>OpenDialog(e.Definition.name,SharedUnitSettings.TorqueText(e.Definition.description+"\n"+PartTuning.Summary(e.Definition)+"\n"+e.Reason+"\n"+string.Join("\n",PartSemantics.Stats(e.Definition).Select(PartStatText))),new[]{new DialogAction("Close",CloseDialog)}),detail:true);info.AddToClassList("part-info-button");info.tooltip="All part specifications";
+            var info=PartButton(heading,"partInfo","i",()=>OpenDialog(e.Definition.name,SharedUnitSettings.TorqueText(PartBrands.Description(e.Definition.brand)+"\n"+e.Definition.description+"\n"+PartTuning.Summary(e.Definition)+"\n"+e.Reason+"\n"+string.Join("\n",PartSemantics.Stats(e.Definition).Select(PartStatText))),new[]{new DialogAction("Close",CloseDialog)}),detail:true);info.AddToClassList("part-info-button");info.tooltip="All part specifications";
             var top=new VisualElement{name="partDetailTop"};top.AddToClassList("part-detail-top");partsDetailScroll.Add(top);
             var facts=new VisualElement{name="partDetailFacts"};facts.AddToClassList("part-detail-facts");top.Add(facts);top.EnableInClassList("part-preview-unavailable",e.Proposed==null);DecoratePartDetail(facts,RacingSurface.Kind.Panel);
             PartDetailFact(facts,"Compatibility",e.Compatibility,e.Compatibility=="Compatible"?"car-ready":"car-warning");
-            PartDetailFact(facts,"Brand / quality",e.Definition.brand+" · "+e.Definition.quality);
+            PartDetailFact(facts,"Brand",e.Definition.brand+" · "+PartBrands.Focus(e.Definition.brand));
+            PartDetailFact(facts,"Specification",e.Definition.quality);
             PartDetailFact(facts,"Type",PartSemantics.Friendly(e.Definition.category.ToString())+" · "+e.Source);
             string set=e.Unit==null?InventoryUnits.SetLabel(game.Profile,game.Profile.SelectedCar,e.Definition):"Individual "+e.Unit.element.role;
             PartDetailFact(facts,"Includes",set.Replace("1 units","1 unit"));

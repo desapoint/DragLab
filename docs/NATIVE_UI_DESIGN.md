@@ -1,5 +1,7 @@
 # Native interface direction — grey/red and Settings first
 
+Part supplier focus (2026-10-14): Build uses the existing filter modal and shared joined choices for Upgrade focus and multi-select Brands. Multiple suppliers form an OR selection and combine with the other criteria; Apply/Cancel/Clear/F8 retain existing boundaries. Cards show concise focus/type/condition; details distinguish Brand/focus from actual material/specification. Brand focus never grants tuning or overrides stats. Mixed corner filters use actual constituent suppliers. [Supplier guide](PART_BRANDS.md).
+
 Availability clarification (2026-10-14): remove the Express availability filter from Build. Express delivery is a shortage charge, not a separate product category. Keep quick same-part replacement through the car's wear/maintenance controls, including unavailable parts and the existing explicit express-cost confirmation. Existing saved-build shortage quotes remain supported.
 
 Saved-setup confirmation (2026-10-13): reuse the fixed shared red Load / Buy & load action, current modal, dyno and four-stat comparison, concise owner/scope/cost/balance and exact reused/missing hardware. Info returns to the captured review; Cancel/X leaves assets unchanged. Pending tuning/cart must be resolved first. Explicit confirmation alone publishes the existing atomic load/purchase. No separate theme or live application. [Delivery/review](../reports/phases/4e/05-SETUP-LOAD.md).

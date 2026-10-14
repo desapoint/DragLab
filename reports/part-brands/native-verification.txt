@@ -1,0 +1,44 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1843 offers / 0 full comparisons / 0,00 ms / 1 cache hits
+PASS: Brand filter keeps Express absent from availability
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1843 offers / 0 full comparisons / 0,00 ms / 1 cache hits
+PASS: Applied focus filters actual shop suppliers: OEM
+PASS: Brand/focus filtering does not run per-part dynos: OEM
+PASS: Brand filter keeps Express absent from availability
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1843 offers / 0 full comparisons / 0,00 ms / 1 cache hits
+PASS: Applied focus filters actual shop suppliers: OEM+
+PASS: Brand/focus filtering does not run per-part dynos: OEM+
+PASS: Brand filter keeps Express absent from availability
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1843 offers / 0 full comparisons / 0,00 ms / 1 cache hits
+PASS: Applied focus filters actual shop suppliers: Street
+PASS: Brand/focus filtering does not run per-part dynos: Street
+PASS: Brand filter keeps Express absent from availability
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1843 offers / 0 full comparisons / 0,00 ms / 1 cache hits
+PASS: Applied focus filters actual shop suppliers: Tuning
+PASS: Brand/focus filtering does not run per-part dynos: Tuning
+PASS: Brand filter keeps Express absent from availability
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1843 offers / 0 full comparisons / 0,00 ms / 1 cache hits
+PASS: Applied focus filters actual shop suppliers: Competition
+PASS: Brand/focus filtering does not run per-part dynos: Competition
+PASS: Cancel discards supplier and focus drafts
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1843 offers / 0 full comparisons / 0,00 ms / 1 cache hits
+PASS: Individual supplier filters the current section
+PASS: Cards expose supplier focus alongside specification and condition
+PASS: Detail page separates supplier focus from material/specification
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1843 offers / 1 full comparisons / 5,19 ms / 1 cache hits
+PASS: Multiple selected brands form an OR selection
+PASS: F8 retains brand filter choices
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1843 offers / 1 full comparisons / 5,19 ms / 1 cache hits
+PASS: Clear restores all suppliers and focuses
+PASS: Brand browsing and draft actions do not save, spend, heal or change player state
+Checks: 33 / runtime errors: 0

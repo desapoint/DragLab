@@ -61,7 +61,7 @@ namespace DragLab.Domain.Mechanics
     // Stable, authored definitions; interchangeable sets are distinct from their owned instances.
     public sealed class MechanicalCatalog
     {
-        public const int Version = 5;
+        public const int Version = 6;
         public readonly List<PartDefinition> parts = new List<PartDefinition>();
         readonly Dictionary<string, VehicleSpec> specs = new Dictionary<string, VehicleSpec>();
         public static readonly PartCategory[] EngineSlots = { PartCategory.Pistons, PartCategory.Rods, PartCategory.Crankshaft, PartCategory.HeadIntake, PartCategory.FuelSystem, PartCategory.Ignition, PartCategory.Cooling, PartCategory.Induction, PartCategory.Exhaust, PartCategory.Flywheel };
@@ -71,10 +71,11 @@ namespace DragLab.Domain.Mechanics
             foreach (var source in vehicles) { var spec=source.Copy(); specs.Add(spec.id,spec.Copy()); Author(spec); }
             // Extra offers unlock independently. Existing ranks remain purchasable directly.
             foreach(var model in specs.Keys){var source=parts.Where(p=>p.id.StartsWith(model+"/")&&p.category==PartCategory.Induction&&p.turboUnits>0).OrderByDescending(p=>p.turboSize).FirstOrDefault();if(source!=null){var extra=source.Copy();extra.id=model+"/Induction/motorsport";extra.name=source.name+" / motorsport compressor";extra.reputationRequired=8;extra.price=checked(source.price+400);extra.boostScale=Math.Min(4,source.boostScale*1.05f);extra.description+=" Independent REP 8 offer; preceding induction ranks are not required. Higher boost needs matching strength, tires and cooling.";parts.Add(extra);}}
-            PartBrands.Apply(this);LockedCenterHardware.Add(this, specs.Values);AwdHardware.Add(this,specs.Values);
+            LockedCenterHardware.Add(this, specs.Values);AwdHardware.Add(this,specs.Values);
             foreach(var model in specs.Keys)foreach(var category in new[]{PartCategory.Bearings,PartCategory.PistonRings,PartCategory.ValveSeals}){
                 var original=Find(Id(model,category));if(original==null)continue;var spare=original.Copy();spare.id=model+"/"+category+"/ServiceLife";spare.brand="Relay Components";spare.quality="Long-service replacement";spare.name=spare.brand+" long-service "+PartSemantics.Friendly(category.ToString()).ToLowerInvariant();spare.price=(int)Math.Ceiling(original.price*1.2);spare.wearEnergyJ*=1.35f;spare.tuning=PartTuningOptions.None;spare.description="Matched fixed-spec replacement set. Same fit and performance ratings as OEM, with 35% greater wear-energy capacity. Buy into storage for a future rebuild; individual matching replacements remain available.";parts.Add(spare);
             }
+            PartBrands.Apply(this);
             if(applyOverrides)PartCatalogOverrides.Apply(this,PartCatalogOverrides.Load());
             authoring=false;RebuildIndexes();
         }
