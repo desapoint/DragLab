@@ -31,7 +31,7 @@ namespace DragLab.Infrastructure
                     string json = ProfileSaveCodec.ReadJson(path);
                     var profile = JsonUtility.FromJson<PlayerProfile>(json);
                     if (profile == null) throw new InvalidDataException("Empty profile.");
-                    if (profile.saveVersion > MechanicsOwnership.SaveVersion || profile.mechanicsVersion > MechanicsSchema.Version)
+                    if (profile.saveVersion != MechanicsOwnership.SaveVersion || profile.mechanicsVersion > MechanicsSchema.Version)
                     { writeBlocked = true; throw new InvalidDataException("Newer save schema; writing is disabled to preserve it."); }
                     // Optional version-1 additions: keep old saves audible and smoothly drivable.
                     if (profile.driving == null) profile.driving = new DriverSettings();
