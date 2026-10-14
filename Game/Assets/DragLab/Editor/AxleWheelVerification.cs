@@ -65,6 +65,30 @@ namespace DragLab.Editor
         {
             var log=new StringBuilder();int count=0;
             Action<bool,string> check=(ok,label)=>{log.AppendLine(((ok?"PASS: ":"FAIL: ")+label).TrimEnd());if(!ok)throw new InvalidOperationException(label);count++;};
+            // A stale/worn former tire-set condition must never contaminate healthy
+            // fitted tires, and obsolete parent usage counters must not be retained.
+            var independent=new ComponentCondition{health=.1f,failed=true,failureReason="old pack state",
+                slipEnergyJ=800,distanceM=600,runningSeconds=10,
+                tires=Enumerable.Range(0,4).Select(i=>new TireCondition{id="individual-"+i,health=1,temperatureC=20}).ToArray()};
+            TireDynamics.Ensure(independent);
+            check(independent.tires.All(t=>t.health==1&&!t.failed&&t.distanceM==0&&t.slipEnergyJ==0)
+                &&independent.health==1&&!independent.failed&&independent.slipEnergyJ==0
+                &&independent.distanceM==0,"Stale tire-set damage and history never flow back into independent tires");
+            var oldCondition=independent.Copy();
+            oldCondition.tires[0].slipEnergyJ=100;oldCondition.tires[0].distanceM=300;
+            oldCondition.tires[0].health=.75f;oldCondition.tires[0].consumedLife=.25;
+            var advanced=oldCondition.Copy();
+            advanced.tires[0].slipEnergyJ+=50;advanced.tires[0].distanceM+=100;
+            advanced.tires[0].health=.70f;advanced.tires[0].consumedLife=.30;
+            check(RunPersistence.ConditionAdvances(oldCondition,advanced),"Per-tire journal accepts genuine usage growth");
+            advanced.tires[0].slipEnergyJ=20;
+            check(!RunPersistence.ConditionAdvances(oldCondition,advanced),"Per-tire journal rejects energy rewind");
+            advanced=oldCondition.Copy();advanced.tires[0].id="different-tire";
+            check(!RunPersistence.ConditionAdvances(oldCondition,advanced),"An active race cannot silently exchange tire identities");
+            var legacy=new ComponentCondition{health=.6f,slipEnergyJ=120,distanceM=800};
+            TireDynamics.Ensure(legacy);
+            check(legacy.tires.Length==4&&legacy.tires.All(t=>t.health==.6f&&t.distanceM==800&&t.slipEnergyJ==30)
+                &&legacy.distanceM==0&&legacy.slipEnergyJ==0,"Legacy tire-set usage migrates once into per-tire histories");
             foreach(var vehicle in Resources.LoadAll<VehicleDefinition>("Data/Vehicles")){
                 var spec=vehicle.spec.Copy();var tune=vehicle.CreateStockTune();tune.ClampTo(spec);
                 var original=new WheelProfile(spec,tune);var inherited=tune.Copy();inherited.frontWheelDiameter=inherited.rearWheelDiameter=(float)tune.WheelDiameter;inherited.frontWheelWidth=inherited.rearWheelWidth=(float)tune.WheelWidth;inherited.frontTirePressurePsi=inherited.rearTirePressurePsi=tune.tirePressurePsi;
