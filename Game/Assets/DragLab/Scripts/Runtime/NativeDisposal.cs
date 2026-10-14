@@ -18,6 +18,7 @@ namespace DragLab.Runtime
         readonly Dictionary<string,bool> disposalGroups=new Dictionary<string,bool>();
         readonly Dictionary<string,Label> disposalPartStates=new Dictionary<string,Label>();
         Label disposalPrice,disposalSummary,disposalError;
+        Button disposalConfirm;
         string DisposalBuyer=>game.PricingPolicy.buyers[disposalBuyer].id;
         readonly List<SwitchSurface> disposalSwitches=new List<SwitchSurface>();
         readonly List<RacingSurface> disposalSurfaces=new List<RacingSurface>();
@@ -32,6 +33,8 @@ namespace DragLab.Runtime
             var frame=new VisualElement();frame.AddToClassList("car-details-frame");disposalPage.Add(frame);AddSurface(frame,RacingSurface.Kind.Panel);
             var scroll=new ScrollView{name="disposalScroll",horizontalScrollerVisibility=ScrollerVisibility.Hidden};scroll.AddToClassList("car-details-scroll");frame.Add(scroll);
             disposalContent=new VisualElement{name="disposalContent"};disposalContent.AddToClassList("car-details-content");scroll.Add(disposalContent);
+            var actions=new VisualElement();actions.AddToClassList("car-details-actions");disposalPage.Add(actions);
+            disposalConfirm=new Button(OpenDisposalReview){name="disposalReview",text="Review sale"};disposalConfirm.AddToClassList("action-button");disposalConfirm.AddToClassList("primary-action");actions.Add(disposalConfirm);AddSurface(disposalConfirm,RacingSurface.Kind.Action);
             var button=new Button(()=>OpenDisposal(ownedDetailId)){name="ownedSellSalvage",text="Sell / Salvage"};button.AddToClassList("action-button");ownedUse.parent.Insert(1,button);AddSurface(button,RacingSurface.Kind.SecondaryAction);
         }
         void OpenDisposal(string id){if(ModalOpen||!game.Profile.cars.Exists(c=>c.instanceId==id))return;disposalCarId=id;disposalKey=null;disposalMode=disposalBuyer=0;disposalKept.Clear();Refresh();}
@@ -41,6 +44,7 @@ namespace DragLab.Runtime
             if(route!="Garage"&&route!="Settings")disposalCarId=null;
             var car=game.Profile.cars.Find(c=>c.instanceId==disposalCarId);if(car==null)disposalCarId=null;
             bool show=route=="Garage"&&disposalCarId!=null&&!dealerMode;disposalPage.EnableInClassList("hidden",!show);if(!show)return;
+            bool expired=disposalQuote!=null&&DateTime.UtcNow.Ticks>=disposalQuote.ExpiresUtcTicks;disposalConfirm.SetEnabled(disposalQuote!=null&&!disposalQuote.Reserved&&game.CartCount==0&&!CartReservations.Active(game.Profile)&&!expired);if(expired&&disposalError!=null)disposalError.text="Quote expired. Refresh.";
             garagePages.AddToClassList("hidden");ownedDetails.AddToClassList("hidden");ownedScroll.AddToClassList("hidden");ownedToolbar.AddToClassList("hidden");
             string key=disposalCarId+"/"+game.Profile.revision;if(disposalKey==key)return;disposalKey=key;foreach(var surface in disposalSurfaces)surfaces.Remove(surface);disposalSurfaces.Clear();foreach(var surface in disposalSwitches)switchSurfaces.Remove(surface);disposalSwitches.Clear();disposalContent.Clear();
             var name=new Label(VehicleCollection.DisplayName(game.Profile.catalog,car)){name="disposalCarName",enableRichText=false};name.AddToClassList("car-detail-title");disposalContent.Add(name);
@@ -74,6 +78,25 @@ namespace DragLab.Runtime
             RefreshDisposalQuote();
             ExcludeTabTraversal();
         }
+        void OpenDisposalReview()
+        {
+            var quote=disposalQuote;var car=game.Profile.cars.Find(c=>c.instanceId==disposalCarId);if(quote==null||car==null)return;
+            string invalid=Valuations.Validate(quote,game.Profile,game.Profile.catalog,game.PricingPolicy,DateTime.UtcNow.Ticks);if(invalid!=null){disposalError.text=invalid;return;}
+            var error=new Label{name="disposalCommitError"};error.AddToClassList("car-critical");string id=car.instanceId;
+            OpenDialog("Confirm sale",null,new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Sell",()=>{
+                if(!game.CommitNativeDisposal(id,quote)){error.text=game.NativeNotice;return;}
+                CloseDialog();disposalCarId=null;ownedDetailId=null;ClearOwnedDetailContent();InvalidateOwnedGrid();Refresh();
+            },true)},populate:content=>{
+                content.Add(new Label(VehicleCollection.DisplayName(game.Profile.catalog,car)+" · "+(quote.Kind==ValuationKind.Chassis?"Chassis / engine kept":"Car")){enableRichText=false});
+                content.Add(new Label("Receive "+DisplayUnits.Money(quote.Total)+" · Balance after "+DisplayUnits.Money((long)game.Profile.cash+quote.Total)));
+                if(game.Profile.cars.Count==1)content.Add(new Label("Last car · dealership and recovery remain available."));
+                var included=game.Profile.parts.Where(p=>quote.IncludedIds.Contains(p.instanceId)).ToArray();
+                content.Add(new Label("Sell · "+included.Length+" components"));foreach(var part in included)content.Add(new Label(game.Profile.catalog.Find(part.definitionId).name+" · "+part.condition.health.ToString("P0")){enableRichText=false});
+                var kept=game.Profile.parts.Where(p=>car.installed.slots.Any(b=>b.partInstanceId==p.instanceId)&&!quote.IncludedIds.Contains(p.instanceId)).ToArray();
+                content.Add(new Label("Keep · "+kept.Length+" components"+(quote.Kind==ValuationKind.Chassis?" · Engine assembly, oil and coolant":"")));
+                foreach(var part in kept)content.Add(new Label(game.Profile.catalog.Find(part.definitionId).name+" · "+part.condition.health.ToString("P0")){enableRichText=false});content.Add(error);
+            });
+        }
         void RefreshDisposalQuote()
         {
             var car=game.Profile.cars.Find(c=>c.instanceId==disposalCarId);if(car==null)return;
@@ -82,8 +105,20 @@ namespace DragLab.Runtime
                 disposalPrice.text=DisplayUnits.Money(disposalQuote.Total);
                 int sold=disposalPartStates.Keys.Count(id=>disposalQuote.IncludedIds.Contains(id));int kept=disposalPartStates.Count-sold;
                 disposalSummary.text="Sell "+sold+" components · Keep "+kept+(disposalMode==1?" · Engine and its liquids retained":"")+" · "+(disposalQuote.Complete?"Complete":"Incomplete")+(disposalQuote.Faulty?" · Faults present":"");
-                disposalError.text=disposalQuote.Reserved?"Reserved · inspection only":game.CartCount>0?"Checkout or clear the cart before selling.":"";
+                disposalError.text=disposalQuote.Reserved?"Reserved · inspection only":(game.CartCount>0||CartReservations.Active(game.Profile))?"Checkout or clear the cart before selling.":"";
             }catch(Exception error){disposalQuote=null;disposalPrice.text="—";disposalError.text=error.Message;}
+        }
+    }
+    public sealed partial class PrototypeGame
+    {
+        internal bool CommitNativeDisposal(string carId,ValuationQuote quote)
+        {
+            try{
+                if(screen!="Garage"||pendingAction!=null||CartCount>0||CartReservations.Active(profile))throw new InvalidOperationException("Close pending actions or the cart before selling.");
+                var car=profile.cars.Find(c=>c.instanceId==carId);if(car==null||quote==null||!(quote.Kind==ValuationKind.Car&&quote.AssetId==carId||quote.Kind==ValuationKind.Chassis&&quote.AssetId==car.chassisId))throw new InvalidOperationException("Sale target changed. Reopen the review.");
+                if(!CommitParts(quote.Revision,p=>PaidEconomy.Sell(p,p.catalog,PricingPolicy,quote,DateTime.UtcNow.Ticks)))return false;
+                ShowGarageCar();notice="Sale saved.";return true;
+            }catch(Exception e){notice=e.Message;return false;}
         }
     }
 }

@@ -1,5 +1,7 @@
 # Slice 4 — Interface migration, input and platform validation
 
+**4I sale/salvage checkpoints delivered (2026-10-14):** four sequential commits deliver the page, actual valuation/contents, retention and durable explicit disposal. Windows build and final native 50/0 pass; [review/checks](../reports/phases/4i/04-CONFIRMATION.md). User visual acceptance remains separate. The explicitly authorized next checkpoint is native Race selection, then saved-setup rename/delete.
+
 **Authorized interface batch (2026-10-14):** deliver Sell/Salvage page, valuation/contents, retention choices and confirmation as four separate tested/built/committed checkpoints, then Race selection, then saved-setup rename/delete. 4I.1 page passes 32 native checks and Windows build; [report](../reports/phases/4i/01-PAGE.md). Continue only after each technical checkpoint; user visual acceptance remains distinct.
 
 **Responsiveness correction (2026-10-14):** the user requested reverting the new background startup/menu work. The established Unity execution flow is restored. Redundant preview market generation/catalogue authoring, linear lookups, broad preview fingerprints, save catalogue rebuilding, repeated card ordering and identical surface geometry are corrected without new workers or a storage migration. Detailed before/after timings, residual costs, checks and review are in [the audit](../reports/responsiveness/CHANGES.md). Settings direction, progressive finish-line braking and nine-race cart reservations remain the authorized following corrections.

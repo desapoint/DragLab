@@ -1,0 +1,7 @@
+# 4I.4 confirmed sale and salvage — 2026-10-14
+
+A fixed red Review sale action opens the shared confirmation with exact sold/kept fitted hardware, quoted cash/balance and last-car warning. Confirmation uses the existing PaidEconomy sale inside the authoritative transaction and SQLite durable publication. Expired/stale/reserved targets and pending carts cannot authorize disposal. Cancellation and failed saves retain the review and real assets. Whole-car sale removes its captured tree; chassis sale retains the named engine/liquids and checked sets with their original wear/faults. Empty garages retain dealership and existing recovery-work access.
+
+Windows build and final packaged native **50 / 0 runtime errors** passed: all prior quote/retention/navigation checks, 1024/1080p/true 4K layout, expiry rejection, Cancel, locked persistence failure/retry, actual chassis disposal, exact retained worn brakes/engine/liquids, SQLite reload, replay rejection, whole-car disposal and unrelated stored-engine preservation. [Evidence](04-native.txt). No simulation/economy recalibration was introduced. User visual acceptance remains pending.
+
+Review Garage → car → Sell / Salvage: choose buyer, Keep engine or individual fitted sets, inspect price info, and review the exact list before Sell. Test on a disposable save. This completes the four requested sale checkpoints technically; the user explicitly authorized Race selection next, then saved-setup rename/delete.

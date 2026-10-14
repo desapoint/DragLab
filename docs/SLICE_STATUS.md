@@ -1,5 +1,7 @@
 # Prototype implementation status
 
+**4I sale/salvage checkpoints delivered (2026-10-14):** four sequential commits deliver the page, actual valuation/contents, retention and durable explicit disposal. Windows build and final native 50/0 pass; [review/checks](../reports/phases/4i/04-CONFIRMATION.md). User visual acceptance remains separate. The explicitly authorized next checkpoint is native Race selection, then saved-setup rename/delete.
+
 **Authorized interface batch (2026-10-14):** deliver Sell/Salvage page, valuation/contents, retention choices and confirmation as four separate tested/built/committed checkpoints, then Race selection, then saved-setup rename/delete. 4I.1 page passes 32 native checks and Windows build; [report](../reports/phases/4i/01-PAGE.md). Continue only after each technical checkpoint; user visual acceptance remains distinct.
 
 **Shared dialog correction (2026-10-14):** title/X space is fixed, themed rails align ten points from the right edge, and maintenance rows/quotes remain stable during held slider drags. Windows build and native maintenance **63/0**, Settings **146/0**, warnings **283/0** passed across compact/1080p/4K checks. [Delivery/review](../reports/dialog-scroll/CHANGES.md). This requested correction is ready for user review; no later interface phase advanced.

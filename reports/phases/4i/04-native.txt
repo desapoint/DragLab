@@ -1,0 +1,52 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Sell / Salvage opens a dedicated page from exact owned-car details
+PASS: Sale page uses the original compact Back control
+PASS: Sale page identifies the actual named owned car
+PASS: Sale price matches authoritative condition/history/assembly valuation
+PASS: Grouped contents expose every actual included pack and its condition
+PASS: Keeping a fitted set reprices the real quote without removing or replacing it
+PASS: Keep engine quotes the chassis and explicitly retains the attached engine/liquids / $1 120 expected $1 120 / Sell 13 components · Keep 26 · Engine and its liquids retained · Complete /
+PASS: Price explanation uses the shared scrollable dialog
+PASS: F8 keeps the same sale page and asset
+PASS: Clean Settings Cancel returns to the sale page
+PASS: Sale content and Back fit 1024
+PASS: Sale content and Back fit 1920
+PASS: Sale actions remain reachable at crisp 4K scale
+PASS: Back returns to the same owned-car details
+PASS: Sale page navigation, Settings and F8 never spend, dispose, heal or save
+PASS: Expired sale cannot dispose or credit anything
+PASS: Destructive sale opens a separate explicit Sell confirmation
+PASS: Cancel retains all car identities, fluids, stock and cash
+PASS: Failed sale persistence publishes no money or ownership change and retains review
+PASS: Confirmed chassis sale disposes once and credits exactly its quote
+PASS: Stored engine/liquids and explicitly retained worn brakes preserve exact identities and condition
+PASS: Sale ownership and money survive a real SQLite reload
+PASS: Replaying the same sale cannot pay twice
+PASS: Last-car disposal leaves dealership and recovery navigation available
+PASS: Isolated whole-car sale fixture is durably created /
+PASS: Whole-car sale removes only its captured engine tree and leaves the previously retained engine intact
+PASS: Both sale modes leave a valid durable ownership ledger
+Checks: 50 / runtime errors: 0
