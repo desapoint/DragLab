@@ -1,0 +1,18 @@
+Menu workload timings / before / milliseconds
+catalogue: 89.23
+new profile / normalization: 2153.45
+definitions: 2238 / new stock products: 1800 / used stock: 14
+current profile normalization: 94.76
+current profile validation: 92.70
+transaction validation / clone: 338.21
+three dealership static previews: 3534.64
+stock refresh: 1593.01
+shop cold: 229.16
+shop revisit: 197.88
+10000 catalogue lookups: 82.93
+100 stock quotes: 0.30
+part detail comparison: 16.80
+planned shop: 496.12
+planned shop revisit: 239.81
+10 full profile serializations: 163.83
+profile bytes: 1306018

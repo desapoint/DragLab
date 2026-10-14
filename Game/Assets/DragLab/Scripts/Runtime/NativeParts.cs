@@ -125,8 +125,9 @@ namespace DragLab.Runtime
             if(PartComparisonPending){partsCount.text="… / "+list.Count;partsEmpty.text="Calculating comparison…";partsEmpty.RemoveFromClassList("hidden");return;}
             var matching=list.Where(e=>PartsQuery.Matches(e,game.Profile.cash)).ToList();matching.Sort(PartsQuery.Compare);
             foreach(var card in partCards.Values)card.AddToClassList("hidden");
-            string order=string.Join("/",matching.Select(e=>e.Id));bool reorder=partsOrder!=order;partsOrder=order;
-            foreach(var e in matching){if(!partCards.TryGetValue(e.Id,out var card)){CreatePartCard(e);card=partCards[e.Id];}card.RemoveFromClassList("hidden");if(reorder)card.BringToFront();}
+            string order=PartsQuery.Sort+"/"+PartsQuery.Descending+(PartsQuery.RequiresChanges?"/"+string.Join("/",matching.Select(e=>e.Id)):"");bool reorder=partsOrder!=order;partsOrder=order;VisualElement previous=null;
+            foreach(var e in matching){bool created=!partCards.TryGetValue(e.Id,out var card);if(created){CreatePartCard(e);card=partCards[e.Id];}card.RemoveFromClassList("hidden");
+                if(reorder||created){int target=previous==null?0:partsGrid.IndexOf(previous)+1;int current=partsGrid.IndexOf(card);if(current!=target){if(current<target)target--;card.RemoveFromHierarchy();partsGrid.Insert(Math.Min(target,partsGrid.childCount),card);}}previous=card;}
             partsCount.text=matching.Count+" / "+list.Count;partsEmpty.text=game.Profile.SelectedCar==null?"Select a car in Garage.":"No matching parts";partsEmpty.EnableInClassList("hidden",matching.Count>0);partsSort.Q<Label>().text=PartsQuery.Sort+(PartsQuery.Descending?" ↓":" ↑");
 
         }

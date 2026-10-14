@@ -34,7 +34,7 @@ namespace DragLab.Domain.Mechanics {
    if(data==null||data.version!=1||data.parts==null)throw new ArgumentException("Unsupported part-authoring data.");
    var seen=new HashSet<string>();var pending=new List<PartDefinition>();
    foreach(var draft in data.parts){if(draft==null||string.IsNullOrEmpty(draft.id)||!seen.Add(draft.id))throw new ArgumentException("Missing/duplicate override identity.");var original=catalog.Find(draft.id);if(original==null){if(requireAll)throw new ArgumentException("Unknown override: "+draft.id);continue;}string error=Validate(original,draft);if(error!=null)throw new ArgumentException(draft.id+": "+error);pending.Add(draft.Copy());}
-   foreach(var draft in pending)catalog.parts[catalog.parts.FindIndex(p=>p.id==draft.id)]=draft;
+   foreach(var draft in pending)catalog.parts[catalog.parts.FindIndex(p=>p.id==draft.id)]=draft;catalog.RebuildIndexes();
   }
  }
 }

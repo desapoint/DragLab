@@ -13,6 +13,10 @@ namespace DragLab.Runtime
         readonly Kind kind;
         readonly List<Vertex> vertices = new List<Vertex>(1024);
         readonly List<ushort> indices = new List<ushort>(4096);
+        sealed class CachedGeometry {internal Vertex[] vertices;internal ushort[] indices;}
+        static readonly Dictionary<(Kind,float,float,float,bool,bool,Color,Color,Color,Color,Color),CachedGeometry> geometryCache=new Dictionary<(Kind,float,float,float,bool,bool,Color,Color,Color,Color,Color),CachedGeometry>();
+        internal static int GeometryCacheHits {get;private set;}
+        Color drawAccent;
         static Texture2D dither;
         bool hovered, pressed, selected, wasAnimating;
         float sweepStarted = float.NegativeInfinity;
@@ -47,7 +51,10 @@ namespace DragLab.Runtime
         {
             float w = contentRect.width, h = contentRect.height;
             if (w < 1 || h < 1) return;
-            PaintCount++;
+            PaintCount++;drawAccent=RacingPalette.Accent(this);
+            bool cacheable=!hovered&&!pressed&&!ShineActive;
+            var geometryKey=(kind,w,h,AntiAliasWidth,owner.ClassListContains("clickable-panel"),selected,drawAccent,RacingPalette.Read(this,RacingPalette.MetalTop,C(.19f,.21f,.235f)),RacingPalette.Read(this,RacingPalette.MetalBottom,C(.075f,.085f,.10f)),RacingPalette.Read(this,RacingPalette.PanelTop,C(.095f,.108f,.12f)),RacingPalette.Read(this,RacingPalette.PanelBottom,C(.05f,.06f,.072f)));
+            if(cacheable&&geometryCache.TryGetValue(geometryKey,out var cached)){GeometryCacheHits++;var reused=context.Allocate(cached.vertices.Length,cached.indices.Length);foreach(var vertex in cached.vertices)reused.SetNextVertex(vertex);foreach(var index in cached.indices)reused.SetNextIndex(index);if(!UsesContour&&kind!=Kind.Header&&kind!=Kind.Footer)DrawDither(context,w,h);return;}
             vertices.Clear(); indices.Clear();
             bool lit = hovered;
             if (UsesContour) DrawContouredControl(w,h);
@@ -86,6 +93,7 @@ namespace DragLab.Runtime
                     DrawShine(w,h,.14f);
                 if (pressed) Face(0,0,w,h,C(0,0,0,.22f));
             }
+            if(cacheable){if(geometryCache.Count>=96)geometryCache.Clear();geometryCache[geometryKey]=new CachedGeometry{vertices=vertices.ToArray(),indices=indices.ToArray()};}
             var mesh = context.Allocate(vertices.Count,indices.Count);
             foreach (var vertex in vertices) mesh.SetNextVertex(vertex);
             foreach (var index in indices) mesh.SetNextIndex(index);
@@ -280,7 +288,7 @@ namespace DragLab.Runtime
             indices.Add((ushort)a); indices.Add((ushort)b); indices.Add((ushort)c);
             indices.Add((ushort)c); indices.Add((ushort)d); indices.Add((ushort)a);
         }
-        Color A(float brightness=1,float white=0,float alpha=1) => RacingPalette.Shade(this,brightness,white,alpha);
+        Color A(float brightness=1,float white=0,float alpha=1) {var color=Color.Lerp(drawAccent*brightness,Color.white,white);color.a=alpha;return color;}
         static Color C(float r,float g,float b,float a = 1) => new Color(r,g,b,a);
     }
 }

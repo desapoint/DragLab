@@ -15,6 +15,7 @@ namespace DragLab.Runtime
         readonly Dictionary<string,CarInspection> inspections=new Dictionary<string,CarInspection>();
         readonly Dictionary<string,PlayerProfile> plans=new Dictionary<string,PlayerProfile>();
         readonly Dictionary<string,NativePartEntry> comparisons=new Dictionary<string,NativePartEntry>();
+        internal string Context=>context;
         internal int Hits,Misses;
         internal bool HasComparisons=>comparisons.Count>0;
         internal static string Fingerprint(string text){using(var sha=SHA256.Create())return Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(text)));}

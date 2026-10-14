@@ -63,9 +63,10 @@ namespace DragLab.Domain.Mechanics
             if(expire)p.inventory.dealer.Clear();
             var state=new PartsStockState{version=1,seed=p.vehicleStock.seed,generation=p.vehicleStock.generation,guaranteeAtRefresh=p.driving.guaranteedFittingParts};p.inventory.market=state;
             uint random=Stream(state,0x91e10da5u),newQuantity=Stream(state,0x27d4eb2fu),usedRandom=Stream(state,0x165667b1u),usedQuantity=Stream(state,0x85ebca6bu),engineRandom=Stream(state,0xc2b2ae35u),engineQuantity=Stream(state,0xd3a2646cu),coverageRandom=Stream(state,0xfd7046c5u),coverageQuantity=Stream(state,0xb55a4f09u);
+            var productKeys=p.catalog.parts.ToDictionary(d=>d.id,ProductKey,StringComparer.Ordinal);
             var models=Models(p.catalog);var specs=models.Select(p.catalog.Spec).ToArray();
             var selectedNew=new List<KeyValuePair<NewPartStock,int>>();
-            foreach(var group in p.catalog.parts.GroupBy(ProductKey,StringComparer.Ordinal).OrderBy(g=>g.Min(d=>d.id),StringComparer.Ordinal)){
+            foreach(var group in p.catalog.parts.GroupBy(d=>productKeys[d.id],StringComparer.Ordinal).OrderBy(g=>g.Min(d=>d.id),StringComparer.Ordinal)){
                 var d=group.OrderBy(v=>v.id,StringComparer.Ordinal).First();int max=specs.Where(s=>p.catalog.Fits(s,d)).Select(s=>Count(s,d)).DefaultIfEmpty(1).Max();bool selected=Next(ref random)>=.24;
                 var row=new NewPartStock{definitions=group.Select(v=>v.id).OrderBy(id=>id,StringComparer.Ordinal).ToList(),deliveryPercent=5+(int)(Next(ref random)*6)%6};state.parts.Add(row);if(selected)selectedNew.Add(new KeyValuePair<NewPartStock,int>(row,max));
             }
@@ -86,9 +87,9 @@ namespace DragLab.Domain.Mechanics
             for(int n=0;n<selectedUsed.Count;n++)AddUsedSupply(p,selectedUsed[n].Item1,selectedUsed[n].Item2,prefix+"used/"+n,ref usedQuantity);
             if(owned.Length>0&&state.guaranteeAtRefresh>0){
                 var generated=p.inventory.dealer.Where(row=>row.Id.StartsWith(prefix+"used/",StringComparison.Ordinal)).ToArray();
-                var present=new HashSet<string>(generated.Where(row=>{var d=p.catalog.Find(row.DefinitionId);return d.reputationRequired<=p.reputation&&targets.Any(spec=>p.catalog.Fits(spec,d));}).Select(row=>ProductKey(p.catalog.Find(row.DefinitionId))),StringComparer.Ordinal);
-                var candidates=p.catalog.parts.Where(d=>PartSemantics.Wears(d.category)&&d.reputationRequired<=p.reputation&&targets.Any(spec=>p.catalog.Fits(spec,d))).GroupBy(ProductKey,StringComparer.Ordinal).OrderBy(g=>g.Min(d=>d.id),StringComparer.Ordinal).Select(g=>g.OrderBy(d=>d.id,StringComparer.Ordinal).First()).ToList();
-                while(present.Count<state.guaranteeAtRefresh){var remaining=candidates.Where(d=>!present.Contains(ProductKey(d))).ToArray();if(remaining.Length==0)break;var d=remaining[(int)(Next(ref coverageRandom)*remaining.Length)%remaining.Length];var platforms=targets.Where(spec=>p.catalog.Fits(spec,d)).ToArray();var source=platforms[(int)(Next(ref coverageRandom)*platforms.Length)%platforms.Length];var spec=p.catalog.Resolve(source.id,p.catalog.Recipe(source.id),new Tune()).spec;AddUsedSupply(p,spec,d,prefix+"used/guaranteed/"+present.Count,ref coverageQuantity);present.Add(ProductKey(d));}
+                var present=new HashSet<string>(generated.Where(row=>{var d=p.catalog.Find(row.DefinitionId);return d.reputationRequired<=p.reputation&&targets.Any(spec=>p.catalog.Fits(spec,d));}).Select(row=>productKeys[row.DefinitionId]),StringComparer.Ordinal);
+                var candidates=p.catalog.parts.Where(d=>PartSemantics.Wears(d.category)&&d.reputationRequired<=p.reputation&&targets.Any(spec=>p.catalog.Fits(spec,d))).GroupBy(d=>productKeys[d.id],StringComparer.Ordinal).OrderBy(g=>g.Min(d=>d.id),StringComparer.Ordinal).Select(g=>g.OrderBy(d=>d.id,StringComparer.Ordinal).First()).ToList();
+                while(present.Count<state.guaranteeAtRefresh){var remaining=candidates.Where(d=>!present.Contains(productKeys[d.id])).ToArray();if(remaining.Length==0)break;var d=remaining[(int)(Next(ref coverageRandom)*remaining.Length)%remaining.Length];var platforms=targets.Where(spec=>p.catalog.Fits(spec,d)).ToArray();var source=platforms[(int)(Next(ref coverageRandom)*platforms.Length)%platforms.Length];var spec=p.catalog.Resolve(source.id,p.catalog.Recipe(source.id),new Tune()).spec;AddUsedSupply(p,spec,d,prefix+"used/guaranteed/"+present.Count,ref coverageQuantity);present.Add(productKeys[d.id]);}
             }
             int engines=Next(ref engineRandom)<.25?0:1+(int)(Next(ref engineRandom)*6)%6;var newModels=new HashSet<string>();var selectedEngines=new List<Tuple<string,bool>>();
             for(int n=0;n<engines;n++){

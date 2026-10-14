@@ -66,6 +66,7 @@ namespace DragLab.Domain.Mechanics
         public static readonly PartCategory[] EngineSlots = { PartCategory.Pistons, PartCategory.Rods, PartCategory.Crankshaft, PartCategory.HeadIntake, PartCategory.FuelSystem, PartCategory.Ignition, PartCategory.Cooling, PartCategory.Induction, PartCategory.Exhaust, PartCategory.Flywheel };
         public MechanicalCatalog(IEnumerable<VehicleSpec> vehicles, bool applyOverrides=true)
         {
+            authoring=true;
             foreach (var source in vehicles) { var spec=source.Copy(); specs.Add(spec.id,spec.Copy()); Author(spec); }
             // Extra offers unlock independently. Existing ranks remain purchasable directly.
             foreach(var model in specs.Keys){var source=parts.Where(p=>p.id.StartsWith(model+"/")&&p.category==PartCategory.Induction&&p.turboUnits>0).OrderByDescending(p=>p.turboSize).FirstOrDefault();if(source!=null){var extra=source.Copy();extra.id=model+"/Induction/motorsport";extra.name=source.name+" / motorsport compressor";extra.reputationRequired=8;extra.price=checked(source.price+400);extra.boostScale=Math.Min(4,source.boostScale*1.05f);extra.description+=" Independent REP 8 offer; preceding induction ranks are not required. Higher boost needs matching strength, tires and cooling.";parts.Add(extra);}}
@@ -74,9 +75,25 @@ namespace DragLab.Domain.Mechanics
                 var original=Find(Id(model,category));if(original==null)continue;var spare=original.Copy();spare.id=model+"/"+category+"/ServiceLife";spare.brand="Relay Components";spare.quality="Long-service replacement";spare.name=spare.brand+" long-service "+PartSemantics.Friendly(category.ToString()).ToLowerInvariant();spare.price=(int)Math.Ceiling(original.price*1.2);spare.wearEnergyJ*=1.35f;spare.tuning=PartTuningOptions.None;spare.description="Matched fixed-spec replacement set. Same fit and performance ratings as OEM, with 35% greater wear-energy capacity. Buy into storage for a future rebuild; individual matching replacements remain available.";parts.Add(spare);
             }
             if(applyOverrides)PartCatalogOverrides.Apply(this,PartCatalogOverrides.Load());
+            authoring=false;RebuildIndexes();
+        }
+        bool authoring;
+        struct IndexedPart {public PartDefinition value;public int position;}
+        volatile Dictionary<string,IndexedPart> partIndex;
+        int indexedPartCount=-1;
+        readonly object indexLock=new object();
+        public void RebuildIndexes()
+        {
+            lock(indexLock){var next=new Dictionary<string,IndexedPart>(StringComparer.Ordinal);for(int i=0;i<parts.Count;i++)if(!next.ContainsKey(parts[i].id))next[parts[i].id]=new IndexedPart{value=parts[i],position=i};partIndex=next;indexedPartCount=parts.Count;}
         }
         public VehicleSpec Spec(string id) { return specs[id].Copy(); }
-        public PartDefinition Find(string id) { return parts.Find(p => p.id == id); }
+        public PartDefinition Find(string id)
+        {
+            if(id==null)return null;if(authoring)return parts.Find(p=>p.id==id);
+            if(partIndex==null||indexedPartCount!=parts.Count)RebuildIndexes();
+            if(partIndex.TryGetValue(id,out var part)&&part.position<parts.Count&&ReferenceEquals(parts[part.position],part.value)&&part.value.id==id)return part.value;
+            var found=parts.Find(p=>p.id==id);if(found!=null||part.value!=null)RebuildIndexes();return found;
+        }
         public static bool EngineSlot(PartCategory category) { return Array.IndexOf(EngineSlots, category) >= 0 || ServiceHardware.IsCategory(category); }
         public static bool DisablingEngineFailure(PartCategory category) { return category == PartCategory.Pistons || category == PartCategory.Rods || category == PartCategory.Crankshaft || category == PartCategory.FuelSystem || category == PartCategory.Ignition || ServiceHardware.CoreFailure(category) || category==PartCategory.ValveSprings || category==PartCategory.Followers; }
         public static bool DriveBranch(PartCategory category) { return category >= PartCategory.FrontAxle && category <= PartCategory.TransferCase; }
@@ -186,9 +203,15 @@ namespace DragLab.Domain.Mechanics
             }
             return result;
         }
+        public static bool SupportsSlot(VehicleSpec spec,PartCategory category)
+        {
+            if(category<PartCategory.Pistons||category>PartCategory.GlowPlugs)return false;
+            if(category==PartCategory.SparkPlugs&&CombustionHardware.Diesel(spec)||category==PartCategory.GlowPlugs&&!CombustionHardware.Diesel(spec)||category==PartCategory.Ignition&&CombustionHardware.Diesel(spec))return false;
+            return !DriveBranch(category)||spec.drive==DriveType.AWD||category==PartCategory.FrontAxle&&spec.drive==DriveType.FWD||category==PartCategory.RearAxle&&spec.drive==DriveType.RWD;
+        }
         public bool Fits(VehicleSpec spec, PartDefinition part)
         {
-            if(part==null || !Slots(spec).Contains(part.category) || part.fitment!=Interface(spec,part.category) || part.boreMm!=0 && Math.Abs(part.boreMm-Bore(spec))>=.01)return false;
+            if(part==null || !SupportsSlot(spec,part.category) || part.fitment!=Interface(spec,part.category) || part.boreMm!=0 && Math.Abs(part.boreMm-Bore(spec))>=.01)return false;
             if(EngineSlot(part.category)&&part.category!=PartCategory.Controls&&part.fuelKind!=spec.combustion.fuelKind)return false;
             if(part.category!=PartCategory.Controls)return true;
             if(CombustionHardware.Diesel(spec))return part.supportsDiesel&&part.controllerCylinderCapacity>=spec.sound.cylinders;

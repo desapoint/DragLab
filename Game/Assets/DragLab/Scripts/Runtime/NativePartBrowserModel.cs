@@ -81,12 +81,15 @@ namespace DragLab.Runtime
             cache?.Bind(profile,actualCar);
             Current=string.IsNullOrEmpty(actualCar.engineAssemblyId)?null:cache==null?Inspect(InspectionBuild.Capture(profile,actualCar)):cache.Inspection("current",()=>Inspect(InspectionBuild.Capture(profile,actualCar)));reference=profile;
             var cart=lines.Select(l=>l.Copy()).ToArray();
-            string planKey="plan/"+NativePartPreviewCache.Fingerprint(JsonUtility.ToJson(new PartCart.Lines{entries=cart.ToList()})+(cart.Length==0?"":JsonUtility.ToJson(profile)+string.Join("/",cart.Select(l=>JsonUtility.ToJson(profile.catalog.Find(l.definitionId))))));
+            string incoming=cart.Length==0?"":cache==null?JsonUtility.ToJson(profile):cache.Context+"/"+string.Join("/",cart.Select(l=>JsonUtility.ToJson(profile.parts.Find(i=>i.instanceId==l.assetId))+JsonUtility.ToJson(profile.looseEngineElements.Find(i=>i.element.id==l.assetId))+JsonUtility.ToJson(profile.inventory.dealer.Find(i=>i.Id==l.assetId))+JsonUtility.ToJson(profile.catalog.Find(l.definitionId))));
+            string planKey="plan/"+NativePartPreviewCache.Fingerprint(JsonUtility.ToJson(new PartCart.Lines{entries=cart.ToList()})+incoming);
             if(cart.Length>0)try {PartCart.Total(profile,actualCar.instanceId,cart);var copy=cache==null?PartCart.PreviewProfile(profile,actualCar,cart):cache.Plan(planKey,()=>PartCart.PreviewProfile(profile,actualCar,cart));Plan=cache==null?Inspect(InspectionBuild.Capture(copy,copy.SelectedCar)):cache.Inspection(planKey,()=>Inspect(InspectionBuild.Capture(copy,copy.SelectedCar)));if(planned)reference=copy;}catch(Exception e){PlanError=e.Message;}
             referenceKey=planned&&Plan!=null?planKey:"current";
             referenceCar=reference.SelectedCar;referenceMap=MechanicsOwnership.Definitions(reference,referenceCar);Reference=planned&&PlanError!=null||string.IsNullOrEmpty(referenceCar.engineAssemblyId)?null:ReferenceEquals(reference,profile)?Current:Plan;
             referenceSpec=actual.catalog.Resolve(referenceCar.vehicleId,referenceMap,referenceCar.tune).spec;
-            bool Owns(string id)=>profile.parts.Any(p=>p.condition.tires.Length==4?Enumerable.Range(0,4).Any(i=>TireFitments.DefinitionId(p,i)==id):WheelFitments.HasOverrides(p)?Enumerable.Range(0,4).Any(i=>WheelFitments.DefinitionId(p,i)==id):p.definitionId==id)||profile.looseEngineElements.Any(p=>p.definitionId==id);
+            var ownedDefinitions=new HashSet<string>(profile.looseEngineElements.Select(u=>u.definitionId),StringComparer.Ordinal);
+            foreach(var part in profile.parts){if(part.condition.tires.Length==4)for(int i=0;i<4;i++)ownedDefinitions.Add(TireFitments.DefinitionId(part,i));else if(WheelFitments.HasOverrides(part))for(int i=0;i<4;i++)ownedDefinitions.Add(WheelFitments.DefinitionId(part,i));else ownedDefinitions.Add(part.definitionId);}
+            bool Owns(string id)=>ownedDefinitions.Contains(id);
             if(page=="Installed")foreach(var slot in actualCar.installed.slots){var p=profile.parts.Find(i=>i.instanceId==slot.partInstanceId);if(p==null)continue;Add(p.instanceId,p.definitionId,"Installed",p,null,true,p.ownerId,null);}
             if(page=="Inventory"){
                 foreach(var p in profile.parts.Where(p=>!actualCar.installed.slots.Any(s=>s.partInstanceId==p.instanceId)))Add(p.instanceId,p.definitionId,"Owned",p,null,true,p.location==PartLocation.Inventory?SharedInventory.StorageOf(p.storageId):p.ownerId,SafePrice(()=>salePrice(p.instanceId,false),p.location==PartLocation.Inventory));

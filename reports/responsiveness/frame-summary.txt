@@ -1,0 +1,8 @@
+Focused UI audit, normal initial resolution. Excludes the separate all-car diagnostic matrix.
+These intervals include rendering, scripted input and small verifier assertions; they are not CPU-only timings.
+shop entry: 47 frames; frame median 13.95, p95 22.69, max 187.87; menu CPU p95 3.45, max 128.43
+search: 3 frames; frame median 13.94, p95 13.94, max 20.84; menu CPU p95 2.94, max 3.02
+part details: 36 frames; frame median 13.95, p95 20.98, max 78.37; menu CPU p95 3.56, max 4.75
+cart: 37 frames; frame median 14.00, p95 21.89, max 212.61; menu CPU p95 3.82, max 175.29
+tuning: 66 frames; frame median 13.94, p95 21.77, max 144.58; menu CPU p95 4.30, max 106.58
+settings: 40 frames; frame median 14.01, p95 20.96, max 34.79; menu CPU p95 3.09, max 10.21

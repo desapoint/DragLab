@@ -8,6 +8,9 @@ namespace DragLab.Infrastructure
 {
     public static class ProfileStore
     {
+        internal static Action<string,double> SaveMeasurement;
+        static long SaveStamp()=>SaveMeasurement==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
+        static void SavedPhase(string phase,long stamp){if(stamp!=0)SaveMeasurement?.Invoke(phase,(System.Diagnostics.Stopwatch.GetTimestamp()-stamp)*1000.0/System.Diagnostics.Stopwatch.Frequency);}
         static bool recoveredBackup;
         static bool writeBlocked;
 #if UNITY_EDITOR
@@ -144,8 +147,8 @@ namespace DragLab.Infrastructure
         {
             using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                var bytes = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(profile, true));
-                stream.Write(bytes, 0, bytes.Length); stream.Flush(true);
+                long stamp=SaveStamp();var bytes = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(profile, true));SavedPhase("save JSON + UTF-8",stamp);
+                stamp=SaveStamp();stream.Write(bytes, 0, bytes.Length); stream.Flush(true);SavedPhase("save write + durable flush",stamp);
             }
         }
         static void Publish(string temp, string path)
@@ -159,18 +162,18 @@ namespace DragLab.Infrastructure
             try
             {
                 if (writeBlocked) throw new InvalidDataException("Save writes blocked because a newer schema was encountered.");
-                MechanicsOwnership.Ensure(profile, MechanicsTransactions.Catalog());
+                long stamp=SaveStamp();MechanicsOwnership.Ensure(profile, profile.catalog ?? MechanicsTransactions.Catalog());SavedPhase("save normalization + validation",stamp);
                 string checkpointWarning;
-                RaceCheckpointStore.Merge(FilePath,profile,false,out checkpointWarning);
+                stamp=SaveStamp();RaceCheckpointStore.Merge(FilePath,profile,false,out checkpointWarning);SavedPhase("save checkpoint merge",stamp);
                 Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
                 string temp = FilePath + ".tmp";
                 // Flush to disk before replacing the previous complete profile.
                 WriteDurable(temp, profile);
-                if (File.Exists(FilePath) && !recoveredBackup) File.Copy(FilePath, FilePath + ".bak", true);
+                stamp=SaveStamp();if (File.Exists(FilePath) && !recoveredBackup) File.Copy(FilePath, FilePath + ".bak", true);
                 // Temp is in the same directory, permitting an atomic file rename/replace.
                 if (File.Exists(FilePath)) File.Replace(temp, FilePath, null);
                 else File.Move(temp, FilePath);
-                RaceCheckpointStore.Retire(FilePath);
+                RaceCheckpointStore.Retire(FilePath);SavedPhase("save backup + atomic publication",stamp);
                 recoveredBackup = false;
                 Status = "Saved.";
                 return true;

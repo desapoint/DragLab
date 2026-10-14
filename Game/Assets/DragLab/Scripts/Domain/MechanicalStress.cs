@@ -10,7 +10,6 @@ namespace DragLab.Domain
     public sealed class MechanicalStress
     {
         public readonly List<PartInstance> parts;
-        readonly MechanicalCatalog catalog;
         readonly Dictionary<string, PartDefinition> definitions;
         readonly VehicleSpec spec;
         readonly AwdSpec awd;
@@ -21,9 +20,10 @@ namespace DragLab.Domain
             this.spec = spec; awd = AxleDriveDynamics.Configuration(spec, tune);
             var type = tune.transmissionUpgrade == TransmissionUpgrade.Factory ? spec.transmission.type : (TransmissionType)((int)tune.transmissionUpgrade - 1);
             frictionClutch = type == TransmissionType.Manual || type == TransmissionType.DCT;
-            catalog = new MechanicalCatalog(new[] { spec });
-            definitions = catalog.parts.ToDictionary(p => p.id);
+            var catalog = spec.hasInstalledParts ? null : new MechanicalCatalog(new[] { spec });
+            definitions = catalog==null ? new Dictionary<string,PartDefinition>() : catalog.parts.ToDictionary(p => p.id);
             foreach (var p in spec.fittedParts) definitions[p.id] = p.Copy();
+            foreach(var d in spec.cornerWheelDefinitions??new PartDefinition[0])definitions[d.id]=d.Copy();
             foreach(var d in spec.cornerTireDefinitions??new PartDefinition[0])definitions[d.id]=d.Copy();
             parts = installed == null ? (spec.hasInstalledParts ? spec.fittedParts.ToDictionary(p => p.category, p => p.id) : catalog.Recipe(spec.id, tune)).Select(p => new PartInstance { instanceId = "simulation/" + p.Key, definitionId = p.Value, location = PartLocation.Vehicle, ownerId = "simulation", slot = p.Key.ToString() }).ToList() : installed.Select(p => p.Copy()).ToList();
             foreach(var p in parts){var d=Definition(p);EngineElements.Ensure(spec,d,p);ClutchHardware.Ensure(d,p.condition);}

@@ -1,0 +1,1184 @@
+PASS city-three indexed slot support Pistons
+PASS city-three indexed slot support Rods
+PASS city-three indexed slot support Crankshaft
+PASS city-three indexed slot support HeadIntake
+PASS city-three indexed slot support FuelSystem
+PASS city-three indexed slot support Ignition
+PASS city-three indexed slot support Cooling
+PASS city-three indexed slot support Induction
+PASS city-three indexed slot support Exhaust
+PASS city-three indexed slot support Clutch
+PASS city-three indexed slot support Flywheel
+PASS city-three indexed slot support Gearbox
+PASS city-three indexed slot support Differential
+PASS city-three indexed slot support Wheels
+PASS city-three indexed slot support Tires
+PASS city-three indexed slot support Brakes
+PASS city-three indexed slot support Body
+PASS city-three indexed slot support Controls
+PASS city-three indexed slot support Driveshaft
+PASS city-three indexed slot support FrontAxle
+PASS city-three indexed slot support RearAxle
+PASS city-three indexed slot support FrontDriveshaft
+PASS city-three indexed slot support RearDriveshaft
+PASS city-three indexed slot support FrontDifferential
+PASS city-three indexed slot support RearDifferential
+PASS city-three indexed slot support TransferCase
+PASS city-three indexed slot support Interior
+PASS city-three indexed slot support Accessories
+PASS city-three indexed slot support RevLimiter
+PASS city-three indexed slot support ShiftLight
+PASS city-three indexed slot support TwoStep
+PASS city-three indexed slot support Camshaft
+PASS city-three indexed slot support ValveSprings
+PASS city-three indexed slot support Valves
+PASS city-three indexed slot support Followers
+PASS city-three indexed slot support TimingDrive
+PASS city-three indexed slot support PistonRings
+PASS city-three indexed slot support CylinderBlock
+PASS city-three indexed slot support Bearings
+PASS city-three indexed slot support ValveSeals
+PASS city-three indexed slot support OilPan
+PASS city-three indexed slot support OilPump
+PASS city-three indexed slot support OilFilter
+PASS city-three indexed slot support CoolantPump
+PASS city-three indexed slot support CoolingCap
+PASS city-three indexed slot support CoolingHoses
+PASS city-three indexed slot support OilCooler
+PASS city-three indexed slot support SparkPlugs
+PASS city-three indexed slot support GlowPlugs
+PASS city-three captured definition agrees with authored baseline Pistons
+PASS city-three captured definition agrees with authored baseline Rods
+PASS city-three captured definition agrees with authored baseline Crankshaft
+PASS city-three captured definition agrees with authored baseline HeadIntake
+PASS city-three captured definition agrees with authored baseline FuelSystem
+PASS city-three captured definition agrees with authored baseline Ignition
+PASS city-three captured definition agrees with authored baseline Cooling
+PASS city-three captured definition agrees with authored baseline Induction
+PASS city-three captured definition agrees with authored baseline Exhaust
+PASS city-three captured definition agrees with authored baseline Clutch
+PASS city-three captured definition agrees with authored baseline Flywheel
+PASS city-three captured definition agrees with authored baseline Gearbox
+PASS city-three captured definition agrees with authored baseline Differential
+PASS city-three captured definition agrees with authored baseline Wheels
+PASS city-three captured definition agrees with authored baseline Tires
+PASS city-three captured definition agrees with authored baseline Brakes
+PASS city-three captured definition agrees with authored baseline Body
+PASS city-three captured definition agrees with authored baseline Controls
+PASS city-three captured definition agrees with authored baseline Driveshaft
+PASS city-three captured definition agrees with authored baseline FrontAxle
+PASS city-three captured definition agrees with authored baseline Interior
+PASS city-three captured definition agrees with authored baseline Accessories
+PASS city-three captured definition agrees with authored baseline RevLimiter
+PASS city-three captured definition agrees with authored baseline Camshaft
+PASS city-three captured definition agrees with authored baseline ValveSprings
+PASS city-three captured definition agrees with authored baseline Valves
+PASS city-three captured definition agrees with authored baseline Followers
+PASS city-three captured definition agrees with authored baseline TimingDrive
+PASS city-three captured definition agrees with authored baseline PistonRings
+PASS city-three captured definition agrees with authored baseline CylinderBlock
+PASS city-three captured definition agrees with authored baseline Bearings
+PASS city-three captured definition agrees with authored baseline ValveSeals
+PASS city-three captured definition agrees with authored baseline OilPan
+PASS city-three captured definition agrees with authored baseline OilPump
+PASS city-three captured definition agrees with authored baseline OilFilter
+PASS city-three captured definition agrees with authored baseline CoolantPump
+PASS city-three captured definition agrees with authored baseline CoolingCap
+PASS city-three captured definition agrees with authored baseline CoolingHoses
+PASS city-three captured definition agrees with authored baseline SparkPlugs
+PASS city-three retains the same simulation component topology
+PASS juniper-club indexed slot support Pistons
+PASS juniper-club indexed slot support Rods
+PASS juniper-club indexed slot support Crankshaft
+PASS juniper-club indexed slot support HeadIntake
+PASS juniper-club indexed slot support FuelSystem
+PASS juniper-club indexed slot support Ignition
+PASS juniper-club indexed slot support Cooling
+PASS juniper-club indexed slot support Induction
+PASS juniper-club indexed slot support Exhaust
+PASS juniper-club indexed slot support Clutch
+PASS juniper-club indexed slot support Flywheel
+PASS juniper-club indexed slot support Gearbox
+PASS juniper-club indexed slot support Differential
+PASS juniper-club indexed slot support Wheels
+PASS juniper-club indexed slot support Tires
+PASS juniper-club indexed slot support Brakes
+PASS juniper-club indexed slot support Body
+PASS juniper-club indexed slot support Controls
+PASS juniper-club indexed slot support Driveshaft
+PASS juniper-club indexed slot support FrontAxle
+PASS juniper-club indexed slot support RearAxle
+PASS juniper-club indexed slot support FrontDriveshaft
+PASS juniper-club indexed slot support RearDriveshaft
+PASS juniper-club indexed slot support FrontDifferential
+PASS juniper-club indexed slot support RearDifferential
+PASS juniper-club indexed slot support TransferCase
+PASS juniper-club indexed slot support Interior
+PASS juniper-club indexed slot support Accessories
+PASS juniper-club indexed slot support RevLimiter
+PASS juniper-club indexed slot support ShiftLight
+PASS juniper-club indexed slot support TwoStep
+PASS juniper-club indexed slot support Camshaft
+PASS juniper-club indexed slot support ValveSprings
+PASS juniper-club indexed slot support Valves
+PASS juniper-club indexed slot support Followers
+PASS juniper-club indexed slot support TimingDrive
+PASS juniper-club indexed slot support PistonRings
+PASS juniper-club indexed slot support CylinderBlock
+PASS juniper-club indexed slot support Bearings
+PASS juniper-club indexed slot support ValveSeals
+PASS juniper-club indexed slot support OilPan
+PASS juniper-club indexed slot support OilPump
+PASS juniper-club indexed slot support OilFilter
+PASS juniper-club indexed slot support CoolantPump
+PASS juniper-club indexed slot support CoolingCap
+PASS juniper-club indexed slot support CoolingHoses
+PASS juniper-club indexed slot support OilCooler
+PASS juniper-club indexed slot support SparkPlugs
+PASS juniper-club indexed slot support GlowPlugs
+PASS juniper-club captured definition agrees with authored baseline Pistons
+PASS juniper-club captured definition agrees with authored baseline Rods
+PASS juniper-club captured definition agrees with authored baseline Crankshaft
+PASS juniper-club captured definition agrees with authored baseline HeadIntake
+PASS juniper-club captured definition agrees with authored baseline FuelSystem
+PASS juniper-club captured definition agrees with authored baseline Ignition
+PASS juniper-club captured definition agrees with authored baseline Cooling
+PASS juniper-club captured definition agrees with authored baseline Induction
+PASS juniper-club captured definition agrees with authored baseline Exhaust
+PASS juniper-club captured definition agrees with authored baseline Clutch
+PASS juniper-club captured definition agrees with authored baseline Flywheel
+PASS juniper-club captured definition agrees with authored baseline Gearbox
+PASS juniper-club captured definition agrees with authored baseline Differential
+PASS juniper-club captured definition agrees with authored baseline Wheels
+PASS juniper-club captured definition agrees with authored baseline Tires
+PASS juniper-club captured definition agrees with authored baseline Brakes
+PASS juniper-club captured definition agrees with authored baseline Body
+PASS juniper-club captured definition agrees with authored baseline Controls
+PASS juniper-club captured definition agrees with authored baseline Driveshaft
+PASS juniper-club captured definition agrees with authored baseline FrontAxle
+PASS juniper-club captured definition agrees with authored baseline Interior
+PASS juniper-club captured definition agrees with authored baseline Accessories
+PASS juniper-club captured definition agrees with authored baseline RevLimiter
+PASS juniper-club captured definition agrees with authored baseline Camshaft
+PASS juniper-club captured definition agrees with authored baseline ValveSprings
+PASS juniper-club captured definition agrees with authored baseline Valves
+PASS juniper-club captured definition agrees with authored baseline Followers
+PASS juniper-club captured definition agrees with authored baseline TimingDrive
+PASS juniper-club captured definition agrees with authored baseline PistonRings
+PASS juniper-club captured definition agrees with authored baseline CylinderBlock
+PASS juniper-club captured definition agrees with authored baseline Bearings
+PASS juniper-club captured definition agrees with authored baseline ValveSeals
+PASS juniper-club captured definition agrees with authored baseline OilPan
+PASS juniper-club captured definition agrees with authored baseline OilPump
+PASS juniper-club captured definition agrees with authored baseline OilFilter
+PASS juniper-club captured definition agrees with authored baseline CoolantPump
+PASS juniper-club captured definition agrees with authored baseline CoolingCap
+PASS juniper-club captured definition agrees with authored baseline CoolingHoses
+PASS juniper-club captured definition agrees with authored baseline SparkPlugs
+PASS juniper-club retains the same simulation component topology
+PASS juniper-economy indexed slot support Pistons
+PASS juniper-economy indexed slot support Rods
+PASS juniper-economy indexed slot support Crankshaft
+PASS juniper-economy indexed slot support HeadIntake
+PASS juniper-economy indexed slot support FuelSystem
+PASS juniper-economy indexed slot support Ignition
+PASS juniper-economy indexed slot support Cooling
+PASS juniper-economy indexed slot support Induction
+PASS juniper-economy indexed slot support Exhaust
+PASS juniper-economy indexed slot support Clutch
+PASS juniper-economy indexed slot support Flywheel
+PASS juniper-economy indexed slot support Gearbox
+PASS juniper-economy indexed slot support Differential
+PASS juniper-economy indexed slot support Wheels
+PASS juniper-economy indexed slot support Tires
+PASS juniper-economy indexed slot support Brakes
+PASS juniper-economy indexed slot support Body
+PASS juniper-economy indexed slot support Controls
+PASS juniper-economy indexed slot support Driveshaft
+PASS juniper-economy indexed slot support FrontAxle
+PASS juniper-economy indexed slot support RearAxle
+PASS juniper-economy indexed slot support FrontDriveshaft
+PASS juniper-economy indexed slot support RearDriveshaft
+PASS juniper-economy indexed slot support FrontDifferential
+PASS juniper-economy indexed slot support RearDifferential
+PASS juniper-economy indexed slot support TransferCase
+PASS juniper-economy indexed slot support Interior
+PASS juniper-economy indexed slot support Accessories
+PASS juniper-economy indexed slot support RevLimiter
+PASS juniper-economy indexed slot support ShiftLight
+PASS juniper-economy indexed slot support TwoStep
+PASS juniper-economy indexed slot support Camshaft
+PASS juniper-economy indexed slot support ValveSprings
+PASS juniper-economy indexed slot support Valves
+PASS juniper-economy indexed slot support Followers
+PASS juniper-economy indexed slot support TimingDrive
+PASS juniper-economy indexed slot support PistonRings
+PASS juniper-economy indexed slot support CylinderBlock
+PASS juniper-economy indexed slot support Bearings
+PASS juniper-economy indexed slot support ValveSeals
+PASS juniper-economy indexed slot support OilPan
+PASS juniper-economy indexed slot support OilPump
+PASS juniper-economy indexed slot support OilFilter
+PASS juniper-economy indexed slot support CoolantPump
+PASS juniper-economy indexed slot support CoolingCap
+PASS juniper-economy indexed slot support CoolingHoses
+PASS juniper-economy indexed slot support OilCooler
+PASS juniper-economy indexed slot support SparkPlugs
+PASS juniper-economy indexed slot support GlowPlugs
+PASS juniper-economy captured definition agrees with authored baseline Pistons
+PASS juniper-economy captured definition agrees with authored baseline Rods
+PASS juniper-economy captured definition agrees with authored baseline Crankshaft
+PASS juniper-economy captured definition agrees with authored baseline HeadIntake
+PASS juniper-economy captured definition agrees with authored baseline FuelSystem
+PASS juniper-economy captured definition agrees with authored baseline Ignition
+PASS juniper-economy captured definition agrees with authored baseline Cooling
+PASS juniper-economy captured definition agrees with authored baseline Induction
+PASS juniper-economy captured definition agrees with authored baseline Exhaust
+PASS juniper-economy captured definition agrees with authored baseline Clutch
+PASS juniper-economy captured definition agrees with authored baseline Flywheel
+PASS juniper-economy captured definition agrees with authored baseline Gearbox
+PASS juniper-economy captured definition agrees with authored baseline Differential
+PASS juniper-economy captured definition agrees with authored baseline Wheels
+PASS juniper-economy captured definition agrees with authored baseline Tires
+PASS juniper-economy captured definition agrees with authored baseline Brakes
+PASS juniper-economy captured definition agrees with authored baseline Body
+PASS juniper-economy captured definition agrees with authored baseline Controls
+PASS juniper-economy captured definition agrees with authored baseline Driveshaft
+PASS juniper-economy captured definition agrees with authored baseline FrontAxle
+PASS juniper-economy captured definition agrees with authored baseline Interior
+PASS juniper-economy captured definition agrees with authored baseline Accessories
+PASS juniper-economy captured definition agrees with authored baseline RevLimiter
+PASS juniper-economy captured definition agrees with authored baseline Camshaft
+PASS juniper-economy captured definition agrees with authored baseline ValveSprings
+PASS juniper-economy captured definition agrees with authored baseline Valves
+PASS juniper-economy captured definition agrees with authored baseline Followers
+PASS juniper-economy captured definition agrees with authored baseline TimingDrive
+PASS juniper-economy captured definition agrees with authored baseline PistonRings
+PASS juniper-economy captured definition agrees with authored baseline CylinderBlock
+PASS juniper-economy captured definition agrees with authored baseline Bearings
+PASS juniper-economy captured definition agrees with authored baseline ValveSeals
+PASS juniper-economy captured definition agrees with authored baseline OilPan
+PASS juniper-economy captured definition agrees with authored baseline OilPump
+PASS juniper-economy captured definition agrees with authored baseline OilFilter
+PASS juniper-economy captured definition agrees with authored baseline CoolantPump
+PASS juniper-economy captured definition agrees with authored baseline CoolingCap
+PASS juniper-economy captured definition agrees with authored baseline CoolingHoses
+PASS juniper-economy captured definition agrees with authored baseline SparkPlugs
+PASS juniper-economy retains the same simulation component topology
+PASS kestrel-track indexed slot support Pistons
+PASS kestrel-track indexed slot support Rods
+PASS kestrel-track indexed slot support Crankshaft
+PASS kestrel-track indexed slot support HeadIntake
+PASS kestrel-track indexed slot support FuelSystem
+PASS kestrel-track indexed slot support Ignition
+PASS kestrel-track indexed slot support Cooling
+PASS kestrel-track indexed slot support Induction
+PASS kestrel-track indexed slot support Exhaust
+PASS kestrel-track indexed slot support Clutch
+PASS kestrel-track indexed slot support Flywheel
+PASS kestrel-track indexed slot support Gearbox
+PASS kestrel-track indexed slot support Differential
+PASS kestrel-track indexed slot support Wheels
+PASS kestrel-track indexed slot support Tires
+PASS kestrel-track indexed slot support Brakes
+PASS kestrel-track indexed slot support Body
+PASS kestrel-track indexed slot support Controls
+PASS kestrel-track indexed slot support Driveshaft
+PASS kestrel-track indexed slot support FrontAxle
+PASS kestrel-track indexed slot support RearAxle
+PASS kestrel-track indexed slot support FrontDriveshaft
+PASS kestrel-track indexed slot support RearDriveshaft
+PASS kestrel-track indexed slot support FrontDifferential
+PASS kestrel-track indexed slot support RearDifferential
+PASS kestrel-track indexed slot support TransferCase
+PASS kestrel-track indexed slot support Interior
+PASS kestrel-track indexed slot support Accessories
+PASS kestrel-track indexed slot support RevLimiter
+PASS kestrel-track indexed slot support ShiftLight
+PASS kestrel-track indexed slot support TwoStep
+PASS kestrel-track indexed slot support Camshaft
+PASS kestrel-track indexed slot support ValveSprings
+PASS kestrel-track indexed slot support Valves
+PASS kestrel-track indexed slot support Followers
+PASS kestrel-track indexed slot support TimingDrive
+PASS kestrel-track indexed slot support PistonRings
+PASS kestrel-track indexed slot support CylinderBlock
+PASS kestrel-track indexed slot support Bearings
+PASS kestrel-track indexed slot support ValveSeals
+PASS kestrel-track indexed slot support OilPan
+PASS kestrel-track indexed slot support OilPump
+PASS kestrel-track indexed slot support OilFilter
+PASS kestrel-track indexed slot support CoolantPump
+PASS kestrel-track indexed slot support CoolingCap
+PASS kestrel-track indexed slot support CoolingHoses
+PASS kestrel-track indexed slot support OilCooler
+PASS kestrel-track indexed slot support SparkPlugs
+PASS kestrel-track indexed slot support GlowPlugs
+PASS kestrel-track captured definition agrees with authored baseline Pistons
+PASS kestrel-track captured definition agrees with authored baseline Rods
+PASS kestrel-track captured definition agrees with authored baseline Crankshaft
+PASS kestrel-track captured definition agrees with authored baseline HeadIntake
+PASS kestrel-track captured definition agrees with authored baseline FuelSystem
+PASS kestrel-track captured definition agrees with authored baseline Ignition
+PASS kestrel-track captured definition agrees with authored baseline Cooling
+PASS kestrel-track captured definition agrees with authored baseline Induction
+PASS kestrel-track captured definition agrees with authored baseline Exhaust
+PASS kestrel-track captured definition agrees with authored baseline Clutch
+PASS kestrel-track captured definition agrees with authored baseline Flywheel
+PASS kestrel-track captured definition agrees with authored baseline Gearbox
+PASS kestrel-track captured definition agrees with authored baseline Differential
+PASS kestrel-track captured definition agrees with authored baseline Wheels
+PASS kestrel-track captured definition agrees with authored baseline Tires
+PASS kestrel-track captured definition agrees with authored baseline Brakes
+PASS kestrel-track captured definition agrees with authored baseline Body
+PASS kestrel-track captured definition agrees with authored baseline Controls
+PASS kestrel-track captured definition agrees with authored baseline Driveshaft
+PASS kestrel-track captured definition agrees with authored baseline RearAxle
+PASS kestrel-track captured definition agrees with authored baseline Interior
+PASS kestrel-track captured definition agrees with authored baseline Accessories
+PASS kestrel-track captured definition agrees with authored baseline RevLimiter
+PASS kestrel-track captured definition agrees with authored baseline TwoStep
+PASS kestrel-track captured definition agrees with authored baseline Camshaft
+PASS kestrel-track captured definition agrees with authored baseline ValveSprings
+PASS kestrel-track captured definition agrees with authored baseline Valves
+PASS kestrel-track captured definition agrees with authored baseline Followers
+PASS kestrel-track captured definition agrees with authored baseline TimingDrive
+PASS kestrel-track captured definition agrees with authored baseline PistonRings
+PASS kestrel-track captured definition agrees with authored baseline CylinderBlock
+PASS kestrel-track captured definition agrees with authored baseline Bearings
+PASS kestrel-track captured definition agrees with authored baseline ValveSeals
+PASS kestrel-track captured definition agrees with authored baseline OilPan
+PASS kestrel-track captured definition agrees with authored baseline OilPump
+PASS kestrel-track captured definition agrees with authored baseline OilFilter
+PASS kestrel-track captured definition agrees with authored baseline CoolantPump
+PASS kestrel-track captured definition agrees with authored baseline CoolingCap
+PASS kestrel-track captured definition agrees with authored baseline CoolingHoses
+PASS kestrel-track captured definition agrees with authored baseline SparkPlugs
+PASS kestrel-track retains the same simulation component topology
+PASS rally-sedan indexed slot support Pistons
+PASS rally-sedan indexed slot support Rods
+PASS rally-sedan indexed slot support Crankshaft
+PASS rally-sedan indexed slot support HeadIntake
+PASS rally-sedan indexed slot support FuelSystem
+PASS rally-sedan indexed slot support Ignition
+PASS rally-sedan indexed slot support Cooling
+PASS rally-sedan indexed slot support Induction
+PASS rally-sedan indexed slot support Exhaust
+PASS rally-sedan indexed slot support Clutch
+PASS rally-sedan indexed slot support Flywheel
+PASS rally-sedan indexed slot support Gearbox
+PASS rally-sedan indexed slot support Differential
+PASS rally-sedan indexed slot support Wheels
+PASS rally-sedan indexed slot support Tires
+PASS rally-sedan indexed slot support Brakes
+PASS rally-sedan indexed slot support Body
+PASS rally-sedan indexed slot support Controls
+PASS rally-sedan indexed slot support Driveshaft
+PASS rally-sedan indexed slot support FrontAxle
+PASS rally-sedan indexed slot support RearAxle
+PASS rally-sedan indexed slot support FrontDriveshaft
+PASS rally-sedan indexed slot support RearDriveshaft
+PASS rally-sedan indexed slot support FrontDifferential
+PASS rally-sedan indexed slot support RearDifferential
+PASS rally-sedan indexed slot support TransferCase
+PASS rally-sedan indexed slot support Interior
+PASS rally-sedan indexed slot support Accessories
+PASS rally-sedan indexed slot support RevLimiter
+PASS rally-sedan indexed slot support ShiftLight
+PASS rally-sedan indexed slot support TwoStep
+PASS rally-sedan indexed slot support Camshaft
+PASS rally-sedan indexed slot support ValveSprings
+PASS rally-sedan indexed slot support Valves
+PASS rally-sedan indexed slot support Followers
+PASS rally-sedan indexed slot support TimingDrive
+PASS rally-sedan indexed slot support PistonRings
+PASS rally-sedan indexed slot support CylinderBlock
+PASS rally-sedan indexed slot support Bearings
+PASS rally-sedan indexed slot support ValveSeals
+PASS rally-sedan indexed slot support OilPan
+PASS rally-sedan indexed slot support OilPump
+PASS rally-sedan indexed slot support OilFilter
+PASS rally-sedan indexed slot support CoolantPump
+PASS rally-sedan indexed slot support CoolingCap
+PASS rally-sedan indexed slot support CoolingHoses
+PASS rally-sedan indexed slot support OilCooler
+PASS rally-sedan indexed slot support SparkPlugs
+PASS rally-sedan indexed slot support GlowPlugs
+PASS rally-sedan captured definition agrees with authored baseline Pistons
+PASS rally-sedan captured definition agrees with authored baseline Rods
+PASS rally-sedan captured definition agrees with authored baseline Crankshaft
+PASS rally-sedan captured definition agrees with authored baseline HeadIntake
+PASS rally-sedan captured definition agrees with authored baseline FuelSystem
+PASS rally-sedan captured definition agrees with authored baseline Ignition
+PASS rally-sedan captured definition agrees with authored baseline Cooling
+PASS rally-sedan captured definition agrees with authored baseline Induction
+PASS rally-sedan captured definition agrees with authored baseline Exhaust
+PASS rally-sedan captured definition agrees with authored baseline Clutch
+PASS rally-sedan captured definition agrees with authored baseline Flywheel
+PASS rally-sedan captured definition agrees with authored baseline Gearbox
+PASS rally-sedan captured definition agrees with authored baseline Differential
+PASS rally-sedan captured definition agrees with authored baseline Wheels
+PASS rally-sedan captured definition agrees with authored baseline Tires
+PASS rally-sedan captured definition agrees with authored baseline Brakes
+PASS rally-sedan captured definition agrees with authored baseline Body
+PASS rally-sedan captured definition agrees with authored baseline Controls
+PASS rally-sedan captured definition agrees with authored baseline Driveshaft
+PASS rally-sedan captured definition agrees with authored baseline FrontAxle
+PASS rally-sedan captured definition agrees with authored baseline RearAxle
+PASS rally-sedan captured definition agrees with authored baseline FrontDriveshaft
+PASS rally-sedan captured definition agrees with authored baseline RearDriveshaft
+PASS rally-sedan captured definition agrees with authored baseline FrontDifferential
+PASS rally-sedan captured definition agrees with authored baseline RearDifferential
+PASS rally-sedan captured definition agrees with authored baseline TransferCase
+PASS rally-sedan captured definition agrees with authored baseline Interior
+PASS rally-sedan captured definition agrees with authored baseline Accessories
+PASS rally-sedan captured definition agrees with authored baseline RevLimiter
+PASS rally-sedan captured definition agrees with authored baseline TwoStep
+PASS rally-sedan captured definition agrees with authored baseline Camshaft
+PASS rally-sedan captured definition agrees with authored baseline ValveSprings
+PASS rally-sedan captured definition agrees with authored baseline Valves
+PASS rally-sedan captured definition agrees with authored baseline Followers
+PASS rally-sedan captured definition agrees with authored baseline TimingDrive
+PASS rally-sedan captured definition agrees with authored baseline PistonRings
+PASS rally-sedan captured definition agrees with authored baseline CylinderBlock
+PASS rally-sedan captured definition agrees with authored baseline Bearings
+PASS rally-sedan captured definition agrees with authored baseline ValveSeals
+PASS rally-sedan captured definition agrees with authored baseline OilPan
+PASS rally-sedan captured definition agrees with authored baseline OilPump
+PASS rally-sedan captured definition agrees with authored baseline OilFilter
+PASS rally-sedan captured definition agrees with authored baseline CoolantPump
+PASS rally-sedan captured definition agrees with authored baseline CoolingCap
+PASS rally-sedan captured definition agrees with authored baseline CoolingHoses
+PASS rally-sedan captured definition agrees with authored baseline SparkPlugs
+PASS rally-sedan retains the same simulation component topology
+PASS sport-coupe indexed slot support Pistons
+PASS sport-coupe indexed slot support Rods
+PASS sport-coupe indexed slot support Crankshaft
+PASS sport-coupe indexed slot support HeadIntake
+PASS sport-coupe indexed slot support FuelSystem
+PASS sport-coupe indexed slot support Ignition
+PASS sport-coupe indexed slot support Cooling
+PASS sport-coupe indexed slot support Induction
+PASS sport-coupe indexed slot support Exhaust
+PASS sport-coupe indexed slot support Clutch
+PASS sport-coupe indexed slot support Flywheel
+PASS sport-coupe indexed slot support Gearbox
+PASS sport-coupe indexed slot support Differential
+PASS sport-coupe indexed slot support Wheels
+PASS sport-coupe indexed slot support Tires
+PASS sport-coupe indexed slot support Brakes
+PASS sport-coupe indexed slot support Body
+PASS sport-coupe indexed slot support Controls
+PASS sport-coupe indexed slot support Driveshaft
+PASS sport-coupe indexed slot support FrontAxle
+PASS sport-coupe indexed slot support RearAxle
+PASS sport-coupe indexed slot support FrontDriveshaft
+PASS sport-coupe indexed slot support RearDriveshaft
+PASS sport-coupe indexed slot support FrontDifferential
+PASS sport-coupe indexed slot support RearDifferential
+PASS sport-coupe indexed slot support TransferCase
+PASS sport-coupe indexed slot support Interior
+PASS sport-coupe indexed slot support Accessories
+PASS sport-coupe indexed slot support RevLimiter
+PASS sport-coupe indexed slot support ShiftLight
+PASS sport-coupe indexed slot support TwoStep
+PASS sport-coupe indexed slot support Camshaft
+PASS sport-coupe indexed slot support ValveSprings
+PASS sport-coupe indexed slot support Valves
+PASS sport-coupe indexed slot support Followers
+PASS sport-coupe indexed slot support TimingDrive
+PASS sport-coupe indexed slot support PistonRings
+PASS sport-coupe indexed slot support CylinderBlock
+PASS sport-coupe indexed slot support Bearings
+PASS sport-coupe indexed slot support ValveSeals
+PASS sport-coupe indexed slot support OilPan
+PASS sport-coupe indexed slot support OilPump
+PASS sport-coupe indexed slot support OilFilter
+PASS sport-coupe indexed slot support CoolantPump
+PASS sport-coupe indexed slot support CoolingCap
+PASS sport-coupe indexed slot support CoolingHoses
+PASS sport-coupe indexed slot support OilCooler
+PASS sport-coupe indexed slot support SparkPlugs
+PASS sport-coupe indexed slot support GlowPlugs
+PASS sport-coupe captured definition agrees with authored baseline Pistons
+PASS sport-coupe captured definition agrees with authored baseline Rods
+PASS sport-coupe captured definition agrees with authored baseline Crankshaft
+PASS sport-coupe captured definition agrees with authored baseline HeadIntake
+PASS sport-coupe captured definition agrees with authored baseline FuelSystem
+PASS sport-coupe captured definition agrees with authored baseline Ignition
+PASS sport-coupe captured definition agrees with authored baseline Cooling
+PASS sport-coupe captured definition agrees with authored baseline Induction
+PASS sport-coupe captured definition agrees with authored baseline Exhaust
+PASS sport-coupe captured definition agrees with authored baseline Clutch
+PASS sport-coupe captured definition agrees with authored baseline Flywheel
+PASS sport-coupe captured definition agrees with authored baseline Gearbox
+PASS sport-coupe captured definition agrees with authored baseline Differential
+PASS sport-coupe captured definition agrees with authored baseline Wheels
+PASS sport-coupe captured definition agrees with authored baseline Tires
+PASS sport-coupe captured definition agrees with authored baseline Brakes
+PASS sport-coupe captured definition agrees with authored baseline Body
+PASS sport-coupe captured definition agrees with authored baseline Controls
+PASS sport-coupe captured definition agrees with authored baseline Driveshaft
+PASS sport-coupe captured definition agrees with authored baseline RearAxle
+PASS sport-coupe captured definition agrees with authored baseline Interior
+PASS sport-coupe captured definition agrees with authored baseline Accessories
+PASS sport-coupe captured definition agrees with authored baseline RevLimiter
+PASS sport-coupe captured definition agrees with authored baseline TwoStep
+PASS sport-coupe captured definition agrees with authored baseline Camshaft
+PASS sport-coupe captured definition agrees with authored baseline ValveSprings
+PASS sport-coupe captured definition agrees with authored baseline Valves
+PASS sport-coupe captured definition agrees with authored baseline Followers
+PASS sport-coupe captured definition agrees with authored baseline TimingDrive
+PASS sport-coupe captured definition agrees with authored baseline PistonRings
+PASS sport-coupe captured definition agrees with authored baseline CylinderBlock
+PASS sport-coupe captured definition agrees with authored baseline Bearings
+PASS sport-coupe captured definition agrees with authored baseline ValveSeals
+PASS sport-coupe captured definition agrees with authored baseline OilPan
+PASS sport-coupe captured definition agrees with authored baseline OilPump
+PASS sport-coupe captured definition agrees with authored baseline OilFilter
+PASS sport-coupe captured definition agrees with authored baseline CoolantPump
+PASS sport-coupe captured definition agrees with authored baseline CoolingCap
+PASS sport-coupe captured definition agrees with authored baseline CoolingHoses
+PASS sport-coupe captured definition agrees with authored baseline SparkPlugs
+PASS sport-coupe retains the same simulation component topology
+PASS starter-hatch indexed slot support Pistons
+PASS starter-hatch indexed slot support Rods
+PASS starter-hatch indexed slot support Crankshaft
+PASS starter-hatch indexed slot support HeadIntake
+PASS starter-hatch indexed slot support FuelSystem
+PASS starter-hatch indexed slot support Ignition
+PASS starter-hatch indexed slot support Cooling
+PASS starter-hatch indexed slot support Induction
+PASS starter-hatch indexed slot support Exhaust
+PASS starter-hatch indexed slot support Clutch
+PASS starter-hatch indexed slot support Flywheel
+PASS starter-hatch indexed slot support Gearbox
+PASS starter-hatch indexed slot support Differential
+PASS starter-hatch indexed slot support Wheels
+PASS starter-hatch indexed slot support Tires
+PASS starter-hatch indexed slot support Brakes
+PASS starter-hatch indexed slot support Body
+PASS starter-hatch indexed slot support Controls
+PASS starter-hatch indexed slot support Driveshaft
+PASS starter-hatch indexed slot support FrontAxle
+PASS starter-hatch indexed slot support RearAxle
+PASS starter-hatch indexed slot support FrontDriveshaft
+PASS starter-hatch indexed slot support RearDriveshaft
+PASS starter-hatch indexed slot support FrontDifferential
+PASS starter-hatch indexed slot support RearDifferential
+PASS starter-hatch indexed slot support TransferCase
+PASS starter-hatch indexed slot support Interior
+PASS starter-hatch indexed slot support Accessories
+PASS starter-hatch indexed slot support RevLimiter
+PASS starter-hatch indexed slot support ShiftLight
+PASS starter-hatch indexed slot support TwoStep
+PASS starter-hatch indexed slot support Camshaft
+PASS starter-hatch indexed slot support ValveSprings
+PASS starter-hatch indexed slot support Valves
+PASS starter-hatch indexed slot support Followers
+PASS starter-hatch indexed slot support TimingDrive
+PASS starter-hatch indexed slot support PistonRings
+PASS starter-hatch indexed slot support CylinderBlock
+PASS starter-hatch indexed slot support Bearings
+PASS starter-hatch indexed slot support ValveSeals
+PASS starter-hatch indexed slot support OilPan
+PASS starter-hatch indexed slot support OilPump
+PASS starter-hatch indexed slot support OilFilter
+PASS starter-hatch indexed slot support CoolantPump
+PASS starter-hatch indexed slot support CoolingCap
+PASS starter-hatch indexed slot support CoolingHoses
+PASS starter-hatch indexed slot support OilCooler
+PASS starter-hatch indexed slot support SparkPlugs
+PASS starter-hatch indexed slot support GlowPlugs
+PASS starter-hatch captured definition agrees with authored baseline Pistons
+PASS starter-hatch captured definition agrees with authored baseline Rods
+PASS starter-hatch captured definition agrees with authored baseline Crankshaft
+PASS starter-hatch captured definition agrees with authored baseline HeadIntake
+PASS starter-hatch captured definition agrees with authored baseline FuelSystem
+PASS starter-hatch captured definition agrees with authored baseline Ignition
+PASS starter-hatch captured definition agrees with authored baseline Cooling
+PASS starter-hatch captured definition agrees with authored baseline Induction
+PASS starter-hatch captured definition agrees with authored baseline Exhaust
+PASS starter-hatch captured definition agrees with authored baseline Clutch
+PASS starter-hatch captured definition agrees with authored baseline Flywheel
+PASS starter-hatch captured definition agrees with authored baseline Gearbox
+PASS starter-hatch captured definition agrees with authored baseline Differential
+PASS starter-hatch captured definition agrees with authored baseline Wheels
+PASS starter-hatch captured definition agrees with authored baseline Tires
+PASS starter-hatch captured definition agrees with authored baseline Brakes
+PASS starter-hatch captured definition agrees with authored baseline Body
+PASS starter-hatch captured definition agrees with authored baseline Controls
+PASS starter-hatch captured definition agrees with authored baseline Driveshaft
+PASS starter-hatch captured definition agrees with authored baseline FrontAxle
+PASS starter-hatch captured definition agrees with authored baseline Interior
+PASS starter-hatch captured definition agrees with authored baseline Accessories
+PASS starter-hatch captured definition agrees with authored baseline RevLimiter
+PASS starter-hatch captured definition agrees with authored baseline Camshaft
+PASS starter-hatch captured definition agrees with authored baseline ValveSprings
+PASS starter-hatch captured definition agrees with authored baseline Valves
+PASS starter-hatch captured definition agrees with authored baseline Followers
+PASS starter-hatch captured definition agrees with authored baseline TimingDrive
+PASS starter-hatch captured definition agrees with authored baseline PistonRings
+PASS starter-hatch captured definition agrees with authored baseline CylinderBlock
+PASS starter-hatch captured definition agrees with authored baseline Bearings
+PASS starter-hatch captured definition agrees with authored baseline ValveSeals
+PASS starter-hatch captured definition agrees with authored baseline OilPan
+PASS starter-hatch captured definition agrees with authored baseline OilPump
+PASS starter-hatch captured definition agrees with authored baseline OilFilter
+PASS starter-hatch captured definition agrees with authored baseline CoolantPump
+PASS starter-hatch captured definition agrees with authored baseline CoolingCap
+PASS starter-hatch captured definition agrees with authored baseline CoolingHoses
+PASS starter-hatch captured definition agrees with authored baseline SparkPlugs
+PASS starter-hatch retains the same simulation component topology
+PASS super-v8 indexed slot support Pistons
+PASS super-v8 indexed slot support Rods
+PASS super-v8 indexed slot support Crankshaft
+PASS super-v8 indexed slot support HeadIntake
+PASS super-v8 indexed slot support FuelSystem
+PASS super-v8 indexed slot support Ignition
+PASS super-v8 indexed slot support Cooling
+PASS super-v8 indexed slot support Induction
+PASS super-v8 indexed slot support Exhaust
+PASS super-v8 indexed slot support Clutch
+PASS super-v8 indexed slot support Flywheel
+PASS super-v8 indexed slot support Gearbox
+PASS super-v8 indexed slot support Differential
+PASS super-v8 indexed slot support Wheels
+PASS super-v8 indexed slot support Tires
+PASS super-v8 indexed slot support Brakes
+PASS super-v8 indexed slot support Body
+PASS super-v8 indexed slot support Controls
+PASS super-v8 indexed slot support Driveshaft
+PASS super-v8 indexed slot support FrontAxle
+PASS super-v8 indexed slot support RearAxle
+PASS super-v8 indexed slot support FrontDriveshaft
+PASS super-v8 indexed slot support RearDriveshaft
+PASS super-v8 indexed slot support FrontDifferential
+PASS super-v8 indexed slot support RearDifferential
+PASS super-v8 indexed slot support TransferCase
+PASS super-v8 indexed slot support Interior
+PASS super-v8 indexed slot support Accessories
+PASS super-v8 indexed slot support RevLimiter
+PASS super-v8 indexed slot support ShiftLight
+PASS super-v8 indexed slot support TwoStep
+PASS super-v8 indexed slot support Camshaft
+PASS super-v8 indexed slot support ValveSprings
+PASS super-v8 indexed slot support Valves
+PASS super-v8 indexed slot support Followers
+PASS super-v8 indexed slot support TimingDrive
+PASS super-v8 indexed slot support PistonRings
+PASS super-v8 indexed slot support CylinderBlock
+PASS super-v8 indexed slot support Bearings
+PASS super-v8 indexed slot support ValveSeals
+PASS super-v8 indexed slot support OilPan
+PASS super-v8 indexed slot support OilPump
+PASS super-v8 indexed slot support OilFilter
+PASS super-v8 indexed slot support CoolantPump
+PASS super-v8 indexed slot support CoolingCap
+PASS super-v8 indexed slot support CoolingHoses
+PASS super-v8 indexed slot support OilCooler
+PASS super-v8 indexed slot support SparkPlugs
+PASS super-v8 indexed slot support GlowPlugs
+PASS super-v8 captured definition agrees with authored baseline Pistons
+PASS super-v8 captured definition agrees with authored baseline Rods
+PASS super-v8 captured definition agrees with authored baseline Crankshaft
+PASS super-v8 captured definition agrees with authored baseline HeadIntake
+PASS super-v8 captured definition agrees with authored baseline FuelSystem
+PASS super-v8 captured definition agrees with authored baseline Ignition
+PASS super-v8 captured definition agrees with authored baseline Cooling
+PASS super-v8 captured definition agrees with authored baseline Induction
+PASS super-v8 captured definition agrees with authored baseline Exhaust
+PASS super-v8 captured definition agrees with authored baseline Clutch
+PASS super-v8 captured definition agrees with authored baseline Flywheel
+PASS super-v8 captured definition agrees with authored baseline Gearbox
+PASS super-v8 captured definition agrees with authored baseline Differential
+PASS super-v8 captured definition agrees with authored baseline Wheels
+PASS super-v8 captured definition agrees with authored baseline Tires
+PASS super-v8 captured definition agrees with authored baseline Brakes
+PASS super-v8 captured definition agrees with authored baseline Body
+PASS super-v8 captured definition agrees with authored baseline Controls
+PASS super-v8 captured definition agrees with authored baseline Driveshaft
+PASS super-v8 captured definition agrees with authored baseline RearAxle
+PASS super-v8 captured definition agrees with authored baseline Interior
+PASS super-v8 captured definition agrees with authored baseline Accessories
+PASS super-v8 captured definition agrees with authored baseline RevLimiter
+PASS super-v8 captured definition agrees with authored baseline TwoStep
+PASS super-v8 captured definition agrees with authored baseline Camshaft
+PASS super-v8 captured definition agrees with authored baseline ValveSprings
+PASS super-v8 captured definition agrees with authored baseline Valves
+PASS super-v8 captured definition agrees with authored baseline Followers
+PASS super-v8 captured definition agrees with authored baseline TimingDrive
+PASS super-v8 captured definition agrees with authored baseline PistonRings
+PASS super-v8 captured definition agrees with authored baseline CylinderBlock
+PASS super-v8 captured definition agrees with authored baseline Bearings
+PASS super-v8 captured definition agrees with authored baseline ValveSeals
+PASS super-v8 captured definition agrees with authored baseline OilPan
+PASS super-v8 captured definition agrees with authored baseline OilPump
+PASS super-v8 captured definition agrees with authored baseline OilFilter
+PASS super-v8 captured definition agrees with authored baseline CoolantPump
+PASS super-v8 captured definition agrees with authored baseline CoolingCap
+PASS super-v8 captured definition agrees with authored baseline CoolingHoses
+PASS super-v8 captured definition agrees with authored baseline SparkPlugs
+PASS super-v8 retains the same simulation component topology
+PASS timber-diesel indexed slot support Pistons
+PASS timber-diesel indexed slot support Rods
+PASS timber-diesel indexed slot support Crankshaft
+PASS timber-diesel indexed slot support HeadIntake
+PASS timber-diesel indexed slot support FuelSystem
+PASS timber-diesel indexed slot support Ignition
+PASS timber-diesel indexed slot support Cooling
+PASS timber-diesel indexed slot support Induction
+PASS timber-diesel indexed slot support Exhaust
+PASS timber-diesel indexed slot support Clutch
+PASS timber-diesel indexed slot support Flywheel
+PASS timber-diesel indexed slot support Gearbox
+PASS timber-diesel indexed slot support Differential
+PASS timber-diesel indexed slot support Wheels
+PASS timber-diesel indexed slot support Tires
+PASS timber-diesel indexed slot support Brakes
+PASS timber-diesel indexed slot support Body
+PASS timber-diesel indexed slot support Controls
+PASS timber-diesel indexed slot support Driveshaft
+PASS timber-diesel indexed slot support FrontAxle
+PASS timber-diesel indexed slot support RearAxle
+PASS timber-diesel indexed slot support FrontDriveshaft
+PASS timber-diesel indexed slot support RearDriveshaft
+PASS timber-diesel indexed slot support FrontDifferential
+PASS timber-diesel indexed slot support RearDifferential
+PASS timber-diesel indexed slot support TransferCase
+PASS timber-diesel indexed slot support Interior
+PASS timber-diesel indexed slot support Accessories
+PASS timber-diesel indexed slot support RevLimiter
+PASS timber-diesel indexed slot support ShiftLight
+PASS timber-diesel indexed slot support TwoStep
+PASS timber-diesel indexed slot support Camshaft
+PASS timber-diesel indexed slot support ValveSprings
+PASS timber-diesel indexed slot support Valves
+PASS timber-diesel indexed slot support Followers
+PASS timber-diesel indexed slot support TimingDrive
+PASS timber-diesel indexed slot support PistonRings
+PASS timber-diesel indexed slot support CylinderBlock
+PASS timber-diesel indexed slot support Bearings
+PASS timber-diesel indexed slot support ValveSeals
+PASS timber-diesel indexed slot support OilPan
+PASS timber-diesel indexed slot support OilPump
+PASS timber-diesel indexed slot support OilFilter
+PASS timber-diesel indexed slot support CoolantPump
+PASS timber-diesel indexed slot support CoolingCap
+PASS timber-diesel indexed slot support CoolingHoses
+PASS timber-diesel indexed slot support OilCooler
+PASS timber-diesel indexed slot support SparkPlugs
+PASS timber-diesel indexed slot support GlowPlugs
+PASS timber-diesel captured definition agrees with authored baseline Pistons
+PASS timber-diesel captured definition agrees with authored baseline Rods
+PASS timber-diesel captured definition agrees with authored baseline Crankshaft
+PASS timber-diesel captured definition agrees with authored baseline HeadIntake
+PASS timber-diesel captured definition agrees with authored baseline FuelSystem
+PASS timber-diesel captured definition agrees with authored baseline Cooling
+PASS timber-diesel captured definition agrees with authored baseline Induction
+PASS timber-diesel captured definition agrees with authored baseline Exhaust
+PASS timber-diesel captured definition agrees with authored baseline Clutch
+PASS timber-diesel captured definition agrees with authored baseline Flywheel
+PASS timber-diesel captured definition agrees with authored baseline Gearbox
+PASS timber-diesel captured definition agrees with authored baseline Differential
+PASS timber-diesel captured definition agrees with authored baseline Wheels
+PASS timber-diesel captured definition agrees with authored baseline Tires
+PASS timber-diesel captured definition agrees with authored baseline Brakes
+PASS timber-diesel captured definition agrees with authored baseline Body
+PASS timber-diesel captured definition agrees with authored baseline Controls
+PASS timber-diesel captured definition agrees with authored baseline Driveshaft
+PASS timber-diesel captured definition agrees with authored baseline FrontAxle
+PASS timber-diesel captured definition agrees with authored baseline RearAxle
+PASS timber-diesel captured definition agrees with authored baseline FrontDriveshaft
+PASS timber-diesel captured definition agrees with authored baseline RearDriveshaft
+PASS timber-diesel captured definition agrees with authored baseline FrontDifferential
+PASS timber-diesel captured definition agrees with authored baseline RearDifferential
+PASS timber-diesel captured definition agrees with authored baseline TransferCase
+PASS timber-diesel captured definition agrees with authored baseline Interior
+PASS timber-diesel captured definition agrees with authored baseline Accessories
+PASS timber-diesel captured definition agrees with authored baseline RevLimiter
+PASS timber-diesel captured definition agrees with authored baseline Camshaft
+PASS timber-diesel captured definition agrees with authored baseline ValveSprings
+PASS timber-diesel captured definition agrees with authored baseline Valves
+PASS timber-diesel captured definition agrees with authored baseline Followers
+PASS timber-diesel captured definition agrees with authored baseline TimingDrive
+PASS timber-diesel captured definition agrees with authored baseline PistonRings
+PASS timber-diesel captured definition agrees with authored baseline CylinderBlock
+PASS timber-diesel captured definition agrees with authored baseline Bearings
+PASS timber-diesel captured definition agrees with authored baseline ValveSeals
+PASS timber-diesel captured definition agrees with authored baseline OilPan
+PASS timber-diesel captured definition agrees with authored baseline OilPump
+PASS timber-diesel captured definition agrees with authored baseline OilFilter
+PASS timber-diesel captured definition agrees with authored baseline CoolantPump
+PASS timber-diesel captured definition agrees with authored baseline CoolingCap
+PASS timber-diesel captured definition agrees with authored baseline CoolingHoses
+PASS timber-diesel captured definition agrees with authored baseline GlowPlugs
+PASS timber-diesel retains the same simulation component topology
+PASS timber-diesel-tow indexed slot support Pistons
+PASS timber-diesel-tow indexed slot support Rods
+PASS timber-diesel-tow indexed slot support Crankshaft
+PASS timber-diesel-tow indexed slot support HeadIntake
+PASS timber-diesel-tow indexed slot support FuelSystem
+PASS timber-diesel-tow indexed slot support Ignition
+PASS timber-diesel-tow indexed slot support Cooling
+PASS timber-diesel-tow indexed slot support Induction
+PASS timber-diesel-tow indexed slot support Exhaust
+PASS timber-diesel-tow indexed slot support Clutch
+PASS timber-diesel-tow indexed slot support Flywheel
+PASS timber-diesel-tow indexed slot support Gearbox
+PASS timber-diesel-tow indexed slot support Differential
+PASS timber-diesel-tow indexed slot support Wheels
+PASS timber-diesel-tow indexed slot support Tires
+PASS timber-diesel-tow indexed slot support Brakes
+PASS timber-diesel-tow indexed slot support Body
+PASS timber-diesel-tow indexed slot support Controls
+PASS timber-diesel-tow indexed slot support Driveshaft
+PASS timber-diesel-tow indexed slot support FrontAxle
+PASS timber-diesel-tow indexed slot support RearAxle
+PASS timber-diesel-tow indexed slot support FrontDriveshaft
+PASS timber-diesel-tow indexed slot support RearDriveshaft
+PASS timber-diesel-tow indexed slot support FrontDifferential
+PASS timber-diesel-tow indexed slot support RearDifferential
+PASS timber-diesel-tow indexed slot support TransferCase
+PASS timber-diesel-tow indexed slot support Interior
+PASS timber-diesel-tow indexed slot support Accessories
+PASS timber-diesel-tow indexed slot support RevLimiter
+PASS timber-diesel-tow indexed slot support ShiftLight
+PASS timber-diesel-tow indexed slot support TwoStep
+PASS timber-diesel-tow indexed slot support Camshaft
+PASS timber-diesel-tow indexed slot support ValveSprings
+PASS timber-diesel-tow indexed slot support Valves
+PASS timber-diesel-tow indexed slot support Followers
+PASS timber-diesel-tow indexed slot support TimingDrive
+PASS timber-diesel-tow indexed slot support PistonRings
+PASS timber-diesel-tow indexed slot support CylinderBlock
+PASS timber-diesel-tow indexed slot support Bearings
+PASS timber-diesel-tow indexed slot support ValveSeals
+PASS timber-diesel-tow indexed slot support OilPan
+PASS timber-diesel-tow indexed slot support OilPump
+PASS timber-diesel-tow indexed slot support OilFilter
+PASS timber-diesel-tow indexed slot support CoolantPump
+PASS timber-diesel-tow indexed slot support CoolingCap
+PASS timber-diesel-tow indexed slot support CoolingHoses
+PASS timber-diesel-tow indexed slot support OilCooler
+PASS timber-diesel-tow indexed slot support SparkPlugs
+PASS timber-diesel-tow indexed slot support GlowPlugs
+PASS timber-diesel-tow captured definition agrees with authored baseline Pistons
+PASS timber-diesel-tow captured definition agrees with authored baseline Rods
+PASS timber-diesel-tow captured definition agrees with authored baseline Crankshaft
+PASS timber-diesel-tow captured definition agrees with authored baseline HeadIntake
+PASS timber-diesel-tow captured definition agrees with authored baseline FuelSystem
+PASS timber-diesel-tow captured definition agrees with authored baseline Cooling
+PASS timber-diesel-tow captured definition agrees with authored baseline Induction
+PASS timber-diesel-tow captured definition agrees with authored baseline Exhaust
+PASS timber-diesel-tow captured definition agrees with authored baseline Clutch
+PASS timber-diesel-tow captured definition agrees with authored baseline Flywheel
+PASS timber-diesel-tow captured definition agrees with authored baseline Gearbox
+PASS timber-diesel-tow captured definition agrees with authored baseline Differential
+PASS timber-diesel-tow captured definition agrees with authored baseline Wheels
+PASS timber-diesel-tow captured definition agrees with authored baseline Tires
+PASS timber-diesel-tow captured definition agrees with authored baseline Brakes
+PASS timber-diesel-tow captured definition agrees with authored baseline Body
+PASS timber-diesel-tow captured definition agrees with authored baseline Controls
+PASS timber-diesel-tow captured definition agrees with authored baseline Driveshaft
+PASS timber-diesel-tow captured definition agrees with authored baseline FrontAxle
+PASS timber-diesel-tow captured definition agrees with authored baseline RearAxle
+PASS timber-diesel-tow captured definition agrees with authored baseline FrontDriveshaft
+PASS timber-diesel-tow captured definition agrees with authored baseline RearDriveshaft
+PASS timber-diesel-tow captured definition agrees with authored baseline FrontDifferential
+PASS timber-diesel-tow captured definition agrees with authored baseline RearDifferential
+PASS timber-diesel-tow captured definition agrees with authored baseline TransferCase
+PASS timber-diesel-tow captured definition agrees with authored baseline Interior
+PASS timber-diesel-tow captured definition agrees with authored baseline Accessories
+PASS timber-diesel-tow captured definition agrees with authored baseline RevLimiter
+PASS timber-diesel-tow captured definition agrees with authored baseline Camshaft
+PASS timber-diesel-tow captured definition agrees with authored baseline ValveSprings
+PASS timber-diesel-tow captured definition agrees with authored baseline Valves
+PASS timber-diesel-tow captured definition agrees with authored baseline Followers
+PASS timber-diesel-tow captured definition agrees with authored baseline TimingDrive
+PASS timber-diesel-tow captured definition agrees with authored baseline PistonRings
+PASS timber-diesel-tow captured definition agrees with authored baseline CylinderBlock
+PASS timber-diesel-tow captured definition agrees with authored baseline Bearings
+PASS timber-diesel-tow captured definition agrees with authored baseline ValveSeals
+PASS timber-diesel-tow captured definition agrees with authored baseline OilPan
+PASS timber-diesel-tow captured definition agrees with authored baseline OilPump
+PASS timber-diesel-tow captured definition agrees with authored baseline OilFilter
+PASS timber-diesel-tow captured definition agrees with authored baseline CoolantPump
+PASS timber-diesel-tow captured definition agrees with authored baseline CoolingCap
+PASS timber-diesel-tow captured definition agrees with authored baseline CoolingHoses
+PASS timber-diesel-tow captured definition agrees with authored baseline GlowPlugs
+PASS timber-diesel-tow retains the same simulation component topology
+PASS touring-six indexed slot support Pistons
+PASS touring-six indexed slot support Rods
+PASS touring-six indexed slot support Crankshaft
+PASS touring-six indexed slot support HeadIntake
+PASS touring-six indexed slot support FuelSystem
+PASS touring-six indexed slot support Ignition
+PASS touring-six indexed slot support Cooling
+PASS touring-six indexed slot support Induction
+PASS touring-six indexed slot support Exhaust
+PASS touring-six indexed slot support Clutch
+PASS touring-six indexed slot support Flywheel
+PASS touring-six indexed slot support Gearbox
+PASS touring-six indexed slot support Differential
+PASS touring-six indexed slot support Wheels
+PASS touring-six indexed slot support Tires
+PASS touring-six indexed slot support Brakes
+PASS touring-six indexed slot support Body
+PASS touring-six indexed slot support Controls
+PASS touring-six indexed slot support Driveshaft
+PASS touring-six indexed slot support FrontAxle
+PASS touring-six indexed slot support RearAxle
+PASS touring-six indexed slot support FrontDriveshaft
+PASS touring-six indexed slot support RearDriveshaft
+PASS touring-six indexed slot support FrontDifferential
+PASS touring-six indexed slot support RearDifferential
+PASS touring-six indexed slot support TransferCase
+PASS touring-six indexed slot support Interior
+PASS touring-six indexed slot support Accessories
+PASS touring-six indexed slot support RevLimiter
+PASS touring-six indexed slot support ShiftLight
+PASS touring-six indexed slot support TwoStep
+PASS touring-six indexed slot support Camshaft
+PASS touring-six indexed slot support ValveSprings
+PASS touring-six indexed slot support Valves
+PASS touring-six indexed slot support Followers
+PASS touring-six indexed slot support TimingDrive
+PASS touring-six indexed slot support PistonRings
+PASS touring-six indexed slot support CylinderBlock
+PASS touring-six indexed slot support Bearings
+PASS touring-six indexed slot support ValveSeals
+PASS touring-six indexed slot support OilPan
+PASS touring-six indexed slot support OilPump
+PASS touring-six indexed slot support OilFilter
+PASS touring-six indexed slot support CoolantPump
+PASS touring-six indexed slot support CoolingCap
+PASS touring-six indexed slot support CoolingHoses
+PASS touring-six indexed slot support OilCooler
+PASS touring-six indexed slot support SparkPlugs
+PASS touring-six indexed slot support GlowPlugs
+PASS touring-six captured definition agrees with authored baseline Pistons
+PASS touring-six captured definition agrees with authored baseline Rods
+PASS touring-six captured definition agrees with authored baseline Crankshaft
+PASS touring-six captured definition agrees with authored baseline HeadIntake
+PASS touring-six captured definition agrees with authored baseline FuelSystem
+PASS touring-six captured definition agrees with authored baseline Ignition
+PASS touring-six captured definition agrees with authored baseline Cooling
+PASS touring-six captured definition agrees with authored baseline Induction
+PASS touring-six captured definition agrees with authored baseline Exhaust
+PASS touring-six captured definition agrees with authored baseline Clutch
+PASS touring-six captured definition agrees with authored baseline Flywheel
+PASS touring-six captured definition agrees with authored baseline Gearbox
+PASS touring-six captured definition agrees with authored baseline Differential
+PASS touring-six captured definition agrees with authored baseline Wheels
+PASS touring-six captured definition agrees with authored baseline Tires
+PASS touring-six captured definition agrees with authored baseline Brakes
+PASS touring-six captured definition agrees with authored baseline Body
+PASS touring-six captured definition agrees with authored baseline Controls
+PASS touring-six captured definition agrees with authored baseline Driveshaft
+PASS touring-six captured definition agrees with authored baseline RearAxle
+PASS touring-six captured definition agrees with authored baseline Interior
+PASS touring-six captured definition agrees with authored baseline Accessories
+PASS touring-six captured definition agrees with authored baseline RevLimiter
+PASS touring-six captured definition agrees with authored baseline Camshaft
+PASS touring-six captured definition agrees with authored baseline ValveSprings
+PASS touring-six captured definition agrees with authored baseline Valves
+PASS touring-six captured definition agrees with authored baseline Followers
+PASS touring-six captured definition agrees with authored baseline TimingDrive
+PASS touring-six captured definition agrees with authored baseline PistonRings
+PASS touring-six captured definition agrees with authored baseline CylinderBlock
+PASS touring-six captured definition agrees with authored baseline Bearings
+PASS touring-six captured definition agrees with authored baseline ValveSeals
+PASS touring-six captured definition agrees with authored baseline OilPan
+PASS touring-six captured definition agrees with authored baseline OilPump
+PASS touring-six captured definition agrees with authored baseline OilFilter
+PASS touring-six captured definition agrees with authored baseline CoolantPump
+PASS touring-six captured definition agrees with authored baseline CoolingCap
+PASS touring-six captured definition agrees with authored baseline CoolingHoses
+PASS touring-six captured definition agrees with authored baseline SparkPlugs
+PASS touring-six retains the same simulation component topology
+PASS utility-pickup indexed slot support Pistons
+PASS utility-pickup indexed slot support Rods
+PASS utility-pickup indexed slot support Crankshaft
+PASS utility-pickup indexed slot support HeadIntake
+PASS utility-pickup indexed slot support FuelSystem
+PASS utility-pickup indexed slot support Ignition
+PASS utility-pickup indexed slot support Cooling
+PASS utility-pickup indexed slot support Induction
+PASS utility-pickup indexed slot support Exhaust
+PASS utility-pickup indexed slot support Clutch
+PASS utility-pickup indexed slot support Flywheel
+PASS utility-pickup indexed slot support Gearbox
+PASS utility-pickup indexed slot support Differential
+PASS utility-pickup indexed slot support Wheels
+PASS utility-pickup indexed slot support Tires
+PASS utility-pickup indexed slot support Brakes
+PASS utility-pickup indexed slot support Body
+PASS utility-pickup indexed slot support Controls
+PASS utility-pickup indexed slot support Driveshaft
+PASS utility-pickup indexed slot support FrontAxle
+PASS utility-pickup indexed slot support RearAxle
+PASS utility-pickup indexed slot support FrontDriveshaft
+PASS utility-pickup indexed slot support RearDriveshaft
+PASS utility-pickup indexed slot support FrontDifferential
+PASS utility-pickup indexed slot support RearDifferential
+PASS utility-pickup indexed slot support TransferCase
+PASS utility-pickup indexed slot support Interior
+PASS utility-pickup indexed slot support Accessories
+PASS utility-pickup indexed slot support RevLimiter
+PASS utility-pickup indexed slot support ShiftLight
+PASS utility-pickup indexed slot support TwoStep
+PASS utility-pickup indexed slot support Camshaft
+PASS utility-pickup indexed slot support ValveSprings
+PASS utility-pickup indexed slot support Valves
+PASS utility-pickup indexed slot support Followers
+PASS utility-pickup indexed slot support TimingDrive
+PASS utility-pickup indexed slot support PistonRings
+PASS utility-pickup indexed slot support CylinderBlock
+PASS utility-pickup indexed slot support Bearings
+PASS utility-pickup indexed slot support ValveSeals
+PASS utility-pickup indexed slot support OilPan
+PASS utility-pickup indexed slot support OilPump
+PASS utility-pickup indexed slot support OilFilter
+PASS utility-pickup indexed slot support CoolantPump
+PASS utility-pickup indexed slot support CoolingCap
+PASS utility-pickup indexed slot support CoolingHoses
+PASS utility-pickup indexed slot support OilCooler
+PASS utility-pickup indexed slot support SparkPlugs
+PASS utility-pickup indexed slot support GlowPlugs
+PASS utility-pickup captured definition agrees with authored baseline Pistons
+PASS utility-pickup captured definition agrees with authored baseline Rods
+PASS utility-pickup captured definition agrees with authored baseline Crankshaft
+PASS utility-pickup captured definition agrees with authored baseline HeadIntake
+PASS utility-pickup captured definition agrees with authored baseline FuelSystem
+PASS utility-pickup captured definition agrees with authored baseline Ignition
+PASS utility-pickup captured definition agrees with authored baseline Cooling
+PASS utility-pickup captured definition agrees with authored baseline Induction
+PASS utility-pickup captured definition agrees with authored baseline Exhaust
+PASS utility-pickup captured definition agrees with authored baseline Clutch
+PASS utility-pickup captured definition agrees with authored baseline Flywheel
+PASS utility-pickup captured definition agrees with authored baseline Gearbox
+PASS utility-pickup captured definition agrees with authored baseline Differential
+PASS utility-pickup captured definition agrees with authored baseline Wheels
+PASS utility-pickup captured definition agrees with authored baseline Tires
+PASS utility-pickup captured definition agrees with authored baseline Brakes
+PASS utility-pickup captured definition agrees with authored baseline Body
+PASS utility-pickup captured definition agrees with authored baseline Controls
+PASS utility-pickup captured definition agrees with authored baseline Driveshaft
+PASS utility-pickup captured definition agrees with authored baseline FrontAxle
+PASS utility-pickup captured definition agrees with authored baseline RearAxle
+PASS utility-pickup captured definition agrees with authored baseline FrontDriveshaft
+PASS utility-pickup captured definition agrees with authored baseline RearDriveshaft
+PASS utility-pickup captured definition agrees with authored baseline FrontDifferential
+PASS utility-pickup captured definition agrees with authored baseline RearDifferential
+PASS utility-pickup captured definition agrees with authored baseline TransferCase
+PASS utility-pickup captured definition agrees with authored baseline Interior
+PASS utility-pickup captured definition agrees with authored baseline Accessories
+PASS utility-pickup captured definition agrees with authored baseline Camshaft
+PASS utility-pickup captured definition agrees with authored baseline ValveSprings
+PASS utility-pickup captured definition agrees with authored baseline Valves
+PASS utility-pickup captured definition agrees with authored baseline Followers
+PASS utility-pickup captured definition agrees with authored baseline TimingDrive
+PASS utility-pickup captured definition agrees with authored baseline PistonRings
+PASS utility-pickup captured definition agrees with authored baseline CylinderBlock
+PASS utility-pickup captured definition agrees with authored baseline Bearings
+PASS utility-pickup captured definition agrees with authored baseline ValveSeals
+PASS utility-pickup captured definition agrees with authored baseline OilPan
+PASS utility-pickup captured definition agrees with authored baseline OilPump
+PASS utility-pickup captured definition agrees with authored baseline OilFilter
+PASS utility-pickup captured definition agrees with authored baseline CoolantPump
+PASS utility-pickup captured definition agrees with authored baseline CoolingCap
+PASS utility-pickup captured definition agrees with authored baseline CoolingHoses
+PASS utility-pickup captured definition agrees with authored baseline SparkPlugs
+PASS utility-pickup retains the same simulation component topology
+PASS v8-muscle indexed slot support Pistons
+PASS v8-muscle indexed slot support Rods
+PASS v8-muscle indexed slot support Crankshaft
+PASS v8-muscle indexed slot support HeadIntake
+PASS v8-muscle indexed slot support FuelSystem
+PASS v8-muscle indexed slot support Ignition
+PASS v8-muscle indexed slot support Cooling
+PASS v8-muscle indexed slot support Induction
+PASS v8-muscle indexed slot support Exhaust
+PASS v8-muscle indexed slot support Clutch
+PASS v8-muscle indexed slot support Flywheel
+PASS v8-muscle indexed slot support Gearbox
+PASS v8-muscle indexed slot support Differential
+PASS v8-muscle indexed slot support Wheels
+PASS v8-muscle indexed slot support Tires
+PASS v8-muscle indexed slot support Brakes
+PASS v8-muscle indexed slot support Body
+PASS v8-muscle indexed slot support Controls
+PASS v8-muscle indexed slot support Driveshaft
+PASS v8-muscle indexed slot support FrontAxle
+PASS v8-muscle indexed slot support RearAxle
+PASS v8-muscle indexed slot support FrontDriveshaft
+PASS v8-muscle indexed slot support RearDriveshaft
+PASS v8-muscle indexed slot support FrontDifferential
+PASS v8-muscle indexed slot support RearDifferential
+PASS v8-muscle indexed slot support TransferCase
+PASS v8-muscle indexed slot support Interior
+PASS v8-muscle indexed slot support Accessories
+PASS v8-muscle indexed slot support RevLimiter
+PASS v8-muscle indexed slot support ShiftLight
+PASS v8-muscle indexed slot support TwoStep
+PASS v8-muscle indexed slot support Camshaft
+PASS v8-muscle indexed slot support ValveSprings
+PASS v8-muscle indexed slot support Valves
+PASS v8-muscle indexed slot support Followers
+PASS v8-muscle indexed slot support TimingDrive
+PASS v8-muscle indexed slot support PistonRings
+PASS v8-muscle indexed slot support CylinderBlock
+PASS v8-muscle indexed slot support Bearings
+PASS v8-muscle indexed slot support ValveSeals
+PASS v8-muscle indexed slot support OilPan
+PASS v8-muscle indexed slot support OilPump
+PASS v8-muscle indexed slot support OilFilter
+PASS v8-muscle indexed slot support CoolantPump
+PASS v8-muscle indexed slot support CoolingCap
+PASS v8-muscle indexed slot support CoolingHoses
+PASS v8-muscle indexed slot support OilCooler
+PASS v8-muscle indexed slot support SparkPlugs
+PASS v8-muscle indexed slot support GlowPlugs
+PASS v8-muscle captured definition agrees with authored baseline Pistons
+PASS v8-muscle captured definition agrees with authored baseline Rods
+PASS v8-muscle captured definition agrees with authored baseline Crankshaft
+PASS v8-muscle captured definition agrees with authored baseline HeadIntake
+PASS v8-muscle captured definition agrees with authored baseline FuelSystem
+PASS v8-muscle captured definition agrees with authored baseline Ignition
+PASS v8-muscle captured definition agrees with authored baseline Cooling
+PASS v8-muscle captured definition agrees with authored baseline Induction
+PASS v8-muscle captured definition agrees with authored baseline Exhaust
+PASS v8-muscle captured definition agrees with authored baseline Clutch
+PASS v8-muscle captured definition agrees with authored baseline Flywheel
+PASS v8-muscle captured definition agrees with authored baseline Gearbox
+PASS v8-muscle captured definition agrees with authored baseline Differential
+PASS v8-muscle captured definition agrees with authored baseline Wheels
+PASS v8-muscle captured definition agrees with authored baseline Tires
+PASS v8-muscle captured definition agrees with authored baseline Brakes
+PASS v8-muscle captured definition agrees with authored baseline Body
+PASS v8-muscle captured definition agrees with authored baseline Controls
+PASS v8-muscle captured definition agrees with authored baseline Driveshaft
+PASS v8-muscle captured definition agrees with authored baseline RearAxle
+PASS v8-muscle captured definition agrees with authored baseline Interior
+PASS v8-muscle captured definition agrees with authored baseline Accessories
+PASS v8-muscle captured definition agrees with authored baseline Camshaft
+PASS v8-muscle captured definition agrees with authored baseline ValveSprings
+PASS v8-muscle captured definition agrees with authored baseline Valves
+PASS v8-muscle captured definition agrees with authored baseline Followers
+PASS v8-muscle captured definition agrees with authored baseline TimingDrive
+PASS v8-muscle captured definition agrees with authored baseline PistonRings
+PASS v8-muscle captured definition agrees with authored baseline CylinderBlock
+PASS v8-muscle captured definition agrees with authored baseline Bearings
+PASS v8-muscle captured definition agrees with authored baseline ValveSeals
+PASS v8-muscle captured definition agrees with authored baseline OilPan
+PASS v8-muscle captured definition agrees with authored baseline OilPump
+PASS v8-muscle captured definition agrees with authored baseline OilFilter
+PASS v8-muscle captured definition agrees with authored baseline CoolantPump
+PASS v8-muscle captured definition agrees with authored baseline CoolingCap
+PASS v8-muscle captured definition agrees with authored baseline CoolingHoses
+PASS v8-muscle captured definition agrees with authored baseline SparkPlugs
+PASS v8-muscle retains the same simulation component topology
+PASS Same-length editable catalogue replacement invalidates index identity
+PASS Index supports restoring the authored entry without stale aliases
+Checks: 1183; failures: 0

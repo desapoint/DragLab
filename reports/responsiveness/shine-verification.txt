@@ -1,0 +1,89 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Hover starts shared angled sweep: Navigation
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: Navigation / 25,66
+PASS: Sweep completes once: Navigation
+PASS: Hover starts shared angled sweep: Button
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: Button / 25,64
+PASS: Sweep completes once: Button
+PASS: Hover starts shared angled sweep: Primary
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: Primary / 25,05
+PASS: Angled Settings shine stays outside the clear slanted corner
+PASS: Sweep completes once: Primary
+PASS: Hover starts shared angled sweep: Tab
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: Tab / 25,64
+PASS: Sweep completes once: Tab
+PASS: Hover starts shared angled sweep: FirstTab
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: FirstTab / 26,11
+PASS: Sweep completes once: FirstTab
+PASS: Hover starts shared angled sweep: Action
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: Action / 25,59
+PASS: Sweep completes once: Action
+PASS: Hover starts shared angled sweep: SecondaryAction
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: SecondaryAction / 26,12
+PASS: Sweep completes once: SecondaryAction
+PASS: Hover starts shared angled sweep: DangerAction
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: DangerAction / 25,64
+PASS: Sweep completes once: DangerAction
+PASS: Hover starts shared angled sweep: ChoiceFirst
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: ChoiceFirst / 26,11
+PASS: Sweep completes once: ChoiceFirst
+PASS: Hover starts shared angled sweep: ChoiceMiddle
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: ChoiceMiddle / 26,15
+PASS: Sweep completes once: ChoiceMiddle
+PASS: Hover starts shared angled sweep: ChoiceLast
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: ChoiceLast / 25,55
+PASS: Sweep completes once: ChoiceLast
+PASS: Hover starts shared angled sweep: Panel
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: Panel / 25,08
+PASS: Sweep completes once: Panel
+PASS: Hover starts shared angled sweep: wide-short-action
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: wide-short-action / 26,43
+PASS: Sweep completes once: wide-short-action
+PASS: Hover starts shared angled sweep: 1080p-settings
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: 1080p-settings / 25,65
+PASS: Angled Settings shine stays outside the clear slanted corner
+PASS: Sweep completes once: 1080p-settings
+PASS: 4K target retains uniform two-times native scaling
+PASS: Hover starts shared angled sweep: 4k-settings
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: 4k-settings / 25,22
+PASS: Angled Settings shine stays outside the clear slanted corner
+PASS: Sweep completes once: 4k-settings
+PASS: Hover starts shared angled sweep: 4k-short-action
+PASS: Rendered shine has measurable contrast at row 0,28
+PASS: Rendered shine has measurable contrast at row 0,72
+PASS: Rendered angle stays 25 degrees from vertical: 4k-short-action / 26,20
+PASS: Sweep completes once: 4k-short-action
+PASS: Hover rendering changes no player assets or saved bytes
+PASS: Angled shine probe has no runtime errors
+Checks: 87 / runtime errors: 0

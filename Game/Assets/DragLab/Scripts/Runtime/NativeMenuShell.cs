@@ -114,10 +114,12 @@ namespace DragLab.Runtime
         }
         void LateUpdate()
         {
+            using(FramePacingProbe.Measure(4)){
             Refresh();
             if (Visible && Input.GetKeyDown(KeyCode.Escape)) { if (ModalOpen) CloseDialog(); else if(game.ScreenName=="Tuning"&&setupLibraryOpen) BackFromSetupLibrary(); else if (game.ScreenName=="Parts" && cartPageOpen) BackFromNativeCart(); else if (game.ScreenName=="Parts" && partsDetailId!=null) BackToParts(); else if (DealerDetailsOpen) BackToDealer(); else if (OwnedDetailsOpen) BackToOwnedCars(); }
             foreach (var surface in surfaces) surface.Tick(Visible);
             foreach (var surface in switchSurfaces) surface.Tick(Visible);
+            }
         }
         internal void Refresh()
         {
@@ -127,6 +129,7 @@ namespace DragLab.Runtime
             bool show = Supports(route) && InterfaceComparison.IsReplacement(route);
             root.EnableInClassList("hidden", !show);
             if (!show) return;
+            FramePacingProbe.Phase="menu/"+route;
             int width = panel.targetTexture == null ? Screen.width : panel.targetTexture.width;
             int height = panel.targetTexture == null ? Screen.height : panel.targetTexture.height;
             panel.scale = DisplayScale(width, height);

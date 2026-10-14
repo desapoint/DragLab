@@ -1,0 +1,410 @@
+PASS 12345 identical seed/epoch produces exact stock including identities
+PASS 12345 normalization cannot replenish/reroll stock
+PASS 12345 serialization round trip retains supply
+PASS 12345 seeded new availability includes local stock and delivery-only offers
+PASS 12345 global used/engine pool sizes have no per-model quotas
+PASS 12345 at least five local new choices fit something in the owned garage
+PASS city-three all initially stocked products support a whole required set
+PASS 12345 city-three False complete engine bought into storage
+PASS 12345 city-three engine ownership validates
+PASS 12345 city-three engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 12345 city-three True complete engine bought into storage
+PASS 12345 city-three engine ownership validates
+PASS 12345 city-three engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS juniper-club all initially stocked products support a whole required set
+PASS 12345 juniper-club False complete engine bought into storage
+PASS 12345 juniper-club engine ownership validates
+PASS 12345 juniper-club engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 12345 juniper-club True complete engine bought into storage
+PASS 12345 juniper-club engine ownership validates
+PASS 12345 juniper-club engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS juniper-economy all initially stocked products support a whole required set
+PASS 12345 juniper-economy False complete engine bought into storage
+PASS 12345 juniper-economy engine ownership validates
+PASS 12345 juniper-economy engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 12345 juniper-economy True complete engine bought into storage
+PASS 12345 juniper-economy engine ownership validates
+PASS 12345 juniper-economy engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS kestrel-track all initially stocked products support a whole required set
+PASS 12345 kestrel-track False complete engine bought into storage
+PASS 12345 kestrel-track engine ownership validates
+PASS 12345 kestrel-track engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 12345 kestrel-track True complete engine bought into storage
+PASS 12345 kestrel-track engine ownership validates
+PASS 12345 kestrel-track engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS rally-sedan all initially stocked products support a whole required set
+PASS 12345 rally-sedan False complete engine bought into storage
+PASS 12345 rally-sedan engine ownership validates
+PASS 12345 rally-sedan engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 12345 rally-sedan True complete engine bought into storage
+PASS 12345 rally-sedan engine ownership validates
+PASS 12345 rally-sedan engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS sport-coupe all initially stocked products support a whole required set
+PASS 12345 sport-coupe False complete engine bought into storage
+PASS 12345 sport-coupe engine ownership validates
+PASS 12345 sport-coupe engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 12345 sport-coupe True complete engine bought into storage
+PASS 12345 sport-coupe engine ownership validates
+PASS 12345 sport-coupe engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS starter-hatch all initially stocked products support a whole required set
+PASS 12345 starter-hatch False complete engine bought into storage
+PASS 12345 starter-hatch engine ownership validates
+PASS 12345 starter-hatch engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 12345 starter-hatch True complete engine bought into storage
+PASS 12345 starter-hatch engine ownership validates
+PASS 12345 starter-hatch engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS super-v8 all initially stocked products support a whole required set
+PASS 12345 super-v8 False complete engine bought into storage
+PASS 12345 super-v8 engine ownership validates
+PASS 12345 super-v8 engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 12345 super-v8 True complete engine bought into storage
+PASS 12345 super-v8 engine ownership validates
+PASS 12345 super-v8 engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS timber-diesel all initially stocked products support a whole required set
+PASS 12345 timber-diesel False complete engine bought into storage
+PASS 12345 timber-diesel engine ownership validates
+PASS 12345 timber-diesel engine condition retained
+PASS 12345 timber-diesel True complete engine bought into storage
+PASS 12345 timber-diesel engine ownership validates
+PASS 12345 timber-diesel engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS timber-diesel-tow all initially stocked products support a whole required set
+PASS 12345 timber-diesel-tow False complete engine bought into storage
+PASS 12345 timber-diesel-tow engine ownership validates
+PASS 12345 timber-diesel-tow engine condition retained
+PASS 12345 timber-diesel-tow True complete engine bought into storage
+PASS 12345 timber-diesel-tow engine ownership validates
+PASS 12345 timber-diesel-tow engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS touring-six all initially stocked products support a whole required set
+PASS 12345 touring-six False complete engine bought into storage
+PASS 12345 touring-six engine ownership validates
+PASS 12345 touring-six engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 12345 touring-six True complete engine bought into storage
+PASS 12345 touring-six engine ownership validates
+PASS 12345 touring-six engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS utility-pickup all initially stocked products support a whole required set
+PASS 12345 utility-pickup False complete engine bought into storage
+PASS 12345 utility-pickup engine ownership validates
+PASS 12345 utility-pickup engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 12345 utility-pickup True complete engine bought into storage
+PASS 12345 utility-pickup engine ownership validates
+PASS 12345 utility-pickup engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS v8-muscle all initially stocked products support a whole required set
+PASS 12345 v8-muscle False complete engine bought into storage
+PASS 12345 v8-muscle engine ownership validates
+PASS 12345 v8-muscle engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 12345 v8-muscle True complete engine bought into storage
+PASS 12345 v8-muscle engine ownership validates
+PASS 12345 v8-muscle engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS Trade-in and generated supply remain through two races
+PASS Third completed race refreshes both markets and expires trade-ins
+PASS Refresh ignores player sales and generates the same next epoch
+PASS Migration preserves existing trade-ins until refresh
+PASS -7 identical seed/epoch produces exact stock including identities
+PASS -7 normalization cannot replenish/reroll stock
+PASS -7 serialization round trip retains supply
+PASS -7 seeded new availability includes local stock and delivery-only offers
+PASS -7 global used/engine pool sizes have no per-model quotas
+PASS -7 at least five local new choices fit something in the owned garage
+PASS city-three all initially stocked products support a whole required set
+PASS -7 city-three False complete engine bought into storage
+PASS -7 city-three engine ownership validates
+PASS -7 city-three engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS -7 city-three True complete engine bought into storage
+PASS -7 city-three engine ownership validates
+PASS -7 city-three engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS juniper-club all initially stocked products support a whole required set
+PASS -7 juniper-club False complete engine bought into storage
+PASS -7 juniper-club engine ownership validates
+PASS -7 juniper-club engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS -7 juniper-club True complete engine bought into storage
+PASS -7 juniper-club engine ownership validates
+PASS -7 juniper-club engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS juniper-economy all initially stocked products support a whole required set
+PASS -7 juniper-economy False complete engine bought into storage
+PASS -7 juniper-economy engine ownership validates
+PASS -7 juniper-economy engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS -7 juniper-economy True complete engine bought into storage
+PASS -7 juniper-economy engine ownership validates
+PASS -7 juniper-economy engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS kestrel-track all initially stocked products support a whole required set
+PASS -7 kestrel-track False complete engine bought into storage
+PASS -7 kestrel-track engine ownership validates
+PASS -7 kestrel-track engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS -7 kestrel-track True complete engine bought into storage
+PASS -7 kestrel-track engine ownership validates
+PASS -7 kestrel-track engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS rally-sedan all initially stocked products support a whole required set
+PASS -7 rally-sedan False complete engine bought into storage
+PASS -7 rally-sedan engine ownership validates
+PASS -7 rally-sedan engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS -7 rally-sedan True complete engine bought into storage
+PASS -7 rally-sedan engine ownership validates
+PASS -7 rally-sedan engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS sport-coupe all initially stocked products support a whole required set
+PASS -7 sport-coupe False complete engine bought into storage
+PASS -7 sport-coupe engine ownership validates
+PASS -7 sport-coupe engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS -7 sport-coupe True complete engine bought into storage
+PASS -7 sport-coupe engine ownership validates
+PASS -7 sport-coupe engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS starter-hatch all initially stocked products support a whole required set
+PASS -7 starter-hatch False complete engine bought into storage
+PASS -7 starter-hatch engine ownership validates
+PASS -7 starter-hatch engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS -7 starter-hatch True complete engine bought into storage
+PASS -7 starter-hatch engine ownership validates
+PASS -7 starter-hatch engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS super-v8 all initially stocked products support a whole required set
+PASS -7 super-v8 False complete engine bought into storage
+PASS -7 super-v8 engine ownership validates
+PASS -7 super-v8 engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS -7 super-v8 True complete engine bought into storage
+PASS -7 super-v8 engine ownership validates
+PASS -7 super-v8 engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS timber-diesel all initially stocked products support a whole required set
+PASS -7 timber-diesel False complete engine bought into storage
+PASS -7 timber-diesel engine ownership validates
+PASS -7 timber-diesel engine condition retained
+PASS -7 timber-diesel True complete engine bought into storage
+PASS -7 timber-diesel engine ownership validates
+PASS -7 timber-diesel engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS timber-diesel-tow all initially stocked products support a whole required set
+PASS -7 timber-diesel-tow False complete engine bought into storage
+PASS -7 timber-diesel-tow engine ownership validates
+PASS -7 timber-diesel-tow engine condition retained
+PASS -7 timber-diesel-tow True complete engine bought into storage
+PASS -7 timber-diesel-tow engine ownership validates
+PASS -7 timber-diesel-tow engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS touring-six all initially stocked products support a whole required set
+PASS -7 touring-six False complete engine bought into storage
+PASS -7 touring-six engine ownership validates
+PASS -7 touring-six engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS -7 touring-six True complete engine bought into storage
+PASS -7 touring-six engine ownership validates
+PASS -7 touring-six engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS utility-pickup all initially stocked products support a whole required set
+PASS -7 utility-pickup False complete engine bought into storage
+PASS -7 utility-pickup engine ownership validates
+PASS -7 utility-pickup engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS -7 utility-pickup True complete engine bought into storage
+PASS -7 utility-pickup engine ownership validates
+PASS -7 utility-pickup engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS v8-muscle all initially stocked products support a whole required set
+PASS -7 v8-muscle False complete engine bought into storage
+PASS -7 v8-muscle engine ownership validates
+PASS -7 v8-muscle engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS -7 v8-muscle True complete engine bought into storage
+PASS -7 v8-muscle engine ownership validates
+PASS -7 v8-muscle engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS Trade-in and generated supply remain through two races
+PASS Third completed race refreshes both markets and expires trade-ins
+PASS Refresh ignores player sales and generates the same next epoch
+PASS Migration preserves existing trade-ins until refresh
+PASS 987654 identical seed/epoch produces exact stock including identities
+PASS 987654 normalization cannot replenish/reroll stock
+PASS 987654 serialization round trip retains supply
+PASS 987654 seeded new availability includes local stock and delivery-only offers
+PASS 987654 global used/engine pool sizes have no per-model quotas
+PASS 987654 at least five local new choices fit something in the owned garage
+PASS city-three all initially stocked products support a whole required set
+PASS 987654 city-three False complete engine bought into storage
+PASS 987654 city-three engine ownership validates
+PASS 987654 city-three engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 987654 city-three True complete engine bought into storage
+PASS 987654 city-three engine ownership validates
+PASS 987654 city-three engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS juniper-club all initially stocked products support a whole required set
+PASS 987654 juniper-club False complete engine bought into storage
+PASS 987654 juniper-club engine ownership validates
+PASS 987654 juniper-club engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 987654 juniper-club True complete engine bought into storage
+PASS 987654 juniper-club engine ownership validates
+PASS 987654 juniper-club engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS juniper-economy all initially stocked products support a whole required set
+PASS 987654 juniper-economy False complete engine bought into storage
+PASS 987654 juniper-economy engine ownership validates
+PASS 987654 juniper-economy engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 987654 juniper-economy True complete engine bought into storage
+PASS 987654 juniper-economy engine ownership validates
+PASS 987654 juniper-economy engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS kestrel-track all initially stocked products support a whole required set
+PASS 987654 kestrel-track False complete engine bought into storage
+PASS 987654 kestrel-track engine ownership validates
+PASS 987654 kestrel-track engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 987654 kestrel-track True complete engine bought into storage
+PASS 987654 kestrel-track engine ownership validates
+PASS 987654 kestrel-track engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS rally-sedan all initially stocked products support a whole required set
+PASS 987654 rally-sedan False complete engine bought into storage
+PASS 987654 rally-sedan engine ownership validates
+PASS 987654 rally-sedan engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 987654 rally-sedan True complete engine bought into storage
+PASS 987654 rally-sedan engine ownership validates
+PASS 987654 rally-sedan engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS sport-coupe all initially stocked products support a whole required set
+PASS 987654 sport-coupe False complete engine bought into storage
+PASS 987654 sport-coupe engine ownership validates
+PASS 987654 sport-coupe engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 987654 sport-coupe True complete engine bought into storage
+PASS 987654 sport-coupe engine ownership validates
+PASS 987654 sport-coupe engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS starter-hatch all initially stocked products support a whole required set
+PASS 987654 starter-hatch False complete engine bought into storage
+PASS 987654 starter-hatch engine ownership validates
+PASS 987654 starter-hatch engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 987654 starter-hatch True complete engine bought into storage
+PASS 987654 starter-hatch engine ownership validates
+PASS 987654 starter-hatch engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS super-v8 all initially stocked products support a whole required set
+PASS 987654 super-v8 False complete engine bought into storage
+PASS 987654 super-v8 engine ownership validates
+PASS 987654 super-v8 engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 987654 super-v8 True complete engine bought into storage
+PASS 987654 super-v8 engine ownership validates
+PASS 987654 super-v8 engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS timber-diesel all initially stocked products support a whole required set
+PASS 987654 timber-diesel False complete engine bought into storage
+PASS 987654 timber-diesel engine ownership validates
+PASS 987654 timber-diesel engine condition retained
+PASS 987654 timber-diesel True complete engine bought into storage
+PASS 987654 timber-diesel engine ownership validates
+PASS 987654 timber-diesel engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS timber-diesel-tow all initially stocked products support a whole required set
+PASS 987654 timber-diesel-tow False complete engine bought into storage
+PASS 987654 timber-diesel-tow engine ownership validates
+PASS 987654 timber-diesel-tow engine condition retained
+PASS 987654 timber-diesel-tow True complete engine bought into storage
+PASS 987654 timber-diesel-tow engine ownership validates
+PASS 987654 timber-diesel-tow engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS touring-six all initially stocked products support a whole required set
+PASS 987654 touring-six False complete engine bought into storage
+PASS 987654 touring-six engine ownership validates
+PASS 987654 touring-six engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 987654 touring-six True complete engine bought into storage
+PASS 987654 touring-six engine ownership validates
+PASS 987654 touring-six engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS utility-pickup all initially stocked products support a whole required set
+PASS 987654 utility-pickup False complete engine bought into storage
+PASS 987654 utility-pickup engine ownership validates
+PASS 987654 utility-pickup engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 987654 utility-pickup True complete engine bought into storage
+PASS 987654 utility-pickup engine ownership validates
+PASS 987654 utility-pickup engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS v8-muscle all initially stocked products support a whole required set
+PASS 987654 v8-muscle False complete engine bought into storage
+PASS 987654 v8-muscle engine ownership validates
+PASS 987654 v8-muscle engine condition retained
+PASS Stored engine purchases use the current ignition topology without duplicate spark plugs
+PASS 987654 v8-muscle True complete engine bought into storage
+PASS 987654 v8-muscle engine ownership validates
+PASS 987654 v8-muscle engine condition retained
+PASS Used engine is an exact nonrepeatable asset
+PASS Trade-in and generated supply remain through two races
+PASS Third completed race refreshes both markets and expires trade-ins
+PASS Refresh ignores player sales and generates the same next epoch
+PASS Migration preserves existing trade-ins until refresh
+PASS Seed matrix includes genuinely empty used-parts and engine markets, plus varied shared pool sizes
+PASS Collective owned-garage used guarantee: 0 across two different platforms
+PASS Difficulty changes cannot reroll current stock; next refresh only
+PASS Collective owned-garage used guarantee: 5 across two different platforms
+PASS Difficulty changes cannot reroll current stock; next refresh only
+PASS Collective owned-garage used guarantee: 10 across two different platforms
+PASS Difficulty changes cannot reroll current stock; next refresh only
+PASS Collective owned-garage used guarantee: 20 across two different platforms
+PASS Difficulty changes cannot reroll current stock; next refresh only
+PASS Hard simulation preset disables market guarantees
+PASS Easy simulation preset offers a larger market guarantee
+PASS Catalogue iteration order cannot change saved-seed selections, quantities or aliases
+PASS Guarantee top-ups cannot change the independent engine selection/quantity rolls
+PASS Repeated components favour complete matching sets while preserving single/partial used stock
+PASS Generated loose used members preserve unique valid condition and identities
+PASS Tires seeded supply includes valid individual replacements
+PASS Wheels seeded supply includes valid individual replacements
+PASS Ignition seeded supply includes valid individual replacements
+PASS Generated tire, wheel and ignition singles retain valid per-member metadata
+PASS Generated individual stock buys once with its exact identity, wear and price
+PASS Version-7 migration adds supply once, preserving player hardware and car-market rolls
+PASS A version-8 save missing its stock is rejected instead of replenishing lost stock
+PASS Express rate is 5–10% of absent goods
+PASS Partial local stock charges delivery only on the missing fraction, without mutating a preview
+PASS Buying depletes only local supply and reload cannot restock it
+PASS Market refresh invalidates stale quotes before any charge or transfer
+PASS Mixed set/unit cart charges quoted express total once without negative stock
+PASS Equivalent definition aliases share one quantity pool
+PASS Missing saved build quotes express goods
+PASS Saved build checkout equals combined supply quote
+PASS Same-part maintenance includes delivery and charges once
+Measured quote + atomic transaction mean: 269,4 ms; serialized profile: 1241317 chars
+PASS Failed persistence retains stock, cash and asset ownership
+PASS Final market/profile validates
+Checks: 408; failures: 0
