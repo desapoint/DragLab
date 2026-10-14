@@ -49,11 +49,13 @@ namespace DragLab.Runtime
             if(car==null)return;
             var installed=car.installed.slots.Find(s=>s.slot==PartCategory.Tires.ToString());
             var pack=installed==null?null:profile.parts.Find(p=>p.instanceId==installed.partInstanceId);
-            var candidates=profile.looseEngineElements.Where(u=>u.tireUnit&&u.tire!=null&&u.element!=null)
+            var candidates=profile.looseEngineElements.Where(u=>u.tireUnit&&u.tire!=null&&u.element!=null
+                &&profile.catalog.Find(u.definitionId)!=null
+                &&profile.catalog.Fits(profile.catalog.Spec(car.vehicleId),profile.catalog.Find(u.definitionId)))
                 .OrderByDescending(u=>Math.Min(u.tire.health,Math.Max(0,1-u.tire.consumedLife)))
                 .ThenBy(u=>u.element.id,StringComparer.Ordinal).ToArray();
             if(pack==null||candidates.Length==0){
-                OpenDialog("Swap stored tires",pack==null?"Fit a complete tire set first.":"No individual tires are stored in inventory.",
+                OpenDialog("Swap stored tires",pack==null?"Fit a complete tire set first.":"No compatible individual tires are stored in inventory.",
                     new[]{new DialogAction("Close",CloseDialog)});
                 return;
             }
@@ -67,7 +69,8 @@ namespace DragLab.Runtime
                 var health=Math.Min(tire.tire.health,Math.Max(0,1-tire.tire.consumedLife));
                 labels.Add((d==null?tire.definitionId:d.name)+" · "+health.ToString("P0")
                     +" · "+(tire.tire.distanceM/1000).ToString("F1")+" km"
-                    +(tire.tire.failed?" · FAILED":"")+" · #"+id.Substring(Math.Max(0,id.Length-6)));
+                    +(tire.tire.failed?" · FAILED":"")+" · "+SharedInventory.StorageOf(tire.storageId)
+                    +" · #"+id.Substring(Math.Max(0,id.Length-6)));
             }
             var positions=new DropdownField[4];
             var feedback=new Label{name="tireSwapFeedback",enableRichText=false};
@@ -102,12 +105,15 @@ namespace DragLab.Runtime
                         }
                         refresh();
                     }){text=preset,name="tireSwapPreset:"+preset};
-                    button.AddToClassList("action-button");presets.Add(button);
+                    button.AddToClassList("action-button");
+                    if(choice!="Clear")button.SetEnabled(candidates.Length>=(choice=="All"?4:2));
+                    presets.Add(button);
                 }
                 for(int i=0;i<4;i++){
                     int corner=i;
                     var row=new VisualElement();row.AddToClassList("setting-row");content.Add(row);
-                    row.Add(new Label(corners[i]+" · fitted "+TireFitments.DefinitionId(pack,i)
+                    var definition=profile.catalog.Find(TireFitments.DefinitionId(pack,i));
+                    row.Add(new Label(corners[i]+" · fitted "+(definition==null?pack.definitionId:definition.name)
                         +" · "+Math.Min(pack.condition.tires[i].health,Math.Max(0,1-pack.condition.tires[i].consumedLife)).ToString("P0")));
                     var dropdown=new DropdownField{ name="tireSwapCorner:"+i,choices=new System.Collections.Generic.List<string>(labels),index=0 };
                     dropdown.RegisterValueChangedCallback(_=>refresh());
