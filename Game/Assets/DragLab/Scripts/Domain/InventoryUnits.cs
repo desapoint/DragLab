@@ -68,7 +68,7 @@ namespace DragLab.Domain.Mechanics
             p.looseEngineElements.Add(new LooseEngineElement{definitionId=oldDefinition,unitPrice=InventoryPricing.NewUnit(p.catalog.Find(oldDefinition),4),element=new EngineElement{id=oldId,role="tire",cylinder=-1,valve=-1,health=old.failed?0:Math.Min(old.health,(float)Math.Max(0,1-old.consumedLife))},tireUnit=true,tire=old.Copy()});
             var next=unit.tire.Copy();next.id=unit.element.id;next.definitionId=unit.definitionId;next.lastContactWorkJ=0;pack.condition.tires[index]=next;p.looseEngineElements.Remove(unit);
             TireDynamics.SyncSummary(pack.condition);
-            pack.condition.serviceCount++;pack.condition.lastService="Individual tire replaced / "+PositionLabel(p,car,pack.definitionId,position);
+            // Tire swap is a transaction; the container owns no maintenance history.
         }
     }
 }
