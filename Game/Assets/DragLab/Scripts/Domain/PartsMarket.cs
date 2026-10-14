@@ -125,7 +125,7 @@ namespace DragLab.Domain.Mechanics
             for(int n=0;n<quantity;n++){
                 int pick=(int)(Next(ref random)*positions.Count)%positions.Count,index=positions[pick];positions.RemoveAt(pick);
                 var tire=d.category==PartCategory.Tires?pack.condition.tires[index].Copy():null;
-                var element=tire==null?pack.condition.elements[index].Copy():new EngineElement{id=tire.id,role="tire",health=health};element.cylinder=element.valve=-1;
+                var element=tire==null?pack.condition.elements[index].Copy():(EngineElement)tire; if(tire!=null)element.cylinder=element.valve=-1;
                 int unitPrice=InventoryPricing.NewUnit(d,count);var unit=new LooseEngineElement{definitionId=d.id,unitPrice=unitPrice,element=element,tireUnit=tire!=null,tire=tire};p.inventory.dealer.Add(new DealerStock{isUnit=true,unit=unit,paidPrice=Math.Max(1,(int)Math.Ceiling(unitPrice*.48*health))});
             }
         }
