@@ -15,13 +15,14 @@ namespace DragLab.Domain {
   public static void Ensure(ComponentCondition c) {
    if(c.tires.Length==0) {
     // One-time migration of saves that predate per-corner tire conditions.
-    c.tires=new TireCondition[4];
-    for(int i=0;i<4;i++) c.tires[i]=new TireCondition {
+    var migrated=new TireCondition[4];
+    for(int i=0;i<4;i++) migrated[i]=new TireCondition {
      health=c.health, failed=c.failed,
      temperatureC=c.temperatureC, slipEnergyJ=c.slipEnergyJ*.25,
      distanceM=c.distanceM, runningSeconds=c.runningSeconds, consumedLife=Math.Max(0,1-c.health),
      failureReason=c.failed?c.failureReason:""
     };
+    c.tires=migrated;
    }
    if(c.tires.Length!=4||c.tires.Any(t=>t==null))throw new ArgumentException("Four individual tire conditions are required.");
    SyncSummary(c);
