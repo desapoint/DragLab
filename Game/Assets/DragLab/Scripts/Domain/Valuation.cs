@@ -94,7 +94,7 @@ namespace DragLab.Domain.Mechanics
     public static class Valuations
     {
         static double Clamp(double x, double low, double high) => Math.Max(low, Math.Min(high, x));
-        static bool Fault(ComponentCondition c) => c.failed || c.health <= 0 || c.elements.Any(e => e.Failed || e.fault != ElementFault.None) || c.tires.Any(t => t.failed || t.health <= 0);
+        static bool Fault(ComponentCondition c) => c.tires != null && c.tires.Length == 4 ? c.tires.Any(t => t.failed || t.health <= 0) : c.failed || c.health <= 0 || c.elements.Any(e => e.Failed || e.fault != ElementFault.None);
         static double ElementHealth(EngineElement e) => e.Failed ? 0 : e.health * (e.fault == ElementFault.None ? 1 : 1 - .7 * Clamp(e.severity, 0, 1));
         static double Health(ComponentCondition c)
         {
