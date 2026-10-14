@@ -36,6 +36,8 @@ namespace DragLab.Runtime
         bool drivingPreferencesDirty;
         string screen = "Garage";
         string notice;
+        bool resetRequired;
+        internal bool ResetRequired => resetRequired;
         double accumulator;
         float difficulty = 1;
         float freeDistance = 402.336f;
@@ -70,6 +72,14 @@ namespace DragLab.Runtime
         internal void PreviewVehicle(string id) { DiscardPreviews(); profile.selectedVehicleId = id; MechanicsOwnership.Ensure(profile,profile.catalog); lastBenchmarkKey = null; screen = "Garage"; ShowGarageCar(); }
         public void ReturnToGarage() { DiscardPreviews(); if(!SyncRaceWear(true,"Returned to garage"))return; race?.CloseOpponentWorker(); race = null; screen = "Garage"; ShowGarageCar(); }
         public void StartPractice() { StartRace(null, true); }
+        internal bool ResetIncompatibleSave(out string error)
+        {
+            if(!resetRequired){error="No reset is required.";return false;}
+            if(!ProfileStore.TryResetIncompatibleSave(out error))return false;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            return true;
+        }
+
 
         VehicleDefinition Selected { get { return Array.Find(vehicles, v => v.spec.id == profile.selectedVehicleId) ?? vehicles[0]; } }
         OwnedCar Build { get { return profile.SelectedCar; } }
@@ -87,6 +97,14 @@ namespace DragLab.Runtime
             Array.Sort(career, (a, b) => a.reputationRequired.CompareTo(b.reputationRequired));
             if (!PreferenceCommit.Recover(out var settingsRecoveryError)) { Debug.LogError(settingsRecoveryError); enabled = false; return; }
             profile = ProfileStore.Load(true);
+            if(ProfileStore.ResetRequired)
+            {
+                resetRequired = true;
+                nativeMenu = gameObject.AddComponent<NativeMenuShell>();
+                nativeMenu.Initialize(this);
+                nativeMenu.ShowIncompatibleSaveDialog(ProfileStore.Status);
+                return;
+            }
             settings = profile.driving;
             difficulty = profile.difficulty;
             if (Build != null && Array.Find(vehicles, v => v.spec.id == profile.selectedVehicleId) == null)
@@ -197,7 +215,7 @@ namespace DragLab.Runtime
         { using (FramePacingProbe.Measure(0)) UpdateMeasured(); }
         void UpdateMeasured()
         {
-            if (profile == null) return;
+            if (profile == null || resetRequired) return;
             if(profile.vehicleStock!=null&&screen!="Race"&&Time.realtimeSinceStartup>.25f&&!Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&GUIUtility.hotControl==0){string key=profile.vehicleStock.seed+"/"+profile.vehicleStock.generation+"/"+profile.firstPurchasePending;if(key!=marketWarmKey){marketWarmKey=key;marketWarm=VehicleListings.WarmNext(profile).GetEnumerator();}if(marketWarm!=null&&!marketWarm.MoveNext())marketWarm=null;}
             if (pendingAction != null) { var action = pendingAction; pendingAction = null; action(); }
             if (saveDelay > 0 && GUIUtility.hotControl == 0 && !Input.GetMouseButton(0) && !Input.GetMouseButton(1)) { if(drivingPreferencesDirty){if(!ProfileStore.TrySavePreferences(profile,out var error))notice="Settings save failed: "+error;drivingPreferencesDirty=false;}else ProfileStore.Save(profile);saveDelay=0; }
