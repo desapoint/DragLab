@@ -138,6 +138,11 @@ namespace DragLab.Domain.Mechanics
             foreach (var binding in car.installed.slots)
             {
                 var item = profile.parts.Find(p => p.instanceId == binding.partInstanceId);
+                if(item!=null&&catalog.Find(item.definitionId).category==PartCategory.Tires&&item.condition.tires!=null&&item.condition.tires.Length==4){
+                    for(int i=0;i<4;i++)if(item.condition.tires[i].failed||item.condition.tires[i].health<=0)
+                        result.warnings.Add(new[]{"Front left","Front right","Rear left","Rear right"}[i]+" tire failed");
+                    continue;
+                }
                 if (item != null && (PartSemantics.Wears(catalog.Find(item.definitionId).category) || catalog.Find(item.definitionId).category == PartCategory.Controls && result.spec.engineBehavior.fueling == FuelSystem.Injection) && (item.condition.failed || item.condition.health <= 0)) (MechanicalCatalog.DisablingEngineFailure(catalog.Find(item.definitionId).category) || catalog.Find(item.definitionId).category == PartCategory.Controls && result.spec.engineBehavior.fueling == FuelSystem.Injection ? result.errors : result.warnings).Add(binding.slot + " failed: " + item.condition.failureReason);
             }
             return result;
