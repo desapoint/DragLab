@@ -153,6 +153,39 @@ namespace DragLab.Editor
                 check(car.state.frontWheelRadiusM==car.wheels.radii[0]&&car.state.rearWheelRadiusM==car.wheels.radii[2],"Tire sound/smoke feedback receives actual axle radii: "+spec.id);
             }
             var catalogue=new MechanicalCatalog(Resources.LoadAll<VehicleDefinition>("Data/Vehicles").Select(v=>v.spec));
+            var categoryTypes=new[]{
+                PartCategory.Pistons,PartCategory.Rods,PartCategory.PistonRings,
+                PartCategory.Bearings,PartCategory.Valves,PartCategory.ValveSprings,
+                PartCategory.ValveSeals,PartCategory.Followers,PartCategory.Wheels,
+                PartCategory.Ignition,PartCategory.SparkPlugs,PartCategory.GlowPlugs,
+                PartCategory.FuelSystem
+            };
+            foreach(var category in categoryTypes)
+            {
+                var created=EngineElements.Create(category);
+                created.id="type-test/"+category;created.definitionId="test-spec";
+                created.role=category==PartCategory.Wheels?"wheel":"test member";
+                created.cylinder=-1;created.valve=-1;created.health=.63f;
+                created.severity=.24f;created.wearRemainder=.00000043;
+                var beforeType=created.GetType();
+                var payload=new ComponentCondition{elements=new[]{created}};
+                var restored=JsonUtility.FromJson<ComponentCondition>(JsonUtility.ToJson(payload));
+                var copied=payload.Copy();
+                check(restored.elements.Length==1&&restored.elements[0].GetType()==beforeType
+                    &&EngineElements.MatchesCategory(category,restored.elements[0])
+                    &&restored.elements[0].id==created.id&&restored.elements[0].health==created.health
+                    &&restored.elements[0].severity==created.severity
+                    &&restored.elements[0].wearRemainder==created.wearRemainder
+                    &&copied.elements[0].GetType()==beforeType&&!ReferenceEquals(copied.elements[0],created),
+                    "Each individual component category survives typed Unity JSON and independent copying: "+category);
+            }
+            var donor=new IgnitionElement{id="split/ignition",role="spark plug / lead",cylinder=1,valve=-1,health=.37f,severity=.42f,wearRemainder=.00003,fault=ElementFault.Disabled};
+            var split=EngineElements.CopyAsCategory(PartCategory.SparkPlugs,donor);
+            check(split is SparkPlugElement&&split.id==donor.id&&split.health==donor.health
+                &&split.fault==donor.fault&&split.severity==donor.severity
+                &&split.wearRemainder==donor.wearRemainder
+                &&!EngineElements.FaultAllowed(PartCategory.Ignition,split),
+                "Ignition-kit split preserves physical spark plug wear and rejects wrong-category member types");
             foreach(var vehicle in Resources.LoadAll<VehicleDefinition>("Data/Vehicles")){
                 var profile=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(profile,catalogue);profile.cash=1000000;profile.reputation=1000;
                 VehicleCollection.Buy(profile,catalogue,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});var owned=profile.SelectedCar;
