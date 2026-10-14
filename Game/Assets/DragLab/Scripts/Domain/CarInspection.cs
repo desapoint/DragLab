@@ -95,7 +95,7 @@ namespace DragLab.Domain
             result.flywheelMassKg = MassDynamics.Installed(spec,PartCategory.Flywheel) ? spec.flywheel.massKg * tune.FlywheelMass : 0; result.flywheelInertia = FlywheelDynamics.Inertia(spec, tune);
             result.clutchCapacityNm = spec.ClutchCapacity * tune.CapacityMultiplier * car.state.clutchCapacityFactor;
             result.shiftSeconds = TransmissionDynamics.ShiftSeconds(car.transmission, spec, tune); result.brakeG = spec.BrakeDeceleration * car.state.brakeCapacityFactor / DragMath.Gravity;
-            result.condition = car.mechanics.parts.Where(p => PartSemantics.Wears(car.mechanics.Definition(p).category)).Select(p => (double)p.condition.health).DefaultIfEmpty(1).Min();
+            result.condition = car.mechanics.parts.Where(p => PartSemantics.Wears(car.mechanics.Definition(p).category)).Select(p => car.mechanics.Definition(p).category==PartCategory.Tires?(double)TireDynamics.LowestHealth(p.condition):p.condition.health).DefaultIfEmpty(1).Min();
             result.turboSpoolSeconds = car.induction.data.turboSpoolSeconds * Math.Pow(car.induction.size, 1.7) * (car.induction.turboCount == 2 ? car.induction.data.twinTurboSpoolFactor : 1);
             for (double rpm = spec.idleRpm; rpm <= spec.redlineRpm + .01; rpm = Math.Min(spec.redlineRpm, rpm + 100))
             {
