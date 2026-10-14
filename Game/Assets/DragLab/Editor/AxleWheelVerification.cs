@@ -85,6 +85,35 @@ namespace DragLab.Editor
             check(!RunPersistence.ConditionAdvances(oldCondition,advanced),"Per-tire journal rejects energy rewind");
             advanced=oldCondition.Copy();advanced.tires[0].id="different-tire";
             check(!RunPersistence.ConditionAdvances(oldCondition,advanced),"An active race cannot silently exchange tire identities");
+            var typed=independent.Copy();
+            typed.tires[2].health=.34f;typed.tires[2].consumedLife=.66;
+            typed.tires[2].temperatureC=97;typed.tires[2].distanceM=1298;typed.tires[2].slipEnergyJ=33091;
+            typed.tires[2].failed=true;typed.tires[2].failureReason="verified simulated puncture";
+            string encoded=JsonUtility.ToJson(typed);
+            var decoded=JsonUtility.FromJson<ComponentCondition>(encoded);
+            check(!encoded.Contains("\"tires\"")
+                &&decoded.elements.Length==4&&decoded.elements.All(e=>e is TireCondition)
+                &&decoded.tires[2].id==typed.tires[2].id&&decoded.tires[2].health==typed.tires[2].health
+                &&decoded.tires[2].consumedLife==typed.tires[2].consumedLife
+                &&decoded.tires[2].temperatureC==typed.tires[2].temperatureC
+                &&decoded.tires[2].distanceM==typed.tires[2].distanceM
+                &&decoded.tires[2].slipEnergyJ==typed.tires[2].slipEnergyJ
+                &&decoded.tires[2].failed&&decoded.tires[2].failureReason==typed.tires[2].failureReason,
+                "SerializeReference stores the concrete tire member type and full worn history without a separate tire array");
+            var typedCopy=decoded.Copy();typedCopy.tires[2].slipEnergyJ+=500;
+            check(decoded.tires[2].slipEnergyJ!=typedCopy.tires[2].slipEnergyJ,
+                "Typed member copies do not share independent tire history");
+            var pistonElements=new ComponentCondition{
+                elements=new EngineElement[]{
+                    new PistonElement{id="test-piston",role="piston",cylinder=0,valve=-1},
+                    new ValveElement{id="test-valve",role="intake valve",cylinder=0,valve=0}
+                }
+            };
+            var engineRoundTrip=JsonUtility.FromJson<ComponentCondition>(JsonUtility.ToJson(pistonElements));
+            check(engineRoundTrip.elements.Length==2
+                &&engineRoundTrip.elements[0] is PistonElement
+                &&engineRoundTrip.elements[1] is ValveElement,
+                "Piston and valve component member types survive Unity JSON polymorphic serialization");
             var legacy=new ComponentCondition{health=.6f,slipEnergyJ=120,distanceM=800};
             TireDynamics.Ensure(legacy);
             check(legacy.tires.Length==4&&legacy.tires.All(t=>t.health==.6f&&t.distanceM==800&&t.slipEnergyJ==30)
