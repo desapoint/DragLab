@@ -8,7 +8,7 @@ namespace DragLab.Runtime
         {
             root.RemoveFromClassList("hidden");
             OpenDialog("Save reset required",
-                "This save uses an older component format that cannot be loaded by the updated tire system. " +
+                "This save uses an incompatible component format that cannot be loaded by the updated tire system. " +
                 "A new save is required to continue. The previous files will be archived locally.",
                 new[]
                 {
