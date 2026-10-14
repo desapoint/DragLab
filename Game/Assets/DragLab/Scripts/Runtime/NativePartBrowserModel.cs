@@ -133,7 +133,9 @@ namespace DragLab.Runtime
         internal NativePartEntry PreviewNewUnit(NativePartEntry offer,string role,IEnumerable<string> selection)
         {
             var e=new NativePartEntry{Id=offer.Id,Source="New",Definition=offer.Definition,Owned=offer.Owned,Price=PartsMarket.Quote(actual,offer.Definition,InventoryUnits.Count(actual,actualCar,offer.Definition),true).cost};
-            e.Unit=new LooseEngineElement{definitionId=e.Definition.id,element=new EngineElement{id="native-offer-unit",role=role,cylinder=-1,valve=-1},tireUnit=e.Definition.category==PartCategory.Tires,tire=e.Definition.category==PartCategory.Tires?new TireCondition():null};
+            var member=EngineElements.Create(e.Definition.category);
+            member.id="native-offer-unit";member.definitionId=e.Definition.id;member.role=role;member.cylinder=-1;member.valve=-1;
+            e.Unit=new LooseEngineElement{definitionId=e.Definition.id,element=member,tireUnit=e.Definition.category==PartCategory.Tires};
             var available=InventoryUnits.Positions(reference,referenceCar,e.Definition.id,role);var selected=selection.Where(available.Contains).Distinct().ToArray();
             if(selected.Length==0&&available.Length>0)selected=new[]{available[0]};e.Position=selected.FirstOrDefault();Evaluate(e);
             if(selected.Length>1&&e.Proposed!=null){
