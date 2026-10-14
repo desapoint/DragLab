@@ -78,7 +78,7 @@ namespace DragLab.Runtime
                 var caption=new VisualElement();caption.AddToClassList("maintenance-part-caption");row.Add(caption);
                 string model=catalog.Spec(car.vehicleId).displayName+" / "; string name=d.name.StartsWith(model,StringComparison.Ordinal)?d.name.Substring(model.Length):d.name;
                 var title=new Label(name) {tooltip=d.name+" · "+item.instanceId,enableRichText=false};title.AddToClassList("maintenance-part-name");caption.Add(title);
-                int faults=item.condition.elements.Count(e=>e.Failed||e.fault!=ElementFault.None||e.health<.5f)+item.condition.tires.Count(t=>t.failed||t.health<=.5f);
+                int faults=item.condition.elements.Count(e=>e is TireCondition ? ((TireCondition)e).failed||e.health<=.5f : e.Failed||e.fault!=ElementFault.None||e.health<.5f);
                 var state=new Label((PrototypeGame.PartFailed(item)?"Failed":"Condition "+item.condition.health.ToString("P0"))+(faults>0?" · "+faults+" faulty":"")) {tooltip=item.condition.failureReason};state.AddToClassList(PrototypeGame.PartFailed(item)?"car-critical":ServiceConditionClass(item.condition.health));caption.Add(state);
                 var actions=new VisualElement();actions.AddToClassList("maintenance-part-actions");row.Add(actions);
                 foreach(var action in ServiceOperations.Available(d,item.condition))
