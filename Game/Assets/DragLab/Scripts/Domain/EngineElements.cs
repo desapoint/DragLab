@@ -67,6 +67,21 @@ namespace DragLab.Domain.Mechanics
                 default: return new EngineElement();
             }
         }
+        // Used when a physical member is reclassified between kit categories,
+        // for example during the one-time ignition/spark-plug split. Do not
+        // reset wear, severity, role or identity during that reclassification.
+        public static EngineElement CopyAsCategory(PartCategory category,EngineElement existing)
+        {
+            if(existing==null||existing is TireCondition||category==PartCategory.Tires)
+                throw new InvalidOperationException("Invalid mechanical member conversion.");
+            var copy=Create(category);
+            copy.id=existing.id;copy.definitionId=existing.definitionId;
+            copy.health=existing.health;copy.role=existing.role;
+            copy.cylinder=existing.cylinder;copy.valve=existing.valve;
+            copy.severity=existing.severity;copy.wearRemainder=existing.wearRemainder;
+            copy.fault=existing.fault;
+            return copy;
+        }
         // Do not infer type from role strings: a coil, plug or injector can have
         // identical topology but still represents a different physical asset.
         public static bool MatchesCategory(PartCategory category,EngineElement element)
