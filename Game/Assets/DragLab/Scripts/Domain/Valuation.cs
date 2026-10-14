@@ -119,14 +119,14 @@ namespace DragLab.Domain.Mechanics
                     double baseValue = spec.price * .25 * policy.usedPartFraction;
                     var grade = policy.qualities.Find(q => q.quality == spec.quality);
                     double tread = t.failed ? 0 : Clamp(Math.Min(t.health, 1 - t.consumedLife), 0, 1);
-                    double history = Clamp(t.distanceM / 1000 * policy.distanceDiscountPerKm, 0, policy.historyDiscountLimit);
+                    double history = Clamp(t.distanceM / 1000 * policy.distanceDiscountPerKm + t.runningSeconds / 3600 * policy.hourDiscount, 0, policy.historyDiscountLimit);
                     double usedValue = baseValue * (grade == null ? 1 : grade.factor)
                         * (policy.minimumWearFactor + (1 - policy.minimumWearFactor) * tread)
                         * (t.failed || tread <= 0 ? policy.scrapFraction : 1) * (1 - history);
                     total += usedValue;
                     lines.Add(new ValuationLine(string.IsNullOrEmpty(t.id) ? part.instanceId + "/tire:" + i : t.id,
                         spec.name + " / " + new[] { "Front left", "Front right", "Rear left", "Rear right" }[i],
-                        0, usedValue, "Individual compound, wear, failure and " + (t.distanceM / 1000).ToString("F1") + " km; no condition inherited from other tyres"));
+                        0, usedValue, "Individual compound, wear, failure and " + (t.distanceM / 1000).ToString("F1") + " km / " + (t.runningSeconds / 3600).ToString("F1") + " hours; no condition inherited from other tyres"));
                 }
                 return Change(lines, part.instanceId, "Loose-part buyer", total, buyer.parts, buyer.name);
             }
