@@ -24,11 +24,17 @@ namespace DragLab.Runtime
             var section=new VisualElement {name="carMaintenance"}; section.AddToClassList("car-maintenance"); ownedDetailContent.Add(section);
             var build=MechanicsOwnership.Resolve(profile,car,catalog);
             var installed=profile.parts.Where(p=>car.installed.slots.Any(s=>s.partInstanceId==p.instanceId)).ToList();
-            var service=installed.Where(p=>PartSemantics.Wears(catalog.Find(p.definitionId).category) &&
-                (PrototypeGame.PartFailed(p) || p.condition.health<=.5f || p.condition.deposits>=.05 || p.condition.leakSeverity>=.01 || p.condition.adjustmentError>=.05 || EngineElements.NeedsService(p.condition) || p.condition.tires.Any(t=>t.failed || t.health<=.5f)))
+            var service=installed.Where(p=>catalog.Find(p.definitionId).category!=PartCategory.Tires
+                &&PartSemantics.Wears(catalog.Find(p.definitionId).category)
+                &&(PrototypeGame.PartFailed(p)||p.condition.health<=.5f||p.condition.deposits>=.05
+                    ||p.condition.leakSeverity>=.01||p.condition.adjustmentError>=.05||EngineElements.NeedsService(p.condition)))
                 .OrderByDescending(PrototypeGame.PartFailed).ThenBy(p=>p.condition.health).ToList();
-            int failed=service.Count(PrototypeGame.PartFailed);
-            var summary=new Label("Maintenance · "+failed+" failed · "+(service.Count-failed)+" need service") {name="maintenanceCondition"};
+            var wornTires=installed.Where(p=>catalog.Find(p.definitionId).category==PartCategory.Tires)
+                .SelectMany(p=>p.condition.tires.Select((t,i)=>new{Part=p,Tire=t,Corner=i}))
+                .Where(x=>x.Tire.failed||x.Tire.health<=.5f||x.Tire.consumedLife>=.5).ToList();
+            int failed=service.Count(PrototypeGame.PartFailed)+wornTires.Count(x=>x.Tire.failed||x.Tire.health<=0);
+            int needs=service.Count+wornTires.Count-failed;
+            var summary=new Label("Maintenance · "+failed+" failed · "+needs+" need service") {name="maintenanceCondition"};
             summary.AddToClassList("maintenance-summary"); summary.AddToClassList(failed>0?"car-critical":service.Count>0?"car-warning":"car-ready"); section.Add(summary);
             bool available=true;
             try { EngineRebuilds.RequireAvailable(car); }
@@ -53,6 +59,20 @@ namespace DragLab.Runtime
                 MaintenanceAction(row,"maintenanceClutchOil","Service oil",new PaymentRequest {kind=PaymentKind.ClutchOil,carId=car.instanceId,targetId=clutch.instanceId},"Renew the wet-clutch oil bath and pay labour. Clutch wear remains.",available);
             }
             var parts=new VisualElement {name="maintenanceParts"}; section.Add(parts);
+            foreach(var entry in wornTires){
+                var row=new VisualElement{name="maintenanceTire:"+entry.Corner};row.AddToClassList("maintenance-part");parts.Add(row);
+                var caption=new VisualElement();caption.AddToClassList("maintenance-part-caption");row.Add(caption);
+                var spec=catalog.Find(TireFitments.DefinitionId(entry.Part,entry.Corner));
+                string corner=new[]{"Front left","Front right","Rear left","Rear right"}[entry.Corner];
+                var title=new Label(corner+" tire · "+spec.name){tooltip=entry.Tire.id,enableRichText=false};
+                title.AddToClassList("maintenance-part-name");caption.Add(title);
+                double life=Math.Min(entry.Tire.health,Math.Max(0,1-entry.Tire.consumedLife));
+                bool tireFailed=entry.Tire.failed||life<=0;
+                var state=new Label(tireFailed?"Failed":"Condition "+life.ToString("P0"));
+                state.AddToClassList(tireFailed?"car-critical":ServiceConditionClass((float)life));caption.Add(state);
+                var guidance=new Label("Select this corner in Replace parts to buy and fit an individual tire.");
+                guidance.AddToClassList("maintenance-summary");row.Add(guidance);
+            }
             foreach(var item in service) {
                 var d=catalog.Find(item.definitionId);var row=new VisualElement {name="maintenancePart:"+item.instanceId};row.AddToClassList("maintenance-part");parts.Add(row);
                 var caption=new VisualElement();caption.AddToClassList("maintenance-part-caption");row.Add(caption);
