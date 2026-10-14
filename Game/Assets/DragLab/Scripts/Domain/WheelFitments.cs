@@ -11,7 +11,7 @@ namespace DragLab.Domain.Mechanics
         public static void Ensure(PartInstance pack)
         {
             if(pack.condition.elements!=null&&pack.condition.elements.Length>0)return;
-            pack.condition.elements=Enumerable.Range(0,4).Select(i=>new EngineElement{id=pack.instanceId+"/wheel/"+i,role="wheel",cylinder=i,valve=-1,health=pack.condition.failed?0:pack.condition.health}).ToArray();
+            pack.condition.elements=Enumerable.Range(0,4).Select(i=>new WheelElement{id=pack.instanceId+"/wheel/"+i,role="wheel",cylinder=i,valve=-1,health=pack.condition.failed?0:pack.condition.health}).ToArray();
         }
         public static void Capture(VehicleSpec spec,IEnumerable<PartInstance> parts,MechanicalCatalog catalog)
         {
