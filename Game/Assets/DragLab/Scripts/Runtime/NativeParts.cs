@@ -44,7 +44,8 @@ namespace DragLab.Runtime
         {
             partsPage=new VisualElement{name="partsPage"};partsPage.AddToClassList("parts-page");partsPage.AddToClassList("hidden");root.Q(className:"workspace").Add(partsPage);
             var heading=new VisualElement();heading.AddToClassList("car-details-heading");partsPage.Add(heading);var name=new Label{name="partsCarName",enableRichText=false};name.AddToClassList("car-detail-title");heading.Add(name);
-            partsCart=PartButton(heading,"partsCart","Cart",OpenNativeCart);partsCart.Insert(1,new FilledMenuIcon("Business"));
+            partsCart=PartButton(heading,"partsCart","Cart",OpenNativeCart);
+            PartButton(heading,"partsTireSwap","Swap stored tires",OpenTireInventorySwap);partsCart.Insert(1,new FilledMenuIcon("Business"));
             PartButton(heading,"partsEngines","Engines",()=>{enginePageOpen=true;engineDetailId=null;engineViewKey=null;Refresh();}).Insert(1,new FilledMenuIcon("Build"));
             var sources=new VisualElement();sources.AddToClassList("owned-query-choices");sources.AddToClassList("choice-group");partsPage.Add(sources);
             sources.AddToClassList("parts-sources");
