@@ -119,10 +119,10 @@ namespace DragLab.Domain.Mechanics
                     double baseValue = spec.price * .25 * policy.usedPartFraction;
                     var grade = policy.qualities.Find(q => q.quality == spec.quality);
                     double tread = t.failed ? 0 : Clamp(Math.Min(t.health, 1 - t.consumedLife), 0, 1);
-                    double history = Clamp(t.distanceM / 1000 * policy.distanceDiscountPerKm + t.runningSeconds / 3600 * policy.hourDiscount, 0, policy.historyDiscountLimit);
+                    double tireHistory = Clamp(t.distanceM / 1000 * policy.distanceDiscountPerKm + t.runningSeconds / 3600 * policy.hourDiscount, 0, policy.historyDiscountLimit);
                     double usedValue = baseValue * (grade == null ? 1 : grade.factor)
                         * (policy.minimumWearFactor + (1 - policy.minimumWearFactor) * tread)
-                        * (t.failed || tread <= 0 ? policy.scrapFraction : 1) * (1 - history);
+                        * (t.failed || tread <= 0 ? policy.scrapFraction : 1) * (1 - tireHistory);
                     total += usedValue;
                     lines.Add(new ValuationLine(string.IsNullOrEmpty(t.id) ? part.instanceId + "/tire:" + i : t.id,
                         spec.name + " / " + new[] { "Front left", "Front right", "Rear left", "Rear right" }[i],
