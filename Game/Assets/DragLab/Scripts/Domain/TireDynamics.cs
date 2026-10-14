@@ -17,7 +17,7 @@ namespace DragLab.Domain {
     // One-time migration of saves that predate per-corner tire conditions.
     c.tires=new TireCondition[4];
     for(int i=0;i<4;i++) c.tires[i]=new TireCondition {
-     id=MechanicsOwnership.NewId("tire"), health=c.health, failed=c.failed,
+     health=c.health, failed=c.failed,
      temperatureC=c.temperatureC, slipEnergyJ=c.slipEnergyJ*.25,
      distanceM=c.distanceM, consumedLife=Math.Max(0,1-c.health)
     };
