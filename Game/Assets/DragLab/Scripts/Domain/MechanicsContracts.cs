@@ -16,6 +16,22 @@ namespace DragLab.Domain.Mechanics
     public enum PartLocation { Inventory, Vehicle, Assembly }
     public enum RunSegment { Staging, Driving, Shutdown, Neutral, Diagnostic }
     [Serializable]
+    public sealed class ClutchConditionState
+    {
+        public int version;
+        public double oilLitres, oilCondition=1;
+
+        public ClutchConditionState Copy(){return (ClutchConditionState)MemberwiseClone();}
+        public string Validate()
+        {
+            if(version<0||version>1)return "Invalid clutch-fluid schema.";
+            if(!MechanicsSchema.Finite(oilLitres)||oilLitres<0||oilLitres>10
+               ||!MechanicsSchema.Finite(oilCondition)||oilCondition<0||oilCondition>1)
+                return "Invalid clutch fluid.";
+            return null;
+        }
+    }
+    [Serializable]
     public sealed class ComponentCondition
     {
         public float health = 1;
@@ -27,7 +43,25 @@ namespace DragLab.Domain.Mechanics
         public int serviceCount, reconditionCount;
         public string lastService = "";
         [SerializeReference] public EngineElement[] elements = new EngineElement[0];
-        public int clutchFluidVersion; public double clutchOilLitres, clutchOilCondition=1;
+        // Kept as accessors because the physical clutch-bath state now belongs
+        // only to an actual clutch payload, not to every component container.
+        [SerializeReference] public ClutchConditionState clutch;
+        public int clutchFluidVersion
+        {
+            get => clutch==null?0:clutch.version;
+            set {if(clutch==null&&value==0)return;if(clutch==null)clutch=new ClutchConditionState();clutch.version=value;}
+        }
+        public double clutchOilLitres
+        {
+            get => clutch==null?0:clutch.oilLitres;
+            set {if(clutch==null&&value==0)return;if(clutch==null)clutch=new ClutchConditionState();clutch.oilLitres=value;}
+        }
+        public double clutchOilCondition
+        {
+            get => clutch==null?1:clutch.oilCondition;
+            set {if(clutch==null&&value==1)return;if(clutch==null)clutch=new ClutchConditionState();clutch.oilCondition=value;}
+        }
+        public void ClearClutch(){clutch=null;}
         // Legacy call sites use this typed view during the migration. This is
         // not serialized: the only canonical members are elements[].
         [NonSerialized] TireCondition[] tireView;
@@ -62,6 +96,7 @@ namespace DragLab.Domain.Mechanics
             var copy=(ComponentCondition)MemberwiseClone();
             copy.elements=elements==null?null:Array.ConvertAll(elements,e=>e==null?null:e.Copy());
             copy.tireView=null;
+            copy.clutch=clutch==null?null:clutch.Copy();
             return copy;
         }
         public string Validate()
@@ -72,7 +107,7 @@ namespace DragLab.Domain.Mechanics
             if (!MechanicsSchema.Finite(temperatureC) || temperatureC < -50 || temperatureC > 2000 || !MechanicsSchema.Finite(slipEnergyJ) || slipEnergyJ < 0) return "Invalid component thermal history.";
             if(!MechanicsSchema.Finite(deposits)||deposits<0||deposits>1||!MechanicsSchema.Finite(leakSeverity)||leakSeverity<0||leakSeverity>1||!MechanicsSchema.Finite(adjustmentError)||adjustmentError<0||adjustmentError>1||serviceCount<0||reconditionCount<0||!MechanicsSchema.Finite(serviceWearRemainder)||serviceWearRemainder<0)return "Invalid component service/fault history.";
             if(elements!=null){var ids=new HashSet<string>();if(elements.Length>128)return "Too many engine elements.";foreach(var e in elements)if(e==null||e.Validate()!=null||!ids.Add(e.id))return "Invalid/duplicate engine elements.";}
-            if(!MechanicsSchema.Finite(clutchOilLitres)||clutchOilLitres<0||clutchOilLitres>10||(!MechanicsSchema.Finite(clutchOilCondition)||clutchOilCondition<0||clutchOilCondition>1))return "Invalid clutch oil.";
+            if(clutch!=null&&clutch.Validate()!=null)return clutch.Validate();
             if(tires.Length!=0){if(tires.Length!=4)return "Tire pack needs four conditions.";foreach(var t in tires)if(t==null||t.Validate()!=null)return "Invalid tire condition.";}
             return null;
         }
