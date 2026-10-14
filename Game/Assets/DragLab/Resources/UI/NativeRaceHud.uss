@@ -12,7 +12,7 @@
 .analog-gauge { width: 226px; height: 226px; margin-right: 14px; }
 .rpm-gauge { width: 254px; height: 254px; }
 .gauge-layer { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
-.gauge-number { position: absolute; width: 40px; height: 24px; -unity-text-align: middle-center; font-size: 18px; color: var(--gauge-tick); }
+.gauge-number { position: absolute; width: 32px; height: 22px; padding: 0; margin: 0; -unity-text-align: middle-center; font-size: 18px; color: var(--gauge-tick); }
 .gauge-red-number { color: var(--racing-accent); }
 .gauge-value { position: absolute; left: 25%; right: 25%; top: 63%; height: 36px; font-size: 30px; -unity-text-align: middle-center; }
 .gauge-unit { position: absolute; left: 15%; right: 15%; top: 79%; height: 22px; font-size: 14px; color: var(--racing-muted); -unity-text-align: middle-center; }
@@ -40,3 +40,6 @@
 .h-pattern .shifter-gear { right: auto; top: auto; width: 92px; height: 92px; font-size: 57px; }
 
 .race-pause-button, .race-pause-button:hover, .race-pause-button:active { background-image: none; }
+
+.gauge-shift-lamp { left: 44%; right: auto; top: 19%; bottom: auto; width: 12%; height: 12%; }
+.gauge-shift-lamp.hidden { display: none; }

@@ -32,6 +32,32 @@ namespace DragLab.Runtime
             Check(Math.Abs(hud.Rpm.Scale.Redline - Math.Min(safe, game.Race.player.spec.redlineRpm)) < .01, "Red band starts at the lowest safe hardware/spec redline, separately from shift/cut settings");
             Check(hud.Rpm.Scale.SweepDegrees < 360 && hud.Rpm.Scale.Maximum > game.Race.player.spec.redlineRpm, "Analog scale has a partial-circle sweep and headroom above redline");
             Check(!hud.Root.Query<Label>().ToList().Any(l => l.text.Contains("Shift") || l.text.Contains("target")), "New RPM dial contains no suggested shift marker or target");
+            Check(hud.Root.IndexOf(hud.SteeringRim)>hud.Root.IndexOf(hud.Speed.parent),"Steering rim draws in front of both gauges");
+            Check(RaceSteeringRim.Thickness>34&&RaceSteeringRim.LowerOffset>240,"Foreground wheel has a thicker black rim and lower position");
+            var strip=UnityEngine.Object.FindFirstObjectByType<DragLab.Presentation.DragStripView>();
+            Check(DragLab.Presentation.DragStripView.Project(8,-2).y==DragLab.Presentation.DragStripView.Project(2,-2).y,"Travel remains horizontal rather than tilting the road or cars");
+            float nearTravel=DragLab.Presentation.DragStripView.Project(12,-3).x-DragLab.Presentation.DragStripView.Project(2,-3).x;
+            float farTravel=DragLab.Presentation.DragStripView.Project(12,.6f).x-DragLab.Presentation.DragStripView.Project(2,.6f).x;
+            Check(nearTravel>farTravel&&DragLab.Presentation.DragStripView.DepthScale(-.2f)<1,"Road texture, markings and far car share a foreshortened depth projection with faster near-ground motion");
+            double oldDistance=state.distance,oldTime=game.Race.time;bool oldDq=state.disqualified;
+            game.Race.time=2.1;strip.Render(game.Race);yield return Capture("race-lights-amber");
+            state.distance=100;state.speed=70;strip.Render(game.Race);
+            Check(Math.Abs(strip.Travel-60)<.001&&strip.SpeedCue>.7f,"High-speed ground travel uses the shared larger distance scale and stronger near-road cues");
+            Check(strip.LitLampCount==4,"Countdown illuminates both lanes' reached amber lamps");
+            game.Race.time=3.1;strip.Render(game.Race);Check(strip.LitLampCount==2,"Green shows only the paired green lamps");yield return Capture("race-lights-green");
+            state.disqualified=true;strip.Render(game.Race);Check(strip.LitLampCount==2,"Red light replaces green for a false start");yield return Capture("race-lights-red");
+            state.disqualified=oldDq;game.Race.time=oldTime;state.distance=oldDistance;state.speed=speed;strip.Render(game.Race);
+            var hardware=game.Race.player.tune;var car=game.Race.player;
+            bool fitted=hardware.partShiftLight,adjustable=hardware.partShiftLightAdjustable,launched=state.launched;
+            float threshold=hardware.shiftLightRpm;double remaining=state.shiftRemaining,oldRpm=state.rpm;int oldGearLight=state.gear;
+            hardware.partShiftLight=false;state.rpm=car.spec.redlineRpm;state.launched=true;state.gear=2;state.shiftRemaining=0;hud.Refresh();
+            Check(!hud.ShiftLamp.Installed&&!hud.ShiftLamp.Lit&&hud.ShiftLamp.ClassListContains("hidden"),"No shift-light hardware means no lamp or shift cue even at high RPM");
+            hardware.partShiftLight=true;hardware.partShiftLightAdjustable=true;hardware.shiftLightRpm=4000;state.rpm=3900;hud.Refresh();
+            Check(hud.ShiftLamp.Installed&&!hud.ShiftLamp.Lit,"Installed programmable light remains dark below its real threshold");
+            state.rpm=4100;hud.Refresh();Check(hud.ShiftLamp.Lit,"Purchased light illuminates at the applied hardware threshold without adding a dial shift marker");
+            state.gear=car.spec.gears.Length;hud.Refresh();Check(!hud.ShiftLamp.Lit,"Shift light does not request a nonexistent gear above top gear");
+            hardware.partShiftLight=fitted;hardware.partShiftLightAdjustable=adjustable;hardware.shiftLightRpm=threshold;
+            state.launched=launched;state.gear=oldGearLight;state.shiftRemaining=remaining;state.rpm=oldRpm;hud.Refresh();
             yield return new WaitForSecondsRealtime(.2f);
             int faces = hud.Rpm.FacePaints, needles = hud.Rpm.NeedlePaints;
             state.rpm = 4488; hud.Refresh(); yield return new WaitForSecondsRealtime(.2f);
@@ -86,6 +112,19 @@ namespace DragLab.Runtime
                 Check(hud.Speed.worldBound.xMax < hud.Rpm.worldBound.xMin && hud.Rpm.worldBound.xMax < hud.Gear.worldBound.xMin, "Left dials and right shifter stay separated at " + width);
                 float pedalTop = (Screen.height - 91 * RaceInputAdapter.Scale(Screen.width,Screen.height)) / hud.Panel.scale;
                 Check(hud.Dashboard.worldBound.yMax <= hud.Root.worldBound.yMax && hud.Rpm.worldBound.yMin < hud.Dashboard.worldBound.yMin && hud.Gear.worldBound.yMax <= hud.Root.worldBound.yMax, "Low dashboard stays bounded with the instrument cluster overflowing at " + width);
+                foreach(var dial in new[]{hud.Speed,hud.Rpm})
+                {
+                    float radius=dial.contentRect.width*.40f;
+                    var center=dial.worldBound.center;
+                    bool clear=true;
+                    foreach(var number in dial.Query<Label>(className:"gauge-number").ToList())
+                    {
+                        var b=number.worldBound;
+                        foreach(var c in new[]{new Vector2(b.xMin,b.yMin),new Vector2(b.xMax,b.yMin),new Vector2(b.xMin,b.yMax),new Vector2(b.xMax,b.yMax)})
+                            if((c-center).magnitude>radius+.5f)clear=false;
+                    }
+                    Check(clear,"All "+dial.name+" number boxes remain inside the tick marks at "+width);
+                }
                 yield return Capture("race-gauges-"+width);
             }
             var target = new RenderTexture(3840,2160,24);target.Create();hud.Panel.targetTexture=target;hud.Refresh();yield return new WaitForSecondsRealtime(.3f);
@@ -112,7 +151,13 @@ namespace DragLab.Runtime
             game.Profile.driving.shifting=ShiftMode.Automatic;game.Profile.driving.launch=LaunchMode.Automatic;
             game.StartPractice();game.verificationInput=()=>new DriverInput{throttle=1};
             float finishDeadline=Time.realtimeSinceStartup+65;
-            while(game.Race.phase!=RacePhase.Finished&&Time.realtimeSinceStartup<finishDeadline)yield return null;
+            bool movingShot=false,fastShot=false;
+            while(game.Race.phase!=RacePhase.Finished&&Time.realtimeSinceStartup<finishDeadline)
+            {
+                if(!movingShot&&game.Race.player.state.speed>=20){movingShot=true;yield return Capture("race-road-72kmh");}
+                if(!fastShot&&game.Race.player.state.speed>=35){fastShot=true;yield return Capture("race-road-126kmh");}
+                yield return null;
+            }
             game.verificationInput=null;yield return null;
             Check(game.ComparisonRoute=="Results"&&!hud.Visible&&game.Race.player.state.finished,"Finishing a real authoritative pass hides instruments and preserves the existing results workflow");
             yield return Capture("race-gauges-results");
