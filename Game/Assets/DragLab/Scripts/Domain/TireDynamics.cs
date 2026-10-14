@@ -9,7 +9,34 @@ namespace DragLab.Domain {
   public string Validate(){if(!MechanicsSchema.Finite(health)||health<0||health>1||!MechanicsSchema.Finite(temperatureC)||temperatureC< -50||temperatureC>2000||!MechanicsSchema.Finite(slipEnergyJ)||slipEnergyJ<0||!MechanicsSchema.Finite(distanceM)||distanceM<0||!MechanicsSchema.Finite(lastContactWorkJ)||lastContactWorkJ<0||!MechanicsSchema.Finite(consumedLife)||consumedLife<0)return "Invalid per-wheel tire condition.";return null;}
  }
  public static class TireDynamics {
-  public static void Ensure(ComponentCondition c){if(c.tires==null||c.tires.Length==0){c.tires=new TireCondition[4];for(int i=0;i<4;i++)c.tires[i]=new TireCondition {health=c.health,failed=c.failed,temperatureC=c.temperatureC,slipEnergyJ=c.slipEnergyJ*.25,distanceM=c.distanceM,consumedLife=1-c.health};}if(c.tires.Length!=4||c.tires.Any(t=>t==null))throw new ArgumentException("Tire pack requires four conditions.");if(c.failed&&c.tires.All(t=>!t.failed))foreach(var t in c.tires)t.failed=true;double minimum=c.tires.Min(t=>t.health);if(c.health<minimum-1e-6)foreach(var t in c.tires){t.health=Math.Min(t.health,c.health);t.consumedLife=Math.Max(t.consumedLife,1-t.health);}}
+  // TireCondition is the sole owner of tire wear and lifetime usage. The containing
+  // PartInstance exists for fitment/ownership only; its condition is a derived
+  // compatibility summary, never a source of wear or failure for existing tires.
+  public static void Ensure(ComponentCondition c) {
+   if(c.tires==null||c.tires.Length==0) {
+    // One-time migration of saves that predate per-corner tire conditions.
+    c.tires=new TireCondition[4];
+    for(int i=0;i<4;i++) c.tires[i]=new TireCondition {
+     id=MechanicsOwnership.NewId("tire"), health=c.health, failed=c.failed,
+     temperatureC=c.temperatureC, slipEnergyJ=c.slipEnergyJ*.25,
+     distanceM=c.distanceM, consumedLife=Math.Max(0,1-c.health)
+    };
+   }
+   if(c.tires.Length!=4||c.tires.Any(t=>t==null))throw new ArgumentException("Four individual tire conditions are required.");
+   SyncSummary(c);
+  }
+  public static void SyncSummary(ComponentCondition c) {
+   if(c.tires==null||c.tires.Length!=4||c.tires.Any(t=>t==null))throw new ArgumentException("Four individual tire conditions are required.");
+   c.health=c.tires.Min(t=>t.health);
+   c.failed=c.tires.Any(t=>t.failed);
+   c.temperatureC=c.tires.Max(t=>t.temperatureC);
+   c.failureReason=c.failed?"Tire unavailable":"";
+   // These old assembly-history fields have no meaning for replaceable tires.
+   // Their histories live exclusively on each TireCondition.
+   c.slipEnergyJ=0;
+   c.distanceM=0;
+   c.runningSeconds=0;
+  }
   public static void ResetContactReference(CarState state,System.Collections.Generic.IEnumerable<PartInstance> parts){foreach(var p in parts)if(p.slot==PartCategory.Tires.ToString()){Ensure(p.condition);for(int i=0;i<4;i++)p.condition.tires[i].lastContactWorkJ=state.contact.slipWorkJ[i];}}
   public static double Grip(PartDefinition d,TireCondition t){if(t.failed||t.health<=0)return .025;double temperature=t.temperatureC<20?DragMath.Clamp(1+(t.temperatureC-20)*.003,.65,1):t.temperatureC<=d.tireOptimalC?1+.05*(t.temperatureC-20)/Math.Max(1,d.tireOptimalC-20):DragMath.Clamp(1.05-(t.temperatureC-d.tireOptimalC)*.005,.35,1.05);return temperature*(.35+.65*Math.Sqrt(t.health));}
   public static void Tick(CarSimulation car,double dt,double distanceBefore){
@@ -22,8 +49,7 @@ namespace DragLab.Domain {
     double loss=(distance/d.tireLifeDistanceM+delta/(d.wearEnergyJ*size))*pressure*load*(1+thermal*3)+dt*thermal*thermal/d.overloadSeconds;
     if(!t.failed){if(Math.Abs(t.health-(1-t.consumedLife))>2e-7)t.consumedLife=Math.Max(t.consumedLife,1-t.health);t.consumedLife+=loss*car.driver.WearRate;t.health=(float)Math.Max(0,1-t.consumedLife);if(t.health<=0)t.failed=true;}
    }
-   c.health=1;c.failed=false;c.temperatureC=-50;c.slipEnergyJ=0;foreach(var t in c.tires){c.health=Math.Min(c.health,t.health);c.temperatureC=Math.Max(c.temperatureC,t.temperatureC);c.slipEnergyJ+=t.slipEnergyJ;if(t.failed)c.failed=true;}
-   if(c.failed&&string.IsNullOrWhiteSpace(c.failureReason))c.failureReason="Tire grip loss / worn or overheated tire";c.runningSeconds+=dt;c.distanceM+=distance;
+   SyncSummary(c);
   }
  }
 }
