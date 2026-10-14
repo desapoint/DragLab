@@ -34,7 +34,17 @@ namespace DragLab.Domain
             var resolved = profile.catalog.Resolve(car.vehicleId, map, adjustments ?? car.tune);
             TireFitments.Capture(resolved.spec,components,profile.catalog);
             if(string.IsNullOrEmpty(car.engineAssemblyId))resolved.errors.Add("No engine attached: stored engines retain their own hardware and liquids.");
-            foreach (var p in components) if ((PartSemantics.Wears(profile.catalog.Find(p.definitionId).category) || profile.catalog.Find(p.definitionId).category == PartCategory.Controls && resolved.spec.engineBehavior.fueling == FuelSystem.Injection) && (p.condition.failed || p.condition.health <= 0)) (MechanicalCatalog.DisablingEngineFailure(profile.catalog.Find(p.definitionId).category) || profile.catalog.Find(p.definitionId).category == PartCategory.Controls && resolved.spec.engineBehavior.fueling == FuelSystem.Injection ? resolved.errors : resolved.warnings).Add("Failed " + p.slot + ": " + p.condition.failureReason);
+            foreach (var p in components) {
+                var category=profile.catalog.Find(p.definitionId).category;
+                if(category==PartCategory.Tires&&p.condition.tires!=null&&p.condition.tires.Length==4){
+                    for(int i=0;i<4;i++)if(p.condition.tires[i].failed||p.condition.tires[i].health<=0)
+                        resolved.warnings.Add(new[]{"Front left","Front right","Rear left","Rear right"}[i]+" tire failed");
+                    continue;
+                }
+                if((PartSemantics.Wears(category)||category==PartCategory.Controls&&resolved.spec.engineBehavior.fueling==FuelSystem.Injection)&&(p.condition.failed||p.condition.health<=0))
+                    (MechanicalCatalog.DisablingEngineFailure(category)||category==PartCategory.Controls&&resolved.spec.engineBehavior.fueling==FuelSystem.Injection?resolved.errors:resolved.warnings)
+                        .Add("Failed "+p.slot+": "+p.condition.failureReason);
+            }
             return new InspectionBuild { build = resolved, components = components, startingFluids=car.fluids.Copy(), startingFuel = new FuelState { litres = car.fuel.litres } };
         }
     }
