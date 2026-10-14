@@ -103,6 +103,19 @@ namespace DragLab.Editor
             var typedCopy=decoded.Copy();typedCopy.tires[2].slipEnergyJ+=500;
             check(decoded.tires[2].slipEnergyJ!=typedCopy.tires[2].slipEnergyJ,
                 "Typed member copies do not share independent tire history");
+            var looseTire=new LooseEngineElement{
+                definitionId="test-tire",tireUnit=true,
+                element=new EngineElement{id="stored-test-tire",role="tire",cylinder=-1,valve=-1},
+                tire=new TireCondition{health=.38f,consumedLife=.62,slipEnergyJ=444,temperatureC=76,distanceM=5000}
+            };
+            string looseJson=JsonUtility.ToJson(looseTire);
+            var stored=JsonUtility.FromJson<LooseEngineElement>(looseJson);
+            check(!looseJson.Contains("\"tire\"")
+                &&stored.element is TireCondition
+                &&stored.tire.id=="stored-test-tire"
+                &&stored.tire.health==.38f&&stored.tire.consumedLife==.62
+                &&stored.tire.slipEnergyJ==444&&stored.tire.temperatureC==76&&stored.tire.distanceM==5000,
+                "Loose tires serialize once as specialized elements and retain stored wear history");
             var pistonElements=new ComponentCondition{
                 elements=new EngineElement[]{
                     new PistonElement{id="test-piston",role="piston",cylinder=0,valve=-1},
