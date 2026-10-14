@@ -242,7 +242,15 @@ namespace DragLab.Domain.Mechanics
             foreach (var item in profile.parts)
                 if (!unique(item.instanceId) || item.Validate() != null || catalog.Find(item.definitionId) == null || (item.location != PartLocation.Inventory) != bindings.Contains(item.instanceId)) return "Duplicate/invalid/orphan part instance.";
             foreach(var loose in profile.looseEngineElements)if(loose==null||loose.element==null||loose.element.Validate()!=null||catalog.Find(loose.definitionId)==null||loose.unitPrice<0||!unique(loose.element.id))return "Invalid loose engine element.";
-            foreach(var part in profile.parts)foreach(var element in part.condition.elements??new EngineElement[0])if(!EngineElements.FaultAllowed(catalog.Find(part.definitionId).category,element)||!unique(element.id))return "Invalid/duplicate engine element identity or fault.";
+            foreach(var part in profile.parts)
+            {
+                var definition=catalog.Find(part.definitionId);
+                if(definition!=null&&definition.category!=PartCategory.Clutch&&part.condition.clutch!=null)
+                    return "Non-clutch components cannot own clutch-fluid state.";
+                foreach(var element in part.condition.elements??new EngineElement[0])
+                    if(!EngineElements.FaultAllowed(definition.category,element)||!unique(element.id))
+                        return "Invalid/duplicate typed element identity, category or fault.";
+            }
             foreach(var part in profile.parts.Where(p=>catalog.Find(p.definitionId).category==PartCategory.Tires))
                 if(part.condition.elements==null||part.condition.elements.Length!=4||part.condition.elements.Any(e=>!(e is TireCondition)))return "Tire sets must contain four typed tire elements.";
             if(profile.driving==null||profile.driving.guaranteedFittingParts<0||profile.driving.guaranteedFittingParts>20)return "Invalid market guarantee difficulty.";
