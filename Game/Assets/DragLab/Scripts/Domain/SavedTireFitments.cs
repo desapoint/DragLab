@@ -26,7 +26,7 @@ namespace DragLab.Domain.Mechanics
             foreach(var line in plan.tires){
                 string id=line.itemId;
                 if(line.purchase){
-                    if(preview){var unit=new LooseEngineElement{definitionId=line.definitionId,tireUnit=!line.wheel,element=new EngineElement{id="preview/setup/"+(line.wheel?"wheel/":"tire/")+line.corner,role=line.wheel?"wheel":"tire",cylinder=-1,valve=-1},tire=line.wheel?null:new TireCondition()};p.looseEngineElements.Add(unit);id=unit.element.id;}
+                    if(preview){var element=EngineElements.Create(line.wheel?PartCategory.Wheels:PartCategory.Tires);element.id="preview/setup/"+(line.wheel?"wheel/":"tire/")+line.corner;element.definitionId=line.definitionId;element.role=line.wheel?"wheel":"tire";element.cylinder=-1;element.valve=-1;var unit=new LooseEngineElement{definitionId=line.definitionId,tireUnit=!line.wheel,element=element};p.looseEngineElements.Add(unit);id=element.id;}
                     else id=InventoryUnits.Buy(p,car.instanceId,line.definitionId,line.wheel?"wheel":"tire").element.id;
                 }
                 InventoryUnits.Install(p,car.instanceId,id,(line.wheel?"wheel:":"tire:")+line.corner);
