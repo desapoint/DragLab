@@ -173,8 +173,8 @@ namespace DragLab.Runtime
                 e.Proposed=Inspect(candidate);var a=Reference;var b=e.Proposed;
                 e.Reason=string.Join("\n",structural.errors.Concat(structural.warnings).Concat(b.warnings.Select(w=>w.title+": "+w.explanation+" "+w.suggestion)).Distinct());
                 e.Change[0]=b.peakHp-a.peakHp;e.Change[1]=b.peakTorque-a.peakTorque;e.Change[2]=b.vehicleMassKg-a.vehicleMassKg;
-                var replaced=reference.componentsPart(d.category);double health=e.Unit!=null?e.Unit.element.health:e.Part!=null?e.Part.condition.health:1;
-                double oldHealth=replaced?.condition.health??0;
+                var replaced=reference.componentsPart(d.category);double health=e.Unit!=null?e.Unit.element.health:e.Part!=null?(d.category==PartCategory.Tires?TireDynamics.LowestHealth(e.Part.condition):e.Part.condition.health):1;
+                double oldHealth=replaced==null?0:d.category==PartCategory.Tires?TireDynamics.LowestHealth(replaced.condition):replaced.condition.health;
                 if(e.Unit!=null&&replaced!=null){if(e.Unit.tireUnit&&e.Position.StartsWith("tire:",StringComparison.Ordinal))oldHealth=replaced.condition.tires[int.Parse(e.Position.Substring(5))].health;else oldHealth=replaced.condition.elements.FirstOrDefault(element=>element.id==e.Position)?.health??oldHealth;}
                 if(PartSemantics.Wears(d.category))e.Change[3]=(health-oldHealth)*100;
                 var prior=replaced==null?null:actual.catalog.Find(replaced.definitionId);
