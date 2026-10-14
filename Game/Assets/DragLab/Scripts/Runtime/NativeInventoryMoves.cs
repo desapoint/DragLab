@@ -92,9 +92,13 @@ namespace DragLab.Runtime
                 foreach(string preset in new[]{"Front","Rear","All","Clear"}){
                     string choice=preset;
                     var button=new Button(()=>{
+                        var chosen=new System.Collections.Generic.HashSet<int>();
                         for(int i=0;i<4;i++){
-                            bool enabled=choice=="All"||choice=="Front"&&i<2||choice=="Rear"&&i>=2;
-                            if(choice=="Clear"||enabled)positions[i].index=0;
+                            bool target=choice=="All"||choice=="Front"&&i<2||choice=="Rear"&&i>=2;
+                            positions[i].index=0;
+                            if(choice=="Clear"||!target)continue;
+                            for(int n=0;n<candidates.Length;n++)
+                                if(chosen.Add(n)){positions[i].index=n+1;break;}
                         }
                         refresh();
                     }){text=preset,name="tireSwapPreset:"+preset};
