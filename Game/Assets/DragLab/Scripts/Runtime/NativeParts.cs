@@ -110,7 +110,7 @@ namespace DragLab.Runtime
             if(!partCardLabels.TryGetValue(e.Id,out var labels))return;
             labels[0].text=e.Compatibility;
             var specs=PartSpecs(e);for(int i=0;i<4;i++){labels[i+1].text=i<specs.Length?PartStatText(specs[i]):"";labels[i+1].tooltip=i<specs.Length?specs[i].explanation:"";}
-            double health=e.Unit?.element.health??e.Part?.condition.health??1;bool failed=e.Unit!=null?e.Unit.element.Failed:e.Part?.condition.failed??false;
+            double health=e.Unit?.element.health??(e.Part!=null&&e.Definition.category==PartCategory.Tires?TireDynamics.LowestHealth(e.Part.condition):e.Part?.condition.health)??1;bool failed=e.Unit!=null?e.Unit.element.Failed:e.Part!=null&&e.Definition.category==PartCategory.Tires?TireDynamics.AnyFailed(e.Part.condition):e.Part?.condition.failed??false;
             labels[5].tooltip=string.Join("\n",e.BrandNames.Select(b=>b+": "+PartBrands.Description(b)));
             labels[5].text=e.Source+" · "+string.Join(" / ",e.BrandNames.Select(PartBrands.Focus).Distinct())+" · "+PartSemantics.Friendly(e.Definition.category.ToString())+(PartSemantics.Wears(e.Definition.category)?" · "+(failed?"FAILED":health.ToString("P0")):"");labels[5].EnableInClassList("car-critical",failed);
             labels[6].text=(e.Price.HasValue?DisplayUnits.Money(e.Price.Value):"—")+(e.Definition.category==PartCategory.Tires||e.Definition.category==PartCategory.Wheels?e.Unit==null?" / set of 4":e.Definition.category==PartCategory.Wheels?" / wheel":" / tire":"")+" · "+(e.Definition.tuning!=PartTuningOptions.None||e.Definition.camTimingAdjustable?"Adjustable":"Fixed");
