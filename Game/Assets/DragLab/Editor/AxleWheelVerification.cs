@@ -65,6 +65,19 @@ namespace DragLab.Editor
         {
             var log=new StringBuilder();int count=0;
             Action<bool,string> check=(ok,label)=>{log.AppendLine(((ok?"PASS: ":"FAIL: ")+label).TrimEnd());if(!ok)throw new InvalidOperationException(label);count++;};
+            var bath=new ComponentCondition();
+            check(bath.clutch==null&&bath.clutchOilLitres==0&&bath.clutchOilCondition==1
+                &&bath.clutchFluidVersion==0,"Non-clutch components have no serialized clutch oil payload");
+            bath.clutchFluidVersion=1;bath.clutchOilLitres=1.75;bath.clutchOilCondition=.63;
+            string clutchJson=JsonUtility.ToJson(bath);
+            var clutchRestored=JsonUtility.FromJson<ComponentCondition>(clutchJson);
+            check(clutchJson.Contains("\"clutch\"")&&!clutchJson.Contains("\"clutchOilLitres\"")
+                &&clutchRestored.clutch!=null&&clutchRestored.clutchOilLitres==1.75
+                &&clutchRestored.clutchOilCondition==.63&&clutchRestored.clutchFluidVersion==1
+                &&clutchRestored.Validate()==null,"Clutch oil version, litres and condition survive a typed Unity JSON round trip");
+            var clutchCopy=bath.Copy();clutchCopy.clutchOilCondition=.3;
+            check(bath.clutchOilCondition==.63&&clutchCopy.clutchOilCondition==.3,
+                "Clutch-specific oil payload copies are independent");
             // A stale/worn former tire-set condition must never contaminate healthy
             // fitted tires, and obsolete parent usage counters must not be retained.
             var independent=new ComponentCondition{health=.1f,failed=true,failureReason="old pack state",
