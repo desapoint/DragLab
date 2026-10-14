@@ -13,7 +13,7 @@ namespace DragLab.Domain.Mechanics
     }
     public static class MechanicsOwnership
     {
-        public const int SaveVersion = 11;
+        public const int SaveVersion = 12;
         public static string NewId(string kind) { return kind + "-" + Guid.NewGuid().ToString("N"); }
         public static void Ensure(PlayerProfile profile, MechanicalCatalog catalog)
         {
