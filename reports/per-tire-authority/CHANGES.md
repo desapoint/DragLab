@@ -29,3 +29,7 @@ tools/Invoke-Unity.ps1 -Action RecoveryVerify
 tools/Invoke-Unity.ps1 -Action BuildWindows
 ```
 Also exercise a real existing save and separately verify one-corner replacement, tire inventory transfers, a mixed-compound build, a partially failed set, and race checkpoints before and after a garage tire replacement. Only syntax delimiter balance and GitHub diff metadata were inspected here; Unity compilation, native builds and these regression suites **have not been run**.
+
+## Architecture correction: neutralized fields are NOT removal
+
+The generic `ComponentCondition` fields in a tire `PartInstance` are currently set to neutral values. This is **only a temporary compatibility approach** and does **not** meet the intended final architecture: the generic mechanical fields remain in serialized tire containers. The proper solution requires a dedicated serialized tire-container payload (four individual `TireCondition` records and structural IDs/fitment only), while preserving `ComponentCondition` for piston/clutch/other mechanical parts. Legacy saves must migrate the four tires into the new payload, and inventory, transactions, checkpoints, simulation, inspection, valuation and UI must switch to it. Do not merge this branch as a completed tire-container removal. Unity compilation and tests remain unrun.
