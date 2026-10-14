@@ -23,7 +23,7 @@ namespace DragLab.Infrastructure
             string backupSuffix = ".before-reset-" + DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
             string[] roots = LegacyFixture ? new[]{FilePath} :
                 slot=="slot-1" ? new[]{FilePath,LegacyFilePath} : new[]{FilePath};
-            string[] suffixes = {"",".bak",".run",".run.bak",".run.tmp",".tmp","-wal","-shm"};
+            string[] suffixes = {"",".bak",".run",".run.bak",".run.tmp",".tmp","-wal","-shm","-journal"};
             try
             {
                 RaceCheckpointStore.Drain();
