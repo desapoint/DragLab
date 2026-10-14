@@ -35,7 +35,14 @@ namespace DragLab.Runtime
             },true)},dismiss:()=>review.RemoveFromHierarchy(),populate:content=>{
                 var car=game.Profile.cars.Find(c=>c.instanceId==carId);content.Add(new Label(VehicleCollection.DisplayName(game.Profile.catalog,car)){name="maintenanceReplacementCar",enableRichText=false});
                 content.Add(new Label("New matching parts. Removed parts keep their condition in inventory."){enableRichText=false});
-                if(!brokenOnly){content.Add(new Label("Below remaining condition"));var range=new NativeTuningRange("maintenanceThreshold",()=>threshold,v=>threshold=v,()=>0,()=>100,()=>15,1,.1f,"%",()=>rebuild(),message=>error.text=message);range.style.flexGrow=1;content.Add(range);}
+                if(!brokenOnly){
+                    content.Add(new Label("Below remaining condition"));NativeTuningRange range=null;bool pending=false;
+                    range=new NativeTuningRange("maintenanceThreshold",()=>threshold,v=>threshold=v,()=>0,()=>100,()=>15,1,.1f,"%",()=>{
+                        if(range.Dragging){pending=true;root.Q<Button>("dialogConfirm").SetEnabled(false);}else rebuild();
+                    },message=>error.text=message);
+                    range.GestureFinished+=()=>{if(pending){pending=false;rebuild();}};
+                    range.style.flexGrow=1;content.Add(range);
+                }
                 content.Add(list);
             });
             var actions=root.Q("modalActions");actions.parent.Insert(actions.parent.IndexOf(actions),review);

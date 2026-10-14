@@ -177,7 +177,7 @@ namespace DragLab.Runtime
             dialogRoute = game.ScreenName;
             root.Q<Label>("modalTitle").text = title;
             foreach (var surface in dialogSurfaces) surfaces.Remove(surface); dialogSurfaces.Clear();
-            var content = root.Q<ScrollView>("modalContent"); content.Clear(); if (!string.IsNullOrEmpty(text)) content.Add(new Label(text)); populate?.Invoke(content);
+            var content = root.Q<ScrollView>("modalContent"); content.Clear(); content.scrollOffset = Vector2.zero; content.horizontalScrollerVisibility = ScrollerVisibility.Hidden; if (!string.IsNullOrEmpty(text)) content.Add(new Label(text)); populate?.Invoke(content);
             var buttons = root.Q("modalActions");
             buttons.Clear();
             foreach (var action in actions)

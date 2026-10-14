@@ -16,6 +16,7 @@ namespace DragLab.Runtime
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
         void CheckReplacementControlBounds(string size)
         {
+            DialogScrollBounds("maintenance "+size);
             var toggles=shell.Root.Query<Toggle>().ToList().Where(t=>t.name.StartsWith("maintenanceTarget:")).ToArray();
             Check(toggles.Length>0&&toggles.All(t=>Math.Abs(t.resolvedStyle.width-56)<.1f&&Math.Abs(t.Q<SwitchSurface>().worldBound.width-56)<.1f&&Math.Abs(t.Q<SwitchSurface>().worldBound.height-28)<.1f&&t.parent.ClassListContains("setting-row")&&t.parent.Q(className:"setting-caption").worldBound.xMax<=t.worldBound.xMin+1),"Replacement switches retain shared 56×28 geometry beside captions at "+size);
             var range=shell.Root.Q<NativeTuningRange>("tuneRange:maintenanceThreshold");
@@ -44,12 +45,19 @@ namespace DragLab.Runtime
             Check(shell.Root.Q<Label>("maintenanceReplacementDelivery").text.Contains("Fee")&&shell.Root.Q<Label>("maintenanceReplacementCost").text.Contains("Balance after"),"Review shows cumulative express fee, total and balance before payment");
             range.Number.value=15.1f;Check(range.Slider.value==15.1f&&shell.Root.Q("maintenanceTarget:"+boundaryKey)!=null,"Precise threshold edits synchronize the slider and eligible positions");
             var track=range.Slider.Q(className:"unity-base-slider__tracker").worldBound;
-            input.MouseButtonAt((int)Mathf.Lerp(track.xMin,track.xMax,.4f),(int)track.center.y,true);yield return new WaitForSecondsRealtime(.1f);input.MouseButtonAt((int)Mathf.Lerp(track.xMin,track.xMax,.4f),(int)track.center.y,false);yield return new WaitForSecondsRealtime(.1f);
+            var list=shell.Root.Q("maintenanceReplacementTargets");var stable=list.Children().ToArray();var stableBounds=range.worldBound;var stableSummary=shell.Root.Q<Label>("maintenanceReplacementSummary").text;
+            input.MouseButtonAt((int)Mathf.Lerp(track.xMin,track.xMax,.4f),(int)track.center.y,true);yield return new WaitForSecondsRealtime(.1f);
+            input.MoveMouseAt((int)Mathf.Lerp(track.xMin,track.xMax,.45f),(int)track.center.y);yield return new WaitForSecondsRealtime(.1f);
+            Check(range.Dragging&&list.Children().SequenceEqual(stable)&&range.worldBound==stableBounds&&shell.Root.Q<Label>("maintenanceReplacementSummary").text==stableSummary&&!shell.Root.Q("dialogConfirm").enabledInHierarchy,"Held threshold drag updates its value without replacing rows, moving the control or quoting an unfinished selection");
+            input.MouseButtonAt((int)Mathf.Lerp(track.xMin,track.xMax,.45f),(int)track.center.y,false);yield return new WaitForSecondsRealtime(.1f);
             Check(range.Number.value>30&&range.Number.value<50&&Math.Abs(range.Number.value-Mathf.Round(range.Number.value))<.001,"Real left-drag uses whole-percent steps");float coarse=range.Number.value;
-            input.MouseButtonAt((int)track.center.x,(int)track.center.y,true,1);yield return new WaitForSecondsRealtime(.1f);input.MoveMouseAt((int)track.center.x+35,(int)track.center.y);yield return new WaitForSecondsRealtime(.1f);input.MouseButtonAt((int)track.center.x+35,(int)track.center.y,false,1);yield return new WaitForSecondsRealtime(.1f);
+            stable=list.Children().ToArray();input.MouseButtonAt((int)track.center.x,(int)track.center.y,true,1);yield return new WaitForSecondsRealtime(.1f);input.MoveMouseAt((int)track.center.x+35,(int)track.center.y);yield return new WaitForSecondsRealtime(.1f);
+            Check(range.Dragging&&list.Children().SequenceEqual(stable),"Fine right-drag also leaves existing replacement rows intact until release");
+            input.MouseButtonAt((int)track.center.x+35,(int)track.center.y,false,1);yield return new WaitForSecondsRealtime(.1f);
             Check(range.Number.value>coarse&&range.Number.value<coarse+2,"Real right-drag provides finer threshold control");
             input.MouseButtonAt((int)track.center.x,(int)track.center.y,true,2);yield return new WaitForSecondsRealtime(.1f);input.MouseButtonAt((int)track.center.x,(int)track.center.y,false,2);yield return new WaitForSecondsRealtime(.15f);
             Check(range.Number.value==15&&shell.Root.Q("maintenanceTarget:"+boundaryKey)==null,"Middle-click restores the 15% default and updates the list");yield return null;CheckReplacementControlBounds("720p");yield return Capture("maintenance-batch-worn");
+            range.Number.value=100;yield return new WaitForSecondsRealtime(.2f);CheckReplacementControlBounds("long list");yield return Capture("maintenance-batch-long-list");range.Number.value=15;yield return new WaitForSecondsRealtime(.2f);
             Screen.SetResolution(1920,1080,false);yield return new WaitForSecondsRealtime(.3f);Check(shell.Root.Q("maintenanceReplacementReview").worldBound.yMax<=shell.Root.Q("modalActions").worldBound.yMin,"Replacement total stays above fixed actions at 1080p");CheckReplacementControlBounds("1080p");yield return Capture("maintenance-batch-1080p");
             var target=new RenderTexture(3840,2160,24);target.Create();shell.Panel.targetTexture=target;shell.Refresh();yield return new WaitForSecondsRealtime(.3f);Check(shell.Panel.scale==2&&shell.Root.Q("modalActions").worldBound.yMax<=shell.Root.worldBound.yMax,"Replacement review remains bounded at crisp 4K scale");CheckReplacementControlBounds("4K");var prior=RenderTexture.active;RenderTexture.active=target;var screenshot=new Texture2D(3840,2160,TextureFormat.RGB24,false);screenshot.ReadPixels(new Rect(0,0,3840,2160),0,0);screenshot.Apply();File.WriteAllBytes(Path.Combine(folder,"maintenance-batch-4k.png"),screenshot.EncodeToPNG());RenderTexture.active=prior;shell.Panel.targetTexture=null;target.Release();Destroy(target);Destroy(screenshot);
             Screen.SetResolution(1280,720,false);yield return new WaitForSecondsRealtime(.3f);yield return Click(input,"modalClose");

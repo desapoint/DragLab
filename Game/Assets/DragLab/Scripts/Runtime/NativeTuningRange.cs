@@ -11,6 +11,7 @@ namespace DragLab.Runtime
         internal float Step {get;}
         internal float FineStep {get;}
         internal bool Dragging {get;private set;}
+        internal event Action GestureFinished;
         readonly Func<float> get,min,max,reset;
         readonly Action<float> set;
         readonly Action changed;
@@ -44,10 +45,14 @@ namespace DragLab.Runtime
                 float width=Mathf.Max(1,Slider.Q(className:"unity-base-slider__tracker").worldBound.width-Slider.Q(className:"unity-base-slider__dragger").worldBound.width);
                 Commit(startValue+(e.position.x-startX)*(max()-min())/width*.1f,FineStep);e.StopImmediatePropagation();e.PreventDefault();
             },TrickleDown.TrickleDown);
-            Slider.RegisterCallback<PointerUpEvent>(e=>{bool special=fine;if(special&&Slider.HasPointerCapture(pointer))Slider.ReleasePointer(pointer);fine=false;Dragging=false;pointer=-1;if(special){e.StopImmediatePropagation();e.PreventDefault();}},TrickleDown.TrickleDown);
-            Slider.RegisterCallback<PointerCaptureOutEvent>(_=>{fine=false;Dragging=false;pointer=-1;});
-            RegisterCallback<DetachFromPanelEvent>(_=>{if(pointer>=0&&Slider.HasPointerCapture(pointer))Slider.ReleasePointer(pointer);fine=false;Dragging=false;pointer=-1;});
+            Slider.RegisterCallback<PointerUpEvent>(e=>{bool special=fine;int captured=pointer;EndGesture();if(special&&Slider.HasPointerCapture(captured))Slider.ReleasePointer(captured);if(special){e.StopImmediatePropagation();e.PreventDefault();}},TrickleDown.TrickleDown);
+            Slider.RegisterCallback<PointerCaptureOutEvent>(_=>EndGesture());
+            RegisterCallback<DetachFromPanelEvent>(_=>{int captured=pointer;fine=false;Dragging=false;pointer=-1;if(captured>=0&&Slider.HasPointerCapture(captured))Slider.ReleasePointer(captured);});
             Refresh();
+        }
+        void EndGesture()
+        {
+            bool wasDragging=Dragging;fine=false;Dragging=false;pointer=-1;if(wasDragging)GestureFinished?.Invoke();
         }
         void Commit(float value,float increment)
         {

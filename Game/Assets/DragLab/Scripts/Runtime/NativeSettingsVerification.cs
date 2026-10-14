@@ -154,6 +154,7 @@ namespace DragLab.Runtime
             Check(root.focusController.focusedElement==modalFocus && shell.ModalOpen,"Tab and Shift+Tab do not traverse dynamically generated confirmation buttons");
             Check(root.Q<ScrollView>("modalContent").Q<Label>().text.Contains("Master") && root.Q<ScrollView>("modalContent").Q<Label>().text.Contains("Mechanical wear"),"Confirmation names actual pending changes");
             Check(root.Q<ScrollView>("modalContent").verticalScroller.ClassListContains("settings-scrollbar") && root.Q<ScrollView>("modalContent").verticalScroller.lowButton.resolvedStyle.display==DisplayStyle.None,"Confirmation details use the same themed scrollbar");
+            DialogScrollBounds("Settings confirmation");
             yield return new WaitForEndOfFrame();
             var dialogPixels=ScreenCapture.CaptureScreenshotAsTexture(); var dialogBounds=root.Q("modalCard").worldBound;
             Color dialogTop=Pixel(dialogPixels,dialogBounds.xMin+14,dialogBounds.yMin+1);

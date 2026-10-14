@@ -1,0 +1,148 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Populated category Difficulty visible
+PASS: Apply/Cancel remain outside scrolling panel: Difficulty
+PASS: Populated category Sound visible
+PASS: Apply/Cancel remain outside scrolling panel: Sound
+PASS: Populated category Units visible
+PASS: Apply/Cancel remain outside scrolling panel: Units
+PASS: Populated category Controls visible
+PASS: Apply/Cancel remain outside scrolling panel: Controls
+PASS: Populated category General visible
+PASS: Reset game is aligned to the right of its General row
+PASS: Reset entry is a subdued action, separate from primary Apply
+PASS: Apply/Cancel remain outside scrolling panel: General
+PASS: Bulk driving/simulation presets share a distinct group separate from individual controls
+PASS: Preset group and individual settings have separate concise visible labels and spacing
+PASS: Hard market difficulty drafts zero guarantees without changing or rerolling live stock
+PASS: Market guarantee slider and numeric input use whole offers
+PASS: Revert restores the saved market rule without changing seller stock
+PASS: Compact Settings exposes at least nine full driving rows at 1280x720: 9
+PASS: Page actions use compact matching heights
+PASS: Choice group rounds only its two outer ends
+PASS: Joined choices have no gap between segments
+PASS: Scrollbar has a slim eight-point column and no stock arrow buttons: 8
+PASS: Scrollbar thumb fits its slim column without overflowing
+PASS: Both rounded panel corners visibly render red accents
+PASS: Panel highlights fade locally within the first 80 points, leaving neutral long edges
+PASS: Scrollbar aligns within the frame with a ten-point right gap and symmetric twelve-point ends: (x:48.00, y:131.00, width:1184.00, height:489.00) / (x:1214.00, y:143.00, width:8.00, height:465.00)
+PASS: Native palette stylesheet supplies the shared accent token
+PASS: Shared palette accent reaches native element: navBar
+PASS: Shared palette accent reaches native element: settingsButton
+PASS: Shared palette accent reaches native element: navGarage
+PASS: Shared palette accent reaches native element: settingsBody
+PASS: Shared palette accent reaches native element: tabDifficulty
+PASS: Shared palette accent reaches native element: heatManagement
+PASS: Shared palette accent reaches native element: masterVolume
+PASS: Header wordmark uses the same palette accent as procedural content
+PASS: Hover and shine leave the clear slanted corner unchanged: tabSound
+PASS: Angled outline uses a one-physical-pixel alpha fringe: tabSound
+PASS: Hover and shine leave the clear slanted corner unchanged: settingsButton
+PASS: Angled outline uses a one-physical-pixel alpha fringe: settingsButton
+PASS: Real toggle click animates thumb and track through intermediate state
+PASS: Rapid toggle reverses from its intermediate position and moves toward the original endpoint
+PASS: Toggle settles exactly at original state after reversal
+PASS: Toggle reaches opposite endpoint without continual animation
+PASS: Settled switch geometry stays cached
+PASS: Existing driving preference mapped: shifting
+PASS: Existing driving preference mapped: launch
+PASS: Existing driving preference mapped: throttleAssist
+PASS: Existing driving preference mapped: tractionAssist
+PASS: Existing driving preference mapped: revMatchAssist
+PASS: Existing driving preference mapped: clutchReleaseSeconds
+PASS: Existing driving preference mapped: shutdownBrakeAssist
+PASS: Existing driving preference mapped: wearMode
+PASS: Existing driving preference mapped: fuelUsage
+PASS: Existing driving preference mapped: guaranteedFittingParts
+PASS: Existing driving preference mapped: fluidDepletion
+PASS: Existing driving preference mapped: fluidAging
+PASS: Existing driving preference mapped: conditionEffects
+PASS: Existing driving preference mapped: serviceAssist
+PASS: Existing driving preference mapped: clutchAssist
+PASS: Existing driving preference mapped: stallPrevention
+PASS: Existing driving preference mapped: raceTemperatures
+PASS: Existing driving preference mapped: warmupBeforeRace
+PASS: Existing driving preference mapped: simulationDifficulty
+PASS: Optimal thermals mapped as Heat management
+PASS: Arcade preset edits shared draft
+PASS: Heat management off disables race-start temperature only
+PASS: Re-enabling heat preserves remembered race-start preference
+PASS: Reduced wear/fuel retain approved 25% rates
+PASS: Slider fill has visible track width
+PASS: Numeric entry uses readable dark themed background
+PASS: Slider thumb is vertically centered on the track: (x:536.00, y:185.00, width:576.00, height:6.00) / (x:954.50, y:179.00, width:18.00, height:18.00)
+PASS: Numeric input uses the shared condensed UI font
+PASS: Real volume slider edits draft without publishing audio gain
+PASS: Numeric input and slider stay synchronized without live publication
+PASS: Real keyboard numeric entry edits only sound draft
+PASS: Tab leaves mouse-focused numeric editing and draft value intact: FloatField masterVolumeValue (x:596.00, y:3.00, width:66.00, height:28.00) world rect: (x:1128.00, y:174.00, width:66.00, height:28.00) → FloatField masterVolumeValue (x:596.00, y:3.00, width:66.00, height:28.00) world rect: (x:1128.00, y:174.00, width:66.00, height:28.00) / 32
+PASS: Shift+Tab leaves numeric focus intact
+PASS: Native numeric text focus blocks F8
+PASS: Driving/units/category edits leave applied profile untouched
+PASS: F8 keeps dirty draft while showing legacy Settings
+PASS: F8 restores same dirty Settings draft
+PASS: Apply opens actual-change confirmation
+PASS: Tab and Shift+Tab do not traverse dynamically generated confirmation buttons
+PASS: Confirmation names actual pending changes
+PASS: Confirmation details use the same themed scrollbar
+PASS: Dialog content clears fixed X/title and actions: Settings confirmation
+PASS: Dialog reuses the shared brushed panel surface without a full left accent border
+PASS: Rendered dialog has top-left/bottom-right corner highlights and a neutral middle edge
+PASS: Confirmation blocks F8
+PASS: Mouse hover visibly lights dialog X even while it has modal focus
+PASS: Dialog X retains distinct mouse-down styling before release
+PASS: X dismisses only dialog and keeps draft
+PASS: Leaving dialog X removes hover despite retained focus
+PASS: Dirty navigation asks Apply/Discard/Stay
+PASS: Stay retains draft
+PASS: Confirmed Apply publishes whole driving draft
+PASS: Reduced rules and opponent difficulty persist together
+PASS: Confirmed Apply publishes shared audio gains
+PASS: Audio and all units survive reload
+PASS: Applied driving settings survive profile reload
+PASS: Locked preference file rejects settings commit independently of progression
+PASS: Failed commit never publishes new profile or audio cache
+PASS: Interrupted rollback retains durable recovery journal
+PASS: Incomplete settings write recovers after lock released
+PASS: Recovery restores all three files and profile backup exactly
+PASS: Successful recovery retires journal
+PASS: Clean Cancel returns to prior Garage
+PASS: Dirty Cancel discards draft and returns to actual previous menu
+PASS: Reopened Settings starts from applied preferences
+PASS: Definitive external unit change preserves unrelated local sound draft
+PASS: Definitive external units reconcile into native draft
+PASS: Conflicting definitive preference edit blocks stale Apply
+PASS: Revert loads latest applied settings
+PASS: Reset opens separate destructive dialog
+PASS: Escape cancels reset without changing progression
+PASS: Reset clears progression and retains applied driving preferences
+PASS: Reset keeps applied sound, discards unsaved draft and opens the starter dealership
+PASS: Click and selected-state change continue original hover sweep
+PASS: Pointer leave does not interrupt full hover sweep
+PASS: Sweep ends once after original hover interval
+PASS: Populated Settings actions remain reachable at compact resolution
+PASS: Populated 4K layout retains panel/action separation with shared 2x scale / scale 2 apply (x:1756.00, y:992.00, width:116.00, height:34.00) body (x:48.00, y:144.50, width:1824.00, height:835.50) actions (x:48.00, y:992.00, width:1824.00, height:34.00)
+PASS: True 4K target keeps its edge fringe at one physical pixel
+Checks: 146 / runtime errors: 0

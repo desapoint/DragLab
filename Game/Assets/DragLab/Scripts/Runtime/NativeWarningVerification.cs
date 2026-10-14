@@ -78,6 +78,7 @@ namespace DragLab.Runtime
             foreach(int width in new[]{1024,1920}){
                 Screen.SetResolution(width,width==1024?640:1080,false);yield return new WaitForSecondsRealtime(.5f);
                 var view=shell.Root.Q<ScrollView>("modalContent");var close=shell.Root.Q("modalClose").worldBound;
+                DialogScrollBounds("warnings "+width);
                 Check(close.xMax<=shell.Root.worldBound.xMax&&close.yMin>=0&&view.worldBound.yMax<shell.Root.Q("dialogClose").worldBound.yMin,"Warnings scroll while Close/X remain reachable at "+width);
                 Check(view.Query<Label>().ToList().All(l=>l.worldBound.xMax<=view.contentViewport.worldBound.xMax+1),"Warning labels wrap within the shared dialog at "+width);yield return Capture("warnings-"+width);
             }

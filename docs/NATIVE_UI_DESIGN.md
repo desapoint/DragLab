@@ -1,5 +1,7 @@
 # Native interface direction — grey/red and Settings first
 
+Shared dialog scrolling (2026-10-14): every native modal reserves a nonshrinking title/X row and sixteen-point content gap. Reuse the existing eight-point scrollbar with a ten-point right inset; keep actions/reviews outside scrolling, hide horizontal scrolling and open new content at the top. Maintenance threshold values update live while dragging, but target rows, selection and quote refresh only after release/capture loss. Typed confirmation and middle-click reset still update immediately. Keep shared precise gestures and explicit purchase confirmation. [Checks/review](../reports/dialog-scroll/CHANGES.md).
+
 Part supplier focus (2026-10-14): Build uses the existing filter modal and shared joined choices for Upgrade focus and multi-select Brands. Multiple suppliers form an OR selection and combine with the other criteria; Apply/Cancel/Clear/F8 retain existing boundaries. Cards show concise focus/type/condition; details distinguish Brand/focus from actual material/specification. Brand focus never grants tuning or overrides stats. Mixed corner filters use actual constituent suppliers. [Supplier guide](PART_BRANDS.md).
 
 Availability clarification (2026-10-14): remove the Express availability filter from Build. Express delivery is a shortage charge, not a separate product category. Keep quick same-part replacement through the car's wear/maintenance controls, including unavailable parts and the existing explicit express-cost confirmation. Existing saved-build shortage quotes remain supported.

@@ -77,6 +77,13 @@ namespace DragLab.Runtime
             var icon = root.Q("settingsButton").Q<FilledMenuIcon>().worldBound;
             Check(Mathf.Abs(icon.width - icon.height) < .1 && icon.height < settings.height, "Settings filled icon keeps aspect ratio and padding");
         }
+        void DialogScrollBounds(string context)
+        {
+            var view=shell.Root.Q<ScrollView>("modalContent");var close=shell.Root.Q("modalClose").worldBound;
+            Check(view.worldBound.yMin>=close.yMax+12&&view.worldBound.yMax<=shell.Root.Q("modalActions").worldBound.yMin,"Dialog content clears fixed X/title and actions: "+context);
+            var bar=view.verticalScroller;
+            if(bar.resolvedStyle.display!=DisplayStyle.None)Check(Mathf.Abs(shell.Root.Q("modalCard").worldBound.xMax-bar.worldBound.xMax-10)<1&&Mathf.Abs(bar.worldBound.width-8)<.1f&&bar.lowButton.resolvedStyle.display==DisplayStyle.None&&bar.highButton.resolvedStyle.display==DisplayStyle.None,"Dialog scrollbar uses the shared thin rail at a ten-point right inset: "+context);
+        }
         IEnumerator Run()
         {
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
