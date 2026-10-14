@@ -158,10 +158,24 @@ namespace DragLab.Domain.Mechanics
             } else if (kind == ValuationKind.LooseElement) {
                 var element = profile.looseEngineElements.Find(e => e.element.id == assetId);
                 if (element == null || kept.Length > 0) throw new InvalidOperationException("Quote requires an owned loose engine element without retained descendants.");
-                ids.Add(assetId); faulty = element.element.Failed || element.element.fault != ElementFault.None;
+                ids.Add(assetId);
                 loose = element.unitPrice * policy.usedPartFraction;
-                lines.Add(new ValuationLine(assetId, element.element.role + " / cylinder " + (element.element.cylinder + 1), 0, loose, "Owned single element / unit catalogue " + DisplayUnits.Money(element.unitPrice)));
-                loose = Change(lines, assetId, "Individual wear / fault", loose, (policy.minimumWearFactor + (1 - policy.minimumWearFactor) * ElementHealth(element.element)) * (faulty ? .65 : 1), "Actual element health/fault");
+                if(element.tireUnit && element.tire != null) {
+                    // A stored tire's value belongs to that physical tire, not its
+                    // previous four-tire set or the generic EngineElement wrapper.
+                    var t=element.tire;
+                    faulty=t.failed||t.health<=0||t.consumedLife>=1;
+                    lines.Add(new ValuationLine(assetId, "Individual tire / "+catalog.Find(element.definitionId).name, 0, loose, "Owned tire / unique identity "+assetId));
+                    double remaining=faulty?0:Clamp(Math.Min(t.health,1-t.consumedLife),0,1);
+                    loose=Change(lines,assetId,"Individual tire wear",loose,policy.minimumWearFactor+(1-policy.minimumWearFactor)*remaining,"Remaining life of this physical tire");
+                    if(faulty)loose=Change(lines,assetId,"Failed tire recovery",loose,policy.scrapFraction,"Damaged tire, not a failed set");
+                    double history=Clamp(t.distanceM/1000*policy.distanceDiscountPerKm+t.runningSeconds/3600*policy.hourDiscount,0,policy.historyDiscountLimit);
+                    loose=Change(lines,assetId,"Tire usage history",loose,1-history,(t.distanceM/1000).ToString("F1")+" km / "+(t.runningSeconds/3600).ToString("F1")+" operating hours");
+                }else{
+                    faulty = element.element.Failed || element.element.fault != ElementFault.None;
+                    lines.Add(new ValuationLine(assetId, element.element.role + " / cylinder " + (element.element.cylinder + 1), 0, loose, "Owned single element / unit catalogue " + DisplayUnits.Money(element.unitPrice)));
+                    loose = Change(lines, assetId, "Individual wear / fault", loose, (policy.minimumWearFactor + (1 - policy.minimumWearFactor) * ElementHealth(element.element)) * (faulty ? .65 : 1), "Actual element health/fault");
+                }
                 loose = Change(lines, assetId, "Loose-element buyer", loose, buyer.parts, buyer.name);
             } else {
                 if (kind == ValuationKind.Engine) {
