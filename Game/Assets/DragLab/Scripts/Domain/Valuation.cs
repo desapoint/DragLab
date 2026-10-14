@@ -106,7 +106,31 @@ namespace DragLab.Domain.Mechanics
         static double Change(List<ValuationLine> lines, string asset, string label, double value, double factor, string why) { double after = value * factor; lines.Add(new ValuationLine(asset, label, value, after, why + " / ×" + factor.ToString("F3"))); return after; }
         internal static double PartValue(PartInstance part, PartDefinition def, ValuationPolicy policy, BuyerPolicy buyer, List<ValuationLine> lines,MechanicalCatalog catalog=null)
         {
-            var c = part.condition;double cataloguePrice=def.price;
+            var c = part.condition;
+            if (def.category == PartCategory.Tires && c.tires != null && c.tires.Length == 4)
+            {
+                // A tyre set is a purchase/fitment wrapper only. Each tyre's identity,
+                // wear, specification, faults and distance determine its own resale.
+                double total = 0;
+                for (int i = 0; i < 4; i++)
+                {
+                    var t = c.tires[i];
+                    var spec = catalog == null ? def : catalog.Find(TireFitments.DefinitionId(part, i)) ?? def;
+                    double baseValue = spec.price * .25 * policy.usedPartFraction;
+                    var grade = policy.qualities.Find(q => q.quality == spec.quality);
+                    double tread = t.failed ? 0 : Clamp(Math.Min(t.health, 1 - t.consumedLife), 0, 1);
+                    double history = Clamp(t.distanceM / 1000 * policy.distanceDiscountPerKm, 0, policy.historyDiscountLimit);
+                    double usedValue = baseValue * (grade == null ? 1 : grade.factor)
+                        * (policy.minimumWearFactor + (1 - policy.minimumWearFactor) * tread)
+                        * (t.failed || tread <= 0 ? policy.scrapFraction : 1) * (1 - history);
+                    total += usedValue;
+                    lines.Add(new ValuationLine(string.IsNullOrEmpty(t.id) ? part.instanceId + "/tire:" + i : t.id,
+                        spec.name + " / " + new[] { "Front left", "Front right", "Rear left", "Rear right" }[i],
+                        0, usedValue, "Individual compound, wear, failure and " + (t.distanceM / 1000).ToString("F1") + " km; no condition inherited from other tyres"));
+                }
+                return Change(lines, part.instanceId, "Loose-part buyer", total, buyer.parts, buyer.name);
+            }
+            double cataloguePrice=def.price;
             if(def.category==PartCategory.Tires&&c.tires.Length==4&&catalog!=null)cataloguePrice=Enumerable.Range(0,4).Sum(i=>catalog.Find(TireFitments.DefinitionId(part,i)).price*.25);
             if(def.category==PartCategory.Wheels&&WheelFitments.HasOverrides(part)&&catalog!=null)cataloguePrice=Enumerable.Range(0,4).Sum(i=>catalog.Find(WheelFitments.DefinitionId(part,i)).price*.25);
             double value = cataloguePrice * policy.usedPartFraction;
