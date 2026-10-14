@@ -85,7 +85,7 @@ namespace DragLab.Domain.Mechanics
             if(s.cylinderContribution==null||s.cylinderContribution.Length!=n){s.cylinderContribution=new double[n];s.cylinderFuelDelivery=new double[n];}
             for(int i=0;i<n;i++){s.cylinderContribution[i]=1;s.cylinderFuelDelivery[i]=1;}
             s.individualValveFloat=0;
-            foreach(var p in car.mechanics.parts){var d=car.mechanics.Definition(p);Ensure(car.spec,d,p);if(p.condition.elements==null||d.category==PartCategory.Wheels)continue;if(p.condition.failed)foreach(var element in p.condition.elements)element.health=0;
+            foreach(var p in car.mechanics.parts){var d=car.mechanics.Definition(p);Ensure(car.spec,d,p);if(p.condition.elements==null||d.category==PartCategory.Wheels||d.category==PartCategory.Tires)continue;if(p.condition.failed)foreach(var element in p.condition.elements)element.health=0;
                 foreach(var e in p.condition.elements){
                     if(e.cylinder>=n)continue;
                     if(d.category==PartCategory.GlowPlugs)continue;
