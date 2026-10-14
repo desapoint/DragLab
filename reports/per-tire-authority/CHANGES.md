@@ -33,3 +33,14 @@ Also exercise a real existing save and separately verify one-corner replacement,
 ## Architecture correction: neutralized fields are NOT removal
 
 The generic `ComponentCondition` fields in a tire `PartInstance` are currently set to neutral values. This is **only a temporary compatibility approach** and does **not** meet the intended final architecture: the generic mechanical fields remain in serialized tire containers. The proper solution requires a dedicated serialized tire-container payload (four individual `TireCondition` records and structural IDs/fitment only), while preserving `ComponentCondition` for piston/clutch/other mechanical parts. Legacy saves must migrate the four tires into the new payload, and inventory, transactions, checkpoints, simulation, inspection, valuation and UI must switch to it. Do not merge this branch as a completed tire-container removal. Unity compilation and tests remain unrun.
+
+## Multi-tire inventory swap (in this branch)
+
+- Added `InventoryUnits.SwapTires` with an explicit unit ID and corner for each selected tire. Validate 1–4 unique tires and unique corners before applying. It preserves individual wear, slip energy, identity, temperature, definition and mileage; it returns every displaced tire to loose inventory. Call inside `MechanicsTransactions.Try` for a single durable commit.
+- Added a `Swap stored tires` action on the native Parts page. The dialog offers Front, Rear and All presets, allows individual corner choices, warns for failed tires and requires review/confirmation.
+- Added `AxleWheelVerification` assertions for two rear tire swaps, untouched fronts, retained outgoing tire identities, preserved worn histories and rejection of duplicate incoming tire IDs.
+- **Unity compilation and runtime verification have not been run.** This feature remains on a draft branch.
+
+## Tire container serialization — still outstanding
+
+The current `PartInstance.condition` is still a generic `ComponentCondition` and includes legacy `tires` plus generic condition fields. These are neutralized by `TireDynamics.SyncSummary` but have **not been removed from serialized tire parts**. Implementing a separate `TireContainerState` requires adapting every serializer, checkpoint, owned inventory, loose/dealer stock, mixed fitment, editor verification, telemetry, valuation and UI consumer, then explicitly migrating historical `condition.tires` **before** dropping that legacy serialized field. Discarding it earlier would silently erase worn tire inventories in old saves. This remains a blocking task before the branch is considered a complete tire-container cleanup.
