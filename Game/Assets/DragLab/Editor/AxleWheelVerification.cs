@@ -135,6 +135,28 @@ namespace DragLab.Editor
                 var originals=profile.looseEngineElements.Where(u=>u.tireUnit&&u.definitionId==pack.definitionId).ToArray();InventoryUnits.Install(profile,owned.instanceId,originals[0].element.id,"tire:2");InventoryUnits.Install(profile,owned.instanceId,originals[1].element.id,"tire:3");
                 var plan=SavedSetups.Preview(profile,owned.instanceId,setup.id);check(plan.tires.Count==2&&plan.tires.All(t=>!t.purchase)&&plan.cost==0,"Whole-car blueprints find exact loose compounds for the saved corners: "+vehicle.spec.id);
                 SavedSetups.Apply(profile,owned.instanceId,setup.id,profile.revision,false,plan.cost);check(TireFitments.DefinitionId(pack,2)==definition&&TireFitments.DefinitionId(pack,3)==definition&&MechanicsOwnership.Validate(profile,catalogue)==null,"Existing setup transaction restores mixed tires without granting replacements: "+vehicle.spec.id);
+                var swapProfile=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(profile));MechanicsOwnership.Ensure(swapProfile,catalogue);
+                var swapCar=swapProfile.SelectedCar;
+                var swapPack=swapProfile.parts.Find(p=>p.instanceId==pack.instanceId);
+                var swapSources=swapProfile.looseEngineElements.Where(u=>u.tireUnit).Take(2).ToArray();
+                check(swapSources.Length==2,"Removed individual tires remain available for rear-axle swapping: "+vehicle.spec.id);
+                string leftBefore=JsonUtility.ToJson(swapPack.condition.tires[0]),rightBefore=JsonUtility.ToJson(swapPack.condition.tires[1]);
+                var outgoingRear=swapPack.condition.tires.Skip(2).Select(t=>t.id).ToArray();
+                for(int i=0;i<2;i++){swapSources[i].tire.health=.4f+i*.1f;swapSources[i].tire.consumedLife=1-swapSources[i].tire.health;swapSources[i].tire.slipEnergyJ=18000+i*1000;swapSources[i].tire.distanceM=7200+i*100;swapSources[i].element.health=swapSources[i].tire.health;}
+                var sourceHistory=swapSources.Select(u=>JsonUtility.ToJson(u.tire)).ToArray();
+                var rearSwap=new[]{new TireSwapAssignment(swapSources[0].element.id,2),new TireSwapAssignment(swapSources[1].element.id,3)};
+                int swapWrites=0;PlayerProfile swapped;string swapError;
+                bool swapOk=MechanicsTransactions.Try(swapProfile,catalogue,swapProfile.revision,p=>InventoryUnits.SwapTires(p,swapCar.instanceId,rearSwap),p=>{swapWrites++;return true;},out swapped,out swapError);
+                check(swapOk&&swapWrites==1,"Two worn rear tires are installed atomically: "+vehicle.spec.id+" / "+swapError);
+                var fitted=swapped.parts.Find(p=>p.instanceId==swapPack.instanceId);
+                check(JsonUtility.ToJson(fitted.condition.tires[0])==leftBefore&&JsonUtility.ToJson(fitted.condition.tires[1])==rightBefore
+                    &&JsonUtility.ToJson(fitted.condition.tires[2])==sourceHistory[0]&&JsonUtility.ToJson(fitted.condition.tires[3])==sourceHistory[1]
+                    &&outgoingRear.All(id=>swapped.looseEngineElements.Any(u=>u.tireUnit&&u.element.id==id)),
+                    "Axle swap preserves untouched front tires, incoming worn histories, and both displaced originals: "+vehicle.spec.id);
+                int refusedWrites=0;PlayerProfile refused;string refusedError;string oldJson=JsonUtility.ToJson(swapped);
+                bool invalidSwap=MechanicsTransactions.Try(swapped,catalogue,swapped.revision,p=>InventoryUnits.SwapTires(p,swapCar.instanceId,
+                    new[]{new TireSwapAssignment(outgoingRear[0],0),new TireSwapAssignment(outgoingRear[0],1)}),p=>{refusedWrites++;return true;},out refused,out refusedError);
+                check(!invalidSwap&&refusedWrites==0&&oldJson==JsonUtility.ToJson(swapped),"Duplicate tire selection rolls back without publishing a partial installation: "+vehicle.spec.id);
                 pack.condition.tires[0].health=.2f;pack.condition.tires[0].consumedLife=.8;pack.condition.health=.2f;string retained=JsonUtility.ToJson(pack.condition);string oldPack=pack.instanceId;
                 var request=new PaymentRequest{kind=PaymentKind.Part,carId=owned.instanceId,targetId=pack.definitionId,install=true,preserveTireFitments=true};long repairNow=DateTime.UtcNow.Ticks;var policy=new OperatingPolicy();var payment=PaidEconomy.Quote(profile,catalogue,policy,ValuationPolicy.Defaults(),request,repairNow);
                 int expected=Enumerable.Range(0,4).Sum(i=>InventoryPricing.NewUnit(catalogue.Find(TireFitments.DefinitionId(pack,i)),4));check(payment.Cost==expected,"Buy same quotes actual mixed constituent costs: "+vehicle.spec.id);
