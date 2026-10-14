@@ -10,8 +10,8 @@ namespace DragLab.Domain {
  }
  public static class TireDynamics {
   // TireCondition is the sole owner of tire wear and lifetime usage. The containing
-  // PartInstance exists for fitment/ownership only; its condition is a derived
-  // compatibility summary, never a source of wear or failure for existing tires.
+  // PartInstance exists for fitment/ownership only; its generic condition is a
+  // neutral serialization shell, never a source of wear or failure.
   public static void Ensure(ComponentCondition c) {
    if(c.tires==null||c.tires.Length==0) {
     // One-time migration of saves that predate per-corner tire conditions.
@@ -40,7 +40,7 @@ namespace DragLab.Domain {
    c.serviceCount=c.reconditionCount=0;
    c.lastService="";
    c.clutchFluidVersion=0;c.clutchOilLitres=0;c.clutchOilCondition=1;
-   c.elements=new EngineElement[0];
+   if(c.elements==null||c.elements.Length>0)c.elements=new EngineElement[0];
   }
   public static float LowestHealth(ComponentCondition c) =>
    c==null||c.tires==null||c.tires.Length!=4?1:c.tires.Min(t=>Math.Min(t.health,(float)Math.Max(0,1-t.consumedLife)));
