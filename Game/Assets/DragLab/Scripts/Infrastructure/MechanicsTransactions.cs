@@ -20,7 +20,7 @@ namespace DragLab.Infrastructure
             try
             {
                 if (current.revision != expectedRevision) throw new InvalidOperationException("Stale action; refresh the garage.");
-                long stamp=Stamp();var candidate = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(current));Measured("clone",stamp);stamp=Stamp();
+                long stamp=Stamp();var candidate = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(current));candidate.storageCommit=current.storageCommit;Measured("clone",stamp);stamp=Stamp();
                 MechanicsOwnership.Ensure(candidate, catalog);Measured("normalize before operation",stamp);stamp=Stamp();
                 operation(candidate); candidate.revision = current.revision + 1;Measured("operation",stamp);stamp=Stamp();
                 // New purchased packs/vehicles must be initialized before either a real or a test

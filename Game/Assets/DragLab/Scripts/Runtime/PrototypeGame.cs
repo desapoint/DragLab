@@ -31,6 +31,7 @@ namespace DragLab.Runtime
         internal string ComparisonRoute => screen == "Race" ? audioSettingsOpen ? "Race settings" : paused ? "Pause" : race != null && race.phase == RacePhase.Finished ? "Results" : "Race" : screen;
         Action pendingAction;
         float saveDelay;
+        bool drivingPreferencesDirty;
         string screen = "Garage";
         string notice;
         double accumulator;
@@ -194,7 +195,7 @@ namespace DragLab.Runtime
             if (profile == null) return;
             if(profile.vehicleStock!=null&&screen!="Race"&&Time.realtimeSinceStartup>.25f&&!Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&GUIUtility.hotControl==0){string key=profile.vehicleStock.seed+"/"+profile.vehicleStock.generation+"/"+profile.firstPurchasePending;if(key!=marketWarmKey){marketWarmKey=key;marketWarm=VehicleListings.WarmNext(profile).GetEnumerator();}if(marketWarm!=null&&!marketWarm.MoveNext())marketWarm=null;}
             if (pendingAction != null) { var action = pendingAction; pendingAction = null; action(); }
-            if (saveDelay > 0 && GUIUtility.hotControl == 0 && !Input.GetMouseButton(0) && !Input.GetMouseButton(1)) { ProfileStore.Save(profile); saveDelay = 0; }
+            if (saveDelay > 0 && GUIUtility.hotControl == 0 && !Input.GetMouseButton(0) && !Input.GetMouseButton(1)) { if(drivingPreferencesDirty){if(!ProfileStore.TrySavePreferences(profile,out var error))notice="Settings save failed: "+error;drivingPreferencesDirty=false;}else ProfileStore.Save(profile);saveDelay=0; }
             if (screen == "Garage" && !(nativeMenu != null && (nativeMenu.ModalOpen || nativeMenu.OwnedDetailsOpen || nativeMenu.DealerPageOpen || nativeMenu.EditingText)) && Input.GetKeyDown(KeyCode.P)) StartPractice();
             if (screen != "Race" || race == null) return;
             if ((race.phase == RacePhase.Finished || paused) && Input.GetKeyDown(KeyCode.G)) { ReturnToGarage(); return; }
@@ -288,7 +289,7 @@ namespace DragLab.Runtime
             profile=next;settings=profile.driving;savedRunTick=liveRunTick;savedRunFailures=RunPersistence.FailureCount(race.player);liveRunClosed=close;return true;
         }
         void OnApplicationPause(bool pause) { if (pause)SetPaused(true); }
-        void OnApplicationQuit() { if (profile != null) { SyncRaceWear(true,"Quit");PersistNativeCartReservation();ProfileStore.Save(profile); } }
+        void OnApplicationQuit() { if (profile != null) { SyncRaceWear(true,"Quit");PersistNativeCartReservation();if(drivingPreferencesDirty)ProfileStore.TrySavePreferences(profile,out _);ProfileStore.Save(profile);ProfileStore.Flush(); } }
 
         internal string AuditMouseEvents = "";
         internal Rect warmupLineLockRect;
@@ -456,7 +457,7 @@ namespace DragLab.Runtime
         {
             float old = difficulty;
             difficulty = GUILayout.SelectionGrid((int)difficulty, new[] { "Easy AI", "Normal AI", "Hard AI" }, 3);
-            if (old != difficulty) { profile.difficulty = (int)difficulty; saveDelay = .5f; }
+            if (old != difficulty) { profile.difficulty = (int)difficulty;drivingPreferencesDirty=true;saveDelay = .5f; }
             GUILayout.Label("Difficulty changes AI reaction time. Both cars use identical physics.");
         }
         void DrivingGUI()
@@ -483,7 +484,7 @@ namespace DragLab.Runtime
             GUILayout.Label("Manual clutch shifting: keep W/Space held, hold Left Shift, E/Q to change gear, then release Shift. Disable rev match assist and blip gas for downshifts.");
             GUILayout.Label("Touch/mouse pedals: hold middle/right for full input; slide left for partial pressure. Different fingers can hold each pedal. S applies brakes during a run and after finish.");
             GUILayout.Label("Hardware determines clutch / converter / DCT / CVT behavior and downshift protection. Manual clutch can stall; clutch in + Enter restarts. Shared mechanical wear/failure persists on owned parts.");
-            if (before != JsonUtility.ToJson(settings)) saveDelay = .5f;
+            if (before != JsonUtility.ToJson(settings)){drivingPreferencesDirty=true;saveDelay=.5f;}
         }
 
         void RaceGUI(float width, float height)

@@ -16,7 +16,7 @@ namespace DragLab.Infrastructure
         static string JournalPath => Path.Combine(Path.GetDirectoryName(ProfileStore.FilePath), "settings-commit.json");
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void RecoverBeforeScenes() { if (!Recover(out var error)) Debug.LogError(error); }
-        static string[] Paths => new[] { ProfileStore.FilePath, ProfileStore.FilePath + ".bak", SharedAudioSettings.FilePath, SharedUnitSettings.FilePath };
+        static string[] Paths => new[] { DrivingPreferences.FilePath, SharedAudioSettings.FilePath, SharedUnitSettings.FilePath };
         static void Atomic(string path, string text)
         {
             Directory.CreateDirectory(Path.GetDirectoryName(path));
@@ -27,8 +27,8 @@ namespace DragLab.Infrastructure
         }
         static void Undo(Journal journal)
         {
-            if (journal.entries == null || journal.entries.Length != Paths.Length) throw new InvalidDataException("Invalid settings recovery record.");
-            var paths = Paths;
+            if (journal.entries == null || journal.entries.Length != Paths.Length&&journal.entries.Length!=4) throw new InvalidDataException("Invalid settings recovery record.");
+            var paths = journal.entries.Length==4?new[]{ProfileStore.LegacyFilePath,ProfileStore.LegacyFilePath+".bak",SharedAudioSettings.FilePath,SharedUnitSettings.FilePath}:Paths;
             for (int i = 0; i < paths.Length; i++)
             { if (journal.entries[i].exists) Atomic(paths[i], journal.entries[i].text); else if (File.Exists(paths[i])) File.Delete(paths[i]); }
         }
@@ -58,9 +58,10 @@ namespace DragLab.Infrastructure
                     throw new InvalidDataException("Volume must be between 0 and 100%.");
                 for (int i = 0; i < paths.Length; i++) journal.entries[i] = new Entry { exists = File.Exists(paths[i]), text = File.Exists(paths[i]) ? File.ReadAllText(paths[i], Encoding.UTF8) : null };
                 Atomic(JournalPath, JsonUtility.ToJson(journal)); prepared = true;
+                Atomic(DrivingPreferences.FilePath,DrivingPreferences.Encode(candidate.driving,candidate.difficulty));
                 Atomic(SharedAudioSettings.FilePath, JsonUtility.ToJson(new Audio { masterVolume = master, opponentVolume = opponent }, true));
                 Atomic(SharedUnitSettings.FilePath, JsonUtility.ToJson(units, true));
-                if (!ProfileStore.TrySave(candidate)) throw new IOException(ProfileStore.Status);
+                // Settings never serialize or commit progression/database state.
                 journal.committed = true; Atomic(JournalPath, JsonUtility.ToJson(journal));
             }
             catch (Exception e)

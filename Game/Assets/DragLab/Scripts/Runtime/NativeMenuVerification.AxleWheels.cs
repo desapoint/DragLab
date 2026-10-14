@@ -53,7 +53,7 @@ namespace DragLab.Runtime
                 Check(loaded.SelectedCar.tune.frontWheelWidth==.5f&&loaded.SelectedCar.tune.rearWheelWidth==1.4f&&Math.Abs(loaded.SelectedCar.tune.AxlePressure(false)-rearPsi)<.001,"Explicit Apply durably saves independent front/rear settings");
                 yield return Click(input,"settingsButton");yield return Click(input,"cancelSettings");yield return Key(input,0x77);yield return Key(input,0x77);
                 Check(game.WheelTuneAxle==1&&game.DraftValues.frontWheelWidth==.5f,"Settings Cancel and F8 retain axle selection and the authoritative tune");
-            }finally{field.SetValue(game,original);File.WriteAllBytes(ProfileStore.FilePath,disk);game.WheelTuneAxle=0;game.BeginTuneDraft();shell.Refresh();}
+            }finally{field.SetValue(game,original);ProfileStore.Flush();SqliteStateStore.Invalidate();File.WriteAllBytes(ProfileStore.FilePath,disk);game.WheelTuneAxle=0;game.BeginTuneDraft();shell.Refresh();}
             shell.Root.Q<ScrollView>("tuningPreviewScroll").scrollOffset=Vector2.zero;
             yield return new WaitForSecondsRealtime(.2f);
         }

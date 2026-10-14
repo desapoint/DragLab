@@ -26,7 +26,7 @@ namespace DragLab.Runtime
         {
             NativeSetupPreviewChecks.Run(game.vehicles.ToArray(),Check);
             var original=game.Profile;var field=typeof(PrototypeGame).GetField("profile",BindingFlags.Instance|BindingFlags.NonPublic);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);
-            var p=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(original));MechanicsOwnership.Ensure(p,original.catalog);p.savedSetups.Clear();p.cash=1000000;p.reputation=1000;var car=p.SelectedCar;string carId=car.instanceId;
+            var p=DragLab.Domain.Mechanics.EngineWorkshop.Copy(original);MechanicsOwnership.Ensure(p,original.catalog);p.savedSetups.Clear();p.cash=1000000;p.reputation=1000;var car=p.SelectedCar;string carId=car.instanceId;
             p.componentsPart(PartCategory.HeadIntake).condition.health=.65f;car.fuel.litres=7;car.fluids.oilLitres=2;car.fluids.coolantLitres=3;
             string engine=SavedSetups.Save(p,carId,"Sprint engine",SetupScope.Engine);SavedSetups.Save(p,carId,"Road build",SetupScope.WholeCar);SavedSetups.Save(p,carId,"Wet tune",SetupScope.TuneOnly);SavedSetups.Save(p,carId,"Wet tune",SetupScope.TuneOnly);
             var oem=p.componentsPart(PartCategory.HeadIntake);string upgraded=PartOperations.Buy(p,p.catalog,carId,p.catalog.Id(car.vehicleId,PartCategory.HeadIntake,1),true);string track=SavedSetups.Save(p,carId,"Track build",SetupScope.WholeCar);PartOperations.Install(p,p.catalog,carId,oem.instanceId);PartOperations.Sell(p,p.catalog,upgraded);
@@ -89,7 +89,7 @@ namespace DragLab.Runtime
                 Screen.SetResolution(1024,768,false);yield return new WaitForSecondsRealtime(.4f);yield return Click(input,"setupLoad");Check(shell.Root.Q("setupLoadConfirm").worldBound.yMax<=shell.Root.worldBound.yMax&&shell.Root.Q<ScrollView>("modalContent").resolvedStyle.height>0,"Compact setup confirmation retains scrolling review and visible fixed actions");yield return Capture("setup-load-compact");yield return Click(input,"modalClose");Screen.SetResolution(1280,720,false);yield return new WaitForSecondsRealtime(.3f);
             }finally{
                 if(shell.ModalOpen)typeof(NativeMenuShell).GetMethod("CloseDialog",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shell,null);
-                field.SetValue(game,original);game.settings=original.driving;game.ClearNativeCart();game.BeginTuneDraft();File.WriteAllBytes(ProfileStore.FilePath,disk);if(backup!=null)File.WriteAllBytes(ProfileStore.FilePath+".bak",backup);else if(File.Exists(ProfileStore.FilePath+".bak"))File.Delete(ProfileStore.FilePath+".bak");shell.Refresh();
+                field.SetValue(game,original);game.settings=original.driving;game.ClearNativeCart();game.BeginTuneDraft();ProfileStore.Flush();SqliteStateStore.Invalidate();File.WriteAllBytes(ProfileStore.FilePath,disk);if(backup!=null)File.WriteAllBytes(ProfileStore.FilePath+".bak",backup);else if(File.Exists(ProfileStore.FilePath+".bak"))File.Delete(ProfileStore.FilePath+".bak");shell.Refresh();
             }
         }
 #endif

@@ -40,7 +40,7 @@ namespace DragLab.Runtime
                     Check(game.ApplyTuneDraftNow()&&Math.Abs(game.Profile.SelectedCar.tune.awd.LockedRatio-1.5)<.00001,"Explicit Apply durably stores supported AWD calibration");Check(Math.Abs(ProfileStore.Load().SelectedCar.tune.awd.LockedRatio-1.5)<.00001,"Saved AWD ratio survives compressed-profile reload");
                     if(vehicle.spec.id=="rally-sedan")yield return Capture("awd-hardware-ratio-applied");
                 }
-            }finally{profileField.SetValue(game,original);game.settings=original.driving;game.ClearNativeCart();game.DiscardPreviews();File.WriteAllBytes(ProfileStore.FilePath,disk);if(backup!=null)File.WriteAllBytes(ProfileStore.FilePath+".bak",backup);game.QueueNativeNavigation("Garage");}
+            }finally{profileField.SetValue(game,original);game.settings=original.driving;game.ClearNativeCart();game.DiscardPreviews();ProfileStore.Flush();SqliteStateStore.Invalidate();File.WriteAllBytes(ProfileStore.FilePath,disk);if(backup!=null)File.WriteAllBytes(ProfileStore.FilePath+".bak",backup);game.QueueNativeNavigation("Garage");}
         }
 #endif
     }

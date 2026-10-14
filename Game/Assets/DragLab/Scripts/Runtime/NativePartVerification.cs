@@ -155,7 +155,7 @@ namespace DragLab.Runtime
         IEnumerator NativePartsChecks(WindowsKeyboardProbe input)
         {
             var original=game.Profile;var profileField=typeof(PrototypeGame).GetField("profile",BindingFlags.Instance|BindingFlags.NonPublic);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath),backup=File.Exists(ProfileStore.FilePath+".bak")?File.ReadAllBytes(ProfileStore.FilePath+".bak"):null;
-            var fixture=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(original));fixture.catalog=original.catalog;fixture.cash=1000000;fixture.reputation=1000;
+            var fixture=DragLab.Domain.Mechanics.EngineWorkshop.Copy(original);fixture.catalog=original.catalog;fixture.cash=1000000;fixture.reputation=1000;
             var pistonPack=fixture.componentsPart(PartCategory.Pistons);pistonPack.condition.elements[0].health=.3f;pistonPack.condition.elements[1].health=.8f;pistonPack.condition.elements[0].fault=ElementFault.CompressionLeak;pistonPack.condition.elements[0].severity=.35f;EngineElementService.RefreshAggregate(pistonPack.condition);var pistonRole=pistonPack.condition.elements[0].role;var spareUnit=InventoryUnits.Buy(fixture,fixture.SelectedCar.instanceId,pistonPack.definitionId,pistonRole);
             var dealerUnit=InventoryUnits.Buy(fixture,fixture.SelectedCar.instanceId,pistonPack.definitionId,pistonRole);fixture.looseEngineElements.Remove(dealerUnit);dealerUnit.element.health=.65f;fixture.inventory.dealer.Add(new DealerStock{unit=dealerUnit,isUnit=true,paidPrice=20});
             var secondDealerUnit=InventoryUnits.Buy(fixture,fixture.SelectedCar.instanceId,pistonPack.definitionId,pistonRole);fixture.looseEngineElements.Remove(secondDealerUnit);secondDealerUnit.element.health=.5f;fixture.inventory.dealer.Add(new DealerStock{unit=secondDealerUnit,isUnit=true,paidPrice=15});
@@ -219,7 +219,7 @@ namespace DragLab.Runtime
                 Screen.SetResolution(1280,720,false);yield return new WaitForSecondsRealtime(.3f);yield return NativePurchaseChecks(input);yield return NativeCartChecks(input);
                 Check(shell.Root.Query<VisualElement>().ToList().All(e=>e.tabIndex==-1)&&errors==0,"Build retains the no-Tab contract with no runtime errors");
             }finally{
-                if(shell.ModalOpen)typeof(NativeMenuShell).GetMethod("CloseDialog",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shell,null);profileField.SetValue(game,original);game.settings=original.driving;game.ClearNativeCart();game.DiscardPreviews();File.WriteAllBytes(ProfileStore.FilePath,disk);if(backup!=null)File.WriteAllBytes(ProfileStore.FilePath+".bak",backup);game.QueueNativeNavigation("Garage");Screen.SetResolution(1280,720,false);
+                if(shell.ModalOpen)typeof(NativeMenuShell).GetMethod("CloseDialog",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shell,null);profileField.SetValue(game,original);game.settings=original.driving;game.ClearNativeCart();game.DiscardPreviews();ProfileStore.Flush();SqliteStateStore.Invalidate();File.WriteAllBytes(ProfileStore.FilePath,disk);if(backup!=null)File.WriteAllBytes(ProfileStore.FilePath+".bak",backup);game.QueueNativeNavigation("Garage");Screen.SetResolution(1280,720,false);
             }
         }
 #endif

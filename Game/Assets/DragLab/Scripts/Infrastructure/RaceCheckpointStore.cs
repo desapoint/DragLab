@@ -16,7 +16,7 @@ namespace DragLab.Infrastructure
     {
         [Serializable] sealed class Data { public int version=1; public long baseRevision; public RunCheckpoint checkpoint; }
         [Serializable] sealed class Envelope { public string payload, sha256; }
-        sealed class Request { public string path; public Data data; }
+        sealed class Request { public string path; public Data data; public string json; }
         static readonly object gate=new object();
         static Request pending;
         static Task worker;
@@ -51,7 +51,7 @@ namespace DragLab.Infrastructure
                     if(lastPath==profilePath&&lastRun==copy.runId&&copy.tick<=lastTick)throw new InvalidOperationException("Journal tick must advance.");
                     if(lastPath==profilePath&&lastRun==copy.runId)ValidateProgress(lastSnapshot,copy);
                     if(lastPath!=null&&lastPath!=profilePath&&worker!=null&&!worker.IsCompleted)throw new InvalidOperationException("Another profile journal is still writing.");
-                    pending=new Request {path=profilePath,data=new Data {baseRevision=profile.revision,checkpoint=copy}};
+                    var data=new Data {baseRevision=profile.revision,checkpoint=copy};pending=new Request {path=profilePath,data=data,json=JsonUtility.ToJson(data)};
                     lastPath=profilePath;lastRun=copy.runId;lastTick=copy.tick;lastSnapshot=copy;
                     if(worker==null||worker.IsCompleted)worker=Task.Run((Action)WriteLoop);
                 }
@@ -65,9 +65,10 @@ namespace DragLab.Infrastructure
                 Request request;
                 lock(gate){request=pending;pending=null;if(request==null){worker=null;return;}}
                 try {
+                    if(ProfileStore.DatabasePath(request.path)){SqliteStateStore.WriteCheckpoint(request.path,request.data.checkpoint.runId,request.json);lock(gate)failure=null;continue;}
                     string path=JournalPath(request.path),temp=path+".tmp";
                     Directory.CreateDirectory(Path.GetDirectoryName(path));
-                    string payload=JsonUtility.ToJson(request.data);
+                    string payload=request.json;
                     var bytes=Encoding.UTF8.GetBytes(JsonUtility.ToJson(new Envelope {payload=payload,sha256=Hash(payload)}));
                     using(var stream=new FileStream(temp,FileMode.Create,FileAccess.Write,FileShare.None)){stream.Write(bytes,0,bytes.Length);stream.Flush(true);}
                     if(File.Exists(path))File.Replace(temp,path,path+".bak");else File.Move(temp,path);
@@ -102,17 +103,21 @@ namespace DragLab.Infrastructure
         public static bool Merge(string profilePath, PlayerProfile profile, bool loading, out string warning)
         {
             warning=null;
-            foreach(var path in new[]{JournalPath(profilePath),JournalPath(profilePath)+".bak"}) {
+            if(ProfileStore.DatabasePath(profilePath)){
+                try{foreach(string json in SqliteStateStore.Checkpoints(profilePath))if(ApplyRecovered(profile,JsonUtility.FromJson<Data>(json),loading))return true;}catch(Exception e){warning="Database checkpoint ignored: "+e.Message;}
+            }else foreach(var path in new[]{JournalPath(profilePath),JournalPath(profilePath)+".bak"}) {
                 if(!File.Exists(path))continue;
-                try {
-                    var envelope=JsonUtility.FromJson<Envelope>(File.ReadAllText(path,Encoding.UTF8));
-                    if(envelope==null||envelope.payload==null||envelope.sha256!=Hash(envelope.payload))throw new InvalidDataException("Checkpoint checksum mismatch.");
-                    var data=JsonUtility.FromJson<Data>(envelope.payload);
+                try{var envelope=JsonUtility.FromJson<Envelope>(File.ReadAllText(path,Encoding.UTF8));if(envelope==null||envelope.payload==null||envelope.sha256!=Hash(envelope.payload))throw new InvalidDataException("Checkpoint checksum mismatch.");if(ApplyRecovered(profile,JsonUtility.FromJson<Data>(envelope.payload),loading))return true;}catch(Exception e){warning="Race checkpoint ignored: "+e.Message;}
+            }
+            return false;
+        }
+        static bool ApplyRecovered(PlayerProfile profile,Data data,bool loading)
+        {
                     if(data==null||data.version!=1||data.checkpoint==null)throw new InvalidDataException("Unknown checkpoint format.");
                     var cp=data.checkpoint;var receipt=profile.runCheckpoints.Find(r=>r.runId==cp.runId);
                     // A full committed result/reset/new entry supersedes an old journal.
-                    if(receipt==null||receipt.ownedVehicleId!=cp.ownedVehicleId||receipt.settled||receipt.tick>=cp.tick)continue;
-                    if(data.baseRevision!=profile.revision && (loading||data.baseRevision+1!=profile.revision))continue;
+                    if(receipt==null||receipt.ownedVehicleId!=cp.ownedVehicleId||receipt.settled||receipt.tick>=cp.tick)return false;
+                    if(data.baseRevision!=profile.revision && (loading||data.baseRevision+1!=profile.revision))return false;
                     // v19 changes fitted AWD permissions, not the component/resource history schema.
                     // Recover monotonic v18 wear/fuel before closing an interrupted run; never replay its driving inputs.
                     if(MechanicsSchema.Model=="draglab-variety-v19"&&cp.model=="draglab-variety-v18")cp.model=MechanicsSchema.Model;
@@ -120,13 +125,11 @@ namespace DragLab.Infrastructure
                     // Journal ticks do not create ledger revisions until a full commit.
                     profile.runCheckpoints.Find(r=>r.runId==cp.runId).revision=profile.revision;
                     return true;
-                }catch(Exception e){warning="Race checkpoint ignored: "+e.Message;}
-            }
-            return false;
         }
-        public static void Retire(string profilePath)
+        public static void Retire(string profilePath,bool clearDatabase=true)
         {
             Drain();
+            if(clearDatabase&&ProfileStore.DatabasePath(profilePath)){try{SqliteStateStore.ClearCheckpoints(profilePath);}catch(IOException){ /* Already superseded by the durable ledger transaction. */ }}
             foreach(var path in new[]{JournalPath(profilePath),JournalPath(profilePath)+".bak",JournalPath(profilePath)+".tmp"})
                 try {if(File.Exists(path))File.Delete(path);}catch(IOException){ /* A superseded journal is harmless and can be retired on the next save. */ }
                 catch(UnauthorizedAccessException){ /* Cleanup failure must not roll back an already durable full commit. */ }

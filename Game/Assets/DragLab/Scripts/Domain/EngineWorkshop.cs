@@ -8,7 +8,7 @@ namespace DragLab.Domain.Mechanics
 {
     public static class EngineWorkshop
     {
-        public static PlayerProfile Copy(PlayerProfile p){var copy=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(p));MechanicsOwnership.Ensure(copy,p.catalog);return copy;}
+        public static PlayerProfile Copy(PlayerProfile p){var copy=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(p));copy.storageCommit=p.storageCommit;MechanicsOwnership.Ensure(copy,p.catalog);return copy;}
         public static void Swap(PlayerProfile p,string engineId,string carId)
         {
             var engine=AssemblyOperations.Stored(p,engineId);var car=AssemblyOperations.MutableCar(p,carId);
@@ -20,7 +20,7 @@ namespace DragLab.Domain.Mechanics
         {
             var pending=(lines??Enumerable.Empty<PartCartLine>()).ToArray();if(pending.Length>0)PartCart.Total(p,p.SelectedCar.instanceId,pending);var copy=pending.Length==0?Copy(p):PartCart.PreviewProfile(p,p.SelectedCar,pending);
             var engine=copy.engines.Find(e=>e.instanceId==engineId)??throw new InvalidOperationException("Engine no longer exists.");
-            if(engine.parentVehicleId!=carId)Swap(copy,engineId,carId);MechanicsOwnership.Ensure(copy,p.catalog);return copy;
+            if(engine.parentVehicleId!=carId)Swap(copy,engineId,carId);copy.storageCommit=p.storageCommit;MechanicsOwnership.Ensure(copy,p.catalog);return copy;
         }
         public static void BuyPart(PlayerProfile p,string engineId,string definition,int expectedPrice)
         {

@@ -96,6 +96,7 @@ namespace DragLab.Domain
         public RecoveryWork recoveryWork;
         public GarageBusinessState business;
         [NonSerialized] public MechanicalCatalog catalog;
+        [NonSerialized] public long storageCommit;
         public int saveVersion = 1;
         public int drivelineVersion;
         public int equipmentVersion;
@@ -121,6 +122,7 @@ namespace DragLab.Domain
             return p;
         }
         public static PlayerProfile NewGame(long utcTicks){var p=New(utcTicks);p.cars.Clear();p.selectedVehicleId=p.selectedOwnedVehicleId="";p.saveVersion=MechanicsOwnership.SaveVersion;p.cash=4700;p.firstPurchasePending=true;return p;}
+        public PlayerProfile CopyWithPreferences(DriverSettings driver,int ai){var copy=(PlayerProfile)MemberwiseClone();copy.driving=driver.Copy();copy.difficulty=ai;return copy;}
         public PlayerProfile RestartKeepingPreferences(long utcTicks)
         {
             var fresh = NewGame(utcTicks);

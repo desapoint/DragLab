@@ -17,7 +17,7 @@ namespace DragLab.Infrastructure
                 return Encoding.UTF8.GetBytes(JsonUtility.ToJson(new Envelope{saveVersion=version,codecVersion=1,encoding="gzip-base64",payload=Convert.ToBase64String(output.ToArray())}));
             }
         }
-        public static string ReadJson(string path)=>Decode(File.ReadAllText(path,Encoding.UTF8));
+        public static string ReadJson(string path)=>ProfileStore.DatabasePath(path)?SqliteStateStore.ExportJson(path):Decode(File.ReadAllText(path,Encoding.UTF8));
         public static string Decode(string text)
         {
             var envelope=JsonUtility.FromJson<Envelope>(text);

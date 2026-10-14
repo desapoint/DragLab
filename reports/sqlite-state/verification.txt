@@ -1,0 +1,323 @@
+PASS Pinned native SQLite runtime loads
+PASS city-three: flat/compressed legacy source imports into real SQLite
+PASS city-three: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS city-three: original migration bytes are retained
+PASS city-three: database reload does not reimport or regenerate state
+PASS city-three: ordered schema migrations recorded
+PASS city-three: build/content/physics versions are independent metadata
+PASS city-three: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 28,82
+DATABASE record projection ms 9,27
+DATABASE open + schema checks ms 0,93
+DATABASE delta index ms 1,77
+DATABASE row and ownership delta SQL ms 12,21
+DATABASE digest + metadata ms 0,45
+DATABASE durable commit ms 54,26
+PROFILE database transaction + durability ms 94,07
+PASS city-three: changed component commits / Saved.
+TIMING city-three warm component save ms 123,28 / changed records 2
+PASS city-three: wear edit writes only changed component/revision records
+PASS city-three: ordinary save refreshes its consistent recovery database
+PASS city-three: failed transaction publishes neither money nor wear changes
+PASS city-three: actual buy/install transaction commits /
+PASS city-three: checkout reloads payment and retains replaced identity
+PASS juniper-club: flat/compressed legacy source imports into real SQLite
+PASS juniper-club: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS juniper-club: original migration bytes are retained
+PASS juniper-club: database reload does not reimport or regenerate state
+PASS juniper-club: ordered schema migrations recorded
+PASS juniper-club: build/content/physics versions are independent metadata
+PASS juniper-club: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 28,74
+DATABASE record projection ms 10,43
+DATABASE open + schema checks ms 0,99
+DATABASE delta index ms 2,10
+DATABASE row and ownership delta SQL ms 13,06
+DATABASE digest + metadata ms 0,51
+DATABASE durable commit ms 101,96
+PROFILE database transaction + durability ms 136,09
+PASS juniper-club: changed component commits / Saved.
+TIMING juniper-club warm component save ms 164,91 / changed records 2
+PASS juniper-club: wear edit writes only changed component/revision records
+PASS juniper-club: ordinary save refreshes its consistent recovery database
+PASS juniper-club: failed transaction publishes neither money nor wear changes
+PASS juniper-club: actual buy/install transaction commits /
+PASS juniper-club: checkout reloads payment and retains replaced identity
+PASS juniper-economy: flat/compressed legacy source imports into real SQLite
+PASS juniper-economy: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS juniper-economy: original migration bytes are retained
+PASS juniper-economy: database reload does not reimport or regenerate state
+PASS juniper-economy: ordered schema migrations recorded
+PASS juniper-economy: build/content/physics versions are independent metadata
+PASS juniper-economy: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 25,77
+DATABASE record projection ms 6,66
+DATABASE open + schema checks ms 0,99
+DATABASE delta index ms 1,88
+DATABASE row and ownership delta SQL ms 14,84
+DATABASE digest + metadata ms 0,50
+DATABASE durable commit ms 43,44
+PROFILE database transaction + durability ms 77,87
+PASS juniper-economy: changed component commits / Saved.
+TIMING juniper-economy warm component save ms 103,74 / changed records 2
+PASS juniper-economy: wear edit writes only changed component/revision records
+PASS juniper-economy: ordinary save refreshes its consistent recovery database
+PASS juniper-economy: failed transaction publishes neither money nor wear changes
+PASS juniper-economy: actual buy/install transaction commits /
+PASS juniper-economy: checkout reloads payment and retains replaced identity
+PASS kestrel-track: flat/compressed legacy source imports into real SQLite
+PASS kestrel-track: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS kestrel-track: original migration bytes are retained
+PASS kestrel-track: database reload does not reimport or regenerate state
+PASS kestrel-track: ordered schema migrations recorded
+PASS kestrel-track: build/content/physics versions are independent metadata
+PASS kestrel-track: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 26,15
+DATABASE record projection ms 9,71
+DATABASE open + schema checks ms 0,92
+DATABASE delta index ms 1,68
+DATABASE row and ownership delta SQL ms 10,43
+DATABASE digest + metadata ms 0,52
+DATABASE durable commit ms 10,24
+PROFILE database transaction + durability ms 37,40
+PASS kestrel-track: changed component commits / Saved.
+TIMING kestrel-track warm component save ms 63,63 / changed records 2
+PASS kestrel-track: wear edit writes only changed component/revision records
+PASS kestrel-track: ordinary save refreshes its consistent recovery database
+PASS kestrel-track: failed transaction publishes neither money nor wear changes
+PASS kestrel-track: actual buy/install transaction commits /
+PASS kestrel-track: checkout reloads payment and retains replaced identity
+PASS rally-sedan: flat/compressed legacy source imports into real SQLite
+PASS rally-sedan: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS rally-sedan: original migration bytes are retained
+PASS rally-sedan: database reload does not reimport or regenerate state
+PASS rally-sedan: ordered schema migrations recorded
+PASS rally-sedan: build/content/physics versions are independent metadata
+PASS rally-sedan: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 28,50
+DATABASE record projection ms 10,78
+DATABASE open + schema checks ms 1,04
+DATABASE delta index ms 2,13
+DATABASE row and ownership delta SQL ms 13,36
+DATABASE digest + metadata ms 0,62
+DATABASE durable commit ms 16,39
+PROFILE database transaction + durability ms 47,99
+PASS rally-sedan: changed component commits / Saved.
+TIMING rally-sedan warm component save ms 76,57 / changed records 2
+PASS rally-sedan: wear edit writes only changed component/revision records
+PASS rally-sedan: ordinary save refreshes its consistent recovery database
+PASS rally-sedan: failed transaction publishes neither money nor wear changes
+PASS rally-sedan: actual buy/install transaction commits /
+PASS rally-sedan: checkout reloads payment and retains replaced identity
+PASS sport-coupe: flat/compressed legacy source imports into real SQLite
+PASS sport-coupe: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS sport-coupe: original migration bytes are retained
+PASS sport-coupe: database reload does not reimport or regenerate state
+PASS sport-coupe: ordered schema migrations recorded
+PASS sport-coupe: build/content/physics versions are independent metadata
+PASS sport-coupe: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 29,70
+DATABASE record projection ms 6,73
+DATABASE open + schema checks ms 0,97
+DATABASE delta index ms 1,86
+DATABASE row and ownership delta SQL ms 11,65
+DATABASE digest + metadata ms 0,56
+DATABASE durable commit ms 17,62
+PROFILE database transaction + durability ms 43,23
+PASS sport-coupe: changed component commits / Saved.
+TIMING sport-coupe warm component save ms 73,01 / changed records 2
+PASS sport-coupe: wear edit writes only changed component/revision records
+PASS sport-coupe: ordinary save refreshes its consistent recovery database
+PASS sport-coupe: failed transaction publishes neither money nor wear changes
+PASS sport-coupe: actual buy/install transaction commits /
+PASS sport-coupe: checkout reloads payment and retains replaced identity
+PASS starter-hatch: flat/compressed legacy source imports into real SQLite
+PASS starter-hatch: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS starter-hatch: original migration bytes are retained
+PASS starter-hatch: database reload does not reimport or regenerate state
+PASS starter-hatch: ordered schema migrations recorded
+PASS starter-hatch: build/content/physics versions are independent metadata
+PASS starter-hatch: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 31,02
+DATABASE record projection ms 10,43
+DATABASE open + schema checks ms 0,91
+DATABASE delta index ms 2,21
+DATABASE row and ownership delta SQL ms 12,68
+DATABASE digest + metadata ms 0,63
+DATABASE durable commit ms 10,56
+PROFILE database transaction + durability ms 40,98
+PASS starter-hatch: changed component commits / Saved.
+TIMING starter-hatch warm component save ms 72,07 / changed records 2
+PASS starter-hatch: wear edit writes only changed component/revision records
+PASS starter-hatch: ordinary save refreshes its consistent recovery database
+PASS starter-hatch: failed transaction publishes neither money nor wear changes
+PASS starter-hatch: actual buy/install transaction commits /
+PASS starter-hatch: checkout reloads payment and retains replaced identity
+PASS super-v8: flat/compressed legacy source imports into real SQLite
+PASS super-v8: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS super-v8: original migration bytes are retained
+PASS super-v8: database reload does not reimport or regenerate state
+PASS super-v8: ordered schema migrations recorded
+PASS super-v8: build/content/physics versions are independent metadata
+PASS super-v8: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 27,97
+DATABASE record projection ms 10,28
+DATABASE open + schema checks ms 0,92
+DATABASE delta index ms 6,00
+DATABASE row and ownership delta SQL ms 12,79
+DATABASE digest + metadata ms 0,60
+DATABASE durable commit ms 41,82
+PROFILE database transaction + durability ms 90,07
+PASS super-v8: changed component commits / Saved.
+TIMING super-v8 warm component save ms 118,13 / changed records 2
+PASS super-v8: wear edit writes only changed component/revision records
+PASS super-v8: ordinary save refreshes its consistent recovery database
+PASS super-v8: failed transaction publishes neither money nor wear changes
+PASS super-v8: actual buy/install transaction commits /
+PASS super-v8: checkout reloads payment and retains replaced identity
+PASS timber-diesel: flat/compressed legacy source imports into real SQLite
+PASS timber-diesel: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS timber-diesel: original migration bytes are retained
+PASS timber-diesel: database reload does not reimport or regenerate state
+PASS timber-diesel: ordered schema migrations recorded
+PASS timber-diesel: build/content/physics versions are independent metadata
+PASS timber-diesel: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 24,48
+DATABASE record projection ms 6,61
+DATABASE open + schema checks ms 0,92
+DATABASE delta index ms 2,00
+DATABASE row and ownership delta SQL ms 18,61
+DATABASE digest + metadata ms 0,63
+DATABASE durable commit ms 10,01
+PROFILE database transaction + durability ms 42,63
+PASS timber-diesel: changed component commits / Saved.
+TIMING timber-diesel warm component save ms 67,20 / changed records 2
+PASS timber-diesel: wear edit writes only changed component/revision records
+PASS timber-diesel: ordinary save refreshes its consistent recovery database
+PASS timber-diesel: failed transaction publishes neither money nor wear changes
+PASS timber-diesel: actual buy/install transaction commits /
+PASS timber-diesel: checkout reloads payment and retains replaced identity
+PASS timber-diesel-tow: flat/compressed legacy source imports into real SQLite
+PASS timber-diesel-tow: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS timber-diesel-tow: original migration bytes are retained
+PASS timber-diesel-tow: database reload does not reimport or regenerate state
+PASS timber-diesel-tow: ordered schema migrations recorded
+PASS timber-diesel-tow: build/content/physics versions are independent metadata
+PASS timber-diesel-tow: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 26,53
+DATABASE record projection ms 6,90
+DATABASE open + schema checks ms 0,96
+DATABASE delta index ms 2,20
+DATABASE row and ownership delta SQL ms 21,30
+DATABASE digest + metadata ms 0,79
+DATABASE durable commit ms 9,35
+PROFILE database transaction + durability ms 45,43
+PASS timber-diesel-tow: changed component commits / Saved.
+TIMING timber-diesel-tow warm component save ms 72,05 / changed records 2
+PASS timber-diesel-tow: wear edit writes only changed component/revision records
+PASS timber-diesel-tow: ordinary save refreshes its consistent recovery database
+PASS timber-diesel-tow: failed transaction publishes neither money nor wear changes
+PASS timber-diesel-tow: actual buy/install transaction commits /
+PASS timber-diesel-tow: checkout reloads payment and retains replaced identity
+PASS touring-six: flat/compressed legacy source imports into real SQLite
+PASS touring-six: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS touring-six: original migration bytes are retained
+PASS touring-six: database reload does not reimport or regenerate state
+PASS touring-six: ordered schema migrations recorded
+PASS touring-six: build/content/physics versions are independent metadata
+PASS touring-six: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 32,94
+DATABASE record projection ms 11,30
+DATABASE open + schema checks ms 0,98
+DATABASE delta index ms 2,41
+DATABASE row and ownership delta SQL ms 14,25
+DATABASE digest + metadata ms 0,76
+DATABASE durable commit ms 10,03
+PROFILE database transaction + durability ms 43,52
+PASS touring-six: changed component commits / Saved.
+TIMING touring-six warm component save ms 76,55 / changed records 2
+PASS touring-six: wear edit writes only changed component/revision records
+PASS touring-six: ordinary save refreshes its consistent recovery database
+PASS touring-six: failed transaction publishes neither money nor wear changes
+PASS touring-six: actual buy/install transaction commits /
+PASS touring-six: checkout reloads payment and retains replaced identity
+PASS utility-pickup: flat/compressed legacy source imports into real SQLite
+PASS utility-pickup: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS utility-pickup: original migration bytes are retained
+PASS utility-pickup: database reload does not reimport or regenerate state
+PASS utility-pickup: ordered schema migrations recorded
+PASS utility-pickup: build/content/physics versions are independent metadata
+PASS utility-pickup: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 36,62
+DATABASE record projection ms 7,60
+DATABASE open + schema checks ms 1,17
+DATABASE delta index ms 2,28
+DATABASE row and ownership delta SQL ms 13,31
+DATABASE digest + metadata ms 0,64
+DATABASE durable commit ms 9,71
+PROFILE database transaction + durability ms 38,60
+PASS utility-pickup: changed component commits / Saved.
+TIMING utility-pickup warm component save ms 75,30 / changed records 2
+PASS utility-pickup: wear edit writes only changed component/revision records
+PASS utility-pickup: ordinary save refreshes its consistent recovery database
+PASS utility-pickup: failed transaction publishes neither money nor wear changes
+PASS utility-pickup: actual buy/install transaction commits /
+PASS utility-pickup: checkout reloads payment and retains replaced identity
+PASS v8-muscle: flat/compressed legacy source imports into real SQLite
+PASS v8-muscle: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS v8-muscle: original migration bytes are retained
+PASS v8-muscle: database reload does not reimport or regenerate state
+PASS v8-muscle: ordered schema migrations recorded
+PASS v8-muscle: build/content/physics versions are independent metadata
+PASS v8-muscle: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 36,03
+DATABASE record projection ms 167,01
+DATABASE open + schema checks ms 0,93
+DATABASE delta index ms 2,01
+DATABASE row and ownership delta SQL ms 12,25
+DATABASE digest + metadata ms 0,59
+DATABASE durable commit ms 10,13
+PROFILE database transaction + durability ms 197,01
+PASS v8-muscle: changed component commits / Saved.
+TIMING v8-muscle warm component save ms 233,13 / changed records 2
+PASS v8-muscle: wear edit writes only changed component/revision records
+PASS v8-muscle: ordinary save refreshes its consistent recovery database
+PASS v8-muscle: failed transaction publishes neither money nor wear changes
+PASS v8-muscle: actual buy/install transaction commits /
+PASS v8-muscle: checkout reloads payment and retains replaced identity
+PASS Stored engines, blueprints, loose members and cart reservations commit
+PASS Complex ownership, independent engine fluids/names and nine-race holds reload exactly
+PASS Populated schema-1 database migrates without changing a single player resource
+PASS Migration populates ownership references before commit
+PASS Original pre-migration SQLite backup is retained
+PASS Domain-invalid migration rolls back schema and data publication
+PASS Locked database rejects save/reset without publishing state
+PASS Locked database failure preserves the full previous state
+PASS A current save token commits
+PASS Stale writer token is rejected even after cache invalidation and equal ledger revision
+PASS SQLite enforces deferred ownership references
+PASS Separate preference commit succeeds /
+PASS Settings apply does not write the progression database
+PASS Separate driving, difficulty and volume settings reload together
+PASS Interrupted reset before database commit cannot publish a new garage
+PASS Healthy original database resolves an abandoned reset intent without losing progression
+PASS Progression reset creates a fresh ownership state
+PASS Progression reset preserves separate preferences exactly
+PASS Database backup recovery cannot resurrect pre-reset assets
+PASS Recovery quarantines obsolete SQLite sidecars with the damaged primary
+PASS Recovered reset database can commit normally
+PASS Unknown future schema blocks all writes/reset and preserves original database
+PASS Failed migration rolls back every pending schema change
+PASS Rolled-back migration can retry from the original schema
+PASS Isolated checkpoint database created
+PASS Race entry commits to database /
+PASS Copied resource checkpoint queues to SQLite /
+PASS Checkpoint worker stores no new sidecar JSON journal
+PASS Interrupted run retains exact wear/fuel without a reward or resumed race
+PASS Committed resource recovery retires its database checkpoint atomically
+PASS Tracked pre-mechanics JSON migration produces stable identities on repeated load
+PASS Historical JSON source is never rewritten during SQLite import
+PASS Schema-9 compressed JSON import preserves custom settings and condition while upgrading its contract
+PASS First separate slot persists
+PASS Second slot starts independently
+Checks: 205 / failures: 0

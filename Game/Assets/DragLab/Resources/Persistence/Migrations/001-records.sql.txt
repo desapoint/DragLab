@@ -1,0 +1,4 @@
+CREATE TABLE state_meta (name TEXT PRIMARY KEY, value TEXT NOT NULL) WITHOUT ROWID;
+CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY, name TEXT NOT NULL, checksum TEXT NOT NULL, applied_utc TEXT NOT NULL);
+CREATE TABLE state_records (collection TEXT NOT NULL, record_key TEXT NOT NULL, ordinal INTEGER NOT NULL CHECK(ordinal>=0), payload TEXT NOT NULL CHECK(json_valid(payload)), PRIMARY KEY(collection,record_key)) WITHOUT ROWID;
+CREATE TABLE pending_checkpoints (run_id TEXT PRIMARY KEY, payload TEXT NOT NULL CHECK(json_valid(payload))) WITHOUT ROWID;

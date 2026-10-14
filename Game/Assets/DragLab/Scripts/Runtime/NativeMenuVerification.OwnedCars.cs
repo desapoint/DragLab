@@ -19,7 +19,7 @@ namespace DragLab.Runtime
         {
             var original = game.Profile;
             var profileField = typeof(PrototypeGame).GetField("profile",BindingFlags.Instance|BindingFlags.NonPublic);
-            var fixture = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(original)); fixture.catalog = original.catalog;
+            var fixture = DragLab.Domain.Mechanics.EngineWorkshop.Copy(original); fixture.catalog = original.catalog;
             string disk = File.ReadAllText(ProfileStore.FilePath);
             byte[] diskBytes=File.ReadAllBytes(ProfileStore.FilePath), backupBytes=File.Exists(ProfileStore.FilePath+".bak")?File.ReadAllBytes(ProfileStore.FilePath+".bak"):null;
             try {
@@ -204,7 +204,7 @@ namespace DragLab.Runtime
                 if(shell.OwnedDetailsOpen)typeof(NativeMenuShell).GetMethod("BackToOwnedCars",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shell,null);
                 profileField.SetValue(game,original);game.settings=original.driving;
                 typeof(PrototypeGame).GetMethod("ShowGarageCar",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(game,null);
-                File.WriteAllBytes(ProfileStore.FilePath,diskBytes);
+                ProfileStore.Flush();SqliteStateStore.Invalidate();File.WriteAllBytes(ProfileStore.FilePath,diskBytes);
                 if(backupBytes!=null)File.WriteAllBytes(ProfileStore.FilePath+".bak",backupBytes);
                 else if(File.Exists(ProfileStore.FilePath+".bak"))File.Delete(ProfileStore.FilePath+".bak");
                 shell.InvalidateOwnedGrid();shell.Refresh();

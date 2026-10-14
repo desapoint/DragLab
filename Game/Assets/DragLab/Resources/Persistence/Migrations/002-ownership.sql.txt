@@ -1,0 +1,11 @@
+CREATE TABLE owners (id TEXT PRIMARY KEY, kind TEXT NOT NULL CHECK(kind IN ('car','engine')), definition_id TEXT NOT NULL) WITHOUT ROWID;
+CREATE TABLE components (id TEXT PRIMARY KEY, definition_id TEXT NOT NULL, owner_id TEXT REFERENCES owners(id) DEFERRABLE INITIALLY DEFERRED, location INTEGER NOT NULL CHECK(location BETWEEN 0 AND 2), CHECK((location=0 AND owner_id IS NULL) OR (location>0 AND owner_id IS NOT NULL))) WITHOUT ROWID;
+CREATE TABLE installed_slots (owner_id TEXT NOT NULL REFERENCES owners(id) DEFERRABLE INITIALLY DEFERRED, slot TEXT NOT NULL, part_id TEXT NOT NULL UNIQUE REFERENCES components(id) DEFERRABLE INITIALLY DEFERRED, PRIMARY KEY(owner_id,slot)) WITHOUT ROWID;
+CREATE INDEX components_by_owner ON components(owner_id);
+CREATE VIEW owned_cars AS SELECT record_key, ordinal, payload FROM state_records WHERE collection='$/cars';
+CREATE VIEW owned_engines AS SELECT record_key, ordinal, payload FROM state_records WHERE collection='$/engines';
+CREATE VIEW owned_parts AS SELECT record_key, ordinal, json_extract(payload,'$.definitionId') AS definition_id, json_extract(payload,'$.condition.health') AS health, payload FROM state_records WHERE collection='$/parts';
+INSERT INTO owners(id,kind,definition_id) SELECT json_extract(payload,'$.instanceId'),'car',json_extract(payload,'$.vehicleId') FROM state_records WHERE collection='$/cars';
+INSERT INTO owners(id,kind,definition_id) SELECT json_extract(payload,'$.instanceId'),'engine',json_extract(payload,'$.vehicleDefinitionId') FROM state_records WHERE collection='$/engines';
+INSERT INTO components(id,definition_id,owner_id,location) SELECT json_extract(payload,'$.instanceId'),json_extract(payload,'$.definitionId'),NULLIF(json_extract(payload,'$.ownerId'),''),json_extract(payload,'$.location') FROM state_records WHERE collection='$/parts';
+INSERT INTO installed_slots(owner_id,slot,part_id) SELECT COALESCE(NULLIF(json_extract(e.payload,'$.parentVehicleId'),''),p.owner_id),json_extract(r.payload,'$.slot'),p.id FROM components p JOIN state_records r ON r.collection='$/parts' AND json_extract(r.payload,'$.instanceId')=p.id LEFT JOIN state_records e ON e.collection='$/engines' AND json_extract(e.payload,'$.instanceId')=p.owner_id WHERE p.location>0;

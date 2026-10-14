@@ -1,0 +1,63 @@
+PASS Pinned native SQLite runtime loads
+PASS city-three: flat/compressed legacy source imports into real SQLite
+PASS city-three: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS city-three: original migration bytes are retained
+PASS city-three: database reload does not reimport or regenerate state
+PASS city-three: ordered schema migrations recorded
+PASS city-three: build/content/physics versions are independent metadata
+PASS city-three: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 27,17
+DATABASE record projection ms 8,51
+DATABASE open + schema checks ms 0,97
+DATABASE delta index ms 1,55
+DATABASE row and ownership delta SQL ms 10,72
+DATABASE digest + metadata ms 0,43
+DATABASE durable commit ms 9,56
+PROFILE database transaction + durability ms 36,40
+PASS city-three: changed component commits / Saved.
+TIMING city-three warm component save ms 63,93 / changed records 2
+PASS city-three: wear edit writes only changed component/revision records
+PASS city-three: failed transaction publishes neither money nor wear changes
+PASS city-three: actual buy/install transaction commits /
+PASS city-three: checkout reloads payment and retains replaced identity
+PASS juniper-club: flat/compressed legacy source imports into real SQLite
+PASS juniper-club: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS juniper-club: original migration bytes are retained
+PASS juniper-club: database reload does not reimport or regenerate state
+PASS juniper-club: ordered schema migrations recorded
+PASS juniper-club: build/content/physics versions are independent metadata
+PASS juniper-club: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 27,96
+DATABASE record projection ms 6,43
+DATABASE open + schema checks ms 0,91
+DATABASE delta index ms 1,85
+DATABASE row and ownership delta SQL ms 11,04
+DATABASE digest + metadata ms 0,51
+DATABASE durable commit ms 36,01
+PROFILE database transaction + durability ms 65,82
+PASS juniper-club: changed component commits / Saved.
+TIMING juniper-club warm component save ms 93,88 / changed records 2
+PASS juniper-club: wear edit writes only changed component/revision records
+PASS juniper-club: failed transaction publishes neither money nor wear changes
+PASS juniper-club: actual buy/install transaction commits /
+PASS juniper-club: checkout reloads payment and retains replaced identity
+PASS SQLite enforces deferred ownership references
+PASS Separate preference commit succeeds /
+PASS Settings apply does not write the progression database
+PASS Separate driving, difficulty and volume settings reload together
+PASS Progression reset creates a fresh ownership state
+PASS Progression reset preserves separate preferences exactly
+PASS Database backup recovery cannot resurrect pre-reset assets
+PASS Recovered reset database can commit normally
+PASS Unknown future schema blocks all writes/reset and preserves original database
+PASS Failed migration rolls back every pending schema change
+PASS Rolled-back migration can retry from the original schema
+PASS Isolated checkpoint database created
+PASS Race entry commits to database /
+PASS Copied resource checkpoint queues to SQLite /
+PASS Checkpoint worker stores no new sidecar JSON journal
+PASS Interrupted run retains exact wear/fuel without a reward or resumed race
+PASS Committed resource recovery retires its database checkpoint atomically
+PASS First separate slot persists
+PASS Second slot starts independently
+Checks: 44 / failures: 0

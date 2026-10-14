@@ -57,7 +57,7 @@ namespace DragLab.Runtime
         {
             var original=game.Profile;var field=typeof(PrototypeGame).GetField("profile",BindingFlags.Instance|BindingFlags.NonPublic);
             byte[] disk=File.ReadAllBytes(ProfileStore.FilePath),backup=File.Exists(ProfileStore.FilePath+".bak")?File.ReadAllBytes(ProfileStore.FilePath+".bak"):null;
-            var fixture=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(original));fixture.catalog=original.catalog;fixture.cash=1000000;fixture.reputation=1000;
+            var fixture=DragLab.Domain.Mechanics.EngineWorkshop.Copy(original);fixture.catalog=original.catalog;fixture.cash=1000000;fixture.reputation=1000;
             MechanicsOwnership.Ensure(fixture,fixture.catalog); // Canonicalize empty inline objects introduced by JsonUtility in this isolated copy.
             fixture.vehicleStock.listings.RemoveAll(o=>o.used);
             fixture.parts.First(p=>p.slot=="Pistons").condition.health=.35f;
@@ -143,7 +143,7 @@ namespace DragLab.Runtime
                 typeof(NativeMenuShell).GetMethod("SwitchGaragePage",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shell,new object[]{false});
                 if(shell.OwnedDetailsOpen)typeof(NativeMenuShell).GetMethod("BackToOwnedCars",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shell,null);
                 field.SetValue(game,original);game.settings=original.driving;typeof(PrototypeGame).GetMethod("ShowGarageCar",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(game,null);
-                File.WriteAllBytes(ProfileStore.FilePath,disk);if(backup!=null)File.WriteAllBytes(ProfileStore.FilePath+".bak",backup);else if(File.Exists(ProfileStore.FilePath+".bak"))File.Delete(ProfileStore.FilePath+".bak");shell.InvalidateOwnedGrid();shell.InvalidateDealer();shell.Refresh();
+                ProfileStore.Flush();SqliteStateStore.Invalidate();File.WriteAllBytes(ProfileStore.FilePath,disk);if(backup!=null)File.WriteAllBytes(ProfileStore.FilePath+".bak",backup);else if(File.Exists(ProfileStore.FilePath+".bak"))File.Delete(ProfileStore.FilePath+".bak");shell.InvalidateOwnedGrid();shell.InvalidateDealer();shell.Refresh();
             }
         }
 #endif

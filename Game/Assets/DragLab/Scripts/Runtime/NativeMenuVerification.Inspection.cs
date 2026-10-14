@@ -40,7 +40,7 @@ namespace DragLab.Runtime
         {
             var original=game.Profile;var field=typeof(PrototypeGame).GetField("profile",BindingFlags.Instance|BindingFlags.NonPublic);
             byte[] disk=File.ReadAllBytes(ProfileStore.FilePath),backup=File.Exists(ProfileStore.FilePath+".bak")?File.ReadAllBytes(ProfileStore.FilePath+".bak"):null;
-            var fixture=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(original));fixture.catalog=original.catalog;fixture.cash=100000;fixture.reputation=1000;
+            var fixture=DragLab.Domain.Mechanics.EngineWorkshop.Copy(original);fixture.catalog=original.catalog;fixture.cash=100000;fixture.reputation=1000;
             MechanicsOwnership.Ensure(fixture,fixture.catalog);
             var listing=fixture.vehicleStock.listings.First(o=>o.used);listing.inspected=false;listing.historyNotes.Clear();listing.historyNotes.Add("Inspection fixture overheating");
             var failed=listing.parts.Single(p=>p.slot=="Pistons");failed.condition.failed=true;failed.condition.health=.15f;failed.condition.failureReason="Inspection fixture seizure";foreach(var e in failed.condition.elements){e.health=0;e.fault=ElementFault.Seized;e.severity=1;}
@@ -91,7 +91,7 @@ namespace DragLab.Runtime
                 typeof(NativeMenuShell).GetMethod("SwitchGaragePage",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shell,new object[]{false});
                 if(shell.OwnedDetailsOpen)typeof(NativeMenuShell).GetMethod("BackToOwnedCars",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shell,null);
                 field.SetValue(game,original);game.settings=original.driving;typeof(PrototypeGame).GetMethod("ShowGarageCar",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(game,null);
-                File.WriteAllBytes(ProfileStore.FilePath,disk);if(backup!=null)File.WriteAllBytes(ProfileStore.FilePath+".bak",backup);else if(File.Exists(ProfileStore.FilePath+".bak"))File.Delete(ProfileStore.FilePath+".bak");
+                ProfileStore.Flush();SqliteStateStore.Invalidate();File.WriteAllBytes(ProfileStore.FilePath,disk);if(backup!=null)File.WriteAllBytes(ProfileStore.FilePath+".bak",backup);else if(File.Exists(ProfileStore.FilePath+".bak"))File.Delete(ProfileStore.FilePath+".bak");
                 shell.InvalidateOwnedGrid();shell.InvalidateDealer();shell.Refresh();
             }
         }

@@ -85,7 +85,7 @@ namespace DragLab.Runtime
                 Check(errors==0,"Native Tuning checkpoint has no runtime errors");
             }finally{
                 if(shell.ModalOpen)typeof(NativeMenuShell).GetMethod("CloseDialog",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shell,null);
-                field.SetValue(game,original);game.settings=original.driving;game.DiscardPreviews();File.WriteAllBytes(ProfileStore.FilePath,disk);if(backup!=null)File.WriteAllBytes(ProfileStore.FilePath+".bak",backup);else if(File.Exists(ProfileStore.FilePath+".bak"))File.Delete(ProfileStore.FilePath+".bak");shell.InvalidateOwnedGrid();shell.InvalidateDealer();game.QueueNativeNavigation("Garage");
+                field.SetValue(game,original);game.settings=original.driving;game.DiscardPreviews();ProfileStore.Flush();SqliteStateStore.Invalidate();File.WriteAllBytes(ProfileStore.FilePath,disk);if(backup!=null)File.WriteAllBytes(ProfileStore.FilePath+".bak",backup);else if(File.Exists(ProfileStore.FilePath+".bak"))File.Delete(ProfileStore.FilePath+".bak");shell.InvalidateOwnedGrid();shell.InvalidateDealer();game.QueueNativeNavigation("Garage");
             }
             yield return new WaitForSecondsRealtime(.3f);
         }
@@ -136,7 +136,7 @@ namespace DragLab.Runtime
             byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);
             try{
                 foreach(var vehicle in game.vehicles){
-                    var fixture=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(original));fixture.catalog=original.catalog;fixture.cash=10000000;fixture.reputation=10000;
+                    var fixture=DragLab.Domain.Mechanics.EngineWorkshop.Copy(original);fixture.catalog=original.catalog;fixture.cash=10000000;fixture.reputation=10000;
                     VehicleCollection.Buy(fixture,fixture.catalog,new VehicleOffer{model=vehicle.spec.id,price=vehicle.purchasePrice,reputation=vehicle.reputationRequired,stock=vehicle.CreateStockTune(),paint="#DA3448"});
                     field.SetValue(game,fixture);game.BeginTuneDraft();shell.Refresh();yield return new WaitForSecondsRealtime(.15f);
                     string clean=JsonUtility.ToJson(fixture);Check(!game.DraftDirty&&clean==JsonUtility.ToJson(fixture)&&shell.Root.Q("tuningPreviewError")==null,"Stock tuning controls preserve the complete build: "+vehicle.spec.id);

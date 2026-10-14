@@ -83,9 +83,10 @@ namespace DragLab.Runtime
             yield return new WaitForSecondsRealtime(.5f);
             using (var input = new WindowsKeyboardProbe())
             {
-                Check(ProfileStore.FilePath == Path.Combine(folder, "profile-v1.json"), "Profile isolated from player assets");
+                Check(ProfileStore.FilePath == Path.Combine(folder, "save-slot-1.sqlite3"), "Profile isolated from player assets");
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-shine-only-verify")>=0){yield return AngledShineChecks(input);yield break;}
                 if(game.Profile.firstPurchasePending)yield return StarterPurchaseChecks(input);
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-sqlite-state-only-verify")>=0){if(!shell.Visible)yield return Key(input,0x77);yield return Click(input,"settingsButton");yield return SettingsChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-part-brands-only-verify")>=0){yield return PartBrandInterfaceChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-awd-hardware-only-verify")>=0){yield return AwdHardwareInterfaceChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-responsiveness-only-verify")>=0){yield return ResponsivenessChecks(input);yield break;}

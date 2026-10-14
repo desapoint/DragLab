@@ -18,10 +18,10 @@ namespace DragLab.Runtime
                 if (field.FieldType.IsEnum && !Enum.IsDefined(field.FieldType, field.GetValue(driver))) { error = "Invalid " + field.Name; return false; }
             foreach (var field in typeof(UnitPreferences).GetFields())
                 if (field.FieldType.IsEnum && !Enum.IsDefined(field.FieldType, field.GetValue(units))) { error = "Invalid " + field.Name; return false; }
-            var candidate = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(profile));
+            var candidate = profile.CopyWithPreferences(driver,ai);
             candidate.catalog = profile.catalog; candidate.driving = driver.Copy(); candidate.difficulty = ai;
             if (!PreferenceCommit.TryApply(candidate, units, master, opponent, out error)) return false;
-            profile = candidate; settings = profile.driving; difficulty = ai; saveDelay = 0;
+            profile = candidate; settings = profile.driving; difficulty = ai; saveDelay = 0;drivingPreferencesDirty=false;
             // A running race owns its captured driver rules; menu edits do not
             // reconstruct its cars, damage, resources or entry contract.
             return true;

@@ -190,16 +190,16 @@ namespace DragLab.Runtime
             Check(loaded.driving.shifting==ShiftMode.ManualClutch && loaded.driving.wearMode==WearMode.Partial && loaded.difficulty==2,"Applied driving settings survive profile reload");
             string current=JsonUtility.ToJson(game.Profile);
             var failedDriver=game.settings.Copy();failedDriver.clutchReleaseSeconds=.39f;
-            string profileDisk=File.ReadAllText(ProfileStore.FilePath),backupDisk=File.Exists(ProfileStore.FilePath+".bak")?File.ReadAllText(ProfileStore.FilePath+".bak"):null,audioDisk=File.ReadAllText(SharedAudioSettings.FilePath),unitDisk=File.ReadAllText(SharedUnitSettings.FilePath);
+            string drivingDisk=File.ReadAllText(DrivingPreferences.FilePath);string profileDisk=File.ReadAllText(ProfileStore.FilePath),backupDisk=File.Exists(ProfileStore.FilePath+".bak")?File.ReadAllText(ProfileStore.FilePath+".bak"):null,audioDisk=File.ReadAllText(SharedAudioSettings.FilePath),unitDisk=File.ReadAllText(SharedUnitSettings.FilePath);
             float liveGain=SharedAudioSettings.MasterVolume;
-            using(var locked=new FileStream(ProfileStore.FilePath,FileMode.Open,FileAccess.Read,FileShare.Read))
+            using(var locked=new FileStream(DrivingPreferences.FilePath,FileMode.Open,FileAccess.Read,FileShare.Read))
             {
-                Check(!game.ApplyNativeSettings(failedDriver,0,new UnitPreferences(),.91f,.92f,out var error) && error!=null,"Locked profile rejects settings commit");
+                Check(!game.ApplyNativeSettings(failedDriver,0,new UnitPreferences(),.91f,.92f,out var error) && error!=null,"Locked preference file rejects settings commit independently of progression");
                 Check(JsonUtility.ToJson(game.Profile)==current && SharedAudioSettings.MasterVolume==liveGain && SharedAudioSettings.OpponentVolume==.41f,"Failed commit never publishes new profile or audio cache");
                 Check(File.Exists(Path.Combine(folder,"settings-commit.json")),"Interrupted rollback retains durable recovery journal");
             }
             Check(PreferenceCommit.Recover(out var recoveryError) && recoveryError==null,"Incomplete settings write recovers after lock released");
-            Check(File.ReadAllText(ProfileStore.FilePath)==profileDisk && (File.Exists(ProfileStore.FilePath+".bak")?File.ReadAllText(ProfileStore.FilePath+".bak"):null)==backupDisk && File.ReadAllText(SharedAudioSettings.FilePath)==audioDisk && File.ReadAllText(SharedUnitSettings.FilePath)==unitDisk,"Recovery restores all three files and profile backup exactly");
+            Check(File.ReadAllText(DrivingPreferences.FilePath)==drivingDisk&&File.ReadAllText(ProfileStore.FilePath)==profileDisk && (File.Exists(ProfileStore.FilePath+".bak")?File.ReadAllText(ProfileStore.FilePath+".bak"):null)==backupDisk && File.ReadAllText(SharedAudioSettings.FilePath)==audioDisk && File.ReadAllText(SharedUnitSettings.FilePath)==unitDisk,"Recovery restores all three files and profile backup exactly");
             Check(!File.Exists(Path.Combine(folder,"settings-commit.json")),"Successful recovery retires journal");
             yield return Click(input,"cancelSettings");Check(game.ScreenName=="Garage","Clean Cancel returns to prior Garage");
             yield return Click(input,"navBusiness");yield return Click(input,"settingsButton");yield return Click(input,"tabSound");
