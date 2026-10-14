@@ -79,7 +79,9 @@ namespace DragLab.Runtime
                 string model=catalog.Spec(car.vehicleId).displayName+" / "; string name=d.name.StartsWith(model,StringComparison.Ordinal)?d.name.Substring(model.Length):d.name;
                 var title=new Label(name) {tooltip=d.name+" · "+item.instanceId,enableRichText=false};title.AddToClassList("maintenance-part-name");caption.Add(title);
                 int faults=item.condition.elements.Count(e=>e is TireCondition ? ((TireCondition)e).failed||e.health<=.5f : e.Failed||e.fault!=ElementFault.None||e.health<.5f);
-                var state=new Label((PrototypeGame.PartFailed(item)?"Failed":"Condition "+item.condition.health.ToString("P0"))+(faults>0?" · "+faults+" faulty":"")) {tooltip=item.condition.failureReason};state.AddToClassList(PrototypeGame.PartFailed(item)?"car-critical":ServiceConditionClass(item.condition.health));caption.Add(state);
+                float memberHealth=d.category==PartCategory.Tires?TireDynamics.LowestHealth(item.condition):item.condition.health;
+                string failureReason=d.category==PartCategory.Tires?TireDynamics.FailedCorners(item.condition):item.condition.failureReason;
+                var state=new Label((PrototypeGame.PartFailed(item)?"Failed":"Condition "+memberHealth.ToString("P0"))+(faults>0?" · "+faults+" faulty":"")) {tooltip=failureReason};state.AddToClassList(PrototypeGame.PartFailed(item)?"car-critical":ServiceConditionClass(memberHealth));caption.Add(state);
                 var actions=new VisualElement();actions.AddToClassList("maintenance-part-actions");row.Add(actions);
                 foreach(var action in ServiceOperations.Available(d,item.condition))
                     MaintenanceAction(actions,"maintenanceRepair:"+action+":"+item.instanceId,action.ToString(),new PaymentRequest {kind=PaymentKind.Repair,carId=car.instanceId,targetId=item.instanceId,service=action},ServiceOperations.Description(action),available);
