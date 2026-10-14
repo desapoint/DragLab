@@ -11,6 +11,53 @@ namespace DragLab.Infrastructure
     {
         internal static Action<string,double> SaveMeasurement;
         static bool writeBlocked;
+        public static bool ResetRequired => writeBlocked;
+
+        // Explicit user-confirmed reset only. Preserve the old database, checkpoint
+        // and backups beside the save under a timestamped name for manual recovery.
+        public static bool TryResetIncompatibleSave(out string error)
+        {
+            error = null;
+            if (!writeBlocked) { error = "No incompatible save requires reset."; return false; }
+            var moved = new System.Collections.Generic.List<string[]>();
+            string backupSuffix = ".before-reset-" + DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+            string[] roots = LegacyFixture ? new[]{FilePath} :
+                slot=="slot-1" ? new[]{FilePath,LegacyFilePath} : new[]{FilePath};
+            string[] suffixes = {"",".bak",".run",".run.bak",".run.tmp",".tmp","-wal","-shm"};
+            try
+            {
+                RaceCheckpointStore.Drain();
+                SqliteStateStore.DrainBackups();
+                SqliteStateStore.Invalidate();
+                foreach (var root in roots) foreach (var suffix in suffixes)
+                {
+                    string source = root + suffix;
+                    if (!File.Exists(source)) continue;
+                    string target = source + backupSuffix;
+                    File.Move(source,target);
+                    moved.Add(new[]{source,target});
+                }
+                writeBlocked = false;
+                var fresh = PlayerProfile.NewGame(DateTime.UtcNow.Ticks);
+                MechanicsOwnership.Ensure(fresh,MechanicsTransactions.Catalog());
+                if(!TrySave(fresh))throw new IOException(Status);
+                Status = "A new save was created. Previous data was archived with suffix " + backupSuffix + ".";
+                return true;
+            }
+            catch(Exception e)
+            {
+                writeBlocked = true;
+                error = "Reset failed; prior data is retained: " + e.Message;
+                for(int i=moved.Count-1;i>=0;i--)try
+                {
+                    if(File.Exists(moved[i][0])) File.Move(moved[i][0],moved[i][0]+".failed-reset"+backupSuffix);
+                    if(File.Exists(moved[i][1])) File.Move(moved[i][1],moved[i][0]);
+                }
+                catch(Exception rollback){error += " Backup restoration: " + rollback.Message;}
+                Status = error;
+                return false;
+            }
+        }
         static string slot="slot-1";
 #if UNITY_EDITOR
         public static string VerificationPath;
