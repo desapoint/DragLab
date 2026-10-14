@@ -77,7 +77,7 @@ namespace DragLab.Domain.Mechanics
         {
             if(old.elements==null||old.elements.Length==0)return true;
             if(next.elements==null||next.elements.Length!=old.elements.Length)return false;
-            for(int i=0;i<old.elements.Length;i++){var a=old.elements[i];var b=next.elements[i];if(a.id!=b.id||(a.definitionId??"")!=(b.definitionId??"")||a.cylinder!=b.cylinder||a.valve!=b.valve||a.role!=b.role||b.health>a.health||a.fault!=ElementFault.None&&(b.fault!=a.fault||b.severity<a.severity))return false;}return true;
+            for(int i=0;i<old.elements.Length;i++){var a=old.elements[i];var b=next.elements[i];if(a==null||b==null||a.GetType()!=b.GetType()||a.id!=b.id||(a.definitionId??"")!=(b.definitionId??"")||a.cylinder!=b.cylinder||a.valve!=b.valve||a.role!=b.role||b.health>a.health||a.fault!=ElementFault.None&&(b.fault!=a.fault||b.severity<a.severity))return false;}return true;
         }
         public static void Prepare(CarSimulation car)
         {
