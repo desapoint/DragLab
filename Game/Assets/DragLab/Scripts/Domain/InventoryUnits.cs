@@ -1,8 +1,16 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace DragLab.Domain.Mechanics
 {
+    [Serializable]
+    public sealed class TireSwapAssignment
+    {
+        public string unitId;
+        public int corner; // Front left, front right, rear left, rear right.
+        public TireSwapAssignment(string id,int index){unitId=id;corner=index;}
+    }
     public static class InventoryUnits
     {
         public static VehicleSpec Spec(PlayerProfile p,OwnedCar car,PartDefinition d)
@@ -71,5 +79,38 @@ namespace DragLab.Domain.Mechanics
             TireDynamics.SyncSummary(pack.condition);
             // Tire swap is a transaction; the container owns no maintenance history.
         }
+        // Call from MechanicsTransactions.Try (or a validated cart preview).
+        // The complete selection is validated against the original inventory before
+        // moving anything; callers commit the candidate profile as one transaction.
+        public static void SwapTires(PlayerProfile p,string carId,IEnumerable<TireSwapAssignment> source)
+        {
+            var selections=source==null?new TireSwapAssignment[0]:source.ToArray();
+            if(selections.Length<1||selections.Length>4)throw new InvalidOperationException("Select between one and four stored tires.");
+            if(selections.Any(x=>x==null||x.corner<0||x.corner>3||string.IsNullOrEmpty(x.unitId))
+                ||selections.Select(x=>x.corner).Distinct().Count()!=selections.Length
+                ||selections.Select(x=>x.unitId).Distinct(StringComparer.Ordinal).Count()!=selections.Length)
+                throw new InvalidOperationException("Each physical tire and corner may appear only once in the swap.");
+            if(p.runCheckpoints.Any(r=>!r.settled))throw new InvalidOperationException("Finish or close the active race before swapping tires.");
+            var car=AssemblyOperations.MutableCar(p,carId);
+            var binding=car.installed.slots.Find(x=>x.slot==PartCategory.Tires.ToString());
+            var pack=binding==null?null:p.parts.Find(x=>x.instanceId==binding.partInstanceId);
+            if(pack==null)throw new InvalidOperationException("Install a complete tire set before swapping individual tires.");
+            TireDynamics.Ensure(pack.condition);
+            foreach(var request in selections)
+            {
+                var unit=p.looseEngineElements.Find(x=>x.element!=null&&x.element.id==request.unitId);
+                var spec=unit==null?null:p.catalog.Find(unit.definitionId);
+                if(unit==null||!unit.tireUnit||unit.tire==null||unit.tire.Validate()!=null
+                    ||unit.element==null||(!string.IsNullOrEmpty(unit.tire.id)&&unit.tire.id!=unit.element.id)
+                    ||spec==null||spec.category!=PartCategory.Tires
+                    ||!p.catalog.Fits(p.catalog.Spec(car.vehicleId),spec))
+                    throw new InvalidOperationException("Stored tire is missing, damaged in the inventory data, or incompatible with this car.");
+            }
+            // Install() returns each displaced tire to inventory with its original
+            // identity, specification, condition and full wear history.
+            foreach(var request in selections.OrderBy(x=>x.corner))
+                Install(p,carId,request.unitId,"tire:"+request.corner);
+        }
+
     }
 }
