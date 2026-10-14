@@ -9,8 +9,8 @@ namespace DragLab.Presentation
         // One projection for road travel, separation and the finish marker. No speed-dependent
         // integration: pausing, replays and resets all retain the same physical distances.
         public const float MetersToView = .60f;
-        public const float PlayerLane=-2.6f, OpponentLane=-.8f;
-        const float Span=76.8f, DepthSlope=(1-.68f)/(OpponentLane-PlayerLane), DepthSkew=1.1f;
+        public const float PlayerLane=-2.6f, OpponentLane=-.8f, RoadDepthCompression=.35f, FarCarScale=.82f, StartLightScale=.85f;
+        const float Span=76.8f, DepthSlope=(1-FarCarScale)/(OpponentLane-PlayerLane), DepthSkew=1.1f;
         struct Tile { public Transform transform; public Vector3 origin; public float parallax; }
         readonly List<Tile> tiles = new List<Tile>();
         readonly List<SpriteRenderer> lamps = new List<SpriteRenderer>(), halos = new List<SpriteRenderer>();
@@ -18,11 +18,12 @@ namespace DragLab.Presentation
         Transform tree, finish, start;
         Mesh roadMesh, finishMesh, startMesh; Material roadMaterial, finishMaterial, startMaterial; bool linesInitialized;
         readonly Vector3[] finishVertices=new Vector3[50],startVertices=new Vector3[50];
-        readonly Vector2[] roadUv=new Vector2[50];readonly float[] roadU=new float[50];
-        static Sprite asphalt, housing, lens, halo, line;
+        readonly Vector2[] roadUv=new Vector2[50],finishUv=new Vector2[50];readonly float[] roadU=new float[50];
+        static Sprite asphalt, housing, lens, halo, line, checker;
         static readonly Color Amber = new Color(1,.56f,.045f), Green = new Color(.22f,1,.36f), Red = new Color(1,.08f,.12f);
         public static float DepthScale(float lane) => 1-(lane-PlayerLane)*DepthSlope;
-        public static Vector3 Project(float x,float lane) => new Vector3(2+(x-2)*DepthScale(lane)+(lane-PlayerLane)*DepthSkew,lane,0);
+        public static float ScreenLane(float lane) => PlayerLane+(lane-PlayerLane)*RoadDepthCompression;
+        public static Vector3 Project(float x,float lane) => new Vector3(2+(x-2)*DepthScale(lane)+(lane-PlayerLane)*DepthSkew,ScreenLane(lane),0);
         public static Vector3 CarPosition(float x,float lane,float contactHeight) => Project(x,lane)+Vector3.up*contactHeight*DepthScale(lane);
         public float Travel { get; private set; }
         public int LitLampCount { get; private set; }
@@ -40,29 +41,29 @@ namespace DragLab.Presentation
                 var streak=AddTile(line,new Vector3(i*3.2f,-3.1f-(i%3)*.15f),-29,new Vector3(.2f,.096f,1),1.12f);
                 streak.color=Color.clear;streaks.Add(streak);
             }
-            tree=Make(housing,Vector3.zero,2000).transform;
-            tree.localScale=Vector3.one*DepthScale(.8f);
+            tree=Make(housing,Vector3.zero,-10).transform;
+            tree.localScale=Vector3.one*StartLightScale;
             for(int row=0;row<5;row++)for(int column=0;column<2;column++)
             {
                 var pos=new Vector3(column==0?-.185f:.185f,.66f-row*.39f);
-                var glow=Make(halo,Vector3.zero,2001);glow.transform.SetParent(tree,false);glow.transform.localPosition=pos;glow.transform.localScale=Vector3.one*.62f;halos.Add(glow);
-                var lamp=Make(lens,Vector3.zero,2002);lamp.transform.SetParent(tree,false);lamp.transform.localPosition=pos;lamp.transform.localScale=Vector3.one*.31f;lamps.Add(lamp);
+                var glow=Make(halo,Vector3.zero,-9);glow.transform.SetParent(tree,false);glow.transform.localPosition=pos;glow.transform.localScale=Vector3.one*.62f;halos.Add(glow);
+                var lamp=Make(lens,Vector3.zero,-8);lamp.transform.SetParent(tree,false);lamp.transform.localPosition=pos;lamp.transform.localScale=Vector3.one*.31f;lamps.Add(lamp);
             }
             // Pre-stage / stage pairs are distinct from the three amber countdown lamps.
             for(int row=0;row<2;row++)for(int col=0;col<2;col++)
             {
-                var stage=Make(lens,Vector3.zero,2002);stage.transform.SetParent(tree,false);
+                var stage=Make(lens,Vector3.zero,-8);stage.transform.SetParent(tree,false);
                 stage.transform.localPosition=new Vector3(col==0?-.14f:.14f,1.2f-row*.22f);
                 stage.transform.localScale=Vector3.one*.11f;stage.color=new Color(.9f,.88f,.65f);
             }
-            finish=MakeMesh("Finish line",Load("finish-checker").texture,-20,out finishMesh,out finishMaterial);
+            finish=MakeMesh("Finish line",checker.texture,-20,out finishMesh,out finishMaterial);
             start=MakeMesh("Start line",line.texture,-21,out startMesh,out startMaterial);
             SetLines(70,2);
             ShowGarage();
         }
         SpriteRenderer AddTile(Sprite sprite,Vector3 origin,int order,Vector3 scale,float parallax)
         {
-            var renderer=Make(sprite,origin,order);var t=renderer.transform;t.localScale=scale*DepthScale(origin.y);
+            var renderer=Make(sprite,origin,order);var t=renderer.transform;var projectedScale=scale*DepthScale(origin.y);if(sprite==line)projectedScale.y*=RoadDepthCompression;t.localScale=projectedScale;
             tiles.Add(new Tile{transform=t,origin=origin,parallax=parallax});return renderer;
         }
         static Sprite Load(string name) => Resources.Load<Sprite>("Sprites/Track/"+name);
@@ -88,7 +89,7 @@ namespace DragLab.Presentation
         {
             tree.gameObject.SetActive(true);finish.gameObject.SetActive(true);start.gameObject.SetActive(true);
             Travel=(float)race.player.state.distance*MetersToView;PositionTiles(Travel);
-            tree.localPosition=Project(-3-Travel,.8f)+Vector3.up*1.6f*DepthScale(.8f);
+            tree.localPosition=Project(-3-Travel,.8f)+Vector3.up*1.6f*StartLightScale;
             SetLines(2+(float)race.distance*MetersToView-Travel,2-Travel);
             float offset=Mathf.Repeat(Travel,6.4f)/6.4f;
             for(int i=0;i<roadUv.Length;i++)roadUv[i].x=roadU[i]+offset;
@@ -97,7 +98,7 @@ namespace DragLab.Presentation
             for(int i=0;i<streaks.Count;i++)
             {
                 streaks[i].color=new Color(.62f,.65f,.67f,SpeedCue*.16f);
-                streaks[i].transform.localScale=new Vector3((.15f+SpeedCue*(1.1f+(i%4)*.18f))*DepthScale(-3.1f-(i%3)*.15f),.096f,1);
+                streaks[i].transform.localScale=new Vector3((.15f+SpeedCue*(1.1f+(i%4)*.18f))*DepthScale(-3.1f-(i%3)*.15f),.096f*RoadDepthCompression,1);
             }
             LitLampCount=0;
             for(int i=0;i<lamps.Count;i++)
@@ -140,17 +141,31 @@ namespace DragLab.Presentation
         }
         void SetLines(float finishX,float startX)
         {
-            for(int row=0;row<=24;row++)for(int side=0;side<2;side++)
+            // Map repeating checks in the ribbon's projected tangent/normal basis. Including
+            // the tangent offset at each edge removes the long, skewed texture diamonds.
+            var tangent=(Vector2)(Project(finishX,.75f)-Project(finishX,-4.4f));tangent.Normalize();
+            var normal=new Vector2(tangent.y,-tangent.x);
+            float v=0,previousWidth=0;Vector2 previousCenter=Vector2.zero;
+            for(int row=0;row<=24;row++)
             {
-                float y=Mathf.Lerp(-4.4f,.75f,row/24f);
-                finishVertices[row*2+side]=Project(finishX+(side==0?-.13f:.13f),y);
-                startVertices[row*2+side]=Project(startX+(side==0?-.035f:.035f),y);
+                float y=Mathf.Lerp(-4.4f,.75f,row/24f);Vector2 center=Project(finishX,y);
+                float width=.44f*DepthScale(y)*Mathf.Abs(normal.x);
+                if(row>0)v+=Vector2.Distance(center,previousCenter)*2/(width+previousWidth);
+                for(int side=0;side<2;side++)
+                {
+                    int index=row*2+side;
+                    finishVertices[index]=Project(finishX+(side==0?-.22f:.22f),y);
+                    var delta=(Vector2)finishVertices[index]-center;
+                    finishUv[index]=new Vector2(.5f+Vector2.Dot(delta,normal)/width,v+Vector2.Dot(delta,tangent)/width);
+                    startVertices[index]=Project(startX+(side==0?-.035f:.035f),y);
+                }
+                previousWidth=width;previousCenter=center;
             }
-            finishMesh.vertices=finishVertices;startMesh.vertices=startVertices;
+            finishMesh.vertices=finishVertices;finishMesh.uv=finishUv;startMesh.vertices=startVertices;
             if(!linesInitialized)
             {
                 var uv=new Vector2[50];for(int i=0;i<50;i++)uv[i]=new Vector2(i%2,i/2f/24);
-                finishMesh.uv=uv;finishMesh.triangles=StripTriangles();finishMesh.MarkDynamic();
+                finishMesh.triangles=StripTriangles();finishMesh.MarkDynamic();
                 startMesh.uv=uv;startMesh.triangles=StripTriangles();startMesh.MarkDynamic();linesInitialized=true;
             }
             finishMesh.RecalculateBounds();startMesh.RecalculateBounds();
@@ -179,6 +194,9 @@ namespace DragLab.Presentation
             },true);
             asphalt.texture.wrapMode=TextureWrapMode.Repeat;
             line=Texture("Road paint",64,8,64,(x,y)=>new Color(.78f,.79f,.75f,Mathf.Min(1,Mathf.Min(y+1,8-y)*.5f)));
+            checker=Texture("Repeating finish checks",64,64,64,(x,y)=>(x/32+y/32)%2==0?new Color(.88f,.90f,.91f):new Color(.025f,.03f,.035f),true);
+            checker.texture.wrapMode=TextureWrapMode.Repeat;
+            checker.texture.filterMode=FilterMode.Trilinear;
             housing=Texture("Start tree housing",160,640,200,(x,y)=>{
                 float cornerX=Mathf.Max(Mathf.Abs(x-79.5f)-69.5f,0),cornerY=Mathf.Max(Mathf.Abs(y-319.5f)-309.5f,0);
                 float d=Mathf.Sqrt(cornerX*cornerX+cornerY*cornerY),alpha=Mathf.Clamp01(10-d);

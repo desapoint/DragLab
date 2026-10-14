@@ -238,3 +238,6 @@ Maintenance batch controls authorized and implemented (2026-10-13): Garage car d
 
 
 4L.5 requested perspective correction (2026-10-14): the prior depth treatment was not visually accepted. Make the asphalt mesh itself trapezoidal, with stronger foreshortening/skew; place/scale/move the rear car through the same projection and make start/finish cross-sections visibly diagonal. Anchor upright car artwork by tire contacts. Do not tilt driving or change physics/timing/resources. [Delivery/review](../reports/phases/4l/05-TRAPEZOID.md). Stop after this correction for user review.
+
+
+4L.6 requested visual calibration (2026-10-14): reduce visible road height for a narrow, nearly edge-on 2D view; retain trapezoid/skew and fix elongated finish checks through repeating, skew-compensated mapping. Before completion, the user also requested larger start lights and a smaller difference in car scale. Use enlarged housing/lenses and an 82% rear car with matching road/displacement projection, retaining upright sprites/contact anchors and proper distant-post layering. This is one steered visual checkpoint, not authorization for other HUD controls. [Delivery/review](../reports/phases/4l/06-NARROW-ROAD.md). Stop for visual acceptance.

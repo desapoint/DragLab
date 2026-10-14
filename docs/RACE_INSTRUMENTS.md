@@ -1,8 +1,14 @@
 # Race instruments — approved direction (2026-10-14)
 
+## Narrow road, checks and scale refinement (2026-10-14)
+
+Show a much narrower, nearly edge-on road surface: compress only ground-depth height to 35% of the previous view. Keep cars, posts and gauges upright. Lanes/contact anchors, road paint, asphalt and start/finish geometry share the compressed ground projection. Retain the skewed trapezoid and diagonal finish. Tile the finish checks with compensated texture coordinates so they read as squares instead of stretching one short image along the full ribbon.
+
+The requested follow-up enlarges the complete start-light housing/lenses and reduces the far-car size difference: **82%**, replacing the previous 68%, with matching apparent movement and road foreshortening. The start-light post stays behind cars where the tighter lanes overlap. Its enlarged display size is independent of ground-depth compression. These are presentation choices; race physics, distances, timing, held input and saves remain unchanged. [Checks/review](../reports/phases/4l/06-NARROW-ROAD.md).
+
 ## Trapezoid correction (2026-10-14)
 
-The previous subtle depth view was not accepted. Road geometry itself must be skewed into a trapezoid with a clearly narrower far edge, rather than leaving a rectangular mesh and only modifying texture coordinates. Use one stronger projection for asphalt/markings, diagonal start/finish ribbons and cars. The rear car is 68% scale with matching longitudinal displacement; upright cars are anchored by tire contacts on their own depth planes. At equal physical distance both cars must meet the same skewed finish cross-section in their respective lanes. Keep travel horizontal and retain authoritative physics/timing. [Checks/review](../reports/phases/4l/05-TRAPEZOID.md).
+The previous subtle depth view was not accepted. Road geometry itself must be skewed into a trapezoid with a clearly narrower far edge, rather than leaving a rectangular mesh and only modifying texture coordinates. Use one stronger projection for asphalt/markings, diagonal start/finish ribbons and cars. That checkpoint used 68% rear-car scale with matching longitudinal displacement; the narrow-road calibration above supersedes that size. Upright cars are anchored by tire contacts on their own depth planes. At equal physical distance both cars must meet the same skewed finish cross-section in their respective lanes. Keep travel horizontal and retain authoritative physics/timing. [Checks/review](../reports/phases/4l/05-TRAPEZOID.md).
 
 ## Road depth and instrument refinement (2026-10-14)
 

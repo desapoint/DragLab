@@ -1,6 +1,9 @@
 # Prototype implementation status
 
 
+**4L.6 narrow-road/scale calibration ready for review (2026-10-14):** road depth height is 35% of the previous view while sprites remain upright; repeating skew-compensated finish checks replace the stretched pattern. Start lights are enlarged, behind overlapping cars; rear-car size/movement is 82% rather than 68%. Windows build and final packaged native **128/0** pass. [Checks/review](../reports/phases/4l/06-NARROW-ROAD.md). Stop for visual acceptance before further controls.
+
+
 **4L.5 trapezoid correction ready for review (2026-10-14):** previous subtle depth was not accepted. Asphalt vertices now form a stronger skewed trapezoid; the rear car is 68% size with corresponding movement and tire-contact placement. Start/finish ribbons share the projection and cross the lanes diagonally. Physics/timing remain unchanged. Windows build and packaged native **122/0** pass, including actual mesh/car/finish alignment and the running finish approach. [Checks/review](../reports/phases/4l/05-TRAPEZOID.md). Stop for visual acceptance before further controls.
 
 

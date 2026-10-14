@@ -43,15 +43,20 @@ namespace DragLab.Runtime
             var asphalt=meshes.First(f=>f.sharedMesh.name=="Perspective asphalt").sharedMesh;
             var roadVertices=asphalt.vertices;
             float nearWidth=(roadVertices[1]-roadVertices[0]).magnitude,farWidth=(roadVertices[49]-roadVertices[48]).magnitude;
-            Check(farWidth<nearWidth*.4f&&roadVertices[48].x>roadVertices[0].x+10,"Asphalt geometry itself is a strongly narrowed and skewed trapezoid, not a rectangular mesh with different UVs");
+            Check(farWidth<nearWidth*.65f&&roadVertices[48].x>roadVertices[0].x+10,"Asphalt geometry itself is a strongly narrowed and skewed trapezoid, not a rectangular mesh with different UVs");
+            Check(roadVertices[48].y-roadVertices[0].y<2&&roadVertices[48].y-roadVertices[0].y>1.5f,"Road is an edge-on strip with about 65 percent less visible vertical surface");
+            Check(DragLab.Presentation.DragStripView.ScreenLane(DragLab.Presentation.DragStripView.OpponentLane)-DragLab.Presentation.DragStripView.ScreenLane(DragLab.Presentation.DragStripView.PlayerLane)<.7f,"Projected lanes move closer without flattening the upright car sprites");
             var nearCar=GameObject.Find("Player Car").GetComponent<DragLab.Presentation.LayeredCarView>();
             var farCar=GameObject.Find("Opponent Car").GetComponent<DragLab.Presentation.LayeredCarView>();
             game.PlaceRaceCars();
-            Check(Math.Abs(farCar.transform.localScale.x-.68f)<.001,"Rear car uses the same 68-percent scale as its projected lane");
-            Check(Math.Abs(nearCar.transform.position.y-nearCar.ContactHeight-DragLab.Presentation.DragStripView.PlayerLane)<.001&&Math.Abs(farCar.transform.position.y-farCar.ContactHeight*.68f-DragLab.Presentation.DragStripView.OpponentLane)<.001,"Both cars are anchored by tire contacts on their depth plane rather than sprite centers");
+            var post=strip.GetComponentsInChildren<SpriteRenderer>(true).First(r=>r.sprite.name=="Start tree housing");
+            Check(post.bounds.size.y>2.5f&&post.bounds.size.x>.6f,"Enlarged start-light housing and lenses remain readable above the narrower road");
+            Check(post.GetComponentsInChildren<SpriteRenderer>(true).All(r=>r.sortingOrder<farCar.GetComponentsInChildren<SpriteRenderer>(true).Min(c=>c.sortingOrder)),"Distant start-light post stays behind the car when the compressed lanes overlap");
+            Check(Math.Abs(farCar.transform.localScale.x-.82f)<.001,"Rear car uses the same 82-percent scale as its projected lane");
+            Check(Math.Abs(nearCar.transform.position.y-nearCar.ContactHeight-DragLab.Presentation.DragStripView.ScreenLane(DragLab.Presentation.DragStripView.PlayerLane))<.001&&Math.Abs(farCar.transform.position.y-farCar.ContactHeight*.82f-DragLab.Presentation.DragStripView.ScreenLane(DragLab.Presentation.DragStripView.OpponentLane))<.001,"Both cars are anchored by tire contacts on their depth plane rather than sprite centers");
             double oldOpponentDistance=game.Race.opponent.state.distance;
             float priorFarX=farCar.transform.position.x;game.Race.opponent.state.distance+=10;game.PlaceRaceCars();
-            Check(Math.Abs(farCar.transform.position.x-priorFarX-10*.60f*.68f)<.001,"Actual rear-car displacement for ten physical metres matches its projected road scale");
+            Check(Math.Abs(farCar.transform.position.x-priorFarX-10*.60f*.82f)<.001,"Actual rear-car displacement for ten physical metres matches its projected road scale");
             game.Race.opponent.state.distance=oldOpponentDistance;game.PlaceRaceCars();
             double oldDistance=state.distance,oldTime=game.Race.time;bool oldDq=state.disqualified;
             game.Race.time=2.1;strip.Render(game.Race);yield return Capture("race-lights-amber");
@@ -63,11 +68,25 @@ namespace DragLab.Runtime
             state.disqualified=oldDq;game.Race.time=3.1;state.distance=game.Race.distance;game.Race.opponent.state.distance=game.Race.distance;
             game.PlaceRaceCars();strip.Render(game.Race);
             var finish=meshes.First(f=>f.sharedMesh.name=="Finish line").sharedMesh.vertices;
-            Check(Math.Abs(finish[48].x-finish[0].x)>4&&Math.Abs(finish[49].x-finish[48].x)<Math.Abs(finish[1].x-finish[0].x)*.4f,"Finish ribbon is visibly diagonal across the road and narrows toward the far edge");
+            Check(Math.Abs(finish[48].x-finish[0].x)>4&&Math.Abs(finish[49].x-finish[48].x)<Math.Abs(finish[1].x-finish[0].x)*.65f,"Finish ribbon is visibly diagonal across the road and narrows toward the far edge");
+            var finishUvs=meshes.First(f=>f.sharedMesh.name=="Finish line").sharedMesh.uv;
+            bool squareChecks=true;
+            foreach(int sample in new[]{0,20,46})
+            {
+                Vector2 edge=(Vector2)(finish[sample+1]-finish[sample]),step=(Vector2)(finish[sample+2]-finish[sample]);
+                var edgeUv=finishUvs[sample+1]-finishUvs[sample];var stepUv=finishUvs[sample+2]-finishUvs[sample];
+                float determinant=edgeUv.x*stepUv.y-edgeUv.y*stepUv.x;
+                var u=(edge*stepUv.y-step*edgeUv.y)/determinant;
+                var v=(-edge*stepUv.x+step*edgeUv.x)/determinant;
+                float ratio=u.magnitude/v.magnitude,skew=Math.Abs(Vector2.Dot(u.normalized,v.normalized));
+                if(ratio<.85f||ratio>1.15f||skew>.15f)squareChecks=false;
+            }
+            Check(squareChecks,"Finish checker UVs reconstruct near-square orthogonal checks at near/middle/far depths instead of elongated diamonds");
+            Check(finishUvs[48].y-finishUvs[0].y>8,"Finish checks repeat along the ribbon instead of stretching one short image over the road");
             foreach(var view in new[]{nearCar,farCar})
             {
                 float lane=view==nearCar?DragLab.Presentation.DragStripView.PlayerLane:DragLab.Presentation.DragStripView.OpponentLane;
-                float row=(lane-finish[0].y)/(finish[48].y-finish[0].y)*24;int lo=Mathf.FloorToInt(row),hi=Mathf.CeilToInt(row);
+                float row=(DragLab.Presentation.DragStripView.ScreenLane(lane)-finish[0].y)/(finish[48].y-finish[0].y)*24;int lo=Mathf.FloorToInt(row),hi=Mathf.CeilToInt(row);
                 float lineX=Mathf.Lerp((finish[lo*2].x+finish[lo*2+1].x)*.5f,(finish[hi*2].x+finish[hi*2+1].x)*.5f,row-lo);
                 Check(Math.Abs(view.transform.position.x-lineX)<.001,"Equal physical finish distances align the actual car and skewed finish mesh in its own lane: "+view.name);
             }
