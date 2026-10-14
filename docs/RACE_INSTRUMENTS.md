@@ -1,0 +1,14 @@
+# Race instruments — approved direction (2026-10-14)
+
+This records the full requested direction; implementation is deliberately limited to the first speed/RPM/shifter checkpoint. Later gauges and variants require their own reviewed increment.
+
+- Start with analog road-speed and RPM gauges together on the left and a shifter-shaped engaged-gear display on the right. “Speed” on the shifter means the selected gear; road speed stays on its own gauge. Show N in neutral and D for a running CVT instead of invented stepped gears.
+- Circular faces do not require a full-circle needle sweep. Support partial-circle and semicircular layouts through presentation configuration, independently of the simulation. The first layout uses a 270° sweep.
+- Make instrument faces, scale geometry, palette, labels and telemetry separable so future themes can reuse the same readings. Future alternatives include analog and digital variants, including the requested eight-segment treatment. Do not add a variant-selection menu yet.
+- The RPM gauge has a redline band, derived from the minimum safe installed-engine/hardware RPM rating and the engine redline. This is distinct from the electronic cut target or the recommended shift point. Do not draw a recommended shift tick/target on the RPM dial.
+- Retain the plan for visible shift lights, single or multiple according to the actual purchased/installed hardware. A multi-light system must require suitable hardware; a display theme cannot grant it. Honor the actual supported threshold/tuning and transmission behavior. Shift-light migration is deferred from this first instrument checkpoint; the original interface remains available with F8.
+- Fuel and heat gauges are part of the intended instrument family. Heat instrumentation is optional: some cars lack suitable factory gauges. Later aftermarket hardware can grant temperature/heat detail (including better oil information) and oil-pressure instrumentation. Do not invent sensors or grant that information through a theme. These readings are not wired in this checkpoint.
+- Reuse the shared grey/red palette, font and sharp vector rendering. Keep essential text concise. The track stays visible; no main-menu navbar over driving. Anchor instruments around the existing controls at compact/windowed, 1080p and scaled 4K sizes.
+- Presentation reads the authoritative live race, with no duplicated physics, telemetry worker, profile recalculation or save on display updates. Preserve held throttle across keyboard/mouse shifts, neutral staging, F8 comparison and existing warm-up/pause/results controls while those await their own checkpoints.
+
+Technical completion and user visual acceptance remain separate. Do not advance to boost/pedals/optional telemetry/shift lights or later race screens without another request.

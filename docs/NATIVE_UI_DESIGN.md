@@ -1,5 +1,7 @@
 # Native interface direction — grey/red and Settings first
 
+Race instruments (2026-10-14): analog partial-circle speed/RPM on the left and shifter gear readout on the right. Separate scales, skins and live readings; RPM redline without a recommended shift tick. Digital/eight-segment variants, hardware-based single/multiple shift lights and optional fuel/thermal/oil-pressure instruments are recorded, not all authorized for this first pass. [Approved decisions](RACE_INSTRUMENTS.md).
+
 Saved-setup management (2026-10-14): put the shared filled pencil beside the selected setup name and a grey Delete action beside Load. Use shared text/confirmation dialogs with explicit red Save/Delete, concise identity and blueprint-only deletion explanation. Preserve actual assets, tuning drafts and pending cart rows; metadata edits do not require resolving those unrelated drafts. Actual setup loading retains its existing restrictions. [Checks/review](../reports/phases/4e/06-SETUP-MANAGEMENT.md).
 
 Race selection (2026-10-14): reuse joined Career/Free race/Practice/Records choices, actual owned-car picker, tier/search controls, two-column event cards with eligibility and concise captured costs/rewards, shared confirmation and fixed Stage action. Blocked entries remain inspectable. Keep Free configuration independent from other modes; cache eligibility between actual context changes. Records stay actual, unavailable values show a dash. [Checks/review](../reports/phases/4j/01-RACE-SELECTION.md).

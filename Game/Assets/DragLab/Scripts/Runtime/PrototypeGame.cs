@@ -27,6 +27,7 @@ namespace DragLab.Runtime
         readonly RaceInputAdapter controls = new RaceInputAdapter();
         readonly InterfaceComparison interfaceComparison = new InterfaceComparison();
         NativeMenuShell nativeMenu;
+        internal NativeRaceHud RaceHud { get; private set; }
         internal string SettingsReturnRoute { get; private set; } = "Garage";
         internal string ComparisonRoute => screen == "Race" ? audioSettingsOpen ? "Race settings" : paused ? "Pause" : race != null && race.phase == RacePhase.Finished ? "Results" : "Race" : screen;
         Action pendingAction;
@@ -116,6 +117,8 @@ namespace DragLab.Runtime
             InterfaceComparisonVerification.AttachIfRequested();
             nativeMenu = gameObject.AddComponent<NativeMenuShell>();
             nativeMenu.Initialize(this);
+            RaceHud = gameObject.AddComponent<NativeRaceHud>();
+            RaceHud.Initialize(this);
             NativeMenuVerification.AttachIfRequested(this, nativeMenu);
         }
         void ShowGarageCar()
@@ -205,7 +208,7 @@ namespace DragLab.Runtime
             if (race.phase == RacePhase.Finished)
             {
                 if(!awarded)FinishRace();
-                controls.Poll(!InterfaceComparison.IsReplacement(ComparisonRoute)); controls.ConsumePause();
+                controls.Poll(!InterfaceComparison.IsReplacement(ComparisonRoute) || NativeRaceHud.Supports(ComparisonRoute)); controls.ConsumePause();
                 accumulator += Math.Min(Time.unscaledDeltaTime, .1f);
                 while (accumulator >= DragMath.FixedStep)
                 {
@@ -215,7 +218,7 @@ namespace DragLab.Runtime
                 }
                 SaveLiveRunIfDue();RenderRace(); return;
             }
-            controls.Poll(!InterfaceComparison.IsReplacement(ComparisonRoute));
+            controls.Poll(!InterfaceComparison.IsReplacement(ComparisonRoute) || NativeRaceHud.Supports(ComparisonRoute));
             if (controls.ConsumePause()) { SetPaused(true); return; }
             accumulator += Math.Min(Time.unscaledDeltaTime, .1f);
             while (accumulator >= DragMath.FixedStep)
@@ -299,8 +302,8 @@ namespace DragLab.Runtime
             using (FramePacingProbe.Measure(4))
             {
                 bool replacement = interfaceComparison.BeginGUI(ComparisonRoute, resetGameConfirm || (nativeMenu != null && (nativeMenu.ModalOpen || nativeMenu.EditingText)) || (screen == "Valuation" && valuationQuote != null && saleConfirmation == valuationQuote.Id) || pendingAction != null || (nativeMenu != null && nativeMenu.Visible && Input.GetMouseButton(0)));
-                if (!replacement) DrawMeasuredGUI();
-                if (!replacement || !NativeMenuShell.Supports(ComparisonRoute)) interfaceComparison.DrawStatus(ComparisonRoute);
+                if (!replacement || NativeRaceHud.Supports(ComparisonRoute)) DrawMeasuredGUI();
+                if (!replacement || !(NativeMenuShell.Supports(ComparisonRoute) || NativeRaceHud.Supports(ComparisonRoute))) interfaceComparison.DrawStatus(ComparisonRoute);
             }
         }
 
@@ -329,7 +332,7 @@ namespace DragLab.Runtime
             float height = Screen.height / scale;
             panelWidth = Mathf.Min(630, width - 32);
             if (heading == null) { heading = new GUIStyle(GUI.skin.label) { fontSize = 24, fontStyle = FontStyle.Bold }; stat = new GUIStyle(GUI.skin.label) { fontSize = 17 }; }
-            if (screen == "Race") { RaceGUI(width, height); return; }
+            if (screen == "Race") { RaceGUI(width, height, InterfaceComparison.IsReplacement(ComparisonRoute) && NativeRaceHud.Supports(ComparisonRoute)); return; }
             if(Build!=null&&(screen=="Garage"||screen=="Parts"||screen=="Tuning"||screen=="Stats"))RefreshInspection();
             GUILayout.BeginArea(new Rect(16, 16, panelWidth, height - 32), GUI.skin.box);
             GUILayout.Label("DRAGLAB / first systems slice", heading);
@@ -487,13 +490,14 @@ namespace DragLab.Runtime
             if (before != JsonUtility.ToJson(settings)){drivingPreferencesDirty=true;saveDelay=.5f;}
         }
 
-        void RaceGUI(float width, float height)
+        void RaceGUI(float width, float height, bool nativeGauges = false)
         {
             var state = race.player.state;
-            float hudHeight = race.player.spec.drive == DriveType.AWD || state.brakesFailed || state.drivetrainFailed ? 218 : 192;
+            bool cvt = race.player.transmission.type == TransmissionType.CVT;
+            float hudHeight = nativeGauges ? 64 : race.player.spec.drive == DriveType.AWD || state.brakesFailed || state.drivetrainFailed ? 218 : 192;
+            if (!nativeGauges) {
             GUILayout.BeginArea(new Rect(16, 16, width - 32, hudHeight), GUI.skin.box);
             GUILayout.Label((activeEvent != null ? activeEvent.displayName : practiceRun ? "PRACTICE / NO PAYOUT" : "FREE RACE") + " / " + race.distance.ToString("F1") + " m", heading);
-            bool cvt = race.player.transmission.type == TransmissionType.CVT;
             string driveLabel = cvt ? (state.gear == 0 ? "CVT N" : "CVT D / RATIO " + state.cvtRatio.ToString("F2")) : "GEAR " + (state.gear == 0 ? "N" : state.gear.ToString());
             GUILayout.Label(driveLabel + "    " + SharedUnitSettings.Speed(state.speed, "F0") + "    " + state.rpm.ToString("F0") + " RPM    SLIP " + (state.slip * 100).ToString("F0") + "%", stat);
             double target = state.launched ? (cvt ? Math.Min(race.player.tune.shiftRpm, race.player.transmission.cvtTargetRpm) : race.player.ShiftPoint(state.gear)) : race.player.tune.launchRpm;
@@ -521,6 +525,7 @@ namespace DragLab.Runtime
             if (race.player.spec.drive == DriveType.AWD || state.brakesFailed || state.drivetrainFailed)
                 GUILayout.Label("Drive " + race.player.spec.drive + " / front:rear " + state.frontTorqueShare.ToString("P0") + ":" + state.rearTorqueShare.ToString("P0") + " / brakes " + state.brakeCapacityFactor.ToString("P0") + (state.drivetrainFailed ? " / NO DRIVE PATH" : state.openCenterFreeBranch ? " / FREE SHAFT " + Math.Max(state.frontShaftRpm, state.rearShaftRpm).ToString("F0") + " RPM" : ""));
             GUILayout.EndArea();
+            }
             if (paused)
             {
                 if (audioSettingsOpen)

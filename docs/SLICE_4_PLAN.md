@@ -1,5 +1,7 @@
 # Slice 4 — Interface migration, input and platform validation
 
+**4L.1 technically complete / visual review pending (2026-10-14):** analog speed/RPM and the right shifter gear display preserve F8 and existing driving controls. Windows build, gauge 59/0 and Race selection 49/0 pass. [Checks/review](../reports/phases/4l/01-INSTRUMENTS.md). Document future analog/digital/eight-segment themes, partial/semicircle sweeps, hardware-based shift lights and optional thermal/oil instruments. No shift target on the RPM dial. [Decisions](RACE_INSTRUMENTS.md).
+
 **Authorized batch technically complete (2026-10-14):** sale/salvage reached four separate built/committed checkpoints (final native 50/0), Race selection reached its built/committed checkpoint (49/0), and saved-setup rename/delete now passes Windows build and native 48/0. [Setup management/review](../reports/phases/4e/06-SETUP-MANAGEMENT.md). Metadata changes preserve actual assets and rebase pending tuning without losing cart rows. User visual acceptance remains pending; stop before later interfaces.
 
 **4J Race selection delivered (2026-10-14):** native Career/free/practice/records, exact eligibility and captured authoritative entry, owned-car selection, responsive shared controls and no preview saves. Windows build and native 49/0 pass; [checks/review](../reports/phases/4j/01-RACE-SELECTION.md). Visual acceptance remains separate. The remaining authorized batch item is saved-setup rename/delete.
