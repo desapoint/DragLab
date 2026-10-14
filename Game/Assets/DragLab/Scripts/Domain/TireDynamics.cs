@@ -41,7 +41,7 @@ namespace DragLab.Domain {
    c.deposits=c.leakSeverity=c.adjustmentError=c.serviceWearRemainder=0;
    c.serviceCount=c.reconditionCount=0;
    c.lastService="";
-   c.clutchFluidVersion=0;c.clutchOilLitres=0;c.clutchOilCondition=1;
+   c.ClearClutch();
 
    // Keep the four typed TireCondition members in ComponentCondition.elements.
   }
