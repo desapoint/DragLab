@@ -131,6 +131,8 @@ namespace DragLab.Runtime
             playerView.Build(Selected.spec.artId, paint, 1000);
             var visibleBuild = MechanicsOwnership.Resolve(profile, Build, profile.catalog);
             playerView.ApplySetup(visibleBuild.spec, visibleBuild.tune);
+            playerView.transform.rotation = Quaternion.identity;
+            aiView.transform.rotation = Quaternion.identity;
             playerView.transform.position = new Vector3(6.5f, 3.85f, 0);
             aiView.gameObject.SetActive(false);
             raceCamera.transform.position = new Vector3(2, 0, -10);
@@ -180,8 +182,7 @@ namespace DragLab.Runtime
             aiView.Build(opponent.spec.artId, opponent.defaultPaint, 0);
             playerView.ApplySetup(race.player.spec, race.player.tune);
             aiView.ApplySetup(race.opponent.spec, race.opponent.tune);
-            playerView.transform.position = new Vector3(2, -2, 0);
-            aiView.transform.position = new Vector3(2, -.2f, 0);
+            PlaceRaceCars();
             screen = "Race";
             accumulator = 0; awarded = false; paused = false; resultScroll = Vector2.zero;
             controls.Clear(); engineAudio.Silence();
@@ -235,10 +236,19 @@ namespace DragLab.Runtime
             if (race.phase == RacePhase.Finished && !awarded) FinishRace();
         }
 
+        internal void PlaceRaceCars()
+        {
+            playerView.transform.position = DragStripView.CarPosition(2,DragStripView.PlayerLane,playerView.ContactHeight);
+            float opponentX=2+(float)(race.opponent.state.distance-race.player.state.distance)*DragStripView.MetersToView;
+            aiView.transform.position = DragStripView.CarPosition(opponentX,DragStripView.OpponentLane,aiView.ContactHeight);
+            var angle=Quaternion.identity;
+            playerView.transform.localScale=Vector3.one;aiView.transform.localScale=Vector3.one*DragStripView.DepthScale(DragStripView.OpponentLane);
+            playerView.transform.rotation=angle;aiView.transform.rotation=angle;
+        }
+
         void RenderRace()
         {
-            playerView.transform.position = new Vector3(2, -2, 0);
-            aiView.transform.position = new Vector3(2 + (float)(race.opponent.state.distance - race.player.state.distance) * .18f, -.2f, 0);
+            PlaceRaceCars();
             strip.Render(race);
             playerView.Animate(race.player.state);
             aiView.Animate(race.opponent.state);
@@ -503,14 +513,14 @@ namespace DragLab.Runtime
             string driveLabel = cvt ? (state.gear == 0 ? "CVT N" : "CVT D / RATIO " + state.cvtRatio.ToString("F2")) : "GEAR " + (state.gear == 0 ? "N" : state.gear.ToString());
             GUILayout.Label(driveLabel + "    " + SharedUnitSettings.Speed(state.speed, "F0") + "    " + state.rpm.ToString("F0") + " RPM    SLIP " + (state.slip * 100).ToString("F0") + "%", stat);
             double target = state.launched ? (cvt ? Math.Min(race.player.tune.shiftRpm, race.player.transmission.cvtTargetRpm) : race.player.ShiftPoint(state.gear)) : race.player.tune.launchRpm;
-            GUILayout.Label((state.launched ? (cvt ? "CVT operating target " : "Shift target ") : "Launch target ") + target.ToString("F0") + " RPM" + (race.player.tune.partShiftLight && !cvt && state.launched && state.rpm >= race.player.tune.ShiftLightRpm(race.player.spec) && state.gear < race.player.spec.gears.Length ? "  /  SHIFT NOW" : "") +
+            GUILayout.Label((race.player.tune.partShiftLight ? (state.launched ? (cvt ? "CVT operating target " : "Shift target ") : "Launch target ") + target.ToString("F0") + " RPM" : "") + (race.player.tune.partShiftLight && !cvt && state.launched && state.rpm >= race.player.tune.ShiftLightRpm(race.player.spec) && state.gear < race.player.spec.gears.Length ? "  /  SHIFT NOW" : "") +
                 "   Throttle " + (state.throttle * 100).ToString("F0") + "%   Clutch " + (state.clutch * 100).ToString("F0") + "%   Brake " + (state.brake * 100).ToString("F0") + "%   " + (state.acceleration / DragMath.Gravity).ToString("F2") + " g");
             Rect rpmBar = GUILayoutUtility.GetRect(100, 10, GUILayout.ExpandWidth(true));
             Color oldColor = GUI.color;
             GUI.color = new Color(.2f, .23f, .28f); GUI.DrawTexture(rpmBar, Texture2D.whiteTexture);
             GUI.color = state.limiter ? Color.red : new Color(.3f, .8f, .65f);
             GUI.DrawTexture(new Rect(rpmBar.x, rpmBar.y, rpmBar.width * Mathf.Clamp01((float)state.rpm / race.player.spec.redlineRpm), rpmBar.height), Texture2D.whiteTexture);
-            GUI.color = Color.yellow; GUI.DrawTexture(new Rect(rpmBar.x + rpmBar.width * (float)target / race.player.spec.redlineRpm - 1, rpmBar.y, 2, rpmBar.height), Texture2D.whiteTexture);
+            if (race.player.tune.partShiftLight) { GUI.color = Color.yellow; GUI.DrawTexture(new Rect(rpmBar.x + rpmBar.width * (float)target / race.player.spec.redlineRpm - 1, rpmBar.y, 2, rpmBar.height), Texture2D.whiteTexture); }
             GUI.color = oldColor;
             string message = race.warmup ? "WARM-UP / LIGHTS WAITING" : race.time < 1.5 ? "STAGED" : race.time < 2 ? "AMBER 1" : race.time < 2.5 ? "AMBER 2" : race.time < 3 ? "AMBER 3" : "GREEN";
             if (state.disqualified) message = "RED LIGHT";

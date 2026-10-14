@@ -15,6 +15,7 @@ namespace DragLab.Runtime
         PanelSettings panel;
         VisualElement root, dials;
         internal RaceDashboard Dashboard { get; private set; }
+        internal RaceSteeringRim SteeringRim { get; private set; }
         Label phase, warning;
         Button pauseButton, readyButton;
         readonly System.Collections.Generic.List<RacingSurface> hudSurfaces = new System.Collections.Generic.List<RacingSurface>();
@@ -23,6 +24,7 @@ namespace DragLab.Runtime
         internal AnalogRaceGauge Speed { get; private set; }
         internal AnalogRaceGauge Rpm { get; private set; }
         internal RaceGearIndicator Gear { get; private set; }
+        internal RaceShiftLamp ShiftLamp { get; private set; }
         internal VisualElement Root => root;
         internal PanelSettings Panel => panel;
         internal bool Visible => root != null && !root.ClassListContains("hidden");
@@ -52,6 +54,8 @@ namespace DragLab.Runtime
             dials.AddToClassList("race-dials"); root.Add(dials);
             Speed = new AnalogRaceGauge("speedGauge"); Speed.AddToClassList("speed-gauge"); dials.Add(Speed);
             Rpm = new AnalogRaceGauge("rpmGauge"); Rpm.AddToClassList("rpm-gauge"); dials.Add(Rpm);
+            ShiftLamp=new RaceShiftLamp();Rpm.Add(ShiftLamp);
+            SteeringRim = new RaceSteeringRim(); root.Add(SteeringRim);
             Gear = new RaceGearIndicator(); root.Add(Gear);
             phase = new Label { name = "racePhase", pickingMode = PickingMode.Ignore }; phase.AddToClassList("race-phase"); root.Add(phase);
             warning = new Label { name = "raceWarning", pickingMode = PickingMode.Ignore }; warning.AddToClassList("race-warning"); root.Add(warning);
@@ -98,6 +102,7 @@ namespace DragLab.Runtime
             var state = car.state;
             Speed.SetValue(DisplayUnits.Speed(state.speed, speedUnit));
             Rpm.SetValue(state.rpm);
+            ShiftLamp.SetState(car);
             Gear.SetState(state.gear, car.transmission, car.spec.gears.Length, state.shiftRemaining, TransmissionDynamics.ShiftSeconds(car.transmission,car.spec,car.tune));
             string signal = game.NativeRacePause ? "PAUSED" : game.Race.warmup ? "WARM-UP" : state.disqualified ? "RED LIGHT" : game.Race.time < 1.5 ? "STAGED" : game.Race.time < 2 ? "AMBER 1" : game.Race.time < 2.5 ? "AMBER 2" : game.Race.time < 3 ? "AMBER 3" : "GREEN";
             Set(phase, signal + "  ·  " + state.distance.ToString("F1") + " / " + game.Race.distance.ToString("F1") + " m");
@@ -166,8 +171,8 @@ namespace DragLab.Runtime
             float size = Mathf.Min(contentRect.width, contentRect.height);
             for (int i = 0; i < numbers.childCount; i++)
             {
-                Vector2 point = GaugeFace.Point(size, Scale.Angle(i * Scale.MajorStep), .68f);
-                numbers[i].style.left = point.x - 20; numbers[i].style.top = point.y - 12;
+                Vector2 point = GaugeFace.Point(size, Scale.Angle(i * Scale.MajorStep), Mathf.Clamp(.80f-42/size,.50f,.66f));
+                numbers[i].style.left = point.x - 16; numbers[i].style.top = point.y - 11;
             }
         }
         internal void SetValue(double next)
@@ -231,6 +236,30 @@ namespace DragLab.Runtime
                 double v = Scale.Maximum * i / minorCount; float a = Scale.Angle(v); bool major = i % 5 == 0;
                 Line(p, Point(size,a,major?.80f:.85f),Point(size,a,.90f),major?2:1,v >= Scale.Redline ? accent : tick);
             }
+        }
+    }
+
+    internal sealed class RaceShiftLamp : GaugeInk
+    {
+        internal bool Installed { get; private set; }
+        internal bool Lit { get; private set; }
+        internal RaceShiftLamp()
+        { name="raceShiftLamp";AddToClassList("gauge-shift-lamp");generateVisualContent+=Draw; }
+        internal void SetState(CarSimulation car)
+        {
+            bool installed=car.tune.partShiftLight&&car.transmission.type!=TransmissionType.CVT;
+            var state=car.state;
+            bool lit=installed&&state.launched&&!state.engineFailed&&!state.stalled&&state.gear>0&&state.gear<car.spec.gears.Length&&state.shiftRemaining<=0&&state.rpm>=car.tune.ShiftLightRpm(car.spec);
+            EnableInClassList("hidden",!installed);
+            if(Installed!=installed||Lit!=lit){Installed=installed;Lit=lit;MarkDirtyRepaint();}
+        }
+        void Draw(MeshGenerationContext context)
+        {
+            if(!Installed)return;
+            var p=context.painter2D;var center=contentRect.center;float r=Mathf.Min(contentRect.width,contentRect.height)*.36f;
+            Circle(p,center,r+2,rim);Circle(p,center,r,face);
+            Circle(p,center,r*.76f,Lit?new Color(1,.65f,.12f):new Color(.16f,.12f,.06f));
+            if(Lit)Circle(p,center+new Vector2(-r*.18f,-r*.22f),r*.22f,new Color(1,.91f,.65f));
         }
     }
 

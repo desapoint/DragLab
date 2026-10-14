@@ -1,5 +1,24 @@
 # Race instruments — approved direction (2026-10-14)
 
+## Narrow road, checks and scale refinement (2026-10-14)
+
+Show a much narrower, nearly edge-on road surface: compress only ground-depth height to 35% of the previous view. Keep cars, posts and gauges upright. Lanes/contact anchors, road paint, asphalt and start/finish geometry share the compressed ground projection. Retain the skewed trapezoid and diagonal finish. Tile the finish checks with compensated texture coordinates so they read as squares instead of stretching one short image along the full ribbon.
+
+The requested follow-up enlarges the complete start-light housing/lenses and reduces the far-car size difference: **82%**, replacing the previous 68%, with matching apparent movement and road foreshortening. The start-light post stays behind cars where the tighter lanes overlap. Its enlarged display size is independent of ground-depth compression. These are presentation choices; race physics, distances, timing, held input and saves remain unchanged. [Checks/review](../reports/phases/4l/06-NARROW-ROAD.md).
+
+## Trapezoid correction (2026-10-14)
+
+The previous subtle depth view was not accepted. Road geometry itself must be skewed into a trapezoid with a clearly narrower far edge, rather than leaving a rectangular mesh and only modifying texture coordinates. Use one stronger projection for asphalt/markings, diagonal start/finish ribbons and cars. That checkpoint used 68% rear-car scale with matching longitudinal displacement; the narrow-road calibration above supersedes that size. Upright cars are anchored by tire contacts on their own depth planes. At equal physical distance both cars must meet the same skewed finish cross-section in their respective lanes. Keep travel horizontal and retain authoritative physics/timing. [Checks/review](../reports/phases/4l/05-TRAPEZOID.md).
+
+## Road depth and instrument refinement (2026-10-14)
+
+- Road angle means visible depth/perspective, **not** an uphill road or rotated cars. Keep travel horizontal. Use one foreshortening projection for near/far road detail, lane markers, opponent placement/scale and the cross-track finish line. Near-ground motion is faster than distant detail; visual distance scale is shared by scenery and car separation. Race distances, timings and physics are unchanged.
+- Asphalt uses cached deterministic fine grit/coarse aggregate, subtle rubber-darkened lanes and distance-based texture scrolling. Add bounded near-road speed cues driven by actual road speed, with no independent animation clock or gameplay RNG. Pause/reset must freeze/reset them with physical travel.
+- Start lights have paired amber/green/red lenses, separate stage lamps and restrained halos. Keep the established countdown/false-start rules.
+- The steering rim renders **in front** of the instruments, a little lower, with a thicker black band. This supersedes the earlier behind-gauges/unchanged-upper-edge placement.
+- Gauge numbers stay centered in smaller unpadded boxes, with enough inset to clear the tick marks at compact and full size.
+- The native single shift lamp is visible only when installed hardware supports it; it uses the applied fixed/programmable threshold, remains dark in neutral/staging, during shifts and at top gear, and is hidden for CVT. The RPM face still has no recommended shift tick. Legacy shift target text/tick also require the part. Multiple-light hardware remains a separately modeled future capability; programmability alone does not grant extra lamps.
+
 ## Dashboard and pause refinement (2026-10-14)
 
 - Replace the blank lower strip with a low, textured car dashboard. Use stable noise/grain, a shallow raised instrument-cluster hood on the left, and a restrained cropped steering-wheel hint. The gauges are expected to overflow above the dash; do not increase its height just to contain them.
@@ -16,9 +35,12 @@ The initial instrument checkpoint implemented speed/RPM/shifter. The dashboard/p
 - Circular faces do not require a full-circle needle sweep. Support partial-circle and semicircular layouts through presentation configuration, independently of the simulation. The first layout uses a 270° sweep.
 - Make instrument faces, scale geometry, palette, labels and telemetry separable so future themes can reuse the same readings. Future alternatives include analog and digital variants, including the requested eight-segment treatment. Do not add a variant-selection menu yet.
 - The RPM gauge has a redline band, derived from the minimum safe installed-engine/hardware RPM rating and the engine redline. This is distinct from the electronic cut target or the recommended shift point. Do not draw a recommended shift tick/target on the RPM dial.
-- Retain the plan for visible shift lights, single or multiple according to the actual purchased/installed hardware. A multi-light system must require suitable hardware; a display theme cannot grant it. Honor the actual supported threshold/tuning and transmission behavior. Shift-light migration is deferred from this first instrument checkpoint; the original interface remains available with F8.
+- Retain the plan for visible shift lights, single or multiple according to the actual purchased/installed hardware. A multi-light system must require suitable hardware; a display theme cannot grant it. Honor the actual supported threshold/tuning and transmission behavior. The first instrument checkpoint deferred shift lights; the refinement above now migrates the current single-light hardware. The original interface remains available with F8.
 - Fuel and heat gauges are part of the intended instrument family. Heat instrumentation is optional: some cars lack suitable factory gauges. Later aftermarket hardware can grant temperature/heat detail (including better oil information) and oil-pressure instrumentation. Do not invent sensors or grant that information through a theme. These readings are not wired in this checkpoint.
 - Reuse the shared grey/red palette, font and sharp vector rendering. Keep essential text concise. The track stays visible; no main-menu navbar over driving. Anchor instruments around the existing controls at compact/windowed, 1080p and scaled 4K sizes.
 - Presentation reads the authoritative live race, with no duplicated physics, telemetry worker, profile recalculation or save on display updates. Preserve held throttle across keyboard/mouse shifts, neutral staging, F8 comparison and existing warm-up/pause/results controls while those await their own checkpoints.
 
 Technical completion and user visual acceptance remain separate. Do not advance to boost/pedals/optional telemetry/shift lights or later race screens without another request.
+
+
+Raise the start-light housing above its previous edge anchor and add a shaded vertical pole whose foot stays on that exact projected ground point. Pole and housing move together; overlap the joint slightly and keep the assembly behind cars. [Checks/review](../reports/phases/4l/07-LIGHT-POLE.md).

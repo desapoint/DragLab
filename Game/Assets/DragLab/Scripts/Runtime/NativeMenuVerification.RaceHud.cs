@@ -32,6 +32,84 @@ namespace DragLab.Runtime
             Check(Math.Abs(hud.Rpm.Scale.Redline - Math.Min(safe, game.Race.player.spec.redlineRpm)) < .01, "Red band starts at the lowest safe hardware/spec redline, separately from shift/cut settings");
             Check(hud.Rpm.Scale.SweepDegrees < 360 && hud.Rpm.Scale.Maximum > game.Race.player.spec.redlineRpm, "Analog scale has a partial-circle sweep and headroom above redline");
             Check(!hud.Root.Query<Label>().ToList().Any(l => l.text.Contains("Shift") || l.text.Contains("target")), "New RPM dial contains no suggested shift marker or target");
+            Check(hud.Root.IndexOf(hud.SteeringRim)>hud.Root.IndexOf(hud.Speed.parent),"Steering rim draws in front of both gauges");
+            Check(RaceSteeringRim.Thickness>34&&RaceSteeringRim.LowerOffset>240,"Foreground wheel has a thicker black rim and lower position");
+            var strip=UnityEngine.Object.FindFirstObjectByType<DragLab.Presentation.DragStripView>();
+            Check(DragLab.Presentation.DragStripView.Project(8,-2).y==DragLab.Presentation.DragStripView.Project(2,-2).y,"Travel remains horizontal rather than tilting the road or cars");
+            float nearTravel=DragLab.Presentation.DragStripView.Project(12,-3).x-DragLab.Presentation.DragStripView.Project(2,-3).x;
+            float farTravel=DragLab.Presentation.DragStripView.Project(12,.6f).x-DragLab.Presentation.DragStripView.Project(2,.6f).x;
+            Check(nearTravel>farTravel&&DragLab.Presentation.DragStripView.DepthScale(-.2f)<1,"Road texture, markings and far car share a foreshortened depth projection with faster near-ground motion");
+            var meshes=strip.GetComponentsInChildren<MeshFilter>(true);
+            var asphalt=meshes.First(f=>f.sharedMesh.name=="Perspective asphalt").sharedMesh;
+            var roadVertices=asphalt.vertices;
+            float nearWidth=(roadVertices[1]-roadVertices[0]).magnitude,farWidth=(roadVertices[49]-roadVertices[48]).magnitude;
+            Check(farWidth<nearWidth*.65f&&roadVertices[48].x>roadVertices[0].x+10,"Asphalt geometry itself is a strongly narrowed and skewed trapezoid, not a rectangular mesh with different UVs");
+            Check(roadVertices[48].y-roadVertices[0].y<2&&roadVertices[48].y-roadVertices[0].y>1.5f,"Road is an edge-on strip with about 65 percent less visible vertical surface");
+            Check(DragLab.Presentation.DragStripView.ScreenLane(DragLab.Presentation.DragStripView.OpponentLane)-DragLab.Presentation.DragStripView.ScreenLane(DragLab.Presentation.DragStripView.PlayerLane)<.7f,"Projected lanes move closer without flattening the upright car sprites");
+            var nearCar=GameObject.Find("Player Car").GetComponent<DragLab.Presentation.LayeredCarView>();
+            var farCar=GameObject.Find("Opponent Car").GetComponent<DragLab.Presentation.LayeredCarView>();
+            game.PlaceRaceCars();
+            var post=strip.GetComponentsInChildren<SpriteRenderer>(true).First(r=>r.sprite.name=="Start tree housing");
+            var support=post.GetComponentsInChildren<SpriteRenderer>(true).First(r=>r.sprite.name=="Start tree support pole");
+            var poleGround=DragLab.Presentation.DragStripView.Project(-3-strip.Travel,.8f);
+            Check(Math.Abs(support.bounds.min.y-poleGround.y)<.001&&Math.Abs(support.bounds.center.x-poleGround.x)<.001,"Vertical support pole meets the exact projected ground point under the lights");
+            Check(Math.Abs(post.bounds.min.y-poleGround.y-DragLab.Presentation.DragStripView.StartPoleHeight)<.001&&support.bounds.max.y>post.bounds.min.y,"Light housing is raised by the exposed pole height and its support overlaps without a gap");
+            Check(post.bounds.size.y>2.5f&&post.bounds.size.x>.6f,"Enlarged start-light housing and lenses remain readable above the narrower road");
+            Check(post.GetComponentsInChildren<SpriteRenderer>(true).All(r=>r.sortingOrder<farCar.GetComponentsInChildren<SpriteRenderer>(true).Min(c=>c.sortingOrder)),"Distant start-light post stays behind the car when the compressed lanes overlap");
+            Check(Math.Abs(farCar.transform.localScale.x-.82f)<.001,"Rear car uses the same 82-percent scale as its projected lane");
+            Check(Math.Abs(nearCar.transform.position.y-nearCar.ContactHeight-DragLab.Presentation.DragStripView.ScreenLane(DragLab.Presentation.DragStripView.PlayerLane))<.001&&Math.Abs(farCar.transform.position.y-farCar.ContactHeight*.82f-DragLab.Presentation.DragStripView.ScreenLane(DragLab.Presentation.DragStripView.OpponentLane))<.001,"Both cars are anchored by tire contacts on their depth plane rather than sprite centers");
+            double oldOpponentDistance=game.Race.opponent.state.distance;
+            float priorFarX=farCar.transform.position.x;game.Race.opponent.state.distance+=10;game.PlaceRaceCars();
+            Check(Math.Abs(farCar.transform.position.x-priorFarX-10*.60f*.82f)<.001,"Actual rear-car displacement for ten physical metres matches its projected road scale");
+            game.Race.opponent.state.distance=oldOpponentDistance;game.PlaceRaceCars();
+            double oldDistance=state.distance,oldTime=game.Race.time;bool oldDq=state.disqualified;
+            game.Race.time=2.1;strip.Render(game.Race);yield return Capture("race-lights-amber");
+            state.distance=100;state.speed=70;strip.Render(game.Race);
+            var movingPoleGround=DragLab.Presentation.DragStripView.Project(-3-strip.Travel,.8f);
+            Check(Math.Abs(support.bounds.center.x-movingPoleGround.x)<.001&&Math.Abs(support.bounds.min.y-movingPoleGround.y)<.001&&support.bounds.center.x<poleGround.x,"Pole and raised lights scroll as one assembly while their foot stays on the projected road edge");
+            Check(Math.Abs(strip.Travel-60)<.001&&strip.SpeedCue>.7f,"High-speed ground travel uses the shared larger distance scale and stronger near-road cues");
+            Check(strip.LitLampCount==4,"Countdown illuminates both lanes' reached amber lamps");
+            game.Race.time=3.1;strip.Render(game.Race);Check(strip.LitLampCount==2,"Green shows only the paired green lamps");yield return Capture("race-lights-green");
+            state.disqualified=true;strip.Render(game.Race);Check(strip.LitLampCount==2,"Red light replaces green for a false start");yield return Capture("race-lights-red");
+            state.disqualified=oldDq;game.Race.time=3.1;state.distance=game.Race.distance;game.Race.opponent.state.distance=game.Race.distance;
+            game.PlaceRaceCars();strip.Render(game.Race);
+            var finish=meshes.First(f=>f.sharedMesh.name=="Finish line").sharedMesh.vertices;
+            Check(Math.Abs(finish[48].x-finish[0].x)>4&&Math.Abs(finish[49].x-finish[48].x)<Math.Abs(finish[1].x-finish[0].x)*.65f,"Finish ribbon is visibly diagonal across the road and narrows toward the far edge");
+            var finishUvs=meshes.First(f=>f.sharedMesh.name=="Finish line").sharedMesh.uv;
+            bool squareChecks=true;
+            foreach(int sample in new[]{0,20,46})
+            {
+                Vector2 edge=(Vector2)(finish[sample+1]-finish[sample]),step=(Vector2)(finish[sample+2]-finish[sample]);
+                var edgeUv=finishUvs[sample+1]-finishUvs[sample];var stepUv=finishUvs[sample+2]-finishUvs[sample];
+                float determinant=edgeUv.x*stepUv.y-edgeUv.y*stepUv.x;
+                var u=(edge*stepUv.y-step*edgeUv.y)/determinant;
+                var v=(-edge*stepUv.x+step*edgeUv.x)/determinant;
+                float ratio=u.magnitude/v.magnitude,skew=Math.Abs(Vector2.Dot(u.normalized,v.normalized));
+                if(ratio<.85f||ratio>1.15f||skew>.15f)squareChecks=false;
+            }
+            Check(squareChecks,"Finish checker UVs reconstruct near-square orthogonal checks at near/middle/far depths instead of elongated diamonds");
+            Check(finishUvs[48].y-finishUvs[0].y>8,"Finish checks repeat along the ribbon instead of stretching one short image over the road");
+            foreach(var view in new[]{nearCar,farCar})
+            {
+                float lane=view==nearCar?DragLab.Presentation.DragStripView.PlayerLane:DragLab.Presentation.DragStripView.OpponentLane;
+                float row=(DragLab.Presentation.DragStripView.ScreenLane(lane)-finish[0].y)/(finish[48].y-finish[0].y)*24;int lo=Mathf.FloorToInt(row),hi=Mathf.CeilToInt(row);
+                float lineX=Mathf.Lerp((finish[lo*2].x+finish[lo*2+1].x)*.5f,(finish[hi*2].x+finish[hi*2+1].x)*.5f,row-lo);
+                Check(Math.Abs(view.transform.position.x-lineX)<.001,"Equal physical finish distances align the actual car and skewed finish mesh in its own lane: "+view.name);
+            }
+            hud.Refresh();yield return Capture("race-trapezoid-finish-alignment");
+            state.distance=oldDistance;game.Race.opponent.state.distance=oldOpponentDistance;game.Race.time=oldTime;state.speed=speed;game.PlaceRaceCars();strip.Render(game.Race);
+            hud.Refresh();yield return Capture("race-trapezoid-start");
+            var hardware=game.Race.player.tune;var car=game.Race.player;
+            bool fitted=hardware.partShiftLight,adjustable=hardware.partShiftLightAdjustable,launched=state.launched;
+            float threshold=hardware.shiftLightRpm;double remaining=state.shiftRemaining,oldRpm=state.rpm;int oldGearLight=state.gear;
+            hardware.partShiftLight=false;state.rpm=car.spec.redlineRpm;state.launched=true;state.gear=2;state.shiftRemaining=0;hud.Refresh();
+            Check(!hud.ShiftLamp.Installed&&!hud.ShiftLamp.Lit&&hud.ShiftLamp.ClassListContains("hidden"),"No shift-light hardware means no lamp or shift cue even at high RPM");
+            hardware.partShiftLight=true;hardware.partShiftLightAdjustable=true;hardware.shiftLightRpm=4000;state.rpm=3900;hud.Refresh();
+            Check(hud.ShiftLamp.Installed&&!hud.ShiftLamp.Lit,"Installed programmable light remains dark below its real threshold");
+            state.rpm=4100;hud.Refresh();Check(hud.ShiftLamp.Lit,"Purchased light illuminates at the applied hardware threshold without adding a dial shift marker");
+            state.gear=car.spec.gears.Length;hud.Refresh();Check(!hud.ShiftLamp.Lit,"Shift light does not request a nonexistent gear above top gear");
+            hardware.partShiftLight=fitted;hardware.partShiftLightAdjustable=adjustable;hardware.shiftLightRpm=threshold;
+            state.launched=launched;state.gear=oldGearLight;state.shiftRemaining=remaining;state.rpm=oldRpm;hud.Refresh();
             yield return new WaitForSecondsRealtime(.2f);
             int faces = hud.Rpm.FacePaints, needles = hud.Rpm.NeedlePaints;
             state.rpm = 4488; hud.Refresh(); yield return new WaitForSecondsRealtime(.2f);
@@ -86,6 +164,19 @@ namespace DragLab.Runtime
                 Check(hud.Speed.worldBound.xMax < hud.Rpm.worldBound.xMin && hud.Rpm.worldBound.xMax < hud.Gear.worldBound.xMin, "Left dials and right shifter stay separated at " + width);
                 float pedalTop = (Screen.height - 91 * RaceInputAdapter.Scale(Screen.width,Screen.height)) / hud.Panel.scale;
                 Check(hud.Dashboard.worldBound.yMax <= hud.Root.worldBound.yMax && hud.Rpm.worldBound.yMin < hud.Dashboard.worldBound.yMin && hud.Gear.worldBound.yMax <= hud.Root.worldBound.yMax, "Low dashboard stays bounded with the instrument cluster overflowing at " + width);
+                foreach(var dial in new[]{hud.Speed,hud.Rpm})
+                {
+                    float radius=dial.contentRect.width*.40f;
+                    var center=dial.worldBound.center;
+                    bool clear=true;
+                    foreach(var number in dial.Query<Label>(className:"gauge-number").ToList())
+                    {
+                        var b=number.worldBound;
+                        foreach(var c in new[]{new Vector2(b.xMin,b.yMin),new Vector2(b.xMax,b.yMin),new Vector2(b.xMin,b.yMax),new Vector2(b.xMax,b.yMax)})
+                            if((c-center).magnitude>radius+.5f)clear=false;
+                    }
+                    Check(clear,"All "+dial.name+" number boxes remain inside the tick marks at "+width);
+                }
                 yield return Capture("race-gauges-"+width);
             }
             var target = new RenderTexture(3840,2160,24);target.Create();hud.Panel.targetTexture=target;hud.Refresh();yield return new WaitForSecondsRealtime(.3f);
@@ -112,7 +203,14 @@ namespace DragLab.Runtime
             game.Profile.driving.shifting=ShiftMode.Automatic;game.Profile.driving.launch=LaunchMode.Automatic;
             game.StartPractice();game.verificationInput=()=>new DriverInput{throttle=1};
             float finishDeadline=Time.realtimeSinceStartup+65;
-            while(game.Race.phase!=RacePhase.Finished&&Time.realtimeSinceStartup<finishDeadline)yield return null;
+            bool movingShot=false,fastShot=false,finishShot=false;
+            while(game.Race.phase!=RacePhase.Finished&&Time.realtimeSinceStartup<finishDeadline)
+            {
+                if(!finishShot&&game.Race.distance-game.Race.player.state.distance<4){finishShot=true;yield return Capture("race-trapezoid-finish-approach");}
+                if(!movingShot&&game.Race.player.state.speed>=20){movingShot=true;yield return Capture("race-road-72kmh");}
+                if(!fastShot&&game.Race.player.state.speed>=35){fastShot=true;yield return Capture("race-road-126kmh");}
+                yield return null;
+            }
             game.verificationInput=null;yield return null;
             Check(game.ComparisonRoute=="Results"&&!hud.Visible&&game.Race.player.state.finished,"Finishing a real authoritative pass hides instruments and preserves the existing results workflow");
             yield return Capture("race-gauges-results");

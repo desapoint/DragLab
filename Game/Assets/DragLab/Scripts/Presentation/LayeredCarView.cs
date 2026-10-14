@@ -22,6 +22,7 @@ namespace DragLab.Presentation
         public int FrontSmokeEmitted=>smoke==null?0:smoke.FrontEmitted;
         public int RearSmokeEmitted=>smoke==null?0:smoke.RearEmitted;
         public float TireSizeScale { get; private set; } = 1;
+        public float ContactHeight => artworkRadius-(frontWheel.y+rearWheel.y)*.5f;
         public float FrontTireSizeScale {get;private set;}=1;public float RearTireSizeScale {get;private set;}=1;
         readonly List<WheelBinding> rotating = new List<WheelBinding>();
         readonly List<SpriteRenderer> paintLayers = new List<SpriteRenderer>();
