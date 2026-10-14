@@ -238,7 +238,7 @@ namespace DragLab.Runtime
         static IReadOnlyList<NativeStatGroup> ElementGroups(string prefix,PartCategory slot,NativeStatsSnapshot a,NativeStatsSnapshot b)
         {
             var groups=new List<NativeStatGroup>();
-            var elements=(a.Part(slot)?.condition.elements??new EngineElement[0]).Concat(b?.Part(slot)?.condition.elements??new EngineElement[0]).GroupBy(e=>e.role+":"+e.cylinder+":"+e.valve).Select(g=>g.First()).ToArray();
+            var elements=(slot==PartCategory.Tires?Enumerable.Empty<EngineElement>():(a.Part(slot)?.condition.elements??new EngineElement[0]).Concat(b?.Part(slot)?.condition.elements??new EngineElement[0])).GroupBy(e=>e.role+":"+e.cylinder+":"+e.valve).Select(g=>g.First()).ToArray();
             foreach(var element in elements) {
                 string key=element.role+":"+element.cylinder+":"+element.valve,id=prefix+":element:"+key;
                 EngineElement Find(NativeStatsSnapshot s)=>s.Part(slot)?.condition.elements.FirstOrDefault(e=>e.role+":"+e.cylinder+":"+e.valve==key);
