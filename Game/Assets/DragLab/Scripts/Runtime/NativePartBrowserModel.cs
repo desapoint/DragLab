@@ -24,7 +24,7 @@ namespace DragLab.Runtime
             if(!string.IsNullOrWhiteSpace(Search)&&!((e.DisplayName??e.Definition.name)+" "+e.SearchExtra+" "+e.Definition.brand+" "+e.Definition.category+" "+e.AssetId+" "+e.Location).ToLowerInvariant().Contains(Search.Trim().ToLowerInvariant()))return false;
             if(Compatibility!="All"&&e.Compatibility!=Compatibility)return false;
             if(Availability=="Owned"&&!e.Owned||Availability=="Affordable"&&(!e.Price.HasValue||e.Price>cash)||Availability=="Unaffordable"&&(!e.Price.HasValue||e.Price<=cash))return false;
-            if(Availability=="In stock"&&(e.Source!="New"&&e.Source!="Used"||e.Source=="New"&&e.RequiresExpress)||Availability=="Express"&&(e.Source!="New"||!e.RequiresExpress))return false;
+            if(Availability=="In stock"&&(e.Source!="New"&&e.Source!="Used"||e.Source=="New"&&e.RequiresExpress))return false;
             if(Condition=="New"&&e.Source!="New"||Condition=="Used"&&e.Source=="New")return false;
             bool tunable=e.Definition.tuning!=PartTuningOptions.None||e.Definition.camTimingAdjustable;
             if(Tuning=="Adjustable"&&!tunable||Tuning=="Fixed"&&tunable)return false;

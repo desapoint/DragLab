@@ -1,5 +1,7 @@
 # Native interface direction — grey/red and Settings first
 
+Availability clarification (2026-10-14): remove the Express availability filter from Build. Express delivery is a shortage charge, not a separate product category. Keep quick same-part replacement through the car's wear/maintenance controls, including unavailable parts and the existing explicit express-cost confirmation. Existing saved-build shortage quotes remain supported.
+
 Saved-setup confirmation (2026-10-13): reuse the fixed shared red Load / Buy & load action, current modal, dyno and four-stat comparison, concise owner/scope/cost/balance and exact reused/missing hardware. Info returns to the captured review; Cancel/X leaves assets unchanged. Pending tuning/cart must be resolved first. Explicit confirmation alone publishes the existing atomic load/purchase. No separate theme or live application. [Delivery/review](../reports/phases/4e/05-SETUP-LOAD.md).
 
 Shop product identity (2026-10-13): display one native shop card for fully equivalent new definitions, preserving original IDs for exact fitted/planned member replacement. Compare the complete product specification, fitment, price and reputation requirement; four headline facts/name are insufficient. Used/owned assets remain separate by actual identity. Reuse current cards/filters/caches and explicit checkout. [Checks and market lifecycle](../reports/shop-products/CHANGES.md).
