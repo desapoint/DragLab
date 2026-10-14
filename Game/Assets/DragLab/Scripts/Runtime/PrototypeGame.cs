@@ -144,7 +144,7 @@ namespace DragLab.Runtime
             var resolved = MechanicsOwnership.Resolve(profile, Build, profile.catalog);
             if (!resolved.Drivable) { notice = "Build cannot drive: " + string.Join("; ", resolved.errors); return; }
             if (!AutoTopUp()) return;
-            PersistNativeCartReservation();ProfileStore.Save(profile);
+            PersistNativeCartReservation();if(!ProfileStore.TrySave(profile)){notice=ProfileStore.Status;return;}
             activeEvent = evt;
             practiceRun = practice && evt == null; previousPass = Build.lastPass; finishedPass = null;
             var opponent = evt != null ? evt.opponent : practiceRun ? Selected : vehicles[freeOpponent];

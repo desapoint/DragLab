@@ -86,6 +86,7 @@ namespace DragLab.Runtime
             InitializeOwnedCars();
             InitializeDealership();
             InitializeDisposal();
+            InitializeRaceSelection();
             InitializeTuning();
             InitializeParts();
             InitializeNativeCart();
@@ -147,6 +148,7 @@ namespace DragLab.Runtime
             RefreshParts(route);
             RefreshEngines(route);
             RefreshDisposal(route);
+            RefreshRaceSelection(route);
             if (renderedRoute == route) return;
             renderedRoute = route;
             bool settings = route == "Settings";
