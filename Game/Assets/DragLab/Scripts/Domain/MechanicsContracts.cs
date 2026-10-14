@@ -30,26 +30,40 @@ namespace DragLab.Domain.Mechanics
         public int clutchFluidVersion; public double clutchOilLitres, clutchOilCondition=1;
         // Legacy call sites use this typed view during the migration. This is
         // not serialized: the only canonical members are elements[].
+        [NonSerialized] TireCondition[] tireView;
         public TireCondition[] tires
         {
-            get {
-                if(elements==null||elements.Length==0)return new TireCondition[0];
-                if(elements[0] is TireCondition)
-                {
-                    if(elements.Length!=4||elements.Any(e=>!(e is TireCondition)))
-                        throw new InvalidOperationException("Invalid mixed tire element collection.");
-                    return elements.Cast<TireCondition>().ToArray();
-                }
-                return new TireCondition[0];
+            get
+            {
+                if(elements==null||elements.Length==0)return Array.Empty<TireCondition>();
+                if(!(elements[0] is TireCondition))return Array.Empty<TireCondition>();
+                if(elements.Length!=4||elements.Any(e=>!(e is TireCondition)))
+                    throw new InvalidOperationException("Invalid mixed tire element collection.");
+                if(elements is TireCondition[] typed)return typed;
+                if(tireView==null||tireView.Length!=4
+                    ||!ReferenceEquals(tireView[0],elements[0])
+                    ||!ReferenceEquals(tireView[1],elements[1])
+                    ||!ReferenceEquals(tireView[2],elements[2])
+                    ||!ReferenceEquals(tireView[3],elements[3]))
+                    tireView=elements.Cast<TireCondition>().ToArray();
+                return tireView;
             }
-            set {
-                if(value==null||value.Length==0){elements=new EngineElement[0];return;}
+            set
+            {
+                if(value==null||value.Length==0){elements=new EngineElement[0];tireView=null;return;}
                 if(value.Length!=4||value.Any(t=>t==null))
                     throw new ArgumentException("Four tire elements required.");
-                elements=value.Cast<EngineElement>().ToArray();
+                elements=value;
+                tireView=value;
             }
         }
-        public ComponentCondition Copy() { var copy=(ComponentCondition)MemberwiseClone(); if(elements!=null)copy.elements=Array.ConvertAll(elements,e=>e==null?null:e.Copy()); return copy; }
+        public ComponentCondition Copy()
+        {
+            var copy=(ComponentCondition)MemberwiseClone();
+            copy.elements=elements==null?null:Array.ConvertAll(elements,e=>e==null?null:e.Copy());
+            copy.tireView=null;
+            return copy;
+        }
         public string Validate()
         {
             if (!MechanicsSchema.Finite(health) || health < 0 || health > 1) return "Health must be 0-1.";
