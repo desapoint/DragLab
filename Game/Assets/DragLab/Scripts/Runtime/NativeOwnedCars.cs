@@ -63,7 +63,7 @@ namespace DragLab.Runtime
         {
             ownedToolbar.EnableInClassList("hidden",route!="Garage"||(dealerMode?dealerDetailId!=null:ownedDetailId!=null));
             ownedScroll.EnableInClassList("hidden", route != "Garage" || dealerMode || ownedDetailId != null);
-            ownedDetails.EnableInClassList("hidden", route != "Garage" || dealerMode || ownedDetailId == null);
+            ownedDetails.EnableInClassList("hidden", route != "Garage" || dealerMode || ownedDetailId == null || disposalCarId != null);
             if (route != "Garage") return;
             var profile = game.Profile;
             TorqueUnit units = SharedUnitSettings.Current.torque;

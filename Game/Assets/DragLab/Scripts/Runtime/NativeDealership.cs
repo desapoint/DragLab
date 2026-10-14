@@ -86,7 +86,7 @@ namespace DragLab.Runtime
         }
         void RefreshDealership(string route)
         {
-            garagePages.EnableInClassList("hidden",route!="Garage");ownedPageButton.EnableInClassList("selected",!dealerMode);dealerPageButton.EnableInClassList("selected",dealerMode);
+            garagePages.EnableInClassList("hidden",route!="Garage"||disposalCarId!=null);ownedPageButton.EnableInClassList("selected",!dealerMode);dealerPageButton.EnableInClassList("selected",dealerMode);
             dealerScroll.EnableInClassList("hidden",route!="Garage"||!dealerMode||dealerDetailId!=null);
             dealerDetails.EnableInClassList("hidden",route!="Garage"||!dealerMode||dealerDetailId==null);
             if(route!="Garage"||!dealerMode)return;
