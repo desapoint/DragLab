@@ -186,6 +186,45 @@ namespace DragLab.Editor
                 &&split.wearRemainder==donor.wearRemainder
                 &&!EngineElements.FaultAllowed(PartCategory.Ignition,split),
                 "Ignition-kit split preserves physical spark plug wear and rejects wrong-category member types");
+            foreach(var kind in new[]{PartCategory.Rods,PartCategory.ValveSprings,PartCategory.SparkPlugs})
+            {
+                var model=Resources.LoadAll<VehicleDefinition>("Data/Vehicles")
+                    .FirstOrDefault(v=>catalogue.Recipe(v.spec.id).ContainsKey(kind));
+                check(model!=null,"Integration fixture includes "+kind+" hardware");
+                var test=PlayerProfile.New(DateTime.UtcNow.Ticks);
+                MechanicsOwnership.Ensure(test,catalogue);
+                test.cash=1000000;test.reputation=1000;
+                VehicleCollection.Buy(test,catalogue,new VehicleOffer{
+                    model=model.spec.id,price=1,reputation=0,stock=model.CreateStockTune(),paint="#FFFFFF"});
+                var owned=test.SelectedCar;
+                var bind=owned.installed.slots.Find(b=>b.slot==kind.ToString());
+                var pack=bind==null?null:test.parts.Find(p=>p.instanceId==bind.partInstanceId);
+                check(pack!=null&&pack.condition.elements.Length>0
+                    &&pack.condition.elements.All(e=>EngineElements.MatchesCategory(kind,e)),
+                    "Installed "+kind+" pack has only its dedicated element class");
+                var removed=pack.condition.elements[0];
+                removed.health=.58f;removed.wearRemainder=.000004;removed.severity=.15f;
+                string removedId=removed.id;
+                var originalState=JsonUtility.ToJson(removed);
+                string initial=JsonUtility.ToJson(test);
+                PlayerProfile result;string installError;int saves=0;
+                bool applied=MechanicsTransactions.Try(test,catalogue,test.revision,editable=>{
+                    var incoming=InventoryUnits.Buy(editable,owned.instanceId,pack.definitionId,removed.role);
+                    if(!EngineElements.MatchesCategory(kind,incoming.element))
+                        throw new InvalidOperationException("Bought unit was not category-specialized.");
+                    InventoryUnits.Install(editable,owned.instanceId,incoming.element.id,removedId);
+                },updated=>{saves++;return true;},out result,out installError);
+                check(applied&&saves==1&&initial==JsonUtility.ToJson(test),
+                    "Atomic "+kind+" member replacement leaves original profile untouched: "+installError);
+                var fitted=result.parts.Find(p=>p.instanceId==pack.instanceId);
+                var loose=result.looseEngineElements.Find(u=>u.element.id==removedId);
+                check(loose!=null&&EngineElements.MatchesCategory(kind,loose.element)
+                    &&JsonUtility.ToJson(loose.element)==originalState
+                    &&fitted.condition.elements[0].id!=removedId
+                    &&EngineElements.MatchesCategory(kind,fitted.condition.elements[0])
+                    &&MechanicsOwnership.Validate(result,catalogue)==null,
+                    "Installed "+kind+" replacement preserves removed physical member and saved wear");
+            }
             foreach(var vehicle in Resources.LoadAll<VehicleDefinition>("Data/Vehicles")){
                 var profile=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(profile,catalogue);profile.cash=1000000;profile.reputation=1000;
                 VehicleCollection.Buy(profile,catalogue,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});var owned=profile.SelectedCar;
