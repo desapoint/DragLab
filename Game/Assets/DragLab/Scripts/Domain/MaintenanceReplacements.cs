@@ -30,7 +30,7 @@ namespace DragLab.Domain.Mechanics
             var result=new List<ReplacementTarget>();
             foreach(var binding in car.installed.slots.OrderBy(s=>s.slot,StringComparer.Ordinal)){
                 var part=p.parts.Find(i=>i.instanceId==binding.partInstanceId);if(part==null)continue;
-                var d=p.catalog.Find(part.definitionId);var c=part.condition;bool broken=Broken(c);int members=c.tires.Length==4?4:c.elements.Length;
+                var d=p.catalog.Find(part.definitionId);var c=part.condition;bool isTire=d.category==PartCategory.Tires;bool broken=!isTire&&Broken(c);int members=isTire?c.tires.Length:c.elements.Length;
                 bool everyMemberFailed=c.tires.Length==4?c.tires.All(t=>t.failed||t.health<=0||t.consumedLife>=1):c.elements.Length>0&&c.elements.All(e=>e.Failed);
                 // An independent set-level failure cannot be repaired by replacing one healthy member.
                 if(members==0||broken&&!everyMemberFailed){
