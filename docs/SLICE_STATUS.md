@@ -201,3 +201,5 @@ Approved requested refinements: modulate tire resonance using actual grip/load/r
 ## Shared inventory and component-set extension (2026-10-09)
 
 Approved post-3H refinement: shared storage/car/engine/seller/cart views, retained dealer component stock, complete-set defaults with explicit unit counts, optional individual engine/tire purchases, targeted reuse, staged ownership moves and atomic net-price trade checkout. Existing complete/partial assembly valuation, salvage, driving ownership and explicit Apply remain intact. See [contract and controls](INVENTORY_COMMERCE.md) and [verification](../reports/inventory-commerce/CHANGES.md). No later planned slice is advanced.
+
+Difficulty direction and shutdown correction (2026-10-14): assisted choices sit left, full/realistic/manual choices right, and lower guaranteed market stock is toward the right. Saved enums and explicit Settings confirmation are retained. The existing shutdown assist ramps brake pressure and releases wheel-lock slip; manual braking and recorded race times remain unchanged. Cross-car checks 65/0, native input 40/0 and Windows build pass. [Review](../reports/driving-corrections/CHANGES.md).

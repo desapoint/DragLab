@@ -1,0 +1,66 @@
+PASS city-three first automatic brake step eases in
+PASS city-three gentle shutdown stops with bounded pressure
+PASS city-three shutdown preserves recorded race result
+PASS city-three wheel-lock slip releases automatic pressure
+PASS city-three direct manual brake remains fully available
+PASS juniper-club first automatic brake step eases in
+PASS juniper-club gentle shutdown stops with bounded pressure
+PASS juniper-club shutdown preserves recorded race result
+PASS juniper-club wheel-lock slip releases automatic pressure
+PASS juniper-club direct manual brake remains fully available
+PASS juniper-economy first automatic brake step eases in
+PASS juniper-economy gentle shutdown stops with bounded pressure
+PASS juniper-economy shutdown preserves recorded race result
+PASS juniper-economy wheel-lock slip releases automatic pressure
+PASS juniper-economy direct manual brake remains fully available
+PASS kestrel-track first automatic brake step eases in
+PASS kestrel-track gentle shutdown stops with bounded pressure
+PASS kestrel-track shutdown preserves recorded race result
+PASS kestrel-track wheel-lock slip releases automatic pressure
+PASS kestrel-track direct manual brake remains fully available
+PASS rally-sedan first automatic brake step eases in
+PASS rally-sedan gentle shutdown stops with bounded pressure
+PASS rally-sedan shutdown preserves recorded race result
+PASS rally-sedan wheel-lock slip releases automatic pressure
+PASS rally-sedan direct manual brake remains fully available
+PASS sport-coupe first automatic brake step eases in
+PASS sport-coupe gentle shutdown stops with bounded pressure
+PASS sport-coupe shutdown preserves recorded race result
+PASS sport-coupe wheel-lock slip releases automatic pressure
+PASS sport-coupe direct manual brake remains fully available
+PASS starter-hatch first automatic brake step eases in
+PASS starter-hatch gentle shutdown stops with bounded pressure
+PASS starter-hatch shutdown preserves recorded race result
+PASS starter-hatch wheel-lock slip releases automatic pressure
+PASS starter-hatch direct manual brake remains fully available
+PASS super-v8 first automatic brake step eases in
+PASS super-v8 gentle shutdown stops with bounded pressure
+PASS super-v8 shutdown preserves recorded race result
+PASS super-v8 wheel-lock slip releases automatic pressure
+PASS super-v8 direct manual brake remains fully available
+PASS timber-diesel first automatic brake step eases in
+PASS timber-diesel gentle shutdown stops with bounded pressure
+PASS timber-diesel shutdown preserves recorded race result
+PASS timber-diesel wheel-lock slip releases automatic pressure
+PASS timber-diesel direct manual brake remains fully available
+PASS timber-diesel-tow first automatic brake step eases in
+PASS timber-diesel-tow gentle shutdown stops with bounded pressure
+PASS timber-diesel-tow shutdown preserves recorded race result
+PASS timber-diesel-tow wheel-lock slip releases automatic pressure
+PASS timber-diesel-tow direct manual brake remains fully available
+PASS touring-six first automatic brake step eases in
+PASS touring-six gentle shutdown stops with bounded pressure
+PASS touring-six shutdown preserves recorded race result
+PASS touring-six wheel-lock slip releases automatic pressure
+PASS touring-six direct manual brake remains fully available
+PASS utility-pickup first automatic brake step eases in
+PASS utility-pickup gentle shutdown stops with bounded pressure
+PASS utility-pickup shutdown preserves recorded race result
+PASS utility-pickup wheel-lock slip releases automatic pressure
+PASS utility-pickup direct manual brake remains fully available
+PASS v8-muscle first automatic brake step eases in
+PASS v8-muscle gentle shutdown stops with bounded pressure
+PASS v8-muscle shutdown preserves recorded race result
+PASS v8-muscle wheel-lock slip releases automatic pressure
+PASS v8-muscle direct manual brake remains fully available
+Checks: 65; failures: 0

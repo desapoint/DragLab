@@ -10,7 +10,7 @@ namespace DragLab.Runtime
             AddToClassList("slider-fill"); pickingMode = PickingMode.Ignore;
             RegisterCallback<CustomStyleResolvedEvent>(_ => MarkDirtyRepaint());
             generateVisualContent += context => {
-                float w = contentRect.width * Mathf.InverseLerp(slider.lowValue, slider.highValue, slider.value), h = contentRect.height;
+                float fraction=Mathf.InverseLerp(slider.lowValue,slider.highValue,slider.value);float w=contentRect.width*(slider.inverted?1-fraction:fraction), h=contentRect.height;
                 if (w <= 0 || h <= 0) return;
                 var mesh = context.Allocate(4, 6);
                 var top = RacingPalette.Shade(this,1,.04f); var bottom = RacingPalette.Shade(this,.72f);

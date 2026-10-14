@@ -1,0 +1,9 @@
+# Difficulty direction and progressive shutdown — 2026-10-14
+
+Simulation choices now put None/Assisted/Auto service on the left and Realistic/Full/Manual service on the right in native Settings and the legacy physical-bench view. Race-start temperatures use Optimal, Fully cooled, Live cooldown; remembered settings and continuous heat management remain separate. Saved enum values are unchanged. The minimum fitting-offers slider is inverted, so moving right reduces guarantees/increases difficulty; its shared fill follows the actual knob. Settings remain drafts until explicit confirmation, and Cancel preserves the profile/save.
+
+The existing finish-line braking assist now ramps its pedal command instead of applying 100% immediately. Its gentle target is bounded by vehicle brake deceleration and 60% pedal, with progressive pressure release when individual wheel contact reports negative locking slip. Both race shutdown and cars that finish before the opponent use the same controller. Manual braking remains direct; recorded elapsed time and trap speed are retained. No new mechanical ABS hardware or race result is fabricated.
+
+Checks: **65/0** across all thirteen cars for gentle initial pressure, stopping, bounded pressure, wheel-lock release, manual 100% input and unchanged race results. Packaged native UI checks pass **40/0 runtime errors**, including actual choice mappings, reversed market slider, shared controls, read-only previews and Cancel. Windows build succeeded. The prior performance checkpoint is retained; this is a separate requested correction.
+
+Review Settings → Difficulty/Driving, its rightmost choices and market slider. Finish a pass with automatic shutdown enabled and watch pressure rise gradually; disable it to retain direct manual braking. Nine-race cart reservations remain the next authorized correction.

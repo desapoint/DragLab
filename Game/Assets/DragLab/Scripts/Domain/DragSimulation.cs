@@ -780,6 +780,15 @@ namespace DragLab.Domain
             state.clutchFrictionPowerW = state.converterLossPowerW = 0;
             state.converterSlipRpm=0;state.converterLocked=false;
         }
+        public double AssistedShutdownBrake(double dt)
+        {
+            if(!Mechanics.MechanicsSchema.Finite(dt)||dt<=0||dt>.05)throw new ArgumentOutOfRangeException("dt");
+            double target=state.brakesFailed?0:Math.Min(.6,3.0/spec.BrakeDeceleration);
+            double slip=0;if(state.contact.slip!=null)foreach(double value in state.contact.slip)slip=Math.Max(slip,-value);
+            if(state.speed>2&&slip>.08)target*=DragMath.Clamp(1-(slip-.08)*8,0,1);
+            double current=DragMath.Clamp(state.brake,0,1),rate=target<current?4:.65;
+            return current+DragMath.Clamp(target-current,-rate*dt,rate*dt);
+        }
         public void Shutdown(double dt, double brake)
         {
             if (!Mechanics.MechanicsSchema.Finite(dt) || dt <= 0 || dt > .05) throw new ArgumentOutOfRangeException("dt");
@@ -889,15 +898,15 @@ namespace DragLab.Domain
         public void Shutdown(DriverInput input, double dt = DragMath.FixedStep)
         {
             if (phase != RacePhase.Finished) return;
-            player.Shutdown(dt, player.driver.shutdownBrakeAssist ? 1 : input.brake);
-            opponent.Shutdown(dt, 1);
+            player.Shutdown(dt, player.driver.shutdownBrakeAssist ? player.AssistedShutdownBrake(dt) : input.brake);
+            opponent.Shutdown(dt, opponent.AssistedShutdownBrake(dt));
         }
 
         void Advance(CarSimulation car, DriverInput input, double dt, double greenTime)
         {
             if (car.state.finished)
             {
-                car.Shutdown(dt, car.driver.shutdownBrakeAssist ? 1 : input.brake);
+                car.Shutdown(dt, car.driver.shutdownBrakeAssist ? car.AssistedShutdownBrake(dt) : input.brake);
                 return;
             }
             double before = car.state.distance;
