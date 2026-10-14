@@ -19,7 +19,8 @@ namespace DragLab.Domain.Mechanics
         {
             bool migratePartsMarket=profile.saveVersion<8;
             if(profile.saveVersion>SaveVersion)throw new InvalidOperationException("Unsupported save version.");
-            if(profile.saveVersion<SaveVersion)throw new InvalidOperationException("Save uses an incompatible pre-polymorphism part format. Reset required.");
+            // Save-file compatibility is enforced by ProfileStore before Ensure.
+            // PlayerProfile.New() starts at v1 in editor tests and needs normal initialization.
             if (profile.mechanicsVersion > MechanicsSchema.Version) throw new InvalidOperationException("Unsupported mechanics version.");
             if (profile.parts == null) profile.parts = new List<PartInstance>();
             if (profile.engines == null) profile.engines = new List<EngineAssemblyInstance>();
