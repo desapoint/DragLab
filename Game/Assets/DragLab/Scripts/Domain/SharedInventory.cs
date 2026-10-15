@@ -45,8 +45,8 @@ namespace DragLab.Domain.Mechanics
             if(p.inventory == null) p.inventory = new InventoryState();
             if(p.inventory.storage == null) p.inventory.storage = new List<InventoryContainer>();
             if(p.inventory.dealer == null) p.inventory.dealer = new List<DealerStock>();
-            foreach(var u in p.looseEngineElements)if(!u.tireUnit)u.tire=null;
-            foreach(var s in p.inventory.dealer){if(s.isUnit){s.part=null;if(s.unit!=null&&!s.unit.tireUnit)s.unit.tire=null;}else s.unit=null;}
+            // Tire is a computed view of the typed element. Clearing it is a no-op.
+            foreach(var s in p.inventory.dealer){if(s.isUnit)s.part=null;else s.unit=null;}
             if(p.inventory.storage.Count == 0) {
                 p.inventory.storage.Add(new InventoryContainer {kind=InventoryKind.Storage,id=Garage,name="Garage shelves"});
                 p.inventory.storage.Add(new InventoryContainer {kind=InventoryKind.Storage,id=Storage,name="Storage shelves"});

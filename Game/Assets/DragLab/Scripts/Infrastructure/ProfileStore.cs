@@ -93,7 +93,19 @@ namespace DragLab.Infrastructure
                 if(!File.Exists(path))continue;
                 if(path==FilePath&&SqliteStateStore.CanInitialize(path))continue;
                 try{
-                    string json=SqliteStateStore.Read(path,raw=>{var staged=JsonUtility.FromJson<PlayerProfile>(DrivingPreferences.AddToJson(raw));if(staged==null||staged.saveVersion<MechanicsOwnership.SaveVersion)throw new InvalidDataException("Old save element format requires reset.");MechanicsOwnership.Ensure(staged,catalog);string invalid=MechanicsOwnership.Validate(staged,catalog);if(invalid!=null)throw new InvalidDataException("Migration validation failed: "+invalid);});var p=JsonUtility.FromJson<PlayerProfile>(DrivingPreferences.AddToJson(json));p.storageCommit=SqliteStateStore.ReadCommit;
+                    string json=SqliteStateStore.Read(path,raw=>{var staged=JsonUtility.FromJson<PlayerProfile>(DrivingPreferences.AddToJson(raw));if(staged==null||staged.saveVersion<MechanicsOwnership.SaveVersion)throw new InvalidDataException("Old save element format requires reset.");
+                        // A v12 profile must already own four concrete tire histories.
+                        // Normalization may initialize new parts, but may not heal a broken save.
+                        if(staged.parts!=null)foreach(var savedPart in staged.parts)
+                        {
+                            if(savedPart==null)continue;
+                            var definition=catalog.Find(savedPart.definitionId);
+                            if(definition?.category!=PartCategory.Tires)continue;
+                            if(savedPart.condition?.elements==null||savedPart.condition.elements.Length!=4
+                               ||Array.Exists(savedPart.condition.elements,e=>!(e is TireCondition)))
+                                throw new InvalidDataException("Saved tire pack has missing or invalid typed members; reset required.");
+                        }
+                        MechanicsOwnership.Ensure(staged,catalog);string invalid=MechanicsOwnership.Validate(staged,catalog);if(invalid!=null)throw new InvalidDataException("Migration validation failed: "+invalid);});var p=JsonUtility.FromJson<PlayerProfile>(DrivingPreferences.AddToJson(json));p.storageCommit=SqliteStateStore.ReadCommit;
                     if(p==null||p.saveVersion!=MechanicsOwnership.SaveVersion||p.mechanicsVersion>MechanicsSchema.Version)throw new NotSupportedException("Newer profile contract; database writes are blocked.");
                     bool contractMigration=p.saveVersion<MechanicsOwnership.SaveVersion||p.mechanicsVersion<MechanicsSchema.Version;p.Sanitize(now);MechanicsOwnership.Ensure(p,catalog);if(MechanicsOwnership.Validate(p,catalog)!=null)throw new InvalidDataException("Invalid saved ownership/state.");
                     if(path!=FilePath&&!writeBlocked)SqliteStateStore.RecoverBackup(FilePath,path);

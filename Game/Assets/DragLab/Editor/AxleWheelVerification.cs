@@ -140,10 +140,20 @@ namespace DragLab.Editor
                 &&engineRoundTrip.elements[0] is PistonElement
                 &&engineRoundTrip.elements[1] is ValveElement,
                 "Piston and valve component member types survive Unity JSON polymorphic serialization");
+            var freshTires=new ComponentCondition();
+            TireDynamics.Ensure(freshTires);
+            check(freshTires.elements.Length==4&&freshTires.tires.All(t=>t.health==1&&!t.failed&&t.distanceM==0&&t.slipEnergyJ==0),
+                "Brand-new tire kits initialize with four independent, unworn tire elements");
             var legacy=new ComponentCondition{health=.6f,slipEnergyJ=120,distanceM=800};
-            TireDynamics.Ensure(legacy);
-            check(legacy.tires.Length==4&&legacy.tires.All(t=>t.health==.6f&&t.distanceM==800&&t.slipEnergyJ==30)
-                &&legacy.distanceM==0&&legacy.slipEnergyJ==0,"Legacy tire-set usage migrates once into per-tire histories");
+            bool rejectedLegacy=false;
+            try{TireDynamics.Ensure(legacy);}catch(InvalidOperationException){rejectedLegacy=true;}
+            check(rejectedLegacy&&legacy.elements.Length==0&&legacy.health==.6f&&legacy.slipEnergyJ==120,
+                "Old tire-pack history cannot silently regenerate missing individual tire data");
+            var malformed=new ComponentCondition{elements=new EngineElement[]{new PistonElement{id="wrong-tire",role="piston",cylinder=0,valve=-1}}};
+            bool rejectedWrongType=false;
+            try{TireDynamics.Ensure(malformed);}catch(InvalidOperationException){rejectedWrongType=true;}
+            check(rejectedWrongType&&malformed.elements[0] is PistonElement,
+                "Wrongly typed persisted tire members are rejected rather than replaced");
             foreach(var vehicle in Resources.LoadAll<VehicleDefinition>("Data/Vehicles")){
                 var spec=vehicle.spec.Copy();var tune=vehicle.CreateStockTune();tune.ClampTo(spec);
                 var original=new WheelProfile(spec,tune);var inherited=tune.Copy();inherited.frontWheelDiameter=inherited.rearWheelDiameter=(float)tune.WheelDiameter;inherited.frontWheelWidth=inherited.rearWheelWidth=(float)tune.WheelWidth;inherited.frontTirePressurePsi=inherited.rearTirePressurePsi=tune.tirePressurePsi;

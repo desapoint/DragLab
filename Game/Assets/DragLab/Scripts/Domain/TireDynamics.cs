@@ -15,15 +15,16 @@ namespace DragLab.Domain {
   // neutral serialization shell, never a source of wear or failure.
   public static void Ensure(ComponentCondition c) {
    if(c.tires.Length==0) {
-    // One-time migration of saves that predate per-corner tire conditions.
-    var migrated=new TireCondition[4];
-    for(int i=0;i<4;i++) migrated[i]=new TireCondition {
-     health=c.health, failed=c.failed,
-     temperatureC=c.temperatureC, slipEnergyJ=c.slipEnergyJ*.25,
-     distanceM=c.distanceM, runningSeconds=c.runningSeconds, consumedLife=Math.Max(0,1-c.health),
-     failureReason=c.failed?c.failureReason:""
-    };
-    c.tires=migrated;
+    // Only a brand-new, untouched pack may create fresh tire elements.
+    // Never recreate missing persisted tires from aggregate container history.
+    if((c.elements!=null&&c.elements.Length!=0)||c.health!=1||c.failed
+       ||!string.IsNullOrEmpty(c.failureReason)||c.runningSeconds!=0||c.distanceM!=0
+       ||c.stressExposure!=0||c.temperatureC!=20||c.slipEnergyJ!=0
+       ||c.deposits!=0||c.leakSeverity!=0||c.adjustmentError!=0
+       ||c.serviceWearRemainder!=0||c.serviceCount!=0||c.reconditionCount!=0
+       ||!string.IsNullOrEmpty(c.lastService)||c.clutch!=null)
+     throw new InvalidOperationException("Tire pack is missing typed members and contains old state; reset required.");
+    c.tires=new[]{new TireCondition(),new TireCondition(),new TireCondition(),new TireCondition()};
    }
    if(c.tires.Length!=4||c.tires.Any(t=>t==null))throw new ArgumentException("Four individual tire conditions are required.");
    SyncSummary(c);
