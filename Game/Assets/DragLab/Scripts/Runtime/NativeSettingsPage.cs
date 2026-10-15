@@ -166,8 +166,8 @@ namespace DragLab.Runtime
         }
         sealed class DialogAction
         {
-            internal string label; internal Action action; internal bool primary;
-            internal DialogAction(string label, Action action, bool primary = false) { this.label = label; this.action = action; this.primary = primary; }
+            internal string label,id; internal Action action; internal bool primary;
+            internal DialogAction(string label, Action action, bool primary = false,string id=null) { this.label = label; this.action = action; this.primary = primary; this.id=id; }
         }
         void OpenDialog(string title, string text, DialogAction[] actions, Action dismiss = null, Action<VisualElement> populate = null)
         {
@@ -182,7 +182,7 @@ namespace DragLab.Runtime
             buttons.Clear();
             foreach (var action in actions)
             {
-                var button = new Button(action.action) { text = action.label, name = "dialog" + action.label.Replace("…", "").Replace(" ", "") };
+                var button = new Button(action.action) { text = action.label, name = action.id ?? "dialog" + action.label.Replace("…", "").Replace(" ", "") };
                 button.AddToClassList("action-button"); if (action.primary) button.AddToClassList("primary-action");
                 buttons.Add(button); AddSurface(button, action.primary ? RacingSurface.Kind.Action : RacingSurface.Kind.SecondaryAction); dialogSurfaces.Add(button.Q<RacingSurface>());
             }

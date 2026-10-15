@@ -12,7 +12,7 @@ namespace DragLab.Runtime
     internal sealed partial class NativeMenuShell
     {
         bool cartPageOpen;
-        string cartPageKey,cartPageOwner;
+        string cartPageKey,cartPageOwner,cartPageRequestedOwner;
         PlayerProfile cartPageProfile;
         VisualElement cartPage,cartRows,cartPreview;
         ScrollView cartScroll,cartPreviewScroll;
@@ -71,6 +71,8 @@ namespace DragLab.Runtime
         }
         void RefreshNativeCart(string route)
         {
+            if(route=="Parts"&&cartPageRequestedOwner!=null){cartPageOwner=cartPageRequestedOwner;cartPageOpen=cartPageOwner==game.Profile.SelectedCar?.instanceId;cartPageRequestedOwner=null;}
+            else if(route!="Garage"&&route!="Parts")cartPageRequestedOwner=null;
             if(route!="Parts"&&route!="Settings")cartPageOpen=false;
             if(cartPageOpen&&cartPageOwner!=game.Profile.SelectedCar?.instanceId)cartPageOpen=false;
             cartPage.EnableInClassList("hidden",route!="Parts"||!cartPageOpen);if(route!="Parts"||!cartPageOpen)return;

@@ -39,12 +39,15 @@ namespace DragLab.Domain.Mechanics
     {
         [Serializable] internal sealed class Lines { public List<PartCartLine> entries=new List<PartCartLine>(); }
         internal static string CatalogSnapshot(MechanicalCatalog catalog,string id,PlayerProfile p) => JsonUtility.ToJson(catalog.Spec(p.cars.Find(c=>c.instanceId==id).vehicleId))+string.Join("/",catalog.parts.Select(MarketCatalogLayout.Json));
-        public static int Total(PlayerProfile p,string carId,IEnumerable<PartCartLine> source,ValuationPolicy policy=null,long now=0,bool validateBlocks=true)
+        public static int Total(PlayerProfile p,string carId,IEnumerable<PartCartLine> source,ValuationPolicy policy=null,long now=0,bool validateBlocks=true,bool includeOwnerReservation=false)
         {
             var car=p.cars.Find(c=>c.instanceId==carId);EngineRebuilds.RequireAvailable(car);
             var lines=source.ToArray();if(lines.Length==0||lines.Length>100)throw new InvalidOperationException("Cart needs 1–100 distinct offers.");
             policy=policy??ValuationPolicy.Defaults();if(now==0)now=DateTime.UtcNow.Ticks;
-            var ids=new HashSet<string>();var assets=new HashSet<string>();var positions=new HashSet<string>();var slots=new HashSet<PartCategory>();int total=0;PlayerProfile movePreview=null;var supply=new PartsMarket.Ledger(p,CartReservations.Matches(p,carId,lines));
+            var ids=new HashSet<string>();var assets=new HashSet<string>();var positions=new HashSet<string>();var slots=new HashSet<PartCategory>();int total=0;PlayerProfile movePreview=null;
+            // An additive draft may reuse its owner's hold before Capture publishes the new rows.
+            // Checkout still requires the exact captured cart and never opts into this preview path.
+            var supply=new PartsMarket.Ledger(p,CartReservations.Matches(p,carId,lines)||includeOwnerReservation&&p.inventory.cart?.carId==carId);
             var moveSlots=new HashSet<string>();
             foreach(var line in lines) {
                 var d=line==null?null:p.catalog.Find(line.definitionId);
