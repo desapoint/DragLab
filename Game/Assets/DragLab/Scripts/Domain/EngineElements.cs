@@ -12,7 +12,7 @@ namespace DragLab.Domain.Mechanics
         public float severity; public double wearRemainder;
         public ElementFault fault;
         public new EngineElement Copy(){return (EngineElement)MemberwiseClone();}
-        public override string Validate(){return string.IsNullOrEmpty(id)||string.IsNullOrEmpty(role)||cylinder< -1||cylinder>15||valve< -1||valve>7||!EngineBehaviorSpec.Range(health,0,1)||!EngineBehaviorSpec.Range(severity,0,1)||!MechanicsSchema.Finite(wearRemainder)||wearRemainder<0||!Enum.IsDefined(typeof(ElementFault),fault)?"Invalid individual engine component.":null;}
+        public override string Validate(){return string.IsNullOrEmpty(id)||string.IsNullOrEmpty(role)||cylinder< -1||cylinder>15||valve< -1||valve>7||!EngineBehaviorSpec.Range(health,0,1)||!EngineBehaviorSpec.Range(severity,0,1)||!MechanicsSchema.Finite(wearRemainder)||wearRemainder<0||!EngineElements.FaultAllowed(this)?"Invalid individual component identity, condition, type or fault.":null;}
         public virtual bool Failed {get{return health<=0||fault==ElementFault.Disabled||fault==ElementFault.DroppedValve||fault==ElementFault.Seized;}}
     }
     [Serializable] public sealed class LooseEngineElement
@@ -38,6 +38,30 @@ namespace DragLab.Domain.Mechanics
     }
     public static class EngineElements
     {
+        static readonly Dictionary<Type,PartCategory> memberCategories=new Dictionary<Type,PartCategory>{
+            {typeof(PistonElement),PartCategory.Pistons},{typeof(ConnectingRodElement),PartCategory.Rods},
+            {typeof(PistonRingElement),PartCategory.PistonRings},{typeof(BearingElement),PartCategory.Bearings},
+            {typeof(ValveElement),PartCategory.Valves},{typeof(ValveSpringElement),PartCategory.ValveSprings},
+            {typeof(ValveSealElement),PartCategory.ValveSeals},{typeof(FollowerElement),PartCategory.Followers},
+            {typeof(WheelElement),PartCategory.Wheels},{typeof(TireCondition),PartCategory.Tires},
+            {typeof(IgnitionElement),PartCategory.Ignition},{typeof(SparkPlugElement),PartCategory.SparkPlugs},
+            {typeof(GlowPlugElement),PartCategory.GlowPlugs},{typeof(FuelSystemElement),PartCategory.FuelSystem}
+        };
+        static IReadOnlyList<ElementFault> FaultList(params ElementFault[] values)=>Array.AsReadOnly(values);
+        static readonly IReadOnlyList<ElementFault> ordinaryFaults=FaultList(ElementFault.None,ElementFault.Disabled);
+        static readonly IReadOnlyList<ElementFault> coreFaults=FaultList(ElementFault.None,ElementFault.Disabled,ElementFault.Seized);
+        static readonly Dictionary<PartCategory,IReadOnlyList<ElementFault>> memberFaults=new Dictionary<PartCategory,IReadOnlyList<ElementFault>>{
+            {PartCategory.Pistons,FaultList(ElementFault.None,ElementFault.Disabled,ElementFault.CompressionLeak,ElementFault.Seized)},
+            {PartCategory.Rods,coreFaults},{PartCategory.Bearings,coreFaults},
+            {PartCategory.PistonRings,FaultList(ElementFault.None,ElementFault.Disabled,ElementFault.CompressionLeak)},
+            {PartCategory.Valves,FaultList(ElementFault.None,ElementFault.Disabled,ElementFault.CompressionLeak,ElementFault.StuckOpen,ElementFault.DroppedValve)},
+            {PartCategory.ValveSprings,FaultList(ElementFault.None,ElementFault.Disabled,ElementFault.WeakSpring)},
+            {PartCategory.Tires,FaultList(ElementFault.None)},
+            {PartCategory.Wheels,ordinaryFaults},{PartCategory.ValveSeals,ordinaryFaults},{PartCategory.Followers,ordinaryFaults},
+            {PartCategory.Ignition,ordinaryFaults},{PartCategory.SparkPlugs,ordinaryFaults},{PartCategory.GlowPlugs,ordinaryFaults},{PartCategory.FuelSystem,ordinaryFaults}
+        };
+        public static IReadOnlyList<ElementFault> Faults(PartCategory category)=>memberFaults.TryGetValue(category,out var values)?values:Array.Empty<ElementFault>();
+        public static bool FaultAllowed(EngineElement element)=>element!=null&&memberCategories.TryGetValue(element.GetType(),out var category)&&Faults(category).Contains(element.fault);
         public static int ValveCount(VehicleSpec v){return v.valvesPerCylinder>0?v.valvesPerCylinder:(v.fuelSystemConverted?v.originalFueling:v.engineBehavior.fueling)==FuelSystem.Carburetor?2:4;}
         public static bool Supported(PartCategory c){return c==PartCategory.Wheels||c==PartCategory.Pistons||c==PartCategory.Rods||c==PartCategory.PistonRings||c==PartCategory.Bearings||c==PartCategory.Valves||c==PartCategory.ValveSprings||c==PartCategory.ValveSeals||c==PartCategory.Followers||c==PartCategory.Ignition||c==PartCategory.SparkPlugs||c==PartCategory.GlowPlugs||c==PartCategory.FuelSystem;}
         public static int Count(VehicleSpec v,PartDefinition d){if(!Supported(d.category))return 0;if(d.category==PartCategory.Wheels)return 4;if(d.category==PartCategory.FuelSystem&&(v.engineBehavior.fueling==FuelSystem.Carburetor||d.fuelDelivery==FuelDeliveryHardware.ThrottleBodyInjection))return 0;return d.category==PartCategory.Ignition&&v.combustion.separateSparkPlugs?CoilCount(v):v.sound.cylinders*(PerValve(d.category)?ValveCount(v):1)+(d.category==PartCategory.Ignition?CoilCount(v):0);}
@@ -86,25 +110,7 @@ namespace DragLab.Domain.Mechanics
         // identical topology but still represents a different physical asset.
         public static bool MatchesCategory(PartCategory category,EngineElement element)
         {
-            if(element==null)return false;
-            switch(category)
-            {
-                case PartCategory.Pistons: return element is PistonElement;
-                case PartCategory.Rods: return element is ConnectingRodElement;
-                case PartCategory.PistonRings: return element is PistonRingElement;
-                case PartCategory.Bearings: return element is BearingElement;
-                case PartCategory.Valves: return element is ValveElement;
-                case PartCategory.ValveSprings: return element is ValveSpringElement;
-                case PartCategory.ValveSeals: return element is ValveSealElement;
-                case PartCategory.Followers: return element is FollowerElement;
-                case PartCategory.Wheels: return element is WheelElement;
-                case PartCategory.Ignition: return element is IgnitionElement;
-                case PartCategory.SparkPlugs: return element is SparkPlugElement;
-                case PartCategory.GlowPlugs: return element is GlowPlugElement;
-                case PartCategory.FuelSystem: return element is FuelSystemElement;
-                case PartCategory.Tires: return element is TireCondition;
-                default: return !Supported(category) && !(element is TireCondition);
-            }
+            return element!=null&&memberCategories.TryGetValue(element.GetType(),out var actual)&&actual==category;
         }
         public static void Ensure(VehicleSpec v,PartDefinition d,PartInstance p)
         {
@@ -121,7 +127,7 @@ namespace DragLab.Domain.Mechanics
         }
         static string Role(PartCategory c,int valve,int valves){return c==PartCategory.Wheels?"wheel":c==PartCategory.GlowPlugs?"glow plug":c==PartCategory.SparkPlugs||c==PartCategory.Ignition?"spark plug / lead":c==PartCategory.FuelSystem?"injector":c==PartCategory.Bearings?"rod bearing pair":c==PartCategory.PistonRings?"piston ring pack":PerValve(c)?(valve<valves/2?"intake ":"exhaust ")+(c==PartCategory.Valves?"valve / guide":c==PartCategory.ValveSprings?"spring / retainer":c==PartCategory.ValveSeals?"valve seal":"follower / rocker"):PartSemantics.Friendly(c.ToString());}
         public static bool NeedsService(ComponentCondition c){return c.elements!=null&&c.elements.Any(e=>e.health<.5||e.fault!=ElementFault.None);}
-        public static bool FaultAllowed(PartCategory c,EngineElement e){if(!MatchesCategory(c,e))return false;if(e.fault==ElementFault.None||e.fault==ElementFault.Disabled)return true;if(e.fault==ElementFault.CompressionLeak)return c==PartCategory.Wheels||c==PartCategory.Pistons||c==PartCategory.PistonRings||c==PartCategory.Valves;if(e.fault==ElementFault.WeakSpring)return c==PartCategory.ValveSprings;if(e.fault==ElementFault.StuckOpen||e.fault==ElementFault.DroppedValve)return c==PartCategory.Valves;return c==PartCategory.Wheels||c==PartCategory.Pistons||c==PartCategory.Rods||c==PartCategory.Bearings;}
+        public static bool FaultAllowed(PartCategory c,EngineElement e)=>MatchesCategory(c,e)&&Faults(c).Contains(e.fault);
         public static double Effect(EngineElement e,double severity)
         {
             if(e.Failed)return 0;

@@ -128,7 +128,10 @@ namespace DragLab.Domain.Mechanics
             if (!Enum.IsDefined(typeof(PartLocation), location)) return "Invalid part location.";
             if (location == PartLocation.Inventory && (!string.IsNullOrEmpty(ownerId) || !string.IsNullOrEmpty(slot))) return "Loose part cannot also be installed.";
             if (location != PartLocation.Inventory && (string.IsNullOrWhiteSpace(ownerId) || string.IsNullOrWhiteSpace(slot))) return "Installed part requires owner/slot.";
-            return condition == null ? "Missing component condition." : condition.Validate();
+            if(condition==null)return "Missing component condition.";
+            string error=condition.Validate();if(error!=null)return error;
+            if(Enum.TryParse(slot,out PartCategory category)&&(condition.elements??Array.Empty<EngineElement>()).Any(e=>!EngineElements.FaultAllowed(category,e)))return "Member type or fault does not match its component slot.";
+            return null;
         }
     }
     [Serializable]

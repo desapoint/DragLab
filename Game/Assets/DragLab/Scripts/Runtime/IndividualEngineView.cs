@@ -39,7 +39,7 @@ namespace DragLab.Runtime
         int testElement;
         void IndividualEngineControls(PartInstance setup,PartDefinition d,PartInstance live)
         {
-            if(live==null)return;EngineElements.Ensure(Session.car.spec,d,setup);
+            if(live==null||d.category==PartCategory.Tires)return;EngineElements.Ensure(Session.car.spec,d,setup);
             var elements=setup.condition.elements;
             bool enabled=GUI.enabled;GUI.enabled=enabled&&(Paused||!Session.car.state.launched);
             if(d.category==PartCategory.Clutch&&d.clutchEnvironment==ClutchEnvironment.Wet){float oil=(float)setup.condition.clutchOilLitres,condition=(float)setup.condition.clutchOilCondition;bool edit=MassSlider("Starting dedicated clutch oil (L)",ref oil,0,d.clutchOilCapacityLitres,"F2",d.clutchOilCapacityLitres);edit|=MassSlider("Starting clutch oil condition",ref condition,0,1,"F2",1);if(edit){setup.condition.clutchOilLitres=oil;setup.condition.clutchOilCondition=condition;ResetBench(true);}}
@@ -57,6 +57,6 @@ namespace DragLab.Runtime
             if(actual!=null){GUILayout.Label("Live "+actual.role+" / "+actual.health.ToString("P0")+" / "+actual.fault);if(Button("element-replace","Replace this individual test component (free / isolated)")){Archive();actual.health=1;actual.fault=ElementFault.None;actual.severity=0;EngineElementService.RefreshAggregate(live.condition);Session.car.state.engineFailed=false;Session.car.state.engineDamage=0;Session=Session.ContinueRecording(Recording);notice="Selected test element replaced; other wear retained. Restart with Enter if stalled.";}}
             var s=Session.car.state;GUILayout.Label("Cylinder contributions: "+string.Join(" / ",s.cylinderContribution.Select((v,i)=>"C"+(i+1)+" "+v.ToString("P0"))));GUILayout.Label("Individual valve float "+s.individualValveFloat.ToString("P0")+" / delivered fuel fraction "+s.cylinderFuelFactor.ToString("P0"));
         }
-        static ElementFault[] IndividualFaults(PartCategory c){return c==PartCategory.ValveSprings?new[]{ElementFault.None,ElementFault.WeakSpring,ElementFault.Disabled}:c==PartCategory.Valves?new[]{ElementFault.None,ElementFault.CompressionLeak,ElementFault.StuckOpen,ElementFault.DroppedValve}:c==PartCategory.Pistons?new[]{ElementFault.None,ElementFault.CompressionLeak,ElementFault.Seized}:c==PartCategory.PistonRings?new[]{ElementFault.None,ElementFault.CompressionLeak,ElementFault.Disabled}:c==PartCategory.Rods||c==PartCategory.Bearings?new[]{ElementFault.None,ElementFault.Disabled,ElementFault.Seized}:new[]{ElementFault.None,ElementFault.Disabled};}
+        static ElementFault[] IndividualFaults(PartCategory c)=>EngineElements.Faults(c).ToArray();
     }
 }
