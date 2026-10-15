@@ -1,4 +1,4 @@
-param([string]$FixtureName = 'native-menu-shell', [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly, [switch]$MaintenanceOnly, [switch]$FrameProbe, [switch]$ResponsivenessOnly, [switch]$AwdHardwareOnly, [switch]$PartBrandsOnly, [switch]$SqliteStateOnly, [switch]$DisposalOnly, [switch]$RaceSelectionOnly, [switch]$SetupManagementOnly, [switch]$RaceHudOnly, [switch]$RacePauseOnly)
+param([string]$FixtureName = 'native-menu-shell', [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly, [switch]$MaintenanceOnly, [switch]$RebuildOnly, [switch]$FrameProbe, [switch]$ResponsivenessOnly, [switch]$AwdHardwareOnly, [switch]$PartBrandsOnly, [switch]$SqliteStateOnly, [switch]$DisposalOnly, [switch]$RaceSelectionOnly, [switch]$SetupManagementOnly, [switch]$RaceHudOnly, [switch]$RacePauseOnly)
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 . (Join-Path $PSScriptRoot 'InterfaceScreenshots.ps1')
@@ -19,6 +19,7 @@ if ($PartBrandsOnly) { $taskArgs += '--draglab-part-brands-only-verify' }
 if ($AwdHardwareOnly) { $taskArgs += '--draglab-awd-hardware-only-verify' }
 if ($ResponsivenessOnly) { $taskArgs += '--draglab-responsiveness-only-verify' }
 if ($FrameProbe) { $taskArgs += '--draglab-frame-probe' }
+if ($RebuildOnly) { $taskArgs += '--draglab-rebuild-only-verify' }
 if ($MaintenanceOnly) { $taskArgs += '--draglab-maintenance-only-verify' }
 if ($InspectionOnly) { $taskArgs += '--draglab-inspection-only-verify' }
 if ($DealershipOnly) { $taskArgs += '--draglab-dealership-only-verify' }
