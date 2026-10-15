@@ -12,7 +12,7 @@ namespace DragLab.Runtime
         {
             var d=profile.catalog.Find(item.definitionId);var elements=item.condition.elements;
             if(d.category==PartCategory.Clutch&&d.clutchEnvironment==ClutchEnvironment.Wet){GUILayout.Label("Dedicated clutch oil "+item.condition.clutchOilLitres.ToString("F2")+" / "+d.clutchOilCapacityLitres.ToString("F1")+" L / condition "+item.condition.clutchOilCondition.ToString("P0"));PaidButton("clutch-oil:"+item.instanceId,"Service clutch oil + labour",Payment(PaymentKind.ClutchOil,target:item.instanceId));}
-            if(elements==null||elements.Length==0)return;
+            if(elements==null||elements.Length==0||d.category==PartCategory.Tires)return;
             GUILayout.Label("INDIVIDUAL COMPONENTS / "+elements.Count(e=>e.Failed||e.fault!=ElementFault.None||e.health<.5)+" need attention. Replacement keeps all other components' wear.");
             int n=Selected.spec.sound.cylinders;serviceCylinder=Math.Min(serviceCylinder,n-1);serviceCylinder=GUILayout.SelectionGrid(serviceCylinder,Enumerable.Range(1,n).Select(i=>"Cylinder "+i).ToArray(),4);
             foreach(var e in elements.Where(e=>e.cylinder==serviceCylinder||e.cylinder<0)){

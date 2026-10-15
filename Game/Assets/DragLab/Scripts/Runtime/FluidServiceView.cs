@@ -38,7 +38,7 @@ namespace DragLab.Runtime
             IndividualEngineService(item);
             GUILayout.Label("Deposits "+c.deposits.ToString("P0")+" / leak "+c.leakSeverity.ToString("P0")+" / clearance error "+c.adjustmentError.ToString("P0")+" / services "+c.serviceCount);
             if(!string.IsNullOrEmpty(c.lastService))GUILayout.Label("Last service: "+c.lastService);
-            foreach(var action in ServiceOperations.Available(d,c)) {
+            foreach(var action in ServiceOperations.Available(d,c,ServiceOperations.BoreHealth(profile,Build))) {
                 string car=Build.instanceId,part=item.instanceId;var service=action;
                 PaidButton("service:"+action+":"+part,ServiceOperations.Description(action),Payment(PaymentKind.Repair,target:part,service:service));
             }

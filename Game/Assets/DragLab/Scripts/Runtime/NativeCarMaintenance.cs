@@ -83,7 +83,7 @@ namespace DragLab.Runtime
                 string failureReason=d.category==PartCategory.Tires?TireDynamics.FailedCorners(item.condition):item.condition.failureReason;
                 var state=new Label((PrototypeGame.PartFailed(item)?"Failed":"Condition "+memberHealth.ToString("P0"))+(faults>0?" · "+faults+" faulty":"")) {tooltip=failureReason};state.AddToClassList(PrototypeGame.PartFailed(item)?"car-critical":ServiceConditionClass(memberHealth));caption.Add(state);
                 var actions=new VisualElement();actions.AddToClassList("maintenance-part-actions");row.Add(actions);
-                foreach(var action in ServiceOperations.Available(d,item.condition))
+                foreach(var action in ServiceOperations.Available(d,item.condition,ServiceOperations.BoreHealth(profile,car)))
                     MaintenanceAction(actions,"maintenanceRepair:"+action+":"+item.instanceId,action.ToString(),new PaymentRequest {kind=PaymentKind.Repair,carId=car.instanceId,targetId=item.instanceId,service=action},ServiceOperations.Description(action),available);
                 int count=Math.Max(item.condition.elements.Length,item.condition.tires.Length);
                 MaintenanceAction(actions,"maintenanceReplace:"+item.instanceId,"Buy same",new PaymentRequest {kind=PaymentKind.Part,carId=car.instanceId,targetId=item.definitionId,install=true,preserveTireFitments=d.category==PartCategory.Tires},(d.category==PartCategory.Tires&&TireFitments.HasOverrides(item)?"Current mixed tire specifications":d.name)+(count>1?(d.category==PartCategory.Tires?" · set of ":" · matched set of ")+count:"")+"\nBuy and install the same specification. The removed part/set stays in inventory with its condition; saved tuning stays.",available,item.instanceId);

@@ -20,7 +20,7 @@ namespace DragLab.Domain.Mechanics
         {if(c.elements==null||c.elements.Length==0)return;c.health=c.elements.Average(e=>e.health);c.failed=c.elements.All(e=>e.Failed);c.failureReason=c.failed?"All individual components unavailable":"";}
         public static void Replace(PlayerProfile p,string carId,string partId,string elementId,string spareId=null)
         {
-            var car=p.cars.Find(c=>c.instanceId==carId);var item=Installed(p,car,partId);if(p.catalog.Find(item.definitionId).category==PartCategory.Wheels){int corner=Array.FindIndex(item.condition.elements,e=>e.id==elementId);if(corner<0)throw new InvalidOperationException("Wheel position changed.");var unit=spareId==null?InventoryUnits.Buy(p,carId,WheelFitments.DefinitionId(item,corner),"wheel"):p.looseEngineElements.Find(u=>u.element.id==spareId);if(unit==null||p.catalog.Find(unit.definitionId)?.category!=PartCategory.Wheels)throw new InvalidOperationException("Choose an owned compatible wheel.");InventoryUnits.Install(p,carId,unit.element.id,"wheel:"+corner);return;}ReplacePack(p,item,elementId,spareId);
+            var car=p.cars.Find(c=>c.instanceId==carId);var item=Installed(p,car,partId);if(p.catalog.Find(item.definitionId).category==PartCategory.Tires)throw new InvalidOperationException("Use per-corner tire replacement instead of generic engine-element service.");if(p.catalog.Find(item.definitionId).category==PartCategory.Wheels){int corner=Array.FindIndex(item.condition.elements,e=>e.id==elementId);if(corner<0)throw new InvalidOperationException("Wheel position changed.");var unit=spareId==null?InventoryUnits.Buy(p,carId,WheelFitments.DefinitionId(item,corner),"wheel"):p.looseEngineElements.Find(u=>u.element.id==spareId);if(unit==null||p.catalog.Find(unit.definitionId)?.category!=PartCategory.Wheels)throw new InvalidOperationException("Choose an owned compatible wheel.");InventoryUnits.Install(p,carId,unit.element.id,"wheel:"+corner);return;}ReplacePack(p,item,elementId,spareId);
         }
         public static void ReplaceStored(PlayerProfile p,string engineId,string partId,string elementId,string spareId=null)
         {
@@ -55,11 +55,11 @@ namespace DragLab.Domain.Mechanics
                 bool replace=part.condition.failed||part.condition.health<.35||part.condition.elements.Any(e=>e.Failed||e.fault==ElementFault.DroppedValve||e.fault==ElementFault.Seized||e.fault==ElementFault.WeakSpring);
                 job.targets.Add(new EngineRebuildTarget{partId=part.instanceId,definitionId=part.definitionId,replace=replace});job.paidPrice=checked(job.paidPrice+(replace?supply.Take(d,InventoryUnits.Count(p,car,d),d.price).cost:(int)Math.Ceiling(d.price*(1-part.condition.health)*.5)));if(replace||part.condition.health<.9||EngineElements.NeedsService(part.condition))work++;
             }
-            var filter=p.catalog.Find(p.catalog.Id(car.vehicleId,PartCategory.OilFilter));job.paidPrice+=supply.Take(filter,1,filter.price).cost;
+            var filter=ServiceOperations.OilFilter(p,car);job.paidPrice+=supply.Take(filter,1,filter.price).cost;
             job.readyUtcTicks=checked(now+TimeSpan.TicksPerMinute*(5+work));return job;
         }
         public static void Start(PlayerProfile p,string carId,long now,OperatingPolicy costs=null)
-        {var car=p.cars.Find(c=>c.instanceId==carId);var job=Quote(p,car,now,costs);if(p.cash<job.paidPrice)throw new InvalidOperationException("Insufficient cash for quoted rebuild.");foreach(var target in job.targets.Where(t=>t.replace)){var d=p.catalog.Find(target.definitionId);PartsMarket.Consume(p,d,InventoryUnits.Count(p,car,d));}PartsMarket.Consume(p,p.catalog.Find(p.catalog.Id(car.vehicleId,PartCategory.OilFilter)),1);p.cash-=job.paidPrice;car.engineRebuild=job;}
+        {var car=p.cars.Find(c=>c.instanceId==carId);var job=Quote(p,car,now,costs);if(p.cash<job.paidPrice)throw new InvalidOperationException("Insufficient cash for quoted rebuild.");foreach(var target in job.targets.Where(t=>t.replace)){var d=p.catalog.Find(target.definitionId);PartsMarket.Consume(p,d,InventoryUnits.Count(p,car,d));}PartsMarket.Consume(p,ServiceOperations.OilFilter(p,car),1);p.cash-=job.paidPrice;car.engineRebuild=job;}
         public static string Validate(PlayerProfile p,OwnedCar car)
         {var j=car.engineRebuild;if(j==null||!j.active)return null;if(string.IsNullOrEmpty(j.id)||j.engineId!=car.engineAssemblyId||j.paidPrice<0||j.startedUtcTicks<=0||j.readyUtcTicks<=j.startedUtcTicks||j.readyUtcTicks>DateTime.MaxValue.Ticks||j.targets==null||j.targets.Count==0||j.targets.Select(t=>t.partId).Distinct().Count()!=j.targets.Count)return "Invalid rebuild quote.";foreach(var t in j.targets)if(!car.installed.slots.Any(s=>s.partInstanceId==t.partId)||!p.parts.Any(i=>i.instanceId==t.partId&&i.definitionId==t.definitionId))return "Rebuild contents changed.";return null;}
         public static void Collect(PlayerProfile p,string carId,string jobId,long now)
@@ -69,7 +69,7 @@ namespace DragLab.Domain.Mechanics
             var savedTune=car.tune.Copy();car.engineRebuild=null;
             foreach(var target in job.targets){var old=p.parts.Find(i=>i.instanceId==target.partId);if(target.replace){var item=new PartInstance{instanceId=MechanicsOwnership.NewId("part"),definitionId=target.definitionId};p.parts.Add(item);MechanicsOwnership.Replace(p,car,item,p.catalog);}else{var c=old.condition;c.health=Math.Max(c.health,.95f);c.failed=false;c.failureReason="";c.deposits=c.leakSeverity=c.adjustmentError=c.serviceWearRemainder=0;foreach(var e in c.elements){e.health=Math.Max(e.health,.95f);e.fault=ElementFault.None;e.severity=0;}c.serviceCount++;c.lastService="Shop engine rebuild / reconditioned";}}
             car.fluids.oilLitres=MechanicsOwnership.Resolve(p,car,p.catalog).spec.fluids.oilCapacityLitres;car.fluids.oilCondition=1;
-            var filter=new PartInstance{instanceId=MechanicsOwnership.NewId("part"),definitionId=p.catalog.Id(car.vehicleId,PartCategory.OilFilter)};p.parts.Add(filter);MechanicsOwnership.Replace(p,car,filter,p.catalog);car.tune=savedTune;
+            var filter=new PartInstance{instanceId=MechanicsOwnership.NewId("part"),definitionId=ServiceOperations.OilFilter(p,car).id};p.parts.Add(filter);MechanicsOwnership.Replace(p,car,filter,p.catalog);car.tune=savedTune;
         }
     }
 }
