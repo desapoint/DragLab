@@ -147,6 +147,30 @@ namespace DragLab.Editor
                 MechanicsOwnership.Validate(phantomPaid, catalog) != null)
                 throw new InvalidOperationException("Fuel payment failed to retain normalized used tire stock.");
 
+            // A stale discriminator on a valid individual dealer unit must not
+            // prevent a liquid quote: normalization is performed on a copy.
+            var stale = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(profile));
+            MechanicsOwnership.Ensure(stale, catalog);
+            stale.SelectedCar.fluids.oilLitres = model.fluids.oilCapacityLitres - 1;
+            var staleSeller = stale.inventory.dealer.Single(s => s.IsUnit && s.Id == tire.id);
+            staleSeller.isUnit = false;
+            staleSeller.part = new PartInstance();
+            string staleBefore = JsonUtility.ToJson(stale);
+            var staleQuote = PaidEconomy.Quote(stale, catalog, policy, prices,
+                new PaymentRequest { kind = PaymentKind.Fluids, carId = stale.SelectedCar.instanceId, litres = 1 }, now);
+            if (JsonUtility.ToJson(stale) != staleBefore)
+                throw new InvalidOperationException("Quote silently modified the live seller state.");
+            PlayerProfile stalePaid;
+            string staleError;
+            if (!MechanicsTransactions.Try(stale, catalog, stale.revision,
+                state => PaidEconomy.Pay(state, catalog, policy, prices, staleQuote, now),
+                state => true, out stalePaid, out staleError))
+                throw new InvalidOperationException("Stale seller discriminator blocked oil refill: " + staleError);
+            if (stalePaid.cash != stale.cash - staleQuote.Cost ||
+                !stalePaid.inventory.dealer.Any(s => s.IsUnit && s.Id == tire.id) ||
+                MechanicsOwnership.Validate(stalePaid, catalog) != null)
+                throw new InvalidOperationException("Oil refill did not reconcile seller metadata safely.");
+
             // The same saved artifact must also be harmless when buying the USED tire.
             var usedProfile = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(profile));
             MechanicsOwnership.Ensure(usedProfile, catalog);
