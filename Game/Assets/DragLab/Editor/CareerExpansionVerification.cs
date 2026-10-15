@@ -37,7 +37,9 @@ namespace DragLab.Editor
         [MenuItem("DragLab/Verify Expanded Career")]
         public static void RunStandalone()
         {
-            Prepare();var cat=MechanicsTransactions.Catalog();var events=Resources.LoadAll<CareerEventDefinition>("Data/Events").OrderBy(e=>e.reputationRequired).ThenBy(e=>e.stableId).ToArray();long now=DateTime.UtcNow.Ticks;
+            var cat=MechanicsTransactions.Catalog();var events=Resources.LoadAll<CareerEventDefinition>("Data/Events").OrderBy(e=>e.reputationRequired).ThenBy(e=>e.stableId).ToArray();
+            if(events.Length!=21)throw new InvalidOperationException("Expanded career event assets are missing. Run DragLab/Prepare Expanded Career explicitly, then verify.");
+            long now=DateTime.UtcNow.Ticks;
             string folder=Path.Combine(Directory.GetParent(Application.dataPath).Parent.FullName,"reports/phases/3e");Directory.CreateDirectory(folder);var log=new StringBuilder();var matrix=new StringBuilder("model,event,eligible,reason\n");int checks=0;
             Action<bool,string> check=(ok,label)=>{if(!ok)throw new InvalidOperationException(label);checks++;log.AppendLine("PASS: "+label);File.WriteAllText(Path.Combine(folder,"verification-progress.txt"),log.ToString(),Encoding.UTF8);};
             Func<string,PlayerProfile> fresh=model=>{var p=PlayerProfile.New(now);p.SelectedCar.vehicleId=model;p.selectedVehicleId=model;MechanicsOwnership.Ensure(p,cat);return p;};

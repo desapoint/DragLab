@@ -22,7 +22,9 @@ namespace DragLab.Editor
         [MenuItem("DragLab/Verify Paid Operations and Salvage")]
         public static void RunStandalone()
         {
-            Prepare(); string folder = Path.Combine(Directory.GetParent(Application.dataPath).Parent.FullName, "reports/phases/3d"); Directory.CreateDirectory(folder);
+            if(Resources.Load<OperatingPolicyDefinition>("Data/Economy/OperatingPolicy")==null||Resources.Load<ValuationPolicyDefinition>("Data/Economy/ValuationPolicy")==null)
+                throw new InvalidOperationException("Operating/valuation policy assets missing. Use the corresponding explicit DragLab/Prepare menu actions before verification.");
+            string folder = Path.Combine(Directory.GetParent(Application.dataPath).Parent.FullName, "reports/phases/3d"); Directory.CreateDirectory(folder);
             var log = new StringBuilder(); int checks = 0; long now = DateTime.UtcNow.Ticks;
             Action<bool, string> check = (ok, label) => { if (!ok) throw new InvalidOperationException(label); checks++; log.AppendLine("PASS: " + label); File.WriteAllText(Path.Combine(folder, "verification-progress.txt"), log.ToString()); };
             var cat = MechanicsTransactions.Catalog(); var costs = Resources.Load<OperatingPolicyDefinition>("Data/Economy/OperatingPolicy").policy; var prices = Resources.Load<ValuationPolicyDefinition>("Data/Economy/ValuationPolicy").policy;
