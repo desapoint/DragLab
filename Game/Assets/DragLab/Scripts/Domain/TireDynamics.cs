@@ -29,6 +29,21 @@ namespace DragLab.Domain {
    if(c.tires.Length!=4||c.tires.Any(t=>t==null))throw new ArgumentException("Four individual tire conditions are required.");
    SyncSummary(c);
   }
+  // Explicit creation path for new/used market stock and read-only previews.
+  // Never call this for persisted data: v12 profile validation must reject
+  // missing tire elements, not manufacture replacement identities or wear.
+  public static void SeedNew(ComponentCondition c) {
+   if(c==null||c.elements==null||c.elements.Length!=0)
+    throw new InvalidOperationException("Only an uninitialized tire pack can be seeded.");
+   var tires=new TireCondition[4];
+   for(int i=0;i<4;i++) tires[i]=new TireCondition{
+    health=c.health, failed=c.failed, failureReason=c.failed?c.failureReason:"",
+    temperatureC=c.temperatureC, slipEnergyJ=c.slipEnergyJ*.25,
+    distanceM=c.distanceM, runningSeconds=c.runningSeconds, consumedLife=Math.Max(0,1-c.health)
+   };
+   c.tires=tires;
+   SyncSummary(c);
+  }
   // The former generic ComponentCondition is retained only as a serialized
   // compatibility shell around the four separately owned tires. Do not put
   // derived health, heat, service history, or wear back into this shell.

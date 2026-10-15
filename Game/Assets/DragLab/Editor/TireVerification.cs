@@ -48,6 +48,12 @@ namespace DragLab.Editor {
    check(rejectedLegacy&&legacy.elements.Length==0&&legacy.health==.4f&&legacy.slipEnergyJ==400,"Legacy aggregate tire condition must not regenerate physical tire histories");
    var fresh=new ComponentCondition();TireDynamics.Ensure(fresh);TireDynamics.Ensure(fresh);
    check(fresh.tires.Length==4&&fresh.tires.All(t=>t.health==1&&!t.failed&&t.temperatureC==20),"Fresh tire members initialize idempotently without inventing wear");
+   var usedSeed=new ComponentCondition{health=.4f,temperatureC=70,slipEnergyJ=400,distanceM=800,runningSeconds=50};
+   TireDynamics.SeedNew(usedSeed);TireDynamics.Ensure(usedSeed);
+   check(usedSeed.tires.Length==4&&usedSeed.tires.All(t=>t.health==.4f&&t.consumedLife>.59
+       &&t.temperatureC==70&&t.slipEnergyJ==100&&t.distanceM==800&&t.runningSeconds==50)
+       &&usedSeed.health==1&&usedSeed.distanceM==0&&usedSeed.slipEnergyJ==0,
+       "Explicit used-market seeding preserves per-tire history and neutralizes its container");
    var retainedFailure=Car(Resources.LoadAll<VehicleDefinition>("Data/Vehicles")[0],0);Pack(retainedFailure).condition.tires[0].failed=true;Pack(retainedFailure).condition.tires[0].failureReason="Original tire failure cause";retainedFailure.mechanics.Prepare(retainedFailure.state);Work(retainedFailure,10000);check(Pack(retainedFailure).condition.tires[0].failed&&Pack(retainedFailure).condition.tires[0].failureReason=="Original tire failure cause"&&Pack(retainedFailure).condition.failed==false,"Existing tire failure flags and diagnostic cause survive continued simulation");
    var broken=new ComponentCondition{elements=new EngineElement[]{new TireCondition(),new TireCondition()}};
    bool rejectedMalformed=false;try{TireDynamics.Ensure(broken);}catch(InvalidOperationException){rejectedMalformed=true;}catch(ArgumentException){rejectedMalformed=true;}

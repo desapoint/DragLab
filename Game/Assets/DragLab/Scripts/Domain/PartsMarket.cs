@@ -134,7 +134,7 @@ namespace DragLab.Domain.Mechanics
             if(d.category==PartCategory.FuelSystem&&d.fuelDelivery!=FuelDeliveryHardware.Factory){spec=spec.Copy();FuelingHardware.Apply(spec,d);}
             var item=new PartInstance{instanceId=id,definitionId=d.id,condition=new ComponentCondition{health=health,distanceM=Math.Round((1-health)*80000000),runningSeconds=Math.Round((1-health)*1000000)}};
             EngineElements.Ensure(spec,d,item);ClutchHardware.Ensure(d,item.condition);
-            if(d.category==PartCategory.Tires){TireDynamics.Ensure(item.condition);for(int i=0;i<4;i++){var t=item.condition.tires[i];t.id=id+"/tire/"+i;t.definitionId=d.id;t.health=health;t.consumedLife=1-health;}}
+            if(d.category==PartCategory.Tires){TireDynamics.SeedNew(item.condition);for(int i=0;i<4;i++){var t=item.condition.tires[i];t.id=id+"/tire/"+i;t.definitionId=d.id;}}
             return item;
         }
         public sealed class Ledger

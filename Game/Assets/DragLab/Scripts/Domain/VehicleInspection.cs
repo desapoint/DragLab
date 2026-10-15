@@ -32,7 +32,7 @@ namespace DragLab.Domain.Mechanics
             view.fluids.oilLitres*=.8;view.fluids.coolantLitres*=.8;
             foreach(var slot in catalog.Recipe(offer.model)){
                 var d=catalog.Find(slot.Value);var p=new PartInstance{instanceId="estimate/"+offer.listingId+"/"+slot.Key,definitionId=d.id,slot=slot.Key.ToString(),condition=new ComponentCondition{health=(float)(PartSemantics.Wears(d.category)?health:1)}};
-                EngineElements.Ensure(build.spec,d,p);ClutchHardware.Ensure(d,p.condition);if(d.category==PartCategory.Tires){float estimated=p.condition.health;TireDynamics.Ensure(p.condition);foreach(var t in p.condition.tires){t.health=estimated;t.consumedLife=1-t.health;}TireDynamics.SyncSummary(p.condition);}view.parts.Add(p);
+                EngineElements.Ensure(build.spec,d,p);ClutchHardware.Ensure(d,p.condition);if(d.category==PartCategory.Tires){TireDynamics.SeedNew(p.condition);for(int i=0;i<4;i++){var tire=p.condition.tires[i];tire.id=p.instanceId+"/tire/"+i;tire.definitionId=d.id;}}view.parts.Add(p);
             }
             return view;
         }
