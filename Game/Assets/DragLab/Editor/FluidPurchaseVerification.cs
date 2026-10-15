@@ -27,9 +27,9 @@ namespace DragLab.Editor
                 string before=JsonUtility.ToJson(generated.inventory);
                 var loaded=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(generated));
                 MechanicsOwnership.Ensure(loaded,catalog);
-                string invalid=MechanicsOwnership.Validate(loaded,catalog);
-                if(invalid!=null)throw new InvalidOperationException("Generated dealer stock seed "+seed
-                    +" failed to reload: "+invalid);
+                string generatedInvalid=MechanicsOwnership.Validate(loaded,catalog);
+                if(generatedInvalid!=null)throw new InvalidOperationException("Generated dealer stock seed "+seed
+                    +" failed to reload: "+generatedInvalid);
                 if(JsonUtility.ToJson(loaded.inventory)!=before)
                     throw new InvalidOperationException("Generated market stock seed "+seed
                         +" changed when loaded without a purchase.");
