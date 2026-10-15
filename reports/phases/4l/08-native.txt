@@ -1,0 +1,143 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Fitted values reflect actual member condition and failures instead of a neutral tire wrapper
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Each fitted part has a shared Shop action, available after an owned car is selected
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Native instruments open over the track without the full-screen menu/navigation
+PASS: Race framing enlarges the whole world and raises the road independently of the HUD
+PASS: Staged car shows neutral and its actual running idle
+PASS: Snapshot instruments display exact authoritative RPM, road speed and engaged gear
+PASS: Red band starts at the lowest safe hardware/spec redline, separately from shift/cut settings
+PASS: Analog scale has a partial-circle sweep and headroom above redline
+PASS: New RPM dial contains no suggested shift marker or target
+PASS: Steering rim draws in front of both gauges
+PASS: Foreground wheel has a thicker black rim and lower position
+PASS: Travel remains horizontal rather than tilting the road or cars
+PASS: Road texture, markings and far car share a foreshortened depth projection with faster near-ground motion
+PASS: Asphalt geometry itself is a strongly narrowed and skewed trapezoid, not a rectangular mesh with different UVs
+PASS: Road retains narrow ground-depth projection with extra asphalt coverage beneath the dashboard
+PASS: Projected lanes move closer without flattening the upright car sprites
+PASS: Vertical support pole meets the exact projected ground point under the lights
+PASS: Light housing is raised by the exposed pole height and its support overlaps without a gap
+PASS: Enlarged start-light housing and lenses remain readable above the narrower road
+PASS: Distant start-light post stays behind the car when the compressed lanes overlap
+PASS: Rear car uses the same 82-percent scale as its projected lane
+PASS: Both cars are anchored by tire contacts on their depth plane rather than sprite centers
+PASS: Actual rear-car displacement for ten physical metres matches its projected road scale
+PASS: Pole and raised lights scroll as one assembly while their foot stays on the projected road edge
+PASS: High-speed ground travel uses the shared larger distance scale and stronger near-road cues
+PASS: Countdown illuminates both lanes' reached amber lamps
+PASS: Green shows only the paired green lamps
+PASS: Red light replaces green for a false start
+PASS: Finish ribbon is visibly diagonal across the road and narrows toward the far edge
+PASS: Finish checker UVs reconstruct near-square orthogonal checks at near/middle/far depths instead of elongated diamonds
+PASS: Finish checks repeat along the ribbon instead of stretching one short image over the road
+PASS: Equal physical finish distances align the actual car and skewed finish mesh in its own lane: Player Car
+PASS: Equal physical finish distances align the actual car and skewed finish mesh in its own lane: Opponent Car
+PASS: No shift-light hardware means no lamp or shift cue even at high RPM
+PASS: Installed programmable light remains dark below its real threshold
+PASS: Purchased light illuminates at the applied hardware threshold without adding a dial shift marker
+PASS: Shift light does not request a nonexistent gear above top gear
+PASS: Changing RPM repaints the needle without rebuilding the fixed dial geometry
+PASS: Concurrent essential engine, driveline and brake warnings remain visible together
+PASS: Manual neutral remains neutral
+PASS: Manual gear display does not invent CVT stepped gears
+PASS: DCT neutral remains neutral
+PASS: DCT gear display does not invent CVT stepped gears
+PASS: Automatic neutral remains neutral
+PASS: Automatic gear display does not invent CVT stepped gears
+PASS: CVT neutral remains neutral
+PASS: CVT gear display does not invent CVT stepped gears
+PASS: H-pattern shift travels through the neutral crossgate using real handover progress
+PASS: Completed H-pattern shift settles into the correct gate
+PASS: Shaft exit moves within the boot around a lower pivot as the round knob changes gates
+PASS: Upper gear row is closer to the boot while lower gear positions stay unchanged
+PASS: The same elapsed shift time advances a fast real gearbox farther than a slow gearbox
+PASS: Shifter animation cannot advance when authoritative shift time is frozen
+PASS: Non-H hardware does not draw a manual H gate: Manual
+PASS: Non-H hardware does not draw a manual H gate: DCT
+PASS: Non-H hardware does not draw a manual H gate: Automatic
+PASS: Non-H hardware does not draw a manual H gate: CVT
+PASS: Dashboard has a shallow instrument-cluster rise rather than a rectangular top
+PASS: Dial and exact readout share applied KilometresPerHour units
+PASS: Dial and exact readout share applied MilesPerHour units
+PASS: Dial and exact readout share applied MetresPerSecond units
+PASS: The same gauge renderer accepts a semicircular scale without changing telemetry
+PASS: Left dials and right shifter stay separated at 1024
+PASS: Low dashboard stays bounded with the instrument cluster overflowing at 1024
+PASS: Asphalt extends beneath the dashboard without a background gap at 1024
+PASS: Reduced dials retain their independent HUD sizing at 1024
+PASS: All speedGauge number boxes remain inside the tick marks at 1024
+PASS: All rpmGauge number boxes remain inside the tick marks at 1024
+PASS: Left dials and right shifter stay separated at 1920
+PASS: Low dashboard stays bounded with the instrument cluster overflowing at 1920
+PASS: Asphalt extends beneath the dashboard without a background gap at 1920
+PASS: Reduced dials retain their independent HUD sizing at 1920
+PASS: All speedGauge number boxes remain inside the tick marks at 1920
+PASS: All rpmGauge number boxes remain inside the tick marks at 1920
+PASS: True 4K target uses sharp vector geometry and shared 2× logical scaling
+PASS: Rendering, themes/scales, units and resizing never change assets or save the profile
+PASS: F8 restores the original whole race interface
+PASS: F8 returns to the instruments on the same live race
+PASS: Held W revs the staged authoritative engine and updates the live dial
+PASS: E engages and launches from neutral with the new HUD
+PASS: Keyboard shifting preserves held throttle and rotating engine RPM
+PASS: Hidden legacy shift buttons have no invisible hit targets; held keyboard throttle remains live
+PASS: Pause icon renders the shared shaded button surface rather than a default unstyled button
+PASS: Visible pause button opens the shared dialog above the dashboard
+PASS: Race pause hides the normal-menu navigation, pages and full Settings interface
+PASS: Dialog content clears fixed X/title and actions: race pause
+PASS: Pedals, shifts and G cannot advance or quit the race behind the pause dialog
+PASS: F8 cannot switch presentation behind an open pause dialog
+PASS: Controls are available as a contained read-only page with actual driving bindings
+PASS: Dialog content clears fixed X/title and actions: race controls
+PASS: Escape from a child page returns to pause without resuming
+PASS: Contained race settings expose only master/opponent sound, without reset or driving-rule changes
+PASS: Shared sound slider is a draft until explicit Apply
+PASS: Pause reuses the shared thin slider and round thumb
+PASS: Sound X discards the draft and returns to pause
+PASS: Failed preference save keeps sound drafts, applied audio and paused race intact
+PASS: Retry applies and durably reloads the two sound settings without resuming
+PASS: Sound apply preserves progression, database bytes, applied units and captured simulation rules
+PASS: Quit race opens an explicit shared confirmation
+PASS: Cancelling quit preserves the same paused session
+PASS: Shared pause card fits the viewport at 1024
+PASS: Dialog content clears fixed X/title and actions: pause 1024
+PASS: Shared pause card fits the viewport at 1920
+PASS: Dialog content clears fixed X/title and actions: pause 1920
+PASS: Main pause X resumes the same race
+PASS: Escape reopens the shared pause menu
+PASS: Resume closes the dialog without restarting the car
+PASS: Quick audio command is rejected outside a paused race
+PASS: Failed durable exit remains in the quit review with the live race retained
+PASS: Confirmed quit uses the existing durable interrupted-race exit and returns to Garage
+PASS: Quit retains exact live fuel and component health instead of refilling or repairing
+PASS: Retained race fuel survives SQLite reload after quitting
+PASS: Leaving the race removes the instrument overlay
+PASS: Finishing a real authoritative pass hides instruments and preserves the existing results workflow
+PASS: Results retry/garage shortcuts cannot bypass an open native pause dialog
+PASS: Real results G shortcut returns to Garage and closes the worn-tire checkpoint
+PASS: Returning to Garage restores its original camera framing
+PASS: Finished-race exit remains settled after durable profile reload
+Checks: 141 / runtime errors: 0

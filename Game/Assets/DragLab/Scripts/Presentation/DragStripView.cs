@@ -10,7 +10,7 @@ namespace DragLab.Presentation
         // integration: pausing, replays and resets all retain the same physical distances.
         public const float MetersToView = .60f;
         public const float PlayerLane=-2.6f, OpponentLane=-.8f, RoadDepthCompression=.35f, FarCarScale=.82f, StartLightScale=.85f, StartPoleHeight=1.1f;
-        const float Span=76.8f, DepthSlope=(1-FarCarScale)/(OpponentLane-PlayerLane), DepthSkew=1.1f;
+        const float Span=76.8f, DepthSlope=(1-FarCarScale)/(OpponentLane-PlayerLane), DepthSkew=1.1f, GroundNearLane=-8f;
         struct Tile { public Transform transform; public Vector3 origin; public float parallax; }
         readonly List<Tile> tiles = new List<Tile>();
         readonly List<SpriteRenderer> lamps = new List<SpriteRenderer>(), halos = new List<SpriteRenderer>();
@@ -128,10 +128,10 @@ namespace DragLab.Presentation
             var vertices=new Vector3[50];var colors=new Color32[50];
             for(int row=0;row<=24;row++)for(int side=0;side<2;side++)
             {
-                float y=Mathf.Lerp(-4.8f,.82f,row/24f),x=side==0?-48:55;
+                float y=Mathf.Lerp(GroundNearLane,.82f,row/24f),x=side==0?-48:55;
                 int at=row*2+side;vertices[at]=Project(x,y);
                 roadU[at]=x/6.4f;
-                roadUv[at]=new Vector2(roadU[at],Mathf.Lerp(0,1,row/24f));
+                roadUv[at]=new Vector2(roadU[at],(y+4.8f)/5.62f);
                 colors[at]=Color.Lerp(Color.white,new Color(.77f,.79f,.81f),row/24f);
             }
             roadMesh.vertices=vertices;roadMesh.uv=roadUv;roadMesh.colors32=colors;roadMesh.triangles=StripTriangles();roadMesh.MarkDynamic();
@@ -146,12 +146,12 @@ namespace DragLab.Presentation
         {
             // Map repeating checks in the ribbon's projected tangent/normal basis. Including
             // the tangent offset at each edge removes the long, skewed texture diamonds.
-            var tangent=(Vector2)(Project(finishX,.75f)-Project(finishX,-4.4f));tangent.Normalize();
+            var tangent=(Vector2)(Project(finishX,.75f)-Project(finishX,GroundNearLane));tangent.Normalize();
             var normal=new Vector2(tangent.y,-tangent.x);
             float v=0,previousWidth=0;Vector2 previousCenter=Vector2.zero;
             for(int row=0;row<=24;row++)
             {
-                float y=Mathf.Lerp(-4.4f,.75f,row/24f);Vector2 center=Project(finishX,y);
+                float y=Mathf.Lerp(GroundNearLane,.75f,row/24f);Vector2 center=Project(finishX,y);
                 float width=.44f*DepthScale(y)*Mathf.Abs(normal.x);
                 if(row>0)v+=Vector2.Distance(center,previousCenter)*2/(width+previousWidth);
                 for(int side=0;side<2;side++)

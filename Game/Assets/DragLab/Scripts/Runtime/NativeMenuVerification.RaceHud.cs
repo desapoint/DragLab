@@ -22,6 +22,7 @@ namespace DragLab.Runtime
             game.StartPractice(); yield return null; yield return new WaitForSecondsRealtime(.1f);
             var hud = game.RaceHud; var state = game.Race.player.state;
             Check(hud.Visible && !shell.Visible, "Native instruments open over the track without the full-screen menu/navigation");
+            Check(Camera.main.orthographicSize < PrototypeGame.MenuCameraSize && Camera.main.transform.position.y < 0, "Race framing enlarges the whole world and raises the road independently of the HUD");
             Check(hud.Gear.Readout == "N" && state.rpm > 0, "Staged car shows neutral and its actual running idle");
             game.enabled = false;
             double rpm = state.rpm, speed = state.speed; int gear = state.gear;
@@ -44,7 +45,8 @@ namespace DragLab.Runtime
             var roadVertices=asphalt.vertices;
             float nearWidth=(roadVertices[1]-roadVertices[0]).magnitude,farWidth=(roadVertices[49]-roadVertices[48]).magnitude;
             Check(farWidth<nearWidth*.65f&&roadVertices[48].x>roadVertices[0].x+10,"Asphalt geometry itself is a strongly narrowed and skewed trapezoid, not a rectangular mesh with different UVs");
-            Check(roadVertices[48].y-roadVertices[0].y<2&&roadVertices[48].y-roadVertices[0].y>1.5f,"Road is an edge-on strip with about 65 percent less visible vertical surface");
+            float markedDepth=DragLab.Presentation.DragStripView.ScreenLane(.82f)-DragLab.Presentation.DragStripView.ScreenLane(-4.8f);
+            Check(markedDepth<2&&markedDepth>1.5f&&roadVertices[0].y<DragLab.Presentation.DragStripView.ScreenLane(-4.8f),"Road retains narrow ground-depth projection with extra asphalt coverage beneath the dashboard");
             Check(DragLab.Presentation.DragStripView.ScreenLane(DragLab.Presentation.DragStripView.OpponentLane)-DragLab.Presentation.DragStripView.ScreenLane(DragLab.Presentation.DragStripView.PlayerLane)<.7f,"Projected lanes move closer without flattening the upright car sprites");
             var nearCar=GameObject.Find("Player Car").GetComponent<DragLab.Presentation.LayeredCarView>();
             var farCar=GameObject.Find("Opponent Car").GetComponent<DragLab.Presentation.LayeredCarView>();
@@ -164,6 +166,11 @@ namespace DragLab.Runtime
                 Check(hud.Speed.worldBound.xMax < hud.Rpm.worldBound.xMin && hud.Rpm.worldBound.xMax < hud.Gear.worldBound.xMin, "Left dials and right shifter stay separated at " + width);
                 float pedalTop = (Screen.height - 91 * RaceInputAdapter.Scale(Screen.width,Screen.height)) / hud.Panel.scale;
                 Check(hud.Dashboard.worldBound.yMax <= hud.Root.worldBound.yMax && hud.Rpm.worldBound.yMin < hud.Dashboard.worldBound.yMin && hud.Gear.worldBound.yMax <= hud.Root.worldBound.yMax, "Low dashboard stays bounded with the instrument cluster overflowing at " + width);
+                var roadEdge=Camera.main.WorldToViewportPoint(new Vector3(2,roadVertices[0].y,0));
+                float roadTop=(1-roadEdge.y)*Screen.height/hud.Panel.scale;
+                float dashTop=hud.Dashboard.worldBound.yMin+RaceDashboard.Top(roadEdge.x*hud.Root.worldBound.width,hud.Root.worldBound.width);
+                Check(roadTop>=dashTop, "Asphalt extends beneath the dashboard without a background gap at " + width);
+                Check(hud.Speed.contentRect.width<226 && hud.Rpm.contentRect.width<254, "Reduced dials retain their independent HUD sizing at " + width);
                 foreach(var dial in new[]{hud.Speed,hud.Rpm})
                 {
                     float radius=dial.contentRect.width*.40f;
@@ -218,6 +225,7 @@ namespace DragLab.Runtime
             Check(game.NativeRacePause&&game.Race==completed,"Results retry/garage shortcuts cannot bypass an open native pause dialog");
             yield return Click(input,"dialogResume");yield return Key(input,0x47);
             Check(game.ScreenName=="Garage"&&game.Race==null&&game.Profile.runCheckpoints.All(r=>r.settled),"Real results G shortcut returns to Garage and closes the worn-tire checkpoint");
+            Check(Math.Abs(Camera.main.orthographicSize-PrototypeGame.MenuCameraSize)<.001 && Camera.main.transform.position.y==0, "Returning to Garage restores its original camera framing");
             Check(ProfileStore.Load().runCheckpoints.All(r=>r.settled),"Finished-race exit remains settled after durable profile reload");
         }
 #endif

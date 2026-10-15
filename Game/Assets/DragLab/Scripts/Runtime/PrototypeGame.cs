@@ -22,6 +22,7 @@ namespace DragLab.Runtime
         CareerEventDefinition activeEvent;
         LayeredCarView playerView, aiView;
         Camera raceCamera;
+        internal const float MenuCameraSize = 5.2f, RaceSceneZoom = 1.15f, RaceCameraY = -.75f;
         DragStripView strip;
         EngineAudio engineAudio, opponentAudio;
         readonly RaceInputAdapter controls = new RaceInputAdapter();
@@ -122,7 +123,7 @@ namespace DragLab.Runtime
             }
             raceCamera.orthographic = true;
             raceCamera.clearFlags = CameraClearFlags.SolidColor;
-            raceCamera.orthographicSize = 5.2f;
+            raceCamera.orthographicSize = MenuCameraSize;
             raceCamera.backgroundColor = new Color(.10f, .16f, .23f);
             raceCamera.transform.position = new Vector3(2, 0, -10);
             if (raceCamera.GetComponent<AudioListener>() == null) raceCamera.gameObject.AddComponent<AudioListener>();
@@ -143,6 +144,8 @@ namespace DragLab.Runtime
         }
         void ShowGarageCar()
         {
+            raceCamera.orthographicSize = MenuCameraSize;
+            raceCamera.transform.position = new Vector3(2, 0, -10);
             if (Build == null) { playerView.gameObject.SetActive(false); aiView.gameObject.SetActive(false); strip.ShowGarage(); engineAudio.Silence(); opponentAudio.Silence(); controls.Clear(); return; }
             playerView.gameObject.SetActive(true);
             Color paint;
@@ -154,7 +157,6 @@ namespace DragLab.Runtime
             aiView.transform.rotation = Quaternion.identity;
             playerView.transform.position = new Vector3(6.5f, 3.85f, 0);
             aiView.gameObject.SetActive(false);
-            raceCamera.transform.position = new Vector3(2, 0, -10);
             strip.ShowGarage();
             engineAudio.Silence(); opponentAudio.Silence(); controls.Clear();
         }
@@ -201,6 +203,8 @@ namespace DragLab.Runtime
             aiView.Build(opponent.spec.artId, opponent.defaultPaint, 0);
             playerView.ApplySetup(race.player.spec, race.player.tune);
             aiView.ApplySetup(race.opponent.spec, race.opponent.tune);
+            raceCamera.orthographicSize = MenuCameraSize / RaceSceneZoom;
+            raceCamera.transform.position = new Vector3(2, RaceCameraY, -10);
             PlaceRaceCars();
             screen = "Race";
             accumulator = 0; awarded = false; paused = false; resultScroll = Vector2.zero;

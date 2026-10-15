@@ -1,5 +1,11 @@
 # Race instruments — approved direction (2026-10-14)
 
+## Race scene framing and smaller dials (2026-10-15)
+
+Enlarge the race world together: road, both cars, start lights/pole, markings and effects. Use a 15% race-only camera zoom and raise the scene slightly, retaining the narrow lane-depth projection, 82% distant-car relationship and physical-distance movement. Asphalt and start/finish ribbons extend beneath the dash to avoid a visible background gap; preserve the existing asphalt texture mapping over the lane area. Restore the original camera on return to Garage.
+
+HUD elements keep their existing logical scale except the two requested smaller gauges: speed/RPM diameters become 204/228 points (172/192 compact), roughly 10% smaller. Keep text sizes readable, redline, purchased shift-light gating, shifter, steering rim and pause layout. [Checks/review](../reports/phases/4l/08-RACE-FRAMING.md). This is one requested visual checkpoint; further instruments and pages remain separately authorized.
+
 ## Narrow road, checks and scale refinement (2026-10-14)
 
 Show a much narrower, nearly edge-on road surface: compress only ground-depth height to 35% of the previous view. Keep cars, posts and gauges upright. Lanes/contact anchors, road paint, asphalt and start/finish geometry share the compressed ground projection. Retain the skewed trapezoid and diagonal finish. Tile the finish checks with compensated texture coordinates so they read as squares instead of stretching one short image along the full ribbon.

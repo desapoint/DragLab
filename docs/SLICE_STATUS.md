@@ -1,5 +1,7 @@
 # Prototype implementation status
 
+**4L.8 race framing ready for review (2026-10-15):** started and remains on merged `main`. Complete race world is 15% larger and slightly higher; asphalt/ribbons cover beneath the unchanged dashboard. Speed/RPM faces are about 10% smaller, with readable labels and independent HUD scale. Returning to Garage restores its original view. Final Windows build and native race **141/0** pass. [Checks/review](../reports/phases/4l/08-RACE-FRAMING.md). Stop here for visual validation; no later control is advanced.
+
 **Per-tire branch release checkpoint (2026-10-15):** audit fixes address save/reset marker recovery, fluid/commerce quotes, exact clutch snapshot continuation, monotonic member tire wear, exhausted-tire maintenance/valuation, component fault permissions and current-contract verification. The completed-race Garage exit and settlement reload pass in the packaged player. [Final audit and evidence](../reports/branch-audit/RELEASE-AUDIT.md). This technical checkpoint does not approve visual interfaces or advance later Slice 4 controls.
 
 **4L.7 raised lights/pole ready for review:** Windows build and native **131/0** pass; [checkpoint](../reports/phases/4l/07-LIGHT-POLE.md). The separately reported post-finish save failure was subsequently addressed and regression-tested in the linked branch release audit.

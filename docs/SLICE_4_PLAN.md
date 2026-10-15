@@ -1,5 +1,7 @@
 # Slice 4 — Interface migration, input and platform validation
 
+Requested race framing checkpoint (2026-10-15): enlarge the complete race world except HUD, raise the road slightly toward the dash boundary, and reduce only the speed/RPM gauges. Preserve shared projection/physical distances and independent HUD sizing. [Delivery/checks/review](../reports/phases/4l/08-RACE-FRAMING.md). This is one requested control checkpoint, not authorization for further instruments or pages.
+
 Requested fitted-part control (2026-10-15): a shared Shop button on each disclosed fitted-part row opens a fresh Shop query with Compatible + In stock plus its category, using the current owned car without buying/installing or changing reserved stock. No later phase is authorized. [Checks/review](../reports/branch-audit/FITTED-PART-SHOP.md).
 
 Requested navigation/filter checkpoint (2026-10-15): main-menu entry restores default tab/list/search/filter/sort/scroll state without losing actual assets or reserved cart rows. Parts default to Compatible + In stock, with independent price and Stock criteria and a collapsed Advanced section. Internal Back, Settings Cancel, F8 and unsaved Settings protection retain their existing roles. This is a user-requested refinement, not advancement to a later Slice 4 phase; visual acceptance remains separate. [Checks/review](../reports/branch-audit/NAVIGATION-FILTERS.md).
