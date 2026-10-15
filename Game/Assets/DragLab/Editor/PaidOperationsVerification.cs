@@ -50,9 +50,17 @@ namespace DragLab.Editor
                 check(p.cash == cash - q.Cost && p.parts.Find(i => i.instanceId == radiator.instanceId).condition.leakSeverity == 0 && p.parts.Find(i => i.instanceId == radiator.instanceId).condition.health == .7f, "Paid repair restores leak only, preserves structural wear: " + model);
                 radiator = p.parts.Find(i => i.instanceId == radiator.instanceId); radiator.condition.failed = true; radiator.condition.failureReason = "fixture";
                 rejects(p, a => PaidEconomy.Pay(a, cat, costs, prices, quote(a, new PaymentRequest { kind = PaymentKind.Repair, carId = carId, targetId = radiator.instanceId, service = ServiceAction.Reseal }), now), "Unrepairable failure cannot be healed by paid reseal: " + model); radiator.condition.failed = false;
+                // An oil change must replace the currently fitted grade, not silently downgrade it.
+                var upgradedFilter=cat.Find(cat.Id(model,PartCategory.OilFilter,1));
+                if(upgradedFilter!=null)PartOperations.Buy(p,cat,carId,upgradedFilter.id,true);
                 string filter = p.SelectedCar.installed.slots.Find(s => s.slot == "OilFilter").partInstanceId;
-                q = quote(p, new PaymentRequest { kind = PaymentKind.OilChange, carId = carId }); cash = p.cash; p = commit(p, a => PaidEconomy.Pay(a, cat, costs, prices, q, now));
-                check(p.cash == cash - q.Cost && p.SelectedCar.fluids.oilCondition == 1 && p.parts.Find(i => i.instanceId == filter).location == PartLocation.Inventory, "Oil/filter/labour charged once; old filter retained: " + model);
+                string fittedFilterId=ServiceOperations.OilFilter(p,p.SelectedCar).id;
+                q = quote(p, new PaymentRequest { kind = PaymentKind.OilChange, carId = carId });
+                int filterCost=PartsMarket.Quote(p,cat.Find(fittedFilterId),1).cost;
+                check(q.Cost==(int)Math.Ceiling(q.Oil*costs.oilPerLitre-1e-9)+costs.oilChangeLabour+filterCost,"Oil change quote uses installed filter grade: "+model);
+                cash = p.cash; p = commit(p, a => PaidEconomy.Pay(a, cat, costs, prices, q, now));
+                var installedFilter=p.parts.Find(i=>i.instanceId==p.SelectedCar.installed.slots.Find(s=>s.slot=="OilFilter").partInstanceId);
+                check(p.cash == cash - q.Cost && p.SelectedCar.fluids.oilCondition == 1 && p.parts.Find(i => i.instanceId == filter).location == PartLocation.Inventory && installedFilter.definitionId==fittedFilterId, "Oil/filter/labour paid once; upgraded filter grade and removed filter retained: " + model);
                 q = quote(p, new PaymentRequest { kind = PaymentKind.Part, carId = carId, targetId = cat.Id(model, PartCategory.Pistons, 1), install = true }); cash = p.cash; p = commit(p, a => PaidEconomy.Pay(a, cat, costs, prices, q, now)); check(p.cash == cash - q.Cost && p.economyReceipts.Last().operation == "Part", "Quoted upgrade purchase settles once: " + model);
                 var offer = new VehicleOffer { model = model, price = asset.purchasePrice, reputation = asset.reputationRequired, stock = asset.CreateStockTune() }; q = quote(p, new PaymentRequest { kind = PaymentKind.Car, offer = offer }); cash = p.cash; p = commit(p, a => PaidEconomy.Pay(a, cat, costs, prices, q, now, offer));
                 check(p.cash == cash - q.Cost && p.cars.Count == 2 && p.SelectedCar.fuel.litres == fuel.capacityLitres, "Dealership payment includes new package resources and separate identities: " + model);
@@ -76,6 +84,8 @@ namespace DragLab.Editor
                 q = quote(service, new PaymentRequest { kind = PaymentKind.CoolantFlush, carId = serviceCar }); cash = service.cash;
                 service = commit(service, a => PaidEconomy.Pay(a, cat, costs, prices, q, now));
                 check(service.cash == cash - q.Cost && service.SelectedCar.fluids.coolantLitres == MechanicsOwnership.Resolve(service, service.SelectedCar, cat).spec.fluids.coolantCapacityLitres, "Paid flush charges full coolant and labour: " + model);
+                var tires=service.parts.Find(i=>i.instanceId==service.SelectedCar.installed.slots.Find(s=>s.slot=="Tires").partInstanceId);
+                rejects(service,a=>PaidEconomy.Quote(a,cat,costs,prices,new PaymentRequest{kind=PaymentKind.ElementNew,carId=serviceCar,targetId=tires.instanceId,auxiliaryId=tires.condition.tires[0].id},now),"Generic element purchase cannot bypass typed per-corner tire checkout: "+model);
                 var pack = service.parts.Find(i => i.instanceId == service.SelectedCar.installed.slots.Find(s => s.slot == "Pistons").partInstanceId);
                 string oldElement = pack.condition.elements[0].id, otherElements = string.Join("/", pack.condition.elements.Skip(1).Select(e => JsonUtility.ToJson(e)));
                 pack.condition.elements[0].fault = ElementFault.CompressionLeak; pack.condition.elements[0].severity = .4f;
@@ -93,6 +103,9 @@ namespace DragLab.Editor
                 check(service.cars.Count == 1 && string.IsNullOrEmpty(service.SelectedCar.engineAssemblyId) && service.SelectedCar.fuel.litres == retainedFuel && service.engines.All(e => e.instanceId != attached) && service.parts.Find(i => i.instanceId == pack.instanceId).location == PartLocation.Inventory && MechanicsOwnership.Validate(service, cat) == null, "Attached engine sale preserves chassis/fuel and selected retained pack: " + model);
             }
             var rebuild = fresh("starter-hatch"); string rebuildCar = rebuild.SelectedCar.instanceId;
+            var rebuildFilter=cat.Find(cat.Id("starter-hatch",PartCategory.OilFilter,1));
+            if(rebuildFilter!=null)PartOperations.Buy(rebuild,cat,rebuildCar,rebuildFilter.id,true);
+            string retainedRebuildFilter=ServiceOperations.OilFilter(rebuild,rebuild.SelectedCar).id;
             var rebuildQuote = quote(rebuild, new PaymentRequest { kind = PaymentKind.Rebuild, carId = rebuildCar }); int rebuildCash = rebuild.cash;
             var originalRebuild = EngineRebuilds.Quote(rebuild, rebuild.SelectedCar, now);
             check(rebuildQuote.Cost == originalRebuild.paidPrice + (int)Math.Ceiling(MechanicsOwnership.Resolve(rebuild, rebuild.SelectedCar, cat).spec.fluids.oilCapacityLitres * costs.oilPerLitre), "Rebuild payment includes renewal oil, existing component/filter cost and labour.");
@@ -102,7 +115,18 @@ namespace DragLab.Editor
             rejects(rebuild, a => PaidEconomy.Quote(a, cat, costs, prices, new PaymentRequest { kind = PaymentKind.Fuel, carId = rebuildCar, litres = 1 }, now), "Paid modification cannot bypass rebuild reservation.");
             var reserved = rebuild.SelectedCar.engineRebuild;
             rebuild = commit(rebuild, a => EngineRebuilds.Collect(a, rebuildCar, reserved.id, reserved.readyUtcTicks));
-            check(rebuild.cash == rebuildCash - rebuildQuote.Cost && rebuild.SelectedCar.engineRebuild == null, "Rebuild collection retains paid fee and releases reservation without second charge.");
+            check(rebuild.cash == rebuildCash - rebuildQuote.Cost && rebuild.SelectedCar.engineRebuild == null && ServiceOperations.OilFilter(rebuild,rebuild.SelectedCar).id==retainedRebuildFilter, "Rebuild collection retains upgraded filter specification and charges no second fee.");
+            var ringsProfile=fresh("starter-hatch");
+            var ringsCar=ringsProfile.SelectedCar;
+            var ringPart=ringsProfile.parts.Find(i=>i.instanceId==ringsCar.installed.slots.Find(s=>s.slot=="PistonRings").partInstanceId);
+            var blockPart=ringsProfile.parts.Find(i=>i.instanceId==ringsCar.installed.slots.Find(s=>s.slot=="CylinderBlock").partInstanceId);
+            ringPart.condition.health=.5f;blockPart.condition.health=.6f;
+            check(!ServiceOperations.Available(cat.Find(ringPart.definitionId),ringPart.condition,ServiceOperations.BoreHealth(ringsProfile,ringsCar)).Contains(ServiceAction.Recondition),"Worn bore excludes piston-ring reconditioning from available paid repairs.");
+            rejects(ringsProfile,a=>PaidEconomy.Quote(a,cat,costs,prices,new PaymentRequest{kind=PaymentKind.Repair,carId=ringsCar.instanceId,targetId=ringPart.instanceId,service=ServiceAction.Recondition},now),"Worn-bore ring service rejects at quote, before charging.");
+            blockPart.condition.health=.9f;
+            var ringQuote=quote(ringsProfile,new PaymentRequest{kind=PaymentKind.Repair,carId=ringsCar.instanceId,targetId=ringPart.instanceId,service=ServiceAction.Recondition});int ringCash=ringsProfile.cash;
+            ringsProfile=commit(ringsProfile,a=>PaidEconomy.Pay(a,cat,costs,prices,ringQuote,now));
+            check(ringsProfile.cash==ringCash-ringQuote.Cost&&ringsProfile.parts.Find(i=>i.instanceId==ringPart.instanceId).condition.health>=.75f,"Viable piston-ring repair charges once after bore prerequisite is met.");
             var wet = fresh("starter-hatch"); var wetDefinition = cat.parts.First(d => d.category == PartCategory.Clutch && d.clutchEnvironment == ClutchEnvironment.Wet && cat.Fits(cat.Spec("starter-hatch"), d));
             PartOperations.Buy(wet, cat, wet.SelectedCar.instanceId, wetDefinition.id, true); MechanicsOwnership.Ensure(wet, cat);
             var wetPart = wet.parts.Find(i => i.instanceId == wet.SelectedCar.installed.slots.Find(s => s.slot == "Clutch").partInstanceId); wetPart.condition.health = .6f; wetPart.condition.clutchOilLitres = .1; wetPart.condition.clutchOilCondition = .2;

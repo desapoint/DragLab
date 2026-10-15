@@ -41,6 +41,20 @@ namespace DragLab.Editor
                 check(next.cash==cash-plan.cost&&next.revision==p.revision+1&&next.economyReceipts.Last().target==carId&&next.selectedOwnedVehicleId==p.selectedOwnedVehicleId,v.spec.id+" one charge/receipt preserves the independently selected car");
                 check(tune==JsonUtility.ToJson(catalog.Resolve(car.vehicleId,MechanicsOwnership.Definitions(next,next.cars[0]),next.cars[0].tune).tune)&&SnapshotEquality.Serialized(fluids,next.cars[0].fluids)&&SnapshotEquality.Serialized(other,next.cars[1])&&next.cars[0].fuel.litres==2,v.spec.id+" applied tuning, liquids and the other car are unchanged / fluids "+SnapshotEquality.Serialized(fluids,next.cars[0].fluids)+" / other "+SnapshotEquality.Serialized(other,next.cars[1]));
                 check(MechanicsOwnership.Validate(next,catalog)==null&&before==JsonUtility.ToJson(p),v.spec.id+" final ownership validates and original transaction source is unchanged");
+                // Buying fuel immediately after Quick Replace must not depend on the removed parts
+                // or change the retained dealer stock; both operations settle in separate receipts.
+                var operating=new OperatingPolicy();var prices=ValuationPolicy.Defaults();
+                var fuelRequest=new PaymentRequest{kind=PaymentKind.Fuel,carId=carId,litres=1};
+                var fuelQuote=PaidEconomy.Quote(next,catalog,operating,prices,fuelRequest,now);
+                int afterReplacementCash=next.cash;string dealerSnapshot=JsonUtility.ToJson(next.inventory);
+                PlayerProfile afterFuel;string fuelError;
+                bool fuelCommitted=MechanicsTransactions.Try(next,catalog,next.revision,
+                    state=>PaidEconomy.Pay(state,catalog,operating,prices,fuelQuote,now),
+                    state=>true,out afterFuel,out fuelError);
+                check(fuelCommitted&&afterFuel.cash==afterReplacementCash-fuelQuote.Cost
+                    &&JsonUtility.ToJson(afterFuel.inventory)==dealerSnapshot
+                    &&afterFuel.economyReceipts.Count==next.economyReceipts.Count+1,
+                    v.spec.id+" quick replacement followed by liquid checkout does not alter dealer inventory or double charge: "+fuelError);
                 foreach(var stock in p.inventory.market.parts)stock.units=0;var express=MaintenanceReplacements.Preview(p,carId,false);check(express.deliveryFee>0&&express.localUnits==0&&express.cost==PartCart.Total(p,carId,express.lines),v.spec.id+" absent stock adds only the shared express price");
                 var single=MaintenanceReplacements.Preview(p,carId,false,15,new[]{candidates.First(t=>t.position==old).key});check(single.lines.Count==1&&single.lines[0].action==CartAction.NewUnits&&single.lines[0].quantity==1,v.spec.id+" manual deselection leaves one exact individual replacement");
                 var rejected=PartCart.Quote(p,carId,express.lines,now,300);before=JsonUtility.ToJson(p);check(!MechanicsTransactions.Try(p,catalog,p.revision,q=>PartCart.Checkout(q,rejected,now),q=>false,out next,out error)&&before==JsonUtility.ToJson(p),v.spec.id+" failed persistence rolls back cash, stock and every replacement");
