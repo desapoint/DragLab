@@ -20,8 +20,10 @@ namespace DragLab.Domain.Mechanics
         // Select the merchandise by its real identity, never wrapper nullness.
         public bool HasPart => part != null && !string.IsNullOrWhiteSpace(part.instanceId);
         public bool HasUnit => unit != null && unit.element != null && !string.IsNullOrWhiteSpace(unit.element.id);
-        public bool IsPart => HasPart && !HasUnit && !isUnit;
-        public bool IsUnit => HasUnit && !HasPart && isUnit;
+        // Readers use real identities even before a stale isUnit flag is normalized.
+        // SharedInventory.Validate still rejects a mismatched persisted discriminator.
+        public bool IsPart => HasPart && !HasUnit;
+        public bool IsUnit => HasUnit && !HasPart;
         public string Id => IsPart ? part.instanceId : IsUnit ? unit.element.id : null;
         public string DefinitionId => IsPart ? part.definitionId : IsUnit ? unit.definitionId : null;
     }

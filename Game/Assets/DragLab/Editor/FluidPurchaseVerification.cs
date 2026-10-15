@@ -212,6 +212,24 @@ namespace DragLab.Editor
                 usedPaid.inventory.dealer.Any(s => s.Id == tire.id))
                 throw new InvalidOperationException("Used tire checkout lost the actual unit or charged incorrectly.");
 
+            // Used-item browse and checkout must also work when only the saved
+            // discriminator is stale; the cloned transaction repairs it on commit.
+            var staleUsed = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(profile));
+            MechanicsOwnership.Ensure(staleUsed, catalog);
+            staleUsed.inventory.dealer.Single(s => s.IsUnit && s.Id == tire.id).isUnit = false;
+            var staleUsedQuote = PartCart.Quote(staleUsed, staleUsed.SelectedCar.instanceId,
+                new[] { new PartCartLine { action = CartAction.BuyUsed,
+                    definitionId = tire.definitionId, assetId = tire.id, role = tire.role } }, now, 300);
+            PlayerProfile staleUsedPaid;
+            string staleUsedError;
+            if (!MechanicsTransactions.Try(staleUsed, catalog, staleUsed.revision,
+                state => PartCart.Checkout(state, staleUsedQuote, now),
+                state => true, out staleUsedPaid, out staleUsedError))
+                throw new InvalidOperationException("Stale dealer flag blocked used tire checkout: " + staleUsedError);
+            if (!staleUsedPaid.looseEngineElements.Any(u => u.element.id == tire.id && u.element is TireCondition) ||
+                staleUsedPaid.inventory.dealer.Any(s => s.Id == tire.id))
+                throw new InvalidOperationException("Stale dealer flag prevented actual used-tire ownership transfer.");
+
             // Reverse case: an empty inactive unit cannot turn a complete used part into an individual unit.
             var fullProfile = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(profile));
             MechanicsOwnership.Ensure(fullProfile, catalog);
