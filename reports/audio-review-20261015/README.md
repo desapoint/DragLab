@@ -1,5 +1,7 @@
 # Listening pack — proposals, not installed sounds
 
+**First draft rejected by the user:** the new engine voices sounded brassy/trumpet-like and shifted too much energy upward. These files remain historical auditions, not an accepted direction. Use the [revised V8 comparisons](revision-2/README.md) for the current listening checkpoint. All other proposed voices remain on hold.
+
 Game code/assets/build are unchanged. Listen at a comfortable fixed volume. These are original procedural drafts using scripted RPM/load, not real-car recordings or finalized in-game mixes. Findings and the approval boundary are in [the audit](REPORT.md).
 
 For each **A/B** clip: **0–8 s current algorithm → 0.7 s silence → 8.7–16.7 s proposed concept**. A/B pairs are loudness-matched using constant gain, targeting −20 LUFS with a −3 dBTP ceiling. The first two compare V8 character; turbo/supercharger clips include engine plus induction.

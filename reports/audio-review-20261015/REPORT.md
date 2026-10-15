@@ -1,5 +1,7 @@
 # Engine and induction sound audit — 2026-10-15
 
+**User review: first listening draft rejected.** The new voices sounded like trumpets and were too high in frequency. The sharper pulse source and much brighter filtering moved energy away from the existing low body. The revised listening checkpoint uses the current DSP voice as its base; see [revision 2 and measured comparison](revision-2/README.md). The original proposed voices below are not approved for integration.
+
 **Review only. No game implementation, asset, build, profile, setting or bench change.** Reviewed `main` at `6a94977`. The proposed voices below are standalone listening drafts and require the user's approval before integration. This does not advance another Slice 4 control.
 
 ## Findings
