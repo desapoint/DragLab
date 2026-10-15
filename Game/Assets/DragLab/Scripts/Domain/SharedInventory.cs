@@ -45,8 +45,21 @@ namespace DragLab.Domain.Mechanics
             if(p.inventory == null) p.inventory = new InventoryState();
             if(p.inventory.storage == null) p.inventory.storage = new List<InventoryContainer>();
             if(p.inventory.dealer == null) p.inventory.dealer = new List<DealerStock>();
-            // Tire is a computed view of the typed element. Clearing it is a no-op.
-            foreach(var s in p.inventory.dealer){if(s.isUnit)s.part=null;else s.unit=null;}
+            // Unity's inline JSON serializer can materialize an empty object in the
+            // unused member. Prefer the real saved identity over the discriminator,
+            // which may be stale. Never discard two populated assets or fabricate
+            // one from an empty record: Validate will reject both cases.
+            foreach(var stock in p.inventory.dealer)
+            {
+                if(stock==null)continue;
+                bool hasPart=stock.part!=null&&!string.IsNullOrWhiteSpace(stock.part.instanceId);
+                bool hasUnit=stock.unit!=null&&stock.unit.element!=null
+                    &&!string.IsNullOrWhiteSpace(stock.unit.element.id);
+                if(hasPart==hasUnit)continue;
+                stock.isUnit=hasUnit;
+                if(hasUnit)stock.part=null;
+                else stock.unit=null;
+            }
             if(p.inventory.storage.Count == 0) {
                 p.inventory.storage.Add(new InventoryContainer {kind=InventoryKind.Storage,id=Garage,name="Garage shelves"});
                 p.inventory.storage.Add(new InventoryContainer {kind=InventoryKind.Storage,id=Storage,name="Storage shelves"});
@@ -95,8 +108,16 @@ namespace DragLab.Domain.Mechanics
             foreach(var item in p.parts.Where(i=>i.location==PartLocation.Inventory))if(!containers.Contains(StorageOf(item.storageId)))return "Unknown part storage.";
             foreach(var unit in p.looseEngineElements)if(!containers.Contains(StorageOf(unit.storageId))||!ValidUnit(p,unit))return "Invalid unit storage/condition.";
             foreach(var e in p.engines.Where(e=>string.IsNullOrEmpty(e.parentVehicleId)))if(!containers.Contains(StorageOf(e.storageId)))return "Unknown engine storage.";
-            foreach(var stock in p.inventory.dealer){
-                if(stock==null||stock.paidPrice<0||(stock.part==null)==(stock.unit==null))return "Invalid dealer stock.";
+            for(int index=0;index<p.inventory.dealer.Count;index++){
+                var stock=p.inventory.dealer[index];
+                if(stock==null)return "Invalid dealer stock at row "+index+": missing listing.";
+                if(stock.paidPrice<0)return "Invalid dealer stock at row "+index+": negative purchase price.";
+                bool hasPart=stock.part!=null&&!string.IsNullOrWhiteSpace(stock.part.instanceId);
+                bool hasUnit=stock.unit!=null&&stock.unit.element!=null
+                    &&!string.IsNullOrWhiteSpace(stock.unit.element.id);
+                if(hasPart==hasUnit)return "Invalid dealer stock at row "+index
+                    +(hasPart?": conflicting part and unit payloads.":": missing part/unit identity.");
+                if(stock.isUnit!=hasUnit)return "Invalid dealer stock at row "+index+": wrong part/unit discriminator.";
                 if(stock.part!=null){var i=stock.part;if(i.location!=PartLocation.Inventory||i.Validate()!=null||p.catalog.Find(i.definitionId)==null||!identities.Add(i.instanceId))return "Invalid/duplicate dealer part.";if(p.catalog.Find(i.definitionId).category!=PartCategory.Clutch&&i.condition.clutch!=null)return "Dealer part has unrelated clutch state.";foreach(var e in i.condition.elements)if(!EngineElements.FaultAllowed(p.catalog.Find(i.definitionId).category,e)||!identities.Add(e.id)||!string.IsNullOrEmpty(e.definitionId)&&(p.catalog.Find(e.definitionId)==null||p.catalog.Find(e.definitionId).category!=p.catalog.Find(i.definitionId).category))return "Invalid/duplicate dealer descendant.";foreach(var t in i.condition.tires)if(!string.IsNullOrEmpty(t.definitionId)&&(p.catalog.Find(t.definitionId)==null||p.catalog.Find(t.definitionId).category!=PartCategory.Tires))return "Invalid dealer tire specification.";}
                 else {var u=stock.unit;if(!ValidUnit(p,u)||!identities.Add(u.element.id))return "Invalid/duplicate dealer unit.";}
             }
