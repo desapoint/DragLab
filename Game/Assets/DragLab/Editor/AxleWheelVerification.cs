@@ -193,11 +193,11 @@ namespace DragLab.Editor
                     "Each individual component category survives typed Unity JSON and independent copying: "+category);
             }
             var donor=new IgnitionElement{id="split/ignition",role="spark plug / lead",cylinder=1,valve=-1,health=.37f,severity=.42f,wearRemainder=.00003,fault=ElementFault.Disabled};
-            var split=EngineElements.CopyAsCategory(PartCategory.SparkPlugs,donor);
-            check(split is SparkPlugElement&&split.id==donor.id&&split.health==donor.health
-                &&split.fault==donor.fault&&split.severity==donor.severity
-                &&split.wearRemainder==donor.wearRemainder
-                &&!EngineElements.FaultAllowed(PartCategory.Ignition,split),
+            var convertedSparkPlug=EngineElements.CopyAsCategory(PartCategory.SparkPlugs,donor);
+            check(convertedSparkPlug is SparkPlugElement&&convertedSparkPlug.id==donor.id&&convertedSparkPlug.health==donor.health
+                &&convertedSparkPlug.fault==donor.fault&&convertedSparkPlug.severity==donor.severity
+                &&convertedSparkPlug.wearRemainder==donor.wearRemainder
+                &&!EngineElements.FaultAllowed(PartCategory.Ignition,convertedSparkPlug),
                 "Ignition-kit split preserves physical spark plug wear and rejects wrong-category member types");
             foreach(var kind in new[]{PartCategory.Rods,PartCategory.ValveSprings,PartCategory.SparkPlugs})
             {
