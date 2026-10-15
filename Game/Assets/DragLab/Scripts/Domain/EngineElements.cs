@@ -109,7 +109,12 @@ namespace DragLab.Domain.Mechanics
         public static void Ensure(VehicleSpec v,PartDefinition d,PartInstance p)
         {
             int count=Count(v,d);if(count==0)return;
-            if(p.condition.elements!=null&&p.condition.elements.Length>0)return; // Migrate once; never heal existing individual damage.
+            if(p.condition.elements!=null&&p.condition.elements.Length>0)
+            {
+                if(p.condition.elements.Any(e=>!MatchesCategory(d.category,e)))
+                    throw new InvalidOperationException("Installed member type does not match "+d.category+". Reset incompatible save.");
+                return; // Never recreate existing individual damage.
+            }
             p.condition.elements=new EngineElement[count];int valves=PerValve(d.category)?ValveCount(v):1;
             for(int i=0;i<count;i++){var element=Create(d.category);element.id=p.instanceId+"/element/"+i;element.cylinder=i/valves;element.valve=PerValve(d.category)?i%valves:-1;element.role=Role(d.category,i%valves,valves);element.health=p.condition.failed?0:p.condition.health;p.condition.elements[i]=element;}
             if(d.category==PartCategory.Ignition)for(int i=v.combustion.separateSparkPlugs?0:v.sound.cylinders;i<count;i++){var e=p.condition.elements[i];e.role="ignition coil";e.cylinder=Ignition(v)==IgnitionTopology.Distributor?-1:i-(v.combustion.separateSparkPlugs?0:v.sound.cylinders);}
