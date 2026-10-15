@@ -1,5 +1,18 @@
 # Tire authority and polymorphic component elements (2026-10-14)
 
+## Follow-up: remaining individual-component types (save v12)
+
+- Every category modeled by `EngineElements.Supported` has a concrete `EngineElement` subtype: pistons, connecting rods, piston rings, bearings, valves, valve springs, valve seals, followers, ignition assemblies, spark plugs, glow plugs, injectors/fuel-system units and wheels. Fitted tires remain their own `TireCondition` class.
+- `EngineElements.Create` is the central factory. Newly owned assemblies, retail loose units, individual replacements, wheel bundles, used-market dealer stock, native part previews and saved-setup preview members now preserve the same concrete type. Cross-category members are rejected by `EngineElements.MatchesCategory`, `FaultAllowed` and inventory boundaries.
+- Dedicated subtype validation now checks nonvalve positions, valvetrain topology and physical wheel corner/role. Existing shared fault and wear fields remain on `EngineElement` because the physics and UI still use that contract.
+- One-time ignition-to-spark-plug splitting copies member identity, fault and wear into a `SparkPlugElement`, rebinds its destination specification and rejects mismatched subtype use during checkpoints.
+- Added `AxleWheelVerification` coverage for all 13 non-tire subtype JSON round-trips and deep copies, cross-category rejection, topology violations, and atomic stored/installed replacement for rods, valve springs and spark plugs.
+- The previously generic clutch-fluid fields have been moved into a separate `ClutchConditionState` serialized only for clutch parts, with neutralized tire packs and defensive inventory validation; the traditional accessor names still work.
+- Save version raised to **12**. Older test profiles deliberately use the existing **blocking UI Toolkit reset-required dialog** with timestamped backup/archival; do not silently migrate older profile JSON.
+
+**Still outstanding:** Runtime Unity compilation, fresh-profile test execution, shop/checkout and checkpoint integration verification. Generic `ComponentCondition` still owns some other cross-category summary/service fields, and the `EngineElement` base still carries cylinder/fault/wear fields for all its subclasses. Moving *every* shared simulation field into category-specific payloads would be a broader, separately testable data-contract change, not completed by simply adding concrete subclasses. Do not merge before Unity tests.
+
+
 Branch: `refactor/per-tire-authority`. **Unity compilation and play-mode regression suites have not been run. Do not merge until verified.**
 
 ## Implemented
