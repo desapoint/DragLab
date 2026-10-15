@@ -118,7 +118,26 @@ namespace DragLab.Domain.Mechanics
                 if(hasPart==hasUnit)return "Invalid dealer stock at row "+index
                     +(hasPart?": conflicting part and unit payloads.":": missing part/unit identity.");
                 if(stock.isUnit!=hasUnit)return "Invalid dealer stock at row "+index+": wrong part/unit discriminator.";
-                if(stock.part!=null){var i=stock.part;if(i.location!=PartLocation.Inventory||i.Validate()!=null||p.catalog.Find(i.definitionId)==null||!identities.Add(i.instanceId))return "Invalid/duplicate dealer part.";if(p.catalog.Find(i.definitionId).category!=PartCategory.Clutch&&i.condition.clutch!=null)return "Dealer part has unrelated clutch state.";foreach(var e in i.condition.elements)if(!EngineElements.FaultAllowed(p.catalog.Find(i.definitionId).category,e)||!identities.Add(e.id)||!string.IsNullOrEmpty(e.definitionId)&&(p.catalog.Find(e.definitionId)==null||p.catalog.Find(e.definitionId).category!=p.catalog.Find(i.definitionId).category))return "Invalid/duplicate dealer descendant.";foreach(var t in i.condition.tires)if(!string.IsNullOrEmpty(t.definitionId)&&(p.catalog.Find(t.definitionId)==null||p.catalog.Find(t.definitionId).category!=PartCategory.Tires))return "Invalid dealer tire specification.";}
+                if(stock.part!=null){
+                    var i=stock.part;
+                    string id=i.instanceId;
+                    if(i.location!=PartLocation.Inventory)return "Invalid dealer part at row "+index+" ("+id+"): stored part is marked "+i.location+".";
+                    string conditionError=i.Validate();
+                    if(conditionError!=null)return "Invalid dealer part at row "+index+" ("+id+"): "+conditionError;
+                    var definition=p.catalog.Find(i.definitionId);
+                    if(definition==null)return "Invalid dealer part at row "+index+" ("+id+"): unknown definition "+i.definitionId+".";
+                    if(!identities.Add(id))return "Duplicate dealer part identity at row "+index+": "+id+".";
+                    if(definition.category!=PartCategory.Clutch&&i.condition.clutch!=null)return "Dealer part at row "+index+" has unrelated clutch state: "+id+".";
+                    foreach(var e in i.condition.elements){
+                        if(!EngineElements.FaultAllowed(definition.category,e))return "Invalid dealer descendant at row "+index+" ("+id+"): mismatched type or fault "+e.id+".";
+                        if(!identities.Add(e.id))return "Duplicate dealer descendant at row "+index+" ("+id+"): "+e.id+".";
+                        if(!string.IsNullOrEmpty(e.definitionId)&&(p.catalog.Find(e.definitionId)==null||p.catalog.Find(e.definitionId).category!=definition.category))
+                            return "Invalid dealer descendant specification at row "+index+" ("+id+"): "+e.definitionId+".";
+                    }
+                    foreach(var t in i.condition.tires)
+                        if(!string.IsNullOrEmpty(t.definitionId)&&(p.catalog.Find(t.definitionId)==null||p.catalog.Find(t.definitionId).category!=PartCategory.Tires))
+                            return "Invalid dealer tire specification at row "+index+" ("+id+"): "+t.definitionId+".";
+                }
                 else {var u=stock.unit;if(!ValidUnit(p,u)||!identities.Add(u.element.id))return "Invalid/duplicate dealer unit.";}
             }
             return null;
