@@ -1,0 +1,79 @@
+using System;
+using System.Collections;
+using System.IO;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.UIElements;
+using DragLab.Domain.Mechanics;
+using DragLab.Infrastructure;
+
+namespace DragLab.Runtime
+{
+    internal sealed partial class NativeMenuVerification
+    {
+#if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
+        IEnumerator NavigationDefaultsChecks(WindowsKeyboardProbe input)
+        {
+            if(!shell.Visible)yield return Key(input,0x77);
+            yield return Click(input,"navGarage");
+            string state=JsonUtility.ToJson(game.Profile);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);
+            string car=game.Profile.SelectedCar.instanceId;
+            yield return Click(input,"ownedCar:"+car);Check(shell.OwnedDetailsOpen,"Owned detail opens normally");
+            yield return Click(input,"navBuild");yield return Click(input,"navGarage");
+            Check(!shell.OwnedDetailsOpen&&!shell.DealerPageOpen&&!shell.DisposalOpen&&shell.Root.Q("ownedCars").resolvedStyle.display!=DisplayStyle.None,"Garage re-entry opens the owned-car grid");
+            yield return Click(input,"garageDealer");yield return Click(input,"navGarage");Check(!shell.DealerPageOpen,"Clicking the current main menu also restores its default tab");
+            shell.Root.Q<TextField>("ownedCarSearch").value="no matching cars";yield return Click(input,"navBuild");yield return Click(input,"navGarage");
+            Check(shell.OwnedQuery.Search==""&&shell.Root.Q<TextField>("ownedCarSearch").value==""&&shell.Root.Q<ScrollView>("ownedCars").scrollOffset==Vector2.zero,"Garage resets search and scroll");
+            yield return Click(input,"navBuild");yield return WaitParts();
+            Check(game.PartsPage=="Shop"&&shell.Root.Q<Button>("partsTab0").ClassListContains("selected")&&!shell.CartPageOpen,"Build defaults to the Engine shop grid");
+            Check(shell.PartQuery.Compatibility=="Compatible"&&shell.PartQuery.InStockOnly&&shell.PartQuery.Availability=="All","Part defaults combine Compatible and In stock independently of price");
+            var definition=shell.PartBrowser.Entries.First().Definition;
+            var sample=new NativePartEntry{Definition=definition,Compatibility="Compatible",Source="New",StockUnits=1,RequiresExpress=true,Price=200};
+            var query=new NativePartQuery();Check(query.Matches(sample,0),"Partial stock remains visible even when a full set needs express or is unaffordable");
+            sample.StockUnits=0;Check(!query.Matches(sample,1000),"Zero-stock new offers are hidden by default");query.InStockOnly=false;Check(query.Matches(sample,1000),"All stock statuses can be requested explicitly");
+            query.Availability="Affordable";Check(!query.Matches(sample,199)&&query.Matches(sample,200),"Affordability remains an independent inclusive price filter");
+            query.InStockOnly=true;Check(!query.Matches(sample,200),"Affordable does not override In stock");sample.Source="Used";Check(query.Matches(sample,200),"An actual used listing is available stock");sample.Source="Owned";Check(query.Matches(sample,200),"Stock default does not hide owned inventory");
+            yield return Click(input,"partsFilters");
+            Check(shell.Root.Q("partAdvancedFilters").ClassListContains("hidden"),"Advanced filters start collapsed");
+            Check(shell.Root.Q("partAdvancedToggle").worldBound.yMax<=shell.Root.Q<ScrollView>("modalContent").contentViewport.worldBound.yMax,"Common filters and Advanced fit the initial window without scrolling");
+            Check(shell.Root.Q("partStockSection").Contains(shell.Root.Q("partStockStatus:In stock"))&&!shell.Root.Q("partStockSection").Contains(shell.Root.Q("partAvailability:Affordable")),"Stock has its own filter section apart from price");
+            Check(shell.Root.Q<Button>("partAvailability:In stock")==null&&shell.Root.Q<Button>("partAvailability:Express")==null,"Stock and express are not mixed into the price choices");
+            yield return Capture("parts-filters-basic");DialogScrollBounds("basic part filters");
+            yield return PartDialogClick(input,"partAvailability:Affordable");yield return PartDialogClick(input,"partStockStatus:All");yield return PartDialogClick(input,"partAdvancedToggle");
+            Check(!shell.Root.Q("partAdvancedFilters").ClassListContains("hidden"),"Advanced can be expanded with the shared disclosure button");
+            yield return Capture("parts-filters-advanced");yield return PartDialogClick(input,"partTuning:Fixed");yield return Capture("parts-filters-advanced-options");yield return Click(input,"dialogCancel");
+            Check(shell.PartQuery.InStockOnly&&shell.PartQuery.Availability=="All"&&shell.PartQuery.Tuning=="All","Cancel discards all basic and advanced edits");
+            yield return Click(input,"partsFilters");yield return PartDialogClick(input,"partAvailability:Affordable");yield return PartDialogClick(input,"partStockStatus:In stock");yield return PartDialogClick(input,"partTuning:Fixed");yield return Click(input,"dialogApply");yield return WaitParts();
+            Check(shell.PartQuery.InStockOnly&&shell.PartQuery.Availability=="Affordable"&&shell.PartQuery.Tuning=="Fixed","Apply combines stock, price and advanced filters");
+            yield return Click(input,"partsFilters");Check(!shell.Root.Q("partAdvancedFilters").ClassListContains("hidden"),"Applied advanced criteria are revealed on reopening");
+            yield return Click(input,"dialogReset");Check(shell.Root.Q("partAdvancedFilters").ClassListContains("hidden")&&shell.Root.Q<Button>("partStockStatus:In stock").ClassListContains("selected")&&shell.Root.Q<Button>("partCompatibility:Compatible").ClassListContains("selected"),"Dialog Reset restores Compatible and In stock, with Advanced collapsed");
+            yield return Click(input,"dialogApply");yield return WaitParts();Check(shell.PartQuery.InStockOnly&&shell.PartQuery.Availability=="All"&&shell.PartQuery.Tuning=="All","Reset draft applies its defaults explicitly");
+            shell.PartQuery.InStockOnly=false;shell.PartQuery.Search="unfindable";yield return Click(input,"partsClear");
+            Check(shell.PartQuery.InStockOnly&&shell.PartQuery.Compatibility=="Compatible"&&shell.PartQuery.Search=="","Toolbar clear uses the same defaults");
+            yield return Click(input,"partsSource:Inventory");yield return Click(input,"partsTab3");shell.Root.Q<TextField>("partsSearch").value="unfindable";yield return Click(input,"partsEngines");
+            yield return Click(input,"navGarage");yield return Click(input,"navBuild");yield return WaitParts();
+            Check(game.PartsPage=="Shop"&&shell.Root.Q<Button>("partsTab0").ClassListContains("selected")&&shell.PartQuery.Search==""&&!shell.PartsPlanned&&shell.Root.Q("enginePage").resolvedStyle.display==DisplayStyle.None,"Build re-entry closes the engine workshop and resets source, category, search and reference");
+            var card=shell.Root.Q("partsGrid").Children().First(e=>!e.ClassListContains("hidden"));shell.Root.Q<ScrollView>("partsScroll").ScrollTo(card);yield return new WaitForSecondsRealtime(.2f);yield return Click(input,card);
+            yield return Click(input,"settingsButton");yield return Click(input,"tabSound");yield return Click(input,"cancelSettings");
+            Check(game.ScreenName=="Parts"&&shell.Root.Q("partsDetail").resolvedStyle.display!=DisplayStyle.None,"Settings Cancel retains the interrupted detail context");
+            yield return Click(input,"settingsButton");Check(shell.Category==0,"Fresh Settings navigation always starts on Difficulty / Driving");yield return Click(input,"tabUnits");yield return Click(input,"settingsButton");Check(shell.Category==0,"Reselecting Settings resets its tab without changing preferences");yield return Click(input,"cancelSettings");
+            yield return Click(input,"settingsButton");yield return Click(input,"tabSound");float appliedVolume=SharedAudioSettings.MasterVolume;var volume=shell.Root.Q<Slider>("masterVolume");volume.value=volume.value<.5f?.8f:.2f;yield return Click(input,"settingsButton");
+            Check(shell.SettingsDirty&&shell.Category==0&&SharedAudioSettings.MasterVolume==appliedVolume,"Reselecting Settings preserves unapplied edits while resetting its category");yield return Click(input,"navBuild");Check(shell.ModalOpen&&game.ScreenName=="Settings","Main navigation still guards unsaved settings");yield return Click(input,"dialogDiscard");
+            Check(game.ScreenName=="Parts"&&shell.Root.Q("partsDetail").resolvedStyle.display==DisplayStyle.None&&SharedAudioSettings.MasterVolume==appliedVolume,"Discard returns to the destination default without applying preferences");
+            yield return Click(input,"navBuild");Check(shell.Root.Q("partsDetail").resolvedStyle.display==DisplayStyle.None,"Main Build navigation closes a part detail");
+            yield return Click(input,"navTuning");yield return Click(input,"tuningTabWheels");yield return Click(input,"tuningLoadSetup");
+            yield return Click(input,"navBuild");yield return Click(input,"navTuning");Check(!shell.SetupLibraryOpen&&shell.Root.Q<Button>("tuningTabEngine").ClassListContains("selected")&&game.WheelTuneAxle==0,"Tuning re-entry closes saved setups and resets category/axle view");
+            yield return Click(input,"navRace");yield return Click(input,"raceMode:Records");yield return Click(input,"navGarage");yield return Click(input,"navRace");
+            Check(shell.Root.Q<Button>("raceMode:Career").ClassListContains("selected")&&shell.Root.Q<TextField>("raceSearch").value=="","Race re-entry starts on Career with empty event search");
+            yield return Click(input,"raceMode:Practice");yield return Click(input,"navRace");Check(shell.Root.Q<Button>("raceMode:Career").ClassListContains("selected"),"Reselecting Race resets its mode too");
+            yield return Click(input,"navBuild");yield return Key(input,0x77);yield return Key(input,0x77);Check(shell.PartQuery.InStockOnly,"F8 comparison keeps the current page state");
+            Check(state==JsonUtility.ToJson(game.Profile)&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Navigation/filtering does not save or alter assets, money, wear, market stock or preferences");
+            string stocked=shell.PartBrowser.Entries.First(e=>e.Source=="New"&&e.StockUnits>0&&e.Compatibility=="Compatible").Definition.id;game.AddToCart(stocked);yield return null;int count=game.CartCount;
+            Check(count>0,"Isolated fixture stages a real cart line");yield return Click(input,"partsCart");yield return Click(input,"navBuild");
+            Check(!shell.CartPageOpen&&game.CartCount==count,"Main navigation closes cart presentation while preserving reserved purchases");
+            yield return Click(input,"navGarage");yield return Click(input,"navBuild");Check(game.CartCount==count,"Reserved cart survives leaving and returning to Build");
+            yield return Capture("navigation-build-default");game.ClearNativeCart();
+        }
+#endif
+    }
+}

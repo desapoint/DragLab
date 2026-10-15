@@ -70,7 +70,7 @@ namespace DragLab.Runtime
         internal void PauseRace(bool value) { SetPaused(value); }
         internal void OpenAudioSettings() { if (screen == "Race") { SetPaused(true); audioSettingsOpen = true; } else { if (screen != "Settings") SettingsReturnRoute = screen; DiscardPreviews(); screen = "Settings"; scroll = Vector2.zero; } }
         internal void PreviewVehicle(string id) { DiscardPreviews(); profile.selectedVehicleId = id; MechanicsOwnership.Ensure(profile,profile.catalog); lastBenchmarkKey = null; screen = "Garage"; ShowGarageCar(); }
-        public void ReturnToGarage() { DiscardPreviews(); if(!SyncRaceWear(true,"Returned to garage"))return; race?.CloseOpponentWorker(); race = null; screen = "Garage"; ShowGarageCar(); }
+        public void ReturnToGarage() { DiscardPreviews(); if(!SyncRaceWear(true,"Returned to garage"))return; race?.CloseOpponentWorker(); race = null; screen = "Garage"; nativeMenu?.ResetMenuEntry("Garage"); ShowGarageCar(); }
         public void StartPractice() { StartRace(null, true); }
         internal bool ResetIncompatibleSave(out string error)
         {
@@ -337,15 +337,16 @@ namespace DragLab.Runtime
             }
         }
 
-        internal void QueueNativeNavigation(string route)
+        internal void QueueNativeNavigation(string route,bool resetMenu=false)
         {
-            if ((!NativeMenuShell.Supports(route) && route != SettingsReturnRoute) || screen == route || pendingAction != null) return;
+            if ((!NativeMenuShell.Supports(route) && route != SettingsReturnRoute) || (screen == route&&!resetMenu) || pendingAction != null) return;
             pendingAction = () => {
-                if (route == "Settings") SettingsReturnRoute = screen;
+                if (route == "Settings"&&screen!=route) SettingsReturnRoute = screen;
                 resetGameConfirm = false;
                 DiscardPreviews();
                 screen = route;
                 scroll = Vector2.zero;
+                if(resetMenu)nativeMenu?.ResetMenuEntry(route);
                 if (route == "Parts") repairsOnly = false;
                 if (route == "Tuning" && Build != null) BeginTuneDraft();
                 InterfaceComparison.SetReplacement(route, NativeMenuShell.Supports(route));
@@ -371,7 +372,7 @@ namespace DragLab.Runtime
             foreach (string tab in new[] { "Garage", "Parts", "Tuning", "Stats", "Race setup", "Career", "Business", "Driving", "Settings" })
             {
                 GUI.enabled = Build != null || tab == "Garage" || tab == "Driving" || tab == "Settings";
-                if (GUILayout.Button(tab, GUILayout.Height(32)) && !(nativeMenu != null && nativeMenu.GuardLegacyNavigation(tab))) pendingAction = () => { if (tab == "Settings" && screen != "Settings") SettingsReturnRoute = screen; resetGameConfirm = false; DiscardPreviews(); screen = tab; scroll = Vector2.zero; if (tab == "Parts") repairsOnly = false; if (tab == "Tuning") BeginTuneDraft(); };
+                if (GUILayout.Button(tab, GUILayout.Height(32)) && !(nativeMenu != null && nativeMenu.GuardLegacyNavigation(tab))) pendingAction = () => { if (tab == "Settings" && screen != "Settings") SettingsReturnRoute = screen; resetGameConfirm = false; DiscardPreviews(); screen = tab; scroll = Vector2.zero; nativeMenu?.ResetMenuEntry(tab); if (tab == "Parts") repairsOnly = false; if (tab == "Tuning") BeginTuneDraft(); };
             }
             GUI.enabled = true;
             GUILayout.EndHorizontal();

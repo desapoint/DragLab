@@ -14,7 +14,7 @@ namespace DragLab.Runtime
     internal sealed partial class NativeMenuVerification
     {
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
-        IEnumerator PartDialogClick(WindowsKeyboardProbe input,string id){var view=shell.Root.Q<ScrollView>("modalContent");view.ScrollTo(shell.Root.Q(id));yield return new WaitForSecondsRealtime(.15f);yield return Click(input,id);}
+        IEnumerator PartDialogClick(WindowsKeyboardProbe input,string id){var target=shell.Root.Q(id);var advanced=shell.Root.Q("partAdvancedFilters");if(advanced!=null&&advanced.ClassListContains("hidden")&&advanced.Contains(target)){yield return PartDialogClick(input,"partAdvancedToggle");}var view=shell.Root.Q<ScrollView>("modalContent");view.ScrollTo(target);yield return new WaitForSecondsRealtime(.15f);yield return Click(input,id);}
         IEnumerator WaitParts()
         {
             float begin=Time.realtimeSinceStartup,until=begin+45;while(shell.PartComparisonPending&&Time.realtimeSinceStartup<until)yield return null;
@@ -42,7 +42,7 @@ namespace DragLab.Runtime
             var model=new NativePartBrowser(p,new PartCartLine[0],false,"Shop",s=>100,(id,u)=>100);
             var head=model.Entries.First(e=>e.Definition.id==catalog.Id(car.vehicleId,PartCategory.HeadIntake,1));model.Evaluate(head);
             Check(head.Proposed!=null&&head.Compatibility=="Compatible"&&head.Change[0]>0,"Projected HP gain uses the authoritative selected-car build");
-            var query=new NativePartQuery();query.Direction[0]="Increase";Check(query.Matches(head,p.cash),"HP-gain filter accepts measured gains");query.Direction[0]="Decrease";Check(!query.Matches(head,p.cash),"HP-loss filter rejects measured gains");query.Direction[0]="Any";query.Minimum[0]=head.Change[0]+1;Check(!query.Matches(head,p.cash),"Minimum gain magnitude is enforced");query.Minimum[0]=null;
+            var query=new NativePartQuery{InStockOnly=false};query.Direction[0]="Increase";Check(query.Matches(head,p.cash),"HP-gain filter accepts measured gains");query.Direction[0]="Decrease";Check(!query.Matches(head,p.cash),"HP-loss filter rejects measured gains");query.Direction[0]="Any";query.Minimum[0]=head.Change[0]+1;Check(!query.Matches(head,p.cash),"Minimum gain magnitude is enforced");query.Minimum[0]=null;
             query.Categories.Add(PartCategory.HeadIntake);query.Categories.Add(PartCategory.Camshaft);Check(query.Matches(head,p.cash),"Subcategory selections combine with OR inside the category filter");query.Categories.Clear();
             var foreign=model.Entries.First(e=>!catalog.Fits(catalog.Spec(car.vehicleId),e.Definition));model.Evaluate(foreign);Check(foreign.Compatibility=="Incompatible"&&foreign.Proposed==null&&foreign.Change.All(v=>!v.HasValue),"Foreign hardware has no fabricated performance gain or zero measurement");query.Direction[0]="Unchanged";Check(!query.Matches(foreign,p.cash),"Unavailable values do not match unchanged-performance filters");query.Direction[0]="Any";
             query.Sort="HP change";query.Descending=true;Check(query.Compare(head,foreign)<0,"Unknown sort values stay last even in descending order");query.Availability="Affordable";Check(query.Matches(head,head.Price.Value)&&!query.Matches(head,head.Price.Value-1),"Affordability includes equality and uses actual offer price");
@@ -64,7 +64,7 @@ namespace DragLab.Runtime
             var riskProfile=JsonUtility.FromJson<PlayerProfile>(before);riskProfile.catalog=new MechanicalCatalog(game.vehicles.Select(v=>v.spec));
             var riskCam=riskProfile.catalog.Find(riskProfile.catalog.Id(car.vehicleId,PartCategory.Camshaft,1));riskCam.camLiftMm=30;
             var risky=new NativePartBrowser(riskProfile,new PartCartLine[0],false,"Shop",s=>100,(id,u)=>100);var riskyItem=risky.Entries.First(e=>e.Definition.id==riskCam.id);risky.Evaluate(riskyItem);
-            var fitsQuery=new NativePartQuery{Compatibility="Compatible"};
+            var fitsQuery=new NativePartQuery{Compatibility="Compatible",InStockOnly=false};
             Check(riskyItem.Compatibility=="Compatible"&&riskyItem.Reason.Contains("spring travel")&&fitsQuery.Matches(riskyItem,p.cash),"Spring-travel and potential engine-damage warnings remain visible in Compatible");
             var springs=riskProfile.catalog.Find(riskProfile.catalog.Id(car.vehicleId,PartCategory.ValveSprings,1));springs.springMaxLiftMm=1;
             var riskyPlan=new NativePartBrowser(riskProfile,new[]{new PartCartLine{definitionId=springs.id,install=true}},true,"Shop",s=>100,(id,u)=>100);riskyItem=riskyPlan.Entries.First(e=>e.Definition.id==riskCam.id);riskyPlan.Evaluate(riskyItem);

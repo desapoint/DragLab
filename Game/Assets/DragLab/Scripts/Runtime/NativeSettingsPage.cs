@@ -112,16 +112,15 @@ namespace DragLab.Runtime
         void Navigate(string route)
         {
             if (ModalOpen) return;
-            if(route=="Parts"&&game.ScreenName=="Parts"&&cartPageOpen){BackFromNativeCart();return;}
             if (game.ScreenName == "Settings" && route != "Settings" && SettingsDirty)
             {
                 OpenDialog("Unsaved settings", "Apply changes before leaving?", new[] {
                     new DialogAction("Stay", CloseDialog),
-                    new DialogAction("Discard", () => { CloseDialog(); ReadApplied(); game.QueueNativeNavigation(route); }),
+                    new DialogAction("Discard", () => { CloseDialog(); ReadApplied(); game.QueueNativeNavigation(route,true); }),
                     new DialogAction("Apply…", () => { CloseDialog(); ConfirmApply(route); }, true) });
                 return;
             }
-            game.QueueNativeNavigation(route);
+            game.QueueNativeNavigation(route,true);
         }
         internal bool GuardLegacyNavigation(string route)
         {
@@ -161,7 +160,7 @@ namespace DragLab.Runtime
                 if (summary != string.Join("\n", Changes())) { CloseDialog(); ConfirmApply(destination); return; }
                 if (!game.ApplyNativeSettings(draftDriver, draftAi, draftUnits, draftMaster, draftOpponent, out var error))
                 { root.Q<ScrollView>("modalContent").Add(new Label(error) { name = "settingsError" }); return; }
-                CloseDialog(); ReadApplied(); UpdateControls(); if (destination != null) game.QueueNativeNavigation(destination);
+                CloseDialog(); ReadApplied(); UpdateControls(); if (destination != null) game.QueueNativeNavigation(destination,true);
             }, true) });
         }
         sealed class DialogAction

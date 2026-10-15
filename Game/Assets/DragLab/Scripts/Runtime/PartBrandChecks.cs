@@ -23,7 +23,7 @@ namespace DragLab.Runtime
             check(catalog.parts.Any(p=>p.id.EndsWith("/0",StringComparison.Ordinal)&&p.quality=="Forged"&&p.brand=="Atlas OE"),"Factory-forged internals are OEM, not automatically competition-branded");
             check(catalog.parts.Where(p=>p.id.EndsWith("/ServiceLife",StringComparison.Ordinal)).All(p=>p.brand=="Relay Components"),"Long-service fixed replacements use the OEM+ supplier");
             check(PartBrands.Focus("Workshop Custom")=="Custom","Unknown authored brands remain filterable as Custom");
-            var entries=catalog.parts.Select(p=>new NativePartEntry{Definition=p,Compatibility="Compatible",Source="New",Price=p.price}).ToArray();var query=new NativePartQuery();
+            var entries=catalog.parts.Select(p=>new NativePartEntry{Definition=p,Compatibility="Compatible",Source="New",StockUnits=1,Price=p.price}).ToArray();var query=new NativePartQuery();
             foreach(var brand in PartBrands.Profiles){
                 query.Brands.Clear();query.Brands.Add(brand.name);query.BrandFocus="All";
                 check(entries.Where(e=>query.Matches(e,int.MaxValue)).Select(e=>e.Definition.id).SequenceEqual(catalog.parts.Where(p=>p.brand==brand.name).Select(p=>p.id)),"Exact brand filter: "+brand.name);

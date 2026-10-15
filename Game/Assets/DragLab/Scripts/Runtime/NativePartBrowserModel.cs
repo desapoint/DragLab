@@ -11,7 +11,7 @@ namespace DragLab.Runtime
     internal sealed class NativePartQuery
     {
         internal string Search="",Compatibility="Compatible",Availability="All",Condition="All",Tuning="All",Sort="Name",Container="All",BrandFocus="All";
-        internal bool Descending;
+        internal bool Descending,InStockOnly=true;
         internal HashSet<string> Brands=new HashSet<string>(StringComparer.Ordinal);
         internal HashSet<PartCategory> Categories=new HashSet<PartCategory>();
         internal string[] Direction=Enumerable.Repeat("Any",7).ToArray();
@@ -26,7 +26,7 @@ namespace DragLab.Runtime
             if(!string.IsNullOrWhiteSpace(Search)&&!((e.DisplayName??e.Definition.name)+" "+e.SearchExtra+" "+string.Join(" ",e.BrandNames.Select(b=>b+" "+PartBrands.Focus(b)))+" "+e.Definition.category+" "+e.AssetId+" "+e.Location).ToLowerInvariant().Contains(Search.Trim().ToLowerInvariant()))return false;
             if(Compatibility!="All"&&e.Compatibility!=Compatibility)return false;
             if(Availability=="Owned"&&!e.Owned||Availability=="Affordable"&&(!e.Price.HasValue||e.Price>cash)||Availability=="Unaffordable"&&(!e.Price.HasValue||e.Price<=cash))return false;
-            if(Availability=="In stock"&&(e.Source!="New"&&e.Source!="Used"||e.Source=="New"&&e.RequiresExpress))return false;
+            if(InStockOnly&&e.Source=="New"&&e.StockUnits<=0)return false;
             if(Condition=="New"&&e.Source!="New"||Condition=="Used"&&e.Source=="New")return false;
             bool tunable=e.Definition.tuning!=PartTuningOptions.None||e.Definition.camTimingAdjustable;
             if(Tuning=="Adjustable"&&!tunable||Tuning=="Fixed"&&tunable)return false;
