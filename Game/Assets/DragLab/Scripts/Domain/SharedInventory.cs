@@ -16,8 +16,14 @@ namespace DragLab.Domain.Mechanics
         public PartInstance part;
         public LooseEngineElement unit;
         public int paidPrice;
-        public string Id => part != null ? part.instanceId : unit.element.id;
-        public string DefinitionId => part != null ? part.definitionId : unit.definitionId;
+        // Unity JSON can materialize an empty inactive inline payload.
+        // Select the merchandise by its real identity, never wrapper nullness.
+        public bool HasPart => part != null && !string.IsNullOrWhiteSpace(part.instanceId);
+        public bool HasUnit => unit != null && unit.element != null && !string.IsNullOrWhiteSpace(unit.element.id);
+        public bool IsPart => HasPart && !HasUnit && !isUnit;
+        public bool IsUnit => HasUnit && !HasPart && isUnit;
+        public string Id => IsPart ? part.instanceId : IsUnit ? unit.element.id : null;
+        public string DefinitionId => IsPart ? part.definitionId : IsUnit ? unit.definitionId : null;
     }
     [Serializable] public sealed class InventoryState
     {
@@ -52,9 +58,8 @@ namespace DragLab.Domain.Mechanics
             foreach(var stock in p.inventory.dealer)
             {
                 if(stock==null)continue;
-                bool hasPart=stock.part!=null&&!string.IsNullOrWhiteSpace(stock.part.instanceId);
-                bool hasUnit=stock.unit!=null&&stock.unit.element!=null
-                    &&!string.IsNullOrWhiteSpace(stock.unit.element.id);
+                bool hasPart=stock.HasPart;
+                bool hasUnit=stock.HasUnit;
                 if(hasPart==hasUnit)continue;
                 stock.isUnit=hasUnit;
                 if(hasUnit)stock.part=null;
@@ -79,9 +84,9 @@ namespace DragLab.Domain.Mechanics
             if(kind == InventoryKind.Storage) parts=p.parts.Where(i=>i.location==PartLocation.Inventory && StorageOf(i.storageId)==id);
             if(kind == InventoryKind.Car) {var car=p.cars.Find(c=>c.instanceId==id);if(car!=null)parts=car.installed.slots.Select(s=>p.parts.Find(i=>i.instanceId==s.partInstanceId));}
             if(kind == InventoryKind.Engine) parts=p.parts.Where(i=>i.location==PartLocation.Assembly && i.ownerId==id);
-            if(kind == InventoryKind.Seller) parts=p.inventory.dealer.Where(s=>s.part!=null).Select(s=>s.part);
+            if(kind == InventoryKind.Seller) parts=p.inventory.dealer.Where(s=>s.IsPart).Select(s=>s.part);
             foreach(var part in parts.Where(i=>i!=null)) yield return new InventoryEntry {id=part.instanceId,definitionId=part.definitionId,label=p.catalog.Find(part.definitionId).name,part=part,installed=part.location!=PartLocation.Inventory};
-            var units=kind==InventoryKind.Storage?p.looseEngineElements.Where(u=>StorageOf(u.storageId)==id):kind==InventoryKind.Seller?p.inventory.dealer.Where(s=>s.unit!=null).Select(s=>s.unit):Enumerable.Empty<LooseEngineElement>();
+            var units=kind==InventoryKind.Storage?p.looseEngineElements.Where(u=>StorageOf(u.storageId)==id):kind==InventoryKind.Seller?p.inventory.dealer.Where(s=>s.IsUnit).Select(s=>s.unit):Enumerable.Empty<LooseEngineElement>();
             foreach(var unit in units) yield return new InventoryEntry {id=unit.element.id,definitionId=unit.definitionId,label=unit.element.role,unit=unit};
             if(kind==InventoryKind.Storage)foreach(var e in p.engines.Where(e=>string.IsNullOrEmpty(e.parentVehicleId)&&StorageOf(e.storageId)==id))yield return new InventoryEntry {id=e.instanceId,label=AssemblyOperations.DisplayName(p,e),engine=e};
         }
@@ -112,13 +117,12 @@ namespace DragLab.Domain.Mechanics
                 var stock=p.inventory.dealer[index];
                 if(stock==null)return "Invalid dealer stock at row "+index+": missing listing.";
                 if(stock.paidPrice<0)return "Invalid dealer stock at row "+index+": negative purchase price.";
-                bool hasPart=stock.part!=null&&!string.IsNullOrWhiteSpace(stock.part.instanceId);
-                bool hasUnit=stock.unit!=null&&stock.unit.element!=null
-                    &&!string.IsNullOrWhiteSpace(stock.unit.element.id);
+                bool hasPart=stock.HasPart;
+                bool hasUnit=stock.HasUnit;
                 if(hasPart==hasUnit)return "Invalid dealer stock at row "+index
                     +(hasPart?": conflicting part and unit payloads.":": missing part/unit identity.");
                 if(stock.isUnit!=hasUnit)return "Invalid dealer stock at row "+index+": wrong part/unit discriminator.";
-                if(stock.part!=null){
+                if(hasPart){
                     var i=stock.part;
                     string id=i.instanceId;
                     if(i.location!=PartLocation.Inventory)return "Invalid dealer part at row "+index+" ("+id+"): stored part is marked "+i.location+".";

@@ -254,8 +254,9 @@ namespace DragLab.Domain.Mechanics
             foreach(var part in profile.parts.Where(p=>catalog.Find(p.definitionId).category==PartCategory.Tires))
                 if(part.condition.elements==null||part.condition.elements.Length!=4||part.condition.elements.Any(e=>!(e is TireCondition)))return "Tire sets must contain four typed tire elements.";
             if(profile.driving==null||profile.driving.guaranteedFittingParts<0||profile.driving.guaranteedFittingParts>20)return "Invalid market guarantee difficulty.";
-            string marketError=PartsMarket.Validate(profile);if(marketError!=null)return marketError;
+            // Validate dealer identities first, before market descendant enumeration.
             string inventoryError=SharedInventory.Validate(profile,identities);if(inventoryError!=null)return inventoryError;
+            string marketError=PartsMarket.Validate(profile);if(marketError!=null)return marketError;
             foreach(var item in profile.parts)foreach(var tire in item.condition.tires??new TireCondition[0])if(!string.IsNullOrEmpty(tire.definitionId)){
                 var d=catalog.Find(tire.definitionId);if(d==null||d.category!=PartCategory.Tires)return "Invalid tire specification.";
                 var owner=profile.cars.FirstOrDefault(c=>c.installed.slots.Any(s=>s.partInstanceId==item.instanceId));

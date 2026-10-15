@@ -108,7 +108,7 @@ namespace DragLab.Runtime
                     Entries[Entries.Count-1].StockUnits=available;Entries[Entries.Count-1].RequiresExpress=supply.expressUnits>0;
                     Entries[Entries.Count-1].SearchExtra=string.Join(" ",product.Select(p=>p.id));
                 }
-                foreach(var d in profile.inventory.dealer)Add("used:"+d.Id,d.DefinitionId,"Used",d.part,d.unit,Owns(d.DefinitionId),"Dealer",usedPrice(d));
+                foreach(var d in profile.inventory.dealer.Where(d=>d.IsPart||d.IsUnit))Add("used:"+d.Id,d.DefinitionId,"Used",d.IsPart?d.part:null,d.IsUnit?d.unit:null,Owns(d.DefinitionId),"Dealer",usedPrice(d));
             }
             foreach(var entry in Entries){Classify(entry);if(!entry.Ready&&cache!=null&&cache.HasComparisons)cache.Restore(NativePartPreviewCache.Key(referenceKey,entry),entry);}
         }
