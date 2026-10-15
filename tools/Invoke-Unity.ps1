@@ -1,7 +1,9 @@
 param(
-    [ValidateSet('SqliteTimingVerify','SqliteStateVerify','PartBrandVerify','AwdHardwareVerify','ResidualCheckpointVerify','ResidualRecoveryVerify','ResidualPerformanceVerify','CartReservationVerify','DrivingCorrectionsVerify','MenuOptimizationVerify','MenuPerformanceBefore','MenuPerformanceAfter','MaintenanceReplaceVerify','OwnershipVerify','PartsMarketRegression','PartsMarketVerify','AwdGeometryVerify','PartComparisonVerify','AxleWheelVerify','StatHelpVerify','SetupPreviewVerify','ShopCacheVerify','UsedInspectionVerify','VerifyRemainingSimulation','VerifyRemaining','CareerVarietyVerify','ResetVerify','VehicleMarketVerify','VehicleVarietyVerify','VehicleVarietyPrepare','VarietyMechanicalVerify','Prepare','InventoryCommerceVerify','CartVerify','MenuPreviewVerify','RacePresentationVerify','TireSoundBaseline','TireSoundVerify','CheckpointVerify','TireFeedbackDiagnose','TireFeedbackVerify','ThermalVerify','CareerExpandedVerify','BusinessVerify','BalanceVerify','EconomyIntegrationVerify','PaidVerify','ValuationVerify','AssemblyVerify','CollectionVerify','Verify','RecoveryVerify','IntegratedVerify','BenchVerify','AxleVerify','PartsEffectsVerify','DurabilityAudit','SliceTwoAudit','MassVerify','ContactVerify','DrivingContactVerify','LaunchVerify','AwdContactVerify','FuelVerify','FuelingConversionVerify','ServiceVerify','IndividualEngineVerify','TireVerify','TireFailureVerify','CareerVerify','SceneCheck','UnitsVisualVerify','ManualGearboxVerify','PartHardwareVerify','BuildWindows','BuildPlayerOnly','Open')]
+    [ValidateSet('SqliteTimingVerify','SqliteStateVerify','PartBrandVerify','AwdHardwareVerify','ResidualCheckpointVerify','ResidualRecoveryVerify','ResidualPerformanceVerify','CartReservationVerify','DrivingCorrectionsVerify','MenuOptimizationVerify','MenuPerformanceBefore','MenuPerformanceAfter','MaintenanceReplaceVerify','OwnershipVerify','PartsMarketRegression','PartsMarketVerify','AwdGeometryVerify','PartComparisonVerify','AxleWheelVerify','StatHelpVerify','SetupPreviewVerify','ShopCacheVerify','UsedInspectionVerify','VerifyRemainingSimulation','VerifyRemaining','CareerVarietyVerify','ResetVerify','VehicleMarketVerify','VehicleVarietyVerify','VehicleVarietyPrepare','VarietyMechanicalVerify','Prepare','InventoryCommerceVerify','CartVerify','MenuPreviewVerify','RacePresentationVerify','TireSoundBaseline','TireSoundVerify','CheckpointVerify','TireFeedbackDiagnose','TireFeedbackVerify','ThermalVerify','CareerExpandedVerify','BusinessVerify','BalanceVerify','EconomyIntegrationVerify','PaidVerify','ValuationVerify','AssemblyVerify','CollectionVerify','Verify','RecoveryVerify','IntegratedVerify','BenchVerify','AxleVerify','PartsEffectsVerify','DurabilityAudit','SliceTwoAudit','MassVerify','ContactVerify','DrivingContactVerify','LaunchVerify','AwdContactVerify','FuelVerify','FuelingConversionVerify','ServiceVerify','IndividualEngineVerify','TireVerify','TireFailureVerify','CareerVerify','SceneCheck','UnitsVisualVerify','ManualGearboxVerify','PartHardwareVerify','BuildWindows','BuildPlayerOnly','Open','ValidationBatch')]
     [string]$Action = 'Prepare',
-    [string]$EditorPath = 'C:\Program Files\Unity\Hub\Editor\6000.6.4f1\Editor\Unity.exe'
+    [string]$EditorPath = 'C:\Program Files\Unity\Hub\Editor\6000.6.4f1\Editor\Unity.exe',
+    [string]$BatchManifest = '',
+    [string]$LogPath = ''
 )
 $ErrorActionPreference = 'Stop'
 $taskRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
@@ -15,6 +17,7 @@ if ($Action -eq 'Open') {
     return
 }
 $taskMethod = switch ($Action) {
+    'ValidationBatch' { 'DragLab.Editor.ValidationBatch.Run' }
     'SqliteTimingVerify' { 'DragLab.Editor.SqliteStateEditorVerification.Timings' }
     'SqliteStateVerify' { 'DragLab.Editor.SqliteStateEditorVerification.Run' }
     'PartBrandVerify' { 'DragLab.Editor.PartBrandVerification.Run' }
@@ -92,11 +95,24 @@ $taskMethod = switch ($Action) {
     'BuildWindows' { 'DragLab.Editor.PlayerBuild.BuildWindows' }
     'BuildPlayerOnly' { 'DragLab.Editor.PlayerBuild.BuildPlayerOnly' }
 }
-$taskLog = Join-Path $taskReports ('unity-' + $Action.ToLowerInvariant() + '.log')
+$taskLog = if ($LogPath) { [System.IO.Path]::GetFullPath($LogPath) } else { Join-Path $taskReports ('unity-' + $Action.ToLowerInvariant() + '.log') }
+if ($Action -eq 'ValidationBatch' -and (-not $BatchManifest -or -not (Test-Path -LiteralPath $BatchManifest))) {
+    throw 'ValidationBatch requires an existing -BatchManifest containing selected checks.'
+}
 $taskArgs = @('-batchmode','-nographics','-quit','-projectPath', ('"' + $taskProject + '"'),'-executeMethod',$taskMethod,'-logFile',('"' + $taskLog + '"'))
-# Unity's GUI executable detaches when invoked directly; waiting is essential.
-# Wait for the editor itself; successful builds can leave compiler/license children alive.
-$taskProcess = Start-Process -FilePath $EditorPath -ArgumentList $taskArgs -WindowStyle Hidden -PassThru
-$taskProcess.WaitForExit()
+# Only the child Unity process inherits this manifest path.
+$previousManifest = [Environment]::GetEnvironmentVariable('DRAGLAB_VALIDATION_MANIFEST', 'Process')
+try {
+    if ($Action -eq 'ValidationBatch') {
+        [Environment]::SetEnvironmentVariable('DRAGLAB_VALIDATION_MANIFEST', [System.IO.Path]::GetFullPath($BatchManifest), 'Process')
+    } else {
+        [Environment]::SetEnvironmentVariable('DRAGLAB_VALIDATION_MANIFEST', $null, 'Process')
+    }
+    # Wait for the actual Unity Editor, not only its detached console wrapper.
+    $taskProcess = Start-Process -FilePath $EditorPath -ArgumentList $taskArgs -WindowStyle Hidden -PassThru
+    $taskProcess.WaitForExit()
+} finally {
+    [Environment]::SetEnvironmentVariable('DRAGLAB_VALIDATION_MANIFEST', $previousManifest, 'Process')
+}
 if ($taskProcess.ExitCode -ne 0) { throw "Unity failed ($($taskProcess.ExitCode)). Read $taskLog" }
 Write-Output "Unity $Action finished. Log: $taskLog"
