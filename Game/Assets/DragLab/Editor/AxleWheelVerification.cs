@@ -192,6 +192,15 @@ namespace DragLab.Editor
                     &&copied.elements[0].GetType()==beforeType&&!ReferenceEquals(copied.elements[0],created),
                     "Each individual component category survives typed Unity JSON and independent copying: "+category);
             }
+            var mispositionedPiston=new PistonElement{id="invalid-piston",role="piston",cylinder=1,valve=2};
+            var looseValveWithIndex=new ValveElement{id="invalid-valve",role="intake valve",cylinder=-1,valve=1};
+            var mislabeledWheel=new WheelElement{id="invalid-wheel",role="injector",cylinder=0,valve=-1};
+            check(mispositionedPiston.Validate()!=null&&looseValveWithIndex.Validate()!=null
+                &&mislabeledWheel.Validate()!=null,
+                "Category-specific topology rules reject valve indexes on pistons, positioned loose valves and wrong wheel roles");
+            check(!EngineElements.MatchesCategory(PartCategory.Rods,EngineElements.Create(PartCategory.Pistons))
+                &&!EngineElements.MatchesCategory(PartCategory.Tires,EngineElements.Create(PartCategory.Wheels)),
+                "Physical subtype matching prevents cross-category insertion despite shared EngineElement ancestry");
             var donor=new IgnitionElement{id="split/ignition",role="spark plug / lead",cylinder=1,valve=-1,health=.37f,severity=.42f,wearRemainder=.00003,fault=ElementFault.Disabled};
             var convertedSparkPlug=EngineElements.CopyAsCategory(PartCategory.SparkPlugs,donor);
             check(convertedSparkPlug is SparkPlugElement&&convertedSparkPlug.id==donor.id&&convertedSparkPlug.health==donor.health
