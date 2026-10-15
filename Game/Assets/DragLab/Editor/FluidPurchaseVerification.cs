@@ -17,6 +17,23 @@ namespace DragLab.Editor
             var policy = new OperatingPolicy();
             var prices = ValuationPolicy.Defaults();
             long now = DateTime.UtcNow.Ticks;
+            // Exercise authentic generated market listings, not only synthetic
+            // inventory rows. A paid service must be able to quote after reload.
+            foreach(int seed in new[]{1,77,912}){
+                var generated=PlayerProfile.New(now);
+                generated.cash=100000;
+                VehicleListings.Initialize(generated,catalog,seed);
+                MechanicsOwnership.Ensure(generated,catalog);
+                string before=JsonUtility.ToJson(generated.inventory);
+                var loaded=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(generated));
+                MechanicsOwnership.Ensure(loaded,catalog);
+                string invalid=MechanicsOwnership.Validate(loaded,catalog);
+                if(invalid!=null)throw new InvalidOperationException("Generated dealer stock seed "+seed
+                    +" failed to reload: "+invalid);
+                if(JsonUtility.ToJson(loaded.inventory)!=before)
+                    throw new InvalidOperationException("Generated market stock seed "+seed
+                        +" changed when loaded without a purchase.");
+            }
             var profile = PlayerProfile.New(now);
             MechanicsOwnership.Ensure(profile, catalog);
             profile.cash = 100000;
@@ -54,7 +71,7 @@ namespace DragLab.Editor
                 Math.Abs(seller.unit.tire.health - .61f) > .000001 ||
                 Math.Abs(seller.unit.tire.consumedLife - .39) > .000001)
                 throw new InvalidOperationException("Seller normalization changed a real typed tire or its wear history.");
-            string sellerJson = JsonUtility.ToJson(profile.inventory.dealer);
+            string sellerJson = JsonUtility.ToJson(profile.inventory);
 
             car = profile.SelectedCar;
             car.fuel.litres = model.fuel.capacityLitres - 3;
@@ -83,7 +100,7 @@ namespace DragLab.Editor
                 car = profile.SelectedCar;
                 cash -= quote.Cost;
                 if (profile.cash != cash) throw new InvalidOperationException(kind + " charged the wrong amount.");
-                if (JsonUtility.ToJson(profile.inventory.dealer) != sellerJson)
+                if (JsonUtility.ToJson(profile.inventory) != sellerJson)
                     throw new InvalidOperationException(kind + " changed unrelated dealer stock.");
                 checks++;
             }
