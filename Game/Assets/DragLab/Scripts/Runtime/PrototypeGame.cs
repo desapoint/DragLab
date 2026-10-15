@@ -103,6 +103,7 @@ namespace DragLab.Runtime
                 nativeMenu = gameObject.AddComponent<NativeMenuShell>();
                 nativeMenu.Initialize(this);
                 nativeMenu.ShowIncompatibleSaveDialog(ProfileStore.Status);
+                NativeMenuVerification.AttachIfRequested(this,nativeMenu);
                 return;
             }
             settings = profile.driving;

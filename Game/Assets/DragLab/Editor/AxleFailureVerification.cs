@@ -124,6 +124,7 @@ namespace DragLab.Editor
             var ungoverned = new CarSimulation(pickupSpec, pickupTune, new DriverSettings { throttleAssist = false }); Fail(ungoverned, PartCategory.FrontDriveshaft); Pull(ungoverned);
             check(ungoverned.engine.limiter == LimiterStyle.None && ungoverned.state.engineDamage > 0, "Ungoverned stock pickup can overrev from sustained gas against an open-center free shaft; this is RPM abuse, not a blanket axle-failure engine flag.");
             var protectedRecipe = catalog.Recipe(pickupSpec.id); protectedRecipe[PartCategory.Controls] = catalog.Id(pickupSpec.id, PartCategory.Controls, 1); protectedRecipe[PartCategory.RevLimiter] = catalog.Id(pickupSpec.id, PartCategory.RevLimiter, 1);
+            protectedRecipe[PartCategory.Differential]=pickupSpec.id+"/Differential/OpenCenter";
             pickupTune.limiter = LimiterStyle.Hard; pickupTune.revLimitRpm = pickupSpec.redlineRpm - 200;
             var protectedBuild = catalog.Resolve(pickupSpec.id, protectedRecipe, pickupTune); var protectedPickup = new CarSimulation(protectedBuild.spec, protectedBuild.tune, new DriverSettings { throttleAssist = false }); Fail(protectedPickup, PartCategory.FrontDriveshaft); Pull(protectedPickup, 1200);
             check(protectedPickup.engine.limiter == LimiterStyle.Hard && !protectedPickup.state.engineFailed && protectedPickup.state.engineDamage == 0 && protectedPickup.state.frontShaftRpm > 1000 && protectedPickup.state.speed < 2, "An installed limiter protects the actual pickup during sustained free-shaft operation without restoring open-center road propulsion.");
@@ -141,6 +142,7 @@ namespace DragLab.Editor
             check(oldIds.All(id => profile.parts.Any(p => p.instanceId == id)) && pickup.installed.slots.Count(s => MechanicalCatalog.DriveBranch((PartCategory)Enum.Parse(typeof(PartCategory), s.slot))) == 7, "Legacy pickup migration adds AWD branch parts once while preserving existing identities and damage.");
             MechanicsOwnership.Remove(profile, pickup, "FrontAxle"); int partCount = profile.parts.Count; MechanicsOwnership.Ensure(profile, catalog);
             check(profile.parts.Count == partCount && !pickup.installed.slots.Any(p => p.slot == "FrontAxle"), "Later intentional removal stays removed; migration never respawns a missing axle.");
+            profile.cash=200000;profile.reputation=1000;PartOperations.Buy(profile,catalog,pickup.instanceId,pickup.vehicleId+"/Differential/ActiveController",true);
             var draft = new TuneDraft(pickup, profile.revision); draft.values.awdConfigured = true; draft.values.awd = new AwdSpec { frontBias = .3f }; draft.ApplyTo(profile);
             draft.values.awd.frontBias = .9f;
             check(pickup.tune.awd.frontBias == .3f, "Applied AWD settings are copied, not linked to discarded tune drafts.");

@@ -59,6 +59,7 @@ namespace DragLab.Domain.Mechanics
         { var setup = Find(p, id); p.savedSetups.Remove(setup); }
         static SavedVehicleSetup Find(PlayerProfile p, string id)
         { return p.savedSetups.Find(s => s.id == id) ?? throw new InvalidOperationException("Saved setup no longer exists."); }
+        static float Health(PartInstance item)=>item.condition.tires.Length==4?TireDynamics.LowestHealth(item.condition):item.condition.health;
         static bool Usable(PartInstance item)
         { return !item.condition.failed && item.condition.health > 0 && !(item.condition.elements ?? new EngineElement[0]).Any(e => e.Failed || e.fault != ElementFault.None); }
         public static SetupPlan Preview(PlayerProfile p, string carId, string setupId)
@@ -79,12 +80,12 @@ namespace DragLab.Domain.Mechanics
                 var binding = car.installed.slots.Find(s => s.slot == desired.slot);
                 var fitted = binding == null ? null : p.parts.Find(i => i.instanceId == binding.partInstanceId);
                 var owned = fitted != null && fitted.definitionId == d.id && Usable(fitted) ? fitted :
-                    p.parts.Where(i => i.location == PartLocation.Inventory && i.definitionId == d.id && Usable(i)).OrderByDescending(i => i.condition.health).ThenBy(i => i.instanceId, StringComparer.Ordinal).FirstOrDefault();
+                    p.parts.Where(i => i.location == PartLocation.Inventory && i.definitionId == d.id && Usable(i)).OrderByDescending(Health).ThenBy(i => i.instanceId, StringComparer.Ordinal).FirstOrDefault();
                 var line = new SetupPlanLine { category = d.category, definitionId = d.id, itemId = owned == null ? null : owned.instanceId, installed = owned != null && owned == fitted, purchase = owned == null, cost = owned == null ? d.price : 0 };
                 if(line.purchase && p.reputation<d.reputationRequired)plan.errors.Add(d.name+": requires REP "+d.reputationRequired);
                 plan.cost = checked(plan.cost + line.cost); plan.lines.Add(line);
                 if(d.category==PartCategory.Tires||d.category==PartCategory.Wheels)SavedTireFitments.Plan(p,car,desired,line,plan);
-                if (owned != null && owned.condition.health < .95) plan.warnings.Add(d.name + ": reuse at " + owned.condition.health.ToString("P0") + " health; wear is retained.");
+                if (owned != null && Health(owned) < .95) plan.warnings.Add(d.name + ": reuse at " + Health(owned).ToString("P0") + " health; wear is retained.");
             }
             var requested = car.tune.Copy();
             if (setup.scope == SetupScope.Engine) AssemblyOperations.EngineAdjustments(requested, setup.tune); else requested.ApplyAdjustments(setup.tune);

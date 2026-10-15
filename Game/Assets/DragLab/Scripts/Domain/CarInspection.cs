@@ -37,7 +37,7 @@ namespace DragLab.Domain
             foreach (var p in components) {
                 var category=profile.catalog.Find(p.definitionId).category;
                 if(category==PartCategory.Tires&&p.condition.tires!=null&&p.condition.tires.Length==4){
-                    for(int i=0;i<4;i++)if(p.condition.tires[i].failed||p.condition.tires[i].health<=0)
+                    for(int i=0;i<4;i++)if(p.condition.tires[i].Failed)
                         resolved.warnings.Add(new[]{"Front left","Front right","Rear left","Rear right"}[i]+" tire failed");
                     continue;
                 }
@@ -87,7 +87,7 @@ namespace DragLab.Domain
             var radiator = car.mechanics.parts.Find(p => p.slot == PartCategory.Cooling.ToString());
             result.coolingTransferPercent = car.state.engineCoolingFactor * 100;
             result.radiatorWattsPerC = radiator == null || radiator.condition.failed ? 0 : car.mechanics.Definition(radiator).coolingWattsPerC * (.4 + .6 * radiator.condition.health);
-            var tirePack=car.mechanics.parts.Find(p=>p.slot=="Tires");if(tirePack!=null){var tireDefinition=car.mechanics.Definition(tirePack);result.tireRollingLifeKm=Enumerable.Range(0,4).Min(i=>car.mechanics.TireDefinition(i).tireLifeDistanceM/1000);result.tireSlidingLifeMj=Enumerable.Range(0,4).Min(i=>car.mechanics.TireDefinition(i).wearEnergyJ/1e6);result.tireGripFactor=Enumerable.Range(0,4).Min(i=>car.mechanics.TireDefinition(i).grip*TireDynamics.Grip(car.mechanics.TireDefinition(i),tirePack.condition.tires[i]));result.lowestTireHealth=tirePack.condition.tires.Min(t=>t.health);}
+            var tirePack=car.mechanics.parts.Find(p=>p.slot=="Tires");if(tirePack!=null){var tireDefinition=car.mechanics.Definition(tirePack);result.tireRollingLifeKm=Enumerable.Range(0,4).Min(i=>car.mechanics.TireDefinition(i).tireLifeDistanceM/1000);result.tireSlidingLifeMj=Enumerable.Range(0,4).Min(i=>car.mechanics.TireDefinition(i).wearEnergyJ/1e6);result.tireGripFactor=Enumerable.Range(0,4).Min(i=>car.mechanics.TireDefinition(i).grip*TireDynamics.Grip(car.mechanics.TireDefinition(i),tirePack.condition.tires[i]));result.lowestTireHealth=TireDynamics.LowestHealth(tirePack.condition);}
             result.transmission = car.transmission.type; result.transmissionName = TransmissionDynamics.DisplayName(car.transmission); result.induction = car.induction.type.ToString(); result.fueling = car.engine.data.fueling.ToString();
             result.wheelRadiusIn = wheels.radius / DisplayUnits.MetresPerInch; result.wheelDiameterIn = result.wheelRadiusIn * 2;
             for(int i=0;i<4;i++){result.wheelRadiiIn[i]=wheels.radii[i]/DisplayUnits.MetresPerInch;result.wheelMassesKg[i]=wheels.assemblyMasses[i];result.wheelInertias[i]=wheels.inertias[i];var d=car.mechanics.TireDefinition(i);if(d!=null){result.wheelGripFactors[i]=spec.tireFriction*d.grip*TireDynamics.Grip(d,tirePack.condition.tires[i])*(1-Math.Abs(tune.AxlePressure(i<2)-26)*.007)*wheels.gripScales[i];result.wheelRollingLifeKm[i]=d.tireLifeDistanceM/1000;result.wheelSlidingLifeMj[i]=d.wearEnergyJ/1e6;}}

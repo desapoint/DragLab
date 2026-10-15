@@ -1,6 +1,6 @@
 # Component failures and AWD
 
-Race and physical bench use the same `CarSimulation`, mechanical stress and axle-force solver. Current physics identity is `draglab-variety-v19`; older recordings must be recorded again. Existing owned parts keep their condition and identities. A one-time migration adds applicable OEM branch components; intentional removals after migration stay removed.
+Race and physical bench use the same `CarSimulation`, mechanical stress and axle-force solver. Current physics identity is `draglab-variety-v20`; older live recordings must be recorded again. Known v18/v19 resource-only journals retain validated monotonic recovery; see the [release audit](../reports/branch-audit/RELEASE-AUDIT.md). Existing owned parts keep their condition and identities. A one-time migration adds applicable OEM branch components; intentional removals after migration stay removed.
 
 | Component | Result |
 | --- | --- |

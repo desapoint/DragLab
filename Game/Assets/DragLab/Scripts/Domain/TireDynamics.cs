@@ -48,7 +48,7 @@ namespace DragLab.Domain {
    for(int i=0;i<4;i++) tires[i]=new TireCondition{
     health=c.health, failed=c.failed, failureReason=c.failed?c.failureReason:"",
     temperatureC=c.temperatureC, slipEnergyJ=c.slipEnergyJ*.25,
-    distanceM=c.distanceM, runningSeconds=c.runningSeconds, consumedLife=Math.Max(0,1-c.health)
+    distanceM=c.distanceM, runningSeconds=c.runningSeconds, consumedLife=Math.Max(0,1.0-c.health)
    };
    c.tires=tires;
    SyncSummary(c);
@@ -71,9 +71,10 @@ namespace DragLab.Domain {
    // Keep the four typed TireCondition members in ComponentCondition.elements.
   }
   public static float LowestHealth(ComponentCondition c) =>
-   c==null||c.tires==null||c.tires.Length!=4?1:c.tires.Min(t=>Math.Min(t.health,(float)Math.Max(0,1-t.consumedLife)));
+   c==null||c.tires==null||c.tires.Length!=4?1:c.tires.Min(RemainingHealth);
+  public static float RemainingHealth(TireCondition t)=>Math.Min(t.health,(float)Math.Max(0,1-t.consumedLife));
   public static bool AnyFailed(ComponentCondition c) =>
-   c!=null&&c.tires!=null&&c.tires.Any(t=>t.failed||t.health<=0||t.consumedLife>=1);
+   c!=null&&c.tires!=null&&c.tires.Any(t=>t.Failed);
   public static double HottestTemperatureC(ComponentCondition c) =>
    c==null||c.tires==null||c.tires.Length==0?20:c.tires.Max(t=>t.temperatureC);
   public static string FailedCorners(ComponentCondition c) {
@@ -82,7 +83,7 @@ namespace DragLab.Domain {
    return string.Join(", ",c.tires.Select((t,i)=>new{t,i}).Where(x=>x.t.failed||x.t.health<=0||x.t.consumedLife>=1).Select(x=>x.i<4?corners[x.i]:"Tire "+(x.i+1)).ToArray());
   }
   public static void ResetContactReference(CarState state,System.Collections.Generic.IEnumerable<PartInstance> parts){foreach(var p in parts)if(p.slot==PartCategory.Tires.ToString()){Ensure(p);for(int i=0;i<4;i++)p.condition.tires[i].lastContactWorkJ=state.contact.slipWorkJ[i];}}
-  public static double Grip(PartDefinition d,TireCondition t){if(t.failed||t.health<=0)return .025;double temperature=t.temperatureC<20?DragMath.Clamp(1+(t.temperatureC-20)*.003,.65,1):t.temperatureC<=d.tireOptimalC?1+.05*(t.temperatureC-20)/Math.Max(1,d.tireOptimalC-20):DragMath.Clamp(1.05-(t.temperatureC-d.tireOptimalC)*.005,.35,1.05);return temperature*(.35+.65*Math.Sqrt(t.health));}
+  public static double Grip(PartDefinition d,TireCondition t){if(t.Failed)return .025;double temperature=t.temperatureC<20?DragMath.Clamp(1+(t.temperatureC-20)*.003,.65,1):t.temperatureC<=d.tireOptimalC?1+.05*(t.temperatureC-20)/Math.Max(1,d.tireOptimalC-20):DragMath.Clamp(1.05-(t.temperatureC-d.tireOptimalC)*.005,.35,1.05);return temperature*(.35+.65*Math.Sqrt(RemainingHealth(t)));}
   public static void Tick(CarSimulation car,double dt,double distanceBefore){
    var p=car.mechanics.parts.Find(v=>v.slot==PartCategory.Tires.ToString());if(p==null)return;var c=p.condition;Ensure(c);
    double distance=Math.Max(0,car.state.distance-distanceBefore);
@@ -91,7 +92,7 @@ namespace DragLab.Domain {
     double normal=(i<2?car.state.frontLoadN:car.state.rearLoadN)*.5,load=Math.Pow(Math.Max(.1,normal/4000),.3),thermal=Math.Max(0,t.temperatureC/d.thermalLimitC-1);
     double size=car.wheels.tireMasses[i]/Math.Max(.1,car.wheels.referenceTireMassKg);
     double loss=(distance/d.tireLifeDistanceM+delta/(d.wearEnergyJ*size))*pressure*load*(1+thermal*3)+dt*thermal*thermal/d.overloadSeconds;
-    if(!t.failed){if(Math.Abs(t.health-(1-t.consumedLife))>2e-7)t.consumedLife=Math.Max(t.consumedLife,1-t.health);t.consumedLife+=loss*car.driver.WearRate;t.health=(float)Math.Max(0,1-t.consumedLife);if(t.health<=0){t.failed=true;t.failureReason="Tire wear depleted";}}
+    if(!t.failed){if(Math.Abs(t.health-(1-t.consumedLife))>2e-7)t.consumedLife=Math.Max(t.consumedLife,1.0-t.health);t.consumedLife+=loss*car.driver.WearRate;t.health=Math.Min(t.health,(float)Math.Max(0,1-t.consumedLife));if(t.health<=0){t.failed=true;t.failureReason="Tire wear depleted";}}
    }
    SyncSummary(c);
   }

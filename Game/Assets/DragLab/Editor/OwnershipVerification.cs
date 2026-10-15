@@ -51,14 +51,15 @@ namespace DragLab.Editor
             string previous = ProfileStore.VerificationPath;
             try
             {
-                ProfileStore.VerificationPath = Path.Combine(folder, "migration-fixture", "profile-v1.json"); Directory.CreateDirectory(Path.GetDirectoryName(ProfileStore.FilePath));
+                ProfileStore.VerificationPath = Path.Combine(folder, "contract-fixture",Guid.NewGuid().ToString("N"), "profile-v1.json"); Directory.CreateDirectory(Path.GetDirectoryName(ProfileStore.FilePath));
                 // Fresh isolated fixture on every verification; actual player path is never touched.
                 foreach (string suffix in new[] { "", ".bak", ".legacy-v1", ".tmp" }) if (File.Exists(ProfileStore.FilePath + suffix)) File.Delete(ProfileStore.FilePath + suffix);
-                string legacy = File.ReadAllText(Path.Combine(root, "reports/phases/2a/before/legacy-earned-profile-v1.json")); File.WriteAllText(ProfileStore.FilePath, legacy);
-                var loaded = ProfileStore.Load(); string identities = string.Join(",", loaded.parts.Select(p => p.instanceId));
-                check(loaded.saveVersion == MechanicsOwnership.SaveVersion && File.ReadAllText(ProfileStore.FilePath + ".legacy-v1") == legacy, "Original earned v1 save backed up byte-for-byte before migration.");
-                check(string.Join(",", ProfileStore.Load().parts.Select(p => p.instanceId)) == identities, "Migration IDs are durable before any gameplay save; immediate second load repeats them.");
-                check(ProfileStore.TrySave(loaded), "Migrated profile atomically saves.");
+                string legacy = File.ReadAllText(Path.Combine(root, "reports/phases/2a/before/legacy-earned-profile-v1.json"),System.Text.Encoding.UTF8); File.WriteAllText(ProfileStore.FilePath, legacy,System.Text.Encoding.UTF8);
+                var rejected=ProfileStore.Load();byte[] original=File.ReadAllBytes(ProfileStore.FilePath);
+                check(rejected.SelectedCar==null&&!ProfileStore.TrySave(rejected)&&original.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Unsupported earned v1 save remains intact and cannot be overwritten with fabricated ownership.");
+                File.WriteAllText(ProfileStore.FilePath,JsonUtility.ToJson(profile),System.Text.Encoding.UTF8);var loaded=ProfileStore.Load();string identities=string.Join(",",loaded.parts.Select(p=>p.instanceId));
+                check(identities==string.Join(",",profile.parts.Select(p=>p.instanceId))&&string.Join(",",ProfileStore.Load().parts.Select(p=>p.instanceId))==identities,"Current-contract IDs survive immediate repeated load without reconstructed OEM parts.");
+                check(ProfileStore.TrySave(loaded), "Current profile atomically saves.");
                 var reloaded = ProfileStore.Load(); check(string.Join(",", reloaded.parts.Select(p => p.instanceId)) == identities && reloaded.cash == loaded.cash && reloaded.cars[0].lastPass != null, "Repeated disk load preserves earned records/IDs with no duplicated OEM parts.");
                 check(ProfileStore.TrySave(reloaded), "Second complete save writes a recoverable backup.");
                 File.WriteAllText(ProfileStore.FilePath, "interrupted invalid fixture");

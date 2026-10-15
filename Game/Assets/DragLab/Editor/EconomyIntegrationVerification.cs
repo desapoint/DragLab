@@ -191,17 +191,19 @@ namespace DragLab.Editor
                     matrix.AppendLine(string.Join(",", f.model, f.p.cars.Count, f.p.engines.Count, f.p.parts.Count, f.p.careerRuns.Count, f.p.business.jobs.Count, f.p.cash,
                         f.p.SelectedCar.fuel.litres.ToString("R", System.Globalization.CultureInfo.InvariantCulture), f.p.revision));
                 }
-                // Required static legacy earned save: verify migration durability without current fixtures.
+                // Legacy logical profiles are read-only until an explicit progression reset.
                 ProfileStore.VerificationPath = Path.Combine(fixtures, "legacy", "profile-v1.json"); Directory.CreateDirectory(Path.GetDirectoryName(ProfileStore.FilePath));
                 File.Copy(Path.Combine(root, "reports/phases/2a/before/legacy-earned-profile-v1.json"), ProfileStore.FilePath);
-                var migrated = ProfileStore.Load(); string ids = string.Join("|", migrated.parts.Select(i => i.instanceId));
-                check(migrated.saveVersion == MechanicsOwnership.SaveVersion && File.Exists(ProfileStore.FilePath + ".legacy-v1"), "legacy earned profile migrates and retains original");
-                check(ids == string.Join("|", ProfileStore.Load().parts.Select(i => i.instanceId)) && migrated.cash == ProfileStore.Load().cash, "legacy repeat load preserves IDs and earned cash");
+                string legacyBytes = File.ReadAllText(ProfileStore.FilePath, Encoding.UTF8); var rejected = ProfileStore.Load();
+                check(rejected.cars.Count == 0 && !ProfileStore.TrySave(rejected) && File.ReadAllText(ProfileStore.FilePath, Encoding.UTF8) == legacyBytes, "legacy earned profile is preserved and writes are blocked");
+                check(ProfileStore.Load().cars.Count == 0 && File.ReadAllText(ProfileStore.FilePath, Encoding.UTF8) == legacyBytes, "legacy repeat load never invents ownership");
                 var old = PlayerProfile.New(DateTime.UtcNow.Ticks); MechanicsOwnership.Ensure(old, MechanicsTransactions.Catalog()); old.saveVersion = 4; old.business = null; old.careerRuns = null;
                 ProfileStore.VerificationPath = Path.Combine(fixtures, "schema4", "profile-v1.json"); Directory.CreateDirectory(Path.GetDirectoryName(ProfileStore.FilePath));
-                File.WriteAllText(ProfileStore.FilePath, JsonUtility.ToJson(old), Encoding.UTF8); migrated = ProfileStore.Load();
-                check(migrated.saveVersion == MechanicsOwnership.SaveVersion && migrated.business.version == 1 && migrated.careerRuns.Count == 0 && File.Exists(ProfileStore.FilePath + ".legacy-v4"), "schema4 gains career/business contracts without invented payouts");
-                check(SnapshotEquality.Profile(JsonUtility.ToJson(migrated), ProfileStore.Load(), MechanicsTransactions.Catalog()), "schema4 migration is repeatable");
+                string oldJson = JsonUtility.ToJson(old); File.WriteAllText(ProfileStore.FilePath, oldJson, Encoding.UTF8); rejected = ProfileStore.Load();
+                check(rejected.cars.Count == 0 && !ProfileStore.TrySave(rejected) && File.ReadAllText(ProfileStore.FilePath, Encoding.UTF8) == oldJson, "schema4 is preserved without invented assets or payouts");
+                check(ProfileStore.Load().cars.Count == 0 && File.ReadAllText(ProfileStore.FilePath, Encoding.UTF8) == oldJson, "schema4 rejection is repeatable");
+                old = PlayerProfile.New(DateTime.UtcNow.Ticks); MechanicsOwnership.Ensure(old, MechanicsTransactions.Catalog());
+                File.WriteAllText(ProfileStore.FilePath, JsonUtility.ToJson(old), Encoding.UTF8); ProfileStore.Load();
             }
             finally { ProfileStore.VerificationPath = previous; }
             File.WriteAllText(Path.Combine(folder, "integration-verification.txt"), log + "Checks: " + checks + "\n", Encoding.UTF8);

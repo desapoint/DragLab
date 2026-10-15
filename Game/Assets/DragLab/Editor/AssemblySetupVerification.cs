@@ -97,14 +97,15 @@ namespace DragLab.Editor
             check((looseOwner.parts.Find(i=>i.instanceId==looseV8).condition.elements??new EngineElement[0]).Length==8,"New loose V8 kits contain the purchased eight members even when another owned chassis has no engine.");
             PartOperations.Install(looseOwner,catalog,v8Id,looseV8);MechanicsOwnership.Ensure(looseOwner,catalog);check(looseOwner.parts.Find(i=>i.instanceId==looseV8).condition.elements.Length==8,"The eight purchased V8 members remain fitted on their real owner.");
             check(catalog.Fits(catalog.Spec("sport-coupe"),catalog.Find(catalog.Id("starter-hatch",PartCategory.FuelSystem)))&&!catalog.Fits(catalog.Spec("touring-six"),catalog.Find(catalog.Id("starter-hatch",PartCategory.FuelSystem)))&&!catalog.Fits(catalog.Spec("city-three"),catalog.Find(catalog.Id("starter-hatch",PartCategory.FuelSystem))),"Four-cylinder injector packs remain shared, but cannot silently supply three/six-cylinder engines.");
-            // Actual file migration from the accepted 3A schema; no live player profile is read.
-            string file=Path.Combine(folder,"migration/profile-v1.json");Directory.CreateDirectory(Path.GetDirectoryName(file));var old=fresh("starter-hatch");old.saveVersion=3;string legacy=JsonUtility.ToJson(old);File.WriteAllText(file,legacy);
-            ProfileStore.VerificationPath=file;
+            // Unsupported old contracts stay read-only; current assemblies still round-trip.
+            string file=Path.Combine(folder,"contracts",Guid.NewGuid().ToString("N"),"profile-v1.json");Directory.CreateDirectory(Path.GetDirectoryName(file));var old=fresh("starter-hatch");old.saveVersion=3;string legacy=JsonUtility.ToJson(old);File.WriteAllText(file,legacy,System.Text.Encoding.UTF8);
+            string previousPath=ProfileStore.VerificationPath;ProfileStore.VerificationPath=file;
             try {
-                var loaded=ProfileStore.Load();check(loaded.saveVersion==MechanicsOwnership.SaveVersion&&loaded.SelectedCar.instanceId==old.SelectedCar.instanceId&&File.Exists(file+".legacy-v3"),"Schema-3 migration persists original IDs and retains original backup.");
+                var rejected=ProfileStore.Load();check(rejected.SelectedCar==null&&!ProfileStore.TrySave(rejected)&&File.ReadAllText(file,System.Text.Encoding.UTF8)==legacy,"Unsupported schema-3 data is preserved and writes remain blocked.");
+                old.saveVersion=MechanicsOwnership.SaveVersion;File.WriteAllText(file,JsonUtility.ToJson(old),System.Text.Encoding.UTF8);var loaded=ProfileStore.Load();check(loaded.SelectedCar.instanceId==old.SelectedCar.instanceId,"Current-contract assembly ownership reloads with exact original IDs.");
                 string engine=AssemblyOperations.Detach(loaded,loaded.SelectedCar.instanceId);SavedSetups.Save(loaded,loaded.SelectedCar.instanceId,"Partial chassis",SetupScope.TuneOnly);ProfileStore.Save(loaded);var again=ProfileStore.Load();check(again.engines.Find(e=>e.instanceId==engine).slots.Count>0&&again.savedSetups.Count==1&&string.IsNullOrEmpty(again.SelectedCar.engineAssemblyId),"Disk reload retains stored engine, partial chassis and named tune.");
                 var reset=again.RestartKeepingPreferences(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(reset,catalog);check(reset.savedSetups.Count==0&&reset.engines.Count==0&&reset.cars.Count==0&&reset.firstPurchasePending,"Progress reset clears configuration blueprints and stored assemblies.");
-            } finally { ProfileStore.VerificationPath=null; }
+            } finally { ProfileStore.VerificationPath=previousPath; }
             int regressions=OwnershipVerification.Run(root)+InventoryVerification.Run(root);
             File.WriteAllText(Path.Combine(folder,"verification.txt"),"Model "+MechanicsSchema.Model+" / player schema "+MechanicsOwnership.SaveVersion+"\n"+log+"Checks: "+count+" / prior ownership/inventory: "+regressions+" / total "+(count+regressions)+"\n");Debug.Log("DRAGLAB ASSEMBLY SETUP PASS "+(count+regressions));
         }

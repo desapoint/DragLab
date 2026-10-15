@@ -91,6 +91,7 @@ namespace DragLab.Runtime
             using (var input = new WindowsKeyboardProbe())
             {
                 Check(ProfileStore.FilePath == Path.Combine(folder, "save-slot-1.sqlite3"), "Profile isolated from player assets");
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-reset-required-only-verify")>=0){yield return IncompatibleSaveChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-shine-only-verify")>=0){yield return AngledShineChecks(input);yield break;}
                 if(game.Profile.firstPurchasePending)yield return StarterPurchaseChecks(input);
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-navigation-only-verify")>=0){yield return NavigationDefaultsChecks(input);yield break;}

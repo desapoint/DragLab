@@ -15,7 +15,7 @@ namespace DragLab.Editor
         public static void Audit()
         {
             string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../.."));
-            Run(root, false);
+            Run(root);
         }
         public static int Run(string root, bool enforce = true)
         {
@@ -56,13 +56,13 @@ namespace DragLab.Editor
                         carried = car.mechanics.parts.Select(p => p.Copy()).ToList();
                         if (Broken(car)) break;
                     }
-                    bool okay = !Broken(car) && (scenario != "ten-quarter-miles" || passes == 10) && carried.All(p => p.condition.health >= .9f);
-                    string label = v.spec.id + " / " + scenario + " / passes " + passes + " / lowest health " + carried.Min(p => p.condition.health).ToString("P2") + " / " + string.Join("; ", carried.Where(p => p.condition.failed).Select(p => p.slot + ": " + p.condition.failureReason));
+                    bool okay = !Broken(car) && (scenario != "ten-quarter-miles" || passes == 10) && carried.All(p => Health(p) >= .9f);
+                    string label = v.spec.id + " / " + scenario + " / passes " + passes + " / lowest health " + carried.Min(Health).ToString("P2") + " / " + string.Join("; ", carried.Where(Failed).Select(p => p.slot + ": " + p.condition.failureReason));
                     report.AppendLine((okay ? "PASS: " : "FAIL: ") + label); checks++; if (!okay) failures.Add(label);
-                    foreach (var p in carried) csv.AppendLine(string.Join(",", v.spec.id, scenario, passes, F(elapsed), F(car.state.distance), F(car.state.rpm), F(peakRpm), F(damage), F(peakEngine), F(peakShaft), p.slot, F(p.condition.health), F(peaks[p.slot]), p.condition.failureReason));
+                    foreach (var p in carried) csv.AppendLine(string.Join(",", v.spec.id, scenario, passes, F(elapsed), F(car.state.distance), F(car.state.rpm), F(peakRpm), F(damage), F(peakEngine), F(peakShaft), p.slot, F(Health(p)), F(peaks[p.slot]), p.condition.failureReason));
                 }
             }
-            string folder = Path.Combine(root, "reports/stock-durability"); Directory.CreateDirectory(folder);
+            string folder = Path.Combine(root, "reports/stock-durability","validation-"+Guid.NewGuid().ToString("N")); Directory.CreateDirectory(folder);
             if (enforce)
             {
                 Action<bool, string> check = (ok, label) => { checks++; report.AppendLine((ok ? "PASS: " : "FAIL: ") + label); if (!ok) failures.Add(label); };
@@ -125,7 +125,9 @@ namespace DragLab.Editor
             if (enforce && failures.Count > 0) throw new InvalidOperationException("Stock durability: " + string.Join("\n", failures));
             Debug.Log(report.ToString()); return checks;
         }
-        static bool Broken(CarSimulation car) { return car.state.engineFailed || car.state.drivetrainFailed || car.mechanics.parts.Any(p => p.condition.failed); }
+        static float Health(PartInstance part)=>part.slot=="Tires"?TireDynamics.LowestHealth(part.condition):part.condition.health;
+        static bool Failed(PartInstance part)=>part.slot=="Tires"?TireDynamics.AnyFailed(part.condition):part.condition.failed;
+        static bool Broken(CarSimulation car) { return car.state.engineFailed || car.state.drivetrainFailed || car.mechanics.parts.Any(Failed); }
         static string F(double value) { return value.ToString("F4", System.Globalization.CultureInfo.InvariantCulture); }
     }
 }

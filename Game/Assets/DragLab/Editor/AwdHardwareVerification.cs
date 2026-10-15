@@ -40,19 +40,19 @@ namespace DragLab.Editor
                 PartOperations.Buy(p,catalog,p.SelectedCar.instanceId,v.spec.id+"/Differential/OnDemandController",true);Check(p.parts.Any(i=>i.instanceId==id&&JsonUtility.ToJson(i.condition)==condition&&i.location==PartLocation.Inventory)&&MechanicsOwnership.Validate(p,catalog)==null,v.spec.id+" real replacement retains worn original identity and condition");
             }
             var raw=new VehicleSpec{drive=DriveType.AWD};foreach(AwdMode mode in Enum.GetValues(typeof(AwdMode))){var t=new Tune{awdConfigured=true,awd=new AwdSpec{mode=mode}};Check(AxleDriveDynamics.Configuration(raw,t).mode==mode,"Explicit raw engineering fixture remains available: "+mode);}
-            string folder=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/awd-hardware"));Directory.CreateDirectory(folder);CheckOldResourceJournal(catalog,folder,Check);log.AppendLine("Checks: "+checks+"; failures: 0");File.WriteAllText(Path.Combine(folder,"verification.txt"),log.ToString(),new UTF8Encoding(false));Debug.Log("AWD hardware checks passed: "+checks);
+            string folder=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/awd-hardware"));Directory.CreateDirectory(folder);foreach(string model in new[]{"draglab-variety-v18","draglab-variety-v19"})CheckOldResourceJournal(catalog,folder,Check,model);log.AppendLine("Checks: "+checks+"; failures: 0");File.WriteAllText(Path.Combine(folder,"verification.txt"),log.ToString(),new UTF8Encoding(false));Debug.Log("AWD hardware checks passed: "+checks);
         }
-        static void CheckOldResourceJournal(MechanicalCatalog catalog,string folder,Action<bool,string> check)
+        static void CheckOldResourceJournal(MechanicalCatalog catalog,string folder,Action<bool,string> check,string model)
         {
             string prior=ProfileStore.VerificationPath;try{
-                ProfileStore.VerificationPath=Path.Combine(folder,"fixtures/v18-resource-profile.json");Directory.CreateDirectory(Path.GetDirectoryName(ProfileStore.FilePath));
+                ProfileStore.VerificationPath=Path.Combine(folder,"fixtures",model+"-"+Guid.NewGuid().ToString("N"),"resource-profile.json");Directory.CreateDirectory(Path.GetDirectoryName(ProfileStore.FilePath));
                 var p=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(p,catalog);var build=MechanicsOwnership.Resolve(p,p.SelectedCar,catalog);var car=new CarSimulation(build.spec,build.tune,new DriverSettings(),p.parts);car.SetFluids(p.SelectedCar.fluids);car.SetMassInputs(75,0,1.5,.45,p.SelectedCar.fuel.litres);
                 string run=MechanicsOwnership.NewId("old-journal");check(MechanicsTransactions.Try(p,catalog,p.revision,q=>MechanicsTransactions.ApplyCheckpoint(q,RunPersistence.Capture(run,q.SelectedCar.instanceId,0,car)),ProfileStore.TrySave,out var entered,out var error),"Migration test enters a durable run: "+error);p=entered;
-                var cp=RunPersistence.Capture(run,p.SelectedCar.instanceId,120,car);cp.model="draglab-variety-v18";cp.fuel.litres-=.05;cp.fuel.cumulativeUsedLitres+=.05;cp.components[0].condition.health=.8f;
+                var cp=RunPersistence.Capture(run,p.SelectedCar.instanceId,120,car);cp.model=model;cp.fuel.litres-=.05;cp.fuel.cumulativeUsedLitres+=.05;cp.components[0].condition.health=.8f;
                 check(!MechanicsTransactions.Try(p,catalog,p.revision,q=>MechanicsTransactions.ApplyCheckpoint(q,cp),q=>true,out _,out _),"Live submissions still reject obsolete physics captures");
                 string payload=JsonUtility.ToJson(new JournalData{baseRevision=p.revision,checkpoint=cp}),hash;using(var sha=System.Security.Cryptography.SHA256.Create())hash=Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(payload)));
                 File.WriteAllText(RaceCheckpointStore.JournalPath(ProfileStore.FilePath),JsonUtility.ToJson(new JournalEnvelope{payload=payload,sha256=hash}),new UTF8Encoding(false));var loaded=ProfileStore.Load(true);
-                check(loaded.parts[0].condition.health==.8f&&loaded.SelectedCar.fuel.litres==cp.fuel.litres&&loaded.runCheckpoints.Single(r=>r.runId==run).settled&&loaded.cash==p.cash&&loaded.SelectedCar.completedRuns==0,"Known v18 resource journal retains damage/fuel on upgrade without replaying the race or awarding a result");
+                check(loaded.parts[0].condition.health==.8f&&loaded.SelectedCar.fuel.litres==cp.fuel.litres&&loaded.runCheckpoints.Single(r=>r.runId==run).settled&&loaded.cash==p.cash&&loaded.SelectedCar.completedRuns==0,"Known "+model+" resource journal retains damage/fuel on upgrade without replaying the race or awarding a result");
             }finally{ProfileStore.VerificationPath=prior;}
         }
     }

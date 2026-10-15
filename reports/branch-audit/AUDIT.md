@@ -1,5 +1,7 @@
 # Per-tire authority branch audit — 2026-10-15
 
+Current follow-up: [release audit and final validation](RELEASE-AUDIT.md). The failures below are retained as the original baseline.
+
 Reviewed `refactor/per-tire-authority` at `81e5699` against `main` at `9bcc706` (68 changed files). This is a focused runtime/source audit of tire ownership, checkpointing, reset recovery and commerce, not certification of every branch feature.
 
 **Result: not green. Two introduced regressions reproduced, plus one inherited checkpoint defect. Production behavior was left unchanged for review.** The intentional v12 incompatible-save reset policy is not itself reported as a defect.

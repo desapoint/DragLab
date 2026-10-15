@@ -1,0 +1,68 @@
+Action,Status,Seconds,Evidence,Note
+AssemblyVerify,PASS,40.517,reports/branch-audit/release-followup-1.tsv.results.tsv,Rerun after audit correction or final smoke
+AwdContactVerify,PASS,1.48,reports/unity-validation-all-20261015-134313-54836-batch04.log,Original complete curated run; unchanged gate
+AwdGeometryVerify,PASS,50.77,reports/unity-validation-all-20261015-134313-54836-batch04.log,Original complete curated run; unchanged gate
+AwdHardwareVerify,PASS,5.61,reports/unity-validation-all-20261015-134313-54836-batch04.log,Original complete curated run; unchanged gate
+AxleVerify,PASS,18.647,reports/branch-audit/release-fast.tsv.results.tsv,Rerun after audit correction or final smoke
+AxleWheelVerify,PASS,28.790,reports/branch-audit/release-remaining-2.tsv.results.tsv,Rerun after audit correction or final smoke
+BalanceVerify,PASS,357.864,reports/branch-audit/release-remaining-1.tsv.results.tsv,Rerun after audit correction or final smoke
+BenchVerify,PASS,509.18,reports/unity-validation-all-20261015-134313-54836-batch06.log,Original complete curated run; unchanged gate
+BranchAuditVerify,PASS,3.510,reports/branch-audit/release-followup-1.tsv.results.tsv,Rerun after audit correction or final smoke
+BusinessVerify,PASS,41.19,reports/unity-validation-all-20261015-134313-54836-batch06.log,Original complete curated run; unchanged gate
+CareerExpandedVerify,PASS,83.11,reports/unity-validation-all-20261015-134313-54836-batch02.log,Original complete curated run; unchanged gate
+CareerVarietyVerify,PASS,78.475,reports/branch-audit/release-remaining-2.tsv.results.tsv,Rerun after audit correction or final smoke
+CareerVerify,PASS,433.16,reports/unity-validation-all-20261015-134313-54836-batch02.log,Original complete curated run; unchanged gate
+CartReservationVerify,PASS,11.92,reports/unity-validation-all-20261015-134313-54836-batch03.log,Original complete curated run; unchanged gate
+CartVerify,PASS,19.82,reports/unity-validation-all-20261015-134313-54836-batch03.log,Original complete curated run; unchanged gate
+CheckpointVerify,PASS,30.946,reports/branch-audit/release-remaining-2.tsv.results.tsv,Rerun after audit correction or final smoke
+CollectionVerify,PASS,38.703,reports/branch-audit/release-remaining-2.tsv.results.tsv,Rerun after audit correction or final smoke
+ComponentFaultVerify,PASS,15.553,reports/branch-audit/release-followup-1.tsv.results.tsv,Rerun after audit correction or final smoke
+ContactVerify,PASS,1.69,reports/unity-validation-all-20261015-134313-54836-batch05.log,Original complete curated run; unchanged gate
+DrivingContactVerify,PASS,347.532,reports/branch-audit/release-remaining-1.tsv.results.tsv,Rerun after audit correction or final smoke
+DrivingCorrectionsVerify,PASS,4.54,reports/unity-validation-all-20261015-134313-54836-batch08.log,Original complete curated run; unchanged gate
+DurabilityAudit,PASS,536.513,reports/branch-audit/release-remaining-3.tsv.results.tsv,Rerun after audit correction or final smoke
+EconomyIntegrationVerify,PASS,142.881,reports/branch-audit/release-remaining-1.tsv.results.tsv,Rerun after audit correction or final smoke
+EngineRebuildFlowVerify,PASS,49.441,reports/branch-audit/release-followup-1.tsv.results.tsv,Rerun after audit correction or final smoke
+FluidPurchaseVerify,PASS,6.28,reports/unity-validation-all-20261015-134313-54836-batch02.log,Original complete curated run; unchanged gate
+FuelVerify,PASS,166.26,reports/unity-validation-all-20261015-134313-54836-batch08.log,Original complete curated run; unchanged gate
+FuelingConversionVerify,PASS,21.9,reports/unity-validation-all-20261015-134313-54836-batch04.log,Original complete curated run; unchanged gate
+IndividualEngineVerify,PASS,69.44,reports/unity-validation-all-20261015-134313-54836-batch03.log,Original complete curated run; unchanged gate
+IntegratedVerify,PASS,354.517,reports/branch-audit/release-remaining-3.tsv.results.tsv,Rerun after audit correction or final smoke
+InventoryCommerceVerify,PASS,79.53,reports/unity-validation-all-20261015-134313-54836-batch03.log,Original complete curated run; unchanged gate
+LaunchVerify,PASS,0.16,reports/unity-validation-all-20261015-134313-54836-batch05.log,Original complete curated run; unchanged gate
+MaintenanceReplaceVerify,PASS,49.138,reports/branch-audit/release-remaining-1.tsv.results.tsv,Rerun after audit correction or final smoke
+ManualGearboxVerify,PASS,26.63,reports/unity-validation-all-20261015-134313-54836-batch05.log,Original complete curated run; unchanged gate
+MassVerify,PASS,22.54,reports/unity-validation-all-20261015-134313-54836-batch05.log,Original complete curated run; unchanged gate
+MenuPreviewVerify,PASS,1.65,reports/unity-validation-all-20261015-134313-54836-batch06.log,Original complete curated run; unchanged gate
+OwnershipVerify,PASS,2.398,reports/branch-audit/release-followup-1.tsv.results.tsv,Rerun after audit correction or final smoke
+PaidVerify,PASS,106.388,reports/branch-audit/release-followup-1.tsv.results.tsv,Rerun after audit correction or final smoke
+PartBrandVerify,PASS,1.3,reports/unity-validation-all-20261015-134313-54836-batch07.log,Original complete curated run; unchanged gate
+PartComparisonVerify,PASS,41.2,reports/unity-validation-all-20261015-134313-54836-batch07.log,Original complete curated run; unchanged gate
+PartHardwareVerify,PASS,450.86,reports/unity-validation-all-20261015-134313-54836-batch05.log,Original complete curated run; unchanged gate
+PartsEffectsVerify,PASS,43.5,reports/unity-validation-all-20261015-134313-54836-batch05.log,Original complete curated run; unchanged gate
+PartsMarketVerify,PASS,43.48,reports/unity-validation-all-20261015-134313-54836-batch02.log,Original complete curated run; unchanged gate
+RacePresentationVerify,PASS,64.64,reports/unity-validation-all-20261015-134313-54836-batch06.log,Original complete curated run; unchanged gate
+RecoveryVerify,PASS,75.94,reports/unity-validation-all-20261015-134313-54836-batch08.log,Original complete curated run; unchanged gate
+ResetVerify,PASS,2.367,reports/branch-audit/release-remaining-2.tsv.results.tsv,Rerun after audit correction or final smoke
+ResidualCheckpointVerify,PASS,30.74,reports/unity-validation-all-20261015-134313-54836-batch08.log,Original complete curated run; unchanged gate
+ResidualPerformanceVerify,PASS,45.188,reports/branch-audit/release-remaining-2.tsv.results.tsv,Rerun after audit correction or final smoke
+ResidualRecoveryVerify,PASS,78.06,reports/unity-validation-all-20261015-134313-54836-batch08.log,Original complete curated run; unchanged gate
+SceneCheck,PASS,8.030,reports/branch-audit/release-remaining-2.tsv.results.tsv,Rerun after audit correction or final smoke
+ServiceVerify,PASS,77.18,reports/unity-validation-all-20261015-134313-54836-batch03.log,Original complete curated run; unchanged gate
+SetupPreviewVerify,PASS,80.71,reports/unity-validation-all-20261015-134313-54836-batch07.log,Original complete curated run; unchanged gate
+ShopCacheVerify,PASS,31.47,reports/unity-validation-all-20261015-134313-54836-batch07.log,Original complete curated run; unchanged gate
+SliceTwoAudit,PASS_COMBINED,3912.83,reports/unity-validation-all-20261015-134313-54836-batch08.log,"Original 14429 unchanged assertions passed; 13 stale fixture failures corrected; shared failure/AWD subset rerun 1149/0, 555 runs; see RELEASE-AUDIT.md"
+SqliteStateVerify,PASS,61.175,reports/branch-audit/release-remaining-3.tsv.results.tsv,Rerun after audit correction or final smoke
+StatHelpVerify,PASS,9.121,reports/branch-audit/release-fast.tsv.results.tsv,Rerun after audit correction or final smoke
+SupplyPricingVerify,PASS,281.581,reports/branch-audit/release-followup-1.tsv.results.tsv,Rerun after audit correction or final smoke
+ThermalVerify,PASS,5.02,reports/unity-validation-all-20261015-134313-54836-batch04.log,Original complete curated run; unchanged gate
+TireFailureVerify,PASS,0.767,reports/branch-audit/release-remaining-2.tsv.results.tsv,Rerun after audit correction or final smoke
+TireFeedbackVerify,PASS,1.12,reports/unity-validation-all-20261015-134313-54836-batch06.log,Original complete curated run; unchanged gate
+TireSoundVerify,PASS,1.6,reports/unity-validation-all-20261015-134313-54836-batch06.log,Original complete curated run; unchanged gate
+TireVerify,PASS,174.495,reports/branch-audit/release-remaining-1.tsv.results.tsv,Rerun after audit correction or final smoke
+UnitsVisualVerify,PASS,8.29,reports/unity-validation-all-20261015-134313-54836-batch09.log,Original complete curated run; unchanged gate
+UsedInspectionVerify,PASS,11.96,reports/unity-validation-all-20261015-134313-54836-batch03.log,Original complete curated run; unchanged gate
+ValuationVerify,PASS,365.04,reports/unity-validation-all-20261015-134313-54836-batch03.log,Original complete curated run; unchanged gate
+VarietyMechanicalVerify,PASS,7.214,reports/branch-audit/release-fast.tsv.results.tsv,Rerun after audit correction or final smoke
+VehicleMarketVerify,PASS,11.852,reports/branch-audit/release-remaining-2.tsv.results.tsv,Rerun after audit correction or final smoke
+VehicleVarietyVerify,PASS,8.24,reports/unity-validation-all-20261015-134313-54836-batch07.log,Original complete curated run; unchanged gate

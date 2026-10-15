@@ -88,6 +88,11 @@ namespace DragLab.Editor
                 check(before==JsonUtility.ToJson(p)&&basketBefore==Rows(basket),v.spec.id+" merging is read-only for both profile and existing cart");
                 string mergedRows=Rows(merged.lines);
                 check(mergedRows==Rows(MaintenanceReplacements.AddToCart(p,carId,express,merged.lines).lines),v.spec.id+" repeated Add to cart does not buy duplicate replacements");
+                var restoredBasket=basket.Select(row=>JsonUtility.FromJson<PartCartLine>(JsonUtility.ToJson(row))).ToArray();foreach(var row in restoredBasket){row.preparationOwner="";if(row.action==CartAction.NewSet)row.role="";}
+                var restored=MaintenanceReplacements.AddToCart(p,carId,express,restoredBasket);
+                check(Rows(restored.lines)==mergedRows,v.spec.id+" restored cart's empty optional fields neither create duplicate rows nor pretend an engine is reserved");
+                var prepared=restoredBasket.Select(l=>l.Copy()).ToArray();prepared[0].preparationOwner="actual-engine";bool preparationRejected=false;try{MaintenanceReplacements.AddToCart(p,carId,express,prepared);}catch(InvalidOperationException){preparationRejected=true;}
+                check(preparationRejected,v.spec.id+" a real prepared-engine reservation still rejects a conflicting maintenance merge");
                 check(merged.deliveryFee>0&&merged.cost==PartCart.Total(p,carId,merged.lines)&&merged.supply.Values.Sum(q=>q.fee)==merged.deliveryFee,v.spec.id+" merged review and per-offer supply use the actual delivered basket price");
                 var fullPistons=new ReplacementPlan();fullPistons.lines.Add(new PartCartLine{action=CartAction.NewSet,definitionId=pistons.definitionId,install=true});
                 var covered=MaintenanceReplacements.AddToCart(p,carId,fullPistons,single.lines);

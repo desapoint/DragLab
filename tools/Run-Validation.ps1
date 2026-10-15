@@ -2,7 +2,7 @@
 .SYNOPSIS
 Runs curated DragLab Unity checks with failure details and CSV results.
 Only Smoke, Functional and Extended are included in All.
-Quarantined targets are older schema/composite suites needing separate review.
+Quarantined targets repeat feature suites; run individual release gates instead.
 Diagnostics are measurements, not pass/fail feature gates.
 #>
 param(
@@ -33,6 +33,10 @@ $suite = @{
         'SqliteStateVerify'
     )
     Functional = @(
+        'BranchAuditVerify',
+        'ComponentFaultVerify',
+        'EngineRebuildFlowVerify',
+        'SupplyPricingVerify',
         'FluidPurchaseVerify',
         'CareerVerify',
         'CareerExpandedVerify',
@@ -77,6 +81,11 @@ $suite = @{
         'FuelVerify'
     )
     Extended = @(
+        'OwnershipVerify',
+        'AssemblyVerify',
+        'PaidVerify',
+        'EconomyIntegrationVerify',
+        'ResidualPerformanceVerify',
         'ResidualCheckpointVerify',
         'ResidualRecoveryVerify',
         'DrivingCorrectionsVerify',
@@ -87,11 +96,6 @@ $suite = @{
     )
     Quarantined = @(
         'PartsMarketRegression',
-        'OwnershipVerify',
-        'AssemblyVerify',
-        'PaidVerify',
-        'EconomyIntegrationVerify',
-        'ResidualPerformanceVerify',
         'Verify',
         'VerifyRemaining',
         'VerifyRemainingSimulation'
@@ -121,7 +125,7 @@ if ($ListOnly) {
 
 # Resolve methods from the existing single-action launcher; never fork its action map.
 $methodByAction = @{}
-$launcherSource = Get-Content -LiteralPath $invoke -Raw
+$launcherSource = Get-Content -LiteralPath $invoke -Raw -Encoding UTF8
 $pattern = "(?m)^\s*'(?<action>[A-Za-z0-9]+)'\s*\{\s*'(?<method>[A-Za-z0-9_.]+)'\s*\}"
 foreach ($match in [regex]::Matches($launcherSource, $pattern)) {
     $methodByAction[$match.Groups['action'].Value] = $match.Groups['method'].Value
@@ -135,7 +139,7 @@ if ($editors.Count -gt 0) {
     throw 'Close all Unity Editor/batch processes before running validation. No processes were terminated.'
 }
 if ($Group -eq 'Quarantined') {
-    Write-Warning 'These checks include obsolete save-migration or repeated composite coverage. Results are not a current-release gate.'
+    Write-Warning 'These checks include repeated composite coverage. Results are not a current-release gate.'
 }
 if ($Group -eq 'Diagnostics') {
     Write-Warning 'Diagnostic actions measure behavior; completion is not a verification PASS.'

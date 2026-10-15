@@ -38,7 +38,7 @@ namespace DragLab.Infrastructure
         // is for history serialization only; it never permits health/failure repair.
         public static bool HistoryLess(double next,double old){return next<old-Math.Max(1e-10,Math.Abs(old)*1e-12);}
         public static int FailureCount(CarSimulation car)
-        {return car.mechanics.parts.Sum(p=>p.condition.tires!=null&&p.condition.tires.Length==4?p.condition.tires.Count(t=>t.failed||t.health<=0):((p.condition.failed?1:0)+(p.condition.elements==null?0:p.condition.elements.Count(e=>e.Failed))))+(car.state.engineFailed?1:0)+(car.state.drivetrainFailed?1:0);}
+        {return car.mechanics.parts.Sum(p=>p.condition.tires!=null&&p.condition.tires.Length==4?p.condition.tires.Count(t=>t.Failed):((p.condition.failed?1:0)+(p.condition.elements==null?0:p.condition.elements.Count(e=>e.Failed))))+(car.state.engineFailed?1:0)+(car.state.drivetrainFailed?1:0);}
         public static bool RecoverInterrupted(PlayerProfile profile)
         {
             bool changed=false;

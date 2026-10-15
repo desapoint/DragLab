@@ -69,7 +69,7 @@ namespace DragLab.Runtime
                 var health=Math.Min(tire.tire.health,Math.Max(0,1-tire.tire.consumedLife));
                 labels.Add((d==null?tire.definitionId:d.name)+" · "+health.ToString("P0")
                     +" · "+(tire.tire.distanceM/1000).ToString("F1")+" km"
-                    +(tire.tire.failed?" · FAILED":"")+" · "+SharedInventory.StorageOf(tire.storageId)
+                    +(tire.tire.Failed?" · FAILED":"")+" · "+SharedInventory.StorageOf(tire.storageId)
                     +" · #"+id.Substring(Math.Max(0,id.Length-6)));
             }
             var positions=new DropdownField[4];
@@ -123,7 +123,7 @@ namespace DragLab.Runtime
                 refresh=()=>{
                     var selected=positions.Where(x=>x.index>0).Select(x=>candidates[x.index-1].element.id).ToArray();
                     bool duplicate=selected.Distinct(StringComparer.Ordinal).Count()!=selected.Length;
-                    bool failed=positions.Any(x=>x.index>0&&candidates[x.index-1].tire.failed);
+                    bool failed=positions.Any(x=>x.index>0&&candidates[x.index-1].tire.Failed);
                     feedback.text=duplicate?"A physical tire cannot occupy two corners.":failed?"Warning: one selected tire is failed and may have severely reduced grip.":"";
                     var submit=root.Q<Button>("dialogSwaptires");
                     if(submit!=null)submit.SetEnabled(selected.Length>0&&!duplicate);

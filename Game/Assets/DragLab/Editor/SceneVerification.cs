@@ -1,9 +1,12 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Linq;
+using System.Text;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using DragLab.Domain;
+using DragLab.Domain.Mechanics;
 using DragLab.Infrastructure;
 using DragLab.Presentation;
 using DragLab.Runtime;
@@ -15,75 +18,54 @@ namespace DragLab.Editor
     public static class SceneVerification
     {
         static readonly BindingFlags PrivateInstance = BindingFlags.Instance | BindingFlags.NonPublic;
+        [Serializable] sealed class ArtManifest { public ArtLayer[] layers; }
+        [Serializable] sealed class ArtLayer { public string id; }
 
         public static void Run()
         {
-            string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../.."));
-            string fixtures = Path.Combine(root, "reports/scene-fixtures", DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff"));
-            ProfileStore.VerificationPath = Path.Combine(fixtures, "profile-v1.json");
+            string root=Path.GetFullPath(Path.Combine(Application.dataPath,"../.."));
+            string fixtures=Path.Combine(root,"reports/scene-fixtures",Guid.NewGuid().ToString("N"));Directory.CreateDirectory(fixtures);
+            string oldPath=ProfileStore.VerificationPath,oldAudio=SharedAudioSettings.VerificationPath,oldUnits=SharedUnitSettings.VerificationPath;
+            ProfileStore.VerificationPath=Path.Combine(fixtures,"save.sqlite3");SharedAudioSettings.VerificationPath=Path.Combine(fixtures,"audio.json");SharedUnitSettings.VerificationPath=Path.Combine(fixtures,"units.json");
             try
             {
                 EditorSceneManager.OpenScene("Assets/DragLab/Scenes/FirstSlice.unity");
-                var game = UnityEngine.Object.FindFirstObjectByType<PrototypeGame>();
-                Check(game != null, "Scene contains PrototypeGame.");
-                Invoke(game, "Start");
-                Check(game.vehicles.Length >= 8 && game.career.Length >= 21, "Scene loads the expanded vehicle catalog and expanded career events.");
-                var profile = Field<PlayerProfile>(game, "profile");
-                int startCash = profile.cash;
-                game.StartRace(game.career[0]);
-                var race = Field<RaceSimulation>(game, "race");
-                int guard = 15000;
-                while (race.phase != RacePhase.Finished && --guard > 0) race.Step(new DriverInput());
-                Debug.Log("SCENE DUEL: player reaction " + race.player.state.reaction + " ET " + race.player.state.elapsed +
-                    "; opponent reaction " + race.opponent.state.reaction + " ET " + race.opponent.state.elapsed);
-                Check(guard > 0 && race.playerWon, "Starter can complete and win the first event.");
-                // Direct domain stepping bypasses Update's tick counter. Publish the matching
-                // boundary tick, then inspect the committed profile rather than its old draft.
-                SetField(game, "liveRunTick", (long)(15000 - guard));
-                Invoke(game, "FinishRace");
-                profile = Field<PlayerProfile>(game, "profile");
-                Check(profile.cash == startCash + game.career[0].cashWin && profile.reputation == game.career[0].reputationWin,
-                    "Win grants the configured cash and first-win reputation.");
-                Invoke(game, "FinishRace");
-                Check(profile.cash == startCash + game.career[0].cashWin && profile.SelectedCar.completedRuns == 1, "Repeated result settlement cannot duplicate cash or records.");
-                var loaded = ProfileStore.Load();
-                Check(loaded.cash == profile.cash && loaded.careerWins.Contains(game.career[0].stableId), "Result persists through save/reload.");
-                Check(File.Exists(ProfileStore.FilePath + ".bak"), "Previous save backup exists.");
-                File.WriteAllText(ProfileStore.FilePath, "corrupt fixture data");
-                var recovered = ProfileStore.Load();
-                Check(recovered.cash == startCash && ProfileStore.Status.Contains("Recovered"), "Invalid main save recovers its previous backup.");
-                ProfileStore.Save(recovered);
-                File.WriteAllText(ProfileStore.FilePath, "corrupt fixture again");
-                Check(ProfileStore.Load().cash == startCash && ProfileStore.Status.Contains("Recovered"), "Saving after recovery does not overwrite the valid backup with corruption.");
-                var view = Field<LayeredCarView>(game, "playerView");
-                Check(view.transform.childCount == 12, "Runtime car assembles all twelve manifest layers.");
-                File.WriteAllText(ProfileStore.FilePath, "{\"saveVersion\":1,\"cash\":1234,\"driving\":{\"shifting\":1,\"launch\":1}} ");
-                var legacy = ProfileStore.Load();
-                Check(legacy.SelectedCar.lastPass == null, "Earlier saves have no invented last-pass record.");
-                Check(legacy.cash == 1234 && legacy.driving.shifting == ShiftMode.Sequential && legacy.driving.clutchReleaseSeconds == .18f && legacy.driving.soundVolume == .35f && legacy.driving.shutdownBrakeAssist,
-                    "Earlier version-1 driving saves receive the new pedal/audio defaults without losing cash or modes.");
-                legacy.driving.soundVolume = 0; legacy.driving.clutchReleaseSeconds = .4f; legacy.driving.shutdownBrakeAssist = false; ProfileStore.Save(legacy);
-                Check(ProfileStore.Load().driving.soundVolume == 0 && ProfileStore.Load().driving.clutchReleaseSeconds == .4f && !ProfileStore.Load().driving.shutdownBrakeAssist, "Explicit muted audio, manual brakes and pedal preferences survive reload.");
-                int practiceCash = profile.cash, practiceRep = profile.reputation, practiceRuns = profile.SelectedCar.completedRuns;
-                game.StartPractice(); race = Field<RaceSimulation>(game, "race"); guard = 15000;
-                while (race.phase != RacePhase.Finished && --guard > 0) race.Step(new DriverInput());
-                SetField(game, "liveRunTick", (long)(15000 - guard));
-                Invoke(game, "FinishRace"); Invoke(game, "FinishRace");
-                profile = Field<PlayerProfile>(game, "profile");
-                Check(guard > 0 && profile.cash == practiceCash && profile.reputation == practiceRep && profile.SelectedCar.completedRuns == practiceRuns + 1,
-                    "Practice records exactly one valid pass without paying cash/reputation.");
-                var savedPass = ProfileStore.Load().SelectedCar.lastPass;
-                Check(savedPass != null && Math.Abs(savedPass.elapsedSeconds - race.player.state.elapsed) < 1e-10 && savedPass.tune != profile.SelectedCar.tune &&
-                    savedPass.driving.launch == race.player.driver.launch, "Last-pass timing, tune and assists persist independently.");
-                game.ReturnToGarage(); Check(Field<string>(game, "screen") == "Garage", "Completed practice returns to garage without restarting.");
-                string report = "PASS: scene initialization, eight-car/expanded-event wiring, first race, reward/save roundtrip, backup recovery and twelve-layer runtime car assembly.\n" +
-                    "Practice settles once with no payout, last-pass snapshots persist, legacy saves have no invented pass, and return to garage succeeds.\n" +
-                    "Editor: " + Application.unityVersion + "\nFixture: " + fixtures + "\nNo actual player save was accessed.\n" +
-                    "Scope: synchronous scene integration; UI input, rendering, audio and device behavior still require Play Mode/device QA.\n";
-                File.WriteAllText(Path.Combine(root, "reports/unity-scene-verification.txt"), report);
+                var game=UnityEngine.Object.FindFirstObjectByType<PrototypeGame>();Check(game!=null,"Scene contains PrototypeGame.");Invoke(game,"Start");
+                Check(game.vehicles.Length>=8&&game.career.Length>=21,"Scene loads authored vehicles and expanded career events.");
+                var profile=Field<PlayerProfile>(game,"profile");Check(profile.firstPurchasePending&&profile.SelectedCar==null,"Fresh scene starts at first-car selection without a gifted car.");
+                VehicleCollection.Buy(profile,profile.catalog,profile.vehicleStock.listings.First(o=>o.model=="starter-hatch"));Check(ProfileStore.TrySave(profile),"Starter purchase fixture is durable.");game.ReturnToGarage();
+                int cash=profile.cash,rep=profile.reputation;var evt=game.career.First(e=>CareerProgression.EntryError(profile,profile.SelectedCar,e)==null);
+                game.StartRace(evt);var race=Field<RaceSimulation>(game,"race");Check(race!=null,"Eligible first event stages after purchasing a starter.");
+                int ticks=0;while(race.phase!=RacePhase.Finished&&ticks<15000){race.Step(new DriverInput());ticks++;}
+                Check(ticks<15000&&race.player.state.finished&&!race.player.state.disqualified,"Default driving completes the pass; victory is not guaranteed.");
+                SetField(game,"liveRunTick",(long)ticks);Invoke(game,"FinishRace");profile=Field<PlayerProfile>(game,"profile");
+                int expectedCash=cash-evt.entryFee+(race.playerWon?evt.cashWin+evt.firstWinBonus:evt.cashLoss),expectedRep=rep+(race.playerWon?evt.reputationWin:0);
+                Check(profile.cash==expectedCash&&profile.reputation==expectedRep&&profile.careerRuns.Last().complete,"Captured outcome settles its actual fee, reward and first-win terms.");
+                Invoke(game,"FinishRace");Check(profile.cash==expectedCash&&profile.SelectedCar.completedRuns==1,"Repeated settlement cannot duplicate rewards or pass records.");
+                var loaded=ProfileStore.Load();Check(loaded.cash==profile.cash&&loaded.careerWins.Contains(evt.stableId)==race.playerWon,"Actual race outcome survives database reload.");
+                game.ReturnToGarage();profile=Field<PlayerProfile>(game,"profile");ProfileStore.Flush();
+                Check(File.Exists(ProfileStore.FilePath+".bak"),"Durable recovery database exists.");
+                File.WriteAllText(ProfileStore.FilePath,"corrupt isolated primary",Encoding.UTF8);var recovered=ProfileStore.Load();
+                Check(recovered.cash==profile.cash&&recovered.SelectedCar.instanceId==profile.SelectedCar.instanceId&&ProfileStore.Status.Contains("Recovered"),"Damaged primary recovers the latest durable assets and balance.");
+                Check(ProfileStore.TrySave(recovered),"Recovered database commits normally.");ProfileStore.Flush();File.WriteAllText(ProfileStore.FilePath,"corrupt isolated primary again",Encoding.UTF8);
+                var reloaded=ProfileStore.Load();Check(reloaded.cash==profile.cash&&!ProfileStore.ResetRequired,"Saving after recovery preserves a valid recovery database.");
+                SetField(game,"profile",reloaded);game.settings=reloaded.driving;profile=reloaded;
+                var view=Field<LayeredCarView>(game,"playerView");var art=game.vehicles.First(v=>v.spec.id==profile.SelectedCar.vehicleId).spec.artId;
+                var manifest=JsonUtility.FromJson<ArtManifest>(Resources.Load<TextAsset>("Sprites/Vehicles/"+art+"/car-sprite").text);
+                var sprites=view.transform.Cast<Transform>().Where(t=>t.GetComponent<SpriteRenderer>()!=null).ToArray();
+                Check(sprites.Length==manifest.layers.Length&&manifest.layers.All(layer=>sprites.Any(t=>t.name==layer.id&&t.GetComponent<SpriteRenderer>().sprite!=null)),"Runtime car assembles every authored sprite layer alongside its tire effects.");
+                int practiceCash=profile.cash,practiceRep=profile.reputation,practiceRuns=profile.SelectedCar.completedRuns;
+                game.StartPractice();race=Field<RaceSimulation>(game,"race");Check(race!=null,"Practice stages with restored ownership.");ticks=0;
+                while(race.phase!=RacePhase.Finished&&ticks<15000){race.Step(new DriverInput());ticks++;}
+                SetField(game,"liveRunTick",(long)ticks);Invoke(game,"FinishRace");Invoke(game,"FinishRace");profile=Field<PlayerProfile>(game,"profile");
+                Check(ticks<15000&&profile.cash==practiceCash&&profile.reputation==practiceRep&&profile.SelectedCar.completedRuns==practiceRuns+1,"Practice records one valid pass without payout or duplicated settlement.");
+                var savedPass=ProfileStore.Load().SelectedCar.lastPass;
+                Check(savedPass!=null&&Math.Abs(savedPass.elapsedSeconds-race.player.state.elapsed)<1e-6&&savedPass.tune!=profile.SelectedCar.tune&&savedPass.driving.launch==race.player.driver.launch,"Last-pass timing and independent tune/assist snapshots persist.");
+                game.ReturnToGarage();Check(Field<string>(game,"screen")=="Garage","Completed practice returns to Garage.");
+                File.WriteAllText(Path.Combine(root,"reports/unity-scene-verification.txt"),"PASS: isolated fresh SQLite scene, explicit starter purchase, outcome-based career settlement, duplicate settlement, durable backup recovery, authored sprite assembly, no-payout practice and last-pass snapshot.\nEditor: "+Application.unityVersion+"\nFixture: "+fixtures+"\nNo player save/preferences accessed. Native input/render/audio checks are separate.\n",new UTF8Encoding(false));
                 Debug.Log("DRAGLAB SCENE VERIFICATION PASS");
             }
-            finally { ProfileStore.VerificationPath = null; }
+            finally {ProfileStore.Flush();ProfileStore.VerificationPath=oldPath;SharedAudioSettings.VerificationPath=oldAudio;SharedUnitSettings.VerificationPath=oldUnits;ProfileStore.UseSlot("slot-1");}
         }
         static void Check(bool value, string message) { if (!value) throw new InvalidOperationException("SCENE CHECK FAILED: " + message); }
         static T Field<T>(PrototypeGame game, string field) { return (T)typeof(PrototypeGame).GetField(field, PrivateInstance).GetValue(game); }

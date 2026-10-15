@@ -1,4 +1,4 @@
-param([string]$FixtureName = 'native-menu-shell', [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly, [switch]$MaintenanceOnly, [switch]$RebuildOnly, [switch]$PricingOnly, [switch]$FrameProbe, [switch]$ResponsivenessOnly, [switch]$AwdHardwareOnly, [switch]$PartBrandsOnly, [switch]$SqliteStateOnly, [switch]$DisposalOnly, [switch]$RaceSelectionOnly, [switch]$SetupManagementOnly, [switch]$RaceHudOnly, [switch]$RacePauseOnly, [switch]$NavigationOnly)
+param([string]$FixtureName = 'native-menu-shell', [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly, [switch]$MaintenanceOnly, [switch]$RebuildOnly, [switch]$PricingOnly, [switch]$FrameProbe, [switch]$ResponsivenessOnly, [switch]$AwdHardwareOnly, [switch]$PartBrandsOnly, [switch]$SqliteStateOnly, [switch]$DisposalOnly, [switch]$RaceSelectionOnly, [switch]$SetupManagementOnly, [switch]$RaceHudOnly, [switch]$RacePauseOnly, [switch]$NavigationOnly, [switch]$ResetRequiredOnly)
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 . (Join-Path $PSScriptRoot 'InterfaceScreenshots.ps1')
@@ -9,6 +9,16 @@ $taskScreenshotSuite = if ($taskSuite.Count) { 'native-' + ($taskSuite -join '-'
 $taskScreenshots = Start-InterfaceScreenshotRun $taskRoot $taskFixture $taskScreenshotSuite
 $taskPlayer = Join-Path $taskRoot 'Game/Builds/Windows/DragLab.exe'
 $taskArgs = @('-screen-fullscreen','0','-screen-width','1280','-screen-height','720','-logFile',('"' + (Join-Path $taskFixture 'player.log') + '"'),'--draglab-verify',('"' + $taskFixture + '"'),'--draglab-native-menu-verify')
+if ($ResetRequiredOnly) {
+    $taskArgs += '--draglab-reset-required-only-verify'
+    if (Test-Path -LiteralPath (Join-Path $taskFixture 'save-slot-1.sqlite3')) { throw 'Reset-required verification needs a fresh disposable FixtureName.' }
+    $resetFiles = @{''='isolated incompatible database'; '.bak'='isolated incompatible recovery'; '.reset-generation'='1'; '.reset-intent'='2|1'}
+    foreach ($suffix in $resetFiles.Keys) {
+        [IO.File]::WriteAllText((Join-Path $taskFixture ('save-slot-1.sqlite3' + $suffix)), $resetFiles[$suffix], [Text.UTF8Encoding]::new($false))
+        [IO.File]::WriteAllText((Join-Path $taskFixture ('reset-original' + $suffix + '.bin')), $resetFiles[$suffix], [Text.UTF8Encoding]::new($false))
+    }
+    [IO.File]::WriteAllText((Join-Path $taskFixture 'driving-settings.json'), '{"version":1,"driving":{"wearMode":1,"shifting":1},"difficulty":2}', [Text.UTF8Encoding]::new($false))
+}
 if ($NavigationOnly) { $taskArgs += '--draglab-navigation-only-verify' }
 if ($RacePauseOnly) { $taskArgs += '--draglab-race-pause-only-verify' }
 if ($RaceHudOnly) { $taskArgs += '--draglab-race-hud-only-verify' }

@@ -1,6 +1,8 @@
 # Prototype implementation status
 
-**4L.7 raised lights/pole ready for review:** Windows build and native **131/0** pass; [checkpoint](../reports/phases/4l/07-LIGHT-POLE.md). The separately reported post-finish save failure is under investigation, not fixed by this visual change.
+**Per-tire branch release checkpoint (2026-10-15):** audit fixes address save/reset marker recovery, fluid/commerce quotes, exact clutch snapshot continuation, monotonic member tire wear, exhausted-tire maintenance/valuation, component fault permissions and current-contract verification. The completed-race Garage exit and settlement reload pass in the packaged player. [Final audit and evidence](../reports/branch-audit/RELEASE-AUDIT.md). This technical checkpoint does not approve visual interfaces or advance later Slice 4 controls.
+
+**4L.7 raised lights/pole ready for review:** Windows build and native **131/0** pass; [checkpoint](../reports/phases/4l/07-LIGHT-POLE.md). The separately reported post-finish save failure was subsequently addressed and regression-tested in the linked branch release audit.
 
 
 **4L.6 narrow-road/scale calibration ready for review (2026-10-14):** road depth height is 35% of the previous view while sprites remain upright; repeating skew-compensated finish checks replace the stretched pattern. Start lights are enlarged, behind overlapping cars; rear-car size/movement is 82% rather than 68%. Windows build and final packaged native **128/0** pass. [Checks/review](../reports/phases/4l/06-NARROW-ROAD.md). Stop for visual acceptance before further controls.

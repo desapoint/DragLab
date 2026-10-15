@@ -1,3 +1,9 @@
+# Current release follow-up — 2026-10-15
+
+See [the release audit](../branch-audit/RELEASE-AUDIT.md) for current behavior, executed checks, corrected failures and compatibility limits. The WIP/not-run statements below describe the original implementation baseline and are superseded by that audit. Save contract is 12; physics model is v20. The neutral ownership container is retained intentionally; tire condition is authoritative on each typed member.
+
+---
+
 # Tire authority and polymorphic component elements (2026-10-14)
 
 ## Follow-up: remaining individual-component types (save v12)

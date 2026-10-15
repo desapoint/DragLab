@@ -32,7 +32,7 @@ namespace DragLab.Infrastructure
                     var profile = JsonUtility.FromJson<PlayerProfile>(json);
                     if (profile == null) throw new InvalidDataException("Empty profile.");
                     if (profile.saveVersion != MechanicsOwnership.SaveVersion || profile.mechanicsVersion > MechanicsSchema.Version)
-                    { writeBlocked = true; throw new InvalidDataException("Newer save schema; writing is disabled to preserve it."); }
+                    { writeBlocked = true; throw new InvalidDataException("Incompatible save contract; writing is disabled to preserve it."); }
                     // Optional version-1 additions: keep old saves audible and smoothly drivable.
                     if (profile.driving == null) profile.driving = new DriverSettings();
                     if (json.IndexOf("\"wearMode\"", StringComparison.Ordinal) < 0) profile.driving.wearMode = WearMode.Full;

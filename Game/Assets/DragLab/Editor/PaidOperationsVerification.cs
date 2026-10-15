@@ -152,9 +152,10 @@ namespace DragLab.Editor
             long clock = ready; test.cash = 0; int jobs = 0;
             while (test.cash < PaidEconomy.DealerPrice(cat, costs, prices, cheapest)) { test = commit(test, a => PaidEconomy.StartRecovery(a, costs, clock)); clock = test.recoveryWork.readyUtcTicks; job = test.recoveryWork.id; test = commit(test, a => PaidEconomy.ClaimRecovery(a, job, clock)); if (++jobs > 100) throw new InvalidOperationException("Unbounded recovery route."); }
             var purchase = PaidEconomy.Quote(test, cat, costs, prices, new PaymentRequest { kind = PaymentKind.Car, offer = cheapest }, clock); test = commit(test, a => PaidEconomy.Pay(a, cat, costs, prices, purchase, clock, cheapest)); check(test.cars.Count == 1 && MechanicsOwnership.Resolve(test, test.SelectedCar, cat).Drivable && test.engines.Any(e => string.IsNullOrEmpty(e.parentVehicleId)), "Zero-cash empty garage recovers through bounded timed work and funded replacement, retaining stored assets.");
-            string disk = Path.Combine(folder, "disk/profile-v1.json"); Directory.CreateDirectory(Path.GetDirectoryName(disk));
+            string disk = Path.Combine(folder, "disk",Guid.NewGuid().ToString("N"),"profile-v1.json"); Directory.CreateDirectory(Path.GetDirectoryName(disk));
             try {
-                ProfileStore.VerificationPath = disk; var old = fresh("starter-hatch"); old.saveVersion = 4; File.WriteAllText(disk, JsonUtility.ToJson(old)); var migrated = ProfileStore.Load(); check(migrated.saveVersion == MechanicsOwnership.SaveVersion && migrated.SelectedCar.instanceId == old.SelectedCar.instanceId && File.Exists(disk + ".legacy-v4"), "Schema-4 migration retains original identities and backup.");
+                ProfileStore.VerificationPath = disk; var old = fresh("starter-hatch"); old.saveVersion = 4; string obsolete=JsonUtility.ToJson(old);File.WriteAllText(disk,obsolete,System.Text.Encoding.UTF8);var rejected=ProfileStore.Load();check(rejected.SelectedCar==null&&!ProfileStore.TrySave(rejected)&&File.ReadAllText(disk,System.Text.Encoding.UTF8)==obsolete,"Unsupported schema-4 data remains intact without inventing a playable car.");
+                old.saveVersion=MechanicsOwnership.SaveVersion;File.WriteAllText(disk,JsonUtility.ToJson(old),System.Text.Encoding.UTF8);var migrated=ProfileStore.Load();check(migrated.SelectedCar.instanceId==old.SelectedCar.instanceId,"Current paid-operation fixture retains its original ownership.");
                 var dq = PaidEconomy.Quote(migrated, cat, costs, prices, new PaymentRequest { kind = PaymentKind.Fuel, carId = migrated.SelectedCar.instanceId, litres = 1 }, now); // full tank: capture only
                 var ds = Valuations.Capture(migrated, cat, prices, ValuationKind.Car, migrated.SelectedCar.instanceId, "recycler", now);
                 PlayerProfile committed; check(MechanicsTransactions.Try(migrated, cat, migrated.revision, a => PaidEconomy.Sell(a, cat, prices, ds, now), ProfileStore.TrySave, out committed, out error), "Actual disk transaction commits last-car sale.");
@@ -162,7 +163,7 @@ namespace DragLab.Editor
                 File.Copy(disk, disk + ".tmp", true); check(ProfileStore.Load().cash == loaded.cash, "Leftover temporary transaction file cannot duplicate settlement.");
                 File.WriteAllText(disk, "truncated"); var recovered = ProfileStore.Load(); check(recovered.SelectedCar != null && recovered.economyReceipts.All(r => r.id != ds.Id) && recovered.cash == migrated.cash, "Backup recovery restores complete pre-sale assets and pre-sale cash, never a mixed tree/payment.");
             } finally { ProfileStore.VerificationPath = null; }
-            File.WriteAllText(Path.Combine(folder, "verification.txt"), "3D / schema 5 / " + MechanicsSchema.Model + "\n" + log + "Checks: " + checks + "\n"); Debug.Log("DRAGLAB PAID OPERATIONS PASS " + checks);
+            File.WriteAllText(Path.Combine(folder, "verification.txt"), "3D / schema "+MechanicsOwnership.SaveVersion+" / " + MechanicsSchema.Model + "\n" + log + "Checks: " + checks + "\n",System.Text.Encoding.UTF8); Debug.Log("DRAGLAB PAID OPERATIONS PASS " + checks);
         }
     }
 }

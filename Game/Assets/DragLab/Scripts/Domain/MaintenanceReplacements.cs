@@ -34,12 +34,12 @@ namespace DragLab.Domain.Mechanics
             foreach(var replacement in plan.lines){
                 if(replacement.action==CartAction.NewUnits&&rows.Any(l=>l.install&&l.action==CartAction.NewSet&&l.definitionId==replacement.definitionId))continue;
                 if(replacement.action==CartAction.NewSet)foreach(var covered in rows.Where(l=>l.install&&l.action==CartAction.NewUnits&&l.definitionId==replacement.definitionId).ToArray()){
-                    if(covered.preparationOwner!=null)throw new InvalidOperationException("This replacement conflicts with a prepared engine. Review the cart first.");
+                    if(!string.IsNullOrEmpty(covered.preparationOwner))throw new InvalidOperationException("This replacement conflicts with a prepared engine. Review the cart first.");
                     covered.quantity-=covered.positions.Count;covered.positions.Clear();covered.install=false;if(covered.quantity==0)rows.Remove(covered);
                 }
-                var line=rows.Find(l=>l.action==replacement.action&&l.definitionId==replacement.definitionId&&l.role==replacement.role);
+                var line=rows.Find(l=>l.action==replacement.action&&l.definitionId==replacement.definitionId&&(l.role??"")==(replacement.role??""));
                 if(line==null){rows.Add(replacement.Copy());continue;}
-                if(line.preparationOwner!=null)throw new InvalidOperationException("This replacement conflicts with a prepared engine. Review the cart first.");
+                if(!string.IsNullOrEmpty(line.preparationOwner))throw new InvalidOperationException("This replacement conflicts with a prepared engine. Review the cart first.");
                 if(replacement.action==CartAction.NewUnits){line.positions=(line.install?line.positions:Enumerable.Empty<string>()).Union(replacement.positions).ToList();line.quantity=Math.Max(line.quantity,line.positions.Count);}
                 line.install=true;
             }

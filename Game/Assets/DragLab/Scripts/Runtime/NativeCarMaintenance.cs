@@ -31,11 +31,11 @@ namespace DragLab.Runtime
                 .OrderByDescending(PrototypeGame.PartFailed).ThenBy(p=>p.condition.health).ToList();
             var wornTires=installed.Where(p=>catalog.Find(p.definitionId).category==PartCategory.Tires)
                 .SelectMany(p=>p.condition.tires.Select((t,i)=>new{Part=p,Tire=t,Corner=i}))
-                .Where(x=>x.Tire.failed||x.Tire.health<=.5f||x.Tire.consumedLife>=.5).ToList();
-            int failed=service.Count(PrototypeGame.PartFailed)+wornTires.Count(x=>x.Tire.failed||x.Tire.health<=0);
+                .Where(x=>x.Tire.Failed||TireDynamics.RemainingHealth(x.Tire)<=.5f).ToList();
+            int failed=service.Count(PrototypeGame.PartFailed)+wornTires.Count(x=>x.Tire.Failed);
             int needs=service.Count+wornTires.Count-failed;
             var summary=new Label("Maintenance · "+failed+" failed · "+needs+" need service") {name="maintenanceCondition"};
-            summary.AddToClassList("maintenance-summary"); summary.AddToClassList(failed>0?"car-critical":service.Count>0?"car-warning":"car-ready"); section.Add(summary);
+            summary.AddToClassList("maintenance-summary"); summary.AddToClassList(failed>0?"car-critical":needs>0?"car-warning":"car-ready"); section.Add(summary);
             bool available=true;
             try { EngineRebuilds.RequireAvailable(car); }
             catch (InvalidOperationException restriction) { var warning=new Label(restriction.Message); warning.AddToClassList("car-warning"); section.Add(warning); available=false; }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
+using DragLab.Domain;
 using DragLab.Domain.Mechanics;
 using DragLab.Infrastructure;
 
@@ -72,7 +73,40 @@ namespace DragLab.Runtime
             Check(count>0,"Isolated fixture stages a real cart line");yield return Click(input,"partsCart");yield return Click(input,"navBuild");
             Check(!shell.CartPageOpen&&game.CartCount==count,"Main navigation closes cart presentation while preserving reserved purchases");
             yield return Click(input,"navGarage");yield return Click(input,"navBuild");Check(game.CartCount==count,"Reserved cart survives leaving and returning to Build");
-            yield return Capture("navigation-build-default");yield return FittedShopChecks(input);game.ClearNativeCart();
+            yield return Capture("navigation-build-default");yield return FittedShopChecks(input);game.ClearNativeCart();yield return TireMaintenanceStateChecks(input);
+        }
+        IEnumerator IncompatibleSaveChecks(WindowsKeyboardProbe input)
+        {
+            string marker=Path.Combine(folder,"reset-clicked.txt"),beforeReport=Path.Combine(folder,"reset-before.txt");
+            if(File.Exists(marker)){
+                report.Append(File.ReadAllText(beforeReport,System.Text.Encoding.UTF8));checks+=int.Parse(File.ReadAllText(marker,System.Text.Encoding.UTF8));
+                Check(!game.ResetRequired&&!ProfileStore.ResetRequired&&game.Profile.firstPurchasePending&&game.Profile.cars.Count==0,"Explicit reset reloads the scene into the empty starting dealership");
+                Check(game.Profile.driving.wearMode==WearMode.Partial&&game.Profile.driving.shifting==ShiftMode.Sequential,"Startup reset preserves separate driving preferences");
+                foreach(string suffix in new[]{"",".bak",".reset-generation",".reset-intent"}){string original=File.ReadAllText(Path.Combine(folder,"reset-original"+suffix+".bin"),System.Text.Encoding.UTF8);Check(Directory.GetFiles(folder,"save-slot-1.sqlite3"+suffix+".before-reset-*").Any(file=>File.ReadAllText(file,System.Text.Encoding.UTF8)==original),"Startup reset archives original save-family file / "+suffix);}
+                Check(ProfileStore.Load().firstPurchasePending&&!ProfileStore.ResetRequired,"Fresh startup database remains loadable after scene reload");
+                yield return Capture("incompatible-save-reset-complete");yield break;
+            }
+            Check(game.ResetRequired&&shell.ModalOpen&&!shell.Root.Q("navBar").enabledSelf&&shell.Root.Q("modalClose").resolvedStyle.display==DisplayStyle.None,"Incompatible startup uses the blocking themed modal with no close control");
+            byte[] originalBytes=File.ReadAllBytes(ProfileStore.FilePath);yield return Key(input,0x1B);yield return Key(input,0x77);
+            Check(game.ResetRequired&&shell.ModalOpen&&originalBytes.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Escape and F8 cannot dismiss the reset requirement or rewrite the original save");
+            DialogScrollBounds("incompatible save");yield return Capture("incompatible-save-reset-required");
+            Check(errors==0,"Blocked startup and reset-modal input produce no runtime errors");
+            File.WriteAllText(beforeReport,report.ToString(),new System.Text.UTF8Encoding(false));File.WriteAllText(marker,checks.ToString(),new System.Text.UTF8Encoding(false));
+            yield return Click(input,"dialogResetandstartnewgame");
+            yield return new WaitForSecondsRealtime(5);throw new InvalidOperationException("Reset did not reload the scene.");
+        }
+        IEnumerator TireMaintenanceStateChecks(WindowsKeyboardProbe input)
+        {
+            var original=game.Profile;var profileField=typeof(PrototypeGame).GetField("profile",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);
+            try{
+                foreach(double life in new[]{.8,1.0}){
+                    var copy=EngineWorkshop.Copy(original);var car=copy.SelectedCar;var binding=car.installed.slots.First(s=>s.slot=="Tires");var tire=copy.parts.First(p=>p.instanceId==binding.partInstanceId).condition.tires[0];tire.health=1;tire.consumedLife=life;tire.failed=false;profileField.SetValue(game,copy);game.settings=copy.driving;
+                    yield return Click(input,"navGarage");yield return Click(input,"ownedCar:"+car.instanceId);var summary=shell.Root.Q<Label>("maintenanceCondition");
+                    Check(summary.ClassListContains(life<1?"car-warning":"car-critical")&&summary.text.Contains(life<1?"0 failed · 1 need service":"1 failed · 0 need service"),"Maintenance summary uses actual remaining tire life and matching severity / "+life);
+                    if(life>=1)yield return Capture("maintenance-exhausted-tire");
+                }
+            }finally{profileField.SetValue(game,original);game.settings=original.driving;shell.InvalidateOwnedGrid();}
+            yield return Click(input,"navBuild");Check(disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Temporary tire-maintenance inspection fixtures do not save or change player assets");
         }
         IEnumerator FittedShopChecks(WindowsKeyboardProbe input)
         {

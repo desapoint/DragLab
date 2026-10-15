@@ -254,7 +254,8 @@ namespace DragLab.Runtime
                     AddSurface(toggle,RacingSurface.Kind.Button);dialogSurfaces.Add(toggle.Q<RacingSurface>());frame.Add(body);
                     foreach(var entry in entries) {
                         var p=entry.Part;var row=new VisualElement{name="fittedPart:"+p.instanceId,userData=entry.Definition.category};row.AddToClassList("fitted-part");body.Add(row);
-                        CarFact(row,entry.Definition.name,p.condition.failed?"Failed · "+p.condition.failureReason:p.condition.health.ToString("P0"));
+                        string failure=entry.Definition.category==PartCategory.Tires?TireDynamics.FailedCorners(p.condition):p.condition.failureReason;
+                        CarFact(row,entry.Definition.name,PrototypeGame.PartFailed(p)?"Failed"+(string.IsNullOrEmpty(failure)?"":" · "+failure):PrototypeGame.MaintenanceConditionHealth(p).ToString("P0"));
                         var actions=new VisualElement();actions.AddToClassList("fitted-part-actions");row.Add(actions);
                         var slot=new Label(PartSemantics.Friendly(entry.Definition.category.ToString()));slot.AddToClassList("fitted-part-slot");actions.Add(slot);
                         var category=entry.Definition.category;
