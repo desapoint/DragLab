@@ -40,11 +40,17 @@ namespace DragLab.Runtime
         internal NativePartQuery PartQuery=>PartsQuery;
         internal bool PartsPlanned=>partsPlanned;
         internal int PartBrowserBuildCount{get;private set;}
+        internal void FilterShopCategory(PartCategory category)
+        {
+            partsSection=NativePartBrowser.Section(category);
+            var query=new NativePartQuery();query.Categories.Add(category);partQueries["Shop/"+partsSection]=query;
+        }
         void InitializeParts()
         {
             partsPage=new VisualElement{name="partsPage"};partsPage.AddToClassList("parts-page");partsPage.AddToClassList("hidden");root.Q(className:"workspace").Add(partsPage);
             var heading=new VisualElement();heading.AddToClassList("car-details-heading");partsPage.Add(heading);var name=new Label{name="partsCarName",enableRichText=false};name.AddToClassList("car-detail-title");heading.Add(name);
-            partsCart=PartButton(heading,"partsCart","Cart",OpenNativeCart);partsCart.Insert(1,new FilledMenuIcon("Business"));
+            partsCart=PartButton(heading,"partsCart","Cart",OpenNativeCart);
+            PartButton(heading,"partsTireSwap","Swap stored tires",OpenTireInventorySwap);partsCart.Insert(1,new FilledMenuIcon("Business"));
             PartButton(heading,"partsEngines","Engines",()=>{enginePageOpen=true;engineDetailId=null;engineViewKey=null;Refresh();}).Insert(1,new FilledMenuIcon("Build"));
             var sources=new VisualElement();sources.AddToClassList("owned-query-choices");sources.AddToClassList("choice-group");partsPage.Add(sources);
             sources.AddToClassList("parts-sources");
@@ -110,7 +116,7 @@ namespace DragLab.Runtime
             if(!partCardLabels.TryGetValue(e.Id,out var labels))return;
             labels[0].text=e.Compatibility;
             var specs=PartSpecs(e);for(int i=0;i<4;i++){labels[i+1].text=i<specs.Length?PartStatText(specs[i]):"";labels[i+1].tooltip=i<specs.Length?specs[i].explanation:"";}
-            double health=e.Unit?.element.health??e.Part?.condition.health??1;bool failed=e.Unit!=null?e.Unit.element.Failed:e.Part?.condition.failed??false;
+            double health=e.Unit?.element.health??(e.Part!=null&&e.Definition.category==PartCategory.Tires?TireDynamics.LowestHealth(e.Part.condition):e.Part?.condition.health)??1;bool failed=e.Unit!=null?e.Unit.element.Failed:e.Part!=null&&e.Definition.category==PartCategory.Tires?TireDynamics.AnyFailed(e.Part.condition):e.Part?.condition.failed??false;
             labels[5].tooltip=string.Join("\n",e.BrandNames.Select(b=>b+": "+PartBrands.Description(b)));
             labels[5].text=e.Source+" · "+string.Join(" / ",e.BrandNames.Select(PartBrands.Focus).Distinct())+" · "+PartSemantics.Friendly(e.Definition.category.ToString())+(PartSemantics.Wears(e.Definition.category)?" · "+(failed?"FAILED":health.ToString("P0")):"");labels[5].EnableInClassList("car-critical",failed);
             labels[6].text=(e.Price.HasValue?DisplayUnits.Money(e.Price.Value):"—")+(e.Definition.category==PartCategory.Tires||e.Definition.category==PartCategory.Wheels?e.Unit==null?" / set of 4":e.Definition.category==PartCategory.Wheels?" / wheel":" / tire":"")+" · "+(e.Definition.tuning!=PartTuningOptions.None||e.Definition.camTimingAdjustable?"Adjustable":"Fixed");
@@ -171,7 +177,7 @@ namespace DragLab.Runtime
             string set=e.Unit==null?InventoryUnits.SetLabel(game.Profile,game.Profile.SelectedCar,e.Definition):"Individual "+e.Unit.element.role;
             PartDetailFact(facts,"Includes",set.Replace("1 units","1 unit"));
             if(PartSemantics.Wears(e.Definition.category)){
-                double health=e.Unit?.element.health??e.Part?.condition.health??1;bool failed=e.Unit!=null?e.Unit.element.Failed:e.Part?.condition.failed??false;
+                double health=e.Unit?.element.health??(e.Part!=null&&e.Definition.category==PartCategory.Tires?TireDynamics.LowestHealth(e.Part.condition):e.Part?.condition.health)??1;bool failed=e.Unit!=null?e.Unit.element.Failed:e.Part!=null&&e.Definition.category==PartCategory.Tires?TireDynamics.AnyFailed(e.Part.condition):e.Part?.condition.failed??false;
                 PartDetailFact(facts,"Part condition",failed?"Failed · "+health.ToString("P0"):health.ToString("P0"),failed||health<=.25?"car-critical":health<=.5?"car-warning":"car-ready");
             }
             if(e.Source=="New"){var supply=PartsMarket.Quote(game.Profile,e.Definition,InventoryUnits.Count(game.Profile,game.Profile.SelectedCar,e.Definition),PurchaseDraft(offer).Individual);PartDetailFact(facts,"Supply",PartsMarket.Available(game.Profile,e.Definition)+" units · "+supply.Summary);}

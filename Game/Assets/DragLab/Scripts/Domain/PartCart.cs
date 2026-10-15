@@ -39,12 +39,15 @@ namespace DragLab.Domain.Mechanics
     {
         [Serializable] internal sealed class Lines { public List<PartCartLine> entries=new List<PartCartLine>(); }
         internal static string CatalogSnapshot(MechanicalCatalog catalog,string id,PlayerProfile p) => JsonUtility.ToJson(catalog.Spec(p.cars.Find(c=>c.instanceId==id).vehicleId))+string.Join("/",catalog.parts.Select(MarketCatalogLayout.Json));
-        public static int Total(PlayerProfile p,string carId,IEnumerable<PartCartLine> source,ValuationPolicy policy=null,long now=0,bool validateBlocks=true)
+        public static int Total(PlayerProfile p,string carId,IEnumerable<PartCartLine> source,ValuationPolicy policy=null,long now=0,bool validateBlocks=true,bool includeOwnerReservation=false)
         {
             var car=p.cars.Find(c=>c.instanceId==carId);EngineRebuilds.RequireAvailable(car);
             var lines=source.ToArray();if(lines.Length==0||lines.Length>100)throw new InvalidOperationException("Cart needs 1–100 distinct offers.");
             policy=policy??ValuationPolicy.Defaults();if(now==0)now=DateTime.UtcNow.Ticks;
-            var ids=new HashSet<string>();var assets=new HashSet<string>();var positions=new HashSet<string>();var slots=new HashSet<PartCategory>();int total=0;PlayerProfile movePreview=null;var supply=new PartsMarket.Ledger(p,CartReservations.Matches(p,carId,lines));
+            var ids=new HashSet<string>();var assets=new HashSet<string>();var positions=new HashSet<string>();var slots=new HashSet<PartCategory>();int total=0;PlayerProfile movePreview=null;
+            // An additive draft may reuse its owner's hold before Capture publishes the new rows.
+            // Checkout still requires the exact captured cart and never opts into this preview path.
+            var supply=new PartsMarket.Ledger(p,CartReservations.Matches(p,carId,lines)||includeOwnerReservation&&p.inventory.cart?.carId==carId);
             var moveSlots=new HashSet<string>();
             foreach(var line in lines) {
                 var d=line==null?null:p.catalog.Find(line.definitionId);
@@ -64,8 +67,8 @@ namespace DragLab.Domain.Mechanics
                 int price=InventoryPricing.NewSet(d);bool unit=line.action==CartAction.NewUnits;
                 if(line.action==CartAction.BuyUsed) {
                     var stock=p.inventory.dealer.Find(s=>s.Id==line.assetId);
-                    if(stock==null||stock.DefinitionId!=d.id||line.quantity!=1||!assets.Add(line.assetId))throw new InvalidOperationException("Used stock unavailable or used twice.");
-                    unit=stock.unit!=null;if(unit&&line.role!=stock.unit.element.role)throw new InvalidOperationException("Used unit role changed.");price=InventoryPricing.BuyUsed(stock,policy);
+                    if(stock==null||!(stock.IsPart||stock.IsUnit)||stock.DefinitionId!=d.id||line.quantity!=1||!assets.Add(line.assetId))throw new InvalidOperationException("Used stock unavailable or used twice.");
+                    unit=stock.IsUnit;if(unit&&line.role!=stock.unit.element.role)throw new InvalidOperationException("Used unit role changed.");price=InventoryPricing.BuyUsed(stock,policy);
                 } else if(!ids.Add(line.action+"/"+d.id+"/"+line.role))throw new InvalidOperationException("Duplicate new offer.");
                 if(unit) {
                     if(!InventoryUnits.Roles(p,car,d).Contains(line.role))throw new InvalidOperationException("This offer has no individually modeled units of that type.");
@@ -74,7 +77,7 @@ namespace DragLab.Domain.Mechanics
                 } else if(line.install&&!slots.Add(d.category))throw new InvalidOperationException("Only one cart offer can install in each slot. Other offers may be bought as spares.");
                 total=checked(total+(line.action==CartAction.BuyUsed?checked(price*line.quantity):supply.Take(d,unit?1:InventoryUnits.Count(p,car,d),price,line.quantity).cost));
             }
-            foreach(var category in slots)if(lines.Any(l=>l.install&&(l.action==CartAction.NewUnits||l.action==CartAction.BuyUsed&&p.inventory.dealer.Any(s=>s.Id==l.assetId&&s.unit!=null))&&p.catalog.Find(l.definitionId).category==category))throw new InvalidOperationException("Choose a complete set or individual replacements for a slot, not both.");
+            foreach(var category in slots)if(lines.Any(l=>l.install&&(l.action==CartAction.NewUnits||l.action==CartAction.BuyUsed&&p.inventory.dealer.Any(s=>s.Id==l.assetId&&s.IsUnit))&&p.catalog.Find(l.definitionId).category==category))throw new InvalidOperationException("Choose a complete set or individual replacements for a slot, not both.");
             if(validateBlocks){
                 var blocks=lines.Where(l=>p.catalog.Find(l.definitionId)?.category==PartCategory.CylinderBlock&&(l.install||l.action==CartAction.Move&&l.destination==InventoryKind.Car)).Where(l=>{var target=p.cars.Find(c=>c.instanceId==(l.action==CartAction.Move?l.destinationId:carId));return target==null||!MechanicsOwnership.Definitions(p,target).TryGetValue(PartCategory.CylinderBlock,out var old)||old!=l.definitionId;}).ToArray();
                 if(blocks.Length>0){if(blocks.Any(l=>!l.preparedBlock))throw new InvalidOperationException("Prepare the block and its required components before installation.");var preview=PreviewProfile(p,car,lines);foreach(var targetId in blocks.Select(l=>l.action==CartAction.Move?l.destinationId:carId).Distinct()){var result=MechanicsOwnership.Resolve(preview,preview.cars.Find(c=>c.instanceId==targetId),preview.catalog);if(!result.Drivable)throw new InvalidOperationException("Block preparation is incomplete: "+string.Join("; ",result.errors));}}
@@ -117,7 +120,7 @@ namespace DragLab.Domain.Mechanics
                     if(line.action==CartAction.NewSet){PartOperations.Buy(p,p.catalog,carId,line.definitionId,line.install&&i==0);continue;}
                     LooseEngineElement unit;
                     if(line.action==CartAction.NewUnits)unit=InventoryUnits.Buy(p,carId,line.definitionId,line.role);
-                    else {var stock=p.inventory.dealer.Find(s=>s.Id==line.assetId);p.cash-=InventoryPricing.BuyUsed(stock,policy);p.inventory.dealer.Remove(stock);if(stock.part!=null){stock.part.storageId=SharedInventory.Garage;p.parts.Add(stock.part);if(line.install)SharedInventory.Move(p,stock.part.instanceId,InventoryKind.Car,carId);continue;}unit=stock.unit;unit.storageId=SharedInventory.Garage;p.looseEngineElements.Add(unit);}
+                    else {var stock=p.inventory.dealer.Find(s=>s.Id==line.assetId);if(stock==null||!(stock.IsPart||stock.IsUnit))throw new InvalidOperationException("Used stock unavailable or invalid.");p.cash-=InventoryPricing.BuyUsed(stock,policy);p.inventory.dealer.Remove(stock);if(stock.IsPart){stock.part.storageId=SharedInventory.Garage;p.parts.Add(stock.part);if(line.install)SharedInventory.Move(p,stock.part.instanceId,InventoryKind.Car,carId);continue;}unit=stock.unit;unit.storageId=SharedInventory.Garage;p.looseEngineElements.Add(unit);}
                     if(line.install&&i<line.positions.Count)InventoryUnits.Install(p,carId,unit.element.id,line.positions[i]);
                 }
             }

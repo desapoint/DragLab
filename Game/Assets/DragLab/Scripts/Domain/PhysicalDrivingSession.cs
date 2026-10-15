@@ -83,7 +83,13 @@ namespace DragLab.Domain
                 foreach (var field in typeof(CarState).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)) if (field.FieldType == typeof(double) && !MechanicsSchema.Finite((double)field.GetValue(data.startingDynamics.state))) return "Nonfinite starting dynamics.";
                 CarDynamicsCheckpoint c; try { c = data.startingDynamics.Copy(); ExactPhysicsNumbers.Decode(c); } catch (Exception) { return "Invalid exact checkpoint."; } var s = c.state;
                 if(s.fluids==null||s.fluids.Validate(data.vehicle.fluids)!=null)return "Invalid checkpoint fluids.";
-                if (c.components != null && c.components.Any(p => p == null || p.Validate() != null)) return "Invalid exact component state.";
+                if (c.components != null) foreach (var part in c.components)
+                {
+                    string invalid = part == null ? "Missing part." : part.Validate();
+                    if (invalid != null) return "Invalid exact component state"
+                        + (part == null ? "" : " (" + part.slot + " / " + part.instanceId + ")")
+                        + ": " + invalid;
+                }
                 if (s == null || s.contact == null || s.contact.Validate() != null || !MechanicsSchema.Finite(c.engagementPenalty) || !MechanicsSchema.Finite(c.inductionLastThrottle) || s.gear < 0 || s.gear > data.vehicle.gears.Length || s.speed < 0 || s.speed > 1000 || s.rpm < 0 || s.rpm > data.vehicle.redlineRpm * 1.5 + 1 || s.fuelLitres < 0 || s.fuelLitres > data.vehicle.fuel.capacityLitres || s.fuelUsedLitres < 0 || s.fuelFlowLitresPerSecond < 0 || s.engineDamage < 0 || s.engineDamage > 1 || s.finished || s.disqualified) return "Invalid starting dynamics.";
                 foreach (var field in typeof(CarState).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
                     if (field.FieldType == typeof(double) && !MechanicsSchema.Finite((double)field.GetValue(s))) return "Nonfinite starting dynamics.";
@@ -122,7 +128,7 @@ namespace DragLab.Domain
             var sample = samples[samples.Count - 1]; sample.translatingMassKg = car.mass.TranslatingKg; sample.dryMassKg = car.mass.dryInstalledKg; sample.driverMassKg = car.mass.driverKg; sample.payloadMassKg = car.mass.payloadKg; sample.fuelMassKg = car.mass.fuelKg; sample.cgHeightM = car.mass.centerOfGravityHeightM; sample.cgPositionM = car.mass.centerOfGravityFromFrontM; sample.frontLoadN = s.frontLoadN; sample.rearLoadN = s.rearLoadN; sample.frontShare = s.frontTorqueShare; sample.rearShare = s.rearTorqueShare;
             sample.frontSlipEstimate = s.frontSlip; sample.rearSlipEstimate = s.rearSlip; sample.frontForceN = s.frontDriveForceN; sample.rearForceN = s.rearDriveForceN;
             sample.frontAvailable = s.frontDriveAvailable; sample.rearAvailable = s.rearDriveAvailable; sample.brakeCapacity = s.brakeCapacityFactor; sample.brakesFailed = s.brakesFailed;
-            var tires=car.mechanics.parts.Find(p=>p.slot=="Tires");if(tires!=null)for(int i=0;i<4;i++){sample.tireHealth[i]=tires.condition.tires[i].health;sample.tireTemperatureC[i]=tires.condition.tires[i].temperatureC;sample.tireSlipEnergyJ[i]=tires.condition.tires[i].slipEnergyJ;}
+            var tires=car.mechanics.parts.Find(p=>p.slot=="Tires");if(tires!=null)for(int i=0;i<4;i++){sample.tireHealth[i]=TireDynamics.RemainingHealth(tires.condition.tires[i]);sample.tireTemperatureC[i]=tires.condition.tires[i].temperatureC;sample.tireSlipEnergyJ[i]=tires.condition.tires[i].slipEnergyJ;}
             var f=s.fluids;sample.oilLitres=f.oilLitres;sample.coolantLitres=f.coolantLitres;sample.oilTemperatureC=f.oilTemperatureC;sample.oilPressureBar=f.oilPressureBar;sample.coolantPressureBar=f.coolantPressureBar;sample.oilCondition=f.oilCondition;sample.oilBurnLps=f.oilBurnLps;sample.oilLeakLps=f.oilLeakLps;sample.coolantLeakLps=f.coolantLeakLps;sample.coolantVentLps=f.coolantVentLps;sample.valveFloat=s.valveFloat;sample.combustionEfficiency=s.conditionCombustionEfficiency;
             sample.cylinderFactor=s.cylinderCombustionFactor;sample.cylinderFuelFactor=s.cylinderFuelFactor;sample.individualValveFloat=s.individualValveFloat;sample.cylinderContribution=(double[])s.cylinderContribution.Clone();sample.clutchOilL=clutch==null?0:clutch.condition.clutchOilLitres;sample.clutchOilCondition=clutch==null?0:clutch.condition.clutchOilCondition;
             sample.fuelLitres = s.fuelLitres; sample.fuelUsedLitres = s.fuelUsedLitres; sample.fuelFlowLps = s.fuelFlowLitresPerSecond;

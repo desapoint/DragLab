@@ -32,7 +32,7 @@ namespace DragLab.Editor
  if(v.spec.engineBehavior.fueling==FuelSystem.Carburetor){map[PartCategory.Camshaft]=v.spec.id+"/Camshaft/RollerStreet";check(!catalog.Resolve(v.spec.id,map).Drivable,v.spec.id+" mismatched roller actuation rejected");map[PartCategory.Followers]=v.spec.id+"/Followers/RollerConversion";check(catalog.Resolve(v.spec.id,map).Drivable,v.spec.id+" matched roller conversion runs");}
  }
  var profile=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(profile,catalog);var owner=profile.SelectedCar;var spark=profile.parts.Single(p=>p.ownerId==owner.engineAssemblyId&&p.slot=="SparkPlugs");var coil=profile.parts.Single(p=>p.ownerId==owner.engineAssemblyId&&p.slot=="Ignition");
- string id=spark.condition.elements[0].id;spark.condition.elements[0].health=.2f;spark.condition.elements[0].fault=ElementFault.Disabled;var plugs=spark.condition.elements;
+ string id=spark.condition.elements[0].id;spark.condition.elements[0].health=.2f;spark.condition.elements[0].fault=ElementFault.Disabled;var plugs=spark.condition.elements.Select(e=>EngineElements.CopyAsCategory(PartCategory.Ignition,e)).ToArray();foreach(var plug in plugs)plug.definitionId=coil.definitionId;
  coil.condition.elements=plugs.Concat(coil.condition.elements).ToArray();profile.parts.Remove(spark);owner.installed.slots.RemoveAll(s=>s.slot=="SparkPlugs");profile.ignitionHardwareVersion=0;
  MechanicsOwnership.Ensure(profile,catalog);spark=profile.parts.Single(p=>p.ownerId==owner.engineAssemblyId&&p.slot=="SparkPlugs");
  check(spark.condition.elements[0].id==id&&spark.condition.elements[0].health==.2f&&spark.condition.elements[0].fault==ElementFault.Disabled,"legacy plugs retain exact identity, wear and fault");

@@ -11,7 +11,7 @@ namespace DragLab.Runtime
     internal sealed class NativePartQuery
     {
         internal string Search="",Compatibility="Compatible",Availability="All",Condition="All",Tuning="All",Sort="Name",Container="All",BrandFocus="All";
-        internal bool Descending;
+        internal bool Descending,InStockOnly=true;
         internal HashSet<string> Brands=new HashSet<string>(StringComparer.Ordinal);
         internal HashSet<PartCategory> Categories=new HashSet<PartCategory>();
         internal string[] Direction=Enumerable.Repeat("Any",7).ToArray();
@@ -26,7 +26,7 @@ namespace DragLab.Runtime
             if(!string.IsNullOrWhiteSpace(Search)&&!((e.DisplayName??e.Definition.name)+" "+e.SearchExtra+" "+string.Join(" ",e.BrandNames.Select(b=>b+" "+PartBrands.Focus(b)))+" "+e.Definition.category+" "+e.AssetId+" "+e.Location).ToLowerInvariant().Contains(Search.Trim().ToLowerInvariant()))return false;
             if(Compatibility!="All"&&e.Compatibility!=Compatibility)return false;
             if(Availability=="Owned"&&!e.Owned||Availability=="Affordable"&&(!e.Price.HasValue||e.Price>cash)||Availability=="Unaffordable"&&(!e.Price.HasValue||e.Price<=cash))return false;
-            if(Availability=="In stock"&&(e.Source!="New"&&e.Source!="Used"||e.Source=="New"&&e.RequiresExpress))return false;
+            if(InStockOnly&&e.Source=="New"&&e.StockUnits<=0)return false;
             if(Condition=="New"&&e.Source!="New"||Condition=="Used"&&e.Source=="New")return false;
             bool tunable=e.Definition.tuning!=PartTuningOptions.None||e.Definition.camTimingAdjustable;
             if(Tuning=="Adjustable"&&!tunable||Tuning=="Fixed"&&tunable)return false;
@@ -108,7 +108,7 @@ namespace DragLab.Runtime
                     Entries[Entries.Count-1].StockUnits=available;Entries[Entries.Count-1].RequiresExpress=supply.expressUnits>0;
                     Entries[Entries.Count-1].SearchExtra=string.Join(" ",product.Select(p=>p.id));
                 }
-                foreach(var d in profile.inventory.dealer)Add("used:"+d.Id,d.DefinitionId,"Used",d.part,d.unit,Owns(d.DefinitionId),"Dealer",usedPrice(d));
+                foreach(var d in profile.inventory.dealer.Where(d=>d.IsPart||d.IsUnit))Add("used:"+d.Id,d.DefinitionId,"Used",d.IsPart?d.part:null,d.IsUnit?d.unit:null,Owns(d.DefinitionId),"Dealer",usedPrice(d));
             }
             foreach(var entry in Entries){Classify(entry);if(!entry.Ready&&cache!=null&&cache.HasComparisons)cache.Restore(NativePartPreviewCache.Key(referenceKey,entry),entry);}
         }
@@ -133,7 +133,9 @@ namespace DragLab.Runtime
         internal NativePartEntry PreviewNewUnit(NativePartEntry offer,string role,IEnumerable<string> selection)
         {
             var e=new NativePartEntry{Id=offer.Id,Source="New",Definition=offer.Definition,Owned=offer.Owned,Price=PartsMarket.Quote(actual,offer.Definition,InventoryUnits.Count(actual,actualCar,offer.Definition),true).cost};
-            e.Unit=new LooseEngineElement{definitionId=e.Definition.id,element=new EngineElement{id="native-offer-unit",role=role,cylinder=-1,valve=-1},tireUnit=e.Definition.category==PartCategory.Tires,tire=e.Definition.category==PartCategory.Tires?new TireCondition():null};
+            var member=EngineElements.Create(e.Definition.category);
+            member.id="native-offer-unit";member.definitionId=e.Definition.id;member.role=role;member.cylinder=-1;member.valve=-1;
+            e.Unit=new LooseEngineElement{definitionId=e.Definition.id,element=member,tireUnit=e.Definition.category==PartCategory.Tires};
             var available=InventoryUnits.Positions(reference,referenceCar,e.Definition.id,role);var selected=selection.Where(available.Contains).Distinct().ToArray();
             if(selected.Length==0&&available.Length>0)selected=new[]{available[0]};e.Position=selected.FirstOrDefault();Evaluate(e);
             if(selected.Length>1&&e.Proposed!=null){
@@ -173,9 +175,9 @@ namespace DragLab.Runtime
                 e.Proposed=Inspect(candidate);var a=Reference;var b=e.Proposed;
                 e.Reason=string.Join("\n",structural.errors.Concat(structural.warnings).Concat(b.warnings.Select(w=>w.title+": "+w.explanation+" "+w.suggestion)).Distinct());
                 e.Change[0]=b.peakHp-a.peakHp;e.Change[1]=b.peakTorque-a.peakTorque;e.Change[2]=b.vehicleMassKg-a.vehicleMassKg;
-                var replaced=reference.componentsPart(d.category);double health=e.Unit!=null?e.Unit.element.health:e.Part!=null?e.Part.condition.health:1;
-                double oldHealth=replaced?.condition.health??0;
-                if(e.Unit!=null&&replaced!=null){if(e.Unit.tireUnit&&e.Position.StartsWith("tire:",StringComparison.Ordinal))oldHealth=replaced.condition.tires[int.Parse(e.Position.Substring(5))].health;else oldHealth=replaced.condition.elements.FirstOrDefault(element=>element.id==e.Position)?.health??oldHealth;}
+                var replaced=reference.componentsPart(d.category);double health=e.Unit!=null?e.Unit.element.health:e.Part!=null?(d.category==PartCategory.Tires?TireDynamics.LowestHealth(e.Part.condition):e.Part.condition.health):1;
+                double oldHealth=replaced==null?0:d.category==PartCategory.Tires?TireDynamics.LowestHealth(replaced.condition):replaced.condition.health;
+                if(e.Unit!=null&&replaced!=null){if(e.Unit.tireUnit&&e.Position.StartsWith("tire:",StringComparison.Ordinal))oldHealth=TireDynamics.RemainingHealth(replaced.condition.tires[int.Parse(e.Position.Substring(5))]);else oldHealth=replaced.condition.elements.FirstOrDefault(element=>element.id==e.Position)?.health??oldHealth;}
                 if(PartSemantics.Wears(d.category))e.Change[3]=(health-oldHealth)*100;
                 var prior=replaced==null?null:actual.catalog.Find(replaced.definitionId);
                 if(PartSemantics.TorqueRated(d.category)&&prior!=null)e.Change[4]=d.torqueLimitNm-prior.torqueLimitNm;

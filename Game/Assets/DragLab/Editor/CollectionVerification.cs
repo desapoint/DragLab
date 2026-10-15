@@ -11,13 +11,13 @@ namespace DragLab.Editor
 {
     public static class CollectionVerification
     {
-        public static void RunStandalone() { VehicleRoster.Prepare(); Run(Path.GetFullPath(Path.Combine(Application.dataPath,"../.."))); }
+        public static void RunStandalone() { Run(Path.GetFullPath(Path.Combine(Application.dataPath,"../.."))); }
         public static int Run(string root)
         {
-            string folder=Path.Combine(root,"reports/phases/3a");Directory.CreateDirectory(folder);int count=0;var log=new StringBuilder();
-            Action<bool,string> check=(ok,label)=>{log.AppendLine((ok?"PASS: ":"FAIL: ")+label);File.WriteAllText(Path.Combine(folder,"verification.txt"),log.ToString());if(!ok)throw new InvalidOperationException(label);count++;};
+            string folder=Path.Combine(root,"reports/phases/3a","validation-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(folder);int count=0;var log=new StringBuilder();
+            Action<bool,string> check=(ok,label)=>{log.AppendLine((ok?"PASS: ":"FAIL: ")+label);File.AppendAllText(Path.Combine(folder,"verification-progress.txt"),(ok?"PASS: ":"FAIL: ")+label+"\n",Encoding.UTF8);if(!ok)throw new InvalidOperationException(label);count++;};
             var assets=Resources.LoadAll<VehicleDefinition>("Data/Vehicles");var catalog=MechanicsTransactions.Catalog();
-            check(assets.Length==8&&assets.Select(a=>a.spec.id).Distinct().Count()==8,"Eight unique authored cars are available.");
+            check(assets.Length>=8&&assets.Select(a=>a.spec.id).Distinct().Count()==assets.Length&&new[]{"starter-hatch","sport-coupe","v8-muscle","city-three","rally-sedan","touring-six","super-v8","utility-pickup"}.All(id=>assets.Any(a=>a.spec.id==id)),"Every authored car has a unique identity and the original collection is available.");
             var calibration=new StringBuilder("model,cylinders,litres,drive,price,quarter_s,trap_kmh,lowest_health\n");
             foreach(var asset in assets){
                 check(asset.spec.Validate()==null&&asset.purchasePrice>0,"Valid specification and paid repeat purchase: "+asset.spec.id);
@@ -44,8 +44,8 @@ namespace DragLab.Editor
             check(!first.installed.slots.Any(b=>b.slot=="Pistons")&&p.SelectedCar.installed.slots.Any(b=>b.partInstanceId==worn.instanceId)&&worn.condition.health==.4f,"Donor transfer moves the actual worn identity once and leaves only its donor incomplete.");
             string[] identities=p.parts.Select(i=>i.instanceId).ToArray();MechanicsOwnership.Ensure(p,catalog);
             check(identities.SequenceEqual(p.parts.Select(i=>i.instanceId))&&!first.installed.slots.Any(b=>b.slot=="Pistons"),"Repeated ownership initialization does not recreate sold/removed components.");
-            string fixture=Path.Combine(folder,"save-fixture-"+DateTime.UtcNow.ToString("yyyyMMddHHmmssfff"),"profile-v1.json");ProfileStore.VerificationPath=fixture;
-            try{check(ProfileStore.TrySave(p),"Same-model collection saves.");var loaded=ProfileStore.Load();check(loaded.SelectedCar.instanceId==copy&&loaded.cars.Count==2&&loaded.cars.Find(c=>c.instanceId==original).fuel.litres==7,"Reload selects the exact instance and retains independent resources.");check(MechanicsOwnership.Validate(loaded,catalog)==null,"Loaded collection has exclusive valid ownership.");}finally{ProfileStore.VerificationPath=null;}
+            string fixture=Path.Combine(folder,"save-fixture-"+DateTime.UtcNow.ToString("yyyyMMddHHmmssfff"),"profile-v1.json"),previousPath=ProfileStore.VerificationPath;ProfileStore.VerificationPath=fixture;
+            try{ProfileStore.Load();check(ProfileStore.TrySave(p),"Same-model collection saves: "+ProfileStore.Status);var loaded=ProfileStore.Load();check(loaded.SelectedCar.instanceId==copy&&loaded.cars.Count==2&&loaded.cars.Find(c=>c.instanceId==original).fuel.litres==7,"Reload selects the exact instance and retains independent resources.");check(MechanicsOwnership.Validate(loaded,catalog)==null,"Loaded collection has exclusive valid ownership.");}finally{ProfileStore.VerificationPath=previousPath;}
             var poor=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(poor,catalog);poor.cash=0;string unchanged=JsonUtility.ToJson(poor);
             check(!MechanicsTransactions.Try(poor,catalog,poor.revision,q=>VehicleCollection.Buy(q,catalog,offer),q=>true,out next,out error)&&unchanged==JsonUtility.ToJson(poor),"Insufficient cash rejects the complete purchase.");
             poor.cash=100000;var locked=assets.Single(a=>a.spec.id=="super-v8");check(!MechanicsTransactions.Try(poor,catalog,poor.revision,q=>VehicleCollection.Buy(q,catalog,new VehicleOffer{model=locked.spec.id,stock=locked.CreateStockTune(),price=locked.purchasePrice,reputation=locked.reputationRequired}),q=>true,out next,out error),"Reputation requirements remain enforced for new cars.");

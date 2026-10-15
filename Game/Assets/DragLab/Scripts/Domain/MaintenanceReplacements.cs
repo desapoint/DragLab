@@ -18,9 +18,41 @@ namespace DragLab.Domain.Mechanics
         public readonly List<PartCartLine> lines=new List<PartCartLine>();
         public int cost, deliveryFee, localUnits, expressUnits;
     }
+    public sealed class ReplacementCartPlan
+    {
+        public List<PartCartLine> lines;
+        public int cost,deliveryFee,localUnits,expressUnits;
+        public readonly Dictionary<string,SupplyQuote> supply=new Dictionary<string,SupplyQuote>();
+    }
     // Selection is read-only. Checkout uses the same matched sets, exact units and stock ledger as Build.
     public static class MaintenanceReplacements
     {
+        // Work on copies: a conflict must not partly modify an existing shopping basket.
+        public static ReplacementCartPlan AddToCart(PlayerProfile p,string carId,ReplacementPlan plan,IEnumerable<PartCartLine> existing,ValuationPolicy policy=null)
+        {
+            var rows=existing.Select(l=>l.Copy()).ToList();
+            foreach(var replacement in plan.lines){
+                if(replacement.action==CartAction.NewUnits&&rows.Any(l=>l.install&&l.action==CartAction.NewSet&&l.definitionId==replacement.definitionId))continue;
+                if(replacement.action==CartAction.NewSet)foreach(var covered in rows.Where(l=>l.install&&l.action==CartAction.NewUnits&&l.definitionId==replacement.definitionId).ToArray()){
+                    if(!string.IsNullOrEmpty(covered.preparationOwner))throw new InvalidOperationException("This replacement conflicts with a prepared engine. Review the cart first.");
+                    covered.quantity-=covered.positions.Count;covered.positions.Clear();covered.install=false;if(covered.quantity==0)rows.Remove(covered);
+                }
+                var line=rows.Find(l=>l.action==replacement.action&&l.definitionId==replacement.definitionId&&(l.role??"")==(replacement.role??""));
+                if(line==null){rows.Add(replacement.Copy());continue;}
+                if(!string.IsNullOrEmpty(line.preparationOwner))throw new InvalidOperationException("This replacement conflicts with a prepared engine. Review the cart first.");
+                if(replacement.action==CartAction.NewUnits){line.positions=(line.install?line.positions:Enumerable.Empty<string>()).Union(replacement.positions).ToList();line.quantity=Math.Max(line.quantity,line.positions.Count);}
+                line.install=true;
+            }
+            var result=new ReplacementCartPlan{lines=rows,cost=PartCart.Total(p,carId,rows,policy,includeOwnerReservation:true)};
+            var car=p.cars.Find(c=>c.instanceId==carId);var ledger=new PartsMarket.Ledger(p,p.inventory.cart?.carId==carId);
+            foreach(var row in rows.Where(l=>l.action==CartAction.NewSet||l.action==CartAction.NewUnits)){
+                var d=p.catalog.Find(row.definitionId);int count=InventoryUnits.Count(p,car,d);bool unit=row.action==CartAction.NewUnits;
+                var q=ledger.Take(d,unit?1:count,unit?InventoryPricing.NewUnit(d,count):d.price,row.quantity);
+                result.deliveryFee=checked(result.deliveryFee+q.fee);result.localUnits+=q.localUnits;result.expressUnits+=q.expressUnits;
+                result.supply[row.action+"/"+row.definitionId+"/"+row.role]=q;
+            }
+            return result;
+        }
         static bool Broken(ComponentCondition c)=>c.failed||c.health<=0;
         static bool Select(bool broken,double health,bool brokenOnly,double threshold)=>broken||!brokenOnly&&health<threshold/100;
         public static ReplacementTarget[] Candidates(PlayerProfile p,string carId,bool brokenOnly,double belowPercent=15)
@@ -30,7 +62,7 @@ namespace DragLab.Domain.Mechanics
             var result=new List<ReplacementTarget>();
             foreach(var binding in car.installed.slots.OrderBy(s=>s.slot,StringComparer.Ordinal)){
                 var part=p.parts.Find(i=>i.instanceId==binding.partInstanceId);if(part==null)continue;
-                var d=p.catalog.Find(part.definitionId);var c=part.condition;bool broken=Broken(c);int members=c.tires.Length==4?4:c.elements.Length;
+                var d=p.catalog.Find(part.definitionId);var c=part.condition;bool isTire=d.category==PartCategory.Tires;bool broken=!isTire&&Broken(c);int members=isTire?c.tires.Length:c.elements.Length;
                 bool everyMemberFailed=c.tires.Length==4?c.tires.All(t=>t.failed||t.health<=0||t.consumedLife>=1):c.elements.Length>0&&c.elements.All(e=>e.Failed);
                 // An independent set-level failure cannot be repaired by replacing one healthy member.
                 if(members==0||broken&&!everyMemberFailed){

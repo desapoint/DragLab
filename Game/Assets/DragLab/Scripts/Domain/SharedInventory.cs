@@ -16,8 +16,16 @@ namespace DragLab.Domain.Mechanics
         public PartInstance part;
         public LooseEngineElement unit;
         public int paidPrice;
-        public string Id => part != null ? part.instanceId : unit.element.id;
-        public string DefinitionId => part != null ? part.definitionId : unit.definitionId;
+        // Unity JSON can materialize an empty inactive inline payload.
+        // Select the merchandise by its real identity, never wrapper nullness.
+        public bool HasPart => part != null && !string.IsNullOrWhiteSpace(part.instanceId);
+        public bool HasUnit => unit != null && unit.element != null && !string.IsNullOrWhiteSpace(unit.element.id);
+        // Readers use real identities even before a stale isUnit flag is normalized.
+        // SharedInventory.Validate still rejects a mismatched persisted discriminator.
+        public bool IsPart => HasPart && !HasUnit;
+        public bool IsUnit => HasUnit && !HasPart;
+        public string Id => IsPart ? part.instanceId : IsUnit ? unit.element.id : null;
+        public string DefinitionId => IsPart ? part.definitionId : IsUnit ? unit.definitionId : null;
     }
     [Serializable] public sealed class InventoryState
     {
@@ -45,8 +53,20 @@ namespace DragLab.Domain.Mechanics
             if(p.inventory == null) p.inventory = new InventoryState();
             if(p.inventory.storage == null) p.inventory.storage = new List<InventoryContainer>();
             if(p.inventory.dealer == null) p.inventory.dealer = new List<DealerStock>();
-            foreach(var u in p.looseEngineElements)if(!u.tireUnit)u.tire=null;
-            foreach(var s in p.inventory.dealer){if(s.isUnit){s.part=null;if(s.unit!=null&&!s.unit.tireUnit)s.unit.tire=null;}else s.unit=null;}
+            // Unity's inline JSON serializer can materialize an empty object in the
+            // unused member. Prefer the real saved identity over the discriminator,
+            // which may be stale. Never discard two populated assets or fabricate
+            // one from an empty record: Validate will reject both cases.
+            foreach(var stock in p.inventory.dealer)
+            {
+                if(stock==null)continue;
+                bool hasPart=stock.HasPart;
+                bool hasUnit=stock.HasUnit;
+                if(hasPart==hasUnit)continue;
+                stock.isUnit=hasUnit;
+                if(hasUnit)stock.part=null;
+                else stock.unit=null;
+            }
             if(p.inventory.storage.Count == 0) {
                 p.inventory.storage.Add(new InventoryContainer {kind=InventoryKind.Storage,id=Garage,name="Garage shelves"});
                 p.inventory.storage.Add(new InventoryContainer {kind=InventoryKind.Storage,id=Storage,name="Storage shelves"});
@@ -66,9 +86,9 @@ namespace DragLab.Domain.Mechanics
             if(kind == InventoryKind.Storage) parts=p.parts.Where(i=>i.location==PartLocation.Inventory && StorageOf(i.storageId)==id);
             if(kind == InventoryKind.Car) {var car=p.cars.Find(c=>c.instanceId==id);if(car!=null)parts=car.installed.slots.Select(s=>p.parts.Find(i=>i.instanceId==s.partInstanceId));}
             if(kind == InventoryKind.Engine) parts=p.parts.Where(i=>i.location==PartLocation.Assembly && i.ownerId==id);
-            if(kind == InventoryKind.Seller) parts=p.inventory.dealer.Where(s=>s.part!=null).Select(s=>s.part);
+            if(kind == InventoryKind.Seller) parts=p.inventory.dealer.Where(s=>s.IsPart).Select(s=>s.part);
             foreach(var part in parts.Where(i=>i!=null)) yield return new InventoryEntry {id=part.instanceId,definitionId=part.definitionId,label=p.catalog.Find(part.definitionId).name,part=part,installed=part.location!=PartLocation.Inventory};
-            var units=kind==InventoryKind.Storage?p.looseEngineElements.Where(u=>StorageOf(u.storageId)==id):kind==InventoryKind.Seller?p.inventory.dealer.Where(s=>s.unit!=null).Select(s=>s.unit):Enumerable.Empty<LooseEngineElement>();
+            var units=kind==InventoryKind.Storage?p.looseEngineElements.Where(u=>StorageOf(u.storageId)==id):kind==InventoryKind.Seller?p.inventory.dealer.Where(s=>s.IsUnit).Select(s=>s.unit):Enumerable.Empty<LooseEngineElement>();
             foreach(var unit in units) yield return new InventoryEntry {id=unit.element.id,definitionId=unit.definitionId,label=unit.element.role,unit=unit};
             if(kind==InventoryKind.Storage)foreach(var e in p.engines.Where(e=>string.IsNullOrEmpty(e.parentVehicleId)&&StorageOf(e.storageId)==id))yield return new InventoryEntry {id=e.instanceId,label=AssemblyOperations.DisplayName(p,e),engine=e};
         }
@@ -95,9 +115,35 @@ namespace DragLab.Domain.Mechanics
             foreach(var item in p.parts.Where(i=>i.location==PartLocation.Inventory))if(!containers.Contains(StorageOf(item.storageId)))return "Unknown part storage.";
             foreach(var unit in p.looseEngineElements)if(!containers.Contains(StorageOf(unit.storageId))||!ValidUnit(p,unit))return "Invalid unit storage/condition.";
             foreach(var e in p.engines.Where(e=>string.IsNullOrEmpty(e.parentVehicleId)))if(!containers.Contains(StorageOf(e.storageId)))return "Unknown engine storage.";
-            foreach(var stock in p.inventory.dealer){
-                if(stock==null||stock.paidPrice<0||(stock.part==null)==(stock.unit==null))return "Invalid dealer stock.";
-                if(stock.part!=null){var i=stock.part;if(i.location!=PartLocation.Inventory||i.Validate()!=null||p.catalog.Find(i.definitionId)==null||!identities.Add(i.instanceId))return "Invalid/duplicate dealer part.";foreach(var e in i.condition.elements)if(!EngineElements.FaultAllowed(p.catalog.Find(i.definitionId).category,e)||!identities.Add(e.id)||!string.IsNullOrEmpty(e.definitionId)&&(p.catalog.Find(e.definitionId)==null||p.catalog.Find(e.definitionId).category!=p.catalog.Find(i.definitionId).category))return "Invalid/duplicate dealer descendant.";foreach(var t in i.condition.tires){if(!string.IsNullOrEmpty(t.id)&&!identities.Add(t.id))return "Duplicate dealer tire.";if(!string.IsNullOrEmpty(t.definitionId)&&(p.catalog.Find(t.definitionId)==null||p.catalog.Find(t.definitionId).category!=PartCategory.Tires))return "Invalid dealer tire specification.";}}
+            for(int index=0;index<p.inventory.dealer.Count;index++){
+                var stock=p.inventory.dealer[index];
+                if(stock==null)return "Invalid dealer stock at row "+index+": missing listing.";
+                if(stock.paidPrice<0)return "Invalid dealer stock at row "+index+": negative purchase price.";
+                bool hasPart=stock.HasPart;
+                bool hasUnit=stock.HasUnit;
+                if(hasPart==hasUnit)return "Invalid dealer stock at row "+index
+                    +(hasPart?": conflicting part and unit payloads.":": missing part/unit identity.");
+                if(stock.isUnit!=hasUnit)return "Invalid dealer stock at row "+index+": wrong part/unit discriminator.";
+                if(hasPart){
+                    var i=stock.part;
+                    string id=i.instanceId;
+                    if(i.location!=PartLocation.Inventory)return "Invalid dealer part at row "+index+" ("+id+"): stored part is marked "+i.location+".";
+                    string conditionError=i.Validate();
+                    if(conditionError!=null)return "Invalid dealer part at row "+index+" ("+id+"): "+conditionError;
+                    var definition=p.catalog.Find(i.definitionId);
+                    if(definition==null)return "Invalid dealer part at row "+index+" ("+id+"): unknown definition "+i.definitionId+".";
+                    if(!identities.Add(id))return "Duplicate dealer part identity at row "+index+": "+id+".";
+                    if(definition.category!=PartCategory.Clutch&&i.condition.clutch!=null)return "Dealer part at row "+index+" has unrelated clutch state: "+id+".";
+                    foreach(var e in i.condition.elements){
+                        if(!EngineElements.FaultAllowed(definition.category,e))return "Invalid dealer descendant at row "+index+" ("+id+"): mismatched type or fault "+e.id+".";
+                        if(!identities.Add(e.id))return "Duplicate dealer descendant at row "+index+" ("+id+"): "+e.id+".";
+                        if(!string.IsNullOrEmpty(e.definitionId)&&(p.catalog.Find(e.definitionId)==null||p.catalog.Find(e.definitionId).category!=definition.category))
+                            return "Invalid dealer descendant specification at row "+index+" ("+id+"): "+e.definitionId+".";
+                    }
+                    foreach(var t in i.condition.tires)
+                        if(!string.IsNullOrEmpty(t.definitionId)&&(p.catalog.Find(t.definitionId)==null||p.catalog.Find(t.definitionId).category!=PartCategory.Tires))
+                            return "Invalid dealer tire specification at row "+index+" ("+id+"): "+t.definitionId+".";
+                }
                 else {var u=stock.unit;if(!ValidUnit(p,u)||!identities.Add(u.element.id))return "Invalid/duplicate dealer unit.";}
             }
             return null;
@@ -105,7 +151,7 @@ namespace DragLab.Domain.Mechanics
         static bool ValidUnit(PlayerProfile p,LooseEngineElement u)
         {
             var d=u==null?null:p.catalog.Find(u.definitionId);if(d==null||u.element==null||u.element.Validate()!=null||u.unitPrice<0)return false;
-            if(u.tireUnit)return d.category==PartCategory.Tires&&u.tire!=null&&u.tire.Validate()==null&&(string.IsNullOrEmpty(u.tire.definitionId)||u.tire.definitionId==u.definitionId)&&Math.Abs(u.element.health-(u.tire.failed?0:Math.Min(u.tire.health,Math.Max(0,1-u.tire.consumedLife))))<1e-6;
+            if(u.tireUnit)return d.category==PartCategory.Tires&&u.element is TireCondition&&u.tire.Validate()==null&&(string.IsNullOrEmpty(u.tire.definitionId)||u.tire.definitionId==u.definitionId);
             return EngineElements.Supported(d.category)&&EngineElements.FaultAllowed(d.category,u.element)&&u.tire==null&&(string.IsNullOrEmpty(u.element.definitionId)||u.element.definitionId==u.definitionId);
         }
     }

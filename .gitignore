@@ -74,3 +74,6 @@ Thumbs.db
 
 # Exploratory failed balance run; retain locally rather than version as acceptance.
 /reports/phases/3g/fresh-career-loss-diagnostic.txt
+
+# Generated branch-audit diagnostics; the concise audit report stays tracked.
+/reports/branch-audit/*.txt

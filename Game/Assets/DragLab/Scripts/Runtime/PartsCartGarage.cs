@@ -36,7 +36,7 @@ namespace DragLab.Runtime
         internal void StageInventory(PartCartLine line){EnsureCartOwner();if(cart.Count>=100&&!cart.Any(l=>l.assetId==line.assetId)){notice="Cart holds at most 100 lines.";return;}cart.RemoveAll(l=>!string.IsNullOrEmpty(line.assetId)&&l.assetId==line.assetId);cart.Add(line);CartChanged();}
         void PersistNativeCartReservation(){if(cartOwner!=null)CartReservations.Capture(profile,cartOwner,cart);}
         void CartChanged(){if(profile.inventory.cart!=null&&cartOwner!=null)PersistNativeCartReservation();previewCart=true;previewDefinitionId=previewInstanceId=null;previewRemoval=null;statsKey=null;cartPriceKey=null;}
-        bool IsUnit(PartCartLine line)=>line.action==CartAction.NewUnits||line.action==CartAction.BuyUsed&&profile.inventory.dealer.Any(s=>s.Id==line.assetId&&s.unit!=null);
+        bool IsUnit(PartCartLine line)=>line.action==CartAction.NewUnits||line.action==CartAction.BuyUsed&&profile.inventory.dealer.Any(s=>s.Id==line.assetId&&s.IsUnit);
         void SetCartInstallation(PartCartLine line,bool value)
         {
             if(value&&!IsUnit(line)){var slot=profile.catalog.Find(line.definitionId).category;foreach(var other in cart)if(other!=line&&other.definitionId!=null&&profile.catalog.Find(other.definitionId).category==slot)other.install=false;}
@@ -90,9 +90,9 @@ namespace DragLab.Runtime
         void DealerGUI()
         {
             GUILayout.Label("DEALER USED STOCK / retained condition / buyback adds "+PricingPolicy.dealerResaleMarkup.ToString("P0")+" margin + " + DisplayUnits.Money(PricingPolicy.dealerHandlingFee),stat);
-            foreach(var stock in profile.inventory.dealer.Where(s=>profile.catalog.Find(s.DefinitionId).category==partCategory)){var d=profile.catalog.Find(stock.DefinitionId);GUILayout.Label(d.name+" / "+(stock.part!=null?Condition(stock.part):stock.unit.element.role+" / "+stock.unit.element.health.ToString("P0"))+" / " + DisplayUnits.Money(InventoryPricing.BuyUsed(stock,PricingPolicy)),partProse);bool enabled=GUI.enabled;GUI.enabled=enabled&&profile.catalog.Fits(Selected.spec,d)&&profile.reputation>=d.reputationRequired;
-                if(stock.part!=null&&PartButton("dealer-preview:"+stock.Id,"Inspect used hardware / dyno"))PreviewPart(instanceId:stock.Id);
-                if(PartButton("dealer-cart:"+stock.Id,"Add used item to cart"))StageInventory(new PartCartLine{action=CartAction.BuyUsed,assetId=stock.Id,definitionId=d.id,role=stock.unit?.element.role});GUI.enabled=enabled;}
+            foreach(var stock in profile.inventory.dealer.Where(s=>(s.IsPart||s.IsUnit)&&profile.catalog.Find(s.DefinitionId)?.category==partCategory)){var d=profile.catalog.Find(stock.DefinitionId);GUILayout.Label(d.name+" / "+(stock.IsPart?Condition(stock.part):stock.unit.element.role+" / "+stock.unit.element.health.ToString("P0"))+" / " + DisplayUnits.Money(InventoryPricing.BuyUsed(stock,PricingPolicy)),partProse);bool enabled=GUI.enabled;GUI.enabled=enabled&&profile.catalog.Fits(Selected.spec,d)&&profile.reputation>=d.reputationRequired;
+                if(stock.IsPart&&PartButton("dealer-preview:"+stock.Id,"Inspect used hardware / dyno"))PreviewPart(instanceId:stock.Id);
+                if(PartButton("dealer-cart:"+stock.Id,"Add used item to cart"))StageInventory(new PartCartLine{action=CartAction.BuyUsed,assetId=stock.Id,definitionId=d.id,role=stock.IsUnit?stock.unit.element.role:null});GUI.enabled=enabled;}
         }
         void InventoryUnitsGUI()
         {

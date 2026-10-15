@@ -16,7 +16,8 @@ namespace DragLab.Runtime
         public static void Run(VehicleDefinition[] vehicles,Action<bool,string> check)
         {
             var catalog=new MechanicalCatalog(vehicles.Select(v=>v.spec));
-            check(catalog.parts.Count>0&&catalog.parts.SelectMany(part=>PartSemantics.Stats(part).Select(metric=>"part:"+part.category+":rating:"+metric.key)).All(id=>NativeStatHelp.Find(id)!=null),"All catalogue part ratings have directional help, including non-OEM hardware");
+            var missing=catalog.parts.SelectMany(part=>PartSemantics.Stats(part).Select(metric=>"part:"+part.category+":rating:"+metric.key)).Distinct().Where(id=>NativeStatHelp.Find(id)==null).ToArray();
+            check(catalog.parts.Count>0&&missing.Length==0,"All catalogue part ratings have directional help, including non-OEM hardware: "+string.Join(", ",missing));
             foreach(var vehicle in vehicles){
                 var profile=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(profile,catalog);profile.cash=1000000;profile.reputation=1000;
                 VehicleCollection.Buy(profile,catalog,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});

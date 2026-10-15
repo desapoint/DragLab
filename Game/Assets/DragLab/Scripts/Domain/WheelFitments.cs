@@ -11,7 +11,7 @@ namespace DragLab.Domain.Mechanics
         public static void Ensure(PartInstance pack)
         {
             if(pack.condition.elements!=null&&pack.condition.elements.Length>0)return;
-            pack.condition.elements=Enumerable.Range(0,4).Select(i=>new EngineElement{id=pack.instanceId+"/wheel/"+i,role="wheel",cylinder=i,valve=-1,health=pack.condition.failed?0:pack.condition.health}).ToArray();
+            pack.condition.elements=Enumerable.Range(0,4).Select(i=>new WheelElement{id=pack.instanceId+"/wheel/"+i,role="wheel",cylinder=i,valve=-1,health=pack.condition.failed?0:pack.condition.health}).ToArray();
         }
         public static void Capture(VehicleSpec spec,IEnumerable<PartInstance> parts,MechanicalCatalog catalog)
         {
@@ -22,6 +22,7 @@ namespace DragLab.Domain.Mechanics
         }
         public static void Install(PlayerProfile p,OwnedCar car,LooseEngineElement unit,string position)
         {
+            if(!EngineElements.MatchesCategory(PartCategory.Wheels,unit.element))throw new InvalidOperationException("Choose a physical wheel member, not another component type.");
             if(!InventoryUnits.Positions(p,car,unit.definitionId,"wheel").Contains(position))throw new InvalidOperationException("Choose a valid wheel position.");
             var slot=car.installed.slots.Find(s=>s.slot=="Wheels");var pack=p.parts.Find(i=>i.instanceId==slot.partInstanceId);Ensure(pack);int corner=int.Parse(position.Substring(6));
             var old=pack.condition.elements[corner];string oldDefinition=DefinitionId(pack,corner);

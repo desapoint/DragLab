@@ -112,16 +112,15 @@ namespace DragLab.Runtime
         void Navigate(string route)
         {
             if (ModalOpen) return;
-            if(route=="Parts"&&game.ScreenName=="Parts"&&cartPageOpen){BackFromNativeCart();return;}
             if (game.ScreenName == "Settings" && route != "Settings" && SettingsDirty)
             {
                 OpenDialog("Unsaved settings", "Apply changes before leaving?", new[] {
                     new DialogAction("Stay", CloseDialog),
-                    new DialogAction("Discard", () => { CloseDialog(); ReadApplied(); game.QueueNativeNavigation(route); }),
+                    new DialogAction("Discard", () => { CloseDialog(); ReadApplied(); game.QueueNativeNavigation(route,true); }),
                     new DialogAction("Apply…", () => { CloseDialog(); ConfirmApply(route); }, true) });
                 return;
             }
-            game.QueueNativeNavigation(route);
+            game.QueueNativeNavigation(route,true);
         }
         internal bool GuardLegacyNavigation(string route)
         {
@@ -161,13 +160,13 @@ namespace DragLab.Runtime
                 if (summary != string.Join("\n", Changes())) { CloseDialog(); ConfirmApply(destination); return; }
                 if (!game.ApplyNativeSettings(draftDriver, draftAi, draftUnits, draftMaster, draftOpponent, out var error))
                 { root.Q<ScrollView>("modalContent").Add(new Label(error) { name = "settingsError" }); return; }
-                CloseDialog(); ReadApplied(); UpdateControls(); if (destination != null) game.QueueNativeNavigation(destination);
+                CloseDialog(); ReadApplied(); UpdateControls(); if (destination != null) game.QueueNativeNavigation(destination,true);
             }, true) });
         }
         sealed class DialogAction
         {
-            internal string label; internal Action action; internal bool primary;
-            internal DialogAction(string label, Action action, bool primary = false) { this.label = label; this.action = action; this.primary = primary; }
+            internal string label,id; internal Action action; internal bool primary;
+            internal DialogAction(string label, Action action, bool primary = false,string id=null) { this.label = label; this.action = action; this.primary = primary; this.id=id; }
         }
         void OpenDialog(string title, string text, DialogAction[] actions, Action dismiss = null, Action<VisualElement> populate = null)
         {
@@ -182,7 +181,7 @@ namespace DragLab.Runtime
             buttons.Clear();
             foreach (var action in actions)
             {
-                var button = new Button(action.action) { text = action.label, name = "dialog" + action.label.Replace("…", "").Replace(" ", "") };
+                var button = new Button(action.action) { text = action.label, name = action.id ?? "dialog" + action.label.Replace("…", "").Replace(" ", "") };
                 button.AddToClassList("action-button"); if (action.primary) button.AddToClassList("primary-action");
                 buttons.Add(button); AddSurface(button, action.primary ? RacingSurface.Kind.Action : RacingSurface.Kind.SecondaryAction); dialogSurfaces.Add(button.Q<RacingSurface>());
             }

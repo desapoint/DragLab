@@ -100,7 +100,7 @@ namespace DragLab.Runtime
                     string action=choice;var button=new Button(()=>{
                         individual=true;selected.Clear();var available=InventoryUnits.Positions(game.Profile,car,d.id,role);
                         foreach(string target in available){var member=target.StartsWith("wheel:")?fitted?.condition.elements[int.Parse(target.Substring(6))]:fitted?.condition.elements.FirstOrDefault(e=>e.id==target);var tire=target.StartsWith("tire:")?fitted?.condition.tires[int.Parse(target.Substring(5))]:null;
-                            if(action=="All"||action=="Front"&&(target.StartsWith("tire:")&&int.Parse(target.Substring(5))<2||target.StartsWith("wheel:")&&int.Parse(target.Substring(6))<2)||action=="Rear"&&(target.StartsWith("tire:")&&int.Parse(target.Substring(5))>=2||target.StartsWith("wheel:")&&int.Parse(target.Substring(6))>=2)||action=="Failed"&&(member?.Failed==true||tire?.failed==true)||action=="Worn"&&(member?.health<=.5||tire?.health<=.5))selected.Add(target);
+                            if(action=="All"||action=="Front"&&(target.StartsWith("tire:")&&int.Parse(target.Substring(5))<2||target.StartsWith("wheel:")&&int.Parse(target.Substring(6))<2)||action=="Rear"&&(target.StartsWith("tire:")&&int.Parse(target.Substring(5))>=2||target.StartsWith("wheel:")&&int.Parse(target.Substring(6))>=2)||action=="Failed"&&(member?.Failed==true||tire?.Failed==true)||action=="Worn"&&(member?.health<=.5||tire!=null&&TireDynamics.RemainingHealth(tire)<=.5))selected.Add(target);
                         }
                         quantity=Math.Max(quantity,selected.Count);update();
                     }){name="partSelect"+choice,text=choice,focusable=false,tabIndex=-1};button.AddToClassList("action-button");button.AddToClassList("part-selection-shortcut");shortcuts.Add(button);AddSurface(button,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(button.Q<RacingSurface>());
@@ -159,7 +159,7 @@ namespace DragLab.Runtime
             if(position.StartsWith("wheel:")&&part!=null)fitted=game.Profile.catalog.Find(WheelFitments.DefinitionId(part,int.Parse(position.Substring(6))));
             TireCondition tire=position.StartsWith("tire:",StringComparison.Ordinal)&&part?.condition.tires!=null?part.condition.tires[int.Parse(position.Substring(5))]:null;
             if(tire!=null)fitted=game.Profile.catalog.Find(TireFitments.DefinitionId(part,int.Parse(position.Substring(5))));
-            double? health=element?.health??tire?.health;bool failed=element?.Failed??tire?.failed??false;
+            double? health=element?.health??(tire==null?(double?)null:TireDynamics.RemainingHealth(tire));bool failed=element?.Failed??tire?.Failed??false;
             string title=InventoryUnits.PositionLabel(game.Profile,car,offer.id,position);
             if(element!=null&&offer.category==PartCategory.Pistons)title="Piston "+(element.cylinder+1);
             string type=element?.role??"Tire";
@@ -170,7 +170,7 @@ namespace DragLab.Runtime
             var label=new Label(title){name="positionTitle:"+position,enableRichText=false,pickingMode=PickingMode.Ignore};label.AddToClassList("position-title");heading.Add(label);
             var wear=new Label(health.HasValue?(failed?"Failed · ":"")+"Wear "+((1-health.Value)*100).ToString("0.#")+"%":"Condition unavailable"){name="positionWear:"+position,pickingMode=PickingMode.Ignore};wear.AddToClassList("position-wear");wear.AddToClassList(failed||health<=.25?"car-critical":!health.HasValue||health<=.5?"car-warning":"car-ready");heading.Add(wear);
             var spec=new Label((fitted?.name??"Missing specification")+" · "+type){name="positionSpec:"+position,enableRichText=false,pickingMode=PickingMode.Ignore};spec.AddToClassList("position-spec");button.Add(spec);
-            string fault=element!=null&&element.fault!=ElementFault.None?PartSemantics.Friendly(element.fault.ToString())+" · "+(element.severity*100).ToString("0.#")+"%":tire?.failed==true?"Failed tire":element?.Failed==true?"Worn out":"";
+            string fault=element!=null&&element.fault!=ElementFault.None?PartSemantics.Friendly(element.fault.ToString())+" · "+(element.severity*100).ToString("0.#")+"%":tire?.Failed==true?"Failed tire":element?.Failed==true?"Worn out":"";
             if(fault.Length>0){var reason=new Label(fault){name="positionFault:"+position,enableRichText=false,pickingMode=PickingMode.Ignore};reason.AddToClassList("position-fault");button.Add(reason);}
             button.tooltip=(fitted?.name??"")+"\n"+title+"\n"+type+"\nCondition "+(health.HasValue?health.Value.ToString("P0"):"unavailable")+(fault.Length>0?"\n"+fault:"");
             AddSurface(button,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(button.Q<RacingSurface>());return button;

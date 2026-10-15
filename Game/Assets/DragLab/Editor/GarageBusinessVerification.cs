@@ -22,7 +22,9 @@ namespace DragLab.Editor
         [MenuItem("DragLab/Verify Garage Jobs and Idle")]
         public static void RunStandalone()
         {
-            Prepare();var policy=Resources.Load<GarageBusinessPolicyDefinition>("Data/Economy/GarageBusinessPolicy").policy;policy.Validate();var cat=MechanicsTransactions.Catalog();var values=Resources.Load<ValuationPolicyDefinition>("Data/Economy/ValuationPolicy").policy;var costs=Resources.Load<OperatingPolicyDefinition>("Data/Economy/OperatingPolicy").policy;long now=DateTime.UtcNow.Ticks;
+            var businessAsset=Resources.Load<GarageBusinessPolicyDefinition>("Data/Economy/GarageBusinessPolicy");
+            if(businessAsset==null||businessAsset.policy==null)throw new InvalidOperationException("Business policy missing. Run DragLab/Prepare Garage Business Policy explicitly, then verify.");
+            var policy=businessAsset.policy;policy.Validate();var cat=MechanicsTransactions.Catalog();var values=Resources.Load<ValuationPolicyDefinition>("Data/Economy/ValuationPolicy").policy;var costs=Resources.Load<OperatingPolicyDefinition>("Data/Economy/OperatingPolicy").policy;long now=DateTime.UtcNow.Ticks;
             string folder=Path.Combine(Directory.GetParent(Application.dataPath).Parent.FullName,"reports/phases/3f");Directory.CreateDirectory(folder);var log=new StringBuilder();var matrix=new StringBuilder("model,offer,eligible,reason\n");int count=0;
             Action<bool,string> check=(ok,label)=>{if(!ok)throw new InvalidOperationException(label);count++;log.AppendLine("PASS: "+label);File.WriteAllText(Path.Combine(folder,"verification-progress.txt"),log.ToString(),Encoding.UTF8);};
             Func<string,PlayerProfile> fresh=model=>{var p=PlayerProfile.New(now);p.SelectedCar.vehicleId=model;p.selectedVehicleId=model;p.cash=100000;p.reputation=99;MechanicsOwnership.Ensure(p,cat);return p;};

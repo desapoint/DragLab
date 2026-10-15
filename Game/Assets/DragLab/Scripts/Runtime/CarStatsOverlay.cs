@@ -50,7 +50,7 @@ namespace DragLab.Runtime
                     var capture=InspectionBuild.Capture(profile,Build);
                     savedStats=CarInspection.CalculatePrepared(capture,CarInspection.PrepareCar(capture),false);
                     healthyStats=null;
-                    if(capture.components.Any(p=>p.condition.health<.9999f||p.condition.failed||p.condition.deposits>.001||p.condition.leakSeverity>.001||p.condition.adjustmentError>.001||p.condition.clutchOilCondition<.9999||p.condition.elements.Any(e=>e.health<.9999f||e.fault!=ElementFault.None)||p.condition.tires.Any(t=>t.health<.9999f||t.failed))) {
+                    if(capture.components.Any(p=>p.condition.health<.9999f||p.condition.failed||p.condition.deposits>.001||p.condition.leakSeverity>.001||p.condition.adjustmentError>.001||p.condition.clutchOilCondition<.9999||p.condition.elements.Any(e=>e.health<.9999f||e.fault!=ElementFault.None)||p.condition.tires.Any(t=>TireDynamics.RemainingHealth(t)<.9999f||t.Failed))) {
                         var healthy=InspectionBuild.Capture(profile,Build,healthy:true);
                         healthyStats=CarInspection.CalculatePrepared(healthy,CarInspection.PrepareCar(healthy),false);
                     }

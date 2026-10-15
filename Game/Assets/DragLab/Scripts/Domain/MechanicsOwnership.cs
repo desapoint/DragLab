@@ -13,12 +13,31 @@ namespace DragLab.Domain.Mechanics
     }
     public static class MechanicsOwnership
     {
-        public const int SaveVersion = 10;
+        public const int SaveVersion = 12;
         public static string NewId(string kind) { return kind + "-" + Guid.NewGuid().ToString("N"); }
+        // Quotations are read-only. The transaction clone will normalize recoverable
+        // Unity seller metadata, so validate the same normalization on a COPY only.
+        // Real conflicting or duplicate identities remain invalid for all payments.
+        public static string ValidateForQuote(PlayerProfile profile, MechanicalCatalog catalog)
+        {
+            string invalid = Validate(profile, catalog);
+            if (invalid == null || invalid.IndexOf("dealer", StringComparison.OrdinalIgnoreCase) < 0)
+                return invalid;
+            var copy = UnityEngine.JsonUtility.FromJson<PlayerProfile>(UnityEngine.JsonUtility.ToJson(profile));
+            copy.catalog = catalog;
+            // Unity materializes null inline jobs/reservations during the copy.
+            // Preserve the source's absence exactly; never clear a real record.
+            if (profile.recoveryWork == null) copy.recoveryWork = null;
+            if (profile.inventory.cart == null) copy.inventory.cart = null;
+            SharedInventory.Ensure(copy);
+            return Validate(copy, catalog);
+        }
         public static void Ensure(PlayerProfile profile, MechanicalCatalog catalog)
         {
             bool migratePartsMarket=profile.saveVersion<8;
             if(profile.saveVersion>SaveVersion)throw new InvalidOperationException("Unsupported save version.");
+            // Save-file compatibility is enforced by ProfileStore before Ensure.
+            // PlayerProfile.New() starts at v1 in editor tests and needs normal initialization.
             if (profile.mechanicsVersion > MechanicsSchema.Version) throw new InvalidOperationException("Unsupported mechanics version.");
             if (profile.parts == null) profile.parts = new List<PartInstance>();
             if (profile.engines == null) profile.engines = new List<EngineAssemblyInstance>();
@@ -108,7 +127,7 @@ namespace DragLab.Domain.Mechanics
                     if(stored!=null){if(!resolvedOwners.TryGetValue(stored.instanceId,out spec)){spec=catalog.Resolve(stored.vehicleDefinitionId,AssemblyOperations.Definitions(profile,stored),stored.tune).spec;resolvedOwners[stored.instanceId]=spec;}EngineElements.Ensure(spec,d,item);}
                 }
                 if(d!=null)ClutchHardware.Ensure(d,item.condition);
-                if(d?.category==PartCategory.Tires)TireDynamics.Ensure(item.condition);if(d?.category==PartCategory.Wheels)WheelFitments.Ensure(item);
+                if(d?.category==PartCategory.Tires){TireDynamics.Ensure(item.condition);foreach(var tire in item.condition.tires)if(string.IsNullOrWhiteSpace(tire.id))tire.id=NewId("tire");}if(d?.category==PartCategory.Wheels)WheelFitments.Ensure(item);
             }
             profile.equipmentVersion = 1; profile.drivelineVersion = 2; profile.mechanicsVersion = MechanicsSchema.Version; profile.saveVersion = SaveVersion;
             var selected = profile.SelectedCar ?? profile.cars.FirstOrDefault();
@@ -138,6 +157,11 @@ namespace DragLab.Domain.Mechanics
             foreach (var binding in car.installed.slots)
             {
                 var item = profile.parts.Find(p => p.instanceId == binding.partInstanceId);
+                if(item!=null&&catalog.Find(item.definitionId).category==PartCategory.Tires&&item.condition.tires!=null&&item.condition.tires.Length==4){
+                    for(int i=0;i<4;i++)if(item.condition.tires[i].Failed)
+                        result.warnings.Add(new[]{"Front left","Front right","Rear left","Rear right"}[i]+" tire failed");
+                    continue;
+                }
                 if (item != null && (PartSemantics.Wears(catalog.Find(item.definitionId).category) || catalog.Find(item.definitionId).category == PartCategory.Controls && result.spec.engineBehavior.fueling == FuelSystem.Injection) && (item.condition.failed || item.condition.health <= 0)) (MechanicalCatalog.DisablingEngineFailure(catalog.Find(item.definitionId).category) || catalog.Find(item.definitionId).category == PartCategory.Controls && result.spec.engineBehavior.fueling == FuelSystem.Injection ? result.errors : result.warnings).Add(binding.slot + " failed: " + item.condition.failureReason);
             }
             return result;
@@ -235,11 +259,21 @@ namespace DragLab.Domain.Mechanics
             foreach (var item in profile.parts)
                 if (!unique(item.instanceId) || item.Validate() != null || catalog.Find(item.definitionId) == null || (item.location != PartLocation.Inventory) != bindings.Contains(item.instanceId)) return "Duplicate/invalid/orphan part instance.";
             foreach(var loose in profile.looseEngineElements)if(loose==null||loose.element==null||loose.element.Validate()!=null||catalog.Find(loose.definitionId)==null||loose.unitPrice<0||!unique(loose.element.id))return "Invalid loose engine element.";
-            foreach(var part in profile.parts)foreach(var element in part.condition.elements??new EngineElement[0])if(!EngineElements.FaultAllowed(catalog.Find(part.definitionId).category,element)||!unique(element.id))return "Invalid/duplicate engine element identity or fault.";
-            foreach(var part in profile.parts)foreach(var tire in part.condition.tires??new TireCondition[0])if(!string.IsNullOrEmpty(tire.id)&&!unique(tire.id))return "Duplicate tire identity.";
+            foreach(var part in profile.parts)
+            {
+                var definition=catalog.Find(part.definitionId);
+                if(definition!=null&&definition.category!=PartCategory.Clutch&&part.condition.clutch!=null)
+                    return "Non-clutch components cannot own clutch-fluid state.";
+                foreach(var element in part.condition.elements??new EngineElement[0])
+                    if(!EngineElements.FaultAllowed(definition.category,element)||!unique(element.id))
+                        return "Invalid/duplicate typed element identity, category or fault.";
+            }
+            foreach(var part in profile.parts.Where(p=>catalog.Find(p.definitionId).category==PartCategory.Tires))
+                if(part.condition.elements==null||part.condition.elements.Length!=4||part.condition.elements.Any(e=>!(e is TireCondition)))return "Tire sets must contain four typed tire elements.";
             if(profile.driving==null||profile.driving.guaranteedFittingParts<0||profile.driving.guaranteedFittingParts>20)return "Invalid market guarantee difficulty.";
-            string marketError=PartsMarket.Validate(profile);if(marketError!=null)return marketError;
+            // Validate dealer identities first, before market descendant enumeration.
             string inventoryError=SharedInventory.Validate(profile,identities);if(inventoryError!=null)return inventoryError;
+            string marketError=PartsMarket.Validate(profile);if(marketError!=null)return marketError;
             foreach(var item in profile.parts)foreach(var tire in item.condition.tires??new TireCondition[0])if(!string.IsNullOrEmpty(tire.definitionId)){
                 var d=catalog.Find(tire.definitionId);if(d==null||d.category!=PartCategory.Tires)return "Invalid tire specification.";
                 var owner=profile.cars.FirstOrDefault(c=>c.installed.slots.Any(s=>s.partInstanceId==item.instanceId));

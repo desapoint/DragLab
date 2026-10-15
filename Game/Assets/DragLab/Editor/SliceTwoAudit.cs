@@ -18,9 +18,12 @@ namespace DragLab.Editor
     {
         static readonly FieldInfo[] Numbers = typeof(CarState).GetFields().Where(f => f.FieldType == typeof(double)).ToArray();
         public static void Run() { RunVerified(); }
-        public static int RunVerified()
+        public static void ChangedCases(){RunVerified(true);}
+        public static int RunVerified(){return RunVerified(false);}
+        static int RunVerified(bool changedOnly)
         {
             string folder = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/slice-2-audit"));
+            if(changedOnly)folder=Path.Combine(folder,"changed-cases-"+Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(folder);
             var log = new StringBuilder(); var rows = new StringBuilder("car,configuration,scenario,seconds,speed_kmh,rpm,gear,engine_failed,drive_failed,brakes_failed,min_health,failed_parts\n");
             var partRows = new StringBuilder("car,part_id,name,category,quality,stats,build_ready,peak_hp,internal_safe_nm,internal_safe_rpm\n");
@@ -49,6 +52,7 @@ namespace DragLab.Editor
             foreach (var v in vehicles)
             {
                 var stock = catalog.Resolve(v.spec.id, catalog.Recipe(v.spec.id), v.CreateStockTune());
+                if(!changedOnly){
                 foreach (var p in catalog.parts.Where(p => catalog.Fits(v.spec, p) && MechanicalCatalog.Slots(v.spec).Contains(p.category)))
                 {
                     var map = catalog.Recipe(v.spec.id); map[p.category] = p.id;
@@ -88,17 +92,20 @@ namespace DragLab.Editor
                 var disconnected = new CarSimulation(stock.spec, stock.tune, Driver());
                 for (int i = 0; i < 2400; i++) disconnected.IndependentStep(DragMath.FixedStep, new DriverInput { throttle = i % 480 < 120 ? .65 : 0 }, true, false);
                 check(disconnected.mechanics.parts.Where(p => p.slot == "Driveshaft" || p.slot == "Differential" || MechanicalCatalog.DriveBranch(catalog.Find(p.definitionId).category)).All(p => p.condition.health == 1 && Math.Abs(p.condition.temperatureC - 20) < 1e-6), "Stationary neutral revving cannot heat/wear downstream drive paths: " + v.spec.id);
+                }
                 // Flags must be authoritative even if a test sets positive health.
                 foreach (var original in new CarSimulation(stock.spec, stock.tune, Driver()).mechanics.parts)
                 {
                     var car = new CarSimulation(stock.spec, stock.tune, Driver()); var bad = car.mechanics.parts.Find(p => p.slot == original.slot);
-                    bad.condition.failed = true; bad.condition.failureReason = "Audit injected failure";
+                    if(original.slot=="Tires"){foreach(var tire in bad.condition.tires){tire.failed=true;tire.failureReason="Audit injected failure";}TireDynamics.SyncSummary(bad.condition);}
+                    else {bad.condition.failed = true; bad.condition.failureReason = "Audit injected failure";}
                     car.mechanics.Prepare(car.state);
                     exercise(car, "failed:" + original.slot, "mixed-pedals", 120);
                     if (original.slot == "Brakes") check(car.state.brakesFailed && !car.state.engineFailed && !car.state.drivetrainFailed, "Brake-only failure preserves combustion and drive: " + v.spec.id);
                     if (original.slot == "Driveshaft" || original.slot == "Gearbox") check(car.state.drivetrainFailed && !car.state.engineFailed, "Drive-only failure preserves engine: " + v.spec.id + "/" + original.slot);
-                    check(bad.condition.failed && bad.condition.failureReason == "Audit injected failure", "Existing failed condition is retained: " + v.spec.id + "/" + original.slot);
+                    check(original.slot=="Tires"?bad.condition.tires.All(t=>t.Failed&&t.failureReason=="Audit injected failure")&&bad.condition.health==1&&!bad.condition.failed:bad.condition.failed && bad.condition.failureReason == "Audit injected failure", "Existing failed condition is retained: " + v.spec.id + "/" + original.slot);
                 }
+                if(!changedOnly){
                 var noWear = new CarSimulation(stock.spec, stock.tune, new DriverSettings { wearMode = WearMode.None });
                 var failedPiston = noWear.mechanics.parts.Find(p => p.slot == "Pistons"); failedPiston.condition.failed = true; failedPiston.condition.failureReason = "Existing piston failure";
                 noWear.IndependentStep(DragMath.FixedStep, new DriverInput(), true, false);
@@ -111,13 +118,15 @@ namespace DragLab.Editor
                     var build = catalog.Resolve(v.spec.id, map, tune);
                     exercise(new CarSimulation(build.spec, build.tune, Driver()), "radius-scale:" + radius + "/flywheel:" + flywheel, "mixed-pedals", 3600);
                 }
+                }
                 foreach (AwdMode mode in Enum.GetValues(typeof(AwdMode)))
                 {
-                    var build = catalog.Resolve(v.spec.id, catalog.Recipe(v.spec.id), v.CreateStockTune()); build.spec.drive = DriveType.AWD;
-                    // Use an actual AWD OEM recipe to retain all branches, rather than invent missing hardware.
                     if (v.spec.drive != DriveType.AWD) continue;
-                    build.tune.awdConfigured = true; build.tune.awd = build.spec.awd.Copy(); build.tune.awd.mode = mode;
-                    exercise(new CarSimulation(build.spec, build.tune, Driver()), "AWD:" + mode, "mixed-pedals", 3600);
+                    var map=catalog.Recipe(v.spec.id);string key=mode==AwdMode.FixedSplit?"FixedSplit35":mode==AwdMode.OpenCenter?"OpenCenter":mode==AwdMode.LimitedSlipCenter?"AdjustableLSD":mode==AwdMode.LockedCenter?"SwitchableLock":mode==AwdMode.OnDemand?"OnDemandController":"ActiveController";
+                    map[PartCategory.Differential]=v.spec.id+"/Differential/"+key;var tune=v.CreateStockTune();tune.awdConfigured=true;tune.awd=v.spec.awd.Copy();tune.awd.mode=mode;
+                    var build=catalog.Resolve(v.spec.id,map,tune);var car=new CarSimulation(build.spec,build.tune,Driver());
+                    check(build.Drivable&&car.awd.mode==mode,"Requested AWD scenario uses matching installed hardware: "+v.spec.id+" / "+mode);
+                    exercise(car, "AWD:" + mode, "mixed-pedals", 3600);
                 }
             }
             File.WriteAllText(Path.Combine(folder, "verification.txt"), "Model: " + MechanicsSchema.Model + "\nUTC: " + DateTime.UtcNow.ToString("O") + "\nChecks: " + checks + "; failures: " + failures + "; simulation runs: " + runs + "; simulated seconds: " + F(seconds) + "\n" + log);

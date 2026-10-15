@@ -216,7 +216,9 @@ namespace DragLab.Runtime
             yield return Capture("race-gauges-results");
             var completed=game.Race;yield return Key(input,0x1B);yield return Key(input,0x52);yield return Key(input,0x47);
             Check(game.NativeRacePause&&game.Race==completed,"Results retry/garage shortcuts cannot bypass an open native pause dialog");
-            yield return Click(input,"dialogResume");game.ReturnToGarage();
+            yield return Click(input,"dialogResume");yield return Key(input,0x47);
+            Check(game.ScreenName=="Garage"&&game.Race==null&&game.Profile.runCheckpoints.All(r=>r.settled),"Real results G shortcut returns to Garage and closes the worn-tire checkpoint");
+            Check(ProfileStore.Load().runCheckpoints.All(r=>r.settled),"Finished-race exit remains settled after durable profile reload");
         }
 #endif
     }

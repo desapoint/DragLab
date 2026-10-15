@@ -124,15 +124,15 @@ namespace DragLab.Domain.Mechanics
             if (request.kind == PaymentKind.Fluids || request.kind == PaymentKind.OilChange || request.kind == PaymentKind.CoolantFlush) {
                 if (string.IsNullOrEmpty(car.engineAssemblyId)) throw new InvalidOperationException("No attached engine to service.");
                 if (request.kind == PaymentKind.Fluids) { a.oil = Quantity(request.litres, build.spec.fluids.oilCapacityLitres - car.fluids.oilLitres); a.coolant = Quantity(request.coolantLitres, build.spec.fluids.coolantCapacityLitres - car.fluids.coolantLitres); a.cost = Money(a.oil * policy.oilPerLitre + a.coolant * policy.coolantPerLitre); }
-                if (request.kind == PaymentKind.OilChange) { a.oil = build.spec.fluids.oilCapacityLitres; a.cost = checked(Money(a.oil * policy.oilPerLitre) + policy.oilChangeLabour + PartsMarket.Quote(p,cat.Find(cat.Id(car.vehicleId, PartCategory.OilFilter)),1).cost); }
+                if (request.kind == PaymentKind.OilChange) { a.oil = build.spec.fluids.oilCapacityLitres; a.cost = checked(Money(a.oil * policy.oilPerLitre) + policy.oilChangeLabour + PartsMarket.Quote(p,ServiceOperations.OilFilter(p,car),1).cost); }
                 if (request.kind == PaymentKind.CoolantFlush) { a.coolant = build.spec.fluids.coolantCapacityLitres; a.cost = checked(Money(a.coolant * policy.coolantPerLitre) + policy.coolantFlushLabour); }
                 return a;
             }
             if (request.kind == PaymentKind.Rebuild) { a.cost = checked(EngineRebuilds.Quote(p, car, now,policy).paidPrice + Money(build.spec.fluids.oilCapacityLitres * policy.oilPerLitre)); return a; }
             var item = Installed(p, car, request.targetId); var definition = cat.Find(item.definitionId);
-            if (request.kind == PaymentKind.Repair) { if (!ServiceOperations.Available(definition, item.condition).Contains(request.service)) throw new InvalidOperationException("Service is not applicable to this damage."); a.cost = checked(policy.repairLabour + Money(definition.price * policy.repairPriceFraction)); a.description = ServiceOperations.Description(request.service); }
+            if (request.kind == PaymentKind.Repair) { if (!ServiceOperations.Available(definition,item.condition,ServiceOperations.BoreHealth(p,car)).Contains(request.service)) throw new InvalidOperationException("Service is not applicable to this damage."); a.cost = checked(policy.repairLabour + Money(definition.price * policy.repairPriceFraction)); a.description = ServiceOperations.Description(request.service); }
             if (request.kind == PaymentKind.ClutchOil) { if (definition.category != PartCategory.Clutch || definition.clutchEnvironment != ClutchEnvironment.Wet) throw new InvalidOperationException("No wet clutch oil bath to service."); a.cost = checked(policy.repairLabour + Money(definition.clutchOilCapacityLitres * policy.clutchOilPerLitre)); }
-            if (request.kind == PaymentKind.ElementNew || request.kind == PaymentKind.ElementReuse) { if (!item.condition.elements.Any(e => e.id == request.auxiliaryId)) throw new InvalidOperationException("Individual element changed."); a.cost = request.kind == PaymentKind.ElementNew ? PartsMarket.Quote(p,definition.category==PartCategory.Wheels?cat.Find(WheelFitments.DefinitionId(item,Array.FindIndex(item.condition.elements,e=>e.id==request.auxiliaryId))):definition,item.condition.elements.Length,true).cost : 0; }
+            if (request.kind == PaymentKind.ElementNew || request.kind == PaymentKind.ElementReuse) { if(definition.category==PartCategory.Tires)throw new InvalidOperationException("Use per-corner tire replacement instead of generic engine-element service."); if (!item.condition.elements.Any(e => e.id == request.auxiliaryId)) throw new InvalidOperationException("Individual element changed."); a.cost = request.kind == PaymentKind.ElementNew ? PartsMarket.Quote(p,definition.category==PartCategory.Wheels?cat.Find(WheelFitments.DefinitionId(item,Array.FindIndex(item.condition.elements,e=>e.id==request.auxiliaryId))):definition,item.condition.elements.Length,true).cost : 0; }
             return a;
         }
         static string Hash(PlayerProfile p, MechanicalCatalog cat, OperatingPolicy policy, ValuationPolicy values, PaymentRequest r,string profileJson=null,string requestJson=null)
@@ -144,7 +144,9 @@ namespace DragLab.Domain.Mechanics
         }
         public static PaymentQuote Quote(PlayerProfile p, MechanicalCatalog cat, OperatingPolicy policy, ValuationPolicy values, PaymentRequest request, long now)
         {
-            Guard(p, now, ""); string invalid = MechanicsOwnership.Validate(p, cat); if (invalid != null) throw new InvalidOperationException(invalid);
+            Guard(p, now, "");
+            string invalid = MechanicsOwnership.ValidateForQuote(p, cat);
+            if (invalid != null) throw new InvalidOperationException(invalid);
             var a = Preview(p, cat, policy, values, request, now); return new PaymentQuote(p, policy, request, a, Hash(p, cat, policy, values, request), now);
         }
         public static void Pay(PlayerProfile p, MechanicalCatalog cat, OperatingPolicy policy, ValuationPolicy values, PaymentQuote q, long now, VehicleOffer currentOffer = null)

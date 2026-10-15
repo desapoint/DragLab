@@ -118,7 +118,7 @@ namespace DragLab.Runtime
         {
             using(FramePacingProbe.Measure(4)){
             Refresh();
-            if (Visible && !game.NativeRacePause && Input.GetKeyDown(KeyCode.Escape)) { if (ModalOpen) CloseDialog(); else if(game.ScreenName=="Tuning"&&setupLibraryOpen) BackFromSetupLibrary(); else if (game.ScreenName=="Parts" && cartPageOpen) BackFromNativeCart(); else if (game.ScreenName=="Parts" && partsDetailId!=null) BackToParts(); else if (DealerDetailsOpen) BackToDealer(); else if (DisposalOpen) BackFromDisposal(); else if (OwnedDetailsOpen) BackToOwnedCars(); }
+            if (!game.ResetRequired && Visible && !game.NativeRacePause && Input.GetKeyDown(KeyCode.Escape)) { if (ModalOpen) CloseDialog(); else if(game.ScreenName=="Tuning"&&setupLibraryOpen) BackFromSetupLibrary(); else if (game.ScreenName=="Parts" && cartPageOpen) BackFromNativeCart(); else if (game.ScreenName=="Parts" && partsDetailId!=null) BackToParts(); else if (DealerDetailsOpen) BackToDealer(); else if (DisposalOpen) BackFromDisposal(); else if (OwnedDetailsOpen) BackToOwnedCars(); }
             foreach (var surface in surfaces) surface.Tick(Visible);
             foreach (var surface in switchSurfaces) surface.Tick(Visible);
             }
@@ -126,6 +126,7 @@ namespace DragLab.Runtime
         internal void Refresh()
         {
             if (root == null || game.Profile == null) return;
+            if (game.ResetRequired) { root.RemoveFromClassList("hidden"); return; }
             if (SyncRacePause()) return;
             string route = game.ScreenName;
             SyncSettingsEntry(route);
@@ -160,6 +161,37 @@ namespace DragLab.Runtime
             root.Q("settingsActions").EnableInClassList("hidden", !settings);
             ShowCategory();
             for (int i = 0; i < categoryIds.Length; i++) root.Q<Button>("tab" + categoryIds[i]).EnableInClassList("selected", i == category);
+        }
+        internal void ResetMenuEntry(string route)
+        {
+            renderedRoute=null;
+            if(route=="Garage"){
+                ownedDetailId=dealerDetailId=disposalCarId=null;comparingOwnedId=comparingDealerId=null;
+                dealerMode=game.Profile.firstPurchasePending;
+                ResetCarQuery(savedOwnedQuery);ResetCarQuery(dealerQuery);ownedSearch.SetValueWithoutNotify("");ownedSearch.Q("ownedCarSearchHint").RemoveFromClassList("hidden");
+                ownedStatsShown.Clear();ownedStatsCollapsed.Clear();dealerStatsShown.Clear();dealerStatsCollapsed.Clear();comparisonDifferencesOnly=false;
+                ownedScroll.scrollOffset=dealerScroll.scrollOffset=ownedReturnScroll=dealerReturnScroll=Vector2.zero;ApplyOwnedQuery(true);
+            }
+            else if(route=="Parts"){
+                cartPageOpen=enginePageOpen=engineMarketOpen=false;cartPageRequestedOwner=null;engineDetailId=engineReferenceId=null;engineSearch="";engineViewKey=null;engineCollapsed.Clear();
+                game.SelectPartsPage("Shop");partsSection=NativePartSection.Engine;partsPlanned=false;partsDetailId=null;partsStateKey=null;partQueries.Clear();
+                partDetailCollapsed.Clear();partDetailDifferences.Clear();cartStatGroups.Clear();cartStatDifferences.Clear();
+                partsScroll.scrollOffset=partsReturnScroll=Vector2.zero;partsNotice.text="";
+            }
+            else if(route=="Tuning"){
+                tuningCategory=0;setupLibraryOpen=false;setupSelectedId=null;setupQuery.Search="";setupQuery.Scope="All";setupLibraryKey=null;setupCollapsed.Clear();setupDifferencesOnly=false;
+                setupSearch.SetValueWithoutNotify("");setupSearch.Q(className:"owned-search-hint").RemoveFromClassList("hidden");
+                setupPage.Query<Button>(className:"choice-button").ForEach(b=>b.EnableInClassList("selected",b.name=="setupLibraryScope:All"));
+                tuningCollapsed.Clear();tuningDifferencesOnly=false;tuningKey=tuningInputsKey=null;game.WheelTuneAxle=0;tuningError.text="";ShowTuningCategory();
+                tuningPage.Query<ScrollView>().ForEach(s=>s.scrollOffset=Vector2.zero);setupListScroll.scrollOffset=setupPreviewScroll.scrollOffset=Vector2.zero;
+            }
+            else if(route=="Race setup"){
+                raceSelectionMode="Career";raceSelectionEvent=null;raceSearch="";raceTier="All";raceSelectionKey=raceActionKey=null;raceSelectionScroll.scrollOffset=Vector2.zero;
+                raceSelectionPage.Query<Button>(className:"choice-button").ForEach(b=>b.EnableInClassList("selected",b.name=="raceMode:Career"));
+            }
+            else if(route=="Settings"){
+                category=0;root.Q<ScrollView>("settingsScroll").scrollOffset=Vector2.zero;ShowCategory();
+            }
         }
         void SetText(string id, string value) { var label = root.Q<Label>(id); if (label.text != value) label.text = value; }
         void OnDestroy() { ownedCancellation?.Cancel(); ownedCancellation?.Dispose(); dealerCancellation?.Cancel(); dealerCancellation?.Dispose(); if (panel != null) Destroy(panel); }

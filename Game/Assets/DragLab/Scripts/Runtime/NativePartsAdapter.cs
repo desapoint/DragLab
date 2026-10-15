@@ -70,7 +70,7 @@ namespace DragLab.Runtime
             var d=profile.catalog.Find(current.definitionId);bool fresh=current.action==CartAction.NewSet||current.action==CartAction.NewUnits;
             if(d==null||install&&!profile.catalog.Fits(Selected.spec,d)||profile.reputation<d.reputationRequired||quantity<1||quantity>99||!fresh&&current.action!=CartAction.BuyUsed){notice="Offer or quantity unavailable.";return false;}
             var stock=fresh?null:profile.inventory.dealer.Find(s=>s.Id==current.assetId);
-            if(!fresh&&(stock==null||stock.DefinitionId!=d.id||quantity!=1||individual!=(stock.unit!=null)||individual&&role!=stock.unit.element.role)){notice="Used stock changed; review it again.";return false;}
+            if(!fresh&&(stock==null||stock.DefinitionId!=d.id||quantity!=1||individual!=stock.IsUnit||individual&&role!=stock.unit.element.role)){notice="Used stock changed; review it again.";return false;}
             var candidate=current.Copy();candidate.action=fresh?individual?CartAction.NewUnits:CartAction.NewSet:CartAction.BuyUsed;candidate.role=individual?role:null;candidate.quantity=quantity;candidate.install=install;candidate.positions=individual&&install?targets.Distinct().ToList():new List<string>();
             if(individual&&!InventoryUnits.Roles(profile,Build,d).Contains(role)){notice="Individual role unavailable.";return false;}
             if(cart.Any(l=>l!=current&&l.action==candidate.action&&l.definitionId==d.id&&l.role==candidate.role&&fresh)){notice="Another row already buys this offer and role. Edit that row or remove it first.";return false;}

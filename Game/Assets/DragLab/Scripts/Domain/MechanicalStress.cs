@@ -66,7 +66,7 @@ namespace DragLab.Domain
             foreach (var part in parts)
             {
                 var d = Definition(part); if (d == null) continue; var c = part.condition;
-                if(d.category==PartCategory.Tires){TireDynamics.Ensure(c);continue;}
+                if(d.category==PartCategory.Tires){TireDynamics.Ensure(part);continue;}
                 if (s.optimalThermals) c.temperatureC = OptimalTemperature(d.category);
                 if (d.category == PartCategory.Clutch && frictionClutch)
                     s.clutchCapacityFactor = c.failed ? 0 : ClutchHardware.Capacity(d,c)*Math.Max(.05, .4 + .6 * ConditionHealth(c,s)) * DragMath.Clamp(1 - Math.Max(0, c.temperatureC - d.thermalLimitC * .7) / d.thermalLimitC, .15, 1);

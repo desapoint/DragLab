@@ -24,12 +24,18 @@ namespace DragLab.Runtime
             var section=new VisualElement {name="carMaintenance"}; section.AddToClassList("car-maintenance"); ownedDetailContent.Add(section);
             var build=MechanicsOwnership.Resolve(profile,car,catalog);
             var installed=profile.parts.Where(p=>car.installed.slots.Any(s=>s.partInstanceId==p.instanceId)).ToList();
-            var service=installed.Where(p=>PartSemantics.Wears(catalog.Find(p.definitionId).category) &&
-                (PrototypeGame.PartFailed(p) || p.condition.health<=.5f || p.condition.deposits>=.05 || p.condition.leakSeverity>=.01 || p.condition.adjustmentError>=.05 || EngineElements.NeedsService(p.condition) || p.condition.tires.Any(t=>t.failed || t.health<=.5f)))
+            var service=installed.Where(p=>catalog.Find(p.definitionId).category!=PartCategory.Tires
+                &&PartSemantics.Wears(catalog.Find(p.definitionId).category)
+                &&(PrototypeGame.PartFailed(p)||p.condition.health<=.5f||p.condition.deposits>=.05
+                    ||p.condition.leakSeverity>=.01||p.condition.adjustmentError>=.05||EngineElements.NeedsService(p.condition)))
                 .OrderByDescending(PrototypeGame.PartFailed).ThenBy(p=>p.condition.health).ToList();
-            int failed=service.Count(PrototypeGame.PartFailed);
-            var summary=new Label("Maintenance · "+failed+" failed · "+(service.Count-failed)+" need service") {name="maintenanceCondition"};
-            summary.AddToClassList("maintenance-summary"); summary.AddToClassList(failed>0?"car-critical":service.Count>0?"car-warning":"car-ready"); section.Add(summary);
+            var wornTires=installed.Where(p=>catalog.Find(p.definitionId).category==PartCategory.Tires)
+                .SelectMany(p=>p.condition.tires.Select((t,i)=>new{Part=p,Tire=t,Corner=i}))
+                .Where(x=>x.Tire.Failed||TireDynamics.RemainingHealth(x.Tire)<=.5f).ToList();
+            int failed=service.Count(PrototypeGame.PartFailed)+wornTires.Count(x=>x.Tire.Failed);
+            int needs=service.Count+wornTires.Count-failed;
+            var summary=new Label("Maintenance · "+failed+" failed · "+needs+" need service") {name="maintenanceCondition"};
+            summary.AddToClassList("maintenance-summary"); summary.AddToClassList(failed>0?"car-critical":needs>0?"car-warning":"car-ready"); section.Add(summary);
             bool available=true;
             try { EngineRebuilds.RequireAvailable(car); }
             catch (InvalidOperationException restriction) { var warning=new Label(restriction.Message); warning.AddToClassList("car-warning"); section.Add(warning); available=false; }
@@ -53,15 +59,31 @@ namespace DragLab.Runtime
                 MaintenanceAction(row,"maintenanceClutchOil","Service oil",new PaymentRequest {kind=PaymentKind.ClutchOil,carId=car.instanceId,targetId=clutch.instanceId},"Renew the wet-clutch oil bath and pay labour. Clutch wear remains.",available);
             }
             var parts=new VisualElement {name="maintenanceParts"}; section.Add(parts);
+            foreach(var entry in wornTires){
+                var row=new VisualElement{name="maintenanceTire:"+entry.Corner};row.AddToClassList("maintenance-part");parts.Add(row);
+                var caption=new VisualElement();caption.AddToClassList("maintenance-part-caption");row.Add(caption);
+                var spec=catalog.Find(TireFitments.DefinitionId(entry.Part,entry.Corner));
+                string corner=new[]{"Front left","Front right","Rear left","Rear right"}[entry.Corner];
+                var title=new Label(corner+" tire · "+spec.name){tooltip=entry.Tire.id,enableRichText=false};
+                title.AddToClassList("maintenance-part-name");caption.Add(title);
+                double life=Math.Min(entry.Tire.health,Math.Max(0,1-entry.Tire.consumedLife));
+                bool tireFailed=entry.Tire.failed||life<=0;
+                var state=new Label(tireFailed?"Failed":"Condition "+life.ToString("P0"));
+                state.AddToClassList(tireFailed?"car-critical":ServiceConditionClass((float)life));caption.Add(state);
+                var guidance=new Label("Select this corner in Replace parts to buy and fit an individual tire.");
+                guidance.AddToClassList("maintenance-summary");row.Add(guidance);
+            }
             foreach(var item in service) {
                 var d=catalog.Find(item.definitionId);var row=new VisualElement {name="maintenancePart:"+item.instanceId};row.AddToClassList("maintenance-part");parts.Add(row);
                 var caption=new VisualElement();caption.AddToClassList("maintenance-part-caption");row.Add(caption);
                 string model=catalog.Spec(car.vehicleId).displayName+" / "; string name=d.name.StartsWith(model,StringComparison.Ordinal)?d.name.Substring(model.Length):d.name;
                 var title=new Label(name) {tooltip=d.name+" · "+item.instanceId,enableRichText=false};title.AddToClassList("maintenance-part-name");caption.Add(title);
-                int faults=item.condition.elements.Count(e=>e.Failed||e.fault!=ElementFault.None||e.health<.5f)+item.condition.tires.Count(t=>t.failed||t.health<=.5f);
-                var state=new Label((PrototypeGame.PartFailed(item)?"Failed":"Condition "+item.condition.health.ToString("P0"))+(faults>0?" · "+faults+" faulty":"")) {tooltip=item.condition.failureReason};state.AddToClassList(PrototypeGame.PartFailed(item)?"car-critical":ServiceConditionClass(item.condition.health));caption.Add(state);
+                int faults=item.condition.elements.Count(e=>e is TireCondition ? ((TireCondition)e).failed||e.health<=.5f : e.Failed||e.fault!=ElementFault.None||e.health<.5f);
+                float memberHealth=d.category==PartCategory.Tires?TireDynamics.LowestHealth(item.condition):item.condition.health;
+                string failureReason=d.category==PartCategory.Tires?TireDynamics.FailedCorners(item.condition):item.condition.failureReason;
+                var state=new Label((PrototypeGame.PartFailed(item)?"Failed":"Condition "+memberHealth.ToString("P0"))+(faults>0?" · "+faults+" faulty":"")) {tooltip=failureReason};state.AddToClassList(PrototypeGame.PartFailed(item)?"car-critical":ServiceConditionClass(memberHealth));caption.Add(state);
                 var actions=new VisualElement();actions.AddToClassList("maintenance-part-actions");row.Add(actions);
-                foreach(var action in ServiceOperations.Available(d,item.condition))
+                foreach(var action in ServiceOperations.Available(d,item.condition,ServiceOperations.BoreHealth(profile,car)))
                     MaintenanceAction(actions,"maintenanceRepair:"+action+":"+item.instanceId,action.ToString(),new PaymentRequest {kind=PaymentKind.Repair,carId=car.instanceId,targetId=item.instanceId,service=action},ServiceOperations.Description(action),available);
                 int count=Math.Max(item.condition.elements.Length,item.condition.tires.Length);
                 MaintenanceAction(actions,"maintenanceReplace:"+item.instanceId,"Buy same",new PaymentRequest {kind=PaymentKind.Part,carId=car.instanceId,targetId=item.definitionId,install=true,preserveTireFitments=d.category==PartCategory.Tires},(d.category==PartCategory.Tires&&TireFitments.HasOverrides(item)?"Current mixed tire specifications":d.name)+(count>1?(d.category==PartCategory.Tires?" · set of ":" · matched set of ")+count:"")+"\nBuy and install the same specification. The removed part/set stays in inventory with its condition; saved tuning stays.",available,item.instanceId);

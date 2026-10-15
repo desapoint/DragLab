@@ -12,6 +12,7 @@ namespace DragLab.Editor
 {
     public static class UsedVehicleInspectionVerification
     {
+        [MenuItem("DragLab/Prepare Vehicle Inspection Policy")]
         public static void Prepare()
         {
             var asset=Resources.Load<OperatingPolicyDefinition>("Data/Economy/OperatingPolicy");
@@ -24,7 +25,9 @@ namespace DragLab.Editor
         }
         public static void RunStandalone()
         {
-            Prepare();var cat=MechanicsTransactions.Catalog();var policy=VehicleListings.Costs;var values=VehicleListings.Values;long now=DateTime.UtcNow.Ticks;
+            var inspectionAsset=Resources.Load<OperatingPolicyDefinition>("Data/Economy/OperatingPolicy");
+            if(inspectionAsset==null||inspectionAsset.policy==null||inspectionAsset.policy.version<3)throw new InvalidOperationException("Vehicle inspection policy is not authored. Prepare the inspection policy explicitly, then verify.");
+            var cat=MechanicsTransactions.Catalog();var policy=VehicleListings.Costs;var values=VehicleListings.Values;long now=DateTime.UtcNow.Ticks;
             int count=0;var log=new StringBuilder();Action<bool,string> check=(ok,label)=>{if(!ok)throw new InvalidOperationException(label);count++;log.AppendLine("PASS "+label);};
             var initial=PlayerProfile.NewGame(now);MechanicsOwnership.Ensure(initial,cat);string untouched=JsonUtility.ToJson(initial);
             foreach(var o in initial.vehicleStock.listings){check(o.firstStarter&&VehicleInspection.Known(o)&&o.engineRuns&&o.drives&&o.parts.All(p=>!p.condition.failed&&p.condition.health>=.9),o.model+" starter is safe and fully disclosed without a fee");bool rejected=false;try{PaidEconomy.Quote(initial,cat,policy,values,new PaymentRequest{kind=PaymentKind.VehicleInspection,offer=o},now);}catch(InvalidOperationException){rejected=true;}check(rejected,"Starter inspection cannot charge");}

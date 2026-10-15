@@ -138,8 +138,9 @@ namespace DragLab.Domain
             if(mode==RaceTemperatureMode.Live)return;
             bool optimal=mode==RaceTemperatureMode.Optimal;
             foreach(var part in mechanics.parts) {
-                var d=mechanics.Definition(part);part.condition.temperatureC=optimal?MechanicalStress.OptimalTemperature(d.category):20;
-                if(d.category==PartCategory.Tires&&part.condition.tires!=null){for(int i=0;i<part.condition.tires.Length;i++)part.condition.tires[i].temperatureC=optimal?mechanics.TireDefinition(i).tireOptimalC:20;part.condition.temperatureC=part.condition.tires.Max(t=>t.temperatureC);}
+                var d=mechanics.Definition(part);
+                if(d.category==PartCategory.Tires&&part.condition.tires!=null){for(int i=0;i<part.condition.tires.Length;i++)part.condition.tires[i].temperatureC=optimal?mechanics.TireDefinition(i).tireOptimalC:20;TireDynamics.SyncSummary(part.condition);}
+                else part.condition.temperatureC=optimal?MechanicalStress.OptimalTemperature(d.category):20;
             }
             state.fluids.oilTemperatureC=optimal?90:20;state.fluids.oilPressureBar=state.fluids.coolantPressureBar=0;state.engineTemperature=optimal?1:0;state.exhaustHeat=0;
         }
@@ -153,10 +154,10 @@ namespace DragLab.Domain
                 foreach(var p in mechanics.parts) {
                     var d=mechanics.Definition(p);
                     // Cooling's liquid/pressure circuit is advanced by FluidDynamics below.
-                    if(d.category!=PartCategory.Cooling)p.condition.temperatureC=20+(p.condition.temperatureC-20)*Math.Exp(-dt*d.coolingWattsPerC/Math.Max(1,d.heatCapacityJPerC));
+                    if(d.category!=PartCategory.Cooling&&d.category!=PartCategory.Tires)p.condition.temperatureC=20+(p.condition.temperatureC-20)*Math.Exp(-dt*d.coolingWattsPerC/Math.Max(1,d.heatCapacityJPerC));
                     if(d.category==PartCategory.Tires&&p.condition.tires!=null) {
                         double capacity=d.heatCapacityJPerC*Math.Max(.1,wheels.tireMassKg/Math.Max(.1,wheels.referenceTireMassKg));
-                        for(int i=0;i<p.condition.tires.Length;i++){var tire=p.condition.tires[i];var tireSpec=mechanics.TireDefinition(i);double localCapacity=tireSpec.heatCapacityJPerC*Math.Max(.1,wheels.tireMasses[i]/Math.Max(.1,wheels.referenceTireMassKg));tire.temperatureC=20+(tire.temperatureC-20)*Math.Exp(-dt*tireSpec.coolingWattsPerC/localCapacity);}
+                        for(int i=0;i<p.condition.tires.Length;i++){var tire=p.condition.tires[i];var tireSpec=mechanics.TireDefinition(i);double localCapacity=tireSpec.heatCapacityJPerC*Math.Max(.1,wheels.tireMasses[i]/Math.Max(.1,wheels.referenceTireMassKg));tire.temperatureC=20+(tire.temperatureC-20)*Math.Exp(-dt*tireSpec.coolingWattsPerC/localCapacity);}TireDynamics.SyncSummary(p.condition);
                     }
                 }
                 FluidDynamics.Tick(this,dt,true);

@@ -50,10 +50,14 @@ namespace DragLab.Runtime
         }
         internal void ResetOwnedQuery()
         {
-            ownedQuery.Search="";ownedQuery.Rank=ownedQuery.Drive=ownedQuery.Type=ownedQuery.Gearbox=ownedQuery.Induction=ownedQuery.Status=ownedQuery.Affordability=ownedQuery.StockCondition="All";
-            ownedQuery.Minimum=new double?[5];ownedQuery.Maximum=new double?[5];ownedQuery.Sort=OwnedCarSort.OwnedOrder;ownedQuery.Descending=false;
+            ResetCarQuery(ownedQuery);
             ownedSearch.SetValueWithoutNotify("");ownedSearch.Q("ownedCarSearchHint").RemoveFromClassList("hidden");ApplyOwnedQuery(true);
             ownedSearch.Blur();
+        }
+        static void ResetCarQuery(OwnedCarQuery query)
+        {
+            query.Search="";query.Rank=query.Drive=query.Type=query.Gearbox=query.Induction=query.Status=query.Affordability=query.StockCondition="All";
+            query.Minimum=new double?[5];query.Maximum=new double?[5];query.Sort=OwnedCarSort.OwnedOrder;query.Descending=false;
         }
         internal void ApplyOwnedQuery(bool resetScroll=false)
         {
@@ -82,7 +86,7 @@ namespace DragLab.Runtime
         }
         void QueryChoices(VisualElement parent,string id,string label,string[] options,Func<string> get,Action<string> set,int perRow=5)
         {
-            var block=new VisualElement();block.AddToClassList("owned-query-group");parent.Add(block);block.Add(new Label(label));
+            var block=new VisualElement();block.AddToClassList("owned-query-group");parent.Add(block);if(!string.IsNullOrEmpty(label))block.Add(new Label(label));
             var buttons=new List<Tuple<Button,string>>();
             void Update(){foreach(var pair in buttons)pair.Item1.EnableInClassList("selected",get()==pair.Item2);}
             for(int start=0;start<options.Length;start+=perRow) {

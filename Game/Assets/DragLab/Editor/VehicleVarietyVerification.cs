@@ -10,10 +10,11 @@ using DragLab.Infrastructure;
 namespace DragLab.Editor {
  public static class VehicleVarietyVerification {
  public static void RunStandalone(){
- VehicleVarietySetup.Prepare();
+ // Verification must not author or modify vehicle assets.
  int checks=0;var log=new StringBuilder();Action<bool,string> check=(ok,label)=>{if(!ok)throw new InvalidOperationException(label);checks++;log.AppendLine("PASS "+label);};
  var cat=MechanicsTransactions.Catalog();var cars=Resources.LoadAll<VehicleDefinition>("Data/Vehicles");
- check(cars.Length>=13&&cars.Select(v=>v.spec.id).Distinct().Count()==cars.Length,"13 unique authored vehicles/trims");
+ check(cars.Length>=13&&cars.Select(v=>v.spec.id).Distinct().Count()==cars.Length&&cars.All(v=>!string.IsNullOrEmpty(v.spec.engineFamily)),
+      "Expected authored vehicle trims and engine families; run VehicleVarietyPrepare explicitly if fixtures are missing");
  foreach(var v in cars){var b=cat.Resolve(v.spec.id,cat.Recipe(v.spec.id),v.CreateStockTune());check(b.Drivable&&b.spec.Validate()==null,v.spec.id+" stock hardware resolves");var c=new CarSimulation(b.spec,b.tune,new DriverSettings{wearMode=WearMode.Full});c.Launch(0);for(int i=0;i<3600&&c.state.distance<402.336;i++)c.Step(DragMath.FixedStep,new DriverInput{throttle=1});check(c.state.distance>=402.336&&!c.state.engineFailed&&c.mechanics.parts.All(p=>!p.condition.failed),v.spec.id+" full-wear factory quarter mile survives");
  if(!CombustionHardware.Diesel(v.spec))continue;
  check(c.mechanics.Part(PartCategory.Ignition)==null&&c.mechanics.Part(PartCategory.SparkPlugs)==null&&c.mechanics.Part(PartCategory.GlowPlugs)!=null,v.spec.id+" diesel heaters and injectors replace spark equipment");

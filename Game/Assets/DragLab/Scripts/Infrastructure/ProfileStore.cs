@@ -11,6 +11,53 @@ namespace DragLab.Infrastructure
     {
         internal static Action<string,double> SaveMeasurement;
         static bool writeBlocked;
+        public static bool ResetRequired => writeBlocked;
+
+        // Explicit user-confirmed reset only. Preserve the old database, checkpoint
+        // and backups beside the save under a timestamped name for manual recovery.
+        public static bool TryResetIncompatibleSave(out string error)
+        {
+            error = null;
+            if (!writeBlocked) { error = "No incompatible save requires reset."; return false; }
+            var moved = new System.Collections.Generic.List<string[]>();
+            string backupSuffix = ".before-reset-" + DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+            string[] roots = LegacyFixture ? new[]{FilePath} :
+                slot=="slot-1" ? new[]{FilePath,LegacyFilePath} : new[]{FilePath};
+            string[] suffixes = {"",".bak",".run",".run.bak",".run.tmp",".tmp","-wal","-shm","-journal",".reset-generation",".reset-intent",".reset-generation.tmp",".reset-intent.tmp",".backup-next"};
+            try
+            {
+                RaceCheckpointStore.Drain();
+                SqliteStateStore.DrainBackups();
+                SqliteStateStore.Invalidate();
+                foreach (var root in roots) foreach (var suffix in suffixes)
+                {
+                    string source = root + suffix;
+                    if (!File.Exists(source)) continue;
+                    string target = source + backupSuffix;
+                    File.Move(source,target);
+                    moved.Add(new[]{source,target});
+                }
+                writeBlocked = false;
+                var fresh = PlayerProfile.NewGame(DateTime.UtcNow.Ticks);
+                MechanicsOwnership.Ensure(fresh,MechanicsTransactions.Catalog());
+                if(!TrySave(fresh))throw new IOException(Status);
+                Status = "A new save was created. Previous data was archived with suffix " + backupSuffix + ".";
+                return true;
+            }
+            catch(Exception e)
+            {
+                writeBlocked = true;
+                error = "Reset failed; prior data is retained: " + e.Message;
+                for(int i=moved.Count-1;i>=0;i--)try
+                {
+                    if(File.Exists(moved[i][0])) File.Move(moved[i][0],moved[i][0]+".failed-reset"+backupSuffix);
+                    if(File.Exists(moved[i][1])) File.Move(moved[i][1],moved[i][0]);
+                }
+                catch(Exception rollback){error += " Backup restoration: " + rollback.Message;}
+                Status = error;
+                return false;
+            }
+        }
         static string slot="slot-1";
 #if UNITY_EDITOR
         public static string VerificationPath;
@@ -46,8 +93,20 @@ namespace DragLab.Infrastructure
                 if(!File.Exists(path))continue;
                 if(path==FilePath&&SqliteStateStore.CanInitialize(path))continue;
                 try{
-                    string json=SqliteStateStore.Read(path,raw=>{var staged=JsonUtility.FromJson<PlayerProfile>(DrivingPreferences.AddToJson(raw));MechanicsOwnership.Ensure(staged,catalog);string invalid=MechanicsOwnership.Validate(staged,catalog);if(invalid!=null)throw new InvalidDataException("Migration validation failed: "+invalid);});var p=JsonUtility.FromJson<PlayerProfile>(DrivingPreferences.AddToJson(json));p.storageCommit=SqliteStateStore.ReadCommit;
-                    if(p==null||p.saveVersion>MechanicsOwnership.SaveVersion||p.mechanicsVersion>MechanicsSchema.Version)throw new NotSupportedException("Newer profile contract; database writes are blocked.");
+                    string json=SqliteStateStore.Read(path,raw=>{var staged=JsonUtility.FromJson<PlayerProfile>(DrivingPreferences.AddToJson(raw));if(staged==null||staged.saveVersion<MechanicsOwnership.SaveVersion)throw new InvalidDataException("Old save element format requires reset.");
+                        // A v12 profile must already own four concrete tire histories.
+                        // Normalization may initialize new parts, but may not heal a broken save.
+                        if(staged.parts!=null)foreach(var savedPart in staged.parts)
+                        {
+                            if(savedPart==null)continue;
+                            var definition=catalog.Find(savedPart.definitionId);
+                            if(definition?.category!=PartCategory.Tires)continue;
+                            if(savedPart.condition?.elements==null||savedPart.condition.elements.Length!=4
+                               ||Array.Exists(savedPart.condition.elements,e=>!(e is TireCondition)))
+                                throw new InvalidDataException("Saved tire pack has missing or invalid typed members; reset required.");
+                        }
+                        MechanicsOwnership.Ensure(staged,catalog);string invalid=MechanicsOwnership.Validate(staged,catalog);if(invalid!=null)throw new InvalidDataException("Migration validation failed: "+invalid);});var p=JsonUtility.FromJson<PlayerProfile>(DrivingPreferences.AddToJson(json));p.storageCommit=SqliteStateStore.ReadCommit;
+                    if(p==null||p.saveVersion!=MechanicsOwnership.SaveVersion||p.mechanicsVersion>MechanicsSchema.Version)throw new NotSupportedException("Newer profile contract; database writes are blocked.");
                     bool contractMigration=p.saveVersion<MechanicsOwnership.SaveVersion||p.mechanicsVersion<MechanicsSchema.Version;p.Sanitize(now);MechanicsOwnership.Ensure(p,catalog);if(MechanicsOwnership.Validate(p,catalog)!=null)throw new InvalidDataException("Invalid saved ownership/state.");
                     if(path!=FilePath&&!writeBlocked)SqliteStateStore.RecoverBackup(FilePath,path);
                     Status=path==FilePath?"Save database loaded.":"Recovered previous save database.";if(contractMigration&&!writeBlocked&&!TrySave(p))throw new IOException("Logical save-contract migration could not commit: "+Status);

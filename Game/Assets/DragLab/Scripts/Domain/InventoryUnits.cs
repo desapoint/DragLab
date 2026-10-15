@@ -1,8 +1,16 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace DragLab.Domain.Mechanics
 {
+    [Serializable]
+    public sealed class TireSwapAssignment
+    {
+        public string unitId;
+        public int corner; // Front left, front right, rear left, rear right.
+        public TireSwapAssignment(string id,int index){unitId=id;corner=index;}
+    }
     public static class InventoryUnits
     {
         public static VehicleSpec Spec(PlayerProfile p,OwnedCar car,PartDefinition d)
@@ -35,7 +43,9 @@ namespace DragLab.Domain.Mechanics
             var car=AssemblyOperations.MutableCar(p,carId);var d=p.catalog.Find(definition);
             if(d==null||!PartsMarket.FitsAny(p,d)||p.reputation<d.reputationRequired||!Roles(p,car,d).Contains(role))throw new InvalidOperationException("Individual unit incompatible or unavailable.");
             int count=Count(p,car,d);int price=PartsMarket.Quote(p,d,count,true).cost;if(p.cash<price)throw new InvalidOperationException("Insufficient cash for unit.");
-            var item=new LooseEngineElement{definitionId=d.id,unitPrice=InventoryPricing.NewUnit(d,count),element=new EngineElement{id=MechanicsOwnership.NewId("element"),role=role,cylinder=-1,valve=-1},tireUnit=d.category==PartCategory.Tires,tire=d.category==PartCategory.Tires?new TireCondition():null};
+            var element=EngineElements.Create(d.category);
+            element.id=MechanicsOwnership.NewId("element");element.definitionId=d.id;element.role=role;element.cylinder=-1;element.valve=-1;
+            var item=new LooseEngineElement{definitionId=d.id,unitPrice=InventoryPricing.NewUnit(d,count),element=element,tireUnit=d.category==PartCategory.Tires};
             PartsMarket.Consume(p,d,count,true);p.cash-=price;p.looseEngineElements.Add(item);return item;
         }
         public static string[] Positions(PlayerProfile p,OwnedCar car,string definition,string role)
@@ -66,9 +76,42 @@ namespace DragLab.Domain.Mechanics
             string oldDefinition=TireFitments.DefinitionId(pack,index);
             string oldId=string.IsNullOrEmpty(old.id)?MechanicsOwnership.NewId("tire"):old.id;
             p.looseEngineElements.Add(new LooseEngineElement{definitionId=oldDefinition,unitPrice=InventoryPricing.NewUnit(p.catalog.Find(oldDefinition),4),element=new EngineElement{id=oldId,role="tire",cylinder=-1,valve=-1,health=old.failed?0:Math.Min(old.health,(float)Math.Max(0,1-old.consumedLife))},tireUnit=true,tire=old.Copy()});
-            var next=unit.tire.Copy();next.id=unit.element.id;next.definitionId=unit.definitionId;next.lastContactWorkJ=0;pack.condition.tires[index]=next;p.looseEngineElements.Remove(unit);
-            pack.condition.health=pack.condition.tires.Min(t=>t.health);pack.condition.failed=pack.condition.tires.Any(t=>t.failed);pack.condition.failureReason=pack.condition.failed?"Tire unavailable":"";
-            pack.condition.serviceCount++;pack.condition.lastService="Individual tire replaced / "+PositionLabel(p,car,pack.definitionId,position);
+            var next=unit.tire.Copy();next.id=unit.element.id;next.definitionId=unit.definitionId;next.lastContactWorkJ=0;pack.condition.elements[index]=next;p.looseEngineElements.Remove(unit);
+            TireDynamics.SyncSummary(pack.condition);
+            // Tire swap is a transaction; the container owns no maintenance history.
         }
+        // Call from MechanicsTransactions.Try (or a validated cart preview).
+        // The complete selection is validated against the original inventory before
+        // moving anything; callers commit the candidate profile as one transaction.
+        public static void SwapTires(PlayerProfile p,string carId,IEnumerable<TireSwapAssignment> source)
+        {
+            var selections=source==null?new TireSwapAssignment[0]:source.ToArray();
+            if(selections.Length<1||selections.Length>4)throw new InvalidOperationException("Select between one and four stored tires.");
+            if(selections.Any(x=>x==null||x.corner<0||x.corner>3||string.IsNullOrEmpty(x.unitId))
+                ||selections.Select(x=>x.corner).Distinct().Count()!=selections.Length
+                ||selections.Select(x=>x.unitId).Distinct(StringComparer.Ordinal).Count()!=selections.Length)
+                throw new InvalidOperationException("Each physical tire and corner may appear only once in the swap.");
+            if(p.runCheckpoints.Any(r=>!r.settled))throw new InvalidOperationException("Finish or close the active race before swapping tires.");
+            var car=AssemblyOperations.MutableCar(p,carId);
+            var binding=car.installed.slots.Find(x=>x.slot==PartCategory.Tires.ToString());
+            var pack=binding==null?null:p.parts.Find(x=>x.instanceId==binding.partInstanceId);
+            if(pack==null)throw new InvalidOperationException("Install a complete tire set before swapping individual tires.");
+            TireDynamics.Ensure(pack.condition);
+            foreach(var request in selections)
+            {
+                var unit=p.looseEngineElements.Find(x=>x.element!=null&&x.element.id==request.unitId);
+                var spec=unit==null?null:p.catalog.Find(unit.definitionId);
+                if(unit==null||!unit.tireUnit||unit.tire==null||unit.tire.Validate()!=null
+                    ||unit.element==null||(!string.IsNullOrEmpty(unit.tire.id)&&unit.tire.id!=unit.element.id)
+                    ||spec==null||spec.category!=PartCategory.Tires
+                    ||!p.catalog.Fits(p.catalog.Spec(car.vehicleId),spec))
+                    throw new InvalidOperationException("Stored tire is missing, damaged in the inventory data, or incompatible with this car.");
+            }
+            // Install() returns each displaced tire to inventory with its original
+            // identity, specification, condition and full wear history.
+            foreach(var request in selections.OrderBy(x=>x.corner))
+                Install(p,carId,request.unitId,"tire:"+request.corner);
+        }
+
     }
 }

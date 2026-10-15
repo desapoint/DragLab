@@ -26,7 +26,7 @@ namespace DragLab.Domain.Mechanics
         {
             var item = Item(profile, itemId);
             if (item.location != PartLocation.Inventory) throw new InvalidOperationException("Remove the installed part before selling it.");
-            int sale=TireFitments.HasOverrides(item)?(int)Math.Floor(System.Linq.Enumerable.Range(0,4).Sum(i=>catalog.Find(TireFitments.DefinitionId(item,i)).price*.25*.45*item.condition.tires[i].health*(item.condition.tires[i].failed?.1:1))):WheelFitments.HasOverrides(item)?(int)Math.Floor(Enumerable.Range(0,4).Sum(i=>catalog.Find(WheelFitments.DefinitionId(item,i)).price*.25*.45*item.condition.elements[i].health*(item.condition.elements[i].Failed?.1:1))):SaleValue(catalog.Find(item.definitionId),item.condition);
+            int sale=catalog.Find(item.definitionId).category==PartCategory.Tires&&item.condition.tires.Length==4?(int)Math.Floor(Enumerable.Range(0,4).Sum(i=>{var t=item.condition.tires[i];return catalog.Find(TireFitments.DefinitionId(item,i)).price*.25*.45*Math.Min(t.health,Math.Max(0,1-t.consumedLife))*(t.failed?.1:1);})):WheelFitments.HasOverrides(item)?(int)Math.Floor(Enumerable.Range(0,4).Sum(i=>catalog.Find(WheelFitments.DefinitionId(item,i)).price*.25*.45*item.condition.elements[i].health*(item.condition.elements[i].Failed?.1:1))):SaleValue(catalog.Find(item.definitionId),item.condition);
             profile.cash = checked(profile.cash + sale); profile.parts.Remove(item);profile.inventory.dealer.Add(new DealerStock{part=item,paidPrice=sale});
         }
         public static void Transfer(PlayerProfile profile, MechanicalCatalog catalog, string donorVehicleId, string targetVehicleId, PartCategory category)

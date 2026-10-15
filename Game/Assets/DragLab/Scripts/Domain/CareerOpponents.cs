@@ -76,7 +76,7 @@ namespace DragLab.Domain {
  var components=new List<PartInstance>();
  foreach(var pair in map){var d=catalog.Find(pair.Value);var assigned=setup.parts?.FirstOrDefault(p=>p.category==pair.Key);double h=!setup.authored||!PartSemantics.Wears(pair.Key)?1:assigned?.health??DragMath.Clamp(setup.health+((int)pair.Key%5-2)*.003,.4,1);
  var p=new PartInstance{instanceId="rival/"+e.stableId+"/"+setup.seed+"/"+pair.Key,definitionId=d.id,slot=pair.Key.ToString(),condition=new ComponentCondition{health=(float)h,distanceM=setup.authored?setup.mileageKm*1000:0}};
- EngineElements.Ensure(build.spec,d,p);ClutchHardware.Ensure(d,p.condition);if(pair.Key==PartCategory.Tires){TireDynamics.Ensure(p.condition);foreach(var tire in p.condition.tires){tire.health=(float)h;tire.consumedLife=1-h;}}components.Add(p);
+ EngineElements.Ensure(build.spec,d,p);ClutchHardware.Ensure(d,p.condition);if(pair.Key==PartCategory.Tires){TireDynamics.SeedNew(p.condition);for(int i=0;i<4;i++){var tire=p.condition.tires[i];tire.id=p.instanceId+"/tire/"+i;tire.definitionId=d.id;}}components.Add(p);
  }
  double tier=difficulty<.5?.2:difficulty>1.5?-.12:0;
  int drivingSeed=attemptSeed??setup.seed;if(!MechanicsSchema.Finite(setup.reactionJitterSeconds)||setup.reactionJitterSeconds<0||setup.reactionJitterSeconds>.5)throw new InvalidOperationException("Invalid reaction variance.");double jitter=setup.authored?(RivalBehavior.Noise(drivingSeed,1)*2-1)*setup.reactionJitterSeconds:0;

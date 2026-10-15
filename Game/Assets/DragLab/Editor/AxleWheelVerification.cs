@@ -65,6 +65,95 @@ namespace DragLab.Editor
         {
             var log=new StringBuilder();int count=0;
             Action<bool,string> check=(ok,label)=>{log.AppendLine(((ok?"PASS: ":"FAIL: ")+label).TrimEnd());if(!ok)throw new InvalidOperationException(label);count++;};
+            var bath=new ComponentCondition();
+            check(bath.clutch==null&&bath.clutchOilLitres==0&&bath.clutchOilCondition==1
+                &&bath.clutchFluidVersion==0,"Non-clutch components have no serialized clutch oil payload");
+            bath.clutchFluidVersion=1;bath.clutchOilLitres=1.75;bath.clutchOilCondition=.63;
+            string clutchJson=JsonUtility.ToJson(bath);
+            var clutchRestored=JsonUtility.FromJson<ComponentCondition>(clutchJson);
+            check(clutchJson.Contains("\"clutch\"")&&!clutchJson.Contains("\"clutchOilLitres\"")
+                &&clutchRestored.clutch!=null&&clutchRestored.clutchOilLitres==1.75
+                &&clutchRestored.clutchOilCondition==.63&&clutchRestored.clutchFluidVersion==1
+                &&clutchRestored.Validate()==null,"Clutch oil version, litres and condition survive a typed Unity JSON round trip");
+            var clutchCopy=bath.Copy();clutchCopy.clutchOilCondition=.3;
+            check(bath.clutchOilCondition==.63&&clutchCopy.clutchOilCondition==.3,
+                "Clutch-specific oil payload copies are independent");
+            // A stale/worn former tire-set condition must never contaminate healthy
+            // fitted tires, and obsolete parent usage counters must not be retained.
+            var independent=new ComponentCondition{health=.1f,failed=true,failureReason="old pack state",
+                slipEnergyJ=800,distanceM=600,runningSeconds=10,
+                tires=Enumerable.Range(0,4).Select(i=>new TireCondition{id="individual-"+i,health=1,temperatureC=20}).ToArray()};
+            TireDynamics.Ensure(independent);
+            check(independent.tires.All(t=>t.health==1&&!t.failed&&t.distanceM==0&&t.slipEnergyJ==0)
+                &&independent.health==1&&!independent.failed&&independent.slipEnergyJ==0
+                &&independent.distanceM==0,"Stale tire-set damage and history never flow back into independent tires");
+            var oldCondition=independent.Copy();
+            oldCondition.tires[0].slipEnergyJ=100;oldCondition.tires[0].distanceM=300;
+            oldCondition.tires[0].health=.75f;oldCondition.tires[0].consumedLife=.25;
+            var advanced=oldCondition.Copy();
+            advanced.tires[0].slipEnergyJ+=50;advanced.tires[0].distanceM+=100;
+            advanced.tires[0].health=.70f;advanced.tires[0].consumedLife=.30;
+            check(RunPersistence.ConditionAdvances(oldCondition,advanced),"Per-tire journal accepts genuine usage growth");
+            advanced.tires[0].slipEnergyJ=20;
+            check(!RunPersistence.ConditionAdvances(oldCondition,advanced),"Per-tire journal rejects energy rewind");
+            advanced=oldCondition.Copy();advanced.tires[0].id="different-tire";
+            check(!RunPersistence.ConditionAdvances(oldCondition,advanced),"An active race cannot silently exchange tire identities");
+            var typed=independent.Copy();
+            typed.tires[2].health=.34f;typed.tires[2].consumedLife=.66;
+            typed.tires[2].temperatureC=97;typed.tires[2].distanceM=1298;typed.tires[2].slipEnergyJ=33091;
+            typed.tires[2].failed=true;typed.tires[2].failureReason="verified simulated puncture";
+            string encoded=JsonUtility.ToJson(typed);
+            var decoded=JsonUtility.FromJson<ComponentCondition>(encoded);
+            check(!encoded.Contains("\"tires\"")
+                &&decoded.elements.Length==4&&decoded.elements.All(e=>e is TireCondition)
+                &&decoded.tires[2].id==typed.tires[2].id&&decoded.tires[2].health==typed.tires[2].health
+                &&decoded.tires[2].consumedLife==typed.tires[2].consumedLife
+                &&decoded.tires[2].temperatureC==typed.tires[2].temperatureC
+                &&decoded.tires[2].distanceM==typed.tires[2].distanceM
+                &&decoded.tires[2].slipEnergyJ==typed.tires[2].slipEnergyJ
+                &&decoded.tires[2].failed&&decoded.tires[2].failureReason==typed.tires[2].failureReason,
+                "SerializeReference stores the concrete tire member type and full worn history without a separate tire array");
+            var typedCopy=decoded.Copy();typedCopy.tires[2].slipEnergyJ+=500;
+            check(decoded.tires[2].slipEnergyJ!=typedCopy.tires[2].slipEnergyJ,
+                "Typed member copies do not share independent tire history");
+            var looseTire=new LooseEngineElement{
+                definitionId="test-tire",tireUnit=true,
+                element=new EngineElement{id="stored-test-tire",role="tire",cylinder=-1,valve=-1},
+                tire=new TireCondition{health=.38f,consumedLife=.62,slipEnergyJ=444,temperatureC=76,distanceM=5000}
+            };
+            string looseJson=JsonUtility.ToJson(looseTire);
+            var stored=JsonUtility.FromJson<LooseEngineElement>(looseJson);
+            check(!looseJson.Contains("\"tire\":")
+                &&stored.element is TireCondition
+                &&stored.tire.id=="stored-test-tire"
+                &&stored.tire.health==.38f&&stored.tire.consumedLife==.62
+                &&stored.tire.slipEnergyJ==444&&stored.tire.temperatureC==76&&stored.tire.distanceM==5000,
+                "Loose tires serialize once as specialized elements and retain stored wear history");
+            var pistonElements=new ComponentCondition{
+                elements=new EngineElement[]{
+                    new PistonElement{id="test-piston",role="piston",cylinder=0,valve=-1},
+                    new ValveElement{id="test-valve",role="intake valve",cylinder=0,valve=0}
+                }
+            };
+            var engineRoundTrip=JsonUtility.FromJson<ComponentCondition>(JsonUtility.ToJson(pistonElements));
+            check(engineRoundTrip.elements.Length==2
+                &&engineRoundTrip.elements[0] is PistonElement
+                &&engineRoundTrip.elements[1] is ValveElement,
+                "Piston and valve component member types survive Unity JSON polymorphic serialization");
+            var freshTires=new ComponentCondition();
+            TireDynamics.Ensure(freshTires);
+            check(freshTires.elements.Length==4&&freshTires.tires.All(t=>t.health==1&&!t.failed&&t.distanceM==0&&t.slipEnergyJ==0),
+                "Brand-new tire kits initialize with four independent, unworn tire elements");
+            var legacy=new ComponentCondition{health=.6f,slipEnergyJ=120,distanceM=800};
+            bool rejectedLegacy=false;
+            try{TireDynamics.Ensure(legacy);}catch(InvalidOperationException){rejectedLegacy=true;}
+            check(rejectedLegacy&&legacy.elements.Length==0&&legacy.health==.6f&&legacy.slipEnergyJ==120,
+                "Old tire-pack history cannot silently regenerate missing individual tire data");
+            var malformed=new ComponentCondition{elements=new EngineElement[]{new PistonElement{id="wrong-tire",role="piston",cylinder=0,valve=-1}}};
+            bool rejectedWrongType=false;
+            try{TireDynamics.Ensure(malformed);}catch(InvalidOperationException){rejectedWrongType=true;}
+            check(rejectedWrongType&&malformed.elements[0] is PistonElement,
+                "Wrongly typed persisted tire members are rejected rather than replaced");
             foreach(var vehicle in Resources.LoadAll<VehicleDefinition>("Data/Vehicles")){
                 var spec=vehicle.spec.Copy();var tune=vehicle.CreateStockTune();tune.ClampTo(spec);
                 var original=new WheelProfile(spec,tune);var inherited=tune.Copy();inherited.frontWheelDiameter=inherited.rearWheelDiameter=(float)tune.WheelDiameter;inherited.frontWheelWidth=inherited.rearWheelWidth=(float)tune.WheelWidth;inherited.frontTirePressurePsi=inherited.rearTirePressurePsi=tune.tirePressurePsi;
@@ -87,18 +176,100 @@ namespace DragLab.Editor
                 check(car.state.frontWheelRadiusM==car.wheels.radii[0]&&car.state.rearWheelRadiusM==car.wheels.radii[2],"Tire sound/smoke feedback receives actual axle radii: "+spec.id);
             }
             var catalogue=new MechanicalCatalog(Resources.LoadAll<VehicleDefinition>("Data/Vehicles").Select(v=>v.spec));
+            var categoryTypes=new[]{
+                PartCategory.Pistons,PartCategory.Rods,PartCategory.PistonRings,
+                PartCategory.Bearings,PartCategory.Valves,PartCategory.ValveSprings,
+                PartCategory.ValveSeals,PartCategory.Followers,PartCategory.Wheels,
+                PartCategory.Ignition,PartCategory.SparkPlugs,PartCategory.GlowPlugs,
+                PartCategory.FuelSystem
+            };
+            foreach(var category in categoryTypes)
+            {
+                var created=EngineElements.Create(category);
+                created.id="type-test/"+category;created.definitionId="test-spec";
+                created.role=category==PartCategory.Wheels?"wheel":"test member";
+                created.cylinder=-1;created.valve=-1;created.health=.63f;
+                created.severity=.24f;created.wearRemainder=.00000043;
+                var beforeType=created.GetType();
+                var payload=new ComponentCondition{elements=new[]{created}};
+                var restored=JsonUtility.FromJson<ComponentCondition>(JsonUtility.ToJson(payload));
+                var copied=payload.Copy();
+                check(restored.elements.Length==1&&restored.elements[0].GetType()==beforeType
+                    &&EngineElements.MatchesCategory(category,restored.elements[0])
+                    &&restored.elements[0].id==created.id&&restored.elements[0].health==created.health
+                    &&restored.elements[0].severity==created.severity
+                    &&restored.elements[0].wearRemainder==created.wearRemainder
+                    &&copied.elements[0].GetType()==beforeType&&!ReferenceEquals(copied.elements[0],created),
+                    "Each individual component category survives typed Unity JSON and independent copying: "+category);
+            }
+            var mispositionedPiston=new PistonElement{id="invalid-piston",role="piston",cylinder=1,valve=2};
+            var looseValveWithIndex=new ValveElement{id="invalid-valve",role="intake valve",cylinder=-1,valve=1};
+            var mislabeledWheel=new WheelElement{id="invalid-wheel",role="injector",cylinder=0,valve=-1};
+            check(mispositionedPiston.Validate()!=null&&looseValveWithIndex.Validate()!=null
+                &&mislabeledWheel.Validate()!=null,
+                "Category-specific topology rules reject valve indexes on pistons, positioned loose valves and wrong wheel roles");
+            check(!EngineElements.MatchesCategory(PartCategory.Rods,EngineElements.Create(PartCategory.Pistons))
+                &&!EngineElements.MatchesCategory(PartCategory.Tires,EngineElements.Create(PartCategory.Wheels)),
+                "Physical subtype matching prevents cross-category insertion despite shared EngineElement ancestry");
+            var donor=new IgnitionElement{id="split/ignition",role="spark plug / lead",cylinder=1,valve=-1,health=.37f,severity=.42f,wearRemainder=.00003,fault=ElementFault.Disabled};
+            var convertedSparkPlug=EngineElements.CopyAsCategory(PartCategory.SparkPlugs,donor);
+            check(convertedSparkPlug is SparkPlugElement&&convertedSparkPlug.id==donor.id&&convertedSparkPlug.health==donor.health
+                &&convertedSparkPlug.fault==donor.fault&&convertedSparkPlug.severity==donor.severity
+                &&convertedSparkPlug.wearRemainder==donor.wearRemainder
+                &&!EngineElements.FaultAllowed(PartCategory.Ignition,convertedSparkPlug),
+                "Ignition-kit split preserves physical spark plug wear and rejects wrong-category member types");
+            foreach(var kind in new[]{PartCategory.Rods,PartCategory.ValveSprings,PartCategory.SparkPlugs})
+            {
+                var model=Resources.LoadAll<VehicleDefinition>("Data/Vehicles")
+                    .FirstOrDefault(v=>catalogue.Recipe(v.spec.id).ContainsKey(kind));
+                check(model!=null,"Integration fixture includes "+kind+" hardware");
+                var test=PlayerProfile.New(DateTime.UtcNow.Ticks);
+                MechanicsOwnership.Ensure(test,catalogue);
+                test.cash=1000000;test.reputation=1000;
+                VehicleCollection.Buy(test,catalogue,new VehicleOffer{
+                    model=model.spec.id,price=1,reputation=0,stock=model.CreateStockTune(),paint="#FFFFFF"});
+                var owned=test.SelectedCar;
+                var bind=owned.installed.slots.Find(b=>b.slot==kind.ToString());
+                var pack=bind==null?null:test.parts.Find(p=>p.instanceId==bind.partInstanceId);
+                check(pack!=null&&pack.condition.elements.Length>0
+                    &&pack.condition.elements.All(e=>EngineElements.MatchesCategory(kind,e)),
+                    "Installed "+kind+" pack has only its dedicated element class");
+                var removed=pack.condition.elements[0];
+                removed.health=.58f;removed.wearRemainder=.000004;removed.severity=.15f;
+                string removedId=removed.id;
+                var originalState=JsonUtility.ToJson(removed);
+                string initial=JsonUtility.ToJson(test);
+                PlayerProfile result;string installError;int saves=0;
+                bool applied=MechanicsTransactions.Try(test,catalogue,test.revision,editable=>{
+                    var incoming=InventoryUnits.Buy(editable,owned.instanceId,pack.definitionId,removed.role);
+                    if(!EngineElements.MatchesCategory(kind,incoming.element))
+                        throw new InvalidOperationException("Bought unit was not category-specialized.");
+                    InventoryUnits.Install(editable,owned.instanceId,incoming.element.id,removedId);
+                },updated=>{saves++;return true;},out result,out installError);
+                check(applied&&saves==1&&initial==JsonUtility.ToJson(test),
+                    "Atomic "+kind+" member replacement leaves original profile untouched: "+installError);
+                var fitted=result.parts.Find(p=>p.instanceId==pack.instanceId);
+                var loose=result.looseEngineElements.Find(u=>u.element.id==removedId);
+                check(loose!=null&&EngineElements.MatchesCategory(kind,loose.element)
+                    &&JsonUtility.ToJson(loose.element)==originalState
+                    &&fitted.condition.elements[0].id!=removedId
+                    &&EngineElements.MatchesCategory(kind,fitted.condition.elements[0])
+                    &&MechanicsOwnership.Validate(result,catalogue)==null,
+                    "Installed "+kind+" replacement preserves removed physical member and saved wear");
+            }
             foreach(var vehicle in Resources.LoadAll<VehicleDefinition>("Data/Vehicles")){
                 var profile=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(profile,catalogue);profile.cash=1000000;profile.reputation=1000;
                 VehicleCollection.Buy(profile,catalogue,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});var owned=profile.SelectedCar;
                 var pack=profile.parts.First(p=>p.instanceId==owned.installed.slots.First(s=>s.slot=="Tires").partInstanceId);TireDynamics.Ensure(pack.condition);
-                foreach(var t in pack.condition.tires)t.id=MechanicsOwnership.NewId("tire");pack.condition.tires[2].health=.65f;pack.condition.tires[2].consumedLife=.35;pack.condition.health=.65f;
+                foreach(var t in pack.condition.tires)t.id=MechanicsOwnership.NewId("tire");pack.condition.tires[2].health=.65f;pack.condition.tires[2].consumedLife=.35;TireDynamics.SyncSummary(pack.condition);
                 string front=JsonUtility.ToJson(pack.condition.tires[0]),before=JsonUtility.ToJson(profile);int cash=profile.cash;string definition=catalogue.Id(owned.vehicleId,PartCategory.Tires,3);
                 var lines=new[]{new PartCartLine{action=CartAction.NewUnits,definitionId=definition,role="tire",quantity=2,install=true,positions=new System.Collections.Generic.List<string>{"tire:2","tire:3"}}};
                 var preview=PartCart.Preview(profile,owned,lines);var prepared=CarInspection.PrepareCar(preview);
                 check(before==JsonUtility.ToJson(profile)&&prepared.mechanics.TireDefinition(0).id==pack.definitionId&&prepared.mechanics.TireDefinition(2).id==definition,"Mixed rear-compound cart previews actual corner definitions without changing owned assets: "+vehicle.spec.id);
                 long now=DateTime.UtcNow.Ticks;var quote=PartCart.Quote(profile,owned.instanceId,lines,now,60);string packId=pack.instanceId;int writes=0;PlayerProfile next;string error;
                 bool accepted=MechanicsTransactions.Try(profile,catalogue,profile.revision,p=>PartCart.Checkout(p,quote,now),p=>{writes++;return true;},out next,out error);check(accepted&&writes==1,"Mixed tire cart publishes one transaction: "+vehicle.spec.id+" / "+error);profile=next;owned=profile.SelectedCar;pack=profile.parts.Find(p=>p.instanceId==packId);
-                check(profile.cash==cash-2*InventoryPricing.NewUnit(catalogue.Find(definition),4)&&front==JsonUtility.ToJson(pack.condition.tires[0])&&TireFitments.DefinitionId(pack,2)==definition&&profile.looseEngineElements.Any(u=>u.tireUnit&&u.definitionId==pack.definitionId&&u.tire.health==.65f),"Atomic mixed-compound checkout keeps exact fronts and removed worn originals: "+vehicle.spec.id);
+                check(profile.cash==cash-quote.total,"Mixed tire checkout charges the reviewed stock/delivery total: "+vehicle.spec.id+" / quoted="+quote.total+" / paid="+(cash-profile.cash));
+                check(front==JsonUtility.ToJson(pack.condition.tires[0])&&TireFitments.DefinitionId(pack,2)==definition&&profile.looseEngineElements.Any(u=>u.tireUnit&&u.definitionId==pack.definitionId&&u.tire.health==.65f),"Atomic mixed-compound checkout keeps exact fronts and removed worn originals: "+vehicle.spec.id);
                 var actual=MechanicsOwnership.Resolve(profile,owned,catalogue);var car=new CarSimulation(actual.spec,actual.tune,new DriverSettings(),new[]{pack}.Concat(profile.parts.Where(p=>p.instanceId!=pack.instanceId&&owned.installed.slots.Any(s=>s.partInstanceId==p.instanceId))));
                 check(car.mechanics.TireDefinition(0).grip<car.mechanics.TireDefinition(2).grip&&car.mechanics.TireDefinition(0).tireLifeDistanceM>car.mechanics.TireDefinition(2).tireLifeDistanceM,"Mixed compounds retain independent grip/life ratings in the shared simulation: "+vehicle.spec.id);
                 car.ApplyRaceTemperatures(RaceTemperatureMode.Optimal,0,DateTime.UtcNow.Ticks);var simTires=car.mechanics.Part(PartCategory.Tires);check(simTires.condition.tires[0].temperatureC==car.mechanics.TireDefinition(0).tireOptimalC&&simTires.condition.tires[2].temperatureC==car.mechanics.TireDefinition(2).tireOptimalC,"Optimal starts use each actual compound's own temperature: "+vehicle.spec.id);
@@ -110,10 +281,36 @@ namespace DragLab.Editor
                 SavedSetups.Save(profile,owned.instanceId,"Staggered build",SetupScope.WholeCar);var setup=profile.savedSetups.Last();
                 var originals=profile.looseEngineElements.Where(u=>u.tireUnit&&u.definitionId==pack.definitionId).ToArray();InventoryUnits.Install(profile,owned.instanceId,originals[0].element.id,"tire:2");InventoryUnits.Install(profile,owned.instanceId,originals[1].element.id,"tire:3");
                 var plan=SavedSetups.Preview(profile,owned.instanceId,setup.id);check(plan.tires.Count==2&&plan.tires.All(t=>!t.purchase)&&plan.cost==0,"Whole-car blueprints find exact loose compounds for the saved corners: "+vehicle.spec.id);
-                SavedSetups.Apply(profile,owned.instanceId,setup.id,profile.revision,false,plan.cost);check(TireFitments.DefinitionId(pack,2)==definition&&TireFitments.DefinitionId(pack,3)==definition&&MechanicsOwnership.Validate(profile,catalogue)==null,"Existing setup transaction restores mixed tires without granting replacements: "+vehicle.spec.id);
-                pack.condition.tires[0].health=.2f;pack.condition.tires[0].consumedLife=.8;pack.condition.health=.2f;string retained=JsonUtility.ToJson(pack.condition);string oldPack=pack.instanceId;
+                SavedSetups.Apply(profile,owned.instanceId,setup.id,profile.revision,false,plan.cost);
+                check(TireFitments.DefinitionId(pack,2)==definition&&TireFitments.DefinitionId(pack,3)==definition,
+                    "Existing setup restores both rear tire specifications: "+vehicle.spec.id+" / rear left="+TireFitments.DefinitionId(pack,2)+" / rear right="+TireFitments.DefinitionId(pack,3)+" / expected="+definition);
+                string setupValidation=MechanicsOwnership.Validate(profile,catalogue);
+                check(setupValidation==null,"Existing setup retains valid ownership and separate tire identities: "+vehicle.spec.id+" / "+setupValidation);
+                var swapProfile=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(profile));MechanicsOwnership.Ensure(swapProfile,catalogue);
+                var swapCar=swapProfile.SelectedCar;
+                var swapPack=swapProfile.parts.Find(p=>p.instanceId==pack.instanceId);
+                var swapSources=swapProfile.looseEngineElements.Where(u=>u.tireUnit).Take(2).ToArray();
+                check(swapSources.Length==2,"Removed individual tires remain available for rear-axle swapping: "+vehicle.spec.id);
+                string leftBefore=JsonUtility.ToJson(swapPack.condition.tires[0]),rightBefore=JsonUtility.ToJson(swapPack.condition.tires[1]);
+                var outgoingRear=swapPack.condition.tires.Skip(2).Select(t=>t.id).ToArray();
+                for(int i=0;i<2;i++){swapSources[i].tire.health=.4f+i*.1f;swapSources[i].tire.consumedLife=1-swapSources[i].tire.health;swapSources[i].tire.slipEnergyJ=18000+i*1000;swapSources[i].tire.distanceM=7200+i*100;swapSources[i].element.health=swapSources[i].tire.health;}
+                var sourceHistory=swapSources.Select(u=>JsonUtility.ToJson(u.tire)).ToArray();
+                var rearSwap=new[]{new TireSwapAssignment(swapSources[0].element.id,2),new TireSwapAssignment(swapSources[1].element.id,3)};
+                int swapWrites=0;PlayerProfile swapped;string swapError;
+                bool swapOk=MechanicsTransactions.Try(swapProfile,catalogue,swapProfile.revision,p=>InventoryUnits.SwapTires(p,swapCar.instanceId,rearSwap),p=>{swapWrites++;return true;},out swapped,out swapError);
+                check(swapOk&&swapWrites==1,"Two worn rear tires are installed atomically: "+vehicle.spec.id+" / "+swapError);
+                var fitted=swapped.parts.Find(p=>p.instanceId==swapPack.instanceId);
+                check(JsonUtility.ToJson(fitted.condition.tires[0])==leftBefore&&JsonUtility.ToJson(fitted.condition.tires[1])==rightBefore
+                    &&JsonUtility.ToJson(fitted.condition.tires[2])==sourceHistory[0]&&JsonUtility.ToJson(fitted.condition.tires[3])==sourceHistory[1]
+                    &&outgoingRear.All(id=>swapped.looseEngineElements.Any(u=>u.tireUnit&&u.element.id==id)),
+                    "Axle swap preserves untouched front tires, incoming worn histories, and both displaced originals: "+vehicle.spec.id);
+                int refusedWrites=0;PlayerProfile refused;string refusedError;string oldJson=JsonUtility.ToJson(swapped);
+                bool invalidSwap=MechanicsTransactions.Try(swapped,catalogue,swapped.revision,p=>InventoryUnits.SwapTires(p,swapCar.instanceId,
+                    new[]{new TireSwapAssignment(outgoingRear[0],0),new TireSwapAssignment(outgoingRear[0],1)}),p=>{refusedWrites++;return true;},out refused,out refusedError);
+                check(!invalidSwap&&refusedWrites==0&&oldJson==JsonUtility.ToJson(swapped),"Duplicate tire selection rolls back without publishing a partial installation: "+vehicle.spec.id);
+                pack.condition.tires[0].health=.2f;pack.condition.tires[0].consumedLife=.8;TireDynamics.SyncSummary(pack.condition);string retained=JsonUtility.ToJson(pack.condition);string oldPack=pack.instanceId;
                 var request=new PaymentRequest{kind=PaymentKind.Part,carId=owned.instanceId,targetId=pack.definitionId,install=true,preserveTireFitments=true};long repairNow=DateTime.UtcNow.Ticks;var policy=new OperatingPolicy();var payment=PaidEconomy.Quote(profile,catalogue,policy,ValuationPolicy.Defaults(),request,repairNow);
-                int expected=Enumerable.Range(0,4).Sum(i=>InventoryPricing.NewUnit(catalogue.Find(TireFitments.DefinitionId(pack,i)),4));check(payment.Cost==expected,"Buy same quotes actual mixed constituent costs: "+vehicle.spec.id);
+                int expected=TireFitments.ReplacementSupply(profile,owned,pack.definitionId).cost;check(payment.Cost==expected,"Buy same quotes actual mixed constituent costs including supply: "+vehicle.spec.id);
                 int prior=profile.cash;PlayerProfile repaired;string repairError;bool repairedOk=MechanicsTransactions.Try(profile,catalogue,profile.revision,p=>PaidEconomy.Pay(p,catalogue,policy,ValuationPolicy.Defaults(),payment,repairNow),p=>true,out repaired,out repairError);
                 var repairedPack=repaired.parts.Find(p=>p.instanceId==repaired.SelectedCar.installed.slots.First(b=>b.slot=="Tires").partInstanceId);
                 check(repairedOk&&repaired.cash==prior-expected&&TireFitments.DefinitionId(repairedPack,2)==definition&&repairedPack.condition.tires.All(t=>t.health==1)&&repaired.parts.Find(p=>p.instanceId==oldPack).location==PartLocation.Inventory&&JsonUtility.ToJson(repaired.parts.Find(p=>p.instanceId==oldPack).condition)==retained,"Mixed Buy same preserves specifications and worn originals in one paid transaction: "+vehicle.spec.id+" / "+repairError);
