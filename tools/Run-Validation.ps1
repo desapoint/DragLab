@@ -10,7 +10,9 @@ param(
     [string]$Group = 'Smoke',
     [string]$StartAt = '',
     [switch]$ContinueOnFailure,
-    [switch]$ListOnly
+    [switch]$ListOnly,
+    [ValidateRange(1, 100)]
+    [int]$BatchSize = 9
 )
 
 $ErrorActionPreference = 'Stop'
@@ -116,73 +118,118 @@ if ($ListOnly) {
     return
 }
 
+# Resolve methods from the existing single-action launcher; never fork its action map.
+$methodByAction = @{}
+$launcherSource = Get-Content -LiteralPath $invoke -Raw
+$pattern = "(?m)^\s*'(?<action>[A-Za-z0-9]+)'\s*\{\s*'(?<method>[A-Za-z0-9_.]+)'\s*\}"
+foreach ($match in [regex]::Matches($launcherSource, $pattern)) {
+    $methodByAction[$match.Groups['action'].Value] = $match.Groups['method'].Value
+}
+foreach ($test in $tests) {
+    if (-not $methodByAction.ContainsKey($test)) { throw "No Unity entry point mapped for action $test." }
+}
+
 $editors = @(Get-Process -Name Unity -ErrorAction SilentlyContinue)
 if ($editors.Count -gt 0) {
     throw 'Close all Unity Editor/batch processes before running validation. No processes were terminated.'
 }
 if ($Group -eq 'Quarantined') {
-    Write-Warning 'These checks still include obsolete save-migration or repeated composite coverage. Results are not a current-release gate.'
+    Write-Warning 'These checks include obsolete save-migration or repeated composite coverage. Results are not a current-release gate.'
 }
 if ($Group -eq 'Diagnostics') {
-    Write-Warning 'These are measurement/diagnosis actions; a completed run is not equivalent to a verification PASS.'
+    Write-Warning 'Diagnostic actions measure behavior; completion is not a verification PASS.'
 }
-
 New-Item -Path $reportRoot -ItemType Directory -Force | Out-Null
-$start = Get-Date -Format 'yyyyMMdd-HHmmss'
-$csv = Join-Path $reportRoot ('validation-' + $Group.ToLowerInvariant() + '-' + $start + '.csv')
+$batchDir = Join-Path $reportRoot 'validation-batches'
+New-Item -Path $batchDir -ItemType Directory -Force | Out-Null
+$stamp = (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + $PID
+$csv = Join-Path $reportRoot ('validation-' + $Group.ToLowerInvariant() + '-' + $stamp + '.csv')
 $results = New-Object System.Collections.Generic.List[object]
+$commit = (git -C $root rev-parse --short HEAD)
+$hasFailure = $false
+$halt = $false
 Push-Location $root
 try {
-    for ($index = 0; $index -lt $tests.Count; $index++) {
-        $action = $tests[$index]
-        $timer = [System.Diagnostics.Stopwatch]::StartNew()
-        $errorText = ''
-        $result = 'PASS'
-        Write-Host ("[{0}/{1}] {2}" -f ($index+1), $tests.Count, $action) -ForegroundColor Cyan
+    for ($offset = 0; $offset -lt $tests.Count -and -not $halt; $offset += $BatchSize) {
+        $batch = @($tests | Select-Object -Skip $offset -First $BatchSize)
+        $chunkNumber = [int]([math]::Floor($offset / $BatchSize) + 1)
+        $chunkName = ('{0}-{1}-batch{2:D2}' -f $Group.ToLowerInvariant(), $stamp, $chunkNumber)
+        $manifest = Join-Path $batchDir ($chunkName + '.tsv')
+        $statusFile = $manifest + '.results.tsv'
+        $batchLog = Join-Path $reportRoot ('unity-validation-' + $chunkName + '.log')
+        $rows = New-Object 'System.Collections.Generic.List[string]'
+        $rows.Add(('#continue=' + [int][bool]$ContinueOnFailure))
+        foreach ($action in $batch) { $rows.Add(($action + [char]9 + $methodByAction[$action])) }
+        [IO.File]::WriteAllLines($manifest, $rows.ToArray(), (New-Object System.Text.UTF8Encoding($false)))
+        if (Test-Path -LiteralPath $statusFile) { Remove-Item -LiteralPath $statusFile -Force }
+
+        Write-Host ("Unity batch {0}: actions {1}-{2} of {3} ({4})" -f $chunkNumber, ($offset+1), ($offset+$batch.Count), $tests.Count, ($batch -join ', ')) -ForegroundColor Cyan
+        $launchError = ''
         try {
-            & $invoke -Action $action
+            & $invoke -Action ValidationBatch -BatchManifest $manifest -LogPath $batchLog
+        } catch {
+            $launchError = $_.Exception.Message
+            Write-Host $launchError -ForegroundColor Red
         }
-        catch {
-            $result = 'FAIL'
-            $errorText = $_.Exception.Message
-            Write-Host $errorText -ForegroundColor Red
-            $logPath = Join-Path $reportRoot ('unity-' + $action.ToLowerInvariant() + '.log')
-            if (Test-Path -LiteralPath $logPath) {
-                $matches = @(Select-String -LiteralPath $logPath -Pattern @(
-                    '^[A-Za-z][A-Za-z0-9.]*Exception:',
-                    'FAIL:',
-                    'error CS[0-9]+',
-                    'executeMethod method .* threw exception'
-                ) -ErrorAction SilentlyContinue)
-                foreach ($line in ($matches | Select-Object -Last 8)) {
-                    Write-Host ($line.Line.Trim()) -ForegroundColor Yellow
+
+        $processed = 0
+        $batchFailed = $false
+        if (Test-Path -LiteralPath $statusFile) {
+            foreach ($line in @(Get-Content -LiteralPath $statusFile -Encoding UTF8)) {
+                if ($processed -ge $batch.Count) { throw "Batch produced excess results: $statusFile" }
+                $fields = $line.Split([char]9)
+                if ($fields.Count -ne 4 -or $fields[1] -ne $batch[$processed] -or $fields[0] -notin @('PASS', 'FAIL')) {
+                    throw "Invalid/misordered test result: $statusFile; line $($processed+1)."
                 }
+                $duration = [double]::Parse($fields[2], [Globalization.CultureInfo]::InvariantCulture)
+                $problem = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($fields[3]))
+                $status = $fields[0]
+                if ($Group -eq 'Diagnostics' -and $status -eq 'PASS') { $status = 'COMPLETED' }
+                if ($status -eq 'FAIL') { $batchFailed = $true; $hasFailure = $true }
+                $results.Add([pscustomobject]@{
+                    Action = $fields[1]
+                    Status = $status
+                    Seconds = [Math]::Round($duration, 2)
+                    Commit = $commit
+                    LogFile = [IO.Path]::Combine('reports', [IO.Path]::GetFileName($batchLog))
+                    Error = $problem
+                })
+                Write-Host ("  {0}: {1} ({2:N1}s)" -f $status, $fields[1], $duration) -ForegroundColor $(if ($status -eq 'FAIL') { 'Red' } else { 'Green' })
+                if ($problem) { Write-Host ($problem -split '[\r\n]+' | Select-Object -First 2) -ForegroundColor Yellow }
+                $processed++
             }
         }
-        finally {
-            $timer.Stop()
+
+        # Unexpected Unity exit: preserve completed tests and mark only the first
+        # unfinished one as failed. Do not claim the remaining actions executed.
+        if ($processed -lt $batch.Count -and -not ($batchFailed -and -not $ContinueOnFailure)) {
+            $missing = $batch[$processed]
+            $problem = if ($launchError) { $launchError } else { 'Unity stopped without recording this action result.' }
+            $results.Add([pscustomobject]@{
+                Action = $missing
+                Status = 'FAIL'
+                Seconds = 0
+                Commit = $commit
+                LogFile = [IO.Path]::Combine('reports', [IO.Path]::GetFileName($batchLog))
+                Error = $problem
+            })
+            $batchFailed = $true
+            $hasFailure = $true
+            $halt = $true
+            Write-Host ("  FAIL: {0}: {1}" -f $missing, $problem) -ForegroundColor Red
         }
-        if ($Group -eq 'Diagnostics' -and $result -eq 'PASS') { $result = 'COMPLETED' }
-        $results.Add([pscustomobject]@{
-            Action = $action
-            Status = $result
-            Seconds = [Math]::Round($timer.Elapsed.TotalSeconds, 2)
-            Commit = (git rev-parse --short HEAD)
-            LogFile = 'reports/unity-' + $action.ToLowerInvariant() + '.log'
-            Error = $errorText
-        })
+        if ($launchError -and -not $batchFailed) {
+            # An abnormal Unity exit cannot be declared a passing suite.
+            $hasFailure = $true
+            $halt = $true
+            Write-Host 'Unity returned an error after recording results. Review the batch log.' -ForegroundColor Red
+        }
         $results | Export-Csv -LiteralPath $csv -NoTypeInformation -Encoding UTF8
-        if ($result -eq 'FAIL' -and -not $ContinueOnFailure) {
-            Write-Host 'Stopped at first failure. Use -StartAt to resume after a fix.' -ForegroundColor Yellow
-            break
-        }
+        if ($batchFailed -and -not $ContinueOnFailure) { $halt = $true }
     }
-}
-finally {
+} finally {
     Pop-Location
 }
-$results | Format-Table Action,Status,Seconds -AutoSize
+$results | Format-Table Action, Status, Seconds -AutoSize
 Write-Host ("Summary: {0}" -f $csv)
-if (@($results | Where-Object { $_.Status -eq 'FAIL' }).Count -gt 0) {
-    throw 'Validation had failures; see the CSV and individual Unity logs.'
-}
+if ($hasFailure) { throw 'Validation had failures; see the CSV and corresponding Unity batch logs.' }
