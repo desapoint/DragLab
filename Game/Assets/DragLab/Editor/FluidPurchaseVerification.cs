@@ -122,6 +122,72 @@ namespace DragLab.Editor
                 throw new InvalidOperationException("Fluid purchases left an invalid profile: " +
                     MechanicsOwnership.Validate(profile, catalog));
 
+            // Simulate the Unity JSON inactive-member artifact on a LIVE profile,
+            // without a pre-quote normalization pass. The transaction clone must
+            // normalize it without losing dealer merchandise or charging twice.
+            var phantom = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(profile));
+            MechanicsOwnership.Ensure(phantom, catalog);
+            var phantomSeller = phantom.inventory.dealer.Single(s => s.IsUnit && s.Id == tire.id);
+            phantomSeller.part = new PartInstance();
+            if (MechanicsOwnership.Validate(phantom, catalog) != null)
+                throw new InvalidOperationException("Empty inactive dealer part prevents unrelated payments.");
+            phantom.SelectedCar.fuel.litres = model.fuel.capacityLitres - 1;
+            int phantomCash = phantom.cash;
+            var phantomQuote = PaidEconomy.Quote(phantom, catalog, policy, prices,
+                new PaymentRequest { kind = PaymentKind.Fuel, carId = phantom.SelectedCar.instanceId, litres = 1 }, now);
+            PlayerProfile phantomPaid;
+            string phantomError;
+            if (!MechanicsTransactions.Try(phantom, catalog, phantom.revision,
+                state => PaidEconomy.Pay(state, catalog, policy, prices, phantomQuote, now),
+                state => true, out phantomPaid, out phantomError))
+                throw new InvalidOperationException("Fuel purchase rejected inactive seller payload: " + phantomError);
+            var retainedSeller = phantomPaid.inventory.dealer.Single(s => s.Id == tire.id);
+            if (phantomPaid.cash != phantomCash - phantomQuote.Cost ||
+                retainedSeller.part != null || !(retainedSeller.unit.element is TireCondition) ||
+                MechanicsOwnership.Validate(phantomPaid, catalog) != null)
+                throw new InvalidOperationException("Fuel payment failed to retain normalized used tire stock.");
+
+            // The same saved artifact must also be harmless when buying the USED tire.
+            var usedProfile = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(profile));
+            MechanicsOwnership.Ensure(usedProfile, catalog);
+            usedProfile.inventory.dealer.Single(s => s.IsUnit && s.Id == tire.id).part = new PartInstance();
+            var usedQuote = PartCart.Quote(usedProfile, usedProfile.SelectedCar.instanceId,
+                new[] { new PartCartLine { action = CartAction.BuyUsed, definitionId = tire.definitionId,
+                    assetId = tire.id, role = tire.role } }, now, 300);
+            int usedCash = usedProfile.cash;
+            PlayerProfile usedPaid;
+            string usedError;
+            if (!MechanicsTransactions.Try(usedProfile, catalog, usedProfile.revision,
+                state => PartCart.Checkout(state, usedQuote, now),
+                state => true, out usedPaid, out usedError))
+                throw new InvalidOperationException("Used tire purchase confused seller payloads: " + usedError);
+            if (usedPaid.cash != usedCash - usedQuote.total ||
+                !usedPaid.looseEngineElements.Any(u => u.element.id == tire.id && u.element is TireCondition) ||
+                usedPaid.inventory.dealer.Any(s => s.Id == tire.id))
+                throw new InvalidOperationException("Used tire checkout lost the actual unit or charged incorrectly.");
+
+            // Reverse case: an empty inactive unit cannot turn a complete used part into an individual unit.
+            var fullProfile = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(profile));
+            MechanicsOwnership.Ensure(fullProfile, catalog);
+            var filterId = catalog.Id(fullProfile.SelectedCar.vehicleId, PartCategory.OilFilter);
+            var fullId = MechanicsOwnership.NewId("used-filter");
+            fullProfile.inventory.dealer.Add(new DealerStock {
+                part = new PartInstance { instanceId = fullId, definitionId = filterId },
+                unit = new LooseEngineElement(), paidPrice = 10
+            });
+            var fullQuote = PartCart.Quote(fullProfile, fullProfile.SelectedCar.instanceId,
+                new[] { new PartCartLine { action = CartAction.BuyUsed,
+                    definitionId = filterId, assetId = fullId } }, now, 300);
+            PlayerProfile fullPaid;
+            string fullError;
+            if (!MechanicsTransactions.Try(fullProfile, catalog, fullProfile.revision,
+                state => PartCart.Checkout(state, fullQuote, now),
+                state => true, out fullPaid, out fullError))
+                throw new InvalidOperationException("Used full-part purchase confused seller payloads: " + fullError);
+            if (!fullPaid.parts.Any(i => i.instanceId == fullId && i.location == PartLocation.Inventory) ||
+                fullPaid.inventory.dealer.Any(s => s.Id == fullId))
+                throw new InvalidOperationException("Used full-part checkout lost its original identity.");
+
             // Conflicting genuine payloads must never be automatically deleted to enable commerce.
             var conflict = profile.inventory.dealer.Single(s => s.isUnit && s.unit?.element?.id == tire.id);
             conflict.part = new PartInstance { instanceId = MechanicsOwnership.NewId("used-part") };
