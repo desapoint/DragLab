@@ -26,7 +26,8 @@ namespace DragLab.Runtime
             Check(rows.All(r=>r.parent.name=="fittedPartsBody:"+NativeMenuShell.FittedPartGroup((PartCategory)r.userData)),"All part rows belong to their component system, including cooling, electronics and drivetrain");
             Check(Enum.GetValues(typeof(PartCategory)).Cast<PartCategory>().All(c=>NativeMenuShell.FittedPartGroup(c)!="Other"),"Every current component category has a named system, including diesel and AWD hardware");
             Check(new[]{"Engine","Cooling & lubrication","Drivetrain","Wheels & brakes"}.All(g=>list.Q("fittedPartsGroup:"+g)!=null),"Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections");
-            Check(list.Query<Button>().ToList().All(b=>list.Q("fittedPartsBody:"+b.name.Substring("fittedPartsGroup:".Length)).ClassListContains("hidden")),"Dialog starts with a concise collapsed system overview");
+            Check(list.Query<Button>(className:"stat-group-toggle").ToList().All(b=>list.Q("fittedPartsBody:"+b.name.Substring("fittedPartsGroup:".Length)).ClassListContains("hidden")),"Dialog starts with a concise collapsed system overview");
+            Check(rows.All(r=>r.Q<Button>("fittedPartShop:"+r.name.Substring("fittedPart:".Length)) is Button shop&&shop.Q<FilledMenuIcon>()!=null&&!shop.focusable&&shop.tabIndex==-1&&shop.enabledSelf==(game.Profile.SelectedCar!=null)),"Each fitted part has a shared Shop action, available after an owned car is selected");
             yield return Capture(capture+"-overview");yield return Click(input,"fittedPartsGroup:Engine");yield return new WaitForSecondsRealtime(.1f);
             Check(list.Q("fittedPartsBody:Engine").Children().All(r=>r.Query<Label>().ToList().All(l=>l.worldBound.xMax<=r.worldBound.xMax+2)),"Part names and failure values wrap within the dialog width");
             yield return Capture(capture+"-groups");

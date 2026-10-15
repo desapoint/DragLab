@@ -72,7 +72,34 @@ namespace DragLab.Runtime
             Check(count>0,"Isolated fixture stages a real cart line");yield return Click(input,"partsCart");yield return Click(input,"navBuild");
             Check(!shell.CartPageOpen&&game.CartCount==count,"Main navigation closes cart presentation while preserving reserved purchases");
             yield return Click(input,"navGarage");yield return Click(input,"navBuild");Check(game.CartCount==count,"Reserved cart survives leaving and returning to Build");
-            yield return Capture("navigation-build-default");game.ClearNativeCart();
+            yield return Capture("navigation-build-default");yield return FittedShopChecks(input);game.ClearNativeCart();
+        }
+        IEnumerator FittedShopChecks(WindowsKeyboardProbe input)
+        {
+            string before=JsonUtility.ToJson(game.Profile),selected=game.Profile.SelectedCar.instanceId;byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);int cartCount=game.CartCount;
+            var offer=game.Profile.vehicleStock.listings.First(VehicleInspection.Known);
+            var samples=offer.parts.GroupBy(p=>NativePartBrowser.Section(game.Profile.catalog.Find(p.definitionId).category)).Select(g=>g.First()).ToArray();
+            foreach(var part in samples){
+                var category=game.Profile.catalog.Find(part.definitionId).category;var section=NativePartBrowser.Section(category);string group=NativeMenuShell.FittedPartGroup(category);
+                shell.PartQuery.Search="old search";shell.PartQuery.Availability="Affordable";shell.PartQuery.InStockOnly=false;shell.PartQuery.Sort="Price";shell.PartQuery.Descending=true;
+                yield return Click(input,"navGarage");yield return Click(input,"garageDealer");yield return DealerCardClick(input,offer.listingId);
+                var scroll=shell.Root.Q<ScrollView>("dealerDetailScroll");scroll.ScrollTo(shell.Root.Q("dealerFittedParts"));yield return new WaitForSecondsRealtime(.15f);
+                yield return Click(input,"dealerFittedParts");yield return PartDialogClick(input,"fittedPartsGroup:"+group);
+                var shop=shell.Root.Q<Button>("fittedPartShop:"+part.instanceId);shell.Root.Q<ScrollView>("modalContent").ScrollTo(shop);yield return new WaitForSecondsRealtime(.15f);
+                Check(shop.worldBound.width>=88&&shop.worldBound.xMax<=shop.parent.worldBound.xMax+1&&shop.worldBound.xMin>=shop.parent.Q<Label>().worldBound.xMax,"Fitted Shop button fits beside its component type: "+category);
+                yield return Capture("fitted-parts-shop-"+section);yield return Click(input,shop);
+                yield return WaitParts();
+                Check(game.ScreenName=="Parts"&&!shell.ModalOpen&&game.PartsPage=="Shop"&&shell.Root.Q<Button>("partsTab"+(int)section).ClassListContains("selected"),"Fitted Shop navigates to the matching Build section: "+category);
+                var query=shell.PartQuery;
+                Check(query.Compatibility=="Compatible"&&query.InStockOnly&&query.Availability=="All"&&query.Condition=="All"&&query.Search==""&&query.Sort=="Name"&&!query.Descending&&!shell.PartsPlanned&&query.Categories.SetEquals(new[]{category})&&query.Brands.Count==0&&query.BrandFocus=="All"&&query.Tuning=="All"&&query.Direction.All(d=>d=="Any")&&query.Minimum.All(m=>!m.HasValue),"Fitted Shop uses default filters plus only the clicked part type: "+category);
+                var ids=shell.Root.Q("partsGrid").Children().Where(c=>!c.ClassListContains("hidden")).Select(c=>c.name.Substring("partCard:".Length)).ToHashSet();
+                Check(shell.PartBrowser.Entries.Where(e=>ids.Contains(e.Id)).All(e=>e.Definition.category==category&&e.Compatibility=="Compatible"&&(e.Source!="New"||e.StockUnits>0)),"Only fitting, stocked parts of that type are displayed: "+category);
+                Check(game.Profile.SelectedCar.instanceId==selected&&game.CartCount==cartCount,"Shop shortcut preserves current car and reserved purchases: "+category);
+            }
+            Check(samples.Length>=4,"Fitted Shop exercises multiple component systems / sections");
+            yield return Click(input,"partsFilters");Check(shell.Root.Q("partAdvancedFilters").ClassListContains("hidden")==false,"The selected part type is visible in Advanced on opening filters");yield return Capture("fitted-shop-filter");yield return Click(input,"dialogCancel");
+            yield return Click(input,"navBuild");Check(shell.PartQuery.Categories.Count==0&&shell.PartQuery.InStockOnly&&shell.PartQuery.Compatibility=="Compatible","Ordinary main navigation clears the contextual part-type filter");
+            Check(before==JsonUtility.ToJson(game.Profile)&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Fitted Shop does not buy, install, switch cars, inspect, reroll stock or save");
         }
 #endif
     }

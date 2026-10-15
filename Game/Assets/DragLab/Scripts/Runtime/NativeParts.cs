@@ -40,6 +40,11 @@ namespace DragLab.Runtime
         internal NativePartQuery PartQuery=>PartsQuery;
         internal bool PartsPlanned=>partsPlanned;
         internal int PartBrowserBuildCount{get;private set;}
+        internal void FilterShopCategory(PartCategory category)
+        {
+            partsSection=NativePartBrowser.Section(category);
+            var query=new NativePartQuery();query.Categories.Add(category);partQueries["Shop/"+partsSection]=query;
+        }
         void InitializeParts()
         {
             partsPage=new VisualElement{name="partsPage"};partsPage.AddToClassList("parts-page");partsPage.AddToClassList("hidden");root.Q(className:"workspace").Add(partsPage);

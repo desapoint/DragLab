@@ -337,7 +337,7 @@ namespace DragLab.Runtime
             }
         }
 
-        internal void QueueNativeNavigation(string route,bool resetMenu=false)
+        internal void QueueNativeNavigation(string route,bool resetMenu=false,PartCategory? shopCategory=null)
         {
             if ((!NativeMenuShell.Supports(route) && route != SettingsReturnRoute) || (screen == route&&!resetMenu) || pendingAction != null) return;
             pendingAction = () => {
@@ -347,6 +347,7 @@ namespace DragLab.Runtime
                 screen = route;
                 scroll = Vector2.zero;
                 if(resetMenu)nativeMenu?.ResetMenuEntry(route);
+                if(route=="Parts"&&shopCategory.HasValue)nativeMenu?.FilterShopCategory(shopCategory.Value);
                 if (route == "Parts") repairsOnly = false;
                 if (route == "Tuning" && Build != null) BeginTuneDraft();
                 InterfaceComparison.SetReplacement(route, NativeMenuShell.Supports(route));

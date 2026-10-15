@@ -272,6 +272,9 @@
 .fitted-part .car-fact-value { flex-shrink: 1; flex-basis: 35%; }
 .modal-content .fitted-part Label { font-size: 17px; margin-bottom: 0; }
 .modal-content .fitted-part-slot { font-size: 14px; color: var(--racing-muted); }
+.fitted-part-actions { flex-direction: row; align-items: center; margin-top: 4px; }
+.fitted-part-actions .fitted-part-slot { flex-grow: 1; flex-shrink: 1; }
+.fitted-part-shop { min-width: 88px; margin-top: 0; margin-left: 12px; align-self: center; }
 .modal-content .fitted-part-fault { color: var(--racing-accent); margin-top: 4px; }
 .dealer-includes { margin-top: 16px; white-space: normal; color: var(--racing-muted); font-size: 18px; }
 .tuning-page { flex-grow: 1; min-height: 0; }
