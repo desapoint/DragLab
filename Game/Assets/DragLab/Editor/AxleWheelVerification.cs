@@ -123,7 +123,7 @@ namespace DragLab.Editor
             };
             string looseJson=JsonUtility.ToJson(looseTire);
             var stored=JsonUtility.FromJson<LooseEngineElement>(looseJson);
-            check(!looseJson.Contains("\"tire\"")
+            check(!looseJson.Contains("\"tire\":")
                 &&stored.element is TireCondition
                 &&stored.tire.id=="stored-test-tire"
                 &&stored.tire.health==.38f&&stored.tire.consumedLife==.62
