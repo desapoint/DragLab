@@ -111,7 +111,7 @@ if ($StartAt) {
     $tests = @($tests | Select-Object -Skip $position)
 }
 if ($ListOnly) {
-    Write-Host "$Group: $($tests.Count) actions"
+    Write-Host ("{0}: {1} actions" -f $Group, $tests.Count)
     $tests | ForEach-Object { Write-Output $_ }
     return
 }
