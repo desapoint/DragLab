@@ -58,7 +58,14 @@ namespace DragLab.Runtime
                     plan=MaintenanceReplacements.Preview(game.Profile,carId,brokenOnly,threshold,selected);int units=plan.targets.Sum(t=>t.count);summary.text=units+(units==1?" unit selected":" units selected");
                     var combined=game.PreviewNativeReplacements(carId,plan);cost.text="Cart total "+DisplayUnits.Money(combined.cost)+" · Balance after "+DisplayUnits.Money((long)game.Profile.cash-combined.cost);
                     delivery.text="Stock "+combined.localUnits+" units · Express "+combined.expressUnits+" units"+(combined.deliveryFee>0?" · Fee "+DisplayUnits.Money(combined.deliveryFee)+" included":"");
-                    foreach(var pair in pills){var definitions=plan.targets.Where(t=>t.partId==pair.Key).Select(t=>t.definitionId).ToArray();var quotes=combined.lines.Where(l=>l.install&&definitions.Contains(l.definitionId)).Select(l=>combined.supply.TryGetValue(l.action+"/"+l.definitionId+"/"+l.role,out var q)?q:null).Where(q=>q!=null).ToArray();int missing=quotes.Sum(q=>q.expressUnits),fee=quotes.Sum(q=>q.fee);pair.Value.text=missing>0?"Express":"In stock";pair.Value.tooltip=missing>0?missing+" units need delivery · +"+DisplayUnits.Money(fee)+" included in cart total":"Available without an express fee";pair.Value.EnableInClassList("hidden",quotes.Length==0);pair.Value.EnableInClassList("car-warning",missing>0);}
+                    foreach(var pair in pills){
+                        var definitions=plan.targets.Where(t=>t.partId==pair.Key).Select(t=>t.definitionId).ToArray();
+                        var quotes=combined.lines.Where(l=>l.install&&definitions.Contains(l.definitionId)).Select(l=>combined.supply.TryGetValue(l.action+"/"+l.definitionId+"/"+l.role,out var q)?q:null).Where(q=>q!=null).ToArray();
+                        int missing=quotes.Sum(q=>q.expressUnits),stock=quotes.Sum(q=>q.localUnits),fee=quotes.Sum(q=>q.fee),total=stock+missing;
+                        pair.Value.text=missing>0?"Express · "+missing+"/"+total:"In stock · "+stock;
+                        pair.Value.tooltip="Shop stock: "+stock+" of "+total+" units · Express: "+missing+(fee>0?" · +"+DisplayUnits.Money(fee)+" included in cart total":" · No delivery fee");
+                        pair.Value.EnableInClassList("hidden",quotes.Length==0);pair.Value.EnableInClassList("car-warning",missing>0);
+                    }
                     error.text=game.Profile.cash<combined.cost?"Not enough cash to checkout yet.":"";root.Q<Button>("dialogConfirm").SetEnabled(plan.lines.Count>0);
                 }
                 catch(Exception e){plan=null;error.text=e.Message;root.Q<Button>("dialogConfirm").SetEnabled(false);}

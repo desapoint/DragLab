@@ -13,6 +13,29 @@ namespace DragLab.Editor
     public static class MaintenanceReplacementVerification
     {
         static string Rows(System.Collections.Generic.IEnumerable<PartCartLine> lines)=>string.Join("\n",lines.Select(l=>JsonUtility.ToJson(l)));
+        static void SupplyLifecycle(PlayerProfile original,string carId,PartCartLine line,int available,long now,Action<bool,string> check)
+        {
+            var p=EngineWorkshop.Copy(original);var car=p.cars.Single(c=>c.instanceId==carId);var d=p.catalog.Find(line.definitionId);
+            var stock=p.inventory.market.parts.Single(s=>s.definitions.Contains(d.id));stock.units=stock.initialUnits=available;
+            bool unit=line.action==CartAction.NewUnits;int count=InventoryUnits.Count(p,car,d),required=unit?line.quantity:count*line.quantity,local=Math.Min(required,available),missing=required-local;
+            int basePrice=unit?InventoryPricing.NewUnit(d,count):d.price;
+            int fee=unit?missing*(int)Math.Ceiling(basePrice*stock.deliveryPercent/100.0):(int)Math.Ceiling(basePrice*(missing/(double)count)*stock.deliveryPercent/100.0);
+            string label=car.vehicleId+" "+d.category+" shelf "+available+" / needed "+required+" / ";
+            string before=JsonUtility.ToJson(p);var plan=new ReplacementPlan();plan.lines.Add(line.Copy());
+            var draft=MaintenanceReplacements.AddToCart(p,carId,plan,Array.Empty<PartCartLine>());
+            check(draft.localUnits==local&&draft.expressUnits==missing&&draft.deliveryFee==fee&&draft.cost==basePrice*line.quantity+fee,label+"uses stocked units first and charges only the independently calculated shortage fee");
+            check(before==JsonUtility.ToJson(p)&&PartsMarket.Available(p,d)==available,label+"review leaves real shop inventory unchanged");
+            check(MechanicsTransactions.Try(p,p.catalog,p.revision,q=>CartReservations.Capture(q,carId,draft.lines),q=>true,out var reserved,out var error),label+"reserves the available portion atomically: "+error);
+            check(CartReservations.Held(reserved,d)==local&&PartsMarket.Available(reserved,d)==available-local&&reserved.cash==p.cash&&reserved.inventory.market.parts.Single(s=>s.definitions.Contains(d.id)).units==available,label+"only stocked units leave shelf availability; money and physical stock wait for checkout");
+            reserved=EngineWorkshop.Copy(reserved);
+            check(CartReservations.Held(reserved,d)==local&&PartCart.Total(reserved,carId,reserved.inventory.cart.lines)==draft.cost,label+"saved reservation retains both the quantities and exact partial-delivery price");
+            var released=EngineWorkshop.Copy(reserved);CartReservations.Clear(released);
+            check(PartsMarket.Available(released,d)==available&&released.inventory.market.parts.Single(s=>s.definitions.Contains(d.id)).units==available&&released.cash==p.cash,label+"removing the order returns held units to the shelf without generating express stock");
+            var quote=PartCart.Quote(reserved,carId,reserved.inventory.cart.lines,now,300);before=JsonUtility.ToJson(reserved);
+            check(!MechanicsTransactions.Try(reserved,p.catalog,reserved.revision,q=>PartCart.Checkout(q,quote,now),q=>false,out _,out error)&&before==JsonUtility.ToJson(reserved),label+"failed checkout rolls back shelf, reservation, delivery and payment");
+            check(MechanicsTransactions.Try(reserved,p.catalog,reserved.revision,q=>PartCart.Checkout(q,quote,now),q=>true,out var paid,out error),label+"normal checkout succeeds: "+error);
+            check(paid.cash==p.cash-draft.cost&&paid.inventory.cart==null&&paid.inventory.market.parts.Single(s=>s.definitions.Contains(d.id)).units==available-local&&PartsMarket.Available(paid,d)==available-local&&MechanicsOwnership.Validate(paid,p.catalog)==null,label+"checkout consumes the held shelf quantity once and delivers shortages directly to the car");
+        }
         public static void Run()
         {
             var log=new StringBuilder();int count=0;Action<bool,string> check=(ok,label)=>{if(!ok)throw new InvalidOperationException(label);count++;log.AppendLine(("PASS "+label).TrimEnd());};
@@ -85,6 +108,9 @@ namespace DragLab.Editor
                 var held=EngineWorkshop.Copy(p);var stockRow=held.inventory.market.parts.First(s=>s.definitions.Contains(pistons.definitionId));stockRow.units=stockRow.initialUnits=1;
                 CartReservations.Capture(held,carId,single.lines);var withHold=MaintenanceReplacements.AddToCart(held,carId,express,held.inventory.cart.lines);CartReservations.Capture(held,carId,withHold.lines);
                 check(withHold.cost==PartCart.Total(held,carId,held.inventory.cart.lines)&&withHold.localUnits==1,v.spec.id+" merging honors previously reserved supply instead of charging express twice");
+                SupplyLifecycle(p,carId,express.lines.Single(l=>l.definitionId==brakes.definitionId),2,now,check);
+                SupplyLifecycle(p,carId,express.lines.Single(l=>l.definitionId==pistons.definitionId),1,now,check);
+                if(v.spec.id=="starter-hatch")foreach(int available in new[]{0,4,5})SupplyLifecycle(p,carId,express.lines.Single(l=>l.definitionId==brakes.definitionId),available,now,check);
                 var rejected=PartCart.Quote(p,carId,express.lines,now,300);before=JsonUtility.ToJson(p);check(!MechanicsTransactions.Try(p,catalog,p.revision,q=>PartCart.Checkout(q,rejected,now),q=>false,out next,out error)&&before==JsonUtility.ToJson(p),v.spec.id+" failed persistence rolls back cash, stock and every replacement");
                 var all=EngineWorkshop.Copy(p);var allPack=all.parts.Find(i=>i.instanceId==pistons.instanceId);foreach(var e in allPack.condition.elements){e.health=.1f;e.fault=ElementFault.None;}EngineElementService.RefreshAggregate(allPack.condition);var allTargets=MaintenanceReplacements.Candidates(all,carId,false).Where(t=>t.partId==allPack.instanceId).Select(t=>t.key);var full=MaintenanceReplacements.Preview(all,carId,false,15,allTargets);check(full.lines.Count==1&&full.lines[0].action==CartAction.NewSet,v.spec.id+" selecting every matching member buys a complete set");
                 all.cash=0;var poor=PartCart.Quote(all,carId,full.lines,now,300);before=JsonUtility.ToJson(all);check(!MechanicsTransactions.Try(all,catalog,all.revision,q=>PartCart.Checkout(q,poor,now),q=>true,out next,out error)&&before==JsonUtility.ToJson(all),v.spec.id+" insufficient funds cannot partly replace components");
