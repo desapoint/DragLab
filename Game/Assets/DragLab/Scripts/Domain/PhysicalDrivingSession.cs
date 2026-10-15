@@ -83,7 +83,13 @@ namespace DragLab.Domain
                 foreach (var field in typeof(CarState).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)) if (field.FieldType == typeof(double) && !MechanicsSchema.Finite((double)field.GetValue(data.startingDynamics.state))) return "Nonfinite starting dynamics.";
                 CarDynamicsCheckpoint c; try { c = data.startingDynamics.Copy(); ExactPhysicsNumbers.Decode(c); } catch (Exception) { return "Invalid exact checkpoint."; } var s = c.state;
                 if(s.fluids==null||s.fluids.Validate(data.vehicle.fluids)!=null)return "Invalid checkpoint fluids.";
-                if (c.components != null && c.components.Any(p => p == null || p.Validate() != null)) return "Invalid exact component state.";
+                if (c.components != null) foreach (var part in c.components)
+                {
+                    string invalid = part == null ? "Missing part." : part.Validate();
+                    if (invalid != null) return "Invalid exact component state"
+                        + (part == null ? "" : " (" + part.slot + " / " + part.instanceId + ")")
+                        + ": " + invalid;
+                }
                 if (s == null || s.contact == null || s.contact.Validate() != null || !MechanicsSchema.Finite(c.engagementPenalty) || !MechanicsSchema.Finite(c.inductionLastThrottle) || s.gear < 0 || s.gear > data.vehicle.gears.Length || s.speed < 0 || s.speed > 1000 || s.rpm < 0 || s.rpm > data.vehicle.redlineRpm * 1.5 + 1 || s.fuelLitres < 0 || s.fuelLitres > data.vehicle.fuel.capacityLitres || s.fuelUsedLitres < 0 || s.fuelFlowLitresPerSecond < 0 || s.engineDamage < 0 || s.engineDamage > 1 || s.finished || s.disqualified) return "Invalid starting dynamics.";
                 foreach (var field in typeof(CarState).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
                     if (field.FieldType == typeof(double) && !MechanicsSchema.Finite((double)field.GetValue(s))) return "Nonfinite starting dynamics.";

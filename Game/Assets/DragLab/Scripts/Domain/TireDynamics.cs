@@ -29,6 +29,15 @@ namespace DragLab.Domain {
    if(c.tires.Length!=4||c.tires.Any(t=>t==null))throw new ArgumentException("Four individual tire conditions are required.");
    SyncSummary(c);
   }
+  // Simulation-owned tire packs need deterministic member IDs. Only give IDs
+  // to newly initialized packs; never rewrite the identities of existing tires.
+  public static void Ensure(PartInstance part) {
+   if(part==null||part.condition==null||string.IsNullOrWhiteSpace(part.instanceId))
+    throw new ArgumentException("Tire pack requires a valid parent identity.");
+   bool newPack=part.condition.tires.Length==0;
+   Ensure(part.condition);
+   if(newPack)for(int i=0;i<4;i++)part.condition.tires[i].id=part.instanceId+"/tire/"+i;
+  }
   // Explicit creation path for new/used market stock and read-only previews.
   // Never call this for persisted data: v12 profile validation must reject
   // missing tire elements, not manufacture replacement identities or wear.
@@ -72,7 +81,7 @@ namespace DragLab.Domain {
    var corners=new[]{"Front left","Front right","Rear left","Rear right"};
    return string.Join(", ",c.tires.Select((t,i)=>new{t,i}).Where(x=>x.t.failed||x.t.health<=0||x.t.consumedLife>=1).Select(x=>x.i<4?corners[x.i]:"Tire "+(x.i+1)).ToArray());
   }
-  public static void ResetContactReference(CarState state,System.Collections.Generic.IEnumerable<PartInstance> parts){foreach(var p in parts)if(p.slot==PartCategory.Tires.ToString()){Ensure(p.condition);for(int i=0;i<4;i++)p.condition.tires[i].lastContactWorkJ=state.contact.slipWorkJ[i];}}
+  public static void ResetContactReference(CarState state,System.Collections.Generic.IEnumerable<PartInstance> parts){foreach(var p in parts)if(p.slot==PartCategory.Tires.ToString()){Ensure(p);for(int i=0;i<4;i++)p.condition.tires[i].lastContactWorkJ=state.contact.slipWorkJ[i];}}
   public static double Grip(PartDefinition d,TireCondition t){if(t.failed||t.health<=0)return .025;double temperature=t.temperatureC<20?DragMath.Clamp(1+(t.temperatureC-20)*.003,.65,1):t.temperatureC<=d.tireOptimalC?1+.05*(t.temperatureC-20)/Math.Max(1,d.tireOptimalC-20):DragMath.Clamp(1.05-(t.temperatureC-d.tireOptimalC)*.005,.35,1.05);return temperature*(.35+.65*Math.Sqrt(t.health));}
   public static void Tick(CarSimulation car,double dt,double distanceBefore){
    var p=car.mechanics.parts.Find(v=>v.slot==PartCategory.Tires.ToString());if(p==null)return;var c=p.condition;Ensure(c);

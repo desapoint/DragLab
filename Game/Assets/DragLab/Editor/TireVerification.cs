@@ -39,6 +39,9 @@ namespace DragLab.Editor {
     var session=new PhysicalDrivingSession(new RunSnapshot{vehicle=v.spec.Copy(),tune=v.CreateStockTune(),driving=new DriverSettings {wearMode=WearMode.Full,throttleAssist=false,tractionAssist=false}});
     foreach(var command in PhysicalScenarios.Timeline(PhysicalScenario.FullPullShiftCoastBrake,41))session.Step(command);
     check(Pack(session.car).condition.tires.Any(t=>t.slipEnergyJ>0&&t.health<1),"Full physical pull/shift/coast/brake produces tire wear: "+v.spec.id);
+    var checkpoint=session.car.CaptureDynamics();var checkedPack=checkpoint.components.Single(p=>p.slot==PartCategory.Tires.ToString());
+    check(checkedPack.condition.tires.Length==4&&checkedPack.condition.tires.Select((t,i)=>t.id==checkedPack.instanceId+"/tire/"+i&&t.Validate()==null).All(ok=>ok),
+        "Simulated tire pack has valid, deterministic member IDs before checkpoint continuation: "+v.spec.id);
     var continuation=session.ContinueRecording();for(int tick=0;tick<120;tick++)continuation.Step(new TickInput{tick=continuation.Tick,neutral=true,input=new DriverInput {brake=.5}});
     check(continuation.Csv()==PhysicalDrivingSession.Replay(JsonUtility.FromJson<RunSnapshot>(JsonUtility.ToJson(continuation.snapshot))).Csv(),"Serialized checkpoint retains exact per-wheel thermal/wear trace: "+v.spec.id);
     File.WriteAllText(Path.Combine(folder,v.spec.id+"-tires.csv"),session.Csv());
