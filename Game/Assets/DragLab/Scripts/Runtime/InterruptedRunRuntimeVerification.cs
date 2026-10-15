@@ -40,7 +40,7 @@ namespace DragLab.Runtime
             require(actual.SelectedCar.instanceId==expected.SelectedCar.instanceId&&actual.cash==expected.cash&&actual.reputation==expected.reputation&&actual.SelectedCar.completedRuns==0,"Forced restart retains ownership/cash and adds no reward or record.");
             require(actual.runCheckpoints.Count==1&&actual.runCheckpoints[0].settled&&game.Race==null,"Forced restart closes the interrupted receipt without resuming a race.");
             require(Math.Abs(actual.SelectedCar.fuel.litres-expected.SelectedCar.fuel.litres)<1e-9&&Math.Abs(actual.SelectedCar.fluids.oilLitres-expected.SelectedCar.fluids.oilLitres)<1e-9,"Forced restart retains committed fuel and oil quantities.");
-            var shaft=actual.parts.Find(p=>p.slot=="Driveshaft");string id=shaft.instanceId;int price=actual.catalog.Find(shaft.definitionId).price;
+            var shaft=actual.parts.Find(p=>p.slot=="Driveshaft");string id=shaft.instanceId;var definition=actual.catalog.Find(shaft.definitionId);int price=PartsMarket.Quote(actual,definition,InventoryUnits.Count(actual,actual.SelectedCar,definition)).cost;
             require(shaft.condition.failed&&shaft.condition.failureReason=="Torque overload","Failed shaft identity and cause survive forced termination.");
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
             game.ShowRepairs();yield return new WaitForSecondsRealtime(.2f);yield return Capture("interruption-recovered-repairs");

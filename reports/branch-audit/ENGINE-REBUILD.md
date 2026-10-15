@@ -34,6 +34,8 @@ Review screenshots are copied to the normal screenshot root: `reports/interface-
 
 ## Existing verifier limitation
 
+Follow-up: [the pricing-assertion audit](PRICING-ASSERTIONS.md) diagnosed and corrected this prerequisite; the full individual-engine wrapper subsequently passed. The paragraph below retains the limitation at the time of rebuild validation.
+
 `IndividualEngineVerify` was attempted first and stopped before its rebuild section at `city-three: replacement retains original and neighbours`. That combined assertion expects a unit's base price despite time-seeded supply/delivery fees, matching the pricing-test limitation documented in the original audit. Each operand of that combined failure was not independently diagnosed here; its later assertions are not claimed executed. The focused rebuild matrix avoids that unrelated prerequisite and uses authoritative paid quotes.
 
 ## Reproduce and evidence

@@ -6,6 +6,8 @@ Reviewed `refactor/per-tire-authority` at `81e5699` against `main` at `9bcc706` 
 
 Follow-up: the user confirmed liquids/shop failures. The quote-validation regression is addressed in [the commerce correction](COMMERCE-FIX.md). The results below retain the original audit baseline.
 
+The later [pricing-assertion audit](PRICING-ASSERTIONS.md) corrects the stock/delivery expectations and confirms the full axle suite plus individual-engine wrapper. Historical failed outcomes below are retained rather than overwritten.
+
 ## Introduced regressions
 
 ### P1 — Incompatible-save reset leaves a recovery floor that rejects its new database

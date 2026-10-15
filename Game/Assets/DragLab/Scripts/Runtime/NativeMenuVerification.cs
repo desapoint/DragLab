@@ -102,6 +102,7 @@ namespace DragLab.Runtime
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-part-brands-only-verify")>=0){yield return PartBrandInterfaceChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-awd-hardware-only-verify")>=0){yield return AwdHardwareInterfaceChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-responsiveness-only-verify")>=0){yield return ResponsivenessChecks(input);yield break;}
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-pricing-only-verify")>=0){yield return SupplyPricingChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-rebuild-only-verify")>=0){yield return RebuildFlowChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-maintenance-only-verify")>=0){yield return MaintenanceBatchChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-parts-only-verify")>=0){yield return NativePartsChecks(input);yield break;}
