@@ -33,6 +33,7 @@ $suite = @{
         'SqliteStateVerify'
     )
     Functional = @(
+        'FluidPurchaseVerify',
         'CareerVerify',
         'CareerExpandedVerify',
         'PartsMarketVerify',
