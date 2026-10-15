@@ -34,7 +34,6 @@ $suite = @{
         'CareerVerify',
         'CareerExpandedVerify',
         'PartsMarketVerify',
-        'PartsMarketRegression',
         'MaintenanceReplaceVerify',
         'CartVerify',
         'CartReservationVerify',
@@ -84,6 +83,7 @@ $suite = @{
         'IntegratedVerify'
     )
     Quarantined = @(
+        'PartsMarketRegression',
         'OwnershipVerify',
         'AssemblyVerify',
         'PaidVerify',

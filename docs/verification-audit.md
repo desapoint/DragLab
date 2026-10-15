@@ -26,6 +26,7 @@ The six setup/build/baseline operations (`Open`, `Prepare`, `VehicleVarietyPrepa
 - **Typed tire condition:** revised direct test mutations in `AxleWheelVerification`, `IndividualEngineVerification`, `PartsMarketVerification`, and `ValuationVerification`. Tire wear belongs to `TireCondition` members; the `ComponentCondition` parent is a neutral shell. Re-normalize the shell when directly editing fixtures.
 - **Current schema fixtures:** removed old version-7 and version-8 migrations from market/cart reservation checks and version-5 migration from career expansion verification. Replaced them with assertions about current save normalization and empty career progression.
 - **Diagnostic assertions:** `AxleWheelVerify` saved-setup restoration now tests the rear tire fitment separately from the ownership invariant, including the actual failing value in the message.
+- **Asset authoring isolation:** career rivals, expanded career, variety vehicles, used-car inspection, garage business, economy balance, and paid-operations verifications no longer silently call `Prepare()`. They report missing prerequisites; authoring has to be explicitly requested from the Unity menu or dedicated preparation action.
 
 ## Quarantined tests requiring additional changes
 
@@ -34,6 +35,7 @@ The six setup/build/baseline operations (`Open`, `Prepare`, `VehicleVarietyPrepa
 - `PaidVerify`: includes older v4 save migration.
 - `EconomyIntegrationVerify`: asserts old v1/v4 save migration.
 - `ResidualPerformanceVerify`: asserts v9 file migration.
+- `PartsMarketRegression`: composite convenience gate that reruns `PartsMarketVerify`, `VehicleMarketVerify`, `CartVerify`, `InventoryCommerceVerify`, `PaidVerify`, `AssemblyVerify`, and shop/setup preview checks; not an independent test.
 - `Verify`, `VerifyRemaining`, `VerifyRemainingSimulation`: composite legacy foundation gates, substantially rerun standalone tests; `VerifyRemainingSimulation` includes `OwnershipVerification.Run` with old migrations.
 
 These are **not deleted** because their modern portions can still be valuable. Their obsolete migrations should be removed or moved to separate archived compatibility tests before they can return to the release gate. Unreleased save compatibility is not a current product requirement, but unsupported schema rejection and the new reset-dialog behavior remain relevant.
@@ -44,7 +46,7 @@ These are **not deleted** because their modern portions can still be valuable. T
 2. List the curated smoke tasks: `.\tools\Run-Validation.ps1 -Group Smoke -ListOnly`.
 3. Execute `.\tools\Run-Validation.ps1 -Group Smoke`; it fails fast, prints the exception text, and creates a per-run summary CSV in `reports/`.
 4. Diagnose the exact assertion before changing logic. For `AxleWheelVerify`, note whether the rear specifications or `MechanicsOwnership.Validate` fails.
-5. Only after smoke results are green, proceed to `-Group Functional`, then `-Group Extended`. Avoid the quarantined composites unless specifically testing compatibility.
+5. Only after smoke results are green, proceed to `-Group Functional`, then `-Group Extended`. Avoid the quarantined composites unless specifically testing compatibility. Asset-authoring prerequisites must be prepared deliberately; a test no longer generates or modifies these fixtures in order to pass.
 6. Use in-editor manual validation for race staging, post-race tire wear, profile persistence, and the UI Toolkit reset dialog.
 
 **Runtime status at review time:** `TireVerify` and `TireFailureVerify` passed in the user's Unity installation before the latest fixture cleanup; `AxleWheelVerify` is still unconfirmed after the latest changes. No automated claim is made for unexecuted actions.

@@ -12,6 +12,7 @@ namespace DragLab.Editor
 {
     public static class UsedVehicleInspectionVerification
     {
+        [MenuItem("DragLab/Prepare Vehicle Inspection Policy")]
         public static void Prepare()
         {
             var asset=Resources.Load<OperatingPolicyDefinition>("Data/Economy/OperatingPolicy");
