@@ -75,7 +75,8 @@ namespace DragLab.Editor
                 var p=fresh("starter-hatch");var b=MechanicsOwnership.Resolve(p,p.SelectedCar,cat);var race=new RaceSimulation(new CarSimulation(b.spec,b.tune,p.driving),new CarSimulation(first.opponent.spec,first.opponentTune,new DriverSettings()),402.336);string id="case-"+outcome;CareerProgression.Enter(p,id,p.SelectedCar.instanceId,first,outcome=="practice");race.phase=RacePhase.Finished;race.player.state.finished=outcome=="loss"||outcome=="practice";race.player.state.disqualified=outcome=="redlight";
                 int cash=p.cash;if(outcome=="interrupted")CareerProgression.Interrupted(p,id);else CareerProgression.Settle(p,id,race);check(p.cash==cash+(outcome=="loss"?first.cashLoss:0)&&p.reputation==0&&p.careerRuns.Last().complete,"Outcome ledger / no invented rewards: "+outcome);
             }
-            var legacy=JsonUtility.FromJson<PlayerProfile>("{\"saveVersion\":5,\"cash\":999,\"reputation\":12,\"careerWins\":[\"first-pass\",\"club-run\",\"coupe-rival\",\"local-final\"],\"cars\":[]}");legacy.Sanitize(now);MechanicsOwnership.Ensure(legacy,cat);check(legacy.cash==999&&legacy.careerWins.Count==4&&legacy.careerRuns.Count==0,"Existing empty-garage save retains earned legacy wins; no invented records/assets.");
+            var emptyCareer=PlayerProfile.NewGame(now);MechanicsOwnership.Ensure(emptyCareer,cat);
+                check(emptyCareer.careerWins.Count==0&&emptyCareer.careerRuns.Count==0&&emptyCareer.cars.Count==0,"New-game career starts empty without invented progress or owned assets.");
             File.WriteAllText(Path.Combine(folder,"career-matrix.csv"),matrix.ToString(),Encoding.UTF8);File.WriteAllText(Path.Combine(folder,"verification.txt"),log+"Checks: "+checks+"\n",Encoding.UTF8);Debug.Log("EXPANDED CAREER PASS: "+checks);
         }
     }

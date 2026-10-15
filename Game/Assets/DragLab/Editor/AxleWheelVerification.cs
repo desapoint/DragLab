@@ -261,7 +261,7 @@ namespace DragLab.Editor
                 var profile=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(profile,catalogue);profile.cash=1000000;profile.reputation=1000;
                 VehicleCollection.Buy(profile,catalogue,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});var owned=profile.SelectedCar;
                 var pack=profile.parts.First(p=>p.instanceId==owned.installed.slots.First(s=>s.slot=="Tires").partInstanceId);TireDynamics.Ensure(pack.condition);
-                foreach(var t in pack.condition.tires)t.id=MechanicsOwnership.NewId("tire");pack.condition.tires[2].health=.65f;pack.condition.tires[2].consumedLife=.35;pack.condition.health=.65f;
+                foreach(var t in pack.condition.tires)t.id=MechanicsOwnership.NewId("tire");pack.condition.tires[2].health=.65f;pack.condition.tires[2].consumedLife=.35;TireDynamics.SyncSummary(pack.condition);
                 string front=JsonUtility.ToJson(pack.condition.tires[0]),before=JsonUtility.ToJson(profile);int cash=profile.cash;string definition=catalogue.Id(owned.vehicleId,PartCategory.Tires,3);
                 var lines=new[]{new PartCartLine{action=CartAction.NewUnits,definitionId=definition,role="tire",quantity=2,install=true,positions=new System.Collections.Generic.List<string>{"tire:2","tire:3"}}};
                 var preview=PartCart.Preview(profile,owned,lines);var prepared=CarInspection.PrepareCar(preview);
@@ -280,7 +280,11 @@ namespace DragLab.Editor
                 SavedSetups.Save(profile,owned.instanceId,"Staggered build",SetupScope.WholeCar);var setup=profile.savedSetups.Last();
                 var originals=profile.looseEngineElements.Where(u=>u.tireUnit&&u.definitionId==pack.definitionId).ToArray();InventoryUnits.Install(profile,owned.instanceId,originals[0].element.id,"tire:2");InventoryUnits.Install(profile,owned.instanceId,originals[1].element.id,"tire:3");
                 var plan=SavedSetups.Preview(profile,owned.instanceId,setup.id);check(plan.tires.Count==2&&plan.tires.All(t=>!t.purchase)&&plan.cost==0,"Whole-car blueprints find exact loose compounds for the saved corners: "+vehicle.spec.id);
-                SavedSetups.Apply(profile,owned.instanceId,setup.id,profile.revision,false,plan.cost);check(TireFitments.DefinitionId(pack,2)==definition&&TireFitments.DefinitionId(pack,3)==definition&&MechanicsOwnership.Validate(profile,catalogue)==null,"Existing setup transaction restores mixed tires without granting replacements: "+vehicle.spec.id);
+                SavedSetups.Apply(profile,owned.instanceId,setup.id,profile.revision,false,plan.cost);
+                check(TireFitments.DefinitionId(pack,2)==definition&&TireFitments.DefinitionId(pack,3)==definition,
+                    "Existing setup restores both rear tire specifications: "+vehicle.spec.id+" / rear left="+TireFitments.DefinitionId(pack,2)+" / rear right="+TireFitments.DefinitionId(pack,3)+" / expected="+definition);
+                string setupValidation=MechanicsOwnership.Validate(profile,catalogue);
+                check(setupValidation==null,"Existing setup retains valid ownership and separate tire identities: "+vehicle.spec.id+" / "+setupValidation);
                 var swapProfile=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(profile));MechanicsOwnership.Ensure(swapProfile,catalogue);
                 var swapCar=swapProfile.SelectedCar;
                 var swapPack=swapProfile.parts.Find(p=>p.instanceId==pack.instanceId);
@@ -303,7 +307,7 @@ namespace DragLab.Editor
                 bool invalidSwap=MechanicsTransactions.Try(swapped,catalogue,swapped.revision,p=>InventoryUnits.SwapTires(p,swapCar.instanceId,
                     new[]{new TireSwapAssignment(outgoingRear[0],0),new TireSwapAssignment(outgoingRear[0],1)}),p=>{refusedWrites++;return true;},out refused,out refusedError);
                 check(!invalidSwap&&refusedWrites==0&&oldJson==JsonUtility.ToJson(swapped),"Duplicate tire selection rolls back without publishing a partial installation: "+vehicle.spec.id);
-                pack.condition.tires[0].health=.2f;pack.condition.tires[0].consumedLife=.8;pack.condition.health=.2f;string retained=JsonUtility.ToJson(pack.condition);string oldPack=pack.instanceId;
+                pack.condition.tires[0].health=.2f;pack.condition.tires[0].consumedLife=.8;TireDynamics.SyncSummary(pack.condition);string retained=JsonUtility.ToJson(pack.condition);string oldPack=pack.instanceId;
                 var request=new PaymentRequest{kind=PaymentKind.Part,carId=owned.instanceId,targetId=pack.definitionId,install=true,preserveTireFitments=true};long repairNow=DateTime.UtcNow.Ticks;var policy=new OperatingPolicy();var payment=PaidEconomy.Quote(profile,catalogue,policy,ValuationPolicy.Defaults(),request,repairNow);
                 int expected=Enumerable.Range(0,4).Sum(i=>InventoryPricing.NewUnit(catalogue.Find(TireFitments.DefinitionId(pack,i)),4));check(payment.Cost==expected,"Buy same quotes actual mixed constituent costs: "+vehicle.spec.id);
                 int prior=profile.cash;PlayerProfile repaired;string repairError;bool repairedOk=MechanicsTransactions.Try(profile,catalogue,profile.revision,p=>PaidEconomy.Pay(p,catalogue,policy,ValuationPolicy.Defaults(),payment,repairNow),p=>true,out repaired,out repairError);
