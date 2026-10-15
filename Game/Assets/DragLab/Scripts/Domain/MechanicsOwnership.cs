@@ -25,6 +25,10 @@ namespace DragLab.Domain.Mechanics
                 return invalid;
             var copy = UnityEngine.JsonUtility.FromJson<PlayerProfile>(UnityEngine.JsonUtility.ToJson(profile));
             copy.catalog = catalog;
+            // Unity materializes null inline jobs/reservations during the copy.
+            // Preserve the source's absence exactly; never clear a real record.
+            if (profile.recoveryWork == null) copy.recoveryWork = null;
+            if (profile.inventory.cart == null) copy.inventory.cart = null;
             SharedInventory.Ensure(copy);
             return Validate(copy, catalog);
         }

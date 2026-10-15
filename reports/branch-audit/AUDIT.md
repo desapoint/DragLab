@@ -4,6 +4,8 @@ Reviewed `refactor/per-tire-authority` at `81e5699` against `main` at `9bcc706` 
 
 **Result: not green. Two introduced regressions reproduced, plus one inherited checkpoint defect. Production behavior was left unchanged for review.** The intentional v12 incompatible-save reset policy is not itself reported as a defect.
 
+Follow-up: the user confirmed liquids/shop failures. The quote-validation regression is addressed in [the commerce correction](COMMERCE-FIX.md). The results below retain the original audit baseline.
+
 ## Introduced regressions
 
 ### P1 — Incompatible-save reset leaves a recovery floor that rejects its new database

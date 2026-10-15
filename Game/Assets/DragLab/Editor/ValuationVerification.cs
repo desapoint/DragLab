@@ -55,7 +55,14 @@ namespace DragLab.Editor
                     var worn = quote(p, ValuationKind.Car, car.instanceId, "enthusiast"); check(worn.Total <= healthy.Total, "Wear never improves quote: " + model + "/" + d.category); record("worn-" + d.category, model, worn);
                     check(Valuations.Validate(healthy, p, catalog, policy, now + 1) != null, "Condition edit invalidates even without revision: " + model + "/" + d.category);
                     if (d.category == PartCategory.Tires && item.condition.tires.Length == 4) { item.condition.tires[0].failed = true; item.condition.tires[0].failureReason = "Fixture"; TireDynamics.SyncSummary(item.condition); } else { item.condition.failed = true; item.condition.failureReason = "Fixture"; } var broken = quote(p, ValuationKind.Car, car.instanceId, "enthusiast"); check(broken.Faulty && broken.Total < healthy.Total, "Failed component discounts part/assembly: " + model + "/" + d.category); record("failed-" + d.category, model, broken); item.condition = original;
-                    if (original.elements.Length > 0) { item.condition.elements[0].fault = ElementFault.Disabled; var bad = quote(p, ValuationKind.Car, car.instanceId, "enthusiast"); check(bad.Faulty && bad.Total < healthy.Total, "Single-element failure priced despite healthy aggregate: " + model + "/" + d.category); item.condition = original.Copy(); item.condition.elements[0].fault = ElementFault.None; }
+                    if (original.elements.Length > 0) {
+                        item.condition = original.Copy();
+                        if (d.category == PartCategory.Tires) item.condition.tires[0].failed = true;
+                        else item.condition.elements[0].fault = ElementFault.Disabled;
+                        var bad = quote(p, ValuationKind.Car, car.instanceId, "enthusiast");
+                        check(bad.Faulty && bad.Total < healthy.Total, "Single-element failure priced despite healthy aggregate: " + model + "/" + d.category);
+                        item.condition = original.Copy();
+                    }
                     var kept = Valuations.Capture(p, catalog, policy, ValuationKind.Car, car.instanceId, "enthusiast", now, new[] { item.instanceId });
                     record("retained-" + d.category, model, kept);
                     check(!kept.IncludedIds.Contains(item.instanceId) && item.condition.elements.All(el => !kept.IncludedIds.Contains(el.id)) && kept.Total < healthy.Total, "Keeping pack excludes actual children and value: " + model + "/" + d.category);

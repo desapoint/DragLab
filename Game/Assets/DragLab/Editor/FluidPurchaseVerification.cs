@@ -171,6 +171,34 @@ namespace DragLab.Editor
                 MechanicsOwnership.Validate(stalePaid, catalog) != null)
                 throw new InvalidOperationException("Oil refill did not reconcile seller metadata safely.");
 
+            // Read-only quote normalization must preserve real recovery work and
+            // reject malformed work rather than clearing it to enable a purchase.
+            var working = JsonUtility.FromJson<PlayerProfile>(staleBefore);
+            MechanicsOwnership.Ensure(working, catalog);
+            working.inventory.dealer.Single(s => s.IsUnit && s.Id == tire.id).isUnit = false;
+            working.recoveryWork = new RecoveryWork { id = MechanicsOwnership.NewId("recovery"),
+                startedUtcTicks = now - TimeSpan.TicksPerSecond,
+                readyUtcTicks = now + TimeSpan.TicksPerSecond, reward = 10 };
+            string workingBefore = JsonUtility.ToJson(working);
+            PaidEconomy.Quote(working, catalog, policy, prices,
+                new PaymentRequest { kind = PaymentKind.Fluids, carId = working.SelectedCar.instanceId, litres = 1 }, now);
+            if (JsonUtility.ToJson(working) != workingBefore)
+                throw new InvalidOperationException("Quote modified valid recovery work or live seller metadata.");
+            working.recoveryWork.reward = 0;
+            if (MechanicsOwnership.ValidateForQuote(working, catalog) != "Invalid recovery work.")
+                throw new InvalidOperationException("Quote accepted genuinely malformed recovery work.");
+            working.recoveryWork.reward = 10;
+            CartReservations.Capture(working, working.SelectedCar.instanceId,
+                new[] { new PartCartLine { action = CartAction.NewUnits,
+                    definitionId = tire.definitionId, role = "tire", quantity = 1 } });
+            workingBefore = JsonUtility.ToJson(working);
+            if (MechanicsOwnership.ValidateForQuote(working, catalog) != null ||
+                JsonUtility.ToJson(working) != workingBefore)
+                throw new InvalidOperationException("Quote altered or rejected a real cart reservation.");
+            working.inventory.cart.expiresRun = 0;
+            if (MechanicsOwnership.ValidateForQuote(working, catalog) != "Invalid cart reservation clock or owner.")
+                throw new InvalidOperationException("Quote accepted a genuinely malformed cart reservation.");
+
             // Selling an owned spare must not depend on a stale unrelated seller flag.
             var resale = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(profile));
             MechanicsOwnership.Ensure(resale, catalog);
