@@ -145,21 +145,8 @@ namespace DragLab.Domain.Mechanics
         public static PaymentQuote Quote(PlayerProfile p, MechanicalCatalog cat, OperatingPolicy policy, ValuationPolicy values, PaymentRequest request, long now)
         {
             Guard(p, now, "");
-            string invalid = MechanicsOwnership.Validate(p, cat);
-            if (invalid != null)
-            {
-                // A live profile can still carry a Unity-materialized, stale seller
-                // discriminator. Quote on its original snapshot, but check that a
-                // read-only normalized COPY is structurally valid. The transaction
-                // performs the same canonicalization before any money moves.
-                if (invalid.IndexOf("dealer", StringComparison.OrdinalIgnoreCase) < 0)
-                    throw new InvalidOperationException(invalid);
-                var normalized = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(p));
-                normalized.catalog = cat;
-                SharedInventory.Ensure(normalized);
-                string normalizedError = MechanicsOwnership.Validate(normalized, cat);
-                if (normalizedError != null) throw new InvalidOperationException(normalizedError);
-            }
+            string invalid = MechanicsOwnership.ValidateForQuote(p, cat);
+            if (invalid != null) throw new InvalidOperationException(invalid);
             var a = Preview(p, cat, policy, values, request, now); return new PaymentQuote(p, policy, request, a, Hash(p, cat, policy, values, request), now);
         }
         public static void Pay(PlayerProfile p, MechanicalCatalog cat, OperatingPolicy policy, ValuationPolicy values, PaymentQuote q, long now, VehicleOffer currentOffer = null)

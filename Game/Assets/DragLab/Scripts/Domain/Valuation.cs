@@ -146,7 +146,7 @@ namespace DragLab.Domain.Mechanics
         public static ValuationQuote Capture(PlayerProfile profile, MechanicalCatalog catalog, ValuationPolicy policy, ValuationKind kind, string assetId, string buyerId, long nowUtcTicks, IEnumerable<string> retain = null)
         {
             if (profile == null || catalog == null || policy == null || !Enum.IsDefined(typeof(ValuationKind), kind) || nowUtcTicks <= 0 || nowUtcTicks > DateTime.MaxValue.Ticks - TimeSpan.FromDays(1).Ticks) throw new InvalidOperationException("Invalid valuation request.");
-            policy.Validate(); string invalid = MechanicsOwnership.Validate(profile, catalog); if (invalid != null) throw new InvalidOperationException(invalid);
+            policy.Validate(); string invalid = MechanicsOwnership.ValidateForQuote(profile, catalog); if (invalid != null) throw new InvalidOperationException(invalid);
             var buyer = policy.buyers.Find(b => b.id == buyerId); if (buyer == null) throw new InvalidOperationException("Unknown buyer.");
             string[] kept = (retain ?? Enumerable.Empty<string>()).OrderBy(id => id, StringComparer.Ordinal).ToArray();
             if (kept.Distinct().Count() != kept.Length) throw new InvalidOperationException("Duplicate retained asset.");

@@ -171,6 +171,28 @@ namespace DragLab.Editor
                 MechanicsOwnership.Validate(stalePaid, catalog) != null)
                 throw new InvalidOperationException("Oil refill did not reconcile seller metadata safely.");
 
+            // Selling an owned spare must not depend on a stale unrelated seller flag.
+            var resale = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(profile));
+            MechanicsOwnership.Ensure(resale, catalog);
+            var resaleRow = resale.inventory.dealer.Single(s => s.IsUnit && s.Id == tire.id);
+            resaleRow.isUnit = false;
+            var spareId = MechanicsOwnership.NewId("spare-filter");
+            resale.parts.Add(new PartInstance { instanceId = spareId,
+                definitionId = catalog.Id(resale.SelectedCar.vehicleId, PartCategory.OilFilter) });
+            int resaleCash = resale.cash;
+            var saleQuote = Valuations.Capture(resale, catalog, prices, ValuationKind.LoosePart,
+                spareId, "recycler", now);
+            PlayerProfile sold;
+            string saleError;
+            if (!MechanicsTransactions.Try(resale, catalog, resale.revision,
+                state => PaidEconomy.Sell(state, catalog, prices, saleQuote, now),
+                state => true, out sold, out saleError))
+                throw new InvalidOperationException("Stale seller discriminator blocked unrelated asset sale: " + saleError);
+            if (sold.cash != resaleCash + saleQuote.Total ||
+                sold.parts.Any(i => i.instanceId == spareId) ||
+                !sold.inventory.dealer.Any(s => s.IsPart && s.Id == spareId))
+                throw new InvalidOperationException("Asset sale lost the payment or actual sold part.");
+
             // The same saved artifact must also be harmless when buying the USED tire.
             var usedProfile = JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(profile));
             MechanicsOwnership.Ensure(usedProfile, catalog);

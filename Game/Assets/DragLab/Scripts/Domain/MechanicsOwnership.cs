@@ -15,6 +15,19 @@ namespace DragLab.Domain.Mechanics
     {
         public const int SaveVersion = 12;
         public static string NewId(string kind) { return kind + "-" + Guid.NewGuid().ToString("N"); }
+        // Quotations are read-only. The transaction clone will normalize recoverable
+        // Unity seller metadata, so validate the same normalization on a COPY only.
+        // Real conflicting or duplicate identities remain invalid for all payments.
+        public static string ValidateForQuote(PlayerProfile profile, MechanicalCatalog catalog)
+        {
+            string invalid = Validate(profile, catalog);
+            if (invalid == null || invalid.IndexOf("dealer", StringComparison.OrdinalIgnoreCase) < 0)
+                return invalid;
+            var copy = UnityEngine.JsonUtility.FromJson<PlayerProfile>(UnityEngine.JsonUtility.ToJson(profile));
+            copy.catalog = catalog;
+            SharedInventory.Ensure(copy);
+            return Validate(copy, catalog);
+        }
         public static void Ensure(PlayerProfile profile, MechanicalCatalog catalog)
         {
             bool migratePartsMarket=profile.saveVersion<8;
