@@ -160,7 +160,7 @@ try {
         $rows = New-Object 'System.Collections.Generic.List[string]'
         $rows.Add(('#continue=' + [int][bool]$ContinueOnFailure))
         foreach ($action in $batch) { $rows.Add(($action + [char]9 + $methodByAction[$action])) }
-        [IO.File]::WriteAllLines($manifest, $rows.ToArray(), (New-Object System.Text.UTF8Encoding($false)))
+        [IO.File]::WriteAllLines($manifest, $rows.ToArray(), ([System.Text.UTF8Encoding]::new($false)))
         if (Test-Path -LiteralPath $statusFile) { Remove-Item -LiteralPath $statusFile -Force }
 
         Write-Host ("Unity batch {0}: actions {1}-{2} of {3} ({4})" -f $chunkNumber, ($offset+1), ($offset+$batch.Count), $tests.Count, ($batch -join ', ')) -ForegroundColor Cyan
