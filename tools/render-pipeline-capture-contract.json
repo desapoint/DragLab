@@ -1,0 +1,2544 @@
+{
+  "version": 1,
+  "purpose": "Migration comparison contract; baseline hashes anchor captured evidence, not user design approval. No budgets are fitted to observed differences.",
+  "limits": {
+    "channel_tolerance": 8,
+    "tile_size": 32,
+    "max_changed_percent": 0.5,
+    "max_mean_channel_error": 0.25,
+    "max_worst_tile_changed_percent": 8,
+    "max_worst_tile_mean_error": 12,
+    "max_new_magenta_pixels": 0
+  },
+  "suites": [
+    "Block",
+    "Cart",
+    "Comparison",
+    "Disposal",
+    "EngineBench",
+    "Maintenance",
+    "Parts",
+    "Purchase",
+    "RaceHud",
+    "RaceSelection",
+    "Rebuild",
+    "SetupManagement",
+    "Shell",
+    "Warnings",
+    "Workshop"
+  ],
+  "nonrepeatable": [
+    {
+      "pattern": "Comparison/route-parts-old.png",
+      "reason": "Asynchronous performance estimates may complete at different capture frames"
+    },
+    {
+      "pattern": "Comparison/route-assemblies-old.png",
+      "reason": "Generated assembly identities differ between disposable fixtures"
+    },
+    {
+      "pattern": "Comparison/valuation-old.png",
+      "reason": "Generated quote identities differ between disposable fixtures"
+    },
+    {
+      "pattern": "Comparison/sound-tab-7.png",
+      "reason": "File paths and recording metadata differ between capture fixtures"
+    },
+    {
+      "pattern": "EngineBench/*.png",
+      "reason": "Live traces, recording paths and simulation values are not frozen by the historical bench probes"
+    },
+    {
+      "pattern": "RaceHud/race-gauges-driving.png",
+      "reason": "Live race captures are not synchronized to the same simulation tick"
+    },
+    {
+      "pattern": "RaceHud/race-gauges-results.png",
+      "reason": "Shutdown movement and opponent timing vary between live captures"
+    },
+    {
+      "pattern": "RaceHud/race-trapezoid-finish-approach.png",
+      "reason": "Live finish-approach captures are not synchronized to the same simulation tick"
+    },
+    {
+      "pattern": "Shell/used-*.png",
+      "reason": "The full-menu probe regenerates market state and may select a different used listing"
+    },
+    {
+      "pattern": "Shell/car-maintenance-replace-set.png",
+      "reason": "The full-menu probe may quote different stock/express availability after market regeneration"
+    },
+    {
+      "pattern": "Shell/button-shine-*.png",
+      "reason": "Hover shine is intentionally animated and its phase is not fixed"
+    }
+  ],
+  "captures": [
+    {
+      "image": "Block/block-oem.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "3df53cd5e1229f8bfe56262902516947f968896119a76cce8745d5e3087435a7"
+    },
+    {
+      "image": "Block/block-reuse.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "f40fcc823540d28adf4f0b9cfea7ff630b8e05fe8c05fc9990dc309443cc9941"
+    },
+    {
+      "image": "Block/parts-loading.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "8056f97692b15930c1934efcb3489badda19ad519fac11571a3ec715a56bba0e"
+    },
+    {
+      "image": "Block/resolution-tests/block-1080p.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "8ed4a8b65871c6e40104702dcd9a890c6c3714a143877b17bc2edda51cc32f65"
+    },
+    {
+      "image": "Block/resolution-tests/block-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "e1d2267415bc240064faf78fcaa69183732cc1731e4d88e81e69c5126c359317"
+    },
+    {
+      "image": "Block/resolution-tests/block-compact.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "3f4b8004d369951505b7ffbbc2083f79960debec58f07eba683cae6a88ff78be"
+    },
+    {
+      "image": "Cart/cart-edit-pistons.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "11871bd3468fc84c44696e60519b10f11b90eeab3a5458cc770a5407775dbe69"
+    },
+    {
+      "image": "Cart/cart-edit-valves.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "47c90829fa8589948be038ca24284a082a32ceb04c92a7d7d899eb06f1fd0315"
+    },
+    {
+      "image": "Cart/cart-full-stats.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1c9756befec45400eeab66b7747a202b22b1fae40450f33bb13489400e0a3dd3"
+    },
+    {
+      "image": "Cart/cart-page.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "ebb51380c95dbfdfac2f6101093c987ec00c79ac2f24653de8537e8375ea1c5c"
+    },
+    {
+      "image": "Cart/cart-reservation.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "2b40ffc109d4d5465090e21c23a3976fe06505d74aa050357cc7e00ce9b766b7"
+    },
+    {
+      "image": "Cart/parts-loading.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "7608e53cef9f10401827967173ac0850badd0e8ec41cf71842b32fac8528845a"
+    },
+    {
+      "image": "Cart/resolution-tests/cart-1080p.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "c9ef4cdc44d80880365e4c48302f3e61aaab5a8c2079eb2932f7b11d104f40cb"
+    },
+    {
+      "image": "Cart/resolution-tests/cart-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "19ebd89e17d748f9227c013bb2ba917231033d0a90fcba34f5d199fb9eccbcad"
+    },
+    {
+      "image": "Cart/resolution-tests/cart-compact.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "75788ba2b568c8d62d067515905b0484f71e11bc6347aaee343aaf7a7566b9d9"
+    },
+    {
+      "image": "Cart/starter-fitted-collapsed.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "5d03b82cf5b79209b2b53785bcc2fab790d4169b4bd871aea53048c99765171f"
+    },
+    {
+      "image": "Cart/starter-fitted-control.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "27f798a18ac81c2d6f77185a64160217b8ba61bde6c88c3fc6741981e7fbbcac"
+    },
+    {
+      "image": "Cart/starter-fitted-groups.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "8ecfa3d1b3abedd5babb32a7da90d21523018b1411eafe705bac390cd560c11a"
+    },
+    {
+      "image": "Cart/starter-fitted-overview.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "2abf527b0594b1b585ef87a2cd89488fa7b63c37e3cceb4d45e0bb2aeaac247d"
+    },
+    {
+      "image": "Cart/starter-owned.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "fbf74e061259f4ff186c2b60acfacf55799363e88dad89aff6c0cafb6061d751"
+    },
+    {
+      "image": "Cart/starter-selection.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1a0fd9ee8debb4e0d2452415dd9bd2b214f96d27840d2e76e16411d077230ea8"
+    },
+    {
+      "image": "Comparison/pause-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e52d89019970a69bd0cbdba7a8bd718f3b5150bb1a1642eb773b0681103ef5ad"
+    },
+    {
+      "image": "Comparison/pause-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e52d89019970a69bd0cbdba7a8bd718f3b5150bb1a1642eb773b0681103ef5ad"
+    },
+    {
+      "image": "Comparison/physical-audio-settings.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "03a6524b0aed8b5f3d78ab2c82f12d397038d16261463808a7389997c15ad1b7"
+    },
+    {
+      "image": "Comparison/physical-component-clutch.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "ee46e2e76c975cfc7e1eb5f626665b1a839110bb65f93f2ee2634aa7f3f1d0e7"
+    },
+    {
+      "image": "Comparison/physical-component-cooling.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "50c2ec045a0142d088cb1649a9780713012f226da64880f8f82c7ac901832e13"
+    },
+    {
+      "image": "Comparison/physical-component-ignition.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "637109e7f9e655f9d6091db0f982bafabca758c06d4d1e712798e4a8065f9fc4"
+    },
+    {
+      "image": "Comparison/physical-component-tires.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "db8b45d53b69335f2cff826eb381ea7259d2859198fcd8d50d6d597a56af8520"
+    },
+    {
+      "image": "Comparison/physical-diagnostics-0.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e8fb0d65174d9199fd4cf51d05785a9df88d5a5c143d451e70d260fe3f011e25"
+    },
+    {
+      "image": "Comparison/physical-diagnostics-1000.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "636aee183eb44e3b3fa6f25bb7ae0a70c15cadfdf7e87cfe4817dfe6fd43e3a6"
+    },
+    {
+      "image": "Comparison/physical-diagnostics-140.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "7aa25f4ce67fa56501fcc54cb2001366515b48405e770b7bb0faa710760c1d1f"
+    },
+    {
+      "image": "Comparison/physical-diagnostics-280.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "a8e751efeb0e1340021a9265ac03e74b0688accafc1ba1b1fba511d7b5131f86"
+    },
+    {
+      "image": "Comparison/physical-diagnostics-420.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "f99e08e22e93c7429308ab9c4a7fc5455b714ae958d918cab9fa09cae01cb508"
+    },
+    {
+      "image": "Comparison/physical-diagnostics-700.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "9c295d0f21adc04dd115063c99940507c3f17dea1ace9b671f08ff2162cc2a9b"
+    },
+    {
+      "image": "Comparison/physical-graph-condition.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "63155f58a464887b3eabfe4194d582804a36935be47e61bc0f2592f206b31603"
+    },
+    {
+      "image": "Comparison/physical-graph-contact.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "a5baf369d3af13c4b85115c813be00d387b5426b8a09228beeea47b4fdaf5e02"
+    },
+    {
+      "image": "Comparison/physical-graph-coupling.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "977af7b564d749daad7668e3a47fa1a72fc0664a5426f57a18a5a10db45325be"
+    },
+    {
+      "image": "Comparison/physical-graph-cylinders.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e428e9713c3af8fd5339794a54b0c0d79c0b89cd98df32a14eb87ffe02cd63f2"
+    },
+    {
+      "image": "Comparison/physical-graph-energy.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "31385f467dc51f3d6250cd3cf34678c8b0827fd1d6982661e6d39fb979daf5d3"
+    },
+    {
+      "image": "Comparison/physical-graph-fluid-losses.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "23587b1627c1a1be33ac534ed35987784f1a3d16e88666d33d27a09792289054"
+    },
+    {
+      "image": "Comparison/physical-graph-fluids.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e2c0f91dcc374bb5be7dcdd5b91e3d7b02f9d550c3ce4346b6983b2e04d45dd6"
+    },
+    {
+      "image": "Comparison/physical-graph-mass-fuel.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "f97809f8076189ac07a45474425e8ad7f79a5431d598e3ef9901aba6f3a73ecc"
+    },
+    {
+      "image": "Comparison/physical-graph-part-health-1.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "57d71f09c02d823a08a1bdf8049ae023bf425bf8c7f6b69799e9c1448aefcf84"
+    },
+    {
+      "image": "Comparison/physical-graph-part-health-2.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "d1bb09ffd3bf66065eb4414c06ee80c696f7ada93410c8592f5ebc2b3d3b6ad9"
+    },
+    {
+      "image": "Comparison/physical-graph-part-health-3.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "5da975be70a1c19af13ddc2e8d7f7fe8540df5f0bf6f9e5bc3ed6bb09738552b"
+    },
+    {
+      "image": "Comparison/physical-graph-part-health-4.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "b401aa59eb574723340e522776d0712752adac2071cde55e31153d6f06015b51"
+    },
+    {
+      "image": "Comparison/physical-graph-part-health-5.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "6ba3f402dc5d90a8b1a0cfdede28a6f446aac4d5b0fed9a6a8806e57bc34e131"
+    },
+    {
+      "image": "Comparison/physical-graph-part-heat-1.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e3eb5e505249627aa79143aace7ee61cad3f4588845847bdbb400600693fb936"
+    },
+    {
+      "image": "Comparison/physical-graph-part-heat-2.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1498b2a2ce825c71a52d4329288460326505808cc791096fd5f77c4cbe41a26e"
+    },
+    {
+      "image": "Comparison/physical-graph-part-heat-3.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "144ed3aa5451d603ea4bfbb8b52cfd0a1fea5e33c28a8e40ac680d23256bc72c"
+    },
+    {
+      "image": "Comparison/physical-graph-part-heat-4.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "2091489007e1f43d92ef74253967c78d64aea908b3b5f0adf9aa294bcd574646"
+    },
+    {
+      "image": "Comparison/physical-graph-part-heat-5.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1cc44cbeb1a055d9bd18657873c55c65992a6bdc9624d532fe81f88aca75d04d"
+    },
+    {
+      "image": "Comparison/physical-graph-power.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "d856d5826aa437a086d8df6868362753365523a69badcd93b9fd9c92c02b9d5a"
+    },
+    {
+      "image": "Comparison/physical-graph-tires.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "f6296b67a8c6891be9823b0fc1a09c704e1aae8a71a2eca264acee3a75889e28"
+    },
+    {
+      "image": "Comparison/physical-graph-wheel-force.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "b4bee8e1c3b37fdcdd76e17d9f33941c2f6128f01e6e9e6df6db6dc00cb941e7"
+    },
+    {
+      "image": "Comparison/physical-graph-wheel-rpm.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "ab84da9ef1f1705e4ac2c353c11f207eeddfce7b9a09f87405f65278e0019122"
+    },
+    {
+      "image": "Comparison/physical-graph-wheel-slip.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "70a125469f83c8e0f3c3440baa1d84f350a9d9e7fe5c8d20475af4715eb878d5"
+    },
+    {
+      "image": "Comparison/physical-graph-wheel-torque.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "277fa9e01c2333032d16fe2e6b1db7ed154c03cf4a5642417143b5a1d75479e3"
+    },
+    {
+      "image": "Comparison/physical-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "34887cb21ced285a0170b1eb372a4c2f41a026f0e4dc957cbc204afcf65c8b47"
+    },
+    {
+      "image": "Comparison/physical-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "dc588d84e8cd6cd7d5e1df87e3660c09b6ebb8bdc50cb4ec17ca5f83ddbfefe5"
+    },
+    {
+      "image": "Comparison/physical-replay-overlays.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "9561caadf41b1e6cad18a09bfdab79c96a316bec1bb62ce5934368ce2d4455ad"
+    },
+    {
+      "image": "Comparison/route-assemblies-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "b49721a02c54a1931b0a85f70edb0091b0b676d369003f0c1877c59aaf078246"
+    },
+    {
+      "image": "Comparison/route-assemblies-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "325fab905ee3d9bae92cdba7c4f9c476101a731a037466b6b9ec2273fb5ca855"
+    },
+    {
+      "image": "Comparison/route-business-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "f753edcf443117a2178dd5ddf0df93370d756b906a7e45b8db52ab2c7db9f134"
+    },
+    {
+      "image": "Comparison/route-business-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "29cdc5b2f0b69fa4a8301e77fe0bdd93f8120963a7cb84828fbd89c21c1e4879"
+    },
+    {
+      "image": "Comparison/route-career-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "82af2c3de9eb5fa72e62f18532e5c2798a88aac66b2ce6a561fc99b6f23a2bce"
+    },
+    {
+      "image": "Comparison/route-career-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "269342c81cc7b7a5e749ed04053364e241351759a550335b9eb3a756598990f4"
+    },
+    {
+      "image": "Comparison/route-collection-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "21ab41dceb4d88bcc1d9fac0bb2a6ae67f50510b2e658caf7a80eafd5ffe3099"
+    },
+    {
+      "image": "Comparison/route-collection-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "a102b5b17f8ba8d4d3f5d0593c939e8e472e0644b56da99e6d4426570a4a4649"
+    },
+    {
+      "image": "Comparison/route-driving-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e0f938a6f777f25d21bcd36ff9017d0343ffd2e84097719fc84bf7a46e5f801c"
+    },
+    {
+      "image": "Comparison/route-driving-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "35b42b019ba7fc7f5e6055235c6017c6b60e419ca5bc8c3b0af6e8b251a4cb9a"
+    },
+    {
+      "image": "Comparison/route-garage-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "31100c07ff592899c03de74de634f47ccd6c1f507a6d886a962cd9efd442df20"
+    },
+    {
+      "image": "Comparison/route-garage-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "61f4491180f21537a16c25b72c1ec8ac3b29f4454122bd8af2208d183f1e9217"
+    },
+    {
+      "image": "Comparison/route-parts-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "3a5d99a2ccdf46a3e3fc808fd33c8f679a766df7e5f462c9bb5da9bbcddcfff7"
+    },
+    {
+      "image": "Comparison/route-parts-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "9bbc8dcb36f567a4b259f89f9eaed1144f66713aa0aa5a8de78b5ac7496fc4b1"
+    },
+    {
+      "image": "Comparison/route-race-setup-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "466b4813586a2f025784b70c12f18cdbcde579a27aa6e48f78bc75ca307367e6"
+    },
+    {
+      "image": "Comparison/route-race-setup-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "6f48dbcd6661ccb0865e983e63892f8351b774139ebfb942549a95e96a4824d9"
+    },
+    {
+      "image": "Comparison/route-recovery-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e4d9eb37abed662df9d5af5f6e8eac5bde394c702905f51f6482a0f2bfd40bae"
+    },
+    {
+      "image": "Comparison/route-recovery-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "97c9a1ccc41ecefb200c66d3b74630d2976fedfe900dc259b400435a5af80e49"
+    },
+    {
+      "image": "Comparison/route-settings-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "199acdaae206b8e8d6e096feb924bf9d6ed7b090b76d674dbacfcb32c279dc98"
+    },
+    {
+      "image": "Comparison/route-settings-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "d0cff548949d9423a39b56f7b215c09c0828a9a5dffa04513cf028601cadf35a"
+    },
+    {
+      "image": "Comparison/route-setups-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "f39af3f457f08d6411bac8a12780e9e0b85df65d127cf831f7d13d4d4f1b6ff6"
+    },
+    {
+      "image": "Comparison/route-setups-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "a7a3c97b7081dbbdd3dee042343e72bbe89a9df11e73f373dbe9f32d49df2f72"
+    },
+    {
+      "image": "Comparison/route-stats-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "c204db961f0d7c323cf13994af9fed98bfef3bec70eba79c3ca8dda0d15a6ad6"
+    },
+    {
+      "image": "Comparison/route-stats-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1db2fb00c8099b8009208d36ef3d58af3dcf735fc06dbd6b6b921e0135629cb4"
+    },
+    {
+      "image": "Comparison/route-tuning-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "3f18ad21b7465e1f457b7acd740ec9cf06e7d452d4e777579ff93e09e03ae621"
+    },
+    {
+      "image": "Comparison/route-tuning-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "4f0d4b0ddd1938d85e07f0b64266e43cb0b66715de69d6aad709e9f44cd11a64"
+    },
+    {
+      "image": "Comparison/sound-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "3821bd04de8aa18ded92f5b349f9df71bd3633f3b1dad01801f0be2512d22b7d"
+    },
+    {
+      "image": "Comparison/sound-tab-0.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "4c535ccb3e46206a46dcb5b945f76edd41e033ae9c15fc4cb5ec4d933959f083"
+    },
+    {
+      "image": "Comparison/sound-tab-1.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "0eabf4e5c14cc663cb5b11de773d296b8f567c6d3f1f5cc8af5e9e4eae69aef4"
+    },
+    {
+      "image": "Comparison/sound-tab-2.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "c716b68b73b8bac17f0af7a27515192353b22985bdb3ff0c3a45a2bdc4d54aa3"
+    },
+    {
+      "image": "Comparison/sound-tab-3.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "679de38a90998d50b4ce362c9f9cc88568faf2ddc6e9988808f9c3b70b2b2af5"
+    },
+    {
+      "image": "Comparison/sound-tab-4.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "edcda8744d6a1aea9b356904cb07e8c25bd1c7e44a0017ba95ee22aa3ea649ac"
+    },
+    {
+      "image": "Comparison/sound-tab-5.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "091bdf8d1c7bb7e5dcf33357164eb0be1acb44519cbbe2b4479d6f574c223183"
+    },
+    {
+      "image": "Comparison/sound-tab-6.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "36fab41ecf27533f634cb8aa3fb1c8ed4545d76c60d6798f7eafb933bfa4e34b"
+    },
+    {
+      "image": "Comparison/sound-tab-7.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "9143ba245ce94a73ad2822790f50caea630a97aaecba8e9b79a97b82d423827f"
+    },
+    {
+      "image": "Comparison/sound-tab-8.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "0da14a0bdf77f20e5f4b5a35c7daaff9cad8bc773534876d8799d1a9c3b9991d"
+    },
+    {
+      "image": "Comparison/valuation-new.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e0ae16448e6128356b1aaa932406df60a53e48a1bf26bdfa5562dd4b136a145d"
+    },
+    {
+      "image": "Comparison/valuation-old.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "389d482f062fa4fe51234e7ed6de5f122ac62776d6310dd7336984c1c450d121"
+    },
+    {
+      "image": "Disposal/disposal-after.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "5dae2cdb04b528fe720185ea20006c5f7a62ec8d4c7a5984cc0a679f8d0226b4"
+    },
+    {
+      "image": "Disposal/disposal-confirm.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "0a84cdebffd7c090903fdd28cce39f4543e6f185be1d190fc659da80a9b2be0e"
+    },
+    {
+      "image": "Disposal/disposal-keep-engine.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "2901b224bf828f63308d84a59ff0efc87f5517695b126c32456a2dfba20ae53f"
+    },
+    {
+      "image": "Disposal/disposal-page.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "90ab123c6cbae5e70110c12aabf9a40e1761cf3abd624fe93f2af1714d394454"
+    },
+    {
+      "image": "Disposal/resolution-tests/disposal-1024.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "a1e6cde448fe7849e3372380c98ffafd183490f1d6d13ff9fa9fad7fdd6186d7"
+    },
+    {
+      "image": "Disposal/resolution-tests/disposal-1920.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "b7c1d1430bcca996f7bcf3aea8c20d93dcd8ee1ece7df4dcea770bd08244cf30"
+    },
+    {
+      "image": "Disposal/resolution-tests/disposal-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "81f9bdda47863aab3dfa2088ee5dac6153f4df2bd376c6035e7b960574924a2c"
+    },
+    {
+      "image": "Disposal/starter-fitted-collapsed.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "5d64c9cafd880c969903542c825b1094caf1e58b1db0282406d64c872f87294a"
+    },
+    {
+      "image": "Disposal/starter-fitted-control.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "27f798a18ac81c2d6f77185a64160217b8ba61bde6c88c3fc6741981e7fbbcac"
+    },
+    {
+      "image": "Disposal/starter-fitted-groups.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "2d94234d374e2e1fe1bf185d519d76b9e79ad6daa431873bd9dc21a20079d90f"
+    },
+    {
+      "image": "Disposal/starter-fitted-overview.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "54cad11c7197ec6a440fb9cd7b3ad311fa48d49d8d4f0aadbf7cac3f4396ae08"
+    },
+    {
+      "image": "Disposal/starter-owned.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e4f272699beb05634f4e27e6ac71267c9a2b139155942555dde8e84fd26b41d2"
+    },
+    {
+      "image": "Disposal/starter-selection.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1a0fd9ee8debb4e0d2452415dd9bd2b214f96d27840d2e76e16411d077230ea8"
+    },
+    {
+      "image": "EngineBench/bench-dyno-overlays.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "933bc5d11e32a81c0bb062c46e3d86c177914df33a381154712af0b787308ecb"
+    },
+    {
+      "image": "EngineBench/bench-flywheel-coast-overlays.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "9de1a43f752854c20d85b85c15f748835bdaf63bb54a647f3fae6334daa6e313"
+    },
+    {
+      "image": "EngineBench/bench-flywheel-dynamic-overlays.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "c41cbb575d4318c5498969b9f8404a485fd06719ca399b1b6cacb25de23dd35a"
+    },
+    {
+      "image": "EngineBench/bench-manual.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "c0c9ab9ae2ac3b511127a9dfc09654e307f4e5a814c303144d585e9d16dad38b"
+    },
+    {
+      "image": "EngineBench/bench-tab-1.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "b7b0e9025fd8dfe086a53e8a2c9e2e3590968e9122df00ed45c2add77ed9b7c2"
+    },
+    {
+      "image": "EngineBench/bench-tab-2.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "da52942c3dd999e23e75e6279951d9a6d555f1bfc86091ad550e91e21c860c29"
+    },
+    {
+      "image": "EngineBench/bench-tab-3.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1d7188beb28b98a58fbcad92d05edbcfc83cc6fed142267e7dad76374e387773"
+    },
+    {
+      "image": "EngineBench/bench-tab-4.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e99b38df00cfcf61606613a9d6f8aa52d1d825053bc6b9528a0fc9fdf91464fd"
+    },
+    {
+      "image": "EngineBench/bench-tab-5.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "ed3a808656d5de61db368880fd5aa5eaa8811a904e78bea3bf2ef4d0aaabeafa"
+    },
+    {
+      "image": "EngineBench/bench-tab-6.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "354b5c878448e56fa1d1044daf7ccab606b87e18bca1203a0f80067905a1e388"
+    },
+    {
+      "image": "EngineBench/bench-tab-7.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "7cff8111dfeb26e20028863e866ad923405c394be6d26702b93d7ee824eaee5c"
+    },
+    {
+      "image": "Maintenance/maintenance-batch-after.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "10e609a0e8dbe71baddc0721e11fd98ecb394834f4d749a8e7e92f3cce707c88"
+    },
+    {
+      "image": "Maintenance/maintenance-batch-broken.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "4890df1034fac0694d0218a3e77f9d1048bcd2d69eaeb09c0fdbf786f74d743a"
+    },
+    {
+      "image": "Maintenance/maintenance-batch-cart.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1ae1cbee3ca20f5d52b96e270f4d8308a0c465de4b51d0e631354b24786fc51c"
+    },
+    {
+      "image": "Maintenance/maintenance-batch-long-list.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "d61cf70b581bb5799b623aafc18a15479f6dcba537821e13fc53bbb89c8f94e9"
+    },
+    {
+      "image": "Maintenance/maintenance-batch-worn.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "779ce829eef62ef80dd18f0693875af8cf21b728da85a5647f1c82afc125c5fd"
+    },
+    {
+      "image": "Maintenance/resolution-tests/maintenance-batch-1080p.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "12751369a3d906be6d442262aa12189a9ef3462d282bd6abb119e683881a019c"
+    },
+    {
+      "image": "Maintenance/resolution-tests/maintenance-batch-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "77362518598c7c88b2a7a351a241872610ced4c2fa1c68540e99183e92b32486"
+    },
+    {
+      "image": "Maintenance/starter-fitted-collapsed.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "031d8f01857f37dc0616e26e9dc910805e25981f436f8ea24bba1a715864c1d3"
+    },
+    {
+      "image": "Maintenance/starter-fitted-control.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "27f798a18ac81c2d6f77185a64160217b8ba61bde6c88c3fc6741981e7fbbcac"
+    },
+    {
+      "image": "Maintenance/starter-fitted-groups.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "488c0cbd5c83d9a74d82daaf49da21ba1b5738bc4e0cfd1840943ce8f7c2e219"
+    },
+    {
+      "image": "Maintenance/starter-fitted-overview.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "25a7cf3f0d7d6b34b2656bbe53c92db3ff7715ef093e29ae7d7da536d9e6d44f"
+    },
+    {
+      "image": "Maintenance/starter-owned.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e9286c07a0142f117690cdec7307192931e3839e99c766db9c14d6edf743f4ab"
+    },
+    {
+      "image": "Maintenance/starter-selection.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1a0fd9ee8debb4e0d2452415dd9bd2b214f96d27840d2e76e16411d077230ea8"
+    },
+    {
+      "image": "Parts/cart-edit-pistons.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "c94d2cb41ab3dc4965aec2a38ce1c9c2e9dab63b3e117dc9ee6d8b4f23c1b2c2"
+    },
+    {
+      "image": "Parts/cart-edit-valves.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "ab0dc88aa39fb85ee5003286bc2852198436168a15fedadcc90b26fb3a238192"
+    },
+    {
+      "image": "Parts/cart-full-stats.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "5d5eb0fd4f84bb124978b50035d2989561f00869cda6cd9f13e8639e8d1a9aaf"
+    },
+    {
+      "image": "Parts/cart-page.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "8eb80b52603bb24b0e4eba0b755157a6e31ccf716f11bc02aa9c49695421096a"
+    },
+    {
+      "image": "Parts/cart-reservation.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "7f679207900dc5091c40dceaab5ee6a879118a37f5db50679ad5808af25f2f67"
+    },
+    {
+      "image": "Parts/part-comparison.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "5f1fcc093e2edec1ed80bf03f55063f8789d02adc558acb38e443e890bb9261d"
+    },
+    {
+      "image": "Parts/part-scope-brakes-effects.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "3343cfda6b78043b02c3a939988ea62dec8bc3c7a364aee6698b045171990cb0"
+    },
+    {
+      "image": "Parts/part-scope-brakes.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1bf72c7aef599fb7ae3b4979e6a87c5ceafeb204b549b9223307f235943aa820"
+    },
+    {
+      "image": "Parts/part-scope-cooling-effects.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "498475bd7c68b8302ea839ee52e8a6f607142417a9dd10ab1da1bd98ff3f2ec3"
+    },
+    {
+      "image": "Parts/part-scope-cooling.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "765e28d604b6292ae11416528891da246c67b8227f341bac40410e1fa80241c9"
+    },
+    {
+      "image": "Parts/part-scope-pistons-effects.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "a3baa2440bc034ac28bff749c00f497c97af06d9c6ea63b62ba0b0f3df073c08"
+    },
+    {
+      "image": "Parts/part-scope-pistons.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "a4c67642e662d0b75b8302240129c4a50e2e0d688261ee505ea8273bd791f3bd"
+    },
+    {
+      "image": "Parts/parts-cart.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "b82bf34d9d3e175eaba9ddb7a0f5d103e0806655d5bbbf7dfbcf97a0047395f2"
+    },
+    {
+      "image": "Parts/parts-grid.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1334c4dd7f2560ea05851960e224d65fec79363eec17e38f988a286733f02b6f"
+    },
+    {
+      "image": "Parts/parts-loading.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "6729beaaae5abbf8caa7209ab0832b68fdbd73f5d197dfc9aba4ec59ab09e9d7"
+    },
+    {
+      "image": "Parts/purchase-individual-extras.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "d36ca32f5b702b05c87f07ede2e61e82c3f9985a10744210a73f4e73b7d5b0bd"
+    },
+    {
+      "image": "Parts/purchase-mismatched.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e1bd92c6c0ee3cee8c3d1366fd84f1dbf75ab0b65bc9f4c2c705579f57b213d0"
+    },
+    {
+      "image": "Parts/purchase-mixed-rear-tires.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "a74bc22718c80ecb1dc9732667563f30bf56bf740c49e662793f93fdbe019458"
+    },
+    {
+      "image": "Parts/purchase-mixed-rear-wheels.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "aa29270172774e6c4fdb541c077c668d9b9d1f7844099052cb65d8a55b667cac"
+    },
+    {
+      "image": "Parts/purchase-set-install.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "c9a5ea32e15c071b8c7d2c28c0f99d6895fc04c5133536c180971294f340f32a"
+    },
+    {
+      "image": "Parts/purchase-used-unit.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "37a7fa4bd03d977540ba360d8a0c187413d54514fc3653172875e82ce2004713"
+    },
+    {
+      "image": "Parts/purchase-valves.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "43b4e5b93ba4562e86bc59fd1e44c00110a8c443a35ec46878304e33a3dfd7c3"
+    },
+    {
+      "image": "Parts/resolution-tests/cart-1080p.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "5ebf60b587b24630b602673f6cef00407d6e67beec2d560c1ab8eb57e04e6bcc"
+    },
+    {
+      "image": "Parts/resolution-tests/cart-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "c8b966254d5fea390b2de3a36acf8d485f4a9e7328361b8b65eaf72ae99e22ff"
+    },
+    {
+      "image": "Parts/resolution-tests/cart-compact.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "16c9147a9098e540e9d61d9bfcf8b00030b7b32fad8085d577f6c894a284ffc2"
+    },
+    {
+      "image": "Parts/resolution-tests/part-details-1080p.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "15f029ac602b39bdc32ed84162b7cbe9d0cbab112abf2e6ce6d2ca23887a9d57"
+    },
+    {
+      "image": "Parts/resolution-tests/part-details-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "3c12667c8cba5b8bfabf88516539c2646e4ac035387b354cb6185ffe5b034e98"
+    },
+    {
+      "image": "Parts/resolution-tests/part-details-compact.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "b012aed097a659d3ae73e7a0daa1877e98ce95d6c7772fe698952016fa6db120"
+    },
+    {
+      "image": "Parts/resolution-tests/parts-1080p.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "5bdee72d5803948c8b70594ec2d236ead7640f414b83cfbd8aa7d9c67f77ee19"
+    },
+    {
+      "image": "Parts/resolution-tests/parts-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "24923d95a53ad02e48a1cf058e238a591b8837faac8beea8829a9a02d253f868"
+    },
+    {
+      "image": "Parts/resolution-tests/parts-compact.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "110ea08f851c8b8e843d87798acd70c94a8714a759d8ace20820db032ed5d903"
+    },
+    {
+      "image": "Parts/resolution-tests/purchase-1080p.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "d853b512b522c265ef2008874c06f642bc0b0183ee7871447be1c37c7f46766d"
+    },
+    {
+      "image": "Parts/resolution-tests/purchase-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "9c4e6b76c6b75e231e2d7b8107091cbb3c768767a30427dc453d468ac879ccb1"
+    },
+    {
+      "image": "Parts/resolution-tests/purchase-compact.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "8f1749ca050f0866ff140dcb33f07a7c7017ff28d978885cb63797f3652586f2"
+    },
+    {
+      "image": "Parts/shop-tire-specs.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "b51caaeeea15fd4fc1d235aaa1c92986103c8e9db99a0ba615038ca8dcce29f4"
+    },
+    {
+      "image": "Parts/single-tire-purchase.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "df50f9925f04b7d284d01442f5ac8929ae9373c536082876c3f1f8f09582e8e9"
+    },
+    {
+      "image": "Purchase/parts-loading.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "37bc82effdc5b10a5d2fd94ea68fbf79097bef5284a0f21dff51ecf72e82902b"
+    },
+    {
+      "image": "Purchase/purchase-individual-extras.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "d249c08bd0e57e4da0f77baba70a0d8d6d4673a13c587850f267e2622a9a4853"
+    },
+    {
+      "image": "Purchase/purchase-mismatched.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e4cbe5b160cbfbaba7adddd086cc8da6c010667368bb9650f731147bedd4ffb6"
+    },
+    {
+      "image": "Purchase/purchase-set-install.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "b57132c0c56372ac3e1aed11f5dba066d389fb1461144044721b8078ff5c80e3"
+    },
+    {
+      "image": "Purchase/purchase-used-unit.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "264d709fcef93eb7eb67166c72bc7e3b6ea2da1e08f2cc119f900bc06829c57d"
+    },
+    {
+      "image": "Purchase/purchase-valves.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "89a30d2019f625d8dc6b93fe3ae12340c2caf2e82a7f5d31da81ca79497f37c9"
+    },
+    {
+      "image": "Purchase/resolution-tests/purchase-1080p.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "66ef1859b2185f52bbd2546cf070687dcc9bd709f6acfa927764d46c999673a3"
+    },
+    {
+      "image": "Purchase/resolution-tests/purchase-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "b124e211f3cc832480e83c76543f556799a894f5af1615460a68d70a1f1d7711"
+    },
+    {
+      "image": "Purchase/resolution-tests/purchase-compact.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "58e408dfeec2c28b16f9ceafd9cf3898f728cb3f3d944c7b519c2019376e2398"
+    },
+    {
+      "image": "RaceHud/race-dashboard-Automatic.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e94da69cc576ebd0834a9d84e5ddb0156102704b3c95d831d424a4ef69fab832"
+    },
+    {
+      "image": "RaceHud/race-dashboard-CVT.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e36c5ba749f202f6e5e00d2902aca2e52e1cfb3e03a0c1e1ced30fa6938c6f35"
+    },
+    {
+      "image": "RaceHud/race-dashboard-DCT.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "17c9281f78c3d327c7c19ee510ce54493a4a5795eb362e55cc00f221f261d776"
+    },
+    {
+      "image": "RaceHud/race-dashboard-Manual.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "c400843911761df7621210ef43819b7499af6b1afb698e2abcefe0cffc62f939"
+    },
+    {
+      "image": "RaceHud/race-dashboard-h-shift.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "70427dcadbf55941dc7c63e83129ca79cb9217346b90ff838351cab1db45f532"
+    },
+    {
+      "image": "RaceHud/race-gauges-1280.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "5efe3867afc459a040c0c0ddf513f2619b4449dcc191575bfe5014278db93f57"
+    },
+    {
+      "image": "RaceHud/race-gauges-driving.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "6b6292415e504e780e89e995ccd8f4cd221ad76492888491e52e46ab07abc6c1"
+    },
+    {
+      "image": "RaceHud/race-gauges-results.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "0810927df13b415d157911a8522aae8eb050f21740a08132503606f8cf1b3107"
+    },
+    {
+      "image": "RaceHud/race-gauges-semicircle.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "5194a29708db1a969f5187a27ad16ce9dfddac685caf04502b6e08cd04270154"
+    },
+    {
+      "image": "RaceHud/race-lights-amber.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "60b233664ebb04b19cdac4f85c766ecae8f819b305a96c9a3a83a0ed3b3613a4"
+    },
+    {
+      "image": "RaceHud/race-lights-green.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "2fd9ca01342471966be83c38b4b653f8b42808efdcf159e451275d57784a16f4"
+    },
+    {
+      "image": "RaceHud/race-lights-red.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "8159f65cb2fd0bc1bc481842616334fea33cb46aa206071f2d1fbc2ecadf872b"
+    },
+    {
+      "image": "RaceHud/race-pause-controls.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "75f260b8ac62b38bef5b0a5475366cf3819d2dc5be54b74832b2f4f5a6d155db"
+    },
+    {
+      "image": "RaceHud/race-pause-menu.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "29ee326c391b8bd2c613e8b0142e2e19034eb45e41dc596674493cb861d128a8"
+    },
+    {
+      "image": "RaceHud/race-pause-quit.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "70bfd1ba877833cf9136455aeee0df83f23fef7d359e23855af8b2fccc8eb6f5"
+    },
+    {
+      "image": "RaceHud/race-pause-sound-draft.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "13eae9e36bba00373d4a7c9f1969d6ae76950253d56bea7fba17e5e4515c35ef"
+    },
+    {
+      "image": "RaceHud/race-road-72kmh.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "cdb3a6f9ea65f82959bc2889b0383b0ae7c812b2b18077a690247e75caafd92f"
+    },
+    {
+      "image": "RaceHud/race-shifter-upper-row.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "5efe3867afc459a040c0c0ddf513f2619b4449dcc191575bfe5014278db93f57"
+    },
+    {
+      "image": "RaceHud/race-trapezoid-finish-alignment.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "90954ae23443f75fa0bc5fd5356bc4176153c6917e7c98fea9b8d686ded58d1a"
+    },
+    {
+      "image": "RaceHud/race-trapezoid-finish-approach.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "3daa4d8cf1b2b448ec204351d345b15f7b98f6327e1dd41114e111bc6ffb6523"
+    },
+    {
+      "image": "RaceHud/race-trapezoid-start.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "f51206fede61ef4f47e41f2085087e398c390212291d1daf82a76bc7d1e0a612"
+    },
+    {
+      "image": "RaceHud/resolution-tests/race-gauges-1024.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "a64c9d8bb5c1c9319a49ffd478a440969d4a5b266023ea7d7e2bdfc98a52a7d4"
+    },
+    {
+      "image": "RaceHud/resolution-tests/race-gauges-1920.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "529987c8ce59091b777f9f3b3927f133a3c15eaae7a3ac280f9e0644e6dd837b"
+    },
+    {
+      "image": "RaceHud/resolution-tests/race-gauges-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "d21daf213bb4c8bf69df4067abb1892bb623a5573d8cf8e005e901f29472d6a5"
+    },
+    {
+      "image": "RaceHud/resolution-tests/race-pause-1024.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "e01975bd7326a1c3a5fa66c5381e378d0f2fac9d980eb2500facf63786673bcc"
+    },
+    {
+      "image": "RaceHud/resolution-tests/race-pause-1920.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "1db606cfc6ff9104194381fefdd2ae2efcb099214e3d45e20316e2e5c0b2a16a"
+    },
+    {
+      "image": "RaceHud/starter-fitted-collapsed.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "793f74181a3517e93c616e7576a12f817ed3f5cc1a39ca2cc7dd12a07232c99d"
+    },
+    {
+      "image": "RaceHud/starter-fitted-control.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "27f798a18ac81c2d6f77185a64160217b8ba61bde6c88c3fc6741981e7fbbcac"
+    },
+    {
+      "image": "RaceHud/starter-fitted-groups.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "3d3e46a5da8fccba7df81f959061a99d5b49b88d77c723c53788a1218e36b525"
+    },
+    {
+      "image": "RaceHud/starter-fitted-overview.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "9389097fec036e04faaceb3b5587e12d85d7e329265e187e765d92750437abbe"
+    },
+    {
+      "image": "RaceHud/starter-owned.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "93c9d6224593237b5c0398aee54cd8b7e8851f77ba042be69f0f536a06de406e"
+    },
+    {
+      "image": "RaceHud/starter-selection.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1a0fd9ee8debb4e0d2452415dd9bd2b214f96d27840d2e76e16411d077230ea8"
+    },
+    {
+      "image": "RaceSelection/race-career.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "66f3ad9a057d9c5dd61b46a9044385cb7d6a67afcfd5a927e1bb8f8ff2c8bf83"
+    },
+    {
+      "image": "RaceSelection/race-free.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "6e00cb2a908772c88a791f0570550bb4f097dbda8b0e9b3e63e4f76c54b45cd5"
+    },
+    {
+      "image": "RaceSelection/race-records.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "0a2faf12fc0369c948514a5c7ca59796eae1a74f9a7243a9f49c130aff73e973"
+    },
+    {
+      "image": "RaceSelection/resolution-tests/race-1024.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "cc99e86d801819908379a1066f0a30befbe6911d78661b116264a0830896925a"
+    },
+    {
+      "image": "RaceSelection/resolution-tests/race-1920.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "171abfef9df5953035adfece1860db59b096331b13c7533d48139d8d6e3f5f74"
+    },
+    {
+      "image": "RaceSelection/resolution-tests/race-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "a3169ce4c0a91108d54bdedb98c46ea14c287fdb131b998c3f8b9649ee9a4f07"
+    },
+    {
+      "image": "RaceSelection/starter-fitted-collapsed.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "ebe0da688356cf57b265fd1f5d756ad10fddc2deeda9903ba9c101b1eac0e94e"
+    },
+    {
+      "image": "RaceSelection/starter-fitted-control.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "27f798a18ac81c2d6f77185a64160217b8ba61bde6c88c3fc6741981e7fbbcac"
+    },
+    {
+      "image": "RaceSelection/starter-fitted-groups.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "3d3e46a5da8fccba7df81f959061a99d5b49b88d77c723c53788a1218e36b525"
+    },
+    {
+      "image": "RaceSelection/starter-fitted-overview.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "b31ac3004a71cfe8d8bc5d25a67582504474bbf14e36757fcff1622d02833e12"
+    },
+    {
+      "image": "RaceSelection/starter-owned.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "2d09721c8a9ff5ff65b6c97ab7f341d77d9370bf8ce446da8b4bef4ddc7bd46d"
+    },
+    {
+      "image": "RaceSelection/starter-selection.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1a0fd9ee8debb4e0d2452415dd9bd2b214f96d27840d2e76e16411d077230ea8"
+    },
+    {
+      "image": "Rebuild/rebuild-collected.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "bafb5f3025aea1332e9e0e8990d8810d70a3dbd72fc4212534a63e132a12f57e"
+    },
+    {
+      "image": "Rebuild/rebuild-quote.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "9e341c32b8f725ced19c4d1c516faa1f69c651ca9ed0552ae1079497c1ba4223"
+    },
+    {
+      "image": "Rebuild/rebuild-ready.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "c8371a2adecc830cdd5728efb6c54061c0238d0a6073d01eecbfdfbdf26f906f"
+    },
+    {
+      "image": "Rebuild/rebuild-waiting.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "b91981a438634b2a2f7a71638237e35ddaf9d9b78967cc123c050fdfd20ceafc"
+    },
+    {
+      "image": "Rebuild/starter-fitted-collapsed.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "ebe0da688356cf57b265fd1f5d756ad10fddc2deeda9903ba9c101b1eac0e94e"
+    },
+    {
+      "image": "Rebuild/starter-fitted-control.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "27f798a18ac81c2d6f77185a64160217b8ba61bde6c88c3fc6741981e7fbbcac"
+    },
+    {
+      "image": "Rebuild/starter-fitted-groups.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "97343e06a0360709233367dcc457fe8ce15eff71439b2c8abda6e13506a7a178"
+    },
+    {
+      "image": "Rebuild/starter-fitted-overview.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "2abf527b0594b1b585ef87a2cd89488fa7b63c37e3cceb4d45e0bb2aeaac247d"
+    },
+    {
+      "image": "Rebuild/starter-owned.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "b35b3e1556cdf0a6c60c370e20cca51f267d7ed0688108d18ce01fe8cfdea1da"
+    },
+    {
+      "image": "Rebuild/starter-selection.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1a0fd9ee8debb4e0d2452415dd9bd2b214f96d27840d2e76e16411d077230ea8"
+    },
+    {
+      "image": "SetupManagement/resolution-tests/setup-management-1024.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "0d1df54fc8b1bcf9c12fe681d23371c019652a0ba560f0f49e296978968fefe7"
+    },
+    {
+      "image": "SetupManagement/resolution-tests/setup-management-1920.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "5514c3b83e3c1fc1e5b8a7f1da6b923ac7e6ccb923b710a14f5262a2bffce648"
+    },
+    {
+      "image": "SetupManagement/resolution-tests/setup-management-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "c26a96c627c956d5b3488c73cd361a3ee435341e3cb20ac4b0320a665dc77e7e"
+    },
+    {
+      "image": "SetupManagement/setup-deleted.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "b3fd54f97cad478e8c6fdb7c9bdf67e33a13ab6e0c19646710981a6b9edaa256"
+    },
+    {
+      "image": "SetupManagement/setup-managed-name.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "f209bf6148d4f4d6afc697a9e11cf02218eed66ceda69630aa714120db431a60"
+    },
+    {
+      "image": "SetupManagement/starter-fitted-collapsed.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "7838a4a504422e6b96bb73df7b4ea17ea13ff3aeb538f2c37dff2a2a04a56bbb"
+    },
+    {
+      "image": "SetupManagement/starter-fitted-control.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "27f798a18ac81c2d6f77185a64160217b8ba61bde6c88c3fc6741981e7fbbcac"
+    },
+    {
+      "image": "SetupManagement/starter-fitted-groups.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "9458033e64f1f88bebae3a9a8e1132725c80282f3d3ccfd5af9e42323fa5e48c"
+    },
+    {
+      "image": "SetupManagement/starter-fitted-overview.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "54407b2fd4b62346475771101a5a73dcf62b8ba9c47b31e292613990ce23370d"
+    },
+    {
+      "image": "SetupManagement/starter-owned.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "49803027d7ca266ca9331f0760c15bbc4067d9b33b3f650ed0f7cc19e6de9074"
+    },
+    {
+      "image": "SetupManagement/starter-selection.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1a0fd9ee8debb4e0d2452415dd9bd2b214f96d27840d2e76e16411d077230ea8"
+    },
+    {
+      "image": "Shell/button-shine-a.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "d7c0df1f64614a76cd2d82d850ef131f65f8d77f6cdfe5d29ec04fdc692407ae"
+    },
+    {
+      "image": "Shell/button-shine-b.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "a935f8934189ac645d670f19d4631b3069bb77c4498cdd790bade36bbb4f5b71"
+    },
+    {
+      "image": "Shell/car-filter-ranges.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "cda92defa440096b0343197d5548db865b321c81cfe11a4f3539c200276ffc84"
+    },
+    {
+      "image": "Shell/car-filters.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "d757a00a11ce5ddfe0be8c82aeb59be20a52f10627d2a83c90dcce1ae82e7cce"
+    },
+    {
+      "image": "Shell/car-maintenance-after.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "c63a23e2ccf063f36b9770936cad9e49239e458db07f240f34f0f4a8ca14067d"
+    },
+    {
+      "image": "Shell/car-maintenance-rebuild-ready.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "6dd4059648e12e8c3210a2302bb0678faaa7dd6bdef074d13275cd91b8bed3ae"
+    },
+    {
+      "image": "Shell/car-maintenance-refill.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "05edc92cdc086d1b2bbe850ab1242dcfb5e17189e60043fe4a2b0be7ad57e2ba"
+    },
+    {
+      "image": "Shell/car-maintenance-replace-set.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "a6c81eecf0b74eaca84e5fad291069d1afda8a47345474b7a61d198ecad15987"
+    },
+    {
+      "image": "Shell/car-no-matches.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "c4a95fb0eca137b103dba2f6127a62003fc4f3055f7319d7e1ecb851fd63e44f"
+    },
+    {
+      "image": "Shell/car-search.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "901e99503c6ba356fb83933654981c1002865f6cacb7f7ae1d15d7099495fb0f"
+    },
+    {
+      "image": "Shell/car-sorted-hp.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "b5db7337a1a760f7ece0a4356855a5ed97215120be520d222eb0df933e5c73d1"
+    },
+    {
+      "image": "Shell/dealer-affordability-filter.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "294ae3b0f3bf92e23b5b01f3707555f78036be649dec8b5f686c93cec9892007"
+    },
+    {
+      "image": "Shell/dealer-comparison.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "01d85ecfae1643b993acf42c929a9f9e6b5521909a5212bf9be207dc1217d165"
+    },
+    {
+      "image": "Shell/dealer-confirmation.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "405c669c645077318adbd5145686f163f8e40055e2c42a9a0b17fbe9bc238aa0"
+    },
+    {
+      "image": "Shell/dealer-details.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "edffc939e7a6bd11b199cf63bfe88f5fd13166f26432d9e499b1cfcd69d3a312"
+    },
+    {
+      "image": "Shell/dealer-differences-filter.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "090803869b1dbd77164d88e9bec7384c8f696aae2556ed58538b7242734b11df"
+    },
+    {
+      "image": "Shell/dealer-differences-only.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "6a6497b6aff818fba9abf8edbb67bb70a21b3c1dced3c737c63f1a8ecb3d1fbb"
+    },
+    {
+      "image": "Shell/dealer-grid.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "2fa854df0b5ba28273f69caaac20a4ce20f1b26e9b43734fcfcef8d65c9919f8"
+    },
+    {
+      "image": "Shell/dealer-search.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "9c1bc30ef9f788ac758d14742e8a6604254c1f64b1339f6890ac30a384a3e5f8"
+    },
+    {
+      "image": "Shell/dealer-tradeoff-info.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "9ff70c5daa418f7bcf10b996efecec240db70774849b57c854c20984eaf54ddc"
+    },
+    {
+      "image": "Shell/dialog-close-hover.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "2ca75cdb051b7383846f5c88524c25ddbf45a9624f560cf1406f5362346ac15b"
+    },
+    {
+      "image": "Shell/difficulty-lower-options.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "9966d9513d8989fa67ce6c1ed58ef1158f4a09a01fd685874c80aa09201af16c"
+    },
+    {
+      "image": "Shell/engine-stats-lower.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "cf0cfe4a71cd1639a4ba1df27460a3dc0f0acfd8bc4b0b2ba008020893660874"
+    },
+    {
+      "image": "Shell/engine-stats-open.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1f5388eb8d0ab600f2378738831b5cc009f360d4aee9489967f255a8956d51bd"
+    },
+    {
+      "image": "Shell/garage-1280.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e67da6289f04406cdc85140a2f5cdd6a3021df03e0301d0667c85fc680bb85ed"
+    },
+    {
+      "image": "Shell/owned-car-details-1280.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "52db77143f8b05813472e897898df8c1a4adcd38bb96374d685800c018e018e5"
+    },
+    {
+      "image": "Shell/owned-car-dyno-hover.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "d7929c7a110dcb09f2f24b02339a54f8f7e084dacc9e80dccaec3a52f4d7b20e"
+    },
+    {
+      "image": "Shell/owned-car-rename-dialog.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "063cf1324ff04a8041c4d06e0f10e7a78c0cc7fcb07e1863f35e706a7979b39f"
+    },
+    {
+      "image": "Shell/owned-car-renamed-grid.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "a513af7d30be29125a68c438e08024542442efc899015357b21a7ed7d69d45ca"
+    },
+    {
+      "image": "Shell/owned-car-use-result.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "c43c34af9749306e4f6482d9f9ed64585d9a3a19e8dba1aa72b6663da02e8667"
+    },
+    {
+      "image": "Shell/owned-cars-1280.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "d3d85f9b8cc8d3f73c77c4f9631b6e59549606565414a8d08d2c3f054e5012c1"
+    },
+    {
+      "image": "Shell/owned-cars-empty.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "8f0835665184e9edfd1d5b92cbe569971ca33ff4f3444677591f13bc5867347a"
+    },
+    {
+      "image": "Shell/owned-cars-selected.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "03caec04111f2b73afd0bda1f17f0e758133cf5ac99c7e74dde5f21233c4a744"
+    },
+    {
+      "image": "Shell/owned-comparison.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "5745f091283bbca27e67a51848a3afef4be00c45efba2006f5322f801edddd62"
+    },
+    {
+      "image": "Shell/owned-differences-filter.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "0607e0d6ef614d5c0f1024ffa20919ba2874f3897bb07e1187fcf6b531237fe8"
+    },
+    {
+      "image": "Shell/owned-differences-only.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "423428ccfb2a2ad4ca33906f164ce305a9a6ee85f8375803c63bffdaa98eeb39"
+    },
+    {
+      "image": "Shell/owned-tradeoff-info.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "f3539a228e52d2bbe97a18f634b7852e13a1dbd76fac31f6a563ccc5e6cc5a2c"
+    },
+    {
+      "image": "Shell/polished-hover-settingsButton.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "4b52dd287a03e278e4c01be31771b0156a9e632329016f4199098f4c6f9c37aa"
+    },
+    {
+      "image": "Shell/polished-hover-tabSound.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "ea5bc2c95a888960be028ada042b25ef35ee9eee71c0a78f1800e23161bce2bf"
+    },
+    {
+      "image": "Shell/polished-switch-opposite.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e6814a8e70fcac5383f743a1f236e7e966cc2af775438b985da422945f3a44aa"
+    },
+    {
+      "image": "Shell/polished-switch-transition.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "6e345fa1756b4d64249b5cbf24ec7ae5e8c47f41c7848ae7e0a3bb48ea2a3ea4"
+    },
+    {
+      "image": "Shell/populated-Controls.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "198197430fde6dee8e0f9e2088d2158cd9697f7b10765cf1728509100a9225f4"
+    },
+    {
+      "image": "Shell/populated-Difficulty.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "07dc639011eb2a92bf8e3c520fb2cf35d736d29c9173d880235b3c54081fed17"
+    },
+    {
+      "image": "Shell/populated-General.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "3a3ebcb5abd2566c767abec5f22694666d6043dd54c34156a7d87c0c23f2df15"
+    },
+    {
+      "image": "Shell/populated-Sound.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "7065ff9c97e720eb4028d8fff56cc338bc077d385ae39e1fb775329ada49663a"
+    },
+    {
+      "image": "Shell/populated-Units.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "c83b62dedb190a80e78f7c5de0fb3e75ef0d8f08ec8a9bd0685b6e451d913fbc"
+    },
+    {
+      "image": "Shell/resolution-tests/car-maintenance-1024.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "4ad0fe5d829192b41f527d2afa72eef315391200fea3f17ccf2d445eb76f285c"
+    },
+    {
+      "image": "Shell/resolution-tests/dealer-1080p.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "c8d9e323ec9b41d6cfb0c5e1291b76198a0e881753d37b7da6b156ce6fb262fa"
+    },
+    {
+      "image": "Shell/resolution-tests/dealer-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "24c3b177f2709ab99ecd01d0037c74202f04123a06e8b0fda598a6a7cbeff8b5"
+    },
+    {
+      "image": "Shell/resolution-tests/dealer-compact.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "9935fc9731554fbc3a08087e06682b0885b6a0c4ec2327094cb6b901dad73008"
+    },
+    {
+      "image": "Shell/resolution-tests/engine-stats-1024.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "c6315566cd4a839402223e7f3ada495e5e41cc5b50d2c7d4157a26fbbb8f2018"
+    },
+    {
+      "image": "Shell/resolution-tests/engine-stats-1920.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "992f0eec55b10333148a9448a74c9b79e66485a29842608af2cd6a270c968b0d"
+    },
+    {
+      "image": "Shell/resolution-tests/owned-car-details-1024.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "ef4a85342827e3f51bcc8b8200c020f66ddc9c5fff52afffd53f5f00c8270009"
+    },
+    {
+      "image": "Shell/resolution-tests/owned-car-details-1920.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "0fe196ea7f83cf6d0538d4a3cc105c034293c877c7149a034dd919aabb5bf187"
+    },
+    {
+      "image": "Shell/resolution-tests/owned-car-dyno-hover-1024.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "6e2cb364318bb403eb94f0c406d5b4f9db4763f4ab3c7cd637cc034cf0555127"
+    },
+    {
+      "image": "Shell/resolution-tests/owned-car-dyno-hover-1920.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "e8fa9fd5557f5ebb864ed1546eb3d350657d3fc9e667a7a7cd8cb19aab5f1ae4"
+    },
+    {
+      "image": "Shell/resolution-tests/owned-car-long-name-1024.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "df7cf2a3b9ce08e2538575f4fc44725063d806f8cb1ffa2fa230c19309a06b61"
+    },
+    {
+      "image": "Shell/resolution-tests/owned-car-rename-1024.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "00f53884c1d8f15c6d8bcfb7c9d91d5a21a3982711af1a71fd62234ebb114814"
+    },
+    {
+      "image": "Shell/resolution-tests/owned-cars-1024.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "7d199e030f00501d564195cc28e5fa7abcf9bd78f66790f6ae8deab7d5610502"
+    },
+    {
+      "image": "Shell/resolution-tests/owned-cars-1920.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "3afd650efbd1b1dc395d0e95b9e4b73f34f252b7b0b88ad04128d5061a2db9cc"
+    },
+    {
+      "image": "Shell/resolution-tests/owned-cars-4k-target.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "c90589e5d60f97d1c3389be0a6481018ef483e90698612d01ba127f158b28300"
+    },
+    {
+      "image": "Shell/resolution-tests/settings-1024x768.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "9a979aa2fe5df15dddb17e8520983b28b84b8360494f19c4a18318cab7417024"
+    },
+    {
+      "image": "Shell/resolution-tests/settings-1920x1080.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "81064b9b0674b5d7692e9791dd0a822cb0fcfe2d66d8b116a81fe6b5eba2a0bc"
+    },
+    {
+      "image": "Shell/resolution-tests/settings-3360x2160.png",
+      "width": 3360,
+      "height": 2160,
+      "before_sha256": "f54a143f53d1b923e66ef9bbfe6abf3a1e614a3e7a3801ae0531c85b75c7af6f"
+    },
+    {
+      "image": "Shell/resolution-tests/settings-4k-render-target.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "2f26f0bc2eddb73af24dcaa25fe7e60240d2d64161ec3c8ff9afbaa7c88c9dce"
+    },
+    {
+      "image": "Shell/resolution-tests/settings-final-compact.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "50f47940a4f1fc85403bfe23e1959b433e20b594f0cb4dc195d4f6d450a3e178"
+    },
+    {
+      "image": "Shell/resolution-tests/settings-fullscreen.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "bfb91f98e1c0928f0b17daafd75a7639bcb9aaf0b81dae07c3ba0280723af112"
+    },
+    {
+      "image": "Shell/resolution-tests/settings-populated-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "b2d7e6f6dd3a8f6088c6bc6ee554b4e11adbfe52008dde5f8d86a0ef9ce9767f"
+    },
+    {
+      "image": "Shell/resolution-tests/setup-library-1080p.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "f9754c35bf96d15177f3f6c79a575b5bf6ec93f291c5dc32292b07cb251e17ed"
+    },
+    {
+      "image": "Shell/resolution-tests/setup-library-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "c68b7d3cfb1f044b304232877654b459600e44e6e71268400ae015a87aec6734"
+    },
+    {
+      "image": "Shell/resolution-tests/setup-library-compact.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "a7a7041017e66fc263e31c44f759553760cf241f48f8a3fe37cbb3413324faf3"
+    },
+    {
+      "image": "Shell/resolution-tests/setup-load-compact.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "25c7bd1c3cff82de9a7f6cf007371fdea3d7fe563e584c8baa36bcacc018de02"
+    },
+    {
+      "image": "Shell/resolution-tests/setup-save-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "86409d6823eb22bea0c45f91eee5091c840f764a6ec7b22af57aa25faa28b6ea"
+    },
+    {
+      "image": "Shell/resolution-tests/setup-save-compact.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "492b8b7f058e70ae13e19c9b380f5f2e3739dcc3eec9c1608663156d9f3daac6"
+    },
+    {
+      "image": "Shell/resolution-tests/stat-components-1024.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "0e5f9a0b2138880f07252ae89cffd9e2d20e513c47ef674338480548b44a1b5f"
+    },
+    {
+      "image": "Shell/resolution-tests/stat-components-1920.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "563c4e20fecb2893d4f25f16eb6614025b21660609011a3593d164ebcc8580b6"
+    },
+    {
+      "image": "Shell/resolution-tests/stat-groups-1024.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "99354f7c4ced0ff680a935e7b6d9c5a748b4d456253a10905a6fbffbdab4a859"
+    },
+    {
+      "image": "Shell/resolution-tests/stat-groups-1920.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "b480c95d5931884687e8c5f1b7bae567bc6bbb3f1916765185a27f1e9344c07b"
+    },
+    {
+      "image": "Shell/resolution-tests/tuning-1080p.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "33e6975a71c8842d99054514d16263e33f4434d437272d0d0e221609d1593e4e"
+    },
+    {
+      "image": "Shell/resolution-tests/tuning-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "edd42e397c434a8cf305517d03a581a3e104f0f839ab1725c9b193036d4f5a13"
+    },
+    {
+      "image": "Shell/resolution-tests/tuning-compact.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "074aff61087a2558b25c8fa71451a48ddfa68fd89d3eea9b039346f01d690bdd"
+    },
+    {
+      "image": "Shell/settings-1280.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e1369538cb8c2f09c977963d389b22817070a82de87d5b145f994e9b6ef45cbf"
+    },
+    {
+      "image": "Shell/settings-apply-dialog.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "f13dc0f307bac4e7f4b0322f1954b61dccddc1ae49434f58656179df565a040a"
+    },
+    {
+      "image": "Shell/settings-final-difficulty.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "6e86f4d18f6f0526965d9832c2633aedb02dfeec601e12cdaa8f3bd443568a0a"
+    },
+    {
+      "image": "Shell/settings-restored.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "373143c9b37b0dd9ba1494e40caf8c9d2b7c2e736d59f418751493132572ab1c"
+    },
+    {
+      "image": "Shell/setup-library-empty.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "737b616e3b6efd7d0a5d55c978dea6536eba972d4f059c9f24d7b9ca1657b276"
+    },
+    {
+      "image": "Shell/setup-library-list.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "26418c10a1ab3cc5f80d8b2e3c13e13073edbbbbaab6098e16aa183d5204dbbc"
+    },
+    {
+      "image": "Shell/setup-library-no-engine.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "24076ea41abbb4e5b73a3a4fb97946776143f8df9445592cd606ac71fa1c6131"
+    },
+    {
+      "image": "Shell/setup-library-no-match.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "08ea04216383028fa05ed276de913d4ffbc968c0de0c7ab7384235e6e2b44979"
+    },
+    {
+      "image": "Shell/setup-library-other-platform.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1ccb01528b136cc416e59e45306fcaa21f47b916c1d7b7741e7713a4250a3bfb"
+    },
+    {
+      "image": "Shell/setup-library-preview.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "6b8adc638041a63bb4c40d07513b6e656df7446d95ecf79781f844a6ce904771"
+    },
+    {
+      "image": "Shell/setup-library-stats.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "07d447d6fddf2a8fae770f8c4c9120b55b62293a989551d9b5f0c23b977441bf"
+    },
+    {
+      "image": "Shell/setup-library-warnings.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "b835db889acd6e66abbe19bf3fb85d1c62a66ecb8c6eea90fc7f4f4781e6843f"
+    },
+    {
+      "image": "Shell/setup-load-buy-review.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "9be487cfdf1472180aa079b4ad743c113a7b742e75bb87a5285bce5e875b8002"
+    },
+    {
+      "image": "Shell/setup-load-reuse-review.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "ea50b35d33d75c05112c2b9631e93e8c57ccd3411ef420a0a9c77e5b08c76685"
+    },
+    {
+      "image": "Shell/setup-save-dialog.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "23e12387fdde8d866dd63422ea0c7820c8fe6cb1090f7622cb0aabeb7c2ab8ed"
+    },
+    {
+      "image": "Shell/shared-dyno-three-series.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "d34c052334e03ad42d8dea83c3dab7965711252c163d3674400c7cfc8776d874"
+    },
+    {
+      "image": "Shell/starter-fitted-collapsed.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "ab80c24410e89fdbebc4f1da6d68ddb56f23ad8a404cc5f27b4a89c0f699b410"
+    },
+    {
+      "image": "Shell/starter-fitted-control.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "412e02dc1a6dc08d5dd04889d3c0a304e95d01095ca8b041e4e4c2b9b1b1e490"
+    },
+    {
+      "image": "Shell/starter-fitted-groups.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "3a9dfb9661911a01d6b0ae94e0205a7180a6a32a2a68144d0726692503bfeef9"
+    },
+    {
+      "image": "Shell/starter-fitted-overview.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "51efdba302f330e38aec1cb071bc3bf47266eb3b0efc8c2fe412a3a2b5ea752b"
+    },
+    {
+      "image": "Shell/starter-owned.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "03c620f5d1b6b3e77fccbb82d6ddbf0ed26df7c01bc17f95ee64d41aad35690b"
+    },
+    {
+      "image": "Shell/starter-selection.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "0c71a55e1835754d9fe7b0ff41c60b685f930828685ea10fb962e246a63e5cdb"
+    },
+    {
+      "image": "Shell/stat-groups-overview.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e1b43259b6e2f6d3c685c6cbe6283b435b28329a75b6a3dca4140d0953a5e163"
+    },
+    {
+      "image": "Shell/stat-help-dealer-displacement.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "bcd33731c5836fc1c0764871feccb5f1c7558ead4460dc60f5720a41801c00d3"
+    },
+    {
+      "image": "Shell/stat-help-dealer-power.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "10dea056f8221c848a5e41b17d7311eef90349718708209077a2f2ee17f23b94"
+    },
+    {
+      "image": "Shell/stat-help-owned-displacement.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "bacfa6f0f0421b47b9966e8b35b9404e9b36326bac228abab96764199d252c4e"
+    },
+    {
+      "image": "Shell/stat-help-owned-power.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e0362edbb3ac374f4088ae08762a444af34f07a45facc62849393b15f92688fc"
+    },
+    {
+      "image": "Shell/stat-help-single-power.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "4ff99e0c2717e71e70f9d517bc9be44e1a31d63d95884762426f4938b6441e58"
+    },
+    {
+      "image": "Shell/stat-help-tuning-weight.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e2bc99fe66bbf9b9524fc7ae1e682ba8add6e42bd54756ab6aaaaee3b1aba900"
+    },
+    {
+      "image": "Shell/stats-component-elements.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "4f8f8556c1367353e9a5686d1bf689bd3394892b7da43f96eade87f8aa7eeda6"
+    },
+    {
+      "image": "Shell/stats-induction.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "6382cc9654d693beb66014166ef072691e2a2b65980c3145d6597783417ea644"
+    },
+    {
+      "image": "Shell/stats-performance.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "4622c0dbd43aa1ac08f634f669135bc585f1b3ff40eb326b345300dca8da2954"
+    },
+    {
+      "image": "Shell/stats-saved-tuning.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "683b294f2361ec5a0d4ae1d58406ebf48a6c3f401dd8ae8dcee7fec7c11bdc35"
+    },
+    {
+      "image": "Shell/stats-weight.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "68523a0c19bbd98fd4ee84b5bb6838fed51f8737409584aef3c81cc1090719f0"
+    },
+    {
+      "image": "Shell/tuning-TwinSupercharger.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "5e9d1489ee21cf4c303fe523283d626b5353ba4537215f90ebf4c90b49425959"
+    },
+    {
+      "image": "Shell/tuning-TwinTurbo.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "264e98d50ec382046267c916509785c838ce989fbe7683ce35a887b87ef7ea6f"
+    },
+    {
+      "image": "Shell/tuning-Twincharged.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1ca59f4d7bf601afdaad93d583a02c06cc51c68d70e5bc0b0ef429a691850968"
+    },
+    {
+      "image": "Shell/tuning-awd-geared-lock.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "054a4a3bb3b04772aeec3d3934525005ae05f30df931efc9c4015f75f363ccc6"
+    },
+    {
+      "image": "Shell/tuning-axle-stats.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "8de8c28248434727f7fff648fbd54b13e7112226d51584cabf077bcf4074419e"
+    },
+    {
+      "image": "Shell/tuning-draft.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "ea9cca88774592715b896bd8d44eefdcf4f2801a4950b35870a5b72e2af81d4b"
+    },
+    {
+      "image": "Shell/tuning-layout.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "3d7b4608a1933e6c69ab5232885b95da248fe8236cb2450ef1a6a8f7dd4afca8"
+    },
+    {
+      "image": "Shell/tuning-no-car.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "5a700f2e5ec2be80e07b7505dd17699bc43174ed8c24c011c0f65ec9de383722"
+    },
+    {
+      "image": "Shell/tuning-no-engine.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "f43e131eb01d5c803f78b6157839078de17b23afac35ea74aa922ef50075b02f"
+    },
+    {
+      "image": "Shell/tuning-staggered-front.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "d5bbf974cde79fdfb58256083b236d0b151796fdb0a18fc5d34ccb6428f8a529"
+    },
+    {
+      "image": "Shell/tuning-staggered-rear.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "290c049ef10b938fc1cf60785667a167cbea338fc2e7612a1c401e4dc488f744"
+    },
+    {
+      "image": "Shell/tuning-wheel-draft.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "563f8205dcd3e8906b4821d55aa456a4e1f72d6ef7caeb9f588bf82a1bc58204"
+    },
+    {
+      "image": "Shell/used-fitted-collapsed.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "b272462c8dac95ba260d0e563384bed575e9e3aa30a1e016947aca01c1824084"
+    },
+    {
+      "image": "Shell/used-fitted-control.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e6a1eef2574a1934fbd36d7b40acf0d335d8d02ca21d042890f11e5d0af6483b"
+    },
+    {
+      "image": "Shell/used-fitted-groups.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "9a63589b9cfcbb7bbf07713b3c398e7b1a52fca18a1fe2c188b3534be3d66745"
+    },
+    {
+      "image": "Shell/used-fitted-overview.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "f8415e9d8a2cff24778efc58045aa3d5668e47ceb99dec03546cc2e1d1ce58eb"
+    },
+    {
+      "image": "Shell/used-inspected.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "3279109a81655dda6852f31c7d334ba81bea7b66f8267419de44cc35805e0126"
+    },
+    {
+      "image": "Shell/used-owned.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "57ed85163aa59936bf595b6ef758e1b5f0e137e6ffaccd76e1782eee8b2d768a"
+    },
+    {
+      "image": "Shell/used-returned.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "8f0c227b30ba83b8e00d19ca1f77648214d158e2c3e04f477fa666975c9d2c4b"
+    },
+    {
+      "image": "Shell/used-uninspected-legacy.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "09524099a261a594417d85e7f1cd82e1c4bd544353aa7f3e55b4ecba5df44e25"
+    },
+    {
+      "image": "Shell/used-uninspected.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "8f0c227b30ba83b8e00d19ca1f77648214d158e2c3e04f477fa666975c9d2c4b"
+    },
+    {
+      "image": "Warnings/cart-warning-dialog.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "4677a54f20af2e98e0b18b58a411996e393e1c70e73963c50ae70f2024e67cbe"
+    },
+    {
+      "image": "Warnings/owned-warning-dialog.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "a25bccd12ca883470b21f253758f8d4c2ed589a00b299aefad8953b1fdb9527b"
+    },
+    {
+      "image": "Warnings/parts-loading.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "cb794af8aab261ebb79daaa099186325d207ba222b64c72f54513377883a7103"
+    },
+    {
+      "image": "Warnings/resolution-tests/warnings-1024.png",
+      "width": 1024,
+      "height": 640,
+      "before_sha256": "55ef28e662ce4d184037b3f7e76789bbbec51025b74dc23603644379a02cba0a"
+    },
+    {
+      "image": "Warnings/resolution-tests/warnings-1920.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "dc9125041cfbb56f2ca408990f58503b1bd30759c6029bfe90f94f3473322e7e"
+    },
+    {
+      "image": "Warnings/resolution-tests/warnings-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "5af8e1c21d1d5146159c7151e08476f19cdb262abe316dd3f892c073afb08766"
+    },
+    {
+      "image": "Warnings/starter-fitted-collapsed.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "ebe0da688356cf57b265fd1f5d756ad10fddc2deeda9903ba9c101b1eac0e94e"
+    },
+    {
+      "image": "Warnings/starter-fitted-control.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "27f798a18ac81c2d6f77185a64160217b8ba61bde6c88c3fc6741981e7fbbcac"
+    },
+    {
+      "image": "Warnings/starter-fitted-groups.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "9d6e4ca124ee809e708732f0bc73d7bd637165da48bc81fe16c927742f0f856e"
+    },
+    {
+      "image": "Warnings/starter-fitted-overview.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "3e02dcee80bb340c147ac97e7b3dd85997112d283d213abc5d969f24c25bccbb"
+    },
+    {
+      "image": "Warnings/starter-owned.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "daaab87c5046572439e3e0dc33f9424619b8f253e01bd24622b6915745859712"
+    },
+    {
+      "image": "Warnings/starter-selection.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1a0fd9ee8debb4e0d2452415dd9bd2b214f96d27840d2e76e16411d077230ea8"
+    },
+    {
+      "image": "Warnings/warning-icon-attention.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "46c479eed64caefd13fe649d303496ca943a16d2998cbcc93b86b957ef6e8bef"
+    },
+    {
+      "image": "Warnings/warning-icon-clear.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "d6f72247344fbe43aee15d8952192dc29f131e1bf1b1fc9c58614080a03a7f88"
+    },
+    {
+      "image": "Warnings/warning-icon-critical.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "05ed483c95dacdacff5ecbdb4b810910a59be2191bbd5e4e6f592f940f0e7eea"
+    },
+    {
+      "image": "Workshop/block-oem.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "f878e886a8a4237cf21ba06e1f57a9037f72ed158b79f429c86969f231b30477"
+    },
+    {
+      "image": "Workshop/block-reuse.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "8e3edf16e646331407440cad593c87b1cb23e207702d427c48a4b42d86403369"
+    },
+    {
+      "image": "Workshop/engine-detail-installed.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "e4c385ecd1eb2360372303972cc3be9425b05a51935cdbf0a10eb10eace5aff0"
+    },
+    {
+      "image": "Workshop/engine-market-bought.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1ef7d27a660aabc8da7ca7434036e350d251f6f3fc1214ab03b30988ac30e11d"
+    },
+    {
+      "image": "Workshop/engine-market-confirm.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "af8227a89eedd1c7cd669f71f1b825b232b5b1f49ad3e5e54a07f31a9683bbc8"
+    },
+    {
+      "image": "Workshop/engine-market.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "7b2e51e8df34e0a139e70bd5a43e57951eedcc9a514c460c6c976df51e6f8e9b"
+    },
+    {
+      "image": "Workshop/engine-member-confirm.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "530d7392620a913e2f653f6be54616b3598a44965f72ec3b827b6ee41976c057"
+    },
+    {
+      "image": "Workshop/engine-swap.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "b0c4974baebca753cc87635ee95feb8ec637fe71d0b80b76868543847857dd81"
+    },
+    {
+      "image": "Workshop/inventory-move.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "3b6a472fa8e6a69ad88966ea6eb43348cdda1a4ec060f9164608128b5d87a34e"
+    },
+    {
+      "image": "Workshop/parts-loading.png",
+      "width": 1280,
+      "height": 720,
+      "before_sha256": "1334c4dd7f2560ea05851960e224d65fec79363eec17e38f988a286733f02b6f"
+    },
+    {
+      "image": "Workshop/resolution-tests/block-1080p.png",
+      "width": 1920,
+      "height": 1080,
+      "before_sha256": "1dcbfb5429c3e64769cef6a7cc0b144bee68e380816342023cce2472f393fb48"
+    },
+    {
+      "image": "Workshop/resolution-tests/block-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "before_sha256": "ef3016e3ad2ccfc3a2674ef956490a7ceb512105a7858c3d40bfcc6793951a56"
+    },
+    {
+      "image": "Workshop/resolution-tests/block-compact.png",
+      "width": 1024,
+      "height": 768,
+      "before_sha256": "ff5305dc0fd831288271f477d348089ee8eb10b776b592442365cfcdab157475"
+    },
+    {
+      "image": "Workshop/resolution-tests/engine-compact.png",
+      "width": 1024,
+      "height": 640,
+      "before_sha256": "3b6749bfb32c0b0b8d8755e895eccaf1b40eada8a3aa956607939595c2d1589a"
+    }
+  ]
+}

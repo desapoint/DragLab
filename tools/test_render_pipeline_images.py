@@ -1,4 +1,5 @@
 import contextlib
+import hashlib
 import importlib.util
 import io
 import json
@@ -65,6 +66,24 @@ class ImageComparisonTests(unittest.TestCase):
             summary = json.loads((Path(root) / "comparison/summary.json").read_text(encoding="utf-8"))
             self.assertEqual(summary["exact"], 1)
             self.assertEqual(summary["failed_or_missing_suites"], 1)
+
+    def test_gallery_rejects_stale_validation_after_capture_changes(self):
+        with tempfile.TemporaryDirectory() as root:
+            for phase in ("before", "after"):
+                self.capture(root, phase, "same.png")
+            hashes = {phase + "_sha256": hashlib.sha256((Path(root) / phase / "suite/same.png").read_bytes()).hexdigest()
+                      for phase in ("before", "after")}
+            validation = Path(root) / "validation"
+            validation.mkdir()
+            (validation / "results.json").write_text(json.dumps(dict(verdict="PASS", counts={"PASS": 1},
+                captures=[dict(image="suite/same.png", verdict="PASS", reason="within budget", **hashes)])), encoding="utf-8")
+            self.run_comparison(root)
+            self.assertNotIn("STALE —", (Path(root) / "index.html").read_text(encoding="utf-8"))
+            self.capture(root, "after", "same.png", pixel=((30, 30), (255, 0, 255)))
+            self.run_comparison(root)
+            page = (Path(root) / "index.html").read_text(encoding="utf-8")
+            self.assertIn("STALE —", page)
+            self.assertIn('"automatic_validation": "not run / stale"', page)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,8 @@
 """Compare matching Unity captures using Pillow and NumPy; never align away layout changes."""
 import argparse
 import csv
+import hashlib
+import html
 import json
 import re
 from pathlib import Path
@@ -89,13 +91,29 @@ def compare(root: Path):
         draw.text((x + 2, y + 153), f'{row["changed_percent"]:.2f}% / MAE {row["mean_channel_error"]:.3f}', fill="#bbbbbb")
     if worst:
         sheet.save(output / "largest-differences.jpg", quality=90)
-    data = json.dumps(rows).replace("</", "<\\/")
+    validation_path = root / "validation/results.json"
+    validation = json.loads(validation_path.read_text(encoding="utf-8")) if validation_path.exists() else None
+    verdicts = {r["image"]: r for r in validation["captures"]} if validation else {}
+    viewer_rows = []
+    stale = False
+    for row in rows:
+        checked = verdicts.get(row["image"], {})
+        current = bool(checked) and all((root / phase / row["image"]).is_file() and
+            hashlib.sha256((root / phase / row["image"]).read_bytes()).hexdigest() == checked.get(phase + "_sha256")
+            for phase in ("before", "after"))
+        stale |= validation is not None and not current
+        viewer_rows.append(dict(row, automatic_validation=checked["verdict"] if current else "not run / stale",
+                                validation_reason=checked.get("reason", "") if current else "rerun validation for these exact files"))
+    banner = ('<p>Automatic validation: <a href="validation/index.html">'
+              + html.escape(("STALE — rerun validation" if stale else validation["verdict"]) + " · " + str(validation["counts"]))
+              + '</a>. REVIEW and FAIL both block automatic acceptance.</p>') if validation else ''
+    data = json.dumps(viewer_rows).replace("</", "<\\/")
     viewer = '''<!doctype html><meta charset="utf-8"><title>DragLab pipeline comparison</title>
 <style>body{margin:20px;background:#14181c;color:#eee;font:15px system-ui}select{max-width:85vw}img{max-width:100%;display:block}#stage{position:relative}#top{position:absolute;inset:0;opacity:.5}button,input,select{margin:6px}#detail{font-family:monospace}a{color:#eee}</style>
-<input id="search" placeholder="Find interface"><select id="pick"></select><button id="prev">Previous</button><button id="next">Next</button>
+VALIDATION_BANNER<input id="search" placeholder="Find interface"><select id="pick"></select><button id="prev">Previous</button><button id="next">Next</button>
 <div><button data-mode="before">Before</button><button data-mode="after">After</button><button data-mode="overlay">Overlay</button><button data-mode="difference">Difference ×4</button><label>After opacity <input id="alpha" type="range" min="0" max="1" step=".01" value=".5"></label></div>
 <p id="detail"></p><div id="stage"><img id="base"><img id="top"></div><p>Matching filenames and dimensions. No resizing, registration, masking or color normalization is applied. Animated race values, hover shine and simulation traces can differ with frame timing. Inspect those separately from rendering regressions.</p>
-<script>const rows=DATA;const pick=document.querySelector('#pick'),base=document.querySelector('#base'),top=document.querySelector('#top');let mode='overlay';rows.forEach((r,i)=>pick.add(new Option(r.image+' — '+(r.changed_percent??r.status)+(r.changed_percent!==undefined?'%':''),i)));function url(p){return p.split('/').map(encodeURIComponent).join('/')}function show(){const r=rows[+pick.value];document.querySelector('#detail').textContent=r.status==='paired'?`${r.width} × ${r.height} · ${r.changed_percent}% changed pixels · mean channel difference ${r.mean_channel_error} / 255 · new magenta pixels ${r.new_magenta_pixels}`:r.status;top.style.display='none';if(r.status!=='paired'){base.removeAttribute('src');return}base.src=url(mode==='difference'?r.difference:mode==='after'?'after/'+r.image:'before/'+r.image);if(mode==='overlay'){top.src=url('after/'+r.image);top.style.display='block';top.style.opacity=document.querySelector('#alpha').value}}pick.onchange=show;document.querySelector('#search').oninput=()=>{const term=document.querySelector('#search').value.toLowerCase();pick.replaceChildren();rows.forEach((r,i)=>{if(r.image.toLowerCase().includes(term))pick.add(new Option(r.image+' — '+(r.changed_percent??r.status)+(r.changed_percent!==undefined?'%':''),i))});if(pick.options.length)show();else{base.removeAttribute('src');top.style.display='none';document.querySelector('#detail').textContent='No matches'}};document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;show()});document.querySelector('#alpha').oninput=show;document.querySelector('#prev').onclick=()=>{if(pick.options.length){pick.selectedIndex=Math.max(0,pick.selectedIndex-1);show()}};document.querySelector('#next').onclick=()=>{if(pick.options.length){pick.selectedIndex=Math.min(pick.options.length-1,pick.selectedIndex+1);show()}};show();</script>'''.replace("DATA", data)
+<script>const rows=DATA;const pick=document.querySelector('#pick'),base=document.querySelector('#base'),top=document.querySelector('#top');let mode='overlay';rows.forEach((r,i)=>pick.add(new Option('['+r.automatic_validation+'] '+r.image+' — '+(r.changed_percent??r.status)+(r.changed_percent!==undefined?'%':''),i)));function url(p){return p.split('/').map(encodeURIComponent).join('/')}function show(){const r=rows[+pick.value];document.querySelector('#detail').textContent=r.status==='paired'?`${r.width} × ${r.height} · ${r.changed_percent}% changed pixels · mean channel difference ${r.mean_channel_error} / 255 · new magenta pixels ${r.new_magenta_pixels} · ${r.automatic_validation}: ${r.validation_reason}`:r.status;top.style.display='none';if(r.status!=='paired'){base.removeAttribute('src');return}base.src=url(mode==='difference'?r.difference:mode==='after'?'after/'+r.image:'before/'+r.image);if(mode==='overlay'){top.src=url('after/'+r.image);top.style.display='block';top.style.opacity=document.querySelector('#alpha').value}}pick.onchange=show;document.querySelector('#search').oninput=()=>{const term=document.querySelector('#search').value.toLowerCase();pick.replaceChildren();rows.forEach((r,i)=>{if((r.image+' '+r.automatic_validation).toLowerCase().includes(term))pick.add(new Option('['+r.automatic_validation+'] '+r.image+' — '+(r.changed_percent??r.status)+(r.changed_percent!==undefined?'%':''),i))});if(pick.options.length)show();else{base.removeAttribute('src');top.style.display='none';document.querySelector('#detail').textContent='No matches'}};document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;show()});document.querySelector('#alpha').oninput=show;document.querySelector('#prev').onclick=()=>{if(pick.options.length){pick.selectedIndex=Math.max(0,pick.selectedIndex-1);show()}};document.querySelector('#next').onclick=()=>{if(pick.options.length){pick.selectedIndex=Math.min(pick.options.length-1,pick.selectedIndex+1);show()}};function jump(){const key=decodeURIComponent(location.hash.slice(1));const index=rows.findIndex(r=>r.image===key);if(index>=0){document.querySelector('#search').value='';document.querySelector('#search').oninput();pick.value=index}show()}window.onhashchange=jump;jump();</script>'''.replace("DATA", data).replace("VALIDATION_BANNER", banner)
     (root / "index.html").write_text(viewer, encoding="utf-8")
     summary = {"before": len(before), "after": len(after), "paired": len(paired),
                "unpaired_or_size_mismatch": len(rows) - len(paired),
