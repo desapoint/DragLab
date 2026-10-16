@@ -1,0 +1,126 @@
+Actual 120 Hz CarSimulation / 60 Hz immutable audio frame capture; no player saves.
+E0001 / Sprig 1.2 / Throttle lift / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 0 / anti-lag ticks 0
+E0002 / Sprig 1.2 / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 620 / anti-lag ticks 0
+E0003 / Sprig 1.2 / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 807 / anti-lag ticks 0
+E0004 / Sprig 1.2 / Two-step / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 663 / anti-lag ticks 0
+E0005 / Sprig 1.2 / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 46 / limited ticks 620 / anti-lag ticks 0
+E0006 / Sprig 1.2 / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 0 / limited ticks 807 / anti-lag ticks 0
+E0007 / Sprig 1.2 / Two-step / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 211 / limited ticks 663 / anti-lag ticks 0
+E0008 / Sprig 1.2 / Shift handover / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 47 / anti-lag ticks 0
+E0009 / Sprig 1.2 / Cold idle / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 0 / anti-lag ticks 0
+E0010 / Sprig 1.2 / Pause / resume / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 436 / anti-lag ticks 0
+E0011 / Juniper 1.6 Club / Throttle lift / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 37 / anti-lag ticks 0
+E0012 / Juniper 1.6 Club / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 678 / anti-lag ticks 0
+E0013 / Juniper 1.6 Club / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 822 / anti-lag ticks 0
+E0014 / Juniper 1.6 Club / Two-step / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 709 / anti-lag ticks 0
+E0015 / Juniper 1.6 Club / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 47 / limited ticks 678 / anti-lag ticks 0
+E0016 / Juniper 1.6 Club / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 0 / limited ticks 822 / anti-lag ticks 0
+E0017 / Juniper 1.6 Club / Two-step / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 228 / limited ticks 709 / anti-lag ticks 0
+E0018 / Juniper 1.6 Club / Shift handover / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 75 / anti-lag ticks 0
+E0019 / Juniper 1.6 Club / Cold idle / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 0 / anti-lag ticks 0
+E0020 / Juniper 1.6 Club / Pause / resume / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 479 / anti-lag ticks 0
+E0021 / Juniper 1.4 Economy / Throttle lift / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 19 / anti-lag ticks 0
+E0022 / Juniper 1.4 Economy / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 658 / anti-lag ticks 0
+E0023 / Juniper 1.4 Economy / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 813 / anti-lag ticks 0
+E0024 / Juniper 1.4 Economy / Two-step / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 692 / anti-lag ticks 0
+E0025 / Juniper 1.4 Economy / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 48 / limited ticks 658 / anti-lag ticks 0
+E0026 / Juniper 1.4 Economy / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 0 / limited ticks 813 / anti-lag ticks 0
+E0027 / Juniper 1.4 Economy / Two-step / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 218 / limited ticks 692 / anti-lag ticks 0
+E0028 / Juniper 1.4 Economy / Shift handover / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 70 / anti-lag ticks 0
+E0029 / Juniper 1.4 Economy / Cold idle / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 0 / anti-lag ticks 0
+E0030 / Juniper 1.4 Economy / Pause / resume / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 462 / anti-lag ticks 0
+E0031 / Kestrel 2.0T Track / Throttle lift / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 63 / anti-lag ticks 0
+E0032 / Kestrel 2.0T Track / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 690 / anti-lag ticks 0
+E0033 / Kestrel 2.0T Track / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 836 / anti-lag ticks 0
+E0034 / Kestrel 2.0T Track / Two-step / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 730 / anti-lag ticks 0
+E0035 / Kestrel 2.0T Track / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 48 / limited ticks 690 / anti-lag ticks 0
+E0036 / Kestrel 2.0T Track / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 0 / limited ticks 836 / anti-lag ticks 0
+E0037 / Kestrel 2.0T Track / Two-step / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 230 / limited ticks 730 / anti-lag ticks 0
+E0038 / Kestrel 2.0T Track / Shift handover / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 59 / anti-lag ticks 0
+E0039 / Kestrel 2.0T Track / Cold idle / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 0 / anti-lag ticks 0
+E0040 / Kestrel 2.0T Track / Pause / resume / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 492 / anti-lag ticks 0
+E0041 / Kestrel 2.0T Track / Anti-lag on lift / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 64 / limited ticks 274 / anti-lag ticks 600
+E0042 / Kestrel 2.0T Track / Two-step turbo preload / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 283 / limited ticks 745 / anti-lag ticks 599
+E0043 / Tempest AWD 2.0T / Throttle lift / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 82 / anti-lag ticks 0
+E0044 / Tempest AWD 2.0T / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 705 / anti-lag ticks 0
+E0045 / Tempest AWD 2.0T / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 845 / anti-lag ticks 0
+E0046 / Tempest AWD 2.0T / Two-step / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 746 / anti-lag ticks 0
+E0047 / Tempest AWD 2.0T / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 46 / limited ticks 705 / anti-lag ticks 0
+E0048 / Tempest AWD 2.0T / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 0 / limited ticks 845 / anti-lag ticks 0
+E0049 / Tempest AWD 2.0T / Two-step / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 232 / limited ticks 746 / anti-lag ticks 0
+E0050 / Tempest AWD 2.0T / Shift handover / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 103 / anti-lag ticks 0
+E0051 / Tempest AWD 2.0T / Cold idle / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 0 / anti-lag ticks 0
+E0052 / Tempest AWD 2.0T / Pause / resume / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 504 / anti-lag ticks 0
+E0053 / Tempest AWD 2.0T / Anti-lag on lift / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 58 / limited ticks 314 / anti-lag ticks 600
+E0054 / Tempest AWD 2.0T / Two-step turbo preload / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 287 / limited ticks 763 / anti-lag ticks 599
+E0055 / Kestrel 2.0T / Throttle lift / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 63 / anti-lag ticks 0
+E0056 / Kestrel 2.0T / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 690 / anti-lag ticks 0
+E0057 / Kestrel 2.0T / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 836 / anti-lag ticks 0
+E0058 / Kestrel 2.0T / Two-step / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 730 / anti-lag ticks 0
+E0059 / Kestrel 2.0T / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 48 / limited ticks 690 / anti-lag ticks 0
+E0060 / Kestrel 2.0T / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 0 / limited ticks 836 / anti-lag ticks 0
+E0061 / Kestrel 2.0T / Two-step / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 230 / limited ticks 730 / anti-lag ticks 0
+E0062 / Kestrel 2.0T / Shift handover / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 43 / anti-lag ticks 0
+E0063 / Kestrel 2.0T / Cold idle / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 0 / anti-lag ticks 0
+E0064 / Kestrel 2.0T / Pause / resume / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 492 / anti-lag ticks 0
+E0065 / Kestrel 2.0T / Anti-lag on lift / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 64 / limited ticks 263 / anti-lag ticks 600
+E0066 / Kestrel 2.0T / Two-step turbo preload / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 283 / limited ticks 745 / anti-lag ticks 599
+E0067 / Juniper 1.6 / Throttle lift / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 30 / anti-lag ticks 0
+E0068 / Juniper 1.6 / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 669 / anti-lag ticks 0
+E0069 / Juniper 1.6 / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 819 / anti-lag ticks 0
+E0070 / Juniper 1.6 / Two-step / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 707 / anti-lag ticks 0
+E0071 / Juniper 1.6 / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 49 / limited ticks 669 / anti-lag ticks 0
+E0072 / Juniper 1.6 / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 0 / limited ticks 819 / anti-lag ticks 0
+E0073 / Juniper 1.6 / Two-step / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 220 / limited ticks 707 / anti-lag ticks 0
+E0074 / Juniper 1.6 / Shift handover / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 62 / anti-lag ticks 0
+E0075 / Juniper 1.6 / Cold idle / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 0 / anti-lag ticks 0
+E0076 / Juniper 1.6 / Pause / resume / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 474 / anti-lag ticks 0
+E0077 / Bison R 5.0 SC / Throttle lift / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 146 / anti-lag ticks 0
+E0078 / Bison R 5.0 SC / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 796 / anti-lag ticks 0
+E0079 / Bison R 5.0 SC / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 859 / anti-lag ticks 0
+E0080 / Bison R 5.0 SC / Two-step / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 814 / anti-lag ticks 0
+E0081 / Bison R 5.0 SC / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 31 / limited ticks 796 / anti-lag ticks 0
+E0082 / Bison R 5.0 SC / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 0 / limited ticks 859 / anti-lag ticks 0
+E0083 / Bison R 5.0 SC / Two-step / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 248 / limited ticks 814 / anti-lag ticks 0
+E0084 / Bison R 5.0 SC / Shift handover / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 140 / anti-lag ticks 0
+E0085 / Bison R 5.0 SC / Cold idle / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 0 / anti-lag ticks 0
+E0086 / Bison R 5.0 SC / Pause / resume / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 572 / anti-lag ticks 0
+E0087 / Timber 2.8D Work / Throttle lift / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 117 / anti-lag ticks 0
+E0088 / Timber 2.8D Work / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 739 / anti-lag ticks 0
+E0089 / Timber 2.8D Work / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 858 / anti-lag ticks 0
+E0090 / Timber 2.8D Work / Two-step / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 769 / anti-lag ticks 0
+E0091 / Timber 2.8D Work / Shift handover / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 72 / anti-lag ticks 0
+E0092 / Timber 2.8D Work / Cold idle / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 0 / anti-lag ticks 0
+E0093 / Timber 2.8D Work / Pause / resume / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 531 / anti-lag ticks 0
+E0094 / Timber 2.8D Tow / Throttle lift / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 121 / anti-lag ticks 0
+E0095 / Timber 2.8D Tow / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 730 / anti-lag ticks 0
+E0096 / Timber 2.8D Tow / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 861 / anti-lag ticks 0
+E0097 / Timber 2.8D Tow / Two-step / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 772 / anti-lag ticks 0
+E0098 / Timber 2.8D Tow / Shift handover / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 116 / anti-lag ticks 0
+E0099 / Timber 2.8D Tow / Cold idle / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 0 / anti-lag ticks 0
+E0100 / Timber 2.8D Tow / Pause / resume / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 526 / anti-lag ticks 0
+E0101 / Meridian GT 3.0 / Throttle lift / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 108 / anti-lag ticks 0
+E0102 / Meridian GT 3.0 / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 758 / anti-lag ticks 0
+E0103 / Meridian GT 3.0 / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 847 / anti-lag ticks 0
+E0104 / Meridian GT 3.0 / Two-step / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 780 / anti-lag ticks 0
+E0105 / Meridian GT 3.0 / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 44 / limited ticks 758 / anti-lag ticks 0
+E0106 / Meridian GT 3.0 / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 0 / limited ticks 847 / anti-lag ticks 0
+E0107 / Meridian GT 3.0 / Two-step / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 243 / limited ticks 780 / anti-lag ticks 0
+E0108 / Meridian GT 3.0 / Shift handover / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 128 / anti-lag ticks 0
+E0109 / Meridian GT 3.0 / Cold idle / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 0 / anti-lag ticks 0
+E0110 / Meridian GT 3.0 / Pause / resume / Isolated healthy car + programmable-controls fixture; Fuel cut. No player resources used. / pops 0 / limited ticks 544 / anti-lag ticks 0
+E0111 / Timber Utility 4.2 / Backfire / overrun / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 13 / limited ticks 172 / anti-lag ticks 0
+E0112 / Timber Utility 4.2 / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 39 / limited ticks 771 / anti-lag ticks 0
+E0113 / Timber Utility 4.2 / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 2 / limited ticks 848 / anti-lag ticks 0
+E0114 / Timber Utility 4.2 / Two-step / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 251 / limited ticks 805 / anti-lag ticks 0
+E0115 / Timber Utility 4.2 / Shift handover / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 6 / limited ticks 22 / anti-lag ticks 0
+E0116 / Timber Utility 4.2 / Cold idle / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 0 / limited ticks 0 / anti-lag ticks 0
+E0117 / Timber Utility 4.2 / Pause / resume / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 29 / limited ticks 552 / anti-lag ticks 0
+E0118 / Bison 5.0 / Backfire / overrun / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 13 / limited ticks 193 / anti-lag ticks 0
+E0119 / Bison 5.0 / Hard rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 34 / limited ticks 800 / anti-lag ticks 0
+E0120 / Bison 5.0 / Soft rev limiter / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 2 / limited ticks 865 / anti-lag ticks 0
+E0121 / Bison 5.0 / Two-step / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 250 / limited ticks 821 / anti-lag ticks 0
+E0122 / Bison 5.0 / Shift handover / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 29 / limited ticks 166 / anti-lag ticks 0
+E0123 / Bison 5.0 / Cold idle / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 0 / limited ticks 0 / anti-lag ticks 0
+E0124 / Bison 5.0 / Pause / resume / Isolated healthy car + programmable-controls fixture; Ignition cut. No player resources used. / pops 25 / limited ticks 578 / anti-lag ticks 0
+PASS: 124 physically driven event captures.

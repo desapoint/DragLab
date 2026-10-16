@@ -21,14 +21,18 @@ def encode(out,identity,row):
     if media.exists() and meta.exists():
         cached=json.loads(meta.read_text(encoding='utf-8-sig'))
         assert hashlib.sha256(media.read_bytes()).hexdigest()==cached['sha256']
-        return cached
-    parts=[];measured=[]
+        if abs(cached['measurements'][0]['presented_lufs']-cached['measurements'][1]['presented_lufs'])<.001:return cached
+    sources=[];parts=[];measured=[]
     for side in ['before','after']:
-        path=out/'raw'/(row['id']+'-'+side+'.f32')
+        path=out/row.get('rawFolder','raw')/(row['id']+'-'+side+'.f32')
         x=np.fromfile(path,dtype='<f4').astype(float)
-        assert len(x)==10*RATE and np.isfinite(x).all() and abs(x).max()<=1
+        assert len(x)==row.get('segmentSeconds',10)*RATE and np.isfinite(x).all() and abs(x).max()<=1
         m=loudness(path)
-        gain=min(-20-float(m['input_i']),-3-float(m['input_tp']))
+        sources.append((side,x,m))
+    # Percussive cuts/pops can need more headroom. Lower BOTH sides to one achievable level.
+    target=min([-20]+[-3-float(m['input_tp'])+float(m['input_i']) for _,_,m in sources])
+    for side,x,m in sources:
+        gain=target-float(m['input_i'])
         x*=10**(gain/20)
         fade=int(RATE*.025);x[:fade]*=np.linspace(0,1,fade);x[-fade:]*=np.linspace(1,0,fade)
         assert abs(x).max()<.72
@@ -48,18 +52,33 @@ def encode(out,identity,row):
     meta.write_text(json.dumps(result,indent=2),encoding='utf-8')
     return result
 
+def write_viewer(out,rows):
+    template=(Path(__file__).parent/'viewer.html').read_text(encoding='utf-8-sig')
+    (out/'index.html').write_text(template.replace('__MATRIX_JSON__',json.dumps(rows,ensure_ascii=False).replace('<','\\u003c')),encoding='utf-8')
+    with zipfile.ZipFile(out/'listening-matrix.zip','w',compression=zipfile.ZIP_STORED) as archive:
+        for name in ['index.html','manifest.json','coverage-matrix.csv','verification.json','source-hashes.json']:
+            archive.write(out/name,name)
+        for name in sorted({r['file'] for r in rows}):archive.write(out/name,name)
+        for name in ['effects-index.json','effects-source-hashes.json','effects-capture-verification.txt']:
+            if (out/name).exists():archive.write(out/name,name)
+
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,default=ROOT/'reports/audio-matrix-20261015');parser.add_argument('--limit',type=int);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,default=ROOT/'reports/audio-matrix-20261015');parser.add_argument('--limit',type=int);parser.add_argument('--refresh-viewer',action='store_true');args=parser.parse_args()
     out=args.output.resolve();assert out.is_relative_to(ROOT/'reports')
+    if args.refresh_viewer:
+        rows=json.loads((out/'manifest.json').read_text(encoding='utf-8-sig'))
+        for name,expected in {r['file']:r['audioHash'] for r in rows}.items():assert hashlib.sha256((out/name).read_bytes()).hexdigest()==expected
+        write_viewer(out,rows);print('Refreshed viewer/archive with verified existing media; no synthesis or normalization rerun.');return
     cases=json.loads((out/'cases.json').read_text(encoding='utf-8-sig'))
+    if (out/'effects-index.json').exists():cases.extend(json.loads((out/'effects-index.json').read_text(encoding='utf-8-sig')))
     if args.limit:cases=cases[:args.limit]
     (out/'audio').mkdir(exist_ok=True)
     unique={};identities={}
     for row in cases:
         digest=hashlib.sha256(b'audition-matrix-normalize-v1')
         for side in ['before','after']:
-            data=(out/'raw'/(row['id']+'-'+side+'.f32')).read_bytes()
-            assert len(data)==10*RATE*4
+            data=(out/row.get('rawFolder','raw')/(row['id']+'-'+side+'.f32')).read_bytes()
+            assert len(data)==row.get('segmentSeconds',10)*RATE*4
             digest.update(data)
         identity=digest.hexdigest()[:24];identities[row['id']]=identity;unique.setdefault(identity,row)
     metadata={}
@@ -76,21 +95,18 @@ def main():
         rows.append(row)
     (out/'manifest.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2),encoding='utf-8')
     with (out/'coverage-matrix.csv').open('w',encoding='utf-8',newline='') as stream:
-        writer=csv.DictWriter(stream,fieldnames=list(rows[0]),lineterminator='\n');writer.writeheader();writer.writerows(rows)
-    template=(Path(__file__).parent/'viewer.html').read_text(encoding='utf-8-sig')
-    (out/'index.html').write_text(template.replace('__MATRIX_JSON__',json.dumps(rows,ensure_ascii=False).replace('<','\\u003c')),encoding='utf-8')
+        writer=csv.DictWriter(stream,fieldnames=list(dict.fromkeys(k for row in rows for k in row)),lineterminator='\n');writer.writeheader();writer.writerows(rows)
     (out/'highlights').mkdir(exist_ok=True)
     for row in rows:
         if row['factoryReference']:
             run(['-y','-i',str(out/row['file']),'-c:a','pcm_s16le',str(out/'highlights'/(row['engineKey']+'-AB.wav'))])
     hashes=json.loads((out/'source-hashes.json').read_text(encoding='utf-8-sig'))
+    if (out/'effects-source-hashes.json').exists():hashes.update(json.loads((out/'effects-source-hashes.json').read_text(encoding='utf-8-sig')))
     for path,expected in hashes.items():assert hashlib.sha256((ROOT/path).read_bytes()).hexdigest()==expected,path
-    summary={'cases':len(rows),'unique_audio_pairs':len(metadata),'authored_engine_definitions':len({r['engineKey'] for r in rows if 'laboratory' not in r['group'].lower()}),'actual_cylinder_counts':sorted({r['cylinders'] for r in rows if 'laboratory' not in r['group'].lower()}),'groups':{g:sum(r['group']==g for r in rows) for g in sorted({r['group'] for r in rows})},'max_level_difference_lufs':max(abs(r['levelDifferenceLufs']) for r in rows),'finite_bounded_pcm':True,'lossless_roundtrip_all_unique_files':True,'source_hashes_unchanged':True,'game_integration':False,'audio_bytes':sum((out/m['file']).stat().st_size for m in metadata.values())}
+    summary={'cases':len(rows),'unique_audio_pairs':len(metadata),'authored_engine_definitions':len({r['engineKey'] for r in rows if 'laboratory' not in r['group'].lower()}),'actual_cylinder_counts':sorted({r['cylinders'] for r in rows if 'laboratory' not in r['group'].lower()}),'groups':{g:sum(r['group']==g for r in rows) for g in sorted({r['group'] for r in rows})},'max_level_difference_lufs':max(abs(r['levelDifferenceLufs']) for r in rows),'finite_bounded_pcm':True,'lossless_roundtrip_all_unique_files':True,'source_hashes_unchanged':True,'preview_packaging_changes_runtime':False,'approved_voice_integrated':True,'audio_bytes':sum((out/m['file']).stat().st_size for m in metadata.values())}
+    assert summary['max_level_difference_lufs']<.01
     (out/'verification.json').write_text(json.dumps(summary,indent=2),encoding='utf-8')
-    with zipfile.ZipFile(out/'listening-matrix.zip','w',compression=zipfile.ZIP_STORED) as archive:
-        for name in ['index.html','manifest.json','coverage-matrix.csv','verification.json','source-hashes.json']:
-            archive.write(out/name,name)
-        for m in sorted(metadata.values(),key=lambda x:x['file']):archive.write(out/m['file'],m['file'])
+    write_viewer(out,rows)
     print(json.dumps(summary,indent=2),flush=True)
 
 if __name__=='__main__':main()

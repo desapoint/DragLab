@@ -2,13 +2,15 @@
 
 **Subsequent approval:** the user accepted the After voices and requested their game integration. [Integration, checks and build](../audio-integration-20261015/CHANGES.md). The preview-generation record below remains historical; the library retains the reviewed Before/After reference.
 
-**Preview checkpoint only; no game integration or listening acceptance.** Based on `main` at `8761bfc`. All game sources, assets, bench interfaces, settings, saves and the current Windows build remain unchanged. Unrelated user work remains untouched.
+**Effects extension:** the same page now includes 124 real simulation event examples (backfire, limiter/cut types, two-step, anti-lag/preload, shifts, cold idle and pause), bringing the library to **1,450 cases / 939 unique pairs**. [Effects, timing and checks](EFFECTS.md). Click **Effects** after refreshing `index.html`; its clips use 12-second halves, with After starting at 12.7 s.
+
+**Original preview checkpoint, before approval.** Based on `main` at `8761bfc`. At that checkpoint, game sources, assets, bench interfaces, settings, saves and the Windows build remained unchanged. Unrelated user work was preserved.
 
 Open the local `index.html` in a browser. It provides engine/cylinder/layout/fuel/delivery/induction/exhaust/size/pulley/boost/valve filters, search, factory-only selection and Before / After / full A/B playback. Factory configurations appear first. The optional laboratory switch reveals counts not currently offered by cars. Download/copy `listening-matrix.zip` and extract it to keep the viewer and media together. `highlights/` contains WAV A/B files for all 13 actual factory configurations.
 
 Every file: **before 0–10 seconds; after 10.7–20.7 seconds**. Each half contains idle 0–1.5 s, neutral revving 1.5–3.5 s, loaded acceleration 3.5–8 s and lift 8–10 s. Both halves receive the same scripted input trajectory. These are not live race recordings or full simulation/fitment verification.
 
-## Coverage
+## Original engine-only coverage
 
 | Group | Cases |
 | --- | ---: |

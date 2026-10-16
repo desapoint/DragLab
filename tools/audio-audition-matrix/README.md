@@ -24,6 +24,25 @@ The current four-stroke generator and its accepted-input limitations remain the 
 
 Checks: finite bounded buffers for every pair; repeat/different-seed checks sampled every hundred cases; full raw-file dimensions; constant-gain loudness matching toward −20 LUFS with a −3 dBTP ceiling; every unique FLAC decoded and compared sample-for-sample with its packaged PCM; output hashes; unchanged source hashes. Each pair is before 0–10 s, gap, after 10.7–20.7 s. Each side includes idle, unloaded rev, loaded pull and lift. Passing those checks does not certify auditory realism, production callback cost or Unity playback. Full game simulation and Unity builds are deliberately outside this preview-only checkpoint.
 
+## Physically driven effects section
+
+The separately requested effects extension adds 124 before/after examples across all 13 authored cars. Capture real 120 Hz `CarSimulation.IndependentStep` behavior and the production `EngineSoundController` first:
+
+```powershell
+unity run "$PWD/Game" --editor-version 6000.6.4f1 --timeout 600 -- -nographics -executeMethod DragLab.Editor.EngineEffectsAudition.Run -logFile "$PWD/reports/audio-matrix-20261015/effects-capture.log"
+python tools/audio-audition-matrix/prepare-effects.py
+python tools/audio-audition-matrix/package.py
+node tools/audio-audition-matrix/verify-viewer.cjs reports/audio-matrix-20261015
+```
+
+These fixtures are isolated healthy cars with programmable controls, disabled wear/resource consumption and deliberate throttle/shift/staging inputs. They do not load or alter player assets, purchase components, duplicate physics or force audio pop/cut flags. Captured exact binary frames include actual cylinder contributions, limiter/cut fractions, pop/release identifiers and pause state. Profile doubles are exported as round-trip strings. The standalone renderer replays identical frames through the pre-integration sound and current production sound, with engine-only audio and no tire mix.
+
+Effects include carburetor overrun/backfires, ordinary throttle lift, hard/soft fuel and ignition rev limiting, two-step, petrol-turbo preload/anti-lag, actual shift handovers, cold idle and pause/resume. Unsupported carburetor fuel cuts and diesel ignition/anti-lag are omitted. Captures assert that their labelled limiting, two-step, backfire and anti-lag events actually occur and that the engine survives. Cold idle does not invent a starter sound; manual shifts do not invent ignition cuts. Effects use the authored factory exhaust and these discrete fixtures, not every possible tune/exhaust combination.
+
+`effects-index.json`, `effects-source-hashes.json`, capture traces and raw PCM are local generated artifacts. The package retains the original 1,326 core cases, adds the effects, and verifies the current captured source hashes alongside the original reference provenance. Per-effect A/B timing is before 0–12 s and after 12.7–24.7 s, shown dynamically in the player. Strong transients can require a lower shared loudness target to preserve the −3 dBTP ceiling: both sides are matched to that same achievable level without dynamic compression. The new page previews existing effect behavior; it does not redesign the pressure-pop generator or change any further production sound.
+
+For later HTML-only edits, `python tools/audio-audition-matrix/package.py --refresh-viewer` verifies existing media hashes and rebuilds just the page/archive without re-reading raw PCM or rerunning sound generation/normalization.
+
 Use `Renderer.cs`'s optional second argument and `package.py --limit N` for a small smoke run. Limits select the first N cases; a smoke package must not be reported as complete coverage. The package can resume from verified hash-matched lossless files. Re-run the renderer after changing synthesis or input logic; don't reuse stale raw buffers.
 
 After integration, `python tools/audio-audition-matrix/verify-integration.py` compares the live production synth with the hash-pinned approved reference over the full matrix. When the published raw audition cache exists, it also compares every production sample to those original buffers. On a fresh checkout the versioned generator/reference hash provides the gate without requiring ignored fixtures. This check writes its isolated compiler harness under `reports/audio-integration-20261015/`, not into Unity. It never regenerates or overwrites the listening library.
