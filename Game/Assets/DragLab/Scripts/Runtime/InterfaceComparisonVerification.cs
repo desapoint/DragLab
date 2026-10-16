@@ -41,7 +41,8 @@ namespace DragLab.Runtime
             File.WriteAllText(Path.Combine(folder, "verification.txt"), report.ToString(), new UTF8Encoding(false));
             Application.Quit(error == null && errors == 0 ? 0 : 1);
         }
-        void Update() { if (started > 0 && Time.realtimeSinceStartup - started > 90) Finish(new TimeoutException("UI probe timeout")); }
+        bool CaptureAll => Array.IndexOf(Environment.GetCommandLineArgs(), "--draglab-capture-all-interfaces") >= 0;
+        void Update() { if (started > 0 && Time.realtimeSinceStartup - started > (CaptureAll ? 180 : 90)) Finish(new TimeoutException("UI probe timeout")); }
         IEnumerator Start()
         {
             started = Time.realtimeSinceStartup;
@@ -69,10 +70,11 @@ namespace DragLab.Runtime
             using (var input = new WindowsKeyboardProbe())
             {
                 var game = FindFirstObjectByType<PrototypeGame>();
-                Check(game != null && ProfileStore.FilePath == Path.Combine(folder, "profile-v1.json"), "Real player uses an isolated profile fixture");
+                Check(game != null && ProfileStore.FilePath == Path.Combine(folder, "save-slot-1.sqlite3"), "Real player uses an isolated database fixture");
                 // Fresh-dealership behavior is verified by NativeMenuVerification.Market.
                 // This historical whole-interface probe needs an owned car for tuning/race routes.
                 if(game.Profile.firstPurchasePending){VehicleCollection.Buy(game.Profile,game.Profile.catalog,game.Profile.vehicleStock.listings.First(o=>o.model=="starter-hatch"));ProfileStore.Save(game.Profile);game.ReturnToGarage();}
+                if (CaptureAll) { yield return CaptureInterfaceSurvey(game); yield break; }
                 InterfaceComparison.SetReplacement("Garage",false);
                 var profile = game.Profile; var saved = JsonUtility.ToJson(profile);
                 string disk = File.Exists(ProfileStore.FilePath) ? File.ReadAllText(ProfileStore.FilePath) : null;
@@ -150,6 +152,77 @@ namespace DragLab.Runtime
 #else
             throw new InvalidOperationException("Run this probe in the Windows development player.");
 #endif
+        }
+        // Rendering survey is deliberately separate from historical input assertions.
+        // Select each presentation directly; focused probes still validate real input.
+        IEnumerator CaptureInterfaceSurvey(PrototypeGame game)
+        {
+            game.OpenTuning();
+            foreach (string route in new[] { "Garage", "Settings", "Driving", "Parts", "Tuning", "Stats", "Race setup", "Career", "Business", "Collection", "Setups", "Assemblies", "Recovery" })
+            {
+                Field(game, "screen", route);
+                foreach (bool replacement in new[] { false, true })
+                {
+                    InterfaceComparison.SetReplacement(route, replacement);
+                    yield return new WaitForSecondsRealtime(.3f);
+                    yield return Capture("route-" + route.Replace(" ", "-").ToLowerInvariant() + (replacement ? "-new" : "-old"));
+                }
+                InterfaceComparison.SetReplacement(route, false);
+            }
+            game.OpenValuation(ValuationKind.Car, game.Profile.SelectedCar.instanceId);
+            foreach (bool replacement in new[] { false, true })
+            {
+                InterfaceComparison.SetReplacement("Valuation", replacement);
+                yield return new WaitForSecondsRealtime(.3f); yield return Capture("valuation-" + (replacement ? "new" : "old"));
+            }
+            game.ReturnToGarage(); game.StartPractice(); game.PauseRace(true);
+            foreach (bool replacement in new[] { false, true })
+            {
+                InterfaceComparison.SetReplacement("Pause", replacement);
+                yield return new WaitForSecondsRealtime(.3f); yield return Capture("pause-" + (replacement ? "new" : "old"));
+            }
+            game.ReturnToGarage(); SceneManager.LoadScene("EngineTest"); yield return new WaitForSecondsRealtime(.5f);
+            var sound=FindFirstObjectByType<EngineTestScene>(); sound.Pause(true);
+            for (int tab=0; tab<9; tab++)
+            {
+                sound.ShowTestTab(tab); yield return new WaitForSecondsRealtime(.2f); yield return Capture("sound-tab-" + tab);
+            }
+            InterfaceComparison.SetReplacement(EngineTestScene.ComparisonRoute,true);
+            yield return new WaitForSecondsRealtime(.2f); yield return Capture("sound-new");
+            SceneManager.LoadScene("DrivingTest"); yield return new WaitForSecondsRealtime(.5f);
+            var physical=FindFirstObjectByType<PhysicalDrivingBench>();
+            var physicalCars=Resources.LoadAll<DragLab.Data.VehicleDefinition>("Data/Vehicles").OrderBy(v=>v.spec.id).ToArray();
+            physical.SelectVehicle(Array.FindIndex(physicalCars,v=>v.spec.id=="starter-hatch"));physical.SetPaused(true);
+            yield return Capture("physical-old");
+            physical.StartScenario(PhysicalScenario.FullPullShiftCoastBrake);
+            float deadline=Time.realtimeSinceStartup+45;
+            while(!physical.Paused&&Time.realtimeSinceStartup<deadline)yield return null;
+            Check(physical.Paused&&physical.Session.samples.Count>1000,"Physical render survey has an actual recorded shared-simulation pull");
+            foreach(string group in DrivingTraceChannels.Groups)
+            {
+                Field(physical,"showDiagnostics",false);
+                Field(physical,"graph",Array.FindIndex(DrivingTraceChannels.All,c=>c.group==group));
+                yield return new WaitForSecondsRealtime(.15f);
+                yield return Capture("physical-graph-"+System.Text.RegularExpressions.Regex.Replace(group.ToLowerInvariant(),"[^a-z0-9]+","-"));
+            }
+            foreach(int offset in new[]{0,140,280,420,700,1000})
+            {physical.MassPanelForVerification(offset);yield return new WaitForSecondsRealtime(.15f);yield return Capture("physical-diagnostics-"+offset);}
+            Field(physical,"showDiagnostics",false);
+            Check(physical.ReplayLast(),"Physical visual survey replays its real recorded input");
+            deadline=Time.realtimeSinceStartup+45;while(!physical.Paused&&Time.realtimeSinceStartup<deadline)yield return null;
+            Check(physical.Paused,"Physical replay finishes before its overlay capture");
+            Field(physical,"graph",0);yield return Capture("physical-replay-overlays");
+            physical.SetStartingTire(2,.35f,110);physical.SetPaused(true);
+            foreach(string slot in new[]{"Tires","Ignition","Clutch","Cooling"})
+            {
+                physical.ElementPanelForVerification(slot,1100);
+                yield return new WaitForSecondsRealtime(.15f);yield return Capture("physical-component-"+slot.ToLowerInvariant());
+            }
+            Field(physical,"audioSettings",true);physical.TirePanelForVerification(0);
+            yield return new WaitForSecondsRealtime(.15f);yield return Capture("physical-audio-settings");
+            InterfaceComparison.SetReplacement(PhysicalDrivingBench.ComparisonRoute,true);
+            yield return new WaitForSecondsRealtime(.2f); yield return Capture("physical-new");
+            Check(errors==0,"Every interface survey capture renders without runtime errors");
         }
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
         static IEnumerator Press(WindowsKeyboardProbe input, ushort key)

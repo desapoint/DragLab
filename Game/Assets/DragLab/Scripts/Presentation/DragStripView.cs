@@ -73,7 +73,7 @@ namespace DragLab.Presentation
         SpriteRenderer Make(Sprite sprite,Vector3 position,int order)
         {
             var obj=new GameObject(sprite.name);obj.transform.SetParent(transform,false);obj.transform.localPosition=position;
-            var r=obj.AddComponent<SpriteRenderer>();r.sprite=sprite;r.sortingOrder=order;return r;
+            var r=obj.AddComponent<SpriteRenderer>();r.sharedMaterial=RenderMaterials.Sprite;r.sprite=sprite;r.sortingOrder=order;return r;
         }
         public void ShowGarage()
         {
@@ -118,7 +118,7 @@ namespace DragLab.Presentation
         {
             var obj=new GameObject(caption);obj.transform.SetParent(transform,false);
             mesh=new Mesh{name=caption};obj.AddComponent<MeshFilter>().sharedMesh=mesh;
-            material=new Material(Shader.Find("Sprites/Default")){name=caption,mainTexture=texture};
+            material=RenderMaterials.CreateVertex(caption,texture);
             var renderer=obj.AddComponent<MeshRenderer>();renderer.sharedMaterial=material;renderer.sortingOrder=order;
             return obj.transform;
         }

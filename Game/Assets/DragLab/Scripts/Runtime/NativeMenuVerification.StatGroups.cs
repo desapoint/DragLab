@@ -104,6 +104,11 @@ namespace DragLab.Runtime
             foreach(AwdMode mode in Enum.GetValues(typeof(AwdMode))) {
                 var source=InspectionBuild.Capture(game.Profile,game.Profile.cars.First(c=>game.Profile.catalog.Spec(c.vehicleId).drive==DriveType.AWD));
                 source.build.tune.awdConfigured=true;source.build.tune.awd=new AwdSpec {mode=mode,frontBias=.35f};
+                // This tests row applicability, so give the copied fixture matching hardware.
+                // A tuning request can no longer turn an installed center into another system.
+                source.build.spec.fittedParts=source.build.spec.fittedParts.Select(p=>p.Copy()).ToArray();
+                var center=AwdHardware.Installed(source.build.spec);
+                center.awdHardware=new AwdHardwareSpec {modes=1<<(int)mode,calibration=source.build.tune.awd.Copy()};
                 var stats=CarInspection.CalculatePrepared(source,CarInspection.PrepareCar(source),false);var state=new NativeStatsSnapshot(stats);var rows=StatDefinitions(NativeStatCatalog.Groups(stats)).ToDictionary(d=>d.Id);
                 Check(Math.Abs(rows["awdFrontBias"].Number(state).Value-35)<.001&&rows["awdSecondary"].Number(state).HasValue==(mode==AwdMode.OnDemand)&&rows["centerBias"].Number(state).HasValue==(mode==AwdMode.LimitedSlipCenter)&&rows["awdMinimumFront"].Number(state).HasValue==(mode==AwdMode.ActiveBias),"AWD rows honor configured topology and applicability: "+mode);
             }

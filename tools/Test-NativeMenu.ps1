@@ -1,4 +1,4 @@
-param([string]$FixtureName = 'native-menu-shell', [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly, [switch]$MaintenanceOnly, [switch]$RebuildOnly, [switch]$PricingOnly, [switch]$FrameProbe, [switch]$ResponsivenessOnly, [switch]$AwdHardwareOnly, [switch]$PartBrandsOnly, [switch]$SqliteStateOnly, [switch]$DisposalOnly, [switch]$RaceSelectionOnly, [switch]$SetupManagementOnly, [switch]$RaceHudOnly, [switch]$RacePauseOnly, [switch]$NavigationOnly, [switch]$ResetRequiredOnly)
+param([string]$FixtureName = 'native-menu-shell', [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly, [switch]$MaintenanceOnly, [switch]$RebuildOnly, [switch]$PricingOnly, [switch]$FrameProbe, [switch]$ResponsivenessOnly, [switch]$AwdHardwareOnly, [switch]$PartBrandsOnly, [switch]$SqliteStateOnly, [switch]$DisposalOnly, [switch]$RaceSelectionOnly, [switch]$SetupManagementOnly, [switch]$RaceHudOnly, [switch]$RacePauseOnly, [switch]$NavigationOnly, [switch]$ResetRequiredOnly, [string]$PlayerPath = '')
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 . (Join-Path $PSScriptRoot 'InterfaceScreenshots.ps1')
@@ -8,6 +8,7 @@ $taskSuite = @($PSBoundParameters.Keys | Where-Object { $_ -like '*Only' -and $P
 $taskScreenshotSuite = if ($taskSuite.Count) { 'native-' + ($taskSuite -join '-') } else { 'native-menus' }
 $taskScreenshots = Start-InterfaceScreenshotRun $taskRoot $taskFixture $taskScreenshotSuite
 $taskPlayer = Join-Path $taskRoot 'Game/Builds/Windows/DragLab.exe'
+if ($PlayerPath) { $taskPlayer = [IO.Path]::GetFullPath($PlayerPath) }
 $taskArgs = @('-screen-fullscreen','0','-screen-width','1280','-screen-height','720','-logFile',('"' + (Join-Path $taskFixture 'player.log') + '"'),'--draglab-verify',('"' + $taskFixture + '"'),'--draglab-native-menu-verify')
 if ($ResetRequiredOnly) {
     $taskArgs += '--draglab-reset-required-only-verify'

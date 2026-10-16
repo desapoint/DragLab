@@ -1,0 +1,15 @@
+URP saved-state verification
+Pipeline: DragLabURP / renderer: DragLab2DRenderer / render scale 1 / MSAA 2 / HDR off / post-processing unused
+Color space: Gamma
+PASS quality: Very Low
+PASS quality: Low
+PASS quality: Medium
+PASS quality: High
+PASS quality: Very High
+PASS quality: Ultra
+PASS serialized Graphics and all Quality assignments match the pipeline GUID
+PASS material: Universal Render Pipeline/2D/Sprite-Unlit-Default
+PASS material: DragLab/Vertex Unlit
+PASS scene: Assets/DragLab/Scenes/FirstSlice.unity / no authored lights, probes, lightmaps or post-processing; runtime cameras
+PASS scene: Assets/DragLab/Scenes/EngineTest.unity / no authored lights, probes, lightmaps or post-processing; runtime cameras
+PASS scene: Assets/DragLab/Scenes/DrivingTest.unity / no authored lights, probes, lightmaps or post-processing; runtime cameras

@@ -58,6 +58,7 @@ namespace DragLab.Presentation
                 var obj = new GameObject(layer.id);
                 obj.transform.SetParent(transform, false);
                 var renderer = obj.AddComponent<SpriteRenderer>();
+                renderer.sharedMaterial = RenderMaterials.Sprite;
                 renderer.sprite = Resources.Load<Sprite>(root + System.IO.Path.GetFileNameWithoutExtension(layer.file));
                 if (renderer.sprite == null) throw new InvalidOperationException("Sprite must import as Single: " + layer.file);
                 renderer.sortingOrder = laneOrder + layer.z;

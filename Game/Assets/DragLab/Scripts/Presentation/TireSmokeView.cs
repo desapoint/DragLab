@@ -34,7 +34,7 @@ namespace DragLab.Presentation
         {
             for(int i=0;i<Capacity;i++) {
                 var obj=new GameObject("Smoke puff "+i);obj.transform.SetParent(transform,false);
-                var renderer=obj.AddComponent<SpriteRenderer>();renderer.sprite=Cloud();renderer.sortingOrder=order;renderer.enabled=false;
+                var renderer=obj.AddComponent<SpriteRenderer>();renderer.sharedMaterial=RenderMaterials.Sprite;renderer.sprite=Cloud();renderer.sortingOrder=order;renderer.enabled=false;
                 puffs[i].renderer=renderer;
             }
         }

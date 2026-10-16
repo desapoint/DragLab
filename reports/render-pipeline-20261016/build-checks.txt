@@ -1,0 +1,15 @@
+Rendering checkpoint, 2026-10-16
+PASS Unity Windows development builds: historical Built-in survey and URP review.
+PASS saved Graphics/all six Quality GUID assignments, 2D renderer and supported shaders.
+PASS 15 final suites per pipeline: 5,067 checks (overlapping), zero reported runtime errors.
+PASS 411 matched captures; no missing/dimension-mismatched pairs; 167 pixel-identical.
+PASS no newly magenta pixels in any pair; dynamic differences reviewed in CHANGES.md.
+PASS gallery JavaScript syntax and all 822 overlay/difference paths.
+PASS Python comparison-tool tests: four; repeat rerun needed normal temp access outside sandbox.
+PASS screenshot-export cleanup, resolution folders and path guards.
+PASS final installed build: 311 files match tested URP output by SHA256.
+PASS installed-build capture-only startup smoke; this is not another full gameplay run.
+PASS normal player excludes DRAGLAB_BUILTIN_CAPTURE material branch.
+LIMIT pre-existing physical-bench mouse/input failure retained; scenario/replay rendering passes.
+LIMIT historical whole-interface focus/input assertion retained; direct presentation survey passes.
+PENDING user visual acceptance. No later Slice 4 control implemented.

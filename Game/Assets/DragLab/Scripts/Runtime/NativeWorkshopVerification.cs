@@ -86,7 +86,18 @@ namespace DragLab.Runtime
             int cash=game.Profile.cash,total=game.NativeCartTotal();yield return Click(input,"partsEngines");yield return Click(input,"engineCard:"+oldEngine);yield return Click(input,"engineSwap");yield return Click(input,"dialogConfirm");
             Check(game.Profile.SelectedCar.engineAssemblyId==oldEngine&&game.Profile.cash==cash-total&&game.CartCount==0&&game.Profile.engines.Find(e=>e.instanceId==id).parentVehicleId=="","Combined confirmation charges the pending basket once, swaps and retains the removed engine");yield return Click(input,"engineBack");yield return Click(input,"engineBack");
         }
-        IEnumerator PartEngineClick(WindowsKeyboardProbe input,string id){shell.Root.Q<ScrollView>("engineScroll").ScrollTo(shell.Root.Q(id));yield return new WaitForSecondsRealtime(.15f);yield return Click(input,id);}
+        IEnumerator PartEngineClick(WindowsKeyboardProbe input,string id)
+        {
+            var view=shell.Root.Q<ScrollView>("engineScroll");var target=shell.Root.Q(id);
+            Check(target!=null,"Engine action exists: "+id);
+            view.ScrollTo(target);yield return null;view.ScrollTo(target);yield return new WaitForSecondsRealtime(.2f);
+            if(!view.contentViewport.worldBound.Contains(target.worldBound.center)){
+                view.verticalScroller.value+=target.worldBound.center.y-view.contentViewport.worldBound.center.y;
+                yield return new WaitForSecondsRealtime(.2f);
+            }
+            Check(target.worldBound.height>0&&target.enabledInHierarchy&&view.contentViewport.worldBound.Contains(target.worldBound.center),"Engine action is visible in its actual viewport: "+id);
+            yield return Click(input,id);
+        }
         void BlockDomainChecks()
         {
             foreach(var vehicle in game.vehicles){var p=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(p,new MechanicalCatalog(game.vehicles.Select(v=>v.spec)));p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,p.catalog,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});

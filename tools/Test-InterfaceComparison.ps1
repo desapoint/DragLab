@@ -1,4 +1,4 @@
-param([string]$FixtureName = 'interface-comparison-native', [switch]$ShowPlayer)
+param([string]$FixtureName = 'interface-comparison-native', [switch]$ShowPlayer, [switch]$CaptureAll, [string]$PlayerPath = '')
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 . (Join-Path $PSScriptRoot 'InterfaceScreenshots.ps1')
@@ -6,7 +6,9 @@ $taskFixture = [IO.Path]::GetFullPath((Join-Path $taskRoot ('reports/player-fixt
 if (-not $taskFixture.StartsWith((Join-Path $taskRoot 'reports/player-fixtures/'), [StringComparison]::OrdinalIgnoreCase)) { throw 'Fixture must stay within reports/player-fixtures.' }
 $taskScreenshots = Start-InterfaceScreenshotRun $taskRoot $taskFixture 'interface-comparison'
 $taskPlayer = Join-Path $taskRoot 'Game/Builds/Windows/DragLab.exe'
+if ($PlayerPath) { $taskPlayer = [IO.Path]::GetFullPath($PlayerPath) }
 $taskArgs = @('-screen-fullscreen', '0', '-screen-width', '1280', '-screen-height', '720', '-logFile', ('"' + (Join-Path $taskFixture 'player.log') + '"'), '--draglab-verify', ('"' + $taskFixture + '"'), '--draglab-ui-verify')
+if ($CaptureAll) { $taskArgs += '--draglab-capture-all-interfaces' }
 # Native OS-key checks require an interactive player window; no helper window is shown.
 $taskStyle = if ($ShowPlayer) { 'Normal' } else { 'Hidden' }
 $taskPassed = $false

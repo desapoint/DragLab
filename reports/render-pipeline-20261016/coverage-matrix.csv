@@ -1,0 +1,16 @@
+suite,before_status,before_images,before_checks,before_reported_errors,after_status,after_images,after_checks,after_reported_errors
+Block,PASS,6,329,0,PASS,6,329,0
+Cart,PASS,15,297,0,PASS,15,297,0
+Comparison,PASS,78,5,0,PASS,78,5,0
+Disposal,PASS,13,52,0,PASS,13,52,0
+EngineBench,PASS,11,53,0,PASS,11,53,0
+Maintenance,PASS,13,80,0,PASS,13,80,0
+Parts,PASS,36,1402,0,PASS,36,1402,0
+Purchase,PASS,9,269,0,PASS,9,269,0
+RaceHud,PASS,32,141,0,PASS,32,141,0
+RaceSelection,PASS,12,51,0,PASS,12,51,0
+Rebuild,PASS,10,39,0,PASS,10,39,0
+SetupManagement,PASS,11,50,0,PASS,11,50,0
+Shell,PASS,136,1534,0,PASS,136,1534,0
+Warnings,PASS,15,285,0,PASS,15,285,0
+Workshop,PASS,14,480,0,PASS,14,480,0
