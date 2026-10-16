@@ -1,0 +1,6 @@
+Full native race suite frame trace, including test-driven captures, forced save failures and explicit durability boundaries.
+These whole-suite maxima are not ordinary finish settlement timings. See the held-write MEASURE lines in native-verification.txt and pacing-verification.txt.
+phase | frames | frame p50/p95/max ms | race update p50/p95/max ms
+menu/Garage | 1347 | 6.944/9.505/976.617 | 0.132/0.243/176.296
+race/driving | 16282 | 6.944/7.073/776.671 | 0.583/0.734/202.158
+race/results | 1698 | 6.941/10.213/1454.011 | 0.801/1.755/634.848

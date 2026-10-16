@@ -50,7 +50,7 @@ namespace DragLab.Domain
             p.careerRuns.Add(new CareerRun{rival=rival,runId=runId,carId=carId,eventId=e?.stableId,practice=practice,fee=fee,winCash=e==null?120:e.cashWin,lossCash=e==null?40:e.cashLoss,reputation=e==null?0:e.reputationWin,firstBonus=e==null?0:e.firstWinBonus});
             while(p.careerRuns.Count>256){var old=p.careerRuns.Find(r=>r.complete);if(old==null)throw new InvalidOperationException("Too many active entries.");p.careerRuns.Remove(old);}
         }
-        public static void Settle(PlayerProfile p,string runId,RaceSimulation race)
+        public static void Settle(PlayerProfile p,string runId,RaceSimulation race,bool refreshMarket=true)
         {
             var r=p.careerRuns.Find(t=>t.runId==runId)??throw new InvalidOperationException("Missing captured race entry.");
             if(r.complete)throw new InvalidOperationException("Race already settled.");
@@ -61,7 +61,7 @@ namespace DragLab.Domain
             if(valid){c.Record(race);if(Math.Abs(race.distance-402.336)<.01&&(p.bestQuarterSeconds<=0||race.player.state.elapsed<p.bestQuarterSeconds))p.bestQuarterSeconds=race.player.state.elapsed;
                 if(!r.practice){bool first=race.playerWon&&!string.IsNullOrEmpty(r.eventId)&&!p.careerWins.Contains(r.eventId);p.cash=checked(p.cash+(race.playerWon?r.winCash:r.lossCash)+(first?r.firstBonus:0));if(first){p.careerWins.Add(r.eventId);p.reputation=checked(p.reputation+r.reputation);}}
             }
-            r.complete=true;if(valid&&!r.practice)VehicleListings.AfterRace(p,p.catalog);
+            r.complete=true;if(valid&&!r.practice&&refreshMarket)VehicleListings.AfterRace(p,p.catalog);
         }
         public static void Interrupted(PlayerProfile p,string id){var r=p.careerRuns.Find(t=>t.runId==id);if(r!=null&&!r.complete){r.complete=true;r.outcome="Interrupted / no payout";}}
         public static string Validate(PlayerProfile p)

@@ -225,8 +225,10 @@ namespace DragLab.Runtime
                 }
                 yield return null;
             }
-            game.verificationInput=null;yield return null;
-            float previousCameraX=2,maxCameraStep=0,cameraDeadline=Time.realtimeSinceStartup+4;
+            game.verificationInput=null;float readyDeadline=Time.realtimeSinceStartup+12;
+            while(game.ResultSettlementPending&&Time.realtimeSinceStartup<readyDeadline)yield return null;yield return new WaitForEndOfFrame();
+            Check(!game.ResultSettlementPending,"Finish settlement publishes only after its isolated durable job completes");
+            float previousCameraX=Camera.main.transform.position.x,maxCameraStep=0,cameraDeadline=Time.realtimeSinceStartup+4;
             while(Time.realtimeSinceStartup<cameraDeadline){
                 float cameraX=Camera.main.transform.position.x;maxCameraStep=Mathf.Max(maxCameraStep,Mathf.Abs(cameraX-previousCameraX));previousCameraX=cameraX;
                 if(Mathf.Abs(cameraX-4.4f)<.01f)break;yield return null;
@@ -272,6 +274,7 @@ namespace DragLab.Runtime
             Check(Math.Abs(Camera.main.orthographicSize-PrototypeGame.MenuCameraSize)<.001 && Camera.main.transform.position.y==0, "Returning to Garage restores its original camera framing");
             Check(ProfileStore.Load().runCheckpoints.All(r=>r.settled),"Finished-race exit remains settled after durable profile reload");
             yield return ResultActionChecks(input);
+            yield return FinishPacingChecks(input);
         }
         IEnumerator ResultActionChecks(WindowsKeyboardProbe input)
         {
@@ -283,12 +286,13 @@ namespace DragLab.Runtime
             SqliteStateStore.FailureInjection=stage=>{if(stage=="before-commit"&&game.Race?.phase==RacePhase.Finished)throw new IOException("Isolated result-save failure");};
             try{
                 while(game.Race.phase!=RacePhase.Finished&&Time.realtimeSinceStartup<retryDeadline)yield return null;
-                yield return null;
+                float errorDeadline=Time.realtimeSinceStartup+8;while(!game.ResultNotice.StartsWith("Result save failed")&&Time.realtimeSinceStartup<errorDeadline)yield return null;
+                yield return new WaitForEndOfFrame();
                 Check(game.Results.Visible&&game.ResultNotice.StartsWith("Result save failed")&&!game.Results.Root.Q("slipNotice").ClassListContains("hidden"),"Actual failed result save stays visible on the slip with retry retained");
                 yield return Capture("race-result-save-error");
             }finally{SqliteStateStore.FailureInjection=null;}
-            game.verificationInput=null;float settlementDeadline=Time.realtimeSinceStartup+3;
-            while(!string.IsNullOrEmpty(game.ResultNotice)&&Time.realtimeSinceStartup<settlementDeadline)yield return null;
+            game.verificationInput=null;float settlementDeadline=Time.realtimeSinceStartup+12;
+            while(game.ResultSettlementPending&&Time.realtimeSinceStartup<settlementDeadline)yield return null;
             yield return new WaitForEndOfFrame();Check(game.Results.Visible,"A second actual pass opens the reusable paper results");
             Check(string.IsNullOrEmpty(game.ResultNotice)&&game.Results.Root.Q("slipNotice").ClassListContains("hidden"),"Successful settlement retry clears the actionable error without adding a success message / notice="+game.ResultNotice+" / storage="+ProfileStore.Status+" / hidden="+game.Results.Root.Q("slipNotice").ClassListContains("hidden"));
             var retryRace=game.Race;var extra=game.Results.Root.Q<Foldout>("resultDetails");extra.value=true;yield return null;

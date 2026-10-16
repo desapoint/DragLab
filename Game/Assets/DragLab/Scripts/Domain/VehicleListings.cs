@@ -23,7 +23,8 @@ namespace DragLab.Domain.Mechanics {
  if(p.firstPurchasePending){p.firstPurchasePending=false;stock.generation++;Generate(p,c);}
  else if(!offer.used){var v=Resources.LoadAll<VehicleDefinition>("Data/Vehicles").Single(a=>a.spec.id==offer.model);uint seed=1;stock.listings.Add(Create(c,v,offer.model,false,1,0,stock.generation,stock.purchases,stock.seed,ref seed));}
  }
- public static void AfterRace(PlayerProfile p,MechanicalCatalog c){if(p.firstPurchasePending)return;Ensure(p,c);p.vehicleStock.completedRuns++;CartReservations.Expire(p);if(p.vehicleStock.completedRuns%3==0){p.vehicleStock.generation++;Generate(p,c);}}
+ public static void AfterRace(PlayerProfile p,MechanicalCatalog c){foreach(var unused in AfterRaceSteps(p,c,false)){} }
+ public static IEnumerable<object> AfterRaceSteps(PlayerProfile p,MechanicalCatalog c,bool incremental=true){if(p.firstPurchasePending)yield break;Ensure(p,c);p.vehicleStock.completedRuns++;CartReservations.Expire(p);if(p.vehicleStock.completedRuns%3==0){p.vehicleStock.generation++;foreach(var unused in GenerateSteps(p,c,incremental))yield return unused;}}
  public static System.Collections.IEnumerable WarmNext(PlayerProfile p){
  var cars=Resources.LoadAll<VehicleDefinition>("Data/Vehicles").OrderBy(v=>v.spec.id,StringComparer.Ordinal).ToArray();int generation=p.vehicleStock.generation+1,purchases=p.vehicleStock.purchases+(p.firstPurchasePending?1:0),marketSeed=p.vehicleStock.seed;var catalog=p.catalog;uint seed=(uint)marketSeed^(uint)(generation+1)*2654435761u;if(seed==0)seed=1;
  foreach(var unused in WarmGeneration(catalog,cars,generation,purchases,marketSeed,seed))yield return null;
@@ -34,14 +35,16 @@ namespace DragLab.Domain.Mechanics {
  if(scheduled.Count>=8)scheduled.Clear();scheduled.Add(key);
  }
  static double Next(ref uint seed){seed^=seed<<13;seed^=seed>>17;seed^=seed<<5;return seed/(double)uint.MaxValue;}
- static void Generate(PlayerProfile p,MechanicalCatalog c){
- p.catalog=c;PartsMarket.Refresh(p);
+ static void Generate(PlayerProfile p,MechanicalCatalog c){foreach(var unused in GenerateSteps(p,c,false)){} }
+ static IEnumerable<object> GenerateSteps(PlayerProfile p,MechanicalCatalog c,bool incremental){
+ p.catalog=c;foreach(var unused in PartsMarket.RefreshSteps(p))yield return unused;
  var stock=p.vehicleStock;stock.listings.Clear();var cars=Resources.LoadAll<VehicleDefinition>("Data/Vehicles").OrderBy(v=>v.spec.id,StringComparer.Ordinal).ToArray();uint seed=(uint)stock.seed^(uint)(stock.generation+1)*2654435761u;if(seed==0)seed=1;
- if(p.firstPurchasePending){for(int i=0;i<starters.Length;i++){var v=cars.Single(a=>a.spec.id==starters[i]);uint fixedSeed=(uint)(101+i);var offer=Create(c,v,"starter:"+v.spec.id,true,new[]{.96,.97,.96}[i],new[]{55000.0,32000,76000}[i],0,0,stock.seed,ref fixedSeed,true);offer.reputation=0;stock.listings.Add(offer);}return;}
- foreach(var v in cars)stock.listings.Add(Create(c,v,v.spec.id,false,1,0,stock.generation,stock.purchases,stock.seed,ref seed));
+ if(p.firstPurchasePending){for(int i=0;i<starters.Length;i++){var v=cars.Single(a=>a.spec.id==starters[i]);uint fixedSeed=(uint)(101+i);var offer=Create(c,v,"starter:"+v.spec.id,true,new[]{.96,.97,.96}[i],new[]{55000.0,32000,76000}[i],0,0,stock.seed,ref fixedSeed,true);offer.reputation=0;stock.listings.Add(offer);yield return "cars/starter";}yield break;}
+ foreach(var v in cars){stock.listings.Add(Create(c,v,v.spec.id,false,1,0,stock.generation,stock.purchases,stock.seed,ref seed));yield return "cars/offer";}
  // On a cold miss, launch the seven independent inspections before awaiting any result.
- foreach(var unused in WarmGeneration(c,cars,stock.generation,stock.purchases,stock.seed,seed)){}
- for(int i=0;i<7;i++){var v=cars[(int)(Next(ref seed)*cars.Length)%cars.Length];double health=.58+Next(ref seed)*.39;double km=10000+Next(ref seed)*180000;stock.listings.Add(Create(c,v,"used:"+stock.generation+":"+i,true,health,km,stock.generation,stock.purchases,stock.seed,ref seed));}
+ foreach(var unused in WarmGeneration(c,cars,stock.generation,stock.purchases,stock.seed,seed))yield return "cars/inspection preparation";
+ if(incremental)while(VehicleAssessmentCache.Pending)yield return "cars/inspection wait";
+ for(int i=0;i<7;i++){var v=cars[(int)(Next(ref seed)*cars.Length)%cars.Length];double health=.58+Next(ref seed)*.39;double km=10000+Next(ref seed)*180000;stock.listings.Add(Create(c,v,"used:"+stock.generation+":"+i,true,health,km,stock.generation,stock.purchases,stock.seed,ref seed));yield return "cars/offer";}
  }
  static VehicleOffer Create(MechanicalCatalog c,VehicleDefinition v,string id,bool used,double health,double km,int generation,int purchases,int marketSeed,ref uint seed,bool starter=false,bool warm=false){
  var map=c.Recipe(v.spec.id);if(used&&!starter&&Next(ref seed)>.55){map[PartCategory.HeadIntake]=c.Id(v.spec.id,PartCategory.HeadIntake,1);map[PartCategory.Exhaust]=c.Id(v.spec.id,PartCategory.Exhaust,1);}if(used&&!starter&&Next(ref seed)>.75)map.Remove(PartCategory.Interior);

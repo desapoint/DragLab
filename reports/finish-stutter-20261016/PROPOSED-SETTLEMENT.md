@@ -1,5 +1,7 @@
 # Remaining finish-stall proposal — approval required
 
+Historical proposal: the user subsequently explicitly approved it on 2026-10-16. The implementation, failure/recovery checks and final measurements are recorded in [the approved checkpoint](../staged-settlement-20261016/CHANGES.md). The initial rejected/partial checkpoint below remains historical evidence.
+
 Measured synchronous finish work blocks the live race: approximately 215 ms for practice and 1.10 seconds for a paid market refresh in the initial copied-save Editor probe. The existing synchronous sequence remains in place in this checkpoint. The safe camera correction and validated-save entry only reduce symptoms/work; they do not solve the entire stall.
 
 Proposed implementation:

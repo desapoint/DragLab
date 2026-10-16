@@ -1,0 +1,137 @@
+PASS: Seed 1: staged stock exactly matches synchronous definitions/prices/quantities/conditions, excluding fresh random GUID identities
+PASS: Seed 1: market candidate remains isolated and yields its work
+PASS: Seed 1: staged parts/cars preserve fitment, unique actual identities and market validation
+PASS: Seed 42: staged stock exactly matches synchronous definitions/prices/quantities/conditions, excluding fresh random GUID identities
+PASS: Seed 42: market candidate remains isolated and yields its work
+PASS: Seed 42: staged parts/cars preserve fitment, unique actual identities and market validation
+PASS: Seed 12345: staged stock exactly matches synchronous definitions/prices/quantities/conditions, excluding fresh random GUID identities
+PASS: Seed 12345: market candidate remains isolated and yields its work
+PASS: Seed 12345: staged parts/cars preserve fitment, unique actual identities and market validation
+PASS: Reward-policy fixture reaches a real shared-simulation finish
+PASS: first-pass / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: first-pass / False: exact captured payout and reputation
+PASS: first-pass / False: duplicate settlement is rejected without another reward
+PASS: first-pass / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: first-pass / True: exact captured payout and reputation
+PASS: first-pass / True: duplicate settlement is rejected without another reward
+PASS: club-run / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: club-run / False: exact captured payout and reputation
+PASS: club-run / False: duplicate settlement is rejected without another reward
+PASS: club-run / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: club-run / True: exact captured payout and reputation
+PASS: club-run / True: duplicate settlement is rejected without another reward
+PASS: coupe-rival / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: coupe-rival / False: exact captured payout and reputation
+PASS: coupe-rival / False: duplicate settlement is rejected without another reward
+PASS: coupe-rival / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: coupe-rival / True: exact captured payout and reputation
+PASS: coupe-rival / True: duplicate settlement is rejected without another reward
+PASS: local-final / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: local-final / False: exact captured payout and reputation
+PASS: local-final / False: duplicate settlement is rejected without another reward
+PASS: local-final / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: local-final / True: exact captured payout and reputation
+PASS: local-final / True: duplicate settlement is rejected without another reward
+PASS: ladder-f-qualifier / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-f-qualifier / False: exact captured payout and reputation
+PASS: ladder-f-qualifier / False: duplicate settlement is rejected without another reward
+PASS: ladder-f-qualifier / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-f-qualifier / True: exact captured payout and reputation
+PASS: ladder-f-qualifier / True: duplicate settlement is rejected without another reward
+PASS: ladder-f-rival / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-f-rival / False: exact captured payout and reputation
+PASS: ladder-f-rival / False: duplicate settlement is rejected without another reward
+PASS: ladder-f-rival / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-f-rival / True: exact captured payout and reputation
+PASS: ladder-f-rival / True: duplicate settlement is rejected without another reward
+PASS: ladder-e-qualifier / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-e-qualifier / False: exact captured payout and reputation
+PASS: ladder-e-qualifier / False: duplicate settlement is rejected without another reward
+PASS: ladder-e-qualifier / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-e-qualifier / True: exact captured payout and reputation
+PASS: ladder-e-qualifier / True: duplicate settlement is rejected without another reward
+PASS: ladder-e-rival / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-e-rival / False: exact captured payout and reputation
+PASS: ladder-e-rival / False: duplicate settlement is rejected without another reward
+PASS: ladder-e-rival / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-e-rival / True: exact captured payout and reputation
+PASS: ladder-e-rival / True: duplicate settlement is rejected without another reward
+PASS: ladder-d-qualifier / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-d-qualifier / False: exact captured payout and reputation
+PASS: ladder-d-qualifier / False: duplicate settlement is rejected without another reward
+PASS: ladder-d-qualifier / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-d-qualifier / True: exact captured payout and reputation
+PASS: ladder-d-qualifier / True: duplicate settlement is rejected without another reward
+PASS: ladder-d-rival / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-d-rival / False: exact captured payout and reputation
+PASS: ladder-d-rival / False: duplicate settlement is rejected without another reward
+PASS: ladder-d-rival / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-d-rival / True: exact captured payout and reputation
+PASS: ladder-d-rival / True: duplicate settlement is rejected without another reward
+PASS: ladder-c-qualifier / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-c-qualifier / False: exact captured payout and reputation
+PASS: ladder-c-qualifier / False: duplicate settlement is rejected without another reward
+PASS: ladder-c-qualifier / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-c-qualifier / True: exact captured payout and reputation
+PASS: ladder-c-qualifier / True: duplicate settlement is rejected without another reward
+PASS: ladder-c-rival / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-c-rival / False: exact captured payout and reputation
+PASS: ladder-c-rival / False: duplicate settlement is rejected without another reward
+PASS: ladder-c-rival / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-c-rival / True: exact captured payout and reputation
+PASS: ladder-c-rival / True: duplicate settlement is rejected without another reward
+PASS: ladder-b-qualifier / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-b-qualifier / False: exact captured payout and reputation
+PASS: ladder-b-qualifier / False: duplicate settlement is rejected without another reward
+PASS: ladder-b-qualifier / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-b-qualifier / True: exact captured payout and reputation
+PASS: ladder-b-qualifier / True: duplicate settlement is rejected without another reward
+PASS: ladder-b-rival / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-b-rival / False: exact captured payout and reputation
+PASS: ladder-b-rival / False: duplicate settlement is rejected without another reward
+PASS: ladder-b-rival / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-b-rival / True: exact captured payout and reputation
+PASS: ladder-b-rival / True: duplicate settlement is rejected without another reward
+PASS: ladder-a-qualifier / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-a-qualifier / False: exact captured payout and reputation
+PASS: ladder-a-qualifier / False: duplicate settlement is rejected without another reward
+PASS: ladder-a-qualifier / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-a-qualifier / True: exact captured payout and reputation
+PASS: ladder-a-qualifier / True: duplicate settlement is rejected without another reward
+PASS: ladder-a-rival / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-a-rival / False: exact captured payout and reputation
+PASS: ladder-a-rival / False: duplicate settlement is rejected without another reward
+PASS: ladder-a-rival / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-a-rival / True: exact captured payout and reputation
+PASS: ladder-a-rival / True: duplicate settlement is rejected without another reward
+PASS: ladder-s-qualifier / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-s-qualifier / False: exact captured payout and reputation
+PASS: ladder-s-qualifier / False: duplicate settlement is rejected without another reward
+PASS: ladder-s-qualifier / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-s-qualifier / True: exact captured payout and reputation
+PASS: ladder-s-qualifier / True: duplicate settlement is rejected without another reward
+PASS: ladder-s-rival / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-s-rival / False: exact captured payout and reputation
+PASS: ladder-s-rival / False: duplicate settlement is rejected without another reward
+PASS: ladder-s-rival / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: ladder-s-rival / True: exact captured payout and reputation
+PASS: ladder-s-rival / True: duplicate settlement is rejected without another reward
+PASS: special-0 / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: special-0 / False: exact captured payout and reputation
+PASS: special-0 / False: duplicate settlement is rejected without another reward
+PASS: special-0 / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: special-0 / True: exact captured payout and reputation
+PASS: special-0 / True: duplicate settlement is rejected without another reward
+PASS: special-1 / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: special-1 / False: exact captured payout and reputation
+PASS: special-1 / False: duplicate settlement is rejected without another reward
+PASS: special-1 / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: special-1 / True: exact captured payout and reputation
+PASS: special-1 / True: duplicate settlement is rejected without another reward
+PASS: special-2 / False: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: special-2 / False: exact captured payout and reputation
+PASS: special-2 / False: duplicate settlement is rejected without another reward
+PASS: special-2 / True: staged policy matches captured synchronous fee/reward/first-win/market behavior
+PASS: special-2 / True: exact captured payout and reputation
+PASS: special-2 / True: duplicate settlement is rejected without another reward
+Checks: 136 / failures: 0

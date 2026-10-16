@@ -229,8 +229,8 @@ namespace DragLab.Runtime
             if (saveDelay > 0 && GUIUtility.hotControl == 0 && !Input.GetMouseButton(0) && !Input.GetMouseButton(1)) { if(drivingPreferencesDirty){if(!ProfileStore.TrySavePreferences(profile,out var error))notice="Settings save failed: "+error;drivingPreferencesDirty=false;}else ProfileStore.Save(profile);saveDelay=0; }
             if (screen == "Garage" && !(nativeMenu != null && (nativeMenu.ModalOpen || nativeMenu.OwnedDetailsOpen || nativeMenu.DealerPageOpen || nativeMenu.EditingText)) && Input.GetKeyDown(KeyCode.P)) StartPractice();
             if (screen != "Race" || race == null) return;
-            if (!NativeRacePause && (race.phase == RacePhase.Finished || paused) && Input.GetKeyDown(KeyCode.G)) { ReturnToGarage(); return; }
-            if (!NativeRacePause && race.phase == RacePhase.Finished && Input.GetKeyDown(KeyCode.R)) { StartRace(activeEvent, practiceRun); return; }
+            if (!NativeRacePause && (race.phase == RacePhase.Finished || paused) && !ResultSettlementPending && Input.GetKeyDown(KeyCode.G)) { ReturnToGarage(); return; }
+            if (!NativeRacePause && race.phase == RacePhase.Finished && !ResultSettlementPending && Input.GetKeyDown(KeyCode.R)) { StartRace(activeEvent, practiceRun); return; }
             if (Input.GetKeyDown(KeyCode.Escape)) { if (NativeRacePause) nativeMenu.EscapeRacePause(); else SetPaused(!paused); }
             if (paused) return;
             if (race.phase == RacePhase.Finished)
@@ -278,6 +278,7 @@ namespace DragLab.Runtime
             float targetX=race.phase==RacePhase.Finished&&InterfaceComparison.IsReplacement("Results")?4.4f:2;
             float cameraX=targetX==2?2:Mathf.SmoothDamp(raceCamera.transform.position.x,targetX,ref resultCameraVelocity,.45f,20,Mathf.Min(Time.unscaledDeltaTime,.05f));
             if(targetX==2)resultCameraVelocity=0;
+            FinishMeasurement?.Invoke("camera step units",Math.Abs(cameraX-raceCamera.transform.position.x));
             raceCamera.transform.position=new Vector3(cameraX,RaceCameraY,-10);
             PlaceRaceCars();
             strip.Render(race);
@@ -288,15 +289,7 @@ namespace DragLab.Runtime
                 SharedAudioSettings.OpponentVolume * SharedAudioSettings.OpponentGain(race.opponent.state.distance - race.player.state.distance), tiresActive:!paused);
         }
 
-        void FinishRace()
-        {
-            if(awarded||race==null||race.phase!=RacePhase.Finished)return;
-            var checkpoint=RunPersistence.Capture(liveRunId,liveRunOwner,liveRunTick,race.player,false,"Result settled / shutdown still running");
-            PlayerProfile next;string error;
-            if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{var old=p.runCheckpoints.Find(r=>r.runId==liveRunId);if(old==null||old.tick<liveRunTick)MechanicsTransactions.ApplyCheckpoint(p,checkpoint);CareerProgression.Settle(p,liveRunId,race);},ProfileStore.TrySaveValidated,out next,out error)){notice="Result save failed; retry retained. "+error;return;}
-            profile=next;settings=profile.driving;awarded=true;savedRunTick=liveRunTick;savedRunFailures=RunPersistence.FailureCount(race.player);finishedPass=Build.lastPass;
-            notice="";
-        }
+        void FinishRace()=>AdvanceFinishSettlement();
         void SetPaused(bool value)
         {
             paused = value; accumulator = 0; controls.Clear();
@@ -306,15 +299,15 @@ namespace DragLab.Runtime
             if (opponentAudio != null) opponentAudio.Silence();
             if(value&&profile!=null&&race!=null)SyncRaceWear();
         }
-        internal void HandleApplicationInterruption()
+        internal void HandleApplicationInterruption(bool suspend=false)
         {
             if(screen!="Race"||race==null)return;
-            if(race.phase==RacePhase.Finished)SyncRaceWear();else SetPaused(true);
+            if(race.phase==RacePhase.Finished){if(suspend||!ResultSettlementPending)SyncRaceWear();}else SetPaused(true);
         }
         void OnApplicationFocus(bool focused) { if (!focused) interfaceComparison.ReleaseShortcut(); if (!focused && !RuntimeVerification.Active) HandleApplicationInterruption(); }
         void SaveLiveRunIfDue()
         {
-            if(liveRunClosed)return;
+            if(liveRunClosed||ResultSettlementPending)return;
             string backgroundError=RaceCheckpointStore.Error;
             if(backgroundError!=null)notice=backgroundError+"; full save will retry at pause/exit.";
             if(liveRunTick-savedRunTick<RunPersistence.PeriodTicks && RunPersistence.FailureCount(race.player)==savedRunFailures)return;
@@ -331,6 +324,7 @@ namespace DragLab.Runtime
         bool SyncRaceWearMeasured(bool close=false,string reason="")
         {
             if(race==null||profile==null||liveRunClosed)return true;
+            if(ResultSettlementPending&&!FlushFinishSettlement())return false;
             var durable=profile.runCheckpoints.Find(r=>r.runId==liveRunId);
             if(!close&&durable!=null&&liveRunTick==durable.tick)return true;
             var checkpoint=RunPersistence.Capture(liveRunId,liveRunOwner,liveRunTick,race.player,close,reason);
@@ -338,7 +332,7 @@ namespace DragLab.Runtime
             if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{MechanicsTransactions.ApplyCheckpoint(p,checkpoint);if(close)CareerProgression.Interrupted(p,liveRunId);},ProfileStore.TrySave,out next,out error)){notice="Run save failed; live state retained. "+error;return false;}
             profile=next;settings=profile.driving;savedRunTick=liveRunTick;savedRunFailures=RunPersistence.FailureCount(race.player);liveRunClosed=close;return true;
         }
-        void OnApplicationPause(bool pause) { if (pause)HandleApplicationInterruption(); }
+        void OnApplicationPause(bool pause) { if (pause)HandleApplicationInterruption(true); }
         void OnApplicationQuit() { if (profile != null) { SyncRaceWear(true,"Quit");PersistNativeCartReservation();if(drivingPreferencesDirty)ProfileStore.TrySavePreferences(profile,out _);ProfileStore.Save(profile);ProfileStore.Flush(); } }
 
         internal string AuditMouseEvents = "";

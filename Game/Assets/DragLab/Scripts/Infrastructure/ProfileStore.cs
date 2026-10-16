@@ -7,7 +7,7 @@ using DragLab.Domain;
 using DragLab.Domain.Mechanics;
 namespace DragLab.Infrastructure
 {
-    public static class ProfileStore
+    public static partial class ProfileStore
     {
         internal static Action<string,double> SaveMeasurement;
         static bool writeBlocked;

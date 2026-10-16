@@ -1,0 +1,57 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Fitted parts is a compact left-aligned action rather than a full-width fact row
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Fitted values reflect actual member condition and failures instead of a neutral tire wrapper
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Each fitted part has a shared Shop action, available after an owned car is selected
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Finish pacing fixture has a durable baseline
+PASS: Finish pacing stages a real practice run
+PASS: Real settlement reaches a held durable write without blocking the UI
+PASS: Finished focus loss neither pauses nor waits on the held writer
+PASS: Frames and physical shutdown continue while durable write is held
+PASS: Durable write executes on the isolated writer, not Unity's main thread
+PASS: Cash and complete receipt remain unpublished before durable commit
+PASS: Results cannot start a conflicting action while settlement is pending
+MEASURE: finish practice / max main step ms 14,981 / max stage settlement/normalize / max frame ms 24,591 / max camera step 0,048 / held-write frames 72
+PASS: Finish preparation is split into bounded main steps and camera motion remains continuous
+PASS: Actual suspend boundary drains pending work without auto-pausing finished results
+PASS: Successful background commit publishes exactly one completed receipt
+PASS: Background settlement applies the captured reward exactly once
+PASS: Paid third-race stock refresh stays seeded and shares the car/part epoch
+PASS: Background settlement and final shutdown resources survive durable exit/reload
+PASS: Finish pacing fixture has a durable baseline
+PASS: Finish pacing stages a real paid refresh run
+PASS: Real settlement reaches a held durable write without blocking the UI
+PASS: Finished focus loss neither pauses nor waits on the held writer
+PASS: Frames and physical shutdown continue while durable write is held
+PASS: Durable write executes on the isolated writer, not Unity's main thread
+PASS: Cash and complete receipt remain unpublished before durable commit
+PASS: Results cannot start a conflicting action while settlement is pending
+MEASURE: finish paid refresh / max main step ms 31,646 / max stage parts/layout and selection / max frame ms 35,728 / max camera step 0,054 / held-write frames 73
+PASS: Finish preparation is split into bounded main steps and camera motion remains continuous
+PASS: Explicit Garage boundary drains pending settlement before exit
+PASS: Successful background commit publishes exactly one completed receipt
+PASS: Background settlement applies the captured reward exactly once
+PASS: Paid third-race stock refresh stays seeded and shares the car/part epoch
+PASS: Background settlement and final shutdown resources survive durable exit/reload
+Checks: 53 / runtime errors: 0

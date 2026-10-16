@@ -1,0 +1,10 @@
+PASS: Isolated recovery fixture is durably initialized
+PASS: Completed worker does not publish into the live source before acknowledgement
+PASS: Reload after commit but before publication recovers exactly the committed balance
+PASS: Committed recovery retains all component identities, condition, fluids and ownership
+PASS: Repeated recovery does not apply the delta twice
+PASS: Publication acknowledges the same durable commit
+PASS: Failed transaction leaves durable balance and commit unchanged
+PASS: Rollback preserves actual component condition and fluids
+PASS: Stale writer cannot overwrite a completed background commit
+Checks: 9 / failures: 0

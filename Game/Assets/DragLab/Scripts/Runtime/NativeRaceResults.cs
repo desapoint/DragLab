@@ -14,7 +14,8 @@ namespace DragLab.Runtime
         VisualElement root, paper;
         ScrollView scroll;
         Label note, comparison;
-        Button repairs;
+        Button repairs,garage,again,export;
+        long recordRevision=-1;
         RaceSimulation bound;
         readonly List<RacingSurface> surfaces=new List<RacingSurface>();
         internal bool Visible=>root!=null&&!root.ClassListContains("hidden");
@@ -38,8 +39,8 @@ namespace DragLab.Runtime
             scroll=new ScrollView{name="timingSlipScroll",horizontalScrollerVisibility=ScrollerVisibility.Hidden};scroll.AddToClassList("slip-scroll");paper.Add(scroll);
             var bar=scroll.verticalScroller;bar.AddToClassList("settings-scrollbar");bar.slider.AddToClassList("settings-scrollbar-slider");bar.lowButton.AddToClassList("scrollbar-arrow");bar.highButton.AddToClassList("scrollbar-arrow");
             var actions=new VisualElement();actions.AddToClassList("slip-actions");dock.Add(actions);
-            ActionButton(actions,"resultGarage","Garage",game.QueueResultGarage,false);
-            ActionButton(actions,"resultAgain","Race again",game.QueueResultAgain,true);
+            garage=ActionButton(actions,"resultGarage","Garage",game.QueueResultGarage,false);
+            again=ActionButton(actions,"resultAgain","Race again",game.QueueResultAgain,true);
             InterfaceComparison.SetReplacement("Results",true);
         }
         Button ActionButton(VisualElement parent,string id,string caption,Action action,bool primary)
@@ -54,13 +55,16 @@ namespace DragLab.Runtime
             root.EnableInClassList("hidden",!show);foreach(var s in surfaces)s.Tick(show);if(!show)return;
             int width=panel.targetTexture==null?Screen.width:panel.targetTexture.width,height=panel.targetTexture==null?Screen.height:panel.targetTexture.height;
             panel.scale=NativeMenuShell.DisplayScale(width,height);root.EnableInClassList("compact",width/panel.scale<1150||height/panel.scale<700);
+            garage.SetEnabled(!game.ResultSettlementPending);again.SetEnabled(!game.ResultSettlementPending);
             if(bound!=game.Race){bound=game.Race;BuildSlip();}
             if(note.text!=game.ResultNotice){note.text=game.ResultNotice;note.EnableInClassList("hidden",string.IsNullOrEmpty(note.text));comparison.text=game.ResultComparison;comparison.EnableInClassList("hidden",string.IsNullOrEmpty(comparison.text));}
+            if(recordRevision!=game.Profile.revision){recordRevision=game.Profile.revision;comparison.text=game.ResultComparison;comparison.EnableInClassList("hidden",string.IsNullOrEmpty(comparison.text));}
+            repairs.SetEnabled(!game.ResultSettlementPending);export.SetEnabled(!game.ResultSettlementPending);
             repairs.EnableInClassList("hidden",!bound.player.mechanics.parts.Exists(PrototypeGame.PartFailedForResults));
         }
         void BuildSlip()
         {
-            scroll.Clear();surfaces.RemoveAll(s=>s.panel==null);
+            scroll.Clear();surfaces.RemoveAll(s=>s.panel==null);recordRevision=game.Profile.revision;
             var title=new Label("DRAGLAB");title.AddToClassList("slip-brand");scroll.Add(title);
             var meta=new Label((game.IsPractice?"PRACTICE":"RACE")+"  /  "+bound.distance.ToString("F1")+" m");meta.AddToClassList("slip-meta");scroll.Add(meta);
             var outcome=new Label(bound.player.state.disqualified?"RED LIGHT":bound.timedOut?"TIMEOUT":!bound.player.state.finished?"DNF":bound.playerWon?"WIN":"LOSS");outcome.name="slipOutcome";outcome.AddToClassList("slip-outcome");scroll.Add(outcome);
@@ -75,7 +79,7 @@ namespace DragLab.Runtime
             comparison=new Label(game.ResultComparison);comparison.AddToClassList("slip-note");comparison.EnableInClassList("hidden",string.IsNullOrEmpty(comparison.text));details.Add(comparison);
             var analysis=new Label(bound.telemetry.Analysis(bound.player));analysis.AddToClassList("slip-note");details.Add(analysis);
             repairs=ActionButton(details,"resultRepairs","Review failures",game.QueueResultRepairs,false);
-            ActionButton(details,"resultExport","Export telemetry",game.ExportResultTelemetry,false);
+            export=ActionButton(details,"resultExport","Export telemetry",game.ExportResultTelemetry,false);
         }
         static string Time(CarState s)=>s.finished?s.elapsed.ToString("F3"):"DNF";
         static string Reaction(CarState s)=>s.reaction>=0?s.reaction.ToString("F3"):"—";
@@ -109,7 +113,7 @@ namespace DragLab.Runtime
         internal string ResultNotice=>notice;
         internal string ResultComparison=>finishedPass==null?"":finishedPass.Compare(previousPass,SharedUnitSettings.Current);
         internal static bool PartFailedForResults(DragLab.Domain.Mechanics.PartInstance part)=>PartFailed(part);
-        bool CanResultAction=>race!=null&&race.phase==RacePhase.Finished&&!NativeRacePause&&pendingAction==null;
+        bool CanResultAction=>race!=null&&race.phase==RacePhase.Finished&&!NativeRacePause&&pendingAction==null&&!ResultSettlementPending;
         internal void QueueResultGarage(){if(CanResultAction)pendingAction=ReturnToGarage;}
         internal void QueueResultAgain(){if(CanResultAction)pendingAction=()=>StartRace(activeEvent,practiceRun);}
         internal void QueueResultRepairs(){if(CanResultAction)pendingAction=()=>{ReturnToGarage();if(screen!="Race")ShowRepairs();};}

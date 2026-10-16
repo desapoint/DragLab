@@ -61,12 +61,14 @@ namespace DragLab.Domain.Mechanics
             else if(p.inventory.market.seed!=p.vehicleStock.seed||p.inventory.market.generation!=p.vehicleStock.generation)throw new InvalidOperationException("Parts and car market epochs disagree.");
         }
         public static void Refresh(PlayerProfile p) { if(p.inventory!=null)Generate(p,true); }
-        static void Generate(PlayerProfile p,bool expire)
+        static void Generate(PlayerProfile p,bool expire){foreach(var unused in GenerateSteps(p,expire)){} }
+        public static IEnumerable<object> RefreshSteps(PlayerProfile p)=>GenerateSteps(p,true);
+        static IEnumerable<object> GenerateSteps(PlayerProfile p,bool expire)
         {
             if(expire){var retained=p.inventory.dealer.Where(s=>s.Id!=null&&CartReservations.HoldsUsed(p,s.Id)).ToArray();p.inventory.dealer.Clear();p.inventory.dealer.AddRange(retained);}
             var state=new PartsStockState{version=1,seed=p.vehicleStock.seed,generation=p.vehicleStock.generation,guaranteeAtRefresh=p.driving.guaranteedFittingParts};p.inventory.market=state;
             uint random=Stream(state,0x91e10da5u),newQuantity=Stream(state,0x27d4eb2fu),usedRandom=Stream(state,0x165667b1u),usedQuantity=Stream(state,0x85ebca6bu),engineRandom=Stream(state,0xc2b2ae35u),engineQuantity=Stream(state,0xd3a2646cu),coverageRandom=Stream(state,0xfd7046c5u),coverageQuantity=Stream(state,0xb55a4f09u);
-            long stamp=Stamp();var productKeys=p.catalog.parts.ToDictionary(d=>d.id,ProductKey,StringComparer.Ordinal);Measured("product keys",stamp);stamp=Stamp();
+            long stamp=Stamp();var productKeys=new Dictionary<string,string>(StringComparer.Ordinal);int indexed=0;foreach(var definition in p.catalog.parts){productKeys.Add(definition.id,ProductKey(definition));if(++indexed%32==0)yield return "parts/product keys";}Measured("product keys",stamp);stamp=Stamp();yield return "parts/product keys";
             var models=Models(p.catalog);var specs=models.Select(p.catalog.Spec).ToArray();
             var selectedNew=new List<KeyValuePair<NewPartStock,int>>();
             var layout=MarketCatalogLayout.Get(p.catalog,productKeys,specs);foreach(var group in layout.groups){
@@ -74,32 +76,32 @@ namespace DragLab.Domain.Mechanics
                 var row=new NewPartStock{definitions=new List<string>(group.ids),deliveryPercent=5+(int)(Next(ref random)*6)%6};state.parts.Add(row);if(selected)selectedNew.Add(new KeyValuePair<NewPartStock,int>(row,group.maximum));
             }
             foreach(var selected in selectedNew){double roll=Next(ref newQuantity);int sets=selected.Value>1?(roll<.5?1:roll<.85?2:3):(roll<.8?1:roll<.97?2:3);selected.Key.units=selected.Key.initialUnits=selected.Value*sets;}
-            Measured("new product selection/quantities",stamp);stamp=Stamp();
+            Measured("new product selection/quantities",stamp);stamp=Stamp();yield return "parts/layout and selection";
             // A single shared pool: no model quotas for used parts or engines.
             var owned=p.cars.Select(c=>c.vehicleId).Distinct().ToArray();var targets=owned.Length==0?specs:owned.Select(p.catalog.Spec).ToArray();
             var fitting=state.parts.Where(row=>row.definitions.Any(id=>{var d=p.catalog.Find(id);return d.reputationRequired==0&&targets.Any(spec=>p.catalog.Fits(spec,d));})).ToList();
             while(fitting.Count(row=>row.units>0)<Math.Min(state.guaranteeAtRefresh,fitting.Count)){
                 var missing=fitting.Where(row=>row.units==0).ToArray();var row=missing[(int)(Next(ref coverageRandom)*missing.Length)%missing.Length];var d=p.catalog.Find(row.definitions[0]);int max=specs.Where(spec=>p.catalog.Fits(spec,d)).Select(spec=>Count(spec,d)).DefaultIfEmpty(1).Max();row.units=row.initialUnits=max*(1+(int)(Next(ref coverageQuantity)*3)%3);
             }
-            Measured("new fitting guarantee",stamp);stamp=Stamp();string prefix="market/"+state.seed+"/"+state.generation+"/";
+            Measured("new fitting guarantee",stamp);stamp=Stamp();yield return "parts/new guarantee";string prefix="market/"+state.seed+"/"+state.generation+"/";
             int usedCount=Next(ref usedRandom)<.15?0:1+(int)(Next(ref usedRandom)*24)%24;var selectedUsed=new List<Tuple<VehicleSpec,PartDefinition>>();
             for(int n=0;n<usedCount;n++){
                 string model=models[(int)(Next(ref usedRandom)*models.Length)%models.Length];var spec=layout.Stock(p.catalog,model);
                 var choices=layout.Choices(p.catalog,model);
                 var candidates=choices[(int)(Next(ref usedRandom)*choices.Length)%choices.Length];selectedUsed.Add(Tuple.Create(spec,candidates[(int)(Next(ref usedRandom)*candidates.Length)%candidates.Length]));
             }
-            for(int n=0;n<selectedUsed.Count;n++)AddUsedSupply(p,selectedUsed[n].Item1,selectedUsed[n].Item2,prefix+"used/"+n,ref usedQuantity);
+            for(int n=0;n<selectedUsed.Count;n++){AddUsedSupply(p,selectedUsed[n].Item1,selectedUsed[n].Item2,prefix+"used/"+n,ref usedQuantity);yield return "parts/used supply";}
             if(owned.Length>0&&state.guaranteeAtRefresh>0){
                 var generated=p.inventory.dealer.Where(row=>row.Id.StartsWith(prefix+"used/",StringComparison.Ordinal)).ToArray();
                 var present=new HashSet<string>(generated.Where(row=>{var d=p.catalog.Find(row.DefinitionId);return d.reputationRequired<=p.reputation&&targets.Any(spec=>p.catalog.Fits(spec,d));}).Select(row=>productKeys[row.DefinitionId]),StringComparer.Ordinal);
                 var candidates=p.catalog.parts.Where(d=>PartSemantics.Wears(d.category)&&d.reputationRequired<=p.reputation&&targets.Any(spec=>p.catalog.Fits(spec,d))).GroupBy(d=>productKeys[d.id],StringComparer.Ordinal).OrderBy(g=>g.Min(d=>d.id),StringComparer.Ordinal).Select(g=>g.OrderBy(d=>d.id,StringComparer.Ordinal).First()).ToList();
-                while(present.Count<state.guaranteeAtRefresh){var remaining=candidates.Where(d=>!present.Contains(productKeys[d.id])).ToArray();if(remaining.Length==0)break;var d=remaining[(int)(Next(ref coverageRandom)*remaining.Length)%remaining.Length];var platforms=targets.Where(spec=>p.catalog.Fits(spec,d)).ToArray();var source=platforms[(int)(Next(ref coverageRandom)*platforms.Length)%platforms.Length];var spec=layout.Stock(p.catalog,source.id);AddUsedSupply(p,spec,d,prefix+"used/guaranteed/"+present.Count,ref coverageQuantity);present.Add(productKeys[d.id]);}
+                while(present.Count<state.guaranteeAtRefresh){var remaining=candidates.Where(d=>!present.Contains(productKeys[d.id])).ToArray();if(remaining.Length==0)break;var d=remaining[(int)(Next(ref coverageRandom)*remaining.Length)%remaining.Length];var platforms=targets.Where(spec=>p.catalog.Fits(spec,d)).ToArray();var source=platforms[(int)(Next(ref coverageRandom)*platforms.Length)%platforms.Length];var spec=layout.Stock(p.catalog,source.id);AddUsedSupply(p,spec,d,prefix+"used/guaranteed/"+present.Count,ref coverageQuantity);present.Add(productKeys[d.id]);yield return "parts/used guarantee";}
             }
             Measured("used parts/guarantee",stamp);stamp=Stamp();int engines=Next(ref engineRandom)<.25?0:1+(int)(Next(ref engineRandom)*6)%6;var newModels=new HashSet<string>();var selectedEngines=new List<Tuple<string,bool>>();
             for(int n=0;n<engines;n++){
                 string model=models[(int)(Next(ref engineRandom)*models.Length)%models.Length];bool used=Next(ref engineRandom)<.6;if(!used&&!newModels.Add(model))used=true;selectedEngines.Add(Tuple.Create(model,used));
             }
-            for(int n=0;n<selectedEngines.Count;n++)state.engines.Add(CreateEngineOffer(p,selectedEngines[n].Item1,selectedEngines[n].Item2,prefix+"engine/"+n,ref engineQuantity));
+            for(int n=0;n<selectedEngines.Count;n++){state.engines.Add(CreateEngineOffer(p,selectedEngines[n].Item1,selectedEngines[n].Item2,prefix+"engine/"+n,ref engineQuantity));yield return "parts/engine offer";}
             Measured("engine offers",stamp);
         }
         public static EngineOffer CreateEngineOffer(PlayerProfile p,string model,bool used,string id,ref uint random)

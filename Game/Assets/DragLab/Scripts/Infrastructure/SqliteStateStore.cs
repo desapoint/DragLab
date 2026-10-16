@@ -53,7 +53,11 @@ namespace DragLab.Infrastructure
         }
         internal static Snapshot Capture(PlayerProfile profile)
         {
-            Prepare();return new Snapshot{json=JsonUtility.ToJson(profile),revision=profile.revision,expectedCommit=profile.storageCommit,build=Application.version,content=MechanicalCatalog.Version.ToString(CultureInfo.InvariantCulture),physics=MechanicsSchema.Model,saveVersion=profile.saveVersion.ToString(CultureInfo.InvariantCulture),
+            Prepare();return CaptureManaged(profile,Application.version);
+        }
+        internal static Snapshot CaptureManaged(PlayerProfile profile,string build)
+        {
+            return new Snapshot{json=JsonUtility.ToJson(profile),revision=profile.revision,expectedCommit=profile.storageCommit,build=build,content=MechanicalCatalog.Version.ToString(CultureInfo.InvariantCulture),physics=MechanicsSchema.Model,saveVersion=profile.saveVersion.ToString(CultureInfo.InvariantCulture),
                 owners=profile.cars.Select(c=>new[]{c.instanceId,"car",c.vehicleId}).Concat(profile.engines.Select(e=>new[]{e.instanceId,"engine",e.vehicleDefinitionId})).ToList(),
                 components=profile.parts.Select(p=>new[]{p.instanceId,p.definitionId,string.IsNullOrEmpty(p.ownerId)?null:p.ownerId,((int)p.location).ToString(CultureInfo.InvariantCulture)}).ToList(),
                 slots=profile.cars.SelectMany(c=>c.installed.slots.Select(s=>new[]{c.instanceId,s.slot,s.partInstanceId})).Concat(profile.engines.SelectMany(e=>e.slots.Select(s=>new[]{e.instanceId,s.slot,s.partInstanceId}))).ToList()};

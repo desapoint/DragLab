@@ -1,0 +1,7 @@
+Windows development build: Unity 6000.6.4f1
+Build job ca12d29eb51240c8aeea26707c24a919: successful before final native 200/0 and pacing 53/0 checks.
+SHA256 | bytes | build-relative path
+437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd | 667136 | DragLab.exe
+03e9f069db6cbf771182dd9fff49305021eb114d018aa830c48b5c758f2f58e8 | 2763776 | DragLab_Data/Managed/Assembly-CSharp.dll
+b4c4b7e42bfac4b3c9301383640e9196e621e4c2e6632350c5574761a57b571f | 994496 | DragLab_Data/resources.assets
+c37573ee5978ff59d2f80f788f7df82ca8476ada1764622e695af622717a6857 | 83012 | DragLab_Data/globalgamemanagers
