@@ -13,7 +13,7 @@ namespace DragLab.Domain.Mechanics {
  public static void Ensure(PlayerProfile p,MechanicalCatalog c){if(p.vehicleStock!=null){var offers=p.vehicleStock.listings??new List<VehicleOffer>();foreach(var offer in offers)VehicleInspection.Migrate(c,offer,p.firstPurchasePending);
  // Add price metadata to old new-car listings without rerolling asks, contents or identities.
  if(offers.Any(o=>!o.used&&o.cataloguePrice==0)){var prices=Resources.LoadAll<VehicleDefinition>("Data/Vehicles").ToDictionary(v=>v.spec.id,v=>v.purchasePrice);foreach(var offer in offers.Where(o=>!o.used&&o.cataloguePrice==0))offer.cataloguePrice=prices.TryGetValue(offer.model,out var price)?Math.Max(1,price):offer.price;}
- return;}Initialize(p,c,Guid.NewGuid().GetHashCode());}
+ return;}Initialize(p,c,DragLab.Domain.RuntimeEntropy.MarketSeed);}
  public static void Initialize(PlayerProfile p,MechanicalCatalog c,int seed){p.vehicleStock=new VehicleStockState{seed=seed==0?1:seed};Generate(p,c);}
  public static VehicleOffer Find(PlayerProfile p,string id)=>p.vehicleStock?.listings.FirstOrDefault(o=>o.listingId==id);
  public static void RequireCurrent(PlayerProfile p,VehicleOffer offer){if(offer==null)throw new InvalidOperationException("Missing offer.");if(string.IsNullOrEmpty(offer.listingId)){if(p.firstPurchasePending)throw new InvalidOperationException("Choose one of the fixed starter listings first.");return;}var actual=Find(p,offer.listingId);if(actual==null||!SnapshotEquality.Serialized(JsonUtility.ToJson(actual),offer))throw new InvalidOperationException("Listing sold or changed. Reopen the dealership.");}

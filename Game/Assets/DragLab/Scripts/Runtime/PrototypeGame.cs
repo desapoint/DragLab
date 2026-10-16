@@ -177,7 +177,7 @@ namespace DragLab.Runtime
             var opponent = evt != null ? evt.opponent : practiceRun ? Selected : vehicles[freeOpponent];
             Tune enemyTune = evt != null ? JsonUtility.FromJson<Tune>(JsonUtility.ToJson(evt.opponentTune)) : opponent.CreateStockTune();
             var enemyDriver = new DriverSettings { reactionSeconds = difficulty < .5 ? .45 : difficulty < 1.5 ? .22 : .08 };
-            var rivalCapture=evt==null?null:CareerOpponents.Capture(evt,profile.catalog,difficulty,Guid.NewGuid().GetHashCode());
+            var rivalCapture=evt==null?null:CareerOpponents.Capture(evt,profile.catalog,difficulty,DragLab.Domain.RuntimeEntropy.NewGuid().GetHashCode());
             var playerDriver = JsonUtility.FromJson<DriverSettings>(JsonUtility.ToJson(settings));
             race?.CloseOpponentWorker();
             race = rivalCapture==null?RaceSessionFactory.Create(resolved.spec, resolved.tune, playerDriver,
@@ -190,7 +190,7 @@ namespace DragLab.Runtime
             race.player.SetMassInputs(resolved.tune.driverMassKg, resolved.tune.payloadMassKg, resolved.tune.payloadPositionM, resolved.tune.payloadHeightM, Build.fuel.litres);
             race.player.state.fuelUsedLitres = Build.fuel.cumulativeUsedLitres;
             race.player.SetFluids(Build.fluids);
-            race.player.ApplyRaceTemperatures(playerDriver.raceTemperatures,Build.thermalUtcTicks,DateTime.UtcNow.Ticks);
+            race.player.ApplyRaceTemperatures(playerDriver.raceTemperatures,Build.thermalUtcTicks,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);
             race.RefreshOpponentStrategy();
             if(playerDriver.warmupBeforeRace)race.BeginWarmup();
             liveRunId=MechanicsOwnership.NewId("run");liveRunOwner=Build.instanceId;liveRunTick=0;savedRunTick=-1;savedRunFailures=RunPersistence.FailureCount(race.player);liveRunClosed=false;
@@ -220,6 +220,7 @@ namespace DragLab.Runtime
         { using (FramePacingProbe.Measure(0)) UpdateMeasured(); }
         void UpdateMeasured()
         {
+            if(DeterministicCapture.Frame)return;
             if (profile == null || resetRequired) return;
             if(profile.vehicleStock!=null&&screen!="Race"&&Time.realtimeSinceStartup>.25f&&!Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&GUIUtility.hotControl==0){string key=profile.vehicleStock.seed+"/"+profile.vehicleStock.generation+"/"+profile.firstPurchasePending;if(key!=marketWarmKey){marketWarmKey=key;marketWarm=VehicleListings.WarmNext(profile).GetEnumerator();}if(marketWarm!=null&&!marketWarm.MoveNext())marketWarm=null;}
             if (pendingAction != null) { var action = pendingAction; pendingAction = null; action(); }
@@ -436,8 +437,8 @@ namespace DragLab.Runtime
             if (GUILayout.Button("Owned car collection / dealership / buy another copy")) pendingAction = OpenCollection;
             GUILayout.Label("GARAGE BUSINESS / " + DisplayUnits.Money(BusinessPolicy.hourlyRates[profile.garageLevel-1])+" per hour / "+BusinessPolicy.capsHours[profile.garageLevel-1]+" hour cap",stat);
             if(PartButton("garage-business","Jobs / expansion / claim income"))pendingAction=OpenBusiness;
-            int idle=GarageBusiness.Pending(profile,BusinessPolicy,DateTime.UtcNow.Ticks);
-            GUI.enabled=idle>0;if(PartButton("garage-idle","Claim " + DisplayUnits.Money(idle)))QueuePartAction(p=>GarageBusiness.Claim(p,BusinessPolicy,DateTime.UtcNow.Ticks));GUI.enabled=true;
+            int idle=GarageBusiness.Pending(profile,BusinessPolicy,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);
+            GUI.enabled=idle>0;if(PartButton("garage-idle","Claim " + DisplayUnits.Money(idle)))QueuePartAction(p=>GarageBusiness.Claim(p,BusinessPolicy,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks));GUI.enabled=true;
 
         }
 

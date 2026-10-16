@@ -14,7 +14,7 @@ namespace DragLab.Domain.Mechanics
     public static class MechanicsOwnership
     {
         public const int SaveVersion = 12;
-        public static string NewId(string kind) { return kind + "-" + Guid.NewGuid().ToString("N"); }
+        public static string NewId(string kind) { return kind + "-" + DragLab.Domain.RuntimeEntropy.NewGuid(kind).ToString("N"); }
         // Quotations are read-only. The transaction clone will normalize recoverable
         // Unity seller metadata, so validate the same normalization on a COPY only.
         // Real conflicting or duplicate identities remain invalid for all payments.

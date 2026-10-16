@@ -20,7 +20,7 @@ namespace DragLab.Infrastructure
             error = null;
             if (!writeBlocked) { error = "No incompatible save requires reset."; return false; }
             var moved = new System.Collections.Generic.List<string[]>();
-            string backupSuffix = ".before-reset-" + DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+            string backupSuffix = ".before-reset-" + DragLab.Domain.RuntimeEntropy.UtcNow.ToString("yyyyMMddHHmmssfff");
             string[] roots = LegacyFixture ? new[]{FilePath} :
                 slot=="slot-1" ? new[]{FilePath,LegacyFilePath} : new[]{FilePath};
             string[] suffixes = {"",".bak",".run",".run.bak",".run.tmp",".tmp","-wal","-shm","-journal",".reset-generation",".reset-intent",".reset-generation.tmp",".reset-intent.tmp",".backup-next"};
@@ -38,7 +38,7 @@ namespace DragLab.Infrastructure
                     moved.Add(new[]{source,target});
                 }
                 writeBlocked = false;
-                var fresh = PlayerProfile.NewGame(DateTime.UtcNow.Ticks);
+                var fresh = PlayerProfile.NewGame(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);
                 MechanicsOwnership.Ensure(fresh,MechanicsTransactions.Catalog());
                 if(!TrySave(fresh))throw new IOException(Status);
                 Status = "A new save was created. Previous data was archived with suffix " + backupSuffix + ".";
@@ -88,7 +88,7 @@ namespace DragLab.Infrastructure
         public static PlayerProfile Load(bool recoverInterrupted=false)
         {
             if(LegacyFixture){var old=LegacyProfileStore.Load(recoverInterrupted);Status=LegacyProfileStore.Status;return old;}
-            RaceCheckpointStore.Drain();SqliteStateStore.DrainBackups();SqliteStateStore.Prepare();SqliteStateStore.Invalidate();writeBlocked=false;Status=null;long now=DateTime.UtcNow.Ticks;var catalog=MechanicsTransactions.Catalog();
+            RaceCheckpointStore.Drain();SqliteStateStore.DrainBackups();SqliteStateStore.Prepare();SqliteStateStore.Invalidate();writeBlocked=false;Status=null;long now=DragLab.Domain.RuntimeEntropy.UtcNow.Ticks;var catalog=MechanicsTransactions.Catalog();
             foreach(string path in new[]{FilePath,FilePath+".bak"}){
                 if(!File.Exists(path))continue;
                 if(path==FilePath&&SqliteStateStore.CanInitialize(path))continue;
@@ -153,7 +153,7 @@ namespace DragLab.Infrastructure
         public static bool TryReset(PlayerProfile current,out PlayerProfile committed)
         {
             if(LegacyFixture){bool ok=LegacyProfileStore.TryReset(current,out committed);Status=LegacyProfileStore.Status;return ok;}
-            RaceCheckpointStore.Drain();SqliteStateStore.DrainBackups();committed=current;try{if(writeBlocked)throw new InvalidDataException("Save writes are blocked.");var fresh=current.RestartKeepingPreferences(DateTime.UtcNow.Ticks);fresh.storageCommit=current.storageCommit;MechanicsOwnership.Ensure(fresh,current.catalog??MechanicsTransactions.Catalog());var snapshot=SqliteStateStore.Capture(fresh);string path=FilePath;Task.Run(()=>SqliteStateStore.Write(path,snapshot,true)).GetAwaiter().GetResult();fresh.storageCommit=snapshot.committed;RaceCheckpointStore.Retire(FilePath,false);committed=fresh;Status="Game reset. Settings preserved.";return true;}catch(Exception error){Status="RESET FAILED: "+error.Message;return false;}
+            RaceCheckpointStore.Drain();SqliteStateStore.DrainBackups();committed=current;try{if(writeBlocked)throw new InvalidDataException("Save writes are blocked.");var fresh=current.RestartKeepingPreferences(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);fresh.storageCommit=current.storageCommit;MechanicsOwnership.Ensure(fresh,current.catalog??MechanicsTransactions.Catalog());var snapshot=SqliteStateStore.Capture(fresh);string path=FilePath;Task.Run(()=>SqliteStateStore.Write(path,snapshot,true)).GetAwaiter().GetResult();fresh.storageCommit=snapshot.committed;RaceCheckpointStore.Retire(FilePath,false);committed=fresh;Status="Game reset. Settings preserved.";return true;}catch(Exception error){Status="RESET FAILED: "+error.Message;return false;}
         }
     }
 }

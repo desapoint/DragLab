@@ -47,11 +47,11 @@ namespace DragLab.Runtime
         {
             string key=profile.revision+"/"+JsonUtility.ToJson(new CartInspectionKey{lines=cart})+"/"+JsonUtility.ToJson(PricingPolicy);
             if(cartPriceKey==key)return;cartPriceKey=key;cartError=null;cartTotal=0;cartSalePrices.Clear();if(cart.Count==0)return;
-            try{cartTotal=PartCart.Total(profile,Build.instanceId,cart,PricingPolicy);foreach(var l in cart.Where(l=>l.action==CartAction.SellPart||l.action==CartAction.SellUnit))cartSalePrices[l]=-InventoryPricing.Sell(profile,l.assetId,l.action==CartAction.SellUnit,PricingPolicy,"wholesale",DateTime.UtcNow.Ticks).Total;}catch(Exception e){cartError=e.Message;}
+            try{cartTotal=PartCart.Total(profile,Build.instanceId,cart,PricingPolicy);foreach(var l in cart.Where(l=>l.action==CartAction.SellPart||l.action==CartAction.SellUnit))cartSalePrices[l]=-InventoryPricing.Sell(profile,l.assetId,l.action==CartAction.SellUnit,PricingPolicy,"wholesale",DragLab.Domain.RuntimeEntropy.UtcNow.Ticks).Total;}catch(Exception e){cartError=e.Message;}
         }
         internal bool CheckoutCartNow()
         {
-            try{var quote=PartCart.Quote(profile,Build.instanceId,cart,DateTime.UtcNow.Ticks,Costs.quoteSeconds,PricingPolicy);if(!CommitParts(quote.revision,p=>PartCart.Checkout(p,quote,DateTime.UtcNow.Ticks,PricingPolicy)))return false;cart.Clear();previewCart=false;statsKey=null;cartPriceKey=null;notice="Complete basket saved once: purchases, sales and moves. Original condition and identities retained.";return true;}catch(Exception e){notice=e.Message;return false;}
+            try{var quote=PartCart.Quote(profile,Build.instanceId,cart,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks,Costs.quoteSeconds,PricingPolicy);if(!CommitParts(quote.revision,p=>PartCart.Checkout(p,quote,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks,PricingPolicy)))return false;cart.Clear();previewCart=false;statsKey=null;cartPriceKey=null;notice="Complete basket saved once: purchases, sales and moves. Original condition and identities retained.";return true;}catch(Exception e){notice=e.Message;return false;}
         }
         string CartKey(PartCartLine line)=>line.action==CartAction.NewSet?line.definitionId:line.action+"/"+(line.assetId??line.definitionId)+"/"+line.role;
         void CartGUI()

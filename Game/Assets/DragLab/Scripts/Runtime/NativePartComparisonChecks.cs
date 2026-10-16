@@ -19,7 +19,7 @@ namespace DragLab.Runtime
             var cat=new MechanicalCatalog(vehicles.Select(v=>v.spec));
             foreach(var category in cat.parts.Select(p=>p.category).Distinct()){
                 var pair=(from candidate in cat.parts.Where(d=>d.category==category).OrderByDescending(d=>d.stage) from vehicle in vehicles where cat.Fits(cat.Spec(vehicle.spec.id),candidate) select new{part=candidate,v=vehicle}).FirstOrDefault();check(pair!=null,"Category has a real compatible test platform: "+category);var part=pair.part;var v=pair.v;
-                var p=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(p,cat);p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,cat,new VehicleOffer{model=v.spec.id,price=1,stock=v.CreateStockTune(),paint="#FFFFFF"});
+                var p=PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);MechanicsOwnership.Ensure(p,cat);p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,cat,new VehicleOffer{model=v.spec.id,price=1,stock=v.CreateStockTune(),paint="#FFFFFF"});
                 var worn=p.componentsPart(category);if(worn!=null&&PartSemantics.Wears(category)){worn.condition.health=.35f;foreach(var e in worn.condition.elements)e.health=.35f;foreach(var tire in worn.condition.tires)tire.health=.35f;}
                 string before=JsonUtility.ToJson(p);var a=NativePartBrowser.Inspect(InspectionBuild.Capture(p,p.SelectedCar));var b=NativePartBrowser.Inspect(InspectionBuild.Capture(p,p.SelectedCar,definitionId:part.id));
                 var own=NativeStatCatalog.PartSpecific(a,b,new[]{category});var effects=NativeStatCatalog.PartEffects(a,b,new[]{category});var rows=Rows(effects).ToArray();
@@ -48,7 +48,7 @@ namespace DragLab.Runtime
 
             }
             foreach(var v in vehicles){
-                var p=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(p,cat);p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,cat,new VehicleOffer{model=v.spec.id,price=1,stock=v.CreateStockTune(),paint="#FFFFFF"});
+                var p=PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);MechanicsOwnership.Ensure(p,cat);p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,cat,new VehicleOffer{model=v.spec.id,price=1,stock=v.CreateStockTune(),paint="#FFFFFF"});
                 var car=p.SelectedCar;var map=MechanicsOwnership.Definitions(p,car);var pistons=cat.Find(map[PartCategory.Pistons]);var rods=cat.Find(map[PartCategory.Rods]);var crank=cat.Find(map[PartCategory.Crankshaft]);
                 float pr=pistons.rpmLimit,rr=rods.rpmLimit,cr=crank.rpmLimit,pt=pistons.torqueLimitNm,rt=rods.torqueLimitNm,ct=crank.torqueLimitNm;
                 try{

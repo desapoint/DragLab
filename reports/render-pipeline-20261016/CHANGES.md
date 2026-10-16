@@ -2,6 +2,9 @@
 
 Status: technical checkpoint complete. User visual acceptance remains separate.
 
+Follow-up: [deterministic capture/validation](../render-pipeline-deterministic-20261016/CHANGES.md) supersedes the repeatability limits below. Historical measurements and original evidence remain unchanged.
+
+
 ## Implementation
 
 - Unity remains on 6000.6.4f1. URP 17.6.0 supplies the 2D Renderer and Render Graph. Graphics and every Quality level explicitly reference `DragLabURP`.

@@ -3,12 +3,14 @@ param(
     [string[]]$Suites = @('Comparison','Shell','Parts','Purchase','Cart','Warnings','Workshop','Block','Maintenance','Rebuild','Disposal','RaceSelection','SetupManagement','RaceHud','EngineBench'),
     [string]$FixtureSuffix = '',
     [string]$ComparisonPlayerPath = '',
-    [string]$PlayerPath = ''
+    [string]$PlayerPath = '',
+    [switch]$Deterministic,
+    [string]$CaptureRoot = ''
 )
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'InterfaceScreenshots.ps1')
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$taskCaptureRoot = Join-Path $taskRoot 'reports/render-pipeline-20261016'
+$taskCaptureRoot = if ($CaptureRoot) { [IO.Path]::GetFullPath($CaptureRoot) } elseif ($Deterministic) { Join-Path $taskRoot 'reports/render-pipeline-deterministic-20261016' } else { Join-Path $taskRoot 'reports/render-pipeline-20261016' }
 $taskRunStamp = Get-Date -Format 'yyyyMMdd-HHmmssfff'
 if (!$FixtureSuffix) { $FixtureSuffix = $taskRunStamp }
 $taskDestination = Join-Path $taskCaptureRoot $Phase
@@ -17,8 +19,17 @@ foreach ($taskSuite in $Suites) {
     if ($taskSuite -notin @('Comparison','Shell','Parts','Purchase','Cart','Warnings','Workshop','Block','Maintenance','Rebuild','Disposal','RaceSelection','SetupManagement','RaceHud','EngineBench','DrivingBench')) { throw "Unknown interface suite: $taskSuite" }
     $taskFixtureName = 'render-' + $Phase + '-' + $taskSuite.ToLowerInvariant()
     if ($FixtureSuffix) { $taskFixtureName += '-' + $FixtureSuffix }
+    if ($Deterministic) { $taskFixtureName = 'render-deterministic-' + $taskSuite.ToLowerInvariant() }
     $taskFixture = Join-Path $taskRoot ('reports/player-fixtures/' + $taskFixtureName)
     $taskOutput = Join-Path $taskDestination $taskSuite
+    if ($Deterministic -and (Test-Path -LiteralPath $taskFixture)) {
+        $taskFixtureArchive = [IO.Path]::GetFullPath((Join-Path $taskCaptureRoot ('attempts/fixture-' + $Phase + '-' + $taskSuite + '-' + $taskRunStamp)))
+        $taskFixturePrefix = [IO.Path]::GetFullPath((Join-Path $taskRoot 'reports/player-fixtures')) + [IO.Path]::DirectorySeparatorChar
+        if (!$taskFixture.StartsWith($taskFixturePrefix,[StringComparison]::OrdinalIgnoreCase) -or !$taskFixtureArchive.StartsWith($taskRoot + [IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)) { throw 'Fixture archive escaped workspace' }
+        if ((Get-Item -LiteralPath $taskFixture).Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'Fixture must not be a reparse point' }
+        New-Item -ItemType Directory -Path (Split-Path $taskFixtureArchive) -Force | Out-Null
+        Move-Item -LiteralPath $taskFixture -Destination $taskFixtureArchive
+    }
     if ((Test-Path -LiteralPath $taskOutput) -and @(Get-ChildItem -LiteralPath $taskOutput -Force).Count) {
         $taskArchive = [IO.Path]::GetFullPath((Join-Path $taskCaptureRoot ('attempts/' + $Phase + '-' + $taskSuite + '-' + $taskRunStamp)))
         $taskResolvedOutput = [IO.Path]::GetFullPath($taskOutput)
@@ -40,14 +51,14 @@ foreach ($taskSuite in $Suites) {
     try {
         if ($taskSuite -eq 'Comparison') {
             if (!$ComparisonPlayerPath -and $PlayerPath) { $ComparisonPlayerPath = $PlayerPath }
-            & (Join-Path $PSScriptRoot 'Test-InterfaceComparison.ps1') -FixtureName $taskFixtureName -ShowPlayer -CaptureAll -PlayerPath $ComparisonPlayerPath *> $taskLog
+            & (Join-Path $PSScriptRoot 'Test-InterfaceComparison.ps1') -FixtureName $taskFixtureName -ShowPlayer -CaptureAll -PlayerPath $ComparisonPlayerPath -DeterministicCapture:$Deterministic *> $taskLog
         } elseif ($taskSuite -in @('EngineBench','DrivingBench')) {
-            $taskOptions = @{FixtureName=$taskFixtureName;ShowPlayer=$true}
+            $taskOptions = @{FixtureName=$taskFixtureName;ShowPlayer=$true;DeterministicCapture=$Deterministic}
             if ($PlayerPath) { $taskOptions.PlayerPath = $PlayerPath }
             $taskOptions[$taskSuite+'Only']=$true
             & (Join-Path $PSScriptRoot 'Test-WindowsSlice.ps1') @taskOptions *> $taskLog
         } else {
-            $taskOptions = @{FixtureName=$taskFixtureName}
+            $taskOptions = @{FixtureName=$taskFixtureName;DeterministicCapture=$Deterministic}
             if ($PlayerPath) { $taskOptions.PlayerPath = $PlayerPath }
             if ($taskSuite -ne 'Shell') { $taskOptions[$taskSuite+'Only']=$true }
             & (Join-Path $PSScriptRoot 'Test-NativeMenu.ps1') @taskOptions *> $taskLog
@@ -58,6 +69,9 @@ foreach ($taskSuite in $Suites) {
                 $taskReportText = Get-Content -LiteralPath $taskReportPath -Encoding UTF8 -Raw
                 if ($taskReportText -match '(?im)^FAIL:|runtime errors: [1-9]') { throw "Capture report contains failed checks/runtime errors: $taskReportPath" }
             }
+        }
+        if ($Deterministic -and !(Test-Path -LiteralPath (Join-Path $taskFixture 'capture-inputs.jsonl'))) {
+            throw 'The player did not activate the deterministic capture protocol; rebuild with current hooks.'
         }
         'PASS' | Set-Content (Join-Path $taskOutput 'status.txt') -Encoding UTF8
     } catch {
@@ -71,7 +85,7 @@ foreach ($taskSuite in $Suites) {
                     $taskImageFolder = if (Test-InterfaceScreenshotResolution $taskFile) { Join-Path $taskOutput 'resolution-tests' } else { $taskOutput }
                     New-Item -ItemType Directory -Path $taskImageFolder -Force | Out-Null
                     Copy-Item -LiteralPath $taskFile.FullName -Destination $taskImageFolder -Force
-                } elseif ($taskFile.Name -in @('verification.txt','runtime-verification.txt','player.log')) {
+                } elseif ($taskFile.Name -in @('verification.txt','runtime-verification.txt','player.log','capture-inputs.jsonl')) {
                     Copy-Item -LiteralPath $taskFile.FullName -Destination $taskOutput -Force
                 }
             }

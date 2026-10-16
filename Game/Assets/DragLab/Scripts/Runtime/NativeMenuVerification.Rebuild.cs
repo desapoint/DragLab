@@ -27,7 +27,7 @@ namespace DragLab.Runtime
             Check(shell.Root.Q("maintenanceRebuild").enabledInHierarchy,"Broken engine still exposes the rebuild action");
             string before=JsonUtility.ToJson(game.Profile);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);int cash=game.Profile.cash;
             yield return MaintenanceClick(input,"maintenanceRebuild");DialogScrollBounds("rebuild confirmation");
-            int price=PaidEconomy.Preview(game.Profile,game.Profile.catalog,game.Costs,game.PricingPolicy,new PaymentRequest{kind=PaymentKind.Rebuild,carId=carId},DateTime.UtcNow.Ticks).cost;
+            int price=PaidEconomy.Preview(game.Profile,game.Profile.catalog,game.Costs,game.PricingPolicy,new PaymentRequest{kind=PaymentKind.Rebuild,carId=carId},DragLab.Domain.RuntimeEntropy.UtcNow.Ticks).cost;
             Check(shell.Root.Q("dialogConfirm").enabledInHierarchy&&shell.Root.Q<Label>("maintenanceCost").text=="Total "+DisplayUnits.Money(price)+" · Cash "+DisplayUnits.Money(cash),"Rebuild dialog shows the actual payable price and enabled confirmation");
             yield return Capture("rebuild-quote");yield return Click(input,"dialogCancel");
             Check(before==JsonUtility.ToJson(game.Profile)&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Cancelling rebuild performs no payment or save");
@@ -41,7 +41,7 @@ namespace DragLab.Runtime
             Check(!game.CommitNativeService(carId,game.Profile.revision,before,job.id)&&before==JsonUtility.ToJson(game.Profile),"Premature native collection rejects without publishing state");
             // Advance only this isolated fixture's shop clock; domain checks cover
             // the exact saved deadline boundary without a real multi-minute wait.
-            job.startedUtcTicks=DateTime.UtcNow.AddHours(-1).Ticks;job.readyUtcTicks=DateTime.UtcNow.AddSeconds(-1).Ticks;
+            job.startedUtcTicks=DragLab.Domain.RuntimeEntropy.UtcNow.AddHours(-1).Ticks;job.readyUtcTicks=DragLab.Domain.RuntimeEntropy.UtcNow.AddSeconds(-1).Ticks;
             Check(ProfileStore.TrySave(game.Profile),"Ready-state test clock is durable in the isolated save");
             shell.InvalidateOwnedGrid();shell.Refresh();yield return new WaitForSecondsRealtime(.2f);
             Check(shell.Root.Q("maintenanceRebuildCollect").enabledInHierarchy,"Ready job enables collection");

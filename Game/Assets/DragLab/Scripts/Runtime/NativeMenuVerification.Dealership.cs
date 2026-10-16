@@ -116,7 +116,7 @@ namespace DragLab.Runtime
                     yield return Click(input,"dialogConfirm");Check(shell.ModalOpen&&!string.IsNullOrEmpty(shell.Root.Q<Label>("dealerConfirmationError").text)&&JsonUtility.ToJson(game.Profile)==baseline,"Failed durable save rolls back cash, car and every new part; error stays visible");
                 }
                 yield return Click(input,"dialogCancel");yield return Click(input,"dealerBuy");
-                int count=fixture.cars.Count,receipts=fixture.economyReceipts.Count;long revision=fixture.revision;var stale=PaidEconomy.Quote(fixture,fixture.catalog,game.Costs,game.PricingPolicy,new PaymentRequest {kind=PaymentKind.Car,offer=game.AuthoredOffer(id)},DateTime.UtcNow.Ticks);
+                int count=fixture.cars.Count,receipts=fixture.economyReceipts.Count;long revision=fixture.revision;var stale=PaidEconomy.Quote(fixture,fixture.catalog,game.Costs,game.PricingPolicy,new PaymentRequest {kind=PaymentKind.Car,offer=game.AuthoredOffer(id)},DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);
                 yield return Click(input,"dialogConfirm");var bought=game.Profile;
                 Check(!shell.ModalOpen&&shell.OwnedDetailsOpen&&bought.cars.Count==count+1&&bought.cash==fixture.cash-cost&&bought.revision==revision+1&&bought.economyReceipts.Count==receipts+1,"Successful confirmation commits one priced purchase and opens the new current owned car");
                 Check(bought.SelectedCar.vehicleId==id&&!fixture.cars.Any(c=>c.instanceId==bought.SelectedCar.instanceId)&&MechanicsOwnership.Validate(bought,bought.catalog)==null,"Purchase creates an independent valid car/engine/component identity and selects it");

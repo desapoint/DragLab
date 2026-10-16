@@ -15,7 +15,7 @@ namespace DragLab.Runtime
         {
             var catalog=new MechanicalCatalog(vehicles.Select(v=>v.spec));
             foreach(var vehicle in vehicles){
-                var p=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(p,catalog);p.cash=1000000;p.reputation=1000;
+                var p=PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);MechanicsOwnership.Ensure(p,catalog);p.cash=1000000;p.reputation=1000;
                 VehicleCollection.Buy(p,catalog,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});var car=p.SelectedCar;
                 p.componentsPart(PartCategory.HeadIntake).condition.health=.65f;car.fuel.litres=7;car.fluids.oilLitres=2;car.fluids.coolantLitres=3;car.fluids.oilCondition=.5;
                 foreach(SetupScope scope in Enum.GetValues(typeof(SetupScope))){
@@ -41,7 +41,7 @@ namespace DragLab.Runtime
         {
             var catalog=new MechanicalCatalog(vehicles.Select(v=>v.spec));
             foreach(var vehicle in vehicles){
-                var p=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(p,catalog);p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,catalog,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});var car=p.SelectedCar;
+                var p=PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);MechanicsOwnership.Ensure(p,catalog);p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,catalog,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});var car=p.SelectedCar;
                 p.componentsPart(PartCategory.HeadIntake).condition.health=.61f;car.fuel.litres=7;car.fluids.oilLitres=2;car.fluids.coolantLitres=3;
                 foreach(SetupScope scope in Enum.GetValues(typeof(SetupScope))){
                     string id=SavedSetups.Save(p,car.instanceId,"Load "+scope,scope);p.savedSetups.Last().tune.launchRpm+=100;

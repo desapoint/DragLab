@@ -67,7 +67,7 @@ namespace DragLab.Runtime
                 yield return ClickPart(mouse,"repair-buy:" + shaft);
                 check(game.Profile.cash == cash - price && game.Profile.parts.Find(i=>i.instanceId==shaft).condition.failed && game.Profile.parts.Find(i=>i.instanceId==shaft).location == PartLocation.Inventory,"Actual replacement charges once and retains failed original.");
                 game.OpenBusiness(); yield return new WaitForSecondsRealtime(.2f);
-                while (DateTime.UtcNow.Ticks < job.readyUtcTicks) yield return new WaitForSecondsRealtime(.1f);
+                while (DragLab.Domain.RuntimeEntropy.UtcNow.Ticks < job.readyUtcTicks) yield return new WaitForSecondsRealtime(.1f);
                 cash = game.Profile.cash; yield return ClickPart(mouse,"job-claim:" + job.id);
                 check(game.Profile.cash == cash + job.reward && game.Profile.business.jobs.Count == 0,"Actual real-deadline claim releases offline job once.");
                 game.OpenCareer(); yield return new WaitForSecondsRealtime(.2f); yield return ClickPart(mouse,"career-first-pass");

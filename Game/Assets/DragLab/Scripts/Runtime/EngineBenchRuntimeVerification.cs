@@ -55,7 +55,7 @@ namespace DragLab.Runtime
             yield return new WaitForSecondsRealtime(.2f);
             Check(scene.Controls.Source == EngineBenchControlSource.Keyboard && SharedAudioSettings.MasterVolume == .62f && SharedAudioSettings.DspMasterVolume == .62f && AudioListener.volume == 1,
                 "Audio settings can change while keyboard ownership remains active.");
-            yield return new WaitForEndOfFrame(); ScreenCapture.CaptureScreenshot(Path.Combine(output, "bench-audio-settings.png"));
+            yield return new WaitForEndOfFrame(); yield return DeterministicCapture.Screenshot(output, System.IO.Path.GetFileNameWithoutExtension("bench-audio-settings.png"));
             scene.UseSliders(); scene.SetSliderControls(new EngineBenchControls { fixedRpm = true, targetRpm = 4000, throttle = .8f, load = .6f });
             scene.config.volume = .03f;
             yield return new WaitForSecondsRealtime(.3f);
@@ -80,12 +80,12 @@ namespace DragLab.Runtime
             var game = FindFirstObjectByType<PrototypeGame>();
             Check(game != null && SharedAudioSettings.MasterVolume == .62f, "Garage inherits the bench's saved master across actual scene transitions.");
             Check(ProfileStore.FilePath == Path.Combine(output, "profile-v1.json"), "Cross-scene verification keeps career saves isolated too.");
-            game.OpenAudioSettings(); yield return new WaitForEndOfFrame(); ScreenCapture.CaptureScreenshot(Path.Combine(output, "garage-audio-settings.png"));
+            game.OpenAudioSettings(); yield return new WaitForEndOfFrame(); yield return DeterministicCapture.Screenshot(output, System.IO.Path.GetFileNameWithoutExtension("garage-audio-settings.png"));
             game.settings.soundVolume = .02f; game.StartPractice();
             yield return new WaitForSecondsRealtime(.4f);
             Check(Math.Abs(game.Audio.CurrentVolume - .62f) < .001, "Race uses the same master without legacy driving-volume attenuation.");
             game.OpenAudioSettings();
-            yield return new WaitForEndOfFrame(); ScreenCapture.CaptureScreenshot(Path.Combine(output, "pause-audio-settings.png"));
+            yield return new WaitForEndOfFrame(); yield return DeterministicCapture.Screenshot(output, System.IO.Path.GetFileNameWithoutExtension("pause-audio-settings.png"));
             double raceTime = game.Race.time; SharedAudioSettings.SetMasterVolume(.44f);
             yield return new WaitForSecondsRealtime(.15f);
             Check(game.Race.time == raceTime && game.Audio.CurrentVolume == 0, "Race settings preserve pause and mute while changing the global level.");
@@ -120,7 +120,7 @@ namespace DragLab.Runtime
                 Check(scene.MusicTick == tick && scene.Audio.CurrentVolume == 0, "Pause freezes the score and silences the concert.");
                 scene.Pause(false);
                 if (song == 0)
-                { yield return new WaitForEndOfFrame(); ScreenCapture.CaptureScreenshot(Path.Combine(output, "dyno-concert.png")); }
+                { yield return new WaitForEndOfFrame(); yield return DeterministicCapture.Screenshot(output, System.IO.Path.GetFileNameWithoutExtension("dyno-concert.png")); }
                 float deadline = Time.realtimeSinceStartup + 30;
                 while (scene.PlayingMusic && Time.realtimeSinceStartup < deadline) yield return null;
                 Check(!scene.PlayingMusic && JsonUtility.ToJson(scene.config) == original && scene.Controls.Source == EngineBenchControlSource.Sliders,
@@ -211,14 +211,14 @@ namespace DragLab.Runtime
             Check(scene.Bench.spec.sound.cylinders == 8 && scene.Bench.spec.sound.exhaustSystem.parts.Length == 0, "A/B scene switching applies independent engine and exhaust snapshots.");
             scene.Manual(); scene.config.controls = new EngineBenchControls { fixedRpm = true, targetRpm = 3500, throttle = 1, load = .6f, roadSpeedKmh = 40, tireSlip = 1, gear = 1 };
             yield return new WaitForSecondsRealtime(.3f);
-            yield return new WaitForEndOfFrame(); ScreenCapture.CaptureScreenshot(Path.Combine(output, "bench-manual.png"));
+            yield return new WaitForEndOfFrame(); yield return DeterministicCapture.Screenshot(output, System.IO.Path.GetFileNameWithoutExtension("bench-manual.png"));
             yield return new WaitForSecondsRealtime(.2f);
             scene.config.vehicle.sound.exhaustSystem = ExhaustSetup.Preset(0); scene.ApplyConfig();
             Check(scene.Bench.state.rpm == 3500 && scene.Bench.spec.sound.exhaustSystem.parts.Length == 3, "Live exhaust edits retain current operating RPM.");
             foreach (int tab in new[] { 1, 2, 3, 4, 5, 6, 7 })
             {
                 scene.ShowTestTab(tab); yield return null; yield return new WaitForEndOfFrame();
-                ScreenCapture.CaptureScreenshot(Path.Combine(output, "bench-tab-" + tab + ".png"));
+                yield return DeterministicCapture.Screenshot(output, System.IO.Path.GetFileNameWithoutExtension("bench-tab-" + tab + ".png"));
                 yield return new WaitForSecondsRealtime(.08f);
             }
             scene.ShowTestTab(0);
@@ -227,9 +227,9 @@ namespace DragLab.Runtime
             Check(scene.Bench.state.rpm == 0 && scene.Audio.CurrentVolume == 0, "Engine off silences live sound.");
             string json = JsonUtility.ToJson(scene.config, true); File.WriteAllText(Path.Combine(output, "bench-config.json"), json);
             Check(JsonUtility.FromJson<EngineBenchConfig>(json).Validate() == null, "Complete bench configuration serializes separately from saves.");
-            scene.SelectVehicle(0); scene.Dyno.ClearHistory();
+            scene.SelectVehicle(0); scene.Dyno.Finish("verification history reset"); scene.Dyno.ClearHistory();
             scene.config.vehicle.transmission.type = TransmissionType.Manual; scene.ApplyConfig();
-            scene.Dyno.ClearHistory();
+            scene.Dyno.Finish("verification history reset"); scene.Dyno.ClearHistory();
             EngineDynoRun firstRun = null;
             for (int pass = 0; pass < 2; pass++)
             {
@@ -248,7 +248,7 @@ namespace DragLab.Runtime
                 File.WriteAllText(Path.Combine(output, "dyno-pass-" + pass + ".csv"), run.Csv());
             }
             scene.ShowTestTab(0); yield return null; yield return new WaitForEndOfFrame();
-            ScreenCapture.CaptureScreenshot(Path.Combine(output, "bench-dyno-overlays.png"));
+            yield return DeterministicCapture.Screenshot(output, System.IO.Path.GetFileNameWithoutExtension("bench-dyno-overlays.png"));
             yield return new WaitForSecondsRealtime(.15f);
             string dynoFolder = Path.Combine(output, "dyno-exports"); scene.ExportDynoTo(dynoFolder);
             Check(File.ReadAllText(Path.Combine(dynoFolder, "dyno-" + firstRun.id + ".csv")) == firstRun.Csv() &&
@@ -259,7 +259,7 @@ namespace DragLab.Runtime
             yield return new WaitForSecondsRealtime(.1f);
             Check(scene.Controls.Effective.targetRpm == 4100 && scene.Controls.Effective.throttle == .45f && scene.config.controls.targetRpm == 4100 && scene.config.controls.throttle == .45f,
                 "Fixed-RPM preset displays its applied controls and retains them for matching config/WAV exports.");
-            scene.Dyno.ClearHistory();
+            scene.Dyno.Finish("verification history reset"); scene.Dyno.ClearHistory();
             var flywheelConfig = scene.config.Copy();
             flywheelConfig.vehicle.transmission.type = TransmissionType.Manual;
             flywheelConfig.tune.transmissionUpgrade = TransmissionUpgrade.Factory;
@@ -281,9 +281,9 @@ namespace DragLab.Runtime
                     "Live heavy-flywheel decay is slower than the independently captured light setup.");
                 File.WriteAllText(Path.Combine(output, pass == 0 ? "flywheel-coast-light.csv" : "flywheel-coast-heavy.csv"), run.Csv());
             }
-            yield return new WaitForEndOfFrame(); ScreenCapture.CaptureScreenshot(Path.Combine(output, "bench-flywheel-coast-overlays.png"));
+            yield return new WaitForEndOfFrame(); yield return DeterministicCapture.Screenshot(output, System.IO.Path.GetFileNameWithoutExtension("bench-flywheel-coast-overlays.png"));
             yield return new WaitForSecondsRealtime(.15f);
-            scene.Dyno.ClearHistory(); EngineDynoRun dynamicFirst = null;
+            scene.Dyno.Finish("verification history reset"); scene.Dyno.ClearHistory(); EngineDynoRun dynamicFirst = null;
             for (int pass = 0; pass < 2; pass++)
             {
                 if (pass == 0) scene.RunScenario(flywheelConfig, EngineBenchScenario.DynamicPullAndShifts); else scene.RepeatScenario();
@@ -303,7 +303,7 @@ namespace DragLab.Runtime
                 else Check(dynamicFirst.Csv() == run.Csv(), "Dynamic shifts, flywheel energy and release replay exactly in the player.");
                 File.WriteAllText(Path.Combine(output, "flywheel-dynamic-pass-" + pass + ".csv"), run.Csv());
             }
-            yield return new WaitForEndOfFrame(); ScreenCapture.CaptureScreenshot(Path.Combine(output, "bench-flywheel-dynamic-overlays.png"));
+            yield return new WaitForEndOfFrame(); yield return DeterministicCapture.Screenshot(output, System.IO.Path.GetFileNameWithoutExtension("bench-flywheel-dynamic-overlays.png"));
             yield return new WaitForSecondsRealtime(.15f);
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
             if (Array.IndexOf(Environment.GetCommandLineArgs(), "--draglab-bench-keyboard") >= 0)
@@ -343,7 +343,7 @@ namespace DragLab.Runtime
                     yield return new WaitForSecondsRealtime(.2f);
                     Check(scene.Controls.Source == EngineBenchControlSource.Sliders && scene.Controls.Effective.throttle == .35f && scene.Bench.state.rpm == 3800,
                         "Slider edit takes back control and holds the assigned operating point.");
-                    yield return new WaitForEndOfFrame(); ScreenCapture.CaptureScreenshot(Path.Combine(output, "bench-dyno-sliders.png"));
+                    yield return new WaitForEndOfFrame(); yield return DeterministicCapture.Screenshot(output, System.IO.Path.GetFileNameWithoutExtension("bench-dyno-sliders.png"));
                     keyboard.Key(0x57, true); yield return new WaitForSecondsRealtime(.1f); keyboard.Key(0x57, false); yield return new WaitForSecondsRealtime(.1f);
                     Check(scene.Controls.Source == EngineBenchControlSource.Keyboard && !scene.Controls.Effective.fixedRpm && scene.Controls.Effective.throttle == 0,
                         "Subsequent keyboard takeover resumes dynamic engine behavior and normal pedal release.");
@@ -367,7 +367,7 @@ namespace DragLab.Runtime
                     File.WriteAllText(Path.Combine(output, "held-W-focus-regression.csv"), trace.ToString());
                     Check(steady && scene.Bench.state.rpm > 1300 && scene.Bench.state.gear == 1,
                         "Sustained W takes control from numeric focus, stays in first gear with full gas, raises RPM and never flickers back to sliders.");
-                    yield return new WaitForEndOfFrame(); ScreenCapture.CaptureScreenshot(Path.Combine(output, "bench-keyboard-readonly.png"));
+                    yield return new WaitForEndOfFrame(); yield return DeterministicCapture.Screenshot(output, System.IO.Path.GetFileNameWithoutExtension("bench-keyboard-readonly.png"));
                     keyboard.Key(0x57, false);
                     yield return new WaitForSecondsRealtime(.1f);
                     Check(scene.Controls.Source == EngineBenchControlSource.Keyboard && scene.Bench.state.throttle == 0,
@@ -511,7 +511,7 @@ namespace DragLab.Runtime
                 Check(quiet / loud > .25 && quiet / loud < .43, "Master slider drag changes actual PCM loudness.");
                 float saved = SharedAudioSettings.MasterVolume; SharedAudioSettings.Reload();
                 Check(SharedAudioSettings.MasterVolume == saved, "Master drag release saves the selected value.");
-                yield return new WaitForEndOfFrame(); ScreenCapture.CaptureScreenshot(Path.Combine(output, "audio-levels-settings.png"));
+                yield return new WaitForEndOfFrame(); yield return DeterministicCapture.Screenshot(output, System.IO.Path.GetFileNameWithoutExtension("audio-levels-settings.png"));
                 SharedAudioSettings.SetMasterVolume(.75f); scene.ShowTestTab(5);
                 yield return new WaitForSecondsRealtime(.2f);
                 rect = scene.VerificationMixSlider("engineGain");
@@ -525,7 +525,7 @@ namespace DragLab.Runtime
                 yield return ReadListenerRms(rms => quiet = rms);
                 report.AppendLine("MEASURE: engine gain RMS before " + loud.ToString("F6", CultureInfo.InvariantCulture) + " / after " + quiet.ToString("F6", CultureInfo.InvariantCulture));
                 Check(quiet < loud * .45 && quiet > .000001, "Engine gain slider drag changes actual PCM loudness.");
-                yield return new WaitForEndOfFrame(); ScreenCapture.CaptureScreenshot(Path.Combine(output, "audio-levels-mix.png"));
+                yield return new WaitForEndOfFrame(); yield return DeterministicCapture.Screenshot(output, System.IO.Path.GetFileNameWithoutExtension("audio-levels-mix.png"));
                 scene.SelectVehicle(0); scene.config.vehicle.sound.engineGain = 0; scene.config.vehicle.engineBehavior.mechanicalClatter = 0;
                 scene.ApplyConfig(); scene.SetSliderControls(new EngineBenchControls { fixedRpm = true, targetRpm = 4000, throttle = .8f, load = .6f, launchControls = false });
                 scene.ShowTestTab(5); yield return new WaitForSecondsRealtime(2);

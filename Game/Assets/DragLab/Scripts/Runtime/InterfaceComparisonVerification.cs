@@ -60,7 +60,7 @@ namespace DragLab.Runtime
         IEnumerator Capture(string name)
         {
             yield return new WaitForEndOfFrame();
-            ScreenCapture.CaptureScreenshot(Path.Combine(folder, name + ".png"));
+            yield return DeterministicCapture.Screenshot(folder,name);
             yield return new WaitForSecondsRealtime(.15f);
         }
         IEnumerator Run()

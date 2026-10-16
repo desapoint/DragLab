@@ -22,7 +22,7 @@ namespace DragLab.Runtime
             var vehicles=Resources.LoadAll<VehicleDefinition>("Data/Vehicles");MechanicalCatalog catalog=null;PlayerProfile p=null;NativePartBrowser browser=null;
             void Time(string name,Action work){var timer=Stopwatch.StartNew();work();timer.Stop();text.AppendLine(name+": "+timer.Elapsed.TotalMilliseconds.ToString("F2",System.Globalization.CultureInfo.InvariantCulture));}
             Time("catalogue",()=>catalog=new MechanicalCatalog(vehicles.Select(v=>v.spec)));
-            Time("new profile / normalization",()=>{p=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(p,catalog);p.cash=1000000;p.reputation=1000;});
+            Time("new profile / normalization",()=>{p=PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);MechanicsOwnership.Ensure(p,catalog);p.cash=1000000;p.reputation=1000;});
             VehicleListings.Initialize(p,catalog,12345);
             text.AppendLine("definitions: "+catalog.parts.Count+" / new stock products: "+p.inventory.market.parts.Count+" / used stock: "+p.inventory.dealer.Count);
             Time("current profile normalization",()=>MechanicsOwnership.Ensure(p,catalog));

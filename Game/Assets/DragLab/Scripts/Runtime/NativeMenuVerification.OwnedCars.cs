@@ -30,7 +30,7 @@ namespace DragLab.Runtime
                 var worn = fixture.parts.Find(p => p.instanceId==first.installed.slots.First(s=>s.slot=="Pistons").partInstanceId); worn.condition.health=.25f;
                 var failed = fixture.parts.Find(p => p.instanceId==second.installed.slots.First(s=>s.slot=="Brakes").partInstanceId); failed.condition.failed=true; failed.condition.health=0; failed.condition.failureReason="Fixture brake failure";
                 AssemblyOperations.Detach(fixture,fixture.cars[2].instanceId);
-                GarageBusiness.Assign(fixture,GarageBusiness.DefaultPolicy(),fixture.cars[3].instanceId,"photo-session",DateTime.UtcNow.Ticks);
+                GarageBusiness.Assign(fixture,GarageBusiness.DefaultPolicy(),fixture.cars[3].instanceId,"photo-session",DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);
                 fixture.cars[4].fuel.litres=0;
                 Check(MechanicsOwnership.Validate(fixture,fixture.catalog)==null,"Owned-car interaction fixture has valid complete reservation/asset identities");
                 profileField.SetValue(game,fixture); game.QueueNativeNavigation("Garage"); yield return new WaitForSecondsRealtime(.4f);

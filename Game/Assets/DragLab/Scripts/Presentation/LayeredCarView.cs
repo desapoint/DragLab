@@ -123,7 +123,7 @@ namespace DragLab.Presentation
             foreach (var part in rotating)
                 part.transform.localRotation = Quaternion.Euler(0, 0, -(float)((part.front ? state.frontWheelAngleDegrees : state.rearWheelAngleDegrees) % 360));
             // Calipers are deliberately absent from rotating: they follow the car only.
-            if(smoke!=null&&effectsActive)smoke.Step(state,Time.unscaledDeltaTime,acousticSlip,drive);
+            if(smoke!=null&&effectsActive)smoke.Step(state,RuntimeEntropy.Capture?1f/60f:Time.unscaledDeltaTime,acousticSlip,drive);
         }
     }
 }

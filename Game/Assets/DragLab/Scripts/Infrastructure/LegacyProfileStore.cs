@@ -20,7 +20,7 @@ namespace DragLab.Infrastructure
         public static PlayerProfile Load(bool recoverInterrupted=false)
         {
             RaceCheckpointStore.Drain();
-            long now = DateTime.UtcNow.Ticks;
+            long now = DragLab.Domain.RuntimeEntropy.UtcNow.Ticks;
             recoveredBackup = false;
             writeBlocked = false;
             foreach (string path in new[] { FilePath, FilePath + ".bak" })
@@ -99,7 +99,7 @@ namespace DragLab.Infrastructure
             try
             {
                 if (writeBlocked) throw new InvalidDataException("Save writes are blocked; existing save preserved.");
-                var fresh = current.RestartKeepingPreferences(DateTime.UtcNow.Ticks);
+                var fresh = current.RestartKeepingPreferences(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);
                 MechanicsOwnership.Ensure(fresh, MechanicsTransactions.Catalog());
                 Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
                 WriteDurable(primaryTemp, fresh); WriteDurable(backupTemp, fresh);

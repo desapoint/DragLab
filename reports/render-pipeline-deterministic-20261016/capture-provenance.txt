@@ -1,0 +1,43 @@
+Deterministic capture provenance — 2026-10-16
+
+Fixed capture epoch: 2026-10-16T12:00:00Z
+New-fixture market seed: 16102026
+Simulation sampling: 120 Hz; manual bench 360 ticks
+All fixtures isolated; original migration seeds retained.
+
+Seed save-slot-1.sqlite3 SHA256 15ceaaf7a9680d6059fdb3ce9628c6f9a4061c1467f723d8e11a7abaadd82a20
+Seed stocked.sqlite3 SHA256 90ec63b171ffcd1981606e5121ce1df02bbe6bf0fd30f3234b60c2b156af1fbc
+
+Capture generations (same logic except the explicitly corrected probes):
+v3: 12 unaffected suites retained; all 15 suites passed both phases.
+v4: Shell recaptured for duplicate names and physical window bounds.
+v5: Comparison recaptured for stale active bench history.
+v6: EngineBench recaptured after all verification-history resets close active runs.
+Final image contract: tools/render-pipeline-deterministic-contract.json
+
+v3 before player: reports/render-pipeline-20261016/survey-player
+  DragLab.exe SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+  DragLab_Data/Managed/Assembly-CSharp.dll SHA256 eaa28dfa75c1f3b3bdcbd2a15dcbfd48110d4f80f3957145d2a414806f51231e
+v3 after player: reports/render-pipeline-20261016/urp-player
+  DragLab.exe SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+  DragLab_Data/Managed/Assembly-CSharp.dll SHA256 b6dcb059331018a5b4a2211e9b7a2f9778289370d31a090506ad3346725501eb
+v4 before player: reports/render-pipeline-deterministic-20261016/players/builtin
+  DragLab.exe SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+  DragLab_Data/Managed/Assembly-CSharp.dll SHA256 be3d6d6d64fd1f4e4083dd1d8761d74b48d577285993f860adb78cef4a1445c4
+v4 after player: reports/render-pipeline-deterministic-20261016/players/urp
+  DragLab.exe SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+  DragLab_Data/Managed/Assembly-CSharp.dll SHA256 ac2f1d77277a710e9264dcb7ab430bd52b2f148af43fa4f13232eb08b66730a7
+v5 before player: reports/render-pipeline-deterministic-20261016/players/final-builtin
+  DragLab.exe SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+  DragLab_Data/Managed/Assembly-CSharp.dll SHA256 da08b901b3c296165460beb0003692522845827ddeee8f6df0f697736a64872a
+v5 after player: reports/render-pipeline-deterministic-20261016/players/final-urp
+  DragLab.exe SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+  DragLab_Data/Managed/Assembly-CSharp.dll SHA256 b557f91161abaf4a641c2c7ac4434fd5bebdc045f9e980c917200daaa2d38413
+
+v6 before player: reports/render-pipeline-deterministic-20261016/players/review-builtin
+  DragLab.exe SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+  DragLab_Data/Managed/Assembly-CSharp.dll SHA256 fd7fc3141274ccb20881c23ba00cedded3afe50dcc97323cf5eb5c177e90d352
+
+v6 after / installed source player: reports/render-pipeline-deterministic-20261016/players/review-urp
+  DragLab.exe SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+  DragLab_Data/Managed/Assembly-CSharp.dll SHA256 9c81dcbeda83e3498b5a803db8212aa7da111c0153b9aef97d9bc1f342d8c582

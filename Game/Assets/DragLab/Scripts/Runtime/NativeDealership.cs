@@ -271,7 +271,7 @@ namespace DragLab.Runtime
         void OpenDealerInspection()
         {
             if(ModalOpen||!DealerDetailsOpen||!dealerModels.TryGetValue(dealerDetailId,out var model)||model.Known)return;
-            PaymentQuote quote;try{quote=PaidEconomy.Quote(game.Profile,game.Profile.catalog,game.Costs,game.PricingPolicy,new PaymentRequest{kind=PaymentKind.VehicleInspection,offer=model.Offer},DateTime.UtcNow.Ticks);}catch(Exception error){dealerError.text=error.Message;return;}
+            PaymentQuote quote;try{quote=PaidEconomy.Quote(game.Profile,game.Profile.catalog,game.Costs,game.PricingPolicy,new PaymentRequest{kind=PaymentKind.VehicleInspection,offer=model.Offer},DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);}catch(Exception error){dealerError.text=error.Message;return;}
             string id=dealerDetailId;var errorLabel=new Label{name="dealerInspectionError"};errorLabel.AddToClassList("car-critical");
             OpenDialog("Inspect "+model.Entry.Name,"Reveal history, faults and exact specifications.",new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Inspect",()=>{
                 if(!game.InspectNativeCar(quote)){errorLabel.text=game.NativeNotice;return;}
@@ -282,7 +282,7 @@ namespace DragLab.Runtime
         {
             if(ModalOpen||!DealerDetailsOpen||!dealerModels.TryGetValue(dealerDetailId,out var model))return;
             PaymentQuote quote;
-            try{quote=PaidEconomy.Quote(game.Profile,game.Profile.catalog,game.Costs,game.PricingPolicy,new PaymentRequest {kind=PaymentKind.Car,offer=model.Offer},DateTime.UtcNow.Ticks);
+            try{quote=PaidEconomy.Quote(game.Profile,game.Profile.catalog,game.Costs,game.PricingPolicy,new PaymentRequest {kind=PaymentKind.Car,offer=model.Offer},DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);
                 if(quote.Cost!=model.Price||DealerBlocker(model)!=null)throw new InvalidOperationException("Offer changed. Go back and reopen this model.");}
             catch(Exception error){dealerError.text=error.Message;return;}
             var errorLabel=new Label {name="dealerConfirmationError"};errorLabel.AddToClassList("car-critical");errorLabel.AddToClassList("car-selection-error");

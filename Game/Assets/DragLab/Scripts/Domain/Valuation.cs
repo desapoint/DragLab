@@ -85,7 +85,7 @@ namespace DragLab.Domain.Mechanics
         internal string ProfileJson { get; }
         internal ValuationQuote(ValuationKind kind, string asset, string buyer, ValuationPolicy p, PlayerProfile profile, long now, string fingerprint, List<string> included, string[] kept, List<string> warnings, List<ValuationLine> lines, double loose, double core, double total, bool complete, bool faulty, bool reserved)
         {
-            Id = Guid.NewGuid().ToString("N"); PolicyId = p.id; PolicyVersion = p.version; Kind = kind; AssetId = asset; BuyerId = buyer; BuyerName = p.buyers.Find(b => b.id == buyer).name;
+            Id = DragLab.Domain.RuntimeEntropy.NewGuid().ToString("N"); PolicyId = p.id; PolicyVersion = p.version; Kind = kind; AssetId = asset; BuyerId = buyer; BuyerName = p.buyers.Find(b => b.id == buyer).name;
             Revision = profile.revision; IssuedUtcTicks = now; ExpiresUtcTicks = checked(now + TimeSpan.FromSeconds(p.quoteSeconds).Ticks); Fingerprint = fingerprint;ProfileJson=JsonUtility.ToJson(profile);
             IncludedIds = included.AsReadOnly(); RetainedIds = Array.AsReadOnly((string[])kept.Clone()); Warnings = warnings.AsReadOnly(); Lines = lines.AsReadOnly();
             LoosePartTotal = loose; ChassisCore = core; Total = checked((int)Math.Round(total, MidpointRounding.AwayFromZero)); Complete = complete; Faulty = faulty; Reserved = reserved;

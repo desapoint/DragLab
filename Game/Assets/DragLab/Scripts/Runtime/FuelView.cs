@@ -6,7 +6,7 @@ using DragLab.Infrastructure;
 namespace DragLab.Runtime {
  public sealed partial class PrototypeGame {
   float refuelRequested=5;
-  internal double RefuelOwned(double amount){try{var quote=PaidEconomy.Quote(profile,profile.catalog,Costs,PricingPolicy,Payment(PaymentKind.Fuel,amount),DateTime.UtcNow.Ticks);return PayNow(quote)?quote.Fuel:0;}catch(Exception e){notice=e.Message;return 0;}}
+  internal double RefuelOwned(double amount){try{var quote=PaidEconomy.Quote(profile,profile.catalog,Costs,PricingPolicy,Payment(PaymentKind.Fuel,amount),DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);return PayNow(quote)?quote.Fuel:0;}catch(Exception e){notice=e.Message;return 0;}}
   string refuelText="5";
   void FuelGarage(){
    double free=Math.Max(0,Selected.spec.fuel.capacityLitres-Build.fuel.litres);

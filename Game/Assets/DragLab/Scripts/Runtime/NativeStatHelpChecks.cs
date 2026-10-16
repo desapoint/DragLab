@@ -19,7 +19,7 @@ namespace DragLab.Runtime
             var missing=catalog.parts.SelectMany(part=>PartSemantics.Stats(part).Select(metric=>"part:"+part.category+":rating:"+metric.key)).Distinct().Where(id=>NativeStatHelp.Find(id)==null).ToArray();
             check(catalog.parts.Count>0&&missing.Length==0,"All catalogue part ratings have directional help, including non-OEM hardware: "+string.Join(", ",missing));
             foreach(var vehicle in vehicles){
-                var profile=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(profile,catalog);profile.cash=1000000;profile.reputation=1000;
+                var profile=PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);MechanicsOwnership.Ensure(profile,catalog);profile.cash=1000000;profile.reputation=1000;
                 VehicleCollection.Buy(profile,catalog,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});
                 var inspection=NativePartBrowser.Inspect(InspectionBuild.Capture(profile,profile.SelectedCar));
                 var current=new NativeStatsSnapshot(inspection);var proposed=new NativeStatsSnapshot(inspection);

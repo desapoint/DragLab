@@ -15,7 +15,7 @@ namespace DragLab.Runtime
         internal bool CommitEngineSwap(long revision,string engineId,string carId,PartCartQuote quote)
         {
             if(quote==null?cart.Count!=0:quote.linesJson!=UnityEngine.JsonUtility.ToJson(new PartCart.Lines{entries=cart.Select(l=>l.Copy()).ToList()})){notice="Cart changed. Reopen swap preview.";return false;}
-            if(!CommitEngineAction(revision,p=>{if(quote!=null)PartCart.Checkout(p,quote,DateTime.UtcNow.Ticks,PricingPolicy);EngineWorkshop.Swap(p,engineId,carId);} ))return false;
+            if(!CommitEngineAction(revision,p=>{if(quote!=null)PartCart.Checkout(p,quote,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks,PricingPolicy);EngineWorkshop.Swap(p,engineId,carId);} ))return false;
             if(quote!=null)ClearNativeCart();return true;
         }
     }

@@ -5,8 +5,8 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-if (!$CaptureRoot) { $CaptureRoot = Join-Path $taskRoot 'reports/render-pipeline-20261016' }
-if (!$Contract) { $Contract = Join-Path $PSScriptRoot 'render-pipeline-capture-contract.json' }
+if (!$CaptureRoot) { $CaptureRoot = Join-Path $taskRoot 'reports/render-pipeline-deterministic-20261016' }
+if (!$Contract) { $Contract = Join-Path $PSScriptRoot 'render-pipeline-deterministic-contract.json' }
 $taskStarted = [DateTime]::UtcNow
 & $Python (Join-Path $PSScriptRoot 'Validate-RenderPipelineImages.py') $CaptureRoot --contract $Contract
 $taskValidationExit = $LASTEXITCODE

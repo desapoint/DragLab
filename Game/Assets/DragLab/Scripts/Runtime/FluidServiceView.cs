@@ -49,7 +49,7 @@ namespace DragLab.Runtime
             var spec=MechanicsOwnership.Resolve(profile,Build,profile.catalog).spec.fluids;
             double oil=Math.Max(0,spec.oilCapacityLitres-Build.fluids.oilLitres),coolant=Math.Max(0,spec.coolantCapacityLitres-Build.fluids.coolantLitres);
             if(oil+coolant<=0)return true;
-            try { return PayNow(PaidEconomy.Quote(profile,profile.catalog,Costs,PricingPolicy,Payment(PaymentKind.Fluids,oil,coolant),DateTime.UtcNow.Ticks)); }
+            try { return PayNow(PaidEconomy.Quote(profile,profile.catalog,Costs,PricingPolicy,Payment(PaymentKind.Fluids,oil,coolant),DragLab.Domain.RuntimeEntropy.UtcNow.Ticks)); }
             catch(Exception e){notice=e.Message;return false;}
         }
     }

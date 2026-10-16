@@ -74,6 +74,7 @@ namespace DragLab.Runtime
             view.transform.position = new Vector3(3, .1f, 0); view.transform.localScale = Vector3.one * 1.1f;
             Audio = gameObject.AddComponent<EngineAudio>(); Audio.Initialize();
             filePath = Path.GetFullPath(Path.Combine(Application.dataPath, "../EngineBenchConfigs/config.json"));
+            if(DeterministicCapture.Active)filePath=Path.GetFullPath("reports/capture-engine-config.json");
             SelectVehicle(0);
             EngineBenchRuntimeVerification.AttachIfRequested(this);
             InterfaceComparisonVerification.AttachIfRequested();
@@ -114,6 +115,14 @@ namespace DragLab.Runtime
             Controls.Sliders(config.controls); BeginDyno();
         }
         public void Pause(bool pause) { Paused = pause; accumulator = 0; if (pause) Audio.Silence(); }
+        internal void PrepareRenderCapture(string name)
+        {
+            if(!DeterministicCapture.Active||!(name=="bench-manual"||name.StartsWith("bench-tab-")||name.StartsWith("sound-tab-")))return;
+            Bench=new EngineTestBench(config.vehicle,config.tune);
+            Dyno.Finish("capture fixture reset");Dyno.ClearHistory();Dyno.Begin("Manual / fixed-tick capture",config,Bench.state,config.controls.load);
+            for(int tick=0;tick<360;tick++){Bench.Step(config.controls);Controls.Publish(config.controls,Bench.state);Dyno.Sample(Bench.state,config.controls.load);}
+            view.ClearSlipEffects();view.Animate(Bench.state,false);accumulator=0;
+        }
         public void CaptureSlot(bool a)
         {
             if (config.Validate() != null) return;
@@ -205,6 +214,7 @@ namespace DragLab.Runtime
         }
         void Update()
         {
+            if(DeterministicCapture.Frame)return;
             if (Bench == null) return;
             if (pendingConfig && Time.realtimeSinceStartup - lastEdit > .18f) ApplyConfig();
             // W/Space are not numeric-entry keys. They explicitly claim driving

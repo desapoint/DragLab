@@ -14,7 +14,7 @@ namespace DragLab.Runtime
     {
         public static void Run(VehicleDefinition[] vehicles, Action<bool,string> check)
         {
-            foreach(var vehicle in vehicles){var p=PlayerProfile.New(DateTime.UtcNow.Ticks);MechanicsOwnership.Ensure(p,new MechanicalCatalog(vehicles.Select(v=>v.spec)));p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,p.catalog,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});var car=p.SelectedCar;var cache=new NativePartPreviewCache();
+            foreach(var vehicle in vehicles){var p=PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);MechanicsOwnership.Ensure(p,new MechanicalCatalog(vehicles.Select(v=>v.spec)));p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,p.catalog,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});var car=p.SelectedCar;var cache=new NativePartPreviewCache();
                 var countSupply=PartsMarket.Counter(p,car);foreach(var sample in p.catalog.parts.Where(d=>p.catalog.Fits(p.catalog.Spec(car.vehicleId),d)).GroupBy(d=>d.category+"/"+d.fuelDelivery).Select(g=>g.First()))check(countSupply(sample)==InventoryUnits.Count(p,car,sample),"Fast shelf quantity agrees with authoritative incoming topology: "+vehicle.spec.id+" / "+sample.category+" / "+sample.fuelDelivery);
                 NativePartBrowser Model()=>new NativePartBrowser(p,Array.Empty<PartCartLine>(),false,"Shop",_=>100,(_,u)=>100,cache);
                 var a=Model();

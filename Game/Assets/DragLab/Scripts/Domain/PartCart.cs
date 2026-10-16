@@ -43,7 +43,7 @@ namespace DragLab.Domain.Mechanics
         {
             var car=p.cars.Find(c=>c.instanceId==carId);EngineRebuilds.RequireAvailable(car);
             var lines=source.ToArray();if(lines.Length==0||lines.Length>100)throw new InvalidOperationException("Cart needs 1–100 distinct offers.");
-            policy=policy??ValuationPolicy.Defaults();if(now==0)now=DateTime.UtcNow.Ticks;
+            policy=policy??ValuationPolicy.Defaults();if(now==0)now=DragLab.Domain.RuntimeEntropy.UtcNow.Ticks;
             var ids=new HashSet<string>();var assets=new HashSet<string>();var positions=new HashSet<string>();var slots=new HashSet<PartCategory>();int total=0;PlayerProfile movePreview=null;
             // An additive draft may reuse its owner's hold before Capture publishes the new rows.
             // Checkout still requires the exact captured cart and never opts into this preview path.

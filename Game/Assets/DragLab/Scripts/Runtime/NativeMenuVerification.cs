@@ -60,7 +60,7 @@ namespace DragLab.Runtime
         IEnumerator Capture(string name)
         {
             yield return new WaitForEndOfFrame();
-            ScreenCapture.CaptureScreenshot(Path.Combine(folder, name + ".png"));
+            yield return DeterministicCapture.Screenshot(folder,name);
             yield return new WaitForSecondsRealtime(.2f);
         }
         void LayoutCheck()
@@ -234,6 +234,7 @@ namespace DragLab.Runtime
                 yield return Capture("settings-1280");
                 foreach (int width in new[] { 1024, 1920, 3840 })
                 {
+                    if(DeterministicCapture.Active&&width==3840){report.AppendLine("LIMIT: oversized physical window is host-dependent; deterministic 4K coverage uses the fixed 3840x2160 render target below.");continue;}
                     int height = width == 1024 ? 768 : width * 9 / 16;
                     Screen.SetResolution(width, height, FullScreenMode.Windowed);
                     yield return new WaitForSecondsRealtime(.8f);

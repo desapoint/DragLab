@@ -71,7 +71,7 @@ namespace DragLab.Runtime
         public void SelectVehicle(int index)
         {
             selected = Mathf.Clamp(index, 0, vehicles.Length - 1); var definition = vehicles[selected];
-            var isolated = PlayerProfile.New(DateTime.UtcNow.Ticks); isolated.cars.Clear(); isolated.selectedVehicleId = definition.spec.id;
+            var isolated = PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks); isolated.cars.Clear(); isolated.selectedVehicleId = definition.spec.id;
             isolated.cars.Add(new OwnedCar { vehicleId = definition.spec.id, tune = definition.CreateStockTune() });
             isolated.driving = config == null ? new DriverSettings { launch = LaunchMode.Assisted, shifting = ShiftMode.Sequential, throttleAssist = false } : config.driving.Copy();
             MechanicsOwnership.Ensure(isolated, catalog); config = PhysicalDrivingSession.Copy(PhysicalBenchTransfer.Capture(isolated, isolated.SelectedCar));
@@ -144,7 +144,7 @@ namespace DragLab.Runtime
         }
         internal void ContinueLiveRecording()
         {
-            if (continuationFolder == null) continuationFolder = Path.Combine(exportFolder, "continuous-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff"));
+            if (continuationFolder == null) continuationFolder = Path.Combine(exportFolder, "continuous-" + DragLab.Domain.RuntimeEntropy.UtcNow.ToString("yyyyMMdd-HHmmss-fff"));
             try
             {
                 Directory.CreateDirectory(continuationFolder); string name = Path.Combine(continuationFolder, Session.snapshot.startingTick.ToString("D12"));
@@ -168,6 +168,7 @@ namespace DragLab.Runtime
         { using (FramePacingProbe.Measure(1)) UpdateMeasured(); }
         void UpdateMeasured()
         {
+            if(DeterministicCapture.Frame)return;
             if (Session == null) return;
             if (Input.GetKeyDown(KeyCode.R)) ResetBench();
             if (Input.GetKeyDown(KeyCode.Escape)) SetPaused(!Paused);
@@ -211,7 +212,7 @@ namespace DragLab.Runtime
         void ExportMeasured(string folder = null)
         {
             if (!Recording) { notice = "Enable recording to export an input timeline. Recording is off."; return; }
-            folder = folder ?? exportFolder; Directory.CreateDirectory(folder); string id = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff");
+            folder = folder ?? exportFolder; Directory.CreateDirectory(folder); string id = DragLab.Domain.RuntimeEntropy.UtcNow.ToString("yyyyMMdd-HHmmss-fff");
             File.WriteAllText(Path.Combine(folder, id + ".csv"), Session.Csv());
             File.WriteAllText(Path.Combine(folder, id + ".json"), JsonUtility.ToJson(Session.snapshot, true)); notice = "CSV + replay JSON exported to " + folder;
         }

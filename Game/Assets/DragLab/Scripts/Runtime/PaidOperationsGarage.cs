@@ -21,14 +21,14 @@ namespace DragLab.Runtime
             if(paymentCostsProfile!=profile||paymentCostsRevision!=profile.revision){paymentCosts.Clear();paymentCostsProfile=profile;paymentCostsRevision=profile.revision;}
             string key=JsonUtility.ToJson(request)+"/"+JsonUtility.ToJson(Build?.fuel)+"/"+JsonUtility.ToJson(Build?.fluids);
             if(paymentCosts.TryGetValue(key,out var cost))return cost;
-            try{cost=PaidEconomy.Preview(profile,profile.catalog,Costs,PricingPolicy,request,DateTime.UtcNow.Ticks).cost;}catch{cost=-1;}
+            try{cost=PaidEconomy.Preview(profile,profile.catalog,Costs,PricingPolicy,request,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks).cost;}catch{cost=-1;}
             if(paymentCosts.Count>=256)paymentCosts.Clear();paymentCosts[key]=cost;return cost;
         }
         internal bool PayNow(PaymentQuote quote)
         {
             if (quote == null) return false;
             var request = JsonUtility.FromJson<PaymentRequest>(quote.RequestJson);
-            return CommitParts(quote.Revision, p => PaidEconomy.Pay(p, p.catalog, Costs, PricingPolicy, quote, DateTime.UtcNow.Ticks, (request.kind == PaymentKind.Car || request.kind==PaymentKind.VehicleInspection) ? string.IsNullOrEmpty(request.offer.listingId)?AuthoredOffer(request.offer.model):VehicleListings.Find(p,request.offer.listingId) : null));
+            return CommitParts(quote.Revision, p => PaidEconomy.Pay(p, p.catalog, Costs, PricingPolicy, quote, DragLab.Domain.RuntimeEntropy.UtcNow.Ticks, (request.kind == PaymentKind.Car || request.kind==PaymentKind.VehicleInspection) ? string.IsNullOrEmpty(request.offer.listingId)?AuthoredOffer(request.offer.model):VehicleListings.Find(p,request.offer.listingId) : null));
         }
         internal bool InspectNativeCar(PaymentQuote quote)
         {
@@ -56,7 +56,7 @@ namespace DragLab.Runtime
                     var old = profile.parts.Find(p => p.instanceId == replacedPartId);
                     if (car == null || old == null || !request.install || request.targetId != old.definitionId || !car.installed.slots.Any(s => s.partInstanceId == old.instanceId)) throw new InvalidOperationException("Installed component changed. Reopen maintenance.");
                 }
-                var quote=PaidEconomy.Quote(profile,profile.catalog,Costs,PricingPolicy,request,DateTime.UtcNow.Ticks);
+                var quote=PaidEconomy.Quote(profile,profile.catalog,Costs,PricingPolicy,request,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);
                 if (quote.Cost != shownCost) throw new InvalidOperationException("Maintenance price changed. Close and reopen.");
                 if (!PayNow(quote)) return false;
                 if (request.carId == profile.selectedOwnedVehicleId) ShowGarageCar();
@@ -68,7 +68,7 @@ namespace DragLab.Runtime
             try {
                 if(screen!="Garage"||pendingAction!=null||profile.revision!=revision||!SnapshotEquality.Profile(snapshot,profile,profile.catalog))throw new InvalidOperationException("Car details changed. Close and reopen maintenance.");
                 if(!CommitParts(revision,p=> {
-                    if(rebuildId!=null)EngineRebuilds.Collect(p,carId,rebuildId,DateTime.UtcNow.Ticks);
+                    if(rebuildId!=null)EngineRebuilds.Collect(p,carId,rebuildId,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);
                     else {
                         var car=p.cars.Find(c=>c.instanceId==carId);EngineRebuilds.RequireAvailable(car);
                         if(string.IsNullOrEmpty(car.engineAssemblyId))throw new InvalidOperationException("No attached engine to service.");
@@ -82,7 +82,7 @@ namespace DragLab.Runtime
         }
         void QueuePayment(PaymentRequest request)
         {
-            try { var quote = PaidEconomy.Quote(profile, profile.catalog, Costs, PricingPolicy, request, DateTime.UtcNow.Ticks); pendingAction = () => PayNow(quote); }
+            try { var quote = PaidEconomy.Quote(profile, profile.catalog, Costs, PricingPolicy, request, DragLab.Domain.RuntimeEntropy.UtcNow.Ticks); pendingAction = () => PayNow(quote); }
             catch (Exception e) { notice = e.Message; }
         }
         void PaidButton(string id, string label, PaymentRequest request, bool actionable = true)
@@ -104,19 +104,19 @@ namespace DragLab.Runtime
             GUILayout.Label("Keep your retained engines and spares. Earn a bounded payment for a real-time garage job, then buy fuel, a compatible repair or a replacement car. No parts are repaired or created by a claim.");
             if (Costs == null) { GUILayout.Label("Missing operating policy. Prepare it in Unity."); return; }
             RecoveryAdviceGUI();
-            long now = DateTime.UtcNow.Ticks; var job = profile.recoveryWork;
+            long now = DragLab.Domain.RuntimeEntropy.UtcNow.Ticks; var job = profile.recoveryWork;
             if (job == null) {
                 GUILayout.Label("Garage job: " + Costs.recoverySeconds + " seconds / up to " + DisplayUnits.Money(Costs.recoveryReward) + " / available below " + DisplayUnits.Money(Costs.recoveryCashLimit) + " cash. Continues offline.");
                 GUI.enabled = profile.cash < Costs.recoveryCashLimit;
-                if (PartButton("recovery-start", "Start recovery work")) QueuePartAction(p => PaidEconomy.StartRecovery(p, Costs, DateTime.UtcNow.Ticks)); GUI.enabled = true;
+                if (PartButton("recovery-start", "Start recovery work")) QueuePartAction(p => PaidEconomy.StartRecovery(p, Costs, DragLab.Domain.RuntimeEntropy.UtcNow.Ticks)); GUI.enabled = true;
             } else {
                 GUILayout.Label("Job " + job.id + " / " + DisplayUnits.Money(job.reward) + " / " + (now >= job.readyUtcTicks ? "Ready" : Math.Ceiling((job.readyUtcTicks - now) / (double)TimeSpan.TicksPerSecond) + " seconds remaining"));
                 GUI.enabled = now >= job.readyUtcTicks;
-                if (PartButton("recovery-claim", "Claim finished job once")) { string id = job.id; QueuePartAction(p => PaidEconomy.ClaimRecovery(p, id, DateTime.UtcNow.Ticks)); } GUI.enabled = true;
+                if (PartButton("recovery-claim", "Claim finished job once")) { string id = job.id; QueuePartAction(p => PaidEconomy.ClaimRecovery(p, id, DragLab.Domain.RuntimeEntropy.UtcNow.Ticks)); } GUI.enabled = true;
             }
             int idle = GarageBusiness.Pending(profile,BusinessPolicy,now);
             GUI.enabled = idle > 0;
-            if (PartButton("recovery-idle", "Claim existing idle earnings / " + DisplayUnits.Money(idle))) QueuePartAction(p => GarageBusiness.Claim(p,BusinessPolicy,DateTime.UtcNow.Ticks)); GUI.enabled = true;
+            if (PartButton("recovery-idle", "Claim existing idle earnings / " + DisplayUnits.Money(idle))) QueuePartAction(p => GarageBusiness.Claim(p,BusinessPolicy,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks)); GUI.enabled = true;
             if(PartButton("recovery-business","Business / reserved jobs / expansion"))pendingAction=OpenBusiness;
             if (PartButton("recovery-collection", "Dealership / owned cars")) pendingAction = OpenCollection;
             if (PartButton("recovery-assets", "Value / sell retained assets")) pendingAction = () => OpenValuation(ValuationKind.Car, Build?.instanceId ?? "");
@@ -134,7 +134,7 @@ namespace DragLab.Runtime
             if (saleConfirmation == quote.Id) {
                 GUILayout.Label("CONFIRM: dispose of " + quote.IncludedIds.Count + " captured identities for " + DisplayUnits.Money(quote.Total) + ". " + quote.RetainedIds.Count + " selected kept packs go to inventory. " + (quote.Kind == ValuationKind.Chassis ? "Attached engine and fluids remain stored." : "Use Chassis / keep engine to retain the full engine."));
                 if (PartButton("quote-sell-confirm", "Confirm disposal / save cash and ownership together")) {
-                    long revision = quote.Revision; pendingAction = () => { if (CommitParts(revision, p => PaidEconomy.Sell(p, p.catalog, PricingPolicy, quote, DateTime.UtcNow.Ticks))) { saleConfirmation = null; valuationStatus = "Disposed once; request a quote for another asset."; } };
+                    long revision = quote.Revision; pendingAction = () => { if (CommitParts(revision, p => PaidEconomy.Sell(p, p.catalog, PricingPolicy, quote, DragLab.Domain.RuntimeEntropy.UtcNow.Ticks))) { saleConfirmation = null; valuationStatus = "Disposed once; request a quote for another asset."; } };
                 }
                 if (PartButton("quote-sell-cancel", "Cancel / keep all assets")) saleConfirmation = null;
             }

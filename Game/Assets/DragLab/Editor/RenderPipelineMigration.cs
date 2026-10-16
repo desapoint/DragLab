@@ -40,7 +40,7 @@ namespace DragLab.Editor
             }finally {DragLab.Infrastructure.ProfileStore.VerificationPath=previous;}
         }
 
-        public static void BuildBaselineSurvey()
+        public static void BuildBaselineSurvey(string destination="../reports/render-pipeline-20261016/survey-player/DragLab.exe")
         {
             string graphics=AssetDatabase.GetAssetPath(GraphicsSettings.defaultRenderPipeline);int quality=QualitySettings.GetQualityLevel();
             var qualities=Enumerable.Range(0,QualitySettings.names.Length).Select(i=>AssetDatabase.GetAssetPath(QualitySettings.GetRenderPipelineAssetAt(i))).ToArray();
@@ -48,7 +48,7 @@ namespace DragLab.Editor
                 GraphicsSettings.defaultRenderPipeline=null;
                 for(int i=0;i<qualities.Length;i++){QualitySettings.SetQualityLevel(i,false);QualitySettings.renderPipeline=null;}
                 QualitySettings.SetQualityLevel(quality,false);
-                BuildCapturePlayer("../reports/render-pipeline-20261016/survey-player/DragLab.exe",true);
+                BuildCapturePlayer(destination,true);
             }finally {
                 // Building can unload unreferenced pipeline objects. Restore by persistent path,
                 // never a native object handle captured before the build.
@@ -57,9 +57,9 @@ namespace DragLab.Editor
                 QualitySettings.SetQualityLevel(quality,false);AssetDatabase.SaveAssets();
             }
         }
-        public static void BuildUrpReview()
+        public static void BuildUrpReview(string destination="../reports/render-pipeline-20261016/urp-player/DragLab.exe")
         {
-            Verify();BuildCapturePlayer("../reports/render-pipeline-20261016/urp-player/DragLab.exe");
+            Verify();BuildCapturePlayer(destination);
         }
         static void BuildCapturePlayer(string destination,bool builtIn=false)
         {

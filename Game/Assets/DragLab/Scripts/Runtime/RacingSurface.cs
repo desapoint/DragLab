@@ -20,8 +20,8 @@ namespace DragLab.Runtime
         static Texture2D dither;
         bool hovered, pressed, selected, wasAnimating;
         float sweepStarted = float.NegativeInfinity;
-        internal bool ShineActive => Time.realtimeSinceStartup - sweepStarted < SweepSeconds;
-        internal float ShineProgress => Mathf.Clamp01((Time.realtimeSinceStartup - sweepStarted) / SweepSeconds);
+        internal bool ShineActive => DeterministicCapture.Frame ? DeterministicCapture.Shine && hovered : Time.realtimeSinceStartup - sweepStarted < SweepSeconds;
+        internal float ShineProgress => DeterministicCapture.Frame ? .5f : Mathf.Clamp01((Time.realtimeSinceStartup - sweepStarted) / SweepSeconds);
         internal int PaintCount { get; private set; }
 
         internal RacingSurface(VisualElement owner, Kind kind)

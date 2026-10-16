@@ -94,11 +94,11 @@ namespace DragLab.Runtime
                 if(job!=null&&job.active) {
                     var status=new Label {name="maintenanceRebuildStatus"};status.AddToClassList("maintenance-part-name");engine.Add(status);
                     var collect=MaintenanceButton(engine,"maintenanceRebuildCollect","Collect",()=>OpenFreeMaintenance(car.instanceId,"Collect rebuilt engine","Complete the paid rebuild. Saved tuning stays; work applies only to the reserved engine.",job.id),false);
-                    void UpdateJob(){long remaining=job.readyUtcTicks-DateTime.UtcNow.Ticks;status.text=remaining<=0?"Engine rebuild · ready":"Engine rebuild · "+TimeSpan.FromTicks(remaining).ToString(@"hh\:mm\:ss");collect.SetEnabled(remaining<=0);}
+                    void UpdateJob(){long remaining=job.readyUtcTicks-DragLab.Domain.RuntimeEntropy.UtcNow.Ticks;status.text=remaining<=0?"Engine rebuild · ready":"Engine rebuild · "+TimeSpan.FromTicks(remaining).ToString(@"hh\:mm\:ss");collect.SetEnabled(remaining<=0);}
                     UpdateJob();status.schedule.Execute(UpdateJob).Every(1000);
                 } else {
                     try {
-                        long now=DateTime.UtcNow.Ticks;var quote=EngineRebuilds.Quote(profile,car,now,game.Costs);
+                        long now=DragLab.Domain.RuntimeEntropy.UtcNow.Ticks;var quote=EngineRebuilds.Quote(profile,car,now,game.Costs);
                         string description="Recondition the engine core/valvetrain; replace unsalvageable sets, renew oil/filter. Other systems and saved tuning stay.\nShop time: "+TimeSpan.FromTicks(quote.readyUtcTicks-now).TotalMinutes.ToString("F0")+" minutes; engine reserved until collection. Offline time counts.";
                         MaintenanceAction(engine,"maintenanceRebuild","Rebuild engine",new PaymentRequest {kind=PaymentKind.Rebuild,carId=car.instanceId},description,available);
                     }catch(InvalidOperationException){ }
@@ -138,7 +138,7 @@ namespace DragLab.Runtime
         void MaintenanceAction(VisualElement parent,string id,string label,PaymentRequest request,string description,bool available,string replacedId=null)
         {
             int cost=-1;string reason=null;
-            try { cost=PaidEconomy.Preview(game.Profile,game.Profile.catalog,game.Costs,game.PricingPolicy,request,DateTime.UtcNow.Ticks).cost; }
+            try { cost=PaidEconomy.Preview(game.Profile,game.Profile.catalog,game.Costs,game.PricingPolicy,request,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks).cost; }
             catch(Exception error) {reason=error.Message;}
             var button=MaintenanceButton(parent,id,label+ (cost>=0?" · " + DisplayUnits.Money(cost):""),()=>OpenMaintenance(label,request,description,replacedId:replacedId),available&&cost>=0);
             button.tooltip=reason??description;
@@ -173,7 +173,7 @@ namespace DragLab.Runtime
                         slider.SetValueWithoutNotify(quantity.value);slider.Q<SliderFill>().MarkDirtyRepaint();
                         if(coolant)draft.coolantLitres=quantity.value;else draft.litres=quantity.value;
                     }
-                    var preview=PaidEconomy.Preview(game.Profile,game.Profile.catalog,game.Costs,game.PricingPolicy,draft,DateTime.UtcNow.Ticks);
+                    var preview=PaidEconomy.Preview(game.Profile,game.Profile.catalog,game.Costs,game.PricingPolicy,draft,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);
                     string delivery="";if(draft.kind==PaymentKind.Part){var d=game.Profile.catalog.Find(draft.targetId);var target=game.Profile.cars.Find(c=>c.instanceId==draft.carId);var supply=draft.preserveTireFitments&&draft.install&&d.category==PartCategory.Tires?TireFitments.ReplacementSupply(game.Profile,target,d.id):PartsMarket.Quote(game.Profile,d,InventoryUnits.Count(game.Profile,target,d));if(supply.fee>0)delivery="\nExpress delivery included · "+DisplayUnits.Money(supply.fee)+" (5–10%)";}
                     price=preview.cost;cost.text="Total " + DisplayUnits.Money(price)+" · Cash " + DisplayUnits.Money(game.Profile.cash)+delivery;
                     bool enough=game.Profile.cash>=price;error.text=enough?"":"Need " + DisplayUnits.Money((price-game.Profile.cash))+" more";

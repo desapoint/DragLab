@@ -34,6 +34,7 @@ namespace DragLab.Runtime
         void Draw(MeshGenerationContext context)
         {
             float w=contentRect.width,h=contentRect.height;if(w<1||h<1)return;PaintCount++;
+            float progress=DeterministicCapture.Frame?(DeterministicCapture.Transition?.5f:target):this.progress;
             var p=context.painter2D;
             Color dark=new Color(.10f,.13f,.16f),red=RacingPalette.Shade(this,.92f);
             Capsule(p,new Rect(1,1,w-2,h-2),Color.Lerp(new Color(.31f,.35f,.39f),RacingPalette.Shade(this,1,.08f),progress));
