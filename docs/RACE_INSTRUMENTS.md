@@ -1,5 +1,13 @@
 # Race instruments — approved direction (2026-10-14)
 
+## Timing slip and trackside board (2026-10-16)
+
+Use a modern off-white paper timing slip fixed on the right, with the actual car visible on the left. Keep its subtle paper grain/perforated edges separate from the existing grey/red control theme; actions, fonts and scrollbar reuse shared native controls. Preserve actual elapsed/reaction/finish-speed values, splits, comparison, telemetry export and failure-review navigation. Extra run detail is collapsible. Results wait for both lanes to resolve before announcing an outcome; F8 retains the whole legacy result view.
+
+Place a physical billboard behind the track and farther down the shutdown lane, not on the finish line. Each lane's eight-segment readouts (seven bars plus decimal) stay unlit until that car crosses the finish beam, then hold that car's actual elapsed and reaction times independently. Either car may finish first. The other lane stays blank until its own finish; DNF does not invent a posted time. Publishing does not wait for the player, the rival or arrival at the billboard. The board follows world projection/travel and can leave the screen naturally; the paper remains fixed.
+
+Automatic shutdown should aim for a composition showing car, slip and billboard only when actual grip/brakes allow it. Current layout puts the board 152 m beyond the finish and aims to stop 8 m beyond it. The controller eases into at most 60% brake pressure and releases wheel-lock slip. Faster cars or weak/broken brakes may overshoot; never teleport, clamp distance, force a stop, heal brakes or rewrite ET/trap speed. Manual shutdown braking remains under the player's control. This is post-finish assistance policy, not an alternate physics model or new bench controller. [Checkpoint](../reports/phases/4l/09-TIMING-SLIP.md).
+
 ## Race scene framing and smaller dials (2026-10-15)
 
 Enlarge the race world together: road, both cars, start lights/pole, markings and effects. Use a 15% race-only camera zoom and raise the scene slightly, retaining the narrow lane-depth projection, 82% distant-car relationship and physical-distance movement. Asphalt and start/finish ribbons extend beneath the dash to avoid a visible background gap; preserve the existing asphalt texture mapping over the lane area. Restore the original camera on return to Garage.

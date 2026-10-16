@@ -140,6 +140,7 @@ namespace DragLab.Runtime
             nativeMenu.Initialize(this);
             RaceHud = gameObject.AddComponent<NativeRaceHud>();
             RaceHud.Initialize(this);
+            Results=new GameObject("Native timing slip").AddComponent<NativeRaceResults>();Results.transform.SetParent(transform);Results.Initialize(this);
             NativeMenuVerification.AttachIfRequested(this, nativeMenu);
         }
         void ShowGarageCar()
@@ -272,6 +273,7 @@ namespace DragLab.Runtime
 
         void RenderRace()
         {
+            raceCamera.transform.position=new Vector3(race.phase==RacePhase.Finished&&InterfaceComparison.IsReplacement("Results")?4.4f:2,RaceCameraY,-10);
             PlaceRaceCars();
             strip.Render(race);
             playerView.Animate(race.player.state);
@@ -339,7 +341,7 @@ namespace DragLab.Runtime
                 bool replacement = interfaceComparison.BeginGUI(ComparisonRoute, resetGameConfirm || (nativeMenu != null && (nativeMenu.ModalOpen || nativeMenu.EditingText)) || (screen == "Valuation" && valuationQuote != null && saleConfirmation == valuationQuote.Id) || pendingAction != null || (nativeMenu != null && nativeMenu.Visible && Input.GetMouseButton(0)));
                 if (NativeRacePause) return;
                 if (!replacement || NativeRaceHud.Supports(ComparisonRoute)) DrawMeasuredGUI();
-                if (!replacement || !(NativeMenuShell.Supports(ComparisonRoute) || NativeRaceHud.Supports(ComparisonRoute))) interfaceComparison.DrawStatus(ComparisonRoute);
+                if (!replacement || !(NativeMenuShell.Supports(ComparisonRoute) || NativeRaceHud.Supports(ComparisonRoute) || NativeRaceResults.Supports(ComparisonRoute))) interfaceComparison.DrawStatus(ComparisonRoute);
             }
         }
 

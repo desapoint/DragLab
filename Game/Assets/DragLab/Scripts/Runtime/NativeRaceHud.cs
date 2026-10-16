@@ -105,6 +105,7 @@ namespace DragLab.Runtime
             ShiftLamp.SetState(car);
             Gear.SetState(state.gear, car.transmission, car.spec.gears.Length, state.shiftRemaining, TransmissionDynamics.ShiftSeconds(car.transmission,car.spec,car.tune));
             string signal = game.NativeRacePause ? "PAUSED" : game.Race.warmup ? "WARM-UP" : state.disqualified ? "RED LIGHT" : game.Race.time < 1.5 ? "STAGED" : game.Race.time < 2 ? "AMBER 1" : game.Race.time < 2.5 ? "AMBER 2" : game.Race.time < 3 ? "AMBER 3" : "GREEN";
+            if(state.finished&&!game.NativeRacePause)signal="FINISHED · WAITING FOR RIVAL";
             Set(phase, signal + "  ·  " + state.distance.ToString("F1") + " / " + game.Race.distance.ToString("F1") + " m");
             string faults = state.engineFailed ? "ENGINE FAILED" : state.stalled ? "STALLED · CLUTCH + ENTER" : "";
             if (state.drivetrainFailed) faults += (faults.Length > 0 ? " · " : "") + "NO DRIVE PATH";

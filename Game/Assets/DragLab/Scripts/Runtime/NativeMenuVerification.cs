@@ -96,6 +96,7 @@ namespace DragLab.Runtime
                 if(game.Profile.firstPurchasePending)yield return StarterPurchaseChecks(input);
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-navigation-only-verify")>=0){yield return NavigationDefaultsChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-race-pause-only-verify")>=0){yield return RacePauseChecks(input);yield break;}
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-race-results-only-verify")>=0){yield return ResultActionChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-race-hud-only-verify")>=0){yield return RaceHudChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-setup-management-only-verify")>=0){yield return SetupManagementChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-race-selection-only-verify")>=0){yield return RaceSelectionChecks(input);yield break;}

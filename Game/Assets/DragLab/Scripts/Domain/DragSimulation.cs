@@ -784,6 +784,15 @@ namespace DragLab.Domain
         {
             if(!Mechanics.MechanicsSchema.Finite(dt)||dt<=0||dt>.05)throw new ArgumentOutOfRangeException("dt");
             double target=state.brakesFailed?0:Math.Min(.6,3.0/spec.BrakeDeceleration);
+            if(state.finished&&!state.brakesFailed)
+            {
+                double remaining=state.finishDistance+RaceSimulation.ShutdownStopMetres-state.distance;
+                double capacity=spec.BrakeDeceleration*Math.Max(.01,state.brakeCapacityFactor);
+                double passive=Math.Max(0,-state.acceleration-capacity*state.brake);
+                double required=state.speed*state.speed/(2*Math.Max(.5,remaining));
+                target=Math.Min(.6,Math.Max(0,required-passive)/capacity);
+                if(remaining<1&&state.speed<.5)target=.15;
+            }
             double slip=0;if(state.contact.slip!=null)foreach(double value in state.contact.slip)slip=Math.Max(slip,-value);
             if(state.speed>2&&slip>.08)target*=DragMath.Clamp(1-(slip-.08)*8,0,1);
             double current=DragMath.Clamp(state.brake,0,1),rate=target<current?4:.65;
@@ -810,6 +819,7 @@ namespace DragLab.Domain
         DriverInput RivalInput(double greenTime,double dt)=>opponentBehavior==null?new DriverInput{throttle=1}:opponentBehavior.DriveInput(opponent,greenTime,player.state.distance-opponent.state.distance,dt);
         void AdvanceOpponent() { Advance(opponent, opponentInput, opponentDt, opponentGreenTime); }
         public const double GreenAt = 3;
+        public const float ShutdownStopMetres=160;
         public readonly CarSimulation player;
         public readonly CarSimulation opponent;
         public readonly double distance;

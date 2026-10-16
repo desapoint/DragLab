@@ -1,0 +1,7 @@
+4L.9 tested Windows build fingerprints
+Native suite: race-slip-4l09-complete-20261016-120131 / 163 checks / 0 runtime errors
+
+DragLab.exe SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+DragLab_Data/Managed/Assembly-CSharp.dll SHA256 1fa390c6fc83969a4591233be8d4a38eb59f59cdb8fbcc466e54252318860ce1
+DragLab_Data/resources.assets SHA256 cc5705979969b1bc4c85f3d52947a2a4593a16afdb382eda8ae18193df30a23f
+DragLab_Data/globalgamemanagers SHA256 64864642e4a4aed40feb260dade41ad1fd3ea4a7400b1f67458f1a04fbc31ce5

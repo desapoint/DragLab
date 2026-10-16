@@ -28,10 +28,12 @@ namespace DragLab.Presentation
         public float Travel { get; private set; }
         public int LitLampCount { get; private set; }
         public float SpeedCue { get; private set; }
+        public FinishBillboard Billboard { get; private set; }
         public void Build()
         {
             PrepareTextures();
             BuildRoad();
+            Billboard=new GameObject("Finish timing billboard").AddComponent<FinishBillboard>();Billboard.transform.SetParent(transform,false);Billboard.Initialize();
             for(int i=0;i<60;i++) AddTile(Load("barrier-tile"),new Vector3(i*1.28f,.8f),-40,Vector3.one,1);
             for(int i=0;i<24;i++)
             {
@@ -77,6 +79,7 @@ namespace DragLab.Presentation
         }
         public void ShowGarage()
         {
+            Billboard.gameObject.SetActive(false);
             tree.gameObject.SetActive(false);finish.gameObject.SetActive(false);start.gameObject.SetActive(false);Travel=SpeedCue=0;
             PositionTiles(0);for(int i=0;i<roadUv.Length;i++)roadUv[i].x=roadU[i];roadMesh.uv=roadUv;foreach(var streak in streaks)streak.color=Color.clear;
         }
@@ -90,6 +93,7 @@ namespace DragLab.Presentation
         }
         public void Render(RaceSimulation race)
         {
+            Billboard.gameObject.SetActive(true);Billboard.Refresh(race);
             tree.gameObject.SetActive(true);finish.gameObject.SetActive(true);start.gameObject.SetActive(true);
             Travel=(float)race.player.state.distance*MetersToView;PositionTiles(Travel);
             tree.localPosition=Project(-3-Travel,.8f)+Vector3.up*(1.6f*StartLightScale+StartPoleHeight);

@@ -209,24 +209,79 @@ namespace DragLab.Runtime
             game.ReturnToGarage();yield return null;Check(!hud.Visible,"Leaving the race removes the instrument overlay");
             game.Profile.driving.shifting=ShiftMode.Automatic;game.Profile.driving.launch=LaunchMode.Automatic;
             game.StartPractice();game.verificationInput=()=>new DriverInput{throttle=1};
+            game.Race.opponent.driver.reactionSeconds=game.Race.player.driver.reactionSeconds+8;
             float finishDeadline=Time.realtimeSinceStartup+65;
-            bool movingShot=false,fastShot=false,finishShot=false;
+            bool movingShot=false,fastShot=false,finishShot=false,playerFinishedShot=false;
             while(game.Race.phase!=RacePhase.Finished&&Time.realtimeSinceStartup<finishDeadline)
             {
                 if(!finishShot&&game.Race.distance-game.Race.player.state.distance<4){finishShot=true;yield return Capture("race-trapezoid-finish-approach");}
                 if(!movingShot&&game.Race.player.state.speed>=20){movingShot=true;yield return Capture("race-road-72kmh");}
                 if(!fastShot&&game.Race.player.state.speed>=35){fastShot=true;yield return Capture("race-road-126kmh");}
+                if(!playerFinishedShot&&game.Race.player.state.finished&&!game.Race.opponent.state.finished){
+                    playerFinishedShot=true;strip.Billboard.Refresh(game.Race);
+                    Check(strip.Billboard.Player.Finished&&!strip.Billboard.Opponent.Finished&&strip.Billboard.Opponent.Elapsed==""&&strip.Billboard.Opponent.Reaction=="","Player board publishes only at its finish; rival digits remain blank before its own beam");
+                    Check(!game.Results.Visible,"Paper results do not announce a winner while the rival is still racing");
+                    yield return Capture("race-board-player-finish");
+                }
                 yield return null;
             }
             game.verificationInput=null;yield return null;
             Check(game.ComparisonRoute=="Results"&&!hud.Visible&&game.Race.player.state.finished,"Finishing a real authoritative pass hides instruments and preserves the existing results workflow");
+            Check(playerFinishedShot&&game.Results.Visible&&strip.Billboard.Player.Finished&&strip.Billboard.Opponent.Finished,"Both finish beams publish independently before the native timing slip opens");
+            Check(strip.Billboard.Player.Elapsed==game.Race.player.state.elapsed.ToString("00.000",System.Globalization.CultureInfo.InvariantCulture)&&strip.Billboard.Opponent.Reaction==game.Race.opponent.state.reaction.ToString("0.000",System.Globalization.CultureInfo.InvariantCulture).PadLeft(6),"Eight-segment board uses the two frozen authoritative ET/RT readings");
+            Check(game.Results.Root.Q("timingSlip").worldBound.xMax<=Screen.width+1&&game.Results.Root.Q("resultAgain").worldBound.yMax<=Screen.height+1,"Paper slip and shared result actions fit the viewport");
             yield return Capture("race-gauges-results");
+            yield return Click(input,game.Results.Root.Q<Foldout>("resultDetails").Q<Toggle>());
+            yield return Capture("race-paper-details");
+            yield return Key(input,0x77);Check(!game.Results.Visible&&game.ComparisonRoute=="Results","F8 restores the complete legacy results presentation");
+            yield return Key(input,0x77);Check(game.Results.Visible,"F8 restores the paper timing slip without changing the settled race");
+            var printRace=game.Race;string frozenBoard=strip.Billboard.Player.Elapsed;
+            yield return new WaitForSecondsRealtime(.3f);
+            Check(game.Race==printRace&&strip.Billboard.Player.Elapsed==frozenBoard,"Shutdown motion cannot change a posted finish time");
+            float stopDeadline=Time.realtimeSinceStartup+40;while(game.Race.player.state.speed>.01&&Time.realtimeSinceStartup<stopDeadline)yield return null;
+            Check(game.Race.player.state.speed<=.01&&game.Race.player.state.brake<=.60001,"Automatic shutdown reaches a real stop using partial braking");
+            var carScreen=Camera.main.WorldToScreenPoint(game.PlayerView.transform.position);
+            Check(carScreen.x<game.Results.Root.Q("timingSlip").worldBound.xMin,"Stopped car remains to the left of the fixed paper slip");
+            yield return Capture("race-paper-stopped");
+            foreach(int width in new[]{1024,1920}){
+                Screen.SetResolution(width,width==1024?768:1080,false);yield return new WaitForSecondsRealtime(.4f);game.Results.Refresh();
+                Check(game.Results.Root.Q("timingSlip").worldBound.xMax<=Screen.width+1&&game.Results.Root.Q("resultAgain").worldBound.yMax<=Screen.height+1,"Timing slip and action row stay bounded at "+width);
+                var viewport=game.Results.Root.Q<ScrollView>("timingSlipScroll").contentViewport.worldBound;
+                Check(game.Results.Root.Query<Label>(className:"slip-number").ToList().All(l=>l.worldBound.xMax<=viewport.xMax+1),"Both timing columns fit without right-edge clipping at "+width);
+                yield return Capture("race-paper-"+width);
+            }
+            Screen.SetResolution(1280,720,false);yield return new WaitForSecondsRealtime(.4f);
+            var paperTarget=new RenderTexture(3840,2160,24);paperTarget.Create();game.Results.Panel.targetTexture=paperTarget;game.Results.Refresh();yield return new WaitForSecondsRealtime(.3f);
+            Check(game.Results.Panel.scale==2&&game.Results.Root.Q("resultAgain").worldBound.yMax<=1080,"Paper slip and action row use crisp shared 4K panel scaling");
+            var oldTarget=RenderTexture.active;RenderTexture.active=paperTarget;var paperImage=new Texture2D(3840,2160,TextureFormat.RGB24,false);paperImage.ReadPixels(new Rect(0,0,3840,2160),0,0);paperImage.Apply();File.WriteAllBytes(Path.Combine(folder,"race-paper-4k.png"),paperImage.EncodeToPNG());RenderTexture.active=oldTarget;game.Results.Panel.targetTexture=null;paperTarget.Release();Destroy(paperTarget);Destroy(paperImage);
             var completed=game.Race;yield return Key(input,0x1B);yield return Key(input,0x52);yield return Key(input,0x47);
             Check(game.NativeRacePause&&game.Race==completed,"Results retry/garage shortcuts cannot bypass an open native pause dialog");
-            yield return Click(input,"dialogResume");yield return Key(input,0x47);
+            yield return Click(input,"dialogResume");yield return Click(input,game.Results.Root.Q("resultGarage"));
             Check(game.ScreenName=="Garage"&&game.Race==null&&game.Profile.runCheckpoints.All(r=>r.settled),"Real results G shortcut returns to Garage and closes the worn-tire checkpoint");
             Check(Math.Abs(Camera.main.orthographicSize-PrototypeGame.MenuCameraSize)<.001 && Camera.main.transform.position.y==0, "Returning to Garage restores its original camera framing");
             Check(ProfileStore.Load().runCheckpoints.All(r=>r.settled),"Finished-race exit remains settled after durable profile reload");
+            yield return ResultActionChecks(input);
+        }
+        IEnumerator ResultActionChecks(WindowsKeyboardProbe input)
+        {
+            var strip=GameObject.Find("Drag Strip").GetComponent<DragLab.Presentation.DragStripView>();
+            game.Profile.driving.shifting=ShiftMode.Automatic;game.Profile.driving.launch=LaunchMode.Automatic;
+            int retryCash=game.Profile.cash;game.StartPractice();game.verificationInput=()=>new DriverInput{throttle=1};
+            Check(game.Race!=null,"Result action fixture stages the real car / "+game.ResultNotice);
+            float retryDeadline=Time.realtimeSinceStartup+65;while(game.Race.phase!=RacePhase.Finished&&Time.realtimeSinceStartup<retryDeadline)yield return null;
+            game.verificationInput=null;yield return null;Check(game.Results.Visible,"A second actual pass opens the reusable paper results");
+            var retryRace=game.Race;var extra=game.Results.Root.Q<Foldout>("resultDetails");extra.value=true;yield return null;
+            var export=game.Results.Root.Q("resultExport");game.Results.Root.Q<ScrollView>("timingSlipScroll").ScrollTo(export);yield return new WaitForSecondsRealtime(.15f);yield return Click(input,export);
+            string csv=Path.Combine(Path.GetDirectoryName(ProfileStore.FilePath),"last-run.csv");
+            Check(File.Exists(csv)&&File.ReadAllText(csv)==retryRace.telemetry.Csv(),"Paper telemetry action exports the exact authoritative trace");
+            yield return Click(input,game.Results.Root.Q("resultAgain"));
+            report.AppendLine("MEASURE: retry changed="+(game.Race!=retryRace)+" / phase="+game.Race?.phase+" / visible="+game.Results.Visible+" / note="+game.ResultNotice);
+            yield return Capture("race-paper-retry-outcome");
+            Check(game.Race!=retryRace&&game.Race.phase==RacePhase.Countdown&&!game.Results.Visible,"Race again starts one new session and removes the old slip / "+game.ResultNotice);
+            Check(game.IsPractice&&game.Profile.cash==retryCash,"Practice retry keeps its mode and cannot duplicate rewards");
+            Check(!strip.Billboard.Player.Finished&&!strip.Billboard.Opponent.Finished&&strip.Billboard.Player.Elapsed==""&&strip.Billboard.Opponent.Reaction=="","A new race clears both board lanes independently of the previous winner");
+            yield return Capture("race-board-retry-reset");game.ReturnToGarage();yield return null;
+            Check(game.Race==null&&ProfileStore.Load().runCheckpoints.All(r=>r.settled),"Leaving the staged retry closes its durable checkpoint without replaying a payout");
         }
 #endif
     }
