@@ -45,17 +45,22 @@ static class Program
     static void Main(string[] args)
     {
         string folder=args[0];using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(folder,"cases.json")));
-        var cases=doc.RootElement.EnumerateArray().Select(x=>x.Clone()).ToArray();int limit=args.Length>1?int.Parse(args[1]):cases.Length;
+        bool parity=args.Length>1&&args[1]=="--parity";
+        var cases=doc.RootElement.EnumerateArray().Select(x=>x.Clone()).ToArray();int limit=args.Length>1&&!parity?int.Parse(args[1]):cases.Length;
         cases=cases.Take(limit).ToArray();Directory.CreateDirectory(Path.Combine(folder,"raw"));int done=0;
         Parallel.ForEach(cases,new ParallelOptions{MaxDegreeOfParallelism=4},row=>{
             string id=row.GetProperty("id").GetString();string a=Path.Combine(folder,"raw",id+"-before.f32"),b=Path.Combine(folder,"raw",id+"-after.f32");
-            var first=Render(row,false);var second=Render(row,true);Write(a,first);Write(b,second);
+            var first=Render(row,false);var second=Render(row,true);
+            if(parity){
+                if(!first.SequenceEqual(second))throw new Exception("Integrated/approved PCM mismatch: "+id);
+                if(args.Length>2){var bytes=File.ReadAllBytes(Path.Combine(args[2],id+"-after.f32"));var recorded=new float[bytes.Length/4];Buffer.BlockCopy(bytes,0,recorded,0,bytes.Length);if(!first.SequenceEqual(recorded))throw new Exception("Published audition PCM mismatch: "+id);}
+            }else{Write(a,first);Write(b,second);}
             if(Interlocked.Increment(ref done)%100==0)Console.WriteLine($"Rendered {done}/{cases.Length} pairs");
         });
         foreach(var row in cases.Where((x,i)=>i%100==0)){
             var a=Render(row,true);var b=Render(row,true);var c=Render(row,true,491);
             if(!a.SequenceEqual(b)||a.SequenceEqual(c))throw new Exception("Variation determinism failed");
         }
-        Console.WriteLine($"PASS: {cases.Length} finite bounded before/after pairs; repeatability and private-seed variation checks passed.");
+        Console.WriteLine($"PASS: {cases.Length} finite bounded {(parity?"integrated/approved sample-exact comparisons":"before/after pairs")}; repeatability and private-seed variation checks passed.");
     }
 }

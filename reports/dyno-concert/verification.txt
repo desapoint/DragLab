@@ -1,10 +1,37 @@
 Engine-only classical concert / four-car score ranges / deterministic auditions.
+PASS: Entire score stays in the engine's playable range without modifying the source: city-three / Ode to Joy / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: city-three / Für Elise / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: city-three / In the Hall of the Mountain King / Grieg
+PASS: Entire score stays in the engine's playable range without modifying the source: juniper-club / Ode to Joy / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: juniper-club / Für Elise / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: juniper-club / In the Hall of the Mountain King / Grieg
+PASS: Entire score stays in the engine's playable range without modifying the source: juniper-economy / Ode to Joy / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: juniper-economy / Für Elise / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: juniper-economy / In the Hall of the Mountain King / Grieg
+PASS: Entire score stays in the engine's playable range without modifying the source: kestrel-track / Ode to Joy / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: kestrel-track / Für Elise / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: kestrel-track / In the Hall of the Mountain King / Grieg
+PASS: Entire score stays in the engine's playable range without modifying the source: rally-sedan / Ode to Joy / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: rally-sedan / Für Elise / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: rally-sedan / In the Hall of the Mountain King / Grieg
 PASS: Entire score stays in the engine's playable range without modifying the source: sport-coupe / Ode to Joy / Beethoven
 PASS: Entire score stays in the engine's playable range without modifying the source: sport-coupe / Für Elise / Beethoven
 PASS: Entire score stays in the engine's playable range without modifying the source: sport-coupe / In the Hall of the Mountain King / Grieg
 PASS: Entire score stays in the engine's playable range without modifying the source: starter-hatch / Ode to Joy / Beethoven
 PASS: Entire score stays in the engine's playable range without modifying the source: starter-hatch / Für Elise / Beethoven
 PASS: Entire score stays in the engine's playable range without modifying the source: starter-hatch / In the Hall of the Mountain King / Grieg
+PASS: Entire score stays in the engine's playable range without modifying the source: super-v8 / Ode to Joy / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: super-v8 / Für Elise / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: super-v8 / In the Hall of the Mountain King / Grieg
+PASS: Entire score stays in the engine's playable range without modifying the source: timber-diesel / Ode to Joy / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: timber-diesel / Für Elise / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: timber-diesel / In the Hall of the Mountain King / Grieg
+PASS: Entire score stays in the engine's playable range without modifying the source: timber-diesel-tow / Ode to Joy / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: timber-diesel-tow / Für Elise / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: timber-diesel-tow / In the Hall of the Mountain King / Grieg
+PASS: Entire score stays in the engine's playable range without modifying the source: touring-six / Ode to Joy / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: touring-six / Für Elise / Beethoven
+PASS: Entire score stays in the engine's playable range without modifying the source: touring-six / In the Hall of the Mountain King / Grieg
 PASS: Entire score stays in the engine's playable range without modifying the source: utility-pickup / Ode to Joy / Beethoven
 PASS: Entire score stays in the engine's playable range without modifying the source: utility-pickup / Für Elise / Beethoven
 PASS: Entire score stays in the engine's playable range without modifying the source: utility-pickup / In the Hall of the Mountain King / Grieg
@@ -17,4 +44,4 @@ PASS: Complete engine-DSP audition is audible, bounded and sample-exact on repea
 Für Elise / Beethoven / 11,27 s / RMS 0,0075
 PASS: Complete engine-DSP audition is audible, bounded and sample-exact on repeat: In the Hall of the Mountain King / Grieg
 In the Hall of the Mountain King / Grieg / 12,80 s / RMS 0,0088
-PASS: 15 concert checks.
+PASS: 42 concert checks.

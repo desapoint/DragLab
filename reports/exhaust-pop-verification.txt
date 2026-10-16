@@ -13,8 +13,17 @@ PASS: Sharpness changes the pressure shape/filter.
 PASS: Decay controls brief turbulent energy, not a fixed ringing oscillator.
 PASS: Burst works at the live player's 48 kHz rate.
 PASS: Invalid pop controls are rejected.
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: city-three
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: juniper-club
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: juniper-economy
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: kestrel-track
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: rally-sedan
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: sport-coupe
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: starter-hatch
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: super-v8
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: timber-diesel
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: timber-diesel-tow
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: touring-six
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: utility-pickup
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: v8-muscle
-PASS: 16 exhaust-pop checks.
+PASS: 25 exhaust-pop checks.

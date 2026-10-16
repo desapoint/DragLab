@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 using UnityEngine;
 using DragLab.Domain;
 using DragLab.Data;
@@ -10,6 +11,17 @@ namespace DragLab.Editor
 {
     public static class EngineSoundVerification
     {
+        public static void RunStandalone()
+        {
+            string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../.."));
+            Debug.Log("Engine audio checks: " + Run(root));
+            Debug.Log("Shared audio checks: " + SharedAudioVerification.Run(root));
+            Debug.Log("Exhaust-pop checks: " + ExhaustPopVerification.Run(root));
+            Debug.Log("Induction checks: " + InductionVerification.Run(root));
+            Debug.Log("Bench/exhaust checks: " + EngineBenchVerification.Run(root));
+            Debug.Log("Engine concert checks: " + EngineMusicVerification.Run(root));
+        }
+
         static void Check(bool ok, string message, ref int count) { if (!ok) throw new InvalidOperationException("AUDIO CHECK FAILED: " + message); count++; }
         static double Rms(float[] data) { double sum = 0; foreach (float v in data) sum += v * v; return Math.Sqrt(sum / data.Length); }
         static double Difference(float[] a, float[] b) { double sum = 0; for (int i = 0; i < a.Length; i++) sum += Math.Abs(a[i] - b[i]); return sum / a.Length; }
@@ -247,9 +259,63 @@ namespace DragLab.Editor
                 "Exhaust purchase charges once and tune loading preserves installed hardware.", ref count);
             spec.sound.displacementLitres = float.NaN;
             Check(spec.Validate() != null, "Invalid audio authoring is rejected.", ref count);
+            VerifyApprovedVoice(report, ref count);
             report.AppendLine("PASS: " + count + " audio checks. Playback signal checks do not establish human listening quality or mobile DSP performance.");
             File.WriteAllText(Path.Combine(root, "reports/audio-verification.txt"), report.ToString());
             return count;
+        }
+
+        static void VerifyApprovedVoice(StringBuilder report, ref int count)
+        {
+            var spec = new VehicleSpec { displacementLitres = 5,
+                sound = new EngineSoundSpec { cylinders = 8, layout = EngineLayout.Crossplane } };
+            var profile = new EngineSoundProfile(spec, new Tune());
+            var frame = new EngineSoundFrame(4800, .9, .9, 0, .85,
+                cylinderContribution: new double[] { 1, 1, 1, 1, 1, 1, 1, 1 });
+            var first = new float[48000]; var repeat = new float[48000]; var other = new float[48000];
+            string randomBefore = JsonUtility.ToJson(UnityEngine.Random.state);
+            new EngineSoundSynth(profile, 117).Fill(first, 1, 48000, frame);
+            new EngineSoundSynth(profile, 117).Fill(repeat, 1, 48000, frame);
+            new EngineSoundSynth(profile, 491).Fill(other, 1, 48000, frame);
+            Check(Difference(first, repeat) == 0 && Difference(first, other) > .00001,
+                "Organic pulse variation repeats by private seed and changes with another seed.", ref count);
+            Check(randomBefore == JsonUtility.ToJson(UnityEngine.Random.state) && frame.rpm == 4800 && frame.cylinderContribution[0] == 1,
+                "Audio variation leaves gameplay RNG and captured physical input unchanged.", ref count);
+            var chunks = new float[48000]; var block = new float[400]; var synth = new EngineSoundSynth(profile);
+            for (int offset = 0; offset < chunks.Length; offset += block.Length)
+            {
+                synth.Fill(block, 1, 48000, frame); Array.Copy(block, 0, chunks, offset, block.Length);
+            }
+            Check(Difference(first, chunks) == 0, "Output is sample-exact across callback block partitioning.", ref count);
+            var damaged = new float[48000];
+            new EngineSoundSynth(profile).Fill(damaged, 1, 48000, new EngineSoundFrame(4800, .9, .9, 0, .85,
+                cylinderContribution: new double[] { 0, 1, 1, 1, 1, 1, 1, 1 }));
+            Check(Rms(damaged) < Rms(first) && Difference(first, damaged) > .005,
+                "Deeper V8 voice still exposes the actual missing cylinder contribution.", ref count);
+            var petrol = new VehicleSpec(); petrol.sound.engineGain = 0; petrol.engineBehavior.mechanicalClatter = .4f;
+            var diesel = petrol.Copy(); diesel.engineBehavior.fueling = FuelSystem.Diesel;
+            var petrolTick = Steady(petrol, new Tune(), rpm: 900, load: 0);
+            var dieselTick = Steady(diesel, new Tune(), rpm: 900, load: 0);
+            Check(Rms(dieselTick) > Rms(petrolTick) * 10 && Rms(petrolTick) > 0,
+                "Healthy petrol ticking is softened while diesel retains its mechanical texture.", ref count);
+            foreach (int rate in new[] { 32000, 44100, 48000, 96000 })
+            {
+                var kit = new Tune { engineLevel = 1, inductionUpgrade = EngineUpgradeInduction.Twincharged };
+                var mixed = new EngineSoundSynth(new EngineSoundProfile(spec, kit)); var pcm = new float[4096];
+                mixed.Fill(pcm, 2, rate, new EngineSoundFrame(8000, 1, 1, 1, .85,
+                    turboSpool: 1, turboBoost: .6, superchargerBoost: .4, chargerLoad: .8));
+                bool valid = true;
+                for (int i = 0; i < pcm.Length; i += 2)
+                    valid &= !float.IsNaN(pcm[i]) && !float.IsInfinity(pcm[i]) && Math.Abs(pcm[i]) < 1 && pcm[i] == pcm[i + 1];
+                Check(valid && Rms(pcm) > 0, "Bounded stereo twincharge at " + rate + " Hz.", ref count);
+            }
+            var callback = new float[2048]; synth.Fill(callback, 1, 48000, frame);
+            var timer = new Stopwatch(); long startBytes = GC.GetAllocatedBytesForCurrentThread(); timer.Start();
+            for (int i = 0; i < 128; i++) synth.Fill(callback, 1, 48000, frame);
+            timer.Stop(); long bytes = GC.GetAllocatedBytesForCurrentThread() - startBytes;
+            Check(bytes == 0, "Warmed shared audio callback allocates zero managed bytes.", ref count);
+            report.AppendLine("Approved V8 callback: " + (timer.Elapsed.TotalMilliseconds / 128).ToString("F3")
+                + " ms per 2048 mono samples / 42.667 ms signal; allocated bytes " + bytes + ". Editor CPU observation, not a mobile guarantee.");
         }
     }
 }

@@ -1,5 +1,7 @@
 # Full engine before/after listening matrix — 2026-10-15
 
+**Subsequent approval:** the user accepted the After voices and requested their game integration. [Integration, checks and build](../audio-integration-20261015/CHANGES.md). The preview-generation record below remains historical; the library retains the reviewed Before/After reference.
+
 **Preview checkpoint only; no game integration or listening acceptance.** Based on `main` at `8761bfc`. All game sources, assets, bench interfaces, settings, saves and the current Windows build remain unchanged. Unrelated user work remains untouched.
 
 Open the local `index.html` in a browser. It provides engine/cylinder/layout/fuel/delivery/induction/exhaust/size/pulley/boost/valve filters, search, factory-only selection and Before / After / full A/B playback. Factory configurations appear first. The optional laboratory switch reveals counts not currently offered by cars. Download/copy `listening-matrix.zip` and extract it to keep the viewer and media together. `highlights/` contains WAV A/B files for all 13 actual factory configurations.

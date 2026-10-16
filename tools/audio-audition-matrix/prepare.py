@@ -1,12 +1,13 @@
 """Create a local, isolated audio review matrix. Never writes Game/ or player state."""
 from pathlib import Path
-import argparse, copy, hashlib, json, re
+import argparse, copy, hashlib, json, re, subprocess
 
 ROOT=Path(__file__).resolve().parents[2]
 DOMAIN=ROOT/'Game/Assets/DragLab/Scripts/Domain'
 LABELS=['Naturally aspirated','Single turbo','Supercharger','Twin turbo','Twin supercharger','Twincharged']
 VALVES=['Factory','Recirculated','Hiss','Chirp','Flutter']
 EXHAUSTS=['Factory','Quiet OEM preset','Chambered','Absorptive sport','Open']
+BASELINE_REF='becf7d1d39e2715ebb08eedb0b92ae8d7793981c'
 
 def extract(text, declaration):
     start=text.index(declaration);at=text.index('{',start)+1;depth=1
@@ -93,7 +94,8 @@ def main():
     parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,default=ROOT/'reports/audio-matrix-20261015');args=parser.parse_args()
     out=args.output.resolve();out.mkdir(parents=True,exist_ok=True)
     assert out.is_relative_to(ROOT/'reports'),'Audition output must stay under reports/.'
-    engine=(DOMAIN/'EngineSound.cs').read_text(encoding='utf-8-sig')
+    # Preserve the reviewed before/after reference after the approved voice is integrated.
+    engine=subprocess.run(['git','show',BASELINE_REF+':Game/Assets/DragLab/Scripts/Domain/EngineSound.cs'],cwd=ROOT,capture_output=True,check=True,encoding='utf-8').stdout
     prefix=extract(engine,'    public sealed class EngineSoundProfile').split('        public EngineSoundProfile(')[0]
     common='using System;\nusing System.Linq;\nnamespace DragLab.Domain {\n'+engine[engine.index('    public enum InductionType'):engine.index('    [Serializable]')]
     common+='public enum FuelSystem {Injection,Carburetor,Diesel}\npublic enum CutMethod{Factory,Fuel,Ignition}\npublic static class DragMath{public static double Clamp(double x,double lo,double hi)=>Math.Max(lo,Math.Min(hi,x));}\n'
@@ -103,6 +105,7 @@ def main():
     order=re.search(r'        static readonly int\[\]\[\] orders=.*?;',elements)[0]
     common+='namespace DragLab.Domain.Mechanics {public static class EngineElements{'+order+'public static int[] FiringOrder(int n)=>orders[Math.Clamp(n,1,16)-1];}}\n'
     (out/'CurrentDsp.cs').write_text(common,encoding='utf-8');(out/'AuditionSynth.cs').write_text(candidate(engine),encoding='utf-8')
+    (out/'baseline-reference.json').write_text(json.dumps({'commit':BASELINE_REF,'engine_source_sha256':hashlib.sha256(engine.encode('utf-8')).hexdigest()},indent=2),encoding='utf-8')
     for name in ['ExhaustAcoustics.cs','ExhaustPopSynth.cs']:(out/name).write_bytes((DOMAIN/name).read_bytes())
     (out/'Program.cs').write_bytes((Path(__file__).parent/'Renderer.cs').read_bytes())
     (out/'Preview.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>disable</Nullable></PropertyGroup></Project>',encoding='utf-8')
