@@ -1,0 +1,210 @@
+PASS: city-three: fresh boards blank
+PASS: city-three: expected independent first finish / rival False
+PASS: city-three: only crossed beam posts ET and RT
+PASS: city-three: later finish cannot rewrite first result
+PASS: city-three: shutdown stops physically with at most 90% brakes
+PASS: city-three: pressure rises progressively, never snapping to the new limit
+PASS: city-three: stopping leaves ET and trap untouched
+MEASURE: city-three / trap 124,02 km/h / stop 161,01 m / brake 0,502 / max tick rise 0,00542
+PASS: city-three: fresh boards blank
+PASS: city-three: expected independent first finish / rival True
+PASS: city-three: only crossed beam posts ET and RT
+PASS: city-three: later finish cannot rewrite first result
+PASS: city-three: shutdown stops physically with at most 90% brakes
+PASS: city-three: pressure rises progressively, never snapping to the new limit
+PASS: city-three: stopping leaves ET and trap untouched
+MEASURE: city-three / trap 124,02 km/h / stop 161,01 m / brake 0,502 / max tick rise 0,00542
+PASS: juniper-club: fresh boards blank
+PASS: juniper-club: expected independent first finish / rival False
+PASS: juniper-club: only crossed beam posts ET and RT
+PASS: juniper-club: later finish cannot rewrite first result
+PASS: juniper-club: shutdown stops physically with at most 90% brakes
+PASS: juniper-club: pressure rises progressively, never snapping to the new limit
+PASS: juniper-club: stopping leaves ET and trap untouched
+MEASURE: juniper-club / trap 137,38 km/h / stop 161,13 m / brake 0,633 / max tick rise 0,00542
+PASS: juniper-club: fresh boards blank
+PASS: juniper-club: expected independent first finish / rival True
+PASS: juniper-club: only crossed beam posts ET and RT
+PASS: juniper-club: later finish cannot rewrite first result
+PASS: juniper-club: shutdown stops physically with at most 90% brakes
+PASS: juniper-club: pressure rises progressively, never snapping to the new limit
+PASS: juniper-club: stopping leaves ET and trap untouched
+MEASURE: juniper-club / trap 137,39 km/h / stop 161,13 m / brake 0,633 / max tick rise 0,00542
+PASS: juniper-economy: fresh boards blank
+PASS: juniper-economy: expected independent first finish / rival False
+PASS: juniper-economy: only crossed beam posts ET and RT
+PASS: juniper-economy: later finish cannot rewrite first result
+PASS: juniper-economy: shutdown stops physically with at most 90% brakes
+PASS: juniper-economy: pressure rises progressively, never snapping to the new limit
+PASS: juniper-economy: stopping leaves ET and trap untouched
+MEASURE: juniper-economy / trap 133,77 km/h / stop 161,10 m / brake 0,593 / max tick rise 0,00542
+PASS: juniper-economy: fresh boards blank
+PASS: juniper-economy: expected independent first finish / rival True
+PASS: juniper-economy: only crossed beam posts ET and RT
+PASS: juniper-economy: later finish cannot rewrite first result
+PASS: juniper-economy: shutdown stops physically with at most 90% brakes
+PASS: juniper-economy: pressure rises progressively, never snapping to the new limit
+PASS: juniper-economy: stopping leaves ET and trap untouched
+MEASURE: juniper-economy / trap 133,78 km/h / stop 161,10 m / brake 0,593 / max tick rise 0,00542
+PASS: kestrel-track: fresh boards blank
+PASS: kestrel-track: expected independent first finish / rival False
+PASS: kestrel-track: only crossed beam posts ET and RT
+PASS: kestrel-track: later finish cannot rewrite first result
+PASS: kestrel-track: shutdown stops physically with at most 90% brakes
+PASS: kestrel-track: pressure rises progressively, never snapping to the new limit
+PASS: kestrel-track: stopping leaves ET and trap untouched
+MEASURE: kestrel-track / trap 163,00 km/h / stop 164,78 m / brake 0,900 / max tick rise 0,00542
+PASS: kestrel-track: fresh boards blank
+PASS: kestrel-track: expected independent first finish / rival True
+PASS: kestrel-track: only crossed beam posts ET and RT
+PASS: kestrel-track: later finish cannot rewrite first result
+PASS: kestrel-track: shutdown stops physically with at most 90% brakes
+PASS: kestrel-track: pressure rises progressively, never snapping to the new limit
+PASS: kestrel-track: stopping leaves ET and trap untouched
+MEASURE: kestrel-track / trap 163,02 km/h / stop 164,82 m / brake 0,900 / max tick rise 0,00542
+PASS: rally-sedan: fresh boards blank
+PASS: rally-sedan: expected independent first finish / rival False
+PASS: rally-sedan: only crossed beam posts ET and RT
+PASS: rally-sedan: later finish cannot rewrite first result
+PASS: rally-sedan: shutdown stops physically with at most 90% brakes
+PASS: rally-sedan: pressure rises progressively, never snapping to the new limit
+PASS: rally-sedan: stopping leaves ET and trap untouched
+MEASURE: rally-sedan / trap 166,73 km/h / stop 171,56 m / brake 0,900 / max tick rise 0,00542
+PASS: rally-sedan: fresh boards blank
+PASS: rally-sedan: expected independent first finish / rival True
+PASS: rally-sedan: only crossed beam posts ET and RT
+PASS: rally-sedan: later finish cannot rewrite first result
+PASS: rally-sedan: shutdown stops physically with at most 90% brakes
+PASS: rally-sedan: pressure rises progressively, never snapping to the new limit
+PASS: rally-sedan: stopping leaves ET and trap untouched
+MEASURE: rally-sedan / trap 166,73 km/h / stop 171,55 m / brake 0,900 / max tick rise 0,00542
+PASS: sport-coupe: fresh boards blank
+PASS: sport-coupe: expected independent first finish / rival False
+PASS: sport-coupe: only crossed beam posts ET and RT
+PASS: sport-coupe: later finish cannot rewrite first result
+PASS: sport-coupe: shutdown stops physically with at most 90% brakes
+PASS: sport-coupe: pressure rises progressively, never snapping to the new limit
+PASS: sport-coupe: stopping leaves ET and trap untouched
+MEASURE: sport-coupe / trap 159,96 km/h / stop 161,68 m / brake 0,900 / max tick rise 0,00542
+PASS: sport-coupe: fresh boards blank
+PASS: sport-coupe: expected independent first finish / rival True
+PASS: sport-coupe: only crossed beam posts ET and RT
+PASS: sport-coupe: later finish cannot rewrite first result
+PASS: sport-coupe: shutdown stops physically with at most 90% brakes
+PASS: sport-coupe: pressure rises progressively, never snapping to the new limit
+PASS: sport-coupe: stopping leaves ET and trap untouched
+MEASURE: sport-coupe / trap 159,98 km/h / stop 161,70 m / brake 0,900 / max tick rise 0,00542
+PASS: starter-hatch: fresh boards blank
+PASS: starter-hatch: expected independent first finish / rival False
+PASS: starter-hatch: only crossed beam posts ET and RT
+PASS: starter-hatch: later finish cannot rewrite first result
+PASS: starter-hatch: shutdown stops physically with at most 90% brakes
+PASS: starter-hatch: pressure rises progressively, never snapping to the new limit
+PASS: starter-hatch: stopping leaves ET and trap untouched
+MEASURE: starter-hatch / trap 134,30 km/h / stop 161,10 m / brake 0,598 / max tick rise 0,00542
+PASS: starter-hatch: fresh boards blank
+PASS: starter-hatch: expected independent first finish / rival True
+PASS: starter-hatch: only crossed beam posts ET and RT
+PASS: starter-hatch: later finish cannot rewrite first result
+PASS: starter-hatch: shutdown stops physically with at most 90% brakes
+PASS: starter-hatch: pressure rises progressively, never snapping to the new limit
+PASS: starter-hatch: stopping leaves ET and trap untouched
+MEASURE: starter-hatch / trap 134,30 km/h / stop 161,10 m / brake 0,598 / max tick rise 0,00542
+PASS: super-v8: fresh boards blank
+PASS: super-v8: expected independent first finish / rival False
+PASS: super-v8: only crossed beam posts ET and RT
+PASS: super-v8: later finish cannot rewrite first result
+PASS: super-v8: shutdown stops physically with at most 90% brakes
+PASS: super-v8: pressure rises progressively, never snapping to the new limit
+PASS: super-v8: stopping leaves ET and trap untouched
+MEASURE: super-v8 / trap 184,25 km/h / stop 207,29 m / brake 0,900 / max tick rise 0,00542
+PASS: super-v8: fresh boards blank
+PASS: super-v8: expected independent first finish / rival True
+PASS: super-v8: only crossed beam posts ET and RT
+PASS: super-v8: later finish cannot rewrite first result
+PASS: super-v8: shutdown stops physically with at most 90% brakes
+PASS: super-v8: pressure rises progressively, never snapping to the new limit
+PASS: super-v8: stopping leaves ET and trap untouched
+MEASURE: super-v8 / trap 184,25 km/h / stop 207,29 m / brake 0,900 / max tick rise 0,00542
+PASS: timber-diesel: fresh boards blank
+PASS: timber-diesel: expected independent first finish / rival False
+PASS: timber-diesel: only crossed beam posts ET and RT
+PASS: timber-diesel: later finish cannot rewrite first result
+PASS: timber-diesel: shutdown stops physically with at most 90% brakes
+PASS: timber-diesel: pressure rises progressively, never snapping to the new limit
+PASS: timber-diesel: stopping leaves ET and trap untouched
+MEASURE: timber-diesel / trap 130,34 km/h / stop 161,06 m / brake 0,552 / max tick rise 0,00542
+PASS: timber-diesel: fresh boards blank
+PASS: timber-diesel: expected independent first finish / rival True
+PASS: timber-diesel: only crossed beam posts ET and RT
+PASS: timber-diesel: later finish cannot rewrite first result
+PASS: timber-diesel: shutdown stops physically with at most 90% brakes
+PASS: timber-diesel: pressure rises progressively, never snapping to the new limit
+PASS: timber-diesel: stopping leaves ET and trap untouched
+MEASURE: timber-diesel / trap 130,34 km/h / stop 161,06 m / brake 0,552 / max tick rise 0,00542
+PASS: timber-diesel-tow: fresh boards blank
+PASS: timber-diesel-tow: expected independent first finish / rival False
+PASS: timber-diesel-tow: only crossed beam posts ET and RT
+PASS: timber-diesel-tow: later finish cannot rewrite first result
+PASS: timber-diesel-tow: shutdown stops physically with at most 90% brakes
+PASS: timber-diesel-tow: pressure rises progressively, never snapping to the new limit
+PASS: timber-diesel-tow: stopping leaves ET and trap untouched
+MEASURE: timber-diesel-tow / trap 133,56 km/h / stop 161,09 m / brake 0,584 / max tick rise 0,00542
+PASS: timber-diesel-tow: fresh boards blank
+PASS: timber-diesel-tow: expected independent first finish / rival True
+PASS: timber-diesel-tow: only crossed beam posts ET and RT
+PASS: timber-diesel-tow: later finish cannot rewrite first result
+PASS: timber-diesel-tow: shutdown stops physically with at most 90% brakes
+PASS: timber-diesel-tow: pressure rises progressively, never snapping to the new limit
+PASS: timber-diesel-tow: stopping leaves ET and trap untouched
+MEASURE: timber-diesel-tow / trap 133,56 km/h / stop 161,09 m / brake 0,584 / max tick rise 0,00542
+PASS: touring-six: fresh boards blank
+PASS: touring-six: expected independent first finish / rival False
+PASS: touring-six: only crossed beam posts ET and RT
+PASS: touring-six: later finish cannot rewrite first result
+PASS: touring-six: shutdown stops physically with at most 90% brakes
+PASS: touring-six: pressure rises progressively, never snapping to the new limit
+PASS: touring-six: stopping leaves ET and trap untouched
+MEASURE: touring-six / trap 155,18 km/h / stop 161,31 m / brake 0,900 / max tick rise 0,00542
+PASS: touring-six: fresh boards blank
+PASS: touring-six: expected independent first finish / rival True
+PASS: touring-six: only crossed beam posts ET and RT
+PASS: touring-six: later finish cannot rewrite first result
+PASS: touring-six: shutdown stops physically with at most 90% brakes
+PASS: touring-six: pressure rises progressively, never snapping to the new limit
+PASS: touring-six: stopping leaves ET and trap untouched
+MEASURE: touring-six / trap 155,15 km/h / stop 161,31 m / brake 0,900 / max tick rise 0,00542
+PASS: utility-pickup: fresh boards blank
+PASS: utility-pickup: expected independent first finish / rival False
+PASS: utility-pickup: only crossed beam posts ET and RT
+PASS: utility-pickup: later finish cannot rewrite first result
+PASS: utility-pickup: shutdown stops physically with at most 90% brakes
+PASS: utility-pickup: pressure rises progressively, never snapping to the new limit
+PASS: utility-pickup: stopping leaves ET and trap untouched
+MEASURE: utility-pickup / trap 141,53 km/h / stop 161,16 m / brake 0,673 / max tick rise 0,00542
+PASS: utility-pickup: fresh boards blank
+PASS: utility-pickup: expected independent first finish / rival True
+PASS: utility-pickup: only crossed beam posts ET and RT
+PASS: utility-pickup: later finish cannot rewrite first result
+PASS: utility-pickup: shutdown stops physically with at most 90% brakes
+PASS: utility-pickup: pressure rises progressively, never snapping to the new limit
+PASS: utility-pickup: stopping leaves ET and trap untouched
+MEASURE: utility-pickup / trap 141,53 km/h / stop 161,16 m / brake 0,673 / max tick rise 0,00542
+PASS: v8-muscle: fresh boards blank
+PASS: v8-muscle: expected independent first finish / rival False
+PASS: v8-muscle: only crossed beam posts ET and RT
+PASS: v8-muscle: later finish cannot rewrite first result
+PASS: v8-muscle: shutdown stops physically with at most 90% brakes
+PASS: v8-muscle: pressure rises progressively, never snapping to the new limit
+PASS: v8-muscle: stopping leaves ET and trap untouched
+MEASURE: v8-muscle / trap 162,74 km/h / stop 165,47 m / brake 0,900 / max tick rise 0,00542
+PASS: v8-muscle: fresh boards blank
+PASS: v8-muscle: expected independent first finish / rival True
+PASS: v8-muscle: only crossed beam posts ET and RT
+PASS: v8-muscle: later finish cannot rewrite first result
+PASS: v8-muscle: shutdown stops physically with at most 90% brakes
+PASS: v8-muscle: pressure rises progressively, never snapping to the new limit
+PASS: v8-muscle: stopping leaves ET and trap untouched
+MEASURE: v8-muscle / trap 162,66 km/h / stop 165,34 m / brake 0,900 / max tick rise 0,00542
+PASS: Billboard stands beyond finish, just before the shutdown stop target
+Checks: 183 / failures: 0

@@ -1,0 +1,5 @@
+90% progressive shutdown Windows build / native 163 checks / 0 runtime errors
+DragLab.exe SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+DragLab_Data/Managed/Assembly-CSharp.dll SHA256 bb9a8e36d54ab74e9f81b328a95a574da4fcf1e0e0994a82206f502a807f3fae
+DragLab_Data/resources.assets SHA256 f74e9d3769455dd537a62b5d95786ff9e2763ddd4112b96dfb6793079b190a10
+DragLab_Data/globalgamemanagers SHA256 e45b0c565d71b1b0c3f3712cb0b5df6b0bcc49dbaf6f981f5f8701740f33d3c4

@@ -27,6 +27,8 @@ namespace DragLab.Editor
                 void Tick(DriverInput input){if(race.phase==RacePhase.Finished)race.Shutdown(input);else race.Step(input);}
                 Tick(new DriverInput{brake=.23});Check(Math.Abs(race.player.state.brake-.23)<.00001,vehicle.spec.id+": manual partial braking is not overridden");
                 Tick(new DriverInput());Check(race.player.state.brake==0,vehicle.spec.id+": manual coast has no automatic parking brake");
+                race.player.driver.shutdownBrakeAssist=true;Tick(new DriverInput());
+                Check(race.player.state.brake<=.65*DragMath.FixedStep+.00001,vehicle.spec.id+": automatic braking starts with a gradual first pressure step");
                 var brakes=race.player.mechanics.Part(PartCategory.Brakes);brakes.condition.failed=true;brakes.condition.health=0;
                 race.player.driver.shutdownBrakeAssist=true;
                 for(int i=0;i<4;i++)Tick(new DriverInput());
@@ -34,7 +36,7 @@ namespace DragLab.Editor
                 Check(race.player.state.speed>.01&&!race.player.state.engineFailed,vehicle.spec.id+": failed brakes do not park or break the engine");
                 Check(race.player.state.elapsed==et,vehicle.spec.id+": safety handling leaves the beam time fixed");
             }
-            report.AppendLine("Checks: "+checks+" / failures: 0");Directory.CreateDirectory("../reports/phases/4l");File.WriteAllText("../reports/phases/4l/09-safety.txt",report.ToString(),new UTF8Encoding(false));Debug.Log("Finish safety: "+checks+" passed");
+            report.AppendLine("Checks: "+checks+" / failures: 0");Directory.CreateDirectory("../reports/shutdown-braking-20261016");File.WriteAllText("../reports/shutdown-braking-20261016/safety.txt",report.ToString(),new UTF8Encoding(false));Debug.Log("Finish safety: "+checks+" passed");
         }
         public static void Run()
         {
@@ -53,15 +55,16 @@ namespace DragLab.Editor
                     var posted=new FinishReading(first);Check(posted.Elapsed!=""&&posted.Reaction!=""&&new FinishReading(second).Elapsed==""&&new FinishReading(second).Reaction=="",vehicle.spec.id+": only crossed beam posts ET and RT");
                     for(int tick=0;tick<120*100&&race.phase!=RacePhase.Finished;tick++)race.Step(new DriverInput{throttle=1});
                     Check(race.player.state.finished&&race.opponent.state.finished&&new FinishReading(first).Elapsed==posted.Elapsed,vehicle.spec.id+": later finish cannot rewrite first result");
-                    double elapsed=race.player.state.elapsed,trap=race.player.state.trapSpeed,maxBrake=0;
-                    for(int tick=0;tick<120*90&&race.player.state.speed>.01;tick++){race.Shutdown(new DriverInput());maxBrake=Math.Max(maxBrake,race.player.state.brake);}
-                    Check(race.player.state.speed<=.01&&maxBrake<=.60001,vehicle.spec.id+": shutdown stops physically with at most 60% brakes");
+                    double elapsed=race.player.state.elapsed,trap=race.player.state.trapSpeed,maxBrake=race.player.state.brake,maxRise=0;
+                    for(int tick=0;tick<120*90&&race.player.state.speed>.01;tick++){double previous=race.player.state.brake;race.Shutdown(new DriverInput());maxBrake=Math.Max(maxBrake,race.player.state.brake);maxRise=Math.Max(maxRise,race.player.state.brake-previous);}
+                    Check(race.player.state.speed<=.01&&maxBrake<=RaceSimulation.MaximumShutdownBrake+.00001,vehicle.spec.id+": shutdown stops physically with at most 90% brakes");
+                    Check(maxRise<=.65/120+.00001,vehicle.spec.id+": pressure rises progressively, never snapping to the new limit");
                     Check(race.player.state.elapsed==elapsed&&race.player.state.trapSpeed==trap,vehicle.spec.id+": stopping leaves ET and trap untouched");
-                    report.AppendLine("MEASURE: "+vehicle.spec.id+" / trap "+trap.ToString("F2")+" km/h / stop "+(race.player.state.distance-race.distance).ToString("F2")+" m / brake "+maxBrake.ToString("F3"));
+                    report.AppendLine("MEASURE: "+vehicle.spec.id+" / trap "+trap.ToString("F2")+" km/h / stop "+(race.player.state.distance-race.distance).ToString("F2")+" m / brake "+maxBrake.ToString("F3")+" / max tick rise "+maxRise.ToString("F5"));
                 }
             }
             Check(FinishBillboard.BeyondFinishMetres>0&&FinishBillboard.BeyondFinishMetres<RaceSimulation.ShutdownStopMetres,"Billboard stands beyond finish, just before the shutdown stop target");
-            report.AppendLine("Checks: "+checks+" / failures: 0");Directory.CreateDirectory("../reports/phases/4l");File.WriteAllText("../reports/phases/4l/09-domain.txt",report.ToString(),new UTF8Encoding(false));Debug.Log("Finish presentation: "+checks+" passed");
+            report.AppendLine("Checks: "+checks+" / failures: 0");Directory.CreateDirectory("../reports/shutdown-braking-20261016");File.WriteAllText("../reports/shutdown-braking-20261016/domain.txt",report.ToString(),new UTF8Encoding(false));Debug.Log("Finish presentation: "+checks+" passed");
         }
     }
 }

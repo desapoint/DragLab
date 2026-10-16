@@ -239,7 +239,7 @@ namespace DragLab.Runtime
             yield return new WaitForSecondsRealtime(.3f);
             Check(game.Race==printRace&&strip.Billboard.Player.Elapsed==frozenBoard,"Shutdown motion cannot change a posted finish time");
             float stopDeadline=Time.realtimeSinceStartup+40;while(game.Race.player.state.speed>.01&&Time.realtimeSinceStartup<stopDeadline)yield return null;
-            Check(game.Race.player.state.speed<=.01&&game.Race.player.state.brake<=.60001,"Automatic shutdown reaches a real stop using partial braking");
+            Check(game.Race.player.state.speed<=.01&&game.Race.player.state.brake<=RaceSimulation.MaximumShutdownBrake+.00001,"Automatic shutdown reaches a real stop using partial braking");
             var carScreen=Camera.main.WorldToScreenPoint(game.PlayerView.transform.position);
             Check(carScreen.x<game.Results.Root.Q("timingSlip").worldBound.xMin,"Stopped car remains to the left of the fixed paper slip");
             yield return Capture("race-paper-stopped");

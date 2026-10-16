@@ -1,0 +1,92 @@
+PASS: city-three: safety fixture reaches a real finish
+PASS: city-three: manual partial braking is not overridden
+PASS: city-three: manual coast has no automatic parking brake
+PASS: city-three: automatic braking starts with a gradual first pressure step
+PASS: city-three: actual broken brake hardware has no stopping capacity
+PASS: city-three: failed brakes do not park or break the engine
+PASS: city-three: safety handling leaves the beam time fixed
+PASS: juniper-club: safety fixture reaches a real finish
+PASS: juniper-club: manual partial braking is not overridden
+PASS: juniper-club: manual coast has no automatic parking brake
+PASS: juniper-club: automatic braking starts with a gradual first pressure step
+PASS: juniper-club: actual broken brake hardware has no stopping capacity
+PASS: juniper-club: failed brakes do not park or break the engine
+PASS: juniper-club: safety handling leaves the beam time fixed
+PASS: juniper-economy: safety fixture reaches a real finish
+PASS: juniper-economy: manual partial braking is not overridden
+PASS: juniper-economy: manual coast has no automatic parking brake
+PASS: juniper-economy: automatic braking starts with a gradual first pressure step
+PASS: juniper-economy: actual broken brake hardware has no stopping capacity
+PASS: juniper-economy: failed brakes do not park or break the engine
+PASS: juniper-economy: safety handling leaves the beam time fixed
+PASS: kestrel-track: safety fixture reaches a real finish
+PASS: kestrel-track: manual partial braking is not overridden
+PASS: kestrel-track: manual coast has no automatic parking brake
+PASS: kestrel-track: automatic braking starts with a gradual first pressure step
+PASS: kestrel-track: actual broken brake hardware has no stopping capacity
+PASS: kestrel-track: failed brakes do not park or break the engine
+PASS: kestrel-track: safety handling leaves the beam time fixed
+PASS: rally-sedan: safety fixture reaches a real finish
+PASS: rally-sedan: manual partial braking is not overridden
+PASS: rally-sedan: manual coast has no automatic parking brake
+PASS: rally-sedan: automatic braking starts with a gradual first pressure step
+PASS: rally-sedan: actual broken brake hardware has no stopping capacity
+PASS: rally-sedan: failed brakes do not park or break the engine
+PASS: rally-sedan: safety handling leaves the beam time fixed
+PASS: sport-coupe: safety fixture reaches a real finish
+PASS: sport-coupe: manual partial braking is not overridden
+PASS: sport-coupe: manual coast has no automatic parking brake
+PASS: sport-coupe: automatic braking starts with a gradual first pressure step
+PASS: sport-coupe: actual broken brake hardware has no stopping capacity
+PASS: sport-coupe: failed brakes do not park or break the engine
+PASS: sport-coupe: safety handling leaves the beam time fixed
+PASS: starter-hatch: safety fixture reaches a real finish
+PASS: starter-hatch: manual partial braking is not overridden
+PASS: starter-hatch: manual coast has no automatic parking brake
+PASS: starter-hatch: automatic braking starts with a gradual first pressure step
+PASS: starter-hatch: actual broken brake hardware has no stopping capacity
+PASS: starter-hatch: failed brakes do not park or break the engine
+PASS: starter-hatch: safety handling leaves the beam time fixed
+PASS: super-v8: safety fixture reaches a real finish
+PASS: super-v8: manual partial braking is not overridden
+PASS: super-v8: manual coast has no automatic parking brake
+PASS: super-v8: automatic braking starts with a gradual first pressure step
+PASS: super-v8: actual broken brake hardware has no stopping capacity
+PASS: super-v8: failed brakes do not park or break the engine
+PASS: super-v8: safety handling leaves the beam time fixed
+PASS: timber-diesel: safety fixture reaches a real finish
+PASS: timber-diesel: manual partial braking is not overridden
+PASS: timber-diesel: manual coast has no automatic parking brake
+PASS: timber-diesel: automatic braking starts with a gradual first pressure step
+PASS: timber-diesel: actual broken brake hardware has no stopping capacity
+PASS: timber-diesel: failed brakes do not park or break the engine
+PASS: timber-diesel: safety handling leaves the beam time fixed
+PASS: timber-diesel-tow: safety fixture reaches a real finish
+PASS: timber-diesel-tow: manual partial braking is not overridden
+PASS: timber-diesel-tow: manual coast has no automatic parking brake
+PASS: timber-diesel-tow: automatic braking starts with a gradual first pressure step
+PASS: timber-diesel-tow: actual broken brake hardware has no stopping capacity
+PASS: timber-diesel-tow: failed brakes do not park or break the engine
+PASS: timber-diesel-tow: safety handling leaves the beam time fixed
+PASS: touring-six: safety fixture reaches a real finish
+PASS: touring-six: manual partial braking is not overridden
+PASS: touring-six: manual coast has no automatic parking brake
+PASS: touring-six: automatic braking starts with a gradual first pressure step
+PASS: touring-six: actual broken brake hardware has no stopping capacity
+PASS: touring-six: failed brakes do not park or break the engine
+PASS: touring-six: safety handling leaves the beam time fixed
+PASS: utility-pickup: safety fixture reaches a real finish
+PASS: utility-pickup: manual partial braking is not overridden
+PASS: utility-pickup: manual coast has no automatic parking brake
+PASS: utility-pickup: automatic braking starts with a gradual first pressure step
+PASS: utility-pickup: actual broken brake hardware has no stopping capacity
+PASS: utility-pickup: failed brakes do not park or break the engine
+PASS: utility-pickup: safety handling leaves the beam time fixed
+PASS: v8-muscle: safety fixture reaches a real finish
+PASS: v8-muscle: manual partial braking is not overridden
+PASS: v8-muscle: manual coast has no automatic parking brake
+PASS: v8-muscle: automatic braking starts with a gradual first pressure step
+PASS: v8-muscle: actual broken brake hardware has no stopping capacity
+PASS: v8-muscle: failed brakes do not park or break the engine
+PASS: v8-muscle: safety handling leaves the beam time fixed
+Checks: 91 / failures: 0
