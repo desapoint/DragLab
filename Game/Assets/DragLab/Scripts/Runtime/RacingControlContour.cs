@@ -46,6 +46,11 @@ namespace DragLab.Runtime
             float spacing=panel?3.8f:2.1f;
             for(float x=-h;x<w;x+=spacing+Next(ref seed)*1.8f)
                 Stroke(new Vector2(x,h),new Vector2(x+h*.75f,0),.4f,C(.82f,.86f,.9f,(panel?.014f:.026f)*(.5f+Next(ref seed))));
+            if(panel&&selected&&owner.ClassListContains("clickable-panel"))
+            {
+                Face(0,0,w,h,A(.55f,0,.18f),A(.3f,0,.08f));
+                Face(0,9,3,Mathf.Max(0,h-18),A(.95f));
+            }
             if(!panel || owner.ClassListContains("clickable-panel"))
             {
                 // A narrow bevel, quiet lower reflection and a single soft sweep.
@@ -64,6 +69,7 @@ namespace DragLab.Runtime
             Color neutral=Color.Lerp(C(.48f,.51f,.55f,.9f),C(.19f,.22f,.26f,.9f),p.y/h);
             if(panel)
             {
+                if(red&&owner.ClassListContains("clickable-panel"))return Color.Lerp(A(1,.08f),A(.8f),p.y/h);
                 float corner=Mathf.Min(p.x+p.y,w-p.x+h-p.y);
                 float accent=Mathf.Pow(Mathf.Clamp01(1-corner/80),.65f);
                 return Color.Lerp(neutral,A(),accent);
