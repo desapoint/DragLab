@@ -226,6 +226,12 @@ namespace DragLab.Runtime
                 yield return null;
             }
             game.verificationInput=null;yield return null;
+            float previousCameraX=2,maxCameraStep=0,cameraDeadline=Time.realtimeSinceStartup+4;
+            while(Time.realtimeSinceStartup<cameraDeadline){
+                float cameraX=Camera.main.transform.position.x;maxCameraStep=Mathf.Max(maxCameraStep,Mathf.Abs(cameraX-previousCameraX));previousCameraX=cameraX;
+                if(Mathf.Abs(cameraX-4.4f)<.01f)break;yield return null;
+            }
+            Check(maxCameraStep<.35f&&Mathf.Abs(Camera.main.transform.position.x-4.4f)<.01f,"Results camera eases to its framing without the former 2.4-unit single-frame jump / max step "+maxCameraStep.ToString("F3"));
             Check(game.ComparisonRoute=="Results"&&!hud.Visible&&game.Race.player.state.finished,"Finishing a real authoritative pass hides instruments and preserves the existing results workflow");
             Check(playerFinishedShot&&game.Results.Visible&&strip.Billboard.Player.Finished&&strip.Billboard.Opponent.Finished,"Both finish beams publish independently before the native timing slip opens");
             Check(string.IsNullOrEmpty(game.ResultNotice)&&game.Results.Root.Q("slipNotice").ClassListContains("hidden"),"Successful results omit redundant outcome/save-status text and its empty row");

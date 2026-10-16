@@ -1,0 +1,10 @@
+Finish-aware packaged frame trace (includes injected save failures and explicit exit/entry actions; peaks are not normal-play averages).
+PASS: Results camera eases to its framing without the former 2.4-unit single-frame jump / max step 0,139
+frame 12530 / race/results / frame ms 636.753 / race update ms 632.705 / checkpoint ms 231.462
+frame 9036 / race/results / frame ms 223.559 / race update ms 210.406 / checkpoint ms 210.395
+frame 9252 / race/results / frame ms 949.696 / race update ms 203.117 / checkpoint ms 200.335
+frame 8114 / race/driving / frame ms 208.211 / race update ms 184.776 / checkpoint ms 0.000
+frame 3900 / race/driving / frame ms 189.887 / race update ms 178.985 / checkpoint ms 178.976
+frame 12421 / race/results / frame ms 177.259 / race update ms 173.342 / checkpoint ms 0.000
+frame 3800 / race/driving / frame ms 170.966 / race update ms 161.848 / checkpoint ms 161.831
+frame 12416 / race/driving / frame ms 136.690 / race update ms 131.281 / checkpoint ms 0.000

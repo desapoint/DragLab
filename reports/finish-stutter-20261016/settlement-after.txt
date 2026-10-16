@@ -1,0 +1,18 @@
+PRACTICE
+transaction clone ms 57.321
+transaction normalize before operation ms 26.176
+transaction operation ms 1.481
+transaction normalize after operation ms 13.096
+save database capture + validation ms 31.635
+save database transaction + durability ms 143.934
+transaction persistence ms 176.054
+total ms 274.577 / True /
+PAID MARKET REFRESH
+transaction clone ms 65.782
+transaction normalize before operation ms 13.035
+transaction operation ms 723.796
+transaction normalize after operation ms 8.508
+save database capture + validation ms 20.884
+save database transaction + durability ms 320.934
+transaction persistence ms 341.924
+total ms 1153.074 / True /

@@ -1,0 +1,5 @@
+Safe camera/duplicate-validation partial correction / native 171 checks / 0 runtime errors / full stutter fix NOT complete
+DragLab.exe SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+DragLab_Data/Managed/Assembly-CSharp.dll SHA256 e6d72106df2bae15cb9df7e9f94a0b39c04089a0382a9720f1f06b46daf925ef
+DragLab_Data/resources.assets SHA256 cc5705979969b1bc4c85f3d52947a2a4593a16afdb382eda8ae18193df30a23f
+DragLab_Data/globalgamemanagers SHA256 64864642e4a4aed40feb260dade41ad1fd3ea4a7400b1f67458f1a04fbc31ce5

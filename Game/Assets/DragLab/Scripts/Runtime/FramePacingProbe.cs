@@ -14,6 +14,7 @@ namespace DragLab.Runtime
     public sealed class FramePacingProbe : MonoBehaviour
     {
         static FramePacingProbe instance;
+        public static bool Active=>instance!=null;
         static readonly string[] Names = { "raceUpdate", "benchUpdate", "simulation", "checkpoint", "raceGUI", "benchGUI", "scenarioPreparation", "export", "importAndVerification" };
         readonly double[] costs = new double[9];
         struct Row { public int frame,gc; public string phase; public double ms,a,b,c,d,e,f,g,h,i; public long bytes,unityBytes; }

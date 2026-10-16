@@ -223,6 +223,7 @@ namespace DragLab.Runtime
         {
             if(DeterministicCapture.Frame)return;
             if (profile == null || resetRequired) return;
+            if(FramePacingProbe.Active&&screen=="Race"&&race!=null)FramePacingProbe.Phase=race.phase==RacePhase.Finished?"race/results":"race/driving";
             if(profile.vehicleStock!=null&&screen!="Race"&&Time.realtimeSinceStartup>.25f&&!Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&GUIUtility.hotControl==0){string key=profile.vehicleStock.seed+"/"+profile.vehicleStock.generation+"/"+profile.firstPurchasePending;if(key!=marketWarmKey){marketWarmKey=key;marketWarm=VehicleListings.WarmNext(profile).GetEnumerator();}if(marketWarm!=null&&!marketWarm.MoveNext())marketWarm=null;}
             if (pendingAction != null) { var action = pendingAction; pendingAction = null; action(); }
             if (saveDelay > 0 && GUIUtility.hotControl == 0 && !Input.GetMouseButton(0) && !Input.GetMouseButton(1)) { if(drivingPreferencesDirty){if(!ProfileStore.TrySavePreferences(profile,out var error))notice="Settings save failed: "+error;drivingPreferencesDirty=false;}else ProfileStore.Save(profile);saveDelay=0; }
@@ -271,9 +272,13 @@ namespace DragLab.Runtime
             playerView.transform.rotation=angle;aiView.transform.rotation=angle;
         }
 
+        float resultCameraVelocity;
         void RenderRace()
         {
-            raceCamera.transform.position=new Vector3(race.phase==RacePhase.Finished&&InterfaceComparison.IsReplacement("Results")?4.4f:2,RaceCameraY,-10);
+            float targetX=race.phase==RacePhase.Finished&&InterfaceComparison.IsReplacement("Results")?4.4f:2;
+            float cameraX=targetX==2?2:Mathf.SmoothDamp(raceCamera.transform.position.x,targetX,ref resultCameraVelocity,.45f,20,Mathf.Min(Time.unscaledDeltaTime,.05f));
+            if(targetX==2)resultCameraVelocity=0;
+            raceCamera.transform.position=new Vector3(cameraX,RaceCameraY,-10);
             PlaceRaceCars();
             strip.Render(race);
             playerView.Animate(race.player.state);
@@ -288,7 +293,7 @@ namespace DragLab.Runtime
             if(awarded||race==null||race.phase!=RacePhase.Finished)return;
             var checkpoint=RunPersistence.Capture(liveRunId,liveRunOwner,liveRunTick,race.player,false,"Result settled / shutdown still running");
             PlayerProfile next;string error;
-            if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{var old=p.runCheckpoints.Find(r=>r.runId==liveRunId);if(old==null||old.tick<liveRunTick)MechanicsTransactions.ApplyCheckpoint(p,checkpoint);CareerProgression.Settle(p,liveRunId,race);},ProfileStore.TrySave,out next,out error)){notice="Result save failed; retry retained. "+error;return;}
+            if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{var old=p.runCheckpoints.Find(r=>r.runId==liveRunId);if(old==null||old.tick<liveRunTick)MechanicsTransactions.ApplyCheckpoint(p,checkpoint);CareerProgression.Settle(p,liveRunId,race);},ProfileStore.TrySaveValidated,out next,out error)){notice="Result save failed; retry retained. "+error;return;}
             profile=next;settings=profile.driving;awarded=true;savedRunTick=liveRunTick;savedRunFailures=RunPersistence.FailureCount(race.player);finishedPass=Build.lastPass;
             notice="";
         }
