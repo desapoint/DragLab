@@ -94,6 +94,7 @@ namespace DragLab.Runtime
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-reset-required-only-verify")>=0){yield return IncompatibleSaveChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-shine-only-verify")>=0){yield return AngledShineChecks(input);yield break;}
                 if(game.Profile.firstPurchasePending)yield return StarterPurchaseChecks(input);
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-owned-fitted-only-verify")>=0){yield return OwnedFittedPartsChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-navigation-only-verify")>=0){yield return NavigationDefaultsChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-race-pause-only-verify")>=0){yield return RacePauseChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-finish-pacing-only-verify")>=0){yield return FinishPacingChecks(input);yield break;}

@@ -240,9 +240,13 @@ namespace DragLab.Runtime
         void OpenFittedParts(DealerModel model)
         {
             if(!model.Known)return;
+            OpenFittedParts(model.Offer.parts,dealerCatalog);
+        }
+        void OpenFittedParts(IEnumerable<PartInstance> fitted,MechanicalCatalog catalog)
+        {
             OpenDialog("Fitted parts",null,new[]{new DialogAction("Close",CloseDialog)},populate:content=>{
                 var list=new VisualElement{name="fittedPartsList"};list.AddToClassList("fitted-parts-list");content.Add(list);
-                var parts=model.Offer.parts.Select(p=>new {Part=p,Definition=dealerCatalog.Find(p.definitionId)}).ToArray();
+                var parts=fitted.Select(p=>new {Part=p,Definition=catalog.Find(p.definitionId)}).ToArray();
                 foreach(string title in new[]{"Engine","Cooling & lubrication","Drivetrain","Wheels & brakes","Body & interior","Electronics","Other"}) {
                     var entries=parts.Where(p=>FittedPartGroup(p.Definition.category)==title).OrderBy(p=>(int)p.Definition.category).ToArray();if(entries.Length==0)continue;
                     var frame=new VisualElement();frame.AddToClassList("stat-group");list.Add(frame);

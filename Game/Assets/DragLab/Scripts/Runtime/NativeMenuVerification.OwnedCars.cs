@@ -15,6 +15,38 @@ namespace DragLab.Runtime
     internal sealed partial class NativeMenuVerification
     {
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
+        IEnumerator OwnedFittedPartsChecks(WindowsKeyboardProbe input)
+        {
+            var original=game.Profile;var field=typeof(PrototypeGame).GetField("profile",BindingFlags.Instance|BindingFlags.NonPublic);
+            var fixture=EngineWorkshop.Copy(original);fixture.cash=1000000;fixture.reputation=1000;
+            var vehicle=Resources.LoadAll<VehicleDefinition>("Data/Vehicles").First(v=>v.spec.id==fixture.SelectedCar.vehicleId);
+            for(int i=0;i<2;i++)VehicleCollection.Buy(fixture,fixture.catalog,new VehicleOffer{model=vehicle.spec.id,price=vehicle.purchasePrice,reputation=0,stock=vehicle.CreateStockTune(),paint="#DA3448"});
+            var cars=new[]{fixture.cars[0],fixture.cars[fixture.cars.Count-2],fixture.cars.Last()};AssemblyOperations.Detach(fixture,cars[2].instanceId);
+            string selected=fixture.selectedOwnedVehicleId;byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);string baseline=JsonUtility.ToJson(fixture);
+            try{
+                field.SetValue(game,fixture);game.settings=fixture.driving;
+                foreach(var car in cars){
+                    game.QueueNativeNavigation("Garage",true);yield return new WaitForSecondsRealtime(.4f);shell.InvalidateOwnedGrid();shell.Refresh();yield return null;
+                    shell.Root.Q<ScrollView>("ownedCars").ScrollTo(shell.Root.Q("ownedCar:"+car.instanceId));yield return new WaitForSecondsRealtime(.15f);yield return Click(input,"ownedCar:"+car.instanceId);
+                    var button=shell.Root.Q<Button>("ownedFittedParts");
+                    Check(button!=null&&button.Q<FilledMenuIcon>()!=null&&!button.focusable&&button.tabIndex==-1,"Owned details expose the shared fitted-parts action: "+car.instanceId);
+                    shell.Root.Q<ScrollView>("ownedDetailScroll").ScrollTo(button);yield return new WaitForSecondsRealtime(.15f);yield return Capture("owned-fitted-details-"+Array.IndexOf(cars,car));yield return Click(input,button);
+                    var list=shell.Root.Q("fittedPartsList");var rows=list.Query(className:"fitted-part").ToList();
+                    Check(rows.Select(r=>r.name.Substring("fittedPart:".Length)).ToHashSet().SetEquals(car.installed.slots.Select(s=>s.partInstanceId)),"Owned fitted dialog shows only the viewed car's actual installed identities, including detached-engine state");
+                    Check(rows.All(r=>r.parent.name=="fittedPartsBody:"+NativeMenuShell.FittedPartGroup((PartCategory)r.userData)),"Owned fitted rows reuse the shared component-system groups");
+                    DialogScrollBounds("owned fitted parts");yield return Capture("owned-fitted-groups-"+Array.IndexOf(cars,car));
+                    var binding=car.installed.slots.First(s=>s.slot=="Tires");var part=fixture.parts.Single(p=>p.instanceId==binding.partInstanceId);
+                    yield return PartDialogClick(input,"fittedPartsGroup:Wheels & brakes");var row=list.Q("fittedPart:"+part.instanceId);
+                    Check(row.Query<Label>().ToList().Any(l=>l.text==PrototypeGame.MaintenanceConditionHealth(part).ToString("P0")),"Owned fitted row displays actual remaining tire condition");
+                    var shop=row.Q<Button>("fittedPartShop:"+part.instanceId);shell.Root.Q<ScrollView>("modalContent").ScrollTo(shop);yield return new WaitForSecondsRealtime(.15f);yield return Capture("owned-fitted-expanded-"+Array.IndexOf(cars,car));
+                    if(car==cars[1]){
+                        yield return Click(input,shop);yield return WaitParts();
+                        Check(game.ScreenName=="Parts"&&game.PartsPage=="Shop"&&shell.PartQuery.Categories.SetEquals(new[]{PartCategory.Tires})&&shell.PartQuery.InStockOnly&&shell.PartQuery.Compatibility=="Compatible","Owned fitted Shop uses the same default filters plus component type");
+                    }else yield return Click(input,"dialogClose");
+                    Check(game.Profile.selectedOwnedVehicleId==selected&&JsonUtility.ToJson(fixture)==baseline&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Viewing owned fitted parts and Shop never switches cars, buys, installs or saves");
+                }
+            }finally{if(shell.ModalOpen)typeof(NativeMenuShell).GetMethod("CloseDialog",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shell,null);field.SetValue(game,original);game.settings=original.driving;shell.InvalidateOwnedGrid();}
+        }
         IEnumerator OwnedCarChecks(WindowsKeyboardProbe input)
         {
             var original = game.Profile;
