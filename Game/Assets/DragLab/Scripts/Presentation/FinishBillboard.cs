@@ -81,13 +81,13 @@ namespace DragLab.Presentation
                 char c=i<text.Length?text[i]:' ';
                 if(c=='.'){Rect(x+.015f,y,width*.13f,width*.13f,lit?On:Off);x+=width*.25f;continue;}
                 int mask=c>='0'&&c<='9'?digits[c-'0']:0;
-                float t=width*.16f;
+                float t=width*.16f,gap=t*.22f;
                 for(int s=0;s<7;s++)
                 {
                     bool horizontal=s==0||s==3||s==6;
-                    float sx=x+(s==1||s==2?width-t:0);
-                    float sy=y+(s==0?height-t:s==1||s==5?height*.5f:s==6?height*.5f-t*.5f:0);
-                    float sw=horizontal?width:t,sh=horizontal?t:height*.5f-t*.5f;
+                    float sx=x+(horizontal?t*.5f+gap:s==1||s==2?width-t:0);
+                    float sy=y+(horizontal?(s==0?height-t:s==6?(height-t)*.5f:0):s==1||s==5?(height+t)*.5f+gap:t+gap);
+                    float sw=horizontal?width-t-2*gap:t,sh=horizontal?t:height*.5f-t*1.5f-2*gap;
                     Bevel(sx,sy,sw,sh,(mask&(1<<s))!=0?On:Off,horizontal);
                 }
                 x+=width*1.17f;
@@ -96,8 +96,24 @@ namespace DragLab.Presentation
         void Bevel(float x,float y,float w,float h,Color color,bool horizontal)
         {
             float b=Mathf.Min(w,h)*.45f;
-            if(horizontal)Polygon(color,new Vector2(x,y+h/2),new Vector2(x+b,y),new Vector2(x+w-b,y),new Vector2(x+w,y+h/2),new Vector2(x+w-b,y+h),new Vector2(x+b,y+h));
-            else Polygon(color,new Vector2(x+w/2,y),new Vector2(x+w,y+b),new Vector2(x+w,y+h-b),new Vector2(x+w/2,y+h),new Vector2(x,y+h-b),new Vector2(x,y+b));
+            Vector2[] points=horizontal?
+                new[]{new Vector2(x,y+h/2),new Vector2(x+b,y),new Vector2(x+w-b,y),new Vector2(x+w,y+h/2),new Vector2(x+w-b,y+h),new Vector2(x+b,y+h)}:
+                new[]{new Vector2(x+w/2,y),new Vector2(x+w,y+b),new Vector2(x+w,y+h-b),new Vector2(x+w/2,y+h),new Vector2(x,y+h-b),new Vector2(x,y+b)};
+            int at=vertices.Count;Polygon(color,points);
+            float feather=Mathf.Min(w,h)*.11f;Color edge=color;edge.a=0;
+            for(int i=0;i<points.Length;i++)
+            {
+                Vector2 before=(points[i]-points[(i+points.Length-1)%points.Length]).normalized;
+                Vector2 after=(points[(i+1)%points.Length]-points[i]).normalized;
+                Vector2 normal=new Vector2(after.y,-after.x),miter=(new Vector2(before.y,-before.x)+normal).normalized;
+                vertices.Add(points[i]+miter*(feather/Mathf.Max(.1f,Vector2.Dot(miter,normal))));colors.Add(edge);
+            }
+            for(int i=0;i<points.Length;i++)
+            {
+                int next=(i+1)%points.Length,outer=at+points.Length;
+                triangles.Add(at+i);triangles.Add(outer+i);triangles.Add(outer+next);
+                triangles.Add(at+i);triangles.Add(outer+next);triangles.Add(at+next);
+            }
         }
         void Text(string text,float x,float y,float pixel,Color color)
         {

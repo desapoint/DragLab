@@ -1,0 +1,123 @@
+before: 1280px / ET / 0: 2/6 separate lit segments / JOINED OR MISSING
+before: 1280px / ET / 1: 2/2 separate lit segments / PASS
+before: 1280px / ET / 2: 2/5 separate lit segments / JOINED OR MISSING
+before: 1280px / ET / 3: 2/5 separate lit segments / JOINED OR MISSING
+before: 1280px / ET / 4: 2/4 separate lit segments / JOINED OR MISSING
+before: 1280px / ET / 5: 2/5 separate lit segments / JOINED OR MISSING
+before: 1280px / ET / 6: 2/6 separate lit segments / JOINED OR MISSING
+before: 1280px / ET / 7: 2/3 separate lit segments / JOINED OR MISSING
+before: 1280px / ET / 8: 2/7 separate lit segments / JOINED OR MISSING
+before: 1280px / ET / 9: 2/6 separate lit segments / JOINED OR MISSING
+before: 1280px / RT / 0: 2/6 separate lit segments / JOINED OR MISSING
+before: 1280px / RT / 1: 2/2 separate lit segments / PASS
+before: 1280px / RT / 2: 1/5 separate lit segments / JOINED OR MISSING
+before: 1280px / RT / 3: 1/5 separate lit segments / JOINED OR MISSING
+before: 1280px / RT / 4: 1/4 separate lit segments / JOINED OR MISSING
+before: 1280px / RT / 5: 1/5 separate lit segments / JOINED OR MISSING
+before: 1280px / RT / 6: 1/6 separate lit segments / JOINED OR MISSING
+before: 1280px / RT / 7: 2/3 separate lit segments / JOINED OR MISSING
+before: 1280px / RT / 8: 1/7 separate lit segments / JOINED OR MISSING
+before: 1280px / RT / 9: 1/6 separate lit segments / JOINED OR MISSING
+before: 1920px / ET / 0: 2/6 separate lit segments / JOINED OR MISSING
+before: 1920px / ET / 1: 2/2 separate lit segments / PASS
+before: 1920px / ET / 2: 1/5 separate lit segments / JOINED OR MISSING
+before: 1920px / ET / 3: 2/5 separate lit segments / JOINED OR MISSING
+before: 1920px / ET / 4: 1/4 separate lit segments / JOINED OR MISSING
+before: 1920px / ET / 5: 1/5 separate lit segments / JOINED OR MISSING
+before: 1920px / ET / 6: 1/6 separate lit segments / JOINED OR MISSING
+before: 1920px / ET / 7: 2/3 separate lit segments / JOINED OR MISSING
+before: 1920px / ET / 8: 1/7 separate lit segments / JOINED OR MISSING
+before: 1920px / ET / 9: 1/6 separate lit segments / JOINED OR MISSING
+before: 1920px / RT / 0: 2/6 separate lit segments / JOINED OR MISSING
+before: 1920px / RT / 1: 2/2 separate lit segments / PASS
+before: 1920px / RT / 2: 2/5 separate lit segments / JOINED OR MISSING
+before: 1920px / RT / 3: 2/5 separate lit segments / JOINED OR MISSING
+before: 1920px / RT / 4: 2/4 separate lit segments / JOINED OR MISSING
+before: 1920px / RT / 5: 2/5 separate lit segments / JOINED OR MISSING
+before: 1920px / RT / 6: 1/6 separate lit segments / JOINED OR MISSING
+before: 1920px / RT / 7: 2/3 separate lit segments / JOINED OR MISSING
+before: 1920px / RT / 8: 2/7 separate lit segments / JOINED OR MISSING
+before: 1920px / RT / 9: 2/6 separate lit segments / JOINED OR MISSING
+before: 3840px / ET / 0: 2/6 separate lit segments / JOINED OR MISSING
+before: 3840px / ET / 1: 2/2 separate lit segments / PASS
+before: 3840px / ET / 2: 2/5 separate lit segments / JOINED OR MISSING
+before: 3840px / ET / 3: 3/5 separate lit segments / JOINED OR MISSING
+before: 3840px / ET / 4: 2/4 separate lit segments / JOINED OR MISSING
+before: 3840px / ET / 5: 3/5 separate lit segments / JOINED OR MISSING
+before: 3840px / ET / 6: 2/6 separate lit segments / JOINED OR MISSING
+before: 3840px / ET / 7: 2/3 separate lit segments / JOINED OR MISSING
+before: 3840px / ET / 8: 2/7 separate lit segments / JOINED OR MISSING
+before: 3840px / ET / 9: 2/6 separate lit segments / JOINED OR MISSING
+before: 3840px / RT / 0: 2/6 separate lit segments / JOINED OR MISSING
+before: 3840px / RT / 1: 2/2 separate lit segments / PASS
+before: 3840px / RT / 2: 1/5 separate lit segments / JOINED OR MISSING
+before: 3840px / RT / 3: 1/5 separate lit segments / JOINED OR MISSING
+before: 3840px / RT / 4: 1/4 separate lit segments / JOINED OR MISSING
+before: 3840px / RT / 5: 1/5 separate lit segments / JOINED OR MISSING
+before: 3840px / RT / 6: 1/6 separate lit segments / JOINED OR MISSING
+before: 3840px / RT / 7: 2/3 separate lit segments / JOINED OR MISSING
+before: 3840px / RT / 8: 1/7 separate lit segments / JOINED OR MISSING
+before: 3840px / RT / 9: 1/6 separate lit segments / JOINED OR MISSING
+before: 6/60 rendered digit cases separated correctly
+after: 1280px / ET / 0: 6/6 separate lit segments / PASS
+after: 1280px / ET / 1: 2/2 separate lit segments / PASS
+after: 1280px / ET / 2: 5/5 separate lit segments / PASS
+after: 1280px / ET / 3: 5/5 separate lit segments / PASS
+after: 1280px / ET / 4: 4/4 separate lit segments / PASS
+after: 1280px / ET / 5: 5/5 separate lit segments / PASS
+after: 1280px / ET / 6: 6/6 separate lit segments / PASS
+after: 1280px / ET / 7: 3/3 separate lit segments / PASS
+after: 1280px / ET / 8: 7/7 separate lit segments / PASS
+after: 1280px / ET / 9: 6/6 separate lit segments / PASS
+after: 1280px / RT / 0: 6/6 separate lit segments / PASS
+after: 1280px / RT / 1: 2/2 separate lit segments / PASS
+after: 1280px / RT / 2: 5/5 separate lit segments / PASS
+after: 1280px / RT / 3: 5/5 separate lit segments / PASS
+after: 1280px / RT / 4: 4/4 separate lit segments / PASS
+after: 1280px / RT / 5: 5/5 separate lit segments / PASS
+after: 1280px / RT / 6: 6/6 separate lit segments / PASS
+after: 1280px / RT / 7: 3/3 separate lit segments / PASS
+after: 1280px / RT / 8: 7/7 separate lit segments / PASS
+after: 1280px / RT / 9: 6/6 separate lit segments / PASS
+after: 1920px / ET / 0: 6/6 separate lit segments / PASS
+after: 1920px / ET / 1: 2/2 separate lit segments / PASS
+after: 1920px / ET / 2: 5/5 separate lit segments / PASS
+after: 1920px / ET / 3: 5/5 separate lit segments / PASS
+after: 1920px / ET / 4: 4/4 separate lit segments / PASS
+after: 1920px / ET / 5: 5/5 separate lit segments / PASS
+after: 1920px / ET / 6: 6/6 separate lit segments / PASS
+after: 1920px / ET / 7: 3/3 separate lit segments / PASS
+after: 1920px / ET / 8: 7/7 separate lit segments / PASS
+after: 1920px / ET / 9: 6/6 separate lit segments / PASS
+after: 1920px / RT / 0: 6/6 separate lit segments / PASS
+after: 1920px / RT / 1: 2/2 separate lit segments / PASS
+after: 1920px / RT / 2: 5/5 separate lit segments / PASS
+after: 1920px / RT / 3: 5/5 separate lit segments / PASS
+after: 1920px / RT / 4: 4/4 separate lit segments / PASS
+after: 1920px / RT / 5: 5/5 separate lit segments / PASS
+after: 1920px / RT / 6: 6/6 separate lit segments / PASS
+after: 1920px / RT / 7: 3/3 separate lit segments / PASS
+after: 1920px / RT / 8: 7/7 separate lit segments / PASS
+after: 1920px / RT / 9: 6/6 separate lit segments / PASS
+after: 3840px / ET / 0: 6/6 separate lit segments / PASS
+after: 3840px / ET / 1: 2/2 separate lit segments / PASS
+after: 3840px / ET / 2: 5/5 separate lit segments / PASS
+after: 3840px / ET / 3: 5/5 separate lit segments / PASS
+after: 3840px / ET / 4: 4/4 separate lit segments / PASS
+after: 3840px / ET / 5: 5/5 separate lit segments / PASS
+after: 3840px / ET / 6: 6/6 separate lit segments / PASS
+after: 3840px / ET / 7: 3/3 separate lit segments / PASS
+after: 3840px / ET / 8: 7/7 separate lit segments / PASS
+after: 3840px / ET / 9: 6/6 separate lit segments / PASS
+after: 3840px / RT / 0: 6/6 separate lit segments / PASS
+after: 3840px / RT / 1: 2/2 separate lit segments / PASS
+after: 3840px / RT / 2: 5/5 separate lit segments / PASS
+after: 3840px / RT / 3: 5/5 separate lit segments / PASS
+after: 3840px / RT / 4: 4/4 separate lit segments / PASS
+after: 3840px / RT / 5: 5/5 separate lit segments / PASS
+after: 3840px / RT / 6: 6/6 separate lit segments / PASS
+after: 3840px / RT / 7: 3/3 separate lit segments / PASS
+after: 3840px / RT / 8: 7/7 separate lit segments / PASS
+after: 3840px / RT / 9: 6/6 separate lit segments / PASS
+after: 60/60 rendered digit cases separated correctly
+Corrected captures: 60 cases / 0 failures

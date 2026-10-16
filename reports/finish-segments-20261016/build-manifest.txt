@@ -1,0 +1,5 @@
+Corrected segment Windows build / native suite 163 checks, 0 runtime errors
+DragLab.exe SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+DragLab_Data/Managed/Assembly-CSharp.dll SHA256 844c92aa34bad22b1dd17d17915b57ec15e41a1c07288f78d6e3a50ad97cf0ac
+DragLab_Data/resources.assets SHA256 00c60912941318b6e7b9101bdbef5f459f7eb8ef1fcddeffd5cb89e56039b173
+DragLab_Data/globalgamemanagers SHA256 2cab8466fb967251e07ab55a5243f4072981b79c38545cea02e4c8fb6ea88673

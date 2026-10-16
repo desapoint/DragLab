@@ -58,3 +58,5 @@ Technical completion and user visual acceptance remain separate. Do not advance 
 
 
 Raise the start-light housing above its previous edge anchor and add a shaded vertical pole whose foot stays on that exact projected ground point. Pole and housing move together; overlap the joint slightly and keep the assembly behind cars. [Checks/review](../reports/phases/4l/07-LIGHT-POLE.md).
+
+Finish-board digit refinement (2026-10-16): keep visible gaps between the seven beveled bars, including the middle joins, and smooth segment edges with a thin local transparent fringe. The decimal remains the eighth lit element. This does not change recorded values, lane posting, billboard location or shutdown policy.
