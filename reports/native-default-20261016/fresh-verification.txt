@@ -1,0 +1,122 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Dealership Fitted parts sits beside Stats with the same compact ten-point spacing as owned cars
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Fitted values reflect actual member condition and failures instead of a neutral tire wrapper
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Each fitted part has a shared Shop action, available after an owned car is selected
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: New Garage is the startup default with an owned car, without pressing F8
+PASS: All native menu routes initially select the new presentation
+PASS: F8 switches the default new Garage to the old interface
+PASS: F8 returns to the new interface without changing the save
+PASS: Owned detail opens normally
+PASS: Garage re-entry opens the owned-car grid
+PASS: Clicking the current main menu also restores its default tab
+PASS: Garage resets search and scroll
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1839 offers / 0 full comparisons / 0,00 ms / 2 cache hits
+PASS: Build defaults to the Engine shop grid
+PASS: Part defaults combine Compatible and In stock independently of price
+PASS: Partial stock remains visible even when a full set needs express or is unaffordable
+PASS: Zero-stock new offers are hidden by default
+PASS: All stock statuses can be requested explicitly
+PASS: Affordability remains an independent inclusive price filter
+PASS: Affordable does not override In stock
+PASS: An actual used listing is available stock
+PASS: Stock default does not hide owned inventory
+PASS: Advanced filters start collapsed
+PASS: Common filters and Advanced fit the initial window without scrolling
+PASS: Stock has its own filter section apart from price
+PASS: Stock and express are not mixed into the price choices
+PASS: Dialog content clears fixed X/title and actions: basic part filters
+PASS: Advanced can be expanded with the shared disclosure button
+PASS: Cancel discards all basic and advanced edits
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1839 offers / 0 full comparisons / 0,00 ms / 2 cache hits
+PASS: Apply combines stock, price and advanced filters
+PASS: Applied advanced criteria are revealed on reopening
+PASS: Dialog Reset restores Compatible and In stock, with Advanced collapsed
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1839 offers / 0 full comparisons / 0,00 ms / 2 cache hits
+PASS: Reset draft applies its defaults explicitly
+PASS: Toolbar clear uses the same defaults
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1839 offers / 0 full comparisons / 0,00 ms / 4 cache hits
+PASS: Build re-entry closes the engine workshop and resets source, category, search and reference
+PASS: Settings Cancel retains the interrupted detail context
+PASS: Fresh Settings navigation always starts on Difficulty / Driving
+PASS: Reselecting Settings resets its tab without changing preferences
+PASS: Reselecting Settings preserves unapplied edits while resetting its category
+PASS: Main navigation still guards unsaved settings
+PASS: Discard returns to the destination default without applying preferences
+PASS: Main Build navigation closes a part detail
+PASS: Tuning re-entry closes saved setups and resets category/axle view
+PASS: Race re-entry starts on Career with empty event search
+PASS: Reselecting Race resets its mode too
+PASS: F8 comparison keeps the current page state
+PASS: Navigation/filtering does not save or alter assets, money, wear, market stock or preferences
+PASS: Isolated fixture stages a real cart line
+PASS: Main navigation closes cart presentation while preserving reserved purchases
+PASS: Reserved cart survives leaving and returning to Build
+PASS: Fitted Shop button fits beside its component type: Pistons
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1839 offers / 0 full comparisons / 0,00 ms / 29 cache hits
+PASS: Fitted Shop navigates to the matching Build section: Pistons
+PASS: Fitted Shop uses default filters plus only the clicked part type: Pistons
+PASS: Only fitting, stocked parts of that type are displayed: Pistons
+PASS: Shop shortcut preserves current car and reserved purchases: Pistons
+PASS: Fitted Shop button fits beside its component type: Induction
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1839 offers / 0 full comparisons / 0,00 ms / 33 cache hits
+PASS: Fitted Shop navigates to the matching Build section: Induction
+PASS: Fitted Shop uses default filters plus only the clicked part type: Induction
+PASS: Only fitting, stocked parts of that type are displayed: Induction
+PASS: Shop shortcut preserves current car and reserved purchases: Induction
+PASS: Fitted Shop button fits beside its component type: Clutch
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1839 offers / 0 full comparisons / 0,00 ms / 37 cache hits
+PASS: Fitted Shop navigates to the matching Build section: Clutch
+PASS: Fitted Shop uses default filters plus only the clicked part type: Clutch
+PASS: Only fitting, stocked parts of that type are displayed: Clutch
+PASS: Shop shortcut preserves current car and reserved purchases: Clutch
+PASS: Fitted Shop button fits beside its component type: Wheels
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1839 offers / 0 full comparisons / 0,00 ms / 41 cache hits
+PASS: Fitted Shop navigates to the matching Build section: Wheels
+PASS: Fitted Shop uses default filters plus only the clicked part type: Wheels
+PASS: Only fitting, stocked parts of that type are displayed: Wheels
+PASS: Shop shortcut preserves current car and reserved purchases: Wheels
+PASS: Fitted Shop button fits beside its component type: Body
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1839 offers / 0 full comparisons / 0,00 ms / 45 cache hits
+PASS: Fitted Shop navigates to the matching Build section: Body
+PASS: Fitted Shop uses default filters plus only the clicked part type: Body
+PASS: Only fitting, stocked parts of that type are displayed: Body
+PASS: Shop shortcut preserves current car and reserved purchases: Body
+PASS: Fitted Shop exercises multiple component systems / sections
+PASS: The selected part type is visible in Advanced on opening filters
+PASS: Ordinary main navigation clears the contextual part-type filter
+PASS: Fitted Shop does not buy, install, switch cars, inspect, reroll stock or save
+PASS: Maintenance summary uses actual remaining tire life and matching severity / 0,8
+PASS: Maintenance summary uses actual remaining tire life and matching severity / 1
+PASS: Temporary tire-maintenance inspection fixtures do not save or change player assets
+Checks: 111 / runtime errors: 0

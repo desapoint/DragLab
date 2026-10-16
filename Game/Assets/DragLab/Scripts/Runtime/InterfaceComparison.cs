@@ -7,7 +7,7 @@ namespace DragLab.Runtime
     // Presentation only. Session preferences never enter a player save or test config.
     internal sealed class InterfaceComparison
     {
-        static readonly HashSet<string> replacementRoutes = new HashSet<string>();
+        static readonly HashSet<string> replacementRoutes = new HashSet<string> { "Garage", "Settings", "Parts", "Tuning", "Race setup", "Business", "Stats" };
         bool shortcutHeld;
         GUIStyle badgeStyle, emptyStyle;
         internal static bool IsReplacement(string route) => replacementRoutes.Contains(route);

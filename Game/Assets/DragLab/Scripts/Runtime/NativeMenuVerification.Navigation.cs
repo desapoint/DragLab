@@ -15,7 +15,11 @@ namespace DragLab.Runtime
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
         IEnumerator NavigationDefaultsChecks(WindowsKeyboardProbe input)
         {
-            if(!shell.Visible)yield return Key(input,0x77);
+            Check(shell.Visible&&game.ScreenName=="Garage","New Garage is the startup default with an owned car, without pressing F8");
+            Check(new[]{"Garage","Settings","Parts","Tuning","Race setup","Business","Stats"}.All(InterfaceComparison.IsReplacement),"All native menu routes initially select the new presentation");
+            string initial=JsonUtility.ToJson(game.Profile);byte[] initialDisk=File.ReadAllBytes(ProfileStore.FilePath);
+            yield return Key(input,0x77);Check(!shell.Visible&&!InterfaceComparison.IsReplacement("Garage"),"F8 switches the default new Garage to the old interface");
+            yield return Key(input,0x77);Check(shell.Visible&&InterfaceComparison.IsReplacement("Garage")&&initial==JsonUtility.ToJson(game.Profile)&&initialDisk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"F8 returns to the new interface without changing the save");
             yield return Click(input,"navGarage");
             string state=JsonUtility.ToJson(game.Profile);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);
             string car=game.Profile.SelectedCar.instanceId;
