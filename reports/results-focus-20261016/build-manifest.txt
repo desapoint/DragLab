@@ -1,0 +1,5 @@
+Concise results/focus Windows build / native 170 checks / 0 runtime errors
+DragLab.exe SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+DragLab_Data/Managed/Assembly-CSharp.dll SHA256 5b71ad62b8dd627b0a07c6419038968c402324192c09aca3297734e80bce5e2a
+DragLab_Data/resources.assets SHA256 0c07e6e00f0175722a9c234faba365659dfda94b1720e60d283061053045c818
+DragLab_Data/globalgamemanagers SHA256 242de9dbe32eaa5b8eafb5becb9f5cd3f4198701af452f3b2fd256ca11cef331

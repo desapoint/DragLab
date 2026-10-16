@@ -55,7 +55,7 @@ namespace DragLab.Runtime
             int width=panel.targetTexture==null?Screen.width:panel.targetTexture.width,height=panel.targetTexture==null?Screen.height:panel.targetTexture.height;
             panel.scale=NativeMenuShell.DisplayScale(width,height);root.EnableInClassList("compact",width/panel.scale<1150||height/panel.scale<700);
             if(bound!=game.Race){bound=game.Race;BuildSlip();}
-            if(note.text!=game.ResultNotice){note.text=game.ResultNotice;comparison.text=game.ResultComparison;comparison.EnableInClassList("hidden",string.IsNullOrEmpty(comparison.text));}
+            if(note.text!=game.ResultNotice){note.text=game.ResultNotice;note.EnableInClassList("hidden",string.IsNullOrEmpty(note.text));comparison.text=game.ResultComparison;comparison.EnableInClassList("hidden",string.IsNullOrEmpty(comparison.text));}
             repairs.EnableInClassList("hidden",!bound.player.mechanics.parts.Exists(PrototypeGame.PartFailedForResults));
         }
         void BuildSlip()
@@ -70,7 +70,7 @@ namespace DragLab.Runtime
             Row("Finish · "+DisplayUnits.SpeedLabel(SharedUnitSettings.Current.speed),bound.player.state.finished?DisplayUnits.Speed(bound.player.state.trapSpeed/3.6,SharedUnitSettings.Current.speed).ToString("F1"):"—",bound.opponent.state.finished?DisplayUnits.Speed(bound.opponent.state.trapSpeed/3.6,SharedUnitSettings.Current.speed).ToString("F1"):"—");
             foreach(var split in bound.player.state.splits)
                 Row(split.Key.ToString("F1")+" m",split.Value.ToString("F3"),bound.opponent.state.splits.TryGetValue(split.Key,out double other)?other.ToString("F3"):"—");
-            note=new Label(game.ResultNotice){name="slipNotice"};note.AddToClassList("slip-note");scroll.Add(note);
+            note=new Label(game.ResultNotice){name="slipNotice"};note.AddToClassList("slip-note");note.EnableInClassList("hidden",string.IsNullOrEmpty(note.text));scroll.Add(note);
             var details=new Foldout{text="Run details",value=false,name="resultDetails"};details.focusable=false;scroll.Add(details);
             comparison=new Label(game.ResultComparison);comparison.AddToClassList("slip-note");comparison.EnableInClassList("hidden",string.IsNullOrEmpty(comparison.text));details.Add(comparison);
             var analysis=new Label(bound.telemetry.Analysis(bound.player));analysis.AddToClassList("slip-note");details.Add(analysis);

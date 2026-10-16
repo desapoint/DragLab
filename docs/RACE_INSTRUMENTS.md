@@ -60,3 +60,5 @@ Technical completion and user visual acceptance remain separate. Do not advance 
 Raise the start-light housing above its previous edge anchor and add a shaded vertical pole whose foot stays on that exact projected ground point. Pole and housing move together; overlap the joint slightly and keep the assembly behind cars. [Checks/review](../reports/phases/4l/07-LIGHT-POLE.md).
 
 Finish-board digit refinement (2026-10-16): keep visible gaps between the seven beveled bars, including the middle joins, and smooth segment edges with a thin local transparent fringe. The decimal remains the eighth lit element. This does not change recorded values, lane posting, billboard location or shutdown policy.
+
+Results cleanup (2026-10-16): do not print redundant outcome/save-success status on the paper. Keep actionable save/checkpoint failures and explicit export feedback visible. Losing application focus or receiving an application pause callback must not open a pause dialog after the race has finished. Persist the live shutdown boundary on interruption; active races still pause and the player can still explicitly open pause/settings from results.

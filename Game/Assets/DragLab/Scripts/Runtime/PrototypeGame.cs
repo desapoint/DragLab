@@ -290,7 +290,7 @@ namespace DragLab.Runtime
             PlayerProfile next;string error;
             if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{var old=p.runCheckpoints.Find(r=>r.runId==liveRunId);if(old==null||old.tick<liveRunTick)MechanicsTransactions.ApplyCheckpoint(p,checkpoint);CareerProgression.Settle(p,liveRunId,race);},ProfileStore.TrySave,out next,out error)){notice="Result save failed; retry retained. "+error;return;}
             profile=next;settings=profile.driving;awarded=true;savedRunTick=liveRunTick;savedRunFailures=RunPersistence.FailureCount(race.player);finishedPass=Build.lastPass;
-            var result=profile.careerRuns.Find(r=>r.runId==liveRunId);notice=result.outcome+(practiceRun?" / Practice / no payout":" / reward and resources saved once");
+            notice="";
         }
         void SetPaused(bool value)
         {
@@ -301,7 +301,12 @@ namespace DragLab.Runtime
             if (opponentAudio != null) opponentAudio.Silence();
             if(value&&profile!=null&&race!=null)SyncRaceWear();
         }
-        void OnApplicationFocus(bool focused) { if (!focused) interfaceComparison.ReleaseShortcut(); if (!focused && screen == "Race" && !RuntimeVerification.Active) SetPaused(true); }
+        internal void HandleApplicationInterruption()
+        {
+            if(screen!="Race"||race==null)return;
+            if(race.phase==RacePhase.Finished)SyncRaceWear();else SetPaused(true);
+        }
+        void OnApplicationFocus(bool focused) { if (!focused) interfaceComparison.ReleaseShortcut(); if (!focused && !RuntimeVerification.Active) HandleApplicationInterruption(); }
         void SaveLiveRunIfDue()
         {
             if(liveRunClosed)return;
@@ -328,7 +333,7 @@ namespace DragLab.Runtime
             if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{MechanicsTransactions.ApplyCheckpoint(p,checkpoint);if(close)CareerProgression.Interrupted(p,liveRunId);},ProfileStore.TrySave,out next,out error)){notice="Run save failed; live state retained. "+error;return false;}
             profile=next;settings=profile.driving;savedRunTick=liveRunTick;savedRunFailures=RunPersistence.FailureCount(race.player);liveRunClosed=close;return true;
         }
-        void OnApplicationPause(bool pause) { if (pause)SetPaused(true); }
+        void OnApplicationPause(bool pause) { if (pause)HandleApplicationInterruption(); }
         void OnApplicationQuit() { if (profile != null) { SyncRaceWear(true,"Quit");PersistNativeCartReservation();if(drivingPreferencesDirty)ProfileStore.TrySavePreferences(profile,out _);ProfileStore.Save(profile);ProfileStore.Flush(); } }
 
         internal string AuditMouseEvents = "";

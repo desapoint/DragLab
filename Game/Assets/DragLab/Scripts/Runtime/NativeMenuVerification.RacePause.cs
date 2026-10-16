@@ -17,6 +17,9 @@ namespace DragLab.Runtime
             game.ReturnToGarage();game.Profile.driving.launch=LaunchMode.Assisted;game.Profile.driving.throttleAssist=false;
             game.StartPractice();yield return new WaitForSecondsRealtime(.2f);
             var race=game.Race;var hud=game.RaceHud;
+            game.HandleApplicationInterruption();yield return null;
+            Check(game.NativeRacePause&&shell.ModalOpen,"Application interruption still pauses an unfinished race");
+            yield return Click(input,"dialogResume");
             var pauseSurface=hud.Root.Q("racePause").Q<RacingSurface>();
             Check(pauseSurface.PaintCount>0&&pauseSurface.contentRect.width>30&&pauseSurface.contentRect.height>20,"Pause icon renders the shared shaded button surface rather than a default unstyled button");
             yield return Click(input,hud.Root.Q("racePause"));

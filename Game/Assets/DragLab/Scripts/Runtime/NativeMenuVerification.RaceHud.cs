@@ -228,6 +228,11 @@ namespace DragLab.Runtime
             game.verificationInput=null;yield return null;
             Check(game.ComparisonRoute=="Results"&&!hud.Visible&&game.Race.player.state.finished,"Finishing a real authoritative pass hides instruments and preserves the existing results workflow");
             Check(playerFinishedShot&&game.Results.Visible&&strip.Billboard.Player.Finished&&strip.Billboard.Opponent.Finished,"Both finish beams publish independently before the native timing slip opens");
+            Check(string.IsNullOrEmpty(game.ResultNotice)&&game.Results.Root.Q("slipNotice").ClassListContains("hidden"),"Successful results omit redundant outcome/save-status text and its empty row");
+            var focusRace=game.Race;double focusElapsed=focusRace.player.state.elapsed;int focusCash=game.Profile.cash;
+            game.HandleApplicationInterruption();game.SendMessage("OnApplicationPause",true);yield return null;
+            Check(!game.NativeRacePause&&game.Results.Visible&&game.Race==focusRace&&game.ComparisonRoute=="Results","Focus and application interruptions do not open pause over finished results");
+            Check(game.Race.player.state.elapsed==focusElapsed&&game.Profile.cash==focusCash,"Finished interruption preserves frozen timing and cannot award twice");
             Check(strip.Billboard.Player.Elapsed==game.Race.player.state.elapsed.ToString("00.000",System.Globalization.CultureInfo.InvariantCulture)&&strip.Billboard.Opponent.Reaction==game.Race.opponent.state.reaction.ToString("0.000",System.Globalization.CultureInfo.InvariantCulture).PadLeft(6),"Eight-segment board uses the two frozen authoritative ET/RT readings");
             Check(game.Results.Root.Q("timingSlip").worldBound.xMax<=Screen.width+1&&game.Results.Root.Q("resultAgain").worldBound.yMax<=Screen.height+1,"Paper slip and shared result actions fit the viewport");
             yield return Capture("race-gauges-results");
@@ -268,12 +273,23 @@ namespace DragLab.Runtime
             game.Profile.driving.shifting=ShiftMode.Automatic;game.Profile.driving.launch=LaunchMode.Automatic;
             int retryCash=game.Profile.cash;game.StartPractice();game.verificationInput=()=>new DriverInput{throttle=1};
             Check(game.Race!=null,"Result action fixture stages the real car / "+game.ResultNotice);
-            float retryDeadline=Time.realtimeSinceStartup+65;while(game.Race.phase!=RacePhase.Finished&&Time.realtimeSinceStartup<retryDeadline)yield return null;
-            game.verificationInput=null;yield return null;Check(game.Results.Visible,"A second actual pass opens the reusable paper results");
+            float retryDeadline=Time.realtimeSinceStartup+65;
+            SqliteStateStore.FailureInjection=stage=>{if(stage=="before-commit"&&game.Race?.phase==RacePhase.Finished)throw new IOException("Isolated result-save failure");};
+            try{
+                while(game.Race.phase!=RacePhase.Finished&&Time.realtimeSinceStartup<retryDeadline)yield return null;
+                yield return null;
+                Check(game.Results.Visible&&game.ResultNotice.StartsWith("Result save failed")&&!game.Results.Root.Q("slipNotice").ClassListContains("hidden"),"Actual failed result save stays visible on the slip with retry retained");
+                yield return Capture("race-result-save-error");
+            }finally{SqliteStateStore.FailureInjection=null;}
+            game.verificationInput=null;float settlementDeadline=Time.realtimeSinceStartup+3;
+            while(!string.IsNullOrEmpty(game.ResultNotice)&&Time.realtimeSinceStartup<settlementDeadline)yield return null;
+            yield return new WaitForEndOfFrame();Check(game.Results.Visible,"A second actual pass opens the reusable paper results");
+            Check(string.IsNullOrEmpty(game.ResultNotice)&&game.Results.Root.Q("slipNotice").ClassListContains("hidden"),"Successful settlement retry clears the actionable error without adding a success message / notice="+game.ResultNotice+" / storage="+ProfileStore.Status+" / hidden="+game.Results.Root.Q("slipNotice").ClassListContains("hidden"));
             var retryRace=game.Race;var extra=game.Results.Root.Q<Foldout>("resultDetails");extra.value=true;yield return null;
             var export=game.Results.Root.Q("resultExport");game.Results.Root.Q<ScrollView>("timingSlipScroll").ScrollTo(export);yield return new WaitForSecondsRealtime(.15f);yield return Click(input,export);
             string csv=Path.Combine(Path.GetDirectoryName(ProfileStore.FilePath),"last-run.csv");
             Check(File.Exists(csv)&&File.ReadAllText(csv)==retryRace.telemetry.Csv(),"Paper telemetry action exports the exact authoritative trace");
+            yield return new WaitForEndOfFrame();Check(!game.Results.Root.Q("slipNotice").ClassListContains("hidden")&&game.ResultNotice.StartsWith("Exported:"),"Explicit telemetry export feedback remains visible");
             yield return Click(input,game.Results.Root.Q("resultAgain"));
             report.AppendLine("MEASURE: retry changed="+(game.Race!=retryRace)+" / phase="+game.Race?.phase+" / visible="+game.Results.Visible+" / note="+game.ResultNotice);
             yield return Capture("race-paper-retry-outcome");
