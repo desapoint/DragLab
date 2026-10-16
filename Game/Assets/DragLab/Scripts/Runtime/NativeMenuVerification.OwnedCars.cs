@@ -30,6 +30,13 @@ namespace DragLab.Runtime
                     shell.Root.Q<ScrollView>("ownedCars").ScrollTo(shell.Root.Q("ownedCar:"+car.instanceId));yield return new WaitForSecondsRealtime(.15f);yield return Click(input,"ownedCar:"+car.instanceId);
                     var button=shell.Root.Q<Button>("ownedFittedParts");
                     Check(button!=null&&button.Q<FilledMenuIcon>()!=null&&!button.focusable&&button.tabIndex==-1,"Owned details expose the shared fitted-parts action: "+car.instanceId);
+                    if(car==cars[0])foreach(int width in new[]{1024,1280}){
+                        Screen.SetResolution(width,720,false);yield return new WaitForSecondsRealtime(.4f);
+                        var stats=shell.Root.Q("ownedStatsToggle").worldBound;var parts=button.worldBound;var warnings=shell.Root.Q("ownedDetailWarnings").worldBound;var history=shell.Root.Q("ownedHistory");
+                        Check(Math.Abs(stats.yMin-parts.yMin)<1&&Math.Abs(parts.xMin-stats.xMax-10)<1&&Math.Abs(warnings.yMin-stats.yMax-10)<1&&parts.xMax<=button.parent.worldBound.xMax+1,"Owned actions use aligned rows and consistent ten-point spacing at "+width);
+                        Check(history!=null&&Math.Abs(history.worldBound.yMin-warnings.yMin)<1&&Math.Abs(history.worldBound.xMin-warnings.xMax-10)<1&&history.worldBound.xMax<=history.parent.worldBound.xMax+1,"Warnings and History share the second row without overflow at "+width);
+                        yield return Capture("owned-action-rows-"+width);
+                    }
                     shell.Root.Q<ScrollView>("ownedDetailScroll").ScrollTo(button);yield return new WaitForSecondsRealtime(.15f);yield return Capture("owned-fitted-details-"+Array.IndexOf(cars,car));yield return Click(input,button);
                     var list=shell.Root.Q("fittedPartsList");var rows=list.Query(className:"fitted-part").ToList();
                     Check(rows.Select(r=>r.name.Substring("fittedPart:".Length)).ToHashSet().SetEquals(car.installed.slots.Select(s=>s.partInstanceId)),"Owned fitted dialog shows only the viewed car's actual installed identities, including detached-engine state");

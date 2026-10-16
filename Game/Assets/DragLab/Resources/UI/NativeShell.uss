@@ -209,6 +209,9 @@
 
 .car-stats-button { align-self: flex-start; margin-left: 0; margin-top: 10px; min-width: 100px; padding: 0 12px; }
 .car-stats-button .filled-icon { width: 16px; height: 16px; margin-right: 8px; }
+.car-detail-actions { flex-direction: row; margin-top: 10px; flex-shrink: 0; }
+.car-detail-actions .car-stats-button { min-width: 0; margin: 0; padding: 0 8px; }
+.car-detail-actions .car-detail-action-last { margin-left: 10px; }
 .native-stats { margin-top: 20px; flex-shrink: 0; }
 .stat-filter { align-self: flex-start; margin-left: 0; margin-bottom: 8px; }
 .stat-group { border-radius: 8px; overflow: hidden; padding: 8px 12px; }
@@ -265,7 +268,6 @@
 .dealer-specs { margin-top: 20px; max-width: 720px; }
 .dealer-specs .car-fact { min-height: 34px; border-bottom-width: 1px; border-bottom-color: rgba(138,148,157,0.13); }
 .dealer-specs .car-fact-label { min-width: 180px; }
-.fitted-parts-button { margin-bottom: 8px; }
 .fitted-parts-list > .stat-group { margin-bottom: 10px; }
 .fitted-part { padding: 8px 0; border-bottom-width: 1px; border-bottom-color: rgba(138,148,157,0.13); }
 .fitted-part .car-fact-label { flex-grow: 1; flex-shrink: 1; flex-basis: 65%; margin-right: 12px; }

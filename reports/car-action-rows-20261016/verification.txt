@@ -1,0 +1,52 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Dealership Fitted parts sits beside Stats with the same compact ten-point spacing as owned cars
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Fitted values reflect actual member condition and failures instead of a neutral tire wrapper
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Each fitted part has a shared Shop action, available after an owned car is selected
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Owned details expose the shared fitted-parts action: vehicle-62ac5c10bb854e4d84c601f89b3110df
+PASS: Owned actions use aligned rows and consistent ten-point spacing at 1024
+PASS: Warnings and History share the second row without overflow at 1024
+PASS: Owned actions use aligned rows and consistent ten-point spacing at 1280
+PASS: Warnings and History share the second row without overflow at 1280
+PASS: Owned fitted dialog shows only the viewed car's actual installed identities, including detached-engine state
+PASS: Owned fitted rows reuse the shared component-system groups
+PASS: Dialog content clears fixed X/title and actions: owned fitted parts
+PASS: Owned fitted row displays actual remaining tire condition
+PASS: Viewing owned fitted parts and Shop never switches cars, buys, installs or saves
+PASS: Owned details expose the shared fitted-parts action: vehicle-6b7a7c9715d64f67ae2dbd1782747ff6
+PASS: Owned fitted dialog shows only the viewed car's actual installed identities, including detached-engine state
+PASS: Owned fitted rows reuse the shared component-system groups
+PASS: Dialog content clears fixed X/title and actions: owned fitted parts
+PASS: Owned fitted row displays actual remaining tire condition
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1837 offers / 0 full comparisons / 0,00 ms / 0 cache hits
+PASS: Owned fitted Shop uses the same default filters plus component type
+PASS: Viewing owned fitted parts and Shop never switches cars, buys, installs or saves
+PASS: Owned details expose the shared fitted-parts action: vehicle-7779d7889d414e8697e4de8684cd1dd4
+PASS: Owned fitted dialog shows only the viewed car's actual installed identities, including detached-engine state
+PASS: Owned fitted rows reuse the shared component-system groups
+PASS: Dialog content clears fixed X/title and actions: owned fitted parts
+PASS: Owned fitted row displays actual remaining tire condition
+PASS: Viewing owned fitted parts and Shop never switches cars, buys, installs or saves
+Checks: 49 / runtime errors: 0

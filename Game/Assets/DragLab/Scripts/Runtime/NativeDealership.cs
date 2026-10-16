@@ -209,13 +209,16 @@ namespace DragLab.Runtime
             var visual=new VisualElement();visual.AddToClassList("car-visual");body.Add(visual);if(model.Stats!=null)visual.Add(CarPreview(model.Exterior,model.Offer.paint));body.Add(DealerSummary(model));
             if(comparing)ComparisonSummary(body.Q(className:"car-summary"),selected,model.Stats,model.Entry,model.Offer.reportedCondition);
             if(model.Stats!=null){var dyno=new VisualElement();dyno.AddToClassList("car-dyno");body.Add(dyno);dyno.Add(comparing?ComparisonDyno(selected,model.Stats,"dealerDynoPlot",model.Known?"Viewed":"Estimated"):new NativeDynoPanel(new[] {new NativeDynoSeries("Current",model.Known?"Current":"Estimated",model.Stats,NativeDynoStyle.Primary),new NativeDynoSeries("NoWear","No wear",model.Healthy,NativeDynoStyle.Reference)},dealerTorque,"dealerDynoPlot"));
-                if(model.Known)BuildInspectionStats(body,dealerContent,model.Stats,comparing?selected:null,model.Offer.listingId,"dealerStatsToggle","dealerCarStats",dealerStatsShown,dealerStatsCollapsed,DecorateDealerStats,()=>DealerDriving(model),()=>OwnedDriving(game.Profile.SelectedCar));
+                if(model.Known){
+                    BuildInspectionStats(body,dealerContent,model.Stats,comparing?selected:null,model.Offer.listingId,"dealerStatsToggle","dealerCarStats",dealerStatsShown,dealerStatsCollapsed,DecorateDealerStats,()=>DealerDriving(model),()=>OwnedDriving(game.Profile.SelectedCar));
+                    var summary=body.Q(className:"car-summary");var actions=new VisualElement{name="dealerPrimaryActions"};actions.AddToClassList("car-detail-actions");summary.Add(actions);actions.Add(summary.Q<Button>("dealerStatsToggle"));
+                    var partsInfo=new Button(()=>OpenFittedParts(model)){name="dealerFittedParts",text="Fitted parts",tabIndex=-1,focusable=false};
+                    partsInfo.AddToClassList("action-button");partsInfo.AddToClassList("car-stats-button");partsInfo.AddToClassList("fitted-parts-button");partsInfo.AddToClassList("car-detail-action-last");partsInfo.Add(new FilledMenuIcon("Build"));actions.Add(partsInfo);DecorateDealerStats(partsInfo,RacingSurface.Kind.SecondaryAction);
+                }
                 var specs=new VisualElement();specs.AddToClassList("dealer-specs");dealerContent.Add(specs);var spec=model.Stats.source.build.spec;
                 CarFact(specs,"Engine",spec.DisplacementLitres.ToString("F1")+" L · "+spec.sound.cylinders+" cylinders · "+model.Stats.fueling);
                 CarFact(specs,"Induction",model.Entry.Induction);if(model.Known){CarFact(specs,"Fuel included",model.Stats.source.startingFuel.litres.ToString("F1")+" L");
                 CarFact(specs,"Oil / coolant included",model.Stats.source.startingFluids.oilLitres.ToString("F1")+" / "+model.Stats.source.startingFluids.coolantLitres.ToString("F1")+" L");
-                var partsInfo=new Button(()=>OpenFittedParts(model)){name="dealerFittedParts",text="Fitted parts",tabIndex=-1,focusable=false};
-                partsInfo.AddToClassList("action-button");partsInfo.AddToClassList("car-stats-button");partsInfo.AddToClassList("fitted-parts-button");partsInfo.Add(new FilledMenuIcon("Build"));specs.Add(partsInfo);DecorateDealerStats(partsInfo,RacingSurface.Kind.SecondaryAction);
                 if(model.Offer.historyNotes.Count>0)CarFact(specs,"History",string.Join(" · ",model.Offer.historyNotes));}
                 CarFact(specs,"Estimated ¼ mile",DealerEstimate(model));specs.Children().Last().Q<Label>(className:"car-fact-value").name="dealerQuarterEstimate";
                 if(model.Known)foreach(var warning in model.Stats.warnings){var label=new Label(warning.title+" · "+warning.suggestion);label.AddToClassList("car-reason");dealerContent.Add(label);}

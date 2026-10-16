@@ -235,11 +235,14 @@ namespace DragLab.Runtime
             if(comparing)ComparisonSummary(body.Q(className:"car-summary"),selected,InspectOwned(car).Stats,ownedEntries[car.instanceId]);
             body.Add(OwnedCarDyno(car,comparing?selected:null));
             BuildOwnedStats(body,car,comparing?selected:null);
+            var summary=body.Q(className:"car-summary");
+            var primaryActions=new VisualElement{name="ownedPrimaryActions"};primaryActions.AddToClassList("car-detail-actions");summary.Add(primaryActions);primaryActions.Add(summary.Q<Button>("ownedStatsToggle"));
             var fitted=new Button(()=>OpenFittedParts(car.installed.slots.Select(slot=>profile.parts.Single(part=>part.instanceId==slot.partInstanceId)),profile.catalog)){name="ownedFittedParts",text="Fitted parts",tabIndex=-1,focusable=false};
-            fitted.AddToClassList("action-button");fitted.AddToClassList("car-stats-button");fitted.AddToClassList("fitted-parts-button");fitted.Add(new FilledMenuIcon("Build"));body.Q(className:"car-summary").Add(fitted);DecorateOwnedStats(fitted,RacingSurface.Kind.SecondaryAction);
-            WarningButton(body.Q(className:"car-summary"),"ownedDetailWarnings",CurrentOwnedWarnings(car),()=>OpenOwnedWarnings(car.instanceId),DecorateOwnedStats);
+            fitted.AddToClassList("action-button");fitted.AddToClassList("car-stats-button");fitted.AddToClassList("fitted-parts-button");fitted.AddToClassList("car-detail-action-last");fitted.Add(new FilledMenuIcon("Build"));primaryActions.Add(fitted);DecorateOwnedStats(fitted,RacingSurface.Kind.SecondaryAction);
+            var secondaryActions=new VisualElement{name="ownedSecondaryActions"};secondaryActions.AddToClassList("car-detail-actions");summary.Add(secondaryActions);
+            WarningButton(secondaryActions,"ownedDetailWarnings",CurrentOwnedWarnings(car),()=>OpenOwnedWarnings(car.instanceId),DecorateOwnedStats);
             BuildOwnedMaintenance(car);
-            if(car.usedHistory.Count>0){var history=new Button(()=>OpenDialog("Previous history",string.Join("\n",car.usedHistory),new[]{new DialogAction("Close",CloseDialog)})){name="ownedHistory",text="History",tabIndex=-1,focusable=false};history.AddToClassList("action-button");history.AddToClassList("car-stats-button");history.Add(new FilledMenuIcon("Data"));body.Q(className:"car-summary").Add(history);DecorateOwnedStats(history,RacingSurface.Kind.SecondaryAction);}
+            if(car.usedHistory.Count>0){var history=new Button(()=>OpenDialog("Previous history",string.Join("\n",car.usedHistory),new[]{new DialogAction("Close",CloseDialog)})){name="ownedHistory",text="History",tabIndex=-1,focusable=false};history.AddToClassList("action-button");history.AddToClassList("car-stats-button");history.AddToClassList("car-detail-action-last");history.Add(new FilledMenuIcon("Data"));secondaryActions.Add(history);DecorateOwnedStats(history,RacingSurface.Kind.SecondaryAction);}
             ownedUse.SetEnabled(!current); ownedUse.tooltip = current ? "Already the current car" : "Use this owned car";
             ExcludeTabTraversal();
         }

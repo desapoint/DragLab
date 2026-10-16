@@ -16,7 +16,8 @@ namespace DragLab.Runtime
         IEnumerator FittedPartsChecks(WindowsKeyboardProbe input,VehicleOffer offer,string capture)
         {
             var control=shell.Root.Q<Button>("dealerFittedParts");
-            Check(control.worldBound.width<200&&control.worldBound.width<control.parent.worldBound.width*.5f&&Math.Abs(control.worldBound.x-control.parent.worldBound.x)<2,"Fitted parts is a compact left-aligned action rather than a full-width fact row");
+            var stats=shell.Root.Q("dealerStatsToggle");
+            Check(control.worldBound.width<200&&control.worldBound.xMax<=control.parent.worldBound.xMax+1&&Math.Abs(control.worldBound.yMin-stats.worldBound.yMin)<1&&Math.Abs(control.worldBound.xMin-stats.worldBound.xMax-10)<1,"Dealership Fitted parts sits beside Stats with the same compact ten-point spacing as owned cars");
             Check(control.Q<FilledMenuIcon>()!=null&&!control.focusable&&control.tabIndex==-1,"Fitted parts reuses the filled-icon button with no keyboard traversal");
             yield return Capture(capture+"-control");
             string before=JsonUtility.ToJson(game.Profile);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);
