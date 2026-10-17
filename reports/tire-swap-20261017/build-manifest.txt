@@ -1,0 +1,4 @@
+Windows development build / Unity 6000.6.4f1 / 2026-10-17
+Log: reports/unity-tire-swap-final-20261017.log
+Game/Builds/Windows/DragLab.exe | 667136 bytes | SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+Game/Builds/Windows/DragLab_Data/Managed/Assembly-CSharp.dll | 2788352 bytes | SHA256 e5a6390f696e0ce25277afd8de45a3822390ce8a83592688ff13d9d3270d84d6

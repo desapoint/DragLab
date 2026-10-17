@@ -42,6 +42,14 @@ namespace DragLab.Runtime
                 };
             });update();ExcludeTabTraversal();
         }
+        [Serializable] sealed class TireSwapGroupKey
+        {
+            public string definition,reason;
+            public float health,severity;
+            public double life;
+            public ElementFault fault;
+            public bool failed;
+        }
         void OpenTireInventorySwap()
         {
             var profile=game.Profile;
@@ -61,75 +69,77 @@ namespace DragLab.Runtime
             }
             long revision=profile.revision;
             string carId=car.instanceId;
-            var corners=new[]{"Front left","Front right","Rear left","Rear right"};
-            var labels=new System.Collections.Generic.List<string>{"Keep fitted tire"};
-            foreach(var tire in candidates){
-                var d=profile.catalog.Find(tire.definitionId);
-                var id=tire.element.id;
-                var health=Math.Min(tire.tire.health,Math.Max(0,1-tire.tire.consumedLife));
-                labels.Add((d==null?tire.definitionId:d.name)+" · "+health.ToString("P0")
-                    +" · "+(tire.tire.distanceM/1000).ToString("F1")+" km"
-                    +(tire.tire.Failed?" · FAILED":"")+" · "+SharedInventory.StorageOf(tire.storageId)
-                    +" · #"+id.Substring(Math.Max(0,id.Length-6)));
-            }
-            var positions=new DropdownField[4];
-            var feedback=new Label{name="tireSwapFeedback",enableRichText=false};
-            feedback.AddToClassList("car-critical");
-            Action refresh=null;
-            OpenDialog("Swap tires from inventory",null,new[]{
-                new DialogAction("Cancel",CloseDialog),
-                new DialogAction("Swap tires",()=>{
-                    if(profile.revision!=revision){feedback.text="Inventory changed. Reopen the tire swap.";return;}
-                    var assignments=new System.Collections.Generic.List<TireSwapAssignment>();
-                    for(int i=0;i<4;i++)if(positions[i].index>0)
-                        assignments.Add(new TireSwapAssignment(candidates[positions[i].index-1].element.id,i));
-                    try{
-                        if(game.CommitParts(revision,p=>InventoryUnits.SwapTires(p,carId,assignments))){
-                            CloseDialog();partsStateKey=null;cartPageKey=null;Refresh();
-                        }else feedback.text=game.NativeNotice;
-                    }catch(Exception e){feedback.text=e.Message;}
-                },true)
-            },populate:content=>{
-                content.Add(new Label("Choose the exact physical tires for each corner. All removed tires return to garage storage with their wear and identity intact."));
-                var presets=new VisualElement();presets.style.flexDirection=FlexDirection.Row;content.Add(presets);
-                foreach(string preset in new[]{"Front","Rear","All","Clear"}){
-                    string choice=preset;
-                    var button=new Button(()=>{
-                        var chosen=new System.Collections.Generic.HashSet<int>();
-                        for(int i=0;i<4;i++){
-                            bool target=choice=="All"||choice=="Front"&&i<2||choice=="Rear"&&i>=2;
-                            positions[i].index=0;
-                            if(choice=="Clear"||!target)continue;
-                            for(int n=0;n<candidates.Length;n++)
-                                if(chosen.Add(n)){positions[i].index=n+1;break;}
-                        }
+            // Only group equivalent specifications and wear; physical identities and history remain separate.
+            string GroupKey(LooseEngineElement unit)=>JsonUtility.ToJson(new TireSwapGroupKey{
+                definition=unit.definitionId,health=unit.tire.health,life=unit.tire.consumedLife,
+                fault=unit.tire.fault,severity=unit.tire.severity,failed=unit.tire.failed,reason=unit.tire.failureReason});
+            var groups=candidates.Select((unit,index)=>new{unit,index}).GroupBy(x=>GroupKey(x.unit)).Select(g=>g.Select(x=>x.index).ToArray()).ToArray();
+            var selected=Enumerable.Repeat(-1,4).ToArray();int groupIndex=-1;
+            var positionRows=new Button[4];var planned=new Label[4];
+            VisualElement stock=null,targets=null;Label chosen=null,feedback=null;Action refresh=null;
+            OpenDialog("Swap stored tires",null,new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Swap tires",()=>{
+                if(profile.revision!=revision){feedback.text="Inventory changed. Reopen the tire swap.";return;}
+                var assignments=selected.Select((unit,corner)=>new{unit,corner}).Where(x=>x.unit>=0)
+                    .Select(x=>new TireSwapAssignment(candidates[x.unit].element.id,x.corner)).ToArray();
+                try{
+                    if(game.CommitParts(revision,p=>InventoryUnits.SwapTires(p,carId,assignments))){CloseDialog();partsStateKey=null;cartPageKey=null;Refresh();}
+                    else feedback.text=game.NativeNotice;
+                }catch(Exception e){feedback.text=e.Message;}
+            },true)},populate:content=>{
+                stock=new VisualElement{name="tireSwapStock"};content.Add(stock);
+                for(int g=0;g<groups.Length;g++){
+                    int index=g;var units=groups[g];var tire=candidates[units[0]];var definition=profile.catalog.Find(tire.definitionId);
+                    var button=new Button(()=>{groupIndex=index;refresh();root.Q<ScrollView>("modalContent").scrollOffset=Vector2.zero;}){name="tireSwapStock:"+g,focusable=false,tabIndex=-1};
+                    button.AddToClassList("action-button");button.AddToClassList("part-position-choice");stock.Add(button);
+                    var heading=new VisualElement();heading.AddToClassList("position-heading");button.Add(heading);
+                    var title=new Label(definition.name){enableRichText=false,pickingMode=PickingMode.Ignore};title.AddToClassList("position-title");heading.Add(title);
+                    var count=new Label("× "+units.Length){pickingMode=PickingMode.Ignore};count.AddToClassList("position-wear");heading.Add(count);
+                    var condition=new Label((tire.tire.Failed?"Failed · ":"")+"Wear "+((1-TireDynamics.RemainingHealth(tire.tire))*100).ToString("0.#")+"%"){pickingMode=PickingMode.Ignore};
+                    condition.AddToClassList("position-spec");condition.AddToClassList(tire.tire.Failed?"car-critical":"car-ready");button.Add(condition);
+                    button.tooltip=string.Join("\n",units.Select(n=>InventoryLocation(SharedInventory.StorageOf(candidates[n].storageId))+" · "+(candidates[n].tire.distanceM/1000).ToString("0.#")+" km · #"+candidates[n].element.id));
+                    AddSurface(button,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(button.Q<RacingSurface>());
+                }
+                targets=new VisualElement{name="tireSwapTargets"};content.Add(targets);
+                var back=new Button(()=>{groupIndex=-1;refresh();root.Q<ScrollView>("modalContent").scrollOffset=Vector2.zero;}){name="tireSwapBack",focusable=false,tabIndex=-1};
+                back.AddToClassList("action-button");back.AddToClassList("car-stats-button");back.Add(new FilledMenuIcon("Back"));back.Add(new Label("Tires"){pickingMode=PickingMode.Ignore});targets.Add(back);AddSurface(back,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(back.Q<RacingSurface>());
+                chosen=new Label{name="tireSwapChosen",enableRichText=false};targets.Add(chosen);
+                var presets=new VisualElement();presets.AddToClassList("part-purchase-shortcuts");targets.Add(presets);
+                foreach(string option in new[]{"All","Front","Rear","Clear"}){
+                    string preset=option;var button=new Button(()=>{
+                        for(int n=0;n<selected.Length;n++)selected[n]=-1;int next=0;
+                        for(int i=0;i<4;i++)if(preset=="All"||preset=="Front"&&i<2||preset=="Rear"&&i>=2)selected[i]=groups[groupIndex][next++];
                         refresh();
-                    }){text=preset,name="tireSwapPreset:"+preset};
-                    button.AddToClassList("action-button");
-                    if(choice!="Clear")button.SetEnabled(candidates.Length>=(choice=="All"?4:2));
-                    presets.Add(button);
+                    }){text=preset,name="tireSwapPreset:"+preset,focusable=false,tabIndex=-1};
+                    button.AddToClassList("action-button");button.AddToClassList("part-selection-shortcut");presets.Add(button);AddSurface(button,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(button.Q<RacingSurface>());
                 }
                 for(int i=0;i<4;i++){
                     int corner=i;
-                    var row=new VisualElement();row.AddToClassList("setting-row");content.Add(row);
-                    var definition=profile.catalog.Find(TireFitments.DefinitionId(pack,i));
-                    row.Add(new Label(corners[i]+" · fitted "+(definition==null?pack.definitionId:definition.name)
-                        +" · "+Math.Min(pack.condition.tires[i].health,Math.Max(0,1-pack.condition.tires[i].consumedLife)).ToString("P0")));
-                    var dropdown=new DropdownField{ name="tireSwapCorner:"+i,choices=new System.Collections.Generic.List<string>(labels),index=0 };
-                    dropdown.RegisterValueChangedCallback(_=>refresh());
-                    positions[i]=dropdown;row.Add(dropdown);
+                    positionRows[i]=ReplacementPositionRow(targets,profile.catalog.Find(pack.definitionId),"tire:"+i,"tireSwapCorner:"+i,()=>{
+                        if(selected[corner]>=0&&groups[groupIndex].Contains(selected[corner]))selected[corner]=-1;
+                        else {int next=groups[groupIndex].Where(n=>!selected.Contains(n)).DefaultIfEmpty(-1).First();if(next>=0)selected[corner]=next;}
+                        refresh();
+                    });
+                    planned[i]=new Label{name="tireSwapPlanned:"+i,enableRichText=false,pickingMode=PickingMode.Ignore};planned[i].AddToClassList("position-spec");positionRows[i].Add(planned[i]);
                 }
-                content.Add(feedback);
+                feedback=new Label{name="tireSwapFeedback"};content.Add(feedback);
                 refresh=()=>{
-                    var selected=positions.Where(x=>x.index>0).Select(x=>candidates[x.index-1].element.id).ToArray();
-                    bool duplicate=selected.Distinct(StringComparer.Ordinal).Count()!=selected.Length;
-                    bool failed=positions.Any(x=>x.index>0&&candidates[x.index-1].tire.Failed);
-                    feedback.text=duplicate?"A physical tire cannot occupy two corners.":failed?"Warning: one selected tire is failed and may have severely reduced grip.":"";
-                    var submit=root.Q<Button>("dialogSwaptires");
-                    if(submit!=null)submit.SetEnabled(selected.Length>0&&!duplicate);
+                    stock.EnableInClassList("hidden",groupIndex>=0);targets.EnableInClassList("hidden",groupIndex<0);
+                    int count=selected.Count(n=>n>=0);bool failed=selected.Any(n=>n>=0&&candidates[n].tire.Failed);
+                    feedback.text=count+" / 4 replacements · Removed tires stay in storage"+(failed?"\nWarning: failed tire selected.":"");feedback.EnableInClassList("car-warning",failed);
+                    root.Q<Button>("dialogSwaptires").SetEnabled(count>0);
+                    if(groupIndex<0)return;
+                    var available=groups[groupIndex];var tire=candidates[available[0]];
+                    chosen.text=profile.catalog.Find(tire.definitionId).name+" · Wear "+((1-TireDynamics.RemainingHealth(tire.tire))*100).ToString("0.#")+"% · "+available.Length+" stored";
+                    foreach(string preset in new[]{"All","Front","Rear"}){var button=presets.Q<Button>("tireSwapPreset:"+preset);int needed=preset=="All"?4:2;button.SetEnabled(available.Length>=needed);button.tooltip=available.Length<needed?"Requires "+needed+" matching stored tires":"";}
+                    for(int i=0;i<4;i++){
+                        int n=selected[i];bool matching=n>=0&&available.Contains(n);
+                        positionRows[i].EnableInClassList("selected",n>=0);positionRows[i].SetEnabled(matching||available.Any(unit=>!selected.Contains(unit)));
+                        planned[i].text=n<0?"Keep fitted tire":"Replace with "+profile.catalog.Find(candidates[n].definitionId).name+" · Wear "+((1-TireDynamics.RemainingHealth(candidates[n].tire))*100).ToString("0.#")+"%";
+                        planned[i].tooltip=n<0?"":"#"+candidates[n].element.id;
+                    }
                 };
-                refresh();
             });
+            refresh();
             ExcludeTabTraversal();
         }
 

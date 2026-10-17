@@ -1,5 +1,7 @@
 # Prototype implementation status
 
+**Stored-tire selection (2026-10-17):** replaced dropdowns with a grouped tire picker and shared Purchase-style four-corner replacement cards. Matching specification/wear/fault entries show quantity without merging physical identities; stock-limited All/Front/Rear, individual/mixed-group drafts, Cancel and atomic confirmation are verified. Updated Windows build and packaged native input checks **57/0** pass at compact/default widths. [Checks/review](../reports/tire-swap-20261017/CHANGES.md). Visual acceptance remains pending; no later interface is advanced.
+
 **Native interface default (2026-10-16):** implemented native main menus now start in the new presentation, including Garage after loading an existing owned-car save. F8 still switches old/new without publishing player state. Updated Windows build and packaged navigation checks pass **111/0 fresh + 87/0 existing-save relaunch**. [Checks/review](../reports/native-default-20261016/CHANGES.md). Bench behavior and later UI phases are unchanged.
 
 **Car detail action rows (2026-10-16):** owned details group Stats + Fitted parts and Warnings + History into two evenly spaced rows. Dealership Fitted parts now sits beside Stats in the same summary position, preserving inspection disclosure. Updated Windows build and native **49/0** pass, including compact/default layout checks. [Checks/review](../reports/car-action-rows-20261016/CHANGES.md). No later UI step is advanced.

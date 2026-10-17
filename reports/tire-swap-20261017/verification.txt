@@ -1,0 +1,60 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Dealership Fitted parts sits beside Stats with the same compact ten-point spacing as owned cars
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Fitted values reflect actual member condition and failures instead of a neutral tire wrapper
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Each fitted part has a shared Shop action, available after an owned car is selected
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Requested part comparisons finish without a race probe / route Parts visible True
+Browser ready wait: 0,00 s / 1848 offers / 0 full comparisons / 0,00 ms / 0 cache hits
+PASS: Stored-tire flow starts with tire selection and has no dropdowns
+PASS: Identical specification and wear appears once with quantity four; different wear stays separate
+PASS: Four replacement cards and presets reuse the purchase flow surfaces
+PASS: Dialog content clears fixed X/title and actions: Tire swap 1024
+PASS: Dialog scrollbar uses the shared thin rail at a ten-point right inset: Tire swap 1024
+PASS: Replacement card uses the available dialog width / 1024 / 0
+PASS: Replacement card uses the available dialog width / 1024 / 1
+PASS: Replacement card uses the available dialog width / 1024 / 2
+PASS: Replacement card uses the available dialog width / 1024 / 3
+PASS: Front preset selects only the two front slots / 1024
+PASS: Dialog content clears fixed X/title and actions: Tire swap 1280
+PASS: Dialog scrollbar uses the shared thin rail at a ten-point right inset: Tire swap 1280
+PASS: Replacement card uses the available dialog width / 1280 / 0
+PASS: Replacement card uses the available dialog width / 1280 / 1
+PASS: Replacement card uses the available dialog width / 1280 / 2
+PASS: Replacement card uses the available dialog width / 1280 / 3
+PASS: Front preset selects only the two front slots / 1280
+PASS: Rear preset selects only the two rear slots
+PASS: All preset respects the four replacement slots
+PASS: Clear removes all draft replacements and disables confirmation
+PASS: One available tire cannot select multi-tire presets
+PASS: One stored tire fills one slot and cannot be duplicated
+PASS: Deselecting a slot releases its physical tire
+PASS: Different wear groups can be mixed in one four-slot draft
+PASS: Tab does not traverse replacement controls
+PASS: Selection, Back, presets and Cancel leave assets and saved bytes unchanged
+PASS: Confirmation completes the existing atomic tire swap
+PASS: Four distinct inventory identities reach the selected corners
+PASS: Removed tires retain identity, condition and lifetime history in storage
+PASS: Swap preserves incoming wear and unselected stock without charging a purchase
+PASS: Confirmed tire identities survive database reload
+Checks: 57 / runtime errors: 0

@@ -13,6 +13,47 @@ namespace DragLab.Runtime
     internal sealed partial class NativeMenuVerification
     {
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
+        IEnumerator TireSwapChecks(WindowsKeyboardProbe input)
+        {
+            var original=game.Profile;var field=typeof(PrototypeGame).GetField("profile",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var fixture=EngineWorkshop.Copy(original);fixture.cash=1000000;fixture.reputation=1000;var car=fixture.SelectedCar;var pack=fixture.parts.Single(p=>p.instanceId==car.installed.slots.First(s=>s.slot=="Tires").partInstanceId);
+            var units=new System.Collections.Generic.List<LooseEngineElement>();
+            for(int i=0;i<5;i++){var unit=InventoryUnits.Buy(fixture,car.instanceId,pack.definitionId,"tire");unit.tire.health=i<4?.8f:.4f;unit.tire.consumedLife=1-unit.tire.health;unit.tire.distanceM=1000*(i+1);units.Add(unit);}
+            var old=pack.condition.tires.Select(t=>t.Copy()).ToArray();string before=JsonUtility.ToJson(fixture);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);
+            try{
+                field.SetValue(game,fixture);game.settings=fixture.driving;game.QueueNativeNavigation("Parts",true);yield return new WaitForSecondsRealtime(.3f);yield return WaitParts();yield return Click(input,"partsTireSwap");
+                Check(shell.Root.Query<DropdownField>().ToList().Count==0&&shell.Root.Q("tireSwapTargets").ClassListContains("hidden"),"Stored-tire flow starts with tire selection and has no dropdowns");
+                Check(shell.Root.Q("tireSwapStock").Query<Button>().ToList().Count==2&&shell.Root.Q("tireSwapStock:0").Q<Label>(className:"position-wear").text=="× 4","Identical specification and wear appears once with quantity four; different wear stays separate");
+                yield return Capture("tire-swap-stock");yield return Click(input,"tireSwapStock:0");
+                Check(Enumerable.Range(0,4).All(i=>shell.Root.Q("tireSwapCorner:"+i).Q<RacingSurface>()!=null)&&shell.Root.Q("tireSwapPreset:Front").Q<RacingSurface>()!=null,"Four replacement cards and presets reuse the purchase flow surfaces");
+                foreach(int width in new[]{1024,1280}){
+                    Screen.SetResolution(width,720,false);yield return new WaitForSecondsRealtime(.4f);DialogScrollBounds("Tire swap "+width);
+                    foreach(int corner in Enumerable.Range(0,4)){var row=shell.Root.Q("tireSwapCorner:"+corner);Check(row.worldBound.width>row.parent.worldBound.width*.9,"Replacement card uses the available dialog width / "+width+" / "+corner);}
+                    shell.Root.Q<ScrollView>("modalContent").scrollOffset=Vector2.zero;yield return new WaitForSecondsRealtime(.1f);yield return Click(input,"tireSwapPreset:Front");
+                    Check(Enumerable.Range(0,4).All(i=>shell.Root.Q("tireSwapCorner:"+i).ClassListContains("selected")==(i<2)),"Front preset selects only the two front slots / "+width);
+                    yield return Capture("tire-swap-front-"+width);
+                }
+                yield return Click(input,"tireSwapPreset:Rear");Check(Enumerable.Range(0,4).All(i=>shell.Root.Q("tireSwapCorner:"+i).ClassListContains("selected")==(i>=2)),"Rear preset selects only the two rear slots");
+                yield return Click(input,"tireSwapPreset:All");Check(Enumerable.Range(0,4).All(i=>shell.Root.Q("tireSwapCorner:"+i).ClassListContains("selected")),"All preset respects the four replacement slots");
+                yield return Click(input,"tireSwapPreset:Clear");Check(!shell.Root.Q("dialogSwaptires").enabledSelf,"Clear removes all draft replacements and disables confirmation");
+                yield return Click(input,"tireSwapBack");yield return Click(input,"tireSwapStock:1");
+                Check(new[]{"All","Front","Rear"}.All(p=>!shell.Root.Q("tireSwapPreset:"+p).enabledSelf),"One available tire cannot select multi-tire presets");
+                yield return Click(input,"tireSwapCorner:0");Check(shell.Root.Q("tireSwapCorner:0").ClassListContains("selected")&&!shell.Root.Q("tireSwapCorner:1").enabledSelf,"One stored tire fills one slot and cannot be duplicated");
+                yield return Click(input,"tireSwapCorner:0");Check(shell.Root.Q("tireSwapCorner:1").enabledSelf&&!shell.Root.Q("dialogSwaptires").enabledSelf,"Deselecting a slot releases its physical tire");
+                yield return Click(input,"tireSwapCorner:1");yield return Click(input,"tireSwapBack");yield return Click(input,"tireSwapStock:0");yield return Click(input,"tireSwapCorner:2");
+                Check(shell.Root.Q("tireSwapCorner:1").ClassListContains("selected")&&shell.Root.Q("tireSwapCorner:2").ClassListContains("selected"),"Different wear groups can be mixed in one four-slot draft");
+                var focus=shell.Root.panel.focusController.focusedElement;yield return Key(input,0x09);Check(ReferenceEquals(focus,shell.Root.panel.focusController.focusedElement),"Tab does not traverse replacement controls");
+                yield return Capture("tire-swap-mixed");yield return Click(input,"dialogCancel");
+                Check(JsonUtility.ToJson(fixture)==before&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Selection, Back, presets and Cancel leave assets and saved bytes unchanged");
+                yield return Click(input,"partsTireSwap");yield return Click(input,"tireSwapStock:0");yield return Click(input,"tireSwapPreset:All");yield return Click(input,"dialogSwaptires");yield return new WaitForSecondsRealtime(.3f);
+                Check(!shell.ModalOpen&&game.Profile.SelectedCar.installed.slots.Single(s=>s.slot=="Tires").partInstanceId==pack.instanceId,"Confirmation completes the existing atomic tire swap");
+                var fitted=game.Profile.parts.Single(p=>p.instanceId==pack.instanceId).condition.tires;
+                Check(fitted.Select(t=>t.id).OrderBy(id=>id).SequenceEqual(units.Take(4).Select(u=>u.element.id).OrderBy(id=>id))&&fitted.Select(t=>t.id).Distinct().Count()==4,"Four distinct inventory identities reach the selected corners");
+                Check(old.All(t=>game.Profile.looseEngineElements.Any(u=>u.element.id==t.id&&JsonUtility.ToJson(u.tire)==JsonUtility.ToJson(t))),"Removed tires retain identity, condition and lifetime history in storage");
+                Check(game.Profile.cash==fixture.cash&&fitted.All(t=>Math.Abs(t.health-.8f)<.0001)&&game.Profile.looseEngineElements.Any(u=>u.element.id==units[4].element.id),"Swap preserves incoming wear and unselected stock without charging a purchase");
+                var loaded=ProfileStore.Load();Check(loaded.parts.Single(p=>p.instanceId==pack.instanceId).condition.tires.Select(t=>t.id).SequenceEqual(fitted.Select(t=>t.id)),"Confirmed tire identities survive database reload");
+            }finally{if(shell.ModalOpen)typeof(NativeMenuShell).GetMethod("CloseDialog",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(shell,null);field.SetValue(game,original);game.settings=original.driving;game.QueueNativeNavigation("Garage",true);Screen.SetResolution(1280,720,false);}
+        }
         IEnumerator NavigationDefaultsChecks(WindowsKeyboardProbe input)
         {
             Check(shell.Visible&&game.ScreenName=="Garage","New Garage is the startup default with an owned car, without pressing F8");
