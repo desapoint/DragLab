@@ -16,6 +16,11 @@ namespace DragLab.Runtime
         Label note, comparison;
         Button repairs,garage,again,export;
         long recordRevision=-1;
+        Label rivalTime,rivalReaction,rivalSpeed;
+        readonly Dictionary<double,Label> rivalSplits=new Dictionary<double,Label>();
+        bool rivalFinished,lanesFinished;
+        int rivalSplitCount;
+        double rivalReactionTime;
         RaceSimulation bound;
         readonly List<RacingSurface> surfaces=new List<RacingSurface>();
         internal bool Visible=>root!=null&&!root.ClassListContains("hidden");
@@ -57,6 +62,7 @@ namespace DragLab.Runtime
             panel.scale=NativeMenuShell.DisplayScale(width,height);root.EnableInClassList("compact",width/panel.scale<1150||height/panel.scale<700);
             garage.SetEnabled(!game.ResultSettlementPending);again.SetEnabled(!game.ResultSettlementPending);
             if(bound!=game.Race){bound=game.Race;BuildSlip();}
+            if(rivalFinished!=bound.opponent.state.finished||lanesFinished!=(bound.phase==RacePhase.Finished)||rivalSplitCount!=bound.opponent.state.splits.Count||rivalReactionTime!=bound.opponent.state.reaction)RefreshRivalTimes();
             if(note.text!=game.ResultNotice){note.text=game.ResultNotice;note.EnableInClassList("hidden",string.IsNullOrEmpty(note.text));comparison.text=game.ResultComparison;comparison.EnableInClassList("hidden",string.IsNullOrEmpty(comparison.text));}
             if(recordRevision!=game.Profile.revision){recordRevision=game.Profile.revision;comparison.text=game.ResultComparison;comparison.EnableInClassList("hidden",string.IsNullOrEmpty(comparison.text));}
             repairs.SetEnabled(!game.ResultSettlementPending);export.SetEnabled(!game.ResultSettlementPending);
@@ -64,30 +70,39 @@ namespace DragLab.Runtime
         }
         void BuildSlip()
         {
-            scroll.Clear();surfaces.RemoveAll(s=>s.panel==null);recordRevision=game.Profile.revision;
+            rivalSplits.Clear();scroll.Clear();surfaces.RemoveAll(s=>s.panel==null);recordRevision=game.Profile.revision;
             var title=new Label("DRAGLAB");title.AddToClassList("slip-brand");scroll.Add(title);
             var meta=new Label((game.IsPractice?"PRACTICE":"RACE")+"  /  "+bound.distance.ToString("F1")+" m");meta.AddToClassList("slip-meta");scroll.Add(meta);
-            var outcome=new Label(bound.player.state.disqualified?"RED LIGHT":bound.timedOut?"TIMEOUT":!bound.player.state.finished?"DNF":bound.playerWon?"WIN":"LOSS");outcome.name="slipOutcome";outcome.AddToClassList("slip-outcome");scroll.Add(outcome);
+            var outcome=new Label(bound.player.state.disqualified?"RED LIGHT":!bound.player.state.finished?(bound.timedOut?"TIMEOUT":"DNF"):bound.playerWon?"WIN":"LOSS");outcome.name="slipOutcome";outcome.AddToClassList("slip-outcome");scroll.Add(outcome);
             Row("","YOU","RIVAL",true);
-            Row("Elapsed · s",Time(bound.player.state),Time(bound.opponent.state));
-            Row("Reaction · s",Reaction(bound.player.state),Reaction(bound.opponent.state));
-            Row("Finish · "+DisplayUnits.SpeedLabel(SharedUnitSettings.Current.speed),bound.player.state.finished?DisplayUnits.Speed(bound.player.state.trapSpeed/3.6,SharedUnitSettings.Current.speed).ToString("F1"):"—",bound.opponent.state.finished?DisplayUnits.Speed(bound.opponent.state.trapSpeed/3.6,SharedUnitSettings.Current.speed).ToString("F1"):"—");
+            rivalTime=Row("Elapsed · s",Time(bound.player.state),Time(bound.opponent.state));
+            rivalTime.name="rivalElapsed";
+            rivalReaction=Row("Reaction · s",Reaction(bound.player.state),Reaction(bound.opponent.state));
+            rivalSpeed=Row("Finish · "+DisplayUnits.SpeedLabel(SharedUnitSettings.Current.speed),bound.player.state.finished?DisplayUnits.Speed(bound.player.state.trapSpeed/3.6,SharedUnitSettings.Current.speed).ToString("F1"):"—",bound.opponent.state.finished?DisplayUnits.Speed(bound.opponent.state.trapSpeed/3.6,SharedUnitSettings.Current.speed).ToString("F1"):"—");
             foreach(var split in bound.player.state.splits)
-                Row(split.Key.ToString("F1")+" m",split.Value.ToString("F3"),bound.opponent.state.splits.TryGetValue(split.Key,out double other)?other.ToString("F3"):"—");
+                rivalSplits[split.Key]=Row(split.Key.ToString("F1")+" m",split.Value.ToString("F3"),bound.opponent.state.splits.TryGetValue(split.Key,out double other)?other.ToString("F3"):"—");
             note=new Label(game.ResultNotice){name="slipNotice"};note.AddToClassList("slip-note");note.EnableInClassList("hidden",string.IsNullOrEmpty(note.text));scroll.Add(note);
             var details=new Foldout{text="Run details",value=false,name="resultDetails"};details.focusable=false;scroll.Add(details);
             comparison=new Label(game.ResultComparison);comparison.AddToClassList("slip-note");comparison.EnableInClassList("hidden",string.IsNullOrEmpty(comparison.text));details.Add(comparison);
             var analysis=new Label(bound.telemetry.Analysis(bound.player));analysis.AddToClassList("slip-note");details.Add(analysis);
             repairs=ActionButton(details,"resultRepairs","Review failures",game.QueueResultRepairs,false);
             export=ActionButton(details,"resultExport","Export telemetry",game.ExportResultTelemetry,false);
+            RefreshRivalTimes();
         }
-        static string Time(CarState s)=>s.finished?s.elapsed.ToString("F3"):"DNF";
+        void RefreshRivalTimes()
+        {
+            var state=bound.opponent.state;rivalFinished=state.finished;lanesFinished=bound.phase==RacePhase.Finished;rivalSplitCount=state.splits.Count;rivalReactionTime=state.reaction;
+            rivalTime.text=Time(state);rivalReaction.text=Reaction(state);
+            rivalSpeed.text=state.finished?DisplayUnits.Speed(state.trapSpeed/3.6,SharedUnitSettings.Current.speed).ToString("F1"):"—";
+            foreach(var row in rivalSplits)row.Value.text=state.splits.TryGetValue(row.Key,out double value)?value.ToString("F3"):"—";
+        }
+        string Time(CarState s)=>s.finished?s.elapsed.ToString("F3"):bound.phase==RacePhase.Finished?"DNF":"—";
         static string Reaction(CarState s)=>s.reaction>=0?s.reaction.ToString("F3"):"—";
-        void Row(string caption,string player,string opponent,bool heading=false)
+        Label Row(string caption,string player,string opponent,bool heading=false)
         {
             var row=new VisualElement();row.AddToClassList("slip-row");if(heading)row.AddToClassList("slip-column-head");
             var c=new Label(caption);c.AddToClassList("slip-caption");row.Add(c);
-            var a=new Label(player);a.AddToClassList("slip-number");row.Add(a);var b=new Label(opponent);b.AddToClassList("slip-number");row.Add(b);scroll.Add(row);
+            var a=new Label(player);a.AddToClassList("slip-number");row.Add(a);var b=new Label(opponent);b.AddToClassList("slip-number");row.Add(b);scroll.Add(row);return b;
         }
         void OnDestroy(){if(panel!=null)Destroy(panel);}
     }
@@ -113,7 +128,7 @@ namespace DragLab.Runtime
         internal string ResultNotice=>notice;
         internal string ResultComparison=>finishedPass==null?"":finishedPass.Compare(previousPass,SharedUnitSettings.Current);
         internal static bool PartFailedForResults(DragLab.Domain.Mechanics.PartInstance part)=>PartFailed(part);
-        bool CanResultAction=>race!=null&&race.phase==RacePhase.Finished&&!NativeRacePause&&pendingAction==null&&!ResultSettlementPending;
+        bool CanResultAction=>race!=null&&race.ResultReady&&!NativeRacePause&&pendingAction==null&&!ResultSettlementPending;
         internal void QueueResultGarage(){if(CanResultAction)pendingAction=ReturnToGarage;}
         internal void QueueResultAgain(){if(CanResultAction)pendingAction=()=>StartRace(activeEvent,practiceRun);}
         internal void QueueResultRepairs(){if(CanResultAction)pendingAction=()=>{ReturnToGarage();if(screen!="Race")ShowRepairs();};}

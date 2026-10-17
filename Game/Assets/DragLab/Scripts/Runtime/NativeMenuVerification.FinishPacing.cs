@@ -27,11 +27,11 @@ PrototypeGame.FinishMeasurement=(name,value)=>{if(name=="camera step units")maxC
                 game.verificationInput=()=>new DriverInput{throttle=1};int mainThread=Thread.CurrentThread.ManagedThreadId,writerThread=mainThread;
                 var entered=new ManualResetEventSlim();var release=new ManualResetEventSlim();
                 {
-                    SqliteStateStore.FailureInjection=stage=>{if(stage=="before-commit"&&race.phase==RacePhase.Finished){writerThread=Thread.CurrentThread.ManagedThreadId;entered.Set();if(!release.Wait(8000))throw new IOException("Slow-write fixture timed out");}};
+                    SqliteStateStore.FailureInjection=stage=>{if(stage=="before-commit"&&race.ResultReady){writerThread=Thread.CurrentThread.ManagedThreadId;entered.Set();if(!release.Wait(8000))throw new IOException("Slow-write fixture timed out");}};
                     try{
                         float deadline=Time.realtimeSinceStartup+75;long previous=System.Diagnostics.Stopwatch.GetTimestamp();
                         while(!entered.IsSet&&Time.realtimeSinceStartup<deadline){
-                            if(race.phase==RacePhase.Finished){long now=System.Diagnostics.Stopwatch.GetTimestamp();maxFrame=Math.Max(maxFrame,(now-previous)*1000.0/System.Diagnostics.Stopwatch.Frequency);}
+                            if(race.ResultReady){long now=System.Diagnostics.Stopwatch.GetTimestamp();maxFrame=Math.Max(maxFrame,(now-previous)*1000.0/System.Diagnostics.Stopwatch.Frequency);}
                             previous=System.Diagnostics.Stopwatch.GetTimestamp();yield return null;
                         }
                         Check(entered.IsSet&&game.ResultSettlementPending,"Real settlement reaches a held durable write without blocking the UI");

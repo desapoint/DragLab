@@ -828,6 +828,7 @@ namespace DragLab.Domain
         public RacePhase phase;
         public bool playerWon;
         public bool timedOut;
+        public bool ResultReady => player.state.finished || phase == RacePhase.Finished;
         public bool warmup, warmupNeutral = true;
         public bool WarmupStopped { get { return Math.Abs(player.state.speed)<.1 && Array.TrueForAll(player.state.contact.omega,w=>Math.Abs(w)<.5); } }
         public void BeginWarmup() { if(time!=0||phase!=RacePhase.Countdown)throw new InvalidOperationException("Warm-up must precede countdown.");warmup=true;warmupNeutral=true; }
@@ -897,12 +898,14 @@ namespace DragLab.Domain
                 if (opponentWasLaunched) Advance(opponent, ai, dt, greenTime);
             }
             telemetry.Record(player, greenTime, dt);
+            // A crossed player beam fixes its result; the other lane can keep running.
+            if (player.state.finished)
+                playerWon = !player.state.disqualified && (!opponent.state.finished ||
+                    player.state.reaction + player.state.elapsed < opponent.state.reaction + opponent.state.elapsed);
             if ((player.state.finished || player.state.disqualified || player.state.engineFailed || player.state.drivetrainFailed) && (opponent.state.finished || opponent.state.engineFailed || opponent.state.drivetrainFailed) || greenTime >= 90)
             {
                 phase = RacePhase.Finished;
                 timedOut = greenTime >= 90 && (!player.state.finished || !opponent.state.finished);
-                playerWon = player.state.finished && !player.state.disqualified &&
-                    (!opponent.state.finished || player.state.reaction + player.state.elapsed < opponent.state.reaction + opponent.state.elapsed);
             }
         }
 

@@ -1,6 +1,6 @@
 .race-results { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background-color: transparent; }
 .race-results.hidden { display: none; }
-.results-dock { position: absolute; right: 26px; top: 26px; bottom: 26px; width: 414px; max-width: 45%; justify-content: center; }
+.results-dock { position: absolute; right: 26px; top: 26px; bottom: 272px; width: 414px; max-width: 45%; justify-content: center; }
 .timing-paper { flex-grow: 1; flex-shrink: 1; min-height: 0; max-height: 650px; }
 .timing-paper-surface { position: absolute; left: 0; right: 0; top: 0; bottom: 0; }
 .slip-scroll { flex-grow: 1; min-height: 0; padding: 23px 13px 25px 23px; }
@@ -18,7 +18,7 @@
 .timing-paper .action-button Label { color: #e8eaed; }
 .slip-actions { height: 34px; flex-shrink: 0; margin-top: 12px; flex-direction: row; justify-content: flex-end; }
 .slip-actions .action-button { flex-grow: 1; min-width: 0; margin-left: 8px; }
-.compact .results-dock { right: 18px; top: 18px; bottom: 18px; width: 390px; }
+.compact .results-dock { right: 18px; top: 18px; bottom: 262px; width: 390px; }
 .compact .slip-scroll { padding: 16px 10px 20px 18px; }
 .compact .slip-row { min-height: 32px; }
 .compact .slip-number { font-size: 21px; }

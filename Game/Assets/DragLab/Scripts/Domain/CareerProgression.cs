@@ -54,7 +54,7 @@ namespace DragLab.Domain
         {
             var r=p.careerRuns.Find(t=>t.runId==runId)??throw new InvalidOperationException("Missing captured race entry.");
             if(r.complete)throw new InvalidOperationException("Race already settled.");
-            if(race==null||race.phase!=RacePhase.Finished)throw new InvalidOperationException("Race has not finished.");
+            if(race==null||!race.ResultReady)throw new InvalidOperationException("Race has not finished.");
             var c=p.cars.Find(v=>v.instanceId==r.carId)??throw new InvalidOperationException("Missing race owner.");
             bool valid=race.player.state.finished&&!race.player.state.disqualified;
             r.outcome=race.player.state.disqualified?"Disqualified":!valid?"Mechanical / incomplete DNF":race.playerWon?"Win":"Loss";

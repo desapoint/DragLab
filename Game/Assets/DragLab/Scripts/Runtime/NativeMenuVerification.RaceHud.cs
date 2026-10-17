@@ -218,9 +218,9 @@ namespace DragLab.Runtime
                 if(!movingShot&&game.Race.player.state.speed>=20){movingShot=true;yield return Capture("race-road-72kmh");}
                 if(!fastShot&&game.Race.player.state.speed>=35){fastShot=true;yield return Capture("race-road-126kmh");}
                 if(!playerFinishedShot&&game.Race.player.state.finished&&!game.Race.opponent.state.finished){
-                    playerFinishedShot=true;strip.Billboard.Refresh(game.Race);
+                    playerFinishedShot=true;strip.Billboard.Refresh(game.Race);game.Results.Refresh();hud.Refresh();
                     Check(strip.Billboard.Player.Finished&&!strip.Billboard.Opponent.Finished&&strip.Billboard.Opponent.Elapsed==""&&strip.Billboard.Opponent.Reaction=="","Player board publishes only at its finish; rival digits remain blank before its own beam");
-                    Check(!game.Results.Visible,"Paper results do not announce a winner while the rival is still racing");
+                    Check(game.Race.ResultReady&&game.Race.playerWon&&game.Results.Visible&&hud.Visible,"A confirmed first finish opens the winning slip without hiding the dash or waiting for the rival");
                     yield return Capture("race-board-player-finish");
                 }
                 yield return null;
@@ -234,8 +234,9 @@ namespace DragLab.Runtime
                 if(Mathf.Abs(cameraX-4.4f)<.01f)break;yield return null;
             }
             Check(maxCameraStep<.35f&&Mathf.Abs(Camera.main.transform.position.x-4.4f)<.01f,"Results camera eases to its framing without the former 2.4-unit single-frame jump / max step "+maxCameraStep.ToString("F3"));
-            Check(game.ComparisonRoute=="Results"&&!hud.Visible&&game.Race.player.state.finished,"Finishing a real authoritative pass hides instruments and preserves the existing results workflow");
-            Check(playerFinishedShot&&game.Results.Visible&&strip.Billboard.Player.Finished&&strip.Billboard.Opponent.Finished,"Both finish beams publish independently before the native timing slip opens");
+            Check(game.ComparisonRoute=="Results"&&hud.Visible&&game.Race.player.state.finished,"Finished results retain the live instruments and dashboard");
+            Check(playerFinishedShot&&game.Results.Visible&&strip.Billboard.Player.Finished&&strip.Billboard.Opponent.Finished,"Both finish beams publish independently while the timing slip remains open");
+            Check(game.Results.Root.Q<Label>("rivalElapsed").text==game.Race.opponent.state.elapsed.ToString("F3"),"An opponent that finishes later updates the existing slip with its true elapsed time");
             Check(string.IsNullOrEmpty(game.ResultNotice)&&game.Results.Root.Q("slipNotice").ClassListContains("hidden"),"Successful results omit redundant outcome/save-status text and its empty row");
             var focusRace=game.Race;double focusElapsed=focusRace.player.state.elapsed;int focusCash=game.Profile.cash;
             game.HandleApplicationInterruption();game.SendMessage("OnApplicationPause",true);yield return null;
@@ -246,7 +247,7 @@ namespace DragLab.Runtime
             yield return Capture("race-gauges-results");
             yield return Click(input,game.Results.Root.Q<Foldout>("resultDetails").Q<Toggle>());
             yield return Capture("race-paper-details");
-            yield return Key(input,0x77);Check(!game.Results.Visible&&game.ComparisonRoute=="Results","F8 restores the complete legacy results presentation");
+            yield return Key(input,0x77);Check(!game.Results.Visible&&!hud.Visible&&game.ComparisonRoute=="Results","F8 restores the complete legacy results presentation");
             yield return Key(input,0x77);Check(game.Results.Visible,"F8 restores the paper timing slip without changing the settled race");
             var printRace=game.Race;string frozenBoard=strip.Billboard.Player.Elapsed;
             yield return new WaitForSecondsRealtime(.3f);
@@ -273,8 +274,38 @@ namespace DragLab.Runtime
             Check(game.ScreenName=="Garage"&&game.Race==null&&game.Profile.runCheckpoints.All(r=>r.settled),"Real results G shortcut returns to Garage and closes the worn-tire checkpoint");
             Check(Math.Abs(Camera.main.orthographicSize-PrototypeGame.MenuCameraSize)<.001 && Camera.main.transform.position.y==0, "Returning to Garage restores its original camera framing");
             Check(ProfileStore.Load().runCheckpoints.All(r=>r.settled),"Finished-race exit remains settled after durable profile reload");
+            yield return EarlyFinishExitChecks(input);
             yield return ResultActionChecks(input);
             yield return FinishPacingChecks(input);
+        }
+        IEnumerator EarlyFinishExitChecks(WindowsKeyboardProbe input)
+        {
+            foreach(bool retry in new[]{false,true}){
+                game.ReturnToGarage();game.Profile.driving.shifting=ShiftMode.Automatic;game.Profile.driving.launch=LaunchMode.Automatic;
+                game.Profile.driving.wearMode=WearMode.None;game.Profile.driving.optimalThermals=true;
+                int cash=game.Profile.cash;game.StartRace(null,false);var run=game.Race;string id=game.Profile.careerRuns.Last().runId;
+                run.opponent.driver.reactionSeconds=40;game.verificationInput=()=>new DriverInput{throttle=1};
+                float deadline=Time.realtimeSinceStartup+65;while(!run.ResultReady&&Time.realtimeSinceStartup<deadline)yield return null;
+                float saveDeadline=Time.realtimeSinceStartup+12;while(game.ResultSettlementPending&&Time.realtimeSinceStartup<saveDeadline)yield return null;
+                yield return new WaitForEndOfFrame();
+                Check(run.playerWon&&run.player.state.finished&&!run.opponent.state.finished&&run.phase==RacePhase.Racing,"Win resolves before the rival finishes or the lane simulation ends / retry "+retry);
+                Check(game.Results.Visible&&game.RaceHud.Visible&&game.RaceHud.Dashboard.worldBound.height>0,"Slip, gauges and opaque dashboard remain visible together after the beam");
+                Check(game.Results.Root.Q<Label>("rivalElapsed").text=="—","Unfinished rival elapsed time stays blank rather than reporting DNF");
+                Check(game.Profile.cash==cash+120&&game.Profile.careerRuns.Single(r=>r.runId==id).outcome=="Win","Paid early finish settles one captured win without requiring rival stats");
+                Check(game.Results.Root.Q("resultGarage").enabledInHierarchy&&game.Results.Root.Q("resultAgain").enabledInHierarchy,"Garage and retry are enabled after durable settlement while the rival is unfinished");
+                if(!retry)foreach(int width in new[]{1024,1280,1920}){
+                    Screen.SetResolution(width,width==1024?768:width==1280?720:1080,false);yield return new WaitForSecondsRealtime(.4f);
+                    game.RaceHud.Refresh();game.Results.Refresh();
+                    Check(game.Results.Root.Q("resultAgain").worldBound.yMax<=game.RaceHud.Gear.worldBound.yMin-8,"Slip and actions clear the complete instrument/shifter band / "+width);
+                    yield return Capture("early-finish-layout-"+width);
+                }
+                Screen.SetResolution(1280,720,false);yield return new WaitForSecondsRealtime(.3f);
+                yield return Capture(retry?"early-finish-retry":"early-finish-exit");game.verificationInput=null;
+                yield return Click(input,game.Results.Root.Q(retry?"resultAgain":"resultGarage"));
+                Check(retry?game.Race!=null&&game.Race!=run&&game.Race.phase==RacePhase.Countdown:game.Race==null&&game.ScreenName=="Garage","Result action succeeds before the opponent finish / retry "+retry);
+                var saved=ProfileStore.Load();Check(saved.cash==cash+120&&saved.careerRuns.Count(r=>r.runId==id&&r.complete&&r.outcome=="Win")==1&&saved.runCheckpoints.Single(r=>r.runId==id).settled,"Early exit/retry persists one win and closes its checkpoint without duplicate rewards");
+                game.ReturnToGarage();Check(game.Profile.cash==cash+120,"Closing the remaining presentation cannot pay the completed win twice");
+            }
         }
         IEnumerator ResultActionChecks(WindowsKeyboardProbe input)
         {
@@ -283,7 +314,7 @@ namespace DragLab.Runtime
             int retryCash=game.Profile.cash;game.StartPractice();game.verificationInput=()=>new DriverInput{throttle=1};
             Check(game.Race!=null,"Result action fixture stages the real car / "+game.ResultNotice);
             float retryDeadline=Time.realtimeSinceStartup+65;
-            SqliteStateStore.FailureInjection=stage=>{if(stage=="before-commit"&&game.Race?.phase==RacePhase.Finished)throw new IOException("Isolated result-save failure");};
+            SqliteStateStore.FailureInjection=stage=>{if(stage=="before-commit"&&game.Race?.ResultReady==true)throw new IOException("Isolated result-save failure");};
             try{
                 while(game.Race.phase!=RacePhase.Finished&&Time.realtimeSinceStartup<retryDeadline)yield return null;
                 float errorDeadline=Time.realtimeSinceStartup+8;while(!game.ResultNotice.StartsWith("Result save failed")&&Time.realtimeSinceStartup<errorDeadline)yield return null;

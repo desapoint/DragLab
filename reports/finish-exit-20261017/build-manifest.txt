@@ -1,0 +1,4 @@
+Windows development build / Unity 6000.6.4f1 / 2026-10-17
+Log: reports/unity-finish-exit-final-20261017.log
+Game/Builds/Windows/DragLab.exe | 667136 bytes | SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+Game/Builds/Windows/DragLab_Data/Managed/Assembly-CSharp.dll | 2794496 bytes | SHA256 cc00e5e61177aa6277e5c829af1682654c14baa70a4a38c5332b6f9e8b666fb1

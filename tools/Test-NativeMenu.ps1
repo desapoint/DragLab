@@ -1,4 +1,4 @@
-param([string]$FixtureName = 'native-menu-shell', [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly, [switch]$MaintenanceOnly, [switch]$RebuildOnly, [switch]$PricingOnly, [switch]$FrameProbe, [switch]$ResponsivenessOnly, [switch]$AwdHardwareOnly, [switch]$PartBrandsOnly, [switch]$SqliteStateOnly, [switch]$DisposalOnly, [switch]$RaceSelectionOnly, [switch]$SetupManagementOnly, [switch]$RaceHudOnly, [switch]$ResultsOnly, [switch]$FinishPacingOnly, [switch]$OwnedFittedOnly, [switch]$TireSwapOnly, [switch]$RacePauseOnly, [switch]$NavigationOnly, [switch]$ResetRequiredOnly, [string]$PlayerPath = '', [switch]$DeterministicCapture)
+param([string]$FixtureName = 'native-menu-shell', [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly, [switch]$MaintenanceOnly, [switch]$RebuildOnly, [switch]$PricingOnly, [switch]$FrameProbe, [switch]$ResponsivenessOnly, [switch]$AwdHardwareOnly, [switch]$PartBrandsOnly, [switch]$SqliteStateOnly, [switch]$DisposalOnly, [switch]$RaceSelectionOnly, [switch]$SetupManagementOnly, [switch]$RaceHudOnly, [switch]$ResultsOnly, [switch]$FinishPacingOnly, [switch]$OwnedFittedOnly, [switch]$TireSwapOnly, [switch]$FinishExitOnly, [switch]$RacePauseOnly, [switch]$NavigationOnly, [switch]$ResetRequiredOnly, [string]$PlayerPath = '', [switch]$DeterministicCapture)
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 . (Join-Path $PSScriptRoot 'InterfaceScreenshots.ps1')
@@ -25,6 +25,7 @@ if ($RacePauseOnly) { $taskArgs += '--draglab-race-pause-only-verify' }
 if ($FinishPacingOnly) { $taskArgs += '--draglab-finish-pacing-only-verify' }
 if ($OwnedFittedOnly) { $taskArgs += '--draglab-owned-fitted-only-verify' }
 if ($TireSwapOnly) { $taskArgs += '--draglab-tire-swap-only-verify' }
+if ($FinishExitOnly) { $taskArgs += '--draglab-finish-exit-only-verify' }
 if ($ResultsOnly) { $taskArgs += '--draglab-race-results-only-verify' }
 if ($RaceHudOnly) { $taskArgs += '--draglab-race-hud-only-verify' }
 if ($SetupManagementOnly) { $taskArgs += '--draglab-setup-management-only-verify' }

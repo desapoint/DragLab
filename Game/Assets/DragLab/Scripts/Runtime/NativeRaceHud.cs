@@ -73,7 +73,8 @@ namespace DragLab.Runtime
         internal void Refresh()
         {
             if (root == null) return;
-            bool show = game.Race != null && (Supports(game.ComparisonRoute) || game.NativeRacePause) && InterfaceComparison.IsReplacement("Race");
+            bool results = game.ComparisonRoute == "Results";
+            bool show = game.Race != null && (Supports(game.ComparisonRoute) || game.NativeRacePause || results) && InterfaceComparison.IsReplacement(results ? "Results" : "Race");
             root.EnableInClassList("hidden", !show);
             if (!show) return;
             int width = panel.targetTexture == null ? Screen.width : panel.targetTexture.width;
@@ -81,6 +82,7 @@ namespace DragLab.Runtime
             panel.scale = NativeMenuShell.DisplayScale(width, height);
             root.EnableInClassList("compact", width / panel.scale < 1150 || height / panel.scale < 700);
             pauseButton.SetEnabled(!game.NativeRacePause);
+            pauseButton.EnableInClassList("hidden", game.Race.ResultReady);
             readyButton.EnableInClassList("hidden",!game.Race.warmup||game.NativeRacePause);
             readyButton.SetEnabled(game.Race.WarmupStopped&&!game.Race.player.state.engineFailed&&!game.Race.player.state.drivetrainFailed);
             var car = game.Race.player;
@@ -105,7 +107,7 @@ namespace DragLab.Runtime
             ShiftLamp.SetState(car);
             Gear.SetState(state.gear, car.transmission, car.spec.gears.Length, state.shiftRemaining, TransmissionDynamics.ShiftSeconds(car.transmission,car.spec,car.tune));
             string signal = game.NativeRacePause ? "PAUSED" : game.Race.warmup ? "WARM-UP" : state.disqualified ? "RED LIGHT" : game.Race.time < 1.5 ? "STAGED" : game.Race.time < 2 ? "AMBER 1" : game.Race.time < 2.5 ? "AMBER 2" : game.Race.time < 3 ? "AMBER 3" : "GREEN";
-            if(state.finished&&!game.NativeRacePause)signal="FINISHED · WAITING FOR RIVAL";
+            if(state.finished&&!game.NativeRacePause)signal="FINISHED";
             Set(phase, signal + "  ·  " + state.distance.ToString("F1") + " / " + game.Race.distance.ToString("F1") + " m");
             string faults = state.engineFailed ? "ENGINE FAILED" : state.stalled ? "STALLED · CLUTCH + ENTER" : "";
             if (state.drivetrainFailed) faults += (faults.Length > 0 ? " · " : "") + "NO DRIVE PATH";

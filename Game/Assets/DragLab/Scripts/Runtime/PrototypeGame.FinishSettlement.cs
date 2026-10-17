@@ -13,7 +13,7 @@ namespace DragLab.Runtime
         Task finishTask;
         float finishRetryAt;
         RaceSimulation finishBound;
-        internal bool ResultSettlementPending=>race!=null&&race.phase==RacePhase.Finished&&!awarded;
+        internal bool ResultSettlementPending=>race!=null&&race.ResultReady&&!awarded;
         internal static Action<string,double> FinishMeasurement;
         void AdvanceFinishSettlement()
         {

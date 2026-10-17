@@ -1,0 +1,46 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Dealership Fitted parts sits beside Stats with the same compact ten-point spacing as owned cars
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Fitted values reflect actual member condition and failures instead of a neutral tire wrapper
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Each fitted part has a shared Shop action, available after an owned car is selected
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Win resolves before the rival finishes or the lane simulation ends / retry False
+PASS: Slip, gauges and opaque dashboard remain visible together after the beam
+PASS: Unfinished rival elapsed time stays blank rather than reporting DNF
+PASS: Paid early finish settles one captured win without requiring rival stats
+PASS: Garage and retry are enabled after durable settlement while the rival is unfinished
+PASS: Slip and actions clear the complete instrument/shifter band / 1024
+PASS: Slip and actions clear the complete instrument/shifter band / 1280
+PASS: Slip and actions clear the complete instrument/shifter band / 1920
+PASS: Result action succeeds before the opponent finish / retry False
+PASS: Early exit/retry persists one win and closes its checkpoint without duplicate rewards
+PASS: Closing the remaining presentation cannot pay the completed win twice
+PASS: Win resolves before the rival finishes or the lane simulation ends / retry True
+PASS: Slip, gauges and opaque dashboard remain visible together after the beam
+PASS: Unfinished rival elapsed time stays blank rather than reporting DNF
+PASS: Paid early finish settles one captured win without requiring rival stats
+PASS: Garage and retry are enabled after durable settlement while the rival is unfinished
+PASS: Result action succeeds before the opponent finish / retry True
+PASS: Early exit/retry persists one win and closes its checkpoint without duplicate rewards
+PASS: Closing the remaining presentation cannot pay the completed win twice
+Checks: 44 / runtime errors: 0

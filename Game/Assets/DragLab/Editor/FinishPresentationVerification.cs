@@ -38,7 +38,9 @@ namespace DragLab.Editor
             }
             report.AppendLine("Checks: "+checks+" / failures: 0");Directory.CreateDirectory("../reports/shutdown-braking-20261016");File.WriteAllText("../reports/shutdown-braking-20261016/safety.txt",report.ToString(),new UTF8Encoding(false));Debug.Log("Finish safety: "+checks+" passed");
         }
-        public static void Run()
+        public static void Run()=>Verify("../reports/shutdown-braking-20261016");
+        public static void RunEarlyResults()=>Verify("../reports/finish-exit-20261017");
+        static void Verify(string reportFolder)
         {
             int checks=0;var report=new StringBuilder();
             void Check(bool ok,string text){checks++;if(!ok)throw new InvalidOperationException(text);report.AppendLine("PASS: "+text);}
@@ -52,6 +54,7 @@ namespace DragLab.Editor
                     for(int tick=0;tick<120*100&&!race.player.state.finished&&!race.opponent.state.finished;tick++)race.Step(new DriverInput{throttle=1});
                     var first=rivalFirst?race.opponent.state:race.player.state;var second=rivalFirst?race.player.state:race.opponent.state;
                     Check(first.finished&&!second.finished,vehicle.spec.id+": expected independent first finish / rival "+rivalFirst);
+                    Check(race.ResultReady==!rivalFirst&&race.playerWon==!rivalFirst,vehicle.spec.id+": player result resolves on its own beam, never on the rival beam alone");
                     var posted=new FinishReading(first);Check(posted.Elapsed!=""&&posted.Reaction!=""&&new FinishReading(second).Elapsed==""&&new FinishReading(second).Reaction=="",vehicle.spec.id+": only crossed beam posts ET and RT");
                     for(int tick=0;tick<120*100&&race.phase!=RacePhase.Finished;tick++)race.Step(new DriverInput{throttle=1});
                     Check(race.player.state.finished&&race.opponent.state.finished&&new FinishReading(first).Elapsed==posted.Elapsed,vehicle.spec.id+": later finish cannot rewrite first result");
@@ -64,7 +67,7 @@ namespace DragLab.Editor
                 }
             }
             Check(FinishBillboard.BeyondFinishMetres>0&&FinishBillboard.BeyondFinishMetres<RaceSimulation.ShutdownStopMetres,"Billboard stands beyond finish, just before the shutdown stop target");
-            report.AppendLine("Checks: "+checks+" / failures: 0");Directory.CreateDirectory("../reports/shutdown-braking-20261016");File.WriteAllText("../reports/shutdown-braking-20261016/domain.txt",report.ToString(),new UTF8Encoding(false));Debug.Log("Finish presentation: "+checks+" passed");
+            report.AppendLine("Checks: "+checks+" / failures: 0");Directory.CreateDirectory(reportFolder);File.WriteAllText(Path.Combine(reportFolder,"domain.txt"),report.ToString(),new UTF8Encoding(false));Debug.Log("Finish presentation: "+checks+" passed");
         }
     }
 }

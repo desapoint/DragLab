@@ -31,7 +31,7 @@ namespace DragLab.Runtime
         internal NativeRaceHud RaceHud { get; private set; }
         internal string SettingsReturnRoute { get; private set; } = "Garage";
         internal bool NativeRacePause => screen == "Race" && paused && InterfaceComparison.IsReplacement("Race");
-        internal string ComparisonRoute => screen == "Race" ? audioSettingsOpen ? "Race settings" : paused ? "Pause" : race != null && race.phase == RacePhase.Finished ? "Results" : "Race" : screen;
+        internal string ComparisonRoute => screen == "Race" ? audioSettingsOpen ? "Race settings" : paused ? "Pause" : race != null && race.ResultReady ? "Results" : "Race" : screen;
         Action pendingAction;
         float saveDelay;
         bool drivingPreferencesDirty;
@@ -223,14 +223,14 @@ namespace DragLab.Runtime
         {
             if(DeterministicCapture.Frame)return;
             if (profile == null || resetRequired) return;
-            if(FramePacingProbe.Active&&screen=="Race"&&race!=null)FramePacingProbe.Phase=race.phase==RacePhase.Finished?"race/results":"race/driving";
+            if(FramePacingProbe.Active&&screen=="Race"&&race!=null)FramePacingProbe.Phase=race.ResultReady?"race/results":"race/driving";
             if(profile.vehicleStock!=null&&screen!="Race"&&Time.realtimeSinceStartup>.25f&&!Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&GUIUtility.hotControl==0){string key=profile.vehicleStock.seed+"/"+profile.vehicleStock.generation+"/"+profile.firstPurchasePending;if(key!=marketWarmKey){marketWarmKey=key;marketWarm=VehicleListings.WarmNext(profile).GetEnumerator();}if(marketWarm!=null&&!marketWarm.MoveNext())marketWarm=null;}
             if (pendingAction != null) { var action = pendingAction; pendingAction = null; action(); }
             if (saveDelay > 0 && GUIUtility.hotControl == 0 && !Input.GetMouseButton(0) && !Input.GetMouseButton(1)) { if(drivingPreferencesDirty){if(!ProfileStore.TrySavePreferences(profile,out var error))notice="Settings save failed: "+error;drivingPreferencesDirty=false;}else ProfileStore.Save(profile);saveDelay=0; }
             if (screen == "Garage" && !(nativeMenu != null && (nativeMenu.ModalOpen || nativeMenu.OwnedDetailsOpen || nativeMenu.DealerPageOpen || nativeMenu.EditingText)) && Input.GetKeyDown(KeyCode.P)) StartPractice();
             if (screen != "Race" || race == null) return;
-            if (!NativeRacePause && (race.phase == RacePhase.Finished || paused) && !ResultSettlementPending && Input.GetKeyDown(KeyCode.G)) { ReturnToGarage(); return; }
-            if (!NativeRacePause && race.phase == RacePhase.Finished && !ResultSettlementPending && Input.GetKeyDown(KeyCode.R)) { StartRace(activeEvent, practiceRun); return; }
+            if (!NativeRacePause && (race.ResultReady || paused) && !ResultSettlementPending && Input.GetKeyDown(KeyCode.G)) { ReturnToGarage(); return; }
+            if (!NativeRacePause && race.ResultReady && !ResultSettlementPending && Input.GetKeyDown(KeyCode.R)) { StartRace(activeEvent, practiceRun); return; }
             if (Input.GetKeyDown(KeyCode.Escape)) { if (NativeRacePause) nativeMenu.EscapeRacePause(); else SetPaused(!paused); }
             if (paused) return;
             if (race.phase == RacePhase.Finished)
@@ -259,7 +259,7 @@ namespace DragLab.Runtime
             }
             RenderRace();
             SaveLiveRunIfDue();
-            if (race.phase == RacePhase.Finished && !awarded) FinishRace();
+            if (race.ResultReady && !awarded) FinishRace();
         }
 
         internal void PlaceRaceCars()
@@ -275,7 +275,7 @@ namespace DragLab.Runtime
         float resultCameraVelocity;
         void RenderRace()
         {
-            float targetX=race.phase==RacePhase.Finished&&InterfaceComparison.IsReplacement("Results")?4.4f:2;
+            float targetX=race.ResultReady&&InterfaceComparison.IsReplacement("Results")?4.4f:2;
             float cameraX=targetX==2?2:Mathf.SmoothDamp(raceCamera.transform.position.x,targetX,ref resultCameraVelocity,.45f,20,Mathf.Min(Time.unscaledDeltaTime,.05f));
             if(targetX==2)resultCameraVelocity=0;
             FinishMeasurement?.Invoke("camera step units",Math.Abs(cameraX-raceCamera.transform.position.x));
@@ -302,7 +302,7 @@ namespace DragLab.Runtime
         internal void HandleApplicationInterruption(bool suspend=false)
         {
             if(screen!="Race"||race==null)return;
-            if(race.phase==RacePhase.Finished){if(suspend||!ResultSettlementPending)SyncRaceWear();}else SetPaused(true);
+            if(race.ResultReady){if(suspend||!ResultSettlementPending)SyncRaceWear();}else SetPaused(true);
         }
         void OnApplicationFocus(bool focused) { if (!focused) interfaceComparison.ReleaseShortcut(); if (!focused && !RuntimeVerification.Active) HandleApplicationInterruption(); }
         void SaveLiveRunIfDue()
@@ -587,10 +587,10 @@ namespace DragLab.Runtime
                 GUILayout.EndArea();
                 return;
             }
-            if (race.phase == RacePhase.Finished)
+            if (race.ResultReady)
             {
                 GUILayout.BeginArea(new Rect(width * .5f - 280, 16 + hudHeight, 560, height - hudHeight - 133), GUI.skin.box);
-                GUILayout.Label(state.disqualified ? "RED LIGHT / DISQUALIFIED" : race.timedOut ? "TIMEOUT" : race.playerWon ? "WIN" : "LOSS", heading);
+                GUILayout.Label(state.disqualified ? "RED LIGHT / DISQUALIFIED" : race.timedOut && !state.finished ? "TIMEOUT" : race.playerWon ? "WIN" : "LOSS", heading);
                 GUILayout.Label("Reaction: " + (state.reaction >= 0 ? state.reaction.ToString("F3") + " s" : "—") + "   ET: " + (state.finished ? state.elapsed.ToString("F3") + " s" : "DNF"), stat);
                 GUILayout.Label("Trap: " + SharedUnitSettings.Speed(state.trapSpeed / 3.6) + "   Opponent ET: " + race.opponent.state.elapsed.ToString("F3") + " s");
                 resultScroll = GUILayout.BeginScrollView(resultScroll);
