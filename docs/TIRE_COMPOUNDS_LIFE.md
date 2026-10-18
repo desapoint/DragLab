@@ -1,4 +1,35 @@
-# Tire compounds, heat and persistent life — 2J
+# Tire compounds, heat and persistent life
+
+## Current calibration — 2026-10-18
+
+The approved performance-tire target is **40–60 clean quarter-mile passes at Full wear**, including the shutdown lane. This is drag-game pacing, not real tire mileage. Actual life still depends on distance, axle load, pressure, tire size, sliding work and heat. Partial retains the approved 25% wear rate; None prevents new wear without repairing existing wear or faults. The isolated bench uses the same model and its existing multiplier.
+
+| Compound | Grip factor | Reference rolling life | Sliding life / tire | Best / damage temperature | New full-set base price |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Touring | 0.95 | 250 km | 60 MJ | 45 / 130 °C | $500 |
+| Road | 1.00 | 150 km | 40 MJ | 45 / 130 °C | Existing OEM pricing |
+| Sport | 1.12 | 65 km | 30 MJ | 60 / 140 °C | $600 |
+| Club drag radial | 1.24 | 35 km | 16 MJ | 75 / 150 °C | $1,200 |
+| Club drag slick | 1.36 | 30 km | 10 MJ | 90 / 160 °C | $1,800 |
+| Street semi-slick | 1.55 | 50 km | 8 MJ | 50 / 135 °C | $1,900 |
+| Endurance drag radial | 1.75 | 40 km | 16 MJ | 65 / 170 °C | $2,400 |
+| Pro drag radial | 2.10 | 32 km | 10 MJ | 75 / 170 °C | $2,800 |
+| Medium competition slick | 2.45 | 30 km | 8 MJ | 85 / 170 °C | $3,400 |
+| Soft competition slick | 2.90 | 27 km | 5 MJ | 95 / 170 °C | $4,100 |
+| Qualifying super-soft slick | 3.35 | 16 km | 3 MJ | 100 / 170 °C | $5,200 |
+
+Prices are authored set prices before supply fees; check the actual Shop/cart quote. Grip factors multiply the underlying contact model and are not guaranteed road friction coefficients. Greater grip is independent of life: the semi-slick sacrifices sliding/heat tolerance, while soft and qualifying compounds sacrifice life and cost more. Qualifying tires intentionally last less than the normal performance-tire target. Correct throttle, clutch capacity, temperatures, tire dimensions and differential still matter; no tire promises unlimited torque.
+
+All thirteen models retain their existing five definitions and gain six fitted variants. Compound properties are fixed hardware. Existing front/rear pressure and dimensions remain adjustable; each corner can retain a different compound, identity and condition. Single replacements, axle selections, whole sets, inventory reuse and saved setups use the existing purchase flow. New definitions follow the existing seeded stock rules and appear with the next regular refresh (every three eligible races); current stock/reservations are preserved. Hard difficulty still has no fitting-offer guarantee.
+
+Mechanical wear also retains losses smaller than a health float can represent, using the existing saved double remainders. This corrects lost ordinary wear without globally increasing engine damage or disabling durability limits. Loading does not retroactively invent missing past wear. Existing tire consumed-life fractions, faults, identities and inventory are retained; only future use follows the new definition calibration. Physics/replay model is `draglab-variety-v21`; older input recordings require recapture. Known v18–v20 interrupted-run resource journals can recover monotonic fuel/wear history without replaying old physics.
+
+Current before/after matrices and validation are in [the delivery report](../reports/tires-wear-20261018/CHANGES.md).
+
+## Historical 2J checkpoint
+
+The text below records the original 2J implementation and calibration. Current individual tire purchasing, fitment and life values are described above; the original matrices remain archived.
+
 
 Race and physical bench use the same four independent wheel/contact solver. A tire pack now owns FL/FR/RL/RR condition records: remaining life, failure, temperature, cumulative sliding work, distance and a double precision consumed-life accumulator. Sliding work comes from each tire contact impulse, including powered spin, shifts, neutral recovery and locked-wheel braking. Differential constraint losses are not misreported as tire heat. Pressure and dynamic axle load affect abrasion; compounds author grip separately from durability.
 

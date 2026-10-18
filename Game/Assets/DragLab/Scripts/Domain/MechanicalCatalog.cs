@@ -61,7 +61,7 @@ namespace DragLab.Domain.Mechanics
     // Stable, authored definitions; interchangeable sets are distinct from their owned instances.
     public sealed class MechanicalCatalog
     {
-        public const int Version = 6;
+        public const int Version = 7;
         public readonly List<PartDefinition> parts = new List<PartDefinition>();
         readonly Dictionary<string, VehicleSpec> specs = new Dictionary<string, VehicleSpec>();
         public static readonly PartCategory[] EngineSlots = { PartCategory.Pistons, PartCategory.Rods, PartCategory.Crankshaft, PartCategory.HeadIntake, PartCategory.FuelSystem, PartCategory.Ignition, PartCategory.Cooling, PartCategory.Induction, PartCategory.Exhaust, PartCategory.Flywheel };
@@ -180,6 +180,7 @@ namespace DragLab.Domain.Mechanics
             parts.Add(new PartDefinition { id = spec.id + "/Gearbox/ManualInterlocked", name = spec.displayName + " / actuated manual with downshift interlock", category = PartCategory.Gearbox, fitment = Interface(spec, PartCategory.Gearbox), transmission = TransmissionUpgrade.Manual, manualDownshiftInterlock = true, price = 2800, stage = 1, rpmLimit = spec.redlineRpm * 1.2f, torqueLimitNm = peak * 2.6f });
             foreach (var part in parts.Where(p => p.id.StartsWith(spec.id + "/") && p.description == null)) PartSemantics.Author(part, spec);
             CatalogVariants.Add(this, spec);
+            TireCompounds.Add(this, spec);
             FuelingHardware.AddConversions(this, spec);
             ServiceHardware.Add(this,spec);ClutchHardware.Add(this,spec);CombustionVariants.Add(this,spec);
             foreach(var p in parts.Where(p=>p.id.StartsWith(spec.id+"/"))){p.fuelKind=spec.combustion.fuelKind;if(p.category==PartCategory.Controls&&CombustionHardware.Diesel(spec)){p.supportsDiesel=true;p.supportsInjection=false;p.controllerCylinderCapacity=spec.sound.cylinders;p.name="common-rail fuel controller";}if(p.category==PartCategory.FuelSystem&&CombustionHardware.Diesel(spec))p.name=p.stage==0?"Touring common-rail injector and high-pressure pump set":"high-flow common-rail injector and pump set";}

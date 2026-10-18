@@ -1,0 +1,429 @@
+scenario,step,action,elapsed_minutes,cash_before,cash_after,delta,fuel_before,fuel_after,parts,failed_packs,garage_level,rep
+fresh-career,1,Pay Car / $4012,0.000,4700,688,-4012,0.000000,17.500000,39,0,1,0
+fresh-career,2,Strip optional cabin mass; retain original components,0.000,688,688,0,17.500000,17.500000,39,0,1,0
+fresh-career,3,Enter first-pass,0.000,688,688,0,17.500000,17.500000,39,0,1,0
+fresh-career,4,Settle first-pass / win,0.375,688,838,150,17.500000,17.327393,39,0,1,2
+fresh-career,5,Shutdown / garage,0.536,838,838,0,17.327393,17.326827,39,0,1,2
+fresh-career,6,Pay Part / $636,0.536,838,202,-636,17.326827,17.326827,40,0,1,2
+fresh-career,7,Enter first-pass,0.536,202,202,0,17.326827,17.326827,40,0,1,2
+fresh-career,8,Settle first-pass / win,0.911,202,352,150,17.326827,17.154642,40,0,1,2
+fresh-career,9,Shutdown / garage,1.070,352,352,0,17.154642,17.154078,40,0,1,2
+fresh-career,10,Enter first-pass,1.070,352,352,0,17.154078,17.154078,40,0,1,2
+fresh-career,11,Settle first-pass / win,1.445,352,502,150,17.154078,16.981726,40,0,1,2
+fresh-career,12,Shutdown / garage,1.606,502,502,0,16.981726,16.981160,40,0,1,2
+fresh-career,13,Enter first-pass,1.606,502,502,0,16.981160,16.981160,40,0,1,2
+fresh-career,14,Settle first-pass / win,1.981,502,652,150,16.981160,16.808588,40,0,1,2
+fresh-career,15,Shutdown / garage,2.143,652,652,0,16.808588,16.808020,40,0,1,2
+fresh-career,16,Pay Part / $600,2.143,652,52,-600,16.808020,16.808020,41,0,1,2
+fresh-career,17,Enter first-pass,2.143,52,52,0,16.808020,16.808020,41,0,1,2
+fresh-career,18,Settle first-pass / win,2.518,52,202,150,16.808020,16.634558,41,0,1,2
+fresh-career,19,Shutdown / garage,2.680,202,202,0,16.634558,16.633990,41,0,1,2
+fresh-career,20,Enter first-pass,2.680,202,202,0,16.633990,16.633990,41,0,1,2
+fresh-career,21,Settle first-pass / win,3.055,202,352,150,16.633990,16.460297,41,0,1,2
+fresh-career,22,Shutdown / garage,3.219,352,352,0,16.460297,16.459727,41,0,1,2
+fresh-career,23,Enter first-pass,3.219,352,352,0,16.459727,16.459727,41,0,1,2
+fresh-career,24,Settle first-pass / win,3.593,352,502,150,16.459727,16.285801,41,0,1,2
+fresh-career,25,Shutdown / garage,3.758,502,502,0,16.285801,16.285230,41,0,1,2
+fresh-career,26,Enter first-pass,3.758,502,502,0,16.285230,16.285230,41,0,1,2
+fresh-career,27,Settle first-pass / win,4.133,502,652,150,16.285230,16.111082,41,0,1,2
+fresh-career,28,Shutdown / garage,4.298,652,652,0,16.111082,16.110510,41,0,1,2
+fresh-career,29,Pay Part / $600,4.298,652,52,-600,16.110510,16.110510,42,0,1,2
+fresh-career,30,Enter first-pass,4.298,52,52,0,16.110510,16.110510,42,0,1,2
+fresh-career,31,Settle first-pass / win,4.673,52,202,150,16.110510,15.936778,42,0,1,2
+fresh-career,32,Shutdown / garage,4.841,202,202,0,15.936778,15.936204,42,0,1,2
+fresh-career,33,Enter first-pass,4.841,202,202,0,15.936204,15.936204,42,0,1,2
+fresh-career,34,Settle first-pass / win,5.216,202,352,150,15.936204,15.762175,42,0,1,2
+fresh-career,35,Shutdown / garage,5.385,352,352,0,15.762175,15.761598,42,0,1,2
+fresh-career,36,Enter first-pass,5.385,352,352,0,15.761598,15.761598,42,0,1,2
+fresh-career,37,Settle first-pass / win,5.760,352,502,150,15.761598,15.587355,42,0,1,2
+fresh-career,38,Shutdown / garage,5.931,502,502,0,15.587355,15.586776,42,0,1,2
+fresh-career,39,Enter first-pass,5.931,502,502,0,15.586776,15.586776,42,0,1,2
+fresh-career,40,Settle first-pass / win,6.306,502,652,150,15.586776,15.412317,42,0,1,2
+fresh-career,41,Shutdown / garage,6.477,652,652,0,15.412317,15.411738,42,0,1,2
+fresh-career,42,Pay Part / $630,6.477,652,22,-630,15.411738,15.411738,43,0,1,2
+fresh-career,43,Apply supported launch target,6.477,22,22,0,15.411738,15.411738,43,0,1,2
+fresh-career,44,Enter club-run,6.477,22,22,0,15.411738,15.411738,43,0,1,2
+fresh-career,45,Settle club-run / loss,6.824,22,32,10,15.411738,15.208895,43,0,1,2
+fresh-career,46,Shutdown / garage,6.994,32,32,0,15.208895,15.208250,43,0,1,2
+fresh-career,47,Enter first-pass,6.994,32,32,0,15.208250,15.208250,43,0,1,2
+fresh-career,48,Settle first-pass / win,7.369,32,182,150,15.208250,15.005124,43,0,1,2
+fresh-career,49,Shutdown / garage,7.512,182,182,0,15.005124,15.004478,43,0,1,2
+fresh-career,50,Enter first-pass,7.512,182,182,0,15.004478,15.004478,43,0,1,2
+fresh-career,51,Settle first-pass / win,7.887,182,332,150,15.004478,14.801084,43,0,1,2
+fresh-career,52,Shutdown / garage,8.031,332,332,0,14.801084,14.800437,43,0,1,2
+fresh-career,53,Enter first-pass,8.031,332,332,0,14.800437,14.800437,43,0,1,2
+fresh-career,54,Settle first-pass / win,8.406,332,482,150,14.800437,14.596282,43,0,1,2
+fresh-career,55,Shutdown / garage,8.550,482,482,0,14.596282,14.595634,43,0,1,2
+fresh-career,56,Enter first-pass,8.550,482,482,0,14.595634,14.595634,43,0,1,2
+fresh-career,57,Settle first-pass / win,8.925,482,632,150,14.595634,14.390181,43,0,1,2
+fresh-career,58,Shutdown / garage,9.070,632,632,0,14.390181,14.389535,43,0,1,2
+fresh-career,59,Enter first-pass,9.070,632,632,0,14.389535,14.389535,43,0,1,2
+fresh-career,60,Settle first-pass / win,9.445,632,782,150,14.389535,14.182789,43,0,1,2
+fresh-career,61,Shutdown / garage,9.590,782,782,0,14.182789,14.182145,43,0,1,2
+fresh-career,62,Enter first-pass,9.590,782,782,0,14.182145,14.182145,43,0,1,2
+fresh-career,63,Settle first-pass / win,9.965,782,932,150,14.182145,13.974788,43,0,1,2
+fresh-career,64,Shutdown / garage,10.113,932,932,0,13.974788,13.974229,43,0,1,2
+fresh-career,65,Enter first-pass,10.113,932,932,0,13.974229,13.974229,43,0,1,2
+fresh-career,66,Settle first-pass / win,10.488,932,1082,150,13.974229,13.766651,43,0,1,2
+fresh-career,67,Shutdown / garage,10.638,1082,1082,0,13.766651,13.766088,43,0,1,2
+fresh-career,68,Enter first-pass,10.638,1082,1082,0,13.766088,13.766088,43,0,1,2
+fresh-career,69,Settle first-pass / win,11.013,1082,1232,150,13.766088,13.558195,43,0,1,2
+fresh-career,70,Shutdown / garage,11.163,1232,1232,0,13.558195,13.557632,43,0,1,2
+fresh-career,71,Enter first-pass,11.163,1232,1232,0,13.557632,13.557632,43,0,1,2
+fresh-career,72,Settle first-pass / win,11.538,1232,1382,150,13.557632,13.349506,43,0,1,2
+fresh-career,73,Shutdown / garage,11.690,1382,1382,0,13.349506,13.348942,43,0,1,2
+fresh-career,74,Enter first-pass,11.690,1382,1382,0,13.348942,13.348942,43,0,1,2
+fresh-career,75,Settle first-pass / win,12.065,1382,1532,150,13.348942,13.140511,43,0,1,2
+fresh-career,76,Shutdown / garage,12.217,1532,1532,0,13.140511,13.139945,43,0,1,2
+fresh-career,77,Enter first-pass,12.217,1532,1532,0,13.139945,13.139945,43,0,1,2
+fresh-career,78,Settle first-pass / win,12.592,1532,1682,150,13.139945,12.931215,43,0,1,2
+fresh-career,79,Shutdown / garage,12.746,1682,1682,0,12.931215,12.930648,43,0,1,2
+fresh-career,80,Enter first-pass,12.746,1682,1682,0,12.930648,12.930648,43,0,1,2
+fresh-career,81,Settle first-pass / win,13.121,1682,1832,150,12.930648,12.721690,43,0,1,2
+fresh-career,82,Shutdown / garage,13.276,1832,1832,0,12.721690,12.721122,43,0,1,2
+fresh-career,83,Pay Part / $1800,13.276,1832,32,-1800,12.721122,12.721122,44,0,1,2
+fresh-career,84,Enter club-run,13.276,32,32,0,12.721122,12.721122,44,0,1,2
+fresh-career,85,Settle club-run / loss,13.631,32,42,10,12.721122,12.510555,44,0,1,2
+fresh-career,86,Shutdown / garage,13.805,42,42,0,12.510555,12.509987,44,0,1,2
+fresh-career,87,Enter first-pass,13.805,42,42,0,12.509987,12.509987,44,0,1,2
+fresh-career,88,Settle first-pass / win,14.180,42,192,150,12.509987,12.299203,44,0,1,2
+fresh-career,89,Shutdown / garage,14.334,192,192,0,12.299203,12.298631,44,0,1,2
+fresh-career,90,Enter first-pass,14.334,192,192,0,12.298631,12.298631,44,0,1,2
+fresh-career,91,Settle first-pass / win,14.709,192,342,150,12.298631,12.087566,44,0,1,2
+fresh-career,92,Shutdown / garage,14.865,342,342,0,12.087566,12.086995,44,0,1,2
+fresh-career,93,Enter first-pass,14.865,342,342,0,12.086995,12.086995,44,0,1,2
+fresh-career,94,Settle first-pass / win,15.240,342,492,150,12.086995,11.875634,44,0,1,2
+fresh-career,95,Shutdown / garage,15.397,492,492,0,11.875634,11.875061,44,0,1,2
+fresh-career,96,Enter first-pass,15.397,492,492,0,11.875061,11.875061,44,0,1,2
+fresh-career,97,Settle first-pass / win,15.772,492,642,150,11.875061,11.663400,44,0,1,2
+fresh-career,98,Shutdown / garage,15.931,642,642,0,11.663400,11.662826,44,0,1,2
+fresh-career,99,Enter first-pass,15.931,642,642,0,11.662826,11.662826,44,0,1,2
+fresh-career,100,Settle first-pass / win,16.305,642,792,150,11.662826,11.450901,44,0,1,2
+fresh-career,101,Shutdown / garage,16.465,792,792,0,11.450901,11.450325,44,0,1,2
+fresh-career,102,Enter first-pass,16.465,792,792,0,11.450325,11.450325,44,0,1,2
+fresh-career,103,Settle first-pass / win,16.840,792,942,150,11.450325,11.238112,44,0,1,2
+fresh-career,104,Shutdown / garage,17.001,942,942,0,11.238112,11.237534,44,0,1,2
+fresh-career,105,Enter first-pass,17.001,942,942,0,11.237534,11.237534,44,0,1,2
+fresh-career,106,Settle first-pass / win,17.376,942,1092,150,11.237534,11.025038,44,0,1,2
+fresh-career,107,Shutdown / garage,17.538,1092,1092,0,11.025038,11.024457,44,0,1,2
+fresh-career,108,Enter first-pass,17.538,1092,1092,0,11.024457,11.024457,44,0,1,2
+fresh-career,109,Settle first-pass / win,17.913,1092,1242,150,11.024457,10.811684,44,0,1,2
+fresh-career,110,Shutdown / garage,18.076,1242,1242,0,10.811684,10.811103,44,0,1,2
+fresh-career,111,Pay Rebuild / $423,18.076,1242,819,-423,10.811103,10.811103,44,0,1,2
+fresh-career,112,Collect paid preventive rebuild,27.076,819,819,0,10.811103,10.811103,45,0,1,2
+fresh-career,113,Enter first-pass,27.076,819,819,0,10.811103,10.811103,45,0,1,2
+fresh-career,114,Settle first-pass / win,27.451,819,969,150,10.811103,10.608289,45,0,1,2
+fresh-career,115,Shutdown / garage,27.581,969,969,0,10.608289,10.607665,45,0,1,2
+fresh-career,116,Enter first-pass,27.581,969,969,0,10.607665,10.607665,45,0,1,2
+fresh-career,117,Settle first-pass / win,27.956,969,1119,150,10.607665,10.404861,45,0,1,2
+fresh-career,118,Shutdown / garage,28.086,1119,1119,0,10.404861,10.404237,45,0,1,2
+fresh-career,119,Enter first-pass,28.086,1119,1119,0,10.404237,10.404237,45,0,1,2
+fresh-career,120,Settle first-pass / win,28.461,1119,1269,150,10.404237,10.201454,45,0,1,2
+fresh-career,121,Shutdown / garage,28.591,1269,1269,0,10.201454,10.200830,45,0,1,2
+fresh-career,122,Enter first-pass,28.591,1269,1269,0,10.200830,10.200830,45,0,1,2
+fresh-career,123,Settle first-pass / win,28.966,1269,1419,150,10.200830,9.997968,45,0,1,2
+fresh-career,124,Shutdown / garage,29.096,1419,1419,0,9.997968,9.997344,45,0,1,2
+fresh-career,125,Enter first-pass,29.096,1419,1419,0,9.997344,9.997344,45,0,1,2
+fresh-career,126,Settle first-pass / win,29.471,1419,1569,150,9.997344,9.794509,45,0,1,2
+fresh-career,127,Shutdown / garage,29.602,1569,1569,0,9.794509,9.793885,45,0,1,2
+fresh-career,128,Enter first-pass,29.602,1569,1569,0,9.793885,9.793885,45,0,1,2
+fresh-career,129,Settle first-pass / win,29.977,1569,1719,150,9.793885,9.591060,45,0,1,2
+fresh-career,130,Shutdown / garage,30.107,1719,1719,0,9.591060,9.590435,45,0,1,2
+fresh-career,131,Enter first-pass,30.107,1719,1719,0,9.590435,9.590435,45,0,1,2
+fresh-career,132,Settle first-pass / win,30.482,1719,1869,150,9.590435,9.387621,45,0,1,2
+fresh-career,133,Shutdown / garage,30.613,1869,1869,0,9.387621,9.386996,45,0,1,2
+fresh-career,134,Enter first-pass,30.613,1869,1869,0,9.386996,9.386996,45,0,1,2
+fresh-career,135,Settle first-pass / win,30.987,1869,2019,150,9.386996,9.184183,45,0,1,2
+fresh-career,136,Shutdown / garage,31.118,2019,2019,0,9.184183,9.183558,45,0,1,2
+fresh-career,137,Pay Part / $1800,31.118,2019,219,-1800,9.183558,9.183558,46,0,1,2
+fresh-career,138,Enter club-run,31.118,219,219,0,9.183558,9.183558,46,0,1,2
+fresh-career,139,Settle club-run / win,31.463,219,444,225,9.183558,8.943911,46,0,1,4
+fresh-career,140,Shutdown / garage,31.594,444,444,0,8.943911,8.943337,46,0,1,4
+fresh-career,141,Enter club-run,31.594,444,444,0,8.943337,8.943337,46,0,1,4
+fresh-career,142,Settle club-run / win,31.939,444,669,225,8.943337,8.703633,46,0,1,4
+fresh-career,143,Shutdown / garage,32.071,669,669,0,8.703633,8.703059,46,0,1,4
+fresh-career,144,Enter club-run,32.071,669,669,0,8.703059,8.703059,46,0,1,4
+fresh-career,145,Settle club-run / win,32.415,669,894,225,8.703059,8.463355,46,0,1,4
+fresh-career,146,Shutdown / garage,32.547,894,894,0,8.463355,8.462782,46,0,1,4
+fresh-career,147,Enter club-run,32.547,894,894,0,8.462782,8.462782,46,0,1,4
+fresh-career,148,Settle club-run / win,32.892,894,1119,225,8.462782,8.223085,46,0,1,4
+fresh-career,149,Shutdown / garage,33.024,1119,1119,0,8.223085,8.222511,46,0,1,4
+fresh-career,150,Enter club-run,33.024,1119,1119,0,8.222511,8.222511,46,0,1,4
+fresh-career,151,Settle club-run / win,33.368,1119,1344,225,8.222511,7.982787,46,0,1,4
+fresh-career,152,Shutdown / garage,33.500,1344,1344,0,7.982787,7.982213,46,0,1,4
+fresh-career,153,Enter club-run,33.500,1344,1344,0,7.982213,7.982213,46,0,1,4
+fresh-career,154,Settle club-run / win,33.845,1344,1569,225,7.982213,7.742559,46,0,1,4
+fresh-career,155,Shutdown / garage,33.977,1569,1569,0,7.742559,7.741985,46,0,1,4
+fresh-career,156,Enter club-run,33.977,1569,1569,0,7.741985,7.741985,46,0,1,4
+fresh-career,157,Settle club-run / win,34.322,1569,1794,225,7.741985,7.502247,46,0,1,4
+fresh-career,158,Shutdown / garage,34.454,1794,1794,0,7.502247,7.501674,46,0,1,4
+fresh-career,159,Enter club-run,34.454,1794,1794,0,7.501674,7.501674,46,0,1,4
+fresh-career,160,Settle club-run / win,34.798,1794,2019,225,7.501674,7.261998,46,0,1,4
+fresh-career,161,Shutdown / garage,34.931,2019,2019,0,7.261998,7.261423,46,0,1,4
+fresh-career,162,Enter club-run,34.931,2019,2019,0,7.261423,7.261423,46,0,1,4
+fresh-career,163,Settle club-run / win,35.275,2019,2244,225,7.261423,7.021661,46,0,1,4
+fresh-career,164,Shutdown / garage,35.408,2244,2244,0,7.021661,7.021086,46,0,1,4
+fresh-career,165,Enter club-run,35.408,2244,2244,0,7.021086,7.021086,46,0,1,4
+fresh-career,166,Settle club-run / win,35.752,2244,2469,225,7.021086,6.781349,46,0,1,4
+fresh-career,167,Shutdown / garage,35.885,2469,2469,0,6.781349,6.780774,46,0,1,4
+fresh-career,168,Enter club-run,35.885,2469,2469,0,6.780774,6.780774,46,0,1,4
+fresh-career,169,Settle club-run / win,36.230,2469,2694,225,6.780774,6.541066,46,0,1,4
+fresh-career,170,Shutdown / garage,36.362,2694,2694,0,6.541066,6.540492,46,0,1,4
+fresh-career,171,Enter club-run,36.362,2694,2694,0,6.540492,6.540492,46,0,1,4
+fresh-career,172,Settle club-run / win,36.707,2694,2919,225,6.540492,6.300741,46,0,1,4
+fresh-career,173,Shutdown / garage,36.839,2919,2919,0,6.300741,6.300166,46,0,1,4
+fresh-career,174,Enter club-run,36.839,2919,2919,0,6.300166,6.300166,46,0,1,4
+fresh-career,175,Settle club-run / win,37.184,2919,3144,225,6.300166,6.060359,46,0,1,4
+fresh-career,176,Shutdown / garage,37.317,3144,3144,0,6.060359,6.059785,46,0,1,4
+fresh-career,177,Enter club-run,37.317,3144,3144,0,6.059785,6.059785,46,0,1,4
+fresh-career,178,Settle club-run / win,37.661,3144,3369,225,6.059785,5.820020,46,0,1,4
+fresh-career,179,Shutdown / garage,37.794,3369,3369,0,5.820020,5.819447,46,0,1,4
+fresh-career,180,Enter club-run,37.794,3369,3369,0,5.819447,5.819447,46,0,1,4
+fresh-career,181,Settle club-run / win,38.139,3369,3594,225,5.819447,5.579624,46,0,1,4
+fresh-career,182,Shutdown / garage,38.272,3594,3594,0,5.579624,5.579051,46,0,1,4
+fresh-career,183,Enter club-run,38.272,3594,3594,0,5.579051,5.579051,46,0,1,4
+fresh-career,184,Settle club-run / win,38.616,3594,3819,225,5.579051,5.339269,46,0,1,4
+fresh-career,185,Shutdown / garage,38.749,3819,3819,0,5.339269,5.338696,46,0,1,4
+fresh-career,186,Enter club-run,38.749,3819,3819,0,5.338696,5.338696,46,0,1,4
+fresh-career,187,Settle club-run / win,39.094,3819,4044,225,5.338696,5.098870,46,0,1,4
+fresh-career,188,Shutdown / garage,39.227,4044,4044,0,5.098870,5.098297,46,0,1,4
+fresh-career,189,Enter club-run,39.227,4044,4044,0,5.098297,5.098297,46,0,1,4
+fresh-career,190,Settle club-run / win,39.571,4044,4269,225,5.098297,4.858510,46,0,1,4
+fresh-career,191,Shutdown / garage,39.704,4269,4269,0,4.858510,4.857937,46,0,1,4
+fresh-career,192,Pay Part / $1800,39.704,4269,2469,-1800,4.857937,4.857937,47,0,1,4
+fresh-career,193,Pay Part / $1800,39.704,2469,669,-1800,4.857937,4.857937,48,0,1,4
+fresh-career,194,Apply tested starter gearing / launch,39.704,669,669,0,4.857937,4.857937,48,0,1,4
+fresh-career,195,Enter club-run,39.704,669,669,0,4.857937,4.857937,48,0,1,4
+fresh-career,196,Settle club-run / win,40.050,669,894,225,4.857937,4.611217,48,0,1,4
+fresh-career,197,Shutdown / garage,40.168,894,894,0,4.611217,4.610650,48,0,1,4
+fresh-career,198,Enter coupe-rival,40.168,894,894,0,4.610650,4.610650,48,0,1,4
+fresh-career,199,Settle coupe-rival / win,40.500,894,1219,325,4.610650,4.363968,48,0,1,8
+fresh-career,200,Shutdown / garage,40.631,1219,1219,0,4.363968,4.363401,48,0,1,8
+fresh-career,201,Enter coupe-rival,40.631,1219,1219,0,4.363401,4.363401,48,0,1,8
+fresh-career,202,Settle coupe-rival / win,40.964,1219,1544,325,4.363401,4.116742,48,0,1,8
+fresh-career,203,Shutdown / garage,41.095,1544,1544,0,4.116742,4.116175,48,0,1,8
+fresh-career,204,Enter coupe-rival,41.095,1544,1544,0,4.116175,4.116175,48,0,1,8
+fresh-career,205,Settle coupe-rival / win,41.427,1544,1869,325,4.116175,3.869554,48,0,1,8
+fresh-career,206,Shutdown / garage,41.558,1869,1869,0,3.869554,3.868986,48,0,1,8
+fresh-career,207,Enter coupe-rival,41.558,1869,1869,0,3.868986,3.868986,48,0,1,8
+fresh-career,208,Settle coupe-rival / win,41.891,1869,2194,325,3.868986,3.622282,48,0,1,8
+fresh-career,209,Shutdown / garage,42.022,2194,2194,0,3.622282,3.621714,48,0,1,8
+fresh-career,210,Enter coupe-rival,42.022,2194,2194,0,3.621714,3.621714,48,0,1,8
+fresh-career,211,Settle coupe-rival / win,42.355,2194,2519,325,3.621714,3.375020,48,0,1,8
+fresh-career,212,Shutdown / garage,42.486,2519,2519,0,3.375020,3.374452,48,0,1,8
+fresh-career,213,Enter coupe-rival,42.486,2519,2519,0,3.374452,3.374452,48,0,1,8
+fresh-career,214,Settle coupe-rival / win,42.818,2519,2844,325,3.374452,3.127782,48,0,1,8
+fresh-career,215,Shutdown / garage,42.950,2844,2844,0,3.127782,3.127215,48,0,1,8
+fresh-career,216,Enter coupe-rival,42.950,2844,2844,0,3.127215,3.127215,48,0,1,8
+fresh-career,217,Settle coupe-rival / win,43.282,2844,3169,325,3.127215,2.880582,48,0,1,8
+fresh-career,218,Shutdown / garage,43.413,3169,3169,0,2.880582,2.880015,48,0,1,8
+fresh-career,219,Pay Fuel / $20,43.413,3169,3149,-20,2.880015,12.880015,48,0,1,8
+fresh-career,220,Enter coupe-rival,43.413,3149,3149,0,12.880015,12.880015,48,0,1,8
+fresh-career,221,Settle coupe-rival / win,43.746,3149,3474,325,12.880015,12.632883,48,0,1,8
+fresh-career,222,Shutdown / garage,43.878,3474,3474,0,12.632883,12.632315,48,0,1,8
+fresh-career,223,Enter coupe-rival,43.878,3474,3474,0,12.632315,12.632315,48,0,1,8
+fresh-career,224,Settle coupe-rival / win,44.211,3474,3799,325,12.632315,12.385216,48,0,1,8
+fresh-career,225,Shutdown / garage,44.343,3799,3799,0,12.385216,12.384647,48,0,1,8
+fresh-career,226,Enter coupe-rival,44.343,3799,3799,0,12.384647,12.384647,48,0,1,8
+fresh-career,227,Settle coupe-rival / win,44.675,3799,4124,325,12.384647,12.137574,48,0,1,8
+fresh-career,228,Shutdown / garage,44.807,4124,4124,0,12.137574,12.137006,48,0,1,8
+fresh-career,229,Enter coupe-rival,44.807,4124,4124,0,12.137006,12.137006,48,0,1,8
+fresh-career,230,Settle coupe-rival / win,45.140,4124,4449,325,12.137006,11.889849,48,0,1,8
+fresh-career,231,Shutdown / garage,45.272,4449,4449,0,11.889849,11.889281,48,0,1,8
+fresh-career,232,Enter coupe-rival,45.272,4449,4449,0,11.889281,11.889281,48,0,1,8
+fresh-career,233,Settle coupe-rival / win,45.605,4449,4774,325,11.889281,11.642188,48,0,1,8
+fresh-career,234,Shutdown / garage,45.737,4774,4774,0,11.642188,11.641620,48,0,1,8
+fresh-career,235,Enter coupe-rival,45.737,4774,4774,0,11.641620,11.641620,48,0,1,8
+fresh-career,236,Settle coupe-rival / win,46.070,4774,5099,325,11.641620,11.394464,48,0,1,8
+fresh-career,237,Shutdown / garage,46.202,5099,5099,0,11.394464,11.393895,48,0,1,8
+fresh-career,238,Enter coupe-rival,46.202,5099,5099,0,11.393895,11.393895,48,0,1,8
+fresh-career,239,Settle coupe-rival / win,46.535,5099,5424,325,11.393895,11.146772,48,0,1,8
+fresh-career,240,Shutdown / garage,46.667,5424,5424,0,11.146772,11.146204,48,0,1,8
+fresh-career,241,Enter coupe-rival,46.667,5424,5424,0,11.146204,11.146204,48,0,1,8
+fresh-career,242,Settle coupe-rival / win,47.000,5424,5749,325,11.146204,10.899052,48,0,1,8
+fresh-career,243,Shutdown / garage,47.132,5749,5749,0,10.899052,10.898483,48,0,1,8
+fresh-career,244,Enter coupe-rival,47.132,5749,5749,0,10.898483,10.898483,48,0,1,8
+fresh-career,245,Settle coupe-rival / win,47.465,5749,6074,325,10.898483,10.651366,48,0,1,8
+fresh-career,246,Shutdown / garage,47.598,6074,6074,0,10.651366,10.650796,48,0,1,8
+fresh-career,247,Enter coupe-rival,47.598,6074,6074,0,10.650796,10.650796,48,0,1,8
+fresh-career,248,Settle coupe-rival / win,47.930,6074,6399,325,10.650796,10.403599,48,0,1,8
+fresh-career,249,Shutdown / garage,48.063,6399,6399,0,10.403599,10.403029,48,0,1,8
+fresh-career,250,Enter coupe-rival,48.063,6399,6399,0,10.403029,10.403029,48,0,1,8
+fresh-career,251,Settle coupe-rival / win,48.396,6399,6724,325,10.403029,10.155797,48,0,1,8
+fresh-career,252,Shutdown / garage,48.529,6724,6724,0,10.155797,10.155227,48,0,1,8
+fresh-career,253,Enter coupe-rival,48.529,6724,6724,0,10.155227,10.155227,48,0,1,8
+fresh-career,254,Settle coupe-rival / win,48.861,6724,7049,325,10.155227,9.908050,48,0,1,8
+fresh-career,255,Shutdown / garage,48.995,7049,7049,0,9.908050,9.907480,48,0,1,8
+fresh-career,256,Enter coupe-rival,48.995,7049,7049,0,9.907480,9.907480,48,0,1,8
+fresh-career,257,Settle coupe-rival / win,49.327,7049,7374,325,9.907480,9.660274,48,0,1,8
+fresh-career,258,Shutdown / garage,49.461,7374,7374,0,9.660274,9.659704,48,0,1,8
+fresh-career,259,Enter coupe-rival,49.461,7374,7374,0,9.659704,9.659704,48,0,1,8
+fresh-career,260,Settle coupe-rival / win,49.794,7374,7699,325,9.659704,9.412505,48,0,1,8
+fresh-career,261,Shutdown / garage,49.928,7699,7699,0,9.412505,9.411937,48,0,1,8
+fresh-career,262,Enter coupe-rival,49.928,7699,7699,0,9.411937,9.411937,48,0,1,8
+fresh-career,263,Settle coupe-rival / win,50.260,7699,8024,325,9.411937,9.164729,48,0,1,8
+fresh-career,264,Shutdown / garage,50.395,8024,8024,0,9.164729,9.164161,48,0,1,8
+fresh-career,265,Enter coupe-rival,50.395,8024,8024,0,9.164161,9.164161,48,0,1,8
+fresh-career,266,Settle coupe-rival / win,50.727,8024,8349,325,9.164161,8.916933,48,0,1,8
+fresh-career,267,Shutdown / garage,50.862,8349,8349,0,8.916933,8.916364,48,0,1,8
+fresh-career,268,Enter coupe-rival,50.862,8349,8349,0,8.916364,8.916364,48,0,1,8
+fresh-career,269,Settle coupe-rival / win,51.194,8349,8674,325,8.916364,8.669130,48,0,1,8
+fresh-career,270,Shutdown / garage,51.329,8674,8674,0,8.669130,8.668561,48,0,1,8
+fresh-career,271,Enter coupe-rival,51.329,8674,8674,0,8.668561,8.668561,48,0,1,8
+fresh-career,272,Settle coupe-rival / win,51.662,8674,8999,325,8.668561,8.421231,48,0,1,8
+fresh-career,273,Shutdown / garage,51.797,8999,8999,0,8.421231,8.420661,48,0,1,8
+fresh-career,274,Enter coupe-rival,51.797,8999,8999,0,8.420661,8.420661,48,0,1,8
+fresh-career,275,Settle coupe-rival / win,52.130,8999,9324,325,8.420661,8.173359,48,0,1,8
+fresh-career,276,Shutdown / garage,52.265,9324,9324,0,8.173359,8.172789,48,0,1,8
+fresh-career,277,Enter coupe-rival,52.265,9324,9324,0,8.172789,8.172789,48,0,1,8
+fresh-career,278,Settle coupe-rival / win,52.598,9324,9649,325,8.172789,7.925406,48,0,1,8
+fresh-career,279,Shutdown / garage,52.734,9649,9649,0,7.925406,7.924836,48,0,1,8
+fresh-career,280,Enter coupe-rival,52.734,9649,9649,0,7.924836,7.924836,48,0,1,8
+fresh-career,281,Settle coupe-rival / win,53.066,9649,9974,325,7.924836,7.677497,48,0,1,8
+fresh-career,282,Shutdown / garage,53.203,9974,9974,0,7.677497,7.676928,48,0,1,8
+fresh-career,283,Enter coupe-rival,53.203,9974,9974,0,7.676928,7.676928,48,0,1,8
+fresh-career,284,Settle coupe-rival / win,53.535,9974,10299,325,7.676928,7.429522,48,0,1,8
+fresh-career,285,Shutdown / garage,53.672,10299,10299,0,7.429522,7.428952,48,0,1,8
+fresh-career,286,Enter coupe-rival,53.672,10299,10299,0,7.428952,7.428952,48,0,1,8
+fresh-career,287,Settle coupe-rival / win,54.005,10299,10624,325,7.428952,7.181504,48,0,1,8
+fresh-career,288,Shutdown / garage,54.142,10624,10624,0,7.181504,7.180934,48,0,1,8
+fresh-career,289,Enter coupe-rival,54.142,10624,10624,0,7.180934,7.180934,48,0,1,8
+fresh-career,290,Settle coupe-rival / win,54.474,10624,10949,325,7.180934,6.933455,48,0,1,8
+fresh-career,291,Shutdown / garage,54.612,10949,10949,0,6.933455,6.932884,48,0,1,8
+fresh-career,292,Enter coupe-rival,54.612,10949,10949,0,6.932884,6.932884,48,0,1,8
+fresh-career,293,Settle coupe-rival / win,54.945,10949,11274,325,6.932884,6.685399,48,0,1,8
+fresh-career,294,Shutdown / garage,55.083,11274,11274,0,6.685399,6.684830,48,0,1,8
+fresh-career,295,Enter coupe-rival,55.083,11274,11274,0,6.684830,6.684830,48,0,1,8
+fresh-career,296,Settle coupe-rival / win,55.415,11274,11599,325,6.684830,6.437341,48,0,1,8
+fresh-career,297,Shutdown / garage,55.554,11599,11599,0,6.437341,6.436772,48,0,1,8
+fresh-career,298,Enter coupe-rival,55.554,11599,11599,0,6.436772,6.436772,48,0,1,8
+fresh-career,299,Settle coupe-rival / win,55.886,11599,11924,325,6.436772,6.189248,48,0,1,8
+fresh-career,300,Shutdown / garage,56.025,11924,11924,0,6.189248,6.188679,48,0,1,8
+fresh-career,301,Enter coupe-rival,56.025,11924,11924,0,6.188679,6.188679,48,0,1,8
+fresh-career,302,Settle coupe-rival / win,56.358,11924,12249,325,6.188679,5.941154,48,0,1,8
+fresh-career,303,Shutdown / garage,56.497,12249,12249,0,5.941154,5.940585,48,0,1,8
+fresh-career,304,Enter coupe-rival,56.497,12249,12249,0,5.940585,5.940585,48,0,1,8
+fresh-career,305,Settle coupe-rival / win,56.829,12249,12574,325,5.940585,5.692944,48,0,1,8
+fresh-career,306,Shutdown / garage,56.970,12574,12574,0,5.692944,5.692373,48,0,1,8
+fresh-career,307,Enter coupe-rival,56.970,12574,12574,0,5.692373,5.692373,48,0,1,8
+fresh-career,308,Settle coupe-rival / win,57.302,12574,12899,325,5.692373,5.444660,48,0,1,8
+fresh-career,309,Shutdown / garage,57.443,12899,12899,0,5.444660,5.444089,48,0,1,8
+fresh-career,310,Enter coupe-rival,57.443,12899,12899,0,5.444089,5.444089,48,0,1,8
+fresh-career,311,Settle coupe-rival / win,57.775,12899,13224,325,5.444089,5.196397,48,0,1,8
+fresh-career,312,Shutdown / garage,57.916,13224,13224,0,5.196397,5.195826,48,0,1,8
+fresh-career,313,Enter coupe-rival,57.916,13224,13224,0,5.195826,5.195826,48,0,1,8
+fresh-career,314,Settle coupe-rival / win,58.249,13224,13549,325,5.195826,4.948030,48,0,1,8
+fresh-career,315,Shutdown / garage,58.390,13549,13549,0,4.948030,4.947459,48,0,1,8
+fresh-career,316,Pay Part / $1800,58.390,13549,11749,-1800,4.947459,4.947459,49,0,1,8
+fresh-career,317,Enter coupe-rival,58.390,11749,11749,0,4.947459,4.947459,49,0,1,8
+fresh-career,318,Settle coupe-rival / win,58.723,11749,12074,325,4.947459,4.700085,49,0,1,8
+fresh-career,319,Shutdown / garage,58.856,12074,12074,0,4.700085,4.699515,49,0,1,8
+fresh-career,320,Enter coupe-rival,58.856,12074,12074,0,4.699515,4.699515,49,0,1,8
+fresh-career,321,Settle coupe-rival / win,59.188,12074,12399,325,4.699515,4.452180,49,0,1,8
+fresh-career,322,Shutdown / garage,59.321,12399,12399,0,4.452180,4.451610,49,0,1,8
+fresh-career,323,Enter coupe-rival,59.321,12399,12399,0,4.451610,4.451610,49,0,1,8
+fresh-career,324,Settle coupe-rival / win,59.653,12399,12724,325,4.451610,4.204202,49,0,1,8
+fresh-career,325,Shutdown / garage,59.786,12724,12724,0,4.204202,4.203632,49,0,1,8
+fresh-career,326,Enter coupe-rival,59.786,12724,12724,0,4.203632,4.203632,49,0,1,8
+fresh-career,327,Settle coupe-rival / win,60.119,12724,13049,325,4.203632,3.956261,49,0,1,8
+fresh-career,328,Shutdown / garage,60.252,13049,13049,0,3.956261,3.955692,49,0,1,8
+fresh-career,329,Enter coupe-rival,60.252,13049,13049,0,3.955692,3.955692,49,0,1,8
+fresh-career,330,Settle coupe-rival / win,60.584,13049,13374,325,3.955692,3.708363,49,0,1,8
+fresh-career,331,Shutdown / garage,60.717,13374,13374,0,3.708363,3.707794,49,0,1,8
+fresh-career,332,Enter coupe-rival,60.717,13374,13374,0,3.707794,3.707794,49,0,1,8
+fresh-career,333,Settle coupe-rival / win,61.050,13374,13699,325,3.707794,3.460391,49,0,1,8
+fresh-career,334,Shutdown / garage,61.183,13699,13699,0,3.460391,3.459821,49,0,1,8
+fresh-career,335,Enter coupe-rival,61.183,13699,13699,0,3.459821,3.459821,49,0,1,8
+fresh-career,336,Settle coupe-rival / win,61.515,13699,14024,325,3.459821,3.212453,49,0,1,8
+fresh-career,337,Shutdown / garage,61.648,14024,14024,0,3.212453,3.211884,49,0,1,8
+fresh-career,338,Pay Car / $11250,61.648,14024,2774,-11250,3.211884,53.211884,87,0,1,8
+fresh-career,339,Pay Part / $660,61.648,2774,2114,-660,53.211884,53.211884,88,0,1,8
+fresh-career,340,Pay Part / $1200,61.648,2114,914,-1200,53.211884,53.211884,89,0,1,8
+fresh-career,341,Enter local-final,61.648,914,914,0,53.211884,53.211884,89,0,1,8
+fresh-career,342,Settle local-final / win,61.950,914,1364,450,53.211884,52.740035,89,0,1,12
+fresh-career,343,Shutdown / garage,62.076,1364,1364,0,52.740035,52.735212,89,0,1,12
+fresh-career,344,Enter ladder-f-qualifier,62.076,1364,1314,-50,52.735212,52.735212,89,0,1,12
+fresh-career,345,Settle ladder-f-qualifier / win,62.450,1314,1989,675,52.735212,52.260219,89,0,1,16
+fresh-career,346,Shutdown / garage,62.503,1989,1989,0,52.260219,52.258179,89,0,1,16
+fresh-career,347,Enter ladder-f-rival,62.503,1989,1939,-50,52.258179,52.258179,89,0,1,16
+fresh-career,348,Settle ladder-f-rival / win,62.879,1939,2689,750,52.258179,51.782480,89,0,1,20
+fresh-career,349,Shutdown / garage,62.931,2689,2689,0,51.782480,51.780467,89,0,1,20
+fresh-career,350,Enter ladder-e-qualifier,62.931,2689,2614,-75,51.780467,51.780467,89,0,1,20
+fresh-career,351,Settle ladder-e-qualifier / win,63.292,2614,3464,850,51.780467,51.304941,89,0,1,24
+fresh-career,352,Shutdown / garage,63.360,3464,3464,0,51.304941,51.302343,89,0,1,24
+fresh-career,353,Enter ladder-e-rival,63.360,3464,3389,-75,51.302343,51.302343,89,0,1,24
+fresh-career,354,Settle ladder-e-rival / win,63.723,3389,4339,950,51.302343,50.826050,89,0,1,28
+fresh-career,355,Shutdown / garage,63.788,4339,4339,0,50.826050,50.823527,89,0,1,28
+fresh-career,356,Enter ladder-d-qualifier,63.788,4339,4239,-100,50.823527,50.823527,89,0,1,28
+fresh-career,357,Settle ladder-d-qualifier / win,64.122,4239,5314,1075,50.823527,50.347985,89,0,1,32
+fresh-career,358,Shutdown / garage,64.217,5314,5314,0,50.347985,50.344312,89,0,1,32
+fresh-career,359,Enter ladder-d-rival,64.217,5314,5214,-100,50.344312,50.344312,89,0,1,32
+fresh-career,360,Settle ladder-d-rival / win,64.535,5214,6414,1200,50.344312,49.868727,89,0,1,36
+fresh-career,361,Shutdown / garage,64.647,6414,6414,0,49.868727,49.864441,89,0,1,36
+fresh-career,362,Enter ladder-c-qualifier,64.647,6414,6289,-125,49.864441,49.864441,89,0,1,36
+fresh-career,363,Settle ladder-c-qualifier / win,64.977,6289,7639,1350,49.864441,49.387703,89,0,1,40
+fresh-career,364,Shutdown / garage,65.077,7639,7639,0,49.387703,49.383886,89,0,1,40
+fresh-career,365,Enter ladder-c-rival,65.077,7639,7514,-125,49.383886,49.383886,89,0,1,40
+fresh-career,366,Settle ladder-c-rival / win,65.402,7514,9014,1500,49.383886,48.906695,89,0,1,44
+fresh-career,367,Shutdown / garage,65.507,9014,9014,0,48.906695,48.902670,89,0,1,44
+fresh-career,368,Enter ladder-c-rival,65.507,9014,8889,-125,48.902670,48.902670,89,0,1,44
+fresh-career,369,Settle ladder-c-rival / win,65.832,8889,10064,1175,48.902670,48.425083,89,0,1,44
+fresh-career,370,Shutdown / garage,65.938,10064,10064,0,48.425083,48.421047,89,0,1,44
+fresh-career,371,Enter ladder-c-rival,65.938,10064,9939,-125,48.421047,48.421047,89,0,1,44
+fresh-career,372,Settle ladder-c-rival / win,66.263,9939,11114,1175,48.421047,47.942817,89,0,1,44
+fresh-career,373,Shutdown / garage,66.369,11114,11114,0,47.942817,47.938765,89,0,1,44
+fresh-career,374,Enter ladder-c-rival,66.369,11114,10989,-125,47.938765,47.938765,89,0,1,44
+fresh-career,375,Settle ladder-c-rival / win,66.694,10989,12164,1175,47.938765,47.459877,89,0,1,44
+fresh-career,376,Shutdown / garage,66.800,12164,12164,0,47.459877,47.455810,89,0,1,44
+fresh-career,377,Pay Part / $648,66.800,12164,11516,-648,47.455810,47.455810,90,0,1,44
+fresh-career,378,Pay Part / $600,66.800,11516,10916,-600,47.455810,47.455810,91,0,1,44
+fresh-career,379,Pay Part / $648,66.800,10916,10268,-648,47.455810,47.455810,92,0,1,44
+fresh-career,380,Pay Part / $600,66.800,10268,9668,-600,47.455810,47.455810,93,0,1,44
+fresh-career,381,Pay Part / $600,66.800,9668,9068,-600,47.455810,47.455810,94,0,1,44
+fresh-career,382,Pay Part / $600,66.800,9068,8468,-600,47.455810,47.455810,95,0,1,44
+fresh-career,383,Pay Part / $1926,66.800,8468,6542,-1926,47.455810,47.455810,96,0,1,44
+fresh-career,384,Pay Part / $1800,66.800,6542,4742,-1800,47.455810,47.455810,97,0,1,44
+fresh-career,385,Pay Part / $1800,66.800,4742,2942,-1800,47.455810,47.455810,98,0,1,44
+fresh-career,386,Pay Part / $1800,66.800,2942,1142,-1800,47.455810,47.455810,99,0,1,44
+fresh-career,387,Strip optional interior/accessories; retain originals,66.800,1142,1142,0,47.455810,47.455810,99,0,1,44
+fresh-career,388,Enter ladder-b-qualifier,66.800,1142,992,-150,47.455810,47.455810,99,0,1,44
+fresh-career,389,Settle ladder-b-qualifier / win,67.107,992,2667,1675,47.455810,46.883966,99,0,1,48
+fresh-career,390,Shutdown / garage,67.219,2667,2667,0,46.883966,46.879696,99,0,1,48
+fresh-career,391,Enter ladder-b-rival,67.219,2667,2517,-150,46.879696,46.879696,99,0,1,48
+fresh-career,392,Settle ladder-b-rival / win,67.509,2517,4392,1875,46.879696,46.307262,99,0,1,52
+fresh-career,393,Shutdown / garage,67.638,4392,4392,0,46.307262,46.302311,99,0,1,52
+fresh-career,394,Enter ladder-a-qualifier,67.638,4392,4217,-175,46.302311,46.302311,99,0,1,52
+fresh-career,395,Settle ladder-a-qualifier / win,67.937,4217,6317,2100,46.302311,45.728667,99,0,1,56
+fresh-career,396,Shutdown / garage,68.057,6317,6317,0,45.728667,45.724046,99,0,1,56
+fresh-career,397,Enter ladder-a-rival,68.057,6317,6142,-175,45.724046,45.724046,99,0,1,56
+fresh-career,398,Settle ladder-a-rival / win,68.343,6142,8492,2350,45.724046,45.150143,99,0,1,60
+fresh-career,399,Shutdown / garage,68.477,8492,8492,0,45.150143,45.144978,99,0,1,60
+fresh-career,400,Enter ladder-s-qualifier,68.477,8492,8292,-200,45.144978,45.144978,99,0,1,60
+fresh-career,401,Settle ladder-s-qualifier / win,68.785,8292,10917,2625,45.144978,44.569374,99,0,1,64
+fresh-career,402,Shutdown / garage,68.898,10917,10917,0,44.569374,44.565061,99,0,1,64
+fresh-career,403,Enter ladder-s-rival,68.898,10917,10717,-200,44.565061,44.565061,99,0,1,64
+fresh-career,404,Settle ladder-s-rival / win,69.175,10717,13642,2925,44.565061,43.989455,99,0,1,68
+fresh-career,405,Shutdown / garage,69.319,13642,13642,0,43.989455,43.983960,99,0,1,68
+fresh-career,406,Pay Fuel / $19,69.319,13642,13623,-19,43.983960,53.211884,99,0,1,68
+fresh-career,407,Assign previously raced build,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,408,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,409,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,410,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,411,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,412,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,413,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,414,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,415,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,416,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,417,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,418,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,419,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,420,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,421,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,422,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,423,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,424,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,425,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,426,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,427,Independent save/transaction while job active,69.319,13623,13623,0,53.211884,53.211884,99,0,1,68
+fresh-career,428,Claim previously raced reserved build,69.819,13623,13643,20,53.211884,53.211884,99,0,1,68

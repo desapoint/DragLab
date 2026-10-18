@@ -169,14 +169,14 @@ namespace DragLab.Domain.Mechanics
         public static void Wear(PartInstance part,double loss)
         {
             if(loss<=0||part.condition.elements==null)return;
-            foreach(var e in part.condition.elements){e.wearRemainder+=loss;if(e.wearRemainder>=.000001){e.health=(float)Math.Max(0,e.health-e.wearRemainder);e.wearRemainder=0;}}
+            foreach(var e in part.condition.elements)ComponentWear.Apply(e,loss);
         }
         public static void TickLocal(CarSimulation car,double dt)
         {
             if(car.driver.WearRate<=0||car.state.stalled||car.state.engineFailed)return;
             var springs=car.mechanics.Part(PartCategory.ValveSprings);var valves=car.mechanics.Part(PartCategory.Valves);
             if(springs==null||valves==null)return;
-            foreach(var e in springs.condition.elements){if(e.fault!=ElementFault.WeakSpring&&e.health>.5)continue;double safe=car.spec.valvetrain.springSafeRpm*(.6+.4*e.health)*(e.fault==ElementFault.WeakSpring?1-e.severity*.65:1);double excess=Math.Max(0,car.state.rpm/Math.Max(500,safe)-1);var valve=valves.condition.elements.FirstOrDefault(v=>v.cylinder==e.cylinder&&v.valve==e.valve);if(valve==null)continue;valve.health=(float)Math.Max(0,valve.health-excess*excess*.015*dt*car.driver.WearRate);if(valve.health<=0){valve.fault=car.spec.interferenceEngine?ElementFault.DroppedValve:ElementFault.Disabled;valve.severity=1;}}
+            foreach(var e in springs.condition.elements){if(e.fault!=ElementFault.WeakSpring&&e.health>.5)continue;double safe=car.spec.valvetrain.springSafeRpm*(.6+.4*e.health)*(e.fault==ElementFault.WeakSpring?1-e.severity*.65:1);double excess=Math.Max(0,car.state.rpm/Math.Max(500,safe)-1);var valve=valves.condition.elements.FirstOrDefault(v=>v.cylinder==e.cylinder&&v.valve==e.valve);if(valve==null)continue;ComponentWear.Apply(valve,excess*excess*.015*dt*car.driver.WearRate);if(valve.health<=0){valve.fault=car.spec.interferenceEngine?ElementFault.DroppedValve:ElementFault.Disabled;valve.severity=1;}}
         }
         static readonly int[][] orders=Enumerable.Range(1,16).Select(n=>n==4?new[]{0,2,3,1}:n==6?new[]{0,4,2,5,1,3}:n==8?new[]{0,7,3,2,5,4,6,1}:Enumerable.Range(0,n).ToArray()).ToArray();
         public static int[] FiringOrder(int n){return orders[Math.Max(1,Math.Min(16,n))-1];}

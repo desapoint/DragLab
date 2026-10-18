@@ -77,7 +77,7 @@ namespace DragLab.Domain
                     rate+=Math.Pow(Math.Max(0,c.temperatureC/d.thermalLimitC-1),2)/d.overloadSeconds*car.driver.WearRate;
                     if(d.category==PartCategory.GlowPlugs)rate=.00000008*(1-s.engineTemperature)*car.driver.WearRate;
                     rate*=3000000000/Math.Max(1,d.wearEnergyJ);
-                    EngineElements.Wear(p,rate*dt);c.serviceWearRemainder+=rate*dt; if(c.serviceWearRemainder>=.000001){c.health=(float)Math.Max(0,c.health-c.serviceWearRemainder);c.serviceWearRemainder=0;} c.runningSeconds+=dt;
+                    EngineElements.Wear(p,rate*dt);ComponentWear.Apply(c,rate*dt);c.runningSeconds+=dt;
                     if(c.health<=0){c.failed=true;c.failureReason=s.lubricationFactor<.4?"Oil starvation damage":s.valveFloat>.05?"Valve float / valve contact":"Mechanical wear depleted";}
                 }
                 if(running&&(d.category==PartCategory.FuelSystem||d.category==PartCategory.Ignition||d.category==PartCategory.SparkPlugs||d.category==PartCategory.HeadIntake||d.category==PartCategory.OilFilter))c.deposits=DragMath.Clamp(c.deposits+dt*(d.category==PartCategory.OilFilter?.0000007/Math.Max(1,d.wearEnergyJ/3000000000):.0000001)*car.driver.WearRate,0,1);

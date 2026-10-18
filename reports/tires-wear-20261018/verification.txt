@@ -1,0 +1,203 @@
+PASS: city-three: distinct compound choices
+PASS: city-three: high-output grip headroom
+PASS: city-three/Tires/0: valid authoring and no tuning unlocked
+PASS: city-three/Tires/1: valid authoring and no tuning unlocked
+PASS: city-three/Tires/2: valid authoring and no tuning unlocked
+PASS: city-three/Tires/3: valid authoring and no tuning unlocked
+PASS: city-three/Tires/Touring: valid authoring and no tuning unlocked
+PASS: city-three/Tires/StreetSemiSlick: valid authoring and no tuning unlocked
+PASS: city-three/Tires/EnduranceRadial: valid authoring and no tuning unlocked
+PASS: city-three/Tires/ProRadial: valid authoring and no tuning unlocked
+PASS: city-three/Tires/SlickMedium: valid authoring and no tuning unlocked
+PASS: city-three/Tires/SlickSoft: valid authoring and no tuning unlocked
+PASS: city-three/Tires/QualifyingSlick: valid authoring and no tuning unlocked
+PASS: juniper-club: distinct compound choices
+PASS: juniper-club: high-output grip headroom
+PASS: juniper-club/Tires/0: valid authoring and no tuning unlocked
+PASS: juniper-club/Tires/1: valid authoring and no tuning unlocked
+PASS: juniper-club/Tires/2: valid authoring and no tuning unlocked
+PASS: juniper-club/Tires/3: valid authoring and no tuning unlocked
+PASS: juniper-club/Tires/Touring: valid authoring and no tuning unlocked
+PASS: juniper-club/Tires/StreetSemiSlick: valid authoring and no tuning unlocked
+PASS: juniper-club/Tires/EnduranceRadial: valid authoring and no tuning unlocked
+PASS: juniper-club/Tires/ProRadial: valid authoring and no tuning unlocked
+PASS: juniper-club/Tires/SlickMedium: valid authoring and no tuning unlocked
+PASS: juniper-club/Tires/SlickSoft: valid authoring and no tuning unlocked
+PASS: juniper-club/Tires/QualifyingSlick: valid authoring and no tuning unlocked
+PASS: juniper-economy: distinct compound choices
+PASS: juniper-economy: high-output grip headroom
+PASS: juniper-economy/Tires/0: valid authoring and no tuning unlocked
+PASS: juniper-economy/Tires/1: valid authoring and no tuning unlocked
+PASS: juniper-economy/Tires/2: valid authoring and no tuning unlocked
+PASS: juniper-economy/Tires/3: valid authoring and no tuning unlocked
+PASS: juniper-economy/Tires/Touring: valid authoring and no tuning unlocked
+PASS: juniper-economy/Tires/StreetSemiSlick: valid authoring and no tuning unlocked
+PASS: juniper-economy/Tires/EnduranceRadial: valid authoring and no tuning unlocked
+PASS: juniper-economy/Tires/ProRadial: valid authoring and no tuning unlocked
+PASS: juniper-economy/Tires/SlickMedium: valid authoring and no tuning unlocked
+PASS: juniper-economy/Tires/SlickSoft: valid authoring and no tuning unlocked
+PASS: juniper-economy/Tires/QualifyingSlick: valid authoring and no tuning unlocked
+PASS: kestrel-track: distinct compound choices
+PASS: kestrel-track: high-output grip headroom
+PASS: kestrel-track/Tires/0: valid authoring and no tuning unlocked
+PASS: kestrel-track/Tires/1: valid authoring and no tuning unlocked
+PASS: kestrel-track/Tires/2: valid authoring and no tuning unlocked
+PASS: kestrel-track/Tires/3: valid authoring and no tuning unlocked
+PASS: kestrel-track/Tires/Touring: valid authoring and no tuning unlocked
+PASS: kestrel-track/Tires/StreetSemiSlick: valid authoring and no tuning unlocked
+PASS: kestrel-track/Tires/EnduranceRadial: valid authoring and no tuning unlocked
+PASS: kestrel-track/Tires/ProRadial: valid authoring and no tuning unlocked
+PASS: kestrel-track/Tires/SlickMedium: valid authoring and no tuning unlocked
+PASS: kestrel-track/Tires/SlickSoft: valid authoring and no tuning unlocked
+PASS: kestrel-track/Tires/QualifyingSlick: valid authoring and no tuning unlocked
+PASS: rally-sedan: distinct compound choices
+PASS: rally-sedan: high-output grip headroom
+PASS: rally-sedan/Tires/0: valid authoring and no tuning unlocked
+PASS: rally-sedan/Tires/1: valid authoring and no tuning unlocked
+PASS: rally-sedan/Tires/2: valid authoring and no tuning unlocked
+PASS: rally-sedan/Tires/3: valid authoring and no tuning unlocked
+PASS: rally-sedan/Tires/Touring: valid authoring and no tuning unlocked
+PASS: rally-sedan/Tires/StreetSemiSlick: valid authoring and no tuning unlocked
+PASS: rally-sedan/Tires/EnduranceRadial: valid authoring and no tuning unlocked
+PASS: rally-sedan/Tires/ProRadial: valid authoring and no tuning unlocked
+PASS: rally-sedan/Tires/SlickMedium: valid authoring and no tuning unlocked
+PASS: rally-sedan/Tires/SlickSoft: valid authoring and no tuning unlocked
+PASS: rally-sedan/Tires/QualifyingSlick: valid authoring and no tuning unlocked
+PASS: sport-coupe: distinct compound choices
+PASS: sport-coupe: high-output grip headroom
+PASS: sport-coupe/Tires/0: valid authoring and no tuning unlocked
+PASS: sport-coupe/Tires/1: valid authoring and no tuning unlocked
+PASS: sport-coupe/Tires/2: valid authoring and no tuning unlocked
+PASS: sport-coupe/Tires/3: valid authoring and no tuning unlocked
+PASS: sport-coupe/Tires/Touring: valid authoring and no tuning unlocked
+PASS: sport-coupe/Tires/StreetSemiSlick: valid authoring and no tuning unlocked
+PASS: sport-coupe/Tires/EnduranceRadial: valid authoring and no tuning unlocked
+PASS: sport-coupe/Tires/ProRadial: valid authoring and no tuning unlocked
+PASS: sport-coupe/Tires/SlickMedium: valid authoring and no tuning unlocked
+PASS: sport-coupe/Tires/SlickSoft: valid authoring and no tuning unlocked
+PASS: sport-coupe/Tires/QualifyingSlick: valid authoring and no tuning unlocked
+PASS: starter-hatch: distinct compound choices
+PASS: starter-hatch: high-output grip headroom
+PASS: starter-hatch/Tires/0: valid authoring and no tuning unlocked
+PASS: starter-hatch/Tires/1: valid authoring and no tuning unlocked
+PASS: starter-hatch/Tires/2: valid authoring and no tuning unlocked
+PASS: starter-hatch/Tires/3: valid authoring and no tuning unlocked
+PASS: starter-hatch/Tires/Touring: valid authoring and no tuning unlocked
+PASS: starter-hatch/Tires/StreetSemiSlick: valid authoring and no tuning unlocked
+PASS: starter-hatch/Tires/EnduranceRadial: valid authoring and no tuning unlocked
+PASS: starter-hatch/Tires/ProRadial: valid authoring and no tuning unlocked
+PASS: starter-hatch/Tires/SlickMedium: valid authoring and no tuning unlocked
+PASS: starter-hatch/Tires/SlickSoft: valid authoring and no tuning unlocked
+PASS: starter-hatch/Tires/QualifyingSlick: valid authoring and no tuning unlocked
+PASS: super-v8: distinct compound choices
+PASS: super-v8: high-output grip headroom
+PASS: super-v8/Tires/0: valid authoring and no tuning unlocked
+PASS: super-v8/Tires/1: valid authoring and no tuning unlocked
+PASS: super-v8/Tires/2: valid authoring and no tuning unlocked
+PASS: super-v8/Tires/3: valid authoring and no tuning unlocked
+PASS: super-v8/Tires/Touring: valid authoring and no tuning unlocked
+PASS: super-v8/Tires/StreetSemiSlick: valid authoring and no tuning unlocked
+PASS: super-v8/Tires/EnduranceRadial: valid authoring and no tuning unlocked
+PASS: super-v8/Tires/ProRadial: valid authoring and no tuning unlocked
+PASS: super-v8/Tires/SlickMedium: valid authoring and no tuning unlocked
+PASS: super-v8/Tires/SlickSoft: valid authoring and no tuning unlocked
+PASS: super-v8/Tires/QualifyingSlick: valid authoring and no tuning unlocked
+PASS: timber-diesel: distinct compound choices
+PASS: timber-diesel: high-output grip headroom
+PASS: timber-diesel/Tires/0: valid authoring and no tuning unlocked
+PASS: timber-diesel/Tires/1: valid authoring and no tuning unlocked
+PASS: timber-diesel/Tires/2: valid authoring and no tuning unlocked
+PASS: timber-diesel/Tires/3: valid authoring and no tuning unlocked
+PASS: timber-diesel/Tires/Touring: valid authoring and no tuning unlocked
+PASS: timber-diesel/Tires/StreetSemiSlick: valid authoring and no tuning unlocked
+PASS: timber-diesel/Tires/EnduranceRadial: valid authoring and no tuning unlocked
+PASS: timber-diesel/Tires/ProRadial: valid authoring and no tuning unlocked
+PASS: timber-diesel/Tires/SlickMedium: valid authoring and no tuning unlocked
+PASS: timber-diesel/Tires/SlickSoft: valid authoring and no tuning unlocked
+PASS: timber-diesel/Tires/QualifyingSlick: valid authoring and no tuning unlocked
+PASS: timber-diesel-tow: distinct compound choices
+PASS: timber-diesel-tow: high-output grip headroom
+PASS: timber-diesel-tow/Tires/0: valid authoring and no tuning unlocked
+PASS: timber-diesel-tow/Tires/1: valid authoring and no tuning unlocked
+PASS: timber-diesel-tow/Tires/2: valid authoring and no tuning unlocked
+PASS: timber-diesel-tow/Tires/3: valid authoring and no tuning unlocked
+PASS: timber-diesel-tow/Tires/Touring: valid authoring and no tuning unlocked
+PASS: timber-diesel-tow/Tires/StreetSemiSlick: valid authoring and no tuning unlocked
+PASS: timber-diesel-tow/Tires/EnduranceRadial: valid authoring and no tuning unlocked
+PASS: timber-diesel-tow/Tires/ProRadial: valid authoring and no tuning unlocked
+PASS: timber-diesel-tow/Tires/SlickMedium: valid authoring and no tuning unlocked
+PASS: timber-diesel-tow/Tires/SlickSoft: valid authoring and no tuning unlocked
+PASS: timber-diesel-tow/Tires/QualifyingSlick: valid authoring and no tuning unlocked
+PASS: touring-six: distinct compound choices
+PASS: touring-six: high-output grip headroom
+PASS: touring-six/Tires/0: valid authoring and no tuning unlocked
+PASS: touring-six/Tires/1: valid authoring and no tuning unlocked
+PASS: touring-six/Tires/2: valid authoring and no tuning unlocked
+PASS: touring-six/Tires/3: valid authoring and no tuning unlocked
+PASS: touring-six/Tires/Touring: valid authoring and no tuning unlocked
+PASS: touring-six/Tires/StreetSemiSlick: valid authoring and no tuning unlocked
+PASS: touring-six/Tires/EnduranceRadial: valid authoring and no tuning unlocked
+PASS: touring-six/Tires/ProRadial: valid authoring and no tuning unlocked
+PASS: touring-six/Tires/SlickMedium: valid authoring and no tuning unlocked
+PASS: touring-six/Tires/SlickSoft: valid authoring and no tuning unlocked
+PASS: touring-six/Tires/QualifyingSlick: valid authoring and no tuning unlocked
+PASS: utility-pickup: distinct compound choices
+PASS: utility-pickup: high-output grip headroom
+PASS: utility-pickup/Tires/0: valid authoring and no tuning unlocked
+PASS: utility-pickup/Tires/1: valid authoring and no tuning unlocked
+PASS: utility-pickup/Tires/2: valid authoring and no tuning unlocked
+PASS: utility-pickup/Tires/3: valid authoring and no tuning unlocked
+PASS: utility-pickup/Tires/Touring: valid authoring and no tuning unlocked
+PASS: utility-pickup/Tires/StreetSemiSlick: valid authoring and no tuning unlocked
+PASS: utility-pickup/Tires/EnduranceRadial: valid authoring and no tuning unlocked
+PASS: utility-pickup/Tires/ProRadial: valid authoring and no tuning unlocked
+PASS: utility-pickup/Tires/SlickMedium: valid authoring and no tuning unlocked
+PASS: utility-pickup/Tires/SlickSoft: valid authoring and no tuning unlocked
+PASS: utility-pickup/Tires/QualifyingSlick: valid authoring and no tuning unlocked
+PASS: v8-muscle: distinct compound choices
+PASS: v8-muscle: high-output grip headroom
+PASS: v8-muscle/Tires/0: valid authoring and no tuning unlocked
+PASS: v8-muscle/Tires/1: valid authoring and no tuning unlocked
+PASS: v8-muscle/Tires/2: valid authoring and no tuning unlocked
+PASS: v8-muscle/Tires/3: valid authoring and no tuning unlocked
+PASS: v8-muscle/Tires/Touring: valid authoring and no tuning unlocked
+PASS: v8-muscle/Tires/StreetSemiSlick: valid authoring and no tuning unlocked
+PASS: v8-muscle/Tires/EnduranceRadial: valid authoring and no tuning unlocked
+PASS: v8-muscle/Tires/ProRadial: valid authoring and no tuning unlocked
+PASS: v8-muscle/Tires/SlickMedium: valid authoring and no tuning unlocked
+PASS: v8-muscle/Tires/SlickSoft: valid authoring and no tuning unlocked
+PASS: v8-muscle/Tires/QualifyingSlick: valid authoring and no tuning unlocked
+PASS: 50 reference clean passes / Full: appropriate persistent wear
+PASS: 50 reference clean passes / Partial: appropriate persistent wear
+PASS: 50 reference clean passes / None: appropriate persistent wear
+PASS: StreetSemiSlick: checkout publishes through the real ledger transaction /
+PASS: StreetSemiSlick: two rear units charge the reviewed stock/express total and keep fronts
+PASS: StreetSemiSlick: removed worn tire remains in inventory
+PASS: StreetSemiSlick: actual per-corner compound and ownership survive reload
+PASS: EnduranceRadial: checkout publishes through the real ledger transaction /
+PASS: EnduranceRadial: two rear units charge the reviewed stock/express total and keep fronts
+PASS: EnduranceRadial: removed worn tire remains in inventory
+PASS: EnduranceRadial: actual per-corner compound and ownership survive reload
+PASS: ProRadial: checkout publishes through the real ledger transaction /
+PASS: ProRadial: two rear units charge the reviewed stock/express total and keep fronts
+PASS: ProRadial: removed worn tire remains in inventory
+PASS: ProRadial: actual per-corner compound and ownership survive reload
+PASS: SlickMedium: checkout publishes through the real ledger transaction /
+PASS: SlickMedium: two rear units charge the reviewed stock/express total and keep fronts
+PASS: SlickMedium: removed worn tire remains in inventory
+PASS: SlickMedium: actual per-corner compound and ownership survive reload
+PASS: SlickSoft: checkout publishes through the real ledger transaction /
+PASS: SlickSoft: two rear units charge the reviewed stock/express total and keep fronts
+PASS: SlickSoft: removed worn tire remains in inventory
+PASS: SlickSoft: actual per-corner compound and ownership survive reload
+PASS: QualifyingSlick: checkout publishes through the real ledger transaction /
+PASS: QualifyingSlick: two rear units charge the reviewed stock/express total and keep fronts
+PASS: QualifyingSlick: removed worn tire remains in inventory
+PASS: QualifyingSlick: actual per-corner compound and ownership survive reload
+PASS: Tiny mechanical losses accumulate instead of rounding away
+PASS: Sub-tick wear remainder survives serialization
+PASS: draglab-variety-v18: recover only known monotonic resource journals after physics update
+PASS: draglab-variety-v19: recover only known monotonic resource journals after physics update
+PASS: draglab-variety-v20: recover only known monotonic resource journals after physics update
+PASS: unknown-future-model: recover only known monotonic resource journals after physics update
+Checks: 202 / failures: 0

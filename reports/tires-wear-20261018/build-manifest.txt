@@ -1,0 +1,5 @@
+Unity 6000.6.4f1 Windows development build / content revision 7 / physics draglab-variety-v21
+Build completed; packaged purchase 293/0, stored-tire swap 57/0 and maintenance 80/0 passed.
+Game/Builds/Windows/DragLab.exe | 667136 bytes | SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+Game/Builds/Windows/DragLab_Data/Managed/Assembly-CSharp.dll | 2800640 bytes | SHA256 3877387d9f22056c2d48ae0f37cc379ec320c23dba0ce9e9c71dc095b02427bb
+Game/Builds/Windows/DragLab_Data/resources.assets | 994880 bytes | SHA256 b78ea6853846bf2153b2831e9d58bd5c4ac187db65c106b255a6482d32bdbc5d

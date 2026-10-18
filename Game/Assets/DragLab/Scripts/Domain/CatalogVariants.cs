@@ -57,7 +57,7 @@ namespace DragLab.Domain.Mechanics
             race.capacityScale = 2.1f; race.massKg = 11; race.wearEnergyJ = 45000000; race.thermalLimitC = 340;
             race.description = "Fixed high transferable torque and heat tolerance, with less sliding-work life than the street organic kit. More capacity does not mean longer life.";
             var tires = Variant(catalog, spec, PartCategory.Tires, "Touring", "endurance touring compound", 500, 0);
-            tires.grip = .95f; tires.tireLifeDistanceM = 65000000; tires.wearEnergyJ = 60000000;
+            tires.grip = .95f; tires.tireLifeDistanceM = 250000; tires.wearEnergyJ = 60000000;
             tires.description = "Fixed lower-friction compound with greater rolling and sliding lifetime. Pressure and fitment remain service adjustments; compound properties require replacing tires.";
             var brakes = Variant(catalog, spec, PartCategory.Brakes, "Endurance", "endurance brake kit", 1600);
             brakes.capacityScale = 1.12f; brakes.massKg = 37; brakes.heatCapacityJPerC = 20000; brakes.wearEnergyJ = 9000000000f; brakes.coolingWattsPerC = 85;

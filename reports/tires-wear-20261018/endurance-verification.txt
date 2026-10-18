@@ -1,0 +1,111 @@
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 1
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 2
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 3
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 4
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 5
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 6
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 7
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 8
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 9
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 10
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 11
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 12
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 13
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 14
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 15
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 16
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 17
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 18
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 19
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 20
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 21
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 22
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 23
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 24
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 25
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 26
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 27
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 28
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 29
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 30
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 31
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 32
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 33
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 34
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 35
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 36
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 37
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 38
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 39
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 40
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 41
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 42
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 43
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 44
+PASS: 3: tire life does not invent an engine/drivetrain failure at pass 45
+PASS: 3: real clean-pass life reaches exhaustion in 40–60 passes (actual 45)
+PASS: 3: exhausted individual tire condition survives reload
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 1
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 2
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 3
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 4
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 5
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 6
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 7
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 8
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 9
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 10
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 11
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 12
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 13
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 14
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 15
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 16
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 17
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 18
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 19
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 20
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 21
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 22
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 23
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 24
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 25
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 26
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 27
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 28
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 29
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 30
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 31
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 32
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 33
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 34
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 35
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 36
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 37
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 38
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 39
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 40
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 41
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 42
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 43
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 44
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 45
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 46
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 47
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 48
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 49
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 50
+PASS: SlickMedium: tire life does not invent an engine/drivetrain failure at pass 51
+PASS: SlickMedium: real clean-pass life reaches exhaustion in 40–60 passes (actual 51)
+PASS: SlickMedium: exhausted individual tire condition survives reload
+PASS: Higher compound grip reduces high-gear wheelspin at the same engine output
+PASS: Grip change does not secretly cut engine output
+PASS: Clutch-loss fixture uses an actual friction-clutch manual, not a torque converter
+PASS: A worn stock clutch that cannot hold the tune transmits less work and dissipates more heat
+PASS: Clutch output respects the engine plus initial rotational-energy budget
+PASS: None wear consumes neither health nor the saved sub-tick remainder
+PASS: Mechanical partial wear is exactly 25%, including sub-float remainder / 1E-12
+PASS: Mechanical partial wear is exactly 25%, including sub-float remainder / 1E-09
+PASS: Mechanical partial wear is exactly 25%, including sub-float remainder / 1E-06
+PASS: Accumulated wear reaches a real failed health threshold
+Checks: 110 / failures: 0

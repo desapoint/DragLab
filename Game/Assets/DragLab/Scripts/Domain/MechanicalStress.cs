@@ -135,7 +135,7 @@ namespace DragLab.Domain
                 double loss = heat * dt / d.wearEnergyJ + dt * (overload * overload + overspeed * overspeed * 8 + thermal * thermal) / d.overloadSeconds;
                 c.stressExposure += dt * (overload + overspeed + thermal);
                 EngineElements.Wear(part,loss*car.driver.WearRate);
-                c.health = (float)Math.Max(0, c.health - loss * car.driver.WearRate);
+                ComponentWear.Apply(c,loss*car.driver.WearRate);
                 if (enginePart && s.engineFailed && !existingCoreFailure && car.driver.WearRate > 0) { c.health = 0; Fail(c, "Engine overspeed / thermal damage"); }
                 else if (c.health <= 0) Fail(c, overspeed > 0 ? "Mechanical overspeed" : overload > 0 ? "Torque overload" : thermal > 0 ? "Thermal overload" : "Friction wear");
             }
@@ -148,7 +148,7 @@ namespace DragLab.Domain
                 if (!s.optimalThermals) c.temperatureC = DragMath.Clamp(c.temperatureC + (transferredHeat + crankPower * .08 - radiator) / (d.heatCapacityJPerC*fill) * dt, -50, 2000);
                 c.runningSeconds += dt; c.distanceM += Math.Max(0, s.distance - distanceBefore);
                 double thermal = Math.Max(0, c.temperatureC / d.thermalLimitC - 1);
-                if (!c.failed) { c.health = (float)Math.Max(0, c.health - dt * thermal * thermal / d.overloadSeconds * car.driver.WearRate); if (c.health <= 0) Fail(c, "Cooling thermal overload"); }
+                if (!c.failed) { ComponentWear.Apply(c,dt*thermal*thermal/d.overloadSeconds*car.driver.WearRate); if (c.health <= 0) Fail(c, "Cooling thermal overload"); }
             }
             Prepare(s);
             if (s.engineFailed) s.engineTorqueNm = s.engineHorsepower = 0;

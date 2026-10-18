@@ -22,13 +22,16 @@ namespace DragLab.Editor
             foreach (var v in vehicles)
             {
                 var recipe = catalog.Recipe(v.spec.id); var r = catalog.Resolve(v.spec.id, recipe, v.CreateStockTune());
-                var legacy = Benchmark.QuarterMile(v.spec, v.CreateStockTune()); var resolved = Benchmark.QuarterMile(r.spec, r.tune);
+                var calibrationDriver = new DriverSettings { wearMode = WearMode.None };
+                var legacy = Benchmark.QuarterMile(v.spec, v.CreateStockTune(),calibrationDriver); var resolved = Benchmark.QuarterMile(r.spec, r.tune,calibrationDriver);
                 // Raw authored specs and installed OEM hardware take different
-                // normalization paths. Bound calibration by one physics step
+                // normalization paths. Compare healthy output with wear disabled;
+                // persistent life and full-wear endurance have separate matrices.
+                // Bound calibration by one physics step
                 // and half a displayed 0.1 km/h, rather than bitwise identity.
                 check(r.Drivable && Math.Abs(legacy.elapsed-resolved.elapsed)<DragMath.FixedStep && Math.Abs(legacy.trapKmh-resolved.trapKmh)<.05,
                     "OEM recipe stays within stock calibration budget: "+v.spec.id+" / ET delta="+Math.Abs(legacy.elapsed-resolved.elapsed)+" / km/h delta="+Math.Abs(legacy.trapKmh-resolved.trapKmh));
-                var repeat=Benchmark.QuarterMile(r.spec,r.tune);
+                var repeat=Benchmark.QuarterMile(r.spec,r.tune,calibrationDriver);
                 check(repeat.elapsed==resolved.elapsed&&repeat.trapKmh==resolved.trapKmh,"Identical installed OEM build remains exactly deterministic: "+v.spec.id);
                 csv.AppendFormat(CultureInfo.InvariantCulture, "{0},{1:R},{2:R},{3:R}\n", v.spec.id, legacy.elapsed, resolved.elapsed, resolved.trapKmh);
                 recipe[PartCategory.Pistons] = catalog.Id(v.spec.id, PartCategory.Pistons, 1);
@@ -36,7 +39,7 @@ namespace DragLab.Editor
                 check(forged.Drivable && forged.tune.PowerMultiplier == r.tune.PowerMultiplier && forged.safeTorqueNm >= r.safeTorqueNm, "Forged pistons give strength, not free HP: " + v.spec.id);
                 recipe[PartCategory.HeadIntake] = catalog.Id(v.spec.id, PartCategory.HeadIntake, 3);
                 var mixed = catalog.Resolve(v.spec.id, recipe, v.CreateStockTune());
-                var bench = Benchmark.QuarterMile(mixed.spec, mixed.tune);
+                var bench = Benchmark.QuarterMile(mixed.spec, mixed.tune,calibrationDriver);
                 check(mixed.Drivable && bench.elapsed < resolved.elapsed && mixed.tune.PowerMultiplier == 1.48f, "Direct option 3 mixed build runs without buying intermediate options: " + v.spec.id);
                 mixed.tune.engineLevel = 3; mixed.tune.tireLevel = 3; mixed.tune.gearboxLevel = 3;
                 check(mixed.tune.PowerMultiplier == 1.48f && mixed.tune.GripMultiplier == 1 && mixed.tune.CapacityMultiplier == 1, "Legacy rank fields cannot stack installed output: " + v.spec.id);

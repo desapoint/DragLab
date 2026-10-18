@@ -1,0 +1,3 @@
+#continue=1
+TiresProgression	DragLab.Editor.TireProgressionVerification.Run
+TiresEndurance	DragLab.Editor.TireProgressionVerification.Endurance

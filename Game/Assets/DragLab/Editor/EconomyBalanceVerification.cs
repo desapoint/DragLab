@@ -136,6 +136,12 @@ namespace DragLab.Editor
                 // than assuming the old short campaign's untouched fuel/condition.
                 if(name=="fresh-career"){
                     if(p.SelectedCar.fuel.litres<3)Pay(new PaymentRequest{kind=PaymentKind.Fuel,carId=p.SelectedCar.instanceId,litres=10});
+                    var tires=p.parts.Find(i=>i.slot=="Tires"&&i.ownerId==p.SelectedCar.instanceId);
+                    if(tires!=null&&TireDynamics.LowestHealth(tires.condition)<.25f){
+                        var replacement=new PaymentRequest{kind=PaymentKind.Part,carId=p.SelectedCar.instanceId,targetId=TireFitments.DefinitionId(tires,0),install=true};
+                        var cost=PaidEconomy.Quote(p,cat,costs,values,replacement,now).Cost;
+                        if(p.cash>=cost+30)Pay(replacement);
+                    }
                     if(p.parts.Any(i=>i.ownerId==p.SelectedCar.engineAssemblyId&&EngineRebuilds.Scope(cat.Find(i.definitionId).category)&&i.condition.health<.88f)){
                         var service=PaidEconomy.Quote(p,cat,costs,values,new PaymentRequest{kind=PaymentKind.Rebuild,carId=p.SelectedCar.instanceId},now);
                         if(p.cash>=service.Cost+30){Pay(new PaymentRequest{kind=PaymentKind.Rebuild,carId=p.SelectedCar.instanceId});var job=p.SelectedCar.engineRebuild;now=job.readyUtcTicks;Apply("Collect paid preventive rebuild",a=>EngineRebuilds.Collect(a,a.SelectedCar.instanceId,job.id,now));}
@@ -194,7 +200,7 @@ namespace DragLab.Editor
             foreach(string id in new[]{"club-run","coupe-rival"})check(earned.Race(events.First(e=>e.stableId==id)).playerWon,"Earned direct-rank starter progresses "+id);
             var hero=vehicles.First(v=>v.spec.id=="v8-muscle");int heroPrice=PaidEconomy.DealerPrice(cat,costs,values,offer(hero));
             int firstHeroUpgrades=(int)Math.Ceiling((cat.Find(cat.Id(hero.spec.id,PartCategory.HeadIntake,1)).price+cat.Find(cat.Id(hero.spec.id,PartCategory.Tires,2)).price)*1.1);
-            var fundingRival=events.First(e=>e.stableId=="coupe-rival");int heroAttempts=(int)Math.Ceiling(Math.Max(0,heroPrice+firstHeroUpgrades+500-earned.p.cash)/(double)(fundingRival.cashWin-fundingRival.entryFee))+10;
+            var fundingRival=events.First(e=>e.stableId=="coupe-rival");int heroAttempts=(int)Math.Ceiling(Math.Max(0,heroPrice+firstHeroUpgrades+500-earned.p.cash)/Math.Max(1,(fundingRival.cashWin-fundingRival.entryFee)*.6))+15;
             attempts=0;while(earned.p.cash<heroPrice+firstHeroUpgrades+500){check(earned.Race(fundingRival).playerWon,"Reliable higher-paying cleared rival funds the second build.");if(++attempts>heroAttempts)throw new InvalidOperationException("Hero funding stalled under the authored income budget.");}
             earned.Pay(new PaymentRequest{kind=PaymentKind.Car,offer=offer(hero)});earned.Buy(PartCategory.HeadIntake,1);earned.Buy(PartCategory.Tires,2);
             check(earned.Race(events.First(e=>e.stableId=="local-final")).playerWon,"Funded second build wins local championship.");

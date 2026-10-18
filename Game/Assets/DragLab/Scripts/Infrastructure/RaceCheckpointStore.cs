@@ -118,9 +118,10 @@ namespace DragLab.Infrastructure
                     // A full committed result/reset/new entry supersedes an old journal.
                     if(receipt==null||receipt.ownedVehicleId!=cp.ownedVehicleId||receipt.settled||receipt.tick>=cp.tick)return false;
                     if(data.baseRevision!=profile.revision && (loading||data.baseRevision+1!=profile.revision))return false;
-                    // v20 corrects tire wear/grip; resource history remains the same contract.
+                    // v21 recalibrates tires and retains sub-float mechanical wear;
+                    // resource history remains the same contract.
                     // Recover known monotonic wear/fuel only; never replay obsolete driving inputs.
-                    if(MechanicsSchema.Model=="draglab-variety-v20"&&(cp.model=="draglab-variety-v18"||cp.model=="draglab-variety-v19"))cp.model=MechanicsSchema.Model;
+                    if(MechanicsSchema.Model=="draglab-variety-v21"&&(cp.model=="draglab-variety-v18"||cp.model=="draglab-variety-v19"||cp.model=="draglab-variety-v20"))cp.model=MechanicsSchema.Model;
                     MechanicsTransactions.ApplyCheckpoint(profile,cp);
                     // Journal ticks do not create ledger revisions until a full commit.
                     profile.runCheckpoints.Find(r=>r.runId==cp.runId).revision=profile.revision;

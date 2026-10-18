@@ -1,0 +1,16 @@
+suite	checks	result
+Tire/contact core	494	PASS
+Tire failure/replacement	5	PASS
+OEM durability	114	PASS
+Resource checkpoints	672	PASS
+Service/fluids	1917	PASS
+Individual engine/clutch	879	PASS
+Healthy OEM/parts compatibility	102	PASS
+Reward pacing	164	PASS
+Funded economy	2537	PASS
+Mixed axles/fitment/ownership	541	PASS
+Expanded tire progression	202	PASS
+Tire endurance/precision/coupling	110	PASS
+Packaged purchase/individual install	293	PASS (0 runtime errors)
+Packaged stored-tire swap	57	PASS (0 runtime errors)
+Packaged maintenance/cart/supply	80	PASS (0 runtime errors)
