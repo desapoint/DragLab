@@ -1,6 +1,6 @@
 # Seeded new-parts supply — approved specification
 
-Recorded 2026-10-18 from the user's three Mermaid flows and subsequent explicit wear/coverage rules. Implementation is queued after the in-progress mobile UI clipping correction. This document records approved behavior; it does not claim implementation or acceptance.
+Recorded 2026-10-18 from the user's three Mermaid flows and subsequent explicit wear/coverage rules. Implemented after mobile clipping checkpoint acda6c8. This document remains the approved behavior contract; technical evidence and remaining acceptance limits are recorded in reports/new-parts-supply/CHANGES.md.
 
 **Scope clarification:** all three selection flows, compatibility/discovery/category probabilities, additive stock and first-discovery/restock quantity rules apply exclusively to **new parts**. Do not apply them to used-part or complete-engine supply. Preserve the used market's existing selection probabilities, opportunity/quantity budgets, quantities, wear/fault generation, guarantees, expiration and reservations. Changing or accumulating new inventory must not indirectly increase/reweight the used pool through its former new-stock-count dependency. Generate used stock through its preserved independent behavior first; the new-part priority calculation only reads qualifying available used coverage. Validate this separation explicitly.
 

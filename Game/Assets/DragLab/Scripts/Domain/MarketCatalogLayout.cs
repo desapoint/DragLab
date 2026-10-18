@@ -10,7 +10,7 @@ namespace DragLab.Domain.Mechanics
     internal static class MarketCatalogLayout
     {
         sealed class Product { public PartDefinition snapshot;public string key,json,jsonId; }
-        internal sealed class Group {public PartDefinition definition;public List<string> ids;public int maximum;}
+        internal sealed class Group {public PartDefinition definition;public List<string> ids;public int maximum;public bool deliverable;}
         internal sealed class Layout
         {
             public string[] ids,keys;public Group[] groups;
@@ -59,7 +59,7 @@ namespace DragLab.Domain.Mechanics
             entry.Invalidate();
             entry.ids=catalog.parts.Select(d=>d.id).ToArray();entry.keys=catalog.parts.Select(d=>keys[d.id]).ToArray();
             entry.groups=catalog.parts.GroupBy(d=>keys[d.id],StringComparer.Ordinal).OrderBy(g=>g.Min(d=>d.id),StringComparer.Ordinal).Select(g=>{
-                var d=g.OrderBy(v=>v.id,StringComparer.Ordinal).First();return new Group{definition=d,ids=g.Select(v=>v.id).OrderBy(id=>id,StringComparer.Ordinal).ToList(),maximum=specs.Where(s=>catalog.Fits(s,d)).Select(s=>PartsMarket.Count(s,d)).DefaultIfEmpty(1).Max()};
+                var d=g.OrderBy(v=>v.id,StringComparer.Ordinal).First();var fitting=specs.Where(s=>catalog.Fits(s,d)).ToArray();return new Group{definition=d,ids=g.Select(v=>v.id).OrderBy(id=>id,StringComparer.Ordinal).ToList(),maximum=fitting.Select(s=>PartsMarket.Count(s,d)).DefaultIfEmpty(1).Max(),deliverable=fitting.Length>0};
             }).ToArray();return entry;
         }
     }

@@ -13,7 +13,7 @@ PASS Seed 12345 an untouched expired cart does not automatically renew
 PASS Seed 12345 failed persistence preserves the reservation, stock and money
 PASS Seed 12345 reserved mixed cart checkout succeeds: none
 PASS Seed 12345 one charge transfers the retained item and releases the lease
-PASS Seed 12345 schema-8 migration retains custom market difficulty
+PASS Seed 12345 current-save normalization preserves difficulty and reserved stock
 PASS Seed 8841 reserves nine eligible races without buying or installing
 PASS Seed 8841 reserved stock is separate from the shelf and still quoted once
 PASS Seed 8841 unrelated purchase preview retains the cart hold
@@ -29,7 +29,7 @@ PASS Seed 8841 an untouched expired cart does not automatically renew
 PASS Seed 8841 failed persistence preserves the reservation, stock and money
 PASS Seed 8841 reserved mixed cart checkout succeeds: none
 PASS Seed 8841 one charge transfers the retained item and releases the lease
-PASS Seed 8841 schema-8 migration retains custom market difficulty
+PASS Seed 8841 current-save normalization preserves difficulty and reserved stock
 PASS Seed 7337 reserves nine eligible races without buying or installing
 PASS Seed 7337 reserved stock is separate from the shelf and still quoted once
 PASS Seed 7337 unrelated purchase preview retains the cart hold
@@ -45,5 +45,5 @@ PASS Seed 7337 an untouched expired cart does not automatically renew
 PASS Seed 7337 failed persistence preserves the reservation, stock and money
 PASS Seed 7337 reserved mixed cart checkout succeeds: none
 PASS Seed 7337 one charge transfers the retained item and releases the lease
-PASS Seed 7337 schema-8 migration retains custom market difficulty
+PASS Seed 7337 current-save normalization preserves difficulty and reserved stock
 Checks: 48; failures: 0

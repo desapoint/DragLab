@@ -1,0 +1,201 @@
+PASS Exact wear base boundary 0
+PASS Exact wear base boundary 0,100000001490116
+PASS Exact wear base boundary 0,10001
+PASS Exact wear base boundary 0,25
+PASS Exact wear base boundary 0,25001
+PASS Exact wear base boundary 0,5
+PASS Exact wear base boundary 0,50001
+PASS Exact wear base boundary 0,600000023841858
+PASS Exact wear base boundary 0,60001
+PASS Exact wear base boundary 1
+PASS Failed component uses maximum base despite healthy numeric condition
+PASS New complete-repair multipliers
+PASS Used complete/partial multipliers
+PASS Discovery probability floor, fraction and empty branches
+PASS Weighted roll preserves zero branches and proportional boundaries
+PASS First single delivery boundary 0
+PASS First single delivery boundary 0,79999
+PASS First single delivery boundary 0,8
+PASS First single delivery boundary 0,96999
+PASS First single delivery boundary 0,97
+PASS First full-set delivery boundary 0
+PASS First full-set delivery boundary 0,49999
+PASS First full-set delivery boundary 0,5
+PASS First full-set delivery boundary 0,84999
+PASS First full-set delivery boundary 0,85
+PASS 60/40 mode, unsupported singles, and restock quantity rules
+PASS Empty initial pool exits without rolling
+PASS Undeliverable product is pruned before the single-product exit
+PASS Sole product skips all product-filtering rolls, still delivers and discovers
+PASS Repeated opportunity adds stock rather than replacing it
+PASS Category tree covers Pistons
+PASS Category tree covers Rods
+PASS Category tree covers Crankshaft
+PASS Category tree covers HeadIntake
+PASS Category tree covers FuelSystem
+PASS Category tree covers Ignition
+PASS Category tree covers Cooling
+PASS Category tree covers Induction
+PASS Category tree covers Exhaust
+PASS Category tree covers Clutch
+PASS Category tree covers Flywheel
+PASS Category tree covers Gearbox
+PASS Category tree covers Differential
+PASS Category tree covers Wheels
+PASS Category tree covers Tires
+PASS Category tree covers Brakes
+PASS Category tree covers Body
+PASS Category tree covers Controls
+PASS Category tree covers Driveshaft
+PASS Category tree covers FrontAxle
+PASS Category tree covers RearAxle
+PASS Category tree covers FrontDriveshaft
+PASS Category tree covers RearDriveshaft
+PASS Category tree covers FrontDifferential
+PASS Category tree covers RearDifferential
+PASS Category tree covers TransferCase
+PASS Category tree covers Interior
+PASS Category tree covers Accessories
+PASS Category tree covers RevLimiter
+PASS Category tree covers ShiftLight
+PASS Category tree covers TwoStep
+PASS Category tree covers Camshaft
+PASS Category tree covers ValveSprings
+PASS Category tree covers Valves
+PASS Category tree covers Followers
+PASS Category tree covers TimingDrive
+PASS Category tree covers PistonRings
+PASS Category tree covers CylinderBlock
+PASS Category tree covers Bearings
+PASS Category tree covers ValveSeals
+PASS Category tree covers OilPan
+PASS Category tree covers OilPump
+PASS Category tree covers OilFilter
+PASS Category tree covers CoolantPump
+PASS Category tree covers CoolingCap
+PASS Category tree covers CoolingHoses
+PASS Category tree covers OilCooler
+PASS Category tree covers SparkPlugs
+PASS Category tree covers GlowPlugs
+PASS Root weights equal the approved 16.75-total contract
+PASS Approved family weights: Induction
+PASS Approved family weights: Tires
+PASS Approved family weights: Intake / fuel / exhaust
+PASS Approved family weights: Drivetrain
+PASS Approved family weights: Engine / electronics
+PASS Approved family weights: Wheels / cooling / lubrication
+PASS Approved family weights: Body / interior / accessories
+PASS Owned-car preference follows 76/24 rather than product counts
+PASS Empty high-weight branch renormalizes to valid low-weight branch without retries
+PASS Deep empty family/category branches prune to sole valid product
+PASS Downstream-disabled branches cannot receive original parent weight
+PASS Seeded root distribution follows category weight, not catalogue size: Induction
+PASS Seeded root distribution follows category weight, not catalogue size: Tires
+PASS Seeded root distribution follows category weight, not catalogue size: Intake / fuel / exhaust
+PASS Seeded root distribution follows category weight, not catalogue size: Drivetrain
+PASS Seeded root distribution follows category weight, not catalogue size: Engine / electronics
+PASS Seeded root distribution follows category weight, not catalogue size: Wheels / cooling / lubrication
+PASS Seeded root distribution follows category weight, not catalogue size: Brakes
+PASS Seeded root distribution follows category weight, not catalogue size: Body / interior / accessories
+PASS Pruned root retains nested tire-family 20/30/50 weights
+PASS Nested induction families retain 65/25/10 weights
+PASS Turbo subtypes are equally weighted: Turbo
+PASS Turbo subtypes are equally weighted: TwinTurbo
+PASS Turbo subtypes are equally weighted: Twincharged
+Rule checks elapsed ms: 1317
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 1,0,0
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 1,0,1
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 1,5,0
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 1,5,1
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 1,20,0
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 1,20,1
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 41,0,0
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 41,0,1
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 41,5,0
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 41,5,1
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 41,20,0
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 41,20,1
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 981,0,0
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 981,0,1
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 981,5,0
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 981,5,1
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 981,20,0
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint 981,20,1
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint -7,0,0
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint -7,0,1
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint -7,5,0
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint -7,5,1
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint -7,20,0
+PASS Used parts, quantities, wear, identities and engines exactly match pre-change fingerprint -7,20,1
+Preserved supply checks elapsed ms: 13966
+PASS Worn individual uses exact 30% condition, not aggregate pack average
+PASS One matching new individual is one complete repair
+PASS Two matching new individuals suppress further priority
+PASS Partial differently specified engine stock cannot count as a matching complete replacement
+PASS Complete alternative matched set provides one repair
+PASS Used member at exactly 60% is excluded
+PASS One suitable 75% used individual fully covers one worn member
+PASS Faulted otherwise high-condition member is unusable coverage
+PASS Used member reserved in an active cart is excluded
+PASS Partial alternative-spec used units are not a complete matching repair
+PASS All alternative-spec members together cover one matching repair
+PASS Two complete qualifying used sets retain quarter priority
+PASS Partial new units cannot cover all 4 worn matching pistons
+PASS One complete new repair covers all 4 worn matching pistons
+PASS Matching used half-set is partial coverage for 4 worn pistons
+PASS Matching full used set covers the whole worn-piston repair
+PASS Reserved new units do not suppress wear priority
+PASS Failed member has 40% base and severity one
+PASS Coverage inspection preserves owned condition and identity
+PASS Actual wear selection uses maximum Pi, leaving 60% for normal categories
+PASS Actual wear target distribution follows probability times severity
+PASS Two new tires are partial coverage for a four-tire repair
+PASS Two qualifying used tires are partial coverage for four worn corners
+PASS Four qualifying used tires cover the four-corner repair
+PASS Worn individual uses exact 30% condition, not aggregate pack average
+PASS One matching new individual is one complete repair
+PASS Two matching new individuals suppress further priority
+PASS Partial differently specified engine stock cannot count as a matching complete replacement
+PASS Complete alternative matched set provides one repair
+PASS Used member at exactly 60% is excluded
+PASS One suitable 75% used individual fully covers one worn member
+PASS Faulted otherwise high-condition member is unusable coverage
+PASS Used member reserved in an active cart is excluded
+PASS Partial alternative-spec used units are not a complete matching repair
+PASS All alternative-spec members together cover one matching repair
+PASS Two complete qualifying used sets retain quarter priority
+PASS Partial new units cannot cover all 6 worn matching pistons
+PASS One complete new repair covers all 6 worn matching pistons
+PASS Matching used half-set is partial coverage for 6 worn pistons
+PASS Matching full used set covers the whole worn-piston repair
+PASS Reserved new units do not suppress wear priority
+PASS Failed member has 40% base and severity one
+PASS Coverage inspection preserves owned condition and identity
+PASS Actual wear selection uses maximum Pi, leaving 60% for normal categories
+PASS Actual wear target distribution follows probability times severity
+PASS Two new tires are partial coverage for a four-tire repair
+PASS Two qualifying used tires are partial coverage for four worn corners
+PASS Four qualifying used tires cover the four-corner repair
+PASS Random owned GUIDs cannot change seeded supply choices for identical acquisition order, hardware and wear
+PASS Identical persisted seed, history, wear and inventory replay exact new/used stock
+PASS Discovery metadata is persisted with market version two
+PASS Serialization retains discovery and additive stock exactly
+PASS Refresh carries unreserved stock and preserves old-generation holds without duplicating them
+PASS Prior cart supply stays available to its owner even with no free shelf stock
+PASS Sold-out products keep discovery history across refreshes
+PASS Version-one metadata migration preserves exact assets, stock, fees and epoch
+PASS Version-one history infers previously supplied products without restocking them
+PASS Changing player wear, discovery and accumulated new quantities cannot alter used/engine generation
+Measured product keys: 8.6 ms
+Measured new product selection/quantities: 5.2 ms
+Measured new fitting guarantee: 10.4 ms
+Measured used parts/guarantee: 10.3 ms
+Measured new supply opportunities: 370.7 ms
+Measured engine offers: 0.9 ms
+PASS Staged wear/member preparation yields work and matches synchronous generation exactly
+PASS SQLite commits migrated discovery metadata
+PASS Real SQLite reload retains stock and discovery without rerolling
+PASS Real version-one-market SQLite save upgrades without replacing player resources
+PASS Database upgrade infers history and retains exact stock and delivery rates
+PASS Upgraded database commits and reloads through the normal save boundary
+Checks: 192; failures: 0; elapsed seconds: 28,0

@@ -1,0 +1,9 @@
+gate,checks,result,scope
+New supply contract,192,PASS,Weighted flow; coverage; seeds; real SQLite upgrade
+Used/engine fingerprints,24,PASS,Exact pre-change seeded stock including identities and condition
+Market,1455,PASS,Full authored roster; stock; engines; express; transactions
+Cart reservations,48,PASS,Nine-race holds; expiration; exact checkout
+Parts player,1053,PASS; 0 runtime errors,Shop; individual/set purchase; cart; compact/1080p/4K; F8
+Mobile player,171,PASS; 0 runtime errors,Touch; service; preferences; pedals/shifter; pause/quit; save
+Optional exhaustive pricing,0,INTERRUPTED; NOT PASSED,Repeated unchanged legacy transactions; no acceptance claimed
+Queued bulk maintenance/cart/inventory,0,NOT RUN,Earlier optional batch interrupted; focused player/market gates completed
