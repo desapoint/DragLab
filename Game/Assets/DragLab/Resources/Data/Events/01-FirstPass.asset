@@ -148,7 +148,7 @@ MonoBehaviour:
   eventKind: Race
   prerequisite:
   entryFee: 0
-  firstWinBonus: 0
+  firstWinBonus: 150
   minimumHp: 0
   maximumHp: 0
   maximumDisplacementL: 0

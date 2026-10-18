@@ -18,7 +18,7 @@ namespace DragLab.Editor
         {
             string[] opening={"first-pass","club-run","coupe-rival","local-final"};
             int intro=Array.IndexOf(opening,e.stableId);
-            if(intro>=0){e.cashWin=new[]{150,225,325,450}[intro];e.cashLoss=10;e.firstWinBonus=0;return true;}
+            if(intro>=0){e.cashWin=new[]{150,225,325,450}[intro];e.cashLoss=10;e.firstWinBonus=new[]{150,225,300,400}[intro];return true;}
             string[] tiers={"f","e","d","c","b","a","s"};
             int[] wins={525,575,650,725,825,925,1050,1175,1325,1500,1700,1925,2175,2450};
             for(int t=0;t<tiers.Length;t++)for(int k=0;k<2;k++)if(e.stableId=="ladder-"+tiers[t]+(k==0?"-qualifier":"-rival")){

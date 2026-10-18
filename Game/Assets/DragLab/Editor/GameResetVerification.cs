@@ -46,7 +46,7 @@ namespace DragLab.Editor
                 SharedAudioSettings.ReloadForVerification(); SharedAudioSettings.SetMasterVolume(.47f); string audio = File.ReadAllText(SharedAudioSettings.FilePath);
                 long start = DateTime.UtcNow.Ticks;
                 check(ProfileStore.TryReset(p, out var fresh), "Reset commits a new garage and matching recovery baseline.");
-                check(fresh.cash == 4700 && fresh.reputation == 0 && fresh.garageLevel == 1 && fresh.careerWins.Count == 0 && fresh.bestQuarterSeconds == 0, "Cash, reputation, career, business and global records reset to new-game values.");
+                check(fresh.cash == 6500 && fresh.reputation == 0 && fresh.garageLevel == 1 && fresh.careerWins.Count == 0 && fresh.bestQuarterSeconds == 0, "Cash, reputation, career, business and global records reset to new-game values.");
                 check(fresh.cars.Count==0&&fresh.engines.Count==0&&fresh.parts.Count==0&&fresh.firstPurchasePending&&fresh.vehicleStock.listings.Count==3,"Reset clears owned assets and offers fixed starter choices.");
                 check(fresh.vehicleStock.listings.SelectMany(o=>o.parts).All(x=>!oldIds.Contains(x.instanceId)),"Seller components cannot alias previous owned identities.");
                 check(fresh.savedSetups.Count==0&&fresh.selectedOwnedVehicleId==""&&fresh.selectedVehicleId=="","Saved tunes and selected-car references are cleared.");
@@ -55,10 +55,10 @@ namespace DragLab.Editor
                 check(File.ReadAllText(SharedAudioSettings.FilePath) == audio && SharedAudioSettings.MasterVolume == .47f, "Reset does not rewrite volume preferences or change live master gain.");
                 check(before == JsonUtility.ToJson(p) && fresh.revision == p.revision + 1, "Original object is untouched and old transaction revisions are invalidated.");
                 var loaded = ProfileStore.Load();
-                check(loaded.firstPurchasePending&&loaded.cars.Count==0&&SnapshotEquality.Serialized(JsonUtility.ToJson(fresh.vehicleStock),loaded.vehicleStock) && loaded.cash == 4700 && JsonUtility.ToJson(loaded.driving) == preferences && loaded.difficulty == 2, "Reload retains the exact new ownership tree and preserved preferences.");
+                check(loaded.firstPurchasePending&&loaded.cars.Count==0&&SnapshotEquality.Serialized(JsonUtility.ToJson(fresh.vehicleStock),loaded.vehicleStock) && loaded.cash == 6500 && JsonUtility.ToJson(loaded.driving) == preferences && loaded.difficulty == 2, "Reload retains the exact new ownership tree and preserved preferences.");
                 File.WriteAllText(ProfileStore.FilePath, "corrupt-after-reset");
                 var recovered = ProfileStore.Load();
-                check(recovered.firstPurchasePending&&recovered.cars.Count==0 && recovered.cash == 4700 && recovered.careerWins.Count == 0 && recovered.parts.Count==0, "Backup recovery cannot resurrect pre-reset progression or inventory.");
+                check(recovered.firstPurchasePending&&recovered.cars.Count==0 && recovered.cash == 6500 && recovered.careerWins.Count == 0 && recovered.parts.Count==0, "Backup recovery cannot resurrect pre-reset progression or inventory.");
                 check(ProfileStore.TrySave(recovered), "Recovered reset baseline can save normally.");
                 SharedAudioSettings.SetMasterVolume(0); audio = File.ReadAllText(SharedAudioSettings.FilePath);
                 check(ProfileStore.TryReset(recovered, out var muted) && SharedAudioSettings.MasterVolume == 0 && File.ReadAllText(SharedAudioSettings.FilePath) == audio, "Persisted mute survives another reset unchanged.");

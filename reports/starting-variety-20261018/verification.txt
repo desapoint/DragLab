@@ -1,0 +1,361 @@
+PASS 25 distinct model families
+PASS Every model offers at least two trim configurations
+PASS aster complete compatible OEM build
+PASS aster-sport complete compatible OEM build
+PASS atlas complete compatible OEM build
+PASS atlas-sport complete compatible OEM build
+PASS boreal complete compatible OEM build
+PASS boreal-sport complete compatible OEM build
+PASS cinder complete compatible OEM build
+PASS cinder-sport complete compatible OEM build
+PASS city-three complete compatible OEM build
+PASS comet complete compatible OEM build
+PASS comet-sport complete compatible OEM build
+PASS finch complete compatible OEM build
+PASS finch-sport complete compatible OEM build
+PASS fjord complete compatible OEM build
+PASS fjord-sport complete compatible OEM build
+PASS juniper-club complete compatible OEM build
+PASS juniper-economy complete compatible OEM build
+PASS kestrel-track complete compatible OEM build
+PASS lark complete compatible OEM build
+PASS lark-sport complete compatible OEM build
+PASS meridian-sport complete compatible OEM build
+PASS mistral complete compatible OEM build
+PASS mistral-sport complete compatible OEM build
+PASS osprey complete compatible OEM build
+PASS osprey-sport complete compatible OEM build
+PASS piper complete compatible OEM build
+PASS piper-sport complete compatible OEM build
+PASS rally-sedan complete compatible OEM build
+PASS reed complete compatible OEM build
+PASS reed-sport complete compatible OEM build
+PASS rook complete compatible OEM build
+PASS rook-sport complete compatible OEM build
+PASS sable complete compatible OEM build
+PASS sable-sport complete compatible OEM build
+PASS solstice complete compatible OEM build
+PASS solstice-sport complete compatible OEM build
+PASS sport-coupe complete compatible OEM build
+PASS sprig-sport complete compatible OEM build
+PASS starter-hatch complete compatible OEM build
+PASS super-v8 complete compatible OEM build
+PASS swift complete compatible OEM build
+PASS swift-sport complete compatible OEM build
+PASS tempest-rs complete compatible OEM build
+PASS timber-diesel complete compatible OEM build
+PASS timber-diesel-tow complete compatible OEM build
+PASS touring-six complete compatible OEM build
+PASS utility-pickup complete compatible OEM build
+PASS v8-muscle complete compatible OEM build
+PASS vale complete compatible OEM build
+PASS vale-sport complete compatible OEM build
+PASS wren complete compatible OEM build
+PASS wren-sport complete compatible OEM build
+PASS Seed 1 funded three-choice start without gifted car
+PASS Seed 1 three different models
+PASS Seed 1 disclosed serviceable starter hardware
+PASS Seed 1 valid identities and per-corner tires
+PASS Seed 1 has genuinely worn and fresh components in every starter
+PASS Seed 1 browsing never rerolls
+PASS wren affordable starter at seed 1: 3741
+PASS wren used starter survives full-simulation clean pass: distance=402,336 rpm=5316,19542609683 speed=27,4849759666259 clutch=0 torque=57,5629810101481 power=0,41326185733968 supply=True temperature=1 stalled=False failures=
+PASS sable affordable starter at seed 1: 6372
+PASS sable used starter survives full-simulation clean pass: distance=483,760084379535 rpm=4329,28784109379 speed=29,1667510326208 clutch=0 torque=-15,5875675678567 power=0,895257815566741 supply=True temperature=1 stalled=False failures=
+PASS High-budget serviced starter can win the opening benchmark without upgrades; no result override
+PASS cinder affordable starter at seed 1: 3746
+PASS cinder used starter survives full-simulation clean pass: distance=403,16327808251 rpm=6379,15844456021 speed=33,0781772059208 clutch=0 torque=-31,520126294469 power=0,606934132549573 supply=True temperature=1 stalled=False failures=
+PASS Seed 2 funded three-choice start without gifted car
+PASS Seed 2 three different models
+PASS Seed 2 disclosed serviceable starter hardware
+PASS Seed 2 valid identities and per-corner tires
+PASS Seed 2 has genuinely worn and fresh components in every starter
+PASS Seed 2 browsing never rerolls
+PASS city-three affordable starter at seed 2: 3714
+PASS city-three used starter survives full-simulation clean pass: distance=402,336 rpm=4625,28028945683 speed=24,4463570151128 clutch=0 torque=43,9328188487935 power=0,399852471492821 supply=True temperature=1 stalled=False failures=
+PASS vale affordable starter at seed 2: 3744
+PASS vale used starter survives full-simulation clean pass: distance=404,833021488879 rpm=6412,15401327402 speed=33,2487905929113 clutch=0 torque=-31,7784746048018 power=0,639955427234542 supply=True temperature=1 stalled=False failures=
+PASS wren affordable starter at seed 2: 3740
+PASS Seed 3 funded three-choice start without gifted car
+PASS Seed 3 three different models
+PASS Seed 3 disclosed serviceable starter hardware
+PASS Seed 3 valid identities and per-corner tires
+PASS Seed 3 has genuinely worn and fresh components in every starter
+PASS Seed 3 browsing never rerolls
+PASS vale affordable starter at seed 3: 3744
+PASS sable affordable starter at seed 3: 6372
+PASS mistral affordable starter at seed 3: 3781
+PASS mistral used starter survives full-simulation clean pass: distance=402,336 rpm=6193,32575985607 speed=32,0007207937823 clutch=0 torque=88,6157016571244 power=0,588930088409285 supply=True temperature=1 stalled=False failures=
+PASS Seed 4 funded three-choice start without gifted car
+PASS Seed 4 three different models
+PASS Seed 4 disclosed serviceable starter hardware
+PASS Seed 4 valid identities and per-corner tires
+PASS Seed 4 has genuinely worn and fresh components in every starter
+PASS Seed 4 browsing never rerolls
+PASS finch affordable starter at seed 4: 3693
+PASS finch used starter survives full-simulation clean pass: distance=402,336 rpm=5848,08347616437 speed=30,2309737974362 clutch=0 torque=67,714573132578 power=0,545461735106059 supply=True temperature=1 stalled=False failures=
+PASS cinder affordable starter at seed 4: 3733
+PASS swift affordable starter at seed 4: 3736
+PASS swift used starter survives full-simulation clean pass: distance=402,336 rpm=6096,63267225285 speed=31,5109668778247 clutch=0 torque=76,1713292160836 power=0,560876692614429 supply=True temperature=1 stalled=False failures=
+PASS Seed 5 funded three-choice start without gifted car
+PASS Seed 5 three different models
+PASS Seed 5 disclosed serviceable starter hardware
+PASS Seed 5 valid identities and per-corner tires
+PASS Seed 5 has genuinely worn and fresh components in every starter
+PASS Seed 5 browsing never rerolls
+PASS starter-hatch affordable starter at seed 5: 3832
+PASS starter-hatch used starter survives full-simulation clean pass: distance=402,336 rpm=5765,2961315244 speed=29,7969139456453 clutch=0 torque=73,7099466801701 power=0,536879440528684 supply=True temperature=1 stalled=False failures=
+PASS wren affordable starter at seed 5: 3803
+PASS city-three affordable starter at seed 5: 3693
+PASS Seed 6 funded three-choice start without gifted car
+PASS Seed 6 three different models
+PASS Seed 6 disclosed serviceable starter hardware
+PASS Seed 6 valid identities and per-corner tires
+PASS Seed 6 has genuinely worn and fresh components in every starter
+PASS Seed 6 browsing never rerolls
+PASS lark affordable starter at seed 6: 3804
+PASS lark used starter survives full-simulation clean pass: distance=402,336 rpm=6291,92877781689 speed=32,517529825966 clutch=0 torque=81,3280352203645 power=0,6066217733795 supply=True temperature=1 stalled=False failures=
+PASS finch affordable starter at seed 6: 3807
+PASS rook affordable starter at seed 6: 3754
+PASS rook used starter survives full-simulation clean pass: distance=402,336 rpm=6333,95224488773 speed=32,7367197501923 clutch=0 torque=80,0341123410255 power=0,657727521794442 supply=True temperature=1 stalled=False failures=
+PASS Seed 7 funded three-choice start without gifted car
+PASS Seed 7 three different models
+PASS Seed 7 disclosed serviceable starter hardware
+PASS Seed 7 valid identities and per-corner tires
+PASS Seed 7 has genuinely worn and fresh components in every starter
+PASS Seed 7 browsing never rerolls
+PASS lark affordable starter at seed 7: 3701
+PASS reed affordable starter at seed 7: 3739
+PASS reed used starter survives full-simulation clean pass: distance=402,336 rpm=5150,8877860264 speed=26,6269364952872 clutch=0 torque=59,9102928629046 power=0,400922334932742 supply=True temperature=1 stalled=False failures=
+PASS starter-hatch affordable starter at seed 7: 3831
+PASS Seed 8 funded three-choice start without gifted car
+PASS Seed 8 three different models
+PASS Seed 8 disclosed serviceable starter hardware
+PASS Seed 8 valid identities and per-corner tires
+PASS Seed 8 has genuinely worn and fresh components in every starter
+PASS Seed 8 browsing never rerolls
+PASS rook affordable starter at seed 8: 3728
+PASS wren affordable starter at seed 8: 3752
+PASS cinder affordable starter at seed 8: 3778
+PASS Seed 9 funded three-choice start without gifted car
+PASS Seed 9 three different models
+PASS Seed 9 disclosed serviceable starter hardware
+PASS Seed 9 valid identities and per-corner tires
+PASS Seed 9 has genuinely worn and fresh components in every starter
+PASS Seed 9 browsing never rerolls
+PASS starter-hatch affordable starter at seed 9: 3821
+PASS piper affordable starter at seed 9: 3775
+PASS piper used starter survives full-simulation clean pass: distance=402,336 rpm=6066,60652822005 speed=31,3577050221227 clutch=0 torque=73,4518104976197 power=0,544180407457903 supply=True temperature=1 stalled=False failures=
+PASS sable affordable starter at seed 9: 6372
+PASS Seed 10 funded three-choice start without gifted car
+PASS Seed 10 three different models
+PASS Seed 10 disclosed serviceable starter hardware
+PASS Seed 10 valid identities and per-corner tires
+PASS Seed 10 has genuinely worn and fresh components in every starter
+PASS Seed 10 browsing never rerolls
+PASS aster affordable starter at seed 10: 3767
+PASS aster used starter survives full-simulation clean pass: distance=402,336 rpm=6120,86315387087 speed=31,6226255383508 clutch=0 torque=91,5032600845961 power=0,609878319832894 supply=True temperature=1 stalled=False failures=
+PASS finch affordable starter at seed 10: 3762
+PASS mistral affordable starter at seed 10: 3707
+PASS Seed 11 funded three-choice start without gifted car
+PASS Seed 11 three different models
+PASS Seed 11 disclosed serviceable starter hardware
+PASS Seed 11 valid identities and per-corner tires
+PASS Seed 11 has genuinely worn and fresh components in every starter
+PASS Seed 11 browsing never rerolls
+PASS finch affordable starter at seed 11: 3765
+PASS mistral affordable starter at seed 11: 3712
+PASS lark affordable starter at seed 11: 3694
+PASS Seed 12 funded three-choice start without gifted car
+PASS Seed 12 three different models
+PASS Seed 12 disclosed serviceable starter hardware
+PASS Seed 12 valid identities and per-corner tires
+PASS Seed 12 has genuinely worn and fresh components in every starter
+PASS Seed 12 browsing never rerolls
+PASS finch affordable starter at seed 12: 3717
+PASS wren affordable starter at seed 12: 3754
+PASS starter-hatch affordable starter at seed 12: 3868
+PASS Seed 13 funded three-choice start without gifted car
+PASS Seed 13 three different models
+PASS Seed 13 disclosed serviceable starter hardware
+PASS Seed 13 valid identities and per-corner tires
+PASS Seed 13 has genuinely worn and fresh components in every starter
+PASS Seed 13 browsing never rerolls
+PASS starter-hatch affordable starter at seed 13: 3797
+PASS lark affordable starter at seed 13: 3794
+PASS vale affordable starter at seed 13: 3754
+PASS Seed 14 funded three-choice start without gifted car
+PASS Seed 14 three different models
+PASS Seed 14 disclosed serviceable starter hardware
+PASS Seed 14 valid identities and per-corner tires
+PASS Seed 14 has genuinely worn and fresh components in every starter
+PASS Seed 14 browsing never rerolls
+PASS wren affordable starter at seed 14: 3804
+PASS vale affordable starter at seed 14: 3797
+PASS sable affordable starter at seed 14: 6372
+PASS Seed 15 funded three-choice start without gifted car
+PASS Seed 15 three different models
+PASS Seed 15 disclosed serviceable starter hardware
+PASS Seed 15 valid identities and per-corner tires
+PASS Seed 15 has genuinely worn and fresh components in every starter
+PASS Seed 15 browsing never rerolls
+PASS cinder affordable starter at seed 15: 3796
+PASS swift affordable starter at seed 15: 3745
+PASS wren affordable starter at seed 15: 3726
+PASS Seed 16 funded three-choice start without gifted car
+PASS Seed 16 three different models
+PASS Seed 16 disclosed serviceable starter hardware
+PASS Seed 16 valid identities and per-corner tires
+PASS Seed 16 has genuinely worn and fresh components in every starter
+PASS Seed 16 browsing never rerolls
+PASS finch affordable starter at seed 16: 3719
+PASS starter-hatch affordable starter at seed 16: 3861
+PASS aster affordable starter at seed 16: 3774
+PASS Seed 17 funded three-choice start without gifted car
+PASS Seed 17 three different models
+PASS Seed 17 disclosed serviceable starter hardware
+PASS Seed 17 valid identities and per-corner tires
+PASS Seed 17 has genuinely worn and fresh components in every starter
+PASS Seed 17 browsing never rerolls
+PASS sable affordable starter at seed 17: 6372
+PASS lark affordable starter at seed 17: 3802
+PASS starter-hatch affordable starter at seed 17: 3820
+PASS Seed 18 funded three-choice start without gifted car
+PASS Seed 18 three different models
+PASS Seed 18 disclosed serviceable starter hardware
+PASS Seed 18 valid identities and per-corner tires
+PASS Seed 18 has genuinely worn and fresh components in every starter
+PASS Seed 18 browsing never rerolls
+PASS mistral affordable starter at seed 18: 3756
+PASS wren affordable starter at seed 18: 3743
+PASS aster affordable starter at seed 18: 3803
+PASS Seed 19 funded three-choice start without gifted car
+PASS Seed 19 three different models
+PASS Seed 19 disclosed serviceable starter hardware
+PASS Seed 19 valid identities and per-corner tires
+PASS Seed 19 has genuinely worn and fresh components in every starter
+PASS Seed 19 browsing never rerolls
+PASS comet affordable starter at seed 19: 3719
+PASS comet used starter survives full-simulation clean pass: distance=402,336 rpm=5392,86995475497 speed=27,8758095032277 clutch=0 torque=64,2646684259086 power=0,440175466616864 supply=True temperature=1 stalled=False failures=
+PASS swift affordable starter at seed 19: 3757
+PASS city-three affordable starter at seed 19: 3734
+PASS Seed 20 funded three-choice start without gifted car
+PASS Seed 20 three different models
+PASS Seed 20 disclosed serviceable starter hardware
+PASS Seed 20 valid identities and per-corner tires
+PASS Seed 20 has genuinely worn and fresh components in every starter
+PASS Seed 20 browsing never rerolls
+PASS piper affordable starter at seed 20: 3754
+PASS mistral affordable starter at seed 20: 3725
+PASS wren affordable starter at seed 20: 3770
+PASS Seed 21 funded three-choice start without gifted car
+PASS Seed 21 three different models
+PASS Seed 21 disclosed serviceable starter hardware
+PASS Seed 21 valid identities and per-corner tires
+PASS Seed 21 has genuinely worn and fresh components in every starter
+PASS Seed 21 browsing never rerolls
+PASS lark affordable starter at seed 21: 3743
+PASS mistral affordable starter at seed 21: 3732
+PASS finch affordable starter at seed 21: 3757
+PASS Seed 22 funded three-choice start without gifted car
+PASS Seed 22 three different models
+PASS Seed 22 disclosed serviceable starter hardware
+PASS Seed 22 valid identities and per-corner tires
+PASS Seed 22 has genuinely worn and fresh components in every starter
+PASS Seed 22 browsing never rerolls
+PASS aster affordable starter at seed 22: 3759
+PASS starter-hatch affordable starter at seed 22: 3874
+PASS lark affordable starter at seed 22: 3712
+PASS Seed 23 funded three-choice start without gifted car
+PASS Seed 23 three different models
+PASS Seed 23 disclosed serviceable starter hardware
+PASS Seed 23 valid identities and per-corner tires
+PASS Seed 23 has genuinely worn and fresh components in every starter
+PASS Seed 23 browsing never rerolls
+PASS comet affordable starter at seed 23: 3773
+PASS city-three affordable starter at seed 23: 3741
+PASS reed affordable starter at seed 23: 3689
+PASS Seed 24 funded three-choice start without gifted car
+PASS Seed 24 three different models
+PASS Seed 24 disclosed serviceable starter hardware
+PASS Seed 24 valid identities and per-corner tires
+PASS Seed 24 has genuinely worn and fresh components in every starter
+PASS Seed 24 browsing never rerolls
+PASS cinder affordable starter at seed 24: 3738
+PASS wren affordable starter at seed 24: 3758
+PASS city-three affordable starter at seed 24: 3721
+PASS Seed 25 funded three-choice start without gifted car
+PASS Seed 25 three different models
+PASS Seed 25 disclosed serviceable starter hardware
+PASS Seed 25 valid identities and per-corner tires
+PASS Seed 25 has genuinely worn and fresh components in every starter
+PASS Seed 25 browsing never rerolls
+PASS comet affordable starter at seed 25: 3761
+PASS swift affordable starter at seed 25: 3740
+PASS reed affordable starter at seed 25: 3763
+PASS Seed 26 funded three-choice start without gifted car
+PASS Seed 26 three different models
+PASS Seed 26 disclosed serviceable starter hardware
+PASS Seed 26 valid identities and per-corner tires
+PASS Seed 26 has genuinely worn and fresh components in every starter
+PASS Seed 26 browsing never rerolls
+PASS comet affordable starter at seed 26: 3750
+PASS lark affordable starter at seed 26: 3771
+PASS starter-hatch affordable starter at seed 26: 3806
+PASS Seed 27 funded three-choice start without gifted car
+PASS Seed 27 three different models
+PASS Seed 27 disclosed serviceable starter hardware
+PASS Seed 27 valid identities and per-corner tires
+PASS Seed 27 has genuinely worn and fresh components in every starter
+PASS Seed 27 browsing never rerolls
+PASS city-three affordable starter at seed 27: 3741
+PASS swift affordable starter at seed 27: 3754
+PASS comet affordable starter at seed 27: 3756
+PASS Seed 28 funded three-choice start without gifted car
+PASS Seed 28 three different models
+PASS Seed 28 disclosed serviceable starter hardware
+PASS Seed 28 valid identities and per-corner tires
+PASS Seed 28 has genuinely worn and fresh components in every starter
+PASS Seed 28 browsing never rerolls
+PASS reed affordable starter at seed 28: 3758
+PASS cinder affordable starter at seed 28: 3749
+PASS lark affordable starter at seed 28: 3759
+PASS Seed 29 funded three-choice start without gifted car
+PASS Seed 29 three different models
+PASS Seed 29 disclosed serviceable starter hardware
+PASS Seed 29 valid identities and per-corner tires
+PASS Seed 29 has genuinely worn and fresh components in every starter
+PASS Seed 29 browsing never rerolls
+PASS lark affordable starter at seed 29: 3749
+PASS cinder affordable starter at seed 29: 3737
+PASS vale affordable starter at seed 29: 3760
+PASS Seed 30 funded three-choice start without gifted car
+PASS Seed 30 three different models
+PASS Seed 30 disclosed serviceable starter hardware
+PASS Seed 30 valid identities and per-corner tires
+PASS Seed 30 has genuinely worn and fresh components in every starter
+PASS Seed 30 browsing never rerolls
+PASS comet affordable starter at seed 30: 3775
+PASS starter-hatch affordable starter at seed 30: 3852
+PASS piper affordable starter at seed 30: 3778
+PASS Seed 31 funded three-choice start without gifted car
+PASS Seed 31 three different models
+PASS Seed 31 disclosed serviceable starter hardware
+PASS Seed 31 valid identities and per-corner tires
+PASS Seed 31 has genuinely worn and fresh components in every starter
+PASS Seed 31 browsing never rerolls
+PASS reed affordable starter at seed 31: 3771
+PASS swift affordable starter at seed 31: 3755
+PASS starter-hatch affordable starter at seed 31: 3826
+PASS Seed 32 funded three-choice start without gifted car
+PASS Seed 32 three different models
+PASS Seed 32 disclosed serviceable starter hardware
+PASS Seed 32 valid identities and per-corner tires
+PASS Seed 32 has genuinely worn and fresh components in every starter
+PASS Seed 32 browsing never rerolls
+PASS starter-hatch affordable starter at seed 32: 3823
+PASS aster affordable starter at seed 32: 3803
+PASS reed affordable starter at seed 32: 3746
+PASS Seed matrix covers all 15 starter models and varied shortlists
+PASS New-player defaults: shift myself / Simulation / Normal market
+Checks: 360

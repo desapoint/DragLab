@@ -6,7 +6,7 @@ using DragLab.Data;
 namespace DragLab.Domain.Mechanics {
  [Serializable] public sealed class VehicleStockState {public int version=1,seed,generation,purchases,completedRuns,knowledgeRevision;public List<VehicleOffer> listings=new List<VehicleOffer>();}
  public static class VehicleListings {
- static readonly string[] starters={"starter-hatch","juniper-economy","juniper-club"};
+ public static readonly string[] StarterModels={"starter-hatch","city-three","finch","wren","comet","aster","lark","mistral","rook","swift","vale","cinder","reed","piper","sable"};
  static readonly System.Runtime.CompilerServices.ConditionalWeakTable<MechanicalCatalog,HashSet<string>> warmed=new System.Runtime.CompilerServices.ConditionalWeakTable<MechanicalCatalog,HashSet<string>>();
  public static OperatingPolicy Costs=>Resources.Load<OperatingPolicyDefinition>("Data/Economy/OperatingPolicy")?.policy??new OperatingPolicy();
  public static ValuationPolicy Values=>Resources.Load<ValuationPolicyDefinition>("Data/Economy/ValuationPolicy")?.policy??ValuationPolicy.Defaults();
@@ -16,7 +16,7 @@ namespace DragLab.Domain.Mechanics {
  return;}Initialize(p,c,DragLab.Domain.RuntimeEntropy.MarketSeed);}
  public static void Initialize(PlayerProfile p,MechanicalCatalog c,int seed){p.vehicleStock=new VehicleStockState{seed=seed==0?1:seed};Generate(p,c);}
  public static VehicleOffer Find(PlayerProfile p,string id)=>p.vehicleStock?.listings.FirstOrDefault(o=>o.listingId==id);
- public static void RequireCurrent(PlayerProfile p,VehicleOffer offer){if(offer==null)throw new InvalidOperationException("Missing offer.");if(string.IsNullOrEmpty(offer.listingId)){if(p.firstPurchasePending)throw new InvalidOperationException("Choose one of the fixed starter listings first.");return;}var actual=Find(p,offer.listingId);if(actual==null||!SnapshotEquality.Serialized(JsonUtility.ToJson(actual),offer))throw new InvalidOperationException("Listing sold or changed. Reopen the dealership.");}
+ public static void RequireCurrent(PlayerProfile p,VehicleOffer offer){if(offer==null)throw new InvalidOperationException("Missing offer.");if(string.IsNullOrEmpty(offer.listingId)){if(p.firstPurchasePending)throw new InvalidOperationException("Choose one of the starter listings first.");return;}var actual=Find(p,offer.listingId);if(actual==null||!SnapshotEquality.Serialized(JsonUtility.ToJson(actual),offer))throw new InvalidOperationException("Listing sold or changed. Reopen the dealership.");}
  public static void Consume(PlayerProfile p,MechanicalCatalog c,VehicleOffer offer){
  if(string.IsNullOrEmpty(offer.listingId))return;
  var stock=p.vehicleStock;stock.listings.RemoveAll(o=>o.listingId==offer.listingId);stock.purchases++;
@@ -39,19 +39,37 @@ namespace DragLab.Domain.Mechanics {
  static IEnumerable<object> GenerateSteps(PlayerProfile p,MechanicalCatalog c,bool incremental){
  p.catalog=c;foreach(var unused in PartsMarket.RefreshSteps(p))yield return unused;
  var stock=p.vehicleStock;stock.listings.Clear();var cars=Resources.LoadAll<VehicleDefinition>("Data/Vehicles").OrderBy(v=>v.spec.id,StringComparer.Ordinal).ToArray();uint seed=(uint)stock.seed^(uint)(stock.generation+1)*2654435761u;if(seed==0)seed=1;
- if(p.firstPurchasePending){for(int i=0;i<starters.Length;i++){var v=cars.Single(a=>a.spec.id==starters[i]);uint fixedSeed=(uint)(101+i);var offer=Create(c,v,"starter:"+v.spec.id,true,new[]{.96,.97,.96}[i],new[]{55000.0,32000,76000}[i],0,0,stock.seed,ref fixedSeed,true);offer.reputation=0;stock.listings.Add(offer);yield return "cars/starter";}yield break;}
+ if(p.firstPurchasePending){
+ // The save seed owns the opening shortlist; browsing and reloading cannot reroll it.
+ uint selection;unchecked{selection=(uint)stock.seed^0x85ebca6bu;selection^=selection>>16;selection*=0x7feb352du;selection^=selection>>15;selection*=0x846ca68bu;selection^=selection>>16;}if(selection==0)selection=1;
+ var pool=StarterModels.Select(id=>cars.Single(v=>v.spec.id==id)).ToList();
+ for(int i=0;i<3;i++){int pick=(int)(Next(ref selection)*pool.Count)%pool.Count;var v=pool[pick];pool.RemoveAt(pick);
+ double health=.64+Next(ref selection)*.3,km=45000+Next(ref selection)*170000;
+ var offer=Create(c,v,"starter:"+v.spec.id,true,health,km,0,0,stock.seed,ref selection,true);offer.reputation=0;stock.listings.Add(offer);yield return "cars/starter";}yield break;}
+
  foreach(var v in cars){stock.listings.Add(Create(c,v,v.spec.id,false,1,0,stock.generation,stock.purchases,stock.seed,ref seed));yield return "cars/offer";}
  // On a cold miss, launch the seven independent inspections before awaiting any result.
  foreach(var unused in WarmGeneration(c,cars,stock.generation,stock.purchases,stock.seed,seed))yield return "cars/inspection preparation";
  if(incremental)while(VehicleAssessmentCache.Pending)yield return "cars/inspection wait";
  for(int i=0;i<7;i++){var v=cars[(int)(Next(ref seed)*cars.Length)%cars.Length];double health=.58+Next(ref seed)*.39;double km=10000+Next(ref seed)*180000;stock.listings.Add(Create(c,v,"used:"+stock.generation+":"+i,true,health,km,stock.generation,stock.purchases,stock.seed,ref seed));yield return "cars/offer";}
  }
+ static double UsedHealth(double history,ref uint seed){double roll=Next(ref seed),oldChance=.08+(1-history)*.65;return roll<oldChance?.25+Next(ref seed)*.2:roll<oldChance+.3?.5+Next(ref seed)*.3:.86+Next(ref seed)*.13;}
  static VehicleOffer Create(MechanicalCatalog c,VehicleDefinition v,string id,bool used,double health,double km,int generation,int purchases,int marketSeed,ref uint seed,bool starter=false,bool warm=false){
+ var wornSlots=new[]{PartCategory.Brakes,PartCategory.Cooling,PartCategory.Exhaust,PartCategory.Tires};
+ var memberSlots=new[]{PartCategory.Pistons,PartCategory.PistonRings,PartCategory.Valves,PartCategory.Followers};
+ var wornSlot=starter?wornSlots[(int)(Next(ref seed)*wornSlots.Length)%wornSlots.Length]:PartCategory.Brakes;if(starter&&v.spec.id=="sable")wornSlot=PartCategory.Brakes;
+ var wornMemberSlot=starter?(v.spec.id=="sable"?PartCategory.ValveSeals:memberSlots[(int)(Next(ref seed)*memberSlots.Length)%memberSlots.Length]):PartCategory.Pistons;
  var map=c.Recipe(v.spec.id);if(used&&!starter&&Next(ref seed)>.55){map[PartCategory.HeadIntake]=c.Id(v.spec.id,PartCategory.HeadIntake,1);map[PartCategory.Exhaust]=c.Id(v.spec.id,PartCategory.Exhaust,1);}if(used&&!starter&&Next(ref seed)>.75)map.Remove(PartCategory.Interior);
  var build=c.Resolve(v.spec.id,map,v.CreateStockTune());string identity=marketSeed+"/"+id+"/"+generation+"/"+purchases;
  var offer=new VehicleOffer{listingId=id,model=v.spec.id,stock=build.tune.Copy(),paint="#"+ColorUtility.ToHtmlStringRGB(v.defaultPaint),used=used,disclosureVersion=1,inspected=!used||starter,firstStarter=starter,estimateSeed=(int)seed,mileageKm=Math.Round(km),price=Math.Max(1,v.purchasePrice),cataloguePrice=Math.Max(1,v.purchasePrice),reputation=v.reputationRequired,parts=new List<PartInstance>(),fuel=new FuelState{litres=build.spec.fuel.capacityLitres*(used?.35:1)},fluids=FluidState.Full(build.spec.fluids)};
  if(used)offer.fluids.oilCondition=starter?.9:.55+Next(ref seed)*.4;
- foreach(var entry in map){var d=c.Find(entry.Value);double h=PartSemantics.Wears(d.category)?DragMath.Clamp(health+(used&&!starter?(Next(ref seed)-.5)*.15:0),.4,1):1;var part=new PartInstance{instanceId=identity+"/"+entry.Key,definitionId=d.id,slot=entry.Key.ToString(),condition=new ComponentCondition{health=(float)h,distanceM=km*1000,runningSeconds=km/45*3600}};EngineElements.Ensure(build.spec,d,part);ClutchHardware.Ensure(d,part.condition);if(d.category==PartCategory.Tires){TireDynamics.SeedNew(part.condition);for(int i=0;i<4;i++){var tire=part.condition.tires[i];tire.id=part.instanceId+"/tire/"+i;tire.definitionId=d.id;}}offer.parts.Add(part);}
+ foreach(var entry in map){var d=c.Find(entry.Value);double h=PartSemantics.Wears(d.category)?(used?UsedHealth(health,ref seed):1):1;if(starter&&PartSemantics.Wears(d.category))h=d.category==wornSlot?.3+Next(ref seed)*.1:.55+Next(ref seed)*.43;if(starter&&d.category!=wornSlot&&MechanicalCatalog.EngineSlot(d.category)&&PartSemantics.Wears(d.category))h=v.spec.id=="sable"?.98+Next(ref seed)*.015:.9+Next(ref seed)*.08;if(starter&&d.category==PartCategory.Clutch)h=Math.Max(h,.95);var part=new PartInstance{instanceId=identity+"/"+entry.Key,definitionId=d.id,slot=entry.Key.ToString(),condition=new ComponentCondition{health=(float)h,distanceM=km*1000,runningSeconds=km/45*3600}};EngineElements.Ensure(build.spec,d,part);ClutchHardware.Ensure(d,part.condition);if(d.category==PartCategory.Tires){TireDynamics.SeedNew(part.condition);for(int i=0;i<4;i++){var tire=part.condition.tires[i];tire.id=part.instanceId+"/tire/"+i;tire.definitionId=d.id;}}if(used&&part.condition.elements.Length>0&&d.category!=PartCategory.Tires){
+ for(int i=0;i<part.condition.elements.Length;i++)part.condition.elements[i].health=(float)(starter?DragMath.Clamp(h+(Next(ref seed)-.5)*.05,.25,.995):UsedHealth(health,ref seed));
+ if(starter&&d.category==wornMemberSlot)part.condition.elements[(int)(Next(ref seed)*part.condition.elements.Length)%part.condition.elements.Length].health=(float)(.3+Next(ref seed)*.1);
+ part.condition.health=part.condition.elements.Average(e=>e.health);
+ }
+ if(used&&d.category==PartCategory.Tires){for(int i=0;i<4;i++)part.condition.tires[i].health=(float)(starter?DragMath.Clamp(h+(Next(ref seed)-.5)*.18,.3,.98):UsedHealth(health,ref seed));TireDynamics.SyncSummary(part.condition);}
+ offer.parts.Add(part);}
  if(used&&!starter){
  double roll=Next(ref seed);offer.historyNotes.Add(roll<.28?"Repeated high-load use":roll<.55?"Neglected maintenance":roll<.75?"Previous overheating":"Routine road use");
  offer.fuel.litres=build.spec.fuel.capacityLitres*(.03+Next(ref seed)*.82);
@@ -61,7 +79,7 @@ namespace DragLab.Domain.Mechanics {
  else if(roll<.55){var cooling=offer.parts.Single(p=>p.slot=="Cooling");cooling.condition.leakSeverity=.35+Next(ref seed)*.45;cooling.condition.lastService="Leak left unrepaired";}
  else if(roll<.75){var rings=offer.parts.Single(p=>p.slot=="PistonRings");rings.condition.elements[0].fault=ElementFault.CompressionLeak;rings.condition.elements[0].severity=.55f;rings.condition.stressExposure=1000;}
  }
- if(starter)offer.historyNotes.Add("Documented starter service");
+ if(starter)offer.historyNotes.Add("Documented starter service; clutch replaced");
  offer.reportedCondition=VehicleInspection.Overall(c,offer);
  TireFitments.Capture(build.spec,offer.parts,c);
  if(!used||starter)offer.engineRuns=offer.drives=true;else if(warm)VehicleAssessmentCache.Prepare(c,offer,build);else VehicleInspection.Assess(c,offer,build);

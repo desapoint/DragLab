@@ -121,7 +121,7 @@ namespace DragLab.Domain
             p.cars.Add(new OwnedCar { vehicleId = "starter-hatch" });
             return p;
         }
-        public static PlayerProfile NewGame(long utcTicks){var p=New(utcTicks);p.cars.Clear();p.selectedVehicleId=p.selectedOwnedVehicleId="";p.saveVersion=MechanicsOwnership.SaveVersion;p.cash=4700;p.firstPurchasePending=true;return p;}
+        public static PlayerProfile NewGame(long utcTicks){var p=New(utcTicks);p.cars.Clear();p.selectedVehicleId=p.selectedOwnedVehicleId="";p.saveVersion=MechanicsOwnership.SaveVersion;p.cash=6500;p.driving=StartingPreferences.Create();p.firstPurchasePending=true;return p;}
         public PlayerProfile CopyWithPreferences(DriverSettings driver,int ai){var copy=(PlayerProfile)MemberwiseClone();copy.driving=driver.Copy();copy.difficulty=ai;return copy;}
         public PlayerProfile RestartKeepingPreferences(long utcTicks)
         {

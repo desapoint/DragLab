@@ -1,8 +1,8 @@
 event,fee,win,repeat_net,completed_loss,loss_net,first_bonus
-first-pass,0,150,150,10,10,0
-club-run,0,225,225,10,10,0
-coupe-rival,0,325,325,10,10,0
-local-final,0,450,450,10,10,0
+first-pass,0,150,150,10,10,150
+club-run,0,225,225,10,10,225
+coupe-rival,0,325,325,10,10,300
+local-final,0,450,450,10,10,400
 ladder-f-qualifier,50,525,475,25,-25,150
 special-0,75,400,325,37,-38,175
 special-1,75,500,425,37,-38,225
