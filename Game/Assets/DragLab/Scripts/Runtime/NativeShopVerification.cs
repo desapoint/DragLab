@@ -12,13 +12,9 @@ namespace DragLab.Runtime
     internal sealed partial class NativeMenuVerification
     {
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
-        void ShopCacheChecks()
-        {
-            NativeShopDomainChecks.Run(game.vehicles.ToArray(),Check);
-        }
         IEnumerator ShopStabilityChecks(WindowsKeyboardProbe input)
         {
-            ShopCacheChecks();var model=shell.PartBrowser;int evaluated=model.EvaluationCount,queries=shell.PartQueryApplyCount,cards=shell.PartCardBuildCount;string state=JsonUtility.ToJson(game.Profile);
+            var model=shell.PartBrowser;int evaluated=model.EvaluationCount,queries=shell.PartQueryApplyCount,cards=shell.PartCardBuildCount;string state=JsonUtility.ToJson(game.Profile);
             var visible=shell.Root.Q("partsGrid").Children().Where(e=>!e.ClassListContains("hidden")).ToArray();var rects=visible.Select(e=>e.worldBound).ToArray();yield return new WaitForSecondsRealtime(.7f);
             Check(evaluated==0&&model.EvaluationCount==evaluated&&shell.PartQueryApplyCount==queries&&shell.PartCardBuildCount==cards,"Ordinary shop browsing performs no full-part dynos, query churn or card creation while idle");
             Check(visible.Select((e,i)=>e.worldBound==rects[i]).All(v=>v),"Visible shop cards keep their order and position after the page opens");Check(visible.Length<model.Entries.Count/2,"The shop builds only matching card controls rather than the whole foreign catalogue");

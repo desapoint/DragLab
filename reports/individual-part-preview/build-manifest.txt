@@ -1,0 +1,10 @@
+Built 2026-10-18: individual-part dyno/comparison fix Windows player and matching Android APK.
+Android APK bytes: 87252955
+Android APK SHA256: 01127661ef527d244f4b044c4737f7a73f93f7f84c7f968deaacf59e30e5e772
+Windows Assembly-CSharp.dll SHA256: 8942183f56635883d3f76828d34556c89d37bc4304aa01403cad70e31ee16c3a
+Windows runtime is unchanged by Android packaging: PASS
+APK ZIP CRC / ARM64-only libraries / Windows SQLite DLL exclusion: PASS
+Packaged SQLite matches the tracked ARM64 plugin after llvm-strip --strip-unneeded: PASS
+All packaged ELF PT_LOAD segments support at least 16 KiB alignment: PASS
+External signature, ZIP alignment, package metadata and device checks: see packaging-verification.txt.
+No connected phone testing or store upload is claimed.

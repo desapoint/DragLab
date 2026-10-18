@@ -12,6 +12,42 @@ namespace DragLab.Runtime
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
     public static class NativeShopDomainChecks
     {
+        public static void UnitPreviews(VehicleDefinition[] vehicles,Action<bool,string> check)
+        {
+            var catalog=new MechanicalCatalog(vehicles.Select(v=>v.spec));
+            foreach(var vehicle in vehicles){
+                var p=PlayerProfile.New(1234);MechanicsOwnership.Ensure(p,catalog);p.cash=1000000;p.reputation=1000;
+                VehicleCollection.Buy(p,catalog,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});
+                foreach(var category in new[]{PartCategory.Pistons,PartCategory.Rods,PartCategory.PistonRings,PartCategory.Bearings,PartCategory.Valves,PartCategory.ValveSprings,PartCategory.ValveSeals,PartCategory.SparkPlugs,PartCategory.GlowPlugs}){
+                    var fitted=p.componentsPart(category);if(fitted==null)continue;
+                    var definition=catalog.Find(catalog.Id(vehicle.spec.id,category,1));if(definition==null||definition.id==fitted.definitionId)continue;
+                    var template=InventoryUnits.Template(p,p.SelectedCar,definition);if(template.condition.elements.Length==0)continue;
+                    var unit=new LooseEngineElement{definitionId=definition.id,unitPrice=20,element=template.condition.elements[0].Copy()};
+                    unit.element.id="unit-preview/"+category;unit.element.definitionId=definition.id;unit.element.health=.37f;
+                    if(EngineElements.Faults(category).Contains(ElementFault.CompressionLeak)){unit.element.fault=ElementFault.CompressionLeak;unit.element.severity=.2f;}
+                    var stock=new DealerStock{unit=unit,isUnit=true,paidPrice=20};p.inventory.dealer.Add(stock);
+                    var cache=new NativePartPreviewCache();
+                    NativePartBrowser Model(string page="Shop",PartCartLine[] lines=null)=>new NativePartBrowser(p,lines??Array.Empty<PartCartLine>(),lines!=null,page,s=>InventoryPricing.BuyUsed(s),(_,u)=>20,cache);
+                    string snapshot=JsonUtility.ToJson(p);var browser=Model();var entry=browser.Entries.Single(e=>e.AssetId==unit.element.id);browser.Evaluate(entry);
+                    string label=vehicle.spec.id+" / "+category;
+                    check(entry.Proposed!=null&&entry.RequiresMatchingSet&&entry.Position==null&&entry.Compatibility=="Compatible","Unmatched used unit has an explicit set estimate and no installation target: "+label+" / "+entry.Reason);
+                    if(entry.Proposed==null)continue;
+                    var proposed=entry.Proposed.source.components.Single(i=>i.slot==category.ToString());var member=proposed.condition.elements.Single(e=>e.id==unit.element.id);
+                    check(member.health==unit.element.health&&member.fault==unit.element.fault&&member.severity==unit.element.severity&&proposed.condition.elements.Where(e=>e.id!=unit.element.id).All(e=>e.health==1&&e.fault==ElementFault.None),"Estimate retains offered unit condition/fault and explicitly assumes new matching companions: "+label);
+                    check(entry.Price==InventoryPricing.BuyUsed(stock)&&JsonUtility.ToJson(p)==snapshot,"Comparison preserves single-unit price and all real assets/resources/stock: "+label);
+                    var again=Model();var restored=again.Entries.Single(e=>e.AssetId==unit.element.id);again.Evaluate(restored);
+                    check(restored.RequiresMatchingSet&&ReferenceEquals(restored.Proposed,entry.Proposed)&&again.EvaluationCount==0,"Cached estimate preserves its set requirement: "+label);
+                    var plan=Model(lines:new[]{new PartCartLine{definitionId=definition.id,quantity=1,install=true}});var planned=plan.Entries.Single(e=>e.AssetId==unit.element.id);plan.Evaluate(planned);
+                    check(plan.PlanError==null&&planned.Proposed!=null&&!planned.RequiresMatchingSet&&planned.Position!=null,"Pending matching set enables a real single-position comparison: "+label+" / "+plan.PlanError+" / "+planned.Reason);
+                    p.inventory.dealer.Remove(stock);p.looseEngineElements.Add(unit);string ownedSnapshot=JsonUtility.ToJson(p);
+                    var owned=Model("Inventory");var ownedEntry=owned.Entries.Single(e=>e.AssetId==unit.element.id);owned.Evaluate(ownedEntry);
+                    check(ownedEntry.RequiresMatchingSet&&ownedEntry.Proposed!=null&&ownedEntry.Position==null,"Stored unmatched unit retains the same set estimate without enabling install: "+label);
+                    bool rejected=false;try{InventoryUnits.Install(p,p.SelectedCar.instanceId,unit.element.id,fitted.condition.elements[0].id);}catch(InvalidOperationException){rejected=true;}
+                    check(rejected&&JsonUtility.ToJson(p)==ownedSnapshot,"Real installation rejects mismatched individual specifications without mutation: "+label);
+                    p.looseEngineElements.Remove(unit);
+                }
+            }
+        }
         public static void Run(VehicleDefinition[] vehicles, Action<bool,string> check)
         {
             foreach(var vehicle in vehicles){var p=PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);MechanicsOwnership.Ensure(p,new MechanicalCatalog(vehicles.Select(v=>v.spec)));p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,p.catalog,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});var car=p.SelectedCar;var cache=new NativePartPreviewCache();
@@ -35,7 +71,7 @@ namespace DragLab.Runtime
                 lines[0].install=false;var noInstall=Planned();check(noInstall.Plan!=null&&!ReferenceEquals(planned.Plan,noInstall.Plan),"Cart installation edits invalidate planned snapshots: "+vehicle.spec.id);
                 var definition=p.catalog.Find(stored.definitionId);definition.massKg+=2;var definitionChanged=Model();fresh=new NativePartBrowser(p,Array.Empty<PartCartLine>(),false,"Shop",_=>100,(_,u)=>100);
                 check(!ReferenceEquals(definitionChanged.Current,worn.Current)&&Math.Abs(definitionChanged.Current.vehicleMassKg-fresh.Current.vehicleMassKg)<1e-8,"Definition edits invalidate calculations and match a fresh inspection: "+vehicle.spec.id);
-                var specs=NativePartSpecifications.Summary(p.catalog.Find(p.catalog.Id(car.vehicleId,PartCategory.Tires,1)));check(specs.Select(s=>s.key).SequenceEqual(new[]{"grip","rollinglife","slidinglife","tireoptimal"})&&specs[1].value==25000,"Tire summaries prioritize actual grip and lifespan rather than torque strength: "+vehicle.spec.id);
+                var tireDefinition=p.catalog.Find(p.catalog.Id(car.vehicleId,PartCategory.Tires,1));var specs=NativePartSpecifications.Summary(tireDefinition);check(specs.Select(s=>s.key).SequenceEqual(new[]{"grip","rollinglife","slidinglife","tireoptimal"})&&Math.Abs(specs[1].value-tireDefinition.tireLifeDistanceM/1000)<1e-6,"Tire summaries prioritize actual authored grip and lifespan rather than torque strength: "+vehicle.spec.id);
                 var pack=p.componentsPart(PartCategory.Tires);TireDynamics.Ensure(pack.condition);foreach(var tire in pack.condition.tires)if(string.IsNullOrEmpty(tire.id))tire.id=MechanicsOwnership.NewId("tire");pack.condition.tires[0].health=.4f;var retained=pack.condition.tires.Skip(1).Select(t=>JsonUtility.ToJson(t)).ToArray();int cash=p.cash;var part=p.catalog.Find(pack.definitionId);int unitCost=PartsMarket.Quote(p,part,4,true).cost;var unit=InventoryUnits.Buy(p,car.instanceId,part.id,"tire");InventoryUnits.Install(p,car.instanceId,unit.element.id,"tire:0");check(p.cash==cash-unitCost&&pack.condition.tires.Skip(1).Select(t=>JsonUtility.ToJson(t)).SequenceEqual(retained)&&p.looseEngineElements.Any(u=>u.tireUnit&&u.tire.health==.4f),"One tire can be bought and replaced while retaining other corners and the worn original: "+vehicle.spec.id);
                 ProductIdentityChecks(p,check);
             }

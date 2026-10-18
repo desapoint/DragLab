@@ -1,0 +1,10 @@
+2026-10-18 individual-part comparison fix
+Windows build: PASS; packaged UI: 1053 assertions, zero runtime errors.
+Android ARM64 IL2CPP build: PASS.
+APK signing: PASS; apksigner verifies v2 signature, one signer.
+APK 16 KiB ZIP alignment: PASS; zipalign -c -P 16 4.
+APK ZIP CRC, ARM64-only native libraries, SQLite payload and ELF alignment: PASS.
+Package: com.draglab.prototype; version 1.0 / code 1; minimum API 26; target API 36.
+Android packaging preserves the tested Windows runtime: PASS; hash in build-manifest.txt.
+adb devices -l: no device connected. No on-device validation or store publication claimed.
+Full local commands/logs and screenshots remain ignored generated artifacts.

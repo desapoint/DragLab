@@ -120,7 +120,7 @@ namespace DragLab.Runtime
             labels[5].tooltip=string.Join("\n",e.BrandNames.Select(b=>b+": "+PartBrands.Description(b)));
             labels[5].text=e.Source+" · "+string.Join(" / ",e.BrandNames.Select(PartBrands.Focus).Distinct())+" · "+PartSemantics.Friendly(e.Definition.category.ToString())+(PartSemantics.Wears(e.Definition.category)?" · "+(failed?"FAILED":health.ToString("P0")):"");labels[5].EnableInClassList("car-critical",failed);
             labels[6].text=(e.Price.HasValue?DisplayUnits.Money(e.Price.Value):"—")+(e.Definition.category==PartCategory.Tires||e.Definition.category==PartCategory.Wheels?e.Unit==null?" / set of 4":e.Definition.category==PartCategory.Wheels?" / wheel":" / tire":"")+" · "+(e.Definition.tuning!=PartTuningOptions.None||e.Definition.camTimingAdjustable?"Adjustable":"Fixed");
-            labels[7].text=e.Source=="New"?e.StockUnits+" units in stock"+(e.RequiresExpress?" · Express":""):e.Unit!=null&&e.Change[3].HasValue?"Replacement condition "+PartDelta(e,3):"";
+            labels[7].text=e.RequiresMatchingSet?"Matching-set preview":e.Source=="New"?e.StockUnits+" units in stock"+(e.RequiresExpress?" · Express":""):e.Unit!=null&&e.Change[3].HasValue?"Replacement condition "+PartDelta(e,3):"";
 
         }
         void ApplyPartQuery()
@@ -176,6 +176,10 @@ namespace DragLab.Runtime
             PartDetailFact(facts,"Type",PartSemantics.Friendly(e.Definition.category.ToString())+" · "+e.Source);
             string set=e.Unit==null?InventoryUnits.SetLabel(game.Profile,game.Profile.SelectedCar,e.Definition):"Individual "+e.Unit.element.role;
             PartDetailFact(facts,"Includes",set.Replace("1 units","1 unit"));
+            if(e.RequiresMatchingSet){
+                PartDetailFact(facts,"Preview","With matching set","car-warning");
+                var notice=new Label("Sold individually. Preview uses this unit plus new matching parts. A matching set is required before installing this unit."){name="partMatchingSetNotice",enableRichText=false};notice.AddToClassList("part-description");facts.Add(notice);
+            }
             if(PartSemantics.Wears(e.Definition.category)){
                 double health=e.Unit?.element.health??(e.Part!=null&&e.Definition.category==PartCategory.Tires?TireDynamics.LowestHealth(e.Part.condition):e.Part?.condition.health)??1;bool failed=e.Unit!=null?e.Unit.element.Failed:e.Part!=null&&e.Definition.category==PartCategory.Tires?TireDynamics.AnyFailed(e.Part.condition):e.Part?.condition.failed??false;
                 PartDetailFact(facts,"Part condition",failed?"Failed · "+health.ToString("P0"):health.ToString("P0"),failed||health<=.25?"car-critical":health<=.5?"car-warning":"car-ready");
@@ -215,7 +219,7 @@ namespace DragLab.Runtime
                 NativeStatsPanel quick=null;
                 quick=new NativeStatsPanel(partsBrowser.Reference,SharedUnitSettings.Current,new[]{NativeStatCatalog.PartSummary(partsBrowser.Reference,e.Proposed,new[]{e.Definition.category})},new Dictionary<string,bool>(),d=>OpenDialog(d.Label,d.InfoExplanation(quick.Current,quick.Proposed),new[]{new DialogAction("Close",CloseDialog)}),DecoratePartDetail,e.Proposed){name="partQuickStats"};quick.AddToClassList("part-quick-stats");quick.Q<Button>("statsDifferencesOnly").name="partQuickDifferences";
                 var dyno=new VisualElement{name="partDetailDyno"};dyno.AddToClassList("part-detail-dyno");top.Add(dyno);DecoratePartDetail(dyno,RacingSurface.Kind.Panel);
-                dyno.Add(new NativeDynoPanel(new[]{new NativeDynoSeries("Reference",partsPlanned?"Planned build":"Current build",partsBrowser.Reference,NativeDynoStyle.Primary),new NativeDynoSeries("WithPart","With part",e.Proposed,NativeDynoStyle.Alternative),new NativeDynoSeries("NoWear","Current no wear",OwnedHealthy(game.Profile.SelectedCar),NativeDynoStyle.Reference)},SharedUnitSettings.Current.torque,"partDyno"));partsDetailScroll.Insert(1,quick);
+                dyno.Add(new NativeDynoPanel(new[]{new NativeDynoSeries("Reference",partsPlanned?"Planned build":"Current build",partsBrowser.Reference,NativeDynoStyle.Primary),new NativeDynoSeries("WithPart",e.RequiresMatchingSet?"With matching set":"With part",e.Proposed,NativeDynoStyle.Alternative),new NativeDynoSeries("NoWear","Current no wear",OwnedHealthy(game.Profile.SelectedCar),NativeDynoStyle.Reference)},SharedUnitSettings.Current.torque,"partDyno"));partsDetailScroll.Insert(1,quick);
                 if(!partDetailCollapsed.TryGetValue(id,out var collapsed)){collapsed=new Dictionary<string,bool>();partDetailCollapsed[id]=collapsed;}
                 var groups=NativeStatCatalog.PartEffects(partsBrowser.Reference,e.Proposed,new[]{e.Definition.category}).Select(g=>new NativeStatGroup(g.Id,g.Title,g.Definitions.ToArray()){InitiallyCollapsed=true,Children=g.Children});
                 NativeStatsPanel panel=null;

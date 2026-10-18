@@ -32,9 +32,9 @@ namespace DragLab.Runtime
         internal static string Key(string reference,NativePartEntry e)=>reference+"/"+JsonUtility.ToJson(e.Definition)+"/"+JsonUtility.ToJson(e.Part)+"/"+JsonUtility.ToJson(e.Unit)+"/"+e.Position;
         internal bool Restore(string key,NativePartEntry e)
         {
-            if(!comparisons.TryGetValue(key,out var saved))return false;Hits++;e.Ready=true;e.Proposed=saved.Proposed;e.Reason=saved.Reason;e.Compatibility=saved.Compatibility;e.Position=saved.Position;e.Change=(double?[])saved.Change.Clone();return true;
+            if(!comparisons.TryGetValue(key,out var saved))return false;Hits++;e.Ready=true;e.Proposed=saved.Proposed;e.Reason=saved.Reason;e.Compatibility=saved.Compatibility;e.Position=saved.Position;e.RequiresMatchingSet=saved.RequiresMatchingSet;e.Change=(double?[])saved.Change.Clone();return true;
         }
         internal void Store(string key,NativePartEntry e)
-        {if(comparisons.Count>=128)comparisons.Clear();comparisons[key]=new NativePartEntry{Ready=true,Proposed=e.Proposed,Reason=e.Reason,Compatibility=e.Compatibility,Position=e.Position,Change=(double?[])e.Change.Clone()};}
+        {if(comparisons.Count>=128)comparisons.Clear();comparisons[key]=new NativePartEntry{Ready=true,Proposed=e.Proposed,Reason=e.Reason,Compatibility=e.Compatibility,Position=e.Position,RequiresMatchingSet=e.RequiresMatchingSet,Change=(double?[])e.Change.Clone()};}
     }
 }

@@ -1,0 +1,8 @@
+Individual-part preview regression: PASS
+Configurations: 52
+Applicable member cases: 416
+Assertions: 2912
+Failures: 0
+Coverage: see coverage-matrix.csv
+Gates: worn/faulted offered member; new companions; exact single-unit price; immutable state; cached set flag; planned matching set; owned unit; rejected real mismatched installation.
+Raw detail remains local in unit-preview-full.log.

@@ -57,7 +57,7 @@ namespace DragLab.Runtime
         internal IEnumerable<string> BrandNames=>FittedBrands??new[]{Definition.brand};
         internal PartInstance Part;
         internal LooseEngineElement Unit;
-        internal bool Owned,Ready;
+        internal bool Owned,Ready,RequiresMatchingSet;
         internal int? Price;
         internal int StockUnits;internal bool RequiresExpress;
         internal double?[] Change=new double?[7];
@@ -162,10 +162,23 @@ namespace DragLab.Runtime
             try{
                 InspectionBuild candidate;
                 if(e.Unit!=null){
-                    var positions=InventoryUnits.Positions(reference,referenceCar,d.id,e.Unit.element.role);if(positions.Length==0){e.Compatibility="Compatible";e.Reason="Individual replacement needs the same installed specification. Fit the matching complete set before replacing this unit.";return;}
+                    var positions=InventoryUnits.Positions(reference,referenceCar,d.id,e.Unit.element.role);
+                    e.RequiresMatchingSet=positions.Length==0;
+                    if(e.RequiresMatchingSet){
+                        candidate=InspectionBuild.Capture(reference,referenceCar,definitionId:d.id);
+                        var pack=candidate.components.Single(p=>p.slot==d.category.ToString());
+                        EngineElements.Ensure(candidate.build.spec,d,pack);
+                        int index=Array.FindIndex(pack.condition.elements,member=>member.role==e.Unit.element.role);
+                        if(index<0)throw new InvalidOperationException("This unit has no matching position in the proposed set.");
+                        var target=pack.condition.elements[index];var incoming=e.Unit.element.Copy();
+                        incoming.cylinder=target.cylinder;incoming.valve=target.valve;pack.condition.elements[index]=incoming;
+                        EngineElementService.RefreshAggregate(pack.condition);
+                        e.Position=null;
+                    }else{
                     if(!positions.Contains(e.Position))e.Position=positions[0];var copy=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(reference));copy.catalog=actual.catalog;SharedInventory.Ensure(copy);
                     var u=copy.looseEngineElements.Find(i=>i.element.id==e.Unit.element.id);if(u==null){u=new LooseEngineElement{definitionId=d.id,storageId=SharedInventory.Garage,unitPrice=e.Unit.unitPrice,element=e.Unit.element.Copy(),tireUnit=e.Unit.tireUnit,tire=e.Unit.tire?.Copy()};copy.looseEngineElements.Add(u);}
                     InventoryUnits.Install(copy,referenceCar.instanceId,u.element.id,e.Position);candidate=InspectionBuild.Capture(copy,copy.SelectedCar);
+                    }
                 }else candidate=InspectionBuild.Capture(reference,referenceCar,definitionId:d.id,instanceId:e.Part?.instanceId);
                 var map=new Dictionary<PartCategory,string>(referenceMap){[d.category]=d.id};var structural=actual.catalog.Resolve(referenceCar.vehicleId,map,referenceCar.tune);
                 bool mating=(d.category==PartCategory.Camshaft||d.category==PartCategory.Followers)&&structural.errors.Any(error=>error.Contains("cannot mate"));
@@ -177,7 +190,8 @@ namespace DragLab.Runtime
                 e.Change[0]=b.peakHp-a.peakHp;e.Change[1]=b.peakTorque-a.peakTorque;e.Change[2]=b.vehicleMassKg-a.vehicleMassKg;
                 var replaced=reference.componentsPart(d.category);double health=e.Unit!=null?e.Unit.element.health:e.Part!=null?(d.category==PartCategory.Tires?TireDynamics.LowestHealth(e.Part.condition):e.Part.condition.health):1;
                 double oldHealth=replaced==null?0:d.category==PartCategory.Tires?TireDynamics.LowestHealth(replaced.condition):replaced.condition.health;
-                if(e.Unit!=null&&replaced!=null){if(e.Unit.tireUnit&&e.Position.StartsWith("tire:",StringComparison.Ordinal))oldHealth=TireDynamics.RemainingHealth(replaced.condition.tires[int.Parse(e.Position.Substring(5))]);else oldHealth=replaced.condition.elements.FirstOrDefault(element=>element.id==e.Position)?.health??oldHealth;}
+                if(e.RequiresMatchingSet)health=candidate.components.Single(p=>p.slot==d.category.ToString()).condition.health;
+                if(e.Unit!=null&&replaced!=null&&!e.RequiresMatchingSet){if(e.Unit.tireUnit&&e.Position.StartsWith("tire:",StringComparison.Ordinal))oldHealth=TireDynamics.RemainingHealth(replaced.condition.tires[int.Parse(e.Position.Substring(5))]);else oldHealth=replaced.condition.elements.FirstOrDefault(element=>element.id==e.Position)?.health??oldHealth;}
                 if(PartSemantics.Wears(d.category))e.Change[3]=(health-oldHealth)*100;
                 var prior=replaced==null?null:actual.catalog.Find(replaced.definitionId);
                 if(PartSemantics.TorqueRated(d.category)&&prior!=null)e.Change[4]=d.torqueLimitNm-prior.torqueLimitNm;
