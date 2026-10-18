@@ -272,6 +272,8 @@
 .fitted-part { padding: 8px 0; border-bottom-width: 1px; border-bottom-color: rgba(138,148,157,0.13); }
 .fitted-part .car-fact-label { flex-grow: 1; flex-shrink: 1; flex-basis: 65%; margin-right: 12px; }
 .fitted-part .car-fact-value { flex-shrink: 1; flex-basis: 35%; }
+.fitted-part-corner { margin-top: 6px; padding-left: 8px; }
+.fitted-part-corner .car-fact-label, .fitted-part-corner .car-fact-value { white-space: normal; }
 .modal-content .fitted-part Label { font-size: 17px; margin-bottom: 0; }
 .modal-content .fitted-part-slot { font-size: 14px; color: var(--racing-muted); }
 .fitted-part-actions { flex-direction: row; align-items: center; margin-top: 4px; }

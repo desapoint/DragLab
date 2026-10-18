@@ -1,5 +1,7 @@
 # Native interface direction — grey/red and Settings first
 
+Fitted tire/rim corners (2026-10-18): the shared owned/dealership fitted-parts dialog resolves each corner from its retained physical member, including actual specification, remaining tire life and failure reason. The set heading uses the current common specification or Mixed tires / Mixed wheels, never the original container name after replacements. Keep component groups, shared Shop action and inspection disclosure gating. [Checkpoint](../reports/fitted-corners-20261018/CHANGES.md).
+
 Pedal direction (2026-10-18): use the original clean metal-frame/dark-rubber look with broad brake/clutch pads, a narrow accelerator, rounded corners, subtle taper and shaded grooves. Fix each heel to the floor; the top moves down and away on increased press, with perspective and eased visual travel. Remove overhead arms and the white/red pressed strip. Keep the existing fixed touch rectangles, feathering and independent input. This supersedes the previous upper-hinge/irregular-profile art. [Checkpoint](../reports/floor-pedals-20261018/CHANGES.md).
 
 Mobile header/footer edges (2026-10-18): extend their existing decorative surfaces through the status-bar, cutout and gesture margins to the display edges. Keep navigation buttons, labels and workspace layout inside the safe area. Decorative extensions ignore touches; desktop chrome retains its existing bounds. [Checkpoint](../reports/mobile-chrome-20261018/CHANGES.md).

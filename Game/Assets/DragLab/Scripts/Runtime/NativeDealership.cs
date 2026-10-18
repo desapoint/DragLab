@@ -261,11 +261,23 @@ namespace DragLab.Runtime
                     AddSurface(toggle,RacingSurface.Kind.Button);dialogSurfaces.Add(toggle.Q<RacingSurface>());frame.Add(body);
                     foreach(var entry in entries) {
                         var p=entry.Part;var row=new VisualElement{name="fittedPart:"+p.instanceId,userData=entry.Definition.category};row.AddToClassList("fitted-part");body.Add(row);
+                        var category=entry.Definition.category;
+                        bool tires=category==PartCategory.Tires;
+                        bool corners=tires||category==PartCategory.Wheels&&p.condition.elements.Length==4&&p.condition.elements.All(e=>e.role=="wheel");
+                        var cornerDefinitions=corners?Enumerable.Range(0,4).Select(i=>catalog.Find(tires?TireFitments.DefinitionId(p,i):WheelFitments.DefinitionId(p,i))).ToArray():new PartDefinition[0];
+                        string name=corners?cornerDefinitions.Select(d=>d.id).Distinct().Count()==1?cornerDefinitions[0].name:tires?"Mixed tires":"Mixed wheels":entry.Definition.name;
                         string failure=entry.Definition.category==PartCategory.Tires?TireDynamics.FailedCorners(p.condition):p.condition.failureReason;
-                        CarFact(row,entry.Definition.name,PrototypeGame.PartFailed(p)?"Failed"+(string.IsNullOrEmpty(failure)?"":" · "+failure):PrototypeGame.MaintenanceConditionHealth(p).ToString("P0"));
+                        CarFact(row,name,PrototypeGame.PartFailed(p)?"Failed"+(string.IsNullOrEmpty(failure)?"":" · "+failure):PrototypeGame.MaintenanceConditionHealth(p).ToString("P0"));
+                        if(corners)for(int i=0;i<4;i++){
+                            var member=p.condition.elements[i];
+                            float health=tires?TireDynamics.RemainingHealth(p.condition.tires[i]):member.health;
+                            string reason=tires?p.condition.tires[i].failureReason:member.fault==ElementFault.None?"":member.fault.ToString();
+                            var corner=new VisualElement{name="fittedCorner:"+p.instanceId+":"+i,userData=member.id,tooltip=member.id};corner.AddToClassList("fitted-part-corner");row.Add(corner);
+                            corner.AddToClassList(member.Failed?"car-critical":ServiceConditionClass(health));
+                            CarFact(corner,new[]{"Front left","Front right","Rear left","Rear right"}[i]+" · "+cornerDefinitions[i].name,member.Failed?"Failed"+(string.IsNullOrEmpty(reason)?"":" · "+reason):health.ToString("P0"));
+                        }
                         var actions=new VisualElement();actions.AddToClassList("fitted-part-actions");row.Add(actions);
                         var slot=new Label(PartSemantics.Friendly(entry.Definition.category.ToString()));slot.AddToClassList("fitted-part-slot");actions.Add(slot);
-                        var category=entry.Definition.category;
                         var shop=new Button(()=>{CloseDialog();game.QueueNativeNavigation("Parts",true,category);}){name="fittedPartShop:"+p.instanceId,text="Shop",tooltip=game.Profile.SelectedCar==null?"Buy a car first.":"Shop · "+PartSemantics.Friendly(category.ToString()),focusable=false,tabIndex=-1};
                         shop.AddToClassList("action-button");shop.AddToClassList("car-stats-button");shop.AddToClassList("fitted-part-shop");actions.Add(shop);shop.Add(new FilledMenuIcon("Business"));shop.SetEnabled(game.Profile.SelectedCar!=null);AddSurface(shop,RacingSurface.Kind.SecondaryAction);dialogSurfaces.Add(shop.Q<RacingSurface>());
                         foreach(var element in p.condition.elements.Where(e=>e.fault!=ElementFault.None)) {

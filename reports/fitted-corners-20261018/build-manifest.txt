@@ -1,0 +1,10 @@
+Built 2026-10-18: actual fitted tire/rim corners Windows player and matching Android APK.
+Android APK bytes: 87239705
+Android APK SHA256: de4d776a7ce2598db4b69f1526d95c6fa21f92d05d3ddd04a2598e8aa297e562
+Windows Assembly-CSharp.dll SHA256: 23404ba0a2083bc3a697266e3a5eb7c0c8f3e69c561741e0f88434b43fb6cb44
+Windows runtime is unchanged by Android packaging: PASS
+APK ZIP CRC / ARM64-only libraries / Windows SQLite DLL exclusion: PASS
+Packaged SQLite matches the tracked ARM64 plugin after llvm-strip --strip-unneeded: PASS
+All packaged ELF PT_LOAD segments support at least 16 KiB alignment: PASS
+External signature, ZIP alignment, package metadata and device checks: see packaging-verification.txt.
+No connected phone testing or store upload is claimed.

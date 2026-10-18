@@ -1,0 +1,22 @@
+Actual fitted tire/rim corners - final packaged Windows checks (2026-10-18)
+
+Owned fitted parts:
+Checks: 105 / runtime errors: 0
+Mixed and uniformly replaced: 1 passing assertions
+Fitted set title follows: 6 passing assertions
+Fitted corner shows: 24 passing assertions
+Fitted corner condition uses: 24 passing assertions
+Viewing owned fitted parts: 3 passing assertions
+Disclosed dealer fitted tires: 1 passing assertions
+Opening and grouping fitted parts: 1 passing assertions
+
+Dealership inspection:
+Checks: 63 / runtime errors: 0
+Disclosed dealer fitted tires: 2 passing assertions
+Uninspected view has no: 1 passing assertions
+Opening and grouping fitted parts: 2 passing assertions
+
+Owned scenarios: mixed rear tires/rims; all four individually replaced; stock corners on detached-engine car.
+Corner fixtures use visibly different catalog names, retained IDs and independent wear; the tire failure uses TireCondition.failed.
+Final expanded owned-car capture visually reviewed at 1280x720.
+Raw assertions/captures/logs remain in the isolated player-fixtures directories above (ignored).

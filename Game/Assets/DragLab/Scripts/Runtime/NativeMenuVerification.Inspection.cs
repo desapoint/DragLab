@@ -26,6 +26,12 @@ namespace DragLab.Runtime
             Check(rows.Count==offer.parts.Count&&rows.Select(r=>r.name).Distinct().Count()==rows.Count&&offer.parts.All(p=>rows.Any(r=>r.name=="fittedPart:"+p.instanceId)),"Grouped fitted list shows every actual part exactly once with retained identity");
             Check(rows.All(r=>r.parent.name=="fittedPartsBody:"+NativeMenuShell.FittedPartGroup((PartCategory)r.userData)),"All part rows belong to their component system, including cooling, electronics and drivetrain");
             Check(offer.parts.All(p=>{var text=list.Q("fittedPart:"+p.instanceId).Q<Label>(className:"car-fact-value").text;return PrototypeGame.PartFailed(p)?text.StartsWith("Failed"):text==PrototypeGame.MaintenanceConditionHealth(p).ToString("P0");}),"Fitted values reflect actual member condition and failures instead of a neutral tire wrapper");
+            var tires=offer.parts.Single(p=>p.slot=="Tires");
+            Check(Enumerable.Range(0,4).All(i=>{
+                var row=list.Q("fittedCorner:"+tires.instanceId+":"+i);var tire=tires.condition.tires[i];
+                return row!=null&&(string)row.userData==tire.id&&row.Q<Label>(className:"car-fact-label").text.EndsWith(game.Profile.catalog.Find(TireFitments.DefinitionId(tires,i)).name)
+                    &&(tire.Failed?row.Q<Label>(className:"car-fact-value").text.StartsWith("Failed"):row.Q<Label>(className:"car-fact-value").text==TireDynamics.RemainingHealth(tire).ToString("P0"));
+            }),"Disclosed dealer fitted tires show all four actual corner specifications, identities and remaining conditions");
             Check(Enum.GetValues(typeof(PartCategory)).Cast<PartCategory>().All(c=>NativeMenuShell.FittedPartGroup(c)!="Other"),"Every current component category has a named system, including diesel and AWD hardware");
             Check(new[]{"Engine","Cooling & lubrication","Drivetrain","Wheels & brakes"}.All(g=>list.Q("fittedPartsGroup:"+g)!=null),"Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections");
             Check(list.Query<Button>(className:"stat-group-toggle").ToList().All(b=>list.Q("fittedPartsBody:"+b.name.Substring("fittedPartsGroup:".Length)).ClassListContains("hidden")),"Dialog starts with a concise collapsed system overview");

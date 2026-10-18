@@ -1,5 +1,7 @@
 # Prototype implementation status
 
+**Fitted tire/rim corners (2026-10-18):** shared owned/dealership fitted dialog resolves actual four corner specifications, remaining condition and failures; headings follow the current common specification or Mixed tires/wheels rather than the original container name. Final packaged checks pass **105 owned fitted / 63 dealership inspection**, zero runtime errors, including mixed/uniform individual replacements and read-only asset/save checks. [Fix, builds and review](../reports/fitted-corners-20261018/CHANGES.md). No later UI phase is advanced.
+
 **Floor-mounted pedals / original appearance (2026-10-18):** return to the original clean metal/rubber visual reference, keep heels fixed at the floor and tilt tops down/away on press; remove overhead stalks and the white/red indicator strip. Input and hit regions stay unchanged. Packaged checks pass **65 pedal input / 157 mobile / 85 keyboard-flick**, zero runtime errors. [Requested revision, builds and phone review](../reports/floor-pedals-20261018/CHANGES.md). No later UI phase is advanced.
 
 **Pedal shape / hinge depth (2026-10-18):** shaped clutch/brake and tapered accelerator, shaded metal/rubber and raised grips; artwork rotates with perspective about a fixed hinge instead of sliding flat rectangles. Input/hit regions remain unchanged. Packaged checks pass **65 pedal input / 157 mobile / 85 keyboard-flick**, zero runtime errors. [Requested checkpoint, builds and phone review](../reports/pedal-depth-20261018/CHANGES.md). No later UI phase is advanced.

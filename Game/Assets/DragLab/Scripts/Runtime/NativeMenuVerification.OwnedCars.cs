@@ -22,6 +22,18 @@ namespace DragLab.Runtime
             var vehicle=Resources.LoadAll<VehicleDefinition>("Data/Vehicles").First(v=>v.spec.id==fixture.SelectedCar.vehicleId);
             for(int i=0;i<2;i++)VehicleCollection.Buy(fixture,fixture.catalog,new VehicleOffer{model=vehicle.spec.id,price=vehicle.purchasePrice,reputation=0,stock=vehicle.CreateStockTune(),paint="#DA3448"});
             var cars=new[]{fixture.cars[0],fixture.cars[fixture.cars.Count-2],fixture.cars.Last()};AssemblyOperations.Detach(fixture,cars[2].instanceId);
+            foreach(var car in cars.Take(2))foreach(var category in new[]{PartCategory.Tires,PartCategory.Wheels}){
+                var pack=fixture.parts.Single(p=>p.instanceId==car.installed.slots.First(s=>s.slot==category.ToString()).partInstanceId);
+                var alternative=fixture.catalog.parts.First(d=>d.category==category&&d.id!=pack.definitionId&&d.name!=fixture.catalog.Find(pack.definitionId).name&&fixture.catalog.Fits(fixture.catalog.Spec(car.vehicleId),d));
+                foreach(int corner in car==cars[0]?new[]{2,3}:new[]{0,1,2,3}){
+                    var unit=InventoryUnits.Buy(fixture,car.instanceId,alternative.id,category==PartCategory.Tires?"tire":"wheel");
+                    if(category==PartCategory.Tires){unit.tire.health=.9f;unit.tire.consumedLife=.2+corner*.1;unit.tire.distanceM=2000+corner*1000;}
+                    else unit.element.health=.6f+corner*.1f;
+                    InventoryUnits.Install(fixture,car.instanceId,unit.element.id,(category==PartCategory.Tires?"tire:":"wheel:")+corner);
+                }
+                if(category==PartCategory.Tires&&car==cars[0]){pack.condition.tires[0].health=.9f;pack.condition.tires[0].consumedLife=.6;pack.condition.tires[1].failed=true;pack.condition.tires[1].failureReason="Fixture tire failure";}
+            }
+            Check(MechanicsOwnership.Validate(fixture,fixture.catalog)==null,"Mixed and uniformly replaced corner fixtures retain valid physical identities and typed tire failures");
             string selected=fixture.selectedOwnedVehicleId;byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);string baseline=JsonUtility.ToJson(fixture);
             try{
                 field.SetValue(game,fixture);game.settings=fixture.driving;
@@ -44,7 +56,21 @@ namespace DragLab.Runtime
                     DialogScrollBounds("owned fitted parts");yield return Capture("owned-fitted-groups-"+Array.IndexOf(cars,car));
                     var binding=car.installed.slots.First(s=>s.slot=="Tires");var part=fixture.parts.Single(p=>p.instanceId==binding.partInstanceId);
                     yield return PartDialogClick(input,"fittedPartsGroup:Wheels & brakes");var row=list.Q("fittedPart:"+part.instanceId);
-                    Check(row.Query<Label>().ToList().Any(l=>l.text==PrototypeGame.MaintenanceConditionHealth(part).ToString("P0")),"Owned fitted row displays actual remaining tire condition");
+                    Check(row.Q<Label>(className:"car-fact-value").text==(PrototypeGame.PartFailed(part)?"Failed · "+TireDynamics.FailedCorners(part.condition):PrototypeGame.MaintenanceConditionHealth(part).ToString("P0")),"Owned fitted row displays actual remaining tire condition and corner failures");
+                    foreach(var category in new[]{PartCategory.Tires,PartCategory.Wheels}){
+                        var pack=fixture.parts.Single(p=>p.instanceId==car.installed.slots.First(s=>s.slot==category.ToString()).partInstanceId);
+                        var cornerRow=list.Q("fittedPart:"+pack.instanceId);
+                        var defs=Enumerable.Range(0,4).Select(i=>fixture.catalog.Find(category==PartCategory.Tires?TireFitments.DefinitionId(pack,i):WheelFitments.DefinitionId(pack,i))).ToArray();
+                        string title=defs.Select(d=>d.id).Distinct().Count()==1?defs[0].name:category==PartCategory.Tires?"Mixed tires":"Mixed wheels";
+                        Check(cornerRow.Q<Label>(className:"car-fact-label").text==title,"Fitted set title follows actual corners rather than the original wrapper: "+category);
+                        for(int i=0;i<4;i++){
+                            var member=pack.condition.elements[i];var detail=cornerRow.Q("fittedCorner:"+pack.instanceId+":"+i);
+                            float health=category==PartCategory.Tires?TireDynamics.RemainingHealth(pack.condition.tires[i]):member.health;
+                            Check(detail!=null&&(string)detail.userData==member.id&&detail.Q<Label>(className:"car-fact-label").text==new[]{"Front left","Front right","Rear left","Rear right"}[i]+" · "+defs[i].name,"Fitted corner shows its actual member identity and specification: "+category+" / "+i);
+                            string value=detail?.Q<Label>(className:"car-fact-value").text;
+                            Check(member.Failed?value!=null&&value.StartsWith("Failed"):value==health.ToString("P0"),"Fitted corner condition uses remaining physical life, not the neutral set wrapper: "+category+" / "+i);
+                        }
+                    }
                     var shop=row.Q<Button>("fittedPartShop:"+part.instanceId);shell.Root.Q<ScrollView>("modalContent").ScrollTo(shop);yield return new WaitForSecondsRealtime(.15f);yield return Capture("owned-fitted-expanded-"+Array.IndexOf(cars,car));
                     if(car==cars[1]){
                         yield return Click(input,shop);yield return WaitParts();
