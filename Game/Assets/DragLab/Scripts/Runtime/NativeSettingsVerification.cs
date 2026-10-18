@@ -221,7 +221,7 @@ namespace DragLab.Runtime
             yield return Click(input,"tabGeneral");yield return Click(input,"resetGame");Check(shell.ModalOpen,"Reset opens separate destructive dialog");
             yield return Key(input,0x1b);Check(!shell.ModalOpen && JsonUtility.ToJson(game.Profile)==current,"Escape cancels reset without changing progression");
             yield return Click(input,"resetGame");yield return Click(input,"dialogResetgame");
-            Check(game.Profile.cash==4700 && game.Profile.reputation==0 && game.Profile.cars.Count==0 && game.Profile.firstPurchasePending && game.Profile.vehicleStock.listings.Count==3 && game.settings.shifting==ShiftMode.ManualClutch,"Reset clears progression and retains applied driving preferences");
+            Check(game.Profile.cash==6500 && game.Profile.reputation==0 && game.Profile.cars.Count==0 && game.Profile.firstPurchasePending && game.Profile.vehicleStock.listings.Count==3 && game.settings.shifting==ShiftMode.ManualClutch,"Reset clears progression and retains applied driving preferences");
             Check(Mathf.Abs(SharedAudioSettings.MasterVolume-.58f)<.00001f && !shell.SettingsDirty && game.ScreenName=="Garage","Reset keeps applied sound, discards unsaved draft and opens the starter dealership");
             // Clicking must neither restart nor interrupt a running hover sweep.
             var gear=root.Q("settingsButton");var surface=gear.Q<RacingSurface>();

@@ -64,14 +64,14 @@ namespace DragLab.Runtime
                 yield return ClickReset(mouse, "request"); yield return ClickReset(mouse, "confirm");
             }
             var fresh = game.Profile;
-            require(!ReferenceEquals(fresh, original) && fresh.cash == 4700 && fresh.reputation == 0 && fresh.garageLevel == 1 && fresh.careerWins.Count == 0, "Actual Reset progression starts fresh cash, career and garage business.");
+            require(!ReferenceEquals(fresh, original) && fresh.cash == 6500 && fresh.reputation == 0 && fresh.garageLevel == 1 && fresh.careerWins.Count == 0, "Actual Reset progression starts fresh cash, career and garage business.");
             require(fresh.cars.Count==0&&fresh.parts.Count==0&&fresh.engines.Count==0&&fresh.firstPurchasePending&&fresh.vehicleStock.listings.Count==3,"Reset opens dealership with fixed choices and no gifted ownership.");
             require(fresh.savedSetups.Count==0&&fresh.bestQuarterSeconds==0,"Saved setups and race records cleared.");
             require(JsonUtility.ToJson(game.settings) == prefs && ReferenceEquals(game.settings, fresh.driving) && fresh.difficulty == 2, "Live driving settings and AI difficulty remain bound to the preserved copy.");
             require(SharedAudioSettings.MasterVolume == .42f && File.ReadAllText(SharedAudioSettings.FilePath) == audio, "Live volume and its persisted settings are unchanged.");
             require(game.Race == null && fresh.runCheckpoints.Count == 0 && fresh.PendingIdle(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks) == 0, "Old race state, run settlements and banked offline income are cleared.");
             var reloaded = ProfileStore.Load();
-            require(reloaded.firstPurchasePending&&reloaded.cars.Count==0 && reloaded.cash == 4700 && JsonUtility.ToJson(reloaded.driving) == prefs && reloaded.difficulty == 2, "Reload retains the reset garage and both driving preferences.");
+            require(reloaded.firstPurchasePending&&reloaded.cars.Count==0 && reloaded.cash == 6500 && JsonUtility.ToJson(reloaded.driving) == prefs && reloaded.difficulty == 2, "Reload retains the reset garage and both driving preferences.");
             SharedAudioSettings.Reload(); require(SharedAudioSettings.MasterVolume == .42f, "Reload retains the shared master volume.");
             require(!game.CommitGameReset(original.revision) && ReferenceEquals(game.Profile, fresh), "Double or stale reset action cannot create another identity tree.");
             yield return Capture("reset-complete");

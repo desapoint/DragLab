@@ -1,20 +1,112 @@
-PASS 13 unique authored vehicles/trims
+PASS Expected authored vehicle trims and engine families; run VehicleVarietyPrepare explicitly if fixtures are missing
+PASS aster stock hardware resolves
+PASS aster full-wear factory quarter mile survives
+PASS aster-sport stock hardware resolves
+PASS aster-sport full-wear factory quarter mile survives
+PASS atlas stock hardware resolves
+PASS atlas full-wear factory quarter mile survives
+PASS atlas-sport stock hardware resolves
+PASS atlas-sport full-wear factory quarter mile survives
+PASS boreal stock hardware resolves
+PASS boreal full-wear factory quarter mile survives
+PASS boreal-sport stock hardware resolves
+PASS boreal-sport full-wear factory quarter mile survives
+PASS cinder stock hardware resolves
+PASS cinder full-wear factory quarter mile survives
+PASS cinder-sport stock hardware resolves
+PASS cinder-sport full-wear factory quarter mile survives
 PASS city-three stock hardware resolves
 PASS city-three full-wear factory quarter mile survives
+PASS comet stock hardware resolves
+PASS comet full-wear factory quarter mile survives
+PASS comet-sport stock hardware resolves
+PASS comet-sport full-wear factory quarter mile survives
+PASS finch stock hardware resolves
+PASS finch full-wear factory quarter mile survives
+PASS finch-sport stock hardware resolves
+PASS finch-sport full-wear factory quarter mile survives
+PASS fjord stock hardware resolves
+PASS fjord full-wear factory quarter mile survives
+PASS fjord diesel heaters and injectors replace spark equipment
+PASS fjord compression ignition prevents gasoline exhaust-retard controls
+PASS fjord tune cannot fabricate spark hardware
+PASS fjord one failed glow heater reduces cold support without disabling other cylinders
+PASS fjord individual heater fault cannot remove a warm combustion event
+PASS fjord failed glow heaters worsen cold combustion only
+PASS fjord warm diesel does not need spark/heater firing
+PASS fjord diesel fuel mass and metering
+PASS fjord diesel lift has no throttle-plate blow-off event
+PASS fjord finite distinct diesel sound
+PASS fjord petrol hardware not interchangeable with diesel
+PASS fjord-sport stock hardware resolves
+PASS fjord-sport full-wear factory quarter mile survives
+PASS fjord-sport diesel heaters and injectors replace spark equipment
+PASS fjord-sport compression ignition prevents gasoline exhaust-retard controls
+PASS fjord-sport tune cannot fabricate spark hardware
+PASS fjord-sport one failed glow heater reduces cold support without disabling other cylinders
+PASS fjord-sport individual heater fault cannot remove a warm combustion event
+PASS fjord-sport failed glow heaters worsen cold combustion only
+PASS fjord-sport warm diesel does not need spark/heater firing
+PASS fjord-sport diesel fuel mass and metering
+PASS fjord-sport diesel lift has no throttle-plate blow-off event
+PASS fjord-sport finite distinct diesel sound
+PASS fjord-sport petrol hardware not interchangeable with diesel
 PASS juniper-club stock hardware resolves
 PASS juniper-club full-wear factory quarter mile survives
 PASS juniper-economy stock hardware resolves
 PASS juniper-economy full-wear factory quarter mile survives
 PASS kestrel-track stock hardware resolves
 PASS kestrel-track full-wear factory quarter mile survives
+PASS lark stock hardware resolves
+PASS lark full-wear factory quarter mile survives
+PASS lark-sport stock hardware resolves
+PASS lark-sport full-wear factory quarter mile survives
+PASS meridian-sport stock hardware resolves
+PASS meridian-sport full-wear factory quarter mile survives
+PASS mistral stock hardware resolves
+PASS mistral full-wear factory quarter mile survives
+PASS mistral-sport stock hardware resolves
+PASS mistral-sport full-wear factory quarter mile survives
+PASS osprey stock hardware resolves
+PASS osprey full-wear factory quarter mile survives
+PASS osprey-sport stock hardware resolves
+PASS osprey-sport full-wear factory quarter mile survives
+PASS piper stock hardware resolves
+PASS piper full-wear factory quarter mile survives
+PASS piper-sport stock hardware resolves
+PASS piper-sport full-wear factory quarter mile survives
 PASS rally-sedan stock hardware resolves
 PASS rally-sedan full-wear factory quarter mile survives
+PASS reed stock hardware resolves
+PASS reed full-wear factory quarter mile survives
+PASS reed-sport stock hardware resolves
+PASS reed-sport full-wear factory quarter mile survives
+PASS rook stock hardware resolves
+PASS rook full-wear factory quarter mile survives
+PASS rook-sport stock hardware resolves
+PASS rook-sport full-wear factory quarter mile survives
+PASS sable stock hardware resolves
+PASS sable full-wear factory quarter mile survives
+PASS sable-sport stock hardware resolves
+PASS sable-sport full-wear factory quarter mile survives
+PASS solstice stock hardware resolves
+PASS solstice full-wear factory quarter mile survives
+PASS solstice-sport stock hardware resolves
+PASS solstice-sport full-wear factory quarter mile survives
 PASS sport-coupe stock hardware resolves
 PASS sport-coupe full-wear factory quarter mile survives
+PASS sprig-sport stock hardware resolves
+PASS sprig-sport full-wear factory quarter mile survives
 PASS starter-hatch stock hardware resolves
 PASS starter-hatch full-wear factory quarter mile survives
 PASS super-v8 stock hardware resolves
 PASS super-v8 full-wear factory quarter mile survives
+PASS swift stock hardware resolves
+PASS swift full-wear factory quarter mile survives
+PASS swift-sport stock hardware resolves
+PASS swift-sport full-wear factory quarter mile survives
+PASS tempest-rs stock hardware resolves
+PASS tempest-rs full-wear factory quarter mile survives
 PASS timber-diesel stock hardware resolves
 PASS timber-diesel full-wear factory quarter mile survives
 PASS timber-diesel diesel heaters and injectors replace spark equipment
@@ -47,7 +139,15 @@ PASS utility-pickup stock hardware resolves
 PASS utility-pickup full-wear factory quarter mile survives
 PASS v8-muscle stock hardware resolves
 PASS v8-muscle full-wear factory quarter mile survives
+PASS vale stock hardware resolves
+PASS vale full-wear factory quarter mile survives
+PASS vale-sport stock hardware resolves
+PASS vale-sport full-wear factory quarter mile survives
+PASS wren stock hardware resolves
+PASS wren full-wear factory quarter mile survives
+PASS wren-sport stock hardware resolves
+PASS wren-sport full-wear factory quarter mile survives
 PASS same-engine hatch trims share actual piston family
 PASS different bore/family economy internals excluded
 PASS Track trim retains complete factory recipe
-TOTAL 52
+TOTAL 152

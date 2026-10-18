@@ -1,0 +1,10 @@
+Built 2026-10-18: expanded starters, market variety and onboarding Windows player and matching Android APK.
+Android APK bytes: 87250159
+Android APK SHA256: 9c42b2fb2b5849a31c6dc5db86840265d4a91ad117bd533a5fc510ca056f702e
+Windows Assembly-CSharp.dll SHA256: 9b5d63d1e963dac90200bd1a22d170defae8a39eaace2391c53491d20cb250a2
+Windows runtime is unchanged by Android packaging: PASS
+APK ZIP CRC / ARM64-only libraries / Windows SQLite DLL exclusion: PASS
+Packaged SQLite matches the tracked ARM64 plugin after llvm-strip --strip-unneeded: PASS
+All packaged ELF PT_LOAD segments support at least 16 KiB alignment: PASS
+External signature, ZIP alignment, package metadata and device checks: see packaging-verification.txt.
+No connected phone testing or store upload is claimed.

@@ -94,6 +94,7 @@ namespace DragLab.Runtime
             InitializeSettings();
             InitializeTouchMenus();
             ExcludeTabTraversal();
+            root.schedule.Execute(ShowOnboardingIfNeeded);
         }
 
         void ExcludeTabTraversal()

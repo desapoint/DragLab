@@ -45,7 +45,7 @@ namespace DragLab.Infrastructure
             }
             catch (Exception e) { error = "Settings recovery failed: " + e.Message; return false; }
         }
-        internal static bool TryApply(PlayerProfile candidate, UnitPreferences units, float master, float opponent, out string error, bool? reverseTouchShifting=null)
+        internal static bool TryApply(PlayerProfile candidate, UnitPreferences units, float master, float opponent, out string error, bool? reverseTouchShifting=null,bool? onboardingComplete=null)
         {
             error = null;
             if (!Recover(out error)) return false;
@@ -58,7 +58,7 @@ namespace DragLab.Infrastructure
                     throw new InvalidDataException("Volume must be between 0 and 100%.");
                 for (int i = 0; i < paths.Length; i++) journal.entries[i] = new Entry { exists = File.Exists(paths[i]), text = File.Exists(paths[i]) ? File.ReadAllText(paths[i], Encoding.UTF8) : null };
                 Atomic(JournalPath, JsonUtility.ToJson(journal)); prepared = true;
-                appliedDriving=DrivingPreferences.Encode(candidate.driving,candidate.difficulty,reverseTouchShifting);
+                appliedDriving=DrivingPreferences.Encode(candidate.driving,candidate.difficulty,reverseTouchShifting,onboardingComplete);
                 Atomic(DrivingPreferences.FilePath,appliedDriving);
                 Atomic(SharedAudioSettings.FilePath, JsonUtility.ToJson(new Audio { masterVolume = master, opponentVolume = opponent }, true));
                 Atomic(SharedUnitSettings.FilePath, JsonUtility.ToJson(units, true));

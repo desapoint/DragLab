@@ -1,0 +1,173 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: First start opens preset onboarding before shopping
+PASS: Fresh defaults are Shift myself / Simulation / Normal market
+PASS: Dialog content clears fixed X/title and actions: onboarding presets
+PASS: Presets precede independent Normal market selection
+PASS: Next keeps all settings as unsaved drafts
+PASS: Back retains both preset drafts
+PASS: Returning to market retains its independent draft
+PASS: Dialog content clears fixed X/title and actions: onboarding market
+PASS: Failed preference write keeps onboarding open and retryable
+PASS: Failed onboarding preserves original state and preferences
+PASS: Explicit confirmation persists completion and returns to starter selection
+PASS: Normal market applies after Simulation rather than becoming Hard
+PASS: Onboarding changes preferences only; exact starter stock, money and progression remain intact
+PASS: Confirmed presets reload independently from SQLite progression
+PASS: Touch fresh game reaches all fixed starter choices
+PASS: Touch target exists and is enabled: dealerCar:starter:reed
+PASS: Touch target exists and is enabled: dealerBuy
+PASS: Touch target exists and is enabled: dialogConfirm
+PASS: Starter purchase completes using touch events alone
+PASS: Touch target exists and is enabled: renameOwnedCar
+PASS: Owned car naming has an editable on-screen text field
+PASS: Touch target exists and is enabled: dialogSave
+PASS: Touch name confirmation saves the car label
+PASS: Touch press reveals dyno point values without hover
+PASS: Dyno readings remain available after lifting a finger
+PASS: Touch target exists and is enabled: maintenanceFuel
+PASS: Touch target exists and is enabled: dialogConfirm
+PASS: Touch fuel purchase confirms and closes
+PASS: Menu clears simulated notch/gesture insets at (854, 480)
+PASS: Mobile navigation stays reachable: (854, 480) / navGarage
+PASS: Mobile navigation stays reachable: (854, 480) / navBuild
+PASS: Mobile navigation stays reachable: (854, 480) / navTuning
+PASS: Mobile navigation stays reachable: (854, 480) / navRace
+PASS: Mobile navigation stays reachable: (854, 480) / navBusiness
+PASS: Mobile navigation stays reachable: (854, 480) / navData
+PASS: Mobile navigation stays reachable: (854, 480) / settingsButton
+PASS: Decorative background covers every safe-area edge at (854, 480)
+PASS: Header decoration reaches the top and both display edges at (854, 480)
+PASS: Footer decoration reaches the bottom and both display edges at (854, 480)
+PASS: Extended header/footer decorations cannot take touches at (854, 480)
+PASS: Menu clears simulated notch/gesture insets at (1280, 720)
+PASS: Mobile navigation stays reachable: (1280, 720) / navGarage
+PASS: Mobile navigation stays reachable: (1280, 720) / navBuild
+PASS: Mobile navigation stays reachable: (1280, 720) / navTuning
+PASS: Mobile navigation stays reachable: (1280, 720) / navRace
+PASS: Mobile navigation stays reachable: (1280, 720) / navBusiness
+PASS: Mobile navigation stays reachable: (1280, 720) / navData
+PASS: Mobile navigation stays reachable: (1280, 720) / settingsButton
+PASS: Decorative background covers every safe-area edge at (1280, 720)
+PASS: Header decoration reaches the top and both display edges at (1280, 720)
+PASS: Footer decoration reaches the bottom and both display edges at (1280, 720)
+PASS: Extended header/footer decorations cannot take touches at (1280, 720)
+PASS: Menu clears simulated notch/gesture insets at (1920, 1080)
+PASS: Mobile navigation stays reachable: (1920, 1080) / navGarage
+PASS: Mobile navigation stays reachable: (1920, 1080) / navBuild
+PASS: Mobile navigation stays reachable: (1920, 1080) / navTuning
+PASS: Mobile navigation stays reachable: (1920, 1080) / navRace
+PASS: Mobile navigation stays reachable: (1920, 1080) / navBusiness
+PASS: Mobile navigation stays reachable: (1920, 1080) / navData
+PASS: Mobile navigation stays reachable: (1920, 1080) / settingsButton
+PASS: Decorative background covers every safe-area edge at (1920, 1080)
+PASS: Header decoration reaches the top and both display edges at (1920, 1080)
+PASS: Footer decoration reaches the bottom and both display edges at (1920, 1080)
+PASS: Extended header/footer decorations cannot take touches at (1920, 1080)
+PASS: Menu clears simulated notch/gesture insets at (2400, 1080)
+PASS: Mobile navigation stays reachable: (2400, 1080) / navGarage
+PASS: Mobile navigation stays reachable: (2400, 1080) / navBuild
+PASS: Mobile navigation stays reachable: (2400, 1080) / navTuning
+PASS: Mobile navigation stays reachable: (2400, 1080) / navRace
+PASS: Mobile navigation stays reachable: (2400, 1080) / navBusiness
+PASS: Mobile navigation stays reachable: (2400, 1080) / navData
+PASS: Mobile navigation stays reachable: (2400, 1080) / settingsButton
+PASS: Decorative background covers every safe-area edge at (2400, 1080)
+PASS: Header decoration reaches the top and both display edges at (2400, 1080)
+PASS: Footer decoration reaches the bottom and both display edges at (2400, 1080)
+PASS: Extended header/footer decorations cannot take touches at (2400, 1080)
+PASS: Rendered background covers sentinel at screen edge (2, 2)
+PASS: Rendered background covers sentinel at screen edge (2397, 2)
+PASS: Rendered background covers sentinel at screen edge (2, 1077)
+PASS: Rendered background covers sentinel at screen edge (2397, 1077)
+PASS: Rendered background covers sentinel at screen edge (2, 540)
+PASS: Rendered background covers sentinel at screen edge (1200, 2)
+PASS: Touch target exists and is enabled: settingsButton
+PASS: Touch target exists and is enabled: tabControls
+PASS: Mobile Settings does not advertise a disabled interface shortcut
+PASS: Touch target exists and is enabled: touchShiftDirectionInfo
+PASS: Dialog dimming covers all display edges
+PASS: Dialog content stays inside the safe area despite full-screen dimming
+PASS: Modal scrim visibly dims the former uncovered side strip
+PASS: Touch target exists and is enabled: modalClose
+PASS: Touch target exists and is enabled: cancelSettings
+PASS: Touch target exists and is enabled: navBuild
+PASS: Touch opens parts shop
+PASS: Touch target exists and is enabled: partsFilters
+PASS: Touch opens shop filters
+PASS: Touch target exists and is enabled: dialogCancel
+PASS: Touch target exists and is enabled: partCard:new:reed/CylinderBlock/0
+PASS: Touch target exists and is enabled: partAdd
+PASS: Touch target exists and is enabled: dialogAddtocart
+PASS: Touch purchase dialog reserves a part in the cart
+PASS: Mobile backgrounding durably retains cart reservations and cash
+PASS: Touch target exists and is enabled: navTuning
+PASS: Touch target exists and is enabled: fineUp:launch
+PASS: Touch fine step edits only the tuning draft
+PASS: Touch target exists and is enabled: resetRange:launch
+PASS: Touch reset replaces the middle-click shortcut
+PASS: Precision numeric fields request an editable mobile keyboard
+PASS: Touch helpers respect installed hardware tuning permissions
+PASS: Tuning lists scroll with a finger drag without a mouse wheel
+PASS: Touch target exists and is enabled: settingsButton
+PASS: Touch target exists and is enabled: tabSound
+PASS: Shared sliders accept touch drag input
+PASS: Touch settings remain unapplied drafts
+PASS: Touch target exists and is enabled: applySettings
+PASS: Touch target exists and is enabled: dialogApply
+PASS: Touch Apply confirmation persists settings
+PASS: Touch target exists and is enabled: cancelSettings
+PASS: Cancel returns to the previous menu on touch
+PASS: Touch target exists and is enabled: navBusiness
+PASS: Mobile Business stays in its native workspace without legacy fallback
+PASS: Android Back returns from the native Business workspace
+PASS: Touch target exists and is enabled: navData
+PASS: Mobile Data stays in its native workspace without legacy fallback
+PASS: Mobile has no old-interface button or F8 footer hint
+PASS: Mobile cannot select the legacy Garage presentation
+PASS: An external F8 key cannot switch mobile to the old interface
+PASS: Touch target exists and is enabled: navRace
+PASS: Touch target exists and is enabled: raceMode:Practice
+PASS: Touch target exists and is enabled: raceStage
+PASS: Touch target exists and is enabled: dialogStage
+PASS: Touch staging enters the authoritative physical race
+PASS: Mobile pedals left, instruments center and shifter right do not overlap at 854 / (x:69.75, y:333.00, width:203.63, height:156.38) / (x:313.88, y:310.50, width:351.00, height:180.00) / (x:680.63, y:267.75, width:220.50, height:230.63)
+PASS: Gauges stay centered and the wheel peak aligns with their gap at 854
+PASS: Dashboard bump follows the centered mobile instruments at 854
+PASS: Mobile outer controls clear notch safe edges at 854
+PASS: Race pause clears top safe inset at 854
+PASS: Mobile pedals left, instruments center and shifter right do not overlap at 1280 / (x:51.75, y:342.00, width:204.00, height:156.00) / (x:311.25, y:320.25, width:349.50, height:180.00) / (x:692.25, y:276.75, width:219.75, height:230.25)
+PASS: Gauges stay centered and the wheel peak aligns with their gap at 1280
+PASS: Dashboard bump follows the centered mobile instruments at 1280
+PASS: Mobile outer controls clear notch safe edges at 1280
+PASS: Race pause clears top safe inset at 1280
+PASS: Mobile pedals left, instruments center and shifter right do not overlap at 1920 / (x:40.00, y:348.00, width:204.00, height:156.00) / (x:309.00, y:326.00, width:350.00, height:180.00) / (x:700.00, y:283.00, width:220.00, height:230.00)
+PASS: Gauges stay centered and the wheel peak aligns with their gap at 1920
+PASS: Dashboard bump follows the centered mobile instruments at 1920
+PASS: Mobile outer controls clear notch safe edges at 1920
+PASS: Race pause clears top safe inset at 1920
+PASS: Mobile pedals left, instruments center and shifter right do not overlap at 2400 / (x:40.00, y:348.00, width:204.00, height:156.00) / (x:429.00, y:326.00, width:350.00, height:180.00) / (x:940.00, y:283.00, width:220.00, height:230.00)
+PASS: Gauges stay centered and the wheel peak aligns with their gap at 2400
+PASS: Dashboard bump follows the centered mobile instruments at 2400
+PASS: Mobile outer controls clear notch safe edges at 2400
+PASS: Race pause clears top safe inset at 2400
+PASS: Mobile pedals left, instruments center and shifter right do not overlap at 3840 / (x:29.71, y:430.29, width:204.00, height:156.00) / (x:307.43, y:408.29, width:350.00, height:180.00) / (x:706.86, y:365.43, width:220.00, height:230.00)
+PASS: Gauges stay centered and the wheel peak aligns with their gap at 3840
+PASS: Dashboard bump follows the centered mobile instruments at 3840
+PASS: Mobile outer controls clear notch safe edges at 3840
+PASS: Race pause clears top safe inset at 3840
+PASS: Touch target exists and is enabled: raceLineLock
+PASS: Touch warm-up line lock uses the existing simulation state
+PASS: Touch target exists and is enabled: raceReady
+PASS: Touch Ready stages the countdown without Enter
+PASS: Touch gas and brake operate together at mobile scale
+PASS: Touch shift leaves the accelerator held
+PASS: Touch target exists and is enabled: racePause
+PASS: Touch pause clears held pedals
+PASS: Touch target exists and is enabled: pauseSound
+PASS: Touch pause exposes contained sound controls
+PASS: Touch target exists and is enabled: dialogBack
+PASS: Touch target exists and is enabled: pauseQuit
+PASS: Touch target exists and is enabled: dialogQuitrace
+PASS: Touch quit retains a valid saved ownership state
+Checks: 171 / runtime errors: 0

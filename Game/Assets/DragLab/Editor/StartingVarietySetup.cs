@@ -34,6 +34,7 @@ namespace DragLab.Editor
             Trim("rally-sedan","tempest-rs","RS",.13f,-50,2400,2);
             Trim("touring-six","meridian-sport","Sport",.12f,-65,2200,2);
             var sable=Resources.LoadAll<VehicleDefinition>("Data/Vehicles").Single(v=>v.spec.id=="sable");sable.purchasePrice=8850;EditorUtility.SetDirty(sable);
+            var sableSport=Resources.LoadAll<VehicleDefinition>("Data/Vehicles").Single(v=>v.spec.id=="sable-sport");sableSport.purchasePrice=11682;EditorUtility.SetDirty(sableSport);
             EconomyBalanceVerification.ApplyRaceRewards();
             AssetDatabase.SaveAssets(); AssetDatabase.Refresh();
             Debug.Log("Starting roster: "+Resources.LoadAll<VehicleDefinition>("Data/Vehicles").Length+" configurations");

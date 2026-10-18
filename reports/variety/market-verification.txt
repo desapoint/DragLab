@@ -1,39 +1,262 @@
 PASS fresh game starts without gifted hardware/car
+PASS Generated starter listings contain uniquely identified, typed tire histories
 PASS three fixed used starters, no reputation restriction
 PASS fixed opening selection repeats exactly
-STARTER starter-hatch price=4012 reserve=688
-PASS starter-hatch budget leaves maintenance reserve
+STARTER city-three price=3655 reserve=2845
+PASS city-three starter fits initial budget
+PASS city-three exact paid starter selects owned car
+PASS city-three seller component identities/condition retained exactly
+PASS city-three retained fuel/fluids/mileage
+PASS city-three normal new/used market unlocked:  stock 59
+PASS city-three save/reload retains listings and ownership
+PASS city-three normalization never rerolls listings
+PASS city-three worn starter survives a proper factory pass
+STARTER lark price=3753 reserve=2747
+PASS lark starter fits initial budget
+PASS lark exact paid starter selects owned car
+PASS lark seller component identities/condition retained exactly
+PASS lark retained fuel/fluids/mileage
+PASS lark normal new/used market unlocked:  stock 59
+PASS lark save/reload retains listings and ownership
+PASS lark normalization never rerolls listings
+PASS lark worn starter survives a proper factory pass
+STARTER starter-hatch price=3854 reserve=2646
+PASS starter-hatch starter fits initial budget
 PASS starter-hatch exact paid starter selects owned car
 PASS starter-hatch seller component identities/condition retained exactly
 PASS starter-hatch retained fuel/fluids/mileage
-PASS starter-hatch normal new/used market unlocked:  stock 20
+PASS starter-hatch normal new/used market unlocked:  stock 59
 PASS starter-hatch save/reload retains listings and ownership
 PASS starter-hatch normalization never rerolls listings
 PASS starter-hatch worn starter survives a proper factory pass
-STARTER juniper-economy price=3952 reserve=748
-PASS juniper-economy budget leaves maintenance reserve
-PASS juniper-economy exact paid starter selects owned car
-PASS juniper-economy seller component identities/condition retained exactly
-PASS juniper-economy retained fuel/fluids/mileage
-PASS juniper-economy normal new/used market unlocked:  stock 20
-PASS juniper-economy save/reload retains listings and ownership
-PASS juniper-economy normalization never rerolls listings
-PASS juniper-economy worn starter survives a proper factory pass
-STARTER juniper-club price=3924 reserve=776
-PASS juniper-club budget leaves maintenance reserve
-PASS juniper-club exact paid starter selects owned car
-PASS juniper-club seller component identities/condition retained exactly
-PASS juniper-club retained fuel/fluids/mileage
-PASS juniper-club normal new/used market unlocked:  stock 20
-PASS juniper-club save/reload retains listings and ownership
-PASS juniper-club normalization never rerolls listings
-PASS juniper-club worn starter survives a proper factory pass
 PASS two runs advance refresh counter without swapping stock
 PASS third completed paid/free run refreshes stock
 PASS same persisted seed and run count reproduce refresh exactly
 PASS normal market contains new and used variants
 PASS new stock always has unused healthy components
 PASS used cars have individually varied part condition
+PASS Every generated used car has independently worn/fresh components, not a narrow average band
+PASS New and used vehicle listings preserve four valid typed tires with stable IDs
+PASS aster new premium applies once above MSRP/package floor
+PASS aster used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS aster prior ownership remains used even at low mileage; new premium is not condition based
+PASS aster repeated prices cannot compound or mutate the listing
+PASS aster-sport new premium applies once above MSRP/package floor
+PASS aster-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS aster-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS aster-sport repeated prices cannot compound or mutate the listing
+PASS atlas new premium applies once above MSRP/package floor
+PASS atlas used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS atlas prior ownership remains used even at low mileage; new premium is not condition based
+PASS atlas repeated prices cannot compound or mutate the listing
+PASS atlas-sport new premium applies once above MSRP/package floor
+PASS atlas-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS atlas-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS atlas-sport repeated prices cannot compound or mutate the listing
+PASS boreal new premium applies once above MSRP/package floor
+PASS boreal used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS boreal prior ownership remains used even at low mileage; new premium is not condition based
+PASS boreal repeated prices cannot compound or mutate the listing
+PASS boreal-sport new premium applies once above MSRP/package floor
+PASS boreal-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS boreal-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS boreal-sport repeated prices cannot compound or mutate the listing
+PASS cinder new premium applies once above MSRP/package floor
+PASS cinder used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS cinder prior ownership remains used even at low mileage; new premium is not condition based
+PASS cinder repeated prices cannot compound or mutate the listing
+PASS cinder-sport new premium applies once above MSRP/package floor
+PASS cinder-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS cinder-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS cinder-sport repeated prices cannot compound or mutate the listing
+PASS city-three new premium applies once above MSRP/package floor
+PASS city-three used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS city-three prior ownership remains used even at low mileage; new premium is not condition based
+PASS city-three repeated prices cannot compound or mutate the listing
+PASS comet new premium applies once above MSRP/package floor
+PASS comet used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS comet prior ownership remains used even at low mileage; new premium is not condition based
+PASS comet repeated prices cannot compound or mutate the listing
+PASS comet-sport new premium applies once above MSRP/package floor
+PASS comet-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS comet-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS comet-sport repeated prices cannot compound or mutate the listing
+PASS finch new premium applies once above MSRP/package floor
+PASS finch used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS finch prior ownership remains used even at low mileage; new premium is not condition based
+PASS finch repeated prices cannot compound or mutate the listing
+PASS finch-sport new premium applies once above MSRP/package floor
+PASS finch-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS finch-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS finch-sport repeated prices cannot compound or mutate the listing
+PASS fjord new premium applies once above MSRP/package floor
+PASS fjord used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS fjord prior ownership remains used even at low mileage; new premium is not condition based
+PASS fjord repeated prices cannot compound or mutate the listing
+PASS fjord-sport new premium applies once above MSRP/package floor
+PASS fjord-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS fjord-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS fjord-sport repeated prices cannot compound or mutate the listing
+PASS juniper-club new premium applies once above MSRP/package floor
+PASS juniper-club used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS juniper-club prior ownership remains used even at low mileage; new premium is not condition based
+PASS juniper-club repeated prices cannot compound or mutate the listing
+PASS juniper-economy new premium applies once above MSRP/package floor
+PASS juniper-economy used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS juniper-economy prior ownership remains used even at low mileage; new premium is not condition based
+PASS juniper-economy repeated prices cannot compound or mutate the listing
+PASS kestrel-track new premium applies once above MSRP/package floor
+PASS kestrel-track used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS kestrel-track prior ownership remains used even at low mileage; new premium is not condition based
+PASS kestrel-track repeated prices cannot compound or mutate the listing
+PASS lark new premium applies once above MSRP/package floor
+PASS lark used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS lark prior ownership remains used even at low mileage; new premium is not condition based
+PASS lark repeated prices cannot compound or mutate the listing
+PASS lark-sport new premium applies once above MSRP/package floor
+PASS lark-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS lark-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS lark-sport repeated prices cannot compound or mutate the listing
+PASS meridian-sport new premium applies once above MSRP/package floor
+PASS meridian-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS meridian-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS meridian-sport repeated prices cannot compound or mutate the listing
+PASS mistral new premium applies once above MSRP/package floor
+PASS mistral used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS mistral prior ownership remains used even at low mileage; new premium is not condition based
+PASS mistral repeated prices cannot compound or mutate the listing
+PASS mistral-sport new premium applies once above MSRP/package floor
+PASS mistral-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS mistral-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS mistral-sport repeated prices cannot compound or mutate the listing
+PASS osprey new premium applies once above MSRP/package floor
+PASS osprey used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS osprey prior ownership remains used even at low mileage; new premium is not condition based
+PASS osprey repeated prices cannot compound or mutate the listing
+PASS osprey-sport new premium applies once above MSRP/package floor
+PASS osprey-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS osprey-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS osprey-sport repeated prices cannot compound or mutate the listing
+PASS piper new premium applies once above MSRP/package floor
+PASS piper used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS piper prior ownership remains used even at low mileage; new premium is not condition based
+PASS piper repeated prices cannot compound or mutate the listing
+PASS piper-sport new premium applies once above MSRP/package floor
+PASS piper-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS piper-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS piper-sport repeated prices cannot compound or mutate the listing
+PASS rally-sedan new premium applies once above MSRP/package floor
+PASS rally-sedan used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS rally-sedan prior ownership remains used even at low mileage; new premium is not condition based
+PASS rally-sedan repeated prices cannot compound or mutate the listing
+PASS reed new premium applies once above MSRP/package floor
+PASS reed used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS reed prior ownership remains used even at low mileage; new premium is not condition based
+PASS reed repeated prices cannot compound or mutate the listing
+PASS reed-sport new premium applies once above MSRP/package floor
+PASS reed-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS reed-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS reed-sport repeated prices cannot compound or mutate the listing
+PASS rook new premium applies once above MSRP/package floor
+PASS rook used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS rook prior ownership remains used even at low mileage; new premium is not condition based
+PASS rook repeated prices cannot compound or mutate the listing
+PASS rook-sport new premium applies once above MSRP/package floor
+PASS rook-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS rook-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS rook-sport repeated prices cannot compound or mutate the listing
+PASS sable new premium applies once above MSRP/package floor
+PASS sable used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS sable prior ownership remains used even at low mileage; new premium is not condition based
+PASS sable repeated prices cannot compound or mutate the listing
+PASS sable-sport new premium applies once above MSRP/package floor
+PASS sable-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS sable-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS sable-sport repeated prices cannot compound or mutate the listing
+PASS solstice new premium applies once above MSRP/package floor
+PASS solstice used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS solstice prior ownership remains used even at low mileage; new premium is not condition based
+PASS solstice repeated prices cannot compound or mutate the listing
+PASS solstice-sport new premium applies once above MSRP/package floor
+PASS solstice-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS solstice-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS solstice-sport repeated prices cannot compound or mutate the listing
+PASS sport-coupe new premium applies once above MSRP/package floor
+PASS sport-coupe used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS sport-coupe prior ownership remains used even at low mileage; new premium is not condition based
+PASS sport-coupe repeated prices cannot compound or mutate the listing
+PASS sprig-sport new premium applies once above MSRP/package floor
+PASS sprig-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS sprig-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS sprig-sport repeated prices cannot compound or mutate the listing
+PASS starter-hatch new premium applies once above MSRP/package floor
+PASS starter-hatch used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS starter-hatch prior ownership remains used even at low mileage; new premium is not condition based
+PASS starter-hatch repeated prices cannot compound or mutate the listing
+PASS super-v8 new premium applies once above MSRP/package floor
+PASS super-v8 used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS super-v8 prior ownership remains used even at low mileage; new premium is not condition based
+PASS super-v8 repeated prices cannot compound or mutate the listing
+PASS swift new premium applies once above MSRP/package floor
+PASS swift used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS swift prior ownership remains used even at low mileage; new premium is not condition based
+PASS swift repeated prices cannot compound or mutate the listing
+PASS swift-sport new premium applies once above MSRP/package floor
+PASS swift-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS swift-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS swift-sport repeated prices cannot compound or mutate the listing
+PASS tempest-rs new premium applies once above MSRP/package floor
+PASS tempest-rs used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS tempest-rs prior ownership remains used even at low mileage; new premium is not condition based
+PASS tempest-rs repeated prices cannot compound or mutate the listing
+PASS timber-diesel new premium applies once above MSRP/package floor
+PASS timber-diesel used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS timber-diesel prior ownership remains used even at low mileage; new premium is not condition based
+PASS timber-diesel repeated prices cannot compound or mutate the listing
+PASS timber-diesel-tow new premium applies once above MSRP/package floor
+PASS timber-diesel-tow used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS timber-diesel-tow prior ownership remains used even at low mileage; new premium is not condition based
+PASS timber-diesel-tow repeated prices cannot compound or mutate the listing
+PASS touring-six new premium applies once above MSRP/package floor
+PASS touring-six used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS touring-six prior ownership remains used even at low mileage; new premium is not condition based
+PASS touring-six repeated prices cannot compound or mutate the listing
+PASS utility-pickup new premium applies once above MSRP/package floor
+PASS utility-pickup used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS utility-pickup prior ownership remains used even at low mileage; new premium is not condition based
+PASS utility-pickup repeated prices cannot compound or mutate the listing
+PASS v8-muscle new premium applies once above MSRP/package floor
+PASS v8-muscle used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS v8-muscle prior ownership remains used even at low mileage; new premium is not condition based
+PASS v8-muscle repeated prices cannot compound or mutate the listing
+PASS vale new premium applies once above MSRP/package floor
+PASS vale used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS vale prior ownership remains used even at low mileage; new premium is not condition based
+PASS vale repeated prices cannot compound or mutate the listing
+PASS vale-sport new premium applies once above MSRP/package floor
+PASS vale-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS vale-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS vale-sport repeated prices cannot compound or mutate the listing
+PASS wren new premium applies once above MSRP/package floor
+PASS wren used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS wren prior ownership remains used even at low mileage; new premium is not condition based
+PASS wren repeated prices cannot compound or mutate the listing
+PASS wren-sport new premium applies once above MSRP/package floor
+PASS wren-sport used car with all brand-new parts and top seeded spread stays cheaper than equivalent new
+PASS wren-sport prior ownership remains used even at low mileage; new premium is not condition based
+PASS wren-sport repeated prices cannot compound or mutate the listing
+PASS Old new-stock saves gain MSRP metadata without resetting the market
+PASS Price migration preserves owned assets, used stock, saved asks and seller identities
+PASS Price metadata migration is idempotent
+PASS Existing saved new offer displays/quotes the higher current-policy price
+PASS Repriced old new-stock purchase settles against its original identity:
+PASS Repriced checkout charges once and retains the exact zero-mile package
+PASS Replacement new stock has stable premium pricing and valid ownership
+PASS Changing the new premium invalidates an old quote without charging
+PASS Invalid new-car premium rejected: NaN
+PASS Invalid new-car premium rejected: +Infini
+PASS Invalid new-car premium rejected: -0,1
+PASS Invalid new-car premium rejected: 11
 PASS Legacy absent-stock migration preserves existing owned condition and cash
 PASS Modern corrupt stock is rejected instead of silently rerolled
 PASS Same used model can offer different seeded deals across stock generations
@@ -43,4 +266,4 @@ PASS used listing consumed once
 PASS sold listing cannot duplicate its components
 PASS reset returns to fixed starter selection while clearing progression
 PASS reset preserves driving preferences
-TOTAL 42
+TOTAL 265

@@ -1,4 +1,4 @@
-param([string]$FixtureName = 'native-menu-shell', [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly, [switch]$MaintenanceOnly, [switch]$RebuildOnly, [switch]$PricingOnly, [switch]$FrameProbe, [switch]$ResponsivenessOnly, [switch]$AwdHardwareOnly, [switch]$PartBrandsOnly, [switch]$SqliteStateOnly, [switch]$DisposalOnly, [switch]$RaceSelectionOnly, [switch]$SetupManagementOnly, [switch]$RaceHudOnly, [switch]$TouchPedalsOnly, [switch]$MobileOnly, [switch]$FlickOnly, [switch]$ResultsOnly, [switch]$FinishPacingOnly, [switch]$OwnedFittedOnly, [switch]$TireSwapOnly, [switch]$FinishExitOnly, [switch]$RacePauseOnly, [switch]$NavigationOnly, [switch]$ResetRequiredOnly, [string]$PlayerPath = '', [switch]$DeterministicCapture)
+param([string]$FixtureName = 'native-menu-shell', [switch]$OnboardingOnly, [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly, [switch]$MaintenanceOnly, [switch]$RebuildOnly, [switch]$PricingOnly, [switch]$FrameProbe, [switch]$ResponsivenessOnly, [switch]$AwdHardwareOnly, [switch]$PartBrandsOnly, [switch]$SqliteStateOnly, [switch]$DisposalOnly, [switch]$RaceSelectionOnly, [switch]$SetupManagementOnly, [switch]$RaceHudOnly, [switch]$TouchPedalsOnly, [switch]$MobileOnly, [switch]$FlickOnly, [switch]$ResultsOnly, [switch]$FinishPacingOnly, [switch]$OwnedFittedOnly, [switch]$TireSwapOnly, [switch]$FinishExitOnly, [switch]$RacePauseOnly, [switch]$NavigationOnly, [switch]$ResetRequiredOnly, [string]$PlayerPath = '', [switch]$DeterministicCapture)
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 . (Join-Path $PSScriptRoot 'InterfaceScreenshots.ps1')
@@ -33,6 +33,7 @@ if ($TouchPedalsOnly) { $taskArgs += '--draglab-touch-pedals-only-verify' }
 if ($RaceHudOnly) { $taskArgs += '--draglab-race-hud-only-verify' }
 if ($SetupManagementOnly) { $taskArgs += '--draglab-setup-management-only-verify' }
 if ($RaceSelectionOnly) { $taskArgs += '--draglab-race-selection-only-verify' }
+if ($OnboardingOnly) { $taskArgs += '--draglab-onboarding-only-verify' }
 if ($DisposalOnly) { $taskArgs += '--draglab-disposal-only-verify' }
 if ($SqliteStateOnly) { $taskArgs += '--draglab-sqlite-state-only-verify' }
 if ($PartBrandsOnly) { $taskArgs += '--draglab-part-brands-only-verify' }

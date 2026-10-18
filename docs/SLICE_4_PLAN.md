@@ -262,3 +262,6 @@ Maintenance batch controls authorized and implemented (2026-10-13): Garage car d
 
 
 4L.7 requested control-sized checkpoint: raise the start lights and add an upright metal pole aligned with their projected ground anchor. Do not alter race timing, road/car scale or other HUD controls. [Checks/review](../reports/phases/4l/07-LIGHT-POLE.md).
+
+
+Requested content/onboarding checkpoint (2026-10-18): expand to 25 model families / 52 configurations, seed three starters from a 15-model pool with independent component/member wear, increase new-game budget to $6,500, restore early first-clear bonuses and make used-part product selection larger than stocked new selection. Add the shared two-step Driving + Simulation presets / Market onboarding, with explicit preference-only confirmation and preserved starter stock. Default Shift myself / Simulation / Normal market; existing settings/progression are preserved. This is the requested checkpoint, not advancement to another lettered interface phase. Automated technical status and user visual/phone acceptance are recorded separately in [the report](../reports/starting-variety-20261018/CHANGES.md).

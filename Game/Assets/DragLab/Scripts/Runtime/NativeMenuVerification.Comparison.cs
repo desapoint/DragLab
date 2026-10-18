@@ -16,7 +16,9 @@ namespace DragLab.Runtime
         IEnumerator ComparisonClick(WindowsKeyboardProbe input,string name,bool dealer)
         {
             var element=shell.Root.Q(dealer?"dealerContent":"ownedCarDetails").Q(name);
-            shell.Root.Q<ScrollView>(dealer?"dealerDetailScroll":"ownedDetailScroll").ScrollTo(element);
+            var scroll=shell.Root.Q<ScrollView>(dealer?"dealerDetailScroll":"ownedDetailScroll");scroll.ScrollTo(element);
+            yield return new WaitForSecondsRealtime(.1f);
+            scroll.scrollOffset=new Vector2(0,Mathf.Max(0,element.worldBound.yMin-scroll.contentContainer.worldBound.yMin-scroll.contentViewport.worldBound.height*.35f));
             yield return new WaitForSecondsRealtime(.1f);var rect=element.worldBound;float scale=NativeMenuShell.DisplayScale(Screen.width,Screen.height);
             input.MouseButtonAt((int)(rect.center.x*scale),(int)(rect.center.y*scale),true);yield return new WaitForSecondsRealtime(.08f);
             input.MouseButtonAt((int)(rect.center.x*scale),(int)(rect.center.y*scale),false);yield return new WaitForSecondsRealtime(.2f);
@@ -88,9 +90,14 @@ namespace DragLab.Runtime
             Check(filter.worldBound.xMin>=viewport.xMin&&filter.worldBound.xMax<=viewport.xMax&&filter.worldBound.height>=30,"Shared filter button fits within the stat viewport");
             yield return Capture(dealer?"dealer-differences-filter":"owned-differences-filter");
             yield return ComparisonClick(input,"statsGroup:Transmission",dealer);
-            if(panel.Q("statsBody:Gearing").ClassListContains("hidden"))yield return ComparisonClick(input,"statsGroup:Gearing",dealer);
+            var gearing=NativeStatCatalog.Groups(panel.Current.Inspection,panel.Proposed.Inspection).First(g=>g.Id=="Transmission").Children.First(g=>g.Id=="Gearing");
+            var expected=gearing.Definitions.Where(d=>d.Differs(panel.Current,panel.Proposed)).ToArray();
+            if(expected.Length>0){
+                if(panel.Q("statsBody:Gearing").ClassListContains("hidden"))yield return ComparisonClick(input,"statsGroup:Gearing",dealer);
+                Check(expected.All(d=>panel.Q("stat:"+d.Id)!=null&&!panel.Q("stat:"+d.Id).ClassListContains("hidden")),"Every changed nested gear/CVT stat is built and visible");
+            }else Check(panel.Q("statsGroupFrame:Gearing").ClassListContains("hidden"),"Identical gearing stays hidden when comparing different models with the same ratios");
             var rows=panel.Query<VisualElement>(className:"stat-row").ToList();
-            Check(rows.All(row=>row.ClassListContains("hidden")==!((NativeStatDefinition)row.userData).Differs(panel.Current,panel.Proposed))&&!panel.Q("stat:gearSpeed:0").ClassListContains("hidden"),"Filtering covers all built rows, including nested gear stats");
+            Check(rows.All(row=>row.ClassListContains("hidden")==!((NativeStatDefinition)row.userData).Differs(panel.Current,panel.Proposed)),"Filtering covers every built stat row and nested gear group");
             yield return Capture(dealer?"dealer-differences-only":"owned-differences-only");
             var equal=new NativeStatsPanel(panel.Current.Inspection,units,NativeStatCatalog.Groups(panel.Current.Inspection,panel.Current.Inspection),new System.Collections.Generic.Dictionary<string,bool>{{"Performance",false}},_=>{},(_,__)=>{},panel.Current.Inspection,true);
             equal.SetDrivingInspection(panel.Current.Driving,units,_=>{},panel.Current.Driving);
@@ -102,8 +109,9 @@ namespace DragLab.Runtime
             definition.Number=_=>null;Check(!definition.Differs(panel.Current,panel.Proposed),"Two unavailable numeric stats match");
             definition.Number=s=>ReferenceEquals(s,panel.Current)?100:100.000001;Check(!definition.Differs(panel.Current,panel.Proposed),"Numeric filter ignores floating-point residue using the delta-bar tolerance");
             definition.Number=s=>ReferenceEquals(s,panel.Current)?100:100.0001;Check(definition.Differs(panel.Current,panel.Proposed),"Numeric filter keeps a meaningful nonzero delta");
+            bool gearingWasClosed=panel.Q("statsBody:Gearing").ClassListContains("hidden");
             yield return ComparisonClick(input,"statsDifferencesOnly",dealer);
-            Check(!panel.DifferencesOnly&&panel.Query<VisualElement>(className:"stat-row").ToList().All(row=>!row.ClassListContains("hidden"))&&!panel.Q("statsBody:Gearing").ClassListContains("hidden"),"Turning filtering off restores rows and retains nested disclosure state");
+            Check(!panel.DifferencesOnly&&panel.Query<VisualElement>(className:"stat-row").ToList().All(row=>!row.ClassListContains("hidden"))&&panel.Q("statsBody:Gearing").ClassListContains("hidden")==gearingWasClosed,"Turning filtering off restores rows and retains nested disclosure state");
             Check(ReferenceEquals(curve.Series,series),"Stat filtering leaves the dyno series unchanged");
             yield return ComparisonClick(input,"statsGroup:Transmission",dealer);
             yield return ComparisonClick(input,"statsDifferencesOnly",dealer);

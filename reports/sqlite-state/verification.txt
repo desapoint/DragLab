@@ -1,4 +1,189 @@
 PASS Pinned native SQLite runtime loads
+PASS aster: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS aster: flat/compressed legacy source imports into real SQLite
+PASS aster: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS aster: original migration bytes are retained
+PASS aster: database reload does not reimport or regenerate state
+PASS aster: ordered schema migrations recorded
+PASS aster: build/content/physics versions are independent metadata
+PASS aster: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 103,33
+DATABASE record projection ms 20,63
+DATABASE open + schema checks ms 1,20
+DATABASE delta index ms 4,95
+DATABASE row and ownership delta SQL ms 63,23
+DATABASE digest + metadata ms 1,39
+DATABASE durable commit ms 11,67
+PROFILE database transaction + durability ms 107,67
+PASS aster: changed component commits / Saved.
+TIMING aster warm component save ms 211,33 / changed records 2
+PASS aster: wear edit writes only changed component/revision records
+PASS aster: ordinary save refreshes its consistent recovery database
+PASS aster: failed transaction publishes neither money nor wear changes
+PASS aster: actual buy/install transaction commits /
+PASS aster: checkout reloads payment and retains replaced identity
+PASS aster-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS aster-sport: flat/compressed legacy source imports into real SQLite
+PASS aster-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS aster-sport: original migration bytes are retained
+PASS aster-sport: database reload does not reimport or regenerate state
+PASS aster-sport: ordered schema migrations recorded
+PASS aster-sport: build/content/physics versions are independent metadata
+PASS aster-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 93,88
+DATABASE record projection ms 48,90
+DATABASE open + schema checks ms 0,96
+DATABASE delta index ms 4,66
+DATABASE row and ownership delta SQL ms 29,29
+DATABASE digest + metadata ms 1,29
+DATABASE durable commit ms 10,62
+PROFILE database transaction + durability ms 105,15
+PASS aster-sport: changed component commits / Saved.
+TIMING aster-sport warm component save ms 199,12 / changed records 2
+PASS aster-sport: wear edit writes only changed component/revision records
+PASS aster-sport: ordinary save refreshes its consistent recovery database
+PASS aster-sport: failed transaction publishes neither money nor wear changes
+PASS aster-sport: actual buy/install transaction commits /
+PASS aster-sport: checkout reloads payment and retains replaced identity
+PASS atlas: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS atlas: flat/compressed legacy source imports into real SQLite
+PASS atlas: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS atlas: original migration bytes are retained
+PASS atlas: database reload does not reimport or regenerate state
+PASS atlas: ordered schema migrations recorded
+PASS atlas: build/content/physics versions are independent metadata
+PASS atlas: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 93,29
+DATABASE record projection ms 29,58
+DATABASE open + schema checks ms 0,97
+DATABASE delta index ms 5,40
+DATABASE row and ownership delta SQL ms 30,69
+DATABASE digest + metadata ms 1,46
+DATABASE durable commit ms 10,17
+PROFILE database transaction + durability ms 81,99
+PASS atlas: changed component commits / Saved.
+TIMING atlas warm component save ms 175,36 / changed records 2
+PASS atlas: wear edit writes only changed component/revision records
+PASS atlas: ordinary save refreshes its consistent recovery database
+PASS atlas: failed transaction publishes neither money nor wear changes
+PASS atlas: actual buy/install transaction commits /
+PASS atlas: checkout reloads payment and retains replaced identity
+PASS atlas-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS atlas-sport: flat/compressed legacy source imports into real SQLite
+PASS atlas-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS atlas-sport: original migration bytes are retained
+PASS atlas-sport: database reload does not reimport or regenerate state
+PASS atlas-sport: ordered schema migrations recorded
+PASS atlas-sport: build/content/physics versions are independent metadata
+PASS atlas-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 99,68
+DATABASE record projection ms 19,14
+DATABASE open + schema checks ms 1,00
+DATABASE delta index ms 5,29
+DATABASE row and ownership delta SQL ms 45,88
+DATABASE digest + metadata ms 1,54
+DATABASE durable commit ms 9,20
+PROFILE database transaction + durability ms 86,28
+PASS atlas-sport: changed component commits / Saved.
+TIMING atlas-sport warm component save ms 186,07 / changed records 2
+PASS atlas-sport: wear edit writes only changed component/revision records
+PASS atlas-sport: ordinary save refreshes its consistent recovery database
+PASS atlas-sport: failed transaction publishes neither money nor wear changes
+PASS atlas-sport: actual buy/install transaction commits /
+PASS atlas-sport: checkout reloads payment and retains replaced identity
+PASS boreal: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS boreal: flat/compressed legacy source imports into real SQLite
+PASS boreal: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS boreal: original migration bytes are retained
+PASS boreal: database reload does not reimport or regenerate state
+PASS boreal: ordered schema migrations recorded
+PASS boreal: build/content/physics versions are independent metadata
+PASS boreal: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 97,98
+DATABASE record projection ms 22,40
+DATABASE open + schema checks ms 0,94
+DATABASE delta index ms 16,88
+DATABASE row and ownership delta SQL ms 29,62
+DATABASE digest + metadata ms 1,48
+DATABASE durable commit ms 9,28
+PROFILE database transaction + durability ms 84,25
+PASS boreal: changed component commits / Saved.
+TIMING boreal warm component save ms 182,33 / changed records 2
+PASS boreal: wear edit writes only changed component/revision records
+PASS boreal: ordinary save refreshes its consistent recovery database
+PASS boreal: failed transaction publishes neither money nor wear changes
+PASS boreal: actual buy/install transaction commits /
+PASS boreal: checkout reloads payment and retains replaced identity
+PASS boreal-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS boreal-sport: flat/compressed legacy source imports into real SQLite
+PASS boreal-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS boreal-sport: original migration bytes are retained
+PASS boreal-sport: database reload does not reimport or regenerate state
+PASS boreal-sport: ordered schema migrations recorded
+PASS boreal-sport: build/content/physics versions are independent metadata
+PASS boreal-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 95,90
+DATABASE record projection ms 30,01
+DATABASE open + schema checks ms 0,95
+DATABASE delta index ms 5,18
+DATABASE row and ownership delta SQL ms 34,89
+DATABASE digest + metadata ms 1,65
+DATABASE durable commit ms 9,96
+PROFILE database transaction + durability ms 86,49
+PASS boreal-sport: changed component commits / Saved.
+TIMING boreal-sport warm component save ms 182,50 / changed records 2
+PASS boreal-sport: wear edit writes only changed component/revision records
+PASS boreal-sport: ordinary save refreshes its consistent recovery database
+PASS boreal-sport: failed transaction publishes neither money nor wear changes
+PASS boreal-sport: actual buy/install transaction commits /
+PASS boreal-sport: checkout reloads payment and retains replaced identity
+PASS cinder: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS cinder: flat/compressed legacy source imports into real SQLite
+PASS cinder: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS cinder: original migration bytes are retained
+PASS cinder: database reload does not reimport or regenerate state
+PASS cinder: ordered schema migrations recorded
+PASS cinder: build/content/physics versions are independent metadata
+PASS cinder: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 94,40
+DATABASE record projection ms 30,28
+DATABASE open + schema checks ms 0,95
+DATABASE delta index ms 5,53
+DATABASE row and ownership delta SQL ms 30,48
+DATABASE digest + metadata ms 1,79
+DATABASE durable commit ms 10,11
+PROFILE database transaction + durability ms 82,96
+PASS cinder: changed component commits / Saved.
+TIMING cinder warm component save ms 177,44 / changed records 2
+PASS cinder: wear edit writes only changed component/revision records
+PASS cinder: ordinary save refreshes its consistent recovery database
+PASS cinder: failed transaction publishes neither money nor wear changes
+PASS cinder: actual buy/install transaction commits /
+PASS cinder: checkout reloads payment and retains replaced identity
+PASS cinder-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS cinder-sport: flat/compressed legacy source imports into real SQLite
+PASS cinder-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS cinder-sport: original migration bytes are retained
+PASS cinder-sport: database reload does not reimport or regenerate state
+PASS cinder-sport: ordered schema migrations recorded
+PASS cinder-sport: build/content/physics versions are independent metadata
+PASS cinder-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 95,03
+DATABASE record projection ms 31,04
+DATABASE open + schema checks ms 1,06
+DATABASE delta index ms 5,82
+DATABASE row and ownership delta SQL ms 32,13
+DATABASE digest + metadata ms 1,72
+DATABASE durable commit ms 9,51
+PROFILE database transaction + durability ms 84,93
+PASS cinder-sport: changed component commits / Saved.
+TIMING cinder-sport warm component save ms 180,05 / changed records 2
+PASS cinder-sport: wear edit writes only changed component/revision records
+PASS cinder-sport: ordinary save refreshes its consistent recovery database
+PASS cinder-sport: failed transaction publishes neither money nor wear changes
+PASS cinder-sport: actual buy/install transaction commits /
+PASS cinder-sport: checkout reloads payment and retains replaced identity
+PASS city-three: persistence fixture assigns compression loss to an actual piston, independent of component ordering
 PASS city-three: flat/compressed legacy source imports into real SQLite
 PASS city-three: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
 PASS city-three: original migration bytes are retained
@@ -6,21 +191,160 @@ PASS city-three: database reload does not reimport or regenerate state
 PASS city-three: ordered schema migrations recorded
 PASS city-three: build/content/physics versions are independent metadata
 PASS city-three: component identities indexed and preferences excluded from database roots
-PROFILE database capture + validation ms 28,82
-DATABASE record projection ms 9,27
-DATABASE open + schema checks ms 0,93
-DATABASE delta index ms 1,77
-DATABASE row and ownership delta SQL ms 12,21
-DATABASE digest + metadata ms 0,45
-DATABASE durable commit ms 54,26
-PROFILE database transaction + durability ms 94,07
+PROFILE database capture + validation ms 92,90
+DATABASE record projection ms 30,48
+DATABASE open + schema checks ms 0,91
+DATABASE delta index ms 5,20
+DATABASE row and ownership delta SQL ms 33,20
+DATABASE digest + metadata ms 1,52
+DATABASE durable commit ms 9,69
+PROFILE database transaction + durability ms 84,81
 PASS city-three: changed component commits / Saved.
-TIMING city-three warm component save ms 123,28 / changed records 2
+TIMING city-three warm component save ms 177,80 / changed records 2
 PASS city-three: wear edit writes only changed component/revision records
 PASS city-three: ordinary save refreshes its consistent recovery database
 PASS city-three: failed transaction publishes neither money nor wear changes
 PASS city-three: actual buy/install transaction commits /
 PASS city-three: checkout reloads payment and retains replaced identity
+PASS comet: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS comet: flat/compressed legacy source imports into real SQLite
+PASS comet: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS comet: original migration bytes are retained
+PASS comet: database reload does not reimport or regenerate state
+PASS comet: ordered schema migrations recorded
+PASS comet: build/content/physics versions are independent metadata
+PASS comet: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 103,27
+DATABASE record projection ms 18,96
+DATABASE open + schema checks ms 0,91
+DATABASE delta index ms 5,02
+DATABASE row and ownership delta SQL ms 36,09
+DATABASE digest + metadata ms 1,83
+DATABASE durable commit ms 30,03
+PROFILE database transaction + durability ms 100,37
+PASS comet: changed component commits / Saved.
+TIMING comet warm component save ms 203,82 / changed records 2
+PASS comet: wear edit writes only changed component/revision records
+PASS comet: ordinary save refreshes its consistent recovery database
+PASS comet: failed transaction publishes neither money nor wear changes
+PASS comet: actual buy/install transaction commits /
+PASS comet: checkout reloads payment and retains replaced identity
+PASS comet-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS comet-sport: flat/compressed legacy source imports into real SQLite
+PASS comet-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS comet-sport: original migration bytes are retained
+PASS comet-sport: database reload does not reimport or regenerate state
+PASS comet-sport: ordered schema migrations recorded
+PASS comet-sport: build/content/physics versions are independent metadata
+PASS comet-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 99,31
+DATABASE record projection ms 19,35
+DATABASE open + schema checks ms 1,09
+DATABASE delta index ms 5,27
+DATABASE row and ownership delta SQL ms 37,97
+DATABASE digest + metadata ms 1,94
+DATABASE durable commit ms 9,99
+PROFILE database transaction + durability ms 79,46
+PASS comet-sport: changed component commits / Saved.
+TIMING comet-sport warm component save ms 178,90 / changed records 2
+PASS comet-sport: wear edit writes only changed component/revision records
+PASS comet-sport: ordinary save refreshes its consistent recovery database
+PASS comet-sport: failed transaction publishes neither money nor wear changes
+PASS comet-sport: actual buy/install transaction commits /
+PASS comet-sport: checkout reloads payment and retains replaced identity
+PASS finch: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS finch: flat/compressed legacy source imports into real SQLite
+PASS finch: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS finch: original migration bytes are retained
+PASS finch: database reload does not reimport or regenerate state
+PASS finch: ordered schema migrations recorded
+PASS finch: build/content/physics versions are independent metadata
+PASS finch: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 86,39
+DATABASE record projection ms 34,31
+DATABASE open + schema checks ms 1,01
+DATABASE delta index ms 5,29
+DATABASE row and ownership delta SQL ms 29,75
+DATABASE digest + metadata ms 1,75
+DATABASE durable commit ms 31,23
+PROFILE database transaction + durability ms 112,03
+PASS finch: changed component commits / Saved.
+TIMING finch warm component save ms 198,51 / changed records 2
+PASS finch: wear edit writes only changed component/revision records
+PASS finch: ordinary save refreshes its consistent recovery database
+PASS finch: failed transaction publishes neither money nor wear changes
+PASS finch: actual buy/install transaction commits /
+PASS finch: checkout reloads payment and retains replaced identity
+PASS finch-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS finch-sport: flat/compressed legacy source imports into real SQLite
+PASS finch-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS finch-sport: original migration bytes are retained
+PASS finch-sport: database reload does not reimport or regenerate state
+PASS finch-sport: ordered schema migrations recorded
+PASS finch-sport: build/content/physics versions are independent metadata
+PASS finch-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 89,56
+DATABASE record projection ms 37,73
+DATABASE open + schema checks ms 0,99
+DATABASE delta index ms 5,31
+DATABASE row and ownership delta SQL ms 30,46
+DATABASE digest + metadata ms 1,71
+DATABASE durable commit ms 9,76
+PROFILE database transaction + durability ms 89,79
+PASS finch-sport: changed component commits / Saved.
+TIMING finch-sport warm component save ms 179,44 / changed records 2
+PASS finch-sport: wear edit writes only changed component/revision records
+PASS finch-sport: ordinary save refreshes its consistent recovery database
+PASS finch-sport: failed transaction publishes neither money nor wear changes
+PASS finch-sport: actual buy/install transaction commits /
+PASS finch-sport: checkout reloads payment and retains replaced identity
+PASS fjord: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS fjord: flat/compressed legacy source imports into real SQLite
+PASS fjord: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS fjord: original migration bytes are retained
+PASS fjord: database reload does not reimport or regenerate state
+PASS fjord: ordered schema migrations recorded
+PASS fjord: build/content/physics versions are independent metadata
+PASS fjord: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 89,47
+DATABASE record projection ms 33,03
+DATABASE open + schema checks ms 1,13
+DATABASE delta index ms 5,24
+DATABASE row and ownership delta SQL ms 33,86
+DATABASE digest + metadata ms 1,80
+DATABASE durable commit ms 18,65
+PROFILE database transaction + durability ms 97,68
+PASS fjord: changed component commits / Saved.
+TIMING fjord warm component save ms 187,26 / changed records 2
+PASS fjord: wear edit writes only changed component/revision records
+PASS fjord: ordinary save refreshes its consistent recovery database
+PASS fjord: failed transaction publishes neither money nor wear changes
+PASS fjord: actual buy/install transaction commits /
+PASS fjord: checkout reloads payment and retains replaced identity
+PASS fjord-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS fjord-sport: flat/compressed legacy source imports into real SQLite
+PASS fjord-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS fjord-sport: original migration bytes are retained
+PASS fjord-sport: database reload does not reimport or regenerate state
+PASS fjord-sport: ordered schema migrations recorded
+PASS fjord-sport: build/content/physics versions are independent metadata
+PASS fjord-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 94,64
+DATABASE record projection ms 396,36
+DATABASE open + schema checks ms 1,04
+DATABASE delta index ms 5,66
+DATABASE row and ownership delta SQL ms 32,81
+DATABASE digest + metadata ms 1,62
+DATABASE durable commit ms 9,90
+PROFILE database transaction + durability ms 451,37
+PASS fjord-sport: changed component commits / Saved.
+TIMING fjord-sport warm component save ms 546,10 / changed records 2
+PASS fjord-sport: wear edit writes only changed component/revision records
+PASS fjord-sport: ordinary save refreshes its consistent recovery database
+PASS fjord-sport: failed transaction publishes neither money nor wear changes
+PASS fjord-sport: actual buy/install transaction commits /
+PASS fjord-sport: checkout reloads payment and retains replaced identity
+PASS juniper-club: persistence fixture assigns compression loss to an actual piston, independent of component ordering
 PASS juniper-club: flat/compressed legacy source imports into real SQLite
 PASS juniper-club: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
 PASS juniper-club: original migration bytes are retained
@@ -28,21 +352,22 @@ PASS juniper-club: database reload does not reimport or regenerate state
 PASS juniper-club: ordered schema migrations recorded
 PASS juniper-club: build/content/physics versions are independent metadata
 PASS juniper-club: component identities indexed and preferences excluded from database roots
-PROFILE database capture + validation ms 28,74
-DATABASE record projection ms 10,43
-DATABASE open + schema checks ms 0,99
-DATABASE delta index ms 2,10
-DATABASE row and ownership delta SQL ms 13,06
-DATABASE digest + metadata ms 0,51
-DATABASE durable commit ms 101,96
-PROFILE database transaction + durability ms 136,09
+PROFILE database capture + validation ms 95,66
+DATABASE record projection ms 30,13
+DATABASE open + schema checks ms 0,96
+DATABASE delta index ms 5,40
+DATABASE row and ownership delta SQL ms 32,02
+DATABASE digest + metadata ms 3,69
+DATABASE durable commit ms 9,34
+PROFILE database transaction + durability ms 85,28
 PASS juniper-club: changed component commits / Saved.
-TIMING juniper-club warm component save ms 164,91 / changed records 2
+TIMING juniper-club warm component save ms 181,06 / changed records 2
 PASS juniper-club: wear edit writes only changed component/revision records
 PASS juniper-club: ordinary save refreshes its consistent recovery database
 PASS juniper-club: failed transaction publishes neither money nor wear changes
 PASS juniper-club: actual buy/install transaction commits /
 PASS juniper-club: checkout reloads payment and retains replaced identity
+PASS juniper-economy: persistence fixture assigns compression loss to an actual piston, independent of component ordering
 PASS juniper-economy: flat/compressed legacy source imports into real SQLite
 PASS juniper-economy: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
 PASS juniper-economy: original migration bytes are retained
@@ -50,21 +375,22 @@ PASS juniper-economy: database reload does not reimport or regenerate state
 PASS juniper-economy: ordered schema migrations recorded
 PASS juniper-economy: build/content/physics versions are independent metadata
 PASS juniper-economy: component identities indexed and preferences excluded from database roots
-PROFILE database capture + validation ms 25,77
-DATABASE record projection ms 6,66
+PROFILE database capture + validation ms 88,34
+DATABASE record projection ms 32,66
 DATABASE open + schema checks ms 0,99
-DATABASE delta index ms 1,88
-DATABASE row and ownership delta SQL ms 14,84
-DATABASE digest + metadata ms 0,50
-DATABASE durable commit ms 43,44
-PROFILE database transaction + durability ms 77,87
+DATABASE delta index ms 5,21
+DATABASE row and ownership delta SQL ms 30,07
+DATABASE digest + metadata ms 1,91
+DATABASE durable commit ms 17,61
+PROFILE database transaction + durability ms 92,24
 PASS juniper-economy: changed component commits / Saved.
-TIMING juniper-economy warm component save ms 103,74 / changed records 2
+TIMING juniper-economy warm component save ms 180,68 / changed records 2
 PASS juniper-economy: wear edit writes only changed component/revision records
 PASS juniper-economy: ordinary save refreshes its consistent recovery database
 PASS juniper-economy: failed transaction publishes neither money nor wear changes
 PASS juniper-economy: actual buy/install transaction commits /
 PASS juniper-economy: checkout reloads payment and retains replaced identity
+PASS kestrel-track: persistence fixture assigns compression loss to an actual piston, independent of component ordering
 PASS kestrel-track: flat/compressed legacy source imports into real SQLite
 PASS kestrel-track: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
 PASS kestrel-track: original migration bytes are retained
@@ -72,21 +398,229 @@ PASS kestrel-track: database reload does not reimport or regenerate state
 PASS kestrel-track: ordered schema migrations recorded
 PASS kestrel-track: build/content/physics versions are independent metadata
 PASS kestrel-track: component identities indexed and preferences excluded from database roots
-PROFILE database capture + validation ms 26,15
-DATABASE record projection ms 9,71
-DATABASE open + schema checks ms 0,92
-DATABASE delta index ms 1,68
-DATABASE row and ownership delta SQL ms 10,43
-DATABASE digest + metadata ms 0,52
-DATABASE durable commit ms 10,24
-PROFILE database transaction + durability ms 37,40
+PROFILE database capture + validation ms 105,22
+DATABASE record projection ms 19,82
+DATABASE open + schema checks ms 1,07
+DATABASE delta index ms 5,53
+DATABASE row and ownership delta SQL ms 45,87
+DATABASE digest + metadata ms 1,72
+DATABASE durable commit ms 17,28
+PROFILE database transaction + durability ms 95,03
 PASS kestrel-track: changed component commits / Saved.
-TIMING kestrel-track warm component save ms 63,63 / changed records 2
+TIMING kestrel-track warm component save ms 200,34 / changed records 2
 PASS kestrel-track: wear edit writes only changed component/revision records
 PASS kestrel-track: ordinary save refreshes its consistent recovery database
 PASS kestrel-track: failed transaction publishes neither money nor wear changes
 PASS kestrel-track: actual buy/install transaction commits /
 PASS kestrel-track: checkout reloads payment and retains replaced identity
+PASS lark: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS lark: flat/compressed legacy source imports into real SQLite
+PASS lark: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS lark: original migration bytes are retained
+PASS lark: database reload does not reimport or regenerate state
+PASS lark: ordered schema migrations recorded
+PASS lark: build/content/physics versions are independent metadata
+PASS lark: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 90,07
+DATABASE record projection ms 31,11
+DATABASE open + schema checks ms 0,99
+DATABASE delta index ms 5,29
+DATABASE row and ownership delta SQL ms 30,27
+DATABASE digest + metadata ms 1,59
+DATABASE durable commit ms 9,51
+PROFILE database transaction + durability ms 82,85
+PASS lark: changed component commits / Saved.
+TIMING lark warm component save ms 173,02 / changed records 2
+PASS lark: wear edit writes only changed component/revision records
+PASS lark: ordinary save refreshes its consistent recovery database
+PASS lark: failed transaction publishes neither money nor wear changes
+PASS lark: actual buy/install transaction commits /
+PASS lark: checkout reloads payment and retains replaced identity
+PASS lark-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS lark-sport: flat/compressed legacy source imports into real SQLite
+PASS lark-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS lark-sport: original migration bytes are retained
+PASS lark-sport: database reload does not reimport or regenerate state
+PASS lark-sport: ordered schema migrations recorded
+PASS lark-sport: build/content/physics versions are independent metadata
+PASS lark-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 90,88
+DATABASE record projection ms 31,51
+DATABASE open + schema checks ms 0,91
+DATABASE delta index ms 5,22
+DATABASE row and ownership delta SQL ms 30,17
+DATABASE digest + metadata ms 1,65
+DATABASE durable commit ms 18,77
+PROFILE database transaction + durability ms 91,80
+PASS lark-sport: changed component commits / Saved.
+TIMING lark-sport warm component save ms 182,77 / changed records 2
+PASS lark-sport: wear edit writes only changed component/revision records
+PASS lark-sport: ordinary save refreshes its consistent recovery database
+PASS lark-sport: failed transaction publishes neither money nor wear changes
+PASS lark-sport: actual buy/install transaction commits /
+PASS lark-sport: checkout reloads payment and retains replaced identity
+PASS meridian-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS meridian-sport: flat/compressed legacy source imports into real SQLite
+PASS meridian-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS meridian-sport: original migration bytes are retained
+PASS meridian-sport: database reload does not reimport or regenerate state
+PASS meridian-sport: ordered schema migrations recorded
+PASS meridian-sport: build/content/physics versions are independent metadata
+PASS meridian-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 95,42
+DATABASE record projection ms 30,34
+DATABASE open + schema checks ms 0,99
+DATABASE delta index ms 5,42
+DATABASE row and ownership delta SQL ms 31,40
+DATABASE digest + metadata ms 1,61
+DATABASE durable commit ms 10,33
+PROFILE database transaction + durability ms 84,12
+PASS meridian-sport: changed component commits / Saved.
+TIMING meridian-sport warm component save ms 179,64 / changed records 2
+PASS meridian-sport: wear edit writes only changed component/revision records
+PASS meridian-sport: ordinary save refreshes its consistent recovery database
+PASS meridian-sport: failed transaction publishes neither money nor wear changes
+PASS meridian-sport: actual buy/install transaction commits /
+PASS meridian-sport: checkout reloads payment and retains replaced identity
+PASS mistral: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS mistral: flat/compressed legacy source imports into real SQLite
+PASS mistral: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS mistral: original migration bytes are retained
+PASS mistral: database reload does not reimport or regenerate state
+PASS mistral: ordered schema migrations recorded
+PASS mistral: build/content/physics versions are independent metadata
+PASS mistral: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 91,99
+DATABASE record projection ms 30,33
+DATABASE open + schema checks ms 0,93
+DATABASE delta index ms 5,09
+DATABASE row and ownership delta SQL ms 29,43
+DATABASE digest + metadata ms 2,02
+DATABASE durable commit ms 24,22
+PROFILE database transaction + durability ms 101,21
+PASS mistral: changed component commits / Saved.
+TIMING mistral warm component save ms 193,30 / changed records 2
+PASS mistral: wear edit writes only changed component/revision records
+PASS mistral: ordinary save refreshes its consistent recovery database
+PASS mistral: failed transaction publishes neither money nor wear changes
+PASS mistral: actual buy/install transaction commits /
+PASS mistral: checkout reloads payment and retains replaced identity
+PASS mistral-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS mistral-sport: flat/compressed legacy source imports into real SQLite
+PASS mistral-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS mistral-sport: original migration bytes are retained
+PASS mistral-sport: database reload does not reimport or regenerate state
+PASS mistral-sport: ordered schema migrations recorded
+PASS mistral-sport: build/content/physics versions are independent metadata
+PASS mistral-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 98,66
+DATABASE record projection ms 19,11
+DATABASE open + schema checks ms 1,00
+DATABASE delta index ms 5,08
+DATABASE row and ownership delta SQL ms 46,23
+DATABASE digest + metadata ms 1,62
+DATABASE durable commit ms 18,10
+PROFILE database transaction + durability ms 94,95
+PASS mistral-sport: changed component commits / Saved.
+TIMING mistral-sport warm component save ms 193,71 / changed records 2
+PASS mistral-sport: wear edit writes only changed component/revision records
+PASS mistral-sport: ordinary save refreshes its consistent recovery database
+PASS mistral-sport: failed transaction publishes neither money nor wear changes
+PASS mistral-sport: actual buy/install transaction commits /
+PASS mistral-sport: checkout reloads payment and retains replaced identity
+PASS osprey: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS osprey: flat/compressed legacy source imports into real SQLite
+PASS osprey: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS osprey: original migration bytes are retained
+PASS osprey: database reload does not reimport or regenerate state
+PASS osprey: ordered schema migrations recorded
+PASS osprey: build/content/physics versions are independent metadata
+PASS osprey: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 85,94
+DATABASE record projection ms 33,48
+DATABASE open + schema checks ms 0,95
+DATABASE delta index ms 5,39
+DATABASE row and ownership delta SQL ms 29,82
+DATABASE digest + metadata ms 1,78
+DATABASE durable commit ms 9,47
+PROFILE database transaction + durability ms 84,59
+PASS osprey: changed component commits / Saved.
+TIMING osprey warm component save ms 170,61 / changed records 2
+PASS osprey: wear edit writes only changed component/revision records
+PASS osprey: ordinary save refreshes its consistent recovery database
+PASS osprey: failed transaction publishes neither money nor wear changes
+PASS osprey: actual buy/install transaction commits /
+PASS osprey: checkout reloads payment and retains replaced identity
+PASS osprey-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS osprey-sport: flat/compressed legacy source imports into real SQLite
+PASS osprey-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS osprey-sport: original migration bytes are retained
+PASS osprey-sport: database reload does not reimport or regenerate state
+PASS osprey-sport: ordered schema migrations recorded
+PASS osprey-sport: build/content/physics versions are independent metadata
+PASS osprey-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 112,69
+DATABASE record projection ms 20,21
+DATABASE open + schema checks ms 0,97
+DATABASE delta index ms 5,50
+DATABASE row and ownership delta SQL ms 48,34
+DATABASE digest + metadata ms 1,81
+DATABASE durable commit ms 10,28
+PROFILE database transaction + durability ms 91,37
+PASS osprey-sport: changed component commits / Saved.
+TIMING osprey-sport warm component save ms 204,14 / changed records 2
+PASS osprey-sport: wear edit writes only changed component/revision records
+PASS osprey-sport: ordinary save refreshes its consistent recovery database
+PASS osprey-sport: failed transaction publishes neither money nor wear changes
+PASS osprey-sport: actual buy/install transaction commits /
+PASS osprey-sport: checkout reloads payment and retains replaced identity
+PASS piper: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS piper: flat/compressed legacy source imports into real SQLite
+PASS piper: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS piper: original migration bytes are retained
+PASS piper: database reload does not reimport or regenerate state
+PASS piper: ordered schema migrations recorded
+PASS piper: build/content/physics versions are independent metadata
+PASS piper: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 88,05
+DATABASE record projection ms 36,11
+DATABASE open + schema checks ms 0,93
+DATABASE delta index ms 5,31
+DATABASE row and ownership delta SQL ms 30,05
+DATABASE digest + metadata ms 1,68
+DATABASE durable commit ms 12,27
+PROFILE database transaction + durability ms 91,11
+PASS piper: changed component commits / Saved.
+TIMING piper warm component save ms 179,25 / changed records 2
+PASS piper: wear edit writes only changed component/revision records
+PASS piper: ordinary save refreshes its consistent recovery database
+PASS piper: failed transaction publishes neither money nor wear changes
+PASS piper: actual buy/install transaction commits /
+PASS piper: checkout reloads payment and retains replaced identity
+PASS piper-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS piper-sport: flat/compressed legacy source imports into real SQLite
+PASS piper-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS piper-sport: original migration bytes are retained
+PASS piper-sport: database reload does not reimport or regenerate state
+PASS piper-sport: ordered schema migrations recorded
+PASS piper-sport: build/content/physics versions are independent metadata
+PASS piper-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 140,58
+DATABASE record projection ms 19,69
+DATABASE open + schema checks ms 0,94
+DATABASE delta index ms 5,72
+DATABASE row and ownership delta SQL ms 52,65
+DATABASE digest + metadata ms 1,82
+DATABASE durable commit ms 10,80
+PROFILE database transaction + durability ms 95,83
+PASS piper-sport: changed component commits / Saved.
+TIMING piper-sport warm component save ms 236,55 / changed records 2
+PASS piper-sport: wear edit writes only changed component/revision records
+PASS piper-sport: ordinary save refreshes its consistent recovery database
+PASS piper-sport: failed transaction publishes neither money nor wear changes
+PASS piper-sport: actual buy/install transaction commits /
+PASS piper-sport: checkout reloads payment and retains replaced identity
+PASS rally-sedan: persistence fixture assigns compression loss to an actual piston, independent of component ordering
 PASS rally-sedan: flat/compressed legacy source imports into real SQLite
 PASS rally-sedan: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
 PASS rally-sedan: original migration bytes are retained
@@ -94,21 +628,206 @@ PASS rally-sedan: database reload does not reimport or regenerate state
 PASS rally-sedan: ordered schema migrations recorded
 PASS rally-sedan: build/content/physics versions are independent metadata
 PASS rally-sedan: component identities indexed and preferences excluded from database roots
-PROFILE database capture + validation ms 28,50
-DATABASE record projection ms 10,78
-DATABASE open + schema checks ms 1,04
-DATABASE delta index ms 2,13
-DATABASE row and ownership delta SQL ms 13,36
-DATABASE digest + metadata ms 0,62
-DATABASE durable commit ms 16,39
-PROFILE database transaction + durability ms 47,99
+PROFILE database capture + validation ms 93,87
+DATABASE record projection ms 36,57
+DATABASE open + schema checks ms 0,95
+DATABASE delta index ms 5,82
+DATABASE row and ownership delta SQL ms 31,76
+DATABASE digest + metadata ms 1,87
+DATABASE durable commit ms 20,90
+PROFILE database transaction + durability ms 107,20
 PASS rally-sedan: changed component commits / Saved.
-TIMING rally-sedan warm component save ms 76,57 / changed records 2
+TIMING rally-sedan warm component save ms 201,16 / changed records 2
 PASS rally-sedan: wear edit writes only changed component/revision records
 PASS rally-sedan: ordinary save refreshes its consistent recovery database
 PASS rally-sedan: failed transaction publishes neither money nor wear changes
 PASS rally-sedan: actual buy/install transaction commits /
 PASS rally-sedan: checkout reloads payment and retains replaced identity
+PASS reed: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS reed: flat/compressed legacy source imports into real SQLite
+PASS reed: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS reed: original migration bytes are retained
+PASS reed: database reload does not reimport or regenerate state
+PASS reed: ordered schema migrations recorded
+PASS reed: build/content/physics versions are independent metadata
+PASS reed: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 102,84
+DATABASE record projection ms 18,98
+DATABASE open + schema checks ms 0,91
+DATABASE delta index ms 5,02
+DATABASE row and ownership delta SQL ms 29,17
+DATABASE digest + metadata ms 1,61
+DATABASE durable commit ms 9,92
+PROFILE database transaction + durability ms 69,49
+PASS reed: changed component commits / Saved.
+TIMING reed warm component save ms 172,43 / changed records 2
+PASS reed: wear edit writes only changed component/revision records
+PASS reed: ordinary save refreshes its consistent recovery database
+PASS reed: failed transaction publishes neither money nor wear changes
+PASS reed: actual buy/install transaction commits /
+PASS reed: checkout reloads payment and retains replaced identity
+PASS reed-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS reed-sport: flat/compressed legacy source imports into real SQLite
+PASS reed-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS reed-sport: original migration bytes are retained
+PASS reed-sport: database reload does not reimport or regenerate state
+PASS reed-sport: ordered schema migrations recorded
+PASS reed-sport: build/content/physics versions are independent metadata
+PASS reed-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 88,03
+DATABASE record projection ms 383,59
+DATABASE open + schema checks ms 0,93
+DATABASE delta index ms 5,02
+DATABASE row and ownership delta SQL ms 30,12
+DATABASE digest + metadata ms 1,65
+DATABASE durable commit ms 18,04
+PROFILE database transaction + durability ms 443,14
+PASS reed-sport: changed component commits / Saved.
+TIMING reed-sport warm component save ms 531,26 / changed records 2
+PASS reed-sport: wear edit writes only changed component/revision records
+PASS reed-sport: ordinary save refreshes its consistent recovery database
+PASS reed-sport: failed transaction publishes neither money nor wear changes
+PASS reed-sport: actual buy/install transaction commits /
+PASS reed-sport: checkout reloads payment and retains replaced identity
+PASS rook: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS rook: flat/compressed legacy source imports into real SQLite
+PASS rook: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS rook: original migration bytes are retained
+PASS rook: database reload does not reimport or regenerate state
+PASS rook: ordered schema migrations recorded
+PASS rook: build/content/physics versions are independent metadata
+PASS rook: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 100,86
+DATABASE record projection ms 28,75
+DATABASE open + schema checks ms 0,99
+DATABASE delta index ms 4,88
+DATABASE row and ownership delta SQL ms 30,45
+DATABASE digest + metadata ms 1,37
+DATABASE durable commit ms 19,05
+PROFILE database transaction + durability ms 89,55
+PASS rook: changed component commits / Saved.
+TIMING rook warm component save ms 190,48 / changed records 2
+PASS rook: wear edit writes only changed component/revision records
+PASS rook: ordinary save refreshes its consistent recovery database
+PASS rook: failed transaction publishes neither money nor wear changes
+PASS rook: actual buy/install transaction commits /
+PASS rook: checkout reloads payment and retains replaced identity
+PASS rook-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS rook-sport: flat/compressed legacy source imports into real SQLite
+PASS rook-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS rook-sport: original migration bytes are retained
+PASS rook-sport: database reload does not reimport or regenerate state
+PASS rook-sport: ordered schema migrations recorded
+PASS rook-sport: build/content/physics versions are independent metadata
+PASS rook-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 94,73
+DATABASE record projection ms 22,11
+DATABASE open + schema checks ms 0,98
+DATABASE delta index ms 16,81
+DATABASE row and ownership delta SQL ms 29,45
+DATABASE digest + metadata ms 1,55
+DATABASE durable commit ms 18,77
+PROFILE database transaction + durability ms 93,50
+PASS rook-sport: changed component commits / Saved.
+TIMING rook-sport warm component save ms 188,33 / changed records 2
+PASS rook-sport: wear edit writes only changed component/revision records
+PASS rook-sport: ordinary save refreshes its consistent recovery database
+PASS rook-sport: failed transaction publishes neither money nor wear changes
+PASS rook-sport: actual buy/install transaction commits /
+PASS rook-sport: checkout reloads payment and retains replaced identity
+PASS sable: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS sable: flat/compressed legacy source imports into real SQLite
+PASS sable: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS sable: original migration bytes are retained
+PASS sable: database reload does not reimport or regenerate state
+PASS sable: ordered schema migrations recorded
+PASS sable: build/content/physics versions are independent metadata
+PASS sable: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 108,09
+DATABASE record projection ms 20,25
+DATABASE open + schema checks ms 1,01
+DATABASE delta index ms 8,40
+DATABASE row and ownership delta SQL ms 46,40
+DATABASE digest + metadata ms 1,62
+DATABASE durable commit ms 9,09
+PROFILE database transaction + durability ms 91,25
+PASS sable: changed component commits / Saved.
+TIMING sable warm component save ms 199,44 / changed records 2
+PASS sable: wear edit writes only changed component/revision records
+PASS sable: ordinary save refreshes its consistent recovery database
+PASS sable: failed transaction publishes neither money nor wear changes
+PASS sable: actual buy/install transaction commits /
+PASS sable: checkout reloads payment and retains replaced identity
+PASS sable-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS sable-sport: flat/compressed legacy source imports into real SQLite
+PASS sable-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS sable-sport: original migration bytes are retained
+PASS sable-sport: database reload does not reimport or regenerate state
+PASS sable-sport: ordered schema migrations recorded
+PASS sable-sport: build/content/physics versions are independent metadata
+PASS sable-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 102,28
+DATABASE record projection ms 23,97
+DATABASE open + schema checks ms 1,09
+DATABASE delta index ms 16,05
+DATABASE row and ownership delta SQL ms 30,97
+DATABASE digest + metadata ms 1,69
+DATABASE durable commit ms 18,32
+PROFILE database transaction + durability ms 96,45
+PASS sable-sport: changed component commits / Saved.
+TIMING sable-sport warm component save ms 198,83 / changed records 2
+PASS sable-sport: wear edit writes only changed component/revision records
+PASS sable-sport: ordinary save refreshes its consistent recovery database
+PASS sable-sport: failed transaction publishes neither money nor wear changes
+PASS sable-sport: actual buy/install transaction commits /
+PASS sable-sport: checkout reloads payment and retains replaced identity
+PASS solstice: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS solstice: flat/compressed legacy source imports into real SQLite
+PASS solstice: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS solstice: original migration bytes are retained
+PASS solstice: database reload does not reimport or regenerate state
+PASS solstice: ordered schema migrations recorded
+PASS solstice: build/content/physics versions are independent metadata
+PASS solstice: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 95,06
+DATABASE record projection ms 33,02
+DATABASE open + schema checks ms 1,02
+DATABASE delta index ms 5,85
+DATABASE row and ownership delta SQL ms 31,40
+DATABASE digest + metadata ms 1,83
+DATABASE durable commit ms 9,83
+PROFILE database transaction + durability ms 87,81
+PASS solstice: changed component commits / Saved.
+TIMING solstice warm component save ms 182,96 / changed records 2
+PASS solstice: wear edit writes only changed component/revision records
+PASS solstice: ordinary save refreshes its consistent recovery database
+PASS solstice: failed transaction publishes neither money nor wear changes
+PASS solstice: actual buy/install transaction commits /
+PASS solstice: checkout reloads payment and retains replaced identity
+PASS solstice-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS solstice-sport: flat/compressed legacy source imports into real SQLite
+PASS solstice-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS solstice-sport: original migration bytes are retained
+PASS solstice-sport: database reload does not reimport or regenerate state
+PASS solstice-sport: ordered schema migrations recorded
+PASS solstice-sport: build/content/physics versions are independent metadata
+PASS solstice-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 89,44
+DATABASE record projection ms 34,30
+DATABASE open + schema checks ms 0,96
+DATABASE delta index ms 5,37
+DATABASE row and ownership delta SQL ms 31,05
+DATABASE digest + metadata ms 1,69
+DATABASE durable commit ms 7,79
+PROFILE database transaction + durability ms 85,06
+PASS solstice-sport: changed component commits / Saved.
+TIMING solstice-sport warm component save ms 174,59 / changed records 2
+PASS solstice-sport: wear edit writes only changed component/revision records
+PASS solstice-sport: ordinary save refreshes its consistent recovery database
+PASS solstice-sport: failed transaction publishes neither money nor wear changes
+PASS solstice-sport: actual buy/install transaction commits /
+PASS solstice-sport: checkout reloads payment and retains replaced identity
+PASS sport-coupe: persistence fixture assigns compression loss to an actual piston, independent of component ordering
 PASS sport-coupe: flat/compressed legacy source imports into real SQLite
 PASS sport-coupe: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
 PASS sport-coupe: original migration bytes are retained
@@ -116,21 +835,45 @@ PASS sport-coupe: database reload does not reimport or regenerate state
 PASS sport-coupe: ordered schema migrations recorded
 PASS sport-coupe: build/content/physics versions are independent metadata
 PASS sport-coupe: component identities indexed and preferences excluded from database roots
-PROFILE database capture + validation ms 29,70
-DATABASE record projection ms 6,73
-DATABASE open + schema checks ms 0,97
-DATABASE delta index ms 1,86
-DATABASE row and ownership delta SQL ms 11,65
-DATABASE digest + metadata ms 0,56
-DATABASE durable commit ms 17,62
-PROFILE database transaction + durability ms 43,23
+PROFILE database capture + validation ms 105,58
+DATABASE record projection ms 19,37
+DATABASE open + schema checks ms 1,00
+DATABASE delta index ms 5,46
+DATABASE row and ownership delta SQL ms 48,98
+DATABASE digest + metadata ms 1,74
+DATABASE durable commit ms 43,92
+PROFILE database transaction + durability ms 127,53
 PASS sport-coupe: changed component commits / Saved.
-TIMING sport-coupe warm component save ms 73,01 / changed records 2
+TIMING sport-coupe warm component save ms 233,22 / changed records 2
 PASS sport-coupe: wear edit writes only changed component/revision records
 PASS sport-coupe: ordinary save refreshes its consistent recovery database
 PASS sport-coupe: failed transaction publishes neither money nor wear changes
 PASS sport-coupe: actual buy/install transaction commits /
 PASS sport-coupe: checkout reloads payment and retains replaced identity
+PASS sprig-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS sprig-sport: flat/compressed legacy source imports into real SQLite
+PASS sprig-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS sprig-sport: original migration bytes are retained
+PASS sprig-sport: database reload does not reimport or regenerate state
+PASS sprig-sport: ordered schema migrations recorded
+PASS sprig-sport: build/content/physics versions are independent metadata
+PASS sprig-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 97,64
+DATABASE record projection ms 32,44
+DATABASE open + schema checks ms 0,98
+DATABASE delta index ms 5,42
+DATABASE row and ownership delta SQL ms 31,65
+DATABASE digest + metadata ms 1,74
+DATABASE durable commit ms 17,88
+PROFILE database transaction + durability ms 93,98
+PASS sprig-sport: changed component commits / Saved.
+TIMING sprig-sport warm component save ms 191,71 / changed records 2
+PASS sprig-sport: wear edit writes only changed component/revision records
+PASS sprig-sport: ordinary save refreshes its consistent recovery database
+PASS sprig-sport: failed transaction publishes neither money nor wear changes
+PASS sprig-sport: actual buy/install transaction commits /
+PASS sprig-sport: checkout reloads payment and retains replaced identity
+PASS starter-hatch: persistence fixture assigns compression loss to an actual piston, independent of component ordering
 PASS starter-hatch: flat/compressed legacy source imports into real SQLite
 PASS starter-hatch: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
 PASS starter-hatch: original migration bytes are retained
@@ -138,21 +881,22 @@ PASS starter-hatch: database reload does not reimport or regenerate state
 PASS starter-hatch: ordered schema migrations recorded
 PASS starter-hatch: build/content/physics versions are independent metadata
 PASS starter-hatch: component identities indexed and preferences excluded from database roots
-PROFILE database capture + validation ms 31,02
-DATABASE record projection ms 10,43
-DATABASE open + schema checks ms 0,91
-DATABASE delta index ms 2,21
-DATABASE row and ownership delta SQL ms 12,68
-DATABASE digest + metadata ms 0,63
-DATABASE durable commit ms 10,56
-PROFILE database transaction + durability ms 40,98
+PROFILE database capture + validation ms 92,07
+DATABASE record projection ms 35,55
+DATABASE open + schema checks ms 0,94
+DATABASE delta index ms 5,47
+DATABASE row and ownership delta SQL ms 30,32
+DATABASE digest + metadata ms 1,73
+DATABASE durable commit ms 18,63
+PROFILE database transaction + durability ms 96,42
 PASS starter-hatch: changed component commits / Saved.
-TIMING starter-hatch warm component save ms 72,07 / changed records 2
+TIMING starter-hatch warm component save ms 188,57 / changed records 2
 PASS starter-hatch: wear edit writes only changed component/revision records
 PASS starter-hatch: ordinary save refreshes its consistent recovery database
 PASS starter-hatch: failed transaction publishes neither money nor wear changes
 PASS starter-hatch: actual buy/install transaction commits /
 PASS starter-hatch: checkout reloads payment and retains replaced identity
+PASS super-v8: persistence fixture assigns compression loss to an actual piston, independent of component ordering
 PASS super-v8: flat/compressed legacy source imports into real SQLite
 PASS super-v8: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
 PASS super-v8: original migration bytes are retained
@@ -160,21 +904,91 @@ PASS super-v8: database reload does not reimport or regenerate state
 PASS super-v8: ordered schema migrations recorded
 PASS super-v8: build/content/physics versions are independent metadata
 PASS super-v8: component identities indexed and preferences excluded from database roots
-PROFILE database capture + validation ms 27,97
-DATABASE record projection ms 10,28
-DATABASE open + schema checks ms 0,92
-DATABASE delta index ms 6,00
-DATABASE row and ownership delta SQL ms 12,79
-DATABASE digest + metadata ms 0,60
-DATABASE durable commit ms 41,82
-PROFILE database transaction + durability ms 90,07
+PROFILE database capture + validation ms 106,56
+DATABASE record projection ms 19,42
+DATABASE open + schema checks ms 0,93
+DATABASE delta index ms 5,32
+DATABASE row and ownership delta SQL ms 37,40
+DATABASE digest + metadata ms 1,93
+DATABASE durable commit ms 9,51
+PROFILE database transaction + durability ms 78,07
 PASS super-v8: changed component commits / Saved.
-TIMING super-v8 warm component save ms 118,13 / changed records 2
+TIMING super-v8 warm component save ms 184,76 / changed records 2
 PASS super-v8: wear edit writes only changed component/revision records
 PASS super-v8: ordinary save refreshes its consistent recovery database
 PASS super-v8: failed transaction publishes neither money nor wear changes
 PASS super-v8: actual buy/install transaction commits /
 PASS super-v8: checkout reloads payment and retains replaced identity
+PASS swift: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS swift: flat/compressed legacy source imports into real SQLite
+PASS swift: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS swift: original migration bytes are retained
+PASS swift: database reload does not reimport or regenerate state
+PASS swift: ordered schema migrations recorded
+PASS swift: build/content/physics versions are independent metadata
+PASS swift: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 96,06
+DATABASE record projection ms 35,27
+DATABASE open + schema checks ms 0,97
+DATABASE delta index ms 5,60
+DATABASE row and ownership delta SQL ms 31,73
+DATABASE digest + metadata ms 1,79
+DATABASE durable commit ms 10,31
+PROFILE database transaction + durability ms 89,90
+PASS swift: changed component commits / Saved.
+TIMING swift warm component save ms 186,05 / changed records 2
+PASS swift: wear edit writes only changed component/revision records
+PASS swift: ordinary save refreshes its consistent recovery database
+PASS swift: failed transaction publishes neither money nor wear changes
+PASS swift: actual buy/install transaction commits /
+PASS swift: checkout reloads payment and retains replaced identity
+PASS swift-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS swift-sport: flat/compressed legacy source imports into real SQLite
+PASS swift-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS swift-sport: original migration bytes are retained
+PASS swift-sport: database reload does not reimport or regenerate state
+PASS swift-sport: ordered schema migrations recorded
+PASS swift-sport: build/content/physics versions are independent metadata
+PASS swift-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 92,25
+DATABASE record projection ms 77,12
+DATABASE open + schema checks ms 0,99
+DATABASE delta index ms 5,80
+DATABASE row and ownership delta SQL ms 32,03
+DATABASE digest + metadata ms 1,68
+DATABASE durable commit ms 11,47
+PROFILE database transaction + durability ms 133,08
+PASS swift-sport: changed component commits / Saved.
+TIMING swift-sport warm component save ms 225,42 / changed records 2
+PASS swift-sport: wear edit writes only changed component/revision records
+PASS swift-sport: ordinary save refreshes its consistent recovery database
+PASS swift-sport: failed transaction publishes neither money nor wear changes
+PASS swift-sport: actual buy/install transaction commits /
+PASS swift-sport: checkout reloads payment and retains replaced identity
+PASS tempest-rs: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS tempest-rs: flat/compressed legacy source imports into real SQLite
+PASS tempest-rs: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS tempest-rs: original migration bytes are retained
+PASS tempest-rs: database reload does not reimport or regenerate state
+PASS tempest-rs: ordered schema migrations recorded
+PASS tempest-rs: build/content/physics versions are independent metadata
+PASS tempest-rs: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 92,78
+DATABASE record projection ms 38,18
+DATABASE open + schema checks ms 0,93
+DATABASE delta index ms 6,05
+DATABASE row and ownership delta SQL ms 31,02
+DATABASE digest + metadata ms 1,76
+DATABASE durable commit ms 10,79
+PROFILE database transaction + durability ms 93,11
+PASS tempest-rs: changed component commits / Saved.
+TIMING tempest-rs warm component save ms 186,01 / changed records 2
+PASS tempest-rs: wear edit writes only changed component/revision records
+PASS tempest-rs: ordinary save refreshes its consistent recovery database
+PASS tempest-rs: failed transaction publishes neither money nor wear changes
+PASS tempest-rs: actual buy/install transaction commits /
+PASS tempest-rs: checkout reloads payment and retains replaced identity
+PASS timber-diesel: persistence fixture assigns compression loss to an actual piston, independent of component ordering
 PASS timber-diesel: flat/compressed legacy source imports into real SQLite
 PASS timber-diesel: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
 PASS timber-diesel: original migration bytes are retained
@@ -182,21 +996,22 @@ PASS timber-diesel: database reload does not reimport or regenerate state
 PASS timber-diesel: ordered schema migrations recorded
 PASS timber-diesel: build/content/physics versions are independent metadata
 PASS timber-diesel: component identities indexed and preferences excluded from database roots
-PROFILE database capture + validation ms 24,48
-DATABASE record projection ms 6,61
-DATABASE open + schema checks ms 0,92
-DATABASE delta index ms 2,00
-DATABASE row and ownership delta SQL ms 18,61
-DATABASE digest + metadata ms 0,63
-DATABASE durable commit ms 10,01
-PROFILE database transaction + durability ms 42,63
+PROFILE database capture + validation ms 88,40
+DATABASE record projection ms 404,60
+DATABASE open + schema checks ms 0,98
+DATABASE delta index ms 5,11
+DATABASE row and ownership delta SQL ms 30,30
+DATABASE digest + metadata ms 1,56
+DATABASE durable commit ms 18,05
+PROFILE database transaction + durability ms 464,80
 PASS timber-diesel: changed component commits / Saved.
-TIMING timber-diesel warm component save ms 67,20 / changed records 2
+TIMING timber-diesel warm component save ms 553,29 / changed records 2
 PASS timber-diesel: wear edit writes only changed component/revision records
 PASS timber-diesel: ordinary save refreshes its consistent recovery database
 PASS timber-diesel: failed transaction publishes neither money nor wear changes
 PASS timber-diesel: actual buy/install transaction commits /
 PASS timber-diesel: checkout reloads payment and retains replaced identity
+PASS timber-diesel-tow: persistence fixture assigns compression loss to an actual piston, independent of component ordering
 PASS timber-diesel-tow: flat/compressed legacy source imports into real SQLite
 PASS timber-diesel-tow: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
 PASS timber-diesel-tow: original migration bytes are retained
@@ -204,21 +1019,22 @@ PASS timber-diesel-tow: database reload does not reimport or regenerate state
 PASS timber-diesel-tow: ordered schema migrations recorded
 PASS timber-diesel-tow: build/content/physics versions are independent metadata
 PASS timber-diesel-tow: component identities indexed and preferences excluded from database roots
-PROFILE database capture + validation ms 26,53
-DATABASE record projection ms 6,90
-DATABASE open + schema checks ms 0,96
-DATABASE delta index ms 2,20
-DATABASE row and ownership delta SQL ms 21,30
-DATABASE digest + metadata ms 0,79
-DATABASE durable commit ms 9,35
-PROFILE database transaction + durability ms 45,43
+PROFILE database capture + validation ms 104,92
+DATABASE record projection ms 23,00
+DATABASE open + schema checks ms 1,26
+DATABASE delta index ms 14,07
+DATABASE row and ownership delta SQL ms 28,65
+DATABASE digest + metadata ms 1,28
+DATABASE durable commit ms 17,00
+PROFILE database transaction + durability ms 89,49
 PASS timber-diesel-tow: changed component commits / Saved.
-TIMING timber-diesel-tow warm component save ms 72,05 / changed records 2
+TIMING timber-diesel-tow warm component save ms 194,50 / changed records 2
 PASS timber-diesel-tow: wear edit writes only changed component/revision records
 PASS timber-diesel-tow: ordinary save refreshes its consistent recovery database
 PASS timber-diesel-tow: failed transaction publishes neither money nor wear changes
 PASS timber-diesel-tow: actual buy/install transaction commits /
 PASS timber-diesel-tow: checkout reloads payment and retains replaced identity
+PASS touring-six: persistence fixture assigns compression loss to an actual piston, independent of component ordering
 PASS touring-six: flat/compressed legacy source imports into real SQLite
 PASS touring-six: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
 PASS touring-six: original migration bytes are retained
@@ -226,21 +1042,22 @@ PASS touring-six: database reload does not reimport or regenerate state
 PASS touring-six: ordered schema migrations recorded
 PASS touring-six: build/content/physics versions are independent metadata
 PASS touring-six: component identities indexed and preferences excluded from database roots
-PROFILE database capture + validation ms 32,94
-DATABASE record projection ms 11,30
-DATABASE open + schema checks ms 0,98
-DATABASE delta index ms 2,41
-DATABASE row and ownership delta SQL ms 14,25
-DATABASE digest + metadata ms 0,76
-DATABASE durable commit ms 10,03
-PROFILE database transaction + durability ms 43,52
+PROFILE database capture + validation ms 91,28
+DATABASE record projection ms 30,26
+DATABASE open + schema checks ms 0,97
+DATABASE delta index ms 5,17
+DATABASE row and ownership delta SQL ms 32,75
+DATABASE digest + metadata ms 1,42
+DATABASE durable commit ms 9,95
+PROFILE database transaction + durability ms 84,47
 PASS touring-six: changed component commits / Saved.
-TIMING touring-six warm component save ms 76,55 / changed records 2
+TIMING touring-six warm component save ms 175,84 / changed records 2
 PASS touring-six: wear edit writes only changed component/revision records
 PASS touring-six: ordinary save refreshes its consistent recovery database
 PASS touring-six: failed transaction publishes neither money nor wear changes
 PASS touring-six: actual buy/install transaction commits /
 PASS touring-six: checkout reloads payment and retains replaced identity
+PASS utility-pickup: persistence fixture assigns compression loss to an actual piston, independent of component ordering
 PASS utility-pickup: flat/compressed legacy source imports into real SQLite
 PASS utility-pickup: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
 PASS utility-pickup: original migration bytes are retained
@@ -248,21 +1065,22 @@ PASS utility-pickup: database reload does not reimport or regenerate state
 PASS utility-pickup: ordered schema migrations recorded
 PASS utility-pickup: build/content/physics versions are independent metadata
 PASS utility-pickup: component identities indexed and preferences excluded from database roots
-PROFILE database capture + validation ms 36,62
-DATABASE record projection ms 7,60
-DATABASE open + schema checks ms 1,17
-DATABASE delta index ms 2,28
-DATABASE row and ownership delta SQL ms 13,31
-DATABASE digest + metadata ms 0,64
-DATABASE durable commit ms 9,71
-PROFILE database transaction + durability ms 38,60
+PROFILE database capture + validation ms 100,84
+DATABASE record projection ms 19,54
+DATABASE open + schema checks ms 1,04
+DATABASE delta index ms 5,35
+DATABASE row and ownership delta SQL ms 44,16
+DATABASE digest + metadata ms 1,55
+DATABASE durable commit ms 18,39
+PROFILE database transaction + durability ms 93,73
 PASS utility-pickup: changed component commits / Saved.
-TIMING utility-pickup warm component save ms 75,30 / changed records 2
+TIMING utility-pickup warm component save ms 194,65 / changed records 2
 PASS utility-pickup: wear edit writes only changed component/revision records
 PASS utility-pickup: ordinary save refreshes its consistent recovery database
 PASS utility-pickup: failed transaction publishes neither money nor wear changes
 PASS utility-pickup: actual buy/install transaction commits /
 PASS utility-pickup: checkout reloads payment and retains replaced identity
+PASS v8-muscle: persistence fixture assigns compression loss to an actual piston, independent of component ordering
 PASS v8-muscle: flat/compressed legacy source imports into real SQLite
 PASS v8-muscle: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
 PASS v8-muscle: original migration bytes are retained
@@ -270,21 +1088,113 @@ PASS v8-muscle: database reload does not reimport or regenerate state
 PASS v8-muscle: ordered schema migrations recorded
 PASS v8-muscle: build/content/physics versions are independent metadata
 PASS v8-muscle: component identities indexed and preferences excluded from database roots
-PROFILE database capture + validation ms 36,03
-DATABASE record projection ms 167,01
-DATABASE open + schema checks ms 0,93
-DATABASE delta index ms 2,01
-DATABASE row and ownership delta SQL ms 12,25
-DATABASE digest + metadata ms 0,59
-DATABASE durable commit ms 10,13
-PROFILE database transaction + durability ms 197,01
+PROFILE database capture + validation ms 125,19
+DATABASE record projection ms 19,37
+DATABASE open + schema checks ms 0,94
+DATABASE delta index ms 9,81
+DATABASE row and ownership delta SQL ms 41,54
+DATABASE digest + metadata ms 1,86
+DATABASE durable commit ms 17,98
+PROFILE database transaction + durability ms 95,14
 PASS v8-muscle: changed component commits / Saved.
-TIMING v8-muscle warm component save ms 233,13 / changed records 2
+TIMING v8-muscle warm component save ms 220,42 / changed records 2
 PASS v8-muscle: wear edit writes only changed component/revision records
 PASS v8-muscle: ordinary save refreshes its consistent recovery database
 PASS v8-muscle: failed transaction publishes neither money nor wear changes
 PASS v8-muscle: actual buy/install transaction commits /
 PASS v8-muscle: checkout reloads payment and retains replaced identity
+PASS vale: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS vale: flat/compressed legacy source imports into real SQLite
+PASS vale: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS vale: original migration bytes are retained
+PASS vale: database reload does not reimport or regenerate state
+PASS vale: ordered schema migrations recorded
+PASS vale: build/content/physics versions are independent metadata
+PASS vale: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 103,71
+DATABASE record projection ms 23,80
+DATABASE open + schema checks ms 0,98
+DATABASE delta index ms 20,99
+DATABASE row and ownership delta SQL ms 31,14
+DATABASE digest + metadata ms 1,68
+DATABASE durable commit ms 18,38
+PROFILE database transaction + durability ms 101,01
+PASS vale: changed component commits / Saved.
+TIMING vale warm component save ms 204,82 / changed records 2
+PASS vale: wear edit writes only changed component/revision records
+PASS vale: ordinary save refreshes its consistent recovery database
+PASS vale: failed transaction publishes neither money nor wear changes
+PASS vale: actual buy/install transaction commits /
+PASS vale: checkout reloads payment and retains replaced identity
+PASS vale-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS vale-sport: flat/compressed legacy source imports into real SQLite
+PASS vale-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS vale-sport: original migration bytes are retained
+PASS vale-sport: database reload does not reimport or regenerate state
+PASS vale-sport: ordered schema migrations recorded
+PASS vale-sport: build/content/physics versions are independent metadata
+PASS vale-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 101,19
+DATABASE record projection ms 19,08
+DATABASE open + schema checks ms 0,98
+DATABASE delta index ms 4,94
+DATABASE row and ownership delta SQL ms 51,44
+DATABASE digest + metadata ms 1,75
+DATABASE durable commit ms 18,31
+PROFILE database transaction + durability ms 100,46
+PASS vale-sport: changed component commits / Saved.
+TIMING vale-sport warm component save ms 201,78 / changed records 2
+PASS vale-sport: wear edit writes only changed component/revision records
+PASS vale-sport: ordinary save refreshes its consistent recovery database
+PASS vale-sport: failed transaction publishes neither money nor wear changes
+PASS vale-sport: actual buy/install transaction commits /
+PASS vale-sport: checkout reloads payment and retains replaced identity
+PASS wren: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS wren: flat/compressed legacy source imports into real SQLite
+PASS wren: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS wren: original migration bytes are retained
+PASS wren: database reload does not reimport or regenerate state
+PASS wren: ordered schema migrations recorded
+PASS wren: build/content/physics versions are independent metadata
+PASS wren: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 92,28
+DATABASE record projection ms 33,58
+DATABASE open + schema checks ms 0,97
+DATABASE delta index ms 5,19
+DATABASE row and ownership delta SQL ms 30,23
+DATABASE digest + metadata ms 1,74
+DATABASE durable commit ms 10,06
+PROFILE database transaction + durability ms 85,81
+PASS wren: changed component commits / Saved.
+TIMING wren warm component save ms 178,18 / changed records 2
+PASS wren: wear edit writes only changed component/revision records
+PASS wren: ordinary save refreshes its consistent recovery database
+PASS wren: failed transaction publishes neither money nor wear changes
+PASS wren: actual buy/install transaction commits /
+PASS wren: checkout reloads payment and retains replaced identity
+PASS wren-sport: persistence fixture assigns compression loss to an actual piston, independent of component ordering
+PASS wren-sport: flat/compressed legacy source imports into real SQLite
+PASS wren-sport: exact ownership, wear/faults, Unicode names, fluids, seeds and settings survive import
+PASS wren-sport: original migration bytes are retained
+PASS wren-sport: database reload does not reimport or regenerate state
+PASS wren-sport: ordered schema migrations recorded
+PASS wren-sport: build/content/physics versions are independent metadata
+PASS wren-sport: component identities indexed and preferences excluded from database roots
+PROFILE database capture + validation ms 105,71
+DATABASE record projection ms 19,60
+DATABASE open + schema checks ms 0,93
+DATABASE delta index ms 5,29
+DATABASE row and ownership delta SQL ms 47,32
+DATABASE digest + metadata ms 1,88
+DATABASE durable commit ms 18,69
+PROFILE database transaction + durability ms 97,59
+PASS wren-sport: changed component commits / Saved.
+TIMING wren-sport warm component save ms 203,39 / changed records 2
+PASS wren-sport: wear edit writes only changed component/revision records
+PASS wren-sport: ordinary save refreshes its consistent recovery database
+PASS wren-sport: failed transaction publishes neither money nor wear changes
+PASS wren-sport: actual buy/install transaction commits /
+PASS wren-sport: checkout reloads payment and retains replaced identity
 PASS Stored engines, blueprints, loose members and cart reservations commit
 PASS Complex ownership, independent engine fluids/names and nine-race holds reload exactly
 PASS Populated schema-1 database migrates without changing a single player resource
@@ -315,9 +1225,10 @@ PASS Copied resource checkpoint queues to SQLite /
 PASS Checkpoint worker stores no new sidecar JSON journal
 PASS Interrupted run retains exact wear/fuel without a reward or resumed race
 PASS Committed resource recovery retires its database checkpoint atomically
-PASS Tracked pre-mechanics JSON migration produces stable identities on repeated load
-PASS Historical JSON source is never rewritten during SQLite import
-PASS Schema-9 compressed JSON import preserves custom settings and condition while upgrading its contract
-PASS First separate slot persists
+PASS legacy-v1: incompatible element contract blocks import and writes without creating replacement assets
+PASS legacy-v1: repeated rejected import preserves exact original and archived bytes
+PASS legacy-v9: incompatible element contract blocks import and writes without creating replacement assets
+PASS legacy-v9: repeated rejected import preserves exact original and archived bytes
+PASS First separate slot persists after leaving an incompatible legacy slot
 PASS Second slot starts independently
-Checks: 205 / failures: 0
+Checks: 765 / failures: 0

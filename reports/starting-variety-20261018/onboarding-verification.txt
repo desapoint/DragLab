@@ -1,0 +1,17 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: First start opens preset onboarding before shopping
+PASS: Fresh defaults are Shift myself / Simulation / Normal market
+PASS: Dialog content clears fixed X/title and actions: onboarding presets
+PASS: Presets precede independent Normal market selection
+PASS: Next keeps all settings as unsaved drafts
+PASS: Back retains both preset drafts
+PASS: Returning to market retains its independent draft
+PASS: Dialog content clears fixed X/title and actions: onboarding market
+PASS: Failed preference write keeps onboarding open and retryable
+PASS: Failed onboarding preserves original state and preferences
+PASS: Explicit confirmation persists completion and returns to starter selection
+PASS: Normal market applies after Simulation rather than becoming Hard
+PASS: Onboarding changes preferences only; exact starter stock, money and progression remain intact
+PASS: Confirmed presets reload independently from SQLite progression
+Checks: 15 / runtime errors: 0

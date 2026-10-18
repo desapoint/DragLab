@@ -283,5 +283,5 @@ MonoBehaviour:
     - rpm: 7000
       torqueNm: 164.864
   defaultPaint: {r: 0.6166869, g: 0.72, b: 0.3888, a: 1}
-  purchasePrice: 8183
+  purchasePrice: 11682
   reputationRequired: 0

@@ -1,0 +1,8 @@
+PASS: PrepareVariety (0.249s)
+PASS: StartingVariety (53.571s)
+PASS: VehicleVariety (32.089s)
+PASS: VehicleMarket (19.914s)
+PASS: Inspection (18.477s)
+PASS: Reset (10.952s)
+PASS: SQLite (678.506s)
+All gates passed; separate PartsMarketVerify: 1455 assertions.

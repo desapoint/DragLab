@@ -17,7 +17,7 @@ namespace DragLab.Runtime {
  Check(VisibleDealerCards().Length==3,"New/used choice stays a draft");yield return Click(input,"dialogCancel");
  yield return Click(input,"ownedCarFilters");yield return CarFilterClick(input,"dealerCondition:New");yield return Click(input,"dialogApply");
  Check(VisibleDealerCards().Length==0,"New condition filter excludes fixed used starters");yield return Click(input,"ownedCarClear");
- var listing=VehicleListings.Find(game.Profile,"starter:starter-hatch");
+ var listing=game.Profile.vehicleStock.listings.OrderBy(o=>o.price).First();
  yield return DealerCardClick(input,listing.listingId);
  var dyno=shell.Root.Q<NativeDynoPlot>("dealerDynoPlot");
  Check(dyno.Series.Count==2&&dyno.Series[0].Inspection.source.components.Any(p=>p.condition.health<1),"Used details show actual worn and no-wear dyno curves");
@@ -25,9 +25,9 @@ namespace DragLab.Runtime {
  yield return Click(input,"dealerBuy");yield return Click(input,"dialogCancel");
  Check(JsonUtility.ToJson(game.Profile)==before&&File.ReadAllBytes(ProfileStore.FilePath).SequenceEqual(disk),"Filtering, inspecting and cancelling first purchase leave saved assets unchanged");
  yield return Click(input,"dealerBuy");yield return Click(input,"dialogConfirm");
- Check(!shell.ModalOpen&&shell.OwnedDetailsOpen&&!game.Profile.firstPurchasePending&&game.Profile.cars.Count==1&&game.Profile.cash==4700-listing.price,"First confirmation buys one starter and leaves a maintenance reserve");
+ Check(!shell.ModalOpen&&shell.OwnedDetailsOpen&&!game.Profile.firstPurchasePending&&game.Profile.cars.Count==1&&game.Profile.cash==6500-listing.price,"First confirmation buys one starter and leaves a maintenance reserve");
  Check(listing.parts.All(p=>game.Profile.parts.Any(q=>q.instanceId==p.instanceId&&q.condition.health==p.condition.health)),"First purchase transfers exact seller identities and wear");
- Check(MechanicsOwnership.Validate(game.Profile,game.Profile.catalog)==null&&game.Profile.vehicleStock.listings.Count==20,"First purchase unlocks persisted mixed stock with valid ownership");
+ Check(MechanicsOwnership.Validate(game.Profile,game.Profile.catalog)==null&&game.Profile.vehicleStock.listings.Count==game.vehicles.Length+7,"First purchase unlocks persisted mixed stock with valid ownership");
  yield return Capture("starter-owned");yield return Click(input,"ownedBack");
  }
 #endif

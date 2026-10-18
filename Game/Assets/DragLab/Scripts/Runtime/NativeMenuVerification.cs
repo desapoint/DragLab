@@ -92,6 +92,9 @@ namespace DragLab.Runtime
             {
                 Check(ProfileStore.FilePath == Path.Combine(folder, "save-slot-1.sqlite3"), "Profile isolated from player assets");
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-reset-required-only-verify")>=0){yield return IncompatibleSaveChecks(input);yield break;}
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-mobile-only-verify")>=0){NativeMobile.SimulatedTouch=true;shell.Refresh();yield return new WaitForSecondsRealtime(.1f);}
+                yield return OnboardingChecks(input);
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-onboarding-only-verify")>=0)yield break;
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-shine-only-verify")>=0){yield return AngledShineChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-mobile-only-verify")>=0){yield return MobileAccessChecks(input);yield break;}
                 if(game.Profile.firstPurchasePending)yield return StarterPurchaseChecks(input);

@@ -1,8 +1,8 @@
-PASS starter-hatch starter is safe and fully disclosed without a fee
+PASS finch starter is safe and fully disclosed without a fee
 PASS Starter inspection cannot charge
-PASS juniper-economy starter is safe and fully disclosed without a fee
+PASS swift starter is safe and fully disclosed without a fee
 PASS Starter inspection cannot charge
-PASS juniper-club starter is safe and fully disclosed without a fee
+PASS mistral starter is safe and fully disclosed without a fee
 PASS Starter inspection cannot charge
 PASS Rejected starter inspection changes no assets or cash
 PASS Seeded stock validates with hidden damage / 1

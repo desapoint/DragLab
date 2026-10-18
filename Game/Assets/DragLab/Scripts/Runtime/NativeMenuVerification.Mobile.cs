@@ -53,7 +53,7 @@ namespace DragLab.Runtime
         {
             NativeMobile.SimulatedTouch=true;Screen.SetResolution(1280,720,false);yield return new WaitForSecondsRealtime(.3f);shell.Refresh();
             Check(shell.Visible&&VisibleDealerCards().Length==3,"Touch fresh game reaches all fixed starter choices");
-            yield return MobileTap(shell.Root.Q("dealerCar:starter:starter-hatch"));
+            yield return MobileTap(shell.Root.Q("dealerCar:"+game.Profile.vehicleStock.listings.OrderBy(o=>o.price).First().listingId));
             yield return MobileTap("dealerBuy");yield return MobileTap("dialogConfirm");
             Check(game.Profile.cars.Count==1&&!game.Profile.firstPurchasePending,"Starter purchase completes using touch events alone");
             yield return MobileTap("renameOwnedCar");

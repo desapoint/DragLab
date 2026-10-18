@@ -1,0 +1,23 @@
+PASS: Seed 1 Cinder bought with actual 6500 starting funds.
+PASS: Gearbox, clutch, intake and body purchased at real stock/express prices without cash injection.
+PASS: Four opening wins within 12 attempts; one recorded first clear; wear, service, fluids and stock retained.
+Remaining cash: 942
+fresh-career,1,"Pay Car / $3746",0.000,6500,2754,-3746,0.000000,17.500000,39,0,1,0
+fresh-career,2,"Pay Part / $642",0.000,2754,2112,-642,17.500000,17.500000,40,0,1,0
+fresh-career,3,"Pay Part / $636",0.000,2112,1476,-636,17.500000,17.500000,41,0,1,0
+fresh-career,4,"Pay Part / $630",0.000,1476,846,-630,17.500000,17.500000,42,0,1,0
+fresh-career,5,"Pay Part / $654",0.000,846,192,-654,17.500000,17.500000,43,0,1,0
+fresh-career,6,"Remove optional interior/accessories",0.000,192,192,0,17.500000,17.500000,43,0,1,0
+fresh-career,7,"Apply launch tune",0.000,192,192,0,17.500000,17.500000,43,0,1,0
+fresh-career,8,"Enter first-pass",0.000,192,192,0,17.500000,17.500000,43,0,1,0
+fresh-career,9,"Settle first-pass / win",0.375,192,492,300,17.500000,17.271949,43,0,1,2
+fresh-career,10,"Shutdown / garage",0.513,492,492,0,17.271949,17.271230,43,0,1,2
+fresh-career,11,"Enter first-pass",0.513,492,492,0,17.271230,17.271230,43,0,1,2
+fresh-career,12,"Settle first-pass / win",0.887,492,642,150,17.271230,17.042820,43,0,1,2
+fresh-career,13,"Shutdown / garage",1.026,642,642,0,17.042820,17.042099,43,0,1,2
+fresh-career,14,"Enter first-pass",1.026,642,642,0,17.042099,17.042099,43,0,1,2
+fresh-career,15,"Settle first-pass / win",1.401,642,792,150,17.042099,16.813431,43,0,1,2
+fresh-career,16,"Shutdown / garage",1.540,792,792,0,16.813431,16.812711,43,0,1,2
+fresh-career,17,"Enter first-pass",1.540,792,792,0,16.812711,16.812711,43,0,1,2
+fresh-career,18,"Settle first-pass / win",1.915,792,942,150,16.812711,16.583691,43,0,1,2
+fresh-career,19,"Shutdown / garage",2.055,942,942,0,16.583691,16.582970,43,0,1,2

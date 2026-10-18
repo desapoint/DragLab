@@ -7,14 +7,15 @@ namespace DragLab.Infrastructure
 {
     internal static class DrivingPreferences
     {
-        [Serializable] internal sealed class Data {public int version=1;public DriverSettings driving=new DriverSettings();public int difficulty=1;public bool reverseTouchShifting;}
+        [Serializable] internal sealed class Data {public int version=1;public DriverSettings driving=new DriverSettings();public int difficulty=1;public bool reverseTouchShifting,onboardingComplete;}
         internal static string FilePath=>Path.Combine(Path.GetDirectoryName(ProfileStore.FilePath),"driving-settings.json");
         static string controlsPath;
         static bool reverseTouchShifting;
+        internal static bool OnboardingComplete=>Read(FilePath).onboardingComplete;
         internal static bool ReverseTouchShifting { get { if(controlsPath!=FilePath)ReloadControls();return reverseTouchShifting; } }
         internal static void PublishControls(string json){reverseTouchShifting=JsonUtility.FromJson<Data>(json).reverseTouchShifting;controlsPath=FilePath;}
         internal static void ReloadControls(){string path=FilePath;reverseTouchShifting=Read(path).reverseTouchShifting;controlsPath=path;}
-        internal static string Encode(DriverSettings driving,int difficulty,bool? reverse=null)=>JsonUtility.ToJson(new Data{driving=driving.Copy(),difficulty=difficulty,reverseTouchShifting=reverse??Read(FilePath).reverseTouchShifting});
+        internal static string Encode(DriverSettings driving,int difficulty,bool? reverse=null,bool? onboardingComplete=null)=>JsonUtility.ToJson(new Data{driving=driving.Copy(),difficulty=difficulty,reverseTouchShifting=reverse??Read(FilePath).reverseTouchShifting,onboardingComplete=onboardingComplete??Read(FilePath).onboardingComplete});
         static Data Read(string path)
         {
             if(!File.Exists(path))return new Data();var data=JsonUtility.FromJson<Data>(File.ReadAllText(path,System.Text.Encoding.UTF8));
