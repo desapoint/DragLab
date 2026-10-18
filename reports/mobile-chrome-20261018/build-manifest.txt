@@ -1,0 +1,10 @@
+Built 2026-10-18: mobile header/footer edge extension Windows player and matching Android APK.
+Android APK bytes: 57888443
+Android APK SHA256: 78b1a6dc68b7e488b3347ab4082fd7ff3584db9bbdafaf3d9f35c614052c28f9
+Windows Assembly-CSharp.dll SHA256: bc7e922acb17bfa62f9a3eb6eb548d958667cd1342b7364651c4dbee394c395a
+Windows runtime is unchanged by Android packaging: PASS
+APK ZIP CRC / ARM64-only libraries / Windows SQLite DLL exclusion: PASS
+Packaged SQLite matches the tracked ARM64 plugin after llvm-strip --strip-unneeded: PASS
+All packaged ELF PT_LOAD segments support at least 16 KiB alignment: PASS
+External signature, ZIP alignment, package metadata and device checks: see packaging-verification.txt.
+No connected phone testing or store upload is claimed.

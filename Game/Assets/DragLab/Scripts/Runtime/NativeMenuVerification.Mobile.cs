@@ -79,6 +79,11 @@ namespace DragLab.Runtime
                 }
                 var backdrop=shell.Root.Q("metalBackground").worldBound;
                 Check(backdrop.xMin<=.1&&backdrop.yMin<=.1&&backdrop.xMax*scale>=Screen.width-.1&&backdrop.yMax*scale>=Screen.height-.1,"Decorative background covers every safe-area edge at "+size);
+                var headerInk=shell.Root.Q("navBar").Q<RacingSurface>();var footerInk=shell.Root.Q("footerBar").Q<RacingSurface>();
+                var header=headerInk.worldBound;var footer=footerInk.worldBound;
+                Check(header.xMin<=.1&&header.yMin<=.1&&header.xMax*scale>=Screen.width-.1,"Header decoration reaches the top and both display edges at "+size);
+                Check(footer.xMin<=.1&&footer.xMax*scale>=Screen.width-.1&&footer.yMax*scale>=Screen.height-.1,"Footer decoration reaches the bottom and both display edges at "+size);
+                Check(headerInk.pickingMode==PickingMode.Ignore&&footerInk.pickingMode==PickingMode.Ignore,"Extended header/footer decorations cannot take touches at "+size);
                 yield return Capture("mobile-"+size.x);
             }
             yield return MobileEdgeChecks();

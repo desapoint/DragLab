@@ -1,0 +1,19 @@
+Mobile header/footer edges - packaged Windows verification (2026-10-18)
+
+Mobile:
+PASS: Header decoration reaches the top and both display edges at (854, 480)
+PASS: Footer decoration reaches the bottom and both display edges at (854, 480)
+PASS: Extended header/footer decorations cannot take touches at (854, 480)
+PASS: Header decoration reaches the top and both display edges at (1280, 720)
+PASS: Footer decoration reaches the bottom and both display edges at (1280, 720)
+PASS: Extended header/footer decorations cannot take touches at (1280, 720)
+PASS: Header decoration reaches the top and both display edges at (1920, 1080)
+PASS: Footer decoration reaches the bottom and both display edges at (1920, 1080)
+PASS: Extended header/footer decorations cannot take touches at (1920, 1080)
+PASS: Header decoration reaches the top and both display edges at (2400, 1080)
+PASS: Footer decoration reaches the bottom and both display edges at (2400, 1080)
+PASS: Extended header/footer decorations cannot take touches at (2400, 1080)
+Checks: 157 / runtime errors: 0
+
+Desktop navigation:
+Checks: 111 / runtime errors: 0

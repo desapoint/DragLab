@@ -1,5 +1,7 @@
 # Native interface direction — grey/red and Settings first
 
+Mobile header/footer edges (2026-10-18): extend their existing decorative surfaces through the status-bar, cutout and gesture margins to the display edges. Keep navigation buttons, labels and workspace layout inside the safe area. Decorative extensions ignore touches; desktop chrome retains its existing bounds. [Checkpoint](../reports/mobile-chrome-20261018/CHANGES.md).
+
 Wheel alignment (2026-10-18): center the steering-rim peak on the actual gap between the two gauges in desktop and mobile layouts. Preserve wheel size/height and all other instrument positions. [Decision](RACE_INSTRUMENTS.md#wheel-alignment-2026-10-18).
 
 Race results direction (2026-10-16): the user chose a modern paper timing slip fixed on the right and a physical eight-segment ET/RT billboard behind the track, beyond the finish. Each lane posts only on its own finish beam, regardless of which car finishes first. The car stays visible left of the slip. The board can scroll offscreen; never attach it to the HUD. An achievable progressive assisted stop should frame all three; excessive speed/poor brakes may carry the car beyond it. Paper uses restrained off-white grain and perforated edges; keep shared grey/red buttons, scrolling and fonts. Preserve F8 and actual results/transactions. [Timing and shutdown decisions](RACE_INSTRUMENTS.md#timing-slip-and-trackside-board-2026-10-16).

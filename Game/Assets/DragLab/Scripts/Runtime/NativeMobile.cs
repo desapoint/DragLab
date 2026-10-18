@@ -35,6 +35,13 @@ namespace DragLab.Runtime
                     child.style.left=-left;child.style.right=-right;child.style.top=-top;child.style.bottom=-bottom;
                     child.style.paddingLeft=left;child.style.paddingRight=right;child.style.paddingTop=top;child.style.paddingBottom=bottom;
                 }
+                else if(child.name=="navBar"||child.name=="footerBar"){
+                    var surface=child.Q<RacingSurface>();
+                    if(surface==null)continue;
+                    surface.style.left=-left;surface.style.right=-right;
+                    surface.style.top=child.name=="navBar"?-top:-8;
+                    surface.style.bottom=child.name=="footerBar"?-bottom:0;
+                }
             }
         }
     }

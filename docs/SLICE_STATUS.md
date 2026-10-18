@@ -1,5 +1,7 @@
 # Prototype implementation status
 
+**Mobile header/footer edge extension (2026-10-18):** shared decorative surfaces cover status-bar/cutout/gesture margins while buttons, labels and workspace stay safely inset. Packaged checks pass **157 mobile / 111 desktop navigation**, zero runtime errors. [Requested checkpoint and phone review](../reports/mobile-chrome-20261018/CHANGES.md). No later UI phase is advanced.
+
 **Wheel peak alignment (2026-10-18):** steering rim now follows the actual gap between the unequal speed/RPM dials on desktop and mobile, including resizing/safe areas. Packaged checks pass **145 mobile / 222 desktop HUD**, zero runtime errors. Wheel height/size and other HUD positions are preserved. [Requested checkpoint and phone review](../reports/wheel-gap-20261018/CHANGES.md). No later UI phase is advanced.
 
 **Mobile edges / native-only presentation (2026-10-18):** the metal background and dialog scrim now cover safe-area margins while controls/cards remain inset. Remove phone Old / New controls, comparison hints and legacy main-page/F8 selection; desktop F8 remains available. Business/Data stay in their unfinished native workspaces. Packaged checks pass **145 mobile / 85 gestures / 111 desktop navigation / 148 Settings**, zero runtime errors, including rendered edge/scrim checks. [Builds, limits and phone review](../reports/mobile-edges-20261018/CHANGES.md). No later page is implemented; device acceptance remains pending.

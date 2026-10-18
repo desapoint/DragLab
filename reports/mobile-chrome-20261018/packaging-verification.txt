@@ -1,0 +1,16 @@
+Mobile header/footer extension APK checks - 2026-10-18
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+zipalign -c -P 16 4: PASS
+package: name='com.draglab.prototype' versionCode='1' versionName='1.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'
+sdkVersion:'26'
+targetSdkVersion:'36'
+native-code: 'arm64-v8a'
+List of devices attached
+Phone visual acceptance remains pending; no connected device test is claimed.
