@@ -4,7 +4,7 @@ Current candidate: `04-strong-outline-preview.png`, generated with the built-in 
 
 The user requested believable real-car proportions with a more 2D, cel-shaded raster finish, and explicitly rejected procedural/vector body drawings. The third candidate has no wheels, tires or brakes: both arch openings are transparent. The earlier wheel-bearing iterations record the style development and are not proposed game layers.
 
-Awaiting explicit user review of this first model before creating any additional car or wheel sprites. Not integrated into Resources or a packaged build. The rejected procedural experiments and renderer wiring were archived locally; production rendering remains unchanged. The separately tested staging-idle fix is committed as `e15cae0`.
+The user approved `04-strong-outline-preview.png` on 2026-10-18 and authorized the remaining cars in this style, with paintable body panels and protected nonpaint fixtures. See `docs/VEHICLE_ART_STYLE.md`. This concept folder itself is not a runtime layer package. The rejected procedural experiments and renderer wiring were archived locally. The separately tested staging-idle fix is committed as `e15cae0`.
 
 Approved scope to resume after style review: distinct designs across all 25 model families/52 trims, old and modern silhouettes, varied lengths and axle spacing, plus a visual for every distinct shop wheel product. Trims may share their model body. Wheels, tires, rotating rotors and stationary calipers remain separate layers. Actual per-corner fitted rims and tire sizes must carry through menus and races, with no physics, identity, condition or save-state changes implied by artwork.
 
