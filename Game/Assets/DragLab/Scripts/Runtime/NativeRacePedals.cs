@@ -34,7 +34,13 @@ namespace DragLab.Runtime
         readonly RaceInputAdapter input;
         readonly Func<bool> active;
         readonly int control;
-        readonly Gradient steel=new Gradient{colorKeys=new[]{new GradientColorKey(new Color(.7f,.73f,.75f),0),new GradientColorKey(new Color(.2f,.23f,.26f),1)},alphaKeys=new[]{new GradientAlphaKey(1,0),new GradientAlphaKey(1,1)}};
+        static readonly Gradient steel=Material(new Color(.72f,.76f,.78f),new Color(.26f,.30f,.33f),new Color(.49f,.53f,.55f),new Color(.17f,.20f,.23f));
+        static readonly Gradient rubber=Material(new Color(.16f,.18f,.19f),new Color(.075f,.09f,.10f),new Color(.10f,.12f,.13f),new Color(.025f,.035f,.04f));
+        static readonly Gradient grip=Material(new Color(.34f,.38f,.40f),new Color(.19f,.22f,.24f),new Color(.24f,.27f,.29f),new Color(.065f,.08f,.095f));
+        static readonly Vector2[] clutchShape={new Vector2(.18f,0),new Vector2(.83f,0),new Vector2(1,.18f),new Vector2(.96f,.78f),new Vector2(.78f,1),new Vector2(.19f,.98f),new Vector2(0,.79f),new Vector2(0,.16f)};
+        static readonly Vector2[] brakeShape={new Vector2(.16f,0),new Vector2(.86f,.03f),new Vector2(1,.19f),new Vector2(.94f,.81f),new Vector2(.74f,1),new Vector2(.16f,.97f),new Vector2(0,.78f),new Vector2(.02f,.17f)};
+        static readonly Vector2[] gasShape={new Vector2(.26f,0),new Vector2(.84f,.02f),new Vector2(1,.10f),new Vector2(.91f,.82f),new Vector2(.69f,1),new Vector2(.15f,.97f),new Vector2(0,.85f),new Vector2(.06f,.14f)};
+        static readonly Vector2[] ribShape={new Vector2(.12f,0),new Vector2(.88f,0),new Vector2(1,.22f),new Vector2(1,.78f),new Vector2(.88f,1),new Vector2(.12f,1),new Vector2(0,.78f),new Vector2(0,.22f)};
         readonly Dictionary<int,float> fingers=new Dictionary<int,float>();
         readonly HashSet<int> capturedPointers=new HashSet<int>();
         internal float Depression { get; private set; }
@@ -77,31 +83,67 @@ namespace DragLab.Runtime
             float next=Mathf.MoveTowards(Depression,Mathf.Clamp01(value),Mathf.Max(0,dt)*9);
             if(next==Depression)return;Depression=next;MarkDirtyRepaint();
         }
-        static void Plate(Painter2D p,Rect r,float radius,Color color,FillGradient gradient=default)
+        static Gradient Material(Color a,Color b,Color c,Color d)=>new Gradient{
+            colorKeys=new[]{new GradientColorKey(a,0),new GradientColorKey(b,.35f),new GradientColorKey(c,.68f),new GradientColorKey(d,1)},
+            alphaKeys=new[]{new GradientAlphaKey(1,0),new GradientAlphaKey(1,1)}};
+        readonly struct PedalProjection
         {
-            p.fillColor=color;if(gradient.gradient!=null)p.fillGradient=gradient;p.BeginPath();p.MoveTo(new Vector2(r.xMin+radius,r.yMin));p.LineTo(new Vector2(r.xMax-radius,r.yMin));
-            p.ArcTo(new Vector2(r.xMax,r.yMin),new Vector2(r.xMax,r.yMin+radius),radius);p.LineTo(new Vector2(r.xMax,r.yMax-radius));
-            p.ArcTo(new Vector2(r.xMax,r.yMax),new Vector2(r.xMax-radius,r.yMax),radius);p.LineTo(new Vector2(r.xMin+radius,r.yMax));
-            p.ArcTo(new Vector2(r.xMin,r.yMax),new Vector2(r.xMin,r.yMax-radius),radius);p.LineTo(new Vector2(r.xMin,r.yMin+radius));
-            p.ArcTo(new Vector2(r.xMin,r.yMin),new Vector2(r.xMin+radius,r.yMin),radius);p.ClosePath();p.Fill();
+            readonly float center,sine,cosine;
+            internal PedalProjection(float center,float depression){this.center=center;float angle=Mathf.Lerp(18,-32,depression)*Mathf.Deg2Rad;sine=Mathf.Sin(angle);cosine=Mathf.Cos(angle);}
+            internal Vector2 Point(float x,float y,float depth=0){
+                float down=y-13,z=down*sine+depth*cosine;
+                float perspective=360/(360-z);
+                return new Vector2(center+(x+z*.08f)*perspective,13+(down*cosine-depth*sine)*perspective);
+            }
+            internal Vector2 Point(Rect area,Vector2 uv,float depth)=>Point(area.x+uv.x*area.width,area.y+uv.y*area.height,depth);
+        }
+        static void Outline(Painter2D p,PedalProjection pose,Rect area,Vector2[] shape,float depth,Vector2 offset)
+        {
+            var previous=pose.Point(area,shape[shape.Length-1],depth)+offset;
+            var first=pose.Point(area,shape[0],depth)+offset;
+            p.BeginPath();p.MoveTo(Vector2.Lerp(previous,first,.8f));
+            for(int i=0;i<shape.Length;i++){
+                var corner=pose.Point(area,shape[i],depth)+offset;
+                var next=pose.Point(area,shape[(i+1)%shape.Length],depth)+offset;
+                p.QuadraticCurveTo(corner,Vector2.Lerp(corner,next,.2f));p.LineTo(Vector2.Lerp(corner,next,.8f));
+            }
+            p.ClosePath();
+        }
+        static void Plate(Painter2D p,PedalProjection pose,Rect area,Vector2[] shape,float depth,Color color,Gradient material=null,float reflection=0)
+        {
+            p.fillColor=color;
+            if(material!=null)p.fillGradient=FillGradient.MakeLinearGradient(material,pose.Point(area.xMin,area.yMin-reflection,depth),pose.Point(area.xMax,area.yMax-reflection,depth),AddressMode.Clamp);
+            Outline(p,pose,area,shape,depth,Vector2.zero);p.Fill();
         }
         void Draw(MeshGenerationContext context)
         {
             if(contentRect.width<2)return;var p=context.painter2D;float cx=contentRect.width*.5f;
-            bool gas=control==RaceInputAdapter.GasControl;float w=gas?40:58,h=gas?100:64;
-            float travel=Depression*20,y=gas?35:69;
+            bool gas=control==RaceInputAdapter.GasControl;float w=gas?34:49,h=gas?98:62;
+            var pose=new PedalProjection(cx,Depression);var pad=new Rect(-w/2,gas?35:70,w,h);
+            var shape=gas?gasShape:control==RaceInputAdapter.BrakeControl?brakeShape:clutchShape;
+            var mount=new Vector2(cx,13);var armEnd=pose.Point(0,pad.center.y,-6);
             p.lineCap=LineCap.Round;
-            Line(p,new Vector2(cx-5,15),new Vector2(cx+2,y+35+travel),11,new Color(.025f,.03f,.035f));
-            Line(p,new Vector2(cx-4,16),new Vector2(cx+3,y+35+travel),4,rim);p.lineCap=LineCap.Butt;
-            var pad=new Rect(cx-w/2,y+travel,w,h*(1-Depression*.2f));
-            Plate(p,new Rect(pad.x-3,pad.y+4,pad.width+6,pad.height+4),8,new Color(.008f,.012f,.015f));
-            Plate(p,pad,6,Color.white,FillGradient.MakeLinearGradient(steel,new Vector2(0,pad.y),new Vector2(0,pad.yMax),AddressMode.Clamp));
-            var rubber=new Rect(pad.x+4,pad.y+4,pad.width-8,pad.height-8);Plate(p,rubber,4,face);
-            p.lineCap=LineCap.Round;
-            if(gas)for(int i=0;i<3;i++){float x=rubber.x+7+i*(rubber.width-14)/2;Line(p,new Vector2(x,rubber.y+8),new Vector2(x,rubber.yMax-8),3,new Color(.31f,.34f,.36f));}
-            else for(int i=0;i<4;i++){float yy=rubber.y+9+i*(rubber.height-18)/3;Line(p,new Vector2(rubber.x+7,yy),new Vector2(rubber.xMax-7,yy),3,new Color(.31f,.34f,.36f));}
-            Line(p,new Vector2(pad.x+7,pad.y+2),new Vector2(pad.xMax-7,pad.y+2),2,Color.Lerp(tick,accent,Depression));
-            Circle(p,new Vector2(cx-5,15),4,new Color(.15f,.18f,.2f));p.lineCap=LineCap.Butt;
+            Line(p,mount+new Vector2(3,3),armEnd+new Vector2(3,3),10,new Color(.008f,.012f,.016f,.8f));
+            Line(p,mount,armEnd,8,new Color(.06f,.075f,.085f));
+            Line(p,mount+new Vector2(-2,0),armEnd+new Vector2(-2,0),2.5f,Color.Lerp(rim,face,Depression*.5f));
+            p.fillColor=new Color(0,0,0,.35f);Outline(p,pose,pad,shape,-6,new Vector2(4+Depression*2,7-Depression*3));p.Fill();
+            Plate(p,pose,pad,shape,-6,new Color(.04f,.05f,.065f));
+            Plate(p,pose,pad,shape,0,Color.white,steel,Depression*24);
+            var inset=new Rect(pad.x+3.5f,pad.y+3.5f,pad.width-7,pad.height-7);
+            Plate(p,pose,inset,shape,1,face,rubber,Depression*12);
+            for(int i=0;i<(gas?3:4);i++){
+                var bar=gas?new Rect(inset.x+4+i*(inset.width-11)/2,inset.y+11,3,inset.height-22)
+                    :new Rect(inset.x+6,inset.y+8+i*(inset.height-20)/3,inset.width-12,4);
+                Plate(p,pose,bar,ribShape,1,new Color(.015f,.02f,.025f));
+                Plate(p,pose,bar,ribShape,3,Color.white,grip,Depression*8);
+            }
+            for(int i=0;i<8;i++){
+                float y=pad.y+12+i*(pad.height-24)/7;
+                Line(p,pose.Point(pad.x+1.8f,y,.2f),pose.Point(pad.x+3,y-1,.2f),.55f,new Color(.85f,.9f,.93f,.28f));
+            }
+            Line(p,pose.Point(-w*.25f,pad.y+1,.2f),pose.Point(w*.30f,pad.y+1,.2f),1.2f,Color.Lerp(tick,accent,Depression*.5f));
+            Circle(p,mount,5,new Color(.025f,.035f,.045f));Circle(p,mount,3.3f,rim);
+            Line(p,mount+new Vector2(-1.5f,0),mount+new Vector2(1.5f,0),1,new Color(.06f,.075f,.09f));p.lineCap=LineCap.Butt;
         }
     }
 }

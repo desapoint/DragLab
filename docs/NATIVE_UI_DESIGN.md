@@ -1,5 +1,7 @@
 # Native interface direction — grey/red and Settings first
 
+Pedal shape/depth (2026-10-18): give clutch/brake shaped, curved shoulder profiles and the accelerator a longer tapered profile. Use shaded metal rims, layered rubber grips and subtle surface detail. Pressing rotates the artwork about its fixed upper hinge with perspective foreshortening, moving reflections and a cast shadow; retain fixed generous hit rectangles and existing control/feathering behavior on touch and desktop. [Checkpoint](../reports/pedal-depth-20261018/CHANGES.md).
+
 Mobile header/footer edges (2026-10-18): extend their existing decorative surfaces through the status-bar, cutout and gesture margins to the display edges. Keep navigation buttons, labels and workspace layout inside the safe area. Decorative extensions ignore touches; desktop chrome retains its existing bounds. [Checkpoint](../reports/mobile-chrome-20261018/CHANGES.md).
 
 Wheel alignment (2026-10-18): center the steering-rim peak on the actual gap between the two gauges in desktop and mobile layouts. Preserve wheel size/height and all other instrument positions. [Decision](RACE_INSTRUMENTS.md#wheel-alignment-2026-10-18).

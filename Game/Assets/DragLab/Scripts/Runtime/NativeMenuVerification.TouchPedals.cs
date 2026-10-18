@@ -44,6 +44,7 @@ namespace DragLab.Runtime
             Check(hud.Pedals.Gas.Depression>.9f&&hud.Pedals.Clutch.Depression>.9f,"Both pedal faces animate down while held");yield return Capture("pedals-both-pressed");
             PedalTouch(hud.Pedals.Clutch,2,TouchPhase.Moved,50);
             Check(Math.Abs(controls.Peek().clutch-.5)<.01&&controls.Peek().throttle==1,"Sliding a held clutch upward feathers it without interrupting gas");
+            yield return new WaitForSecondsRealtime(.12f);yield return Capture("pedals-half-clutch");
             PedalTouch(hud.Pedals.Clutch,2,TouchPhase.Ended);
             Check(controls.Peek().clutch==0&&controls.Peek().throttle==1,"Lifting one finger releases only its pedal");
             PedalTouch(hud.Pedals.Brake,2,TouchPhase.Began);Check(controls.Peek().brake==1&&controls.Peek().throttle==1,"Brake and accelerator have independent contacts");

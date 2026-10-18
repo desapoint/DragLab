@@ -1,5 +1,7 @@
 # Prototype implementation status
 
+**Pedal shape / hinge depth (2026-10-18):** shaped clutch/brake and tapered accelerator, shaded metal/rubber and raised grips; artwork rotates with perspective about a fixed hinge instead of sliding flat rectangles. Input/hit regions remain unchanged. Packaged checks pass **65 pedal input / 157 mobile / 85 keyboard-flick**, zero runtime errors. [Requested checkpoint, builds and phone review](../reports/pedal-depth-20261018/CHANGES.md). No later UI phase is advanced.
+
 **Mobile header/footer edge extension (2026-10-18):** shared decorative surfaces cover status-bar/cutout/gesture margins while buttons, labels and workspace stay safely inset. Packaged checks pass **157 mobile / 111 desktop navigation**, zero runtime errors. [Requested checkpoint and phone review](../reports/mobile-chrome-20261018/CHANGES.md). No later UI phase is advanced.
 
 **Wheel peak alignment (2026-10-18):** steering rim now follows the actual gap between the unequal speed/RPM dials on desktop and mobile, including resizing/safe areas. Packaged checks pass **145 mobile / 222 desktop HUD**, zero runtime errors. Wheel height/size and other HUD positions are preserved. [Requested checkpoint and phone review](../reports/wheel-gap-20261018/CHANGES.md). No later UI phase is advanced.

@@ -1,0 +1,10 @@
+Built 2026-10-18: shaped pedals with hinge perspective Windows player and matching Android APK.
+Android APK bytes: 72255625
+Android APK SHA256: d4697cc465e67a0aad94ef704f8c49157ab46a52607f744a827aa9a0ed04ffe3
+Windows Assembly-CSharp.dll SHA256: 92c4a855ca725b20a06f757e96b796c7cf7e169cfc148d406fd1a5ed87a5eabb
+Windows runtime is unchanged by Android packaging: PASS
+APK ZIP CRC / ARM64-only libraries / Windows SQLite DLL exclusion: PASS
+Packaged SQLite matches the tracked ARM64 plugin after llvm-strip --strip-unneeded: PASS
+All packaged ELF PT_LOAD segments support at least 16 KiB alignment: PASS
+External signature, ZIP alignment, package metadata and device checks: see packaging-verification.txt.
+No connected phone testing or store upload is claimed.

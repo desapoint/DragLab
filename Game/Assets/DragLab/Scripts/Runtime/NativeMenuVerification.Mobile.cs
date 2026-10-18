@@ -146,6 +146,7 @@ namespace DragLab.Runtime
             yield return MobileTap(hud.Root.Q("raceReady"));Check(!game.Race.warmup,"Touch Ready stages the countdown without Enter");
             PedalTouch(hud.Pedals.Gas,1,TouchPhase.Began);PedalTouch(hud.Pedals.Brake,2,TouchPhase.Began);
             PedalTouch(hud.Pedals.Clutch,3,TouchPhase.Began);Check(game.RaceControls.Peek().throttle==1&&game.RaceControls.Peek().brake==1&&game.RaceControls.Peek().clutch==1,"Touch gas and brake operate together at mobile scale");
+            yield return new WaitForSecondsRealtime(.16f);yield return Capture("mobile-pedals-pressed");
             ShiftSwipe(hud.ShiftFlick,-45);yield return null;Check(game.RaceControls.Peek().throttle==1,"Touch shift leaves the accelerator held");
             yield return MobileTap(hud.Root.Q("racePause"));Check(game.NativeRacePause&&game.RaceControls.Peek().throttle==0,"Touch pause clears held pedals");yield return Capture("mobile-pause");
             yield return MobileTap("pauseSound");Check(shell.Root.Q("tuneRange:pauseMaster")!=null,"Touch pause exposes contained sound controls");yield return MobileTap("dialogBack");
