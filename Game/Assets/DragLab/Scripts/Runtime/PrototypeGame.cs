@@ -377,7 +377,7 @@ namespace DragLab.Runtime
                 if(route=="Parts"&&shopCategory.HasValue)nativeMenu?.FilterShopCategory(shopCategory.Value);
                 if (route == "Parts") repairsOnly = false;
                 if (route == "Tuning" && Build != null) BeginTuneDraft();
-                InterfaceComparison.SetReplacement(route, NativeMenuShell.Supports(route)&&!(NativeMobile.Touch&&(route=="Business"||route=="Stats")));
+                InterfaceComparison.SetReplacement(route, NativeMenuShell.Supports(route));
             };
         }
         void DrawMeasuredGUI()

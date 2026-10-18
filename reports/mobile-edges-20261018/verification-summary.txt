@@ -1,0 +1,19 @@
+Mobile edges/access: 145 checks / 0 runtime errors
+Fixture: reports/player-fixtures/mobile-edges-final-access-20261018
+Raw verification SHA256: 6bbc92e088edb76bfe5afdf2b7c4afe606750f193a2eecc3d1b6c7c754beed32
+
+Gesture/hold: 85 checks / 0 runtime errors
+Fixture: reports/player-fixtures/mobile-edges-final-flick-20261018
+Raw verification SHA256: db92d5e6a9e574dfd61581b8620dde4def602bf750518bcce3d14c8576d19e65
+
+Desktop navigation: 111 checks / 0 runtime errors
+Fixture: reports/player-fixtures/mobile-edges-final-navigation-20261018
+Raw verification SHA256: fdb34934df4ee2fc582e7488ed20bc777f2baac30495c72ac4a7d43ca4d1a82f
+
+Settings/persistence: 148 checks / 0 runtime errors
+Fixture: reports/player-fixtures/mobile-edges-final-settings-20261018
+Raw verification SHA256: 745349774024255caf70c4d968453fa9536c3eeb3341dd143d663fbf701dceb0
+
+All four suites use the final Windows runtime; suites overlap.
+Final runtime hash is recorded in build-manifest.txt.
+Prior 65-pedal and 220-dashboard suites are retained from the preceding checkpoint, not rerun.

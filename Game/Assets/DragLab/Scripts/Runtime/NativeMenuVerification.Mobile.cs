@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UIElements;
 using DragLab.Domain;
@@ -28,6 +29,26 @@ namespace DragLab.Runtime
             MobilePointer(target,TouchPhase.Ended,target.worldBound.center);yield return new WaitForSecondsRealtime(.15f);
         }
         IEnumerator MobileTap(string id)=>MobileTap(shell.Root.Q(id));
+        IEnumerator MobileEdgeChecks()
+        {
+            var sentinel=new VisualElement{name="edgeSentinel",pickingMode=PickingMode.Ignore};sentinel.style.position=Position.Absolute;
+            sentinel.style.left=sentinel.style.right=sentinel.style.top=sentinel.style.bottom=0;sentinel.style.backgroundColor=Color.magenta;
+            shell.Root.parent.Insert(0,sentinel);yield return Capture("mobile-edge-coverage");
+            var before=new Texture2D(2,2);before.LoadImage(File.ReadAllBytes(Path.Combine(folder,"mobile-edge-coverage.png")));
+            var points=new[]{new Vector2Int(2,2),new Vector2Int(Screen.width-3,2),new Vector2Int(2,Screen.height-3),new Vector2Int(Screen.width-3,Screen.height-3),new Vector2Int(2,Screen.height/2),new Vector2Int(Screen.width/2,2)};
+            foreach(var point in points){var c=before.GetPixel(point.x,point.y);Check(!(c.r>.9f&&c.b>.9f&&c.g<.1f),"Rendered background covers sentinel at screen edge "+point);}
+            yield return MobileTap("settingsButton");yield return MobileTap("tabControls");
+            Check(shell.Root.Q("bindingCompareinterfaceRow").resolvedStyle.display==DisplayStyle.None,"Mobile Settings does not advertise a disabled interface shortcut");
+            yield return MobileTap(shell.Root.Q("touchShiftDirectionInfo"));
+            var layer=shell.Root.Q("modalLayer").worldBound;var card=shell.Root.Q("modalCard").worldBound;float scale=shell.Panel.scale;var safe=NativeMobile.SafeArea;
+            Check(layer.xMin<=.1&&layer.yMin<=.1&&layer.xMax*scale>=Screen.width-.1&&layer.yMax*scale>=Screen.height-.1,"Dialog dimming covers all display edges");
+            Check(card.xMin*scale>=safe.xMin&&card.xMax*scale<=safe.xMax&&card.yMin*scale>=Screen.height-safe.yMax&&card.yMax*scale<=Screen.height-safe.yMin,"Dialog content stays inside the safe area despite full-screen dimming");
+            yield return Capture("mobile-edge-dialog");
+            var after=new Texture2D(2,2);after.LoadImage(File.ReadAllBytes(Path.Combine(folder,"mobile-edge-dialog.png")));
+            var a=before.GetPixel(2,Screen.height/2);var b=after.GetPixel(2,Screen.height/2);
+            Check(b.r+b.g+b.b<(a.r+a.g+a.b)*.7f,"Modal scrim visibly dims the former uncovered side strip");
+            Destroy(before);Destroy(after);sentinel.RemoveFromHierarchy();yield return MobileTap("modalClose");yield return MobileTap("cancelSettings");
+        }
         IEnumerator MobileAccessChecks(WindowsKeyboardProbe mouse)
         {
             NativeMobile.SimulatedTouch=true;Screen.SetResolution(1280,720,false);yield return new WaitForSecondsRealtime(.3f);shell.Refresh();
@@ -56,8 +77,11 @@ namespace DragLab.Runtime
                 foreach(var id in new[]{"navGarage","navBuild","navTuning","navRace","navBusiness","navData","settingsButton"}){
                     var button=shell.Root.Q(id).worldBound;Check(button.xMin>=b.xMin&&button.xMax<=b.xMax+1,"Mobile navigation stays reachable: "+size+" / "+id);
                 }
+                var backdrop=shell.Root.Q("metalBackground").worldBound;
+                Check(backdrop.xMin<=.1&&backdrop.yMin<=.1&&backdrop.xMax*scale>=Screen.width-.1&&backdrop.yMax*scale>=Screen.height-.1,"Decorative background covers every safe-area edge at "+size);
                 yield return Capture("mobile-"+size.x);
             }
+            yield return MobileEdgeChecks();
             NativeMobile.SimulatedSafeArea=null;Screen.SetResolution(1280,720,false);yield return new WaitForSecondsRealtime(.3f);
             yield return MobileTap("navBuild");Check(game.ScreenName=="Parts","Touch opens parts shop");
             yield return MobileTap("partsFilters");Check(shell.ModalOpen,"Touch opens shop filters");yield return MobileTap("dialogCancel");
@@ -88,16 +112,13 @@ namespace DragLab.Runtime
             yield return MobileTap("applySettings");yield return MobileTap("dialogApply");
             Check(!shell.SettingsDirty&&Math.Abs(SharedAudioSettings.MasterVolume-slider.value)<.001,"Touch Apply confirmation persists settings");
             yield return MobileTap("cancelSettings");Check(game.ScreenName=="Tuning","Cancel returns to the previous menu on touch");
-            yield return MobileTap("navBusiness");Check(!shell.Visible&&!InterfaceComparison.IsReplacement("Business"),"Unfinished Business replacement falls back to the working touchable page");
-            shell.TouchBack();yield return new WaitForSecondsRealtime(.2f);Check(shell.Visible&&game.ScreenName=="Garage","Android Back can leave the legacy business page");
-            yield return MobileTap("navData");Check(!shell.Visible&&!InterfaceComparison.IsReplacement("Stats"),"Unfinished Data page also remains accessible through its legacy presentation");
+            yield return MobileTap("navBusiness");Check(shell.Visible&&InterfaceComparison.IsReplacement("Business"),"Mobile Business stays in its native workspace without legacy fallback");
+            shell.TouchBack();yield return new WaitForSecondsRealtime(.2f);Check(shell.Visible&&game.ScreenName=="Garage","Android Back returns from the native Business workspace");
+            yield return MobileTap("navData");Check(shell.Visible&&InterfaceComparison.IsReplacement("Stats"),"Mobile Data stays in its native workspace without legacy fallback");
             shell.TouchBack();yield return new WaitForSecondsRealtime(.2f);
-            yield return MobileTap("touchCompare");Check(!shell.Visible&&!InterfaceComparison.IsReplacement("Garage"),"Footer touch action exposes legacy presentation without F8");
-            float compareScale=NativeMobile.Scale(Screen.width,Screen.height);
-            int compareX=(int)(Screen.width-90*compareScale-8),compareY=(int)(4+22*compareScale);
-            mouse.MouseButtonAt(compareX,compareY,true);yield return null;yield return new WaitForSecondsRealtime(.08f);
-            mouse.MouseButtonAt(compareX,compareY,false);yield return new WaitForSecondsRealtime(.2f);
-            Check(shell.Visible&&InterfaceComparison.IsReplacement("Garage"),"Legacy comparison button returns on a complete press/release gesture");
+            Check(shell.Root.Q("touchCompare")==null&&shell.Root.Q("interactionHint").resolvedStyle.display==DisplayStyle.None,"Mobile has no old-interface button or F8 footer hint");
+            InterfaceComparison.SetReplacement("Garage",false);Check(InterfaceComparison.IsReplacement("Garage"),"Mobile cannot select the legacy Garage presentation");
+            yield return Key(mouse,0x77);Check(shell.Visible&&InterfaceComparison.IsReplacement("Garage"),"An external F8 key cannot switch mobile to the old interface");
             game.Profile.driving.launch=LaunchMode.Manual;game.Profile.driving.shifting=ShiftMode.ManualClutch;game.Profile.driving.clutchAssist=false;game.Profile.driving.warmupBeforeRace=true;yield return MobileTap("navRace");yield return MobileTap("raceMode:Practice");yield return MobileTap("raceStage");yield return MobileTap("dialogStage");
             Check(game.ScreenName=="Race"&&game.RaceHud.Visible,"Touch staging enters the authoritative physical race");
             game.enabled=false;var hud=game.RaceHud;

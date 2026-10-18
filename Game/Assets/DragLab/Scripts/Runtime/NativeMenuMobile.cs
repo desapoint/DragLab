@@ -7,12 +7,6 @@ namespace DragLab.Runtime
     {
         void InitializeTouchMenus()
         {
-            var compare=new Button(()=>{
-                if(ModalOpen||EditingText)return;
-                InterfaceComparison.SetReplacement(game.ComparisonRoute,false);
-            }){name="touchCompare",text="Old / New",focusable=false,tabIndex=-1};
-            compare.AddToClassList("action-button");compare.AddToClassList("touch-compare");
-            root.Q("footerBar").Add(compare);AddSurface(compare,RacingSurface.Kind.SecondaryAction);
             root.RegisterCallback<FocusInEvent>(evt=>{
                 if(!NativeMobile.Touch)return;
                 for(var item=evt.target as VisualElement;item!=null;item=item.parent){

@@ -302,7 +302,10 @@ namespace DragLab.Runtime
                 Row(3,"touchTuning","Tuning").Add(new Label("− / + precise steps · ↺ reset · tap value to type"));
             }
             foreach (var binding in new[] { new[] { "Throttle", "W / Space" }, new[] { "Brake", "S" }, new[] { "Clutch", "Left Shift" }, new[] { "Shift up / engage first", "E" }, new[] { "Shift down", "Q" }, new[] { "Launch / restart", "Enter" }, new[] { "Pause", "Esc" }, new[] { "Return to garage", "G · paused / finished" }, new[] { "Repeat race", "R · finished" }, new[] { "Compare interface", "F8" } })
-                Row(3, "binding" + binding[0].Replace(" ", ""), binding[0]).Add(new Label(binding[1]));
+            {
+                var controls=Row(3,"binding"+binding[0].Replace(" ",""),binding[0]);controls.Add(new Label(binding[1]));
+                if(binding[0]=="Compare interface")controls.parent.AddToClassList("desktop-only");
+            }
             var pedals = new Button(() => OpenDialog("Pedals", "Hold W / Space through gear changes. Manual clutch: Shift + E / Q, then release Shift.\nMouse / touch pedals accept partial pressure; different fingers can hold separate pedals.", new[] { new DialogAction("Close", CloseDialog) })) { text = "Pedal controls" }; pedals.AddToClassList("action-button"); pages[3].Add(pedals); AddSurface(pedals, RacingSurface.Kind.Button);
         }
         void BuildGeneral()

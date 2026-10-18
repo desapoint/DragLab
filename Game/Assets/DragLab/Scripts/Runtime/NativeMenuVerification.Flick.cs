@@ -124,7 +124,7 @@ namespace DragLab.Runtime
             var kind=car.transmission.type;car.transmission.type=TransmissionType.CVT;
             ShiftSwipe(hud.ShiftFlick,-45);Check(!controls.Consume().shiftDown,"CVT has no downshift from a reversed up flick");
             ShiftSwipe(hud.ShiftFlick,45);Check(controls.Consume().shiftUp,"CVT retains its existing Drive/restart input through a flick");car.transmission.type=kind;
-            ShiftTouch(hud.ShiftFlick,0,TouchPhase.Began,Vector2.zero);InterfaceComparison.SetReplacement("Race",false);hud.Refresh();Check(!hud.ShiftFlick.Held,"F8 releases an in-progress flick");InterfaceComparison.SetReplacement("Race",true);hud.Refresh();
+            ShiftTouch(hud.ShiftFlick,0,TouchPhase.Began,Vector2.zero);InterfaceComparison.SetReplacement("Race",false);hud.Refresh();Check(hud.Visible&&hud.ShiftFlick.Held,"Mobile stays native without interrupting an in-progress flick");hud.ReleaseInput();hud.Refresh();
             yield return Capture("mobile-flick-shifter");game.enabled=true;game.ReturnToGarage();NativeMobile.SimulatedTouch=false;
         }
 #endif
