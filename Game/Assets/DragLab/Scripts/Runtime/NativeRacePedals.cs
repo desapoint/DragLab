@@ -34,12 +34,11 @@ namespace DragLab.Runtime
         readonly RaceInputAdapter input;
         readonly Func<bool> active;
         readonly int control;
-        static readonly Gradient steel=Material(new Color(.72f,.76f,.78f),new Color(.26f,.30f,.33f),new Color(.49f,.53f,.55f),new Color(.17f,.20f,.23f));
-        static readonly Gradient rubber=Material(new Color(.16f,.18f,.19f),new Color(.075f,.09f,.10f),new Color(.10f,.12f,.13f),new Color(.025f,.035f,.04f));
-        static readonly Gradient grip=Material(new Color(.34f,.38f,.40f),new Color(.19f,.22f,.24f),new Color(.24f,.27f,.29f),new Color(.065f,.08f,.095f));
-        static readonly Vector2[] clutchShape={new Vector2(.18f,0),new Vector2(.83f,0),new Vector2(1,.18f),new Vector2(.96f,.78f),new Vector2(.78f,1),new Vector2(.19f,.98f),new Vector2(0,.79f),new Vector2(0,.16f)};
-        static readonly Vector2[] brakeShape={new Vector2(.16f,0),new Vector2(.86f,.03f),new Vector2(1,.19f),new Vector2(.94f,.81f),new Vector2(.74f,1),new Vector2(.16f,.97f),new Vector2(0,.78f),new Vector2(.02f,.17f)};
-        static readonly Vector2[] gasShape={new Vector2(.26f,0),new Vector2(.84f,.02f),new Vector2(1,.10f),new Vector2(.91f,.82f),new Vector2(.69f,1),new Vector2(.15f,.97f),new Vector2(0,.85f),new Vector2(.06f,.14f)};
+        static readonly Gradient steel=Material(new Color(.66f,.71f,.74f),new Color(.38f,.43f,.46f),new Color(.47f,.52f,.55f),new Color(.19f,.23f,.27f));
+        static readonly Gradient rubber=Material(new Color(.075f,.09f,.10f),new Color(.035f,.05f,.06f),new Color(.05f,.065f,.075f),new Color(.02f,.03f,.04f));
+        static readonly Gradient grip=Material(new Color(.28f,.32f,.34f),new Color(.21f,.25f,.27f),new Color(.24f,.28f,.30f),new Color(.12f,.15f,.17f));
+        static readonly Vector2[] padShape={new Vector2(.14f,0),new Vector2(.86f,0),new Vector2(.96f,.09f),new Vector2(1,.89f),new Vector2(.88f,1),new Vector2(.12f,1),new Vector2(0,.89f),new Vector2(.04f,.09f)};
+        static readonly Vector2[] gasShape={new Vector2(.16f,0),new Vector2(.84f,0),new Vector2(.94f,.06f),new Vector2(1,.93f),new Vector2(.84f,1),new Vector2(.16f,1),new Vector2(0,.93f),new Vector2(.06f,.06f)};
         static readonly Vector2[] ribShape={new Vector2(.12f,0),new Vector2(.88f,0),new Vector2(1,.22f),new Vector2(1,.78f),new Vector2(.88f,1),new Vector2(.12f,1),new Vector2(0,.78f),new Vector2(0,.22f)};
         readonly Dictionary<int,float> fingers=new Dictionary<int,float>();
         readonly HashSet<int> capturedPointers=new HashSet<int>();
@@ -88,12 +87,13 @@ namespace DragLab.Runtime
             alphaKeys=new[]{new GradientAlphaKey(1,0),new GradientAlphaKey(1,1)}};
         readonly struct PedalProjection
         {
+            internal const float Floor=142;
             readonly float center,sine,cosine;
-            internal PedalProjection(float center,float depression){this.center=center;float angle=Mathf.Lerp(18,-32,depression)*Mathf.Deg2Rad;sine=Mathf.Sin(angle);cosine=Mathf.Cos(angle);}
+            internal PedalProjection(float center,float depression){this.center=center;float angle=Mathf.Lerp(8,48,Mathf.SmoothStep(0,1,depression))*Mathf.Deg2Rad;sine=Mathf.Sin(angle);cosine=Mathf.Cos(angle);}
             internal Vector2 Point(float x,float y,float depth=0){
-                float down=y-13,z=down*sine+depth*cosine;
+                float down=y-Floor,z=down*sine+depth*cosine;
                 float perspective=360/(360-z);
-                return new Vector2(center+(x+z*.08f)*perspective,13+(down*cosine-depth*sine)*perspective);
+                return new Vector2(center+(x+z*.08f)*perspective,Floor+(down*cosine-depth*sine)*perspective);
             }
             internal Vector2 Point(Rect area,Vector2 uv,float depth)=>Point(area.x+uv.x*area.width,area.y+uv.y*area.height,depth);
         }
@@ -118,32 +118,25 @@ namespace DragLab.Runtime
         void Draw(MeshGenerationContext context)
         {
             if(contentRect.width<2)return;var p=context.painter2D;float cx=contentRect.width*.5f;
-            bool gas=control==RaceInputAdapter.GasControl;float w=gas?34:49,h=gas?98:62;
-            var pose=new PedalProjection(cx,Depression);var pad=new Rect(-w/2,gas?35:70,w,h);
-            var shape=gas?gasShape:control==RaceInputAdapter.BrakeControl?brakeShape:clutchShape;
-            var mount=new Vector2(cx,13);var armEnd=pose.Point(0,pad.center.y,-6);
+            bool gas=control==RaceInputAdapter.GasControl;float w=gas?38:56,h=gas?106:72;
+            var pose=new PedalProjection(cx,Depression);var pad=new Rect(-w/2,PedalProjection.Floor-h,w,h);
+            var shape=gas?gasShape:padShape;
+            var fixedBase=new PedalProjection(cx,0);var foot=new Rect(-w*.47f,PedalProjection.Floor-2,w*.94f,10);
             p.lineCap=LineCap.Round;
-            Line(p,mount+new Vector2(3,3),armEnd+new Vector2(3,3),10,new Color(.008f,.012f,.016f,.8f));
-            Line(p,mount,armEnd,8,new Color(.06f,.075f,.085f));
-            Line(p,mount+new Vector2(-2,0),armEnd+new Vector2(-2,0),2.5f,Color.Lerp(rim,face,Depression*.5f));
-            p.fillColor=new Color(0,0,0,.35f);Outline(p,pose,pad,shape,-6,new Vector2(4+Depression*2,7-Depression*3));p.Fill();
+            Plate(p,fixedBase,foot,ribShape,-2,new Color(.008f,.012f,.016f,.8f));
+            Plate(p,fixedBase,new Rect(foot.x+2,foot.y+1,foot.width-4,foot.height-3),ribShape,0,face,rubber);
+            p.fillColor=new Color(0,0,0,.30f);Outline(p,pose,pad,shape,-5,new Vector2(3,3-Depression*2));p.Fill();
             Plate(p,pose,pad,shape,-6,new Color(.04f,.05f,.065f));
             Plate(p,pose,pad,shape,0,Color.white,steel,Depression*24);
             var inset=new Rect(pad.x+3.5f,pad.y+3.5f,pad.width-7,pad.height-7);
             Plate(p,pose,inset,shape,1,face,rubber,Depression*12);
             for(int i=0;i<(gas?3:4);i++){
-                var bar=gas?new Rect(inset.x+4+i*(inset.width-11)/2,inset.y+11,3,inset.height-22)
-                    :new Rect(inset.x+6,inset.y+8+i*(inset.height-20)/3,inset.width-12,4);
+                var bar=gas?new Rect(inset.x+6+i*(inset.width-15)/2,inset.y+8,3,inset.height-16)
+                    :new Rect(inset.x+6,inset.y+9+i*(inset.height-21)/3,inset.width-12,3);
                 Plate(p,pose,bar,ribShape,1,new Color(.015f,.02f,.025f));
-                Plate(p,pose,bar,ribShape,3,Color.white,grip,Depression*8);
+                Plate(p,pose,bar,ribShape,2.2f,Color.white,grip,Depression*8);
             }
-            for(int i=0;i<8;i++){
-                float y=pad.y+12+i*(pad.height-24)/7;
-                Line(p,pose.Point(pad.x+1.8f,y,.2f),pose.Point(pad.x+3,y-1,.2f),.55f,new Color(.85f,.9f,.93f,.28f));
-            }
-            Line(p,pose.Point(-w*.25f,pad.y+1,.2f),pose.Point(w*.30f,pad.y+1,.2f),1.2f,Color.Lerp(tick,accent,Depression*.5f));
-            Circle(p,mount,5,new Color(.025f,.035f,.045f));Circle(p,mount,3.3f,rim);
-            Line(p,mount+new Vector2(-1.5f,0),mount+new Vector2(1.5f,0),1,new Color(.06f,.075f,.09f));p.lineCap=LineCap.Butt;
+            p.lineCap=LineCap.Butt;
         }
     }
 }

@@ -1,0 +1,30 @@
+Original-style floor-mounted pedals - packaged Windows verification (2026-10-18)
+
+Pedal input:
+PASS: Both pedal faces animate down while held
+PASS: Real mouse press uses the same captured pedal and animation
+PASS: Release outside the pedal springs back and cannot leave gas stuck
+Checks: 65 / runtime errors: 0
+
+Mobile layout/input:
+PASS: Mobile pedals left, instruments center and shifter right do not overlap at 854 / (x:69.75, y:333.00, width:203.63, height:156.38) / (x:313.88, y:310.50, width:351.00, height:180.00) / (x:680.63, y:267.75, width:220.50, height:230.63)
+PASS: Mobile pedals left, instruments center and shifter right do not overlap at 1280 / (x:51.75, y:342.00, width:204.00, height:156.00) / (x:311.25, y:320.25, width:349.50, height:180.00) / (x:692.25, y:276.75, width:219.75, height:230.25)
+PASS: Mobile pedals left, instruments center and shifter right do not overlap at 1920 / (x:40.00, y:348.00, width:204.00, height:156.00) / (x:309.00, y:326.00, width:350.00, height:180.00) / (x:700.00, y:283.00, width:220.00, height:230.00)
+PASS: Mobile pedals left, instruments center and shifter right do not overlap at 2400 / (x:40.00, y:348.00, width:204.00, height:156.00) / (x:429.00, y:326.00, width:350.00, height:180.00) / (x:940.00, y:283.00, width:220.00, height:230.00)
+PASS: Mobile pedals left, instruments center and shifter right do not overlap at 3840 / (x:29.71, y:430.29, width:204.00, height:156.00) / (x:307.43, y:408.29, width:350.00, height:180.00) / (x:706.86, y:365.43, width:220.00, height:230.00)
+PASS: Touch gas and brake operate together at mobile scale
+PASS: Touch shift leaves the accelerator held
+Checks: 157 / runtime errors: 0
+
+Keyboard/flick:
+PASS: Real W presses animate only the accelerator
+PASS: Real W/S/Left Shift animate all three desktop pedals
+PASS: Desktop shift input preserves held throttle and pedal pose
+PASS: Keyboard release restores the pedal faces
+Checks: 85 / runtime errors: 0
+
+Frozen desktop PNG comparison:
+Clutch fixed-base strip (x790:852, y688:692): maximum channel difference 0.
+Accelerator fixed-base strip (x962:1007, y688:692): maximum channel difference 0.
+Pedal region (x790:1007, y560:694): bright red pixels 0 in both released/pressed captures.
+Compared pedals-neutral.png and pedals-both-pressed.png under reports/player-fixtures/floor-pedals-input-20261018.

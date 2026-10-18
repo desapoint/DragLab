@@ -1,0 +1,10 @@
+Built 2026-10-18: original-style pedals with fixed floor hinges Windows player and matching Android APK.
+Android APK bytes: 72255625
+Android APK SHA256: 6b6654aff1cbffabf0ceedc6486b248ecbe4b31a62cd54039467419216721a2a
+Windows Assembly-CSharp.dll SHA256: e7031421f4e9b94aa30fed80640dcb7cc0075b3fec6b02687cd26bd0de391473
+Windows runtime is unchanged by Android packaging: PASS
+APK ZIP CRC / ARM64-only libraries / Windows SQLite DLL exclusion: PASS
+Packaged SQLite matches the tracked ARM64 plugin after llvm-strip --strip-unneeded: PASS
+All packaged ELF PT_LOAD segments support at least 16 KiB alignment: PASS
+External signature, ZIP alignment, package metadata and device checks: see packaging-verification.txt.
+No connected phone testing or store upload is claimed.
