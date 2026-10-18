@@ -2,6 +2,8 @@
 
 Recorded 2026-10-18 from the user's three Mermaid flows and subsequent explicit wear/coverage rules. Implementation is queued after the in-progress mobile UI clipping correction. This document records approved behavior; it does not claim implementation or acceptance.
 
+**Scope clarification:** all three selection flows, compatibility/discovery/category probabilities, additive stock and first-discovery/restock quantity rules apply exclusively to **new parts**. Do not apply them to used-part or complete-engine supply. Preserve the used market's existing selection probabilities, opportunity/quantity budgets, quantities, wear/fault generation, guarantees, expiration and reservations. Changing or accumulating new inventory must not indirectly increase/reweight the used pool through its former new-stock-count dependency. Generate used stock through its preserved independent behavior first; the new-part priority calculation only reads qualifying available used coverage. Validate this separation explicitly.
+
 ## Supply opportunity
 
 One opportunity selects one distinct new-part product from the authored catalogue, then adds a seeded delivery to that product's inventory. Equivalent catalogue aliases are one product; individual used listings are not new products. Repeat for each opportunity i of N.
