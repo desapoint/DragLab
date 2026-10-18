@@ -1,0 +1,10 @@
+Built 2026-10-18: wheel peak alignment Windows player and matching Android APK.
+Android APK bytes: 57887463
+Android APK SHA256: a88e311b8e4a8daf5759af6a8f7d3a08d1a9fc032d83c0fabb13eee90e395b5e
+Windows Assembly-CSharp.dll SHA256: 4cc976fdbe2cb9daf20d8cd92a504d5d8c9b162bac25d9fc9a8d154e31d79969
+Windows runtime is unchanged by Android packaging: PASS
+APK ZIP CRC / ARM64-only libraries / Windows SQLite DLL exclusion: PASS
+Packaged SQLite matches the tracked ARM64 plugin after llvm-strip --strip-unneeded: PASS
+All packaged ELF PT_LOAD segments support at least 16 KiB alignment: PASS
+External signature, ZIP alignment, package metadata and device checks: see packaging-verification.txt.
+No connected phone testing or store upload is claimed.

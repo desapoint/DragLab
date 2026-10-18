@@ -164,6 +164,8 @@ namespace DragLab.Runtime
             {
                 Screen.SetResolution(width,width==1024?768:1080,false);yield return new WaitForSecondsRealtime(.4f);hud.Refresh();
                 Check(hud.Speed.worldBound.xMax < hud.Rpm.worldBound.xMin && hud.Rpm.worldBound.xMax < hud.Gear.worldBound.xMin, "Left dials and right shifter stay separated at " + width);
+                float wheelPeak=hud.SteeringRim.LocalToWorld(new Vector2(hud.SteeringRim.CenterX,0)).x;
+                Check(Math.Abs(wheelPeak-(hud.Speed.worldBound.xMax+hud.Rpm.worldBound.xMin)*.5f)<1,"Wheel peak sits directly between the dials at "+width);
                 float pedalTop = (Screen.height - 91 * RaceInputAdapter.Scale(Screen.width,Screen.height)) / hud.Panel.scale;
                 Check(hud.Dashboard.worldBound.yMax <= hud.Root.worldBound.yMax && hud.Rpm.worldBound.yMin < hud.Dashboard.worldBound.yMin && hud.Gear.worldBound.yMax <= hud.Root.worldBound.yMax, "Low dashboard stays bounded with the instrument cluster overflowing at " + width);
                 var roadEdge=Camera.main.WorldToViewportPoint(new Vector3(2,roadVertices[0].y,0));

@@ -1,0 +1,14 @@
+Wheel gap alignment — packaged Windows verification (2026-10-18)
+
+Mobile:
+PASS: Gauges stay centered and the wheel peak aligns with their gap at 854
+PASS: Gauges stay centered and the wheel peak aligns with their gap at 1280
+PASS: Gauges stay centered and the wheel peak aligns with their gap at 1920
+PASS: Gauges stay centered and the wheel peak aligns with their gap at 2400
+PASS: Gauges stay centered and the wheel peak aligns with their gap at 3840
+Checks: 145 / runtime errors: 0
+
+Desktop HUD:
+PASS: Wheel peak sits directly between the dials at 1024
+PASS: Wheel peak sits directly between the dials at 1920
+Checks: 222 / runtime errors: 0

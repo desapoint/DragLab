@@ -91,6 +91,9 @@ namespace DragLab.Runtime
             Rpm = new AnalogRaceGauge("rpmGauge"); Rpm.AddToClassList("rpm-gauge"); dials.Add(Rpm);
             ShiftLamp=new RaceShiftLamp();Rpm.Add(ShiftLamp);
             SteeringRim = new RaceSteeringRim(); root.Add(SteeringRim);
+            dials.RegisterCallback<GeometryChangedEvent>(_ => AlignSteeringRim());
+            Speed.RegisterCallback<GeometryChangedEvent>(_ => AlignSteeringRim());
+            Rpm.RegisterCallback<GeometryChangedEvent>(_ => AlignSteeringRim());
             Gear = new RaceGearIndicator(); root.Add(Gear);
             Pedals=new NativeRacePedals(game.RaceControls,()=>game.RaceTouchActive);root.Add(Pedals);
             shiftDownButton=HudButton("raceShiftDown","−",()=>{if(game.RaceTouchActive)game.RaceControls.NativeShift(-1);});
@@ -113,6 +116,13 @@ namespace DragLab.Runtime
             var surface=new RacingSurface(button,RacingSurface.Kind.SecondaryAction);button.Insert(0,surface);hudSurfaces.Add(surface);root.Add(button);return button;
         }
         void LateUpdate() { Refresh(); foreach(var surface in hudSurfaces)surface.Tick(Visible); }
+        void AlignSteeringRim()
+        {
+            if(Speed.layout.width<=0||Rpm.layout.width<=0)return;
+            // Unequal dial diameters put their gap left of the overall cluster center.
+            float gap=(Speed.worldBound.xMax+Rpm.worldBound.xMin)*.5f;
+            SteeringRim.SetClusterCenter(SteeringRim.WorldToLocal(new Vector2(gap,0)).x);
+        }
         internal void Refresh()
         {
             if (root == null) return;
@@ -132,7 +142,7 @@ namespace DragLab.Runtime
             bool mobile=NativeMobile.Touch;float center=(insetLeft+width/panel.scale-insetRight)*.5f;
             dials.style.width=mobile?new StyleLength(350):new StyleLength(StyleKeyword.Auto);
             dials.style.left=mobile?center-175:(compact?16:22)+insetLeft;dials.style.bottom=22+insetBottom;
-            Dashboard.SetClusterCenter(mobile?(float?)center:null);SteeringRim.SetClusterCenter(mobile?(float?)center:null);
+            Dashboard.SetClusterCenter(mobile?(float?)center:null);AlignSteeringRim();
             pauseButton.style.top=readyButton.style.top=lineLockButton.style.top=18+insetTop;
             Gear.style.right=24+insetRight;Gear.style.bottom=15+insetBottom;
             Pedals.style.left=mobile?new StyleLength(16+insetLeft):new StyleLength(StyleKeyword.Auto);

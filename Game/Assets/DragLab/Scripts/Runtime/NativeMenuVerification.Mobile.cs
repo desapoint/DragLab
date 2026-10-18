@@ -129,7 +129,9 @@ namespace DragLab.Runtime
                 yield return Capture("mobile-race-"+width);
                 Check(pedals.xMax<=dials.xMin&&dials.xMax<=gear.xMin,"Mobile pedals left, instruments center and shifter right do not overlap at "+width+" / "+pedals+" / "+dials+" / "+gear);
                 float center=(NativeMobile.SafeArea.xMin+NativeMobile.SafeArea.xMax)*.5f/hud.Panel.scale;
-                Check(Math.Abs(dials.center.x-center)<1&&Math.Abs(hud.SteeringRim.CenterX-center)<1,"Gauges and foreground wheel share the safe-area center at "+width);
+                float gap=(hud.Speed.worldBound.xMax+hud.Rpm.worldBound.xMin)*.5f;
+                float peak=hud.SteeringRim.LocalToWorld(new Vector2(hud.SteeringRim.CenterX,0)).x;
+                Check(Math.Abs(dials.center.x-center)<1&&Math.Abs(peak-gap)<1,"Gauges stay centered and the wheel peak aligns with their gap at "+width);
                 Check(hud.Dashboard.TopAt(center)<hud.Dashboard.TopAt(center-280)-15&&hud.Dashboard.TopAt(center)<hud.Dashboard.TopAt(center+280)-15,"Dashboard bump follows the centered mobile instruments at "+width);
                 Check(pedals.xMin*hud.Panel.scale>=NativeMobile.SafeArea.xMin&&gear.xMax*hud.Panel.scale<=NativeMobile.SafeArea.xMax,"Mobile outer controls clear notch safe edges at "+width);
                 Check(hud.Root.Q("racePause").worldBound.yMin*hud.Panel.scale>=12,"Race pause clears top safe inset at "+width);

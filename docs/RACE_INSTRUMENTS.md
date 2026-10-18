@@ -1,5 +1,9 @@
 # Race instruments — approved direction (2026-10-14)
 
+## Wheel alignment (2026-10-18)
+
+The wheel rim peak follows the midpoint of the visible gap between the speed and RPM gauges, rather than the center of their unequal-width cluster. Recalculate from actual layout bounds on both desktop and mobile, including resizing and safe-area changes. Keep wheel radius, thickness, height, gauge positions and dashboard bump unchanged. [Checkpoint](../reports/wheel-gap-20261018/CHANGES.md).
+
 ## Timing slip and trackside board (2026-10-16)
 
 Use a modern off-white paper timing slip fixed on the right, with the actual car visible on the left. Keep its subtle paper grain/perforated edges separate from the existing grey/red control theme; actions, fonts and scrollbar reuse shared native controls. Preserve actual elapsed/reaction/finish-speed values, splits, comparison, telemetry export and failure-review navigation. Extra run detail is collapsible. Results wait for both lanes to resolve before announcing an outcome; F8 retains the whole legacy result view.
