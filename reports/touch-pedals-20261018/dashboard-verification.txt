@@ -1,0 +1,5 @@
+Isolated full native dashboard/pause/results/finish regression
+MEASURE: retry changed=True / phase=Countdown / visible=True / note=Exported: E:\Coding adventures\Proper racing game\reports\player-fixtures\touch-pedals-hud-isolated-20261018\last-run.csv
+MEASURE: finish practice / max main step ms 12,440 / max stage settlement/normalize / max frame ms 32,910 / max camera step 0,090 / held-write frames 31
+MEASURE: finish paid refresh / max main step ms 32,003 / max stage parts/layout and selection / max frame ms 45,566 / max camera step 0,101 / held-write frames 31
+Checks: 220 / runtime errors: 0

@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('EngineAudioVerify','SliceTwoChangedVerify','BranchAuditVerify','ComponentFaultVerify','EngineRebuildFlowVerify','SupplyPricingVerify','SqliteTimingVerify','SqliteStateVerify','PartBrandVerify','AwdHardwareVerify','ResidualCheckpointVerify','ResidualRecoveryVerify','ResidualPerformanceVerify','CartReservationVerify','DrivingCorrectionsVerify','MenuOptimizationVerify','MenuPerformanceBefore','MenuPerformanceAfter','MaintenanceReplaceVerify','OwnershipVerify','PartsMarketRegression','PartsMarketVerify','AwdGeometryVerify','PartComparisonVerify','AxleWheelVerify','StatHelpVerify','SetupPreviewVerify','ShopCacheVerify','UsedInspectionVerify','VerifyRemainingSimulation','VerifyRemaining','CareerVarietyVerify','ResetVerify','VehicleMarketVerify','VehicleVarietyVerify','VehicleVarietyPrepare','VarietyMechanicalVerify','Prepare','InventoryCommerceVerify','CartVerify','MenuPreviewVerify','RacePresentationVerify','TireSoundBaseline','TireSoundVerify','CheckpointVerify','TireFeedbackDiagnose','TireFeedbackVerify','ThermalVerify','CareerExpandedVerify','BusinessVerify','BalanceVerify','EconomyIntegrationVerify','PaidVerify','ValuationVerify','AssemblyVerify','CollectionVerify','Verify','RecoveryVerify','IntegratedVerify','BenchVerify','AxleVerify','PartsEffectsVerify','DurabilityAudit','SliceTwoAudit','MassVerify','ContactVerify','DrivingContactVerify','LaunchVerify','AwdContactVerify','FuelVerify','FuelingConversionVerify','ServiceVerify','IndividualEngineVerify','TireVerify','TireFailureVerify','CareerVerify','SceneCheck','UnitsVisualVerify','ManualGearboxVerify','PartHardwareVerify','BuildWindows','BuildPlayerOnly','Open','ValidationBatch','FluidPurchaseVerify')]
+    [ValidateSet('EngineAudioVerify','SliceTwoChangedVerify','BranchAuditVerify','ComponentFaultVerify','EngineRebuildFlowVerify','SupplyPricingVerify','SqliteTimingVerify','SqliteStateVerify','PartBrandVerify','AwdHardwareVerify','ResidualCheckpointVerify','ResidualRecoveryVerify','ResidualPerformanceVerify','CartReservationVerify','DrivingCorrectionsVerify','MenuOptimizationVerify','MenuPerformanceBefore','MenuPerformanceAfter','MaintenanceReplaceVerify','OwnershipVerify','PartsMarketRegression','PartsMarketVerify','AwdGeometryVerify','PartComparisonVerify','AxleWheelVerify','StatHelpVerify','SetupPreviewVerify','ShopCacheVerify','UsedInspectionVerify','VerifyRemainingSimulation','VerifyRemaining','CareerVarietyVerify','ResetVerify','VehicleMarketVerify','VehicleVarietyVerify','VehicleVarietyPrepare','VarietyMechanicalVerify','Prepare','InventoryCommerceVerify','CartVerify','MenuPreviewVerify','RacePresentationVerify','TireSoundBaseline','TireSoundVerify','CheckpointVerify','TireFeedbackDiagnose','TireFeedbackVerify','ThermalVerify','CareerExpandedVerify','BusinessVerify','BalanceVerify','EconomyIntegrationVerify','PaidVerify','ValuationVerify','AssemblyVerify','CollectionVerify','Verify','RecoveryVerify','IntegratedVerify','BenchVerify','AxleVerify','PartsEffectsVerify','DurabilityAudit','SliceTwoAudit','MassVerify','ContactVerify','DrivingContactVerify','LaunchVerify','AwdContactVerify','FuelVerify','FuelingConversionVerify','ServiceVerify','IndividualEngineVerify','TireVerify','TireFailureVerify','CareerVerify','SceneCheck','UnitsVisualVerify','ManualGearboxVerify','PartHardwareVerify','BuildWindows','BuildAndroid','BuildPlayerOnly','Open','ValidationBatch','FluidPurchaseVerify')]
     [string]$Action = 'Prepare',
     [string]$EditorPath = 'C:\Program Files\Unity\Hub\Editor\6000.6.4f1\Editor\Unity.exe',
     [string]$BatchManifest = '',
@@ -99,6 +99,7 @@ $taskMethod = switch ($Action) {
     'PartHardwareVerify' { 'DragLab.Editor.PartHardwareVerification.RunStandalone' }
     'UnitsVisualVerify' { 'DragLab.Editor.UnitsVisualVerification.RunStandalone' }
     'SceneCheck' { 'DragLab.Editor.SceneVerification.Run' }
+    'BuildAndroid' { 'DragLab.Editor.PlayerBuild.BuildAndroid' }
     'BuildWindows' { 'DragLab.Editor.PlayerBuild.BuildWindows' }
     'BuildPlayerOnly' { 'DragLab.Editor.PlayerBuild.BuildPlayerOnly' }
 }
@@ -107,6 +108,8 @@ if ($Action -eq 'ValidationBatch' -and (-not $BatchManifest -or -not (Test-Path 
     throw 'ValidationBatch requires an existing -BatchManifest containing selected checks.'
 }
 $taskArgs = @('-batchmode','-nographics','-quit','-projectPath', ('"' + $taskProject + '"'),'-executeMethod',$taskMethod,'-logFile',('"' + $taskLog + '"'))
+if ($Action -eq 'BuildAndroid') { $taskArgs += @('-buildTarget','Android') }
+if ($Action -in @('BuildWindows','BuildPlayerOnly')) { $taskArgs += @('-buildTarget','Win64') }
 # Only the child Unity process inherits this manifest path.
 $previousManifest = [Environment]::GetEnvironmentVariable('DRAGLAB_VALIDATION_MANIFEST', 'Process')
 try {

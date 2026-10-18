@@ -1,0 +1,14 @@
+Final artifacts built 2026-10-18; raw players/captures/logs stay local and ignored.
+Android APK bytes: 57874322
+Android APK SHA256: 5eabeae2f43d28ef161828afdab9b49a60087fb951b9a86df1da46ecd1d5af75
+Windows Assembly-CSharp.dll SHA256: 9dab68547e442f2265fd6f07ab01936f07079fe4d660a654ed768a82fc03bf57
+Windows runtime matches both passing final player suites: PASS
+Android package: com.draglab.prototype / version 1.0 (1)
+Minimum SDK: 26; target/compile SDK: 36; native ABI: arm64-v8a
+IL2CPP development APK, debug-signed; existing landscape orientation retained.
+apksigner verify: PASS, v2=true, one signer
+zipalign -c -P 16 4: PASS (exit 0)
+APK ZIP CRC and ARM64-only native libraries: PASS
+Packaged SQLite matches llvm-strip --strip-unneeded output of tracked ARM64 plugin: PASS
+Windows SQLite DLL absent from APK: PASS
+Physical Android/emulator validation: NOT RUN, adb reports no attached devices.

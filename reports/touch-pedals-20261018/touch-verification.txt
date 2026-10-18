@@ -1,0 +1,67 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Dealership Fitted parts sits beside Stats with the same compact ten-point spacing as owned cars
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Fitted values reflect actual member condition and failures instead of a neutral tire wrapper
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Each fitted part has a shared Shop action, available after an owned car is selected
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Required manual clutch appears beside brake and accelerator
+PASS: DCT hides the friction-clutch pedal despite manual driver preferences
+PASS: Automatic hides the friction-clutch pedal despite manual driver preferences
+PASS: CVT hides the friction-clutch pedal despite manual driver preferences
+PASS: Clutch assistance removes an unnecessary clutch pedal
+PASS: Manual launch still exposes its required clutch with shift assistance enabled
+PASS: Sequential driving with assisted launch does not require a clutch pedal
+PASS: Two independent touch pointers hold gas and clutch simultaneously
+PASS: Three fingers can operate all pedals independently
+PASS: Native contacts survive keyboard polling and repeated fixed ticks / 0
+PASS: Native contacts survive keyboard polling and repeated fixed ticks / 1
+PASS: Native contacts survive keyboard polling and repeated fixed ticks / 2
+PASS: Native contacts survive keyboard polling and repeated fixed ticks / 3
+PASS: Native contacts survive keyboard polling and repeated fixed ticks / 4
+PASS: Native contacts survive keyboard polling and repeated fixed ticks / 5
+PASS: Native contacts survive keyboard polling and repeated fixed ticks / 6
+PASS: Native contacts survive keyboard polling and repeated fixed ticks / 7
+PASS: Both pedal faces animate down while held
+PASS: Sliding a held clutch upward feathers it without interrupting gas
+PASS: Lifting one finger releases only its pedal
+PASS: Brake and accelerator have independent contacts
+PASS: Touch cancellation clears only the canceled contact
+PASS: Touch shifter queues one upshift without releasing held pedals
+PASS: Touch shift is consumed once
+PASS: Real manual transmission accepts the touch clutch input for its shift gate
+PASS: Releasing touch gas does not release an independently held keyboard throttle
+PASS: Real mouse press uses the same captured pedal and animation
+PASS: Release outside the pedal springs back and cannot leave gas stuck
+PASS: F8 presentation change releases native contacts
+PASS: Application interruption clears every held pedal before pause
+PASS: Pedal set sits left of shifter without overlapping gauges at 960
+PASS: Pedal hit targets remain large and inside the screen at 960
+PASS: Driving controls never introduce Tab navigation at 960
+PASS: Pedal set sits left of shifter without overlapping gauges at 1280
+PASS: Pedal hit targets remain large and inside the screen at 1280
+PASS: Driving controls never introduce Tab navigation at 1280
+PASS: Pedal set sits left of shifter without overlapping gauges at 1920
+PASS: Pedal hit targets remain large and inside the screen at 1920
+PASS: Driving controls never introduce Tab navigation at 1920
+PASS: High-resolution phone layout offers wider touch targets
+Checks: 65 / runtime errors: 0

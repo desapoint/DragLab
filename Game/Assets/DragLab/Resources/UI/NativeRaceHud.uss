@@ -43,3 +43,18 @@
 
 .gauge-shift-lamp { left: 44%; right: auto; top: 19%; bottom: auto; width: 12%; height: 12%; }
 .gauge-shift-lamp.hidden { display: none; }
+
+.race-pedals { position: absolute; right: 260px; bottom: 24px; height: 156px; flex-direction: row; }
+.race-pedal { position: relative; width: 72px; height: 156px; margin-left: 10px; }
+.race-pedal.hidden { display: none; }
+.race-shift-down, .race-shift-up { position: absolute; bottom: 8px; width: 44px; min-width: 44px; height: 42px; margin: 0; padding: 0; }
+.race-shift-down { left: 2px; }
+.race-shift-up { right: 2px; }
+.race-shift-down .unity-text-element, .race-shift-up .unity-text-element { font-size: 26px; }
+.race-shifter .shifter-type { left: 48px; right: 48px; }
+.race-phase, .race-warning { right: 520px; }
+.compact .race-phase { left: 42%; right: 260px; bottom: 228px; }
+.compact .race-warning { left: 42%; right: 260px; bottom: 194px; }
+
+.touch-wide .race-pedal { width: 112px; }
+.touch-wide .race-phase, .touch-wide .race-warning { right: 660px; }

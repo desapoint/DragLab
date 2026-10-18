@@ -25,6 +25,8 @@ namespace DragLab.Runtime
         internal AnalogRaceGauge Rpm { get; private set; }
         internal RaceGearIndicator Gear { get; private set; }
         internal RaceShiftLamp ShiftLamp { get; private set; }
+        internal NativeRacePedals Pedals { get; private set; }
+        Button shiftUpButton, shiftDownButton;
         internal VisualElement Root => root;
         internal PanelSettings Panel => panel;
         internal bool Visible => root != null && !root.ClassListContains("hidden");
@@ -57,6 +59,12 @@ namespace DragLab.Runtime
             ShiftLamp=new RaceShiftLamp();Rpm.Add(ShiftLamp);
             SteeringRim = new RaceSteeringRim(); root.Add(SteeringRim);
             Gear = new RaceGearIndicator(); root.Add(Gear);
+            Pedals=new NativeRacePedals(game.RaceControls,()=>game.RaceTouchActive);root.Add(Pedals);
+            shiftDownButton=HudButton("raceShiftDown","−",()=>{if(game.RaceTouchActive)game.RaceControls.NativeShift(-1);});
+            shiftUpButton=HudButton("raceShiftUp","+",()=>{if(game.RaceTouchActive)game.RaceControls.NativeShift(1);});
+            shiftDownButton.AddToClassList("race-shift-down");shiftUpButton.AddToClassList("race-shift-up");
+            Gear.Add(shiftDownButton);Gear.Add(shiftUpButton);
+            shiftDownButton.tooltip="Downshift";shiftUpButton.tooltip="Engage / upshift / restart";
             phase = new Label { name = "racePhase", pickingMode = PickingMode.Ignore }; phase.AddToClassList("race-phase"); root.Add(phase);
             warning = new Label { name = "raceWarning", pickingMode = PickingMode.Ignore }; warning.AddToClassList("race-warning"); root.Add(warning);
             pauseButton = HudButton("racePause", "", () => game.PauseRace(true)); pauseButton.AddToClassList("race-pause-button");pauseButton.tooltip="Pause";pauseButton.Add(new FilledMenuIcon("Pause"));
@@ -76,16 +84,28 @@ namespace DragLab.Runtime
             bool results = game.ComparisonRoute == "Results";
             bool show = game.Race != null && (Supports(game.ComparisonRoute) || game.NativeRacePause || results) && InterfaceComparison.IsReplacement(results ? "Results" : "Race");
             root.EnableInClassList("hidden", !show);
-            if (!show) return;
+            if (!show) { Pedals.Release(); return; }
             int width = panel.targetTexture == null ? Screen.width : panel.targetTexture.width;
             int height = panel.targetTexture == null ? Screen.height : panel.targetTexture.height;
             panel.scale = NativeMenuShell.DisplayScale(width, height);
-            root.EnableInClassList("compact", width / panel.scale < 1150 || height / panel.scale < 700);
+            bool compact=width/panel.scale<1150||height/panel.scale<700;
+            root.EnableInClassList("compact",compact);
+            var safe=Screen.safeArea;
+            float insetRight=(Screen.width-safe.xMax)/panel.scale,insetBottom=safe.yMin/panel.scale;
+            Gear.style.right=24+insetRight;Gear.style.bottom=15+insetBottom;
+            Pedals.style.right=260+insetRight;Pedals.style.bottom=24+insetBottom;
+            pauseButton.style.right=24+insetRight;readyButton.style.right=80+insetRight;
+            bool wide=Application.isMobilePlatform&&width/panel.scale>=1600;root.EnableInClassList("touch-wide",wide);
+            phase.style.right=warning.style.right=(compact?260:wide?660:520)+insetRight;
+            phase.style.bottom=(compact?228:76)+insetBottom;warning.style.bottom=(compact?194:36)+insetBottom;
             pauseButton.SetEnabled(!game.NativeRacePause);
             pauseButton.EnableInClassList("hidden", game.Race.ResultReady);
             readyButton.EnableInClassList("hidden",!game.Race.warmup||game.NativeRacePause);
             readyButton.SetEnabled(game.Race.WarmupStopped&&!game.Race.player.state.engineFailed&&!game.Race.player.state.drivetrainFailed);
             var car = game.Race.player;
+            bool inputActive=game.RaceTouchActive;
+            Pedals.Refresh(car,inputActive,game.RaceControls.Peek(),Time.unscaledDeltaTime);
+            shiftUpButton.SetEnabled(inputActive);shiftDownButton.SetEnabled(inputActive&&car.transmission.type!=TransmissionType.CVT);
             if (boundCar != car || speedUnit != SharedUnitSettings.Current.speed)
             {
                 boundCar = car; speedUnit = SharedUnitSettings.Current.speed;
@@ -115,7 +135,7 @@ namespace DragLab.Runtime
             Set(warning, faults.Length > 0 ? faults : state.bogging ? "BOGGING" : state.limiter ? "REV LIMITER" : state.slip > .2 ? "WHEELSPIN" : "");
         }
         static void Set(Label label, string text) { if (label.text != text) label.text = text; }
-        void OnDestroy() { if (panel != null) Destroy(panel); }
+        void OnDestroy() { Pedals?.Release(); if (panel != null) Destroy(panel); }
     }
 
     // Presentation configuration, separate from telemetry and mechanical tuning.

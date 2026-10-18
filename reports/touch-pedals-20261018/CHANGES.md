@@ -1,0 +1,26 @@
+# Touch race pedals and Android build — 2026-10-18
+
+Requested checkpoint: add clutch, brake and accelerator to the left of the shifter, with appropriate shapes/press animation and Android touch support. No further HUD instruments or menu migration is advanced.
+
+## Behavior
+
+- Native dashboard shows a left-to-right clutch / brake / accelerator set. Brake/clutch have wide horizontal rubber grooves; the accelerator is narrow and tall. Shaded steel edges, rubber faces and a red press highlight reuse the dashboard palette. Pressed faces depress smoothly and spring back on release. Vector geometry stays crisp at higher resolution.
+- The clutch appears for a friction-clutch manual when Manual launch requires it, or Manual+clutch shifting is selected without clutch assistance. DCT, automatic torque-converter and CVT hardware do not acquire a clutch pedal from an irrelevant driver preference. Manual launch still needs the clutch when shift assistance is on.
+- Hold for full input. Drag a held finger upward to ease that pedal toward zero; lift to release. Separate fingers can hold gas/clutch/brake independently. Capture, cancellation, pause, focus/suspension, menu return and F8 release held contacts. Releasing a touch does not release an independently held keyboard key.
+- The same authoritative race input adapter merges keyboard and touch, without the hidden legacy hit rectangles consuming native touches. Pedals do not bypass launch, clutch, gearbox, ECU, traction, wear or braking rules. Existing raw bench controls remain intact.
+- Shared compact − / + controls inside the existing gear display provide downshift and engage/upshift/restart on touch devices. They feed the existing Q/E behavior and retain the hardware-driven shifter animation. CVT has no discrete downshift. Gas/clutch remain held while another finger shifts.
+- Controls respect right/bottom safe-area insets. High-resolution handhelds get wider pedal hit areas; compact layouts retain clearance from gauges/shifter and move essential status above the pedal set. Pause → Controls explains hold/feather and shifting. No focus highlights or Tab traversal are added.
+
+## Build and verification
+
+The focused Windows player test passes **65 checks / 0 runtime errors** with actual mouse events and independent UI Toolkit touch events. It covers three concurrent pedals, per-finger cancellation, partial clutch input, real manual shift gating, held-key coexistence, release outside, pause/focus/F8 cleanup, no Tab navigation and 960/1280/1920 layout clearance. The pedal gradient path initially exposed a null-gradient runtime error; the renderer now sets gradients only for valid gradient fills, with a cached steel gradient instead of per-frame allocations. The initial settings-visibility fixture was corrected to use the active race driver copy. The isolated full dashboard/pause/results/finish regression passes **220 / 0 runtime errors**, including hardware shift-light visibility, animated gearbox handover, vector/4K layouts, post-finish UI, independent results, pause and recoverable settlement. Its paid third-race refresh measured **32.003 ms** maximum main step and **45.566 ms** maximum frame. A prior timing run overlapped Android compilation and exceeded the existing 50 ms step bound; the isolated rerun uses the same bound and passes. No performance assertions were weakened. The final APK includes this tested renderer. The final Windows runtime hash matches the player used for both passing suites. Signature v2 and 16 KiB ZIP alignment pass; the packaged ARM64 SQLite library matches the tracked plugin after the expected symbol stripping. [Artifact hashes and package checks](build-manifest.txt). Test saves and captures are isolated from the actual player save. Android build support, bundled SDK/NDK/OpenJDK and the existing ARM64 SQLite library are installed. There is no connected Android device/emulator, so device-level input feel and suspend/resume are not claimed as tested.
+
+Reproduce Windows build: `./tools/Invoke-Unity.ps1 BuildPlayerOnly`. Touch probe: `./tools/Test-NativeMenu.ps1 -TouchPedalsOnly -FixtureName touch-pedals-review`. Existing dashboard regression: `-RaceHudOnly`. Android build: `./tools/Invoke-Unity.ps1 BuildAndroid` → `Game/Builds/Android/DragLab.apk` (ARM64, IL2CPP, development/debug-signed). Builds remain local/ignored. The script selects an explicit build target, so the Windows rebuild returns the Editor project to Windows after Android packaging.
+
+## Review gate
+
+Technical checks are separate from user acceptance. Review pedal proportions, press/release feel, feathering and thumb reach on an actual Android device. No device was installed to or modified. Preserve the current legacy/new F8 comparison and stop after this requested checkpoint.
+
+## Repository scope
+
+Unity build-only whitespace/runtime-settings serialization was archived locally and restored after verifying its exact differences. Android IL2CPP/Gradle intermediates are ignored. Pre-existing changes in `reports/maintenance-batch/verification.txt`, `reports/shop-inventory/cart-verification.txt`, `.codex-remote-attachments/`, `Game/Assets/Resources.meta`, `Tests.ps1` and `reports/race-exit-regression/` are preserved and excluded from this checkpoint.

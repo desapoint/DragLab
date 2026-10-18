@@ -26,6 +26,8 @@ namespace DragLab.Runtime
         DragStripView strip;
         EngineAudio engineAudio, opponentAudio;
         readonly RaceInputAdapter controls = new RaceInputAdapter();
+        internal RaceInputAdapter RaceControls => controls;
+        internal bool RaceTouchActive => screen == "Race" && race != null && !paused && InterfaceComparison.IsReplacement(ComparisonRoute);
         readonly InterfaceComparison interfaceComparison = new InterfaceComparison();
         NativeMenuShell nativeMenu;
         internal NativeRaceHud RaceHud { get; private set; }
@@ -302,6 +304,7 @@ namespace DragLab.Runtime
         internal void HandleApplicationInterruption(bool suspend=false)
         {
             if(screen!="Race"||race==null)return;
+            controls.Clear(); RaceHud?.Pedals?.Release();
             if(race.ResultReady){if(suspend||!ResultSettlementPending)SyncRaceWear();}else SetPaused(true);
         }
         void OnApplicationFocus(bool focused) { if (!focused) interfaceComparison.ReleaseShortcut(); if (!focused && !RuntimeVerification.Active) HandleApplicationInterruption(); }

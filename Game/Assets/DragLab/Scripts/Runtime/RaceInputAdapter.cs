@@ -10,6 +10,7 @@ namespace DragLab.Runtime
         public const int GasControl = 0, ClutchControl = 1, DownControl = 2, UpControl = 3, PauseControl = 4, BrakeControl = 5, ControlCount = 6;
         struct Contact { public int control; public float value; }
         readonly Dictionary<int, Contact> contacts = new Dictionary<int, Contact>();
+        readonly Dictionary<int, Contact> nativeContacts = new Dictionary<int, Contact>();
         double keyboardGas, keyboardClutch, keyboardBrake;
         bool launch, up, down, pause, blockPointers;
         public static float Scale(int width, int height) { return Mathf.Max(.65f, Mathf.Min(width / 1100f, height / 700f)); }
@@ -20,7 +21,7 @@ namespace DragLab.Runtime
         }
         public void Clear()
         {
-            contacts.Clear(); launch = up = down = pause = false; keyboardGas = keyboardClutch = keyboardBrake = 0; blockPointers = true;
+            contacts.Clear(); nativeContacts.Clear(); launch = up = down = pause = false; keyboardGas = keyboardClutch = keyboardBrake = 0; blockPointers = true;
         }
         public void Poll(bool pointerControlsVisible = true)
         {
@@ -28,6 +29,7 @@ namespace DragLab.Runtime
                 Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter),
                 Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.UpArrow), Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.DownArrow));
             if (!pointerControlsVisible) { contacts.Clear(); blockPointers = true; return; }
+            nativeContacts.Clear();
             // Ignore the click that entered/resumed a race, without suppressing held keyboard pedals.
             if (blockPointers)
             {
@@ -82,8 +84,21 @@ namespace DragLab.Runtime
                 if (contact.control == ClutchControl) input.clutch = System.Math.Max(input.clutch, contact.value);
                 if (contact.control == BrakeControl) input.brake = System.Math.Max(input.brake, contact.value);
             }
+            foreach (var contact in nativeContacts.Values)
+            {
+                if (contact.control == GasControl) input.throttle = System.Math.Max(input.throttle, contact.value);
+                if (contact.control == ClutchControl) input.clutch = System.Math.Max(input.clutch, contact.value);
+                if (contact.control == BrakeControl) input.brake = System.Math.Max(input.brake, contact.value);
+            }
             return input;
         }
+        internal void NativePedal(int pointer, int control, bool held, float value = 1)
+        {
+            if (!held) { nativeContacts.Remove(pointer); return; }
+            if (control != GasControl && control != ClutchControl && control != BrakeControl) throw new System.ArgumentOutOfRangeException(nameof(control));
+            nativeContacts[pointer] = new Contact { control = control, value = Mathf.Clamp01(value) };
+        }
+        internal void NativeShift(int direction) { if (direction > 0) up = true; else if (direction < 0) down = true; }
         public DriverInput Consume() { var input = Peek(); launch = up = down = false; return input; }
         public bool ConsumePause() { bool value = pause; pause = false; return value; }
     }
