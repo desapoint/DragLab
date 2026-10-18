@@ -563,7 +563,7 @@ namespace DragLab.Domain
             state.engineTemperature = this.tune.coldStart ? 0 : 1;
             shiftPoints = new double[spec.gears.Length];
             for (int gear = 1; gear <= shiftPoints.Length; gear++) shiftPoints[gear - 1] = Math.Min(assistedCeiling, DragMath.ShiftPoint(spec, this.tune, gear));
-            state.rpm = driver.launch == LaunchMode.Manual || engine.twoStep ? spec.idleRpm : this.tune.launchRpm;
+            state.rpm = driver.launch == LaunchMode.Automatic && !engine.twoStep ? this.tune.launchRpm : spec.idleRpm;
             launchClutch = driver.launch == LaunchMode.Manual && transmission.type == TransmissionType.Manual && !driver.clutchAssist;
             autoLaunchClutch = driver.launch != LaunchMode.Manual || driver.clutchAssist;
             PrepareSimulationRules();
@@ -607,7 +607,9 @@ namespace DragLab.Domain
             state.speed = state.acceleration = state.slip = state.transmittedTorqueNm = state.clutchSlipRpm = state.brakeFrictionPowerW = 0;
             state.frontSlip = state.rearSlip = state.frontDriveForceN = state.rearDriveForceN = 0;
             if (input.throttle > 0) stagingPedal = true;
-            bool pedalRevs = driver.launch == LaunchMode.Manual || stagingPedal;
+            // Assisted launch automates the clutch, not the driver's throttle.
+            // Only the automatic driver holds a launch target before pedal input.
+            bool pedalRevs = driver.launch != LaunchMode.Automatic || stagingPedal;
             state.throttle = pedalRevs ? DragMath.Clamp(input.throttle, 0, 1) : 1;
             state.clutch = driver.launch == LaunchMode.Manual ? DragMath.Clamp(input.clutch, 0, 1) : 1;
             EngineBehaviorDynamics.BeginTick(spec, tune, engine, state, state.throttle, true, dt);

@@ -1,0 +1,522 @@
+PASS: aster / Assisted: first displayed state starts at idle.
+PASS: aster / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: aster / Assisted: gas raises RPM before launch.
+PASS: aster / Assisted: released gas returns to idle and keeps the car staged.
+PASS: aster / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: aster / Manual: first displayed state starts at idle.
+PASS: aster / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: aster / Manual: gas raises RPM before launch.
+PASS: aster / Manual: released gas returns to idle and keeps the car staged.
+PASS: aster / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: aster-sport / Assisted: first displayed state starts at idle.
+PASS: aster-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: aster-sport / Assisted: gas raises RPM before launch.
+PASS: aster-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: aster-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: aster-sport / Manual: first displayed state starts at idle.
+PASS: aster-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: aster-sport / Manual: gas raises RPM before launch.
+PASS: aster-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: aster-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: atlas / Assisted: first displayed state starts at idle.
+PASS: atlas / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 904,799675706404/900, gas=0, engineTime=2
+PASS: atlas / Assisted: gas raises RPM before launch.
+PASS: atlas / Assisted: released gas returns to idle and keeps the car staged.
+PASS: atlas / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: atlas / Manual: first displayed state starts at idle.
+PASS: atlas / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 904,799675706404/900, gas=0, engineTime=2
+PASS: atlas / Manual: gas raises RPM before launch.
+PASS: atlas / Manual: released gas returns to idle and keeps the car staged.
+PASS: atlas / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: atlas-sport / Assisted: first displayed state starts at idle.
+PASS: atlas-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 904,799675706404/900, gas=0, engineTime=2
+PASS: atlas-sport / Assisted: gas raises RPM before launch.
+PASS: atlas-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: atlas-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: atlas-sport / Manual: first displayed state starts at idle.
+PASS: atlas-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 904,799675706404/900, gas=0, engineTime=2
+PASS: atlas-sport / Manual: gas raises RPM before launch.
+PASS: atlas-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: atlas-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: boreal / Assisted: first displayed state starts at idle.
+PASS: boreal / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: boreal / Assisted: gas raises RPM before launch.
+PASS: boreal / Assisted: released gas returns to idle and keeps the car staged.
+PASS: boreal / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: boreal / Manual: first displayed state starts at idle.
+PASS: boreal / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: boreal / Manual: gas raises RPM before launch.
+PASS: boreal / Manual: released gas returns to idle and keeps the car staged.
+PASS: boreal / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: boreal-sport / Assisted: first displayed state starts at idle.
+PASS: boreal-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: boreal-sport / Assisted: gas raises RPM before launch.
+PASS: boreal-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: boreal-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: boreal-sport / Manual: first displayed state starts at idle.
+PASS: boreal-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: boreal-sport / Manual: gas raises RPM before launch.
+PASS: boreal-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: boreal-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: cinder / Assisted: first displayed state starts at idle.
+PASS: cinder / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: cinder / Assisted: gas raises RPM before launch.
+PASS: cinder / Assisted: released gas returns to idle and keeps the car staged.
+PASS: cinder / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: cinder / Manual: first displayed state starts at idle.
+PASS: cinder / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: cinder / Manual: gas raises RPM before launch.
+PASS: cinder / Manual: released gas returns to idle and keeps the car staged.
+PASS: cinder / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: cinder-sport / Assisted: first displayed state starts at idle.
+PASS: cinder-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: cinder-sport / Assisted: gas raises RPM before launch.
+PASS: cinder-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: cinder-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: cinder-sport / Manual: first displayed state starts at idle.
+PASS: cinder-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: cinder-sport / Manual: gas raises RPM before launch.
+PASS: cinder-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: cinder-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: city-three / Assisted: first displayed state starts at idle.
+PASS: city-three / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: city-three / Assisted: gas raises RPM before launch.
+PASS: city-three / Assisted: released gas returns to idle and keeps the car staged.
+PASS: city-three / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: city-three / Manual: first displayed state starts at idle.
+PASS: city-three / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: city-three / Manual: gas raises RPM before launch.
+PASS: city-three / Manual: released gas returns to idle and keeps the car staged.
+PASS: city-three / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: comet / Assisted: first displayed state starts at idle.
+PASS: comet / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: comet / Assisted: gas raises RPM before launch.
+PASS: comet / Assisted: released gas returns to idle and keeps the car staged.
+PASS: comet / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: comet / Manual: first displayed state starts at idle.
+PASS: comet / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: comet / Manual: gas raises RPM before launch.
+PASS: comet / Manual: released gas returns to idle and keeps the car staged.
+PASS: comet / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: comet-sport / Assisted: first displayed state starts at idle.
+PASS: comet-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: comet-sport / Assisted: gas raises RPM before launch.
+PASS: comet-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: comet-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: comet-sport / Manual: first displayed state starts at idle.
+PASS: comet-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: comet-sport / Manual: gas raises RPM before launch.
+PASS: comet-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: comet-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: finch / Assisted: first displayed state starts at idle.
+PASS: finch / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: finch / Assisted: gas raises RPM before launch.
+PASS: finch / Assisted: released gas returns to idle and keeps the car staged.
+PASS: finch / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: finch / Manual: first displayed state starts at idle.
+PASS: finch / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: finch / Manual: gas raises RPM before launch.
+PASS: finch / Manual: released gas returns to idle and keeps the car staged.
+PASS: finch / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: finch-sport / Assisted: first displayed state starts at idle.
+PASS: finch-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: finch-sport / Assisted: gas raises RPM before launch.
+PASS: finch-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: finch-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: finch-sport / Manual: first displayed state starts at idle.
+PASS: finch-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: finch-sport / Manual: gas raises RPM before launch.
+PASS: finch-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: finch-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: fjord / Assisted: first displayed state starts at idle.
+PASS: fjord / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 750/750, gas=0, engineTime=2
+PASS: fjord / Assisted: gas raises RPM before launch.
+PASS: fjord / Assisted: released gas returns to idle and keeps the car staged.
+PASS: fjord / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: fjord / Manual: first displayed state starts at idle.
+PASS: fjord / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 750/750, gas=0, engineTime=2
+PASS: fjord / Manual: gas raises RPM before launch.
+PASS: fjord / Manual: released gas returns to idle and keeps the car staged.
+PASS: fjord / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: fjord-sport / Assisted: first displayed state starts at idle.
+PASS: fjord-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 750/750, gas=0, engineTime=2
+PASS: fjord-sport / Assisted: gas raises RPM before launch.
+PASS: fjord-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: fjord-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: fjord-sport / Manual: first displayed state starts at idle.
+PASS: fjord-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 750/750, gas=0, engineTime=2
+PASS: fjord-sport / Manual: gas raises RPM before launch.
+PASS: fjord-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: fjord-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: juniper-club / Assisted: first displayed state starts at idle.
+PASS: juniper-club / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: juniper-club / Assisted: gas raises RPM before launch.
+PASS: juniper-club / Assisted: released gas returns to idle and keeps the car staged.
+PASS: juniper-club / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: juniper-club / Manual: first displayed state starts at idle.
+PASS: juniper-club / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: juniper-club / Manual: gas raises RPM before launch.
+PASS: juniper-club / Manual: released gas returns to idle and keeps the car staged.
+PASS: juniper-club / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: juniper-economy / Assisted: first displayed state starts at idle.
+PASS: juniper-economy / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: juniper-economy / Assisted: gas raises RPM before launch.
+PASS: juniper-economy / Assisted: released gas returns to idle and keeps the car staged.
+PASS: juniper-economy / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: juniper-economy / Manual: first displayed state starts at idle.
+PASS: juniper-economy / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: juniper-economy / Manual: gas raises RPM before launch.
+PASS: juniper-economy / Manual: released gas returns to idle and keeps the car staged.
+PASS: juniper-economy / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: kestrel-track / Assisted: first displayed state starts at idle.
+PASS: kestrel-track / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: kestrel-track / Assisted: gas raises RPM before launch.
+PASS: kestrel-track / Assisted: released gas returns to idle and keeps the car staged.
+PASS: kestrel-track / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: kestrel-track / Manual: first displayed state starts at idle.
+PASS: kestrel-track / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: kestrel-track / Manual: gas raises RPM before launch.
+PASS: kestrel-track / Manual: released gas returns to idle and keeps the car staged.
+PASS: kestrel-track / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: lark / Assisted: first displayed state starts at idle.
+PASS: lark / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: lark / Assisted: gas raises RPM before launch.
+PASS: lark / Assisted: released gas returns to idle and keeps the car staged.
+PASS: lark / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: lark / Manual: first displayed state starts at idle.
+PASS: lark / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: lark / Manual: gas raises RPM before launch.
+PASS: lark / Manual: released gas returns to idle and keeps the car staged.
+PASS: lark / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: lark-sport / Assisted: first displayed state starts at idle.
+PASS: lark-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: lark-sport / Assisted: gas raises RPM before launch.
+PASS: lark-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: lark-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: lark-sport / Manual: first displayed state starts at idle.
+PASS: lark-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: lark-sport / Manual: gas raises RPM before launch.
+PASS: lark-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: lark-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: meridian-sport / Assisted: first displayed state starts at idle.
+PASS: meridian-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: meridian-sport / Assisted: gas raises RPM before launch.
+PASS: meridian-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: meridian-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: meridian-sport / Manual: first displayed state starts at idle.
+PASS: meridian-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: meridian-sport / Manual: gas raises RPM before launch.
+PASS: meridian-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: meridian-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: mistral / Assisted: first displayed state starts at idle.
+PASS: mistral / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: mistral / Assisted: gas raises RPM before launch.
+PASS: mistral / Assisted: released gas returns to idle and keeps the car staged.
+PASS: mistral / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: mistral / Manual: first displayed state starts at idle.
+PASS: mistral / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: mistral / Manual: gas raises RPM before launch.
+PASS: mistral / Manual: released gas returns to idle and keeps the car staged.
+PASS: mistral / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: mistral-sport / Assisted: first displayed state starts at idle.
+PASS: mistral-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: mistral-sport / Assisted: gas raises RPM before launch.
+PASS: mistral-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: mistral-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: mistral-sport / Manual: first displayed state starts at idle.
+PASS: mistral-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: mistral-sport / Manual: gas raises RPM before launch.
+PASS: mistral-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: mistral-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: osprey / Assisted: first displayed state starts at idle.
+PASS: osprey / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: osprey / Assisted: gas raises RPM before launch.
+PASS: osprey / Assisted: released gas returns to idle and keeps the car staged.
+PASS: osprey / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: osprey / Manual: first displayed state starts at idle.
+PASS: osprey / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: osprey / Manual: gas raises RPM before launch.
+PASS: osprey / Manual: released gas returns to idle and keeps the car staged.
+PASS: osprey / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: osprey-sport / Assisted: first displayed state starts at idle.
+PASS: osprey-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: osprey-sport / Assisted: gas raises RPM before launch.
+PASS: osprey-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: osprey-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: osprey-sport / Manual: first displayed state starts at idle.
+PASS: osprey-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: osprey-sport / Manual: gas raises RPM before launch.
+PASS: osprey-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: osprey-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: piper / Assisted: first displayed state starts at idle.
+PASS: piper / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: piper / Assisted: gas raises RPM before launch.
+PASS: piper / Assisted: released gas returns to idle and keeps the car staged.
+PASS: piper / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: piper / Manual: first displayed state starts at idle.
+PASS: piper / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: piper / Manual: gas raises RPM before launch.
+PASS: piper / Manual: released gas returns to idle and keeps the car staged.
+PASS: piper / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: piper-sport / Assisted: first displayed state starts at idle.
+PASS: piper-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: piper-sport / Assisted: gas raises RPM before launch.
+PASS: piper-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: piper-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: piper-sport / Manual: first displayed state starts at idle.
+PASS: piper-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: piper-sport / Manual: gas raises RPM before launch.
+PASS: piper-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: piper-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: rally-sedan / Assisted: first displayed state starts at idle.
+PASS: rally-sedan / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: rally-sedan / Assisted: gas raises RPM before launch.
+PASS: rally-sedan / Assisted: released gas returns to idle and keeps the car staged.
+PASS: rally-sedan / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: rally-sedan / Manual: first displayed state starts at idle.
+PASS: rally-sedan / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: rally-sedan / Manual: gas raises RPM before launch.
+PASS: rally-sedan / Manual: released gas returns to idle and keeps the car staged.
+PASS: rally-sedan / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: reed / Assisted: first displayed state starts at idle.
+PASS: reed / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: reed / Assisted: gas raises RPM before launch.
+PASS: reed / Assisted: released gas returns to idle and keeps the car staged.
+PASS: reed / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: reed / Manual: first displayed state starts at idle.
+PASS: reed / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: reed / Manual: gas raises RPM before launch.
+PASS: reed / Manual: released gas returns to idle and keeps the car staged.
+PASS: reed / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: reed-sport / Assisted: first displayed state starts at idle.
+PASS: reed-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: reed-sport / Assisted: gas raises RPM before launch.
+PASS: reed-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: reed-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: reed-sport / Manual: first displayed state starts at idle.
+PASS: reed-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: reed-sport / Manual: gas raises RPM before launch.
+PASS: reed-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: reed-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: rook / Assisted: first displayed state starts at idle.
+PASS: rook / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: rook / Assisted: gas raises RPM before launch.
+PASS: rook / Assisted: released gas returns to idle and keeps the car staged.
+PASS: rook / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: rook / Manual: first displayed state starts at idle.
+PASS: rook / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: rook / Manual: gas raises RPM before launch.
+PASS: rook / Manual: released gas returns to idle and keeps the car staged.
+PASS: rook / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: rook-sport / Assisted: first displayed state starts at idle.
+PASS: rook-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: rook-sport / Assisted: gas raises RPM before launch.
+PASS: rook-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: rook-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: rook-sport / Manual: first displayed state starts at idle.
+PASS: rook-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: rook-sport / Manual: gas raises RPM before launch.
+PASS: rook-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: rook-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: sable / Assisted: first displayed state starts at idle.
+PASS: sable / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: sable / Assisted: gas raises RPM before launch.
+PASS: sable / Assisted: released gas returns to idle and keeps the car staged.
+PASS: sable / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: sable / Manual: first displayed state starts at idle.
+PASS: sable / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: sable / Manual: gas raises RPM before launch.
+PASS: sable / Manual: released gas returns to idle and keeps the car staged.
+PASS: sable / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: sable-sport / Assisted: first displayed state starts at idle.
+PASS: sable-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: sable-sport / Assisted: gas raises RPM before launch.
+PASS: sable-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: sable-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: sable-sport / Manual: first displayed state starts at idle.
+PASS: sable-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: sable-sport / Manual: gas raises RPM before launch.
+PASS: sable-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: sable-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: solstice / Assisted: first displayed state starts at idle.
+PASS: solstice / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: solstice / Assisted: gas raises RPM before launch.
+PASS: solstice / Assisted: released gas returns to idle and keeps the car staged.
+PASS: solstice / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: solstice / Manual: first displayed state starts at idle.
+PASS: solstice / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: solstice / Manual: gas raises RPM before launch.
+PASS: solstice / Manual: released gas returns to idle and keeps the car staged.
+PASS: solstice / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: solstice-sport / Assisted: first displayed state starts at idle.
+PASS: solstice-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: solstice-sport / Assisted: gas raises RPM before launch.
+PASS: solstice-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: solstice-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: solstice-sport / Manual: first displayed state starts at idle.
+PASS: solstice-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: solstice-sport / Manual: gas raises RPM before launch.
+PASS: solstice-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: solstice-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: sport-coupe / Assisted: first displayed state starts at idle.
+PASS: sport-coupe / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: sport-coupe / Assisted: gas raises RPM before launch.
+PASS: sport-coupe / Assisted: released gas returns to idle and keeps the car staged.
+PASS: sport-coupe / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: sport-coupe / Manual: first displayed state starts at idle.
+PASS: sport-coupe / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: sport-coupe / Manual: gas raises RPM before launch.
+PASS: sport-coupe / Manual: released gas returns to idle and keeps the car staged.
+PASS: sport-coupe / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: sprig-sport / Assisted: first displayed state starts at idle.
+PASS: sprig-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: sprig-sport / Assisted: gas raises RPM before launch.
+PASS: sprig-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: sprig-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: sprig-sport / Manual: first displayed state starts at idle.
+PASS: sprig-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: sprig-sport / Manual: gas raises RPM before launch.
+PASS: sprig-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: sprig-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: starter-hatch / Assisted: first displayed state starts at idle.
+PASS: starter-hatch / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: starter-hatch / Assisted: gas raises RPM before launch.
+PASS: starter-hatch / Assisted: released gas returns to idle and keeps the car staged.
+PASS: starter-hatch / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: starter-hatch / Manual: first displayed state starts at idle.
+PASS: starter-hatch / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: starter-hatch / Manual: gas raises RPM before launch.
+PASS: starter-hatch / Manual: released gas returns to idle and keeps the car staged.
+PASS: starter-hatch / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: super-v8 / Assisted: first displayed state starts at idle.
+PASS: super-v8 / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 904,799675706404/900, gas=0, engineTime=2
+PASS: super-v8 / Assisted: gas raises RPM before launch.
+PASS: super-v8 / Assisted: released gas returns to idle and keeps the car staged.
+PASS: super-v8 / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: super-v8 / Manual: first displayed state starts at idle.
+PASS: super-v8 / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 904,799675706404/900, gas=0, engineTime=2
+PASS: super-v8 / Manual: gas raises RPM before launch.
+PASS: super-v8 / Manual: released gas returns to idle and keeps the car staged.
+PASS: super-v8 / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: swift / Assisted: first displayed state starts at idle.
+PASS: swift / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: swift / Assisted: gas raises RPM before launch.
+PASS: swift / Assisted: released gas returns to idle and keeps the car staged.
+PASS: swift / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: swift / Manual: first displayed state starts at idle.
+PASS: swift / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: swift / Manual: gas raises RPM before launch.
+PASS: swift / Manual: released gas returns to idle and keeps the car staged.
+PASS: swift / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: swift-sport / Assisted: first displayed state starts at idle.
+PASS: swift-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: swift-sport / Assisted: gas raises RPM before launch.
+PASS: swift-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: swift-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: swift-sport / Manual: first displayed state starts at idle.
+PASS: swift-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: swift-sport / Manual: gas raises RPM before launch.
+PASS: swift-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: swift-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: tempest-rs / Assisted: first displayed state starts at idle.
+PASS: tempest-rs / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: tempest-rs / Assisted: gas raises RPM before launch.
+PASS: tempest-rs / Assisted: released gas returns to idle and keeps the car staged.
+PASS: tempest-rs / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: tempest-rs / Manual: first displayed state starts at idle.
+PASS: tempest-rs / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: tempest-rs / Manual: gas raises RPM before launch.
+PASS: tempest-rs / Manual: released gas returns to idle and keeps the car staged.
+PASS: tempest-rs / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: timber-diesel / Assisted: first displayed state starts at idle.
+PASS: timber-diesel / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 750/750, gas=0, engineTime=2
+PASS: timber-diesel / Assisted: gas raises RPM before launch.
+PASS: timber-diesel / Assisted: released gas returns to idle and keeps the car staged.
+PASS: timber-diesel / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: timber-diesel / Manual: first displayed state starts at idle.
+PASS: timber-diesel / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 750/750, gas=0, engineTime=2
+PASS: timber-diesel / Manual: gas raises RPM before launch.
+PASS: timber-diesel / Manual: released gas returns to idle and keeps the car staged.
+PASS: timber-diesel / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: timber-diesel-tow / Assisted: first displayed state starts at idle.
+PASS: timber-diesel-tow / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 750/750, gas=0, engineTime=2
+PASS: timber-diesel-tow / Assisted: gas raises RPM before launch.
+PASS: timber-diesel-tow / Assisted: released gas returns to idle and keeps the car staged.
+PASS: timber-diesel-tow / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: timber-diesel-tow / Manual: first displayed state starts at idle.
+PASS: timber-diesel-tow / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 750/750, gas=0, engineTime=2
+PASS: timber-diesel-tow / Manual: gas raises RPM before launch.
+PASS: timber-diesel-tow / Manual: released gas returns to idle and keeps the car staged.
+PASS: timber-diesel-tow / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: touring-six / Assisted: first displayed state starts at idle.
+PASS: touring-six / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: touring-six / Assisted: gas raises RPM before launch.
+PASS: touring-six / Assisted: released gas returns to idle and keeps the car staged.
+PASS: touring-six / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: touring-six / Manual: first displayed state starts at idle.
+PASS: touring-six / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: touring-six / Manual: gas raises RPM before launch.
+PASS: touring-six / Manual: released gas returns to idle and keeps the car staged.
+PASS: touring-six / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: utility-pickup / Assisted: first displayed state starts at idle.
+PASS: utility-pickup / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 907,064081777754/900, gas=0, engineTime=2
+PASS: utility-pickup / Assisted: gas raises RPM before launch.
+PASS: utility-pickup / Assisted: released gas returns to idle and keeps the car staged.
+PASS: utility-pickup / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: utility-pickup / Manual: first displayed state starts at idle.
+PASS: utility-pickup / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 907,064081777754/900, gas=0, engineTime=2
+PASS: utility-pickup / Manual: gas raises RPM before launch.
+PASS: utility-pickup / Manual: released gas returns to idle and keeps the car staged.
+PASS: utility-pickup / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: v8-muscle / Assisted: first displayed state starts at idle.
+PASS: v8-muscle / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 931,995359717683/900, gas=0, engineTime=2
+PASS: v8-muscle / Assisted: gas raises RPM before launch.
+PASS: v8-muscle / Assisted: released gas returns to idle and keeps the car staged.
+PASS: v8-muscle / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: v8-muscle / Manual: first displayed state starts at idle.
+PASS: v8-muscle / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 931,995359717683/900, gas=0, engineTime=2
+PASS: v8-muscle / Manual: gas raises RPM before launch.
+PASS: v8-muscle / Manual: released gas returns to idle and keeps the car staged.
+PASS: v8-muscle / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: vale / Assisted: first displayed state starts at idle.
+PASS: vale / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: vale / Assisted: gas raises RPM before launch.
+PASS: vale / Assisted: released gas returns to idle and keeps the car staged.
+PASS: vale / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: vale / Manual: first displayed state starts at idle.
+PASS: vale / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: vale / Manual: gas raises RPM before launch.
+PASS: vale / Manual: released gas returns to idle and keeps the car staged.
+PASS: vale / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: vale-sport / Assisted: first displayed state starts at idle.
+PASS: vale-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: vale-sport / Assisted: gas raises RPM before launch.
+PASS: vale-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: vale-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: vale-sport / Manual: first displayed state starts at idle.
+PASS: vale-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: vale-sport / Manual: gas raises RPM before launch.
+PASS: vale-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: vale-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: wren / Assisted: first displayed state starts at idle.
+PASS: wren / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: wren / Assisted: gas raises RPM before launch.
+PASS: wren / Assisted: released gas returns to idle and keeps the car staged.
+PASS: wren / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: wren / Manual: first displayed state starts at idle.
+PASS: wren / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: wren / Manual: gas raises RPM before launch.
+PASS: wren / Manual: released gas returns to idle and keeps the car staged.
+PASS: wren / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: wren-sport / Assisted: first displayed state starts at idle.
+PASS: wren-sport / Assisted: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: wren-sport / Assisted: gas raises RPM before launch.
+PASS: wren-sport / Assisted: released gas returns to idle and keeps the car staged.
+PASS: wren-sport / Assisted: real stalls remain stopped rather than being hidden by the gauge.
+PASS: wren-sport / Manual: first displayed state starts at idle.
+PASS: wren-sport / Manual: untouched countdown ticks the running engine at idle without hidden throttle: 900,803601324156/900, gas=0, engineTime=2
+PASS: wren-sport / Manual: gas raises RPM before launch.
+PASS: wren-sport / Manual: released gas returns to idle and keeps the car staged.
+PASS: wren-sport / Manual: real stalls remain stopped rather than being hidden by the gauge.
+PASS: Automatic driver retains its explicit assisted launch target.
+Checks: 521
