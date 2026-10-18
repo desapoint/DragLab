@@ -1,0 +1,10 @@
+Built 2026-10-18: flick shifter Windows player and matching Android APK.
+Android APK bytes: 57877457
+Android APK SHA256: c025870080120e1694380896a0e46c2de5a8b0d4f12a24dba7e1489ba01e4709
+Windows Assembly-CSharp.dll SHA256: eb8be92b89afeb10f623c6d26061b4a303459fa4402442d3e9a39bc09587c97a
+Windows runtime is unchanged by Android packaging: PASS
+APK ZIP CRC / ARM64-only libraries / Windows SQLite DLL exclusion: PASS
+Packaged SQLite matches the tracked ARM64 plugin after llvm-strip --strip-unneeded: PASS
+All packaged ELF PT_LOAD segments support at least 16 KiB alignment: PASS
+External signature, ZIP alignment, package metadata and device checks: see packaging-verification.txt.
+No connected phone testing or store upload is claimed.

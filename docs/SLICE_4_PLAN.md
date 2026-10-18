@@ -1,5 +1,7 @@
 # Slice 4 — Interface migration, input and platform validation
 
+Requested flick-shifter checkpoint (2026-10-18): replace the native mobile shift buttons with vertical flicks, configurable in Controls with existing Apply/Cancel; make desktop pedal depression more visible under keyboard input. Retain authoritative clutch/gear rules and hardware-specific selector art. Deliver updated Windows and Android builds, then stop for player/device validation. [Decisions and checks](../reports/flick-shifter-20261018/CHANGES.md).
+
 Requested Android access checkpoint (2026-10-18): make existing workflows usable on a phone, including touch alternatives for fine/reset tuning and dyno hover, safe-area/scaled layouts, unfinished-page fallback access, Android Back/background persistence and warm-up controls, then provide an APK. This is one explicitly requested platform increment; it does not authorize redesigning the deferred Business/Data pages or debug benches. [Delivery and phone review gate](../reports/android-mobile-20261018/CHANGES.md).
 
 Approved finish infrastructure checkpoint (2026-10-16): implement staged settlement and background plain-data persistence after explicit user approval, preserving main-thread simulation/assets, durable reward publication, save-failure retry and exit recovery. Delivered with the updated Windows build and targeted/integrated checks; [evidence](../reports/staged-settlement-20261016/CHANGES.md). No later UI control or phase is advanced.

@@ -79,11 +79,11 @@ namespace DragLab.Runtime
         {
             if(contentRect.width<2)return;var p=context.painter2D;float cx=contentRect.width*.5f;
             bool gas=control==RaceInputAdapter.GasControl;float w=gas?40:58,h=gas?100:64;
-            float travel=Depression*12,y=gas?35:69;
+            float travel=Depression*20,y=gas?35:69;
             p.lineCap=LineCap.Round;
             Line(p,new Vector2(cx-5,15),new Vector2(cx+2,y+35+travel),11,new Color(.025f,.03f,.035f));
             Line(p,new Vector2(cx-4,16),new Vector2(cx+3,y+35+travel),4,rim);p.lineCap=LineCap.Butt;
-            var pad=new Rect(cx-w/2,y+travel,w,h*(1-Depression*.13f));
+            var pad=new Rect(cx-w/2,y+travel,w,h*(1-Depression*.2f));
             Plate(p,new Rect(pad.x-3,pad.y+4,pad.width+6,pad.height+4),8,new Color(.008f,.012f,.015f));
             Plate(p,pad,6,Color.white,FillGradient.MakeLinearGradient(steel,new Vector2(0,pad.y),new Vector2(0,pad.yMax),AddressMode.Clamp));
             var rubber=new Rect(pad.x+4,pad.y+4,pad.width-8,pad.height-8);Plate(p,rubber,4,face);

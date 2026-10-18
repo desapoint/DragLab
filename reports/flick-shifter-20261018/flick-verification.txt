@@ -1,0 +1,72 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Dealership Fitted parts sits beside Stats with the same compact ten-point spacing as owned cars
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Fitted values reflect actual member condition and failures instead of a neutral tire wrapper
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Each fitted part has a shared Shop action, available after an owned car is selected
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Desktop retains its existing shift buttons without a flick hitbox
+PASS: Real W presses animate only the accelerator
+PASS: Real W/S/Left Shift animate all three desktop pedals
+PASS: Desktop shift input preserves held throttle and pedal pose
+PASS: Releasing Shift springs back only the clutch pedal
+PASS: Keyboard release restores the pedal faces
+PASS: Mobile has no up/down shift buttons
+PASS: Mobile shifter receives flick gestures without focus navigation
+PASS: Existing preference files default to flick up for upshift
+PASS: Up flick queues upshift with two pedal fingers held
+PASS: Continued movement/release cannot repeat a shift
+PASS: Down flick queues downshift
+PASS: Taps and small movements do not shift
+PASS: Horizontal swipes do not shift
+PASS: Canceled gestures release capture without shifting
+PASS: Extra shifter fingers cannot hijack the captured gesture
+PASS: Pause/focus interruption releases flick and pedal captures
+PASS: Touch target exists and is enabled: settingsButton
+PASS: Touch target exists and is enabled: tabControls
+PASS: Touch target exists and is enabled: touchShiftDirection1
+PASS: Direction choice stays an unapplied draft
+PASS: Touch target exists and is enabled: cancelSettings
+PASS: Cancel discards the proposed direction
+PASS: Touch target exists and is enabled: settingsButton
+PASS: Touch target exists and is enabled: tabControls
+PASS: Touch target exists and is enabled: touchShiftDirection1
+PASS: Touch target exists and is enabled: applySettings
+PASS: Touch target exists and is enabled: dialogApply
+PASS: Failed preference write never publishes reversed controls
+PASS: Direction failure retains recoverable preferences
+PASS: Touch target exists and is enabled: modalClose
+PASS: Touch target exists and is enabled: applySettings
+PASS: Touch target exists and is enabled: dialogApply
+PASS: Confirmed Apply publishes reversed flick direction
+PASS: Reversed controls reload from the separate preferences file
+PASS: Normal driving preference writes preserve touch direction
+PASS: Audio/default preference commits preserve touch direction /
+PASS: Control direction changes neither progression nor captured simulation driver fields
+PASS: Touch target exists and is enabled: cancelSettings
+PASS: Reversed down flick queues upshift
+PASS: Flick uses the real clutch-gated transmission shift
+PASS: Reversed up flick cannot bypass the clutch requirement
+PASS: CVT has no downshift from a reversed up flick
+PASS: CVT retains its existing Drive/restart input through a flick
+PASS: F8 releases an in-progress flick
+Checks: 70 / runtime errors: 0

@@ -15,7 +15,7 @@ namespace DragLab.Runtime
         UnitPreferences draftUnits, baselineUnits;
         float draftMaster, draftOpponent, baselineMaster, baselineOpponent;
         int draftAi, baselineAi;
-        bool conflicted;
+        bool conflicted, draftReverseTouchShifting, baselineReverseTouchShifting;
         float nextPreferenceCheck;
         readonly List<SwitchSurface> switchSurfaces = new List<SwitchSurface>();
         readonly List<Action> updateControls = new List<Action>();
@@ -60,6 +60,7 @@ namespace DragLab.Runtime
             draftUnits = JsonUtility.FromJson<UnitPreferences>(JsonUtility.ToJson(baselineUnits));
             baselineMaster = draftMaster = SharedAudioSettings.MasterVolume;
             baselineOpponent = draftOpponent = SharedAudioSettings.OpponentVolume;
+            baselineReverseTouchShifting=draftReverseTouchShifting=DrivingPreferences.ReverseTouchShifting;
             baselineAi = draftAi = game.Profile.difficulty; conflicted = false;
         }
         void SyncSettingsEntry(string route)
@@ -80,6 +81,7 @@ namespace DragLab.Runtime
             changed |= MergeValue(ref baselineMaster, ref draftMaster, SharedAudioSettings.MasterVolume);
             changed |= MergeValue(ref baselineOpponent, ref draftOpponent, SharedAudioSettings.OpponentVolume);
             changed |= MergeValue(ref baselineAi, ref draftAi, game.Profile.difficulty);
+            changed |= MergeValue(ref baselineReverseTouchShifting, ref draftReverseTouchShifting, DrivingPreferences.ReverseTouchShifting);
             if (changed) UpdateControls();
         }
         bool MergeField(FieldInfo field, object baseline, object draft, object current)
@@ -134,6 +136,7 @@ namespace DragLab.Runtime
             foreach (var field in typeof(DriverSettings).GetFields())
                 if (!Equals(field.GetValue(baselineDriver), field.GetValue(draftDriver))) changes.Add((settingLabels.TryGetValue(field.Name, out var label) ? label : field.Name) + ": " + (field.Name=="optimalThermals"?Display(!baselineDriver.optimalThermals):Display(field.GetValue(baselineDriver))) + " → " + (field.Name=="optimalThermals"?Display(!draftDriver.optimalThermals):Display(field.GetValue(draftDriver))));
             if (baselineAi != draftAi) changes.Add("Opponent: " + new[] { "Easy", "Normal", "Hard" }[baselineAi] + " → " + new[] { "Easy", "Normal", "Hard" }[draftAi]);
+            if(baselineReverseTouchShifting!=draftReverseTouchShifting)changes.Add("Touch shifting: "+(baselineReverseTouchShifting?"Down":"Up")+" to upshift → "+(draftReverseTouchShifting?"Down":"Up")+" to upshift");
             if (baselineMaster != draftMaster) changes.Add("Master: " + baselineMaster.ToString("P0") + " → " + draftMaster.ToString("P0"));
             if (baselineOpponent != draftOpponent) changes.Add("Opponent volume: " + baselineOpponent.ToString("P0") + " → " + draftOpponent.ToString("P0"));
             foreach (var field in typeof(UnitPreferences).GetFields()) if (!Equals(field.GetValue(baselineUnits), field.GetValue(draftUnits))) changes.Add(field.Name + ": " + Display(field.GetValue(baselineUnits)) + " → " + Display(field.GetValue(draftUnits)));
@@ -158,7 +161,7 @@ namespace DragLab.Runtime
                 ReconcileApplied();
                 if (conflicted) { CloseDialog(); UpdateControls(); return; }
                 if (summary != string.Join("\n", Changes())) { CloseDialog(); ConfirmApply(destination); return; }
-                if (!game.ApplyNativeSettings(draftDriver, draftAi, draftUnits, draftMaster, draftOpponent, out var error))
+                if (!game.ApplyNativeSettings(draftDriver, draftAi, draftUnits, draftMaster, draftOpponent, out var error, draftReverseTouchShifting))
                 { root.Q<ScrollView>("modalContent").Add(new Label(error) { name = "settingsError" }); return; }
                 CloseDialog(); ReadApplied(); UpdateControls(); if (destination != null) game.QueueNativeNavigation(destination,true);
             }, true) });
@@ -292,9 +295,10 @@ namespace DragLab.Runtime
         }
         void BuildControls()
         {
+            Choice(3,"touchShiftDirection","Touch shifting",new[]{"Up → upshift","Down → upshift"},()=>draftReverseTouchShifting?1:0,i=>draftReverseTouchShifting=i==1,"Flick vertically on the shifter. The opposite direction shifts down. Apply to save.");
             if(NativeMobile.Touch){
                 Row(3,"touchPedals","Pedals").Add(new Label("Hold · slide up to ease off"));
-                Row(3,"touchShifts","Shifting").Add(new Label("− / + beside gear"));
+                Row(3,"touchShifts","Shifting").Add(new Label("Flick the shifter ↑ / ↓"));
                 Row(3,"touchTuning","Tuning").Add(new Label("− / + precise steps · ↺ reset · tap value to type"));
             }
             foreach (var binding in new[] { new[] { "Throttle", "W / Space" }, new[] { "Brake", "S" }, new[] { "Clutch", "Left Shift" }, new[] { "Shift up / engage first", "E" }, new[] { "Shift down", "Q" }, new[] { "Launch / restart", "Enter" }, new[] { "Pause", "Esc" }, new[] { "Return to garage", "G · paused / finished" }, new[] { "Repeat race", "R · finished" }, new[] { "Compare interface", "F8" } })

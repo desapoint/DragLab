@@ -1,0 +1,19 @@
+Flick: 70 checks / 0 runtime errors
+Fixture: reports/player-fixtures/flick-release-20261018
+Verification SHA256: 2eed091d521897e675613872a185e085891d21e4b45159a356ed691ec3dff265
+
+Mobile: 107 checks / 0 runtime errors
+Fixture: reports/player-fixtures/flick-release-mobile-20261018
+Verification SHA256: 22a5b79e053a3378c13333a0f968601c53a21f04de89fbaf9ff256d6e8c5a317
+
+Pedals: 65 checks / 0 runtime errors
+Fixture: reports/player-fixtures/flick-pedals-final-20261018
+Verification SHA256: 2ace41a99ae26231b24f8d256bfe7a66354dc9c643a2a43c065e29359e2ebb87
+
+Settings: 148 checks / 0 runtime errors
+Fixture: reports/player-fixtures/flick-settings-final-20261018
+Verification SHA256: 745349774024255caf70c4d968453fa9536c3eeb3341dd143d663fbf701dceb0
+
+The suites overlap. Flick/mobile use the final player and hint placement.
+Pedal/settings suites use identical runtime code from the preceding hint-only layout build.
+Raw captures and logs remain ignored; full flick results are versioned separately.

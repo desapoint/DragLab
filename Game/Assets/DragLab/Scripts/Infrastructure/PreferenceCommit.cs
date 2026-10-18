@@ -41,24 +41,25 @@ namespace DragLab.Infrastructure
                 var journal = JsonUtility.FromJson<Journal>(File.ReadAllText(JournalPath, Encoding.UTF8));
                 if (journal == null) throw new InvalidDataException("Invalid settings recovery record.");
                 if (!journal.committed) Undo(journal);
-                File.Delete(JournalPath); return true;
+                File.Delete(JournalPath); DrivingPreferences.ReloadControls(); return true;
             }
             catch (Exception e) { error = "Settings recovery failed: " + e.Message; return false; }
         }
-        internal static bool TryApply(PlayerProfile candidate, UnitPreferences units, float master, float opponent, out string error)
+        internal static bool TryApply(PlayerProfile candidate, UnitPreferences units, float master, float opponent, out string error, bool? reverseTouchShifting=null)
         {
             error = null;
             if (!Recover(out error)) return false;
             RaceCheckpointStore.Drain();
             var paths = Paths; var journal = new Journal { entries = new Entry[paths.Length] };
-            bool prepared = false;
+            bool prepared = false;string appliedDriving=null;
             try
             {
                 if (float.IsNaN(master) || float.IsInfinity(master) || float.IsNaN(opponent) || float.IsInfinity(opponent) || master < 0 || master > 1 || opponent < 0 || opponent > 1)
                     throw new InvalidDataException("Volume must be between 0 and 100%.");
                 for (int i = 0; i < paths.Length; i++) journal.entries[i] = new Entry { exists = File.Exists(paths[i]), text = File.Exists(paths[i]) ? File.ReadAllText(paths[i], Encoding.UTF8) : null };
                 Atomic(JournalPath, JsonUtility.ToJson(journal)); prepared = true;
-                Atomic(DrivingPreferences.FilePath,DrivingPreferences.Encode(candidate.driving,candidate.difficulty));
+                appliedDriving=DrivingPreferences.Encode(candidate.driving,candidate.difficulty,reverseTouchShifting);
+                Atomic(DrivingPreferences.FilePath,appliedDriving);
                 Atomic(SharedAudioSettings.FilePath, JsonUtility.ToJson(new Audio { masterVolume = master, opponentVolume = opponent }, true));
                 Atomic(SharedUnitSettings.FilePath, JsonUtility.ToJson(units, true));
                 // Settings never serialize or commit progression/database state.
@@ -73,7 +74,7 @@ namespace DragLab.Infrastructure
             // Once the durable marker is written, cleanup failure cannot turn a
             // successfully committed change into an apparent failure.
             try { File.Delete(JournalPath); } catch (Exception) { }
-            SharedAudioSettings.Reload(); SharedUnitSettings.Reload(); return true;
+            DrivingPreferences.PublishControls(appliedDriving); SharedAudioSettings.Reload(); SharedUnitSettings.Reload(); return true;
         }
     }
 }

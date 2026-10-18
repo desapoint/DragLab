@@ -214,7 +214,7 @@ namespace DragLab.Runtime
             PlaceRaceCars();
             screen = "Race";
             accumulator = 0; awarded = false; paused = false; resultScroll = Vector2.zero;
-            RaceHud?.Pedals?.Release(); controls.Clear(); engineAudio.Silence();
+            RaceHud?.ReleaseInput(); controls.Clear(); engineAudio.Silence();
             engineAudio.Configure(race.player.spec, race.player.tune);
             opponentAudio.Configure(race.opponent.spec, race.opponent.tune);
             strip.Render(race);
@@ -308,7 +308,7 @@ namespace DragLab.Runtime
         internal void HandleApplicationInterruption(bool suspend=false)
         {
             if(screen!="Race"||race==null)return;
-            controls.Clear(); RaceHud?.Pedals?.Release();
+            controls.Clear(); RaceHud?.ReleaseInput();
             if(race.ResultReady){if(suspend||!ResultSettlementPending)SyncRaceWear();}else SetPaused(true);
         }
         void OnApplicationFocus(bool focused) { if (!focused) interfaceComparison.ReleaseShortcut(); if (!focused && !RuntimeVerification.Active) HandleApplicationInterruption(); }

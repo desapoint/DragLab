@@ -64,3 +64,7 @@
 
 .touch-ui.compact .analog-gauge { width: 160px; height: 160px; }
 .touch-ui.compact .rpm-gauge { width: 180px; height: 180px; }
+
+.race-shift-flick { position: absolute; left: 0; right: 0; top: 0; bottom: 0; }
+.race-flick-hint { position: absolute; right: 6px; top: 50%; width: 20px; height: 24px; margin: 0; margin-top: -12px; }
+.touch-ui .race-shifter .shifter-type { left: 0; right: 26px; }

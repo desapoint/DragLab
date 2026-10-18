@@ -74,7 +74,7 @@ namespace DragLab.Runtime
         {
             racePausePage="controls";
             OpenDialog("Controls",null,new[]{new DialogAction("Back",CloseDialog)},()=>racePausePage=null,content=>{
-                foreach(var binding in new[]{new[]{"Touch pedals","Hold · slide up to ease off"},new[]{"Touch shifting","− / + beside gear"},new[]{"Throttle","W / Space"},new[]{"Brake","S"},new[]{"Clutch","Left Shift"},new[]{"Engage / shift up","E / Up"},new[]{"Shift down","Q / Down"},new[]{"Launch / restart / ready","Enter"},new[]{"Pause","Esc"},new[]{"Compare interface","F8 · while driving"}})
+                foreach(var binding in new[]{new[]{"Touch pedals","Hold · slide up to ease off"},new[]{"Touch shifting",DrivingPreferences.ReverseTouchShifting?"↓ upshift · ↑ downshift":"↑ upshift · ↓ downshift"},new[]{"Throttle","W / Space"},new[]{"Brake","S"},new[]{"Clutch","Left Shift"},new[]{"Engage / shift up","E / Up"},new[]{"Shift down","Q / Down"},new[]{"Launch / restart / ready","Enter"},new[]{"Pause","Esc"},new[]{"Compare interface","F8 · while driving"}})
                 {
                     var row=new VisualElement();row.AddToClassList("setting-row");var caption=new VisualElement();caption.AddToClassList("setting-caption");caption.Add(new Label(binding[0]));row.Add(caption);var key=new Label(binding[1]);key.AddToClassList("setting-control");row.Add(key);content.Add(row);
                 }
