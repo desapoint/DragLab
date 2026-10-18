@@ -1,0 +1,32 @@
+[
+  {
+    "file": "01-original-preview.png",
+    "sha256": "940e6368b60345b16bcc79347b137d28d62318fadcbe722c7cfd6be3da6aae6e",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "transparentPixels": 536150
+  },
+  {
+    "file": "02-cel-shaded-preview.png",
+    "sha256": "d18bb7b01070a79bed97b7d4b9aa0f065fcf1f0c5005e2c28c7feb0753df5cf2",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "transparentPixels": 489113
+  },
+  {
+    "file": "03-body-only-preview.png",
+    "sha256": "5a73120b02ed989c7b005d2836ad7a2e2088a5cd8fb5414cd31d8ff4f28c0ff0",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "transparentPixels": 655976
+  }
+]
