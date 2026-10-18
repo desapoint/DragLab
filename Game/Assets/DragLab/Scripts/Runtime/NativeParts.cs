@@ -18,7 +18,13 @@ namespace DragLab.Runtime
         Button partsFilter,partsSort,partsCart;
         NativePartSection partsSection;
         bool partsPlanned;
-        string partsStateKey,partsDetailId,partsOrder;
+        string partsStateKey,partsDetailId;
+        List<NativePartEntry> partMatches=new List<NativePartEntry>();
+        VisualElement partsBefore,partsAfter;
+        int partWindowFirst=-1,partWindowLast=-1;
+        const float partRowHeight=246;
+        bool renderingPartWindow;
+        internal int PartWindowFirst=>partWindowFirst;
         PlayerProfile partsProfile;
         Vector2 partsReturnScroll;
         NativePartBrowser partsBrowser;
@@ -66,6 +72,8 @@ namespace DragLab.Runtime
             partsReference=new Label{name="partsReference"};partsReference.AddToClassList("tuning-readout");partsPage.Add(partsReference);
             partsScroll=new ScrollView{name="partsScroll",horizontalScrollerVisibility=ScrollerVisibility.Hidden};partsScroll.AddToClassList("owned-cars-scroll");partsPage.Add(partsScroll);
             partsGrid=new VisualElement{name="partsGrid"};partsGrid.AddToClassList("owned-cars-grid");partsScroll.Add(partsGrid);
+            partsBefore=new VisualElement{name="partsWindowBefore",pickingMode=PickingMode.Ignore};partsAfter=new VisualElement{name="partsWindowAfter",pickingMode=PickingMode.Ignore};
+            foreach(var spacer in new[]{partsBefore,partsAfter}){spacer.style.width=Length.Percent(100);spacer.style.flexShrink=0;}
             partsEmpty=new Label{name="partsEmpty"};partsEmpty.AddToClassList("car-empty");partsScroll.Add(partsEmpty);
             partsDetail=new VisualElement{name="partsDetail"};partsDetail.AddToClassList("car-details-page");partsDetail.AddToClassList("hidden");partsPage.Add(partsDetail);
             partsDetailScroll=new ScrollView{name="partsDetailScroll",horizontalScrollerVisibility=ScrollerVisibility.Hidden};partsDetailScroll.AddToClassList("car-details-scroll");partsDetail.Add(partsDetailScroll);
@@ -80,26 +88,60 @@ namespace DragLab.Runtime
         }
         void RefreshParts(string route)
         {
-            partsPage.EnableInClassList("hidden",route!="Parts"||cartPageOpen||enginePageOpen);if(route!="Parts"||cartPageOpen||enginePageOpen)return;
+            partsPage.EnableInClassList("hidden",route!="Parts"||cartPageOpen||enginePageOpen);if(route!="Parts"||cartPageOpen||enginePageOpen){ReleasePartCards();return;}
             var p=game.Profile;game.PrepareNativeCart();var car=p.SelectedCar;
             root.Q<Label>("partsCarName").text=car==null?"No car":VehicleCollection.DisplayName(p.catalog,car);
             partsCart.Q<Label>().text="Cart · "+game.CartCount;partsCart.SetEnabled(car!=null);
             string key=p.revision+"/"+car?.instanceId+"/"+game.PartsPage+"/"+partsPlanned+"/"+JsonUtility.ToJson(SharedUnitSettings.Current)+"/"+JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()});
             if(partsProfile!=p||partsStateKey!=key){partsProfile=p;partsStateKey=key;partsBrowser=new NativePartBrowser(p,game.CartLines,partsPlanned,game.PartsPage,game.NativeUsedPrice,game.NativeSalePrice,partPreviewCache);PartBrowserBuildCount++;RenderPartGrid();if(partsDetailId!=null)OpenPartDetail(partsDetailId,false);}
             if(partsDetailId==null&&!ModalOpen&&PartComparisonPending){var e=partPending[partPendingIndex++];partsBrowser.Evaluate(e);UpdatePartCard(e);if(!PartComparisonPending)ApplyPartQuery();}
+            if(partsDetailId==null&&!PartComparisonPending)RenderPartWindow();
             partsReference.text=(partsPlanned?"Planned build":"Current build")+(partsBrowser.PlanError==null?"":" · "+partsBrowser.PlanError);
             for(int i=0;i<5;i++)root.Q<Button>("partsTab"+i).EnableInClassList("selected",i==(int)partsSection);
             foreach(var b in partsPage.Q(className:"parts-sources").Children().OfType<Button>())b.EnableInClassList("selected",b.name=="partsSource:"+game.PartsPage);
         }
         void RenderPartGrid()
         {
-            if(partsBrowser==null)return;foreach(var surface in partGridSurfaces)surfaces.Remove(surface);partGridSurfaces.Clear();partsGrid.Clear();partCardLabels.Clear();partCards.Clear();partsOrder=null;partsSearch.SetValueWithoutNotify(PartsQuery.Search);
+            if(partsBrowser==null)return;ReleasePartCards();partsSearch.SetValueWithoutNotify(PartsQuery.Search);
             ShowPartsBrowsing(partsDetailId==null);partsScroll.EnableInClassList("hidden",partsDetailId!=null);partsDetail.EnableInClassList("hidden",partsDetailId==null);ApplyPartQuery();ExcludeTabTraversal();
         }
         void CreatePartCard(NativePartEntry e)
         {
             string id=e.Id;var card=new Button(()=>OpenPartDetail(id)){name="partCard:"+id,focusable=false,tabIndex=-1,tooltip=e.Definition.name};card.AddToClassList("owned-car-card");card.AddToClassList("part-card");card.AddToClassList("clickable-panel");partsGrid.Add(card);AddSurface(card,RacingSurface.Kind.Panel);partGridSurfaces.Add(card.Q<RacingSurface>());partCards[id]=card;PartCardBuildCount++;
             var title=new Label(e.DisplayName??e.Definition.name){enableRichText=false,pickingMode=PickingMode.Ignore};title.AddToClassList("car-card-title");card.Add(title);var labels=new Label[8];var specifications=new VisualElement();specifications.AddToClassList("part-card-specifications");for(int i=0;i<labels.Length;i++){labels[i]=new Label{enableRichText=false,pickingMode=PickingMode.Ignore};labels[i].AddToClassList(i==0?"car-condition":"part-card-fact");if(i==1)card.Add(specifications);if(i>=1&&i<=4)specifications.Add(labels[i]);else card.Add(labels[i]);}partCardLabels[id]=labels;UpdatePartCard(e);
+        }
+        void ReleasePartCards()
+        {
+            if(partsGrid==null)return;
+            foreach(var surface in partGridSurfaces)surfaces.Remove(surface);
+            partGridSurfaces.Clear();partsGrid.Clear();partCardLabels.Clear();partCards.Clear();partWindowFirst=partWindowLast=-1;
+        }
+        void RenderPartWindow(bool force=false)
+        {
+            if(renderingPartWindow||partsGrid==null||partMatches==null||!Visible||partsPage.ClassListContains("hidden")||partsScroll.ClassListContains("hidden"))return;
+            var window=NativeCardWindow.Calculate(partMatches.Count,partsScroll.scrollOffset.y,partsScroll.contentViewport.layout.height,partRowHeight);
+            if(!force&&partWindowFirst==window.First&&partWindowLast==window.Last)return;
+            renderingPartWindow=true;
+            try{
+                var wanted=new HashSet<string>();for(int i=window.First;i<window.Last;i++)wanted.Add(partMatches[i].Id);
+                foreach(string id in partCards.Keys.Where(id=>!wanted.Contains(id)).ToArray()){
+                    var surface=partCards[id].Q<RacingSurface>();surfaces.Remove(surface);partGridSurfaces.Remove(surface);partCards.Remove(id);partCardLabels.Remove(id);
+                }
+                partsGrid.Clear();partsBefore.style.height=window.Before;partsAfter.style.height=window.After;
+                if(partMatches.Count>0){
+                    partsGrid.Add(partsBefore);
+                    for(int i=window.First;i<window.Last;i++){var entry=partMatches[i];if(partCards.TryGetValue(entry.Id,out var card)){partsGrid.Add(card);UpdatePartCard(entry);}else CreatePartCard(entry);}
+                    partsGrid.Add(partsAfter);
+                }
+                partWindowFirst=window.First;partWindowLast=window.Last;
+                ExcludeTabTraversal();
+            }finally{renderingPartWindow=false;}
+        }
+        internal Button ScrollToPart(string id)
+        {
+            int index=partMatches.FindIndex(e=>e.Id==id);if(index<0)return null;
+            partsScroll.scrollOffset=new Vector2(0,index/2*partRowHeight);RenderPartWindow(true);
+            return partCards.TryGetValue(id,out var card)?card:null;
         }
         string PartDelta(NativePartEntry e,int metric)
         {if(!e.Change[metric].HasValue)return e.Ready?"—":"…";double value=e.Change[metric].Value;if(metric==1||metric==4)value=DisplayUnits.Torque(value,SharedUnitSettings.Current.torque);return (value>0?"+":"")+value.ToString(metric==3?"0.#":"0.##")+" "+(metric==0?"HP":metric==1||metric==4?SharedUnitSettings.TorqueLabel:metric==2?"kg":metric==3?"pp":metric==5?"RPM":"W/°C");}
@@ -131,10 +173,7 @@ namespace DragLab.Runtime
             partsGrid.EnableInClassList("hidden",PartComparisonPending);
             if(PartComparisonPending){partsCount.text="… / "+list.Count;partsEmpty.text="Calculating comparison…";partsEmpty.RemoveFromClassList("hidden");return;}
             var matching=list.Where(e=>PartsQuery.Matches(e,game.Profile.cash)).ToList();matching.Sort(PartsQuery.Compare);
-            foreach(var card in partCards.Values)card.AddToClassList("hidden");
-            string order=PartsQuery.Sort+"/"+PartsQuery.Descending+(PartsQuery.RequiresChanges?"/"+string.Join("/",matching.Select(e=>e.Id)):"");bool reorder=partsOrder!=order;partsOrder=order;VisualElement previous=null;
-            foreach(var e in matching){bool created=!partCards.TryGetValue(e.Id,out var card);if(created){CreatePartCard(e);card=partCards[e.Id];}card.RemoveFromClassList("hidden");
-                if(reorder||created){int target=previous==null?0:partsGrid.IndexOf(previous)+1;int current=partsGrid.IndexOf(card);if(current!=target){if(current<target)target--;card.RemoveFromHierarchy();partsGrid.Insert(Math.Min(target,partsGrid.childCount),card);}}previous=card;}
+            partMatches=matching;RenderPartWindow(true);
             partsCount.text=matching.Count+" / "+list.Count;partsEmpty.text=game.Profile.SelectedCar==null?"Select a car in Garage.":"No matching parts";partsEmpty.EnableInClassList("hidden",matching.Count>0);partsSort.Q<Label>().text=PartsQuery.Sort+(PartsQuery.Descending?" ↓":" ↑");
 
         }

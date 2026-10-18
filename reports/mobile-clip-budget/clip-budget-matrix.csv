@@ -1,0 +1,12 @@
+layout,category,attached_cards,owned_clip_ids,matching_products,total_products,result
+baseline,Engine,2226,8191,2226,2226,expected allocator exhaustion
+desktop,Engine,8,509,2226,2226,PASS
+desktop,Induction,8,470,959,959,PASS
+desktop,Drivetrain,8,484,2316,2316,PASS
+desktop,Wheels and brakes,8,471,439,439,PASS
+desktop,Body and chassis,8,470,316,316,PASS
+touch,Engine,6,488,2226,2226,PASS
+touch,Induction,6,449,959,959,PASS
+touch,Drivetrain,6,463,2316,2316,PASS
+touch,Wheels and brakes,6,450,439,439,PASS
+touch,Body and chassis,6,449,316,316,PASS

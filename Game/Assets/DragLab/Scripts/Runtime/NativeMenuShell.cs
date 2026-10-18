@@ -134,7 +134,7 @@ namespace DragLab.Runtime
             SyncSettingsEntry(route);
             bool show = Supports(route) && InterfaceComparison.IsReplacement(route);
             root.EnableInClassList("hidden", !show);
-            if (!show) return;
+            if (!show) { ReleasePartCards(); return; }
             FramePacingProbe.Phase="menu/"+route;
             int width = panel.targetTexture == null ? Screen.width : panel.targetTexture.width;
             int height = panel.targetTexture == null ? Screen.height : panel.targetTexture.height;

@@ -9,6 +9,13 @@ namespace DragLab.Editor
 {
     public static class NativeShopCacheVerification
     {
+        public static void CardWindows()
+        {
+            int checks=NativeShopDomainChecks.CardWindows();
+            string folder=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/mobile-clip-budget"));Directory.CreateDirectory(folder);
+            File.WriteAllText(Path.Combine(folder,"layout-verification.txt"),"PASS: "+checks+" count/viewport/offset cases; bounded rows, exact full scroll extent, odd counts and large offsets.\n",new UTF8Encoding(false));
+            Debug.Log("Card window checks passed: "+checks);
+        }
         public static void UnitPreviews()
         {
             var folder=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/individual-part-preview"));Directory.CreateDirectory(folder);

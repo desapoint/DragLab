@@ -1,0 +1,10 @@
+Built 2026-10-18: bounded UI clipping fix Windows player and matching Android APK.
+Android APK bytes: 87257814
+Android APK SHA256: d75847c13527c9dc5f63143492140a2dfd3402772a8404364afa61179af53f36
+Windows Assembly-CSharp.dll SHA256: e21e902defe478f04544f19e0c3ff48f4a924213d18318c3adb21cb6effd2531
+Windows runtime is unchanged by Android packaging: PASS
+APK ZIP CRC / ARM64-only libraries / Windows SQLite DLL exclusion: PASS
+Packaged SQLite matches the tracked ARM64 plugin after llvm-strip --strip-unneeded: PASS
+All packaged ELF PT_LOAD segments support at least 16 KiB alignment: PASS
+External signature, ZIP alignment, package metadata and device checks: see packaging-verification.txt.
+No connected phone testing or store upload is claimed.

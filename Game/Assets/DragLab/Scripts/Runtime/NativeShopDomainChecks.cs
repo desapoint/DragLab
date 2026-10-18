@@ -12,6 +12,18 @@ namespace DragLab.Runtime
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
     public static class NativeShopDomainChecks
     {
+        public static int CardWindows()
+        {
+            int checks=0;
+            foreach(int count in new[]{0,1,2,3,7,2226,10000})foreach(float height in new[]{0f,160f,340f,720f,1080f})foreach(float offset in new[]{0f,1f,246f,247f,12000f,10000000f}){
+                var window=NativeCardWindow.Calculate(count,offset,height,246);
+                if(window.First<0||window.Last<window.First||window.Last>count||window.First%2!=0||window.Before<0||window.After<0||window.Last-window.First>2*(Mathf.CeilToInt(Mathf.Max(246,height)/246)+4))throw new Exception("Unbounded or invalid card window");
+                float total=(count+1)/2*246;
+                if(Mathf.Abs(window.Before+((window.Last-window.First+1)/2)*246+window.After-total)>.01f)throw new Exception("Card window loses scroll extent");
+                checks++;
+            }
+            return checks;
+        }
         public static void UnitPreviews(VehicleDefinition[] vehicles,Action<bool,string> check)
         {
             var catalog=new MechanicalCatalog(vehicles.Select(v=>v.spec));

@@ -98,6 +98,7 @@ namespace DragLab.Runtime
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-shine-only-verify")>=0){yield return AngledShineChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-mobile-only-verify")>=0){yield return MobileAccessChecks(input);yield break;}
                 if(game.Profile.firstPurchasePending)yield return StarterPurchaseChecks(input);
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-clip-budget-only-verify")>=0){yield return ClipBudgetChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-finish-exit-only-verify")>=0){yield return EarlyFinishExitChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-tire-swap-only-verify")>=0){yield return TireSwapChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-owned-fitted-only-verify")>=0){yield return OwnedFittedPartsChecks(input);yield break;}
