@@ -1,0 +1,5 @@
+Full packaged dashboard/pause/results/finish regression
+MEASURE: retry changed=True / phase=Countdown / visible=True / note=Exported: E:\Coding adventures\Proper racing game\reports\player-fixtures\mobile-desktop-hud-verified-20261018\last-run.csv
+MEASURE: finish practice / max main step ms 14,611 / max stage settlement/normalize / max frame ms 20,811 / max camera step 0,041 / held-write frames 73
+MEASURE: finish paid refresh / max main step ms 36,635 / max stage parts/layout and selection / max frame ms 42,518 / max camera step 0,053 / held-write frames 73
+Checks: 220 / runtime errors: 0

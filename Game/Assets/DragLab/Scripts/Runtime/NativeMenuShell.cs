@@ -25,7 +25,7 @@ namespace DragLab.Runtime
         internal int Category => category;
         internal bool Visible => root != null && !root.ClassListContains("hidden");
         internal static bool Supports(string route) => Array.IndexOf(routes, route) >= 0 || route == "Settings";
-        internal static float DisplayScale(int width, int height) => Mathf.Max(1, Mathf.Min(width / 1920f, height / 1080f));
+        internal static float DisplayScale(int width, int height) => NativeMobile.Scale(width,height);
 
         internal void Initialize(PrototypeGame owner)
         {
@@ -92,6 +92,7 @@ namespace DragLab.Runtime
             InitializeNativeCart();
             InitializeNativeEngines();
             InitializeSettings();
+            InitializeTouchMenus();
             ExcludeTabTraversal();
         }
 
@@ -118,7 +119,7 @@ namespace DragLab.Runtime
         {
             using(FramePacingProbe.Measure(4)){
             Refresh();
-            if (!game.ResetRequired && Visible && !game.NativeRacePause && Input.GetKeyDown(KeyCode.Escape)) { if (ModalOpen) CloseDialog(); else if(game.ScreenName=="Tuning"&&setupLibraryOpen) BackFromSetupLibrary(); else if (game.ScreenName=="Parts" && cartPageOpen) BackFromNativeCart(); else if (game.ScreenName=="Parts" && partsDetailId!=null) BackToParts(); else if (DealerDetailsOpen) BackToDealer(); else if (DisposalOpen) BackFromDisposal(); else if (OwnedDetailsOpen) BackToOwnedCars(); }
+            if (!NativeMobile.Touch && !game.ResetRequired && Visible && !game.NativeRacePause && Input.GetKeyDown(KeyCode.Escape)) { if (ModalOpen) CloseDialog(); else if(game.ScreenName=="Tuning"&&setupLibraryOpen) BackFromSetupLibrary(); else if (game.ScreenName=="Parts" && cartPageOpen) BackFromNativeCart(); else if (game.ScreenName=="Parts" && partsDetailId!=null) BackToParts(); else if (DealerDetailsOpen) BackToDealer(); else if (DisposalOpen) BackFromDisposal(); else if (OwnedDetailsOpen) BackToOwnedCars(); }
             foreach (var surface in surfaces) surface.Tick(Visible);
             foreach (var surface in switchSurfaces) surface.Tick(Visible);
             }
@@ -126,7 +127,7 @@ namespace DragLab.Runtime
         internal void Refresh()
         {
             if (root == null || game.Profile == null) return;
-            if (game.ResetRequired) { root.RemoveFromClassList("hidden"); return; }
+            if (game.ResetRequired) { NativeMobile.Fit(root,panel,Screen.width,Screen.height);root.RemoveFromClassList("hidden"); return; }
             if (SyncRacePause()) return;
             string route = game.ScreenName;
             SyncSettingsEntry(route);
@@ -136,7 +137,7 @@ namespace DragLab.Runtime
             FramePacingProbe.Phase="menu/"+route;
             int width = panel.targetTexture == null ? Screen.width : panel.targetTexture.width;
             int height = panel.targetTexture == null ? Screen.height : panel.targetTexture.height;
-            panel.scale = DisplayScale(width, height);
+            NativeMobile.Fit(root,panel,width,height);
             root.EnableInClassList("compact", width / panel.scale < 1150);
             var profile = game.Profile; var car = profile.SelectedCar;
             SetText("cash", DisplayUnits.Money(profile.cash));

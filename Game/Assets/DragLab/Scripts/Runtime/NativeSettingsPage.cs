@@ -198,7 +198,7 @@ namespace DragLab.Runtime
             root.Q("modalLayer").AddToClassList("hidden");
             dialogRoute = null; root.Q(className:"workspace").SetEnabled(true);
             foreach (string id in new[] { "navBar", "settingsTabs", "settingsBody", "settingsActions" }) root.Q(id).SetEnabled(true);
-            UpdateControls(); returnFocus?.Focus();
+            UpdateControls(); if(!NativeMobile.Touch)returnFocus?.Focus();
         }
         VisualElement Row(int page, string id, string label, string help = null)
         {
@@ -292,6 +292,11 @@ namespace DragLab.Runtime
         }
         void BuildControls()
         {
+            if(NativeMobile.Touch){
+                Row(3,"touchPedals","Pedals").Add(new Label("Hold · slide up to ease off"));
+                Row(3,"touchShifts","Shifting").Add(new Label("− / + beside gear"));
+                Row(3,"touchTuning","Tuning").Add(new Label("− / + precise steps · ↺ reset · tap value to type"));
+            }
             foreach (var binding in new[] { new[] { "Throttle", "W / Space" }, new[] { "Brake", "S" }, new[] { "Clutch", "Left Shift" }, new[] { "Shift up / engage first", "E" }, new[] { "Shift down", "Q" }, new[] { "Launch / restart", "Enter" }, new[] { "Pause", "Esc" }, new[] { "Return to garage", "G · paused / finished" }, new[] { "Repeat race", "R · finished" }, new[] { "Compare interface", "F8" } })
                 Row(3, "binding" + binding[0].Replace(" ", ""), binding[0]).Add(new Label(binding[1]));
             var pedals = new Button(() => OpenDialog("Pedals", "Hold W / Space through gear changes. Manual clutch: Shift + E / Q, then release Shift.\nMouse / touch pedals accept partial pressure; different fingers can hold separate pedals.", new[] { new DialogAction("Close", CloseDialog) })) { text = "Pedal controls" }; pedals.AddToClassList("action-button"); pages[3].Add(pedals); AddSurface(pedals, RacingSurface.Kind.Button);

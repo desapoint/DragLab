@@ -1,0 +1,13 @@
+Built 2026-10-18: final Android APK and retained tested Windows player.
+Android APK bytes: 57875744
+Android APK SHA256: 88ac656382a09401aa2bb2bfb5dade5d4f0efed163b11d6199ba642b26d3105d
+Windows Assembly-CSharp.dll SHA256: ea94dcdcdddfc7c0201c0a1cbe1b44290b7e74626bd4d32cf0fd8e6637889ee1
+Windows runtime matches the final 108/65/220/111 passing suites: PASS
+Android package com.draglab.prototype / DragLab Prototype / version 1.0 (1)
+Minimum SDK 26; target/compile SDK 36; ARM64 IL2CPP; landscape; development/debug-signed.
+APK v2 signature: PASS, one signer
+zipalign -c -P 16 4: PASS
+ZIP CRC, ARM64-only native libraries, Windows SQLite DLL exclusion: PASS
+Packaged SQLite matches tracked ARM64 plugin after llvm-strip --strip-unneeded: PASS
+adb devices -l: no device/emulator attached; device/IME/performance review remains pending.
+Windows artifact is unchanged by Android packaging; no extra post-Android Windows rebuild was required.

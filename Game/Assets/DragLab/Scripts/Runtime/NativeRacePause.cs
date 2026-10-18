@@ -22,7 +22,7 @@ namespace DragLab.Runtime
             }
             root.RemoveFromClassList("hidden");
             int width=panel.targetTexture==null?Screen.width:panel.targetTexture.width,height=panel.targetTexture==null?Screen.height:panel.targetTexture.height;
-            panel.scale=DisplayScale(width,height);root.EnableInClassList("compact",width/panel.scale<1150);
+            NativeMobile.Fit(root,panel,width,height);root.EnableInClassList("compact",width/panel.scale<1150);
             if(!ModalOpen||racePausePage==null)ShowRacePause();
             return true;
         }

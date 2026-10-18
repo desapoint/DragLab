@@ -17,7 +17,7 @@ namespace DragLab.Runtime
         internal RaceDashboard Dashboard { get; private set; }
         internal RaceSteeringRim SteeringRim { get; private set; }
         Label phase, warning;
-        Button pauseButton, readyButton;
+        Button pauseButton, readyButton, lineLockButton;
         readonly System.Collections.Generic.List<RacingSurface> hudSurfaces = new System.Collections.Generic.List<RacingSurface>();
         CarSimulation boundCar;
         SpeedUnit speedUnit;
@@ -69,6 +69,7 @@ namespace DragLab.Runtime
             warning = new Label { name = "raceWarning", pickingMode = PickingMode.Ignore }; warning.AddToClassList("race-warning"); root.Add(warning);
             pauseButton = HudButton("racePause", "", () => game.PauseRace(true)); pauseButton.AddToClassList("race-pause-button");pauseButton.tooltip="Pause";pauseButton.Add(new FilledMenuIcon("Pause"));
             readyButton = HudButton("raceReady", "Ready", () => game.Race?.BeginCountdown());readyButton.AddToClassList("race-ready-button");
+            lineLockButton=HudButton("raceLineLock","Line lock",()=>{if(game.RaceTouchActive&&game.Race.warmup)game.Race.player.state.warmupLineLock=!game.Race.player.state.warmupLineLock;});lineLockButton.AddToClassList("race-line-lock");
             InterfaceComparison.SetReplacement("Race", true);
         }
 
@@ -90,12 +91,16 @@ namespace DragLab.Runtime
             panel.scale = NativeMenuShell.DisplayScale(width, height);
             bool compact=width/panel.scale<1150||height/panel.scale<700;
             root.EnableInClassList("compact",compact);
-            var safe=Screen.safeArea;
+            var safe=NativeMobile.SafeArea;
+            root.EnableInClassList("touch-ui",NativeMobile.Touch);
             float insetRight=(Screen.width-safe.xMax)/panel.scale,insetBottom=safe.yMin/panel.scale;
+            float insetLeft=safe.xMin/panel.scale,insetTop=(Screen.height-safe.yMax)/panel.scale;
+            dials.style.left=(NativeMobile.Touch&&compact?0:compact?16:22)+insetLeft;dials.style.bottom=22+insetBottom;
+            pauseButton.style.top=readyButton.style.top=lineLockButton.style.top=18+insetTop;
             Gear.style.right=24+insetRight;Gear.style.bottom=15+insetBottom;
             Pedals.style.right=260+insetRight;Pedals.style.bottom=24+insetBottom;
             pauseButton.style.right=24+insetRight;readyButton.style.right=80+insetRight;
-            bool wide=Application.isMobilePlatform&&width/panel.scale>=1600;root.EnableInClassList("touch-wide",wide);
+            bool wide=NativeMobile.Touch&&width/panel.scale>=1600;root.EnableInClassList("touch-wide",wide);
             phase.style.right=warning.style.right=(compact?260:wide?660:520)+insetRight;
             phase.style.bottom=(compact?228:76)+insetBottom;warning.style.bottom=(compact?194:36)+insetBottom;
             pauseButton.SetEnabled(!game.NativeRacePause);
@@ -104,6 +109,9 @@ namespace DragLab.Runtime
             readyButton.SetEnabled(game.Race.WarmupStopped&&!game.Race.player.state.engineFailed&&!game.Race.player.state.drivetrainFailed);
             var car = game.Race.player;
             bool inputActive=game.RaceTouchActive;
+            lineLockButton.EnableInClassList("hidden",!NativeMobile.Touch||!game.Race.warmup||car.spec.drive==DriveType.AWD);
+            lineLockButton.EnableInClassList("selected",car.state.warmupLineLock);lineLockButton.SetEnabled(inputActive);
+            lineLockButton.style.right=190+insetRight;
             Pedals.Refresh(car,inputActive,game.RaceControls.Peek(),Time.unscaledDeltaTime);
             shiftUpButton.SetEnabled(inputActive);shiftDownButton.SetEnabled(inputActive&&car.transmission.type!=TransmissionType.CVT);
             if (boundCar != car || speedUnit != SharedUnitSettings.Current.speed)

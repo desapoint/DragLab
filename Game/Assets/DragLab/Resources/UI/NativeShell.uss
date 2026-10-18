@@ -434,3 +434,20 @@
 .race-audio-range { margin-bottom: 14px; }
 .race-audio-range > Label { font-size: 18px; }
 .race-audio-range .tuning-input-row { margin: 0; min-height: 32px; }
+
+.touch-compare, .touch-adjust { display: none; }
+.touch-ui .touch-compare { display: flex; height: 38px; min-width: 110px; margin: 0 0 0 10px; }
+.touch-ui .footer-hint { display: none; }
+.touch-ui .footer { height: 44px; }
+.touch-ui .metal-background { bottom: 44px; }
+.touch-ui .workspace { padding: 12px 18px; }
+.touch-ui.compact .nav-button Label { display: none; }
+.touch-ui .action-button { min-height: 40px; }
+.touch-ui .choice-button { height: 40px; }
+.touch-ui .setting-row { height: 52px; }
+.touch-ui .setting-slider, .touch-ui .setting-number, .touch-ui .setting-text { height: 40px; }
+.touch-ui .info-button { width: 30px; min-width: 30px; height: 30px; }
+.touch-ui .close-button { width: 40px; height: 40px; }
+.touch-ui .tuning-input-row { flex-wrap: wrap; }
+.touch-ui .touch-adjust { display: flex; flex-direction: row; width: 100%; justify-content: flex-end; margin-top: 6px; }
+.touch-ui .touch-adjust .action-button { width: 44px; min-width: 44px; height: 40px; padding: 0; margin-left: 8px; }

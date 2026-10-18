@@ -123,8 +123,11 @@ namespace DragLab.Runtime
                 hoverLabels[i]=new Label {name="dynoHover"+Series[i].Id,enableRichText=false,pickingMode=PickingMode.Ignore}; hoverCard.Add(hoverLabels[i]);
             }
             hoverCard.RegisterCallback<GeometryChangedEvent>(_=>{if(HoverRpm.HasValue)PositionHoverCard(hoverPoint);});
-            RegisterCallback<PointerMoveEvent>(evt=>UpdateHover(evt.localPosition));
-            RegisterCallback<PointerLeaveEvent>(_=>ClearHover());
+            RegisterCallback<PointerDownEvent>(evt=>{if(evt.pointerType==UnityEngine.UIElements.PointerType.touch){this.CapturePointer(evt.pointerId);UpdateHover(evt.localPosition);evt.StopPropagation();}});
+            RegisterCallback<PointerUpEvent>(evt=>{if(evt.pointerType==UnityEngine.UIElements.PointerType.touch&&this.HasPointerCapture(evt.pointerId)){this.ReleasePointer(evt.pointerId);evt.StopPropagation();}});
+            RegisterCallback<PointerCancelEvent>(evt=>{if(this.HasPointerCapture(evt.pointerId))this.ReleasePointer(evt.pointerId);ClearHover();});
+            RegisterCallback<PointerMoveEvent>(evt=>{if(evt.pointerType!=UnityEngine.UIElements.PointerType.touch||this.HasPointerCapture(evt.pointerId))UpdateHover(evt.localPosition);});
+            RegisterCallback<PointerLeaveEvent>(evt=>{if(evt.pointerType!=UnityEngine.UIElements.PointerType.touch)ClearHover();});
             RegisterCallback<GeometryChangedEvent>(_=>{ClearHover();MarkDirtyRepaint();});
             RegisterCallback<CustomStyleResolvedEvent>(_=>MarkDirtyRepaint());
             generateVisualContent += Draw;

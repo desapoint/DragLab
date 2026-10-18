@@ -17,6 +17,7 @@ namespace DragLab.Runtime
         readonly Action changed;
         readonly Action<string> invalid;
         readonly SliderFill fill;
+        readonly System.Collections.Generic.List<RacingSurface> touchSurfaces=new System.Collections.Generic.List<RacingSurface>();
         int pointer=-1;
         bool fine,updating;
         float startX,startValue,lastDisplayed=float.NaN;
@@ -30,7 +31,14 @@ namespace DragLab.Runtime
             Number=new FloatField(){name="tuneNumber:"+id,isDelayed=true,formatString=digits==0?"0":"0."+new string('#',digits)};Number.AddToClassList("setting-number");Add(Number);
             var units=new Label(unit);units.AddToClassList("tuning-unit");Add(units);
             Slider.tooltip="Left-drag: "+step+" "+unit+" steps. Right-drag: 10× finer ("+fineStep+"). Middle-click: default.";
-            Number.tooltip="Type an exact value; Enter to confirm. Fine increment: "+fineStep+" "+unit+".";
+            Number.tooltip="Type an exact value. Fine increment: "+fineStep+" "+unit+".";
+            Number.keyboardType=TouchScreenKeyboardType.NumbersAndPunctuation;Number.hideMobileInput=false;
+            var touch=new VisualElement{name="touchAdjust:"+id};touch.AddToClassList("touch-adjust");Add(touch);
+            Action<string,string,Action> button=(key,caption,action)=>{
+                var b=new Button(action){name=key+":"+id,text=caption,focusable=false,tabIndex=-1};b.AddToClassList("action-button");
+                var surface=new RacingSurface(b,RacingSurface.Kind.SecondaryAction);b.text="";b.Insert(0,surface);b.Add(new Label(caption){pickingMode=PickingMode.Ignore});touchSurfaces.Add(surface);touch.Add(b);
+            };
+            button("fineDown","−",()=>Commit(get()-FineStep,FineStep));button("fineUp","+",()=>Commit(get()+FineStep,FineStep));button("resetRange","↺",()=>Commit(reset(),0));
             Slider.RegisterValueChangedCallback(e=>{if(!updating)Commit(e.newValue,Step);});
             Number.RegisterValueChangedCallback(e=>{if(!updating)Commit(e.newValue,FineStep);});
             Slider.RegisterCallback<PointerDownEvent>(e=>{
@@ -63,6 +71,7 @@ namespace DragLab.Runtime
         }
         internal void Refresh()
         {
+            foreach(var surface in touchSurfaces)surface.Tick(NativeMobile.Touch&&panel!=null);
             updating=true;
             try{
                 float value=get();Slider.lowValue=min();Slider.highValue=Mathf.Max(min(),max());Slider.SetValueWithoutNotify(value);
@@ -72,6 +81,6 @@ namespace DragLab.Runtime
                 fill.MarkDirtyRepaint();
             }finally{updating=false;}
         }
-        internal void Allow(bool allowed){Slider.SetEnabled(allowed);Number.SetEnabled(allowed);}
+        internal void Allow(bool allowed){Slider.SetEnabled(allowed);Number.SetEnabled(allowed);this.Q("touchAdjust:"+name.Substring("tuneRange:".Length)).SetEnabled(allowed);}
     }
 }

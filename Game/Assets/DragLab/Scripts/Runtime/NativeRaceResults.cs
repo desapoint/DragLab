@@ -59,7 +59,7 @@ namespace DragLab.Runtime
             bool show=game.Race!=null&&Supports(game.ComparisonRoute)&&InterfaceComparison.IsReplacement("Results");
             root.EnableInClassList("hidden",!show);foreach(var s in surfaces)s.Tick(show);if(!show)return;
             int width=panel.targetTexture==null?Screen.width:panel.targetTexture.width,height=panel.targetTexture==null?Screen.height:panel.targetTexture.height;
-            panel.scale=NativeMenuShell.DisplayScale(width,height);root.EnableInClassList("compact",width/panel.scale<1150||height/panel.scale<700);
+            NativeMobile.Fit(root,panel,width,height);root.EnableInClassList("compact",width/panel.scale<1150||height/panel.scale<700);
             garage.SetEnabled(!game.ResultSettlementPending);again.SetEnabled(!game.ResultSettlementPending);
             if(bound!=game.Race){bound=game.Race;BuildSlip();}
             if(rivalFinished!=bound.opponent.state.finished||lanesFinished!=(bound.phase==RacePhase.Finished)||rivalSplitCount!=bound.opponent.state.splits.Count||rivalReactionTime!=bound.opponent.state.reaction)RefreshRivalTimes();

@@ -1,0 +1,110 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: Touch fresh game reaches all fixed starter choices
+PASS: Touch target exists and is enabled: dealerCar:starter:starter-hatch
+PASS: Touch target exists and is enabled: dealerBuy
+PASS: Touch target exists and is enabled: dialogConfirm
+PASS: Starter purchase completes using touch events alone
+PASS: Touch target exists and is enabled: renameOwnedCar
+PASS: Owned car naming has an editable on-screen text field
+PASS: Touch target exists and is enabled: dialogSave
+PASS: Touch name confirmation saves the car label
+PASS: Touch press reveals dyno point values without hover
+PASS: Dyno readings remain available after lifting a finger
+PASS: Touch target exists and is enabled: maintenanceFuel
+PASS: Touch target exists and is enabled: dialogConfirm
+PASS: Touch fuel purchase confirms and closes
+PASS: Menu clears simulated notch/gesture insets at (854, 480)
+PASS: Mobile navigation stays reachable: (854, 480) / navGarage
+PASS: Mobile navigation stays reachable: (854, 480) / navBuild
+PASS: Mobile navigation stays reachable: (854, 480) / navTuning
+PASS: Mobile navigation stays reachable: (854, 480) / navRace
+PASS: Mobile navigation stays reachable: (854, 480) / navBusiness
+PASS: Mobile navigation stays reachable: (854, 480) / navData
+PASS: Mobile navigation stays reachable: (854, 480) / settingsButton
+PASS: Menu clears simulated notch/gesture insets at (1280, 720)
+PASS: Mobile navigation stays reachable: (1280, 720) / navGarage
+PASS: Mobile navigation stays reachable: (1280, 720) / navBuild
+PASS: Mobile navigation stays reachable: (1280, 720) / navTuning
+PASS: Mobile navigation stays reachable: (1280, 720) / navRace
+PASS: Mobile navigation stays reachable: (1280, 720) / navBusiness
+PASS: Mobile navigation stays reachable: (1280, 720) / navData
+PASS: Mobile navigation stays reachable: (1280, 720) / settingsButton
+PASS: Menu clears simulated notch/gesture insets at (1920, 1080)
+PASS: Mobile navigation stays reachable: (1920, 1080) / navGarage
+PASS: Mobile navigation stays reachable: (1920, 1080) / navBuild
+PASS: Mobile navigation stays reachable: (1920, 1080) / navTuning
+PASS: Mobile navigation stays reachable: (1920, 1080) / navRace
+PASS: Mobile navigation stays reachable: (1920, 1080) / navBusiness
+PASS: Mobile navigation stays reachable: (1920, 1080) / navData
+PASS: Mobile navigation stays reachable: (1920, 1080) / settingsButton
+PASS: Menu clears simulated notch/gesture insets at (2400, 1080)
+PASS: Mobile navigation stays reachable: (2400, 1080) / navGarage
+PASS: Mobile navigation stays reachable: (2400, 1080) / navBuild
+PASS: Mobile navigation stays reachable: (2400, 1080) / navTuning
+PASS: Mobile navigation stays reachable: (2400, 1080) / navRace
+PASS: Mobile navigation stays reachable: (2400, 1080) / navBusiness
+PASS: Mobile navigation stays reachable: (2400, 1080) / navData
+PASS: Mobile navigation stays reachable: (2400, 1080) / settingsButton
+PASS: Touch target exists and is enabled: navBuild
+PASS: Touch opens parts shop
+PASS: Touch target exists and is enabled: partsFilters
+PASS: Touch opens shop filters
+PASS: Touch target exists and is enabled: dialogCancel
+PASS: Touch target exists and is enabled: partCard:new:starter-hatch/HeadIntake/3
+PASS: Touch target exists and is enabled: partAdd
+PASS: Touch target exists and is enabled: dialogAddtocart
+PASS: Touch purchase dialog reserves a part in the cart
+PASS: Mobile backgrounding durably retains cart reservations and cash
+PASS: Touch target exists and is enabled: navTuning
+PASS: Touch target exists and is enabled: fineUp:launch
+PASS: Touch fine step edits only the tuning draft
+PASS: Touch target exists and is enabled: resetRange:launch
+PASS: Touch reset replaces the middle-click shortcut
+PASS: Precision numeric fields request an editable mobile keyboard
+PASS: Touch helpers respect installed hardware tuning permissions
+PASS: Tuning lists scroll with a finger drag without a mouse wheel
+PASS: Touch target exists and is enabled: settingsButton
+PASS: Touch target exists and is enabled: tabSound
+PASS: Shared sliders accept touch drag input
+PASS: Touch settings remain unapplied drafts
+PASS: Touch target exists and is enabled: applySettings
+PASS: Touch target exists and is enabled: dialogApply
+PASS: Touch Apply confirmation persists settings
+PASS: Touch target exists and is enabled: cancelSettings
+PASS: Cancel returns to the previous menu on touch
+PASS: Touch target exists and is enabled: navBusiness
+PASS: Unfinished Business replacement falls back to the working touchable page
+PASS: Android Back can leave the legacy business page
+PASS: Touch target exists and is enabled: navData
+PASS: Unfinished Data page also remains accessible through its legacy presentation
+PASS: Touch target exists and is enabled: touchCompare
+PASS: Footer touch action exposes legacy presentation without F8
+PASS: Legacy comparison button returns on a complete press/release gesture
+PASS: Touch target exists and is enabled: navRace
+PASS: Touch target exists and is enabled: raceMode:Practice
+PASS: Touch target exists and is enabled: raceStage
+PASS: Touch target exists and is enabled: dialogStage
+PASS: Touch staging enters the authoritative physical race
+PASS: Required three-pedal set clears gauges and shifter at mobile width 854 / (x:54.00, y:310.50, width:360.00, height:180.00) / (x:418.50, y:333.00, width:246.38, height:156.38) / (x:680.63, y:267.75, width:220.50, height:230.63)
+PASS: Race pause clears top safe inset at 854
+PASS: Required three-pedal set clears gauges and shifter at mobile width 1280 / (x:36.00, y:320.25, width:359.25, height:180.00) / (x:430.50, y:342.00, width:245.25, height:156.00) / (x:692.25, y:276.75, width:219.75, height:230.25)
+PASS: Race pause clears top safe inset at 1280
+PASS: Required three-pedal set clears gauges and shifter at mobile width 1920 / (x:24.00, y:326.00, width:360.00, height:180.00) / (x:438.00, y:348.00, width:246.00, height:156.00) / (x:700.00, y:283.00, width:220.00, height:230.00)
+PASS: Race pause clears top safe inset at 1920
+PASS: Touch target exists and is enabled: raceLineLock
+PASS: Touch warm-up line lock uses the existing simulation state
+PASS: Touch target exists and is enabled: raceReady
+PASS: Touch Ready stages the countdown without Enter
+PASS: Touch gas and brake operate together at mobile scale
+PASS: Touch target exists and is enabled: raceShiftUp
+PASS: Touch shift leaves the accelerator held
+PASS: Touch target exists and is enabled: racePause
+PASS: Touch pause clears held pedals
+PASS: Touch target exists and is enabled: pauseSound
+PASS: Touch pause exposes contained sound controls
+PASS: Touch target exists and is enabled: dialogBack
+PASS: Touch target exists and is enabled: pauseQuit
+PASS: Touch target exists and is enabled: dialogQuitrace
+PASS: Touch quit retains a valid saved ownership state
+Checks: 108 / runtime errors: 0

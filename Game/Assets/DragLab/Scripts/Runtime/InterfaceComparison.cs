@@ -8,7 +8,7 @@ namespace DragLab.Runtime
     internal sealed class InterfaceComparison
     {
         static readonly HashSet<string> replacementRoutes = new HashSet<string> { "Garage", "Settings", "Parts", "Tuning", "Race setup", "Business", "Stats" };
-        bool shortcutHeld;
+        bool shortcutHeld, blockedTouch;
         GUIStyle badgeStyle, emptyStyle;
         internal static bool IsReplacement(string route) => replacementRoutes.Contains(route);
         internal static void SetReplacement(string route, bool enabled)
@@ -42,6 +42,7 @@ namespace DragLab.Runtime
         {
             var evt = Event.current;
             bool before = IsReplacement(route);
+            blockedTouch=blocked||GUIUtility.hasModalWindow||TextFocused();
             if (HandleKey(route, evt.type, evt.keyCode, evt.shift || evt.control || evt.alt || evt.command,
                 blocked || GUIUtility.hotControl != 0 || GUIUtility.hasModalWindow || TextFocused()))
                 evt.Use();
@@ -55,7 +56,7 @@ namespace DragLab.Runtime
 
         internal void DrawStatus(string route)
         {
-            if (Event.current.type != EventType.Repaint) return;
+            if (!NativeMobile.Touch && Event.current.type != EventType.Repaint) return;
             var matrix = GUI.matrix; var color = GUI.color; var enabled = GUI.enabled;
             GUI.matrix = Matrix4x4.identity; GUI.color = Color.white; GUI.enabled = true;
             if (badgeStyle == null)
@@ -65,7 +66,14 @@ namespace DragLab.Runtime
             }
             bool replacement = IsReplacement(route);
             float width = Mathf.Min(390, Screen.width - 16);
-            GUI.Box(new Rect(Screen.width - width - 8, 4, width, 34),
+            if(NativeMobile.Touch){
+                var safe=NativeMobile.SafeArea;float scale=NativeMobile.Scale(Screen.width,Screen.height);
+                GUI.enabled=!blockedTouch;
+                if(GUI.Button(new Rect(safe.xMax-180*scale-8,Screen.height-safe.yMax+4,180*scale,44*scale),"Old / New")){
+                    SetReplacement(route,!replacement);GUIUtility.ExitGUI();
+                }
+            }
+            else GUI.Box(new Rect(Screen.width - width - 8, 4, width, 34),
                 (replacement ? "NEW / EMPTY" : "OLD") + " · " + route + " · F8 compare", badgeStyle);
             if (replacement)
             {

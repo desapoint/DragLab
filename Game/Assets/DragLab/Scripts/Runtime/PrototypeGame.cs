@@ -89,6 +89,9 @@ namespace DragLab.Runtime
 
         void Start()
         {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            Input.backButtonLeavesApp=false;
+#endif
             if (!benchBootHandled && Array.IndexOf(Environment.GetCommandLineArgs(), "--draglab-engine-bench") >= 0)
             { benchBootHandled = true; SceneManager.LoadScene("EngineTest"); return; }
             if (!benchBootHandled && Array.IndexOf(Environment.GetCommandLineArgs(), "--draglab-driving-bench") >= 0)
@@ -211,7 +214,7 @@ namespace DragLab.Runtime
             PlaceRaceCars();
             screen = "Race";
             accumulator = 0; awarded = false; paused = false; resultScroll = Vector2.zero;
-            controls.Clear(); engineAudio.Silence();
+            RaceHud?.Pedals?.Release(); controls.Clear(); engineAudio.Silence();
             engineAudio.Configure(race.player.spec, race.player.tune);
             opponentAudio.Configure(race.opponent.spec, race.opponent.tune);
             strip.Render(race);
@@ -230,6 +233,7 @@ namespace DragLab.Runtime
             if (pendingAction != null) { var action = pendingAction; pendingAction = null; action(); }
             if (saveDelay > 0 && GUIUtility.hotControl == 0 && !Input.GetMouseButton(0) && !Input.GetMouseButton(1)) { if(drivingPreferencesDirty){if(!ProfileStore.TrySavePreferences(profile,out var error))notice="Settings save failed: "+error;drivingPreferencesDirty=false;}else ProfileStore.Save(profile);saveDelay=0; }
             if (screen == "Garage" && !(nativeMenu != null && (nativeMenu.ModalOpen || nativeMenu.OwnedDetailsOpen || nativeMenu.DealerPageOpen || nativeMenu.EditingText)) && Input.GetKeyDown(KeyCode.P)) StartPractice();
+            if(NativeMobile.Touch&&screen!="Race"&&Input.GetKeyDown(KeyCode.Escape))nativeMenu?.TouchBack();
             if (screen != "Race" || race == null) return;
             if (!NativeRacePause && (race.ResultReady || paused) && !ResultSettlementPending && Input.GetKeyDown(KeyCode.G)) { ReturnToGarage(); return; }
             if (!NativeRacePause && race.ResultReady && !ResultSettlementPending && Input.GetKeyDown(KeyCode.R)) { StartRace(activeEvent, practiceRun); return; }
@@ -335,7 +339,15 @@ namespace DragLab.Runtime
             if(!MechanicsTransactions.Try(profile,profile.catalog,profile.revision,p=>{MechanicsTransactions.ApplyCheckpoint(p,checkpoint);if(close)CareerProgression.Interrupted(p,liveRunId);},ProfileStore.TrySave,out next,out error)){notice="Run save failed; live state retained. "+error;return false;}
             profile=next;settings=profile.driving;savedRunTick=liveRunTick;savedRunFailures=RunPersistence.FailureCount(race.player);liveRunClosed=close;return true;
         }
-        void OnApplicationPause(bool pause) { if (pause)HandleApplicationInterruption(true); }
+        internal void SuspendForMobile()
+        {
+            HandleApplicationInterruption(true);
+            if(profile==null||resetRequired||screen=="Race")return;
+            PersistNativeCartReservation();
+            if(!ProfileStore.TrySave(profile))notice="Save failed: "+ProfileStore.Status;
+            ProfileStore.Flush();
+        }
+        void OnApplicationPause(bool pause) { if(pause){if(NativeMobile.Touch)SuspendForMobile();else HandleApplicationInterruption(true);} }
         void OnApplicationQuit() { if (profile != null) { SyncRaceWear(true,"Quit");PersistNativeCartReservation();if(drivingPreferencesDirty)ProfileStore.TrySavePreferences(profile,out _);ProfileStore.Save(profile);ProfileStore.Flush(); } }
 
         internal string AuditMouseEvents = "";
@@ -365,7 +377,7 @@ namespace DragLab.Runtime
                 if(route=="Parts"&&shopCategory.HasValue)nativeMenu?.FilterShopCategory(shopCategory.Value);
                 if (route == "Parts") repairsOnly = false;
                 if (route == "Tuning" && Build != null) BeginTuneDraft();
-                InterfaceComparison.SetReplacement(route, NativeMenuShell.Supports(route));
+                InterfaceComparison.SetReplacement(route, NativeMenuShell.Supports(route)&&!(NativeMobile.Touch&&(route=="Business"||route=="Stats")));
             };
         }
         void DrawMeasuredGUI()

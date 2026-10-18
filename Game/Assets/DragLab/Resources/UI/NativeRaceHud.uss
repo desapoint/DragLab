@@ -58,3 +58,9 @@
 
 .touch-wide .race-pedal { width: 112px; }
 .touch-wide .race-phase, .touch-wide .race-warning { right: 660px; }
+
+.race-line-lock { position: absolute; top: 18px; width: 116px; }
+.touch-ui .race-shift-down, .touch-ui .race-shift-up { width: 48px; min-width: 48px; height: 44px; }
+
+.touch-ui.compact .analog-gauge { width: 160px; height: 160px; }
+.touch-ui.compact .rpm-gauge { width: 180px; height: 180px; }
