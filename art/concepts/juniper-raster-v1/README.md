@@ -1,6 +1,6 @@
 # Juniper raster style review - 2026-10-18
 
-Current candidate: `03-body-only-preview.png`, generated with the built-in image tool. Original output bytes and earlier iterations are preserved. Exact prompts are in `prompts.json`; file hashes, dimensions and alpha counts are in `assets.json`.
+Current candidate: `04-strong-outline-preview.png`, generated with the built-in image tool. This review iteration strengthens the exterior/panel outlines and simplifies the shading following the user's request for a more 2D finish. Original output bytes and earlier iterations are preserved. Exact earlier prompts are in `prompts.json`; this edit is recorded in `04-strong-outline-prompt.txt`. File hashes, dimensions and alpha counts are in `assets.json`.
 
 The user requested believable real-car proportions with a more 2D, cel-shaded raster finish, and explicitly rejected procedural/vector body drawings. The third candidate has no wheels, tires or brakes: both arch openings are transparent. The earlier wheel-bearing iterations record the style development and are not proposed game layers.
 

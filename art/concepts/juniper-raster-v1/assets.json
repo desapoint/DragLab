@@ -28,5 +28,15 @@
     ],
     "mode": "RGBA",
     "transparentPixels": 655976
+  },
+  {
+    "file": "04-strong-outline-preview.png",
+    "sha256": "0a42cf90e34bc22fd22cb0d7c37bd40e73a4f3b04d38d51c12f26823ee1ad966",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "transparentPixels": 620329
   }
 ]
