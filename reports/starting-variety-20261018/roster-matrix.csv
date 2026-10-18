@@ -1,0 +1,53 @@
+id,name,model_family,trim,drive_enum,body_enum,mass_kg,displacement_l,base_price,rep,shared_art
+aster,Aster 1.8 Base,Aster,Base,0,6,1210,1.8,3600,0,hatch
+aster-sport,Aster 1.8 Sport,Aster,Sport,0,6,1175,1.8,4751,0,hatch
+atlas,Atlas 5.2 Base,Atlas,Base,2,5,2150,5.2,23000,12,muscle
+atlas-sport,Atlas 5.2 Performance,Atlas,Performance,2,5,2115,5.2,30359,14,muscle
+boreal,Boreal 2.4 Base,Boreal,Base,2,6,1560,2.4,12500,7,coupe
+boreal-sport,Boreal 2.4 Performance,Boreal,Performance,2,6,1525,2.4,16499,9,coupe
+cinder,Cinder 1.8 Base,Cinder,Base,0,2,1110,1.8,4400,0,hatch
+cinder-sport,Cinder 1.8 Sport,Cinder,Sport,0,2,1075,1.8,5807,0,hatch
+city-three,Sprig 1.2,Sprig,Standard,0,1,920,1.2,900,0,hatch
+comet,Comet 1.6 Base,Comet,Base,1,3,1100,1.6,3800,0,hatch
+comet-sport,Comet 1.6 Sport,Comet,Sport,1,3,1065,1.6,5015,0,hatch
+finch,Finch 1.3 Base,Finch,Base,0,1,920,1.3,2600,0,hatch
+finch-sport,Finch 1.3 Sport,Finch,Sport,0,1,885,1.3,3431,0,hatch
+fjord,Fjord 2.8 Base,Fjord,Base,0,6,1520,2.8,8400,3,pickup
+fjord-sport,Fjord 2.8 Performance,Fjord,Performance,0,6,1485,2.8,11087,5,pickup
+juniper-club,Juniper 1.6 Club,Juniper,Club,0,1,1045,1.6,3400,0,hatch
+juniper-economy,Juniper 1.4 Economy,Juniper,Economy,0,1,1015,1.4,2400,0,hatch
+kestrel-track,Kestrel 2.0T Track,Kestrel,Track,1,2,1230,2,6200,4,coupe
+lark,Lark 1.6 Base,Lark,Base,1,2,1020,1.6,4100,0,hatch
+lark-sport,Lark 1.6 Sport,Lark,Sport,1,2,985,1.6,5411,0,hatch
+meridian-sport,Meridian GT 3.0 Sport,Meridian,Sport,1,2,1345,3,9000,6,coupe
+mistral,Mistral 1.8 Base,Mistral,Base,0,3,1160,1.8,3900,0,hatch
+mistral-sport,Mistral 1.8 Sport,Mistral,Sport,0,3,1125,1.8,5147,0,hatch
+osprey,Osprey 2.2 Base,Osprey,Base,1,2,1300,2.2,9300,5,coupe
+osprey-sport,Osprey 2.2 Performance,Osprey,Performance,1,2,1265,2.2,12275,7,coupe
+piper,Piper 1.5 Base,Piper,Base,0,1,940,1.5,3500,0,hatch
+piper-sport,Piper 1.5 Sport,Piper,Sport,0,1,905,1.5,4619,0,hatch
+rally-sedan,Tempest AWD 2.0T,Tempest,Standard,2,3,1450,2,8000,6,coupe
+reed,Reed 1.6 Base,Reed,Base,0,6,1140,1.6,3300,0,hatch
+reed-sport,Reed 1.6 Sport,Reed,Sport,0,6,1105,1.6,4355,0,hatch
+rook,Rook 1.4 Base,Rook,Base,0,1,970,1.4,2800,0,hatch
+rook-sport,Rook 1.4 Sport,Rook,Sport,0,1,935,1.4,3695,0,hatch
+sable,Sable 2.0 Base,Sable,Base,1,3,1230,2,8850,0,hatch
+sable-sport,Sable 2.0 Sport,Sable,Sport,1,3,1195,2,8183,0,hatch
+solstice,Solstice 3.2 Base,Solstice,Base,1,8,1370,3.2,16000,9,coupe
+solstice-sport,Solstice 3.2 Performance,Solstice,Performance,1,8,1335,3.2,21119,11,coupe
+sport-coupe,Kestrel 2.0T,Kestrel,Standard,1,2,1320,2,4200,4,coupe
+sprig-sport,Sprig 1.2 Sport,Sprig,Sport,0,1,1000,1.2,1550,0,hatch
+starter-hatch,Juniper 1.6,Juniper,Standard,0,1,1080,1.6,1400,0,hatch
+super-v8,Bison R 5.0 SC,Bison,Standard,1,2,1710,5,11000,10,muscle
+swift,Swift 1.6 Base,Swift,Base,1,8,990,1.6,4900,0,hatch
+swift-sport,Swift 1.6 Sport,Swift,Sport,1,8,955,1.6,6467,0,hatch
+tempest-rs,Tempest AWD 2.0T RS,Tempest,RS,2,3,1400,2,10400,8,coupe
+timber-diesel,Timber 2.8D Work,Timber,Work,2,4,2020,2.8,7200,2,pickup
+timber-diesel-tow,Timber 2.8D Tow,Timber,Tow,2,4,2130,2.8,8900,4,pickup
+touring-six,Meridian GT 3.0,Meridian,Standard,1,2,1410,3,6800,4,coupe
+utility-pickup,Timber Utility 4.2,Timber,Standard,2,4,1920,4.2,6200,8,pickup
+v8-muscle,Bison 5.0,Bison,Standard,1,2,1580,5,7500,8,muscle
+vale,Vale 2.0 Base,Vale,Base,1,3,1270,2,5200,0,hatch
+vale-sport,Vale 2.0 Sport,Vale,Sport,1,3,1235,2,6863,0,hatch
+wren,Wren 1.5 Base,Wren,Base,0,1,980,1.5,3100,0,hatch
+wren-sport,Wren 1.5 Sport,Wren,Sport,0,1,945,1.5,4091,0,hatch

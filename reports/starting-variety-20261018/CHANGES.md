@@ -4,7 +4,7 @@ Requested checkpoint: expand distinct models and starter choices, add independen
 
 ## Content and starter checkpoint
 
-25 distinct model families / 52 authored configurations, at least two trims per model. Existing IDs and assets are retained. New models vary displacement, torque curve, drive layout, mass, weight distribution, body type, gearing and budget. They currently reuse the existing vehicle artwork families; these are new mechanical models, not 18 newly illustrated bodies. See roster.csv.
+25 distinct model families / 52 authored configurations, at least two trims per model. Existing IDs and assets are retained. New models vary displacement, torque curve, drive layout, mass, weight distribution, body type, gearing and budget. They currently reuse the existing vehicle artwork families; these are new mechanical models, not 18 newly illustrated bodies. See roster-matrix.csv.
 
 A new save receives three distinct models from a 15-model low-budget pool, selected from its persisted initial seed. Reloading/browsing preserves the shortlist, exact part identities, condition, mileage and price. Existing starter selections and owned cars are not rerolled. Initial cash is $6,500, with most options leaving maintenance/upgrade funds; the serviced Sable costs nearly the entire budget. No career outcome is forced.
 
@@ -15,3 +15,9 @@ New-player defaults are Shift myself / Simulation / Normal market. The two prese
 Validation and remaining UI/market work are recorded as each checkpoint passes. User visual/phone acceptance is separate from automated checks.
 
 Content checkpoint checks: Unity compilation and 360 roster/32-seed/actual-race assertions pass, including all 15 starters, wide per-component/member wear, full-wear clean passes and a real opening win for the near-budget Sable. The deterministic clean-driver fixture uses automatic shift, traction and stall assistance with full wear/consumption/condition rules; it is an achievable benchmark, not an override of player difficulty or a guaranteed outcome. First-win settlement checks: 164 pass, including repeat-win/captured-term consistency. Existing UI tests are updated in the following onboarding checkpoint. No packaged build claimed at this intermediate commit.
+
+## Market checkpoint
+
+Select 24-44 distinct new products globally before rolling full-set quantities. After fitting top-ups, generate 12-24 more distinct used products than stocked new products, sampling without replacement from wearable products; member batches can still create multiple physical rows. Normal/Easy guarantees remain 5/10 fitting choices collectively across owned cars in each pool; Hard has no fitting guarantee but still gets global used supply. Independent product/quantity streams, 0-6 engine offers, maximum-compatible set quantities, 5-10% express fees, nine-race cart reservations and synchronized three-race refresh are retained. Existing current stock changes only at its next scheduled refresh. The wider catalogue supplies additional engine/platform-specific definitions without duplicate equivalent new listings.
+
+Market verification: 1,455 assertions pass across all authored vehicle configurations and 32 seeds, including used variety exceeding new variety, fitting guarantees, quantities/engine topology, exact identity transfers, shared aliases, stock/delivery accounting and refresh behavior. See market-verification.txt.

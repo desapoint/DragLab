@@ -71,9 +71,13 @@ namespace DragLab.Domain.Mechanics
             long stamp=Stamp();var productKeys=new Dictionary<string,string>(StringComparer.Ordinal);int indexed=0;foreach(var definition in p.catalog.parts){productKeys.Add(definition.id,ProductKey(definition));if(++indexed%32==0)yield return "parts/product keys";}Measured("product keys",stamp);stamp=Stamp();yield return "parts/product keys";
             var models=Models(p.catalog);var specs=models.Select(p.catalog.Spec).ToArray();
             var selectedNew=new List<KeyValuePair<NewPartStock,int>>();
-            var layout=MarketCatalogLayout.Get(p.catalog,productKeys,specs);foreach(var group in layout.groups){
-                bool selected=Next(ref random)>=.24;
-                var row=new NewPartStock{definitions=new List<string>(group.ids),deliveryPercent=5+(int)(Next(ref random)*6)%6};state.parts.Add(row);if(selected)selectedNew.Add(new KeyValuePair<NewPartStock,int>(row,group.maximum));
+            var layout=MarketCatalogLayout.Get(p.catalog,productKeys,specs);
+            // Select products before quantities, from one global catalogue rather than one quota per car.
+            int newCount=Math.Min(layout.groups.Length,24+(int)(Next(ref random)*21)%21);
+            var newCandidates=layout.groups.ToList();var chosen=new HashSet<MarketCatalogLayout.Group>();
+            for(int n=0;n<newCount;n++){int pick=(int)(Next(ref random)*newCandidates.Count)%newCandidates.Count;chosen.Add(newCandidates[pick]);newCandidates.RemoveAt(pick);}
+            foreach(var group in layout.groups){
+                var row=new NewPartStock{definitions=new List<string>(group.ids),deliveryPercent=5+(int)(Next(ref random)*6)%6};state.parts.Add(row);if(chosen.Contains(group))selectedNew.Add(new KeyValuePair<NewPartStock,int>(row,group.maximum));
             }
             foreach(var selected in selectedNew){double roll=Next(ref newQuantity);int sets=selected.Value>1?(roll<.5?1:roll<.85?2:3):(roll<.8?1:roll<.97?2:3);selected.Key.units=selected.Key.initialUnits=selected.Value*sets;}
             Measured("new product selection/quantities",stamp);stamp=Stamp();yield return "parts/layout and selection";
@@ -84,11 +88,13 @@ namespace DragLab.Domain.Mechanics
                 var missing=fitting.Where(row=>row.units==0).ToArray();var row=missing[(int)(Next(ref coverageRandom)*missing.Length)%missing.Length];var d=p.catalog.Find(row.definitions[0]);int max=specs.Where(spec=>p.catalog.Fits(spec,d)).Select(spec=>Count(spec,d)).DefaultIfEmpty(1).Max();row.units=row.initialUnits=max*(1+(int)(Next(ref coverageQuantity)*3)%3);
             }
             Measured("new fitting guarantee",stamp);stamp=Stamp();yield return "parts/new guarantee";string prefix="market/"+state.seed+"/"+state.generation+"/";
-            int usedCount=Next(ref usedRandom)<.15?0:1+(int)(Next(ref usedRandom)*24)%24;var selectedUsed=new List<Tuple<VehicleSpec,PartDefinition>>();
+            var usedCandidates=layout.groups.Where(g=>PartSemantics.Wears(g.definition.category)).ToList();
+            int usedCount=Math.Min(usedCandidates.Count,state.parts.Count(row=>row.units>0)+12+(int)(Next(ref usedRandom)*13)%13);
+            var selectedUsed=new List<Tuple<VehicleSpec,PartDefinition>>();
             for(int n=0;n<usedCount;n++){
-                string model=models[(int)(Next(ref usedRandom)*models.Length)%models.Length];var spec=layout.Stock(p.catalog,model);
-                var choices=layout.Choices(p.catalog,model);
-                var candidates=choices[(int)(Next(ref usedRandom)*choices.Length)%choices.Length];selectedUsed.Add(Tuple.Create(spec,candidates[(int)(Next(ref usedRandom)*candidates.Length)%candidates.Length]));
+                int pick=(int)(Next(ref usedRandom)*usedCandidates.Count)%usedCandidates.Count;var group=usedCandidates[pick];usedCandidates.RemoveAt(pick);
+                var d=p.catalog.Find(group.ids[(int)(Next(ref usedRandom)*group.ids.Count)%group.ids.Count]);
+                string model=d.id.Split('/')[0];selectedUsed.Add(Tuple.Create(layout.Stock(p.catalog,model),d));
             }
             for(int n=0;n<selectedUsed.Count;n++){AddUsedSupply(p,selectedUsed[n].Item1,selectedUsed[n].Item2,prefix+"used/"+n,ref usedQuantity);yield return "parts/used supply";}
             if(owned.Length>0&&state.guaranteeAtRefresh>0){
