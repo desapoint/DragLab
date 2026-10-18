@@ -52,10 +52,10 @@ namespace DragLab.Editor
             }, new Color(.74f, .57f, .51f), 6200, 8);
 
             var events = new[] {
-                MakeEvent("01-FirstPass", "first-pass", "First pass", "Mika", hatch, 0, 500, 2, 0, 0),
-                MakeEvent("02-ClubRun", "club-run", "Club run", "Jules", hatch, 2, 700, 2, 1, 1),
-                MakeEvent("03-CoupeRival", "coupe-rival", "Coupe rival", "Ash", coupe, 4, 1000, 4, 0, 0),
-                MakeEvent("04-LocalFinal", "local-final", "Local final", "Rowan", muscle, 8, 1600, 4, 0, 1)
+                MakeEvent("01-FirstPass", "first-pass", "First pass", "Mika", hatch, 0, 150, 2, 0, 0),
+                MakeEvent("02-ClubRun", "club-run", "Club run", "Jules", hatch, 2, 225, 2, 1, 1),
+                MakeEvent("03-CoupeRival", "coupe-rival", "Coupe rival", "Ash", coupe, 4, 325, 4, 0, 0),
+                MakeEvent("04-LocalFinal", "local-final", "Local final", "Rowan", muscle, 8, 450, 4, 0, 1)
             };
             string scenePath = Root + "Scenes/FirstSlice.unity";
             if (!File.Exists(scenePath))
@@ -211,6 +211,7 @@ namespace DragLab.Editor
             asset.stableId = id; asset.displayName = title; asset.rivalName = rival; asset.opponent = car;
             asset.reputationRequired = rep; asset.cashWin = cash; asset.reputationWin = winRep;
             asset.opponentTune = car.CreateStockTune(); asset.opponentTune.engineLevel = engine; asset.opponentTune.tireLevel = tires;
+            EconomyBalanceVerification.SetRaceRewards(asset);
             AssetDatabase.CreateAsset(asset, path);
             return asset;
         }

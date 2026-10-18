@@ -14,6 +14,98 @@ namespace DragLab.Editor
 {
     public static class EconomyBalanceVerification
     {
+        internal static bool SetRaceRewards(CareerEventDefinition e)
+        {
+            string[] opening={"first-pass","club-run","coupe-rival","local-final"};
+            int intro=Array.IndexOf(opening,e.stableId);
+            if(intro>=0){e.cashWin=new[]{150,225,325,450}[intro];e.cashLoss=10;e.firstWinBonus=0;return true;}
+            string[] tiers={"f","e","d","c","b","a","s"};
+            int[] wins={525,575,650,725,825,925,1050,1175,1325,1500,1700,1925,2175,2450};
+            for(int t=0;t<tiers.Length;t++)for(int k=0;k<2;k++)if(e.stableId=="ladder-"+tiers[t]+(k==0?"-qualifier":"-rival")){
+                e.cashWin=wins[t*2+k];e.cashLoss=e.entryFee/2;e.firstWinBonus=150+t*50+k*25;return true;
+            }
+            for(int i=0;i<3;i++)if(e.stableId=="special-"+i){e.cashWin=new[]{400,500,450}[i];e.cashLoss=e.entryFee/2;e.firstWinBonus=new[]{175,225,200}[i];return true;}
+            return false;
+        }
+        [MenuItem("DragLab/Apply Slower Career Rewards")]
+        public static void ApplyRaceRewards()
+        {
+            foreach(var e in Resources.LoadAll<CareerEventDefinition>("Data/Events"))if(SetRaceRewards(e))EditorUtility.SetDirty(e);
+            AssetDatabase.SaveAssets();
+        }
+        public static void VerifyRaceRewards()
+        {
+            var catalog=MechanicsTransactions.Catalog();var events=Resources.LoadAll<CareerEventDefinition>("Data/Events");
+            int checks=0;var report=new StringBuilder();void Check(bool ok,string label){checks++;if(!ok)throw new InvalidOperationException(label);report.AppendLine("PASS: "+label);}
+            int previous=0;
+            foreach(var e in events.Where(e=>!e.stableId.StartsWith("special-",StringComparison.Ordinal)).OrderBy(e=>e.reputationRequired)){
+                int net=e.cashWin-e.entryFee;Check(net>previous,e.stableId+": take-home repeat reward grows through the main ladder");previous=net;
+                Check(e.firstWinBonus<=net,e.stableId+": first-win bonus is bounded by the repeat prize");
+            }
+            foreach(var e in events){
+                Check(e.cashWin>e.entryFee&&e.cashLoss<e.cashWin,e.stableId+": a win is worthwhile after entry and exceeds consolation");
+                Check(e.entryFee==0?e.cashLoss<=10:e.cashLoss<=e.entryFee/2,e.stableId+": losing cannot farm the former large net payouts");
+                var expected=UnityEngine.Object.Instantiate(e);Check(SetRaceRewards(expected)&&expected.cashWin==e.cashWin&&expected.cashLoss==e.cashLoss&&expected.firstWinBonus==e.firstWinBonus,e.stableId+": authored values match reproducible creation defaults");UnityEngine.Object.DestroyImmediate(expected);
+            }
+            var first=events.Single(e=>e.stableId=="first-pass");int upgrade=catalog.Find(catalog.Id("starter-hatch",PartCategory.HeadIntake,1)).price;
+            int wins=(int)Math.Ceiling(upgrade/(double)(first.cashWin-first.entryFee));Check(wins>=4&&wins<=6,"A standard early airflow upgrade needs four to six repeat wins before operating costs");
+            var driver=new DriverSettings{launch=LaunchMode.Automatic,shifting=ShiftMode.Automatic,wearMode=WearMode.None,fuelUsage=FuelUsageMode.None,optimalThermals=true};
+            var build=catalog.Resolve("starter-hatch",catalog.Recipe("starter-hatch"));var rivalDriver=driver.Copy();rivalDriver.reactionSeconds=40;
+            var race=RaceSessionFactory.Create(build.spec,build.tune,driver,build.spec,build.tune,rivalDriver,402.336);
+            for(int tick=0;tick<20000&&!race.ResultReady;tick++)race.Step(new DriverInput{throttle=1});Check(race.playerWon,"Receipt fixtures use a real completed first-place pass");
+            foreach(var e in events){
+                var p=PlayerProfile.New(DateTime.UtcNow.Ticks);p.SelectedCar.vehicleId=e.opponent.spec.id;p.selectedVehicleId=e.opponent.spec.id;MechanicsOwnership.Ensure(p,catalog);p.cash=10000;p.reputation=1000;
+                if(!string.IsNullOrEmpty(e.prerequisite))p.careerWins.Add(e.prerequisite);
+                int cash=p.cash;var captured=UnityEngine.Object.Instantiate(e);string id="reward-"+e.stableId;
+                CareerProgression.Enter(p,id,p.SelectedCar.instanceId,captured,false);captured.cashWin+=9999;captured.firstWinBonus+=9999;captured.entryFee=0;
+                var restored=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(p));MechanicsOwnership.Ensure(restored,catalog);p=restored;
+                CareerProgression.Settle(p,id,race,false);Check(p.cash==cash-e.entryFee+e.cashWin+e.firstWinBonus,e.stableId+": captured terms survive reload and later definition changes");
+                int paid=p.cash;bool rejected=false;try{CareerProgression.Settle(p,id,race,false);}catch(InvalidOperationException){rejected=true;}Check(rejected&&p.cash==paid,e.stableId+": duplicate settlement cannot pay twice");
+                int rep=p.reputation;CareerProgression.Enter(p,id+"-repeat",p.SelectedCar.instanceId,e,false);CareerProgression.Settle(p,id+"-repeat",race,false);Check(p.cash==paid-e.entryFee+e.cashWin&&p.reputation==rep,e.stableId+": repeats never add first-win cash or reputation again");
+                UnityEngine.Object.DestroyImmediate(captured);
+            }
+            var after=new StringBuilder("event,fee,win,repeat_net,completed_loss,loss_net,first_bonus\n");foreach(var e in events.OrderBy(e=>e.reputationRequired).ThenBy(e=>e.stableId))after.AppendLine(string.Join(",",e.stableId,e.entryFee,e.cashWin,e.cashWin-e.entryFee,e.cashLoss,e.cashLoss-e.entryFee,e.firstWinBonus));
+            Directory.CreateDirectory("../reports/race-rewards-20261017");File.WriteAllText("../reports/race-rewards-20261017/after-matrix.csv",after.ToString(),new UTF8Encoding(false));
+            report.AppendLine("Checks: "+checks+" / failures: 0");File.WriteAllText("../reports/race-rewards-20261017/verification.txt",report.ToString(),new UTF8Encoding(false));
+        }
+        public static void AuditRaceRewards()
+        {
+            var catalog=MechanicsTransactions.Catalog();
+            var rows=new StringBuilder("event,name,tier,rep,prerequisite,fee,win,repeat_net,loss_net,first_bonus,rival_total_min,rival_total_max,finished_attempts\n");
+            foreach(var e in Resources.LoadAll<CareerEventDefinition>("Data/Events").OrderBy(e=>e.reputationRequired).ThenBy(e=>e.stableId)){
+                var times=new List<double>();
+                foreach(int seed in new[]{42,43}){
+                    var rival=CareerOpponents.Capture(e,catalog,1,seed);var player=rival.Create();
+                    player.driver.launch=LaunchMode.Automatic;player.driver.shifting=ShiftMode.Automatic;player.driver.reactionSeconds=.18;
+                    var race=new RaceSimulation(player,rival.Create(),e.distanceM,rival.behavior);
+                    for(int tick=0;tick<20000&&race.phase!=RacePhase.Finished;tick++)race.Step(new DriverInput{throttle=1});
+                    if(race.opponent.state.finished)times.Add(race.opponent.state.reaction+race.opponent.state.elapsed);
+                }
+                string Number(double value)=>value.ToString("F3",CultureInfo.InvariantCulture);
+                rows.AppendLine(string.Join(",",e.stableId,"\""+e.displayName+"\"",e.tier,e.reputationRequired,e.prerequisite,e.entryFee,e.cashWin,e.cashWin-e.entryFee,e.cashLoss-e.entryFee,e.firstWinBonus,times.Count==0?"DNF":Number(times.Min()),times.Count==0?"DNF":Number(times.Max()),times.Count));
+            }
+            Directory.CreateDirectory("../reports/race-rewards-20261017");
+            File.WriteAllText("../reports/race-rewards-20261017/current-matrix.csv",rows.ToString(),new UTF8Encoding(false));
+        }
+        public static void ProbeStarterFunding()
+        {
+            var cat=MechanicsTransactions.Catalog();var e=Resources.LoadAll<CareerEventDefinition>("Data/Events").Single(x=>x.stableId=="club-run");
+            var rows=new StringBuilder("head,tires,gearbox,clutch,launch,shift,player_total,rival_total,win\n");
+            foreach(int tires in new[]{0,1,2})foreach(int launch in new[]{3200,4500}){
+                var costs=Resources.Load<OperatingPolicyDefinition>("Data/Economy/OperatingPolicy").policy;var values=Resources.Load<ValuationPolicyDefinition>("Data/Economy/ValuationPolicy").policy;var business=Resources.Load<GarageBusinessPolicyDefinition>("Data/Economy/GarageBusinessPolicy").policy;
+                var sample=new Scenario("fresh-career","starter-hatch",cat,costs,values,business,new StringBuilder(),DateTime.UtcNow.Ticks);
+                // Diagnostic budget only, never used by the funded acceptance scenario.
+                sample.p.cash=100000;foreach(var c in new[]{PartCategory.Body,PartCategory.Gearbox,PartCategory.Clutch,PartCategory.HeadIntake,PartCategory.Tires}){
+                    int rank=c==PartCategory.Tires?tires:1;if(rank>0)sample.Buy(c,rank);
+                }
+                var p=sample.p;
+                PartOperations.Remove(p,p.SelectedCar.instanceId,PartCategory.Interior);PartOperations.Remove(p,p.SelectedCar.instanceId,PartCategory.Accessories);p.SelectedCar.tune.launchRpm=launch;var b=MechanicsOwnership.Resolve(p,p.SelectedCar,cat);var rival=CareerOpponents.Capture(e,cat);
+                var race=RaceSessionFactory.CreateCaptured(b.spec,b.tune,p.driving,rival,e.distanceM,p.parts.Where(i=>i.ownerId==p.SelectedCar.instanceId||i.ownerId==p.SelectedCar.engineAssemblyId));race.player.SetFluids(p.SelectedCar.fluids);race.player.ApplyRaceTemperatures(p.driving.raceTemperatures,0,DateTime.UtcNow.Ticks);
+                for(int tick=0;tick<25000&&race.phase!=RacePhase.Finished;tick++)race.Step(new DriverInput());
+                rows.AppendLine(string.Join(",",1,tires,1,1,launch,b.tune.shiftRpm,(race.player.state.elapsed+race.player.state.reaction).ToString("F3",CultureInfo.InvariantCulture),(race.opponent.state.elapsed+race.opponent.state.reaction).ToString("F3",CultureInfo.InvariantCulture),race.playerWon));
+            }
+            File.WriteAllText("../reports/race-rewards-20261017/starter-diagnostic.csv",rows.ToString(),new UTF8Encoding(false));
+        }
         [MenuItem("DragLab/Prepare 3G Economy Calibration")]
         public static void Prepare()
         {
@@ -34,11 +126,21 @@ namespace DragLab.Editor
                 ledger.AppendLine(string.Join(",",name,steps,"\""+action.Replace("\"","'")+"\"",((now-start)/(double)TimeSpan.TicksPerMinute).ToString("F3",CultureInfo.InvariantCulture),before,p.cash,p.cash-before,fuel.ToString("F6",CultureInfo.InvariantCulture),Fuel(p).ToString("F6",CultureInfo.InvariantCulture),p.parts.Count,p.parts.Count(i=>i.condition.failed),p.garageLevel,p.reputation));
             }
             public void Pay(PaymentRequest r){var q=PaidEconomy.Quote(p,cat,costs,values,r,now);var normalized=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(p));MechanicsOwnership.Ensure(normalized,cat);if(JsonUtility.ToJson(p)!=JsonUtility.ToJson(normalized)){string folder=Path.Combine(Directory.GetParent(Application.dataPath).Parent.FullName,"reports/phases/3g");File.WriteAllText(Path.Combine(folder,"quote-before.json"),JsonUtility.ToJson(p));File.WriteAllText(Path.Combine(folder,"quote-normalized.json"),JsonUtility.ToJson(normalized));}Apply("Pay "+r.kind+" / $"+q.Cost,a=>PaidEconomy.Pay(a,cat,costs,values,q,now,r.kind==PaymentKind.Car?string.IsNullOrEmpty(r.offer.listingId)?r.offer:VehicleListings.Find(a,r.offer.listingId):null));}
+            public int Price(PartCategory c,int rank)=>PaidEconomy.Preview(p,cat,costs,values,new PaymentRequest{kind=PaymentKind.Part,carId=p.SelectedCar.instanceId,targetId=cat.Id(p.SelectedCar.vehicleId,c,rank),install=true},now).cost;
             public void Buy(PartCategory c,int rank){Pay(new PaymentRequest{kind=PaymentKind.Part,carId=p.SelectedCar.instanceId,targetId=cat.Id(p.SelectedCar.vehicleId,c,rank),install=true});}
             RunCheckpoint Snapshot(string id,string owner,long tick,CarSimulation car,bool closed=false,string reason=""){var result=RunPersistence.Capture(id,owner,tick,car,closed,reason);result.thermalUtcTicks=now;return result;}
             public void RecoverTo(int cash){int guard=0;while(p.cash<cash){if(++guard>100)throw new InvalidOperationException("Unbounded recovery route.");Apply("Start recovery",a=>PaidEconomy.StartRecovery(a,costs,now));var job=p.recoveryWork;now=job.readyUtcTicks;Apply("Claim recovery",a=>PaidEconomy.ClaimRecovery(a,job.id,now));}}
             public RaceSimulation Race(CareerEventDefinition e,bool forceLoss=false)
             {
+                // The longer, slower-income route must budget for real service rather
+                // than assuming the old short campaign's untouched fuel/condition.
+                if(name=="fresh-career"){
+                    if(p.SelectedCar.fuel.litres<3)Pay(new PaymentRequest{kind=PaymentKind.Fuel,carId=p.SelectedCar.instanceId,litres=10});
+                    if(p.parts.Any(i=>i.ownerId==p.SelectedCar.engineAssemblyId&&EngineRebuilds.Scope(cat.Find(i.definitionId).category)&&i.condition.health<.88f)){
+                        var service=PaidEconomy.Quote(p,cat,costs,values,new PaymentRequest{kind=PaymentKind.Rebuild,carId=p.SelectedCar.instanceId},now);
+                        if(p.cash>=service.Cost+30){Pay(new PaymentRequest{kind=PaymentKind.Rebuild,carId=p.SelectedCar.instanceId});var job=p.SelectedCar.engineRebuild;now=job.readyUtcTicks;Apply("Collect paid preventive rebuild",a=>EngineRebuilds.Collect(a,a.SelectedCar.instanceId,job.id,now));}
+                    }
+                }
                 var car=p.SelectedCar;var b=MechanicsOwnership.Resolve(p,car,cat);if(!b.Drivable)throw new InvalidOperationException("Unavailable before race: "+string.Join("; ",b.errors));
                 var rival=CareerOpponents.Capture(e,cat);if(forceLoss)rival.driver.reactionSeconds=0;var race=RaceSessionFactory.CreateCaptured(b.spec,b.tune,p.driving,rival,e.distanceM,p.parts.FindAll(i=>i.ownerId==car.instanceId||i.ownerId==car.engineAssemblyId));race.player.SetFluids(car.fluids);race.player.SetMassInputs(b.tune.driverMassKg,b.tune.payloadMassKg,b.tune.payloadPositionM,b.tune.payloadHeightM,car.fuel.litres);race.player.state.fuelUsedLitres=car.fuel.cumulativeUsedLitres;
                 race.player.ApplyRaceTemperatures(p.driving.raceTemperatures,car.thermalUtcTicks,now);
@@ -66,23 +168,41 @@ namespace DragLab.Editor
             Func<VehicleDefinition,VehicleOffer> offer=v=>new VehicleOffer{model=v.spec.id,price=v.purchasePrice,reputation=v.reputationRequired,stock=v.CreateStockTune()};
             var opening=events.First(e=>e.stableId=="first-pass");
             var earned=scenario("fresh-career","starter-hatch");int attempts=0;
-            check(earned.Race(opening).playerWon,"Controlled paid-starter funding scenario wins against its recorded driver seed.");earned.Buy(PartCategory.Tires,1);
-            int starterBudget=new[]{PartCategory.HeadIntake,PartCategory.Tires,PartCategory.Body,PartCategory.Gearbox}.Sum(c=>cat.Find(cat.Id("starter-hatch",c,3)).price)+cat.Find(cat.Id("starter-hatch",PartCategory.Clutch,1)).price+500;
-            while(earned.p.cash<starterBudget){if(earned.p.cash>=600&&MechanicsOwnership.Definitions(earned.p,earned.p.SelectedCar)[PartCategory.HeadIntake]==cat.Id("starter-hatch",PartCategory.HeadIntake,0))earned.Buy(PartCategory.HeadIntake,1);var pass=earned.Race(opening);check(pass.player.state.finished&&!pass.player.state.disqualified,"Incremental starter funding uses real completed passes, retained wear and actual win/loss payouts.");if(++attempts>30)throw new InvalidOperationException("Starter funding stalled.");}
-            earned.Buy(PartCategory.Clutch,1);foreach(var c in new[]{PartCategory.HeadIntake,PartCategory.Tires,PartCategory.Body,PartCategory.Gearbox})earned.Buy(c,3);
+            earned.Apply("Strip optional cabin mass; retain original components",p=>{PartOperations.Remove(p,p.SelectedCar.instanceId,PartCategory.Interior);PartOperations.Remove(p,p.SelectedCar.instanceId,PartCategory.Accessories);});
+            check(earned.Race(opening).playerWon,"Controlled paid-starter funding scenario wins against its recorded driver seed.");earned.Buy(PartCategory.Body,1);
+            int StarterBudget(){var map=MechanicsOwnership.Definitions(earned.p,earned.p.SelectedCar);return new[]{PartCategory.HeadIntake,PartCategory.Tires,PartCategory.Body,PartCategory.Gearbox}.Where(c=>map[c]!=cat.Id("starter-hatch",c,3)).Sum(c=>earned.Price(c,3))+(map[PartCategory.Clutch]==cat.Id("starter-hatch",PartCategory.Clutch,1)?0:earned.Price(PartCategory.Clutch,1))+500;}
+            int starterBudget=StarterBudget();var club=events.First(e=>e.stableId=="club-run");bool triedClub=false,launchTuned=false;
+            int starterAttempts=(int)Math.Ceiling((starterBudget+3600)/(double)(opening.cashWin-opening.entryFee))+10;
+            while(earned.p.cash<StarterBudget()){
+                var fitted=MechanicsOwnership.Definitions(earned.p,earned.p.SelectedCar);
+                if(earned.p.cash>=earned.Price(PartCategory.Gearbox,1)&&fitted[PartCategory.Gearbox]==cat.Id("starter-hatch",PartCategory.Gearbox,0))earned.Buy(PartCategory.Gearbox,1);
+                else if(fitted[PartCategory.Gearbox]!=cat.Id("starter-hatch",PartCategory.Gearbox,0)&&earned.p.cash>=earned.Price(PartCategory.Clutch,1)&&fitted[PartCategory.Clutch]==cat.Id("starter-hatch",PartCategory.Clutch,0))earned.Buy(PartCategory.Clutch,1);
+                else if(earned.p.cash>=earned.Price(PartCategory.HeadIntake,1)&&fitted[PartCategory.Gearbox]!=cat.Id("starter-hatch",PartCategory.Gearbox,0)&&fitted[PartCategory.HeadIntake]==cat.Id("starter-hatch",PartCategory.HeadIntake,0))earned.Buy(PartCategory.HeadIntake,1);
+                else if((earned.p.careerWins.Contains(club.stableId)||fitted[PartCategory.Gearbox]==cat.Id("starter-hatch",PartCategory.Gearbox,3))&&fitted[PartCategory.HeadIntake]!=cat.Id("starter-hatch",PartCategory.HeadIntake,3)&&earned.p.cash>=earned.Price(PartCategory.HeadIntake,3)){earned.Buy(PartCategory.HeadIntake,3);triedClub=false;}
+                else if(earned.p.cash>=earned.Price(PartCategory.Gearbox,3)&&triedClub&&!earned.p.careerWins.Contains(club.stableId)&&fitted[PartCategory.Gearbox]!=cat.Id("starter-hatch",PartCategory.Gearbox,3)){earned.Buy(PartCategory.Gearbox,3);triedClub=false;}
+                else if(earned.p.cash>=earned.Price(PartCategory.Body,1)&&triedClub&&!earned.p.careerWins.Contains(club.stableId)&&fitted[PartCategory.Body]==cat.Id("starter-hatch",PartCategory.Body,0)){earned.Buy(PartCategory.Body,1);triedClub=false;}
+                fitted=MechanicsOwnership.Definitions(earned.p,earned.p.SelectedCar);
+                bool ready=fitted[PartCategory.HeadIntake]!=cat.Id("starter-hatch",PartCategory.HeadIntake,0)&&fitted[PartCategory.Clutch]!=cat.Id("starter-hatch",PartCategory.Clutch,0)&&fitted[PartCategory.Gearbox]!=cat.Id("starter-hatch",PartCategory.Gearbox,0);
+                if(ready&&!launchTuned){earned.Apply("Apply supported launch target",p=>{var draft=new TuneDraft(p.SelectedCar,p.revision);draft.values.launchRpm=4500;draft.ApplyTo(p);});launchTuned=true;}
+                var funding=earned.p.careerWins.Contains(club.stableId)||ready&&!triedClub?club:opening;if(funding==club)triedClub=true;
+                var pass=earned.Race(funding);check(pass.player.state.finished&&!pass.player.state.disqualified,"Incremental funding advances to the more profitable verified event while retaining wear and costs.");
+                if(++attempts>starterAttempts)throw new InvalidOperationException("Starter funding stalled under the authored income budget.");
+            }
+            if(MechanicsOwnership.Definitions(earned.p,earned.p.SelectedCar)[PartCategory.Clutch]!=cat.Id("starter-hatch",PartCategory.Clutch,1))earned.Buy(PartCategory.Clutch,1);
+            foreach(var c in new[]{PartCategory.HeadIntake,PartCategory.Tires,PartCategory.Body,PartCategory.Gearbox})if(MechanicsOwnership.Definitions(earned.p,earned.p.SelectedCar)[c]!=cat.Id("starter-hatch",c,3))earned.Buy(c,3);
             earned.Apply("Apply tested starter gearing / launch",p=>{var draft=new TuneDraft(p.SelectedCar,p.revision);draft.values.finalDrive=3.4f;draft.values.launchRpm=5400;draft.ApplyTo(p);});
             foreach(string id in new[]{"club-run","coupe-rival"})check(earned.Race(events.First(e=>e.stableId==id)).playerWon,"Earned direct-rank starter progresses "+id);
-            var hero=vehicles.First(v=>v.spec.id=="v8-muscle");int heroPrice=PaidEconomy.DealerPrice(cat,costs,values,offer(hero));int upgradePrice=new[]{PartCategory.HeadIntake,PartCategory.Tires,PartCategory.Body,PartCategory.Gearbox}.Sum(c=>cat.Find(cat.Id(hero.spec.id,c,3)).price)+new[]{PartCategory.Pistons,PartCategory.Rods,PartCategory.Crankshaft,PartCategory.Clutch,PartCategory.FuelSystem,PartCategory.Ignition}.Sum(c=>cat.Find(cat.Id(hero.spec.id,c,1)).price);
-            int firstHeroUpgrades=cat.Find(cat.Id(hero.spec.id,PartCategory.HeadIntake,1)).price+cat.Find(cat.Id(hero.spec.id,PartCategory.Tires,1)).price;
-            attempts=0;while(earned.p.cash<heroPrice+firstHeroUpgrades+500){check(earned.Race(events.First(e=>e.stableId=="club-run")).playerWon,"Reliable earlier club event funds second build.");if(++attempts>40)throw new InvalidOperationException("Hero funding stalled.");}
-            earned.Pay(new PaymentRequest{kind=PaymentKind.Car,offer=offer(hero)});earned.Buy(PartCategory.HeadIntake,1);earned.Buy(PartCategory.Tires,1);
+            var hero=vehicles.First(v=>v.spec.id=="v8-muscle");int heroPrice=PaidEconomy.DealerPrice(cat,costs,values,offer(hero));
+            int firstHeroUpgrades=(int)Math.Ceiling((cat.Find(cat.Id(hero.spec.id,PartCategory.HeadIntake,1)).price+cat.Find(cat.Id(hero.spec.id,PartCategory.Tires,2)).price)*1.1);
+            var fundingRival=events.First(e=>e.stableId=="coupe-rival");int heroAttempts=(int)Math.Ceiling(Math.Max(0,heroPrice+firstHeroUpgrades+500-earned.p.cash)/(double)(fundingRival.cashWin-fundingRival.entryFee))+10;
+            attempts=0;while(earned.p.cash<heroPrice+firstHeroUpgrades+500){check(earned.Race(fundingRival).playerWon,"Reliable higher-paying cleared rival funds the second build.");if(++attempts>heroAttempts)throw new InvalidOperationException("Hero funding stalled under the authored income budget.");}
+            earned.Pay(new PaymentRequest{kind=PaymentKind.Car,offer=offer(hero)});earned.Buy(PartCategory.HeadIntake,1);earned.Buy(PartCategory.Tires,2);
             check(earned.Race(events.First(e=>e.stableId=="local-final")).playerWon,"Funded second build wins local championship.");
-            // Explicitly pay for more grip before the D/C rivals: fully cooled starts
-            // no longer inherit warm tires from previous passes as an invisible benefit.
-            earned.Buy(PartCategory.Tires,2);
+            // The second build already paid for rank-2 tires before racing; fully
+            // cooled D/C starts cannot inherit warm tires as an invisible benefit.
             bool strengthened=false;
             foreach(var e in events.Where(e=>e.stableId.StartsWith("ladder-")).OrderBy(e=>e.reputationRequired)){
-                if(!strengthened&&e.reputationRequired>=44){while(earned.p.cash<upgradePrice+300)check(earned.Race(events.First(x=>x.stableId=="ladder-c-rival")).playerWon,"Earlier tier funds safe high-output build.");
+                if(!strengthened&&e.reputationRequired>=44){while(earned.p.cash<new[]{PartCategory.HeadIntake,PartCategory.Tires,PartCategory.Body,PartCategory.Gearbox}.Sum(c=>earned.Price(c,3))+new[]{PartCategory.Pistons,PartCategory.Rods,PartCategory.Crankshaft,PartCategory.Clutch,PartCategory.FuelSystem,PartCategory.Ignition}.Sum(c=>earned.Price(c,1))+300)check(earned.Race(events.First(x=>x.stableId=="ladder-c-rival")).playerWon,"Earlier tier funds safe high-output build.");
                     foreach(var c in new[]{PartCategory.Pistons,PartCategory.Rods,PartCategory.Crankshaft,PartCategory.Clutch,PartCategory.FuelSystem,PartCategory.Ignition})earned.Buy(c,1);
                     foreach(var c in new[]{PartCategory.HeadIntake,PartCategory.Tires,PartCategory.Body,PartCategory.Gearbox})earned.Buy(c,3);
                     earned.Apply("Strip optional interior/accessories; retain originals",p=>{PartOperations.Remove(p,p.SelectedCar.instanceId,PartCategory.Interior);PartOperations.Remove(p,p.SelectedCar.instanceId,PartCategory.Accessories);});strengthened=true;}

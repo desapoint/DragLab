@@ -1,0 +1,10 @@
+Unity 6000.6.4f1 Windows development build; successful BuildPlayerOnly.
+
+Game/Builds/Windows/DragLab.exe
+SHA256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+
+Game/Builds/Windows/DragLab_Data/Managed/Assembly-CSharp.dll
+SHA256 057d4c2696cb2b2ee605b88894f7a0530df9507ea3e0417ea1c301072a07ec51
+
+Game/Builds/Windows/DragLab_Data/resources.assets
+SHA256 aa92eb035cbff4c87757a94b3a4f92842bce966e2959a5bd7e86a9741a600624

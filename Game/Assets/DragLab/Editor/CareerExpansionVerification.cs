@@ -25,12 +25,12 @@ namespace DragLab.Editor
                 if(AssetDatabase.LoadAssetAtPath<CareerEventDefinition>(path)!=null){previous=id;continue;}
                 var e=ScriptableObject.CreateInstance<CareerEventDefinition>();e.stableId=id;e.tier=tiers[t];e.eventKind=k==0?"Qualification":"Rival";e.displayName=tiers[t]+" "+e.eventKind;e.rivalName=new[]{"Mika","Jules","Ash","Reed","Rowan","Vale","Morgan"}[t];e.prerequisite=previous;e.reputationRequired=12+t*8+k*4;
                 e.opponent=cars.First(v=>v.spec.id==models[t]);e.opponentTune=e.opponent.CreateStockTune();e.opponentTune.engineLevel=k==0?0:Math.Min(3,t/2);e.opponentTune.tireLevel=Math.Min(3,t/2);e.opponentTune.weightLevel=Math.Min(3,t/3);
-                e.entryFee=50+t*25;e.cashWin=700+t*200;e.cashLoss=100+t*30;e.reputationWin=4;e.firstWinBonus=300+t*100;
-                AssetDatabase.CreateAsset(e,path);previous=id;
+                e.entryFee=50+t*25;e.reputationWin=4;
+                EconomyBalanceVerification.SetRaceRewards(e);AssetDatabase.CreateAsset(e,path);previous=id;
             }
             for(int i=0;i<3;i++){
                 string path="Assets/DragLab/Resources/Data/Events/30-special-"+i+".asset";if(AssetDatabase.LoadAssetAtPath<CareerEventDefinition>(path)!=null)continue;
-                var e=ScriptableObject.CreateInstance<CareerEventDefinition>();e.stableId="special-"+i;e.tier="C";e.eventKind="Restricted challenge";e.displayName=new[]{"Front-drive club / under 2 litres","Turbo coupe showcase","Heavy AWD exhibition"}[i];e.rivalName="Reed";e.opponent=cars.First(v=>v.spec.id==new[]{"starter-hatch","sport-coupe","utility-pickup"}[i]);e.opponentTune=e.opponent.CreateStockTune();e.reputationRequired=12;e.prerequisite="local-final";e.restrictDrive=true;e.requiredDrive=new[]{DriveType.FWD,DriveType.RWD,DriveType.AWD}[i];e.maximumDisplacementL=i==0?2:0;e.turboOnly=i==1;e.minimumMassKg=i==2?1700:0;e.cashWin=950;e.cashLoss=150;e.firstWinBonus=400;e.reputationWin=2;e.entryFee=75;AssetDatabase.CreateAsset(e,path);
+                var e=ScriptableObject.CreateInstance<CareerEventDefinition>();e.stableId="special-"+i;e.tier="C";e.eventKind="Restricted challenge";e.displayName=new[]{"Front-drive club / under 2 litres","Turbo coupe showcase","Heavy AWD exhibition"}[i];e.rivalName="Reed";e.opponent=cars.First(v=>v.spec.id==new[]{"starter-hatch","sport-coupe","utility-pickup"}[i]);e.opponentTune=e.opponent.CreateStockTune();e.reputationRequired=12;e.prerequisite="local-final";e.restrictDrive=true;e.requiredDrive=new[]{DriveType.FWD,DriveType.RWD,DriveType.AWD}[i];e.maximumDisplacementL=i==0?2:0;e.turboOnly=i==1;e.minimumMassKg=i==2?1700:0;e.reputationWin=2;e.entryFee=75;EconomyBalanceVerification.SetRaceRewards(e);AssetDatabase.CreateAsset(e,path);
             }
             AssetDatabase.SaveAssets();
         }

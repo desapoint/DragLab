@@ -1,0 +1,22 @@
+PASS: 01-FirstPass.asset — only rewards / explicit zero-default serialization changed
+PASS: 02-ClubRun.asset — only rewards / explicit zero-default serialization changed
+PASS: 03-CoupeRival.asset — only rewards / explicit zero-default serialization changed
+PASS: 04-LocalFinal.asset — only rewards / explicit zero-default serialization changed
+PASS: 10-ladder-f-qualifier.asset — only rewards / explicit zero-default serialization changed
+PASS: 11-ladder-f-rival.asset — only rewards / explicit zero-default serialization changed
+PASS: 12-ladder-e-qualifier.asset — only rewards / explicit zero-default serialization changed
+PASS: 13-ladder-e-rival.asset — only rewards / explicit zero-default serialization changed
+PASS: 14-ladder-d-qualifier.asset — only rewards / explicit zero-default serialization changed
+PASS: 15-ladder-d-rival.asset — only rewards / explicit zero-default serialization changed
+PASS: 16-ladder-c-qualifier.asset — only rewards / explicit zero-default serialization changed
+PASS: 17-ladder-c-rival.asset — only rewards / explicit zero-default serialization changed
+PASS: 18-ladder-b-qualifier.asset — only rewards / explicit zero-default serialization changed
+PASS: 19-ladder-b-rival.asset — only rewards / explicit zero-default serialization changed
+PASS: 20-ladder-a-qualifier.asset — only rewards / explicit zero-default serialization changed
+PASS: 21-ladder-a-rival.asset — only rewards / explicit zero-default serialization changed
+PASS: 22-ladder-s-qualifier.asset — only rewards / explicit zero-default serialization changed
+PASS: 23-ladder-s-rival.asset — only rewards / explicit zero-default serialization changed
+PASS: 30-special-0.asset — only rewards / explicit zero-default serialization changed
+PASS: 30-special-1.asset — only rewards / explicit zero-default serialization changed
+PASS: 30-special-2.asset — only rewards / explicit zero-default serialization changed
+Checks: 21 / failures: 0

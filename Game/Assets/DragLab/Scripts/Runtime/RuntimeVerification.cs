@@ -52,7 +52,8 @@ namespace DragLab.Runtime
         }
         void Update()
         {
-            float budget=Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-durability-only")>=0?600:180;
+            float budget=Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-durability-only")>=0?600:
+                Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-balance-only")>=0?300:180;
             if (startedAt > 0 && Time.realtimeSinceStartup - startedAt > budget)
             {
                 File.WriteAllText(Path.Combine(output, "runtime-verification.txt"), "FAIL: Probe exceeded "+budget+" seconds.\n");
@@ -533,6 +534,8 @@ namespace DragLab.Runtime
             float deadline = Time.realtimeSinceStartup + 105;
             while (game.Race.phase != RacePhase.Finished && Time.realtimeSinceStartup < deadline) yield return null;
             Check(game.Race.phase == RacePhase.Finished, "Run terminates before timeout.");
+            while(game.ResultSettlementPending&&Time.realtimeSinceStartup<deadline)yield return null;
+            Check(!game.ResultSettlementPending,"Durable finish settlement completes before payout assertions.");
             yield return null;
         }
         IEnumerator Capture(string name)

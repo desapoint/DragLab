@@ -1,0 +1,22 @@
+event,name,tier,rep,prerequisite,fee,win,repeat_net,loss_net,first_bonus,rival_total_min,rival_total_max,finished_attempts
+first-pass,"First pass",F,0,,0,500,500,100,0,19.379,19.577,2
+club-run,"Club run",F,2,,0,700,700,100,0,17.476,17.664,2
+coupe-rival,"Coupe rival",F,4,,0,1000,1000,100,0,16.806,16.973,2
+local-final,"Local final",F,8,,0,1600,1600,100,0,15.053,15.228,2
+ladder-f-qualifier,"F Qualification",F,12,local-final,50,700,650,50,300,19.363,19.566,2
+special-0,"Front-drive club / under 2 litres",C,12,local-final,75,950,875,75,400,18.273,18.461,2
+special-1,"Turbo coupe showcase",C,12,local-final,75,950,875,75,400,16.682,16.846,2
+special-2,"Heavy AWD exhibition",C,12,local-final,75,950,875,75,400,17.385,17.581,2
+ladder-f-rival,"F Rival",F,16,ladder-f-qualifier,50,700,650,50,300,19.540,19.742,2
+ladder-e-qualifier,"E Qualification",E,20,ladder-f-rival,75,900,825,55,400,18.368,18.564,2
+ladder-e-rival,"E Rival",E,24,ladder-e-qualifier,75,900,825,55,400,18.648,18.835,2
+ladder-d-qualifier,"D Qualification",D,28,ladder-e-rival,100,1100,1000,60,500,16.742,16.964,2
+ladder-d-rival,"D Rival",D,32,ladder-d-qualifier,100,1100,1000,60,500,15.908,16.073,2
+ladder-c-qualifier,"C Qualification",C,36,ladder-d-rival,125,1300,1175,65,600,16.776,17.132,2
+ladder-c-rival,"C Rival",C,40,ladder-c-qualifier,125,1300,1175,65,600,16.326,16.683,2
+ladder-b-qualifier,"B Qualification",B,44,ladder-c-rival,150,1500,1350,70,700,15.248,15.440,2
+ladder-b-rival,"B Rival",B,48,ladder-b-qualifier,150,1500,1350,70,700,14.200,14.388,2
+ladder-a-qualifier,"A Qualification",A,52,ladder-b-rival,175,1700,1525,75,800,14.841,15.030,2
+ladder-a-rival,"A Rival",A,56,ladder-a-qualifier,175,1700,1525,75,800,13.954,14.145,2
+ladder-s-qualifier,"S Qualification",S,60,ladder-a-rival,200,1900,1700,80,900,15.294,15.490,2
+ladder-s-rival,"S Rival",S,64,ladder-s-qualifier,200,1900,1700,80,900,13.699,14.018,2

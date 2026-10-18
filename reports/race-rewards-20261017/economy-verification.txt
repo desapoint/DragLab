@@ -1,0 +1,186 @@
+Full economy validation: validation-f64bba61f6784c13b98c481511c724f2
+Detailed per-definition no-arbitrage lines omitted here; raw local run retained.
+PASS: Controlled paid-starter funding scenario wins against its recorded driver seed.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Incremental funding advances to the more profitable verified event while retaining wear and costs.
+PASS: Earned direct-rank starter progresses club-run
+PASS: Earned direct-rank starter progresses coupe-rival
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Reliable higher-paying cleared rival funds the second build.
+PASS: Funded second build wins local championship.
+PASS: Funded qualification/rival path: ladder-f-qualifier
+PASS: Funded qualification/rival path: ladder-f-rival
+PASS: Funded qualification/rival path: ladder-e-qualifier
+PASS: Funded qualification/rival path: ladder-e-rival
+PASS: Funded qualification/rival path: ladder-d-qualifier
+PASS: Funded qualification/rival path: ladder-d-rival
+PASS: Funded qualification/rival path: ladder-c-qualifier
+PASS: Funded qualification/rival path: ladder-c-rival
+PASS: Earlier tier funds safe high-output build.
+PASS: Earlier tier funds safe high-output build.
+PASS: Earlier tier funds safe high-output build.
+PASS: Funded qualification/rival path: ladder-b-qualifier
+PASS: Funded qualification/rival path: ladder-b-rival
+PASS: Funded qualification/rival path: ladder-a-qualifier
+PASS: Funded qualification/rival path: ladder-a-rival
+PASS: Funded qualification/rival path: ladder-s-qualifier
+PASS: Funded qualification/rival path: ladder-s-rival
+PASS: Fresh-save full main ladder viable without injected income or physical resource bypass.
+PASS: Completed real loss retains records and authored consolation.
+PASS: Completed real loss retains records and authored consolation.
+PASS: Completed real loss retains records and authored consolation.
+PASS: Completed real loss retains records and authored consolation.
+PASS: Completed real loss retains records and authored consolation.
+PASS: Completed real loss retains records and authored consolation.
+PASS: Completed real loss retains records and authored consolation.
+PASS: Completed real loss retains records and authored consolation.
+PASS: Loss route preserves physical costs without granting REP.
+PASS: Zero cash/tank recovers via bounded work and paid small fill; no parts healed.
+PASS: Accelerated end-of-life abuse produces actual mechanical DNF without payout.
+PASS: Paid repair/replacement preserves failed original and restores a real winning car.
+PASS: Downgrade/reuse costs no cash and restores actual OEM part identity.
+PASS: Actual timed rebuild increases owned damaged engine sale value beyond paid cost.
+PASS: Assembly sale retains chassis/fuel and replaced failed pack.
+PASS: Eight-hour capped income funds a real $600 component.
+PASS: Lowest unrestricted replacement remains below recovery ceiling.
+PASS: Empty garage funds paid replacement without losing retained engine.
+PASS: No instantaneous new-car/assembly-part-out trade profit: city-three
+PASS: No instantaneous new-car/assembly-part-out trade profit: juniper-club
+PASS: No instantaneous new-car/assembly-part-out trade profit: juniper-economy
+PASS: No instantaneous new-car/assembly-part-out trade profit: kestrel-track
+PASS: No instantaneous new-car/assembly-part-out trade profit: rally-sedan
+PASS: No instantaneous new-car/assembly-part-out trade profit: sport-coupe
+PASS: No instantaneous new-car/assembly-part-out trade profit: starter-hatch
+PASS: No instantaneous new-car/assembly-part-out trade profit: super-v8
+PASS: No instantaneous new-car/assembly-part-out trade profit: timber-diesel
+PASS: No instantaneous new-car/assembly-part-out trade profit: timber-diesel-tow
+PASS: No instantaneous new-car/assembly-part-out trade profit: touring-six
+PASS: No instantaneous new-car/assembly-part-out trade profit: utility-pickup
+PASS: No instantaneous new-car/assembly-part-out trade profit: v8-muscle
+PASS: None fuel usage preserves real tank mass: city-three
+PASS: Reduced consumption remains approximately 25% through actual race/shutdown: city-three
+PASS: None fuel usage preserves real tank mass: juniper-club
+PASS: Reduced consumption remains approximately 25% through actual race/shutdown: juniper-club
+PASS: None fuel usage preserves real tank mass: juniper-economy
+PASS: Reduced consumption remains approximately 25% through actual race/shutdown: juniper-economy
+PASS: None fuel usage preserves real tank mass: kestrel-track
+PASS: Reduced consumption remains approximately 25% through actual race/shutdown: kestrel-track
+PASS: None fuel usage preserves real tank mass: rally-sedan
+PASS: Reduced consumption remains approximately 25% through actual race/shutdown: rally-sedan
+PASS: None fuel usage preserves real tank mass: sport-coupe
+PASS: Reduced consumption remains approximately 25% through actual race/shutdown: sport-coupe
+PASS: None fuel usage preserves real tank mass: starter-hatch
+PASS: Reduced consumption remains approximately 25% through actual race/shutdown: starter-hatch
+PASS: None fuel usage preserves real tank mass: super-v8
+PASS: Reduced consumption remains approximately 25% through actual race/shutdown: super-v8
+PASS: None fuel usage preserves real tank mass: timber-diesel
+PASS: Reduced consumption remains approximately 25% through actual race/shutdown: timber-diesel
+PASS: None fuel usage preserves real tank mass: timber-diesel-tow
+PASS: Reduced consumption remains approximately 25% through actual race/shutdown: timber-diesel-tow
+PASS: None fuel usage preserves real tank mass: touring-six
+PASS: Reduced consumption remains approximately 25% through actual race/shutdown: touring-six
+PASS: None fuel usage preserves real tank mass: utility-pickup
+PASS: Reduced consumption remains approximately 25% through actual race/shutdown: utility-pickup
+PASS: None fuel usage preserves real tank mass: v8-muscle
+PASS: Reduced consumption remains approximately 25% through actual race/shutdown: v8-muscle
+PASS: Previously raced job snapshot survives 20 JSON transaction roundtrips without false wear/quantity change.
+PASS: Numeric snapshot fix still rejects meaningful same-revision cash change atomically.
+PASS: Numeric snapshot fix still rejects meaningful same-revision fuel change atomically.
+PASS: Numeric snapshot fix still rejects meaningful same-revision health change atomically.
+PASS: Numeric snapshot fix still rejects meaningful same-revision failure change atomically.
+PASS: Funded full-loop profile survives real disk persistence with old clock guard.
+Checks: 2452
+Ledger rows: 631

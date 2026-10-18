@@ -100,11 +100,18 @@ MonoBehaviour:
     wheelDiameter: 0
     wheelWidth: 0
     wheelMass: 0
+    frontWheelDiameter: 0
+    rearWheelDiameter: 0
+    frontWheelWidth: 0
+    rearWheelWidth: 0
+    frontTirePressurePsi: 0
+    rearTirePressurePsi: 0
     coldStart: 0
     transmissionUpgrade: 0
     flywheelMass: 0
     awd:
       mode: 0
+      centerSpeedRatio: 0
       torqueBiasRatio: 3
       centerPreloadNm: 35
       frontBias: 0.5
@@ -156,13 +163,13 @@ MonoBehaviour:
   distanceM: 402.336
   reputationRequired: 48
   cashWin: 1500
-  cashLoss: 220
+  cashLoss: 75
   reputationWin: 4
   tier: B
   eventKind: Rival
   prerequisite: ladder-b-qualifier
   entryFee: 150
-  firstWinBonus: 700
+  firstWinBonus: 375
   minimumHp: 0
   maximumHp: 0
   maximumDisplacementL: 0

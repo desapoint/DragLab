@@ -1,0 +1,12 @@
+﻿3G actual Windows zero-cash fuel recovery / race / worn-state purchase / job.
+PASS: Balanced work button captures $250 / real 60-second deadline.
+PASS: Work pays once and leaves empty physical tank unchanged.
+PASS: Actual small-refill recovery button pays $2 for one litre.
+PASS: Each real win persists the authored payout and physical costs while saving for an upgrade.
+PASS: Each real win persists the authored payout and physical costs while saving for an upgrade.
+PASS: Each real win persists the authored payout and physical costs while saving for an upgrade.
+PASS: Saved race income pays the actual stock/express-inclusive post-race quote and retains the original part.
+PASS: Previously driven job snapshot survives actual disk reload.
+PASS: Previously driven car's job pays/release once without false condition changes.
+PASS: No runtime / GUI / audio errors.
+Runtime errors: 0

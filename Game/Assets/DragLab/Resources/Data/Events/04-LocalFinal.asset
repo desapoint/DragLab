@@ -79,11 +79,18 @@ MonoBehaviour:
     wheelDiameter: 0
     wheelWidth: 0
     wheelMass: 0
+    frontWheelDiameter: 0
+    rearWheelDiameter: 0
+    frontWheelWidth: 0
+    rearWheelWidth: 0
+    frontTirePressurePsi: 0
+    rearTirePressurePsi: 0
     coldStart: 0
     transmissionUpgrade: 0
     flywheelMass: 0
     awd:
       mode: 0
+      centerSpeedRatio: 0
       torqueBiasRatio: 3
       centerPreloadNm: 35
       frontBias: 0.5
@@ -134,8 +141,8 @@ MonoBehaviour:
     partBoost: 1
   distanceM: 402.336
   reputationRequired: 8
-  cashWin: 1600
-  cashLoss: 100
+  cashWin: 450
+  cashLoss: 10
   reputationWin: 4
   tier: F
   eventKind: Race
