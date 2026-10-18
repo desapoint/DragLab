@@ -5,7 +5,9 @@ namespace DragLab.Runtime
 {
     internal static class NativeMobile
     {
-        internal static bool SimulatedTouch;
+        internal static bool SimulatedTouch, SimulatedPhysicalRaceTouches;
+        internal static bool PhysicalRaceTouches=>Application.isMobilePlatform||SimulatedPhysicalRaceTouches;
+        internal static bool OwnsRacePointer(IPointerEvent e)=>PhysicalRaceTouches&&(e.pointerType!=UnityEngine.UIElements.PointerType.mouse||Input.touchCount>0);
         internal static Rect? SimulatedSafeArea;
         internal static bool Touch => Application.isMobilePlatform || SimulatedTouch;
         internal static float Scale(int width,int height)

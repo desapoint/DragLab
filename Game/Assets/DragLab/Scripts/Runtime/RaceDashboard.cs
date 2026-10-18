@@ -10,11 +10,14 @@ namespace DragLab.Runtime
         internal int PaintCount { get; private set; }
         internal RaceDashboard()
         { name = "raceDashboard"; AddToClassList("race-dashboard"); generateVisualContent += Draw; }
-        internal static float Top(float x, float width)
+        float? clusterCenter;
+        internal void SetClusterCenter(float? x){if(clusterCenter==x)return;clusterCenter=x;MarkDirtyRepaint();}
+        internal static float Top(float x, float width,float? clusterCenter=null)
         {
-            float center = Mathf.Min(268, width * .26f);
+            float center = clusterCenter??Mathf.Min(268, width * .26f);
             return 48 - 30 * Mathf.Exp(-Mathf.Pow((x-center)/230,2)) - 9 * Mathf.Exp(-Mathf.Pow((x-width+130)/140,2));
         }
+        internal float TopAt(float x)=>Top(x,contentRect.width,clusterCenter);
         static Texture2D Grain()
         {
             if (grain != null) return grain;
@@ -30,15 +33,15 @@ namespace DragLab.Runtime
             const int columns=128;var mesh=context.Allocate((columns+1)*2,columns*6,Grain());var uv=mesh.uvRegion;
             for(int i=0;i<=columns;i++)
             {
-                float x=w*i/columns,y=Top(x,w);
+                float x=w*i/columns,y=TopAt(x);
                 mesh.SetNextVertex(new Vertex{position=new Vector3(x,y,Vertex.nearZ),tint=new Color(.19f,.205f,.22f),uv=new Vector2(Mathf.Lerp(uv.xMin,uv.xMax,i/(float)columns),Mathf.Lerp(uv.yMax,uv.yMin,y/h))});
                 mesh.SetNextVertex(new Vertex{position=new Vector3(x,h,Vertex.nearZ),tint=new Color(.045f,.05f,.06f),uv=new Vector2(Mathf.Lerp(uv.xMin,uv.xMax,i/(float)columns),uv.yMin)});
             }
             for(int i=0;i<columns;i++)foreach(int n in new[]{i*2,i*2+2,i*2+1,i*2+1,i*2+2,i*2+3})mesh.SetNextIndex((ushort)n);
-            var p=context.painter2D;p.lineWidth=2;p.strokeColor=rim;p.BeginPath();p.MoveTo(new Vector2(0,Top(0,w)));
-            for(int i=1;i<=columns;i++){float x=w*i/columns;p.LineTo(new Vector2(x,Top(x,w)));}p.Stroke();
-            p.strokeColor=new Color(0,0,0,.75f);p.lineWidth=3;p.BeginPath();p.MoveTo(new Vector2(0,Top(0,w)+5));
-            for(int i=1;i<=columns;i++){float x=w*i/columns;p.LineTo(new Vector2(x,Top(x,w)+5));}p.Stroke();
+            var p=context.painter2D;p.lineWidth=2;p.strokeColor=rim;p.BeginPath();p.MoveTo(new Vector2(0,TopAt(0)));
+            for(int i=1;i<=columns;i++){float x=w*i/columns;p.LineTo(new Vector2(x,TopAt(x)));}p.Stroke();
+            p.strokeColor=new Color(0,0,0,.75f);p.lineWidth=3;p.BeginPath();p.MoveTo(new Vector2(0,TopAt(0)+5));
+            for(int i=1;i<=columns;i++){float x=w*i/columns;p.LineTo(new Vector2(x,TopAt(x)+5));}p.Stroke();
             // Small stitched seam, fixed geometry and a subdued red center-console accent.
             for(float x=550;x<w-270;x+=12)Line(p,new Vector2(x,76),new Vector2(x+5,76),1,new Color(.35f,.36f,.37f,.45f));
             Line(p,new Vector2(w-245,h-10),new Vector2(w-28,h-10),2,accent);
@@ -47,12 +50,15 @@ namespace DragLab.Runtime
     internal sealed class RaceSteeringRim : GaugeInk
     {
         internal const float Radius = 270, Thickness = 48, LowerOffset = 260;
+        float? clusterCenter;
+        internal void SetClusterCenter(float? x){if(clusterCenter==x)return;clusterCenter=x;MarkDirtyRepaint();}
+        internal float CenterX=>clusterCenter??Mathf.Min(270,contentRect.width*.26f);
         internal RaceSteeringRim()
         { name = "raceSteeringRim"; AddToClassList("race-dashboard"); generateVisualContent += Draw; }
         void Draw(MeshGenerationContext context)
         {
             float w=contentRect.width,h=contentRect.height;if(w<2||h<2)return;
-            var hub=new Vector2(Mathf.Min(270,w*.26f),h+LowerOffset);
+            var hub=new Vector2(CenterX,h+LowerOffset);
             var p=context.painter2D;
             p.lineWidth=Thickness;p.strokeColor=new Color(.012f,.016f,.02f);p.BeginPath();
             p.Arc(hub,Radius,Angle.Degrees(180),Angle.Degrees(360));p.Stroke();

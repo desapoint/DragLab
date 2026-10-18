@@ -1,0 +1,10 @@
+Built 2026-10-18: centered mobile HUD / independent physical touch Windows player and matching Android APK.
+Android APK bytes: 57882974
+Android APK SHA256: 49a8896783c36172300da0b0fc665355233680d58c589673df535facd728c657
+Windows Assembly-CSharp.dll SHA256: 65cb28a66c4a7d3613099a736b145bf4e5f23d94c5471ac797511899e6a4b489
+Windows runtime is unchanged by Android packaging: PASS
+APK ZIP CRC / ARM64-only libraries / Windows SQLite DLL exclusion: PASS
+Packaged SQLite matches the tracked ARM64 plugin after llvm-strip --strip-unneeded: PASS
+All packaged ELF PT_LOAD segments support at least 16 KiB alignment: PASS
+External signature, ZIP alignment, package metadata and device checks: see packaging-verification.txt.
+No connected phone testing or store upload is claimed.

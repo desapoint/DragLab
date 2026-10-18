@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DragLab.Domain;
 using DragLab.Domain.Mechanics;
 using DragLab.Infrastructure;
@@ -7,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace DragLab.Runtime
 {
-    // Read-only instruments. Simulation and input remain owned by PrototypeGame.
+    // Instruments and touch presentation; PrototypeGame owns simulation and input consumption.
     internal sealed class NativeRaceHud : MonoBehaviour
     {
         PrototypeGame game;
@@ -27,7 +28,37 @@ namespace DragLab.Runtime
         internal RaceShiftLamp ShiftLamp { get; private set; }
         internal NativeRacePedals Pedals { get; private set; }
         internal RaceShiftFlick ShiftFlick { get; private set; }
-        internal void ReleaseInput(){Pedals?.Release();ShiftFlick?.Release();}
+        readonly Dictionary<int,VisualElement> physicalContacts=new Dictionary<int,VisualElement>();
+        readonly HashSet<int> physicalSeen=new HashSet<int>();
+        readonly List<int> physicalReleased=new List<int>();
+        internal void ReleaseInput(){physicalContacts.Clear();Pedals?.Release();ShiftFlick?.Release();}
+        internal void PollTouches(IReadOnlyList<Touch> samples=null)
+        {
+            if(samples==null&&!NativeMobile.PhysicalRaceTouches)return;
+            if(!Visible||!game.RaceTouchActive){ReleaseInput();return;}
+            physicalSeen.Clear();int count=samples?.Count??Input.touchCount;
+            for(int i=0;i<count;i++){
+                var touch=samples==null?Input.GetTouch(i):samples[i];int id=touch.fingerId+PointerId.touchPointerIdBase;
+                var point=new Vector2(touch.position.x,Screen.height-touch.position.y)/panel.scale;physicalSeen.Add(id);
+                if(touch.phase==TouchPhase.Ended||touch.phase==TouchPhase.Canceled){EndPhysical(id,point,touch.phase==TouchPhase.Canceled);continue;}
+                if(touch.phase==TouchPhase.Began){
+                    EndPhysical(id,point,true);
+                    foreach(var pedal in new[]{Pedals.Clutch,Pedals.Brake,Pedals.Gas})
+                        if(pedal.resolvedStyle.display!=DisplayStyle.None&&pedal.worldBound.Contains(point)&&pedal.StartContact(id,point.y,false)){physicalContacts[id]=pedal;break;}
+                    if(!physicalContacts.ContainsKey(id)&&ShiftFlick.enabledInHierarchy&&ShiftFlick.worldBound.Contains(point)&&ShiftFlick.StartContact(id,point,false))physicalContacts[id]=ShiftFlick;
+                }
+                else if(physicalContacts.TryGetValue(id,out var target)){
+                    if(target is RaceTouchPedal pedal)pedal.MoveContact(id,point.y);else ShiftFlick.MoveContact(id,point);
+                }
+            }
+            physicalReleased.Clear();foreach(int id in physicalContacts.Keys)if(!physicalSeen.Contains(id))physicalReleased.Add(id);
+            foreach(int id in physicalReleased)EndPhysical(id,Vector2.zero,true);
+        }
+        void EndPhysical(int id,Vector2 point,bool canceled)
+        {
+            if(!physicalContacts.TryGetValue(id,out var target))return;physicalContacts.Remove(id);
+            if(target is RaceTouchPedal pedal)pedal.End(id);else if(canceled)ShiftFlick.CancelContact(id);else ShiftFlick.EndContact(id,point);
+        }
         Button shiftUpButton, shiftDownButton;
         internal VisualElement Root => root;
         internal PanelSettings Panel => panel;
@@ -98,14 +129,19 @@ namespace DragLab.Runtime
             root.EnableInClassList("touch-ui",NativeMobile.Touch);
             float insetRight=(Screen.width-safe.xMax)/panel.scale,insetBottom=safe.yMin/panel.scale;
             float insetLeft=safe.xMin/panel.scale,insetTop=(Screen.height-safe.yMax)/panel.scale;
-            dials.style.left=(NativeMobile.Touch&&compact?0:compact?16:22)+insetLeft;dials.style.bottom=22+insetBottom;
+            bool mobile=NativeMobile.Touch;float center=(insetLeft+width/panel.scale-insetRight)*.5f;
+            dials.style.width=mobile?new StyleLength(350):new StyleLength(StyleKeyword.Auto);
+            dials.style.left=mobile?center-175:(compact?16:22)+insetLeft;dials.style.bottom=22+insetBottom;
+            Dashboard.SetClusterCenter(mobile?(float?)center:null);SteeringRim.SetClusterCenter(mobile?(float?)center:null);
             pauseButton.style.top=readyButton.style.top=lineLockButton.style.top=18+insetTop;
             Gear.style.right=24+insetRight;Gear.style.bottom=15+insetBottom;
-            Pedals.style.right=260+insetRight;Pedals.style.bottom=24+insetBottom;
+            Pedals.style.left=mobile?new StyleLength(16+insetLeft):new StyleLength(StyleKeyword.Auto);
+            Pedals.style.right=mobile?new StyleLength(StyleKeyword.Auto):new StyleLength(260+insetRight);Pedals.style.bottom=24+insetBottom;
             pauseButton.style.right=24+insetRight;readyButton.style.right=80+insetRight;
             bool wide=NativeMobile.Touch&&width/panel.scale>=1600;root.EnableInClassList("touch-wide",wide);
-            phase.style.right=warning.style.right=(compact?260:wide?660:520)+insetRight;
-            phase.style.bottom=(compact?228:76)+insetBottom;warning.style.bottom=(compact?194:36)+insetBottom;
+            phase.style.left=warning.style.left=mobile?new StyleLength(center-200):new StyleLength(new Length(compact?42:44,LengthUnit.Percent));
+            phase.style.right=warning.style.right=mobile?width/panel.scale-center-200:(compact?260:wide?660:520)+insetRight;
+            phase.style.bottom=(mobile||compact?228:76)+insetBottom;warning.style.bottom=(mobile||compact?194:36)+insetBottom;
             pauseButton.SetEnabled(!game.NativeRacePause);
             pauseButton.EnableInClassList("hidden", game.Race.ResultReady);
             readyButton.EnableInClassList("hidden",!game.Race.warmup||game.NativeRacePause);

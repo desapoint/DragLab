@@ -242,7 +242,7 @@ namespace DragLab.Runtime
             if (race.phase == RacePhase.Finished)
             {
                 if(!awarded)FinishRace();
-                controls.Poll(!InterfaceComparison.IsReplacement("Race") && !InterfaceComparison.IsReplacement(ComparisonRoute)); controls.ConsumePause();
+                controls.Poll(!InterfaceComparison.IsReplacement("Race") && !InterfaceComparison.IsReplacement(ComparisonRoute)); RaceHud?.PollTouches(); controls.ConsumePause();
                 accumulator += Math.Min(Time.unscaledDeltaTime, .1f);
                 while (accumulator >= DragMath.FixedStep)
                 {
@@ -252,7 +252,7 @@ namespace DragLab.Runtime
                 }
                 SaveLiveRunIfDue();RenderRace(); return;
             }
-            controls.Poll(!InterfaceComparison.IsReplacement("Race") && !InterfaceComparison.IsReplacement(ComparisonRoute));
+            controls.Poll(!InterfaceComparison.IsReplacement("Race") && !InterfaceComparison.IsReplacement(ComparisonRoute)); RaceHud?.PollTouches();
             if (controls.ConsumePause()) { SetPaused(true); return; }
             accumulator += Math.Min(Time.unscaledDeltaTime, .1f);
             while (accumulator >= DragMath.FixedStep)

@@ -1,0 +1,6 @@
+Desktop visual spot check against eea66b0:
+Before: reports/player-fixtures/flick-release-20261018/keyboard-pedals-released.png
+After: reports/player-fixtures/mobile-center-release-flick-20261018/keyboard-pedals-released.png
+Compared desktop dashboard crops; live tachometer interior and live race scene omitted.
+Pixels over 2/255 difference: 0/212695 (0.000000%)
+This is a stationary dashboard crop check, not a deterministic full-frame gate. Native bounds/input and race regression provide independent behavior checks.

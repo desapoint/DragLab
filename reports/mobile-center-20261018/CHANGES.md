@@ -1,0 +1,34 @@
+# Centered mobile instruments and held throttle — 2026-10-18
+
+Requested checkpoint: mobile pedals on the left, gauges/wheel/dashboard bump in the center and the existing shifter on the right; preserve desktop layout and retain gas while flick shifting. No later interface phase or debug bench is advanced.
+
+## Changes
+
+- Native mobile instruments and foreground wheel share the center of the usable safe area. The dashboard's existing shallow grained bump moves with them. Pedals anchor left and the shifter remains right. Shared mobile sizing leaves gaps around all three required pedals, the gauges and the selector, including notch/gesture insets. Phase/warning text stays above the centered instruments. With no inset, instruments are centered on the screen.
+- Desktop keeps its previous left instruments/bump/wheel, right selector and pedals beside the selector, including keyboard-driven pedal animation. Native F8 comparison and post-finish dashboard presentation remain available.
+- Mobile race input now samples physical touches by stable finger ID before the existing simulation input is consumed. A finger captures one visible pedal or the shifter when it lands, remains assigned while stationary/moving, and is released on its own lift/cancel/disappearance. Touch-array order changes and another finger's shifter release cannot clear held gas. This is hold-to-press, not sticky throttle.
+- UI pointer events and physical samples share the same pedal/flick handlers and authoritative race adapter. On phones, compatibility/UI touch events do not own physical held state. Mouse-only operation remains available when no physical touch is active; desktop follows its existing UI pointer path. Clutch visibility/requirements, vertical feathering, one shift per flick, reversed directions, shift timing/protection and CVT behavior remain intact. Pause, F8, teardown and new-race boundaries clear both physical assignments and control state.
+
+## Investigation and tests
+
+The earlier flick test held gas with a secondary UI finger while using the primary finger for shifting. It did not exercise the reported gas-first physical-finger sequence. The adapter itself already stored held contacts separately. Without the device event log, the exact original Android capture-loss sequence is unconfirmed; this change removes physical race holds from that UI pointer lifecycle. Unity distinguishes a touch's physical finger and UI pointer identity, and its primary pointer also produces compatibility mouse events ([Unity reference source](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Modules/UIElements/Core/Events/PointerEvents.cs)).
+
+Expanded regression samples the same mobile physical-touch path with first-finger gas, independent clutch, three repeated flicks, changed array order, stationary frames, shifter-first order, independent lifts/cancels, feathering, lost contacts and interruption cleanup. A UI pointer release cannot clear an active physical finger. The existing tests still cover actual keyboard presses, UI pointer/mouse input, Apply/Cancel/recovery, reversed flicks and real transmission clutch gates. Mobile layout assertions cover 854×480, 1280×720, 1920×1080, 2400×1080 and 3840×2160, with simulated safe insets, center alignment, bump geometry and nonoverlap.
+
+Final packaged-player suites pass **85 gesture/hold**, **126 mobile access** and **65 desktop/pedal/input** checks, all with zero runtime errors. They include sparse physical finger IDs outside UI Toolkit's pointer slots; physical samples never request UI pointer capture. The **220-check full dashboard/pause/results/paid-race** suite also passes in this increment before the final sparse-ID capture-bookkeeping refinement; its drawing/layout, simulation and settlement code is unchanged in the final build. The final three focused suites were rerun afterward. These suites overlap; they are not unique behavior totals. The dedicated 148-check Settings suite is retained from the previous checkpoint, not rerun here.
+
+The paid-refresh race retained its existing timing bounds: maximum main step **32.123 ms**, maximum frame **52.630 ms**, 30 held-write frames and continuous camera motion. A stationary desktop dashboard crop against the preceding checkpoint has **0/212,695 pixels** exceeding 2/255 per channel, excluding the live tachometer interior and race scene; this is a visual spot check, not a deterministic full-frame gate. Layout/input assertions and screenshot review separately confirm the mobile move and desktop placement. See the concise evidence alongside this report.
+
+Final checks, build hashes and packaging evidence accompany this report. Raw captures/logs/saves remain local and ignored; the current screenshot gallery is `reports/interface-screenshots/`, with alternate resolutions in `resolution-tests/`. Intermediate compile failures (a Unity pointer-type ambiguity and a syntax typo) were corrected before passing verification.
+
+Updated Windows and Android builds succeed. The development/debug-signed ARM64/IL2CPP APK supports Android 8.0/API 26 or newer. APK v2 signature, 16 KiB ZIP alignment, CRC, ARM64-only native libraries and all ELF load-segment alignment checks pass; packaged SQLite matches the tracked plugin after normal stripping. The tested Windows runtime is unchanged by Android packaging. No device/emulator is attached. See [artifact hashes](build-manifest.txt), [packaging evidence](packaging-verification.txt), [suite summary](verification-summary.txt), [gesture assertions](gesture-verification.txt) and [desktop visual comparison](desktop-visual-comparison.txt). Build-only Unity serialization was checked, archived locally and restored; the pre-existing file hashes remain unchanged.
+
+## Review gate
+
+On the phone, review center alignment and thumb reach with manual clutch both enabled and hidden. Hold gas with the left thumb while repeatedly flicking with the right; then reverse the order and try the reversed direction preference. Lifting the shifter finger must retain gas, while lifting gas or pausing must release it. Review both notch and gesture-bar clearance. Desktop should retain its existing arrangement and keyboard press animation.
+
+Automated touch samples and native events run in an isolated Windows development player, not on physical Android hardware. Phone feel/device input acceptance remains pending. Windows and Android artifacts remain local under `Game/Builds`; no store publication or remote push is performed. Stop at this requested checkpoint.
+
+## Repository scope
+
+Preserve and exclude the pre-existing changes in `reports/maintenance-batch/verification.txt`, `reports/shop-inventory/cart-verification.txt`, `.codex-remote-attachments/`, `Game/Assets/Resources.meta`, `Tests.ps1` and `reports/race-exit-regression/`. Verify and restore build-only Unity serialization separately. Builds, screenshots and generated save fixtures stay ignored.

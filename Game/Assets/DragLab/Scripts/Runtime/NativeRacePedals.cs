@@ -36,30 +36,40 @@ namespace DragLab.Runtime
         readonly int control;
         readonly Gradient steel=new Gradient{colorKeys=new[]{new GradientColorKey(new Color(.7f,.73f,.75f),0),new GradientColorKey(new Color(.2f,.23f,.26f),1)},alphaKeys=new[]{new GradientAlphaKey(1,0),new GradientAlphaKey(1,1)}};
         readonly Dictionary<int,float> fingers=new Dictionary<int,float>();
+        readonly HashSet<int> capturedPointers=new HashSet<int>();
         internal float Depression { get; private set; }
         internal RaceTouchPedal(string id,string caption,int control,RaceInputAdapter input,Func<bool> active)
         {
             name=id;tooltip=caption;this.control=control;this.input=input;this.active=active;
             RemoveFromClassList("gauge-layer");AddToClassList("race-pedal");pickingMode=PickingMode.Position;focusable=false;tabIndex=-1;
             RegisterCallback<PointerDownEvent>(e=>{
-                if(!active()||e.button!=0)return;
-                fingers[e.pointerId]=e.position.y;input.NativePedal(e.pointerId,control,true);this.CapturePointer(e.pointerId);e.StopPropagation();
+                if(NativeMobile.OwnsRacePointer(e)||e.button!=0)return;
+                if(StartContact(e.pointerId,e.position.y,true))e.StopPropagation();
             });
             RegisterCallback<PointerMoveEvent>(e=>{
-                if(!fingers.TryGetValue(e.pointerId,out float start))return;
-                if(!active()){Release();return;}
-                input.NativePedal(e.pointerId,control,true,Mathf.Clamp01(1+(e.position.y-start)/100));e.StopPropagation();
+                if(NativeMobile.OwnsRacePointer(e)||!fingers.ContainsKey(e.pointerId))return;
+                MoveContact(e.pointerId,e.position.y);e.StopPropagation();
             });
-            RegisterCallback<PointerUpEvent>(e=>{End(e.pointerId);e.StopPropagation();});
-            RegisterCallback<PointerCancelEvent>(e=>End(e.pointerId));
-            RegisterCallback<PointerCaptureOutEvent>(e=>End(e.pointerId));
+            RegisterCallback<PointerUpEvent>(e=>{if(NativeMobile.OwnsRacePointer(e))return;End(e.pointerId);e.StopPropagation();});
+            RegisterCallback<PointerCancelEvent>(e=>{if(!NativeMobile.PhysicalRaceTouches||e.pointerId==PointerId.mousePointerId)End(e.pointerId);});
+            RegisterCallback<PointerCaptureOutEvent>(e=>{if(!NativeMobile.PhysicalRaceTouches||e.pointerId==PointerId.mousePointerId)End(e.pointerId);});
             RegisterCallback<DetachFromPanelEvent>(_=>Release());
             generateVisualContent+=Draw;
         }
-        void End(int pointer)
+        internal bool StartContact(int pointer,float y,bool capture)
+        {
+            if(!active())return false;fingers[pointer]=y;input.NativePedal(pointer,control,true);
+            if(capture){capturedPointers.Add(pointer);this.CapturePointer(pointer);}return true;
+        }
+        internal void MoveContact(int pointer,float y)
+        {
+            if(!fingers.TryGetValue(pointer,out float start))return;if(!active()){Release();return;}
+            input.NativePedal(pointer,control,true,Mathf.Clamp01(1+(y-start)/100));
+        }
+        internal void End(int pointer)
         {
             if(!fingers.Remove(pointer))return;input.NativePedal(pointer,control,false);
-            if(this.HasPointerCapture(pointer))this.ReleasePointer(pointer);
+            if(capturedPointers.Remove(pointer)&&this.HasPointerCapture(pointer))this.ReleasePointer(pointer);
         }
         internal void Release(){if(fingers.Count==0)return;foreach(int pointer in new List<int>(fingers.Keys))End(pointer);}
         internal void Animate(float value,float dt)

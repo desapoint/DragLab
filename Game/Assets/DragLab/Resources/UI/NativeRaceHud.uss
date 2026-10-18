@@ -68,3 +68,7 @@
 .race-shift-flick { position: absolute; left: 0; right: 0; top: 0; bottom: 0; }
 .race-flick-hint { position: absolute; right: 6px; top: 50%; width: 20px; height: 24px; margin: 0; margin-top: -12px; }
 .touch-ui .race-shifter .shifter-type { left: 0; right: 26px; }
+
+.touch-ui .race-pedal { width: 64px; margin-left: 0; margin-right: 6px; }
+.touch-ui #gasPedal { margin-right: 0; }
+.touch-ui .rpm-gauge { margin-right: 0; }

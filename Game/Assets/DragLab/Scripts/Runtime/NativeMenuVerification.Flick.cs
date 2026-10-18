@@ -23,6 +23,38 @@ namespace DragLab.Runtime
         {
             ShiftTouch(flick,0,TouchPhase.Began,Vector2.zero);ShiftTouch(flick,0,TouchPhase.Moved,new Vector2(x,y));ShiftTouch(flick,0,TouchPhase.Ended,new Vector2(x,y));
         }
+        Touch PhysicalTouch(VisualElement target,int finger,TouchPhase phase,Vector2 offset=default)
+        {
+            var point=(target.worldBound.center+offset)*game.RaceHud.Panel.scale;
+            return new Touch{fingerId=finger,phase=phase,position=new Vector2(point.x,Screen.height-point.y)};
+        }
+        IEnumerator PhysicalShiftHoldChecks()
+        {
+            var hud=game.RaceHud;var controls=game.RaceControls;hud.ReleaseInput();controls.Clear();NativeMobile.SimulatedPhysicalRaceTouches=true;
+            var gas=PhysicalTouch(hud.Pedals.Gas,0,TouchPhase.Began);hud.PollTouches(new[]{gas});gas.phase=TouchPhase.Stationary;
+            Check(controls.Peek().throttle==1,"First physical finger presses and holds gas");
+            PedalTouch(hud.Pedals.Gas,0,TouchPhase.Ended);
+            Check(controls.Peek().throttle==1,"UI pointer releases cannot clear a still-held physical finger");
+            var clutch=PhysicalTouch(hud.Pedals.Clutch,1,TouchPhase.Began);hud.PollTouches(new[]{gas,clutch});clutch.phase=TouchPhase.Stationary;
+            for(int pass=0;pass<3;pass++){
+                int shiftFinger=pass==2?127:2;var shift=PhysicalTouch(hud.ShiftFlick,shiftFinger,TouchPhase.Began);hud.PollTouches(new[]{gas,clutch,shift});
+                shift=PhysicalTouch(hud.ShiftFlick,shiftFinger,TouchPhase.Moved,new Vector2(0,-45));hud.PollTouches(new[]{shift,gas,clutch});
+                controls.Poll(false);var input=controls.Consume();
+                Check(input.shiftUp&&input.throttle==1&&input.clutch==1,"Physical flick "+pass+" preserves first-finger gas and clutch despite touch order changes");
+                shift.phase=TouchPhase.Ended;hud.PollTouches(new[]{gas,shift,clutch});
+                for(int frame=0;frame<5;frame++){hud.PollTouches(new[]{gas,clutch});controls.Poll(false);hud.Refresh();yield return null;}
+                Check(controls.Consume().throttle==1&&!controls.Consume().shiftUp,"Lifting the shifter finger leaves gas held across frames "+pass);
+            }
+            clutch.phase=TouchPhase.Ended;hud.PollTouches(new[]{gas,clutch});Check(controls.Peek().throttle==1&&controls.Peek().clutch==0,"Lifting only clutch leaves physical gas held");
+            gas=PhysicalTouch(hud.Pedals.Gas,0,TouchPhase.Moved,new Vector2(0,-50));hud.PollTouches(new[]{gas});Check(Math.Abs(controls.Peek().throttle-.5)<.01,"Physical held pedal still supports feathering");
+            gas.phase=TouchPhase.Ended;hud.PollTouches(new[]{gas});Check(controls.Peek().throttle==0,"Lifting gas releases it without a stuck throttle");
+            gas=PhysicalTouch(hud.Pedals.Gas,107,TouchPhase.Began);hud.PollTouches(new[]{gas});hud.PollTouches(Array.Empty<Touch>());Check(controls.Peek().throttle==0,"Disappeared physical fingers are released even without an Ended event");
+            gas=PhysicalTouch(hud.Pedals.Gas,5,TouchPhase.Began);var shiftFirst=PhysicalTouch(hud.ShiftFlick,0,TouchPhase.Began);hud.PollTouches(new[]{shiftFirst,gas});
+            shiftFirst=PhysicalTouch(hud.ShiftFlick,0,TouchPhase.Moved,new Vector2(0,45));gas.phase=TouchPhase.Stationary;hud.PollTouches(new[]{shiftFirst,gas});
+            Check(controls.Consume().shiftDown&&controls.Peek().throttle==1,"Shifter-first physical touch order also preserves a second gas finger");
+            shiftFirst.phase=TouchPhase.Canceled;hud.PollTouches(new[]{gas,shiftFirst});Check(controls.Peek().throttle==1&&!hud.ShiftFlick.Held,"Canceling a physical shifter contact does not release gas");
+            hud.ReleaseInput();Check(controls.Peek().throttle==0,"HUD interruption clears physical contacts");NativeMobile.SimulatedPhysicalRaceTouches=false;
+        }
         IEnumerator PollPedalKeys(float seconds)
         {
             float until=Time.unscaledTime+seconds;
@@ -49,6 +81,7 @@ namespace DragLab.Runtime
             Check(hud.Root.Q("raceShiftUp").resolvedStyle.display==DisplayStyle.None&&hud.Root.Q("raceShiftDown").resolvedStyle.display==DisplayStyle.None,"Mobile has no up/down shift buttons");
             Check(hud.ShiftFlick.resolvedStyle.display!=DisplayStyle.None&&!hud.ShiftFlick.focusable,"Mobile shifter receives flick gestures without focus navigation");
             Check(!DrivingPreferences.ReverseTouchShifting,"Existing preference files default to flick up for upshift");
+            yield return PhysicalShiftHoldChecks();
             PedalTouch(hud.Pedals.Gas,1,TouchPhase.Began);PedalTouch(hud.Pedals.Clutch,2,TouchPhase.Began);
             ShiftTouch(hud.ShiftFlick,0,TouchPhase.Began,Vector2.zero);ShiftTouch(hud.ShiftFlick,0,TouchPhase.Moved,new Vector2(0,-40));
             var held=controls.Consume();Check(held.shiftUp&&!held.shiftDown&&held.throttle==1&&held.clutch==1,"Up flick queues upshift with two pedal fingers held");

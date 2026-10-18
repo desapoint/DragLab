@@ -1,0 +1,20 @@
+Gesture/physical hold: 85 checks / 0 runtime errors
+Fixture: reports/player-fixtures/mobile-center-release-flick-20261018
+Raw verification SHA256: 61b3afd1d39602a7e5736365920f35553ae4625734c957834352b2a3535d8047
+
+Mobile access: 126 checks / 0 runtime errors
+Fixture: reports/player-fixtures/mobile-center-release-access-20261018
+Raw verification SHA256: a2d9de248b8e996632f9abd81fe0121d496183ff6c1d22d42e73c284fb4cbb09
+
+Desktop/pedals: 65 checks / 0 runtime errors
+Fixture: reports/player-fixtures/mobile-center-release-pedals-20261018
+Raw verification SHA256: 2ace41a99ae26231b24f8d256bfe7a66354dc9c643a2a43c065e29359e2ebb87
+
+Full dashboard/race (before final capture bookkeeping): 220 checks / 0 runtime errors
+Fixture: reports/player-fixtures/mobile-center-dashboard-20261018
+Raw verification SHA256: dcec597d7ae37cdc6184fabf6864e51bb05140d787eb4fd35875001892debec4
+
+Suites overlap. 85/126/65 use the final runtime.
+220 uses the same layout, drawing and simulation before sparse-finger capture bookkeeping was tightened.
+Dashboard-suite Assembly-CSharp.dll SHA256: 2903ddf9e48b19068bce0430547f3b89f151839b6b0a70c031bba4e2b3a01bae
+Final Windows runtime hash is recorded in build-manifest.txt.

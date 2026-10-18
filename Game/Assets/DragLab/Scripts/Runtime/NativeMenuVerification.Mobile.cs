@@ -101,12 +101,16 @@ namespace DragLab.Runtime
             game.Profile.driving.launch=LaunchMode.Manual;game.Profile.driving.shifting=ShiftMode.ManualClutch;game.Profile.driving.clutchAssist=false;game.Profile.driving.warmupBeforeRace=true;yield return MobileTap("navRace");yield return MobileTap("raceMode:Practice");yield return MobileTap("raceStage");yield return MobileTap("dialogStage");
             Check(game.ScreenName=="Race"&&game.RaceHud.Visible,"Touch staging enters the authoritative physical race");
             game.enabled=false;var hud=game.RaceHud;
-            foreach(int width in new[]{854,1280,1920}){
-                Screen.SetResolution(width,width==854?480:width*9/16,false);yield return new WaitForSecondsRealtime(.2f);
+            foreach(int width in new[]{854,1280,1920,2400,3840}){
+                Screen.SetResolution(width,width==854?480:width==2400?1080:width*9/16,false);yield return new WaitForSecondsRealtime(.2f);
                 NativeMobile.SimulatedSafeArea=new Rect(48,24,Screen.width-80,Screen.height-36);hud.Refresh();yield return null;
                 var pedals=hud.Pedals.worldBound;var dials=hud.Root.Q("raceDials").worldBound;var gear=hud.Gear.worldBound;
                 yield return Capture("mobile-race-"+width);
-                Check(dials.xMax<=pedals.xMin&&pedals.xMax<=gear.xMin,"Required three-pedal set clears gauges and shifter at mobile width "+width+" / "+dials+" / "+pedals+" / "+gear);
+                Check(pedals.xMax<=dials.xMin&&dials.xMax<=gear.xMin,"Mobile pedals left, instruments center and shifter right do not overlap at "+width+" / "+pedals+" / "+dials+" / "+gear);
+                float center=(NativeMobile.SafeArea.xMin+NativeMobile.SafeArea.xMax)*.5f/hud.Panel.scale;
+                Check(Math.Abs(dials.center.x-center)<1&&Math.Abs(hud.SteeringRim.CenterX-center)<1,"Gauges and foreground wheel share the safe-area center at "+width);
+                Check(hud.Dashboard.TopAt(center)<hud.Dashboard.TopAt(center-280)-15&&hud.Dashboard.TopAt(center)<hud.Dashboard.TopAt(center+280)-15,"Dashboard bump follows the centered mobile instruments at "+width);
+                Check(pedals.xMin*hud.Panel.scale>=NativeMobile.SafeArea.xMin&&gear.xMax*hud.Panel.scale<=NativeMobile.SafeArea.xMax,"Mobile outer controls clear notch safe edges at "+width);
                 Check(hud.Root.Q("racePause").worldBound.yMin*hud.Panel.scale>=12,"Race pause clears top safe inset at "+width);
             }
             NativeMobile.SimulatedSafeArea=null;Screen.SetResolution(1280,720,false);yield return new WaitForSecondsRealtime(.2f);
