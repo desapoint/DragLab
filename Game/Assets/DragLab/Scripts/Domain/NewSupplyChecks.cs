@@ -141,6 +141,42 @@ namespace DragLab.Domain.Mechanics
             check(Math.Abs(counts[(int)EngineUpgradeInduction.Factory]/(double)samples-.1)<.02&&Math.Abs((counts[(int)EngineUpgradeInduction.Turbo]+counts[(int)EngineUpgradeInduction.TwinTurbo]+counts[(int)EngineUpgradeInduction.Twincharged])/(double)samples-.65)<.025,"Nested induction families retain 65/25/10 weights");
             foreach(var kind in new[]{EngineUpgradeInduction.Turbo,EngineUpgradeInduction.TwinTurbo,EngineUpgradeInduction.Twincharged})check(Math.Abs(counts[(int)kind]/(double)samples-.65/3)<.025,"Turbo subtypes are equally weighted: "+kind);
         }
+        public static void LayoutRegression(MechanicalCatalog catalog,Action<bool,string> check)
+        {
+            // Full authored catalog comparison lives in the game assembly because
+            // MarketCatalogLayout is deliberately internal.
+            var layoutKeys=catalog.parts.ToDictionary(d=>d.id,d=>PartsMarket.ProductKey(d),StringComparer.Ordinal);
+            var layoutModels=catalog.parts.Where(d=>d.category==PartCategory.CylinderBlock)
+                .Select(d=>d.id.Split('/')[0]).Distinct().OrderBy(id=>id,StringComparer.Ordinal).ToArray();
+            var layoutSpecs=layoutModels.Select(catalog.Spec).ToArray();
+            MarketCatalogLayout.Layout staged=null;int layoutYields=0;
+            using(var layoutIterator=MarketCatalogLayout.GetSteps(catalog,layoutKeys,layoutSpecs,l=>staged=l).GetEnumerator())
+                while(layoutIterator.MoveNext()){
+                    layoutYields++;
+                    if(staged!=null)throw new InvalidOperationException("Partially constructed market layout escaped before commit.");
+                }
+            check(staged!=null&&staged.groups.Length>0&&staged.ids.Length==catalog.parts.Count,
+                "Cold layout publishes all authored product identities");
+            var direct=MarketCatalogLayout.Get(catalog,layoutKeys,layoutSpecs);
+            check(ReferenceEquals(staged,direct)&&direct.groups.All(g=>g.ids.Count>0&&g.maximum>0),
+                "Direct callers reuse the exact completed staged layout");
+            var expectedGroups=catalog.parts.GroupBy(d=>layoutKeys[d.id],StringComparer.Ordinal)
+                .OrderBy(g=>g.Min(d=>d.id),StringComparer.Ordinal).ToArray();
+            bool sameGroups=expectedGroups.Length==direct.groups.Length;
+            for(int i=0;sameGroups&&i<expectedGroups.Length;i++){
+                var group=expectedGroups[i];
+                var d=group.OrderBy(v=>v.id,StringComparer.Ordinal).First();
+                var fitting=layoutSpecs.Where(spec=>catalog.Fits(spec,d)).ToArray();
+                sameGroups=ReferenceEquals(d,direct.groups[i].definition)&&
+                    group.Select(v=>v.id).OrderBy(id=>id,StringComparer.Ordinal).SequenceEqual(direct.groups[i].ids)&&
+                    direct.groups[i].deliverable==(fitting.Length>0)&&
+                    direct.groups[i].maximum==fitting.Select(spec=>PartsMarket.Count(spec,d)).DefaultIfEmpty(1).Max();
+            }
+            check(sameGroups,"Staged layout exactly matches the former fitted grouping/max-set algorithm");
+            check(ReferenceEquals(direct,MarketCatalogLayout.Get(catalog,layoutKeys,layoutSpecs)),
+                "Warm catalog layout remains reusable without another fitting build");
+            check(layoutYields>0,"Cold authored market layout yields between fitting batches");
+        }
         public static void Coverage(PlayerProfile p,Action<bool,string> check)
         {
             var car=p.SelectedCar;var catalog=p.catalog;var spec=catalog.Resolve(car.vehicleId,MechanicsOwnership.Definitions(p,car),car.tune).spec;

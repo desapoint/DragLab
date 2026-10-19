@@ -75,7 +75,9 @@ namespace DragLab.Domain.Mechanics
             long stamp=Stamp();var productKeys=new Dictionary<string,string>(StringComparer.Ordinal);int indexed=0;foreach(var definition in p.catalog.parts){productKeys.Add(definition.id,ProductKey(definition));if(++indexed%32==0)yield return "parts/product keys";}Measured("product keys",stamp);stamp=Stamp();yield return "parts/product keys";
             var models=Models(p.catalog);var specs=models.Select(p.catalog.Spec).ToArray();
             var selectedNew=new List<KeyValuePair<NewPartStock,int>>();
-            var layout=MarketCatalogLayout.Get(p.catalog,productKeys,specs);
+            MarketCatalogLayout.Layout layout=null;
+            foreach(var marker in MarketCatalogLayout.GetSteps(p.catalog,productKeys,specs,value=>layout=value))
+                yield return marker;
             // Preserve the exact legacy plan ONLY to hold used-pool budgets and guarantee RNG positions steady.
             // These provisional new rows are replaced after used generation, before any new supply rolls.
             int newCount=Math.Min(layout.groups.Length,24+(int)(Next(ref random)*21)%21);

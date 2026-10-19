@@ -52,15 +52,95 @@ namespace DragLab.Domain.Mechanics
             entry.snapshot=d.Copy();entry.json=null;var copy=d.Copy();copy.id="";return entry.key=JsonUtility.ToJson(copy);
         }
         internal static string Json(PartDefinition d){Key(d);var entry=products.GetValue(d,_=>new Product());if(entry.json==null||entry.jsonId!=d.id){entry.jsonId=d.id;entry.json=JsonUtility.ToJson(d);}return entry.json;}
+        static bool Matches(Layout entry,MechanicalCatalog catalog,Dictionary<string,string> keys)
+            =>entry.groups!=null&&catalog.parts.Select(d=>d.id).SequenceEqual(entry.ids)&&
+                catalog.parts.Select(d=>keys[d.id]).SequenceEqual(entry.keys);
+
+        // Synchronous API retained for original callers and deterministic editor tests.
         internal static Layout Get(MechanicalCatalog catalog,Dictionary<string,string> keys,VehicleSpec[] specs)
         {
-            var entry=layouts.GetValue(catalog,_=>new Layout());
-            if(entry.groups!=null&&catalog.parts.Select(d=>d.id).SequenceEqual(entry.ids)&&catalog.parts.Select(d=>keys[d.id]).SequenceEqual(entry.keys))return entry;
-            entry.Invalidate();
-            entry.ids=catalog.parts.Select(d=>d.id).ToArray();entry.keys=catalog.parts.Select(d=>keys[d.id]).ToArray();
-            entry.groups=catalog.parts.GroupBy(d=>keys[d.id],StringComparer.Ordinal).OrderBy(g=>g.Min(d=>d.id),StringComparer.Ordinal).Select(g=>{
-                var d=g.OrderBy(v=>v.id,StringComparer.Ordinal).First();var fitting=specs.Where(s=>catalog.Fits(s,d)).ToArray();return new Group{definition=d,ids=g.Select(v=>v.id).OrderBy(id=>id,StringComparer.Ordinal).ToList(),maximum=fitting.Select(s=>PartsMarket.Count(s,d)).DefaultIfEmpty(1).Max(),deliverable=fitting.Length>0};
-            }).ToArray();return entry;
+            Layout result=null;
+            foreach(var ignored in GetSteps(catalog,keys,specs,value=>result=value)){}
+            return result;
+        }
+
+        // A cold layout is built privately and only published once all groups have
+        // been fitted. Yield at a soft 2 ms budget to prevent the former ~300 ms
+        // single-frame catalog layout spike. All work remains on Unity's main thread.
+        internal static IEnumerable<object> GetSteps(MechanicalCatalog catalog,Dictionary<string,string> keys,
+            VehicleSpec[] specs,Action<Layout> complete)
+        {
+            var existing=layouts.GetValue(catalog,_=>new Layout());
+            if(Matches(existing,catalog,keys)){complete(existing);yield break;}
+            var candidate=new Layout{
+                ids=catalog.parts.Select(d=>d.id).ToArray(),
+                keys=catalog.parts.Select(d=>keys[d.id]).ToArray()
+            };
+            // Preserve the authored equivalence grouping, ID ordering, and
+            // per-platform maximum calculation, including every alias member.
+            var source=catalog.parts.GroupBy(d=>keys[d.id],StringComparer.Ordinal)
+                .OrderBy(g=>g.Min(d=>d.id),StringComparer.Ordinal).ToArray();
+            var groups=new List<Group>(source.Length);
+            long start=System.Diagnostics.Stopwatch.GetTimestamp();
+            foreach(var group in source)
+            {
+                var definition=group.OrderBy(d=>d.id,StringComparer.Ordinal).First();
+                var fitting=false;
+                int maximum=1;
+                foreach(var spec in specs)
+                {
+                    if(!catalog.Fits(spec,definition))continue;
+                    fitting=true;
+                    maximum=Math.Max(maximum,PartsMarket.Count(spec,definition));
+                }
+                groups.Add(new Group{
+                    definition=definition,
+                    ids=group.Select(d=>d.id).OrderBy(id=>id,StringComparer.Ordinal).ToList(),
+                    maximum=maximum,deliverable=fitting
+                });
+                long now=System.Diagnostics.Stopwatch.GetTimestamp();
+                if((now-start)*1000.0/System.Diagnostics.Stopwatch.Frequency>=2.0)
+                {
+                    yield return "parts/layout group";
+                    start=System.Diagnostics.Stopwatch.GetTimestamp();
+                }
+            }
+            candidate.groups=groups.ToArray();
+            // A newer full layout may have been published during a suspended warmup.
+            // Never overwrite that version with an older construction.
+            var current=layouts.GetValue(catalog,_=>new Layout());
+            if(Matches(current,catalog,keys)){complete(current);yield break;}
+            current.Invalidate();
+            layouts.Remove(catalog);
+            layouts.Add(catalog,candidate);
+            complete(candidate);
+        }
+
+        // Warm once on non-race frames, without making launch, reset or shop
+        // navigation wait. The existing cold-path iterator is always available.
+        internal static IEnumerable<object> WarmSteps(MechanicalCatalog catalog)
+        {
+            if(catalog==null)yield break;
+            var definitions=catalog.parts.ToArray();
+            var keys=new Dictionary<string,string>(StringComparer.Ordinal);
+            long start=System.Diagnostics.Stopwatch.GetTimestamp();
+            foreach(var definition in definitions)
+            {
+                keys.Add(definition.id,Key(definition));
+                long now=System.Diagnostics.Stopwatch.GetTimestamp();
+                if((now-start)*1000.0/System.Diagnostics.Stopwatch.Frequency>=2.0)
+                {
+                    yield return "parts/layout warm keys";
+                    start=System.Diagnostics.Stopwatch.GetTimestamp();
+                }
+            }
+            // An altered count/order must not publish a stale warmup. Any later
+            // market refresh rebuilds using the current catalog and its own keys.
+            if(!definitions.SequenceEqual(catalog.parts))yield break;
+            var models=catalog.parts.Where(d=>d.category==PartCategory.CylinderBlock)
+                .Select(d=>d.id.Split('/')[0]).Distinct().OrderBy(s=>s,StringComparer.Ordinal).ToArray();
+            var specs=models.Select(catalog.Spec).ToArray();
+            foreach(var unused in GetSteps(catalog,keys,specs,_=>{}))yield return unused;
         }
     }
 }

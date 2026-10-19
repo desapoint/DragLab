@@ -224,6 +224,8 @@ namespace DragLab.Runtime
 
         string marketWarmKey;
         System.Collections.IEnumerator marketWarm;
+        MechanicalCatalog layoutWarmCatalog;
+        IEnumerator<object> layoutWarm;
         void Update()
         { using (FramePacingProbe.Measure(0)) UpdateMeasured(); }
         void UpdateMeasured()
@@ -232,7 +234,16 @@ namespace DragLab.Runtime
             if (profile == null || resetRequired) return;
             if(FramePacingProbe.Active&&screen=="Race"&&race!=null)FramePacingProbe.Phase=race.ResultReady?"race/results":"race/driving";
             if(screen!="Race"&&Time.realtimeSinceStartup>.25f&&!Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&GUIUtility.hotControl==0)
+            {
                 NewSupplyCatalogIndex.Advance(profile.catalog,.75);
+                if(!ReferenceEquals(layoutWarmCatalog,profile.catalog))
+                {
+                    layoutWarm?.Dispose();
+                    layoutWarmCatalog=profile.catalog;
+                    layoutWarm=profile.catalog==null?null:MarketCatalogLayout.WarmSteps(profile.catalog).GetEnumerator();
+                }
+                if(layoutWarm!=null&&!layoutWarm.MoveNext()){layoutWarm.Dispose();layoutWarm=null;}
+            }
             if(profile.vehicleStock!=null&&screen!="Race"&&Time.realtimeSinceStartup>.25f&&!Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&GUIUtility.hotControl==0){string key=profile.vehicleStock.seed+"/"+profile.vehicleStock.generation+"/"+profile.firstPurchasePending;if(key!=marketWarmKey){marketWarmKey=key;marketWarm=VehicleListings.WarmNext(profile).GetEnumerator();}if(marketWarm!=null&&!marketWarm.MoveNext())marketWarm=null;}
             if (pendingAction != null) { var action = pendingAction; pendingAction = null; action(); }
             if (saveDelay > 0 && GUIUtility.hotControl == 0 && !Input.GetMouseButton(0) && !Input.GetMouseButton(1)) { if(drivingPreferencesDirty){if(!ProfileStore.TrySavePreferences(profile,out var error))notice="Settings save failed: "+error;drivingPreferencesDirty=false;}else ProfileStore.Save(profile);saveDelay=0; }

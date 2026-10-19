@@ -38,6 +38,7 @@ namespace DragLab.Editor
             Directory.CreateDirectory(Folder);int checks=0;var log=new StringBuilder();var timer=System.Diagnostics.Stopwatch.StartNew();
             Action<bool,string> check=(ok,label)=>{if(!ok)throw new InvalidOperationException(label);checks++;log.AppendLine("PASS "+label);};
             NewSupplyChecks.Rules(check);log.AppendLine("Rule checks elapsed ms: "+timer.Elapsed.TotalMilliseconds.ToString("0"));var catalog=MechanicsTransactions.Catalog();
+            NewSupplyChecks.LayoutRegression(catalog,check);
             var baseline=File.ReadAllLines(Path.Combine(Folder,"used-baseline-matrix.csv"),Encoding.UTF8).Skip(1).Where(s=>s.Length>0).ToDictionary(s=>string.Join(",",s.Split(',').Take(3)),s=>s.Split(',')[5]);
             foreach(int seed in new[]{1,41,981,-7})foreach(int minimum in new[]{0,5,20}){
                 var p=Create(catalog,seed,minimum);
