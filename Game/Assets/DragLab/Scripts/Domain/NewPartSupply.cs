@@ -79,28 +79,47 @@ namespace DragLab.Domain.Mechanics
             if(p.individual&&mode>=.6)return 1;
             return checked(p.maximum*(first?(quantity<.5?1:quantity<.85?2:3):1));
         }
+        // Disabled outside an explicit PartsMarket.Measurement subscription.
+        // Reset the clock after invoking the observer so logging time is not charged to the next stage.
+        static void Sample(Action<string,double> measure,string stage,ref long stamp)
+        {
+            if(measure==null)return;
+            long end=System.Diagnostics.Stopwatch.GetTimestamp();
+            measure(stage,(end-stamp)*1000.0/System.Diagnostics.Stopwatch.Frequency);
+            stamp=System.Diagnostics.Stopwatch.GetTimestamp();
+        }
         internal static int Deliver(List<Product> all,SupplyWear.Need[] needs,ref uint selection,ref uint quantity)
         {
+            var measure=PartsMarket.Measurement;
+            long stamp=measure==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
             // Deliverability is determined before every weighted decision, not by retrying empty branches.
-            var pool=all.Where(p=>p.maximum>0&&Categories.Accepts(p)).ToList();if(pool.Count==0)return 0;
+            var pool=all.Where(p=>p.maximum>0&&Categories.Accepts(p)).ToList();
+            Sample(measure,"delivery/eligible pool",ref stamp);
+            if(pool.Count==0)return 0;
             if(pool.Count>1)pool=Filter(pool,new Func<Product,bool>[] {p=>p.owned,p=>!p.owned},new[]{.76,.24},ref selection);
             if(pool.Count>1){double chance=DiscoveryProbability(pool.Count(p=>!p.stock.discovered),pool.Count);pool=Filter(pool,new Func<Product,bool>[] {p=>!p.stock.discovered,p=>p.stock.discovered},new[]{chance,1-chance},ref selection);}
+            Sample(measure,"delivery/ownership and discovery",ref stamp);
             Product chosen;
             if(pool.Count==1)chosen=pool[0];
             else{
                 var available=new HashSet<Product>(pool);var eligible=needs.Where(n=>n.candidates.Any(c=>available.Contains(c.product))).ToArray();
+                Sample(measure,"delivery/wear candidate match",ref stamp);
                 var probabilities=eligible.Select(n=>n.Probability()).ToArray();double priority=probabilities.DefaultIfEmpty(0).Max();
+                Sample(measure,"delivery/wear probabilities",ref stamp);
                 if(priority>0&&Next(ref selection)<priority){
                     int pick=Roll(eligible.Select((n,i)=>probabilities[i]*n.Severity).ToArray(),Next(ref selection));
                     var replacements=eligible[pick].candidates.Where(c=>available.Contains(c.product)).Select(c=>c.product).ToArray();
                     chosen=replacements.Length==1?replacements[0]:replacements[(int)(Next(ref selection)*replacements.Length)];
                 }else chosen=PickCategory(pool,Categories,ref selection);
             }
+            Sample(measure,"delivery/product choice",ref stamp);
             if(chosen==null)return 0;
             bool first=!chosen.stock.discovered;double mode=chosen.maximum>1&&chosen.individual?Next(ref quantity):0;
             bool full=chosen.maximum>1&&(!chosen.individual||mode<.6);
             double amount=first&&(chosen.maximum<=1||full)?Next(ref quantity):0;
-            int units=Quantity(chosen,first,mode,amount);chosen.stock.units=checked(chosen.stock.units+units);chosen.stock.initialUnits=checked(chosen.stock.initialUnits+units);chosen.stock.discovered=true;return units;
+            int units=Quantity(chosen,first,mode,amount);chosen.stock.units=checked(chosen.stock.units+units);chosen.stock.initialUnits=checked(chosen.stock.initialUnits+units);chosen.stock.discovered=true;
+            Sample(measure,"delivery/quantity and publication",ref stamp);
+            return units;
         }
         internal static Product[] Prepare(PlayerProfile p,MarketCatalogLayout.Layout layout,PartsStockState previous)
         {

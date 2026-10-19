@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -75,8 +76,24 @@ namespace DragLab.Editor
             var changed=EngineWorkshop.Copy(source);foreach(var part in changed.parts){part.condition.health=.01f;foreach(var e in part.condition.elements)e.health=.01f;}foreach(var s in changed.inventory.market.parts){s.units=s.initialUnits=100;s.discovered=true;}
             source.vehicleStock.generation++;changed.vehicleStock.generation++;PartsMarket.Refresh(source);PartsMarket.Refresh(changed);check(Used(source)==Used(changed),"Changing player wear, discovery and accumulated new quantities cannot alter used/engine generation");
             var direct=EngineWorkshop.Copy(changed);var staged=EngineWorkshop.Copy(changed);direct.vehicleStock.generation++;staged.vehicleStock.generation++;PartsMarket.Refresh(direct);
-            int wearSteps=0;var previousMeasurement=PartsMarket.Measurement;PartsMarket.Measurement=(phase,ms)=>log.AppendLine("Measured "+phase+": "+ms.ToString("0.0",System.Globalization.CultureInfo.InvariantCulture)+" ms");
+            // Keep one report row per delivery stage rather than flooding the fixture log.
+            // Values are CPU-only samples; the iterator's time between frames is excluded.
+            var deliveryTimes=new SortedDictionary<string,double[]>(StringComparer.Ordinal);
+            int wearSteps=0;var previousMeasurement=PartsMarket.Measurement;
+            PartsMarket.Measurement=(phase,ms)=>{
+                if(!phase.StartsWith("delivery/",StringComparison.Ordinal)){
+                    log.AppendLine("Measured "+phase+": "+ms.ToString("0.0",System.Globalization.CultureInfo.InvariantCulture)+" ms");
+                    return;
+                }
+                if(!deliveryTimes.TryGetValue(phase,out var values))deliveryTimes[phase]=values=new double[3]; // total, count, maximum
+                values[0]+=ms;values[1]++;values[2]=Math.Max(values[2],ms);
+            };
             try{foreach(var step in PartsMarket.RefreshSteps(staged))if((string)step=="parts/wear coverage")wearSteps++;}finally{PartsMarket.Measurement=previousMeasurement;}
+            foreach(var pair in deliveryTimes){
+                var values=pair.Value;
+                log.AppendLine("Measured "+pair.Key+": "+values[0].ToString("0.0",System.Globalization.CultureInfo.InvariantCulture)+" ms CPU total / "+((int)values[1])+" calls / "+values[2].ToString("0.000",System.Globalization.CultureInfo.InvariantCulture)+" ms max");
+            }
+            check(deliveryTimes.ContainsKey("delivery/eligible pool")&&deliveryTimes.ContainsKey("delivery/wear probabilities"),"New supply profiling captures pool filtering and wear priority separately");
             check(wearSteps>0&&JsonUtility.ToJson(staged.inventory)==JsonUtility.ToJson(direct.inventory),"Staged wear/member preparation yields work and matches synchronous generation exactly");
             string priorPath=ProfileStore.VerificationPath;try{
                 string path=Path.Combine(Folder,"sqlite",Guid.NewGuid().ToString("N")+".sqlite3");Directory.CreateDirectory(Path.GetDirectoryName(path));ProfileStore.VerificationPath=path;
