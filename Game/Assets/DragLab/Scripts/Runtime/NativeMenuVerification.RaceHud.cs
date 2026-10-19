@@ -238,6 +238,8 @@ namespace DragLab.Runtime
             Check(maxCameraStep<.35f&&Mathf.Abs(Camera.main.transform.position.x-4.4f)<.01f,"Results camera eases to its framing without the former 2.4-unit single-frame jump / max step "+maxCameraStep.ToString("F3"));
             Check(game.ComparisonRoute=="Results"&&hud.Visible&&game.Race.player.state.finished,"Finished results retain the live instruments and dashboard");
             Check(playerFinishedShot&&game.Results.Visible&&strip.Billboard.Player.Finished&&strip.Billboard.Opponent.Finished,"Both finish beams publish independently while the timing slip remains open");
+            Check(game.Results.Root.Q<Label>("rivalTotal").text==(game.Race.opponent.state.reaction+game.Race.opponent.state.elapsed).ToString("F3"),"Slip total includes the rival's actual reaction plus elapsed time");
+            Check(game.Results.Root.Q<Label>("finishGap").text.Contains(Math.Abs(game.Race.player.state.reaction+game.Race.player.state.elapsed-game.Race.opponent.state.reaction-game.Race.opponent.state.elapsed).ToString("F3")),"Slip finish gap uses total crossing times rather than ET alone");
             Check(game.Results.Root.Q<Label>("rivalElapsed").text==game.Race.opponent.state.elapsed.ToString("F3"),"An opponent that finishes later updates the existing slip with its true elapsed time");
             Check(string.IsNullOrEmpty(game.ResultNotice)&&game.Results.Root.Q("slipNotice").ClassListContains("hidden"),"Successful results omit redundant outcome/save-status text and its empty row");
             var focusRace=game.Race;double focusElapsed=focusRace.player.state.elapsed;int focusCash=game.Profile.cash;
@@ -327,6 +329,8 @@ namespace DragLab.Runtime
             game.verificationInput=null;float settlementDeadline=Time.realtimeSinceStartup+12;
             while(game.ResultSettlementPending&&Time.realtimeSinceStartup<settlementDeadline)yield return null;
             yield return new WaitForEndOfFrame();Check(game.Results.Visible,"A second actual pass opens the reusable paper results");
+            Check(game.Results.Root.Q<Label>("rivalTotal").text==(game.Race.opponent.state.reaction+game.Race.opponent.state.elapsed).ToString("F3"),"Result slip total is the current rival's reaction plus ET");
+            Check(game.Results.Root.Q<Label>("finishGap").text.Contains(Math.Abs(game.Race.player.state.reaction+game.Race.player.state.elapsed-game.Race.opponent.state.reaction-game.Race.opponent.state.elapsed).ToString("F3")),"Result slip margin uses the current two total crossing times");
             Check(string.IsNullOrEmpty(game.ResultNotice)&&game.Results.Root.Q("slipNotice").ClassListContains("hidden"),"Successful settlement retry clears the actionable error without adding a success message / notice="+game.ResultNotice+" / storage="+ProfileStore.Status+" / hidden="+game.Results.Root.Q("slipNotice").ClassListContains("hidden"));
             var retryRace=game.Race;var extra=game.Results.Root.Q<Foldout>("resultDetails");extra.value=true;yield return null;
             var export=game.Results.Root.Q("resultExport");game.Results.Root.Q<ScrollView>("timingSlipScroll").ScrollTo(export);yield return new WaitForSecondsRealtime(.15f);yield return Click(input,export);

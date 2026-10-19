@@ -1,0 +1,749 @@
+PASS: starter-hatch: fresh timestamps/state
+PASS: starter-hatch: player crossing matches independent green clock
+PASS: starter-hatch: rival crossing matches independent green clock
+PASS: starter-hatch: player physically finishes
+PASS: starter-hatch: rival physically finishes
+PASS: starter-hatch: winner uses RT plus ET
+PASS: starter-hatch: waiting changes reaction rather than adding idle seconds to ET / 16,9651669248773 -> 16,9651669248773 / delay 0,18
+PASS: starter-hatch: fresh timestamps/state
+PASS: starter-hatch: rival crossing matches independent green clock
+PASS: starter-hatch: player crossing matches independent green clock
+PASS: starter-hatch: player physically finishes
+PASS: starter-hatch: rival physically finishes
+PASS: starter-hatch: winner uses RT plus ET
+PASS: starter-hatch: outcome agrees with independently observed lane crossing order
+PASS: starter-hatch: waiting changes reaction rather than adding idle seconds to ET / 16,9651669248773 -> 16,9651669240661 / delay 3,18
+PASS: starter-hatch: several seconds of waiting cannot become a close win against the same healthy car
+PASS: starter-hatch: fresh timestamps/state
+PASS: starter-hatch: rival crossing matches independent green clock
+PASS: starter-hatch: player crossing matches independent green clock
+PASS: starter-hatch: player physically finishes
+PASS: starter-hatch: rival physically finishes
+PASS: starter-hatch: winner uses RT plus ET
+PASS: starter-hatch: outcome agrees with independently observed lane crossing order
+PASS: starter-hatch: waiting changes reaction rather than adding idle seconds to ET / 16,9651669248773 -> 16,9651669240659 / delay 6,18
+PASS: starter-hatch: several seconds of waiting cannot become a close win against the same healthy car
+PASS: v8-muscle: fresh timestamps/state
+PASS: v8-muscle: player crossing matches independent green clock
+PASS: v8-muscle: rival crossing matches independent green clock
+PASS: v8-muscle: player physically finishes
+PASS: v8-muscle: rival physically finishes
+PASS: v8-muscle: winner uses RT plus ET
+PASS: v8-muscle: waiting changes reaction rather than adding idle seconds to ET / 14,610190694118 -> 14,610190694118 / delay 0,18
+PASS: v8-muscle: fresh timestamps/state
+PASS: v8-muscle: rival crossing matches independent green clock
+PASS: v8-muscle: player crossing matches independent green clock
+PASS: v8-muscle: player physically finishes
+PASS: v8-muscle: rival physically finishes
+PASS: v8-muscle: winner uses RT plus ET
+PASS: v8-muscle: outcome agrees with independently observed lane crossing order
+PASS: v8-muscle: waiting changes reaction rather than adding idle seconds to ET / 14,610190694118 -> 14,6101906664303 / delay 3,18
+PASS: v8-muscle: several seconds of waiting cannot become a close win against the same healthy car
+PASS: v8-muscle: fresh timestamps/state
+PASS: v8-muscle: rival crossing matches independent green clock
+PASS: v8-muscle: player crossing matches independent green clock
+PASS: v8-muscle: player physically finishes
+PASS: v8-muscle: rival physically finishes
+PASS: v8-muscle: winner uses RT plus ET
+PASS: v8-muscle: outcome agrees with independently observed lane crossing order
+PASS: v8-muscle: waiting changes reaction rather than adding idle seconds to ET / 14,610190694118 -> 14,61019066643 / delay 6,18
+PASS: v8-muscle: several seconds of waiting cannot become a close win against the same healthy car
+PASS: super-v8: fresh timestamps/state
+PASS: super-v8: player crossing matches independent green clock
+PASS: super-v8: rival crossing matches independent green clock
+PASS: super-v8: player physically finishes
+PASS: super-v8: rival physically finishes
+PASS: super-v8: winner uses RT plus ET
+PASS: super-v8: waiting changes reaction rather than adding idle seconds to ET / 13,2580150005816 -> 13,2580150005816 / delay 0,18
+PASS: super-v8: fresh timestamps/state
+PASS: super-v8: rival crossing matches independent green clock
+PASS: super-v8: player crossing matches independent green clock
+PASS: super-v8: player physically finishes
+PASS: super-v8: rival physically finishes
+PASS: super-v8: winner uses RT plus ET
+PASS: super-v8: outcome agrees with independently observed lane crossing order
+PASS: super-v8: waiting changes reaction rather than adding idle seconds to ET / 13,2580150005816 -> 13,2583966896006 / delay 3,18
+PASS: super-v8: several seconds of waiting cannot become a close win against the same healthy car
+PASS: super-v8: fresh timestamps/state
+PASS: super-v8: rival crossing matches independent green clock
+PASS: super-v8: player crossing matches independent green clock
+PASS: super-v8: player physically finishes
+PASS: super-v8: rival physically finishes
+PASS: super-v8: winner uses RT plus ET
+PASS: super-v8: outcome agrees with independently observed lane crossing order
+PASS: super-v8: waiting changes reaction rather than adding idle seconds to ET / 13,2580150005816 -> 13,258397499228 / delay 6,18
+PASS: super-v8: several seconds of waiting cannot become a close win against the same healthy car
+PASS: Authored career events are included in the audit
+PASS: first-pass: fresh timestamps/state
+PASS: first-pass: player crossing matches independent green clock
+PASS: first-pass: rival crossing matches independent green clock
+PASS: first-pass: player physically finishes
+PASS: first-pass: rival physically finishes
+PASS: first-pass: winner uses RT plus ET
+PASS: first-pass: outcome agrees with independently observed lane crossing order
+PASS: first-pass: retry capture has fresh behavior and identical authored hardware/seed
+PASS: first-pass: fresh timestamps/state
+PASS: first-pass: rival crossing matches independent green clock
+PASS: first-pass: player crossing matches independent green clock
+PASS: first-pass: player physically finishes
+PASS: first-pass: rival physically finishes
+PASS: first-pass: winner uses RT plus ET
+PASS: first-pass: outcome agrees with independently observed lane crossing order
+PASS: first-pass: retry capture has fresh behavior and identical authored hardware/seed
+PASS: first-pass: fresh timestamps/state
+PASS: first-pass: player crossing matches independent green clock
+PASS: first-pass: rival crossing matches independent green clock
+PASS: first-pass: player physically finishes
+PASS: first-pass: rival physically finishes
+PASS: first-pass: winner uses RT plus ET
+PASS: first-pass: outcome agrees with independently observed lane crossing order
+PASS: first-pass: retry capture has fresh behavior and identical authored hardware/seed
+PASS: first-pass: fresh timestamps/state
+PASS: first-pass: rival crossing matches independent green clock
+PASS: first-pass: player crossing matches independent green clock
+PASS: first-pass: player physically finishes
+PASS: first-pass: rival physically finishes
+PASS: first-pass: winner uses RT plus ET
+PASS: first-pass: outcome agrees with independently observed lane crossing order
+PASS: first-pass: retry capture has fresh behavior and identical authored hardware/seed
+PASS: club-run: fresh timestamps/state
+PASS: club-run: player crossing matches independent green clock
+PASS: club-run: rival crossing matches independent green clock
+PASS: club-run: player physically finishes
+PASS: club-run: rival physically finishes
+PASS: club-run: winner uses RT plus ET
+PASS: club-run: outcome agrees with independently observed lane crossing order
+PASS: club-run: retry capture has fresh behavior and identical authored hardware/seed
+PASS: club-run: fresh timestamps/state
+PASS: club-run: rival crossing matches independent green clock
+PASS: club-run: player crossing matches independent green clock
+PASS: club-run: player physically finishes
+PASS: club-run: rival physically finishes
+PASS: club-run: winner uses RT plus ET
+PASS: club-run: outcome agrees with independently observed lane crossing order
+PASS: club-run: retry capture has fresh behavior and identical authored hardware/seed
+PASS: club-run: fresh timestamps/state
+PASS: club-run: player crossing matches independent green clock
+PASS: club-run: rival crossing matches independent green clock
+PASS: club-run: player physically finishes
+PASS: club-run: rival physically finishes
+PASS: club-run: winner uses RT plus ET
+PASS: club-run: outcome agrees with independently observed lane crossing order
+PASS: club-run: retry capture has fresh behavior and identical authored hardware/seed
+PASS: club-run: fresh timestamps/state
+PASS: club-run: rival crossing matches independent green clock
+PASS: club-run: player crossing matches independent green clock
+PASS: club-run: player physically finishes
+PASS: club-run: rival physically finishes
+PASS: club-run: winner uses RT plus ET
+PASS: club-run: outcome agrees with independently observed lane crossing order
+PASS: club-run: retry capture has fresh behavior and identical authored hardware/seed
+PASS: coupe-rival: fresh timestamps/state
+PASS: coupe-rival: rival crossing matches independent green clock
+PASS: coupe-rival: player crossing matches independent green clock
+PASS: coupe-rival: player physically finishes
+PASS: coupe-rival: rival physically finishes
+PASS: coupe-rival: winner uses RT plus ET
+PASS: coupe-rival: outcome agrees with independently observed lane crossing order
+PASS: coupe-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: coupe-rival: fresh timestamps/state
+PASS: coupe-rival: rival crossing matches independent green clock
+PASS: coupe-rival: player crossing matches independent green clock
+PASS: coupe-rival: player physically finishes
+PASS: coupe-rival: rival physically finishes
+PASS: coupe-rival: winner uses RT plus ET
+PASS: coupe-rival: outcome agrees with independently observed lane crossing order
+PASS: coupe-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: coupe-rival: fresh timestamps/state
+PASS: coupe-rival: rival crossing matches independent green clock
+PASS: coupe-rival: player crossing matches independent green clock
+PASS: coupe-rival: player physically finishes
+PASS: coupe-rival: rival physically finishes
+PASS: coupe-rival: winner uses RT plus ET
+PASS: coupe-rival: outcome agrees with independently observed lane crossing order
+PASS: coupe-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: coupe-rival: fresh timestamps/state
+PASS: coupe-rival: rival crossing matches independent green clock
+PASS: coupe-rival: player crossing matches independent green clock
+PASS: coupe-rival: player physically finishes
+PASS: coupe-rival: rival physically finishes
+PASS: coupe-rival: winner uses RT plus ET
+PASS: coupe-rival: outcome agrees with independently observed lane crossing order
+PASS: coupe-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: local-final: fresh timestamps/state
+PASS: local-final: rival crossing matches independent green clock
+PASS: local-final: player crossing matches independent green clock
+PASS: local-final: player physically finishes
+PASS: local-final: rival physically finishes
+PASS: local-final: winner uses RT plus ET
+PASS: local-final: outcome agrees with independently observed lane crossing order
+PASS: local-final: retry capture has fresh behavior and identical authored hardware/seed
+PASS: local-final: fresh timestamps/state
+PASS: local-final: rival crossing matches independent green clock
+PASS: local-final: player crossing matches independent green clock
+PASS: local-final: player physically finishes
+PASS: local-final: rival physically finishes
+PASS: local-final: winner uses RT plus ET
+PASS: local-final: outcome agrees with independently observed lane crossing order
+PASS: local-final: retry capture has fresh behavior and identical authored hardware/seed
+PASS: local-final: fresh timestamps/state
+PASS: local-final: rival crossing matches independent green clock
+PASS: local-final: player crossing matches independent green clock
+PASS: local-final: player physically finishes
+PASS: local-final: rival physically finishes
+PASS: local-final: winner uses RT plus ET
+PASS: local-final: outcome agrees with independently observed lane crossing order
+PASS: local-final: retry capture has fresh behavior and identical authored hardware/seed
+PASS: local-final: fresh timestamps/state
+PASS: local-final: rival crossing matches independent green clock
+PASS: local-final: player crossing matches independent green clock
+PASS: local-final: player physically finishes
+PASS: local-final: rival physically finishes
+PASS: local-final: winner uses RT plus ET
+PASS: local-final: outcome agrees with independently observed lane crossing order
+PASS: local-final: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-f-qualifier: fresh timestamps/state
+PASS: ladder-f-qualifier: player crossing matches independent green clock
+PASS: ladder-f-qualifier: rival crossing matches independent green clock
+PASS: ladder-f-qualifier: player physically finishes
+PASS: ladder-f-qualifier: rival physically finishes
+PASS: ladder-f-qualifier: winner uses RT plus ET
+PASS: ladder-f-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-f-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-f-qualifier: fresh timestamps/state
+PASS: ladder-f-qualifier: rival crossing matches independent green clock
+PASS: ladder-f-qualifier: player crossing matches independent green clock
+PASS: ladder-f-qualifier: player physically finishes
+PASS: ladder-f-qualifier: rival physically finishes
+PASS: ladder-f-qualifier: winner uses RT plus ET
+PASS: ladder-f-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-f-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-f-qualifier: fresh timestamps/state
+PASS: ladder-f-qualifier: player crossing matches independent green clock
+PASS: ladder-f-qualifier: rival crossing matches independent green clock
+PASS: ladder-f-qualifier: player physically finishes
+PASS: ladder-f-qualifier: rival physically finishes
+PASS: ladder-f-qualifier: winner uses RT plus ET
+PASS: ladder-f-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-f-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-f-qualifier: fresh timestamps/state
+PASS: ladder-f-qualifier: rival crossing matches independent green clock
+PASS: ladder-f-qualifier: player crossing matches independent green clock
+PASS: ladder-f-qualifier: player physically finishes
+PASS: ladder-f-qualifier: rival physically finishes
+PASS: ladder-f-qualifier: winner uses RT plus ET
+PASS: ladder-f-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-f-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-f-rival: fresh timestamps/state
+PASS: ladder-f-rival: player crossing matches independent green clock
+PASS: ladder-f-rival: rival crossing matches independent green clock
+PASS: ladder-f-rival: player physically finishes
+PASS: ladder-f-rival: rival physically finishes
+PASS: ladder-f-rival: winner uses RT plus ET
+PASS: ladder-f-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-f-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-f-rival: fresh timestamps/state
+PASS: ladder-f-rival: rival crossing matches independent green clock
+PASS: ladder-f-rival: player crossing matches independent green clock
+PASS: ladder-f-rival: player physically finishes
+PASS: ladder-f-rival: rival physically finishes
+PASS: ladder-f-rival: winner uses RT plus ET
+PASS: ladder-f-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-f-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-f-rival: fresh timestamps/state
+PASS: ladder-f-rival: player crossing matches independent green clock
+PASS: ladder-f-rival: rival crossing matches independent green clock
+PASS: ladder-f-rival: player physically finishes
+PASS: ladder-f-rival: rival physically finishes
+PASS: ladder-f-rival: winner uses RT plus ET
+PASS: ladder-f-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-f-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-f-rival: fresh timestamps/state
+PASS: ladder-f-rival: rival crossing matches independent green clock
+PASS: ladder-f-rival: player crossing matches independent green clock
+PASS: ladder-f-rival: player physically finishes
+PASS: ladder-f-rival: rival physically finishes
+PASS: ladder-f-rival: winner uses RT plus ET
+PASS: ladder-f-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-f-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-e-qualifier: fresh timestamps/state
+PASS: ladder-e-qualifier: player crossing matches independent green clock
+PASS: ladder-e-qualifier: rival crossing matches independent green clock
+PASS: ladder-e-qualifier: player physically finishes
+PASS: ladder-e-qualifier: rival physically finishes
+PASS: ladder-e-qualifier: winner uses RT plus ET
+PASS: ladder-e-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-e-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-e-qualifier: fresh timestamps/state
+PASS: ladder-e-qualifier: rival crossing matches independent green clock
+PASS: ladder-e-qualifier: player crossing matches independent green clock
+PASS: ladder-e-qualifier: player physically finishes
+PASS: ladder-e-qualifier: rival physically finishes
+PASS: ladder-e-qualifier: winner uses RT plus ET
+PASS: ladder-e-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-e-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-e-qualifier: fresh timestamps/state
+PASS: ladder-e-qualifier: player crossing matches independent green clock
+PASS: ladder-e-qualifier: rival crossing matches independent green clock
+PASS: ladder-e-qualifier: player physically finishes
+PASS: ladder-e-qualifier: rival physically finishes
+PASS: ladder-e-qualifier: winner uses RT plus ET
+PASS: ladder-e-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-e-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-e-qualifier: fresh timestamps/state
+PASS: ladder-e-qualifier: rival crossing matches independent green clock
+PASS: ladder-e-qualifier: player crossing matches independent green clock
+PASS: ladder-e-qualifier: player physically finishes
+PASS: ladder-e-qualifier: rival physically finishes
+PASS: ladder-e-qualifier: winner uses RT plus ET
+PASS: ladder-e-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-e-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-e-rival: fresh timestamps/state
+PASS: ladder-e-rival: player crossing matches independent green clock
+PASS: ladder-e-rival: rival crossing matches independent green clock
+PASS: ladder-e-rival: player physically finishes
+PASS: ladder-e-rival: rival physically finishes
+PASS: ladder-e-rival: winner uses RT plus ET
+PASS: ladder-e-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-e-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-e-rival: fresh timestamps/state
+PASS: ladder-e-rival: rival crossing matches independent green clock
+PASS: ladder-e-rival: player crossing matches independent green clock
+PASS: ladder-e-rival: player physically finishes
+PASS: ladder-e-rival: rival physically finishes
+PASS: ladder-e-rival: winner uses RT plus ET
+PASS: ladder-e-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-e-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-e-rival: fresh timestamps/state
+PASS: ladder-e-rival: player crossing matches independent green clock
+PASS: ladder-e-rival: rival crossing matches independent green clock
+PASS: ladder-e-rival: player physically finishes
+PASS: ladder-e-rival: rival physically finishes
+PASS: ladder-e-rival: winner uses RT plus ET
+PASS: ladder-e-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-e-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-e-rival: fresh timestamps/state
+PASS: ladder-e-rival: rival crossing matches independent green clock
+PASS: ladder-e-rival: player crossing matches independent green clock
+PASS: ladder-e-rival: player physically finishes
+PASS: ladder-e-rival: rival physically finishes
+PASS: ladder-e-rival: winner uses RT plus ET
+PASS: ladder-e-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-e-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-d-qualifier: fresh timestamps/state
+PASS: ladder-d-qualifier: rival crossing matches independent green clock
+PASS: ladder-d-qualifier: player crossing matches independent green clock
+PASS: ladder-d-qualifier: player physically finishes
+PASS: ladder-d-qualifier: rival physically finishes
+PASS: ladder-d-qualifier: winner uses RT plus ET
+PASS: ladder-d-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-d-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-d-qualifier: fresh timestamps/state
+PASS: ladder-d-qualifier: rival crossing matches independent green clock
+PASS: ladder-d-qualifier: player crossing matches independent green clock
+PASS: ladder-d-qualifier: player physically finishes
+PASS: ladder-d-qualifier: rival physically finishes
+PASS: ladder-d-qualifier: winner uses RT plus ET
+PASS: ladder-d-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-d-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-d-qualifier: fresh timestamps/state
+PASS: ladder-d-qualifier: rival crossing matches independent green clock
+PASS: ladder-d-qualifier: player crossing matches independent green clock
+PASS: ladder-d-qualifier: player physically finishes
+PASS: ladder-d-qualifier: rival physically finishes
+PASS: ladder-d-qualifier: winner uses RT plus ET
+PASS: ladder-d-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-d-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-d-qualifier: fresh timestamps/state
+PASS: ladder-d-qualifier: rival crossing matches independent green clock
+PASS: ladder-d-qualifier: player crossing matches independent green clock
+PASS: ladder-d-qualifier: player physically finishes
+PASS: ladder-d-qualifier: rival physically finishes
+PASS: ladder-d-qualifier: winner uses RT plus ET
+PASS: ladder-d-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-d-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-d-rival: fresh timestamps/state
+PASS: ladder-d-rival: rival crossing matches independent green clock
+PASS: ladder-d-rival: player crossing matches independent green clock
+PASS: ladder-d-rival: player physically finishes
+PASS: ladder-d-rival: rival physically finishes
+PASS: ladder-d-rival: winner uses RT plus ET
+PASS: ladder-d-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-d-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-d-rival: fresh timestamps/state
+PASS: ladder-d-rival: rival crossing matches independent green clock
+PASS: ladder-d-rival: player crossing matches independent green clock
+PASS: ladder-d-rival: player physically finishes
+PASS: ladder-d-rival: rival physically finishes
+PASS: ladder-d-rival: winner uses RT plus ET
+PASS: ladder-d-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-d-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-d-rival: fresh timestamps/state
+PASS: ladder-d-rival: rival crossing matches independent green clock
+PASS: ladder-d-rival: player crossing matches independent green clock
+PASS: ladder-d-rival: player physically finishes
+PASS: ladder-d-rival: rival physically finishes
+PASS: ladder-d-rival: winner uses RT plus ET
+PASS: ladder-d-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-d-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-d-rival: fresh timestamps/state
+PASS: ladder-d-rival: rival crossing matches independent green clock
+PASS: ladder-d-rival: player crossing matches independent green clock
+PASS: ladder-d-rival: player physically finishes
+PASS: ladder-d-rival: rival physically finishes
+PASS: ladder-d-rival: winner uses RT plus ET
+PASS: ladder-d-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-d-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-c-qualifier: fresh timestamps/state
+PASS: ladder-c-qualifier: rival crossing matches independent green clock
+PASS: ladder-c-qualifier: player crossing matches independent green clock
+PASS: ladder-c-qualifier: player physically finishes
+PASS: ladder-c-qualifier: rival physically finishes
+PASS: ladder-c-qualifier: winner uses RT plus ET
+PASS: ladder-c-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-c-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-c-qualifier: fresh timestamps/state
+PASS: ladder-c-qualifier: rival crossing matches independent green clock
+PASS: ladder-c-qualifier: player crossing matches independent green clock
+PASS: ladder-c-qualifier: player physically finishes
+PASS: ladder-c-qualifier: rival physically finishes
+PASS: ladder-c-qualifier: winner uses RT plus ET
+PASS: ladder-c-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-c-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-c-qualifier: fresh timestamps/state
+PASS: ladder-c-qualifier: rival crossing matches independent green clock
+PASS: ladder-c-qualifier: player crossing matches independent green clock
+PASS: ladder-c-qualifier: player physically finishes
+PASS: ladder-c-qualifier: rival physically finishes
+PASS: ladder-c-qualifier: winner uses RT plus ET
+PASS: ladder-c-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-c-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-c-qualifier: fresh timestamps/state
+PASS: ladder-c-qualifier: rival crossing matches independent green clock
+PASS: ladder-c-qualifier: player crossing matches independent green clock
+PASS: ladder-c-qualifier: player physically finishes
+PASS: ladder-c-qualifier: rival physically finishes
+PASS: ladder-c-qualifier: winner uses RT plus ET
+PASS: ladder-c-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-c-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-c-rival: fresh timestamps/state
+PASS: ladder-c-rival: rival crossing matches independent green clock
+PASS: ladder-c-rival: player crossing matches independent green clock
+PASS: ladder-c-rival: player physically finishes
+PASS: ladder-c-rival: rival physically finishes
+PASS: ladder-c-rival: winner uses RT plus ET
+PASS: ladder-c-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-c-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-c-rival: fresh timestamps/state
+PASS: ladder-c-rival: rival crossing matches independent green clock
+PASS: ladder-c-rival: player crossing matches independent green clock
+PASS: ladder-c-rival: player physically finishes
+PASS: ladder-c-rival: rival physically finishes
+PASS: ladder-c-rival: winner uses RT plus ET
+PASS: ladder-c-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-c-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-c-rival: fresh timestamps/state
+PASS: ladder-c-rival: rival crossing matches independent green clock
+PASS: ladder-c-rival: player crossing matches independent green clock
+PASS: ladder-c-rival: player physically finishes
+PASS: ladder-c-rival: rival physically finishes
+PASS: ladder-c-rival: winner uses RT plus ET
+PASS: ladder-c-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-c-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-c-rival: fresh timestamps/state
+PASS: ladder-c-rival: rival crossing matches independent green clock
+PASS: ladder-c-rival: player crossing matches independent green clock
+PASS: ladder-c-rival: player physically finishes
+PASS: ladder-c-rival: rival physically finishes
+PASS: ladder-c-rival: winner uses RT plus ET
+PASS: ladder-c-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-c-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-b-qualifier: fresh timestamps/state
+PASS: ladder-b-qualifier: rival crossing matches independent green clock
+PASS: ladder-b-qualifier: player crossing matches independent green clock
+PASS: ladder-b-qualifier: player physically finishes
+PASS: ladder-b-qualifier: rival physically finishes
+PASS: ladder-b-qualifier: winner uses RT plus ET
+PASS: ladder-b-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-b-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-b-qualifier: fresh timestamps/state
+PASS: ladder-b-qualifier: rival crossing matches independent green clock
+PASS: ladder-b-qualifier: player crossing matches independent green clock
+PASS: ladder-b-qualifier: player physically finishes
+PASS: ladder-b-qualifier: rival physically finishes
+PASS: ladder-b-qualifier: winner uses RT plus ET
+PASS: ladder-b-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-b-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-b-qualifier: fresh timestamps/state
+PASS: ladder-b-qualifier: rival crossing matches independent green clock
+PASS: ladder-b-qualifier: player crossing matches independent green clock
+PASS: ladder-b-qualifier: player physically finishes
+PASS: ladder-b-qualifier: rival physically finishes
+PASS: ladder-b-qualifier: winner uses RT plus ET
+PASS: ladder-b-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-b-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-b-qualifier: fresh timestamps/state
+PASS: ladder-b-qualifier: rival crossing matches independent green clock
+PASS: ladder-b-qualifier: player crossing matches independent green clock
+PASS: ladder-b-qualifier: player physically finishes
+PASS: ladder-b-qualifier: rival physically finishes
+PASS: ladder-b-qualifier: winner uses RT plus ET
+PASS: ladder-b-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-b-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-b-rival: fresh timestamps/state
+PASS: ladder-b-rival: rival crossing matches independent green clock
+PASS: ladder-b-rival: player crossing matches independent green clock
+PASS: ladder-b-rival: player physically finishes
+PASS: ladder-b-rival: rival physically finishes
+PASS: ladder-b-rival: winner uses RT plus ET
+PASS: ladder-b-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-b-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-b-rival: fresh timestamps/state
+PASS: ladder-b-rival: rival crossing matches independent green clock
+PASS: ladder-b-rival: player crossing matches independent green clock
+PASS: ladder-b-rival: player physically finishes
+PASS: ladder-b-rival: rival physically finishes
+PASS: ladder-b-rival: winner uses RT plus ET
+PASS: ladder-b-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-b-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-b-rival: fresh timestamps/state
+PASS: ladder-b-rival: rival crossing matches independent green clock
+PASS: ladder-b-rival: player crossing matches independent green clock
+PASS: ladder-b-rival: player physically finishes
+PASS: ladder-b-rival: rival physically finishes
+PASS: ladder-b-rival: winner uses RT plus ET
+PASS: ladder-b-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-b-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-b-rival: fresh timestamps/state
+PASS: ladder-b-rival: rival crossing matches independent green clock
+PASS: ladder-b-rival: player crossing matches independent green clock
+PASS: ladder-b-rival: player physically finishes
+PASS: ladder-b-rival: rival physically finishes
+PASS: ladder-b-rival: winner uses RT plus ET
+PASS: ladder-b-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-b-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-a-qualifier: fresh timestamps/state
+PASS: ladder-a-qualifier: rival crossing matches independent green clock
+PASS: ladder-a-qualifier: player crossing matches independent green clock
+PASS: ladder-a-qualifier: player physically finishes
+PASS: ladder-a-qualifier: rival physically finishes
+PASS: ladder-a-qualifier: winner uses RT plus ET
+PASS: ladder-a-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-a-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-a-qualifier: fresh timestamps/state
+PASS: ladder-a-qualifier: rival crossing matches independent green clock
+PASS: ladder-a-qualifier: player crossing matches independent green clock
+PASS: ladder-a-qualifier: player physically finishes
+PASS: ladder-a-qualifier: rival physically finishes
+PASS: ladder-a-qualifier: winner uses RT plus ET
+PASS: ladder-a-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-a-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-a-qualifier: fresh timestamps/state
+PASS: ladder-a-qualifier: rival crossing matches independent green clock
+PASS: ladder-a-qualifier: player crossing matches independent green clock
+PASS: ladder-a-qualifier: player physically finishes
+PASS: ladder-a-qualifier: rival physically finishes
+PASS: ladder-a-qualifier: winner uses RT plus ET
+PASS: ladder-a-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-a-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-a-qualifier: fresh timestamps/state
+PASS: ladder-a-qualifier: rival crossing matches independent green clock
+PASS: ladder-a-qualifier: player crossing matches independent green clock
+PASS: ladder-a-qualifier: player physically finishes
+PASS: ladder-a-qualifier: rival physically finishes
+PASS: ladder-a-qualifier: winner uses RT plus ET
+PASS: ladder-a-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-a-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-a-rival: fresh timestamps/state
+PASS: ladder-a-rival: rival crossing matches independent green clock
+PASS: ladder-a-rival: player crossing matches independent green clock
+PASS: ladder-a-rival: player physically finishes
+PASS: ladder-a-rival: rival physically finishes
+PASS: ladder-a-rival: winner uses RT plus ET
+PASS: ladder-a-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-a-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-a-rival: fresh timestamps/state
+PASS: ladder-a-rival: rival crossing matches independent green clock
+PASS: ladder-a-rival: player crossing matches independent green clock
+PASS: ladder-a-rival: player physically finishes
+PASS: ladder-a-rival: rival physically finishes
+PASS: ladder-a-rival: winner uses RT plus ET
+PASS: ladder-a-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-a-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-a-rival: fresh timestamps/state
+PASS: ladder-a-rival: rival crossing matches independent green clock
+PASS: ladder-a-rival: player crossing matches independent green clock
+PASS: ladder-a-rival: player physically finishes
+PASS: ladder-a-rival: rival physically finishes
+PASS: ladder-a-rival: winner uses RT plus ET
+PASS: ladder-a-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-a-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-a-rival: fresh timestamps/state
+PASS: ladder-a-rival: rival crossing matches independent green clock
+PASS: ladder-a-rival: player crossing matches independent green clock
+PASS: ladder-a-rival: player physically finishes
+PASS: ladder-a-rival: rival physically finishes
+PASS: ladder-a-rival: winner uses RT plus ET
+PASS: ladder-a-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-a-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-s-qualifier: fresh timestamps/state
+PASS: ladder-s-qualifier: rival crossing matches independent green clock
+PASS: ladder-s-qualifier: player crossing matches independent green clock
+PASS: ladder-s-qualifier: player physically finishes
+PASS: ladder-s-qualifier: rival physically finishes
+PASS: ladder-s-qualifier: winner uses RT plus ET
+PASS: ladder-s-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-s-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-s-qualifier: fresh timestamps/state
+PASS: ladder-s-qualifier: rival crossing matches independent green clock
+PASS: ladder-s-qualifier: player crossing matches independent green clock
+PASS: ladder-s-qualifier: player physically finishes
+PASS: ladder-s-qualifier: rival physically finishes
+PASS: ladder-s-qualifier: winner uses RT plus ET
+PASS: ladder-s-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-s-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-s-qualifier: fresh timestamps/state
+PASS: ladder-s-qualifier: rival crossing matches independent green clock
+PASS: ladder-s-qualifier: player crossing matches independent green clock
+PASS: ladder-s-qualifier: player physically finishes
+PASS: ladder-s-qualifier: rival physically finishes
+PASS: ladder-s-qualifier: winner uses RT plus ET
+PASS: ladder-s-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-s-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-s-qualifier: fresh timestamps/state
+PASS: ladder-s-qualifier: rival crossing matches independent green clock
+PASS: ladder-s-qualifier: player crossing matches independent green clock
+PASS: ladder-s-qualifier: player physically finishes
+PASS: ladder-s-qualifier: rival physically finishes
+PASS: ladder-s-qualifier: winner uses RT plus ET
+PASS: ladder-s-qualifier: outcome agrees with independently observed lane crossing order
+PASS: ladder-s-qualifier: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-s-rival: fresh timestamps/state
+PASS: ladder-s-rival: rival crossing matches independent green clock
+PASS: ladder-s-rival: player crossing matches independent green clock
+PASS: ladder-s-rival: player physically finishes
+PASS: ladder-s-rival: rival physically finishes
+PASS: ladder-s-rival: winner uses RT plus ET
+PASS: ladder-s-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-s-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-s-rival: fresh timestamps/state
+PASS: ladder-s-rival: rival crossing matches independent green clock
+PASS: ladder-s-rival: player crossing matches independent green clock
+PASS: ladder-s-rival: player physically finishes
+PASS: ladder-s-rival: rival physically finishes
+PASS: ladder-s-rival: winner uses RT plus ET
+PASS: ladder-s-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-s-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-s-rival: fresh timestamps/state
+PASS: ladder-s-rival: rival crossing matches independent green clock
+PASS: ladder-s-rival: player crossing matches independent green clock
+PASS: ladder-s-rival: player physically finishes
+PASS: ladder-s-rival: rival physically finishes
+PASS: ladder-s-rival: winner uses RT plus ET
+PASS: ladder-s-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-s-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: ladder-s-rival: fresh timestamps/state
+PASS: ladder-s-rival: rival crossing matches independent green clock
+PASS: ladder-s-rival: player crossing matches independent green clock
+PASS: ladder-s-rival: player physically finishes
+PASS: ladder-s-rival: rival physically finishes
+PASS: ladder-s-rival: winner uses RT plus ET
+PASS: ladder-s-rival: outcome agrees with independently observed lane crossing order
+PASS: ladder-s-rival: retry capture has fresh behavior and identical authored hardware/seed
+PASS: special-0: fresh timestamps/state
+PASS: special-0: player crossing matches independent green clock
+PASS: special-0: rival crossing matches independent green clock
+PASS: special-0: player physically finishes
+PASS: special-0: rival physically finishes
+PASS: special-0: winner uses RT plus ET
+PASS: special-0: outcome agrees with independently observed lane crossing order
+PASS: special-0: retry capture has fresh behavior and identical authored hardware/seed
+PASS: special-0: fresh timestamps/state
+PASS: special-0: rival crossing matches independent green clock
+PASS: special-0: player crossing matches independent green clock
+PASS: special-0: player physically finishes
+PASS: special-0: rival physically finishes
+PASS: special-0: winner uses RT plus ET
+PASS: special-0: outcome agrees with independently observed lane crossing order
+PASS: special-0: retry capture has fresh behavior and identical authored hardware/seed
+PASS: special-0: fresh timestamps/state
+PASS: special-0: player crossing matches independent green clock
+PASS: special-0: rival crossing matches independent green clock
+PASS: special-0: player physically finishes
+PASS: special-0: rival physically finishes
+PASS: special-0: winner uses RT plus ET
+PASS: special-0: outcome agrees with independently observed lane crossing order
+PASS: special-0: retry capture has fresh behavior and identical authored hardware/seed
+PASS: special-0: fresh timestamps/state
+PASS: special-0: rival crossing matches independent green clock
+PASS: special-0: player crossing matches independent green clock
+PASS: special-0: player physically finishes
+PASS: special-0: rival physically finishes
+PASS: special-0: winner uses RT plus ET
+PASS: special-0: outcome agrees with independently observed lane crossing order
+PASS: special-0: retry capture has fresh behavior and identical authored hardware/seed
+PASS: special-1: fresh timestamps/state
+PASS: special-1: rival crossing matches independent green clock
+PASS: special-1: player crossing matches independent green clock
+PASS: special-1: player physically finishes
+PASS: special-1: rival physically finishes
+PASS: special-1: winner uses RT plus ET
+PASS: special-1: outcome agrees with independently observed lane crossing order
+PASS: special-1: retry capture has fresh behavior and identical authored hardware/seed
+PASS: special-1: fresh timestamps/state
+PASS: special-1: rival crossing matches independent green clock
+PASS: special-1: player crossing matches independent green clock
+PASS: special-1: player physically finishes
+PASS: special-1: rival physically finishes
+PASS: special-1: winner uses RT plus ET
+PASS: special-1: outcome agrees with independently observed lane crossing order
+PASS: special-1: retry capture has fresh behavior and identical authored hardware/seed
+PASS: special-1: fresh timestamps/state
+PASS: special-1: rival crossing matches independent green clock
+PASS: special-1: player crossing matches independent green clock
+PASS: special-1: player physically finishes
+PASS: special-1: rival physically finishes
+PASS: special-1: winner uses RT plus ET
+PASS: special-1: outcome agrees with independently observed lane crossing order
+PASS: special-1: retry capture has fresh behavior and identical authored hardware/seed
+PASS: special-1: fresh timestamps/state
+PASS: special-1: rival crossing matches independent green clock
+PASS: special-1: player crossing matches independent green clock
+PASS: special-1: player physically finishes
+PASS: special-1: rival physically finishes
+PASS: special-1: winner uses RT plus ET
+PASS: special-1: outcome agrees with independently observed lane crossing order
+PASS: special-1: retry capture has fresh behavior and identical authored hardware/seed
+PASS: special-2: fresh timestamps/state
+PASS: special-2: player crossing matches independent green clock
+PASS: special-2: rival crossing matches independent green clock
+PASS: special-2: player physically finishes
+PASS: special-2: rival physically finishes
+PASS: special-2: winner uses RT plus ET
+PASS: special-2: outcome agrees with independently observed lane crossing order
+PASS: special-2: retry capture has fresh behavior and identical authored hardware/seed
+PASS: special-2: fresh timestamps/state
+PASS: special-2: rival crossing matches independent green clock
+PASS: special-2: player crossing matches independent green clock
+PASS: special-2: player physically finishes
+PASS: special-2: rival physically finishes
+PASS: special-2: winner uses RT plus ET
+PASS: special-2: outcome agrees with independently observed lane crossing order
+PASS: special-2: retry capture has fresh behavior and identical authored hardware/seed
+PASS: special-2: fresh timestamps/state
+PASS: special-2: player crossing matches independent green clock
+PASS: special-2: rival crossing matches independent green clock
+PASS: special-2: player physically finishes
+PASS: special-2: rival physically finishes
+PASS: special-2: winner uses RT plus ET
+PASS: special-2: outcome agrees with independently observed lane crossing order
+PASS: special-2: retry capture has fresh behavior and identical authored hardware/seed
+PASS: special-2: fresh timestamps/state
+PASS: special-2: rival crossing matches independent green clock
+PASS: special-2: player crossing matches independent green clock
+PASS: special-2: player physically finishes
+PASS: special-2: rival physically finishes
+PASS: special-2: winner uses RT plus ET
+PASS: special-2: outcome agrees with independently observed lane crossing order
+PASS: special-2: retry capture has fresh behavior and identical authored hardware/seed
+Checks: 748 / failures: 0

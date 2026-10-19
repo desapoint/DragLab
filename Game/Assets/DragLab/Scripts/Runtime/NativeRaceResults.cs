@@ -16,7 +16,7 @@ namespace DragLab.Runtime
         Label note, comparison;
         Button repairs,garage,again,export;
         long recordRevision=-1;
-        Label rivalTime,rivalReaction,rivalSpeed;
+        Label rivalTime,rivalReaction,rivalSpeed,rivalTotal,finishGap;
         readonly Dictionary<double,Label> rivalSplits=new Dictionary<double,Label>();
         bool rivalFinished,lanesFinished;
         int rivalSplitCount;
@@ -78,12 +78,15 @@ namespace DragLab.Runtime
             rivalTime=Row("Elapsed · s",Time(bound.player.state),Time(bound.opponent.state));
             rivalTime.name="rivalElapsed";
             rivalReaction=Row("Reaction · s",Reaction(bound.player.state),Reaction(bound.opponent.state));
+            rivalTotal=Row("Total · s",Total(bound.player.state),Total(bound.opponent.state));rivalTotal.name="rivalTotal";
+            finishGap=new Label{name="finishGap"};finishGap.AddToClassList("slip-note");scroll.Add(finishGap);
             rivalSpeed=Row("Finish · "+DisplayUnits.SpeedLabel(SharedUnitSettings.Current.speed),bound.player.state.finished?DisplayUnits.Speed(bound.player.state.trapSpeed/3.6,SharedUnitSettings.Current.speed).ToString("F1"):"—",bound.opponent.state.finished?DisplayUnits.Speed(bound.opponent.state.trapSpeed/3.6,SharedUnitSettings.Current.speed).ToString("F1"):"—");
             foreach(var split in bound.player.state.splits)
                 rivalSplits[split.Key]=Row(split.Key.ToString("F1")+" m",split.Value.ToString("F3"),bound.opponent.state.splits.TryGetValue(split.Key,out double other)?other.ToString("F3"):"—");
             note=new Label(game.ResultNotice){name="slipNotice"};note.AddToClassList("slip-note");note.EnableInClassList("hidden",string.IsNullOrEmpty(note.text));scroll.Add(note);
             var details=new Foldout{text="Run details",value=false,name="resultDetails"};details.focusable=false;scroll.Add(details);
             comparison=new Label(game.ResultComparison);comparison.AddToClassList("slip-note");comparison.EnableInClassList("hidden",string.IsNullOrEmpty(comparison.text));details.Add(comparison);
+            var timingHelp=new Label("Elapsed starts at each car's launch. Total includes reaction time and determines who reaches the finish first.");timingHelp.AddToClassList("slip-note");details.Add(timingHelp);
             var analysis=new Label(bound.telemetry.Analysis(bound.player));analysis.AddToClassList("slip-note");details.Add(analysis);
             repairs=ActionButton(details,"resultRepairs","Review failures",game.QueueResultRepairs,false);
             export=ActionButton(details,"resultExport","Export telemetry",game.ExportResultTelemetry,false);
@@ -93,11 +96,16 @@ namespace DragLab.Runtime
         {
             var state=bound.opponent.state;rivalFinished=state.finished;lanesFinished=bound.phase==RacePhase.Finished;rivalSplitCount=state.splits.Count;rivalReactionTime=state.reaction;
             rivalTime.text=Time(state);rivalReaction.text=Reaction(state);
+            rivalTotal.text=Total(state);
+            bool both=state.finished&&bound.player.state.finished;
+            finishGap.text=both&&!bound.player.state.disqualified?"Finish gap · "+Math.Abs(bound.player.state.reaction+bound.player.state.elapsed-state.reaction-state.elapsed).ToString("F3")+" s":"";
+            finishGap.EnableInClassList("hidden",string.IsNullOrEmpty(finishGap.text));
             rivalSpeed.text=state.finished?DisplayUnits.Speed(state.trapSpeed/3.6,SharedUnitSettings.Current.speed).ToString("F1"):"—";
             foreach(var row in rivalSplits)row.Value.text=state.splits.TryGetValue(row.Key,out double value)?value.ToString("F3"):"—";
         }
         string Time(CarState s)=>s.finished?s.elapsed.ToString("F3"):bound.phase==RacePhase.Finished?"DNF":"—";
         static string Reaction(CarState s)=>s.reaction>=0?s.reaction.ToString("F3"):"—";
+        static string Total(CarState s)=>s.finished?(s.reaction+s.elapsed).ToString("F3"):"—";
         Label Row(string caption,string player,string opponent,bool heading=false)
         {
             var row=new VisualElement();row.AddToClassList("slip-row");if(heading)row.AddToClassList("slip-column-head");

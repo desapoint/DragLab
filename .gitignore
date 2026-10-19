@@ -78,6 +78,7 @@ Thumbs.db
 
 # Generated branch-audit diagnostics; the concise audit report stays tracked.
 /reports/branch-audit/*.txt
+/reports/race-timing-audit/failed-diagnostic.txt
 
 # Android IL2CPP/Gradle intermediate outputs; final players stay under Builds.
 /Game/.utmp/
