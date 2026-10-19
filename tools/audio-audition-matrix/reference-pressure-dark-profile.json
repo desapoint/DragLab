@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "description": "Darker, less noisy preview revision; RPM and firing order are retained. Offline only.",
+  "seed": 117,
+  "idleRpm": 750,
+  "firingOrder": [1, 8, 4, 3, 6, 5, 7, 2],
+  "cylinderStrength": [1.04, 0.97, 1.02, 0.95, 1.06, 0.96, 1.01, 0.99],
+  "bankMix": [1.0, 0.62],
+  "headerDelaysMs": [1.25, 1.4, 1.15, 1.55, 1.35, 1.2, 1.5, 1.3],
+  "timingVariationCrankDegrees": 1.2,
+  "pulseStrengthVariation": 0.09,
+  "pulseRiseMs": 0.9,
+  "pulseDecayMs": 4.8,
+  "pulseNoise": 0.14,
+  "continuousTurbulence": 0.004,
+  "highPassHz": 95,
+  "lowPassHz": 1100,
+  "resonators": [
+    {"hz": 86, "q": 0.85, "gain": 0.30},
+    {"hz": 125, "q": 0.90, "gain": 3.0},
+    {"hz": 180, "q": 0.85, "gain": 2.5},
+    {"hz": 260, "q": 0.80, "gain": 0.85},
+    {"hz": 420, "q": 0.75, "gain": 0.25},
+    {"hz": 850, "q": 0.70, "gain": 0.10},
+    {"hz": 1600, "q": 0.65, "gain": 0.02}
+  ]
+}

@@ -67,7 +67,8 @@ def pressure_voice(control,config,seed):
         frame=control[min(len(control)-1,at//400)];excitation=max(frame[2],frame[1]*.65)
         strength*=1+max(-.025,excitation-.025)*1.15
         decay=config['pulseDecayMs']/1000*np.clip((config['idleRpm']/rpm[at])**.35,.45,1.15)
-        t=kernel_time;envelope=(1-np.exp(-t/.00025))*np.exp(-t/decay)
+        t=kernel_time;rise=config.get('pulseRiseMs',.25)/1000
+        envelope=(1-np.exp(-t/rise))*np.exp(-t/decay)
         noise=rng.normal(0,1,len(t));pressure=envelope*(1+noise*config['pulseNoise'])-.28*(1-np.exp(-t/.001))*np.exp(-t/.008)
         length=min(len(pressure),n-start);banks[bank,start:start+length]+=strength*pressure[:length]
         records.append((at/RATE,cylinder,bank,rpm[at],strength))
@@ -134,10 +135,13 @@ def plot(path,series):
     d.text((24,490),'Hz · shapes support comparison; they do not establish perceptual similarity or exact engine RPM.',fill='#aab4bd');im.save(path)
 
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument('--reference',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);args=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument('--reference',type=Path,required=True);ap.add_argument('--output',type=Path,required=True)
+    ap.add_argument('--config',type=Path,default=Path(__file__).with_name('reference-pressure-profile.json'))
+    ap.add_argument('--previous',type=Path,help='Earlier audition folder for level-matched listening comparisons')
+    args=ap.parse_args()
     out=args.output.resolve();assert out.is_relative_to(ROOT/'reports')
     if out.exists():raise RuntimeError('Choose a new output directory; preserve earlier candidates.')
-    out.mkdir(parents=True);config=json.loads(Path(__file__).with_name('reference-pressure-profile.json').read_text(encoding='utf-8'))
+    out.mkdir(parents=True);config=json.loads(args.config.read_text(encoding='utf-8-sig'))
     watched=[DOMAIN/n for n in ['EngineSound.cs','EngineElements.cs','ExhaustAcoustics.cs','ExhaustPopSynth.cs']]+[ROOT/'Game/Assets/DragLab/Resources/Data/Vehicles/V8Muscle.asset'];hashes={str(p.relative_to(ROOT)):sha(p) for p in watched}
     ref,ref_rate=read_wav(args.reference);assert abs(len(ref)/ref_rate-30)<.01
     ref_stats,_,_=features(ref,ref_rate);steady_stats,_,_=features(ref[5*ref_rate:20*ref_rate],ref_rate);control=trace('idle',30,config['seed'],config['idleRpm'])
@@ -157,17 +161,37 @@ def main():
     stats={}
     for name,x in voices.items():write_wav(out/(name+'.wav'),x);stats[name]=features(x,RATE)[0]
     rev_control=trace('rev',12,config['seed'],config['idleRpm']);rev,rev_events,_=pressure_voice(rev_control,config,config['seed']);write_wav(out/'prototype-revs.wav',normalise(rev))
+    comparison={}
+    if args.previous:
+        for scene,file,new in [('idle','prototype.wav',voices['prototype']),('revs','prototype-revs.wav',normalise(rev))]:
+            old,rate=read_wav(args.previous/file);assert rate==RATE and len(old)==len(new)
+            write_wav(out/('previous-'+scene+'.wav'),old)
+            write_wav(out/('previous-then-revised-'+scene+'.wav'),np.concatenate([normalise(old[:12*RATE]),np.zeros(33600),normalise(new[:12*RATE])]))
+            prior=features(old,RATE)[0];revised=features(new,RATE)[0]
+            # Same RPM and firing schedule; timbre changes must not pitch-shift the engine.
+            if scene=='idle':
+                prior_events=np.loadtxt(args.previous/'events.csv',delimiter=',',skiprows=1)
+                assert np.array_equal(prior_events[:,:4],events[:,:4])
+            assert revised['centroidHz']<prior['centroidHz']*.85
+            assert sum(revised['bands'][5:])<sum(prior['bands'][5:])*.35
+            comparison[scene]={'previous':prior,'revised':revised,'sameControlTrace':True}
     write_wav(out/'current-then-prototype.wav',np.concatenate([voices['current'][:12*RATE],np.zeros(33600),voices['prototype'][:12*RATE]]))
     write_wav(out/'reference-then-prototype.wav',np.concatenate([normalise(ref48[5*RATE:17*RATE]),np.zeros(33600),normalise(voices['prototype'][:12*RATE])]))
     assert all(sha(p)==hashes[str(p.relative_to(ROOT))] for p in watched)
     before_error=float(abs(np.array(stats['current']['bands'])-np.array(steady_stats['bands'])).sum());after_error=float(abs(np.array(stats['prototype']['bands'])-np.array(steady_stats['bands'])).sum())
     assert after_error<before_error*.4,'Coarse spectral shape did not improve toward the supplied reference'
     metadata={'referenceURL':'https://www.youtube.com/watch?v=2CJ1jBMwR38','referenceRangeSeconds':[0,30],'steadyAnalysisRangeSeconds':[5,20],'comparisonReferenceRangeSeconds':[5,17],'referenceInputSha256':sha(args.reference),'config':config,'controls':'same independently generated idle RPM trace for current/prototype; nominal 750 RPM is a modelling choice, not measured truth','events':len(events),'sameSeedExact':True,'differentSeedChangesOutput':True,'loadChangesStrengthNotTiming':True,'sourceHashes':hashes,'measurements':stats,'revEventCount':len(rev_events),'referenceRawMeasurements':ref_stats,'referenceSteadyMeasurements':steady_stats,'bandL1Error':{'current':before_error,'prototype':after_error}}
+    metadata['revisionComparison']=comparison
     (out/'analysis.json').write_text(json.dumps(metadata,indent=2),encoding='utf-8');np.savetxt(out/'events.csv',events,delimiter=',',header='seconds,cylinder,bank,rpm,strength',comments='')
     plot(out/'bands.png',[('reference 5–20 s',steady_stats),('current',stats['current']),('prototype',stats['prototype'])])
     rows=''.join('<section><h2>'+title+'</h2><audio controls preload="none" src="'+file+'"></audio><p>'+detail+'</p></section>' for title,file,detail in [('Reference · first 30 seconds','reference.wav','Your supplied recording, downmixed and level-matched for this local analysis.'),('Current production synth · same idle input','current.wav','Unmodified game DSP, hypothetical 5.7 L profile, same RPM/throttle/load control trace as the prototype.'),('Generated pressure-pulse prototype','prototype.wav','Fresh seeded excitation, eight cylinders/two banks, modelled damped exhaust resonances. No reference samples used.'),('Prototype · gentle neutral blips','prototype-revs.wav','An extrapolation: the supplied excerpt is idle only. Actual firing-event rate follows RPM.')])
+    if comparison:
+        rows='<section><h2>Previous preview → darker revision</h2><p>12 seconds each, with a short gap; equal RMS playback. RPM and firing order are unchanged.</p><p>Idle</p><audio controls preload="none" src="previous-then-revised-idle.wav"></audio><p>Neutral revs</p><audio controls preload="none" src="previous-then-revised-revs.wav"></audio></section>'+rows
     (out/'index.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Old V8 reference synthesis</title><style>body{max-width:1000px;margin:35px auto;padding:0 20px;background:#151b20;color:#e6eaed;font:17px system-ui;line-height:1.6}section{background:#232b33;border:1px solid #67737e;border-radius:10px;margin:22px 0;padding:20px}h1{border-bottom:2px solid #ed233d}audio{width:100%;max-width:620px}p{color:#bdc7d1}img{max-width:100%}a{color:#ff9ca7}</style><h1>Old V8 · reference-led procedural audition</h1><p>Preview only. In-game sound is unchanged. Listen to the reference, current generator and new pressure model at matched RMS level. The recording does not reveal exact RPM, cam, pipes or microphone response. The whole 0–30 s excerpt is retained; steadier 5–20 s is used for the chart.</p>'+rows+'<img src="bands.png" alt="Reference/current/prototype frequency-band energy"><p><a href="reference-then-prototype.wav">Reference 5–17 s → prototype, 12 seconds each</a> · <a href="current-then-prototype.wav">Current → prototype, 12 seconds each</a></p><script>document.addEventListener("play",e=>{for(const a of document.querySelectorAll("audio"))if(a!==e.target)a.pause()},true)</script></html>',encoding='utf-8')
     (out/'verification.txt').write_text('PASS: exact 30-second reference, source checksum retained.\nPASS: deterministic fresh synthesis and private-seed variation.\nPASS: eight-cylinder firing order, balanced bank counts, RPM-linked event count.\nPASS: higher load changes pulse strength without changing firing times.\nPASS: finite samples, matched RMS playback, no clipped export.\nPASS: coarse spectral-band error improves against steady reference.\nPASS: production source/asset bytes unchanged.\nHuman listening approval and real-time/mobile DSP performance remain unverified.\n',encoding='utf-8')
+    if comparison:
+        with (out/'verification.txt').open('a',encoding='utf-8') as f:
+            f.write('PASS: idle firing schedule unchanged from previous audition.\nPASS: idle and rev spectral centroids reduced by at least 15%; energy above 640 Hz reduced by at least 65%.\n')
     print('PASS:',len(events),'idle firings; independent private-seed replay and source immutability.');print(json.dumps(stats,indent=2));print(out/'index.html')
 
 if __name__=='__main__':main()
