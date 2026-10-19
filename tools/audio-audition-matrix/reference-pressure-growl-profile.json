@@ -1,0 +1,29 @@
+{
+  "version": 3,
+  "voiceModel": "bank-growl",
+  "description": "Offline uneven-bank growl audition; synthetic pressure events, no sampled audio or invented firing cuts.",
+  "seed": 117,
+  "idleRpm": 750,
+  "firingOrder": [1, 8, 4, 3, 6, 5, 7, 2],
+  "cylinderStrength": [1.04, 0.97, 1.02, 0.95, 1.06, 0.96, 1.01, 0.99],
+  "bankMix": [1.0, 0.23],
+  "bankResonanceScale": [0.96, 1.07],
+  "reflectionMs": [3.2, 5.6],
+  "outletDelayMs": [0.5, 2.2],
+  "headerDelaysMs": [1.25, 1.4, 1.15, 1.55, 1.35, 1.2, 1.5, 1.3],
+  "timingVariationCrankDegrees": 1.2,
+  "cycleVariation": 0.19,
+  "pulseRiseMs": 0.65,
+  "pulseDecayMs": 6.5,
+  "pulseNoise": 0.16,
+  "highPassHz": 95,
+  "lowPassHz": 1250,
+  "resonators": [
+    {"hz": 92, "q": 0.70, "gain": 0.45},
+    {"hz": 132, "q": 0.75, "gain": 3.0},
+    {"hz": 192, "q": 0.70, "gain": 2.2},
+    {"hz": 275, "q": 0.65, "gain": 0.85},
+    {"hz": 430, "q": 0.60, "gain": 0.23},
+    {"hz": 820, "q": 0.60, "gain": 0.08}
+  ]
+}

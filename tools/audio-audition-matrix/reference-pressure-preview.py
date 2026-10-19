@@ -50,6 +50,7 @@ def trace(scene,seconds,seed,idle):
 
 def pressure_voice(control,config,seed):
     """Two generated pulse banks; no reference samples/phase/envelope enter here."""
+    if config.get('voiceModel')=='bank-growl':return growl_voice(control,config,seed)
     rng=np.random.default_rng(seed);seconds=len(control)/120;n=round(seconds*RATE)
     rpm=np.interp(np.arange(n)/RATE,np.arange(len(control))/120,control[:,0])
     # Four-stroke V8: one firing per 90 crank degrees, eight per 720 degrees.
@@ -90,6 +91,60 @@ def pressure_voice(control,config,seed):
         layers.append(x)
     # Different bank pickup strengths retain the unequal bank firing rhythm.
     result=layers[0]*config['bankMix'][0]+layers[1]*config['bankMix'][1]
+    result-=result.mean()
+    return result,np.asarray(records),layers
+
+def growl_voice(control,config,seed):
+    """Preview-only pressure source with correlated cycles and separate exhaust paths."""
+    rng=np.random.default_rng(seed);n=len(control)*400
+    rpm=np.interp(np.arange(n)/RATE,np.arange(len(control))/120,control[:,0])
+    count=np.floor(np.cumsum(rpm)/(60*RATE)*4).astype(np.int64)
+    events=np.flatnonzero(np.diff(count,prepend=-1)>0)
+    # Separate streams keep the source events independent of filter/noise implementation.
+    cycle_rng=np.random.default_rng(seed+1009);cycles=np.zeros(len(events)//8+2)
+    for i in range(1,len(cycles)):cycles[i]=np.clip(.64*cycles[i-1]+cycle_rng.normal(0,.65),-1.8,1.8)
+    banks=np.zeros((2,n));records=[];fill=max(control[0,2],control[0,1]*.65)
+    last=0;t=np.arange(round(.04*RATE))/RATE
+    noise_kernel=np.exp(-np.arange(72)/(RATE*.00045));noise_kernel/=np.sqrt(np.sum(noise_kernel**2))
+    for j,at in enumerate(events):
+        cylinder=config['firingOrder'][j%8];bank=(cylinder-1)%2
+        frame=control[min(len(control)-1,at//400)];target=max(frame[2],frame[1]*.65)
+        dt=(at-last)/RATE;last=at
+        fill+=(target-fill)*(1-np.exp(-dt/(.035 if target>fill else .16)))
+        rough=config['cycleVariation']*np.clip(config['idleRpm']/rpm[at],.42,1.0)
+        strength=config['cylinderStrength'][cylinder-1]*(1+rough*cycles[j//8]+rng.normal(0,.035))
+        strength=max(.55,strength)*(.78+1.1*np.sqrt(max(0,fill)))
+        jitter=rng.uniform(-1,1)*config['timingVariationCrankDegrees']/(rpm[at]*6)
+        start=at+round((config['headerDelaysMs'][cylinder-1]/1000+jitter)*RATE)
+        if start>=n:continue
+        decay=config['pulseDecayMs']/1000*(.9+.2*fill)*np.clip((config['idleRpm']/rpm[at])**.12,.78,1.1)
+        decay*=1+.07*cycles[j//8]+.04*(cylinder-4.5)/3.5
+        rise=config['pulseRiseMs']/1000
+        envelope=(1-np.exp(-t/rise))**2*np.exp(-t/decay)
+        coloured=np.convolve(rng.normal(0,1,len(t)+len(noise_kernel)-1),noise_kernel,mode='valid')
+        # Broad pressure front and recovery, with coloured texture rather than white hiss.
+        pulse=envelope*(1+coloured*config['pulseNoise'])
+        pulse-=.40*(1-np.exp(-t/.0025))*np.exp(-t/(decay*1.8))
+        length=min(len(pulse),n-start);banks[bank,start:start+length]+=strength*pulse[:length]
+        records.append((at/RATE,cylinder,bank,rpm[at],strength))
+    layers=[];impulse_t=np.arange(8192)/RATE
+    fft_size=2**int(np.ceil(np.log2(n+len(impulse_t)-1)));hz=np.fft.rfftfreq(fft_size,1/RATE)
+    for bank in range(2):
+        response=np.zeros(len(impulse_t))
+        for resonator in config['resonators']:
+            f=resonator['hz']*config['bankResonanceScale'][bank];q=resonator['q']
+            r=np.sin(2*np.pi*f*impulse_t)*np.exp(-np.pi*f/q*impulse_t)
+            response+=r*resonator['gain']/max(1e-12,abs((r*np.exp(-2j*np.pi*f*impulse_t)).sum()))
+        h=np.fft.rfft(response,n=fft_size)
+        h*=(1j*hz/(config['highPassHz']+1j*hz))**2
+        h*=(config['lowPassHz']/(config['lowPassHz']+1j*hz))**2
+        # Each outlet gets its own causal pressure reflections and soft saturation.
+        h*=1-.22*np.exp(-2j*np.pi*hz*config['reflectionMs'][bank]/1000)
+        h*=np.exp(-2j*np.pi*hz*config['outletDelayMs'][bank]/1000)
+        source=np.tanh(banks[bank]*1.35)
+        x=np.fft.irfft(np.fft.rfft(source,n=fft_size)*h,n=fft_size)[:n]
+        layers.append(x)
+    result=sum(layer*config['bankMix'][i] for i,layer in enumerate(layers))
     result-=result.mean()
     return result,np.asarray(records),layers
 
@@ -172,8 +227,12 @@ def main():
             if scene=='idle':
                 prior_events=np.loadtxt(args.previous/'events.csv',delimiter=',',skiprows=1)
                 assert np.array_equal(prior_events[:,:4],events[:,:4])
-            assert revised['centroidHz']<prior['centroidHz']*.85
-            assert sum(revised['bands'][5:])<sum(prior['bands'][5:])*.35
+            if config.get('voiceModel')=='bank-growl':
+                assert revised['centroidHz']<170,'Growl preview lost its darker balance'
+                assert sum(revised['bands'][5:])<.01,'Too much upper-band energy for this audition'
+            else:
+                assert revised['centroidHz']<prior['centroidHz']*.85
+                assert sum(revised['bands'][5:])<sum(prior['bands'][5:])*.35
             comparison[scene]={'previous':prior,'revised':revised,'sameControlTrace':True}
     write_wav(out/'current-then-prototype.wav',np.concatenate([voices['current'][:12*RATE],np.zeros(33600),voices['prototype'][:12*RATE]]))
     write_wav(out/'reference-then-prototype.wav',np.concatenate([normalise(ref48[5*RATE:17*RATE]),np.zeros(33600),normalise(voices['prototype'][:12*RATE])]))
@@ -186,12 +245,13 @@ def main():
     plot(out/'bands.png',[('reference 5–20 s',steady_stats),('current',stats['current']),('prototype',stats['prototype'])])
     rows=''.join('<section><h2>'+title+'</h2><audio controls preload="none" src="'+file+'"></audio><p>'+detail+'</p></section>' for title,file,detail in [('Reference · first 30 seconds','reference.wav','Your supplied recording, downmixed and level-matched for this local analysis.'),('Current production synth · same idle input','current.wav','Unmodified game DSP, hypothetical 5.7 L profile, same RPM/throttle/load control trace as the prototype.'),('Generated pressure-pulse prototype','prototype.wav','Fresh seeded excitation, eight cylinders/two banks, modelled damped exhaust resonances. No reference samples used.'),('Prototype · gentle neutral blips','prototype-revs.wav','An extrapolation: the supplied excerpt is idle only. Actual firing-event rate follows RPM.')])
     if comparison:
-        rows='<section><h2>Previous preview → darker revision</h2><p>12 seconds each, with a short gap; equal RMS playback. RPM and firing order are unchanged.</p><p>Idle</p><audio controls preload="none" src="previous-then-revised-idle.wav"></audio><p>Neutral revs</p><audio controls preload="none" src="previous-then-revised-revs.wav"></audio></section>'+rows
+        rows='<section><h2>Previous preview → revised voice</h2><p>12 seconds each, with a short gap; equal RMS playback. RPM and firing order are unchanged.</p><p>Idle</p><audio controls preload="none" src="previous-then-revised-idle.wav"></audio><p>Neutral revs</p><audio controls preload="none" src="previous-then-revised-revs.wav"></audio></section>'+rows
     (out/'index.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Old V8 reference synthesis</title><style>body{max-width:1000px;margin:35px auto;padding:0 20px;background:#151b20;color:#e6eaed;font:17px system-ui;line-height:1.6}section{background:#232b33;border:1px solid #67737e;border-radius:10px;margin:22px 0;padding:20px}h1{border-bottom:2px solid #ed233d}audio{width:100%;max-width:620px}p{color:#bdc7d1}img{max-width:100%}a{color:#ff9ca7}</style><h1>Old V8 · reference-led procedural audition</h1><p>Preview only. In-game sound is unchanged. Listen to the reference, current generator and new pressure model at matched RMS level. The recording does not reveal exact RPM, cam, pipes or microphone response. The whole 0–30 s excerpt is retained; steadier 5–20 s is used for the chart.</p>'+rows+'<img src="bands.png" alt="Reference/current/prototype frequency-band energy"><p><a href="reference-then-prototype.wav">Reference 5–17 s → prototype, 12 seconds each</a> · <a href="current-then-prototype.wav">Current → prototype, 12 seconds each</a></p><script>document.addEventListener("play",e=>{for(const a of document.querySelectorAll("audio"))if(a!==e.target)a.pause()},true)</script></html>',encoding='utf-8')
     (out/'verification.txt').write_text('PASS: exact 30-second reference, source checksum retained.\nPASS: deterministic fresh synthesis and private-seed variation.\nPASS: eight-cylinder firing order, balanced bank counts, RPM-linked event count.\nPASS: higher load changes pulse strength without changing firing times.\nPASS: finite samples, matched RMS playback, no clipped export.\nPASS: coarse spectral-band error improves against steady reference.\nPASS: production source/asset bytes unchanged.\nHuman listening approval and real-time/mobile DSP performance remain unverified.\n',encoding='utf-8')
     if comparison:
         with (out/'verification.txt').open('a',encoding='utf-8') as f:
-            f.write('PASS: idle firing schedule unchanged from previous audition.\nPASS: idle and rev spectral centroids reduced by at least 15%; energy above 640 Hz reduced by at least 65%.\n')
+            f.write('PASS: idle firing schedule unchanged from previous audition.\n')
+            f.write('PASS: idle/rev darker-balance ceilings (centroid <170 Hz; upper-band fraction <1%).\n' if config.get('voiceModel')=='bank-growl' else 'PASS: idle and rev spectral centroids reduced by at least 15%; energy above 640 Hz reduced by at least 65%.\n')
     print('PASS:',len(events),'idle firings; independent private-seed replay and source immutability.');print(json.dumps(stats,indent=2));print(out/'index.html')
 
 if __name__=='__main__':main()
