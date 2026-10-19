@@ -1,0 +1,13 @@
+PASS: exact 30-second reference, source checksum retained.
+PASS: deterministic fresh synthesis and private-seed variation.
+PASS: eight-cylinder firing order, balanced bank counts, RPM-linked event count.
+PASS: higher load changes pulse strength without changing firing times.
+PASS: finite samples, matched RMS playback, no clipped export.
+PASS: coarse spectral-band error improves against steady reference.
+PASS: production source/asset bytes unchanged.
+Human listening approval and real-time/mobile DSP performance remain unverified.
+PASS: idle firing schedule unchanged from previous audition.
+PASS: idle/rev pressure-detail fraction 0.5-10%; spectral centroid below 320 Hz.
+PASS: event rates and cylinder order at 750, 2400 and 5000 RPM.
+PASS: historical F, I and J profiles still produce PCM-byte-identical idle exports.
+PASS: Python syntax.

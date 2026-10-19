@@ -50,7 +50,7 @@ def trace(scene,seconds,seed,idle):
 
 def pressure_voice(control,config,seed):
     """Two generated pulse banks; no reference samples/phase/envelope enter here."""
-    if config.get('voiceModel')=='bank-growl':return growl_voice(control,config,seed)
+    if config.get('voiceModel') in ('bank-growl','open-exhaust'):return growl_voice(control,config,seed)
     rng=np.random.default_rng(seed);seconds=len(control)/120;n=round(seconds*RATE)
     rpm=np.interp(np.arange(n)/RATE,np.arange(len(control))/120,control[:,0])
     # Four-stroke V8: one firing per 90 crank degrees, eight per 720 degrees.
@@ -103,9 +103,10 @@ def growl_voice(control,config,seed):
     # Separate streams keep the source events independent of filter/noise implementation.
     cycle_rng=np.random.default_rng(seed+1009);cycles=np.zeros(len(events)//8+2)
     for i in range(1,len(cycles)):cycles[i]=np.clip(.64*cycles[i-1]+cycle_rng.normal(0,.65),-1.8,1.8)
-    banks=np.zeros((2,n));records=[];fill=max(control[0,2],control[0,1]*.65)
+    banks=np.zeros((2,n));texture_banks=np.zeros((2,n));records=[];fill=max(control[0,2],control[0,1]*.65)
+    open_exhaust=config.get('voiceModel')=='open-exhaust'
     last=0;t=np.arange(round(.04*RATE))/RATE
-    noise_kernel=np.exp(-np.arange(72)/(RATE*.00045));noise_kernel/=np.sqrt(np.sum(noise_kernel**2))
+    noise_kernel=np.exp(-np.arange(72)/(RATE*config.get('textureColourMs',.45)/1000));noise_kernel/=np.sqrt(np.sum(noise_kernel**2))
     for j,at in enumerate(events):
         cylinder=config['firingOrder'][j%8];bank=(cylinder-1)%2
         frame=control[min(len(control)-1,at//400)];target=max(frame[2],frame[1]*.65)
@@ -123,13 +124,38 @@ def growl_voice(control,config,seed):
         envelope=(1-np.exp(-t/rise))**2*np.exp(-t/decay)
         coloured=np.convolve(rng.normal(0,1,len(t)+len(noise_kernel)-1),noise_kernel,mode='valid')
         # Broad pressure front and recovery, with coloured texture rather than white hiss.
-        pulse=envelope*(1+coloured*config['pulseNoise'])
+        pulse=envelope if open_exhaust else envelope*(1+coloured*config['pulseNoise'])
         pulse-=.40*(1-np.exp(-t/.0025))*np.exp(-t/(decay*1.8))
+        if open_exhaust:
+            # A distinct broadband pressure-detail layer avoids passing every sound
+            # through the same low-frequency resonances. No constant noise bed.
+            taper=np.minimum(1,(len(t)-1-np.arange(len(t)))/(RATE*.006))
+            pulse*=taper
+            detail=envelope*coloured*(1+.8*fill)*taper
+            length=min(len(detail),n-start)
+            texture_banks[bank,start:start+length]+=strength*detail[:length]
         length=min(len(pulse),n-start);banks[bank,start:start+length]+=strength*pulse[:length]
         records.append((at/RATE,cylinder,bank,rpm[at],strength))
     layers=[];impulse_t=np.arange(8192)/RATE
     fft_size=2**int(np.ceil(np.log2(n+len(impulse_t)-1)));hz=np.fft.rfftfreq(fft_size,1/RATE)
     for bank in range(2):
+        if open_exhaust:
+            # Direct pressure plus short, progressively damped reflections: no
+            # bank of ringing sine kernels and no steep shared low-pass cascade.
+            body=(1j*hz/(config['highPassHz']+1j*hz))**2
+            body*=config['lowPassHz']/(config['lowPassHz']+1j*hz)
+            detail=(1j*hz/(config['textureHighPassHz']+1j*hz))**2
+            detail*=config['textureLowPassHz']/(config['textureLowPassHz']+1j*hz)
+            path=np.ones_like(hz,dtype=complex)
+            damping=config['reflectionDampingHz']/(config['reflectionDampingHz']+1j*hz)
+            for bounce,gain in enumerate([-.18,.08,-.035],start=1):
+                path+=gain*damping**bounce*np.exp(-2j*np.pi*hz*config['reflectionMs'][bank]*bounce/1000)
+            path*=np.exp(-2j*np.pi*hz*config['outletDelayMs'][bank]/1000)
+            source=np.tanh(banks[bank]*.9)
+            spectrum=np.fft.rfft(source,n=fft_size)*body
+            spectrum+=config['textureMix']*np.fft.rfft(texture_banks[bank],n=fft_size)*detail
+            layers.append(np.fft.irfft(spectrum*path,n=fft_size)[:n])
+            continue
         response=np.zeros(len(impulse_t))
         for resonator in config['resonators']:
             f=resonator['hz']*config['bankResonanceScale'][bank];q=resonator['q']
@@ -197,6 +223,7 @@ def main():
     out=args.output.resolve();assert out.is_relative_to(ROOT/'reports')
     if out.exists():raise RuntimeError('Choose a new output directory; preserve earlier candidates.')
     out.mkdir(parents=True);config=json.loads(args.config.read_text(encoding='utf-8-sig'))
+    level=lambda x:normalise(x,config.get('playbackRms',.12))
     watched=[DOMAIN/n for n in ['EngineSound.cs','EngineElements.cs','ExhaustAcoustics.cs','ExhaustPopSynth.cs']]+[ROOT/'Game/Assets/DragLab/Resources/Data/Vehicles/V8Muscle.asset'];hashes={str(p.relative_to(ROOT)):sha(p) for p in watched}
     ref,ref_rate=read_wav(args.reference);assert abs(len(ref)/ref_rate-30)<.01
     ref_stats,_,_=features(ref,ref_rate);steady_stats,_,_=features(ref[5*ref_rate:20*ref_rate],ref_rate);control=trace('idle',30,config['seed'],config['idleRpm'])
@@ -212,22 +239,25 @@ def main():
     assert np.array_equal(low_events[:,:4],high_events[:,:4]) and np.sqrt(np.mean(high*high))>np.sqrt(np.mean(low*low))*1.1
     # Only measurement/playback level comes from the reference; not waveform or phase.
     ref48=np.interp(np.arange(30*RATE)/RATE,np.arange(len(ref))/ref_rate,ref)
-    voices={'reference':normalise(ref48),'current':normalise(original),'prototype':normalise(proposed)}
+    voices={'reference':level(ref48),'current':level(original),'prototype':level(proposed)}
     stats={}
     for name,x in voices.items():write_wav(out/(name+'.wav'),x);stats[name]=features(x,RATE)[0]
-    rev_control=trace('rev',12,config['seed'],config['idleRpm']);rev,rev_events,_=pressure_voice(rev_control,config,config['seed']);write_wav(out/'prototype-revs.wav',normalise(rev))
+    rev_control=trace('rev',12,config['seed'],config['idleRpm']);rev,rev_events,_=pressure_voice(rev_control,config,config['seed']);write_wav(out/'prototype-revs.wav',level(rev))
     comparison={}
     if args.previous:
-        for scene,file,new in [('idle','prototype.wav',voices['prototype']),('revs','prototype-revs.wav',normalise(rev))]:
+        for scene,file,new in [('idle','prototype.wav',voices['prototype']),('revs','prototype-revs.wav',level(rev))]:
             old,rate=read_wav(args.previous/file);assert rate==RATE and len(old)==len(new)
-            write_wav(out/('previous-'+scene+'.wav'),old)
-            write_wav(out/('previous-then-revised-'+scene+'.wav'),np.concatenate([normalise(old[:12*RATE]),np.zeros(33600),normalise(new[:12*RATE])]))
+            write_wav(out/('previous-'+scene+'.wav'),level(old))
+            write_wav(out/('previous-then-revised-'+scene+'.wav'),np.concatenate([level(old[:12*RATE]),np.zeros(33600),level(new[:12*RATE])]))
             prior=features(old,RATE)[0];revised=features(new,RATE)[0]
             # Same RPM and firing schedule; timbre changes must not pitch-shift the engine.
             if scene=='idle':
                 prior_events=np.loadtxt(args.previous/'events.csv',delimiter=',',skiprows=1)
                 assert np.array_equal(prior_events[:,:4],events[:,:4])
-            if config.get('voiceModel')=='bank-growl':
+            if config.get('voiceModel')=='open-exhaust':
+                assert revised['centroidHz']<320,'Direct-path audition became excessively bright'
+                assert .005<sum(revised['bands'][5:])<.10,'Pressure-detail layer is buried or excessive'
+            elif config.get('voiceModel')=='bank-growl':
                 assert revised['centroidHz']<170,'Growl preview lost its darker balance'
                 assert sum(revised['bands'][5:])<.01,'Too much upper-band energy for this audition'
             else:
@@ -235,7 +265,7 @@ def main():
                 assert sum(revised['bands'][5:])<sum(prior['bands'][5:])*.35
             comparison[scene]={'previous':prior,'revised':revised,'sameControlTrace':True}
     write_wav(out/'current-then-prototype.wav',np.concatenate([voices['current'][:12*RATE],np.zeros(33600),voices['prototype'][:12*RATE]]))
-    write_wav(out/'reference-then-prototype.wav',np.concatenate([normalise(ref48[5*RATE:17*RATE]),np.zeros(33600),normalise(voices['prototype'][:12*RATE])]))
+    write_wav(out/'reference-then-prototype.wav',np.concatenate([level(ref48[5*RATE:17*RATE]),np.zeros(33600),level(voices['prototype'][:12*RATE])]))
     assert all(sha(p)==hashes[str(p.relative_to(ROOT))] for p in watched)
     before_error=float(abs(np.array(stats['current']['bands'])-np.array(steady_stats['bands'])).sum());after_error=float(abs(np.array(stats['prototype']['bands'])-np.array(steady_stats['bands'])).sum())
     assert after_error<before_error*.4,'Coarse spectral shape did not improve toward the supplied reference'
@@ -251,7 +281,8 @@ def main():
     if comparison:
         with (out/'verification.txt').open('a',encoding='utf-8') as f:
             f.write('PASS: idle firing schedule unchanged from previous audition.\n')
-            f.write('PASS: idle/rev darker-balance ceilings (centroid <170 Hz; upper-band fraction <1%).\n' if config.get('voiceModel')=='bank-growl' else 'PASS: idle and rev spectral centroids reduced by at least 15%; energy above 640 Hz reduced by at least 65%.\n')
+            if config.get('voiceModel')=='open-exhaust':f.write('PASS: idle/rev pressure-detail fraction 0.5-10%; spectral centroid below 320 Hz.\n')
+            else:f.write('PASS: idle/rev darker-balance ceilings (centroid <170 Hz; upper-band fraction <1%).\n' if config.get('voiceModel')=='bank-growl' else 'PASS: idle and rev spectral centroids reduced by at least 15%; energy above 640 Hz reduced by at least 65%.\n')
     print('PASS:',len(events),'idle firings; independent private-seed replay and source immutability.');print(json.dumps(stats,indent=2));print(out/'index.html')
 
 if __name__=='__main__':main()
