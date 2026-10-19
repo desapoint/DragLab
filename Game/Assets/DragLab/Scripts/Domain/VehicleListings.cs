@@ -37,7 +37,7 @@ namespace DragLab.Domain.Mechanics {
  static double Next(ref uint seed){seed^=seed<<13;seed^=seed>>17;seed^=seed<<5;return seed/(double)uint.MaxValue;}
  static void Generate(PlayerProfile p,MechanicalCatalog c){foreach(var unused in GenerateSteps(p,c,false)){} }
  static IEnumerable<object> GenerateSteps(PlayerProfile p,MechanicalCatalog c,bool incremental){
- p.catalog=c;foreach(var unused in PartsMarket.RefreshSteps(p))yield return unused;
+ p.catalog=c;foreach(var unused in PartsMarket.RefreshSteps(p,incremental))yield return unused;
  var stock=p.vehicleStock;stock.listings.Clear();var cars=Resources.LoadAll<VehicleDefinition>("Data/Vehicles").OrderBy(v=>v.spec.id,StringComparer.Ordinal).ToArray();uint seed=(uint)stock.seed^(uint)(stock.generation+1)*2654435761u;if(seed==0)seed=1;
  if(p.firstPurchasePending){
  // The save seed owns the opening shortlist; browsing and reloading cannot reroll it.

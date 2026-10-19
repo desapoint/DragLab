@@ -22,11 +22,21 @@ namespace DragLab.Domain.Mechanics
             internal Candidate[] candidates;
             internal double usedMultiplier;
             internal double Severity=>failed?1:1-health;
-            internal double Probability()
+            // Worker availability reads the detached candidate's already-mapped stock,
+            // not the catalog/Unity-backed alias lookup. Same held-reservation rules.
+            internal double Probability(bool detached=false)
             {
+                int Available(Candidate candidate){
+                    if(!detached)return PartsMarket.Available(owner,candidate.product.definition);
+                    var product=candidate.product;var row=product.stock;
+                    int held=CartReservations.Active(owner)?owner.inventory.cart.supply.Where(s=>
+                        s.generation==owner.inventory.market.generation&&
+                        (s.definitionId==product.definition.id||row.definitions.Contains(s.definitionId))).Sum(s=>s.units):0;
+                    return Math.Max(0,row.units-held);
+                }
                 int complete=0;
-                if(mixable)complete=candidates.Sum(c=>PartsMarket.Available(owner,c.product.definition))/candidates[0].required;
-                else foreach(var c in candidates){complete+=PartsMarket.Available(owner,c.product.definition)/c.required;if(complete>=2)return 0;}
+                if(mixable)complete=candidates.Sum(c=>Available(c))/candidates[0].required;
+                else foreach(var c in candidates){complete+=Available(c)/c.required;if(complete>=2)return 0;}
                 return Base(health,failed)*NewMultiplier(complete)*usedMultiplier;
             }
         }

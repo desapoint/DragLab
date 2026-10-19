@@ -121,20 +121,29 @@ namespace DragLab.Domain.Mechanics
             internal DeliveryPool(List<Product> eligibleProducts){eligible=eligibleProducts;}
         }
         internal static DeliveryPool PrepareDeliveryPool(List<Product> all)
+            =>PrepareDeliveryPool(all,PartsMarket.Measurement);
+        internal static DeliveryPool PrepareDeliveryPool(List<Product> all,Action<string,double> measure)
         {
-            var measure=PartsMarket.Measurement;
             long stamp=measure==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
             var prepared=new DeliveryPool(all.Where(p=>p.maximum>0&&Categories.Accepts(p)).ToList());
             Sample(measure,"delivery/pool preparation",ref stamp);
             return prepared;
         }
         internal static int Deliver(List<Product> all,SupplyWear.Need[] needs,ref uint selection,ref uint quantity)
-            =>DeliverCore(all,false,needs,ref selection,ref quantity);
+            =>DeliverCore(all,false,needs,ref selection,ref quantity,PartsMarket.Measurement,false);
         internal static int Deliver(DeliveryPool prepared,SupplyWear.Need[] needs,ref uint selection,ref uint quantity)
-            =>DeliverCore(prepared.eligible,true,needs,ref selection,ref quantity);
-        static int DeliverCore(List<Product> all,bool alreadyEligible,SupplyWear.Need[] needs,ref uint selection,ref uint quantity)
+            =>DeliverCore(prepared.eligible,true,needs,ref selection,ref quantity,PartsMarket.Measurement,false);
+        // Called exclusively on a detached candidate profile. The caller supplies
+        // a worker-private measurement sink; user-facing callbacks run later on main.
+        internal static void DeliverBatch(DeliveryPool prepared,SupplyWear.Need[] needs,int opportunities,
+            ref uint selection,ref uint quantity,Action<string,double> measure)
         {
-            var measure=PartsMarket.Measurement;
+            for(int n=0;n<opportunities;n++)
+                DeliverCore(prepared.eligible,true,needs,ref selection,ref quantity,measure,true);
+        }
+        static int DeliverCore(List<Product> all,bool alreadyEligible,SupplyWear.Need[] needs,
+            ref uint selection,ref uint quantity,Action<string,double> measure,bool detached)
+        {
             long stamp=measure==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
             // Exact same eligibility predicate as the uncached entry path; only the
             // regular refresh reuses the result across its own delivery opportunities.
@@ -149,7 +158,7 @@ namespace DragLab.Domain.Mechanics
             else{
                 var available=new HashSet<Product>(pool);var eligible=needs.Where(n=>n.candidates.Any(c=>available.Contains(c.product))).ToArray();
                 Sample(measure,"delivery/wear candidate match",ref stamp);
-                var probabilities=eligible.Select(n=>n.Probability()).ToArray();double priority=probabilities.DefaultIfEmpty(0).Max();
+                var probabilities=eligible.Select(n=>n.Probability(detached)).ToArray();double priority=probabilities.DefaultIfEmpty(0).Max();
                 Sample(measure,"delivery/wear probabilities",ref stamp);
                 if(priority>0&&Next(ref selection)<priority){
                     int pick=Roll(eligible.Select((n,i)=>probabilities[i]*n.Severity).ToArray(),Next(ref selection));

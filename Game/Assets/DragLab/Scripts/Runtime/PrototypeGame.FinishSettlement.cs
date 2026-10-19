@@ -29,8 +29,21 @@ namespace DragLab.Runtime
             if(Time.realtimeSinceStartup<finishRetryAt)return;
             long stamp=FinishMeasurement==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
             try{
-                if(finishWork==null)finishWork=PrepareFinishSettlement().GetEnumerator();
-                if(!finishWork.MoveNext()){finishWork.Dispose();finishWork=null;finishTask=null;}
+                // Drain cheap iterator boundaries within this frame instead of forcing
+                // hundreds of additional frames for product keys, wear and offer rows.
+                // Never busy-spin on background work or an external writer.
+                long frameStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                while(true){
+                    if(finishWork==null)finishWork=PrepareFinishSettlement().GetEnumerator();
+                    if(!finishWork.MoveNext()){finishWork.Dispose();finishWork=null;finishTask=null;break;}
+                    if(finishWork.Current is MarketWorkerWait waiting){
+                        finishTask=waiting.task;
+                        if(!waiting.task.IsCompleted)break;
+                    }else if(finishWork.Current is string status&&status.EndsWith("wait",StringComparison.Ordinal))
+                        break;
+                    if((System.Diagnostics.Stopwatch.GetTimestamp()-frameStart)*1000.0/
+                        System.Diagnostics.Stopwatch.Frequency>=2.0)break;
+                }
             }catch(Exception error){
                 finishWork?.Dispose();finishWork=null;finishTask=null;finishRetryAt=Time.realtimeSinceStartup+.5f;
                 notice="Result save failed; retry retained. "+error.GetBaseException().Message;

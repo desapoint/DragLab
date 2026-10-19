@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using DragLab.Data;
 
@@ -31,6 +32,13 @@ namespace DragLab.Domain.Mechanics
     {
         public int cost, fee, localUnits, expressUnits;
         public string Summary => expressUnits == 0 ? "In stock" : "Express delivery · +" + DisplayUnits.Money(fee);
+    }
+    // Settlement waits on this completed immutable task handle, never on a worker
+    // accessing the live UI profile. A worker may only mutate its private candidate.
+    public sealed class MarketWorkerWait
+    {
+        public readonly Task task;
+        public MarketWorkerWait(Task job){task=job;}
     }
     // One persisted market epoch. Previews use a disposable ledger, never replenish live stock.
     public static class PartsMarket
@@ -64,9 +72,9 @@ namespace DragLab.Domain.Mechanics
             if(p.inventory.market.version==1){foreach(var row in p.inventory.market.parts)row.discovered=row.initialUnits>0||row.units>0;p.inventory.market.version=2;}
         }
         public static void Refresh(PlayerProfile p) { if(p.inventory!=null)Generate(p,true); }
-        static void Generate(PlayerProfile p,bool expire){foreach(var unused in GenerateSteps(p,expire)){} }
-        public static IEnumerable<object> RefreshSteps(PlayerProfile p)=>GenerateSteps(p,true);
-        static IEnumerable<object> GenerateSteps(PlayerProfile p,bool expire)
+        static void Generate(PlayerProfile p,bool expire){foreach(var unused in GenerateSteps(p,expire,false)){} }
+        public static IEnumerable<object> RefreshSteps(PlayerProfile p,bool offloadDelivery=false)=>GenerateSteps(p,true,offloadDelivery);
+        static IEnumerable<object> GenerateSteps(PlayerProfile p,bool expire,bool offloadDelivery)
         {
             if(expire){var retained=p.inventory.dealer.Where(s=>s.Id!=null&&CartReservations.HoldsUsed(p,s.Id)).ToArray();p.inventory.dealer.Clear();p.inventory.dealer.AddRange(retained);}
             var previous=p.inventory.market;
@@ -138,10 +146,32 @@ namespace DragLab.Domain.Mechanics
                 Measurement("wear/preparation slowest MoveNext",wearMaxStepTicks*1000.0/System.Diagnostics.Stopwatch.Frequency);
             }
             var needs=worn.ToArray();var supply=products.ToList();
-            var deliveryPool=NewPartSupply.PrepareDeliveryPool(supply);
             uint supplySelection=Stream(state,0x91e10da5u),supplyQuantity=Stream(state,0x27d4eb2fu);
             NewPartSupply.Next(ref supplySelection); // The first selection-stream roll already chose the opportunity budget.
-            for(int n=0;n<newCount;n++){NewPartSupply.Deliver(deliveryPool,needs,ref supplySelection,ref supplyQuantity);yield return "parts/new supply";}
+            if(offloadDelivery)
+            {
+                // The candidate, need graph and current stock are detached from the live profile.
+                // Unity-backed engine/vehicle construction remains on the main thread.
+                // Measurements go into a worker-private list, replayed on main after Join.
+                var observer=Measurement;
+                var samples=observer==null?null:new List<KeyValuePair<string,double>>();
+                Action<string,double> collect=null;
+                if(samples!=null)collect=(stage,ms)=>samples.Add(new KeyValuePair<string,double>(stage,ms));
+                uint batchSelection=supplySelection,batchQuantity=supplyQuantity;
+                var job=Task.Run(()=>{
+                    var prepared=NewPartSupply.PrepareDeliveryPool(supply,collect);
+                    NewPartSupply.DeliverBatch(prepared,needs,newCount,ref batchSelection,ref batchQuantity,collect);
+                });
+                var waiting=new MarketWorkerWait(job);
+                while(!job.IsCompleted)yield return waiting;
+                job.GetAwaiter().GetResult();
+                if(samples!=null)foreach(var sample in samples)observer(sample.Key,sample.Value);
+            }
+            else
+            {
+                var deliveryPool=NewPartSupply.PrepareDeliveryPool(supply);
+                for(int n=0;n<newCount;n++){NewPartSupply.Deliver(deliveryPool,needs,ref supplySelection,ref supplyQuantity);yield return "parts/new supply";}
+            }
             // Retain the separate difficulty guarantee without changing the used/engine streams.
             uint guarantee=Stream(state,0xa24baed5u),guaranteeQuantity=Stream(state,0x9fb21c65u);
             var guaranteed=products.Where(product=>product.definition.reputationRequired==0&&targets.Any(spec=>p.catalog.Fits(spec,product.definition))).ToArray();

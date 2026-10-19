@@ -39,6 +39,20 @@ namespace DragLab.Editor
             Action<bool,string> check=(ok,label)=>{if(!ok)throw new InvalidOperationException(label);checks++;log.AppendLine("PASS "+label);};
             NewSupplyChecks.Rules(check);log.AppendLine("Rule checks elapsed ms: "+timer.Elapsed.TotalMilliseconds.ToString("0"));var catalog=MechanicsTransactions.Catalog();
             NewSupplyChecks.LayoutRegression(catalog,check);
+            // Compare entire deterministic market output with and without the
+            // worker boundary, not just isolated category/quantity calculations.
+            var deliveryOriginal=Create(catalog,209,5);
+            var deliveryWorker=EngineWorkshop.Copy(deliveryOriginal);deliveryWorker.catalog=catalog;
+            deliveryOriginal.vehicleStock.generation++;
+            deliveryWorker.vehicleStock.generation++;
+            PartsMarket.Refresh(deliveryOriginal);
+            using(var work=PartsMarket.RefreshSteps(deliveryWorker,true).GetEnumerator())
+                while(work.MoveNext())
+                    if(work.Current is MarketWorkerWait waiting)waiting.task.GetAwaiter().GetResult();
+            check(JsonUtility.ToJson(deliveryOriginal.inventory.market)==JsonUtility.ToJson(deliveryWorker.inventory.market)&&
+                string.Join("/",deliveryOriginal.inventory.dealer.Select(row=>JsonUtility.ToJson(row)))==
+                string.Join("/",deliveryWorker.inventory.dealer.Select(row=>JsonUtility.ToJson(row))),
+                "Incremental worker delivery matches the entire synchronous parts/used/engine market epoch");
             var baseline=File.ReadAllLines(Path.Combine(Folder,"used-baseline-matrix.csv"),Encoding.UTF8).Skip(1).Where(s=>s.Length>0).ToDictionary(s=>string.Join(",",s.Split(',').Take(3)),s=>s.Split(',')[5]);
             foreach(int seed in new[]{1,41,981,-7})foreach(int minimum in new[]{0,5,20}){
                 var p=Create(catalog,seed,minimum);

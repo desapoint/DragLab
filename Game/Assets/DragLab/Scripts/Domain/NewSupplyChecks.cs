@@ -127,6 +127,28 @@ namespace DragLab.Domain.Mechanics
                 }
             }
             check(sameSupply,"Prepared eligible pool preserves all 44 seeded deliveries and evolving stock");
+            // Detached worker batch must retain the exact per-opportunity choices,
+            // quantity draws and final stock, without calling Unity from its loop.
+            var sequential=originalPool.Select(p=>new NewPartSupply.Product{
+                definition=p.definition,maximum=p.maximum,owned=p.owned,
+                stock=new NewPartStock{definitions=new List<string>{p.definition.id},
+                    discovered=p.stock.discovered,units=p.stock.units,initialUnits=p.stock.initialUnits}
+            }).ToList();
+            var batched=sequential.Select(p=>new NewPartSupply.Product{
+                definition=p.definition,maximum=p.maximum,owned=p.owned,
+                stock=new NewPartStock{definitions=new List<string>{p.definition.id},
+                    discovered=p.stock.discovered,units=p.stock.units,initialUnits=p.stock.initialUnits}
+            }).ToList();
+            uint sequentialSeed=991u,batchSeed=991u,sequentialQuantity=992u,batchQuantity=992u;
+            var directPool=NewPartSupply.PrepareDeliveryPool(sequential);
+            var workerPool=NewPartSupply.PrepareDeliveryPool(batched,_=>{});
+            for(int i=0;i<44;i++)NewPartSupply.Deliver(directPool,Array.Empty<SupplyWear.Need>(),ref sequentialSeed,ref sequentialQuantity);
+            NewPartSupply.DeliverBatch(workerPool,Array.Empty<SupplyWear.Need>(),44,ref batchSeed,ref batchQuantity,null);
+            check(sequentialSeed==batchSeed&&sequentialQuantity==batchQuantity&&
+                sequential.Where((row,i)=>row.stock.units!=batched[i].stock.units||
+                    row.stock.initialUnits!=batched[i].stock.initialUnits||
+                    row.stock.discovered!=batched[i].stock.discovered).Count()==0,
+                "Detached worker batch preserves all 44 seeded new-part deliveries");
             var categories=new int[8];const int samples=12000;random=1901;
             for(int n=0;n<samples;n++){var selected=NewPartSupply.PickCategory(all,NewPartSupply.Categories,ref random);categories[Array.FindIndex(NewPartSupply.Categories.children,b=>b.Accepts(selected))]++;}
             double total=rootWeights.Sum();
@@ -188,7 +210,9 @@ namespace DragLab.Domain.Mechanics
             var product=products.Single(v=>v.stock.definitions.Contains(installed.definitionId));var definition=catalog.Find(installed.definitionId);string role=installed.condition.elements[0].role;
             SupplyWear.Need Need()=>SupplyWear.Build(p,products).First(n=>n.component.StartsWith(installed.instanceId+"/",StringComparison.Ordinal));
             check(Math.Abs(Need().Probability()-.2)<1e-12,"Worn individual uses exact 30% condition, not aggregate pack average");
-            product.stock.units=1;check(Need().Probability()==.1,"One matching new individual is one complete repair");product.stock.units=2;check(Need().Probability()==0,"Two matching new individuals suppress further priority");product.stock.units=0;
+            product.stock.units=1;check(Need().Probability()==.1,"One matching new individual is one complete repair");
+            check(Need().Probability(true)==Need().Probability(),"Detached worker availability matches first complete new repair");
+            product.stock.units=2;check(Need().Probability()==0,"Two matching new individuals suppress further priority");product.stock.units=0;
             var alternate=Need().candidates.First(c=>c.product!=product&&c.required>1);alternate.product.stock.units=alternate.required-1;check(Need().Probability()==.2,"Partial differently specified engine stock cannot count as a matching complete replacement");alternate.product.stock.units=alternate.required;check(Need().Probability()==.1,"Complete alternative matched set provides one repair");alternate.product.stock.units=0;
             DealerStock Unit(string id,string def,float health){var e=EngineElements.Create(PartCategory.Pistons);e.id=id;e.role=role;e.cylinder=e.valve=-1;e.health=health;return new DealerStock{isUnit=true,unit=new LooseEngineElement{definitionId=def,unitPrice=10,element=e},paidPrice=1};}
             p.inventory.dealer.Add(Unit("coverage/one",definition.id,.6f));check(Need().usedMultiplier==1,"Used member at exactly 60% is excluded");
@@ -204,7 +228,9 @@ namespace DragLab.Domain.Mechanics
             for(int n=0;n<members/2;n++)p.inventory.dealer.Add(Unit("coverage/matching/"+n,definition.id,.8f));check(Need().usedMultiplier==.75,"Matching used half-set is partial coverage for "+members+" worn pistons");
             for(int n=members/2;n<members;n++)p.inventory.dealer.Add(Unit("coverage/matching/"+n,definition.id,.8f));check(Need().usedMultiplier==.5,"Matching full used set covers the whole worn-piston repair");
             p.inventory.dealer.Clear();foreach(var e in installed.condition.elements)e.health=1;installed.condition.elements[0].health=.3f;
-            product.stock.units=2;CartReservations.Capture(p,car.instanceId,new[]{new PartCartLine{action=CartAction.NewUnits,definitionId=definition.id,role=role,quantity=2}});check(Need().Probability()==.2,"Reserved new units do not suppress wear priority");p.inventory.cart=null;product.stock.units=0;
+            product.stock.units=2;CartReservations.Capture(p,car.instanceId,new[]{new PartCartLine{action=CartAction.NewUnits,definitionId=definition.id,role=role,quantity=2}});check(Need().Probability()==.2,"Reserved new units do not suppress wear priority");
+            check(Need().Probability(true)==Need().Probability(),"Detached worker availability preserves held cart reservations");
+            p.inventory.cart=null;product.stock.units=0;
             installed.condition.elements[0].health=.9f;installed.condition.elements[0].fault=ElementFault.Seized;check(Need().Probability()==.4&&Need().Severity==1,"Failed member has 40% base and severity one");
             check(p.parts.Contains(installed)&&installed.condition.elements[0].health==.9f,"Coverage inspection preserves owned condition and identity");
             // Exercise the actual decision path: max(Pi)=40%, not summed probabilities;
