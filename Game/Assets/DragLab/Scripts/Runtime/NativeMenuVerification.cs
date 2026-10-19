@@ -104,6 +104,7 @@ namespace DragLab.Runtime
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-owned-fitted-only-verify")>=0){yield return OwnedFittedPartsChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-navigation-only-verify")>=0){yield return NavigationDefaultsChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-race-pause-only-verify")>=0){yield return RacePauseChecks(input);yield break;}
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-market-baseline-only-verify")>=0){yield return MarketBaselineChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-finish-pacing-only-verify")>=0){yield return FinishPacingChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-race-results-only-verify")>=0){yield return ResultActionChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-flick-only-verify")>=0){yield return FlickChecks(input);yield break;}

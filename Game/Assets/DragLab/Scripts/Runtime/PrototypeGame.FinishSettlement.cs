@@ -15,6 +15,13 @@ namespace DragLab.Runtime
         RaceSimulation finishBound;
         internal bool ResultSettlementPending=>race!=null&&race.ResultReady&&!awarded;
         internal static Action<string,double> FinishMeasurement;
+        // Opt-in wall-clock spans for player-build baselines. Never changes settlement pacing.
+        internal static Action<string,double> FinishWallMeasurement;
+        static long WallStamp()=>FinishWallMeasurement==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
+        static void EmitWall(string name,long start)
+        {
+            if(start!=0)FinishWallMeasurement?.Invoke(name,(System.Diagnostics.Stopwatch.GetTimestamp()-start)*1000.0/System.Diagnostics.Stopwatch.Frequency);
+        }
         void AdvanceFinishSettlement()
         {
             if(!ResultSettlementPending)return;
@@ -32,26 +39,38 @@ namespace DragLab.Runtime
         }
         IEnumerable<object> PrepareFinishSettlement()
         {
+            long entire=WallStamp();
             var session=race;var source=profile;long tick=liveRunTick,revision=source.revision,commit=source.storageCommit;int failures=RunPersistence.FailureCount(session.player);
             var checkpoint=RunPersistence.Capture(liveRunId,liveRunOwner,tick,session.player,false,"Result settled / shutdown still running");
             // No ledger mutation is allowed while this read-only snapshot is cloned.
             var frozen=source.CopyWithPreferences(source.driving,source.difficulty);
+            long cloning=WallStamp();
             var clone=Task.Run(()=>{var copy=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(frozen));copy.storageCommit=commit;return copy;});
             finishTask=clone;while(!clone.IsCompleted)yield return "settlement/clone wait";
             var candidate=clone.GetAwaiter().GetResult();candidate.catalog=source.catalog;
+            EmitWall("clone task",cloning);
             MechanicsOwnership.Ensure(candidate,candidate.catalog);yield return "settlement/normalize";
             var old=candidate.runCheckpoints.Find(r=>r.runId==liveRunId);
             if(old==null||old.tick<tick)MechanicsTransactions.ApplyCheckpoint(candidate,checkpoint);
             CareerProgression.Settle(candidate,liveRunId,session,false);candidate.revision=checked(revision+1);yield return "settlement/outcome";
+            long market=WallStamp();
             if(session.player.state.finished&&!session.player.state.disqualified&&!practiceRun)
                 foreach(var unused in VehicleListings.AfterRaceSteps(candidate,candidate.catalog))yield return unused;
+            EmitWall("after-race stock generation including yields",market);
             MechanicsOwnership.Ensure(candidate,candidate.catalog);yield return "settlement/normalize";
             if(profile!=source||profile.revision!=revision||profile.storageCommit!=commit||race!=session)throw new InvalidOperationException("Settlement became stale; retry required.");
+            long checkpointWait=WallStamp();
             while(RaceCheckpointStore.Busy)yield return "settlement/checkpoint wait";
+            EmitWall("checkpoint writer wait",checkpointWait);
+            long dispatch=WallStamp();
             var save=ProfileStore.BeginValidatedSave(candidate);finishTask=save;
+            EmitWall("save dispatch main thread",dispatch);
+            long writer=WallStamp();
             while(!save.IsCompleted)yield return "settlement/save dispatch or wait";
             ProfileStore.CompleteValidatedSave(candidate,save);
+            EmitWall("save task and completion",writer);
             profile=candidate;settings=profile.driving;awarded=true;savedRunTick=tick;savedRunFailures=failures;finishedPass=Build.lastPass;notice="";
+            EmitWall("finish-to-commit total",entire);
         }
         bool FlushFinishSettlement()
         {

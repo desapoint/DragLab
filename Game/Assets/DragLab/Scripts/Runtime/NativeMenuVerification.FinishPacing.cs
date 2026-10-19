@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -12,6 +14,117 @@ namespace DragLab.Runtime
     internal sealed partial class NativeMenuVerification
     {
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
+
+        // A natural, unblocked packaged-player baseline, separate from the held-writer pacing test.
+        // Uses the existing disposable verification profile, never the real player save.
+        IEnumerator MarketBaselineChecks(WindowsKeyboardProbe input)
+        {
+            foreach(string scenario in new[]{"practice","paid ordinary","paid third"})
+            {
+                game.ReturnToGarage();
+                game.Profile.driving.launch=LaunchMode.Automatic;
+                game.Profile.driving.shifting=ShiftMode.Automatic;
+                game.Profile.driving.wearMode=WearMode.None;
+                game.Profile.driving.optimalThermals=true;
+                if(scenario=="paid third")
+                    game.Profile.vehicleStock.completedRuns+=((2-game.Profile.vehicleStock.completedRuns%3)+3)%3;
+                else if(scenario=="paid ordinary"&&game.Profile.vehicleStock.completedRuns%3==2)
+                    game.Profile.vehicleStock.completedRuns++;
+                Check(ProfileStore.TrySave(game.Profile),"Market baseline "+scenario+" has a durable isolated starting profile");
+                int generation=game.Profile.vehicleStock.generation;
+                int cash=game.Profile.cash;
+                var costs=new SortedDictionary<string,double[]>(StringComparer.Ordinal);
+                var wall=new SortedDictionary<string,double>(StringComparer.Ordinal);
+                var frames=new List<double>();
+                double maxStep=0,maxCamera=0;string maxStage="";
+                var priorStep=PrototypeGame.FinishMeasurement;
+                var priorWall=PrototypeGame.FinishWallMeasurement;
+                var priorMarket=DragLab.Domain.Mechanics.PartsMarket.Measurement;
+                float deadline=Time.realtimeSinceStartup+75;
+                long readyAt=0,resultsShownAt=0,doneAt=0;
+                try
+                {
+                    // Measuring after StartRace avoids counting setup and initial save as settlement.
+                    game.StartRace(null,scenario=="practice");
+                    var race=game.Race;
+                    Check(race!=null,"Market baseline "+scenario+" stages a real race");
+                    game.verificationInput=()=>new DriverInput{throttle=1};
+                    PrototypeGame.FinishMeasurement=(name,value)=>{
+                        if(name=="camera step units"){maxCamera=Math.Max(maxCamera,value);return;}
+                        if(value>maxStep){maxStep=value;maxStage=name;}
+                    };
+                    PrototypeGame.FinishWallMeasurement=(name,value)=>wall[name]=value;
+                    DragLab.Domain.Mechanics.PartsMarket.Measurement=(name,value)=>{
+                        if(!costs.TryGetValue(name,out var values))costs[name]=values=new double[3];
+                        values[0]+=value;values[1]++;values[2]=Math.Max(values[2],value);
+                    };
+                    while(!race.ResultReady&&Time.realtimeSinceStartup<deadline)yield return null;
+                    Check(race.ResultReady,"Market baseline "+scenario+" reaches the actual finish line");
+                    readyAt=System.Diagnostics.Stopwatch.GetTimestamp();
+                    long previous=readyAt;
+                    int framesPending=0;
+                    while(game.ResultSettlementPending&&Time.realtimeSinceStartup<deadline)
+                    {
+                        yield return null;
+                        long now=System.Diagnostics.Stopwatch.GetTimestamp();
+                        frames.Add((now-previous)*1000.0/System.Diagnostics.Stopwatch.Frequency);
+                        previous=now;
+                        framesPending++;
+                        if(resultsShownAt==0&&game.Results!=null&&game.Results.Root!=null&&!game.Results.Root.ClassListContains("hidden"))
+                            resultsShownAt=now;
+                    }
+                    doneAt=System.Diagnostics.Stopwatch.GetTimestamp();
+                    Check(!game.ResultSettlementPending&&game.Profile.careerRuns.Last().complete,
+                        "Market baseline "+scenario+" settles without an injected writer delay");
+                    Check(resultsShownAt!=0,"Market baseline "+scenario+" presents the results screen");
+                    Check(game.Profile.vehicleStock.generation==generation+(scenario=="paid third"?1:0),
+                        "Market baseline "+scenario+" only refreshes the intended epoch");
+                    int expected=scenario=="practice"?0:(race.playerWon?120:40);
+                    Check(game.Profile.cash==cash+expected,"Market baseline "+scenario+" pays once");
+                    frames.Sort();
+                    double maxFrame=frames.Count==0?0:frames[frames.Count-1];
+                    double p95=frames.Count==0?0:frames[(int)Math.Ceiling(.95*frames.Count)-1];
+                    double resultToCommit=(doneAt-readyAt)*1000.0/System.Diagnostics.Stopwatch.Frequency;
+                    double resultsVisible=(resultsShownAt-readyAt)*1000.0/System.Diagnostics.Stopwatch.Frequency;
+                    report.AppendLine(string.Format(CultureInfo.InvariantCulture,
+                        "MEASURE: market baseline {0} / result-to-commit {1:F3} ms / results-visible {2:F3} ms / pending frames {3} / max frame {4:F3} ms / p95 frame {5:F3} ms / max settlement step {6:F3} ms ({7}) / max camera step {8:F3}",
+                        scenario,resultToCommit,resultsVisible,framesPending,maxFrame,p95,maxStep,maxStage,maxCamera));
+                    foreach(var entry in wall)
+                        report.AppendLine("MEASURE: market baseline "+scenario+" / wall "+entry.Key+" = "+entry.Value.ToString("F3",CultureInfo.InvariantCulture)+" ms");
+                    foreach(var entry in costs)
+                        report.AppendLine(string.Format(CultureInfo.InvariantCulture,
+                            "MEASURE: market baseline {0} / stage {1} / {2:F3} ms sampled / {3} calls / {4:F3} ms max",
+                            scenario,entry.Key,entry.Value[0],(int)entry.Value[1],entry.Value[2]));
+                    Check(wall.ContainsKey("finish-to-commit total")&&wall.ContainsKey("save task and completion"),
+                        "Market baseline "+scenario+" captured the full finish and save timings");
+                }
+                finally
+                {
+                    game.verificationInput=null;
+                    PrototypeGame.FinishMeasurement=priorStep;
+                    PrototypeGame.FinishWallMeasurement=priorWall;
+                    DragLab.Domain.Mechanics.PartsMarket.Measurement=priorMarket;
+                }
+                // Distinguish responsive shop UI from completion of the expensive preview evaluation.
+                game.ReturnToGarage();
+                long shopStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                game.QueueNativeNavigation("Parts",true);
+                float shopDeadline=Time.realtimeSinceStartup+12;
+                while((game.ScreenName!="Parts"||shell.Root.Q("partsPage").ClassListContains("hidden"))&&Time.realtimeSinceStartup<shopDeadline)
+                    yield return null;
+                long shopVisibleAt=System.Diagnostics.Stopwatch.GetTimestamp();
+                Check(game.ScreenName=="Parts"&&!shell.Root.Q("partsPage").ClassListContains("hidden"),
+                    "Market baseline "+scenario+" shows the shop page");
+                while(shell.PartComparisonPending&&Time.realtimeSinceStartup<shopDeadline)yield return null;
+                Check(!shell.PartComparisonPending,"Market baseline "+scenario+" completes first shop preview batch");
+                long shopReadyAt=System.Diagnostics.Stopwatch.GetTimestamp();
+                report.AppendLine(string.Format(CultureInfo.InvariantCulture,
+                    "MEASURE: market baseline {0} / shop visible {1:F3} ms / comparison ready {2:F3} ms",
+                    scenario,(shopVisibleAt-shopStart)*1000.0/System.Diagnostics.Stopwatch.Frequency,
+                    (shopReadyAt-shopStart)*1000.0/System.Diagnostics.Stopwatch.Frequency));
+                game.ReturnToGarage();
+            }
+        }
         IEnumerator FinishPacingChecks(WindowsKeyboardProbe input)
         {
             foreach(bool paid in new[]{false,true})
