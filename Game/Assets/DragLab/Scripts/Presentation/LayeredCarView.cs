@@ -33,6 +33,12 @@ namespace DragLab.Presentation
         [Serializable] class Layer { public string id; public string file; public int z; public Placement placement; public bool rotateWithWheel; }
         [Serializable] class Placement { public string mode; public string anchor; public float x; public float y; public float[] offset; public float scale = 1; public float[] pivotNormalized; }
 
+        public void Build(VehicleSpec spec, Color paint, int laneOrder = 0, bool includeSlipEffects = true)
+        {
+            Build(VehicleArt.Resolve(spec), paint, laneOrder, includeSlipEffects);
+            nominalRadiusM = spec.wheelRadiusM;
+        }
+
         public void Build(string artId, Color paint, int laneOrder = 0, bool includeSlipEffects = true)
         {
             for (int i = transform.childCount - 1; i >= 0; i--)

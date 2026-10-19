@@ -156,7 +156,7 @@ namespace DragLab.Runtime
             playerView.gameObject.SetActive(true);
             Color paint;
             if (!ColorUtility.TryParseHtmlString(Build.paintHex, out paint)) paint = Selected.defaultPaint;
-            playerView.Build(Selected.spec.artId, paint, 1000);
+            playerView.Build(Selected.spec, paint, 1000);
             var visibleBuild = MechanicsOwnership.Resolve(profile, Build, profile.catalog);
             playerView.ApplySetup(visibleBuild.spec, visibleBuild.tune);
             playerView.transform.rotation = Quaternion.identity;
@@ -206,7 +206,7 @@ namespace DragLab.Runtime
             profile=entered;settings=profile.driving;savedRunTick=0;saveDelay=0;
             RaceCheckpointStore.Prepare();
             aiView.gameObject.SetActive(true);
-            aiView.Build(opponent.spec.artId, opponent.defaultPaint, 0);
+            aiView.Build(opponent.spec, opponent.defaultPaint, 0);
             playerView.ApplySetup(race.player.spec, race.player.tune);
             aiView.ApplySetup(race.opponent.spec, race.opponent.tune);
             raceCamera.orthographicSize = MenuCameraSize / RaceSceneZoom;

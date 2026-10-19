@@ -268,7 +268,7 @@ namespace DragLab.Runtime
             try {
                 var view = stage.AddComponent<LayeredCarView>();
                 Color paint; if (!ColorUtility.TryParseHtmlString(paintHex,out paint)) paint = Color.white;
-                view.Build(build.spec.artId,paint,0,false); view.ApplySetup(build.spec,build.tune);
+                view.Build(build.spec,paint,0,false); view.ApplySetup(build.spec,build.tune);
                 var layers = stage.GetComponentsInChildren<SpriteRenderer>().Where(layer => layer.enabled && layer.sprite != null).OrderBy(layer => layer.sortingOrder).ToArray();
                 if (layers.Length == 0) return preview;
                 Bounds bounds = layers[0].bounds; foreach (var layer in layers) bounds.Encapsulate(layer.bounds);

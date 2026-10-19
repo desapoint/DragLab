@@ -1,0 +1,679 @@
+PASS: aster: resolves its own model body.
+PASS: aster: old snapshots without modelFamily retain identity.
+PASS: aster: distinct model has a distinct texture.
+PASS: aster: body occludes wheels; fixtures remain above paint.
+PASS: aster: stock wheel scale and ground contact are valid.
+PASS: aster: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: aster: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: aster: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: aster: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: aster: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: aster: staggered axle tuning is stable across repeated application.
+PASS: aster: independent axle rotation and stationary caliper survive new geometry.
+PASS: aster: rendering preserves authored physics and stable IDs.
+PASS: aster-sport: resolves its own model body.
+PASS: aster-sport: old snapshots without modelFamily retain identity.
+PASS: aster-sport: trims share their model texture.
+PASS: aster-sport: body occludes wheels; fixtures remain above paint.
+PASS: aster-sport: stock wheel scale and ground contact are valid.
+PASS: aster-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: aster-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: aster-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: aster-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: aster-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: aster-sport: staggered axle tuning is stable across repeated application.
+PASS: aster-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: aster-sport: rendering preserves authored physics and stable IDs.
+PASS: atlas: resolves its own model body.
+PASS: atlas: old snapshots without modelFamily retain identity.
+PASS: atlas: distinct model has a distinct texture.
+PASS: atlas: body occludes wheels; fixtures remain above paint.
+PASS: atlas: stock wheel scale and ground contact are valid.
+PASS: atlas: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: atlas: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: atlas: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: atlas: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: atlas: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: atlas: staggered axle tuning is stable across repeated application.
+PASS: atlas: independent axle rotation and stationary caliper survive new geometry.
+PASS: atlas: rendering preserves authored physics and stable IDs.
+PASS: atlas-sport: resolves its own model body.
+PASS: atlas-sport: old snapshots without modelFamily retain identity.
+PASS: atlas-sport: trims share their model texture.
+PASS: atlas-sport: body occludes wheels; fixtures remain above paint.
+PASS: atlas-sport: stock wheel scale and ground contact are valid.
+PASS: atlas-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: atlas-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: atlas-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: atlas-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: atlas-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: atlas-sport: staggered axle tuning is stable across repeated application.
+PASS: atlas-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: atlas-sport: rendering preserves authored physics and stable IDs.
+PASS: boreal: resolves its own model body.
+PASS: boreal: old snapshots without modelFamily retain identity.
+PASS: boreal: distinct model has a distinct texture.
+PASS: boreal: body occludes wheels; fixtures remain above paint.
+PASS: boreal: stock wheel scale and ground contact are valid.
+PASS: boreal: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: boreal: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: boreal: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: boreal: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: boreal: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: boreal: staggered axle tuning is stable across repeated application.
+PASS: boreal: independent axle rotation and stationary caliper survive new geometry.
+PASS: boreal: rendering preserves authored physics and stable IDs.
+PASS: boreal-sport: resolves its own model body.
+PASS: boreal-sport: old snapshots without modelFamily retain identity.
+PASS: boreal-sport: trims share their model texture.
+PASS: boreal-sport: body occludes wheels; fixtures remain above paint.
+PASS: boreal-sport: stock wheel scale and ground contact are valid.
+PASS: boreal-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: boreal-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: boreal-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: boreal-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: boreal-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: boreal-sport: staggered axle tuning is stable across repeated application.
+PASS: boreal-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: boreal-sport: rendering preserves authored physics and stable IDs.
+PASS: cinder: resolves its own model body.
+PASS: cinder: old snapshots without modelFamily retain identity.
+PASS: cinder: distinct model has a distinct texture.
+PASS: cinder: body occludes wheels; fixtures remain above paint.
+PASS: cinder: stock wheel scale and ground contact are valid.
+PASS: cinder: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: cinder: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: cinder: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: cinder: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: cinder: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: cinder: staggered axle tuning is stable across repeated application.
+PASS: cinder: independent axle rotation and stationary caliper survive new geometry.
+PASS: cinder: rendering preserves authored physics and stable IDs.
+PASS: cinder-sport: resolves its own model body.
+PASS: cinder-sport: old snapshots without modelFamily retain identity.
+PASS: cinder-sport: trims share their model texture.
+PASS: cinder-sport: body occludes wheels; fixtures remain above paint.
+PASS: cinder-sport: stock wheel scale and ground contact are valid.
+PASS: cinder-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: cinder-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: cinder-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: cinder-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: cinder-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: cinder-sport: staggered axle tuning is stable across repeated application.
+PASS: cinder-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: cinder-sport: rendering preserves authored physics and stable IDs.
+PASS: city-three: resolves its own model body.
+PASS: city-three: old snapshots without modelFamily retain identity.
+PASS: city-three: distinct model has a distinct texture.
+PASS: city-three: body occludes wheels; fixtures remain above paint.
+PASS: city-three: stock wheel scale and ground contact are valid.
+PASS: city-three: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: city-three: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: city-three: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: city-three: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: city-three: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: city-three: staggered axle tuning is stable across repeated application.
+PASS: city-three: independent axle rotation and stationary caliper survive new geometry.
+PASS: city-three: rendering preserves authored physics and stable IDs.
+PASS: comet: resolves its own model body.
+PASS: comet: old snapshots without modelFamily retain identity.
+PASS: comet: distinct model has a distinct texture.
+PASS: comet: body occludes wheels; fixtures remain above paint.
+PASS: comet: stock wheel scale and ground contact are valid.
+PASS: comet: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: comet: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: comet: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: comet: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: comet: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: comet: staggered axle tuning is stable across repeated application.
+PASS: comet: independent axle rotation and stationary caliper survive new geometry.
+PASS: comet: rendering preserves authored physics and stable IDs.
+PASS: comet-sport: resolves its own model body.
+PASS: comet-sport: old snapshots without modelFamily retain identity.
+PASS: comet-sport: trims share their model texture.
+PASS: comet-sport: body occludes wheels; fixtures remain above paint.
+PASS: comet-sport: stock wheel scale and ground contact are valid.
+PASS: comet-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: comet-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: comet-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: comet-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: comet-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: comet-sport: staggered axle tuning is stable across repeated application.
+PASS: comet-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: comet-sport: rendering preserves authored physics and stable IDs.
+PASS: finch: resolves its own model body.
+PASS: finch: old snapshots without modelFamily retain identity.
+PASS: finch: distinct model has a distinct texture.
+PASS: finch: body occludes wheels; fixtures remain above paint.
+PASS: finch: stock wheel scale and ground contact are valid.
+PASS: finch: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: finch: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: finch: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: finch: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: finch: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: finch: staggered axle tuning is stable across repeated application.
+PASS: finch: independent axle rotation and stationary caliper survive new geometry.
+PASS: finch: rendering preserves authored physics and stable IDs.
+PASS: finch-sport: resolves its own model body.
+PASS: finch-sport: old snapshots without modelFamily retain identity.
+PASS: finch-sport: trims share their model texture.
+PASS: finch-sport: body occludes wheels; fixtures remain above paint.
+PASS: finch-sport: stock wheel scale and ground contact are valid.
+PASS: finch-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: finch-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: finch-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: finch-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: finch-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: finch-sport: staggered axle tuning is stable across repeated application.
+PASS: finch-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: finch-sport: rendering preserves authored physics and stable IDs.
+PASS: fjord: resolves its own model body.
+PASS: fjord: old snapshots without modelFamily retain identity.
+PASS: fjord: distinct model has a distinct texture.
+PASS: fjord: body occludes wheels; fixtures remain above paint.
+PASS: fjord: stock wheel scale and ground contact are valid.
+PASS: fjord: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: fjord: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: fjord: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: fjord: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: fjord: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: fjord: staggered axle tuning is stable across repeated application.
+PASS: fjord: independent axle rotation and stationary caliper survive new geometry.
+PASS: fjord: rendering preserves authored physics and stable IDs.
+PASS: fjord-sport: resolves its own model body.
+PASS: fjord-sport: old snapshots without modelFamily retain identity.
+PASS: fjord-sport: trims share their model texture.
+PASS: fjord-sport: body occludes wheels; fixtures remain above paint.
+PASS: fjord-sport: stock wheel scale and ground contact are valid.
+PASS: fjord-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: fjord-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: fjord-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: fjord-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: fjord-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: fjord-sport: staggered axle tuning is stable across repeated application.
+PASS: fjord-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: fjord-sport: rendering preserves authored physics and stable IDs.
+PASS: juniper-club: resolves its own model body.
+PASS: juniper-club: old snapshots without modelFamily retain identity.
+PASS: juniper-club: distinct model has a distinct texture.
+PASS: juniper-club: body occludes wheels; fixtures remain above paint.
+PASS: juniper-club: stock wheel scale and ground contact are valid.
+PASS: juniper-club: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: juniper-club: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: juniper-club: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: juniper-club: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: juniper-club: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: juniper-club: staggered axle tuning is stable across repeated application.
+PASS: juniper-club: independent axle rotation and stationary caliper survive new geometry.
+PASS: juniper-club: rendering preserves authored physics and stable IDs.
+PASS: juniper-economy: resolves its own model body.
+PASS: juniper-economy: old snapshots without modelFamily retain identity.
+PASS: juniper-economy: trims share their model texture.
+PASS: juniper-economy: body occludes wheels; fixtures remain above paint.
+PASS: juniper-economy: stock wheel scale and ground contact are valid.
+PASS: juniper-economy: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: juniper-economy: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: juniper-economy: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: juniper-economy: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: juniper-economy: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: juniper-economy: staggered axle tuning is stable across repeated application.
+PASS: juniper-economy: independent axle rotation and stationary caliper survive new geometry.
+PASS: juniper-economy: rendering preserves authored physics and stable IDs.
+PASS: kestrel-track: resolves its own model body.
+PASS: kestrel-track: old snapshots without modelFamily retain identity.
+PASS: kestrel-track: distinct model has a distinct texture.
+PASS: kestrel-track: body occludes wheels; fixtures remain above paint.
+PASS: kestrel-track: stock wheel scale and ground contact are valid.
+PASS: kestrel-track: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: kestrel-track: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: kestrel-track: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: kestrel-track: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: kestrel-track: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: kestrel-track: staggered axle tuning is stable across repeated application.
+PASS: kestrel-track: independent axle rotation and stationary caliper survive new geometry.
+PASS: kestrel-track: rendering preserves authored physics and stable IDs.
+PASS: lark: resolves its own model body.
+PASS: lark: old snapshots without modelFamily retain identity.
+PASS: lark: distinct model has a distinct texture.
+PASS: lark: body occludes wheels; fixtures remain above paint.
+PASS: lark: stock wheel scale and ground contact are valid.
+PASS: lark: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: lark: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: lark: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: lark: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: lark: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: lark: staggered axle tuning is stable across repeated application.
+PASS: lark: independent axle rotation and stationary caliper survive new geometry.
+PASS: lark: rendering preserves authored physics and stable IDs.
+PASS: lark-sport: resolves its own model body.
+PASS: lark-sport: old snapshots without modelFamily retain identity.
+PASS: lark-sport: trims share their model texture.
+PASS: lark-sport: body occludes wheels; fixtures remain above paint.
+PASS: lark-sport: stock wheel scale and ground contact are valid.
+PASS: lark-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: lark-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: lark-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: lark-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: lark-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: lark-sport: staggered axle tuning is stable across repeated application.
+PASS: lark-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: lark-sport: rendering preserves authored physics and stable IDs.
+PASS: meridian-sport: resolves its own model body.
+PASS: meridian-sport: old snapshots without modelFamily retain identity.
+PASS: meridian-sport: distinct model has a distinct texture.
+PASS: meridian-sport: body occludes wheels; fixtures remain above paint.
+PASS: meridian-sport: stock wheel scale and ground contact are valid.
+PASS: meridian-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: meridian-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: meridian-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: meridian-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: meridian-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: meridian-sport: staggered axle tuning is stable across repeated application.
+PASS: meridian-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: meridian-sport: rendering preserves authored physics and stable IDs.
+PASS: mistral: resolves its own model body.
+PASS: mistral: old snapshots without modelFamily retain identity.
+PASS: mistral: distinct model has a distinct texture.
+PASS: mistral: body occludes wheels; fixtures remain above paint.
+PASS: mistral: stock wheel scale and ground contact are valid.
+PASS: mistral: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: mistral: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: mistral: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: mistral: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: mistral: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: mistral: staggered axle tuning is stable across repeated application.
+PASS: mistral: independent axle rotation and stationary caliper survive new geometry.
+PASS: mistral: rendering preserves authored physics and stable IDs.
+PASS: mistral-sport: resolves its own model body.
+PASS: mistral-sport: old snapshots without modelFamily retain identity.
+PASS: mistral-sport: trims share their model texture.
+PASS: mistral-sport: body occludes wheels; fixtures remain above paint.
+PASS: mistral-sport: stock wheel scale and ground contact are valid.
+PASS: mistral-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: mistral-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: mistral-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: mistral-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: mistral-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: mistral-sport: staggered axle tuning is stable across repeated application.
+PASS: mistral-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: mistral-sport: rendering preserves authored physics and stable IDs.
+PASS: osprey: resolves its own model body.
+PASS: osprey: old snapshots without modelFamily retain identity.
+PASS: osprey: distinct model has a distinct texture.
+PASS: osprey: body occludes wheels; fixtures remain above paint.
+PASS: osprey: stock wheel scale and ground contact are valid.
+PASS: osprey: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: osprey: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: osprey: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: osprey: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: osprey: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: osprey: staggered axle tuning is stable across repeated application.
+PASS: osprey: independent axle rotation and stationary caliper survive new geometry.
+PASS: osprey: rendering preserves authored physics and stable IDs.
+PASS: osprey-sport: resolves its own model body.
+PASS: osprey-sport: old snapshots without modelFamily retain identity.
+PASS: osprey-sport: trims share their model texture.
+PASS: osprey-sport: body occludes wheels; fixtures remain above paint.
+PASS: osprey-sport: stock wheel scale and ground contact are valid.
+PASS: osprey-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: osprey-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: osprey-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: osprey-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: osprey-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: osprey-sport: staggered axle tuning is stable across repeated application.
+PASS: osprey-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: osprey-sport: rendering preserves authored physics and stable IDs.
+PASS: piper: resolves its own model body.
+PASS: piper: old snapshots without modelFamily retain identity.
+PASS: piper: distinct model has a distinct texture.
+PASS: piper: body occludes wheels; fixtures remain above paint.
+PASS: piper: stock wheel scale and ground contact are valid.
+PASS: piper: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: piper: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: piper: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: piper: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: piper: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: piper: staggered axle tuning is stable across repeated application.
+PASS: piper: independent axle rotation and stationary caliper survive new geometry.
+PASS: piper: rendering preserves authored physics and stable IDs.
+PASS: piper-sport: resolves its own model body.
+PASS: piper-sport: old snapshots without modelFamily retain identity.
+PASS: piper-sport: trims share their model texture.
+PASS: piper-sport: body occludes wheels; fixtures remain above paint.
+PASS: piper-sport: stock wheel scale and ground contact are valid.
+PASS: piper-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: piper-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: piper-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: piper-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: piper-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: piper-sport: staggered axle tuning is stable across repeated application.
+PASS: piper-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: piper-sport: rendering preserves authored physics and stable IDs.
+PASS: rally-sedan: resolves its own model body.
+PASS: rally-sedan: old snapshots without modelFamily retain identity.
+PASS: rally-sedan: distinct model has a distinct texture.
+PASS: rally-sedan: body occludes wheels; fixtures remain above paint.
+PASS: rally-sedan: stock wheel scale and ground contact are valid.
+PASS: rally-sedan: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: rally-sedan: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: rally-sedan: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: rally-sedan: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: rally-sedan: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: rally-sedan: staggered axle tuning is stable across repeated application.
+PASS: rally-sedan: independent axle rotation and stationary caliper survive new geometry.
+PASS: rally-sedan: rendering preserves authored physics and stable IDs.
+PASS: reed: resolves its own model body.
+PASS: reed: old snapshots without modelFamily retain identity.
+PASS: reed: distinct model has a distinct texture.
+PASS: reed: body occludes wheels; fixtures remain above paint.
+PASS: reed: stock wheel scale and ground contact are valid.
+PASS: reed: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: reed: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: reed: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: reed: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: reed: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: reed: staggered axle tuning is stable across repeated application.
+PASS: reed: independent axle rotation and stationary caliper survive new geometry.
+PASS: reed: rendering preserves authored physics and stable IDs.
+PASS: reed-sport: resolves its own model body.
+PASS: reed-sport: old snapshots without modelFamily retain identity.
+PASS: reed-sport: trims share their model texture.
+PASS: reed-sport: body occludes wheels; fixtures remain above paint.
+PASS: reed-sport: stock wheel scale and ground contact are valid.
+PASS: reed-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: reed-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: reed-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: reed-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: reed-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: reed-sport: staggered axle tuning is stable across repeated application.
+PASS: reed-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: reed-sport: rendering preserves authored physics and stable IDs.
+PASS: rook: resolves its own model body.
+PASS: rook: old snapshots without modelFamily retain identity.
+PASS: rook: distinct model has a distinct texture.
+PASS: rook: body occludes wheels; fixtures remain above paint.
+PASS: rook: stock wheel scale and ground contact are valid.
+PASS: rook: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: rook: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: rook: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: rook: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: rook: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: rook: staggered axle tuning is stable across repeated application.
+PASS: rook: independent axle rotation and stationary caliper survive new geometry.
+PASS: rook: rendering preserves authored physics and stable IDs.
+PASS: rook-sport: resolves its own model body.
+PASS: rook-sport: old snapshots without modelFamily retain identity.
+PASS: rook-sport: trims share their model texture.
+PASS: rook-sport: body occludes wheels; fixtures remain above paint.
+PASS: rook-sport: stock wheel scale and ground contact are valid.
+PASS: rook-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: rook-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: rook-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: rook-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: rook-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: rook-sport: staggered axle tuning is stable across repeated application.
+PASS: rook-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: rook-sport: rendering preserves authored physics and stable IDs.
+PASS: sable: resolves its own model body.
+PASS: sable: old snapshots without modelFamily retain identity.
+PASS: sable: distinct model has a distinct texture.
+PASS: sable: body occludes wheels; fixtures remain above paint.
+PASS: sable: stock wheel scale and ground contact are valid.
+PASS: sable: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: sable: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: sable: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: sable: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: sable: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: sable: staggered axle tuning is stable across repeated application.
+PASS: sable: independent axle rotation and stationary caliper survive new geometry.
+PASS: sable: rendering preserves authored physics and stable IDs.
+PASS: sable-sport: resolves its own model body.
+PASS: sable-sport: old snapshots without modelFamily retain identity.
+PASS: sable-sport: trims share their model texture.
+PASS: sable-sport: body occludes wheels; fixtures remain above paint.
+PASS: sable-sport: stock wheel scale and ground contact are valid.
+PASS: sable-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: sable-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: sable-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: sable-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: sable-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: sable-sport: staggered axle tuning is stable across repeated application.
+PASS: sable-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: sable-sport: rendering preserves authored physics and stable IDs.
+PASS: solstice: resolves its own model body.
+PASS: solstice: old snapshots without modelFamily retain identity.
+PASS: solstice: distinct model has a distinct texture.
+PASS: solstice: body occludes wheels; fixtures remain above paint.
+PASS: solstice: stock wheel scale and ground contact are valid.
+PASS: solstice: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: solstice: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: solstice: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: solstice: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: solstice: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: solstice: staggered axle tuning is stable across repeated application.
+PASS: solstice: independent axle rotation and stationary caliper survive new geometry.
+PASS: solstice: rendering preserves authored physics and stable IDs.
+PASS: solstice-sport: resolves its own model body.
+PASS: solstice-sport: old snapshots without modelFamily retain identity.
+PASS: solstice-sport: trims share their model texture.
+PASS: solstice-sport: body occludes wheels; fixtures remain above paint.
+PASS: solstice-sport: stock wheel scale and ground contact are valid.
+PASS: solstice-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: solstice-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: solstice-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: solstice-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: solstice-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: solstice-sport: staggered axle tuning is stable across repeated application.
+PASS: solstice-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: solstice-sport: rendering preserves authored physics and stable IDs.
+PASS: sport-coupe: resolves its own model body.
+PASS: sport-coupe: old snapshots without modelFamily retain identity.
+PASS: sport-coupe: trims share their model texture.
+PASS: sport-coupe: body occludes wheels; fixtures remain above paint.
+PASS: sport-coupe: stock wheel scale and ground contact are valid.
+PASS: sport-coupe: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: sport-coupe: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: sport-coupe: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: sport-coupe: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: sport-coupe: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: sport-coupe: staggered axle tuning is stable across repeated application.
+PASS: sport-coupe: independent axle rotation and stationary caliper survive new geometry.
+PASS: sport-coupe: rendering preserves authored physics and stable IDs.
+PASS: sprig-sport: resolves its own model body.
+PASS: sprig-sport: old snapshots without modelFamily retain identity.
+PASS: sprig-sport: trims share their model texture.
+PASS: sprig-sport: body occludes wheels; fixtures remain above paint.
+PASS: sprig-sport: stock wheel scale and ground contact are valid.
+PASS: sprig-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: sprig-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: sprig-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: sprig-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: sprig-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: sprig-sport: staggered axle tuning is stable across repeated application.
+PASS: sprig-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: sprig-sport: rendering preserves authored physics and stable IDs.
+PASS: starter-hatch: resolves its own model body.
+PASS: starter-hatch: old snapshots without modelFamily retain identity.
+PASS: starter-hatch: trims share their model texture.
+PASS: starter-hatch: body occludes wheels; fixtures remain above paint.
+PASS: starter-hatch: stock wheel scale and ground contact are valid.
+PASS: starter-hatch: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: starter-hatch: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: starter-hatch: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: starter-hatch: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: starter-hatch: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: starter-hatch: staggered axle tuning is stable across repeated application.
+PASS: starter-hatch: independent axle rotation and stationary caliper survive new geometry.
+PASS: starter-hatch: rendering preserves authored physics and stable IDs.
+PASS: super-v8: resolves its own model body.
+PASS: super-v8: old snapshots without modelFamily retain identity.
+PASS: super-v8: distinct model has a distinct texture.
+PASS: super-v8: body occludes wheels; fixtures remain above paint.
+PASS: super-v8: stock wheel scale and ground contact are valid.
+PASS: super-v8: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: super-v8: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: super-v8: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: super-v8: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: super-v8: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: super-v8: staggered axle tuning is stable across repeated application.
+PASS: super-v8: independent axle rotation and stationary caliper survive new geometry.
+PASS: super-v8: rendering preserves authored physics and stable IDs.
+PASS: swift: resolves its own model body.
+PASS: swift: old snapshots without modelFamily retain identity.
+PASS: swift: distinct model has a distinct texture.
+PASS: swift: body occludes wheels; fixtures remain above paint.
+PASS: swift: stock wheel scale and ground contact are valid.
+PASS: swift: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: swift: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: swift: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: swift: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: swift: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: swift: staggered axle tuning is stable across repeated application.
+PASS: swift: independent axle rotation and stationary caliper survive new geometry.
+PASS: swift: rendering preserves authored physics and stable IDs.
+PASS: swift-sport: resolves its own model body.
+PASS: swift-sport: old snapshots without modelFamily retain identity.
+PASS: swift-sport: trims share their model texture.
+PASS: swift-sport: body occludes wheels; fixtures remain above paint.
+PASS: swift-sport: stock wheel scale and ground contact are valid.
+PASS: swift-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: swift-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: swift-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: swift-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: swift-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: swift-sport: staggered axle tuning is stable across repeated application.
+PASS: swift-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: swift-sport: rendering preserves authored physics and stable IDs.
+PASS: tempest-rs: resolves its own model body.
+PASS: tempest-rs: old snapshots without modelFamily retain identity.
+PASS: tempest-rs: trims share their model texture.
+PASS: tempest-rs: body occludes wheels; fixtures remain above paint.
+PASS: tempest-rs: stock wheel scale and ground contact are valid.
+PASS: tempest-rs: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: tempest-rs: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: tempest-rs: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: tempest-rs: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: tempest-rs: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: tempest-rs: staggered axle tuning is stable across repeated application.
+PASS: tempest-rs: independent axle rotation and stationary caliper survive new geometry.
+PASS: tempest-rs: rendering preserves authored physics and stable IDs.
+PASS: timber-diesel: resolves its own model body.
+PASS: timber-diesel: old snapshots without modelFamily retain identity.
+PASS: timber-diesel: distinct model has a distinct texture.
+PASS: timber-diesel: body occludes wheels; fixtures remain above paint.
+PASS: timber-diesel: stock wheel scale and ground contact are valid.
+PASS: timber-diesel: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: timber-diesel: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: timber-diesel: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: timber-diesel: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: timber-diesel: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: timber-diesel: staggered axle tuning is stable across repeated application.
+PASS: timber-diesel: independent axle rotation and stationary caliper survive new geometry.
+PASS: timber-diesel: rendering preserves authored physics and stable IDs.
+PASS: timber-diesel-tow: resolves its own model body.
+PASS: timber-diesel-tow: old snapshots without modelFamily retain identity.
+PASS: timber-diesel-tow: trims share their model texture.
+PASS: timber-diesel-tow: body occludes wheels; fixtures remain above paint.
+PASS: timber-diesel-tow: stock wheel scale and ground contact are valid.
+PASS: timber-diesel-tow: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: timber-diesel-tow: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: timber-diesel-tow: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: timber-diesel-tow: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: timber-diesel-tow: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: timber-diesel-tow: staggered axle tuning is stable across repeated application.
+PASS: timber-diesel-tow: independent axle rotation and stationary caliper survive new geometry.
+PASS: timber-diesel-tow: rendering preserves authored physics and stable IDs.
+PASS: touring-six: resolves its own model body.
+PASS: touring-six: old snapshots without modelFamily retain identity.
+PASS: touring-six: trims share their model texture.
+PASS: touring-six: body occludes wheels; fixtures remain above paint.
+PASS: touring-six: stock wheel scale and ground contact are valid.
+PASS: touring-six: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: touring-six: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: touring-six: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: touring-six: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: touring-six: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: touring-six: staggered axle tuning is stable across repeated application.
+PASS: touring-six: independent axle rotation and stationary caliper survive new geometry.
+PASS: touring-six: rendering preserves authored physics and stable IDs.
+PASS: utility-pickup: resolves its own model body.
+PASS: utility-pickup: old snapshots without modelFamily retain identity.
+PASS: utility-pickup: trims share their model texture.
+PASS: utility-pickup: body occludes wheels; fixtures remain above paint.
+PASS: utility-pickup: stock wheel scale and ground contact are valid.
+PASS: utility-pickup: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: utility-pickup: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: utility-pickup: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: utility-pickup: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: utility-pickup: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: utility-pickup: staggered axle tuning is stable across repeated application.
+PASS: utility-pickup: independent axle rotation and stationary caliper survive new geometry.
+PASS: utility-pickup: rendering preserves authored physics and stable IDs.
+PASS: v8-muscle: resolves its own model body.
+PASS: v8-muscle: old snapshots without modelFamily retain identity.
+PASS: v8-muscle: trims share their model texture.
+PASS: v8-muscle: body occludes wheels; fixtures remain above paint.
+PASS: v8-muscle: stock wheel scale and ground contact are valid.
+PASS: v8-muscle: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: v8-muscle: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: v8-muscle: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: v8-muscle: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: v8-muscle: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: v8-muscle: staggered axle tuning is stable across repeated application.
+PASS: v8-muscle: independent axle rotation and stationary caliper survive new geometry.
+PASS: v8-muscle: rendering preserves authored physics and stable IDs.
+PASS: vale: resolves its own model body.
+PASS: vale: old snapshots without modelFamily retain identity.
+PASS: vale: distinct model has a distinct texture.
+PASS: vale: body occludes wheels; fixtures remain above paint.
+PASS: vale: stock wheel scale and ground contact are valid.
+PASS: vale: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: vale: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: vale: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: vale: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: vale: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: vale: staggered axle tuning is stable across repeated application.
+PASS: vale: independent axle rotation and stationary caliper survive new geometry.
+PASS: vale: rendering preserves authored physics and stable IDs.
+PASS: vale-sport: resolves its own model body.
+PASS: vale-sport: old snapshots without modelFamily retain identity.
+PASS: vale-sport: trims share their model texture.
+PASS: vale-sport: body occludes wheels; fixtures remain above paint.
+PASS: vale-sport: stock wheel scale and ground contact are valid.
+PASS: vale-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: vale-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: vale-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: vale-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: vale-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: vale-sport: staggered axle tuning is stable across repeated application.
+PASS: vale-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: vale-sport: rendering preserves authored physics and stable IDs.
+PASS: wren: resolves its own model body.
+PASS: wren: old snapshots without modelFamily retain identity.
+PASS: wren: distinct model has a distinct texture.
+PASS: wren: body occludes wheels; fixtures remain above paint.
+PASS: wren: stock wheel scale and ground contact are valid.
+PASS: wren: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: wren: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: wren: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: wren: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: wren: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: wren: staggered axle tuning is stable across repeated application.
+PASS: wren: independent axle rotation and stationary caliper survive new geometry.
+PASS: wren: rendering preserves authored physics and stable IDs.
+PASS: wren-sport: resolves its own model body.
+PASS: wren-sport: old snapshots without modelFamily retain identity.
+PASS: wren-sport: trims share their model texture.
+PASS: wren-sport: body occludes wheels; fixtures remain above paint.
+PASS: wren-sport: stock wheel scale and ground contact are valid.
+PASS: wren-sport: repaint changes only the paint renderer / RGBA(1.000, 0.000, 0.000, 1.000)
+PASS: wren-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 1.000, 1.000)
+PASS: wren-sport: repaint changes only the paint renderer / RGBA(1.000, 1.000, 1.000, 1.000)
+PASS: wren-sport: repaint changes only the paint renderer / RGBA(0.000, 0.000, 0.000, 1.000)
+PASS: wren-sport: repaint changes only the paint renderer / RGBA(1.000, 0.922, 0.016, 1.000)
+PASS: wren-sport: staggered axle tuning is stable across repeated application.
+PASS: wren-sport: independent axle rotation and stationary caliper survive new geometry.
+PASS: wren-sport: rendering preserves authored physics and stable IDs.
+PASS: All 52 configurations resolve 25 distinct model bodies.
+PASS: Unknown/custom model preserves its legacy art fallback.
+Checks: 678

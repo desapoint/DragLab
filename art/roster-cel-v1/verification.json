@@ -1,0 +1,331 @@
+{
+  "models": [
+    {
+      "id": "aster",
+      "sourceSha256": "bc83d094edd2fe201045a01a733c08b9a258a7260ba19105d2484ad6d4cb9811",
+      "paintPixels": 81890,
+      "protectedPixels": 52528,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 540.0
+    },
+    {
+      "id": "atlas",
+      "sourceSha256": "89d172f116f8df74bbcdd18e7cea5467265de634d45625012311b2b3a2d279bc",
+      "paintPixels": 102023,
+      "protectedPixels": 94408,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        437
+      ],
+      "wheelbasePx": 590.0
+    },
+    {
+      "id": "bison",
+      "sourceSha256": "c820c43305bbde8bb147fcddded75d90b1970451738477434b379437b43ddbf9",
+      "paintPixels": 100819,
+      "protectedPixels": 28561,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 560.0
+    },
+    {
+      "id": "boreal",
+      "sourceSha256": "f0f97fc41c05a27b47268b139989be9f9e1a1ea5ccf7d4e9e656163ef9d0602e",
+      "paintPixels": 90768,
+      "protectedPixels": 38563,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 540.0
+    },
+    {
+      "id": "cinder",
+      "sourceSha256": "c336161bfa1172deec57d9a14d6a4868f650ceecad66ecc1b92425ea3930478c",
+      "paintPixels": 73717,
+      "protectedPixels": 31244,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 510.0
+    },
+    {
+      "id": "comet",
+      "sourceSha256": "1074516c808fa94bd0e231be666eff20023537840923286d936115cfd8e933d2",
+      "paintPixels": 72851,
+      "protectedPixels": 42734,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 510.0
+    },
+    {
+      "id": "finch",
+      "sourceSha256": "6a9d8b50b72cefeef47787f6bb4e80ce568f8346a2ef0c0b73d879f9ef2972b7",
+      "paintPixels": 81273,
+      "protectedPixels": 48077,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        401
+      ],
+      "wheelbasePx": 510.0
+    },
+    {
+      "id": "fjord",
+      "sourceSha256": "e5726bb251a708279884c543ba85f7d5a9f5723025c863731cfc8d44027223a7",
+      "paintPixels": 79263,
+      "protectedPixels": 53079,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 540.0
+    },
+    {
+      "id": "juniper",
+      "sourceSha256": "0a42cf90e34bc22fd22cb0d7c37bd40e73a4f3b04d38d51c12f26823ee1ad966",
+      "paintPixels": 83142,
+      "protectedPixels": 36858,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 510.0
+    },
+    {
+      "id": "kestrel",
+      "sourceSha256": "1d49462b13f67fe773799ae034e0a70f73b9b6766220b98bb753e42c424e1ff9",
+      "paintPixels": 92805,
+      "protectedPixels": 31010,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 530.0
+    },
+    {
+      "id": "lark",
+      "sourceSha256": "bd8901260c9cdba399d586194fe8e8728536afd0640d48c5c18712eb9a476692",
+      "paintPixels": 73054,
+      "protectedPixels": 31893,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 510.0
+    },
+    {
+      "id": "meridian",
+      "sourceSha256": "2665a6030246f239902d56bf23577293c4a81f889a1474d32b6f636c4d27b709",
+      "paintPixels": 93120,
+      "protectedPixels": 29491,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 550.0
+    },
+    {
+      "id": "mistral",
+      "sourceSha256": "d26a3f2757189e168c2ebc827ab5f1b8b944e8cffebb8901e0b5efb2771c23a5",
+      "paintPixels": 76904,
+      "protectedPixels": 36486,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 510.0
+    },
+    {
+      "id": "osprey",
+      "sourceSha256": "607009765652ca99800d7f3f6dfa77413a69db28eb614cddff3b7fcb8949698d",
+      "paintPixels": 78591,
+      "protectedPixels": 23776,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 510.0
+    },
+    {
+      "id": "piper",
+      "sourceSha256": "bfe3066fe3e1c15e6a9b5670be01ba99c136534b99b47804bb546c07814c9211",
+      "paintPixels": 85418,
+      "protectedPixels": 39589,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 510.0
+    },
+    {
+      "id": "reed",
+      "sourceSha256": "ad085477aec72e24e9ebd3f64bec256c2f0b6de72b6516643efd425eac4e61d5",
+      "paintPixels": 83808,
+      "protectedPixels": 50342,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 540.0
+    },
+    {
+      "id": "rook",
+      "sourceSha256": "7026abae8882e32417dbdbd3a7b2d07dadc6f0a8fdff52e0f03dbf04fba1bf82",
+      "paintPixels": 76207,
+      "protectedPixels": 40877,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 510.0
+    },
+    {
+      "id": "sable",
+      "sourceSha256": "1c9e7321e1c1d83d33e62cd60d41373f757d8a525b9164b2ab876cebead3b635",
+      "paintPixels": 67189,
+      "protectedPixels": 36791,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 510.0
+    },
+    {
+      "id": "solstice",
+      "sourceSha256": "0219d4c1be612c7e21e8cf22e7b39f01d245340aa13f7e78f83c26e98a9a0366",
+      "paintPixels": 64324,
+      "protectedPixels": 14692,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 470.0
+    },
+    {
+      "id": "sprig",
+      "sourceSha256": "9c3e43a01d1af2aa942e0a3e0e6f9337b6b74b9107e693fe478fe9fbbac05338",
+      "paintPixels": 85988,
+      "protectedPixels": 39968,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 480.0
+    },
+    {
+      "id": "swift",
+      "sourceSha256": "bbeb392627880ea443a2d94b0633b4379e1900133b9be37f990c958798d1eb4b",
+      "paintPixels": 66776,
+      "protectedPixels": 13972,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 470.0
+    },
+    {
+      "id": "tempest",
+      "sourceSha256": "d25cdb2a87bcb6c0d0ae8e8a19e65cde04a043086d6cf96c9c6288848781cea8",
+      "paintPixels": 101991,
+      "protectedPixels": 42092,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 540.0
+    },
+    {
+      "id": "timber",
+      "sourceSha256": "8a9f48f2a2361a6bb249f6690658dd1e4d8b619e2af30306f77ec91403d26871",
+      "paintPixels": 115489,
+      "protectedPixels": 50342,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1055,
+        400
+      ],
+      "wheelbasePx": 630.0
+    },
+    {
+      "id": "vale",
+      "sourceSha256": "7ce6ba16530a4fc94da873c947f20721d7ab9c893334553ad5be9c8d6f6c8b65",
+      "paintPixels": 76484,
+      "protectedPixels": 27658,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 510.0
+    },
+    {
+      "id": "wren",
+      "sourceSha256": "f4079d22217fd6534bc03dcd283d2695e3f7e00d65785bb51b420735993b4c87",
+      "paintPixels": 83481,
+      "protectedPixels": 35163,
+      "repaints": 5,
+      "fixtureDifference": 0,
+      "runtimeCanvas": [
+        1024,
+        384
+      ],
+      "wheelbasePx": 510.0
+    }
+  ],
+  "fixtureDifference": 0,
+  "sourceCount": 25
+}

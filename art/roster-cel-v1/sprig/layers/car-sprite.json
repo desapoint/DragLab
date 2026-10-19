@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "revision": 1,
+  "vehicle": {
+    "id": "sprig",
+    "make": "DragLab",
+    "model": "Sprig",
+    "facing": "right",
+    "trim": "Fictional raster body"
+  },
+  "canvas": {
+    "width": 1024,
+    "height": 384
+  },
+  "anchors": {
+    "rearWheel": {
+      "x": 272.413,
+      "y": 289.292,
+      "radius": 70.211
+    },
+    "frontWheel": {
+      "x": 752.413,
+      "y": 289.292,
+      "radius": 70.211
+    }
+  },
+  "layers": [
+    {
+      "id": "shadow",
+      "file": "shadow.png",
+      "z": 0,
+      "placement": {
+        "mode": "canvas",
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "car-underlay",
+      "file": "car-underlay.png",
+      "z": 50,
+      "placement": {
+        "mode": "canvas",
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "rear-rotor",
+      "file": "rotor.png",
+      "z": 100,
+      "rotateWithWheel": true,
+      "placement": {
+        "mode": "anchor",
+        "anchor": "rearWheel",
+        "offset": [
+          0,
+          0
+        ],
+        "pivotNormalized": [
+          0.5,
+          0.5
+        ],
+        "scale": 0.812973
+      }
+    },
+    {
+      "id": "rear-caliper",
+      "file": "caliper.png",
+      "z": 200,
+      "rotateWithWheel": false,
+      "placement": {
+        "mode": "anchor",
+        "anchor": "rearWheel",
+        "offset": [
+          0,
+          0
+        ],
+        "pivotNormalized": [
+          0.5,
+          0.5
+        ],
+        "scale": 0.812973
+      }
+    },
+    {
+      "id": "rear-wheel",
+      "file": "wheel.png",
+      "z": 300,
+      "rotateWithWheel": true,
+      "placement": {
+        "mode": "anchor",
+        "anchor": "rearWheel",
+        "offset": [
+          0,
+          0
+        ],
+        "pivotNormalized": [
+          0.5,
+          0.5
+        ],
+        "scale": 0.923833
+      }
+    },
+    {
+      "id": "front-rotor",
+      "file": "rotor.png",
+      "z": 100,
+      "rotateWithWheel": true,
+      "placement": {
+        "mode": "anchor",
+        "anchor": "frontWheel",
+        "offset": [
+          0,
+          0
+        ],
+        "pivotNormalized": [
+          0.5,
+          0.5
+        ],
+        "scale": 0.923833
+      }
+    },
+    {
+      "id": "front-caliper",
+      "file": "caliper.png",
+      "z": 200,
+      "rotateWithWheel": false,
+      "placement": {
+        "mode": "anchor",
+        "anchor": "frontWheel",
+        "offset": [
+          0,
+          0
+        ],
+        "pivotNormalized": [
+          0.5,
+          0.5
+        ],
+        "scale": 0.923833
+      }
+    },
+    {
+      "id": "front-wheel",
+      "file": "wheel.png",
+      "z": 300,
+      "rotateWithWheel": true,
+      "placement": {
+        "mode": "anchor",
+        "anchor": "frontWheel",
+        "offset": [
+          0,
+          0
+        ],
+        "pivotNormalized": [
+          0.5,
+          0.5
+        ],
+        "scale": 0.923833
+      }
+    },
+    {
+      "id": "body-paint",
+      "file": "body-paint.png",
+      "z": 400,
+      "placement": {
+        "mode": "canvas",
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "body-fixtures",
+      "file": "body-fixtures.png",
+      "z": 430,
+      "placement": {
+        "mode": "canvas",
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "masks": {
+    "paint": "paint-mask.png"
+  },
+  "sources": [],
+  "notes": [
+    "Protected fixtures are source pixels above a neutral paint foundation.",
+    "Existing independent wheel/rotor/caliper masters reused; new shop wheel artwork is separate.",
+    "Visual axle spacing follows authored game wheelbase; art does not set physics."
+  ]
+}

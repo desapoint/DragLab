@@ -1,0 +1,302 @@
+[
+  {
+    "id": "aster",
+    "passed": true,
+    "fingerprint": "5ec3de35403b7b11cacf802a6252bab4e7ada15c98e8d898b455702f6d94d4f2",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "atlas",
+    "passed": true,
+    "fingerprint": "f979d439146b71cc15afbc20f058a59a1b1ed837752bff5d14e8846ede049fbd",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "bison",
+    "passed": true,
+    "fingerprint": "996bae3c343ea6d6665450749025fcb62c2903b1fceb4f4a26ab31409f9eaf43",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "boreal",
+    "passed": true,
+    "fingerprint": "0ac04e1c432fb8c795159c5330078e23338fc4278a0b70cfb3b023abf1a2e46c",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "cinder",
+    "passed": true,
+    "fingerprint": "ab938dc762a0042292d2341b93723dc7960f1ff08f620ac78a514d2a6d78e92a",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "comet",
+    "passed": true,
+    "fingerprint": "e05086e7b393834475d21013b0068b7f120e6168da3cece1d5956d7928235e4d",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "finch",
+    "passed": true,
+    "fingerprint": "8aa1765a945c59be5706e24aa7c432375bfac313764a6681af39cf567bbbdeaa",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "fjord",
+    "passed": true,
+    "fingerprint": "6a9d571a666210de1cdcbc4349f175fa892ec5e37bb87d6ccca7055fdbab2b93",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "juniper",
+    "passed": true,
+    "fingerprint": "b1dcbb283c2ebef9833071a5f8ddaa3946386e54271a78472926320fdb8f7087",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "kestrel",
+    "passed": true,
+    "fingerprint": "62ffedd7d57cacecc68c20bdf5d9e5f75e3af3c09b084490913fda64e3742570",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "lark",
+    "passed": true,
+    "fingerprint": "17ca876fcc1a55c736706bed827ad11703521d1dc9b14f00fedf0f1dde595ead",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "meridian",
+    "passed": true,
+    "fingerprint": "e43d2e7cb67113f389f63f95b81ec99ddf7606ebb1ed7fab0e63386e46b81a0b",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "mistral",
+    "passed": true,
+    "fingerprint": "e307472d12fbd6bdb28b24099ca72b222f59344985695a8b7665ec7c5d5b3e75",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "osprey",
+    "passed": true,
+    "fingerprint": "5b522abe9c8c61f48852debc8d26cb0bd4930a94f0fae43ec0a6ebd2da292a7e",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "piper",
+    "passed": true,
+    "fingerprint": "f5055b4f11d9caec093d4fd014db08610a7727198f3d2f8dfdda086f9b5331e2",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "reed",
+    "passed": true,
+    "fingerprint": "b118aea79f880e56fc9b7221ba352740f29dab1dc56806099ab9f864c6a670bf",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "rook",
+    "passed": true,
+    "fingerprint": "258f401d71134cba5cf87783a0ad272f2a91a2e1693fe59a9ea64e7fc3088773",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "sable",
+    "passed": true,
+    "fingerprint": "a727db12734721efafbf3f60b97eaf6d39b3c39f203d46c966b02fd242f5c93e",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "solstice",
+    "passed": true,
+    "fingerprint": "967b347d334fafdcb9254330e2c7f52e8a542f3b87ca6e7ee81d7beb23d42625",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "sprig",
+    "passed": true,
+    "fingerprint": "49c81e5dbd08f892ff3a37d9e638cce8988f20e7dba2c8db8abc7ab0da72ebfb",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "swift",
+    "passed": true,
+    "fingerprint": "688a4d9346cf819e8c85e8fd88ba4a6dce15743f0a068c48d6c1ce280ad23295",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "tempest",
+    "passed": true,
+    "fingerprint": "eab04a05cb4c4b900c8f8e56a6a42253c840dbf87252e077d2ec272d6adf14ba",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "timber",
+    "passed": true,
+    "fingerprint": "3804bd808ee9dd40b3bffb7237477ed62b3083aad5e4b2de2448e481dff7ffea",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "vale",
+    "passed": true,
+    "fingerprint": "fad9881d55b86689e04048082039a2d119832128cbb4d9c4fbed3d0ef39f5629",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  },
+  {
+    "id": "wren",
+    "passed": true,
+    "fingerprint": "a3b4062b9c9f0a29260505363efa808dfaaabdea58ca55ca0e147dd05494cc4f",
+    "angles": [
+      0.0,
+      45.0,
+      90.0,
+      180.0
+    ],
+    "warnings": []
+  }
+]

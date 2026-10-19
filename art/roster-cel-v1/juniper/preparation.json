@@ -1,0 +1,17 @@
+{
+  "sourceSha256": "0a42cf90e34bc22fd22cb0d7c37bd40e73a4f3b04d38d51c12f26823ee1ad966",
+  "scale": 0.38116591928251115,
+  "offset": [
+    122,
+    78
+  ],
+  "alphaFloor": 2,
+  "opaqueAlphaCeiling": 250,
+  "paintClassification": {
+    "gMinusR": "max(15,0.22g)",
+    "bMinusR": "max(10,0.20b)",
+    "redBelowMinGB": 0.72
+  },
+  "paintPixels": 611564,
+  "fixturePixels": 337285
+}

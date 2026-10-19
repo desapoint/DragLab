@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "styleReference": "../concepts/juniper-raster-v1/04-strong-outline-preview.png",
+  "basePrompt": "Use case: stylized-concept. Generate ONE new production raster car BODY sprite using the reference image ONLY AS AN APPROVED ART STYLE REFERENCE. Do NOT keep its car shape; draw the different model described below with its own silhouette, windows, panels, lights, body length and overhangs. Strict orthographic SIDE VIEW facing RIGHT, level horizontal axles, no perspective or visible front face. Match the approved strong dark ink silhouette and panel outlines, flat hard-edged 2D cel shading, clean believable real-car proportions, graphic highlights. Teal body paint in three/four flat tones; all painted panels including roof/pillars/hood/doors/bumpers/rockers use saturated teal so they can be masked for recoloring. Glass, lights, indicators, rubber and unpainted trim stay neutral charcoal/gray or realistic lamp colors, distinctly separate from painted panels. Mirrors use dark neutral casing. Crisp bold continuous exterior contour and slightly thinner panel seams, readable at small game scale. Simplify tiny details into clean graphic shapes, no photoreal surface noise or airbrushed gloss. CRITICAL: BODY ONLY. No wheels, tires, rims, hubs, brake discs, calipers or ground shadows. Two natural curved wheel-arch openings are genuinely transparent alpha and open underneath, no black filling or backing. Do not erase the fender around the arches. Wide landscape canvas, entire car visible with at least 3% transparent padding on every edge including roof; no cropping. Truly transparent background. No text, logos, brand badges, frame, extra objects, occupants or detached parts. This is a fictional model, not an exact branded replica. SUBJECT: ",
+  "models": [
+    {
+      "id": "aster",
+      "model": "Aster",
+      "year": 1997,
+      "subject": "A compact late-1990s five-door European estate wagon: squared cargo roof, long rear quarter glass, short hood, slim rectangular tail lamp, practical black bumper inserts. Low slender wagon, not SUV."
+    },
+    {
+      "id": "atlas",
+      "model": "Atlas",
+      "year": 2018,
+      "subject": "A large modern five-door AWD SUV: tall broad body, elevated roof and sills, deep flared wheel arches, high hood, upright short rear, large angular LED headlights, black lower cladding."
+    },
+    {
+      "id": "boreal",
+      "model": "Boreal",
+      "year": 2012,
+      "subject": "A modern midsize performance estate wagon: long low athletic body, gently descending roofline, thin raked rear pillar, sculpted side sills, pointed contemporary headlights, broad rear haunches."
+    },
+    {
+      "id": "cinder",
+      "model": "Cinder",
+      "year": 1992,
+      "subject": "An early-1990s compact two-door sport coupe: slim low wedge nose, long frameless-looking side door, descending fastback rear window, subtle short spoiler lip, slim rectangular headlights and side rubbing strip."
+    },
+    {
+      "id": "sprig",
+      "model": "Sprig",
+      "year": 2015,
+      "subject": "A tiny modern three-door city hatchback: short overall length, tall rounded egg-shaped cabin, very short rear overhang, short stubby hood, compact angular headlamps, large simple side windows. Distinct from the longer reference hatchback."
+    },
+    {
+      "id": "comet",
+      "model": "Comet",
+      "year": 1986,
+      "subject": "A modest 1980s rear-drive four-door Japanese-style compact sedan: angular three-box silhouette, thin pillars, upright rear window, flat trunk and hood, slim unpainted black bumpers, rectangular lamps and side strip."
+    },
+    {
+      "id": "finch",
+      "model": "Finch",
+      "year": 1984,
+      "subject": "A lightweight early-1980s three-door economy hatch: little square body, almost upright rear hatch, thin pillars, simple flat black bumpers, tiny rectangular headlamps, narrow side rubbing strips and small mirror."
+    },
+    {
+      "id": "fjord",
+      "model": "Fjord",
+      "year": 1994,
+      "subject": "A long 1990s Nordic-inspired five-door estate: extremely upright rear cargo hatch, three side window sections, squared long roof, large rectangular tail lamps, long hood, restrained chrome window trim, practical black rubbing strip."
+    },
+    {
+      "id": "kestrel",
+      "model": "Kestrel",
+      "year": 1998,
+      "subject": "A late-1990s turbo rear-drive two-door sports coupe: long low rounded nose, sweeping fastback roof, tiny rear quarter window, short wide tail, strong rear haunches, restrained small rear spoiler and period oval lamps."
+    },
+    {
+      "id": "lark",
+      "model": "Lark",
+      "year": 1989,
+      "subject": "A small lightweight late-1980s two-door rear-drive coupe: very low square wedge, compact angular fastback cabin, flat hood with closed pop-up headlamp outlines, short black bumpers, long doors, tiny triangular rear quarter window."
+    },
+    {
+      "id": "meridian",
+      "model": "Meridian",
+      "year": 2007,
+      "subject": "A refined mid-2000s front-engine two-door grand touring coupe: notably long curved bonnet, cabin set far rearward, graceful arched roof, thick elegant C-pillar, short sculpted trunk, swept slim headlights and discreet chrome window trim."
+    },
+    {
+      "id": "mistral",
+      "model": "Mistral",
+      "year": 1996,
+      "subject": "A mid-1990s front-drive four-door compact sedan: soft rounded three-box body, gently curved hood, generous upright cabin, conventional rear trunk, oval headlamp clusters, slim black protective side moldings."
+    },
+    {
+      "id": "osprey",
+      "model": "Osprey",
+      "year": 2020,
+      "subject": "A sharp modern two-door rear-drive sports coupe: very low broad wedge, muscular bulging rear fender, aggressively swept pointed LED headlamp, compact teardrop cabin and pronounced rising lower side crease, short high tail."
+    },
+    {
+      "id": "piper",
+      "model": "Piper",
+      "year": 2010,
+      "subject": "A small cheerful 2010 five-door hatchback: tall rounded roof, steep short bonnet, forward cabin, compact wheelbase, tiny rear quarter glass, vertically stacked rear lamps and rounded triangular headlights."
+    },
+    {
+      "id": "tempest",
+      "model": "Tempest",
+      "year": 2004,
+      "subject": "An early-2000s AWD rally sports four-door sedan: broad boxy fenders, upright compact cabin, short boot with a prominent raised wing, hood scoop, blunt squared nose, angular rectangular headlamps and black mesh lower bumper."
+    },
+    {
+      "id": "reed",
+      "model": "Reed",
+      "year": 1988,
+      "subject": "A narrow lightweight 1980s compact estate wagon: small squared five-door body, low flat roof extending all the way to an upright rear hatch, simple narrow black bumpers, small square lamps, thin pillars and long rectangular cargo glass. Smaller and slimmer than Fjord."
+    },
+    {
+      "id": "rook",
+      "model": "Rook",
+      "year": 1993,
+      "subject": "An early-1990s three-door hot hatchback: squat short square-ended body, wide sloping C-pillar, straight beltline, a single long door and rear quarter window, square headlights, slim black bumpers and side molding."
+    },
+    {
+      "id": "sable",
+      "model": "Sable",
+      "year": 1983,
+      "subject": "A stately older 1980s rear-drive four-door European sedan: formal tall three-box silhouette, upright thin-pillar glasshouse, long squared bonnet and rear trunk, large rectangular headlamp, slim chrome bumpers and black side strip."
+    },
+    {
+      "id": "solstice",
+      "model": "Solstice",
+      "year": 2021,
+      "subject": "A modern powerful two-seat open-top roadster: visibly open cabin with two seatbacks and a low raked windshield, long sculpted nose, short rounded tail, pronounced curved fenders, small roll hoops, sharp LED headlamps. No roof, no driver."
+    },
+    {
+      "id": "bison",
+      "model": "Bison",
+      "year": 1971,
+      "subject": "A classic early-1970s American V8 two-door muscle fastback: very long broad hood, deeply set compact cabin, flowing fastback rear, strong coke-bottle rear haunch, chrome bumpers, simple round-headlamp housing side detail, deep hood crease."
+    },
+    {
+      "id": "swift",
+      "model": "Swift",
+      "year": 1991,
+      "subject": "A tiny lightweight 1990s two-seat open-top roadster: petite rounded low body, short hood with closed pop-up headlamp panel outlines, simple narrow windshield, two small black seat backs, rounded compact tail and slim black trim. No roof, no driver. Much smaller and softer than Solstice."
+    },
+    {
+      "id": "timber",
+      "model": "Timber",
+      "year": 2002,
+      "subject": "An early-2000s utility four-door double-cab pickup: clearly separate open cargo bed behind the cabin, long chassis and wheelbase, tall square cab, upright windshield, raised boxy hood, heavy black bumpers, visible fuel filler on rear bedside. Long body, not an SUV."
+    },
+    {
+      "id": "vale",
+      "model": "Vale",
+      "year": 2009,
+      "subject": "A sleek late-2000s rear-drive four-door sports sedan: long gently sloping hood, arched cabin and strong thick rear pillar, short raised trunk, curved beltline, restrained chrome window surround and slim swept headlights."
+    },
+    {
+      "id": "wren",
+      "model": "Wren",
+      "year": 2022,
+      "subject": "A distinctive modern compact five-door hatchback: sharply sculpted wedge side profile, rising beltline, angular rear quarter window and black roof spoiler, sharply cut LED lamps, sculpted lower door indentation. Sporty contemporary silhouette unlike the 2001 reference."
+    }
+  ]
+}

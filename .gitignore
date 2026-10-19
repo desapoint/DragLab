@@ -71,6 +71,7 @@ Thumbs.db
 # Packaged / duplicated historical art exports; current source art stays tracked.
 /art/packages/
 /art/revisions/
+/art/roster-cel-v1/review/
 
 # Exploratory failed balance run; retain locally rather than version as acceptance.
 /reports/phases/3g/fresh-career-loss-diagnostic.txt
