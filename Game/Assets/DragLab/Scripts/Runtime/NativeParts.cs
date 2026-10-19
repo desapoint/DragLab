@@ -26,6 +26,8 @@ namespace DragLab.Runtime
         bool renderingPartWindow;
         internal int PartWindowFirst=>partWindowFirst;
         PlayerProfile partsProfile;
+        string partsContextKey;
+        readonly Dictionary<string,NativePartBrowser> partsBrowsers=new Dictionary<string,NativePartBrowser>();
         Vector2 partsReturnScroll;
         NativePartBrowser partsBrowser;
         readonly Dictionary<string,NativePartQuery> partQueries=new Dictionary<string,NativePartQuery>();
@@ -66,7 +68,7 @@ namespace DragLab.Runtime
             var toolbar=new VisualElement{name="partsToolbar"};toolbar.AddToClassList("owned-car-toolbar");partsPage.Add(toolbar);
             partsSearch=new TextField{name="partsSearch",maxLength=128};partsSearch.AddToClassList("setting-text");partsSearch.AddToClassList("owned-car-search");toolbar.Add(partsSearch);partsSearch.RegisterValueChangedCallback(e=>{PartsQuery.Search=e.newValue;ApplyPartQuery();});
             var hint=new Label("Search parts"){pickingMode=PickingMode.Ignore};hint.AddToClassList("owned-search-hint");partsSearch.Add(hint);partsSearch.RegisterCallback<FocusInEvent>(_=>hint.AddToClassList("hidden"));partsSearch.RegisterCallback<FocusOutEvent>(_=>hint.EnableInClassList("hidden",partsSearch.value!=""));partsSearch.RegisterValueChangedCallback(e=>hint.EnableInClassList("hidden",e.newValue!=""));
-            partsFilter=PartButton(toolbar,"partsFilters","Filters",()=>OpenPartFilters());partsFilter.Insert(1,new FilledMenuIcon("Tuning"));partsSort=PartButton(toolbar,"partsSort","Name",OpenPartSort);
+            partsFilter=PartButton(toolbar,"partsFilters","Filters",()=>OpenPartFilters());partsFilter.Insert(1,new FilledMenuIcon("Tuning"));partsSort=PartButton(toolbar,"partsSort","Price",OpenPartSort);
             var clear=PartButton(toolbar,"partsClear","×",()=>{partQueries[game.PartsPage+"/"+partsSection]=new NativePartQuery();partsSearch.SetValueWithoutNotify("");ApplyPartQuery();});clear.AddToClassList("owned-query-clear");
             partsCount=new Label{name="partsCount"};partsCount.AddToClassList("owned-car-count");toolbar.Add(partsCount);
             partsReference=new Label{name="partsReference"};partsReference.AddToClassList("tuning-readout");partsPage.Add(partsReference);
@@ -92,9 +94,10 @@ namespace DragLab.Runtime
             var p=game.Profile;game.PrepareNativeCart();var car=p.SelectedCar;
             root.Q<Label>("partsCarName").text=car==null?"No car":VehicleCollection.DisplayName(p.catalog,car);
             partsCart.Q<Label>().text="Cart · "+game.CartCount;partsCart.SetEnabled(car!=null);
-            string key=p.revision+"/"+car?.instanceId+"/"+game.PartsPage+"/"+partsPlanned+"/"+JsonUtility.ToJson(SharedUnitSettings.Current)+"/"+JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()});
-            if(partsProfile!=p||partsStateKey!=key){partsProfile=p;partsStateKey=key;partsBrowser=new NativePartBrowser(p,game.CartLines,partsPlanned,game.PartsPage,game.NativeUsedPrice,game.NativeSalePrice,partPreviewCache);PartBrowserBuildCount++;RenderPartGrid();if(partsDetailId!=null)OpenPartDetail(partsDetailId,false);}
-            if(partsDetailId==null&&!ModalOpen&&PartComparisonPending){var e=partPending[partPendingIndex++];partsBrowser.Evaluate(e);UpdatePartCard(e);if(!PartComparisonPending)ApplyPartQuery();}
+            string key=p.revision+"/"+car?.instanceId+"/"+partsPlanned+"/"+JsonUtility.ToJson(SharedUnitSettings.Current)+"/"+JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()});
+            if(partsProfile!=p||partsContextKey!=key){partsProfile=p;partsContextKey=key;partsStateKey=null;partsBrowsers.Clear();}
+            if(partsStateKey!=game.PartsPage){partsStateKey=game.PartsPage;if(!partsBrowsers.TryGetValue(game.PartsPage,out partsBrowser)){partsBrowser=new NativePartBrowser(p,game.CartLines,partsPlanned,game.PartsPage,game.NativeUsedPrice,game.NativeSalePrice,partPreviewCache);partsBrowsers[game.PartsPage]=partsBrowser;PartBrowserBuildCount++;}RenderPartGrid();if(partsDetailId!=null)OpenPartDetail(partsDetailId,false);}
+            if(partsDetailId==null&&!ModalOpen&&PartComparisonPending){long start=System.Diagnostics.Stopwatch.GetTimestamp();do{var e=partPending[partPendingIndex++];partsBrowser.Evaluate(e);UpdatePartCard(e);}while(PartComparisonPending&&(System.Diagnostics.Stopwatch.GetTimestamp()-start)*1000.0/System.Diagnostics.Stopwatch.Frequency<3);if(!PartComparisonPending)ApplyPartQuery();else partsCount.text=partPendingIndex+" / "+partPending.Count;}
             if(partsDetailId==null&&!PartComparisonPending)RenderPartWindow();
             partsReference.text=(partsPlanned?"Planned build":"Current build")+(partsBrowser.PlanError==null?"":" · "+partsBrowser.PlanError);
             for(int i=0;i<5;i++)root.Q<Button>("partsTab"+i).EnableInClassList("selected",i==(int)partsSection);
@@ -169,7 +172,7 @@ namespace DragLab.Runtime
         {
             if(partsBrowser==null)return;PartQueryApplyCount++;
             var list=partsBrowser.Entries.Where(e=>NativePartBrowser.Section(e.Definition.category)==partsSection).ToList();
-            partPending=PartsQuery.RequiresChanges?list.Where(e=>!e.Ready&&PartsQuery.Matches(e,game.Profile.cash,false)).ToList():new List<NativePartEntry>();partPendingIndex=0;
+            partPending=PartsQuery.RequiresChanges?list.Where(e=>!e.Ready&&PartsQuery.Matches(e,game.Profile.cash,false)&&!partsBrowser.Restore(e)).ToList():new List<NativePartEntry>();partPendingIndex=0;
             partsGrid.EnableInClassList("hidden",PartComparisonPending);
             if(PartComparisonPending){partsCount.text="… / "+list.Count;partsEmpty.text="Calculating comparison…";partsEmpty.RemoveFromClassList("hidden");return;}
             var matching=list.Where(e=>PartsQuery.Matches(e,game.Profile.cash)).ToList();matching.Sort(PartsQuery.Compare);

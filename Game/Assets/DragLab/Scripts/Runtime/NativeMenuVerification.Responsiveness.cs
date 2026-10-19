@@ -14,9 +14,23 @@ namespace DragLab.Runtime
         IEnumerator ResponsivenessChecks(WindowsKeyboardProbe input)
         {
             if(!shell.Visible)yield return Key(input,0x77);
-            var p=game.Profile;p.cash=1000000;p.reputation=1000;p.revision++;Check(ProfileStore.TrySave(p),"UI audit uses a durable isolated profile");string state=JsonUtility.ToJson(p);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);
+            var p=game.Profile;p.cash=1000000;p.reputation=1000;var headDefinition=p.catalog.Id(p.SelectedCar.vehicleId,PartCategory.HeadIntake,1);var headStock=PartsMarket.Stock(p,p.catalog.Find(headDefinition));headStock.units=Math.Max(2,headStock.units);headStock.initialUnits=Math.Max(headStock.units,headStock.initialUnits);p.revision++;Check(ProfileStore.TrySave(p),"UI audit uses a durable isolated profile with an explicit stocked comparison target");string state=JsonUtility.ToJson(p);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);
             int first=Time.frameCount;yield return Click(input,"navBuild");yield return WaitParts();yield return new WaitForSecondsRealtime(.5f);report.AppendLine("UI segment shop entry frames "+first+"–"+Time.frameCount);
             int builds=shell.PartBrowserBuildCount,queries=shell.PartQueryApplyCount,cards=shell.PartCardBuildCount;yield return new WaitForSecondsRealtime(.5f);Check(builds==shell.PartBrowserBuildCount&&queries==shell.PartQueryApplyCount&&cards==shell.PartCardBuildCount,"Idle shop performs no rebuild, requery or card creation");
+            Check(shell.PartQuery.Sort=="Price"&&!shell.PartQuery.Descending,"Default shop sort is price ascending");
+            var firstCard=shell.Root.Q("partsGrid").Query<Button>(className:"part-card").First();var title=firstCard.Q<Label>(className:"car-card-title");
+            Check(Math.Abs(firstCard.resolvedStyle.paddingTop-8)<.1&&title.resolvedStyle.flexGrow==0,"Part titles use a compact top inset without stretching into spare card height");
+            foreach(string page in new[]{"Installed","Inventory","Shop"}){yield return Click(input,"partsSource:"+page);yield return WaitParts();}
+            int warmed=shell.PartBrowserBuildCount;
+            foreach(string page in new[]{"Installed","Inventory","Shop"}){yield return Click(input,"partsSource:"+page);yield return WaitParts();}
+            Check(shell.PartBrowserBuildCount==warmed,"Warmed source tabs reuse their unchanged browser data");
+            foreach(string metric in new[]{"HP change","Torque change"}){
+                yield return Click(input,"partsSort");yield return PartDialogClick(input,"partSortBy:"+metric);yield return Click(input,"dialogApply");
+                float waiting=Time.realtimeSinceStartup;int frame=Time.frameCount;yield return WaitParts();
+                report.AppendLine("MEASURE: "+metric+" ready seconds="+(Time.realtimeSinceStartup-waiting).ToString("F3")+"; frames="+(Time.frameCount-frame));
+                Check(shell.PartQuery.Sort==metric&&shell.PartBrowserBuildCount==warmed,"Stat sort reuses the same source model: "+metric);
+            }
+            yield return Click(input,"partsClear");yield return WaitParts();Check(shell.PartQuery.Sort=="Price"&&!shell.PartQuery.Descending,"Filter reset restores ascending price with default filters");
             first=Time.frameCount;var search=shell.Root.Q<TextField>("partsSearch");search.value="piston";yield return null;search.value="";yield return null;report.AppendLine("UI segment search frames "+first+"–"+Time.frameCount);
             var offer=shell.PartBrowser.Entries.First(e=>e.Source=="New"&&e.Compatibility=="Compatible"&&e.Definition.category==PartCategory.HeadIntake&&e.Definition.stage==1);var card=PartCard("partCard:"+offer.Id);shell.Root.Q<ScrollView>("partsScroll").ScrollTo(card);yield return new WaitForSecondsRealtime(.1f);
             first=Time.frameCount;yield return Click(input,card);yield return new WaitForSecondsRealtime(.2f);Check(shell.Root.Q("partDetailDyno")!=null,"Part details retain actual dyno and comparison");report.AppendLine("UI segment part details frames "+first+"–"+Time.frameCount);yield return Click(input,"partBack");

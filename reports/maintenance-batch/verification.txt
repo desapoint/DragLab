@@ -10,6 +10,7 @@ PASS city-three replaced full components keep original damage in inventory
 PASS city-three one charge/receipt preserves the independently selected car
 PASS city-three applied tuning, liquids and the other car are unchanged / fluids True / other True
 PASS city-three final ownership validates and original transaction source is unchanged
+PASS city-three quick replacement followed by liquid checkout does not alter dealer inventory or double charge:
 PASS city-three absent stock adds only the shared express price
 PASS city-three manual deselection leaves one exact individual replacement
 PASS city-three failed persistence rolls back cash, stock and every replacement
@@ -27,6 +28,7 @@ PASS juniper-club replaced full components keep original damage in inventory
 PASS juniper-club one charge/receipt preserves the independently selected car
 PASS juniper-club applied tuning, liquids and the other car are unchanged / fluids True / other True
 PASS juniper-club final ownership validates and original transaction source is unchanged
+PASS juniper-club quick replacement followed by liquid checkout does not alter dealer inventory or double charge:
 PASS juniper-club absent stock adds only the shared express price
 PASS juniper-club manual deselection leaves one exact individual replacement
 PASS juniper-club failed persistence rolls back cash, stock and every replacement
@@ -44,6 +46,7 @@ PASS juniper-economy replaced full components keep original damage in inventory
 PASS juniper-economy one charge/receipt preserves the independently selected car
 PASS juniper-economy applied tuning, liquids and the other car are unchanged / fluids True / other True
 PASS juniper-economy final ownership validates and original transaction source is unchanged
+PASS juniper-economy quick replacement followed by liquid checkout does not alter dealer inventory or double charge:
 PASS juniper-economy absent stock adds only the shared express price
 PASS juniper-economy manual deselection leaves one exact individual replacement
 PASS juniper-economy failed persistence rolls back cash, stock and every replacement
@@ -61,6 +64,7 @@ PASS kestrel-track replaced full components keep original damage in inventory
 PASS kestrel-track one charge/receipt preserves the independently selected car
 PASS kestrel-track applied tuning, liquids and the other car are unchanged / fluids True / other True
 PASS kestrel-track final ownership validates and original transaction source is unchanged
+PASS kestrel-track quick replacement followed by liquid checkout does not alter dealer inventory or double charge:
 PASS kestrel-track absent stock adds only the shared express price
 PASS kestrel-track manual deselection leaves one exact individual replacement
 PASS kestrel-track failed persistence rolls back cash, stock and every replacement
@@ -78,6 +82,7 @@ PASS rally-sedan replaced full components keep original damage in inventory
 PASS rally-sedan one charge/receipt preserves the independently selected car
 PASS rally-sedan applied tuning, liquids and the other car are unchanged / fluids True / other True
 PASS rally-sedan final ownership validates and original transaction source is unchanged
+PASS rally-sedan quick replacement followed by liquid checkout does not alter dealer inventory or double charge:
 PASS rally-sedan absent stock adds only the shared express price
 PASS rally-sedan manual deselection leaves one exact individual replacement
 PASS rally-sedan failed persistence rolls back cash, stock and every replacement
@@ -95,6 +100,7 @@ PASS sport-coupe replaced full components keep original damage in inventory
 PASS sport-coupe one charge/receipt preserves the independently selected car
 PASS sport-coupe applied tuning, liquids and the other car are unchanged / fluids True / other True
 PASS sport-coupe final ownership validates and original transaction source is unchanged
+PASS sport-coupe quick replacement followed by liquid checkout does not alter dealer inventory or double charge:
 PASS sport-coupe absent stock adds only the shared express price
 PASS sport-coupe manual deselection leaves one exact individual replacement
 PASS sport-coupe failed persistence rolls back cash, stock and every replacement
@@ -112,6 +118,7 @@ PASS starter-hatch replaced full components keep original damage in inventory
 PASS starter-hatch one charge/receipt preserves the independently selected car
 PASS starter-hatch applied tuning, liquids and the other car are unchanged / fluids True / other True
 PASS starter-hatch final ownership validates and original transaction source is unchanged
+PASS starter-hatch quick replacement followed by liquid checkout does not alter dealer inventory or double charge:
 PASS starter-hatch absent stock adds only the shared express price
 PASS starter-hatch manual deselection leaves one exact individual replacement
 PASS starter-hatch failed persistence rolls back cash, stock and every replacement
@@ -129,6 +136,7 @@ PASS super-v8 replaced full components keep original damage in inventory
 PASS super-v8 one charge/receipt preserves the independently selected car
 PASS super-v8 applied tuning, liquids and the other car are unchanged / fluids True / other True
 PASS super-v8 final ownership validates and original transaction source is unchanged
+PASS super-v8 quick replacement followed by liquid checkout does not alter dealer inventory or double charge:
 PASS super-v8 absent stock adds only the shared express price
 PASS super-v8 manual deselection leaves one exact individual replacement
 PASS super-v8 failed persistence rolls back cash, stock and every replacement
@@ -146,6 +154,7 @@ PASS timber-diesel replaced full components keep original damage in inventory
 PASS timber-diesel one charge/receipt preserves the independently selected car
 PASS timber-diesel applied tuning, liquids and the other car are unchanged / fluids True / other True
 PASS timber-diesel final ownership validates and original transaction source is unchanged
+PASS timber-diesel quick replacement followed by liquid checkout does not alter dealer inventory or double charge:
 PASS timber-diesel absent stock adds only the shared express price
 PASS timber-diesel manual deselection leaves one exact individual replacement
 PASS timber-diesel failed persistence rolls back cash, stock and every replacement
@@ -163,6 +172,7 @@ PASS timber-diesel-tow replaced full components keep original damage in inventor
 PASS timber-diesel-tow one charge/receipt preserves the independently selected car
 PASS timber-diesel-tow applied tuning, liquids and the other car are unchanged / fluids True / other True
 PASS timber-diesel-tow final ownership validates and original transaction source is unchanged
+PASS timber-diesel-tow quick replacement followed by liquid checkout does not alter dealer inventory or double charge:
 PASS timber-diesel-tow absent stock adds only the shared express price
 PASS timber-diesel-tow manual deselection leaves one exact individual replacement
 PASS timber-diesel-tow failed persistence rolls back cash, stock and every replacement
@@ -180,6 +190,7 @@ PASS touring-six replaced full components keep original damage in inventory
 PASS touring-six one charge/receipt preserves the independently selected car
 PASS touring-six applied tuning, liquids and the other car are unchanged / fluids True / other True
 PASS touring-six final ownership validates and original transaction source is unchanged
+PASS touring-six quick replacement followed by liquid checkout does not alter dealer inventory or double charge:
 PASS touring-six absent stock adds only the shared express price
 PASS touring-six manual deselection leaves one exact individual replacement
 PASS touring-six failed persistence rolls back cash, stock and every replacement
@@ -197,6 +208,7 @@ PASS utility-pickup replaced full components keep original damage in inventory
 PASS utility-pickup one charge/receipt preserves the independently selected car
 PASS utility-pickup applied tuning, liquids and the other car are unchanged / fluids True / other True
 PASS utility-pickup final ownership validates and original transaction source is unchanged
+PASS utility-pickup quick replacement followed by liquid checkout does not alter dealer inventory or double charge:
 PASS utility-pickup absent stock adds only the shared express price
 PASS utility-pickup manual deselection leaves one exact individual replacement
 PASS utility-pickup failed persistence rolls back cash, stock and every replacement
@@ -214,9 +226,10 @@ PASS v8-muscle replaced full components keep original damage in inventory
 PASS v8-muscle one charge/receipt preserves the independently selected car
 PASS v8-muscle applied tuning, liquids and the other car are unchanged / fluids True / other True
 PASS v8-muscle final ownership validates and original transaction source is unchanged
+PASS v8-muscle quick replacement followed by liquid checkout does not alter dealer inventory or double charge:
 PASS v8-muscle absent stock adds only the shared express price
 PASS v8-muscle manual deselection leaves one exact individual replacement
 PASS v8-muscle failed persistence rolls back cash, stock and every replacement
 PASS v8-muscle selecting every matching member buys a complete set
 PASS v8-muscle insufficient funds cannot partly replace components
-Checks: 221; failures: 0
+Checks: 234; failures: 0

@@ -10,7 +10,7 @@ namespace DragLab.Runtime
     internal enum NativePartSection { Engine, Induction, Drivetrain, WheelsBrakes, BodyChassis }
     internal sealed class NativePartQuery
     {
-        internal string Search="",Compatibility="Compatible",Availability="All",Condition="All",Tuning="All",Sort="Name",Container="All",BrandFocus="All";
+        internal string Search="",Compatibility="Compatible",Availability="All",Condition="All",Tuning="All",Sort="Price",Container="All",BrandFocus="All";
         internal bool Descending,InStockOnly=true;
         internal HashSet<string> Brands=new HashSet<string>(StringComparer.Ordinal);
         internal HashSet<PartCategory> Categories=new HashSet<PartCategory>();
@@ -100,17 +100,17 @@ namespace DragLab.Runtime
                 foreach(var u in profile.looseEngineElements)Add(u.element.id,u.definitionId,"Owned",null,u,true,SharedInventory.StorageOf(u.storageId),SafePrice(()=>salePrice(u.element.id,true),true));
             }
             if(page=="Shop"){
-                var fitted=new HashSet<string>(referenceMap.Values);var supplyCount=PartsMarket.Counter(profile,actualCar);
+                var fitted=new HashSet<string>(referenceMap.Values);var supplyCount=PartsMarket.Counter(profile,actualCar);var shelf=new PartsMarket.Ledger(profile,profile.inventory.usingCartReservation);
                 foreach(var product in profile.catalog.parts.GroupBy(NewProductKey,StringComparer.Ordinal)){
                     var d=product.OrderBy(p=>fitted.Contains(p.id)?0:p.id.StartsWith(referenceCar.vehicleId+"/",StringComparison.Ordinal)?1:2).ThenBy(p=>p.id,StringComparer.Ordinal).First();
-                    var supply=PartsMarket.Quote(profile,d,supplyCount(d));int available=PartsMarket.Available(profile,d);
+                    var supply=shelf.Quote(d,supplyCount(d),d.price);int available=Math.Max(0,shelf.Available(d)-(profile.inventory.usingCartReservation?CartReservations.Held(profile,d):0));
                     Add("new:"+d.id,d.id,"New",null,null,product.Any(p=>Owns(p.id)),"New",supply.cost);
                     Entries[Entries.Count-1].StockUnits=available;Entries[Entries.Count-1].RequiresExpress=supply.expressUnits>0;
                     Entries[Entries.Count-1].SearchExtra=string.Join(" ",product.Select(p=>p.id));
                 }
                 foreach(var d in profile.inventory.dealer.Where(d=>d.IsPart||d.IsUnit))Add("used:"+d.Id,d.DefinitionId,"Used",d.IsPart?d.part:null,d.IsUnit?d.unit:null,Owns(d.DefinitionId),"Dealer",usedPrice(d));
             }
-            foreach(var entry in Entries){Classify(entry);if(!entry.Ready&&cache!=null&&cache.HasComparisons)cache.Restore(NativePartPreviewCache.Key(referenceKey,entry),entry);}
+            foreach(var entry in Entries)Classify(entry);
         }
         internal static string NewProductKey(PartDefinition definition)
         {
@@ -175,7 +175,7 @@ namespace DragLab.Runtime
                         EngineElementService.RefreshAggregate(pack.condition);
                         e.Position=null;
                     }else{
-                    if(!positions.Contains(e.Position))e.Position=positions[0];var copy=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(reference));copy.catalog=actual.catalog;SharedInventory.Ensure(copy);
+                    if(!positions.Contains(e.Position))e.Position=positions[0];var copy=UnitPreviewProfile();
                     var u=copy.looseEngineElements.Find(i=>i.element.id==e.Unit.element.id);if(u==null){u=new LooseEngineElement{definitionId=d.id,storageId=SharedInventory.Garage,unitPrice=e.Unit.unitPrice,element=e.Unit.element.Copy(),tireUnit=e.Unit.tireUnit,tire=e.Unit.tire?.Copy()};copy.looseEngineElements.Add(u);}
                     InventoryUnits.Install(copy,referenceCar.instanceId,u.element.id,e.Position);candidate=InspectionBuild.Capture(copy,copy.SelectedCar);
                     }
@@ -199,6 +199,12 @@ namespace DragLab.Runtime
                 e.Change[6]=b.radiatorWattsPerC-a.radiatorWattsPerC;
             }catch(Exception error){e.Reason="Performance estimate unavailable: "+error.Message;}
             finally{EvaluationMilliseconds+=clock.Elapsed.TotalMilliseconds;if(cache!=null)cache.Store(key,e);}
+        }
+        internal bool Restore(NativePartEntry e)=>e.Ready||cache!=null&&cache.Restore(NativePartPreviewCache.Key(referenceKey,e),e);
+        PlayerProfile UnitPreviewProfile()
+        {
+            var car=JsonUtility.FromJson<OwnedCar>(JsonUtility.ToJson(referenceCar));var installed=new HashSet<string>(car.installed.slots.Select(s=>s.partInstanceId));
+            return new PlayerProfile{catalog=actual.catalog,selectedOwnedVehicleId=car.instanceId,selectedVehicleId=car.vehicleId,cars=new List<OwnedCar>{car},parts=reference.parts.Where(p=>installed.Contains(p.instanceId)).Select(p=>p.Copy()).ToList(),runCheckpoints=reference.runCheckpoints.ToList(),cash=reference.cash};
         }
     }
     internal static class NativePartReference

@@ -76,12 +76,8 @@ MonoBehaviour:
       - rid: 1231810731384766480
       - rid: 1231810731384766482
       - rid: 1231810731384766484
-      - rid: 1231810731384766485
       - rid: 1231810731384766490
-      - rid: 1231810731384766491
       - rid: 1231810731384766492
-      - rid: 1231810731384766493
-      - rid: 1231810731384766494
       - rid: 1231810731384766497
       - rid: 1231810731384766499
       - rid: 1231810731384766500
@@ -96,21 +92,21 @@ MonoBehaviour:
   m_RenderingLayerNames:
   - Default
   m_ValidRenderingLayers: 0
-  lightLayerName0:
-  lightLayerName1:
-  lightLayerName2:
-  lightLayerName3:
-  lightLayerName4:
-  lightLayerName5:
-  lightLayerName6:
-  lightLayerName7:
+  lightLayerName0: 
+  lightLayerName1: 
+  lightLayerName2: 
+  lightLayerName3: 
+  lightLayerName4: 
+  lightLayerName5: 
+  lightLayerName6: 
+  lightLayerName7: 
   apvScenesData:
     obsoleteSceneBounds:
       m_Keys: []
       m_Values: []
     obsoleteHasProbeVolumes:
       m_Keys: []
-      m_Values:
+      m_Values: 
   references:
     version: 2
     RefIds:
@@ -374,7 +370,7 @@ MonoBehaviour:
         m_version: 0
         m_IncludeReferencedInScenes: 0
         m_IncludeAssetsByLabel: 0
-        m_LabelToInclude:
+        m_LabelToInclude: 
     - rid: 1231810731384766507
       type: {class: RenderGraphGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
       data:

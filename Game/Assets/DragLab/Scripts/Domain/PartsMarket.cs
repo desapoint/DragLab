@@ -169,12 +169,21 @@ namespace DragLab.Domain.Mechanics
             readonly PlayerProfile owner;
             readonly Dictionary<string,NewPartStock> stocks=new Dictionary<string,NewPartStock>(StringComparer.Ordinal);
             readonly Dictionary<NewPartStock,int> remaining=new Dictionary<NewPartStock,int>();
+            Dictionary<string,NewPartStock> products;
             public Ledger(PlayerProfile p,bool includeReserved=false){owner=p;bool reserved=CartReservations.Active(p);foreach(var s in p.inventory.market.parts){remaining[s]=s.units;if(reserved){var d=p.catalog.Find(s.definitions[0]);remaining[s]=Math.Max(0,s.units-CartReservations.Held(p,d,true))+(includeReserved?CartReservations.Held(p,d):0);}foreach(string id in s.definitions)stocks[id]=s;}}
             public SupplyQuote Take(PartDefinition d,int units,int basePrice,int quantity=1,bool consume=false)
             {
-                stocks.TryGetValue(d.id,out var stock);if(stock==null)stock=Stock(owner,d);int available=stock==null?0:remaining[stock];var q=Calculate(available,stock?.deliveryPercent??10,units,basePrice,quantity);
+                var stock=Find(d);int available=stock==null?0:remaining[stock];var q=Calculate(available,stock?.deliveryPercent??10,units,basePrice,quantity);
                 if(stock!=null){remaining[stock]=available-q.localUnits;if(consume)stock.units=remaining[stock];}return q;
             }
+            public SupplyQuote Quote(PartDefinition d,int units,int basePrice,int quantity=1){var stock=Find(d);return Calculate(stock==null?0:remaining[stock],stock?.deliveryPercent??10,units,basePrice,quantity);}
+            NewPartStock Find(PartDefinition d)
+            {
+                if(stocks.TryGetValue(d.id,out var stock))return stock;
+                if(products==null){products=new Dictionary<string,NewPartStock>(StringComparer.Ordinal);foreach(var row in owner.inventory.market.parts)foreach(string id in row.definitions){var definition=owner.catalog.Find(id);if(definition!=null){string key=ProductKey(definition);if(!products.ContainsKey(key))products[key]=row;}}}
+                products.TryGetValue(ProductKey(d),out stock);stocks[d.id]=stock;return stock;
+            }
+            public int Available(PartDefinition d){var stock=Find(d);return stock==null?0:remaining[stock];}
         }
         internal static NewPartStock Stock(PlayerProfile p,PartDefinition d)
         {

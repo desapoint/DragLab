@@ -1448,10 +1448,10 @@ PASS Market refresh invalidates stale quotes before any charge or transfer
 PASS Mixed set/unit cart charges quoted express total once without negative stock
 PASS Equivalent definition aliases share one quantity pool
 PASS Missing saved build quotes express goods
-PASS Saved build uses the game's normalization/commit boundary:
+PASS Saved build uses the game's normalization/commit boundary: 
 PASS Saved build checkout equals combined supply quote
 PASS Same-part maintenance includes delivery and charges once
-Measured quote + atomic transaction mean: 534,6 ms; serialized profile: 4291714 chars
+Measured quote + atomic transaction mean: 570,7 ms; serialized profile: 4291714 chars
 PASS Failed persistence retains stock, cash and asset ownership
 PASS Final market/profile validates
 Checks: 1455; failures: 0

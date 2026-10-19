@@ -24,10 +24,65 @@ namespace DragLab.Runtime
             }
             return checks;
         }
-        public static void UnitPreviews(VehicleDefinition[] vehicles,Action<bool,string> check)
+        public static string BrowserTimings(VehicleDefinition[] vehicles)
+        {
+            var catalog=new MechanicalCatalog(vehicles.Select(v=>v.spec));var p=PlayerProfile.New(1234);
+            MechanicsOwnership.Ensure(p,catalog);p.cash=1000000;p.reputation=1000;
+            var car=vehicles.First(v=>v.spec.id=="starter-hatch");
+            VehicleCollection.Buy(p,catalog,new VehicleOffer{model=car.spec.id,price=1,reputation=0,stock=car.CreateStockTune(),paint="#FFFFFF"});
+            string before=JsonUtility.ToJson(p);var log=new System.Text.StringBuilder();var cache=new NativePartPreviewCache();
+            log.AppendLine("catalogue parts="+catalog.parts.Count+"; stock products="+p.inventory.market.parts.Count);
+            NativePartBrowser Model(string page)=>new NativePartBrowser(p,Array.Empty<PartCartLine>(),false,page,s=>InventoryPricing.BuyUsed(s),(_,u)=>20,cache);
+            var clock=new System.Diagnostics.Stopwatch();NativePartBrowser browser=null;
+            foreach(string page in new[]{"Shop","Installed","Inventory","Shop"}){
+                clock.Restart();var b=Model(page);clock.Stop();log.AppendLine(page+" browser ms="+clock.Elapsed.TotalMilliseconds.ToString("F3",System.Globalization.CultureInfo.InvariantCulture)+"; entries="+b.Entries.Count);if(page=="Shop")browser=b;
+            }
+            var query=new NativePartQuery{Sort="HP change"};var eligible=browser.Entries.Where(e=>NativePartBrowser.Section(e.Definition.category)==NativePartSection.Engine&&query.Matches(e,p.cash,false)).ToArray();
+            var times=new List<double>();clock.Restart();foreach(var e in eligible){long start=System.Diagnostics.Stopwatch.GetTimestamp();browser.Evaluate(e);times.Add((System.Diagnostics.Stopwatch.GetTimestamp()-start)*1000.0/System.Diagnostics.Stopwatch.Frequency);}clock.Stop();
+            times.Sort();log.AppendLine("Engine comparisons="+eligible.Length+"; total ms="+clock.Elapsed.TotalMilliseconds.ToString("F3",System.Globalization.CultureInfo.InvariantCulture)+"; p95 ms="+(times.Count==0?0:times[(int)(times.Count*.95)]).ToString("F3",System.Globalization.CultureInfo.InvariantCulture));
+            clock.Restart();var again=Model("Shop");foreach(var e in again.Entries.Where(e=>NativePartBrowser.Section(e.Definition.category)==NativePartSection.Engine&&query.Matches(e,p.cash,false)))again.Evaluate(e);clock.Stop();
+            log.AppendLine("Repeat model/sort ms="+clock.Elapsed.TotalMilliseconds.ToString("F3",System.Globalization.CultureInfo.InvariantCulture)+"; repeated evaluations="+again.EvaluationCount);
+            if(JsonUtility.ToJson(p)!=before)throw new Exception("Browser profiling mutated player assets/resources/stock");
+            log.AppendLine("PASS: profile assets/resources/stock unchanged");
+            p.inventory.market.parts=p.inventory.market.parts.Take(24).ToList();p.inventory.market.index=null;
+            string sparse=JsonUtility.ToJson(p);clock.Restart();Model("Shop");clock.Stop();
+            log.AppendLine("Sparse-stock browser (24 product rows) ms="+clock.Elapsed.TotalMilliseconds.ToString("F3",System.Globalization.CultureInfo.InvariantCulture));
+            if(JsonUtility.ToJson(p)!=sparse)throw new Exception("Sparse-stock browsing changed stock");
+            return log.ToString();
+        }
+        public static void BrowserRegressions(VehicleDefinition[] vehicles,Action<bool,string> check)
+        {
+            var catalog=new MechanicalCatalog(vehicles.Select(v=>v.spec));var p=PlayerProfile.New(1234);MechanicsOwnership.Ensure(p,catalog);p.cash=1000000;p.reputation=1000;
+            var v=vehicles.First(x=>x.spec.id=="starter-hatch");VehicleCollection.Buy(p,catalog,new VehicleOffer{model=v.spec.id,price=1,stock=v.CreateStockTune(),paint="#FFFFFF"});
+            check(new NativePartQuery().Sort=="Price"&&!new NativePartQuery().Descending,"Parts default to price ascending");
+            var cache=new NativePartPreviewCache();cache.Bind(p,p.SelectedCar);
+            for(int i=0;i<NativePartPreviewCache.ComparisonLimit;i++)cache.Store(i.ToString(),new NativePartEntry{Change=new double?[]{i,null,null,null,null,null,null}});
+            check(cache.Restore("0",new NativePartEntry()),"Old comparison can be touched before eviction");cache.Store("extra",new NativePartEntry());
+            check(cache.Restore("0",new NativePartEntry())&&!cache.Restore("1",new NativePartEntry())&&cache.Restore("2",new NativePartEntry()),"Bounded comparison cache evicts one least-recent entry rather than every comparison");
+            foreach(var category in new[]{PartCategory.Pistons,PartCategory.Tires,PartCategory.Wheels}){
+                var pack=p.componentsPart(category);var d=catalog.Find(pack.definitionId);var member=pack.condition.elements[0].Copy();member.id="preview-regression/"+category;member.health=.71f;
+                var unit=new LooseEngineElement{definitionId=d.id,element=member,tireUnit=category==PartCategory.Tires,tire=category==PartCategory.Tires?pack.condition.tires[0].Copy():null};
+                if(unit.tire!=null){unit.tire.id=member.id;unit.tire.health=.71f;}
+                p.inventory.dealer.Add(new DealerStock{isUnit=true,unit=unit,paidPrice=10});
+                string before=JsonUtility.ToJson(p);var browser=new NativePartBrowser(p,Array.Empty<PartCartLine>(),false,"Shop",s=>InventoryPricing.BuyUsed(s),(_,u)=>10,new NativePartPreviewCache());var e=browser.Entries.Single(x=>x.AssetId==member.id);browser.Evaluate(e);
+                var full=JsonUtility.FromJson<PlayerProfile>(before);full.catalog=catalog;SharedInventory.Ensure(full);
+                full.looseEngineElements.Add(new LooseEngineElement{definitionId=d.id,element=unit.element.Copy(),tireUnit=unit.tireUnit,tire=unit.tire?.Copy()});InventoryUnits.Install(full,full.SelectedCar.instanceId,member.id,e.Position);
+                var expected=NativePartBrowser.Inspect(InspectionBuild.Capture(full,full.SelectedCar));
+                check(e.Proposed!=null&&e.Proposed.peakHp==expected.peakHp&&e.Proposed.peakTorque==expected.peakTorque&&e.Proposed.vehicleMassKg==expected.vehicleMassKg&&e.Proposed.curve.SequenceEqual(expected.curve),"Narrow unit preview equals full-profile installation/dyno: "+category);
+                check(JsonUtility.ToJson(p)==before,"Unit preview retains all real assets, wear, fluids, stock and cash: "+category);
+            }
+            p.inventory.market.parts=p.inventory.market.parts.Take(24).ToList();p.inventory.market.index=null;var shelf=new PartsMarket.Ledger(p);
+            foreach(var d in catalog.parts.Where((d,i)=>i%79==0)){
+                var a=PartsMarket.Quote(p,d,4,false,2);var b=shelf.Quote(d,4,d.price,2);
+                check(a.cost==b.cost&&a.fee==b.fee&&a.localUnits==b.localUnits&&a.expressUnits==b.expressUnits&&shelf.Available(d)==PartsMarket.Available(p,d),"Indexed sparse-stock quote equals authoritative stock/express split: "+d.id);
+            }
+            var stocked=p.inventory.market.parts.First();stocked.units=8;var sample=catalog.Find(stocked.definitions[0]);shelf=new PartsMarket.Ledger(p);
+            int amount=shelf.Quote(sample,4,sample.price).cost;check(shelf.Quote(sample,4,sample.price).cost==amount&&shelf.Available(sample)==8&&stocked.units==8,"Repeated shelf quotes do not consume shared or real inventory");
+        }
+        public static void UnitPreviews(VehicleDefinition[] vehicles,Action<bool,string> check,IEnumerable<VehicleDefinition> targets=null)
         {
             var catalog=new MechanicalCatalog(vehicles.Select(v=>v.spec));
-            foreach(var vehicle in vehicles){
+            foreach(var vehicle in targets??vehicles){
                 var p=PlayerProfile.New(1234);MechanicsOwnership.Ensure(p,catalog);p.cash=1000000;p.reputation=1000;
                 VehicleCollection.Buy(p,catalog,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});
                 foreach(var category in new[]{PartCategory.Pistons,PartCategory.Rods,PartCategory.PistonRings,PartCategory.Bearings,PartCategory.Valves,PartCategory.ValveSprings,PartCategory.ValveSeals,PartCategory.SparkPlugs,PartCategory.GlowPlugs}){
@@ -60,9 +115,9 @@ namespace DragLab.Runtime
                 }
             }
         }
-        public static void Run(VehicleDefinition[] vehicles, Action<bool,string> check)
+        public static void Run(VehicleDefinition[] vehicles, Action<bool,string> check,IEnumerable<VehicleDefinition> targets=null)
         {
-            foreach(var vehicle in vehicles){var p=PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);MechanicsOwnership.Ensure(p,new MechanicalCatalog(vehicles.Select(v=>v.spec)));p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,p.catalog,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});var car=p.SelectedCar;var cache=new NativePartPreviewCache();
+            foreach(var vehicle in targets??vehicles){var p=PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);MechanicsOwnership.Ensure(p,new MechanicalCatalog(vehicles.Select(v=>v.spec)));p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,p.catalog,new VehicleOffer{model=vehicle.spec.id,price=1,reputation=0,stock=vehicle.CreateStockTune(),paint="#FFFFFF"});var car=p.SelectedCar;var cache=new NativePartPreviewCache();
                 var countSupply=PartsMarket.Counter(p,car);foreach(var sample in p.catalog.parts.Where(d=>p.catalog.Fits(p.catalog.Spec(car.vehicleId),d)).GroupBy(d=>d.category+"/"+d.fuelDelivery).Select(g=>g.First()))check(countSupply(sample)==InventoryUnits.Count(p,car,sample),"Fast shelf quantity agrees with authoritative incoming topology: "+vehicle.spec.id+" / "+sample.category+" / "+sample.fuelDelivery);
                 NativePartBrowser Model()=>new NativePartBrowser(p,Array.Empty<PartCartLine>(),false,"Shop",_=>100,(_,u)=>100,cache);
                 var a=Model();

@@ -322,10 +322,10 @@
 .parts-sources { width: 420px; margin-bottom: 12px; flex-shrink: 0; }
 .parts-tabs { margin-bottom: 4px; flex-shrink: 0; min-height: 42px; }
 .parts-tabs .category-button { min-width: 0; padding: 0 14px; }
-.part-card { height: 230px; min-height: 230px; }
+.part-card { height: 230px; min-height: 230px; padding-top: 8px; justify-content: flex-start; }
 .part-card-specifications { flex-direction: row; flex-wrap: wrap; height: 44px; flex-shrink: 0; }
 .part-card-specifications .part-card-fact { width: 49%; margin-right: 1%; }
-.part-card .car-card-title { height: 48px; min-height: 48px; flex-shrink: 0; overflow: hidden; }
+.part-card .car-card-title { height: 48px; min-height: 48px; flex-grow: 0; flex-shrink: 0; overflow: hidden; }
 .part-card .part-card-fact, .part-card .car-condition { height: 20px; margin: 1px 0; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .parts-page .car-details-heading, .parts-page .tuning-readout { flex-shrink: 0; }
 .part-card-fact { font-size: 17px; margin: 2px 0; white-space: normal; }

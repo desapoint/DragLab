@@ -9,6 +9,24 @@ namespace DragLab.Editor
 {
     public static class NativeShopCacheVerification
     {
+        public static void BrowserTimings()
+        {
+            string label=Environment.GetEnvironmentVariable("DRAGLAB_SHOP_TIMING_LABEL")??"after";
+            if(label!="before"&&label!="after")throw new ArgumentException("Timing label must be before or after");
+            string dir=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/shop-responsive-20261019"));Directory.CreateDirectory(dir);
+            string result=NativeShopDomainChecks.BrowserTimings(Resources.LoadAll<VehicleDefinition>("Data/Vehicles"));
+            File.WriteAllText(Path.Combine(dir,label+"-timings.txt"),result,new UTF8Encoding(false));Debug.Log(result);
+        }
+        public static void Responsiveness()
+        {
+            var vehicles=Resources.LoadAll<VehicleDefinition>("Data/Vehicles");int n=0;var log=new StringBuilder();
+            void Check(bool ok,string label){if(!ok)throw new InvalidOperationException(label);n++;log.AppendLine("PASS: "+label);if(n%100==0)Debug.Log("Shop regression progress: "+n);}
+            var targets=System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Where(vehicles,v=>v.spec.id=="starter-hatch"||v.spec.id=="rally-sedan"||v.spec.id=="v8-muscle"||v.spec.id=="timber-diesel"));
+            NativeShopDomainChecks.BrowserRegressions(vehicles,Check);NativeShopDomainChecks.Run(vehicles,Check,targets);
+            NativeShopDomainChecks.UnitPreviews(vehicles,Check,targets);
+            string dir=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/shop-responsive-20261019"));Directory.CreateDirectory(dir);
+            log.AppendLine("PASS: "+n+" shop regression checks");File.WriteAllText(Path.Combine(dir,"domain-verification.txt"),log.ToString(),new UTF8Encoding(false));Debug.Log("Shop regression checks: "+n);
+        }
         public static void CardWindows()
         {
             int checks=NativeShopDomainChecks.CardWindows();

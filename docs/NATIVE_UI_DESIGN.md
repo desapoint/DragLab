@@ -1,5 +1,7 @@
 # Native interface direction — grey/red and Settings first
 
+Part browsing refinement (2026-10-19): default/reset sort is Price ascending, together with Compatible + In stock. Cache calculations/source data while resetting navigation, filters, scroll and individual-position drafts on main-menu entry. Part card titles keep the shared font/two-line allowance, an 8-point top inset and no flex growth; preserve existing card height and virtual row extent. [Performance checkpoint](../reports/shop-responsive-20261019/CHANGES.md).
+
 Fitted tire/rim corners (2026-10-18): the shared owned/dealership fitted-parts dialog resolves each corner from its retained physical member, including actual specification, remaining tire life and failure reason. The set heading uses the current common specification or Mixed tires / Mixed wheels, never the original container name after replacements. Keep component groups, shared Shop action and inspection disclosure gating. [Checkpoint](../reports/fitted-corners-20261018/CHANGES.md).
 
 Pedal direction (2026-10-18): use the original clean metal-frame/dark-rubber look with broad brake/clutch pads, a narrow accelerator, rounded corners, subtle taper and shaded grooves. Fix each heel to the floor; the top moves down and away on increased press, with perspective and eased visual travel. Remove overhead arms and the white/red pressed strip. Keep the existing fixed touch rectangles, feathering and independent input. This supersedes the previous upper-hinge/irregular-profile art. [Checkpoint](../reports/floor-pedals-20261018/CHANGES.md).

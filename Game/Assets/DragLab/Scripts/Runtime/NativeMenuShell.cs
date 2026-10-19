@@ -177,6 +177,7 @@ namespace DragLab.Runtime
             else if(route=="Parts"){
                 cartPageOpen=enginePageOpen=engineMarketOpen=false;cartPageRequestedOwner=null;engineDetailId=engineReferenceId=null;engineSearch="";engineViewKey=null;engineCollapsed.Clear();
                 game.SelectPartsPage("Shop");partsSection=NativePartSection.Engine;partsPlanned=false;partsDetailId=null;partsStateKey=null;partQueries.Clear();
+                foreach(var browser in partsBrowsers.Values)foreach(var entry in browser.Entries){if(entry.Unit==null)continue;entry.Position=null;entry.Ready=false;entry.Proposed=null;entry.Change=new double?[7];}
                 partDetailCollapsed.Clear();partDetailDifferences.Clear();cartStatGroups.Clear();cartStatDifferences.Clear();
                 partsScroll.scrollOffset=partsReturnScroll=Vector2.zero;partsNotice.text="";
             }
