@@ -15,6 +15,33 @@ namespace DragLab.Infrastructure
         static readonly Dictionary<string,Cached> cache=new Dictionary<string,Cached>(StringComparer.Ordinal);
         static readonly object cacheGate=new object();
         static readonly HashSet<string> split=new HashSet<string>{"cars","engines","parts","looseEngineElements","savedSetups","runCheckpoints","economyReceipts","careerRuns","careerWins","listings","dealer","storage","lines","supply","elements","tires","slots"};
+        // Market stock is transient, reseeded together as one inventory epoch.
+        // Keep it bounded in deterministic chunks instead of storing thousands
+        // of generated member/element identities as separate SQLite rows.
+        // Owned hardware, wear, cart holds and garage ownership remain split.
+        static readonly Dictionary<string,int> marketChunkSizes=new Dictionary<string,int>(StringComparer.Ordinal){
+            {"$/inventory/market/parts",128},
+            {"$/inventory/market/engines",2},
+            {"$/inventory/dealer",8},
+            {"$/vehicleStock/listings",2}
+        };
+        internal static bool MarketChunkPath(string path)=>marketChunkSizes.ContainsKey(path);
+        static string CaptureMarketChunks(string json,string path,List<Row> rows,int chunkSize)
+        {
+            // Preserve the original JsonUtility payload bytes verbatim. Splitting
+            // does not alter offer IDs, part/member state, prices or RNG.
+            var items=Items(json);int chunk=0;
+            for(int index=0;index<items.Length;index+=chunkSize)
+            {
+                var payload=new StringBuilder("[");
+                int end=Math.Min(index+chunkSize,items.Length);
+                for(int i=index;i<end;i++){if(i>index)payload.Append(',');payload.Append(items[i]);}
+                payload.Append(']');
+                rows.Add(new Row{path=path,key="chunk:"+chunk,order=chunk,json=payload.ToString()});
+                chunk++;
+            }
+            return "{\"$draglabRows\":"+Quote(path)+"}";
+        }
         internal static string Quote(string text){if(text==null)return "null";var b=new StringBuilder("\"");foreach(char c in text){switch(c){case '\"':b.Append("\\\"");break;case '\\':b.Append("\\\\");break;case '\n':b.Append("\\n");break;case '\r':b.Append("\\r");break;case '\t':b.Append("\\t");break;default:if(c<32)b.Append("\\u"+((int)c).ToString("x4"));else b.Append(c);break;}}return b.Append('\"').ToString();}
         static string Segment(string text)=>Uri.EscapeDataString(text);
         static int End(string text,int start){bool quoted=false,escape=false;int depth=0;for(int i=start;i<text.Length;i++){char c=text[i];if(quoted){if(escape)escape=false;else if(c=='\\')escape=true;else if(c=='\"')quoted=false;}else if(c=='\"')quoted=true;else if(c=='{'||c=='[')depth++;else if(c=='}'||c==']'){if(depth==0)return i;depth--;}else if(c==','&&depth==0)return i;}return text.Length;}
@@ -39,13 +66,25 @@ namespace DragLab.Infrastructure
         }
         static string CaptureUncached(string json,string path,string field,List<Row> rows)
         {
+            if(json.StartsWith("[")&&marketChunkSizes.TryGetValue(path,out int chunkSize))
+                return CaptureMarketChunks(json,path,rows,chunkSize);
             if(json.StartsWith("[")&&split.Contains(field)){int order=0;foreach(string item in Items(json)){string key=Key(item,order);rows.Add(new Row{path=path,key=key,order=order++,json=CaptureValue(item,path+"/"+Segment(key),"",rows)});}return "{\"$draglabRows\":"+Quote(path)+"}";}
             if(json.StartsWith("{"))return "{"+string.Join(",",Fields(json).Select(f=>Quote(f.Key)+":"+CaptureValue(f.Value,path+"/"+Segment(f.Key),f.Key,rows)))+"}";return json;
         }
         internal static string Restore(IEnumerable<Row> source)
         {
             var rows=source.GroupBy(r=>r.path).ToDictionary(g=>g.Key,g=>g.OrderBy(r=>r.order).ToArray(),StringComparer.Ordinal);
-            string Value(string json,int depth){if(depth>80)throw new System.IO.InvalidDataException("Database state nesting exceeds the supported bound.");if(!json.StartsWith("{"))return json;var fields=Fields(json);if(fields.Count==1&&fields[0].Key=="$draglabRows"){string path=Unquote(fields[0].Value);return "["+(rows.TryGetValue(path,out var items)?string.Join(",",items.Select(r=>Value(r.json,depth+1))):"")+"]";}return "{"+string.Join(",",fields.Select(f=>Quote(f.Key)+":"+Value(f.Value,depth+1)))+"}";}
+            string Value(string json,int depth){if(depth>80)throw new System.IO.InvalidDataException("Database state nesting exceeds the supported bound.");if(!json.StartsWith("{"))return json;var fields=Fields(json);if(fields.Count==1&&fields[0].Key=="$draglabRows"){string path=Unquote(fields[0].Value);return "["+(rows.TryGetValue(path,out var items)?string.Join(",",items.Select(r=>{
+                // An older database contains regular row:/id: records at these
+                // paths. A newly saved database contains complete JSON-array
+                // chunks. Both restore the exact same logical profile.
+                if(r.key.StartsWith("chunk:",StringComparison.Ordinal)&&MarketChunkPath(path)){
+                    if(r.json.Length<2||r.json[0]!='['||r.json[r.json.Length-1]!=']')
+                        throw new System.IO.InvalidDataException("Invalid market stock chunk.");
+                    return r.json.Substring(1,r.json.Length-2);
+                }
+                return Value(r.json,depth+1);
+            })):"")+"]";}return "{"+string.Join(",",fields.Select(f=>Quote(f.Key)+":"+Value(f.Value,depth+1)))+"}";}
             if(!rows.TryGetValue("$",out var root))throw new System.IO.InvalidDataException("Missing database profile root.");return "{"+string.Join(",",root.Select(r=>Quote(r.key)+":"+Value(r.json,0)))+"}";
         }
     }

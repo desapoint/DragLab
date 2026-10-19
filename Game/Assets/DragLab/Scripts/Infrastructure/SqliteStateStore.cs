@@ -120,6 +120,8 @@ namespace DragLab.Infrastructure
                 if(snapshot.rows==null)snapshot.rows=StateRows.CaptureJson(snapshot.json);
                 SaveMeasured(snapshot,"record projection",ref timing);
                 snapshot.trace?.Value("projected state records",snapshot.rows.Count);
+                if(snapshot.trace!=null)
+                    snapshot.trace.Value("market chunk records",snapshot.rows.Count(row=>StateRows.MarketChunkPath(row.path)));
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 using(var db=Open(path))
                 {
@@ -141,13 +143,13 @@ namespace DragLab.Infrastructure
                         AtomicText(path+".reset-intent",generation.ToString(CultureInfo.InvariantCulture)+"|"+oldCommit.ToString(CultureInfo.InvariantCulture));
                         FailureInjection?.Invoke("after-reset-intent");
                     }
-                    int changed=0,removed=0,inserted=0,updated=0,unchanged=0;
+                    int changed=0,removed=0,inserted=0,updated=0,unchanged=0,marketChanged=0;
                     try
                     {
                         long rowAndOwnershipStart=Stamp();
                         using(var remove=db.Prepare("DELETE FROM state_records WHERE collection=? AND record_key=?"))
                             foreach(var old in before.Values.Where(r=>!after.ContainsKey(r.Id)))
-                            {remove.Execute(old.path,old.key);changed++;removed++;}
+                            {remove.Execute(old.path,old.key);changed++;removed++;if(StateRows.MarketChunkPath(old.path))marketChanged++;}
                         using(var upsert=db.Prepare("INSERT INTO state_records(collection,record_key,ordinal,payload) VALUES(?,?,?,?) ON CONFLICT(collection,record_key) DO UPDATE SET ordinal=excluded.ordinal,payload=excluded.payload"))
                             foreach(var row in snapshot.rows)
                             {
@@ -160,6 +162,7 @@ namespace DragLab.Infrastructure
                                 else inserted++;
                                 upsert.Execute(row.path,row.key,row.order,row.json);
                                 changed++;
+                                if(StateRows.MarketChunkPath(row.path))marketChanged++;
                             }
                         SaveMeasured(snapshot,"state row delta SQL",ref timing);
                         snapshot.trace?.Value("changed state records",changed);
@@ -167,6 +170,7 @@ namespace DragLab.Infrastructure
                         snapshot.trace?.Value("updated state records",updated);
                         snapshot.trace?.Value("removed state records",removed);
                         snapshot.trace?.Value("unchanged state records",unchanged);
+                        snapshot.trace?.Value("changed market chunk records",marketChanged);
                         Sync(db,"owners",new[]{"id","kind","definition_id"},snapshot.owners,1);
                         Sync(db,"components",new[]{"id","definition_id","owner_id","location"},snapshot.components,1);
                         Sync(db,"installed_slots",new[]{"owner_id","slot","part_id"},snapshot.slots,2);

@@ -120,6 +120,8 @@ namespace DragLab.Runtime
                         saveStages.ContainsKey("durable commit")&&
                         saveStages.ContainsKey("entire save worker")&&
                         saveStages.ContainsKey("changed state records")&&
+                        saveStages.ContainsKey("market chunk records")&&
+                        saveStages.ContainsKey("changed market chunk records")&&
                         saveStages.ContainsKey("previous state records")&&
                         saveStages.ContainsKey("projected state records")&&
                         saveStages.ContainsKey("inserted state records")&&
@@ -134,6 +136,11 @@ namespace DragLab.Runtime
                         saveStages["changed state records"]==
                             saveStages["removed state records"]+saveStages["inserted state records"]+saveStages["updated state records"],
                         "Market baseline "+scenario+" SQLite delta counts exactly reconcile without hidden writes");
+                    if(scenario=="paid third")
+                        Check(saveStages["market chunk records"]>0&&
+                            saveStages["projected state records"]<15348&&
+                            saveStages["changed state records"]<17735,
+                            "Third-race market chunks reduce SQLite record projection and changed-row churn below F.3 baseline");
                     Check(wall.ContainsKey("finish-to-commit total")&&wall.ContainsKey("save task and completion"),
                         "Market baseline "+scenario+" captured the full finish and save timings");
                 }

@@ -11,11 +11,58 @@ namespace DragLab.Infrastructure
     public static class SqliteStateVerification
     {
 #if UNITY_EDITOR
+        // Simulates a complete authored-profile JSON projection. These tests
+        // operate on the exact raw JSON bytes, not a model equality shortcut.
+        static void MarketChunkRegression(Action<bool,string> check)
+        {
+            string Stock(int i)=>"{\"definitions\":[\"model/part/"+i+"\"],\"units\":"+i+",\"initialUnits\":"+i+",\"deliveryPercent\":5,\"discovered\":true}";
+            string Seller(int i)=>"{\"isUnit\":false,\"part\":{\"instanceId\":\"dealer:"+i+"\",\"condition\":{\"elements\":[{\"role\":\"ring\",\"health\":0.75},{\"role\":\"ring\",\"health\":0.5}]}}}";
+            string Engine(int i)=>"{\"id\":\"engine:"+i+"\",\"parts\":[{\"instanceId\":\"engine-part:"+i+"\",\"condition\":{\"elements\":[{\"health\":0.625}]}}]}";
+            string Listing(int i)=>"{\"listingId\":\"listing:"+i+"\",\"parts\":[{\"instanceId\":\"vehicle-part:"+i+"\",\"condition\":{\"elements\":[{\"health\":0.25}]}}]}";
+            string parts=string.Join(",",Enumerable.Range(0,257).Select(Stock));
+            string dealer=string.Join(",",Enumerable.Range(0,17).Select(Seller));
+            string engines=string.Join(",",Enumerable.Range(0,5).Select(Engine));
+            string listings=string.Join(",",Enumerable.Range(0,7).Select(Listing));
+            const string owned="{\"instanceId\":\"owned-part\",\"condition\":{\"elements\":[{\"role\":\"piston\",\"health\":0.4}]}}";
+            string json="{\"inventory\":{\"market\":{\"parts\":["+parts+"],\"engines\":["+engines+"]},\"dealer\":["+dealer+"],\"cart\":{\"supply\":[{\"definitionId\":\"model/part/0\",\"units\":3}]}},\"vehicleStock\":{\"listings\":["+listings+"]},\"parts\":["+owned+"]}";
+            // Test projections at both ends of the same deterministic chunk
+            // boundary and keep full physical-member records on the owned path.
+            var captured=StateRows.CaptureJson(json);
+            check(StateRows.Restore(captured)==json,"Market chunk projection roundtrips exact serialized stock, seller identities, engine/vehicle offers and owned wear");
+            check(captured.Count(r=>r.path=="$/inventory/market/parts")==3&&
+                captured.Count(r=>r.path=="$/inventory/dealer")==3&&
+                captured.Count(r=>r.path=="$/inventory/market/engines")==3&&
+                captured.Count(r=>r.path=="$/vehicleStock/listings")==4,
+                "Market record projection uses stable bounded 128/8/2/2 chunks");
+            check(captured.Any(r=>r.path.StartsWith("$/parts/",StringComparison.Ordinal)&&
+                                     r.path.EndsWith("/condition/elements",StringComparison.Ordinal))&&
+                captured.Any(r=>r.path=="$/inventory/cart/supply"),
+                "Owned part wear and cart supply remain independently addressable");
+            int marketRows=captured.Count(r=>StateRows.MarketChunkPath(r.path));
+            check(marketRows==13&&marketRows<257+17+5+7,
+                "Generated stock no longer expands nested seller/engine/vehicle members into thousands of records");
+            string changed=json.Replace("\"units\":0","\"units\":99");
+            var updated=StateRows.CaptureJson(changed);
+            int differences=captured.Count(r=>!updated.Any(other=>other.Id==r.Id&&other.json==r.json));
+            check(differences==1&&StateRows.Restore(updated)==changed,
+                "Changing one market stock entry updates only its containing stable chunk");
+            // Old databases store individual rows under the same array marker.
+            // Rehydrate that format without requiring an on-disk migration.
+            const string legacy="{\"inventory\":{\"market\":{\"parts\":[{\"units\":7},{\"units\":9}]}}}";
+            var oldRows=new[]{
+                new StateRows.Row{path="$",key="inventory",order=0,json="{\"market\":{\"parts\":{\"$draglabRows\":\"$/inventory/market/parts\"}}}"},
+                new StateRows.Row{path="$/inventory/market/parts",key="row:0",order=0,json="{\"units\":7}"},
+                new StateRows.Row{path="$/inventory/market/parts",key="row:1",order=1,json="{\"units\":9}"}
+            };
+            check(StateRows.Restore(oldRows)==legacy,
+                "Historical individually addressed market records still restore without changing SQLite schema");
+        }
         public static void Run(string folder,VehicleDefinition[] vehicles,Action<bool,string> check,Action<string> note,int limit=0)
         {
             string oldPath=ProfileStore.VerificationPath,oldAudio=SharedAudioSettings.VerificationPath,oldUnits=SharedUnitSettings.VerificationPath;
             var catalog=new MechanicalCatalog(vehicles.Select(v=>v.spec));Directory.CreateDirectory(folder);
             try{
+                MarketChunkRegression(check);
                 check(SqliteNative.Version=="3.54.0","Pinned native SQLite runtime loads");
                 foreach(var vehicle in vehicles.Take(limit==0?vehicles.Length:limit)){
                     string directory=Path.Combine(folder,vehicle.spec.id);Directory.CreateDirectory(directory);ProfileStore.VerificationPath=Path.Combine(directory,"save-slot-1.sqlite3");SharedAudioSettings.VerificationPath=Path.Combine(directory,"audio-settings.json");SharedUnitSettings.VerificationPath=Path.Combine(directory,"unit-settings.json");
