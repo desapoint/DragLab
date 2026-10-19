@@ -1,0 +1,55 @@
+PASS: starter-hatch / Assisted / delay 0,2: both physically finish / gear 4 / rpm 5557,28260873593 / stalled False / engine failed False / distance 402,336
+PASS: starter-hatch / Assisted / delay 0,2: manually delayed engagement is included in reaction time
+PASS: starter-hatch / Assisted / delay 0,2: totals match independent green-to-finish observations
+PASS: starter-hatch / Assisted / delay 0,2: winner uses total, including manual reaction delay
+PASS: starter-hatch / Assisted / delay 5,2: both physically finish / gear 4 / rpm 5557,57161663781 / stalled False / engine failed False / distance 402,336
+PASS: starter-hatch / Assisted / delay 5,2: manually delayed engagement is included in reaction time
+PASS: starter-hatch / Assisted / delay 5,2: totals match independent green-to-finish observations
+PASS: starter-hatch / Assisted / delay 5,2: winner uses total, including manual reaction delay
+PASS: starter-hatch / Assisted / delay 5,2: five-second late start loses against the same healthy car
+PASS: starter-hatch / Manual / delay 0,2: both physically finish / gear 4 / rpm 5432,03330032284 / stalled False / engine failed False / distance 402,336
+PASS: starter-hatch / Manual / delay 0,2: manually delayed engagement is included in reaction time
+PASS: starter-hatch / Manual / delay 0,2: totals match independent green-to-finish observations
+PASS: starter-hatch / Manual / delay 0,2: winner uses total, including manual reaction delay
+PASS: starter-hatch / Manual / delay 5,2: both physically finish / gear 4 / rpm 5432,08582515847 / stalled False / engine failed False / distance 402,336
+PASS: starter-hatch / Manual / delay 5,2: manually delayed engagement is included in reaction time
+PASS: starter-hatch / Manual / delay 5,2: totals match independent green-to-finish observations
+PASS: starter-hatch / Manual / delay 5,2: winner uses total, including manual reaction delay
+PASS: starter-hatch / Manual / delay 5,2: five-second late start loses against the same healthy car
+PASS: v8-muscle / Assisted / delay 0,2: both physically finish / gear 4 / rpm 4771,0583932657 / stalled False / engine failed False / distance 408,355994816977
+PASS: v8-muscle / Assisted / delay 0,2: manually delayed engagement is included in reaction time
+PASS: v8-muscle / Assisted / delay 0,2: totals match independent green-to-finish observations
+PASS: v8-muscle / Assisted / delay 0,2: winner uses total, including manual reaction delay
+PASS: v8-muscle / Assisted / delay 5,2: both physically finish / gear 4 / rpm 4812,73914943031 / stalled False / engine failed False / distance 402,336
+PASS: v8-muscle / Assisted / delay 5,2: manually delayed engagement is included in reaction time
+PASS: v8-muscle / Assisted / delay 5,2: totals match independent green-to-finish observations
+PASS: v8-muscle / Assisted / delay 5,2: winner uses total, including manual reaction delay
+PASS: v8-muscle / Assisted / delay 5,2: five-second late start loses against the same healthy car
+PASS: v8-muscle / Manual / delay 0,2: both physically finish / gear 4 / rpm 4744,23844332805 / stalled False / engine failed False / distance 402,336
+PASS: v8-muscle / Manual / delay 0,2: manually delayed engagement is included in reaction time
+PASS: v8-muscle / Manual / delay 0,2: totals match independent green-to-finish observations
+PASS: v8-muscle / Manual / delay 0,2: winner uses total, including manual reaction delay
+PASS: v8-muscle / Manual / delay 5,2: both physically finish / gear 4 / rpm 4744,45153760771 / stalled False / engine failed False / distance 402,336
+PASS: v8-muscle / Manual / delay 5,2: manually delayed engagement is included in reaction time
+PASS: v8-muscle / Manual / delay 5,2: totals match independent green-to-finish observations
+PASS: v8-muscle / Manual / delay 5,2: winner uses total, including manual reaction delay
+PASS: v8-muscle / Manual / delay 5,2: five-second late start loses against the same healthy car
+PASS: super-v8 / Assisted / delay 0,2: both physically finish / gear 4 / rpm 5419,12112568051 / stalled False / engine failed False / distance 402,336
+PASS: super-v8 / Assisted / delay 0,2: manually delayed engagement is included in reaction time
+PASS: super-v8 / Assisted / delay 0,2: totals match independent green-to-finish observations
+PASS: super-v8 / Assisted / delay 0,2: winner uses total, including manual reaction delay
+PASS: super-v8 / Assisted / delay 5,2: both physically finish / gear 4 / rpm 5419,09384759765 / stalled False / engine failed False / distance 402,336
+PASS: super-v8 / Assisted / delay 5,2: manually delayed engagement is included in reaction time
+PASS: super-v8 / Assisted / delay 5,2: totals match independent green-to-finish observations
+PASS: super-v8 / Assisted / delay 5,2: winner uses total, including manual reaction delay
+PASS: super-v8 / Assisted / delay 5,2: five-second late start loses against the same healthy car
+PASS: super-v8 / Manual / delay 0,2: both physically finish / gear 4 / rpm 5419,12112568051 / stalled False / engine failed False / distance 402,336
+PASS: super-v8 / Manual / delay 0,2: manually delayed engagement is included in reaction time
+PASS: super-v8 / Manual / delay 0,2: totals match independent green-to-finish observations
+PASS: super-v8 / Manual / delay 0,2: winner uses total, including manual reaction delay
+PASS: super-v8 / Manual / delay 5,2: both physically finish / gear 4 / rpm 5419,09384759765 / stalled False / engine failed False / distance 402,336
+PASS: super-v8 / Manual / delay 5,2: manually delayed engagement is included in reaction time
+PASS: super-v8 / Manual / delay 5,2: totals match independent green-to-finish observations
+PASS: super-v8 / Manual / delay 5,2: winner uses total, including manual reaction delay
+PASS: super-v8 / Manual / delay 5,2: five-second late start loses against the same healthy car
+Checks: 54 / failures: 0

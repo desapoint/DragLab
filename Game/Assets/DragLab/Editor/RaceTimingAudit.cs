@@ -12,6 +12,36 @@ namespace DragLab.Editor
 {
     public static class RaceTimingAudit
     {
+        public static void ManualStarts()
+        {
+            int checks=0;var log=new StringBuilder();var rows=new StringBuilder("model,launch,requested_delay,player_rt,player_et,player_total,rival_total,won\n");
+            void Check(bool ok,string text){checks++;if(!ok)throw new InvalidOperationException(text);log.AppendLine("PASS: "+text);}
+            foreach(string id in new[]{"starter-hatch","v8-muscle","super-v8"})foreach(bool clutch in new[]{false,true})foreach(double delay in new[]{.2,5.2}) {
+                var v=Resources.LoadAll<VehicleDefinition>("Data/Vehicles").Single(d=>d.spec.id==id);
+                var driver=new DriverSettings{launch=clutch?LaunchMode.Manual:LaunchMode.Assisted,shifting=clutch?ShiftMode.ManualClutch:ShiftMode.Sequential,throttleAssist=false,clutchAssist=false,wearMode=WearMode.None,fuelUsage=FuelUsageMode.None,optimalThermals=true};
+                var rival=driver.Copy();rival.launch=LaunchMode.Automatic;rival.shifting=ShiftMode.Automatic;rival.reactionSeconds=.2;
+                var race=RaceSessionFactory.Create(v.spec,v.CreateStockTune(),driver,v.spec,v.CreateStockTune(),rival,402.336);
+                double playerCross=-1,rivalCross=-1;string name=id+" / "+driver.launch+" / delay "+delay;
+                for(int tick=0;tick<120*95&&race.phase!=RacePhase.Finished;tick++) {
+                    var s=race.player.state;double green=race.time-RaceSimulation.GreenAt;
+                    bool launch=!s.launched&&green>=delay,shift=s.launched&&s.speed>1&&s.clutch<.2&&s.clutchSlipRpm<250&&s.rpm>=race.player.ShiftPoint(s.gear)&&s.shiftRemaining<=0&&s.gear<race.player.spec.gears.Length;
+                    var input=new DriverInput{launch=launch,shiftUp=shift,throttle=green>=delay-.5?1:0};
+                    if(clutch)input.clutch=!s.launched||shift||s.shiftRemaining>0?1:Math.Max(0,1-(green-s.launchTime)/.3);
+                    if(shift||s.shiftRemaining>0)input.throttle=0;
+                    bool a=s.finished,b=race.opponent.state.finished;race.Step(input);
+                    if(!a&&s.finished)playerCross=race.time-RaceSimulation.GreenAt;
+                    if(!b&&race.opponent.state.finished)rivalCross=race.time-RaceSimulation.GreenAt;
+                }
+                Check(race.player.state.finished&&race.opponent.state.finished,name+": both physically finish / gear "+race.player.state.gear+" / rpm "+race.player.state.rpm+" / stalled "+race.player.state.stalled+" / engine failed "+race.player.state.engineFailed+" / distance "+race.player.state.distance);
+                double total=race.player.state.reaction+race.player.state.elapsed,other=race.opponent.state.reaction+race.opponent.state.elapsed;
+                Check(Math.Abs(race.player.state.reaction-delay)<=DragMath.FixedStep*2,name+": manually delayed engagement is included in reaction time");
+                Check(Math.Abs(playerCross-total)<=DragMath.FixedStep+.000001&&Math.Abs(rivalCross-other)<=DragMath.FixedStep+.000001,name+": totals match independent green-to-finish observations");
+                Check(race.playerWon==(total<other),name+": winner uses total, including manual reaction delay");
+                if(delay>5)Check(!race.playerWon&&playerCross>rivalCross,name+": five-second late start loses against the same healthy car");
+                rows.AppendLine(string.Join(",",id,driver.launch,delay.ToString("F3",CultureInfo.InvariantCulture),race.player.state.reaction.ToString("F3",CultureInfo.InvariantCulture),race.player.state.elapsed.ToString("F3",CultureInfo.InvariantCulture),total.ToString("F3",CultureInfo.InvariantCulture),other.ToString("F3",CultureInfo.InvariantCulture),race.playerWon));
+            }
+            Directory.CreateDirectory("../reports/race-timing-audit");log.AppendLine("Checks: "+checks+" / failures: 0");File.WriteAllText("../reports/race-timing-audit/manual-verification.txt",log.ToString(),new UTF8Encoding(false));File.WriteAllText("../reports/race-timing-audit/manual-matrix.csv",rows.ToString(),new UTF8Encoding(false));Debug.Log("Manual race starts: "+checks+" passed.");
+        }
         public static void Run()
         {
             int checks=0;var log=new StringBuilder();var csv=new StringBuilder("case,seed,delay,player_rt,player_et,rival_rt,rival_et,total_gap,won\n");

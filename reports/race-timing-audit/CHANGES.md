@@ -23,3 +23,9 @@ The raster Race HUD run exposed a real 293.590 ms paid stock-refresh step; the f
 Windows development build passed. Real-player Results checks: 52 passed, including failed-save recovery, current totals/margin, exact telemetry export, a fresh retry and cleared board lanes. Real-player early-exit checks: 59 passed, including exits/retries before the rival finish, one durable payout/checkpoint, retained dashboard and 1024/1280/1920 layouts. Both runs had zero runtime errors. Inspected the actual slip capture; the shared scroll area accommodates the additional timing rows.
 
 Local player evidence: `reports/player-fixtures/race-timing-results-20261018-a` and `race-timing-exit-20261018-a`. These focused gates do not replace the separate failing full finish-pacing gate described above.
+
+## Manual-launch follow-up
+
+The user suspected ET-only wins, then accepted the reaction-inclusive total convention. Twelve additional runs exercise Assisted/Sequential and Manual/ManualClutch launches on the hatch, 5.0 V8 and supercharged V8, with 0.2/5.2-second requested delays. All 54 checks pass: the delay is present in reaction, totals match the independently observed green-to-finish clock, and every five-second late start loses against the same healthy rival. Source and existing Android/Windows runtime are unchanged by this Editor-only follow-up.
+
+The initial manual test controller requested upshifts by engine RPM while the launch clutch was still open, causing a legitimate failed launch. Corrected the controller to require speed, a released clutch and synchronized clutch RPM before requesting the next gear. No game stall/shift behavior was weakened to make the fixture finish.

@@ -1,0 +1,13 @@
+model,launch,requested_delay,player_rt,player_et,player_total,rival_total,won
+starter-hatch,Assisted,0.200,0.217,16.964,17.180,17.173,False
+starter-hatch,Assisted,5.200,5.208,16.962,22.170,17.173,False
+starter-hatch,Manual,0.200,0.217,17.888,18.105,17.173,False
+starter-hatch,Manual,5.200,5.208,17.888,23.096,17.173,False
+v8-muscle,Assisted,0.200,0.217,14.475,14.691,14.819,True
+v8-muscle,Assisted,5.200,5.208,14.474,19.682,14.819,False
+v8-muscle,Manual,0.200,0.217,14.895,15.111,14.819,False
+v8-muscle,Manual,5.200,5.208,14.886,20.094,14.819,False
+super-v8,Assisted,0.200,0.217,13.391,13.608,13.467,False
+super-v8,Assisted,5.200,5.208,13.391,18.600,13.467,False
+super-v8,Manual,0.200,0.217,13.391,13.608,13.467,False
+super-v8,Manual,5.200,5.208,13.391,18.600,13.467,False
