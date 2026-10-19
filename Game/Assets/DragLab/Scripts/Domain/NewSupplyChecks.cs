@@ -141,7 +141,7 @@ namespace DragLab.Domain.Mechanics
             }).ToList();
             uint sequentialSeed=991u,batchSeed=991u,sequentialQuantity=992u,batchQuantity=992u;
             var directPool=NewPartSupply.PrepareDeliveryPool(sequential);
-            var workerPool=NewPartSupply.PrepareDeliveryPool(batched,_=>{});
+            var workerPool=NewPartSupply.PrepareDeliveryPool(batched,(stage,milliseconds)=>{});
             for(int i=0;i<44;i++)NewPartSupply.Deliver(directPool,Array.Empty<SupplyWear.Need>(),ref sequentialSeed,ref sequentialQuantity);
             NewPartSupply.DeliverBatch(workerPool,Array.Empty<SupplyWear.Need>(),44,ref batchSeed,ref batchQuantity,null);
             check(sequentialSeed==batchSeed&&sequentialQuantity==batchQuantity&&
