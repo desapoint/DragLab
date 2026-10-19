@@ -1,0 +1,4 @@
+car_id,rate,numeric_buffer_bytes,sample_managed_allocation_bytes,fill_managed_allocation_bytes,desktop_ms_per_2_audio_seconds
+StarterHatch,48000,718128,0,0,6.4225
+RallySedan,48000,718128,0,0,6.4806
+V8Muscle,48000,718128,0,0,7.9181

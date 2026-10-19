@@ -1,0 +1,12 @@
+PASS: three current-source/core-only pairs, identical captured input frames.
+PASS: finite bounded samples, exact repeatability, private-seed variation and callback-boundary invariance.
+PASS: zero managed allocation in warmed core Sample and candidate Fill.
+PASS: 3000 RPM firing rate, balanced per-cylinder events, disabled-cylinder and cut suppression.
+PASS: installed exhaust changes and exhaust-pop events affect all three candidates.
+PASS: turbo and release layers affect the Tempest candidate.
+PASS: matched pair playback levels and unclipped WAVs.
+PASS: production source/asset checksums unchanged.
+Listening acceptance and physical Android performance are pending.
+PASS: final WAV duration/rate/mono, matched RMS and peak checks.
+PASS: individual failed-cylinder response and Python syntax.
+PASS: final C review WAVs byte-identical to B after additional hardware tests.
