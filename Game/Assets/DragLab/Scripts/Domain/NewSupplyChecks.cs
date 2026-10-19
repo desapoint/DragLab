@@ -13,6 +13,19 @@ namespace DragLab.Domain.Mechanics
             DragLab.Infrastructure.SqliteStateStore.Write(path,DragLab.Infrastructure.SqliteStateStore.Capture(p));
         }
         static NewPartSupply.Product Product(PartCategory category,int maximum=1,bool individual=false)=>new NewPartSupply.Product{definition=new PartDefinition{id="fixture/"+category,category=category},stock=new NewPartStock(),maximum=maximum,individual=individual};
+        // Frozen pre-optimization selector: compare both the exact chosen identity and
+        // final RNG state, not just category distribution or statistical frequencies.
+        static NewPartSupply.Product LegacyPickCategory(List<NewPartSupply.Product> pool,NewPartSupply.Branch branch,ref uint random)
+        {
+            if(pool.Count==0)return null;if(pool.Count==1)return pool[0];
+            if(branch.children==null)return pool[(int)(NewPartSupply.Next(ref random)*pool.Count)];
+            var filters=branch.children.Select<NewPartSupply.Branch,Func<NewPartSupply.Product,bool>>(b=>b.Accepts).ToArray();
+            var weights=branch.children.Select(b=>b.weight).ToArray();
+            var selected=NewPartSupply.Filter(pool,filters,weights,ref random);
+            if(selected.Count==0)return null;
+            var child=branch.children.First(b=>b.weight>0&&b.Accepts(selected[0]));
+            return LegacyPickCategory(selected,child,ref random);
+        }
         public static void Rules(Action<bool,string> check)
         {
             foreach(var point in new[]{(0.0,.4),(.1f,.4),(.10001,.3),(.25,.3),(.25001,.2),(.5,.2),(.50001,.1),(.6f,.1),(.60001,0.0),(1.0,0.0)})check(SupplyWear.Base(point.Item1,false)==point.Item2,"Exact wear base boundary "+point.Item1);
@@ -43,14 +56,51 @@ namespace DragLab.Domain.Mechanics
             var only=NewPartSupply.PickCategory(new List<NewPartSupply.Product>{single},NewPartSupply.Categories,ref random);check(only==single,"Deep empty family/category branches prune to sole valid product");
             var custom=new NewPartSupply.Branch{name="fixture",weight=1,children=new[]{new NewPartSupply.Branch{name="dead",weight=99,children=new[]{new NewPartSupply.Branch{name="disabled",weight=0,filter=p=>true}}},new NewPartSupply.Branch{name="live",weight=1,filter=p=>true}}};
             check(!custom.children[0].Accepts(single)&&NewPartSupply.PickCategory(new List<NewPartSupply.Product>{single,kit},custom,ref random)!=null,"Downstream-disabled branches cannot receive original parent weight");
+            void CompareCategoryRng(List<NewPartSupply.Product> pool,string label){
+                uint optimized=0x74bc319du,legacy=optimized;bool identical=true;
+                for(int i=0;i<256;i++){
+                    var chosen=NewPartSupply.PickCategory(pool,NewPartSupply.Categories,ref optimized);
+                    var expected=LegacyPickCategory(pool,NewPartSupply.Categories,ref legacy);
+                    if(!ReferenceEquals(chosen,expected)||optimized!=legacy){identical=false;break;}
+                }
+                check(identical,"Optimized category selection preserves 256 seeded choices/RNG positions: "+label);
+            }
+            CompareCategoryRng(all,"all categories");
+            CompareCategoryRng(all.Where(p=>p.definition.category!=PartCategory.Tires&&p.definition.category!=PartCategory.Induction).ToList(),"filtered families");
+            // Compare a frozen eligible pool against the historical scan on every
+            // opportunity, including stock discovery changes between opportunities.
+            var originalPool=all.Select((p,i)=>new NewPartSupply.Product{
+                definition=p.definition,maximum=i%9==0?0:2,owned=i%2==0,
+                stock=new NewPartStock{discovered=i%5==0,units=i%5==0?2:0,initialUnits=i%5==0?2:0}
+            }).ToList();
+            var preparedPool=originalPool.Select(p=>new NewPartSupply.Product{
+                definition=p.definition,maximum=p.maximum,owned=p.owned,
+                stock=new NewPartStock{discovered=p.stock.discovered,units=p.stock.units,initialUnits=p.stock.initialUnits}
+            }).ToList();
+            var prepared=NewPartSupply.PrepareDeliveryPool(preparedPool);
+            uint oldSelection=0xa148ed3fu,fastSelection=oldSelection,oldQuantity=0xc7124baeu,fastQuantity=oldQuantity;
+            bool sameSupply=true;
+            for(int i=0;i<44;i++){
+                int a=NewPartSupply.Deliver(originalPool,Array.Empty<SupplyWear.Need>(),ref oldSelection,ref oldQuantity);
+                int b=NewPartSupply.Deliver(prepared,Array.Empty<SupplyWear.Need>(),ref fastSelection,ref fastQuantity);
+                if(a!=b||oldSelection!=fastSelection||oldQuantity!=fastQuantity||
+                   originalPool.Where((p,j)=>p.stock.units!=preparedPool[j].stock.units||
+                       p.stock.initialUnits!=preparedPool[j].stock.initialUnits||
+                       p.stock.discovered!=preparedPool[j].stock.discovered).Any()){
+                    sameSupply=false;break;
+                }
+            }
+            check(sameSupply,"Prepared eligible pool preserves all 44 seeded deliveries and evolving stock");
             var categories=new int[8];const int samples=12000;random=1901;
             for(int n=0;n<samples;n++){var selected=NewPartSupply.PickCategory(all,NewPartSupply.Categories,ref random);categories[Array.FindIndex(NewPartSupply.Categories.children,b=>b.Accepts(selected))]++;}
             double total=rootWeights.Sum();
             for(int i=0;i<8;i++)check(Math.Abs(categories[i]/(double)samples-rootWeights[i]/total)<.025,"Seeded root distribution follows category weight, not catalogue size: "+NewPartSupply.Categories.children[i].name);
             var tireKeys=new[]{"OEM","Touring","StreetSemiSlick","EnduranceRadial","ProRadial","SlickMedium","SlickSoft","QualifyingSlick"};var tires=tireKeys.Select(key=>{var p=Product(PartCategory.Tires);p.definition.id="fixture/Tires/"+key;p.definition.stage=key=="OEM"?0:1;return p;}).ToList();
+            CompareCategoryRng(tires,"tire families");
             int street=0,radial=0,slick=0;for(int n=0;n<samples;n++){string family=NewPartSupply.TireFamily(NewPartSupply.PickCategory(tires,NewPartSupply.Categories,ref random).definition);if(Array.IndexOf(tireKeys,family)<3)street++;else if(Array.IndexOf(tireKeys,family)<5)radial++;else slick++;}
             check(Math.Abs(street/(double)samples-.2)<.025&&Math.Abs(radial/(double)samples-.3)<.025&&Math.Abs(slick/(double)samples-.5)<.025,"Pruned root retains nested tire-family 20/30/50 weights");
             var induction=Enum.GetValues(typeof(EngineUpgradeInduction)).Cast<EngineUpgradeInduction>().Select(kind=>{var p=Product(PartCategory.Induction);p.definition.induction=kind;return p;}).ToList();var counts=new int[6];
+            CompareCategoryRng(induction,"induction branches");
             for(int n=0;n<samples;n++)counts[(int)NewPartSupply.PickCategory(induction,NewPartSupply.Categories,ref random).definition.induction]++;
             check(Math.Abs(counts[(int)EngineUpgradeInduction.Factory]/(double)samples-.1)<.02&&Math.Abs((counts[(int)EngineUpgradeInduction.Turbo]+counts[(int)EngineUpgradeInduction.TwinTurbo]+counts[(int)EngineUpgradeInduction.Twincharged])/(double)samples-.65)<.025,"Nested induction families retain 65/25/10 weights");
             foreach(var kind in new[]{EngineUpgradeInduction.Turbo,EngineUpgradeInduction.TwinTurbo,EngineUpgradeInduction.Twincharged})check(Math.Abs(counts[(int)kind]/(double)samples-.65/3)<.025,"Turbo subtypes are equally weighted: "+kind);

@@ -67,10 +67,31 @@ namespace DragLab.Domain.Mechanics
         {
             if(pool.Count==0)return null;if(pool.Count==1)return pool[0];
             if(branch.children==null)return pool[(int)(Next(ref random)*pool.Count)];
-            var filters=branch.children.Select<Branch,Func<Product,bool>>(b=>b.Accepts).ToArray();var weights=branch.children.Select(b=>b.weight).ToArray();
-            var selected=Filter(pool,filters,weights,ref random);if(selected.Count==0)return null;
-            // Select the unique branch that accepted this disjoint category pool.
-            var child=branch.children.First(b=>b.weight>0&&b.Accepts(selected[0]));return PickCategory(selected,child,ref random);
+            // Partition once, in the original product order. This replaces one LINQ scan
+            // and temporary list per child without changing the weighted RNG stream.
+            var children=branch.children;
+            var groups=new List<Product>[children.Length];
+            foreach(var product in pool){
+                for(int i=0;i<children.Length;i++){
+                    if(!children[i].Accepts(product))continue;
+                    if(groups[i]==null)groups[i]=new List<Product>();
+                    groups[i].Add(product);
+                }
+            }
+            var weights=new double[children.Length];
+            int first=-1,valid=0;
+            for(int i=0;i<children.Length;i++){
+                if(groups[i]==null||children[i].weight<=0)continue;
+                weights[i]=children[i].weight;
+                if(first<0)first=i;
+                valid++;
+            }
+            if(first<0)return null;
+            int pick=valid==1?first:Roll(weights,Next(ref random));
+            var selected=groups[pick];
+            // Preserve the original first-accepting-child rule even for overlapping fixtures.
+            var child=children.First(b=>b.weight>0&&b.Accepts(selected[0]));
+            return PickCategory(selected,child,ref random);
         }
         internal static double DiscoveryProbability(int unknown,int total)=>unknown==0||total==0?0:Math.Max(.1,unknown/(double)total);
         internal static int Quantity(Product p,bool first,double mode,double quantity)
@@ -88,12 +109,32 @@ namespace DragLab.Domain.Mechanics
             measure(stage,(end-stamp)*1000.0/System.Diagnostics.Stopwatch.Frequency);
             stamp=System.Diagnostics.Stopwatch.GetTimestamp();
         }
-        internal static int Deliver(List<Product> all,SupplyWear.Need[] needs,ref uint selection,ref uint quantity)
+        // The regular 24-44 opportunities use one immutable eligible membership snapshot.
+        // Stock counts/discovery change during delivery, but category and max-set fit do not.
+        internal sealed class DeliveryPool
+        {
+            internal readonly List<Product> eligible;
+            internal DeliveryPool(List<Product> eligibleProducts){eligible=eligibleProducts;}
+        }
+        internal static DeliveryPool PrepareDeliveryPool(List<Product> all)
         {
             var measure=PartsMarket.Measurement;
             long stamp=measure==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
-            // Deliverability is determined before every weighted decision, not by retrying empty branches.
-            var pool=all.Where(p=>p.maximum>0&&Categories.Accepts(p)).ToList();
+            var prepared=new DeliveryPool(all.Where(p=>p.maximum>0&&Categories.Accepts(p)).ToList());
+            Sample(measure,"delivery/pool preparation",ref stamp);
+            return prepared;
+        }
+        internal static int Deliver(List<Product> all,SupplyWear.Need[] needs,ref uint selection,ref uint quantity)
+            =>DeliverCore(all,false,needs,ref selection,ref quantity);
+        internal static int Deliver(DeliveryPool prepared,SupplyWear.Need[] needs,ref uint selection,ref uint quantity)
+            =>DeliverCore(prepared.eligible,true,needs,ref selection,ref quantity);
+        static int DeliverCore(List<Product> all,bool alreadyEligible,SupplyWear.Need[] needs,ref uint selection,ref uint quantity)
+        {
+            var measure=PartsMarket.Measurement;
+            long stamp=measure==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
+            // Exact same eligibility predicate as the uncached entry path; only the
+            // regular refresh reuses the result across its own delivery opportunities.
+            var pool=alreadyEligible?all:all.Where(p=>p.maximum>0&&Categories.Accepts(p)).ToList();
             Sample(measure,"delivery/eligible pool",ref stamp);
             if(pool.Count==0)return 0;
             if(pool.Count>1)pool=Filter(pool,new Func<Product,bool>[] {p=>p.owned,p=>!p.owned},new[]{.76,.24},ref selection);

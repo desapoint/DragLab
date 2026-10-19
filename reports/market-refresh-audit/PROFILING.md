@@ -22,3 +22,11 @@ The NewSupplyVerify action also compares staged versus synchronous seeded market
 ### Interpretation
 
 The previous `Measured new supply opportunities` span can include iterator yields and is not equivalent to CPU-only readings during live gameplay. The new wear/ and delivery/ figures are scoped CPU measurements. The sum of delivery stage totals does not include wear-preparation or Unity vehicle-market generation; benchmark differences may reflect cache warmth and fixture profile. No Unity or player build was executed by this remote instrumentation change. Re-run locally to obtain actual new numbers.
+
+### Optimized delivery checkpoint
+
+The regular refresh now prepares its immutable eligible product pool once, rather than rescanning all products on each of the 24-44 seeded opportunities. Direct isolated `Deliver(List<Product>,...)` calls retain their original semantics. Category picking now partitions each candidate subset in one ordered scan instead of repeating one LINQ scan per branch. It preserves the original valid-weight mask, same one-branch/no-RNG shortcut, weighted `Roll`, first-accepting-child handling, and product order.
+
+`NewSupplyVerify` additionally compares optimized selection against the frozen legacy selector for four category scenarios, checks exact RNG positions over 256 rolls each, and compares 44 old-scan versus cached-pool deliveries including changing discovery/stock. Existing authored supply/used-stock/staged-synchronous gates remain mandatory. The report includes the one-time `delivery/pool preparation` cost; compare its value plus `delivery/eligible pool` with the original eligible-scan total. This does **not** remove one iterator advance per Unity frame, so it targets CPU cost/hitches rather than the entire results-screen wall-time delay.
+
+Static review: no Unity player/Editor available to this remote commit. Run `./tools/Invoke-Unity.ps1 -Action NewSupplyVerify` and `./tools/Invoke-Unity.ps1 -Action PartsMarketVerify` after pulling.

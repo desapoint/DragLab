@@ -136,9 +136,10 @@ namespace DragLab.Domain.Mechanics
                 Measurement("wear/preparation slowest MoveNext",wearMaxStepTicks*1000.0/System.Diagnostics.Stopwatch.Frequency);
             }
             var needs=worn.ToArray();var supply=products.ToList();
+            var deliveryPool=NewPartSupply.PrepareDeliveryPool(supply);
             uint supplySelection=Stream(state,0x91e10da5u),supplyQuantity=Stream(state,0x27d4eb2fu);
             NewPartSupply.Next(ref supplySelection); // The first selection-stream roll already chose the opportunity budget.
-            for(int n=0;n<newCount;n++){NewPartSupply.Deliver(supply,needs,ref supplySelection,ref supplyQuantity);yield return "parts/new supply";}
+            for(int n=0;n<newCount;n++){NewPartSupply.Deliver(deliveryPool,needs,ref supplySelection,ref supplyQuantity);yield return "parts/new supply";}
             // Retain the separate difficulty guarantee without changing the used/engine streams.
             uint guarantee=Stream(state,0xa24baed5u),guaranteeQuantity=Stream(state,0x9fb21c65u);
             var guaranteed=products.Where(product=>product.definition.reputationRequired==0&&targets.Any(spec=>p.catalog.Fits(spec,product.definition))).ToArray();
