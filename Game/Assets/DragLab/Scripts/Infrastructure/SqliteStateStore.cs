@@ -14,7 +14,18 @@ namespace DragLab.Infrastructure
     {
         internal const int SchemaVersion=2,ApplicationId=0x444C4142;
         internal sealed class Migration {public int version;public string name,sql,hash;}
-        internal sealed class Snapshot {public List<StateRows.Row> rows;public List<string[]> owners,components,slots;public long revision,expectedCommit,committed;public string build,content,physics,saveVersion,json;}
+        internal sealed class SaveTrace
+        {
+            // Writer-owned until Task completion. Observers are replayed on
+            // Unity's main thread, never invoked by a SQLite writer.
+            internal readonly List<KeyValuePair<string,double>> stages=
+                new List<KeyValuePair<string,double>>();
+            internal void Value(string name,double value)=>stages.Add(
+                new KeyValuePair<string,double>(name,value));
+            internal void Elapsed(string name,long start)
+                =>Value(name,(Stamp()-start)*1000.0/System.Diagnostics.Stopwatch.Frequency);
+        }
+        internal sealed class Snapshot {public List<StateRows.Row> rows;public List<string[]> owners,components,slots;public long revision,expectedCommit,committed;public string build,content,physics,saveVersion,json;public SaveTrace trace;}
         static readonly object gate=new object();
         static Migration[] migrations;
         static string cachedPath;static long cachedCommit=-1;static Dictionary<string,StateRows.Row> cachedRows;
@@ -24,6 +35,14 @@ namespace DragLab.Infrastructure
         internal static Action<string,double> Measurement;
         static long Stamp()=>System.Diagnostics.Stopwatch.GetTimestamp();
         static void Measured(string phase,ref long start){Measurement?.Invoke(phase,(Stamp()-start)*1000.0/System.Diagnostics.Stopwatch.Frequency);start=Stamp();}
+        static void SaveMeasured(Snapshot snapshot,string phase,ref long start)
+        {
+            long end=Stamp();
+            double milliseconds=(end-start)*1000.0/System.Diagnostics.Stopwatch.Frequency;
+            snapshot.trace?.Value(phase,milliseconds);
+            Measurement?.Invoke(phase,milliseconds);
+            start=Stamp();
+        }
         internal static void Prepare()
         {
             if(migrations!=null)return;
@@ -55,12 +74,27 @@ namespace DragLab.Infrastructure
         {
             Prepare();return CaptureManaged(profile,Application.version);
         }
-        internal static Snapshot CaptureManaged(PlayerProfile profile,string build)
+        internal static Snapshot CaptureManaged(PlayerProfile profile,string build,SaveTrace trace=null)
         {
-            return new Snapshot{json=JsonUtility.ToJson(profile),revision=profile.revision,expectedCommit=profile.storageCommit,build=build,content=MechanicalCatalog.Version.ToString(CultureInfo.InvariantCulture),physics=MechanicsSchema.Model,saveVersion=profile.saveVersion.ToString(CultureInfo.InvariantCulture),
+            long capture=trace==null?0:Stamp();
+            string json=JsonUtility.ToJson(profile);
+            if(trace!=null){
+                trace.Elapsed("profile serialization",capture);
+                trace.Value("profile JSON characters",json.Length);
+                trace.Value("profile JSON UTF8 bytes",Encoding.UTF8.GetByteCount(json));
+            }
+            long relationships=trace==null?0:Stamp();
+            var result=new Snapshot{json=json,revision=profile.revision,expectedCommit=profile.storageCommit,build=build,content=MechanicalCatalog.Version.ToString(CultureInfo.InvariantCulture),physics=MechanicsSchema.Model,saveVersion=profile.saveVersion.ToString(CultureInfo.InvariantCulture),trace=trace,
                 owners=profile.cars.Select(c=>new[]{c.instanceId,"car",c.vehicleId}).Concat(profile.engines.Select(e=>new[]{e.instanceId,"engine",e.vehicleDefinitionId})).ToList(),
                 components=profile.parts.Select(p=>new[]{p.instanceId,p.definitionId,string.IsNullOrEmpty(p.ownerId)?null:p.ownerId,((int)p.location).ToString(CultureInfo.InvariantCulture)}).ToList(),
                 slots=profile.cars.SelectMany(c=>c.installed.slots.Select(s=>new[]{c.instanceId,s.slot,s.partInstanceId})).Concat(profile.engines.SelectMany(e=>e.slots.Select(s=>new[]{e.instanceId,s.slot,s.partInstanceId}))).ToList()};
+            if(trace!=null){
+                trace.Elapsed("relationship projection",relationships);
+                trace.Value("owner records",result.owners.Count);
+                trace.Value("component records",result.components.Count);
+                trace.Value("slot records",result.slots.Count);
+            }
+            return result;
         }
         internal static void Invalidate(){lock(gate){cachedPath=null;cachedRows=null;cachedCommit=-1;}}
         static string Digest(IEnumerable<StateRows.Row> rows){var sum=new byte[32];using(var sha=SHA256.Create())foreach(var row in rows){if(row.digest==null)row.digest=sha.ComputeHash(Encoding.UTF8.GetBytes(row.Id+"\n"+row.order+"\n"+row.json));for(int i=0;i<sum.Length;i++)sum[i]^=row.digest[i];}return Convert.ToBase64String(sum);}
@@ -78,24 +112,111 @@ namespace DragLab.Infrastructure
         internal static string ExportJson(string path){string json=Read(path);return DrivingPreferences.AddToJson(json,Path.Combine(Path.GetDirectoryName(path),"driving-settings.json"));}
         internal static void Write(string path,Snapshot snapshot,bool reset=false)
         {
-            lock(gate){long timing=Stamp();if(snapshot.rows==null)snapshot.rows=StateRows.CaptureJson(snapshot.json);Measured("record projection",ref timing);Directory.CreateDirectory(Path.GetDirectoryName(path));using(var db=Open(path)){
-                Measured("open + schema checks",ref timing);db.Exec("BEGIN IMMEDIATE");long oldCommit=long.Parse(Meta(db,"commit_id")??"0",CultureInfo.InvariantCulture);if(snapshot.expectedCommit!=oldCommit||cachedPath==path&&cachedCommit>=0&&cachedCommit!=oldCommit)throw new InvalidOperationException("Save changed in another writer; reload before saving.");
-                long savedRevision=long.Parse(Meta(db,"ledger_revision")??"-1",CultureInfo.InvariantCulture);if(snapshot.revision<savedRevision)throw new InvalidOperationException("Stale ledger revision cannot overwrite a newer save.");
-                var before=cachedPath==path&&cachedRows!=null?cachedRows:Rows(db);var after=snapshot.rows.ToDictionary(r=>r.Id,StringComparer.Ordinal);long generation=long.Parse(Meta(db,"reset_generation")??"0",CultureInfo.InvariantCulture);
-                Measured("delta index",ref timing);
-                if(reset){generation++;AtomicText(path+".reset-intent",generation.ToString(CultureInfo.InvariantCulture)+"|"+oldCommit.ToString(CultureInfo.InvariantCulture));FailureInjection?.Invoke("after-reset-intent");}
-                int changed=0;try{
-                    using(var remove=db.Prepare("DELETE FROM state_records WHERE collection=? AND record_key=?"))foreach(var old in before.Values.Where(r=>!after.ContainsKey(r.Id))){remove.Execute(old.path,old.key);changed++;}
-                    using(var upsert=db.Prepare("INSERT INTO state_records(collection,record_key,ordinal,payload) VALUES(?,?,?,?) ON CONFLICT(collection,record_key) DO UPDATE SET ordinal=excluded.ordinal,payload=excluded.payload"))foreach(var row in snapshot.rows){if(before.TryGetValue(row.Id,out var old)&&old.json==row.json&&old.order==row.order){row.digest=old.digest;continue;}upsert.Execute(row.path,row.key,row.order,row.json);changed++;}
-                    Sync(db,"owners",new[]{"id","kind","definition_id"},snapshot.owners,1);Sync(db,"components",new[]{"id","definition_id","owner_id","location"},snapshot.components,1);Sync(db,"installed_slots",new[]{"owner_id","slot","part_id"},snapshot.slots,2);
-                    Measured("row and ownership delta SQL",ref timing);SetMeta(db,"digest_algorithm","xor-sha256-rows-v1");SetMeta(db,"records_digest",Digest(snapshot.rows));
-                    SetMeta(db,"commit_id",(oldCommit+1).ToString(CultureInfo.InvariantCulture));SetMeta(db,"ledger_revision",snapshot.revision.ToString(CultureInfo.InvariantCulture));SetMeta(db,"reset_generation",generation.ToString(CultureInfo.InvariantCulture));SetMeta(db,"game_build",snapshot.build);if(Meta(db,"created_build")==null)SetMeta(db,"created_build",snapshot.build);SetMeta(db,"content_revision",snapshot.content);SetMeta(db,"physics_identity",snapshot.physics);SetMeta(db,"profile_contract",snapshot.saveVersion);
-                    Measured("digest + metadata",ref timing);db.Exec("DELETE FROM pending_checkpoints");FailureInjection?.Invoke("before-commit");db.Exec("COMMIT");Measured("durable commit",ref timing);
-                }catch{db.Exec("ROLLBACK");if(reset&&File.Exists(path+".reset-intent"))File.Delete(path+".reset-intent");throw;}
-                if(reset){try{AtomicText(path+".reset-generation",generation.ToString(CultureInfo.InvariantCulture));File.Delete(path+".reset-intent");}catch(Exception e){backupWarning="Reset is committed; recovery intent retained: "+e.Message;}}
-                cachedPath=path;cachedRows=after;cachedCommit=oldCommit+1;snapshot.committed=cachedCommit;LastChangedRows=changed;
-                if(oldCommit==0||reset){try{db.Backup(path+".bak");}catch(Exception e){backupWarning="Recovery copy refresh failed; durable primary is retained: "+e.Message;}}else ScheduleBackup(path);
-            }}
+            long gateStart=Stamp();
+            lock(gate)
+            {
+                snapshot.trace?.Elapsed("writer gate wait",gateStart);
+                long timing=Stamp();
+                if(snapshot.rows==null)snapshot.rows=StateRows.CaptureJson(snapshot.json);
+                SaveMeasured(snapshot,"record projection",ref timing);
+                snapshot.trace?.Value("projected state records",snapshot.rows.Count);
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                using(var db=Open(path))
+                {
+                    SaveMeasured(snapshot,"open + schema checks",ref timing);
+                    db.Exec("BEGIN IMMEDIATE");
+                    long oldCommit=long.Parse(Meta(db,"commit_id")??"0",CultureInfo.InvariantCulture);
+                    if(snapshot.expectedCommit!=oldCommit||cachedPath==path&&cachedCommit>=0&&cachedCommit!=oldCommit)
+                        throw new InvalidOperationException("Save changed in another writer; reload before saving.");
+                    long savedRevision=long.Parse(Meta(db,"ledger_revision")??"-1",CultureInfo.InvariantCulture);
+                    if(snapshot.revision<savedRevision)throw new InvalidOperationException("Stale ledger revision cannot overwrite a newer save.");
+                    var before=cachedPath==path&&cachedRows!=null?cachedRows:Rows(db);
+                    var after=snapshot.rows.ToDictionary(r=>r.Id,StringComparer.Ordinal);
+                    long generation=long.Parse(Meta(db,"reset_generation")??"0",CultureInfo.InvariantCulture);
+                    SaveMeasured(snapshot,"delta index",ref timing);
+                    snapshot.trace?.Value("previous state records",before.Count);
+                    if(reset)
+                    {
+                        generation++;
+                        AtomicText(path+".reset-intent",generation.ToString(CultureInfo.InvariantCulture)+"|"+oldCommit.ToString(CultureInfo.InvariantCulture));
+                        FailureInjection?.Invoke("after-reset-intent");
+                    }
+                    int changed=0,removed=0,inserted=0,updated=0,unchanged=0;
+                    try
+                    {
+                        long rowAndOwnershipStart=Stamp();
+                        using(var remove=db.Prepare("DELETE FROM state_records WHERE collection=? AND record_key=?"))
+                            foreach(var old in before.Values.Where(r=>!after.ContainsKey(r.Id)))
+                            {remove.Execute(old.path,old.key);changed++;removed++;}
+                        using(var upsert=db.Prepare("INSERT INTO state_records(collection,record_key,ordinal,payload) VALUES(?,?,?,?) ON CONFLICT(collection,record_key) DO UPDATE SET ordinal=excluded.ordinal,payload=excluded.payload"))
+                            foreach(var row in snapshot.rows)
+                            {
+                                if(before.TryGetValue(row.Id,out var old))
+                                {
+                                    if(old.json==row.json&&old.order==row.order)
+                                    {row.digest=old.digest;unchanged++;continue;}
+                                    updated++;
+                                }
+                                else inserted++;
+                                upsert.Execute(row.path,row.key,row.order,row.json);
+                                changed++;
+                            }
+                        SaveMeasured(snapshot,"state row delta SQL",ref timing);
+                        snapshot.trace?.Value("changed state records",changed);
+                        snapshot.trace?.Value("inserted state records",inserted);
+                        snapshot.trace?.Value("updated state records",updated);
+                        snapshot.trace?.Value("removed state records",removed);
+                        snapshot.trace?.Value("unchanged state records",unchanged);
+                        Sync(db,"owners",new[]{"id","kind","definition_id"},snapshot.owners,1);
+                        Sync(db,"components",new[]{"id","definition_id","owner_id","location"},snapshot.components,1);
+                        Sync(db,"installed_slots",new[]{"owner_id","slot","part_id"},snapshot.slots,2);
+                        SaveMeasured(snapshot,"ownership delta SQL",ref timing);
+                        // Preserve the pre-existing aggregate measurement label
+                        // for SQLite domain verifier and historical comparisons.
+                        if(Measurement!=null)Measurement("row and ownership delta SQL",
+                            (Stamp()-rowAndOwnershipStart)*1000.0/System.Diagnostics.Stopwatch.Frequency);
+                        SetMeta(db,"digest_algorithm","xor-sha256-rows-v1");
+                        SetMeta(db,"records_digest",Digest(snapshot.rows));
+                        SaveMeasured(snapshot,"integrity digest",ref timing);
+                        SetMeta(db,"commit_id",(oldCommit+1).ToString(CultureInfo.InvariantCulture));
+                        SetMeta(db,"ledger_revision",snapshot.revision.ToString(CultureInfo.InvariantCulture));
+                        SetMeta(db,"reset_generation",generation.ToString(CultureInfo.InvariantCulture));
+                        SetMeta(db,"game_build",snapshot.build);
+                        if(Meta(db,"created_build")==null)SetMeta(db,"created_build",snapshot.build);
+                        SetMeta(db,"content_revision",snapshot.content);
+                        SetMeta(db,"physics_identity",snapshot.physics);
+                        SetMeta(db,"profile_contract",snapshot.saveVersion);
+                        SaveMeasured(snapshot,"digest + metadata",ref timing);
+                        db.Exec("DELETE FROM pending_checkpoints");
+                        long preCommit=Stamp();
+                        FailureInjection?.Invoke("before-commit");
+                        snapshot.trace?.Elapsed("precommit injection wait",preCommit);
+                        timing=Stamp();
+                        db.Exec("COMMIT");
+                        SaveMeasured(snapshot,"durable commit",ref timing);
+                    }
+                    catch
+                    {
+                        db.Exec("ROLLBACK");
+                        if(reset&&File.Exists(path+".reset-intent"))File.Delete(path+".reset-intent");
+                        throw;
+                    }
+                    if(reset)
+                    {
+                        try{AtomicText(path+".reset-generation",generation.ToString(CultureInfo.InvariantCulture));File.Delete(path+".reset-intent");}
+                        catch(Exception e){backupWarning="Reset is committed; recovery intent retained: "+e.Message;}
+                    }
+                    cachedPath=path;cachedRows=after;cachedCommit=oldCommit+1;
+                    snapshot.committed=cachedCommit;LastChangedRows=changed;
+                    if(oldCommit==0||reset)
+                    {
+                        try{db.Backup(path+".bak");}
+                        catch(Exception e){backupWarning="Recovery copy refresh failed; durable primary is retained: "+e.Message;}
+                    }
+                    else ScheduleBackup(path);
+                    SaveMeasured(snapshot,"backup scheduling",ref timing);
+                }
+            }
         }
         static void Sync(SqliteNative db,string table,string[] columns,List<string[]> values,int keyCount)
         {

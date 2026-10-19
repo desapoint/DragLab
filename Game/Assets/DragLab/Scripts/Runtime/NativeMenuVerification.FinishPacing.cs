@@ -40,6 +40,8 @@ namespace DragLab.Runtime
                 var priorStep=PrototypeGame.FinishMeasurement;
                 var priorWall=PrototypeGame.FinishWallMeasurement;
                 var priorMarket=DragLab.Domain.Mechanics.PartsMarket.Measurement;
+                var priorSave=ProfileStore.ValidatedSaveMeasurement;
+                var saveStages=new SortedDictionary<string,double>(StringComparer.Ordinal);
                 float deadline=Time.realtimeSinceStartup+75;
                 long readyAt=0,resultsShownAt=0,doneAt=0;
                 try
@@ -62,6 +64,7 @@ namespace DragLab.Runtime
                         if(!costs.TryGetValue(name,out var values))costs[name]=values=new double[3];
                         values[0]+=value;values[1]++;values[2]=Math.Max(values[2],value);
                     };
+                    ProfileStore.ValidatedSaveMeasurement=(name,value)=>saveStages[name]=value;
                     while(!race.ResultReady&&Time.realtimeSinceStartup<deadline)yield return null;
                     Check(race.ResultReady,"Market baseline "+scenario+" reaches the actual finish line");
                     readyAt=System.Diagnostics.Stopwatch.GetTimestamp();
@@ -102,6 +105,35 @@ namespace DragLab.Runtime
                         report.AppendLine(string.Format(CultureInfo.InvariantCulture,
                             "MEASURE: market baseline {0} / stage {1} / {2:F3} ms sampled / {3} calls / {4:F3} ms max",
                             scenario,entry.Key,entry.Value[0],(int)entry.Value[1],entry.Value[2]));
+                    foreach(var entry in saveStages)
+                        report.AppendLine(string.Format(CultureInfo.InvariantCulture,
+                            "MEASURE: market baseline {0} / SQLite save {1} = {2:F3}{3}",
+                            scenario,entry.Key,entry.Value,
+                            entry.Key.EndsWith("records",StringComparison.Ordinal)||
+                            entry.Key.EndsWith("bytes",StringComparison.Ordinal)||
+                            entry.Key.EndsWith("characters",StringComparison.Ordinal)?"":" ms"));
+                    Check(saveStages.ContainsKey("profile serialization")&&
+                        saveStages.ContainsKey("record projection")&&
+                        saveStages.ContainsKey("state row delta SQL")&&
+                        saveStages.ContainsKey("ownership delta SQL")&&
+                        saveStages.ContainsKey("integrity digest")&&
+                        saveStages.ContainsKey("durable commit")&&
+                        saveStages.ContainsKey("entire save worker")&&
+                        saveStages.ContainsKey("changed state records")&&
+                        saveStages.ContainsKey("previous state records")&&
+                        saveStages.ContainsKey("projected state records")&&
+                        saveStages.ContainsKey("inserted state records")&&
+                        saveStages.ContainsKey("updated state records")&&
+                        saveStages.ContainsKey("removed state records")&&
+                        saveStages.ContainsKey("unchanged state records"),
+                        "Market baseline "+scenario+" captures detailed SQLite save stages and row counts");
+                    Check(saveStages["projected state records"]==
+                            saveStages["inserted state records"]+saveStages["updated state records"]+saveStages["unchanged state records"]&&
+                        saveStages["previous state records"]==
+                            saveStages["removed state records"]+saveStages["updated state records"]+saveStages["unchanged state records"]&&
+                        saveStages["changed state records"]==
+                            saveStages["removed state records"]+saveStages["inserted state records"]+saveStages["updated state records"],
+                        "Market baseline "+scenario+" SQLite delta counts exactly reconcile without hidden writes");
                     Check(wall.ContainsKey("finish-to-commit total")&&wall.ContainsKey("save task and completion"),
                         "Market baseline "+scenario+" captured the full finish and save timings");
                 }
@@ -111,6 +143,7 @@ namespace DragLab.Runtime
                     PrototypeGame.FinishMeasurement=priorStep;
                     PrototypeGame.FinishWallMeasurement=priorWall;
                     DragLab.Domain.Mechanics.PartsMarket.Measurement=priorMarket;
+                    ProfileStore.ValidatedSaveMeasurement=priorSave;
                 }
                 // Distinguish responsive shop UI from completion of the expensive preview evaluation.
                 game.ReturnToGarage();
