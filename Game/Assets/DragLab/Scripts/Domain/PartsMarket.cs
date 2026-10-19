@@ -190,8 +190,8 @@ namespace DragLab.Domain.Mechanics
                 };
                 var observer=Measurement;
                 var samples=observer==null?null:new List<KeyValuePair<string,double>>();
-                Action<string,double> collect=samples==null?null:
-                    (stage,ms)=>samples.Add(new KeyValuePair<string,double>(stage,ms));
+                Action<string,double> collect=null;
+                if(samples!=null)collect=(stage,ms)=>samples.Add(new KeyValuePair<string,double>(stage,ms));
                 uint workerSelection=Stream(state,0x91e10da5u);
                 uint workerQuantity=Stream(state,0x27d4eb2fu);
                 uint guarantee=Stream(state,0xa24baed5u);
