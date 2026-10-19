@@ -11,14 +11,17 @@ namespace DragLab.Domain.Mechanics
     {
         sealed class Product { public PartDefinition snapshot;public string key,json,jsonId; }
         internal sealed class Group {public PartDefinition definition;public List<string> ids;public int maximum;public bool deliverable;}
-        // Private construction only. The first authored ID in ordinal order
-        // determines the same representative and group order as the former LINQ
-        // GroupBy(...).OrderBy(g => g.Min(d => d.id)).
+        // Original LINQ intentionally used TWO different comparers:
+        // g.Min(d => d.id) uses Comparer<string>.Default for group order,
+        // while g.OrderBy(d => d.id, StringComparer.Ordinal).First() chooses
+        // the group representative. Do not conflate them: doing so changes
+        // seeded stock and definition/quantity assignment.
         sealed class GroupDraft
         {
             internal PartDefinition definition;
+            internal string orderingId;
             internal readonly List<string> ids=new List<string>();
-            internal GroupDraft(PartDefinition first){definition=first;}
+            internal GroupDraft(PartDefinition first){definition=first;orderingId=first.id;}
         }
         internal sealed class Layout
         {
@@ -101,13 +104,18 @@ namespace DragLab.Domain.Mechanics
                     byKey.Add(key,group);
                     ordered.Add(definition.id,group);
                 }
-                else if(StringComparer.Ordinal.Compare(definition.id,group.definition.id)<0)
+                else
                 {
-                    // Changing the minimum must also change the ordered key;
-                    // authored IDs are unique across product groups.
-                    ordered.Remove(group.definition.id);
-                    group.definition=definition;
-                    ordered.Add(definition.id,group);
+                    // Ordinal representative and default-comparer minimum differ
+                    // for some ID punctuation/case combinations. Preserve both.
+                    if(StringComparer.Ordinal.Compare(definition.id,group.definition.id)<0)
+                        group.definition=definition;
+                    if(Comparer<string>.Default.Compare(definition.id,group.orderingId)<0)
+                    {
+                        ordered.Remove(group.orderingId);
+                        group.orderingId=definition.id;
+                        ordered.Add(group.orderingId,group);
+                    }
                 }
                 group.ids.Add(definition.id);
                 // The fixed batch cap makes both cold-start pacing and the
