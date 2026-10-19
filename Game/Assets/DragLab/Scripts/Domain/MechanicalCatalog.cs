@@ -93,13 +93,17 @@ namespace DragLab.Domain.Mechanics
             return copy;
         }
         bool authoring;
+        // Every supported authored-definition edit (including resource overrides)
+        // rebuilds indexes, advancing this revision. Wear and inventory never do.
+        int authoringRevision;
+        internal int AuthoringRevision => authoringRevision;
         struct IndexedPart {public PartDefinition value;public int position;}
         volatile Dictionary<string,IndexedPart> partIndex;
         int indexedPartCount=-1;
         readonly object indexLock=new object();
         public void RebuildIndexes()
         {
-            lock(indexLock){var next=new Dictionary<string,IndexedPart>(StringComparer.Ordinal);for(int i=0;i<parts.Count;i++)if(!next.ContainsKey(parts[i].id))next[parts[i].id]=new IndexedPart{value=parts[i],position=i};partIndex=next;indexedPartCount=parts.Count;}
+            lock(indexLock){var next=new Dictionary<string,IndexedPart>(StringComparer.Ordinal);for(int i=0;i<parts.Count;i++)if(!next.ContainsKey(parts[i].id))next[parts[i].id]=new IndexedPart{value=parts[i],position=i};partIndex=next;indexedPartCount=parts.Count;unchecked{authoringRevision++;}}
         }
         public VehicleSpec Spec(string id) { return specs[id].Copy(); }
         public PartDefinition Find(string id)

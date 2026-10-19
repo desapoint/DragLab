@@ -218,6 +218,35 @@ namespace DragLab.Domain.Mechanics
                     a.ids.SequenceEqual(w.ids)&&a.maximum==w.maximum&&a.deliverable==w.deliverable;
             }
             check(workerWaits>0&&workerMatches,"Detached worker computes the same cold fitted catalog without publishing partial groups");
+            // Author metadata keys belong to a catalog revision, not an epoch.
+            // Verify that the ready dictionary is reused as-is and explicit
+            // authored updates invalidate it while wear never changes it.
+            var definitions=catalog.parts.ToArray();
+            var revision=catalog.AuthoringRevision;
+            check(MarketCatalogLayout.PublishProductKeys(catalog,definitions,revision,layoutKeys),
+                "Completed authored product keys publish as a single catalog snapshot");
+            Dictionary<string,string> ready;
+            check(MarketCatalogLayout.TryReadyProductKeys(catalog,out ready)&&ReferenceEquals(ready,layoutKeys),
+                "Unchanged catalog retrieves the exact cached key dictionary");
+            var sample=definitions[0];string originalName=sample.name;
+            try
+            {
+                sample.name=originalName+" / invalidation regression";
+                catalog.RebuildIndexes();
+                check(!MarketCatalogLayout.TryReadyProductKeys(catalog,out ready),
+                    "Authoring revision invalidates completed product-key snapshots");
+                check(PartsMarket.ProductKey(sample)!=layoutKeys[sample.id],
+                    "An authored field change produces a different canonical product key");
+            }
+            finally
+            {
+                sample.name=originalName;
+                catalog.RebuildIndexes();
+            }
+            check(!MarketCatalogLayout.TryReadyProductKeys(catalog,out ready),
+                "Restoring the authored field also requires a new complete key snapshot");
+            check(PartsMarket.ProductKey(sample)==layoutKeys[sample.id],
+                "Restored authored part reproduces the original canonical key");
         }
         public static void Coverage(PlayerProfile p,Action<bool,string> check)
         {

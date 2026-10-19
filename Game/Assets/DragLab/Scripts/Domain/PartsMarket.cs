@@ -112,24 +112,38 @@ namespace DragLab.Domain.Mechanics
             var previous=p.inventory.market;
             var state=new PartsStockState{version=2,seed=p.vehicleStock.seed,generation=p.vehicleStock.generation,guaranteeAtRefresh=p.driving.guaranteedFittingParts};p.inventory.market=state;
             uint random=Stream(state,0x91e10da5u),newQuantity=Stream(state,0x27d4eb2fu),usedRandom=Stream(state,0x165667b1u),usedQuantity=Stream(state,0x85ebca6bu),engineRandom=Stream(state,0xc2b2ae35u),engineQuantity=Stream(state,0xd3a2646cu),coverageRandom=Stream(state,0xfd7046c5u),coverageQuantity=Stream(state,0xb55a4f09u);
-            long stamp=Stamp();var productKeys=new Dictionary<string,string>(StringComparer.Ordinal);
-            // JsonUtility-backed equivalence keys must stay on Unity's main
-            // thread. Yield by elapsed CPU budget, not one frame per 32 keys:
-            // the old unconditional split added ~1.6 seconds of idle frames.
-            long keysStart=System.Diagnostics.Stopwatch.GetTimestamp();
-            int indexed=0;
-            foreach(var definition in p.catalog.parts)
+            long stamp=Stamp();
+            Dictionary<string,string> productKeys=null;
+            bool reused=offloadDelivery&&MarketCatalogLayout.TryReadyProductKeys(p.catalog,out productKeys);
+            if(!reused)
             {
-                productKeys.Add(definition.id,ProductKey(definition));
-                if(++indexed%512==0||
-                    (System.Diagnostics.Stopwatch.GetTimestamp()-keysStart)*1000.0/
-                        System.Diagnostics.Stopwatch.Frequency>=2.0)
+                // JsonUtility-backed equivalence keys stay on Unity's main thread.
+                // The editor/synchronous path deliberately validates each definition
+                // for direct authored mutations even without an explicit revision.
+                var definitions=p.catalog.parts.ToArray();
+                int revision=p.catalog.AuthoringRevision;
+                productKeys=new Dictionary<string,string>(StringComparer.Ordinal);
+                long keysStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                int indexed=0;
+                foreach(var definition in definitions)
                 {
-                    yield return "parts/product keys";
-                    keysStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                    productKeys.Add(definition.id,ProductKey(definition));
+                    if(++indexed%512==0||
+                        (System.Diagnostics.Stopwatch.GetTimestamp()-keysStart)*1000.0/
+                            System.Diagnostics.Stopwatch.Frequency>=2.0)
+                    {
+                        yield return "parts/product keys";
+                        keysStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                    }
                 }
+                // Store a finished keyed snapshot for later race epochs even
+                // if the non-race warmup was interrupted or never completed.
+                if(offloadDelivery)
+                    MarketCatalogLayout.PublishProductKeys(p.catalog,definitions,revision,productKeys);
             }
-            Measured("product keys",stamp);stamp=Stamp();yield return "parts/product keys";
+            if(reused)Measurement?.Invoke("product keys reused",0);
+            Measured("product keys",stamp);stamp=Stamp();
+            if(!reused)yield return "parts/product keys";
             var models=Models(p.catalog);var specs=models.Select(p.catalog.Spec).ToArray();
             MarketCatalogLayout.Layout layout=null;
             foreach(var marker in MarketCatalogLayout.GetSteps(p.catalog,productKeys,specs,value=>layout=value,offloadDelivery))

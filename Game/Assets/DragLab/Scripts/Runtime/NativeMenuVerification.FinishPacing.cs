@@ -45,7 +45,11 @@ namespace DragLab.Runtime
                 try
                 {
                     // Measuring after StartRace avoids counting setup and initial save as settlement.
+                    var authoredBefore=game.Profile.catalog;
+                    int catalogRevisionBefore=authoredBefore.AuthoringRevision;
                     game.StartRace(null,scenario=="practice");
+                    Check(ReferenceEquals(authoredBefore,game.Profile.catalog),
+                        "Race entry reuses authored catalog across wear and checkpoint transactions: "+scenario);
                     var race=game.Race;
                     Check(race!=null,"Market baseline "+scenario+" stages a real race");
                     game.verificationInput=()=>new DriverInput{throttle=1};
@@ -81,6 +85,9 @@ namespace DragLab.Runtime
                         "Market baseline "+scenario+" only refreshes the intended epoch");
                     int expected=scenario=="practice"?0:(race.playerWon?120:40);
                     Check(game.Profile.cash==cash+expected,"Market baseline "+scenario+" pays once");
+                    Check(ReferenceEquals(authoredBefore,game.Profile.catalog)&&
+                        game.Profile.catalog.AuthoringRevision==catalogRevisionBefore,
+                        "Wear and settlement preserve the same authored catalog and key revision: "+scenario);
                     frames.Sort();
                     double maxFrame=frames.Count==0?0:frames[frames.Count-1];
                     double p95=frames.Count==0?0:frames[(int)Math.Ceiling(.95*frames.Count)-1];
@@ -134,7 +141,10 @@ namespace DragLab.Runtime
                 if(paid)game.Profile.vehicleStock.completedRuns+=((2-game.Profile.vehicleStock.completedRuns%3)+3)%3;
                 Check(ProfileStore.TrySave(game.Profile),"Finish pacing fixture has a durable baseline");
                 int cash=game.Profile.cash,generation=game.Profile.vehicleStock.generation;double maxStep=0,maxCamera=0,maxFrame=0;string maxStage="";
+                var authoredBefore=game.Profile.catalog;
                 game.StartRace(null,!paid);var race=game.Race;
+                Check(ReferenceEquals(authoredBefore,game.Profile.catalog),
+                    "Finish fixture retains catalog identity through race entry");
 PrototypeGame.FinishMeasurement=(name,value)=>{if(name=="camera step units")maxCamera=Math.Max(maxCamera,value);else if(value>maxStep){maxStep=value;maxStage=name;}};
                 Check(race!=null,"Finish pacing stages a real "+(paid?"paid refresh":"practice")+" run");
                 game.verificationInput=()=>new DriverInput{throttle=1};int mainThread=Thread.CurrentThread.ManagedThreadId,writerThread=mainThread;

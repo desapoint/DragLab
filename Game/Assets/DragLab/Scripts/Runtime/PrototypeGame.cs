@@ -175,7 +175,9 @@ namespace DragLab.Runtime
             DiscardPreviews();
             if(!SyncRaceWear(true,"Retry / new race"))return;
             string entryError=CareerProgression.EntryError(profile,Build,evt); if(entryError!=null){notice=entryError;return;}
-            MechanicsOwnership.Ensure(profile, MechanicsTransactions.Catalog());
+            // Existing authored definitions survive races and wear updates.
+            // A new catalog is required only if this profile has none (bootstrap).
+            MechanicsOwnership.Ensure(profile,profile.catalog??MechanicsTransactions.Catalog());
             var resolved = MechanicsOwnership.Resolve(profile, Build, profile.catalog);
             if (!resolved.Drivable) { notice = "Build cannot drive: " + string.Join("; ", resolved.errors); return; }
             if (!AutoTopUp()) return;

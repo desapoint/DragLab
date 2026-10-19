@@ -41,6 +41,53 @@ namespace DragLab.Domain.Mechanics
         static readonly FieldInfo[] fields=typeof(PartDefinition).GetFields().Where(f=>f.Name!="id"&&!fastFields.Contains(f.Name)).ToArray();
         static readonly ConditionalWeakTable<PartDefinition,Product> products=new ConditionalWeakTable<PartDefinition,Product>();
         static readonly ConditionalWeakTable<MechanicalCatalog,Layout> layouts=new ConditionalWeakTable<MechanicalCatalog,Layout>();
+        // Canonical product-key strings depend on authored data, not the market
+        // seed, stock, player wear, reservations or race. A completed snapshot
+        // can be shared by subsequent epochs of this same catalog revision.
+        sealed class KeySnapshot
+        {
+            internal int revision;
+            internal PartDefinition[] definitions;
+            internal Dictionary<string,string> keys;
+        }
+        static readonly ConditionalWeakTable<MechanicalCatalog,KeySnapshot> readyKeys=
+            new ConditionalWeakTable<MechanicalCatalog,KeySnapshot>();
+        internal static bool TryReadyProductKeys(MechanicalCatalog catalog,out Dictionary<string,string> keys)
+        {
+            keys=null;
+            if(catalog==null||!readyKeys.TryGetValue(catalog,out var entry))return false;
+            if(entry.revision!=catalog.AuthoringRevision||
+                entry.definitions.Length!=catalog.parts.Count)
+            {
+                readyKeys.Remove(catalog);
+                return false;
+            }
+            for(int i=0;i<entry.definitions.Length;i++)
+                if(!ReferenceEquals(entry.definitions[i],catalog.parts[i]))
+                {
+                    readyKeys.Remove(catalog);
+                    return false;
+                }
+            keys=entry.keys;return true;
+        }
+        internal static bool PublishProductKeys(MechanicalCatalog catalog,
+            PartDefinition[] definitions,int revision,Dictionary<string,string> keys)
+        {
+            if(catalog==null||definitions==null||keys==null||
+                revision!=catalog.AuthoringRevision||
+                definitions.Length!=catalog.parts.Count||definitions.Length!=keys.Count)
+                return false;
+            for(int i=0;i<definitions.Length;i++)
+                if(!ReferenceEquals(definitions[i],catalog.parts[i])||
+                    !keys.ContainsKey(definitions[i].id))return false;
+            // No caller ever writes to this dictionary after publication.
+            var complete=new KeySnapshot{
+                revision=revision,definitions=definitions,keys=keys
+            };
+            readyKeys.Remove(catalog);
+            readyKeys.Add(catalog,complete);
+            return true;
+        }
         static bool Same(PartDefinition a,PartDefinition b)
         {
             if(!(a.name==b.name && a.fitment==b.fitment && a.brand==b.brand && a.quality==b.quality && a.fuelKind==b.fuelKind &&
@@ -256,21 +303,29 @@ namespace DragLab.Domain.Mechanics
         {
             if(catalog==null)yield break;
             var definitions=catalog.parts.ToArray();
-            var keys=new Dictionary<string,string>(StringComparer.Ordinal);
-            long start=System.Diagnostics.Stopwatch.GetTimestamp();
-            foreach(var definition in definitions)
+            int revision=catalog.AuthoringRevision;
+            Dictionary<string,string> keys;
+            if(!TryReadyProductKeys(catalog,out keys))
             {
-                keys.Add(definition.id,Key(definition));
-                long now=System.Diagnostics.Stopwatch.GetTimestamp();
-                if((now-start)*1000.0/System.Diagnostics.Stopwatch.Frequency>=2.0)
+                keys=new Dictionary<string,string>(StringComparer.Ordinal);
+                long start=System.Diagnostics.Stopwatch.GetTimestamp();
+                foreach(var definition in definitions)
                 {
-                    yield return "parts/layout warm keys";
-                    start=System.Diagnostics.Stopwatch.GetTimestamp();
+                    keys.Add(definition.id,Key(definition));
+                    long now=System.Diagnostics.Stopwatch.GetTimestamp();
+                    if((now-start)*1000.0/System.Diagnostics.Stopwatch.Frequency>=2.0)
+                    {
+                        yield return "parts/layout warm keys";
+                        start=System.Diagnostics.Stopwatch.GetTimestamp();
+                    }
                 }
+                // A replaced authored catalog or override change cannot publish
+                // keys derived from an earlier definition/revision.
+                if(!PublishProductKeys(catalog,definitions,revision,keys))
+                    yield break;
             }
-            // An altered count/order must not publish a stale warmup. Any later
-            // market refresh rebuilds using the current catalog and its own keys.
-            if(!definitions.SequenceEqual(catalog.parts))yield break;
+            if(revision!=catalog.AuthoringRevision||
+                !definitions.SequenceEqual(catalog.parts))yield break;
             var models=catalog.parts.Where(d=>d.category==PartCategory.CylinderBlock)
                 .Select(d=>d.id.Split('/')[0]).Distinct().OrderBy(s=>s,StringComparer.Ordinal).ToArray();
             var specs=models.Select(catalog.Spec).ToArray();

@@ -39,6 +39,11 @@ namespace DragLab.Editor
             Action<bool,string> check=(ok,label)=>{if(!ok)throw new InvalidOperationException(label);checks++;log.AppendLine("PASS "+label);};
             NewSupplyChecks.Rules(check);log.AppendLine("Rule checks elapsed ms: "+timer.Elapsed.TotalMilliseconds.ToString("0"));var catalog=MechanicsTransactions.Catalog();
             NewSupplyChecks.LayoutRegression(catalog,check);
+            // A fresh authored-revision snapshot can be prepared during menus
+            // or by an earlier refresh, and reused across all race epochs.
+            var authoredKeys=catalog.parts.ToDictionary(d=>d.id,d=>PartsMarket.ProductKey(d),StringComparer.Ordinal);
+            check(MarketCatalogLayout.PublishProductKeys(catalog,catalog.parts.ToArray(),
+                catalog.AuthoringRevision,authoredKeys),"Product-key cache is ready for detached stock generation");
             // Compare entire deterministic market output with and without the
             // worker boundary, not just isolated category/quantity calculations.
             var deliveryOriginal=Create(catalog,209,5);
@@ -56,8 +61,10 @@ namespace DragLab.Editor
             deliveryWorker.vehicleStock.generation++;
             PartsMarket.Refresh(deliveryOriginal);
             double wholeSupplyCpu=-1;
+            bool reusedKeys=false;
             var priorObserver=PartsMarket.Measurement;
             PartsMarket.Measurement=(phase,ms)=>{
+                if(phase=="product keys reused")reusedKeys=true;
                 if(phase=="new complete worker CPU")wholeSupplyCpu=ms;
                 priorObserver?.Invoke(phase,ms);
             };
@@ -68,6 +75,7 @@ namespace DragLab.Editor
                         if(work.Current is MarketWorkerWait waiting)waiting.task.GetAwaiter().GetResult();
             }
             finally {PartsMarket.Measurement=priorObserver;}
+            check(reusedKeys,"Detached market refresh reuses completed product keys without recataloging");
             check(wholeSupplyCpu>=0,"Detached new-stock worker processes wear, delivery and fitting guarantee");
             log.AppendLine("Measured detached new-stock worker CPU: "+wholeSupplyCpu.ToString("0.000",System.Globalization.CultureInfo.InvariantCulture)+" ms");
             check(ReferenceEquals(deliveryWorker.catalog,catalog),"Completed detached supply worker restores the authoritative catalog reference");
