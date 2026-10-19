@@ -126,8 +126,13 @@ namespace DragLab.Editor
             Require(coast.state.speed > braking.state.speed + 7 && coast.state.distance > braking.state.distance,
                 "Pedal braking reduces speed and stopping distance compared with coasting.", ref count);
             var brakeRace = new RaceSimulation(coast, braking, 402.336) { phase = RacePhase.Finished };
+            // Opponent brake assist is adaptive and rate-limited: it can release some
+            // pressure after a manually braked interval, rather than remain at 1.
+            double expectedOpponentBrake = braking.AssistedShutdownBrake(DragMath.FixedStep);
             brakeRace.Shutdown(new DriverInput());
-            Require(coast.state.brake == 0 && braking.state.brake == 1, "Disabled shutdown assist leaves player braking to the pedal; opponent still brakes.", ref count);
+            Require(coast.state.brake == 0 && expectedOpponentBrake > 0 &&
+                Math.Abs(braking.state.brake - expectedOpponentBrake) < 1e-9,
+                "Disabled shutdown assist leaves player braking to the pedal; opponent uses adaptive assisted braking.", ref count);
             brakeRace.Shutdown(new DriverInput { brake = .5 });
             Require(coast.state.brake == .5, "Manual shutdown accepts partial brake pressure.", ref count);
             var gripBrake = new CarSimulation(new VehicleSpec { tireFriction = .3f, brakeDecelerationMps2 = 20 }, new Tune(), new DriverSettings());
