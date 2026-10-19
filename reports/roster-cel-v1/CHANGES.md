@@ -17,3 +17,11 @@ Paintable panels use a neutral foundation; glass, lamps, trim and unpainted fitt
 The current small-preview filtering is a baseline for the user's next antialiasing request. No Android/device verification is claimed for these new bodies yet. All-model visual acceptance remains with the user.
 
 Local offline review: `reports/roster-cel-v1/index.html`; player evidence: `reports/player-fixtures/raster-roster-dealership-20261018-a` and `raster-roster-race-20261018-a`.
+
+## Final packaging follow-up
+
+The shared mobile touch/layout suite passed 171 checks with zero runtime errors (`raster-roster-mobile-20261018-a`). This is desktop-driven touch emulation, not a physical-phone test.
+
+Updated Windows player and ARM64 Android APK were built with the raster roster, filtered previews and reaction-inclusive slip totals. APK ZIP/CRC, v2 signature, 16 KiB ZIP alignment and every packaged ELF load-segment alignment pass. Packaged SQLite exactly matches the stripped tracked ARM64 plugin, with no Windows plugin included. Windows runtime assembly hash is unchanged by Android packaging. See `build-manifest.txt` and `packaging-verification.txt`.
+
+APK: `Game/Builds/Android/DragLab.apk` (87,306,792 bytes). No device was connected through ADB, so physical-phone installation, performance and visual acceptance remain unverified. V8 auditions are offline only and are not included in this build. The separately documented paid market-refresh pacing failure remains open.
