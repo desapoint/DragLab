@@ -81,6 +81,8 @@ Thumbs.db
 /reports/race-timing-audit/failed-diagnostic.txt
 /reports/v8-growl-preview-20261018-*/
 /reports/v8-youtube-reference-20261018-*/
+/reports/audio-pressure-20261019-*/
+/reports/audio-pressure-batch.txt
 
 # Android IL2CPP/Gradle intermediate outputs; final players stay under Builds.
 /Game/.utmp/

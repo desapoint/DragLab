@@ -78,7 +78,8 @@ namespace DragLab.Editor
             resonator.parts[0].amount = 0;
             Check(captured.exhaustSystem.parts[0].amount == 1, "Sound profile owns its own exhaust chain.", ref count);
             Check(new ExhaustSetup { parts = new[] { new ExhaustPart { resonanceQ = float.NaN } } }.Validate() != null, "Invalid acoustic coefficients are rejected.", ref count);
-            foreach (var definition in Resources.LoadAll<VehicleDefinition>("Data/Vehicles"))
+            var definitions = Resources.LoadAll<VehicleDefinition>("Data/Vehicles");
+            foreach (var definition in definitions)
             {
                 var test = new EngineBenchConfig { vehicle = definition.spec.Copy(), tune = definition.CreateStockTune() };
                 test.tune.controlLevel = 1; test.tune.twoStep = EquipmentSetting.On;
@@ -105,7 +106,7 @@ namespace DragLab.Editor
             Check(EngineBenchRenderer.ScenarioConfig(config, EngineBenchScenario.WarmIdle).controls.engineEnabled &&
                 !EngineBenchRenderer.ScenarioConfig(config, EngineBenchScenario.FixedRpmHold).controls.engineEnabled,
                 "Timeline scenarios own engine power; captured fixed-RPM holds preserve it.", ref count);
-            report.AppendLine("PASS: " + count + " bench/exhaust checks, including identical PCM rerenders of all " + Enum.GetValues(typeof(EngineBenchScenario)).Length + " scenarios on all four cars.\nA/B exports use matched 120 Hz physics / 60 Hz publication / 44100 Hz PCM; no player saves accessed.");
+            report.AppendLine("PASS: " + count + " bench/exhaust checks, including identical PCM rerenders of all " + Enum.GetValues(typeof(EngineBenchScenario)).Length + " scenarios on all " + definitions.Length + " authored cars.\nA/B exports use matched 120 Hz physics / 60 Hz publication / 44100 Hz PCM; no player saves accessed.");
             File.WriteAllText(Path.Combine(root, "reports/engine-bench-verification.txt"), report.ToString());
             return count;
         }

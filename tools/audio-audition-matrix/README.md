@@ -1,5 +1,24 @@
 # Offline engine audio auditions
 
+## Current production verification (pressure core, 2026-10-19)
+
+`python tools/audio-audition-matrix/verify-integration.py` now runs the production
+pressure-core verifier: all 52 authored configurations, a synthetic 1-16-cylinder /
+layout / induction grid, sample-rate coverage, replay/callback invariance, reviewed
+NA-core PCM parity, cuts/wear and warmed allocation/timing checks. Pass `--output`
+to choose a fresh report folder. This tests actual production DSP; Unity/player
+and physical Android checks remain separate. See `docs/ENGINE_AUDIO_PIPELINE.md`.
+
+The three-car audition tool pins its pre-integration synth to `892ea8c` so the
+reviewed before/after reference remains reproducible. Earlier harmonic matrices
+and reference-pressure experiments below are historical auditions; their original
+source versions and accepted 13-car catalogue are retained in Git. The old
+`--published-raw` harmonic parity gate was superseded by the explicit pressure-core
+integration request. It is available from the earlier checkpoint rather than
+silently relabelling old PCM as the current voice.
+
+## Historical harmonic matrix
+
 Generates an isolated, filterable before/after review library. Does not alter game code, assets, builds, profiles, settings, saves or the debug bench. Candidate voices are prototypes requiring explicit user approval before integration.
 
 Requires Python with NumPy, .NET 10 and FFmpeg. This workstation's FFmpeg is `C:/tools/FFMPEG/ffmpeg.exe`; adjust `package.py` if using a different installation. Run from the repository root in PowerShell:

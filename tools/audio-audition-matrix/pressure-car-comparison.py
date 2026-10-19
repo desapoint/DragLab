@@ -22,7 +22,7 @@ def main():
     paths=[DOMAIN/n for n in ['EngineSound.cs','EngineElements.cs','ExhaustAcoustics.cs','ExhaustPopSynth.cs']]
     paths+=[ROOT/f'Game/Assets/DragLab/Resources/Data/Vehicles/{key}.asset' for key in ['StarterHatch','RallySedan','V8Muscle']]
     hashes={str(p.relative_to(ROOT)).replace('\\','/'):sha(p) for p in paths}
-    engine=paths[0].read_text(encoding='utf-8-sig')
+    engine=subprocess.run(['git','show','892ea8c:Game/Assets/DragLab/Scripts/Domain/EngineSound.cs'],cwd=ROOT,capture_output=True,text=True,encoding='utf-8',check=True).stdout
     prefix=helper.extract(engine,'    public sealed class EngineSoundProfile').split('        public EngineSoundProfile(')[0]
     common='using System;using System.Linq;namespace DragLab.Domain{'+engine[engine.index('    public enum InductionType'):engine.index('    [Serializable]')]
     common+='public enum FuelSystem{Injection,Carburetor,Diesel}public enum CutMethod{Factory,Fuel,Ignition}public static class DragMath{public static double Clamp(double x,double lo,double hi)=>Math.Max(lo,Math.Min(hi,x));}'

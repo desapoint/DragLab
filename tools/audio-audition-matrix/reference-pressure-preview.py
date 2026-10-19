@@ -176,7 +176,8 @@ def growl_voice(control,config,seed):
 
 def production_baseline(folder,control):
     folder.mkdir();spec=importlib.util.spec_from_file_location('prepare',Path(__file__).with_name('prepare.py'));helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
-    source=(DOMAIN/'EngineSound.cs').read_text(encoding='utf-8-sig')
+    # Preserve these historical reference auditions after pressure integration.
+    source=subprocess.run(['git','show','892ea8c:Game/Assets/DragLab/Scripts/Domain/EngineSound.cs'],cwd=ROOT,capture_output=True,encoding='utf-8',check=True).stdout
     asset=(ROOT/'Game/Assets/DragLab/Resources/Data/Vehicles/V8Muscle.asset').read_text(encoding='utf-8-sig');profile=helper.scalar(asset,4)
     for key in ['sound','induction','engineBehavior']:
         section=re.search(r'^    '+key+r':\n(.*?)(?=^    [^ \n]|\Z)',asset,re.M|re.S)[1];profile[key]=helper.scalar(section,6)

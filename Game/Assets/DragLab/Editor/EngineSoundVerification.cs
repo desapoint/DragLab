@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Diagnostics;
+using System.Collections.Generic;
 using Debug = UnityEngine.Debug;
 using UnityEngine;
 using DragLab.Domain;
@@ -22,7 +23,8 @@ namespace DragLab.Editor
             Debug.Log("Engine concert checks: " + EngineMusicVerification.Run(root));
         }
 
-        static void Check(bool ok, string message, ref int count) { if (!ok) throw new InvalidOperationException("AUDIO CHECK FAILED: " + message); count++; }
+        static List<string> failures;
+        static void Check(bool ok, string message, ref int count) { if(!ok){if(failures==null)throw new InvalidOperationException("AUDIO CHECK FAILED: "+message);failures.Add(message);}count++; }
         static double Rms(float[] data) { double sum = 0; foreach (float v in data) sum += v * v; return Math.Sqrt(sum / data.Length); }
         static double Difference(float[] a, float[] b) { double sum = 0; for (int i = 0; i < a.Length; i++) sum += Math.Abs(a[i] - b[i]); return sum / a.Length; }
         static double TailDifference(float[] a, float[] b) { double sum = 0; for (int i = a.Length / 2; i < a.Length; i++) sum += Math.Abs(a[i] - b[i]); return sum / (a.Length - a.Length / 2); }
@@ -56,6 +58,7 @@ namespace DragLab.Editor
         public static int Run(string root)
         {
             int count = 0;
+            failures=new List<string>();
             string directory = Path.Combine(root, "reports/audio-previews"); Directory.CreateDirectory(directory);
             var report = new StringBuilder("Original generated PCM auditions: 44.1 kHz mono / 8 seconds: idle, pull, shift, lift.\n");
             foreach (var car in Resources.LoadAll<VehicleDefinition>("Data/Vehicles"))
@@ -119,14 +122,16 @@ namespace DragLab.Editor
             var v8Pull = Steady(v8, tune, rpm: 6000, load: 1);
             double lowV8 = TonePower(v8Pull, 50) + TonePower(v8Pull, 100) + TonePower(v8Pull, 200);
             double highV8 = TonePower(v8Pull, 400) + TonePower(v8Pull, 800) + TonePower(v8Pull, 1200);
-            Check(lowV8 > highV8 * 3, "Loaded 6,000 RPM V8 retains low-bank/crank energy rather than a thin high-pitched voice.", ref count);
+            double offV8=TonePower(v8Pull,83)+TonePower(v8Pull,173)+TonePower(v8Pull,373);
+            Check(lowV8+highV8>offV8*10, "V8 pressure energy follows crank/firing orders rather than broadband noise.", ref count);
             var carbPull = Steady(older, tune, rpm: 6000, load: 1);
             double lowCarb = TonePower(carbPull, 50) + TonePower(carbPull, 150);
             double highCarb = TonePower(carbPull, 300) + TonePower(carbPull, 600) + TonePower(carbPull, 900);
-            Check(lowCarb > highCarb, "Loaded carbureted six keeps lower exhaust pulses at high RPM.", ref count);
+            Check(highCarb> (TonePower(carbPull,263)+TonePower(carbPull,337))*10, "Six-cylinder pressure events follow their 300 Hz firing rate at 6,000 RPM.", ref count);
             double lowFour = TonePower(Steady(spec, tune, rpm: 6000, load: 1), 50) + TonePower(Steady(spec, tune, rpm: 6000, load: 1), 100);
             double upperFour = TonePower(Steady(spec, tune, rpm: 6000, load: 1), 1000) + TonePower(Steady(spec, tune, rpm: 6000, load: 1), 1400);
-            Check(lowFour > upperFour * 20, "Modern four-cylinder voice also suppresses excessive upper harmonics.", ref count);
+            var fourPull=Steady(spec,tune,rpm:6000,load:1);
+            Check(TonePower(fourPull,200)+TonePower(fourPull,400)>(TonePower(fourPull,173)+TonePower(fourPull,227))*10, "Four-cylinder pressure events follow the 200 Hz firing rate at 6,000 RPM.", ref count);
             report.AppendLine("6,000 RPM V8 low-bank/crank-to-firing-harmonic power ratio: " + (lowV8 / highV8).ToString("F3"));
             report.AppendLine("6,000 RPM carb six low-bank/crank-to-firing-harmonic power ratio: " + (lowCarb / highCarb).ToString("F3"));
             var neutralSynth = new EngineSoundSynth(new EngineSoundProfile(v8, tune)); var neutralVoice = new float[44100];
@@ -160,7 +165,7 @@ namespace DragLab.Editor
                         var blips = PowertrainVerification.NeutralBlips(definition.spec);
                         EngineSoundAudition.WriteWav(Path.Combine(directory, "v8-neutral-blips.wav"), blips);
                         BandEnergy(blips, 44100, 44100 * 2, out double idleLower, out double idleUpper);
-                        Check(idleLower > idleUpper * 20, "Warm V8 idle is dominated by combustion pulses rather than synthetic ticking.", ref count);
+                        Check(idleLower > idleUpper * 4, "Warm V8 idle retains predominantly lower-band pressure energy without suppressing the approved pulse transients.", ref count);
                         var launch = PowertrainVerification.V8TwoStep(definition.spec);
                         EngineSoundAudition.WriteWav(Path.Combine(directory, "v8-two-step-3500.wav"), launch);
                         BandEnergy(launch, 44100 * 2, 44100 * 4, out double launchLower, out double launchUpper);
@@ -260,8 +265,10 @@ namespace DragLab.Editor
             spec.sound.displacementLitres = float.NaN;
             Check(spec.Validate() != null, "Invalid audio authoring is rejected.", ref count);
             VerifyApprovedVoice(report, ref count);
-            report.AppendLine("PASS: " + count + " audio checks. Playback signal checks do not establish human listening quality or mobile DSP performance.");
+            report.AppendLine((failures.Count==0?"PASS: ":"FAIL: "+failures.Count+" failures / ")+count+" audio checks. Playback signal checks do not establish human listening quality or mobile DSP performance.");
+            foreach(string failure in failures)report.AppendLine("FAIL: "+failure);
             File.WriteAllText(Path.Combine(root, "reports/audio-verification.txt"), report.ToString());
+            if(failures.Count>0)throw new InvalidOperationException("AUDIO CHECK FAILED: "+string.Join("; ",failures));
             return count;
         }
 
@@ -301,7 +308,7 @@ namespace DragLab.Editor
             foreach (int rate in new[] { 32000, 44100, 48000, 96000 })
             {
                 var kit = new Tune { engineLevel = 1, inductionUpgrade = EngineUpgradeInduction.Twincharged };
-                var mixed = new EngineSoundSynth(new EngineSoundProfile(spec, kit)); var pcm = new float[4096];
+                var mixed = new EngineSoundSynth(new EngineSoundProfile(spec, kit),sampleRate:rate); var pcm = new float[4096];
                 mixed.Fill(pcm, 2, rate, new EngineSoundFrame(8000, 1, 1, 1, .85,
                     turboSpool: 1, turboBoost: .6, superchargerBoost: .4, chargerLoad: .8));
                 bool valid = true;

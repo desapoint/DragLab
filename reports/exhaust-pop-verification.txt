@@ -13,17 +13,56 @@ PASS: Sharpness changes the pressure shape/filter.
 PASS: Decay controls brief turbulent energy, not a fixed ringing oscillator.
 PASS: Burst works at the live player's 48 kHz rate.
 PASS: Invalid pop controls are rejected.
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: aster
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: aster-sport
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: atlas
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: atlas-sport
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: boreal
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: boreal-sport
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: cinder
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: cinder-sport
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: city-three
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: comet
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: comet-sport
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: finch
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: finch-sport
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: fjord
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: fjord-sport
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: juniper-club
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: juniper-economy
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: kestrel-track
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: lark
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: lark-sport
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: meridian-sport
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: mistral
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: mistral-sport
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: osprey
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: osprey-sport
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: piper
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: piper-sport
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: rally-sedan
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: reed
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: reed-sport
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: rook
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: rook-sport
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: sable
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: sable-sport
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: solstice
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: solstice-sport
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: sport-coupe
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: sprig-sport
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: starter-hatch
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: super-v8
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: swift
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: swift-sport
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: tempest-rs
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: timber-diesel
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: timber-diesel-tow
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: touring-six
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: utility-pickup
 PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: v8-muscle
-PASS: 25 exhaust-pop checks.
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: vale
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: vale-sport
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: wren
+PASS: Full 3500 RPM ignition two-step renders with its actual exhaust: wren-sport
+PASS: 64 exhaust-pop checks.

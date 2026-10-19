@@ -1,4 +1,4 @@
 Fixed 120 Hz induction response checks; fictional calibrations.
 Single turbo at 4500 RPM: 0.1 s = 0,006 bar / 175,2 Nm; 3 s = 0,726 bar / 276,0 Nm.
 Single supercharger at 0.1 s: 0,520 bar / drive 16,4 Nm.
-PASS: 112 induction checks. No compressor-map calibration or manufacturer performance claims.
+PASS: 346 induction checks. No compressor-map calibration or manufacturer performance claims.

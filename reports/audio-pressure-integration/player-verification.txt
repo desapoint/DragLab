@@ -1,0 +1,25 @@
+Windows standalone engine bench / real Update / DSP / OnGUI.
+PASS: Bench loads directly without race/profile initialization.
+PASS: Playback preferences remain isolated from player settings.
+PASS: Playback fixture exists: starter-hatch
+PASS: Listener PCM responds to master gain: starter-hatch
+PASS: Mute silences playback while simulation continues: starter-hatch
+PASS: Pause silences the live pressure voice: starter-hatch
+PASS: Resume restores live playback: starter-hatch
+MEASURE: starter-hatch listener RMS 0.028872
+PASS: Playback fixture exists: rally-sedan
+PASS: Listener PCM responds to master gain: rally-sedan
+PASS: Mute silences playback while simulation continues: rally-sedan
+PASS: Pause silences the live pressure voice: rally-sedan
+PASS: Resume restores live playback: rally-sedan
+MEASURE: rally-sedan listener RMS 0.013690
+PASS: Playback fixture exists: v8-muscle
+PASS: Listener PCM responds to master gain: v8-muscle
+PASS: Mute silences playback while simulation continues: v8-muscle
+PASS: Pause silences the live pressure voice: v8-muscle
+PASS: Resume restores live playback: v8-muscle
+MEASURE: v8-muscle listener RMS 0.058729
+PASS: Real AudioSource callbacks rendered the pressure core.
+MEASURE: callbacks 1008; peak observed callback 1.8472 ms (desktop observation, not an Android budget claim).
+PASS: Pressure playback has no runtime/DSP/GUI errors.
+Runtime errors: 0

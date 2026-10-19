@@ -1,0 +1,3 @@
+PASS: 116 pressure audio checks; all 52 authored cars at 44.1/48 kHz.
+16-cylinder twincharged / 12,000 RPM / 512 stereo frames: p95 0,6697 ms; max 0,7531 ms; budget 10.6667 ms; managed allocation 0 bytes.
+Editor observation only; physical Android callback performance remains unverified.

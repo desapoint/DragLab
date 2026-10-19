@@ -157,6 +157,8 @@ namespace DragLab.Runtime
             }
             yield return new WaitForSecondsRealtime(.2f);
             Check(scene.Bench != null && scene.Audio.Ready && FindFirstObjectByType<PrototypeGame>() == null, "Bench loads directly without race/profile initialization.");
+            if (Array.IndexOf(Environment.GetCommandLineArgs(), "--draglab-pressure-audio-only") >= 0)
+            { yield return Guarded(PressureAudioRun()); Check(errors == 0, "Pressure playback has no runtime/DSP/GUI errors."); yield break; }
             if (Array.IndexOf(Environment.GetCommandLineArgs(), "--draglab-bench-config") >= 0)
             { yield return Guarded(ConfigWhileDrivingRun()); Check(errors == 0, "Live configuration edits have no runtime/DSP/GUI errors."); yield break; }
             if (Array.IndexOf(Environment.GetCommandLineArgs(), "--draglab-audio-levels") >= 0)
@@ -481,6 +483,41 @@ namespace DragLab.Runtime
                 foreach (float sample in pcm) energy += sample * sample;
             }
             result(Math.Sqrt(energy / (pcm.Length * 16)));
+        }
+        // Audio-path regression independent of the historical bench Settings/Mix layout.
+        // Uses the existing isolated --draglab-bench-verify preference/profile fixture.
+        IEnumerator PressureAudioRun()
+        {
+            Check(SharedAudioSettings.FilePath == Path.Combine(output, "audio-settings.json"), "Playback preferences remain isolated from player settings.");
+            foreach (string id in new[] { "starter-hatch", "rally-sedan", "v8-muscle" })
+            {
+                int index = Array.FindIndex(scene.vehicles, car => car.spec.id == id);
+                Check(index >= 0, "Playback fixture exists: " + id);
+                scene.SelectVehicle(index); scene.UseSliders();
+                scene.SetSliderControls(new EngineBenchControls { fixedRpm = true, targetRpm = 4000, throttle = .8f, load = .6f });
+                SharedAudioSettings.SetMasterVolume(.75f);
+                yield return new WaitForSecondsRealtime(2);
+                double loud = 0, quiet = 0, muted = 0;
+                yield return ReadListenerRms(rms => loud = rms);
+                SharedAudioSettings.SetMasterVolume(.25f); yield return new WaitForSecondsRealtime(.4f);
+                yield return ReadListenerRms(rms => quiet = rms);
+                Check(loud > .00001 && quiet / loud > .27 && quiet / loud < .40, "Listener PCM responds to master gain: " + id);
+                SharedAudioSettings.SetMasterVolume(0); yield return new WaitForSecondsRealtime(.3f);
+                yield return ReadListenerRms(rms => muted = rms);
+                Check(muted < 1e-7 && scene.Bench.state.rpm == 4000, "Mute silences playback while simulation continues: " + id);
+                SharedAudioSettings.SetMasterVolume(.75f); scene.Pause(true);
+                yield return new WaitForSecondsRealtime(.3f);
+                yield return ReadListenerRms(rms => muted = rms);
+                Check(muted < 1e-7 && scene.Audio.CurrentVolume == 0, "Pause silences the live pressure voice: " + id);
+                scene.Pause(false); yield return new WaitForSecondsRealtime(.3f);
+                yield return ReadListenerRms(rms => loud = rms);
+                Check(loud > .00001, "Resume restores live playback: " + id);
+                report.AppendLine("MEASURE: " + id + " listener RMS " + loud.ToString("F6", CultureInfo.InvariantCulture));
+            }
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+            Check(scene.Audio.CallbackCount > 100, "Real AudioSource callbacks rendered the pressure core.");
+            report.AppendLine("MEASURE: callbacks " + scene.Audio.CallbackCount + "; peak observed callback " + scene.Audio.PeakCallbackMilliseconds.ToString("F4", CultureInfo.InvariantCulture) + " ms (desktop observation, not an Android budget claim).");
+#endif
         }
         IEnumerator AudioLevelsRun()
         {

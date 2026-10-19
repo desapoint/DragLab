@@ -12,12 +12,20 @@ namespace DragLab.Presentation
         {
             public readonly EngineSoundController controller;
             public readonly EngineSoundSynth synth;
+            public readonly EngineSoundProfile profile;
+            public readonly int rate;
             public EngineSoundFrame frame;
-            public Session(VehicleSpec spec, Tune tune)
+            public Session(VehicleSpec spec, Tune tune,int rate)
             {
+                this.rate=rate;
                 controller = new EngineSoundController(spec, tune);
-                synth = new EngineSoundSynth(new EngineSoundProfile(spec, tune));
+                profile=new EngineSoundProfile(spec,tune);synth=new EngineSoundSynth(profile,sampleRate:rate);
                 frame = new EngineSoundFrame(spec.idleRpm, 0, 0, 0, 0, active: false);
+            }
+            public Session(Session previous,int rate)
+            {
+                this.rate=rate;controller=previous.controller;profile=previous.profile;
+                synth=new EngineSoundSynth(profile,sampleRate:rate);frame=Volatile.Read(ref previous.frame);
             }
         }
         AudioSource source;
@@ -28,6 +36,12 @@ namespace DragLab.Presentation
         int sampleRate;
         float pitch;
         float outputRms;
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+        long callbackTicks,peakCallbackTicks,callbackCount;
+        public double LastCallbackMilliseconds=>Volatile.Read(ref callbackTicks)*1000.0/System.Diagnostics.Stopwatch.Frequency;
+        public double PeakCallbackMilliseconds=>Volatile.Read(ref peakCallbackTicks)*1000.0/System.Diagnostics.Stopwatch.Frequency;
+        public long CallbackCount=>Volatile.Read(ref callbackCount);
+#endif
         public float OutputRms => session != null && session.frame.active ? Volatile.Read(ref outputRms) : 0;
         public bool Ready { get { return source != null && source.clip != null && session != null; } }
         // RPM ratio for diagnostics; DSP itself keeps a fixed playback rate.
@@ -49,15 +63,24 @@ namespace DragLab.Presentation
             AudioSettings.OnAudioConfigurationChanged += AudioConfigurationChanged;
         }
         void AudioConfigurationChanged(bool changed) { Volatile.Write(ref sampleRate, AudioSettings.outputSampleRate); }
+        void Update(){PrepareDeviceRate();}
+        void PrepareDeviceRate()
+        {
+            var current=Volatile.Read(ref session);int rate=Volatile.Read(ref sampleRate);
+            if(current!=null&&rate>=8000&&rate<=192000&&current.rate!=rate)
+                Volatile.Write(ref session,new Session(current,rate));
+        }
         public void Configure(VehicleSpec spec, Tune tune)
         {
             if(tires!=null)tires.Configure(spec.drive);
             // Each callback captures a consistent session when hardware changes on the main thread.
-            Volatile.Write(ref session, new Session(spec, tune)); pitch = (float)spec.idleRpm / 3000;
+            int rate=Volatile.Read(ref sampleRate);if(rate<=0)rate=AudioSettings.outputSampleRate;
+            Volatile.Write(ref session, new Session(spec, tune,rate)); pitch = (float)spec.idleRpm / 3000;
         }
         public void Render(CarState state, bool active, float volume, double loadOverride = -1, bool? tiresActive = null)
         {
             if (!Ready) return;
+            PrepareDeviceRate();
             var current = session;
             Volatile.Write(ref current.frame, current.controller.Update(state, active, volume, Time.unscaledDeltaTime, loadOverride));
             source.volume = active ? 1 : 0; pitch = (float)state.rpm / 3000;
@@ -66,10 +89,19 @@ namespace DragLab.Presentation
         void OnAudioFilterRead(float[] data, int channels)
         {
             var current = Volatile.Read(ref session); int rate = Volatile.Read(ref sampleRate);
-            if (current == null || rate <= 0 || channels <= 0) { Array.Clear(data, 0, data.Length); return; }
+            // A device change may arrive before the next main-thread Update.
+            // Briefly silence that block; never build tables/filters in this callback.
+            if (current == null || rate != current.rate || channels <= 0) { Array.Clear(data, 0, data.Length);Volatile.Write(ref outputRms,0);return; }
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+            long started=System.Diagnostics.Stopwatch.GetTimestamp();
+#endif
             current.synth.Fill(data, channels, rate, Volatile.Read(ref current.frame), SharedAudioSettings.DspMasterVolume);
             double energy = 0; foreach (float sample in data) energy += sample * sample;
             Volatile.Write(ref outputRms, data.Length > 0 ? (float)Math.Sqrt(energy / data.Length) : 0);
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+            long elapsed=System.Diagnostics.Stopwatch.GetTimestamp()-started;
+            Volatile.Write(ref callbackTicks,elapsed);if(elapsed>Volatile.Read(ref peakCallbackTicks))Volatile.Write(ref peakCallbackTicks,elapsed);Interlocked.Increment(ref callbackCount);
+#endif
         }
         public void Silence()
         {
