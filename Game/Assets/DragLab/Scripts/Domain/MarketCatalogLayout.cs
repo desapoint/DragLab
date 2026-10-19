@@ -80,6 +80,9 @@ namespace DragLab.Domain.Mechanics
             // per-platform maximum calculation, including every alias member.
             var source=catalog.parts.GroupBy(d=>keys[d.id],StringComparer.Ordinal)
                 .OrderBy(g=>g.Min(d=>d.id),StringComparer.Ordinal).ToArray();
+            // Keep the potentially expensive grouping separate from the first
+            // fitting batch, especially on a cold player launch.
+            yield return "parts/layout grouping";
             var groups=new List<Group>(source.Length);
             long start=System.Diagnostics.Stopwatch.GetTimestamp();
             foreach(var group in source)
@@ -87,11 +90,23 @@ namespace DragLab.Domain.Mechanics
                 var definition=group.OrderBy(d=>d.id,StringComparer.Ordinal).First();
                 var fitting=false;
                 int maximum=1;
+                // Fitting one entire product against all vehicle specifications used
+                // to be an indivisible MoveNext; it caused a 54.6 ms player hitch.
+                // Resume within that product with local state intact and no
+                // partially built group visible to any caller.
                 foreach(var spec in specs)
                 {
-                    if(!catalog.Fits(spec,definition))continue;
-                    fitting=true;
-                    maximum=Math.Max(maximum,PartsMarket.Count(spec,definition));
+                    if(catalog.Fits(spec,definition))
+                    {
+                        fitting=true;
+                        maximum=Math.Max(maximum,PartsMarket.Count(spec,definition));
+                    }
+                    long fitNow=System.Diagnostics.Stopwatch.GetTimestamp();
+                    if((fitNow-start)*1000.0/System.Diagnostics.Stopwatch.Frequency>=2.0)
+                    {
+                        yield return "parts/layout fitment";
+                        start=System.Diagnostics.Stopwatch.GetTimestamp();
+                    }
                 }
                 groups.Add(new Group{
                     definition=definition,
