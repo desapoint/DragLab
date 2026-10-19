@@ -171,10 +171,12 @@ namespace DragLab.Domain.Mechanics
             var layoutModels=catalog.parts.Where(d=>d.category==PartCategory.CylinderBlock)
                 .Select(d=>d.id.Split('/')[0]).Distinct().OrderBy(id=>id,StringComparer.Ordinal).ToArray();
             var layoutSpecs=layoutModels.Select(catalog.Spec).ToArray();
-            MarketCatalogLayout.Layout staged=null;int layoutYields=0;
+            MarketCatalogLayout.Layout staged=null;int layoutYields=0,groupingYields=0;
             using(var layoutIterator=MarketCatalogLayout.GetSteps(catalog,layoutKeys,layoutSpecs,l=>staged=l).GetEnumerator())
                 while(layoutIterator.MoveNext()){
                     layoutYields++;
+                    if(string.Equals(layoutIterator.Current as string,"parts/layout grouping",StringComparison.Ordinal))
+                        groupingYields++;
                     if(staged!=null)throw new InvalidOperationException("Partially constructed market layout escaped before commit.");
                 }
             check(staged!=null&&staged.groups.Length>0&&staged.ids.Length==catalog.parts.Count,
@@ -198,6 +200,7 @@ namespace DragLab.Domain.Mechanics
             check(ReferenceEquals(direct,MarketCatalogLayout.Get(catalog,layoutKeys,layoutSpecs)),
                 "Warm catalog layout remains reusable without another fitting build");
             check(layoutYields>0,"Cold authored market layout yields between fitting batches");
+            check(groupingYields>1,"Cold authored product grouping is now incrementally yieldable");
         }
         public static void Coverage(PlayerProfile p,Action<bool,string> check)
         {

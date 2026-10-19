@@ -11,6 +11,15 @@ namespace DragLab.Domain.Mechanics
     {
         sealed class Product { public PartDefinition snapshot;public string key,json,jsonId; }
         internal sealed class Group {public PartDefinition definition;public List<string> ids;public int maximum;public bool deliverable;}
+        // Private construction only. The first authored ID in ordinal order
+        // determines the same representative and group order as the former LINQ
+        // GroupBy(...).OrderBy(g => g.Min(d => d.id)).
+        sealed class GroupDraft
+        {
+            internal PartDefinition definition;
+            internal readonly List<string> ids=new List<string>();
+            internal GroupDraft(PartDefinition first){definition=first;}
+        }
         internal sealed class Layout
         {
             public string[] ids,keys;public Group[] groups;
@@ -76,18 +85,49 @@ namespace DragLab.Domain.Mechanics
                 ids=catalog.parts.Select(d=>d.id).ToArray(),
                 keys=catalog.parts.Select(d=>keys[d.id]).ToArray()
             };
-            // Preserve the authored equivalence grouping, ID ordering, and
-            // per-platform maximum calculation, including every alias member.
-            var source=catalog.parts.GroupBy(d=>keys[d.id],StringComparer.Ordinal)
-                .OrderBy(g=>g.Min(d=>d.id),StringComparer.Ordinal).ToArray();
-            // Keep the potentially expensive grouping separate from the first
-            // fitting batch, especially on a cold player launch.
-            yield return "parts/layout grouping";
-            var groups=new List<Group>(source.Length);
+            // GroupBy + OrderBy in one MoveNext caused the remaining 55 ms
+            // player hitch. Construct equivalent buckets incrementally instead.
+            // The entire draft is private until final atomic layout publication.
+            var byKey=new Dictionary<string,GroupDraft>(StringComparer.Ordinal);
+            var ordered=new SortedDictionary<string,GroupDraft>(StringComparer.Ordinal);
             long start=System.Diagnostics.Stopwatch.GetTimestamp();
-            foreach(var group in source)
+            int rowsSinceYield=0;
+            foreach(var definition in catalog.parts)
             {
-                var definition=group.OrderBy(d=>d.id,StringComparer.Ordinal).First();
+                string key=keys[definition.id];
+                if(!byKey.TryGetValue(key,out var group))
+                {
+                    group=new GroupDraft(definition);
+                    byKey.Add(key,group);
+                    ordered.Add(definition.id,group);
+                }
+                else if(StringComparer.Ordinal.Compare(definition.id,group.definition.id)<0)
+                {
+                    // Changing the minimum must also change the ordered key;
+                    // authored IDs are unique across product groups.
+                    ordered.Remove(group.definition.id);
+                    group.definition=definition;
+                    ordered.Add(definition.id,group);
+                }
+                group.ids.Add(definition.id);
+                // The fixed batch cap makes both cold-start pacing and the
+                // deterministic regression independent of machine speed.
+                if(++rowsSinceYield>=32||
+                    (System.Diagnostics.Stopwatch.GetTimestamp()-start)*1000.0/
+                    System.Diagnostics.Stopwatch.Frequency>=2.0)
+                {
+                    yield return "parts/layout grouping";
+                    rowsSinceYield=0;
+                    start=System.Diagnostics.Stopwatch.GetTimestamp();
+                }
+            }
+            // Never combine the last grouping batch with an expensive first fit.
+            yield return "parts/layout grouping";
+            var groups=new List<Group>(ordered.Count);
+            start=System.Diagnostics.Stopwatch.GetTimestamp();
+            foreach(var group in ordered.Values)
+            {
+                var definition=group.definition;
                 var fitting=false;
                 int maximum=1;
                 // Fitting one entire product against all vehicle specifications used
@@ -108,9 +148,10 @@ namespace DragLab.Domain.Mechanics
                         start=System.Diagnostics.Stopwatch.GetTimestamp();
                     }
                 }
+                group.ids.Sort(StringComparer.Ordinal);
                 groups.Add(new Group{
                     definition=definition,
-                    ids=group.Select(d=>d.id).OrderBy(id=>id,StringComparer.Ordinal).ToList(),
+                    ids=group.ids,
                     maximum=maximum,deliverable=fitting
                 });
                 long now=System.Diagnostics.Stopwatch.GetTimestamp();
