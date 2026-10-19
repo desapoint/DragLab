@@ -111,7 +111,30 @@ namespace DragLab.Domain.Mechanics
             Measured("used parts/guarantee",stamp);stamp=Stamp();
             bool carry=expire&&previous!=null&&previous.seed==state.seed&&previous.generation<state.generation;
             var products=NewPartSupply.Prepare(p,layout,carry?previous:null);
-            var worn=new List<SupplyWear.Need>();foreach(var need in SupplyWear.Steps(p,products)){worn.Add(need);yield return "parts/wear coverage";}
+            // Sum only CPU time inside MoveNext; time between yields belongs to the render loop.
+            // Leave the existing need order and per-need yield boundaries unchanged.
+            var worn=new List<SupplyWear.Need>();
+            long wearCpuTicks=0,wearMaxStepTicks=0;
+            int wearAdvanceCount=0;
+            using(var wearSteps=SupplyWear.Steps(p,products).GetEnumerator()){
+                while(true){
+                    long start=Stamp();
+                    bool hasNeed=wearSteps.MoveNext();
+                    if(start!=0){
+                        long elapsed=System.Diagnostics.Stopwatch.GetTimestamp()-start;
+                        wearCpuTicks+=elapsed;
+                        if(elapsed>wearMaxStepTicks)wearMaxStepTicks=elapsed;
+                        wearAdvanceCount++;
+                    }
+                    if(!hasNeed)break;
+                    worn.Add(wearSteps.Current);
+                    yield return "parts/wear coverage";
+                }
+            }
+            if(Measurement!=null){
+                Measurement("wear/preparation CPU total ("+worn.Count+" needs, "+wearAdvanceCount+" advances)",wearCpuTicks*1000.0/System.Diagnostics.Stopwatch.Frequency);
+                Measurement("wear/preparation slowest MoveNext",wearMaxStepTicks*1000.0/System.Diagnostics.Stopwatch.Frequency);
+            }
             var needs=worn.ToArray();var supply=products.ToList();
             uint supplySelection=Stream(state,0x91e10da5u),supplyQuantity=Stream(state,0x27d4eb2fu);
             NewPartSupply.Next(ref supplySelection); // The first selection-stream roll already chose the opportunity budget.
