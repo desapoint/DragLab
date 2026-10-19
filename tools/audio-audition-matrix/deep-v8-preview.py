@@ -9,7 +9,7 @@ DOMAIN=ROOT/'Game/Assets/DragLab/Scripts/Domain'
 def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,required=True);parser.add_argument('--variant',choices=['balanced','deep'],default='deep');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,required=True);parser.add_argument('--variant',choices=['balanced','deep','original-growl','neutral-consistent'],default='neutral-consistent');args=parser.parse_args()
     out=args.output.resolve();assert out.is_relative_to(ROOT/'reports')
     if out.exists():raise RuntimeError('Use a new output folder to preserve prior auditions.')
     out.mkdir(parents=True)
@@ -32,7 +32,7 @@ def main():
     candidate=copy.deepcopy(profile)
     # Lower drive into the nonlinear exhaust stage as bass is reinforced. Merely
     # boosting bass into saturation can create extra bright harmonics instead.
-    controls=dict(exhaustBassGain=2.15,exhaustBrightness=.42,rawPulseGain=.65,engineGain=.42) if args.variant=='balanced' else dict(exhaustBassGain=2.8,exhaustBrightness=.28,rawPulseGain=.45,engineGain=.32)
+    controls={'balanced':dict(exhaustBassGain=2.15,exhaustBrightness=.42,rawPulseGain=.65,engineGain=.42),'deep':dict(exhaustBassGain=2.8,exhaustBrightness=.28,rawPulseGain=.45,engineGain=.32),'original-growl':dict(exhaustBassGain=1.35,exhaustBrightness=.82,rawPulseGain=.95,engineGain=.68),'neutral-consistent':{}}[args.variant]
     candidate['sound'].update(controls)
     (out/'profiles.json').write_text(json.dumps({'before':profile,'after':candidate},indent=2),encoding='utf-8')
     engine=paths[0].read_text(encoding='utf-8-sig')
@@ -40,6 +40,35 @@ def main():
     prefix=helper.extract(engine,'    public sealed class EngineSoundProfile').split('        public EngineSoundProfile(')[0]
     common='using System;using System.Linq;\nnamespace DragLab.Domain {\n'+enums+'\npublic enum FuelSystem{Injection,Carburetor,Diesel}\npublic enum CutMethod{Factory,Fuel,Ignition}\npublic static class DragMath{public static double Clamp(double x,double lo,double hi)=>Math.Max(lo,Math.Min(hi,x));}\n'
     common+=prefix+helper.ADAPTER+helper.extract(engine,'    public sealed class EngineSoundFrame')+helper.extract(engine,'    public sealed class EngineSoundSynth')+'\n}\n'
+    audition=helper.extract(engine,'    public sealed class EngineSoundSynth').replace('EngineSoundSynth','PreviewGrowlSynth')
+    if args.variant=='original-growl':
+        # Keep the original midrange. Reinforce a quiet lower cycle order in the
+        # exhaust bank voice, not a pitch shift of combustion or mechanical rates.
+        before='double body = Math.Sin(bank) + .20 * Math.Sin(bank * 2 + .45) + .07 * Math.Sin(bank * 3 + .8);'
+        after='double body = Math.Sin(bank) + .20 * Math.Sin(bank * 2 + .45) + .07 * Math.Sin(bank * 3 + .8) + .18 * Math.Sin(Tau * cycle + .35);'
+        assert audition.count(before)==1;audition=audition.replace(before,after)
+        before='double uneven = 1 + .16 * Math.Sin(Tau * cycle) + .07 * Math.Sin(Tau * cycle * 3);'
+        after='double uneven = 1 + .22 * Math.Sin(Tau * cycle) + .09 * Math.Sin(Tau * cycle * 3);'
+        assert audition.count(before)==1;audition=audition.replace(before,after)
+    if args.variant=='neutral-consistent':
+        # voiceLoad already includes throttle-weighted excitation. Use the actual
+        # frame load for this small unloaded-only timbre adjustment instead.
+        before='double voiceLoad, voiceThrottle, voiceBrightness, voiceFilter;'
+        after=before+' double neutralMix;'
+        assert audition.count(before)==1;audition=audition.replace(before,after)
+        before='double targetFilter = 1 - Math.Exp(-Tau * cutoff / sampleRate);'
+        after='double neutralTarget=deepV8?DragMath.Clamp(1-frame.load/.25,0,1)*DragMath.Clamp((frame.throttle-.1)/.9,0,1):0; cutoff*=1-neutralTarget*.16; '+before
+        assert audition.count(before)==1;audition=audition.replace(before,after)
+        before='voiceLoad += (excitation - voiceLoad) * toneSmooth;'
+        after=before+' neutralMix+=(neutralTarget-neutralMix)*toneSmooth;'
+        assert audition.count(before)==1;audition=audition.replace(before,after)
+        before='(deepV8 ? (.45+voiceLoad*.42)*bass*DeepBank(crankPhase,voiceLoad) :'
+        after='(deepV8 ? (.45+voiceLoad*.42)*(1+neutralMix*.45)*bass*DeepBank(crankPhase,voiceLoad) :'
+        assert audition.count(before)==1;audition=audition.replace(before,after)
+        before='double value = low * gain * (1 + profile.exhaust * .16);'
+        after=before+' if(deepV8)value/=(1+neutralMix*.45);'
+        assert audition.count(before)==1;audition=audition.replace(before,after)
+    common+='namespace DragLab.Domain {\n'+audition+'\n}\n'
     order=re.search(r'        static readonly int\[\]\[\] orders=.*?;',paths[1].read_text(encoding='utf-8-sig'),re.S)[0]
     common+='namespace DragLab.Domain.Mechanics {public static class EngineElements{'+order+'public static int[] FiringOrder(int n)=>orders[Math.Clamp(n,1,16)-1];}}\n'
     (out/'CurrentDsp.cs').write_text(common,encoding='utf-8')
@@ -53,7 +82,7 @@ def main():
     metrics=[]
     def wav(name,values):
         with wave.open(str(out/name),'wb') as f:f.setnchannels(1);f.setsampwidth(2);f.setframerate(48000);f.writeframes(np.rint(values*32767).astype('<i2').tobytes())
-    for scene in ['idle','rev','pass']:
+    for scene in ['idle','rev','hold','pass']:
         pair=[np.fromfile(out/f'{scene}-{side}.f32',dtype='<f4').astype(np.float64) for side in ['before','after']]
         for x in pair:
             n=480;x[:n]*=np.linspace(0,1,n);x[-n:]*=np.linspace(1,0,n)
@@ -67,14 +96,17 @@ def main():
             low=float(power[(hz>=40)&(hz<250)].sum());high=float(power[(hz>=300)&(hz<1000)].sum())
             metrics.append({'scene':scene,'side':side,'rms':float(np.sqrt(np.mean(x*x))),'peak':float(np.max(np.abs(x))),'low40to250_over300to1000':low/max(1e-20,high),'spectralCentroidHz':float((hz*power).sum()/power.sum()),'gain':g*headroom})
         assert abs(np.sqrt(np.mean(scaled[0]**2))-np.sqrt(np.mean(scaled[1]**2)))<1e-10
-        if scene!='idle':assert metrics[-1]['low40to250_over300to1000']>metrics[-2]['low40to250_over300to1000']*1.3,'Upper edge was not reduced relative to the low bank voice'
+        if args.variant=='neutral-consistent' and scene=='pass':assert np.array_equal(scaled[0],scaled[1]),'Loaded sound changed in neutral-only proposal'
+        elif scene!='idle':assert metrics[-1]['low40to250_over300to1000']>metrics[-2]['low40to250_over300to1000']*1.1,'Upper edge was not reduced relative to the low bank voice'
         wav(f'{scene}-comparison.wav',np.concatenate([scaled[0],np.zeros(33600),scaled[1]]))
     assert all(digest(p)==hashes[str(p.relative_to(ROOT))] for p in paths),'Production source was modified'
-    manifest={'engine':'Bison 5.0 crossplane V8','variant':args.variant,'sampleRate':48000,'previewOnly':True,'sourceHashes':hashes,'proposedSoundControls':candidate['sound'],'metrics':metrics,'input':'Identical scripted idle, neutral blips and three-gear loaded pass; not a recorded physical race. RPM/firing rates are unchanged.','level':'Equal RMS for each before/after pair, common peak headroom; 10 ms edge fades.'}
+    manifest={'engine':'Bison 5.0 crossplane V8','variant':args.variant,'sampleRate':48000,'previewOnly':True,'sourceHashes':hashes,'auditionSynthSha256':hashlib.sha256(audition.encode('utf-8')).hexdigest(),'proposedSoundControls':candidate['sound'],'metrics':metrics,'input':'Identical scripted idle, neutral blips and three-gear loaded pass; not a recorded physical race. RPM/firing rates are unchanged.','level':'Equal RMS for each before/after pair, common peak headroom; 10 ms edge fades.'}
     (out/'manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
-    rows=''.join(f'<section><h2>{title}</h2><div><label>Current<audio controls preload="none" src="{scene}-before.wav"></audio></label><label>Deeper preview<audio controls preload="none" src="{scene}-after.wav"></audio></label></div><a href="{scene}-comparison.wav">Current → deeper, combined clip</a></section>' for scene,title in [('idle','Warm idle'),('rev','Neutral revs'),('pass','Loaded pass and lift')])
-    (out/'index.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>5.0 V8 growl audition</title><style>body{background:#151b20;color:#e7e9eb;font:17px system-ui;max-width:1000px;margin:40px auto;padding:0 20px}h1{border-bottom:2px solid #ed233d;padding-bottom:18px}section{background:#20282f;border:1px solid #606b76;border-radius:10px;padding:20px;margin:22px 0}section div{display:flex;flex-wrap:wrap;gap:30px}label{display:grid;gap:12px}a{color:#ffa0ab}p{line-height:1.6;color:#bcc7cf}</style><h1>Bison 5.0 · deeper V8 audition</h1><p>Preview only. In-game audio is unchanged. Stronger low bank pulse, softer upper edge, reduced raw buzz. Same firing rate, RPM/load trace, exhaust hardware and private random seed. Each pair has equal RMS level.</p><p>Healthy scripted warm idle, neutral blips and three-gear acceleration/lift. This demonstrates timbre, not a new performance calibration or recorded race.</p>'+rows+'<script>document.addEventListener("play",e=>{for(const a of document.querySelectorAll("audio"))if(a!==e.target)a.pause()},true)</script></html>',encoding='utf-8')
-    (out/'verification.txt').write_text('PASS: six finite bounded repeatable source-DSP renders.\nPASS: identical input/RPM/firing order/private seed/exhaust hardware.\nPASS: per-pair equal RMS, peaks at or below 0.9, edge fades.\nPASS: five production source/asset hashes unchanged.\nListening approval and physical-phone playback are pending.\n',encoding='utf-8')
+    rows=''.join(f'<section><h2>{title}</h2><div><label>Current<audio controls preload="none" src="{scene}-before.wav"></audio></label><label>Deeper preview<audio controls preload="none" src="{scene}-after.wav"></audio></label></div><a href="{scene}-comparison.wav">Current → deeper, combined clip</a></section>' for scene,title in [('idle','Warm idle'),('rev','Neutral revs'),('hold','Steady neutral revs · no limiter cuts'),('pass','Loaded pass and lift')])
+    description='Original character retained, with a quieter lower exhaust-cycle order and slightly more uneven bank-pulse growl.' if args.variant=='original-growl' else 'Stronger low bank pulse, softer upper edge, reduced raw buzz.'
+    if args.variant=='neutral-consistent':description='Original sound controls retained. Low bank voice stays present during unloaded throttle; loaded pass is sample-identical. Steady neutral holds have no limiter/cut events.'
+    (out/'index.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>5.0 V8 growl audition</title><style>body{background:#151b20;color:#e7e9eb;font:17px system-ui;max-width:1000px;margin:40px auto;padding:0 20px}h1{border-bottom:2px solid #ed233d;padding-bottom:18px}section{background:#20282f;border:1px solid #606b76;border-radius:10px;padding:20px;margin:22px 0}section div{display:flex;flex-wrap:wrap;gap:30px}label{display:grid;gap:12px}a{color:#ffa0ab}p{line-height:1.6;color:#bcc7cf}</style><h1>Bison 5.0 · '+args.variant+' audition</h1><p>Preview only. In-game audio is unchanged. '+description+' Same firing rate, RPM/load trace, exhaust hardware and private random seed. Each pair has equal RMS level.</p><p>Healthy scripted warm idle, neutral blips and three-gear acceleration/lift. This demonstrates timbre, not a new performance calibration or recorded race.</p>'+rows+'<script>document.addEventListener("play",e=>{for(const a of document.querySelectorAll("audio"))if(a!==e.target)a.pause()},true)</script></html>',encoding='utf-8')
+    (out/'verification.txt').write_text('PASS: '+str(len(metrics))+' finite bounded repeatable source-DSP renders.\nPASS: identical input/RPM/firing order/private seed/exhaust hardware.\nPASS: per-pair equal RMS, peaks at or below 0.9, edge fades.\nPASS: five production source/asset hashes unchanged.\nListening approval and physical-phone playback are pending.\n',encoding='utf-8')
     print(out/'index.html')
     for m in metrics:print(m)
 

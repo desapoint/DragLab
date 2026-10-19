@@ -17,3 +17,13 @@ Candidate A demonstrated that bass boost alone could add upper harmonics through
 Reproduce: `python tools/audio-audition-matrix/deep-v8-preview.py --variant deep --output reports/NEW-UNIQUE-FOLDER`. Use `--variant balanced` for B. A new output path is required to preserve earlier auditions.
 
 Local review: `reports/v8-growl-preview-20261018-c/index.html`; combined loaded-pass clip: `pass-comparison.wav` (current, short silence, deeper). Idle and neutral rev clips are also included. Raw WAV/PCM, standalone build outputs and JSON are ignored; source tooling and this concise report are versioned.
+
+## Latest review direction: neutral character
+
+The user prefers the initial in-game character with slightly lower/throatier revs, and identifies the problem particularly during neutral revving. D retained more of the original midrange. The final **G** preview targets unloaded revving specifically; it supersedes the broad C profile as the current listening candidate.
+
+Tracing the DSP corrects the initial load-only hypothesis: `voiceLoad` already follows throttle-weighted excitation, so neutral is not simply losing all bank voice. G uses actual `frame.load` to smoothly blend a modest neutral-only harmonic balance adjustment, compensating drive into the nonlinear exhaust stage. It retains all authored sound controls, the original bank irregularity, actual RPM/firing timing and cut gates. It does not add choppy modulation to imitate growl.
+
+Eight bounded repeatable renders pass. Idle and the loaded pass are sample-identical to current production output. Neutral-blip low/upper energy ratio increases 1.28× and steady-neutral ratio 1.13×; centroids fall 81.3→76.8 Hz and 96.0→92.2 Hz. Matched RMS is 0.12, peaks below 0.43, with edge fades. Five production source/asset hashes remain unchanged. These metrics support a small timbre adjustment; the user decides whether it sounds better.
+
+Review `reports/v8-growl-preview-20261018-g/index.html`, especially `rev-comparison.wav` (current → proposed) and `hold-comparison.wav` (steady 2500/4500 RPM, no limiter/cut events or second engine). The inputs remain scripted auditions rather than a recorded physical race. Run `--variant neutral-consistent` to reproduce into a new folder. No runtime audio change is authorized or applied; listening approval remains pending.
