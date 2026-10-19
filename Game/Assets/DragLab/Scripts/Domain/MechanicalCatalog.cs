@@ -212,7 +212,9 @@ namespace DragLab.Domain.Mechanics
             if(category==PartCategory.SparkPlugs&&CombustionHardware.Diesel(spec)||category==PartCategory.GlowPlugs&&!CombustionHardware.Diesel(spec)||category==PartCategory.Ignition&&CombustionHardware.Diesel(spec))return false;
             return !DriveBranch(category)||spec.drive==DriveType.AWD||category==PartCategory.FrontAxle&&spec.drive==DriveType.FWD||category==PartCategory.RearAxle&&spec.drive==DriveType.RWD;
         }
-        public bool Fits(VehicleSpec spec, PartDefinition part)
+        public bool Fits(VehicleSpec spec, PartDefinition part)=>FitsDetached(spec,part);
+        // Shared pure predicate: also safe to evaluate on detached authored snapshots.
+        internal static bool FitsDetached(VehicleSpec spec, PartDefinition part)
         {
             if(part?.awdHardware!=null&&part.awdHardware.version==1&&spec.drive!=DriveType.AWD)return false;
             if(part==null || !SupportsSlot(spec,part.category) || part.fitment!=Interface(spec,part.category) || part.boreMm!=0 && Math.Abs(part.boreMm-Bore(spec))>=.01)return false;

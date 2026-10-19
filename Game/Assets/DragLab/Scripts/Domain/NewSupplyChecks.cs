@@ -201,6 +201,23 @@ namespace DragLab.Domain.Mechanics
                 "Warm catalog layout remains reusable without another fitting build");
             check(layoutYields>0,"Cold authored market layout yields between fitting batches");
             check(groupingYields>1,"Cold authored product grouping is now incrementally yieldable");
+            // Test the independent off-thread cold path, not the already-cached
+            // layout. The existing staged/synchronous path above remains exact.
+            MarketCatalogLayout.ClearForVerification(catalog);
+            MarketCatalogLayout.Layout workerLayout=null;
+            int workerWaits=0;
+            using(var iterator=MarketCatalogLayout.GetSteps(catalog,layoutKeys,layoutSpecs,value=>workerLayout=value,true).GetEnumerator())
+                while(iterator.MoveNext()){
+                    if(iterator.Current is MarketWorkerWait wait){workerWaits++;wait.task.GetAwaiter().GetResult();}
+                    if(workerLayout!=null)throw new InvalidOperationException("Worker exposed an unfinished market layout.");
+                }
+            bool workerMatches=workerLayout!=null&&workerLayout.groups.Length==direct.groups.Length;
+            for(int i=0;workerMatches&&i<direct.groups.Length;i++){
+                var a=direct.groups[i];var w=workerLayout.groups[i];
+                workerMatches=ReferenceEquals(a.definition,w.definition)&&
+                    a.ids.SequenceEqual(w.ids)&&a.maximum==w.maximum&&a.deliverable==w.deliverable;
+            }
+            check(workerWaits>0&&workerMatches,"Detached worker computes the same cold fitted catalog without publishing partial groups");
         }
         public static void Coverage(PlayerProfile p,Action<bool,string> check)
         {

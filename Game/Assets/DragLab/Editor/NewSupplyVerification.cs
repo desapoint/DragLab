@@ -52,7 +52,7 @@ namespace DragLab.Editor
             check(JsonUtility.ToJson(deliveryOriginal.inventory.market)==JsonUtility.ToJson(deliveryWorker.inventory.market)&&
                 string.Join("/",deliveryOriginal.inventory.dealer.Select(row=>JsonUtility.ToJson(row)))==
                 string.Join("/",deliveryWorker.inventory.dealer.Select(row=>JsonUtility.ToJson(row))),
-                "Incremental worker delivery matches the entire synchronous parts/used/engine market epoch");
+                "Offloaded catalog layout, initial stock and delivery match the full synchronous parts/used/engine epoch");
             var baseline=File.ReadAllLines(Path.Combine(Folder,"used-baseline-matrix.csv"),Encoding.UTF8).Skip(1).Where(s=>s.Length>0).ToDictionary(s=>string.Join(",",s.Split(',').Take(3)),s=>s.Split(',')[5]);
             foreach(int seed in new[]{1,41,981,-7})foreach(int minimum in new[]{0,5,20}){
                 var p=Create(catalog,seed,minimum);

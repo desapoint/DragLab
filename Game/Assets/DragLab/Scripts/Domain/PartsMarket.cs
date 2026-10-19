@@ -74,6 +74,38 @@ namespace DragLab.Domain.Mechanics
         public static void Refresh(PlayerProfile p) { if(p.inventory!=null)Generate(p,true); }
         static void Generate(PlayerProfile p,bool expire){foreach(var unused in GenerateSteps(p,expire,false)){} }
         public static IEnumerable<object> RefreshSteps(PlayerProfile p,bool offloadDelivery=false)=>GenerateSteps(p,true,offloadDelivery);
+        sealed class InitialGroup
+        {
+            internal string[] ids;internal int maximum;
+        }
+        sealed class InitialPlan
+        {
+            internal List<NewPartStock> rows;internal int newCount;
+        }
+        static InitialPlan BuildInitialPlan(InitialGroup[] groups,uint selection,uint quantity)
+        {
+            // Initial rolls and row ordering are the same as the original path.
+            // Pure managed data only; does not touch a profile or any Unity API.
+            int newCount=Math.Min(groups.Length,24+(int)(Next(ref selection)*21)%21);
+            var candidates=Enumerable.Range(0,groups.Length).ToList();
+            var chosen=new bool[groups.Length];
+            for(int n=0;n<newCount;n++){
+                int pick=(int)(Next(ref selection)*candidates.Count)%candidates.Count;
+                chosen[candidates[pick]]=true;candidates.RemoveAt(pick);
+            }
+            var rows=new List<NewPartStock>(groups.Length);
+            for(int i=0;i<groups.Length;i++){
+                var group=groups[i];
+                rows.Add(new NewPartStock{definitions=new List<string>(group.ids),
+                    deliveryPercent=5+(int)(Next(ref selection)*6)%6});
+            }
+            for(int i=0;i<groups.Length;i++)if(chosen[i]){
+                double roll=Next(ref quantity);int sets=groups[i].maximum>1?
+                    (roll<.5?1:roll<.85?2:3):(roll<.8?1:roll<.97?2:3);
+                rows[i].units=rows[i].initialUnits=groups[i].maximum*sets;
+            }
+            return new InitialPlan{rows=rows,newCount=newCount};
+        }
         static IEnumerable<object> GenerateSteps(PlayerProfile p,bool expire,bool offloadDelivery)
         {
             if(expire){var retained=p.inventory.dealer.Where(s=>s.Id!=null&&CartReservations.HoldsUsed(p,s.Id)).ToArray();p.inventory.dealer.Clear();p.inventory.dealer.AddRange(retained);}
@@ -82,19 +114,24 @@ namespace DragLab.Domain.Mechanics
             uint random=Stream(state,0x91e10da5u),newQuantity=Stream(state,0x27d4eb2fu),usedRandom=Stream(state,0x165667b1u),usedQuantity=Stream(state,0x85ebca6bu),engineRandom=Stream(state,0xc2b2ae35u),engineQuantity=Stream(state,0xd3a2646cu),coverageRandom=Stream(state,0xfd7046c5u),coverageQuantity=Stream(state,0xb55a4f09u);
             long stamp=Stamp();var productKeys=new Dictionary<string,string>(StringComparer.Ordinal);int indexed=0;foreach(var definition in p.catalog.parts){productKeys.Add(definition.id,ProductKey(definition));if(++indexed%32==0)yield return "parts/product keys";}Measured("product keys",stamp);stamp=Stamp();yield return "parts/product keys";
             var models=Models(p.catalog);var specs=models.Select(p.catalog.Spec).ToArray();
-            var selectedNew=new List<KeyValuePair<NewPartStock,int>>();
             MarketCatalogLayout.Layout layout=null;
-            foreach(var marker in MarketCatalogLayout.GetSteps(p.catalog,productKeys,specs,value=>layout=value))
+            foreach(var marker in MarketCatalogLayout.GetSteps(p.catalog,productKeys,specs,value=>layout=value,offloadDelivery))
                 yield return marker;
-            // Preserve the exact legacy plan ONLY to hold used-pool budgets and guarantee RNG positions steady.
-            // These provisional new rows are replaced after used generation, before any new supply rolls.
-            int newCount=Math.Min(layout.groups.Length,24+(int)(Next(ref random)*21)%21);
-            var newCandidates=layout.groups.ToList();var chosen=new HashSet<MarketCatalogLayout.Group>();
-            for(int n=0;n<newCount;n++){int pick=(int)(Next(ref random)*newCandidates.Count)%newCandidates.Count;chosen.Add(newCandidates[pick]);newCandidates.RemoveAt(pick);}
-            foreach(var group in layout.groups){
-                var row=new NewPartStock{definitions=new List<string>(group.ids),deliveryPercent=5+(int)(Next(ref random)*6)%6};state.parts.Add(row);if(chosen.Contains(group))selectedNew.Add(new KeyValuePair<NewPartStock,int>(row,group.maximum));
+            var planGroups=layout.groups.Select(g=>new InitialGroup{ids=g.ids.ToArray(),maximum=g.maximum}).ToArray();
+            InitialPlan initial=null;
+            if(offloadDelivery)
+            {
+                var task=Task.Run(()=>BuildInitialPlan(planGroups,random,newQuantity));
+                var waiting=new MarketWorkerWait(task);
+                yield return waiting;
+                while(!task.IsCompleted)yield return waiting;
+                initial=task.GetAwaiter().GetResult();
             }
-            foreach(var selected in selectedNew){double roll=Next(ref newQuantity);int sets=selected.Value>1?(roll<.5?1:roll<.85?2:3):(roll<.8?1:roll<.97?2:3);selected.Key.units=selected.Key.initialUnits=selected.Value*sets;}
+            else initial=BuildInitialPlan(planGroups,random,newQuantity);
+            // Publish to the detached candidate only after every selection/quantity
+            // roll has finished. Used and engine streams are independent.
+            state.parts.AddRange(initial.rows);
+            int newCount=initial.newCount;
             Measured("new product selection/quantities",stamp);stamp=Stamp();yield return "parts/layout and selection";
             // A single shared pool: no model quotas for used parts or engines.
             var owned=p.cars.Select(c=>c.vehicleId).Distinct().ToArray();var targets=owned.Length==0?specs:owned.Select(p.catalog.Spec).ToArray();

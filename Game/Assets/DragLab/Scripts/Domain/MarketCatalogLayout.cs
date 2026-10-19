@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using UnityEngine;
 namespace DragLab.Domain.Mechanics
 {
@@ -16,6 +17,10 @@ namespace DragLab.Domain.Mechanics
         // while g.OrderBy(d => d.id, StringComparer.Ordinal).First() chooses
         // the group representative. Do not conflate them: doing so changes
         // seeded stock and definition/quantity assignment.
+        // Worker DTOs contain only copied managed data and precomputed string keys.
+        // No Unity objects, catalog mutations or JsonUtility calls cross the boundary.
+        sealed class DetachedInput {internal PartDefinition part;internal string key;}
+        sealed class DetachedGroup {internal string representative;internal List<string> ids;internal int maximum;internal bool deliverable;}
         sealed class GroupDraft
         {
             internal PartDefinition definition;
@@ -76,11 +81,39 @@ namespace DragLab.Domain.Mechanics
             return result;
         }
 
-        // A cold layout is built privately and only published once all groups have
-        // been fitted. Yield at a soft 2 ms budget to prevent the former ~300 ms
-        // single-frame catalog layout spike. All work remains on Unity's main thread.
+        static DetachedGroup[] BuildDetachedGroups(DetachedInput[] inputs,VehicleSpec[] specs)
+        {
+            // Exactly the former LINQ semantics: default-comparer Min for the
+            // group order, ordinal ID for the representative and alias list.
+            var source=inputs.GroupBy(d=>d.key,StringComparer.Ordinal)
+                .OrderBy(g=>g.Min(d=>d.part.id),StringComparer.Ordinal).ToArray();
+            var groups=new DetachedGroup[source.Length];
+            for(int i=0;i<source.Length;i++)
+            {
+                var sourceGroup=source[i];
+                var definition=sourceGroup.OrderBy(d=>d.part.id,StringComparer.Ordinal).First().part;
+                bool fitting=false;int maximum=1;
+                foreach(var spec in specs)
+                    if(MechanicalCatalog.FitsDetached(spec,definition))
+                    {
+                        fitting=true;
+                        maximum=Math.Max(maximum,PartsMarket.Count(spec,definition));
+                    }
+                groups[i]=new DetachedGroup{
+                    representative=definition.id,
+                    ids=sourceGroup.Select(d=>d.part.id).OrderBy(id=>id,StringComparer.Ordinal).ToList(),
+                    maximum=maximum,deliverable=fitting
+                };
+            }
+            return groups;
+        }
+        internal static void ClearForVerification(MechanicalCatalog catalog)=>layouts.Remove(catalog);
+
+        // A cold layout is built privately and only published once all groups
+        // have been fitted. Synchronous callers keep the stepwise 2 ms soft
+        // budget; incremental after-race callers offload copied pure data.
         internal static IEnumerable<object> GetSteps(MechanicalCatalog catalog,Dictionary<string,string> keys,
-            VehicleSpec[] specs,Action<Layout> complete)
+            VehicleSpec[] specs,Action<Layout> complete,bool offloadManaged=false)
         {
             var existing=layouts.GetValue(catalog,_=>new Layout());
             if(Matches(existing,catalog,keys)){complete(existing);yield break;}
@@ -88,6 +121,42 @@ namespace DragLab.Domain.Mechanics
                 ids=catalog.parts.Select(d=>d.id).ToArray(),
                 keys=catalog.parts.Select(d=>keys[d.id]).ToArray()
             };
+            if(offloadManaged)
+            {
+                // Copy mutable authored definitions on Unity's main thread, then
+                // give this complete detached snapshot exclusively to one worker.
+                var inputs=new DetachedInput[catalog.parts.Count];
+                int inputIndex=0;
+                long captureStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                foreach(var authored in catalog.parts)
+                {
+                    inputs[inputIndex++]=new DetachedInput{
+                        part=authored.Copy(),key=keys[authored.id]
+                    };
+                    if(inputIndex%32==0||
+                        (System.Diagnostics.Stopwatch.GetTimestamp()-captureStart)*1000.0/
+                            System.Diagnostics.Stopwatch.Frequency>=2.0)
+                    {
+                        yield return "parts/layout snapshot";
+                        captureStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                    }
+                }
+                var workerSpecs=specs.Select(s=>s.Copy()).ToArray();
+                var worker=Task.Run(()=>BuildDetachedGroups(inputs,workerSpecs));
+                var wait=new MarketWorkerWait(worker);
+                // Always surface the task to the caller so synchronous shutdown
+                // boundaries can join the same worker safely.
+                yield return wait;
+                while(!worker.IsCompleted)yield return wait;
+                var completed=worker.GetAwaiter().GetResult();
+                var byId=catalog.parts.ToDictionary(d=>d.id,StringComparer.Ordinal);
+                candidate.groups=completed.Select(g=>new Group{
+                    definition=byId[g.representative],ids=g.ids,
+                    maximum=g.maximum,deliverable=g.deliverable
+                }).ToArray();
+            }
+            else
+            {
             // GroupBy + OrderBy in one MoveNext caused the remaining 55 ms
             // player hitch. Construct equivalent buckets incrementally instead.
             // The entire draft is private until final atomic layout publication.
@@ -170,6 +239,7 @@ namespace DragLab.Domain.Mechanics
                 }
             }
             candidate.groups=groups.ToArray();
+            }
             // A newer full layout may have been published during a suspended warmup.
             // Never overwrite that version with an older construction.
             var current=layouts.GetValue(catalog,_=>new Layout());
