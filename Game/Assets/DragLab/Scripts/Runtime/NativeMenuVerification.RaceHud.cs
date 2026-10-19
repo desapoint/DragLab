@@ -321,6 +321,8 @@ namespace DragLab.Runtime
             SqliteStateStore.FailureInjection=stage=>{if(stage=="before-commit"&&game.Race?.ResultReady==true)throw new IOException("Isolated result-save failure");};
             try{
                 while(game.Race.phase!=RacePhase.Finished&&Time.realtimeSinceStartup<retryDeadline)yield return null;
+                yield return new WaitForSecondsRealtime(.15f);
+                Check(game.Race.phase==RacePhase.Finished&&game.Audio.CurrentVolume>0&&game.Audio.OutputRms>1e-6,"Finished lane retains live engine DSP through shutdown/results");
                 float errorDeadline=Time.realtimeSinceStartup+8;while(!game.ResultNotice.StartsWith("Result save failed")&&Time.realtimeSinceStartup<errorDeadline)yield return null;
                 yield return new WaitForEndOfFrame();
                 Check(game.Results.Visible&&game.ResultNotice.StartsWith("Result save failed")&&!game.Results.Root.Q("slipNotice").ClassListContains("hidden"),"Actual failed result save stays visible on the slip with retry retained");

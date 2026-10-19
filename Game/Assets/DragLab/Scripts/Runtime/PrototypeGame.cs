@@ -290,8 +290,8 @@ namespace DragLab.Runtime
             strip.Render(race);
             playerView.Animate(race.player.state);
             aiView.Animate(race.opponent.state);
-            engineAudio.Render(race.player.state, !paused && race.phase != RacePhase.Finished, 1, tiresActive:!paused);
-            opponentAudio.Render(race.opponent.state, !paused && race.phase != RacePhase.Finished,
+            engineAudio.Render(race.player.state, !paused, 1, tiresActive:!paused);
+            opponentAudio.Render(race.opponent.state, !paused,
                 SharedAudioSettings.OpponentVolume * SharedAudioSettings.OpponentGain(race.opponent.state.distance - race.player.state.distance), tiresActive:!paused);
         }
 

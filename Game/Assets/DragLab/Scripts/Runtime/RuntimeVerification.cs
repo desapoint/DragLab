@@ -206,7 +206,7 @@ namespace DragLab.Runtime
             game.PauseRace(false);
             yield return AwaitFinish();
             Check(game.Race.player.state.finished && game.Race.player.state.gear > 1, "Automatic launch with manual-clutch shifting completes.");
-            Check(game.Profile.SelectedCar.completedRuns == 3 && game.Audio.CurrentVolume == 0, "Manual-clutch pass records once and finished audio is silent.");
+            Check(game.Profile.SelectedCar.completedRuns == 3 && game.Audio.CurrentVolume > 0, "Manual-clutch pass records once and finished engine audio continues.");
             File.WriteAllText(Path.Combine(output, "manual-clutch-run.csv"), game.Race.telemetry.Csv());
             yield return Capture("manual-clutch-result");
             double coastDistance = game.Race.player.state.distance;

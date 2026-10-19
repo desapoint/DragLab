@@ -12,6 +12,33 @@ namespace DragLab.Editor
 {
     public static class PressureAudioVerification
     {
+        public static void Transitions()
+        {
+            int n=0;var spec=new VehicleSpec();var tune=new Tune();var controller=new EngineSoundController(spec,tune);
+            var state=new CarState{rpm=6000,throttle=1,limiter=true,combustionFraction=.55};
+            var soft=controller.Update(state,true,1,.01);
+            Check(!soft.cut&&soft.combustionFraction==.55,"soft limiting retains actual partial combustion",ref n);
+            state.combustionFraction=0;Check(controller.Update(state,true,1,.01).cut,"actual full cut still suppresses combustion",ref n);
+            state.combustionFraction=1;state.transmissionTorqueCut=true;Check(controller.Update(state,true,1,.01).cut,"transmission cut remains authoritative",ref n);
+            foreach(int rate in new[]{22050,44100,48000,96000}){
+                var p=new EngineSoundProfile(spec,tune);var pop=new ExhaustPopSynth(p);pop.Configure(rate);pop.Trigger(.9,true);
+                double last=0;for(int i=0;i<rate/500;i++)last=pop.Sample();
+                Check(Math.Abs(last)>1e-5,"overlap fixture contains an audible transient",ref n);
+                pop.Trigger(.8,true);Check(Math.Abs(pop.Sample()-last)<1e-12,"overlapping pops have no waveform reset discontinuity / "+rate,ref n);
+                pop.Clear();Check(pop.Sample()==0,"clear removes retrigger tails / "+rate,ref n);
+                var isolated=spec.Copy();isolated.sound.engineGain=0;isolated.engineBehavior.mechanicalClatter=0;
+                var synth=new EngineSoundSynth(new EngineSoundProfile(isolated,tune),sampleRate:rate);var warm=new float[rate];
+                synth.Fill(warm,1,rate,new EngineSoundFrame(3200,.8,.7,0,1,intakeGulp:1));
+                var next=new float[128];synth.Fill(next,1,rate,new EngineSoundFrame(3200,.8,.7,0,.2,intakeGulp:0));
+                double prediction=2*warm[warm.Length-1]-warm[warm.Length-2];
+                Check(Math.Abs(next[0]-prediction)<.002,"intake and volume transition remain continuous / "+rate,ref n);
+            }
+            string root=Path.GetFullPath(Path.Combine(Application.dataPath,"../.."));
+            int audio=EngineSoundVerification.Run(root),pops=ExhaustPopVerification.Run(root),induction=InductionVerification.Run(root);
+            string dir=Path.Combine(root,"reports/audio-transitions-20261019");Directory.CreateDirectory(dir);
+            File.WriteAllText(Path.Combine(dir,"verification.txt"),"PASS: "+n+" transition checks; "+audio+" audio; "+pops+" exhaust-pop; "+induction+" induction checks.\n",new UTF8Encoding(false));
+            Debug.Log("Audio transition checks passed: "+n);
+        }
         static void Check(bool ok,string why,ref int n){if(!ok)throw new InvalidOperationException("PRESSURE AUDIO: "+why);n++;}
         static double Energy(float[] x){double sum=0;foreach(float v in x)sum+=v*v;return sum/x.Length;}
         static float[] Pcm(EngineSoundProfile p,EngineSoundFrame f,int rate=48000)

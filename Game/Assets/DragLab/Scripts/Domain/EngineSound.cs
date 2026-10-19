@@ -158,7 +158,7 @@ namespace DragLab.Domain
             lastPhysicalPop = state.exhaustPopCount;
             wasActive = true; lastPhysicalRelease = state.boostReleaseCount; boost = state.boostBar;
             return new EngineSoundFrame(state.rpm, gas, load, boost, DragMath.Clamp(volume, 0, 1), state.slip, state.speed,
-                true, state.limiter || state.transmissionTorqueCut, releaseId, releaseStrength, state.turboSpool, state.superchargerBoostBar,
+                true, state.combustionFraction <= 0 || state.transmissionTorqueCut, releaseId, releaseStrength, state.turboSpool, state.superchargerBoostBar,
                 DragMath.Clamp(state.superchargerDriveTorqueNm / torque, 0, 1), state.turboBoostBar,
                 state.combustionFraction, state.idleRoughness, state.intakeGulp, state.fuelHesitation,
                 popId, state.exhaustPopStrength, state.launched && gas < .1 && state.rpm > spec.idleRpm + 900,
@@ -189,6 +189,8 @@ namespace DragLab.Domain
         int lastRelease;
         double gulpPhase, clatterPhase;
         double voiceLoad, voiceThrottle;
+        double gulpMix,hesitationMix,overrunMix,blowerBoostMix,blowerLoadMix,voiceVolume;
+        bool voiceInitialized;
         double twoStepMix;
         double outputGain;
         bool outputGainInitialized;
@@ -216,8 +218,10 @@ namespace DragLab.Domain
             if (!frame.active || frame.volume <= 0)
             {
                 Array.Clear(data, 0, data.Length); gain = airLow = dcIn = dcOut = clatterLow = 0; releaseAge = 10;
+                voiceInitialized=false;
                 lastRelease = frame.releaseId; lastPop = frame.popId; pop.Clear(); exhaustFilter.Clear(); pressureCore.Clear(); if(turboCore!=null)turboCore.Clear(); return;
             }
+            if(!voiceInitialized){voiceInitialized=true;voiceVolume=frame.volume;gulpMix=frame.intakeGulp;hesitationMix=frame.fuelHesitation;overrunMix=frame.overrun?1:0;blowerBoostMix=frame.superchargerBoost;blowerLoadMix=frame.chargerLoad;}
             if (frame.releaseId != lastRelease) { lastRelease = frame.releaseId; releaseAge = 0; releaseStrength = frame.releaseStrength; }
             pop.Configure(sampleRate);
             if (frame.popId != lastPop) { lastPop = frame.popId; pop.Trigger(frame.popStrength, frame.twoStep); }
@@ -236,11 +240,13 @@ namespace DragLab.Domain
             for (int i = 0; i < data.Length; i += channels)
             {
                 rpm += (frame.rpm - rpm) * smooth;
+                voiceVolume+=(frame.volume-voiceVolume)*smooth;gulpMix+=(frame.intakeGulp-gulpMix)*smooth;hesitationMix+=(frame.fuelHesitation-hesitationMix)*smooth;
+                overrunMix+=((frame.overrun?1:0)-overrunMix)*smooth;blowerBoostMix+=(frame.superchargerBoost-blowerBoostMix)*smooth;blowerLoadMix+=(frame.chargerLoad-blowerLoadMix)*smooth;
                 voiceLoad += (excitation - voiceLoad) * toneSmooth; voiceThrottle += (frame.throttle - voiceThrottle) * gainSmooth;
                 twoStepMix += ((frame.twoStep ? 1 : 0) - twoStepMix) * gainSmooth;
                 double idleMix = DragMath.Clamp(1 - (rpm - profile.idleRpm) / 1200, 0, 1) * (1 - twoStepMix);
                 double idlePresence = 1 + (profile.idleBoostGain - 1) * (frame.twoStep ? 0 : idleMix * (1 - voiceThrottle));
-                double targetGain = frame.volume * profile.engineGain * (.30 + voiceThrottle * .18 + voiceLoad * .30) * idlePresence * (frame.cut ? .12 : frame.combustionFraction);
+                double targetGain = voiceVolume * profile.engineGain * (.30 + voiceThrottle * .18 + voiceLoad * .30) * idlePresence * (frame.cut ? .12 : frame.combustionFraction);
                 gain += (targetGain - gain) * gainSmooth;
                 double firing = profile.FiringHz(rpm);
                 firingPhase=Advance(firingPhase,firing,sampleRate);crankPhase=Advance(crankPhase,rpm/120,sampleRate);
@@ -249,15 +255,15 @@ namespace DragLab.Domain
                 double value=pulse*gain*(1+profile.exhaust*.16);
                 double carb=carbVoice?1:0;
                 gulpPhase = Advance(gulpPhase, 90 + frame.throttle * 75, sampleRate);
-                double outsideExhaust = (Math.Sin(Tau * gulpPhase) + .25 * Math.Sin(Tau * gulpPhase * 2)) * frame.intakeGulp * .09 * frame.volume;
-                value += Math.Sin(Tau * crankPhase * 2) * frame.fuelHesitation * .06 * frame.volume * combustionColorGain;
+                double outsideExhaust = (Math.Sin(Tau * gulpPhase) + .25 * Math.Sin(Tau * gulpPhase * 2)) * gulpMix * .09 * voiceVolume;
+                value += Math.Sin(Tau * crankPhase * 2) * hesitationMix * .06 * voiceVolume * combustionColorGain;
                 // Open-throttle intake/exhaust rotation remains audible while launch cuts interrupt combustion.
                 value += twoStepMix * voiceThrottle * (Math.Sin(phase) * .12 + Math.Sin(phase * 2) * .045) * frame.volume * combustionColorGain;
                 clatterPhase = Advance(clatterPhase, Math.Min(1900 + rpm * .04, sampleRate * .2), sampleRate);
                 double clatter=Math.Sin(Tau*clatterPhase)*Math.Pow(Math.Max(0,Math.Cos(Tau*crankPhase*2)),dieselVoice?12:6);
                 clatterLow+=clatterSmooth*(clatter-clatterLow);
                 outsideExhaust+=(dieselVoice?clatter*.004:clatterLow*.0005)*profile.mechanicalClatter*frame.volume;
-                if (frame.overrun && carb > 0) value += Math.Sin(phase) * Math.Pow(.5 + .5 * Math.Sin(Tau * crankPhase), 2) * .06 * profile.mixtureVariation * frame.volume * combustionColorGain;
+                if (carb > 0) value += overrunMix * Math.Sin(phase) * Math.Pow(.5 + .5 * Math.Sin(Tau * crankPhase), 2) * .06 * profile.mixtureVariation * voiceVolume * combustionColorGain;
                 value += pop.Sample() * (dieselVoice?0:.3) * frame.volume;
                 value = exhaustFilter.Process(value) + outsideExhaust + pressureCore.Mechanical*gain;
                 if(turboCore!=null)value+=turboCore.Sample(frame,pressureCore.TurbineResponse,noise)*frame.volume;
@@ -267,8 +273,8 @@ namespace DragLab.Domain
                     chargerPhase = Advance(chargerPhase, hz, sampleRate);
                     double whine = Math.Sin(Tau * chargerPhase) + .18 * Math.Sin(Tau * chargerPhase * 2);
                     if (profile.superchargerCount == 2) { chargerSecondPhase = Advance(chargerSecondPhase, hz * .991, sampleRate); whine = (whine + Math.Sin(Tau * chargerSecondPhase)) * .65; }
-                    double scFraction = frame.superchargerBoost > 0 ? frame.superchargerBoost / Math.Max(.1, profile.boostBar) : profile.turboCount == 0 ? frame.boost / Math.Max(.1, profile.boostBar) : 0;
-                    value += (.82*whine+(hz*3<sampleRate*.42?.06*Math.Sin(Tau*chargerPhase*3):0)) * .15 * profile.chargerGain * (.06 + .6 * scFraction + .3 * frame.chargerLoad) * frame.volume;
+                    double scFraction = blowerBoostMix > 0 ? blowerBoostMix / Math.Max(.1, profile.boostBar) : profile.turboCount == 0 ? frame.boost / Math.Max(.1, profile.boostBar) : 0;
+                    value += (.82*whine+(hz*3<sampleRate*.42?.06*Math.Sin(Tau*chargerPhase*3):0)) * .15 * profile.chargerGain * (.06 + .6 * scFraction + .3 * blowerLoadMix) * voiceVolume;
                 }
                 if (!dieselVoice && releaseAge < 1.2 && profile.turboCount > 0)
                 {

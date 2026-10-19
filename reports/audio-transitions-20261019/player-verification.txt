@@ -1,0 +1,56 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: First start opens preset onboarding before shopping
+PASS: Fresh defaults are Shift myself / Simulation / Normal market
+PASS: Dialog content clears fixed X/title and actions: onboarding presets
+PASS: Presets precede independent Normal market selection
+PASS: Next keeps all settings as unsaved drafts
+PASS: Back retains both preset drafts
+PASS: Returning to market retains its independent draft
+PASS: Dialog content clears fixed X/title and actions: onboarding market
+PASS: Failed preference write keeps onboarding open and retryable
+PASS: Failed onboarding preserves original state and preferences
+PASS: Explicit confirmation persists completion and returns to starter selection
+PASS: Normal market applies after Simulation rather than becoming Hard
+PASS: Onboarding changes preferences only; exact starter stock, money and progression remain intact
+PASS: Confirmed presets reload independently from SQLite progression
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Dealership Fitted parts sits beside Stats with the same compact ten-point spacing as owned cars
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Fitted values reflect actual member condition and failures instead of a neutral tire wrapper
+PASS: Disclosed dealer fitted tires show all four actual corner specifications, identities and remaining conditions
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Each fitted part has a shared Shop action, available after an owned car is selected
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Result action fixture stages the real car / Car purchased and selected.
+PASS: Finished lane retains live engine DSP through shutdown/results
+PASS: Actual failed result save stays visible on the slip with retry retained
+PASS: A second actual pass opens the reusable paper results
+PASS: Result slip total is the current rival's reaction plus ET
+PASS: Result slip margin uses the current two total crossing times
+PASS: Successful settlement retry clears the actionable error without adding a success message / notice= / storage=Saved. / hidden=True
+PASS: Paper telemetry action exports the exact authoritative trace
+PASS: Explicit telemetry export feedback remains visible
+MEASURE: retry changed=True / phase=Countdown / visible=True / note=Exported: E:\Coding adventures\Proper racing game\reports\player-fixtures\audio-transitions-20261019-results\last-run.csv
+PASS: Race again starts one new session and removes the old slip / Exported: E:\Coding adventures\Proper racing game\reports\player-fixtures\audio-transitions-20261019-results\last-run.csv
+PASS: Practice retry keeps its mode and cannot duplicate rewards
+PASS: A new race clears both board lanes independently of the previous winner
+PASS: Leaving the staged retry closes its durable checkpoint without replaying a payout
+Checks: 53 / runtime errors: 0

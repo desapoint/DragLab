@@ -136,7 +136,7 @@ namespace DragLab.Domain
             double rf=Clamp((rpm-rpmGrid[r])/(rpmGrid[r+1]-rpmGrid[r]),0,1);int a=Math.Min(3,(int)(throttle*4));double af=throttle*4-a;
             double[] k00=kernels[r*5+a],k01=kernels[r*5+a+1],k10=kernels[(r+1)*5+a],k11=kernels[(r+1)*5+a+1],target=pending[banks[cylinder]];
             double w00=(1-rf)*(1-af)*gain*contribution,w01=(1-rf)*af*gain*contribution,w10=rf*(1-af)*gain*contribution,w11=rf*af*gain*contribution;
-            for(int i=0;i<kernelLength;i++)
+            if(contribution>0)for(int i=0;i<kernelLength;i++)
             {
                 double v=k00[i]*w00+k01[i]*w01+k10[i]*w10+k11[i]*w11;int at=(cursor+offset+i)&mask;
                 target[at]+=v*(1-fraction);target[(at+1)&mask]+=v*fraction;

@@ -5,7 +5,9 @@
 `python tools/audio-audition-matrix/verify-integration.py` now runs the production
 pressure-core verifier: all 52 authored configurations, a synthetic 1-16-cylinder /
 layout / induction grid, sample-rate coverage, replay/callback invariance, reviewed
-NA-core PCM parity, cuts/wear and warmed allocation/timing checks. Pass `--output`
+steady NA-core PCM parity, cuts/wear and warmed allocation/timing checks. Throttle
+reapplication/overrun transitions are intentionally smoothed after the mobile
+click regression; their old discontinuities are not a golden reference. Pass `--output`
 to choose a fresh report folder. This tests actual production DSP; Unity/player
 and physical Android checks remain separate. See `docs/ENGINE_AUDIO_PIPELINE.md`.
 

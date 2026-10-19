@@ -37,7 +37,10 @@ static class PressureLiveRenderer
         {
             string id=row.GetProperty("id").GetString();var profile=new EngineSoundProfile(row.GetProperty("profile"));
             var frames=ComparisonInputs.Frames(profile);var full=Render(profile,frames);
-            if(id=="StarterHatch"||id=="V8Muscle")Check(full.SequenceEqual(Render(profile,frames,true)),"Approved NA pressure voice changed: "+id);
+            if(id=="StarterHatch"||id=="V8Muscle"){
+                var stable=Enumerable.Repeat(new EngineSoundFrame(4500,.9,.85,0,.85),120).ToArray();
+                Check(Render(profile,stable).SequenceEqual(Render(profile,stable,true)),"Approved steady NA pressure voice changed: "+id);
+            }
             if(id=="StarterHatch"||id=="V8Muscle"||id=="RallySedan")
             {
                 Check(full.SequenceEqual(Render(profile,frames,false,128)),"Callback boundary changed output");
