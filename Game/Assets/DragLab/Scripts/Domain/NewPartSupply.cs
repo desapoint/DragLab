@@ -14,6 +14,7 @@ namespace DragLab.Domain.Mechanics
             internal int maximum;
             internal bool owned,individual;
             internal readonly Dictionary<Branch,bool> categories=new Dictionary<Branch,bool>();
+            internal NewSupplyCatalogIndex.Classification preclassified;
         }
         internal sealed class Branch
         {
@@ -23,6 +24,9 @@ namespace DragLab.Domain.Mechanics
             internal Branch[] children;
             internal bool Accepts(Product p)
             {
+                // A published authoring snapshot is immutable. Unready/changed catalogs
+                // use the exact original per-product branch test.
+                if(p.preclassified!=null)return p.preclassified.Accepts(this);
                 if(!p.categories.TryGetValue(this,out bool valid)){valid=filter!=null?filter(p):children.Any(c=>c.weight>0&&c.Accepts(p));p.categories[this]=valid;}
                 return valid;
             }
@@ -175,9 +179,104 @@ namespace DragLab.Domain.Mechanics
                 // If an authored alias group splits, carry its physical units once, never once per alias.
                 row.units=row.initialUnits=prior==null||!carried.Add(prior)?0:Math.Max(0,prior.units-held);row.discovered=prior!=null&&(prior.discovered||prior.initialUnits>0);
                 if(prior!=null)row.deliveryPercent=prior.deliveryPercent;
-                var d=group.definition;result.Add(new Product{definition=d,stock=row,maximum=group.deliverable?group.maximum:0,owned=owned.Any(s=>p.catalog.Fits(s,d)),individual=d.category==PartCategory.Tires||EngineElements.Supported(d.category)});
+                var d=group.definition;result.Add(new Product{definition=d,stock=row,maximum=group.deliverable?group.maximum:0,owned=owned.Any(s=>p.catalog.Fits(s,d)),individual=d.category==PartCategory.Tires||EngineElements.Supported(d.category),
+                    preclassified=NewSupplyCatalogIndex.For(p.catalog,d)});
             }
             p.inventory.market.index=null;return result.ToArray();
+        }
+    }
+
+    // Only Unity's main thread drives this warmup. Never exposes an incomplete index and
+    // never waits for it: an early shop visit or a cold refresh uses the original path.
+    // No background thread touches mutable authored definitions, profile or inventory.
+    internal static class NewSupplyCatalogIndex
+    {
+        internal sealed class Classification
+        {
+            readonly PartDefinition original;
+            readonly string id;
+            readonly PartCategory category;
+            readonly EngineUpgradeInduction induction;
+            readonly int stage;
+            readonly HashSet<NewPartSupply.Branch> accepted;
+
+            internal Classification(PartDefinition definition)
+            {
+                original=definition;id=definition.id;category=definition.category;
+                induction=definition.induction;stage=definition.stage;
+                var product=new NewPartSupply.Product{definition=definition};
+                var acceptedBranches=new HashSet<NewPartSupply.Branch>();
+                Visit(NewPartSupply.Categories,product,acceptedBranches);
+                accepted=acceptedBranches; // Never mutated after publication.
+            }
+            static void Visit(NewPartSupply.Branch branch,NewPartSupply.Product product,HashSet<NewPartSupply.Branch> flags)
+            {
+                if(branch.children!=null)foreach(var child in branch.children)Visit(child,product,flags);
+                if(branch.Accepts(product))flags.Add(branch);
+            }
+            internal bool Matches(PartDefinition definition)
+                =>ReferenceEquals(original,definition)&&id==definition.id&&category==definition.category&&
+                    induction==definition.induction&&stage==definition.stage;
+            internal bool Accepts(NewPartSupply.Branch branch)=>accepted.Contains(branch);
+        }
+
+        sealed class State
+        {
+            internal readonly PartDefinition[] definitions;
+            internal readonly int count;
+            internal Dictionary<string,Classification> building;
+            internal IReadOnlyDictionary<string,Classification> published;
+            internal int index;
+            internal State(MechanicalCatalog catalog)
+            {
+                definitions=catalog.parts.ToArray();count=definitions.Length;
+                building=new Dictionary<string,Classification>(StringComparer.Ordinal);
+            }
+        }
+        static readonly System.Runtime.CompilerServices.ConditionalWeakTable<MechanicalCatalog,State> states=
+            new System.Runtime.CompilerServices.ConditionalWeakTable<MechanicalCatalog,State>();
+
+        // Idempotent request; reuse across new games and progression reset if the
+        // mechanical catalog is unchanged. Nothing here creates stock or rolls RNG.
+        internal static void Request(MechanicalCatalog catalog)
+        {
+            if(catalog==null)return;
+            var existing=states.GetValue(catalog,c=>new State(c));
+            if(existing.count!=catalog.parts.Count){
+                states.Remove(catalog);
+                states.GetValue(catalog,c=>new State(c));
+            }
+        }
+        internal static bool Ready(MechanicalCatalog catalog)
+        {
+            return catalog!=null&&states.TryGetValue(catalog,out var state)&&
+                state.count==catalog.parts.Count&&state.published!=null;
+        }
+        internal static void Advance(MechanicalCatalog catalog,double budgetMilliseconds)
+        {
+            if(catalog==null||budgetMilliseconds<=0)return;
+            Request(catalog);
+            if(!states.TryGetValue(catalog,out var state)||state.published!=null)return;
+            long start=System.Diagnostics.Stopwatch.GetTimestamp();
+            do
+            {
+                if(state.index==state.count){
+                    // Publication is a single reference swap only after every row exists.
+                    state.published=new System.Collections.ObjectModel.ReadOnlyDictionary<string,Classification>(state.building);
+                    state.building=null;
+                    return;
+                }
+                var definition=state.definitions[state.index++];
+                if(definition!=null&&definition.id!=null)
+                    state.building[definition.id]=new Classification(definition);
+            }while((System.Diagnostics.Stopwatch.GetTimestamp()-start)*1000.0/System.Diagnostics.Stopwatch.Frequency<budgetMilliseconds);
+            // The last row may have been added; publish on the next budgeted tick.
+        }
+        internal static Classification For(MechanicalCatalog catalog,PartDefinition definition)
+        {
+            if(catalog==null||definition==null||!states.TryGetValue(catalog,out var state)||
+                state.published==null||state.count!=catalog.parts.Count)return null;
+            return state.published.TryGetValue(definition.id,out var item)&&item.Matches(definition)?item:null;
         }
     }
 }

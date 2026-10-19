@@ -60,6 +60,8 @@ namespace DragLab.Runtime
             if (!ProfileStore.TryReset(profile, out var fresh))
             { resetGameConfirm = false; notice = ProfileStore.Status; return false; }
             profile = fresh; settings = profile.driving; difficulty = profile.difficulty;
+            // Reuse any ready authoring index, or resume incremental preparation.
+            DragLab.Domain.Mechanics.NewSupplyCatalogIndex.Request(profile.catalog);
             DiscardPreviews();
             saveDelay = 0; pendingAction = null;
             race?.CloseOpponentWorker(); race = null; activeEvent = null; previousPass = finishedPass = null;

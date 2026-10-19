@@ -44,6 +44,42 @@ namespace DragLab.Domain.Mechanics
             check(NewPartSupply.Deliver(new List<NewPartSupply.Product>{multiple},Array.Empty<SupplyWear.Need>(),ref random,ref quantity)>0&&random==before&&multiple.stock.discovered,"Sole product skips all product-filtering rolls, still delivers and discovers");
             int stock=multiple.stock.units;NewPartSupply.Deliver(new List<NewPartSupply.Product>{multiple},Array.Empty<SupplyWear.Need>(),ref random,ref quantity);check(multiple.stock.units>stock,"Repeated opportunity adds stock rather than replacing it");
             var all=Enum.GetValues(typeof(PartCategory)).Cast<PartCategory>().Select(c=>Product(c)).ToList();
+            // Cold/preparing/ready paths must agree on every category branch. Warmup
+            // never publishes half-built state and does not consume a random draw.
+            var indexCatalog=new MechanicalCatalog(Array.Empty<VehicleSpec>(),false);
+            indexCatalog.parts.AddRange(all.Select(p=>p.definition));
+            NewSupplyCatalogIndex.Request(indexCatalog);
+            check(!NewSupplyCatalogIndex.Ready(indexCatalog)&&NewSupplyCatalogIndex.For(indexCatalog,all[0].definition)==null,
+                "Cold startup index leaves original eligibility available while unready");
+            NewSupplyCatalogIndex.Advance(indexCatalog,.00001);
+            check(!NewSupplyCatalogIndex.Ready(indexCatalog)&&NewSupplyCatalogIndex.For(indexCatalog,all[0].definition)==null,
+                "Partial startup index is never published");
+            int preparedAdvances=0;
+            while(!NewSupplyCatalogIndex.Ready(indexCatalog)&&preparedAdvances++<all.Count+2)
+                NewSupplyCatalogIndex.Advance(indexCatalog,5);
+            check(NewSupplyCatalogIndex.Ready(indexCatalog),"Incremental startup index publishes once fully ready");
+            bool exactMembership=true;
+            void CompareBranches(NewPartSupply.Branch branch,NewPartSupply.Product plain,NewPartSupply.Product cached){
+                if(branch.Accepts(plain)!=branch.Accepts(cached))exactMembership=false;
+                if(branch.children!=null)foreach(var child in branch.children)CompareBranches(child,plain,cached);
+            }
+            var indexedAll=all.Select(p=>new NewPartSupply.Product{definition=p.definition,
+                stock=new NewPartStock(),maximum=p.maximum,individual=p.individual,owned=p.owned,
+                preclassified=NewSupplyCatalogIndex.For(indexCatalog,p.definition)}).ToList();
+            for(int i=0;i<all.Count;i++)CompareBranches(NewPartSupply.Categories,all[i],indexedAll[i]);
+            check(exactMembership&&indexedAll.All(p=>p.preclassified!=null),"Published index exactly matches cold category tree for every authored category");
+            uint bareSeed=0x8f24173du,cachedSeed=bareSeed;bool equivalent=true;
+            for(int i=0;i<256;i++)
+                if(!ReferenceEquals(NewPartSupply.PickCategory(all,NewPartSupply.Categories,ref bareSeed).definition,
+                    NewPartSupply.PickCategory(indexedAll,NewPartSupply.Categories,ref cachedSeed).definition)||bareSeed!=cachedSeed){equivalent=false;break;}
+            check(equivalent,"Cached product selection preserves 256 exact RNG positions and definition identities");
+            NewSupplyCatalogIndex.Request(indexCatalog);
+            check(NewSupplyCatalogIndex.Ready(indexCatalog),"Reset/reentry reuses the completed catalog index");
+            var mutated=all.First(p=>p.definition.category==PartCategory.Tires).definition;
+            var originalStage=mutated.stage;mutated.stage=originalStage+1;
+            check(NewSupplyCatalogIndex.For(indexCatalog,mutated)==null,
+                "Authored classification changes reject stale cached membership");
+            mutated.stage=originalStage;
             foreach(var p in all)check(NewPartSupply.Categories.Accepts(p),"Category tree covers "+p.definition.category);
             double[] rootWeights={3,3,2.5,2,2,1.75,1.5,1};
             check(NewPartSupply.Categories.children.Select(b=>b.weight).SequenceEqual(rootWeights),"Root weights equal the approved 16.75-total contract");
