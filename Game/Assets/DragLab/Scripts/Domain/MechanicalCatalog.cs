@@ -79,6 +79,19 @@ namespace DragLab.Domain.Mechanics
             if(applyOverrides)PartCatalogOverrides.Apply(this,PartCatalogOverrides.Load());
             authoring=false;RebuildIndexes();
         }
+        // Snapshot constructor performs no authoring and never loads Unity assets.
+        MechanicalCatalog() {}
+        // Main-thread capture for the isolated after-race new-stock worker.
+        // References to authored parts/specs never cross into a worker; its
+        // Find/Resolve code operates solely on these private copies.
+        internal MechanicalCatalog DetachedNewSupplySnapshot()
+        {
+            var copy=new MechanicalCatalog();
+            foreach(var pair in specs)copy.specs.Add(pair.Key,pair.Value.Copy());
+            foreach(var definition in parts)copy.parts.Add(definition.Copy());
+            copy.RebuildIndexes();
+            return copy;
+        }
         bool authoring;
         struct IndexedPart {public PartDefinition value;public int position;}
         volatile Dictionary<string,IndexedPart> partIndex;

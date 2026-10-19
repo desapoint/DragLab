@@ -131,6 +131,11 @@ namespace DragLab.Domain.Mechanics
         }
         internal static int Deliver(List<Product> all,SupplyWear.Need[] needs,ref uint selection,ref uint quantity)
             =>DeliverCore(all,false,needs,ref selection,ref quantity,PartsMarket.Measurement,false);
+        // All inputs are owned by the detached new-supply worker. Never use the
+        // global measurement observer or a Unity-backed stock lookup here.
+        internal static int DeliverDetached(List<Product> all,SupplyWear.Need[] needs,
+            ref uint selection,ref uint quantity,Action<string,double> collect)
+            =>DeliverCore(all,false,needs,ref selection,ref quantity,collect,true);
         internal static int Deliver(DeliveryPool prepared,SupplyWear.Need[] needs,ref uint selection,ref uint quantity)
             =>DeliverCore(prepared.eligible,true,needs,ref selection,ref quantity,PartsMarket.Measurement,false);
         // Called exclusively on a detached candidate profile. The caller supplies
@@ -175,7 +180,7 @@ namespace DragLab.Domain.Mechanics
             Sample(measure,"delivery/quantity and publication",ref stamp);
             return units;
         }
-        internal static Product[] Prepare(PlayerProfile p,MarketCatalogLayout.Layout layout,PartsStockState previous)
+        internal static Product[] Prepare(PlayerProfile p,MarketCatalogLayout.Layout layout,PartsStockState previous,bool detached=false)
         {
             var old=new Dictionary<string,NewPartStock>(StringComparer.Ordinal);
             if(previous!=null)foreach(var row in previous.parts)foreach(string id in row.definitions)old[id]=row;
@@ -189,7 +194,7 @@ namespace DragLab.Domain.Mechanics
                 row.units=row.initialUnits=prior==null||!carried.Add(prior)?0:Math.Max(0,prior.units-held);row.discovered=prior!=null&&(prior.discovered||prior.initialUnits>0);
                 if(prior!=null)row.deliveryPercent=prior.deliveryPercent;
                 var d=group.definition;result.Add(new Product{definition=d,stock=row,maximum=group.deliverable?group.maximum:0,owned=owned.Any(s=>p.catalog.Fits(s,d)),individual=d.category==PartCategory.Tires||EngineElements.Supported(d.category),
-                    preclassified=NewSupplyCatalogIndex.For(p.catalog,d)});
+                    preclassified=detached?null:NewSupplyCatalogIndex.For(p.catalog,d)});
             }
             p.inventory.market.index=null;return result.ToArray();
         }

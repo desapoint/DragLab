@@ -42,17 +42,39 @@ namespace DragLab.Editor
             // Compare entire deterministic market output with and without the
             // worker boundary, not just isolated category/quantity calculations.
             var deliveryOriginal=Create(catalog,209,5);
+            // Exercise actual member wear plus a held new-stock reservation in
+            // the full synchronous/worker parity test, not only empty defaults.
+            var originalCar=deliveryOriginal.SelectedCar;
+            var originalPiston=deliveryOriginal.parts.First(i=>originalCar.installed.slots.Any(slot=>slot.partInstanceId==i.instanceId)&&catalog.Find(i.definitionId).category==PartCategory.Pistons);
+            originalPiston.condition.elements[0].health=.15f;
+            EngineElementService.RefreshAggregate(originalPiston.condition);
+            CartReservations.Capture(deliveryOriginal,originalCar.instanceId,
+                new[]{new PartCartLine{action=CartAction.NewUnits,definitionId=originalPiston.definitionId,quantity=2,role="Pistons"}});
+            check(CartReservations.Active(deliveryOriginal),"Full worker parity fixture includes live member wear and a nine-race cart reservation");
             var deliveryWorker=EngineWorkshop.Copy(deliveryOriginal);deliveryWorker.catalog=catalog;
             deliveryOriginal.vehicleStock.generation++;
             deliveryWorker.vehicleStock.generation++;
             PartsMarket.Refresh(deliveryOriginal);
-            using(var work=PartsMarket.RefreshSteps(deliveryWorker,true).GetEnumerator())
-                while(work.MoveNext())
-                    if(work.Current is MarketWorkerWait waiting)waiting.task.GetAwaiter().GetResult();
+            double wholeSupplyCpu=-1;
+            var priorObserver=PartsMarket.Measurement;
+            PartsMarket.Measurement=(phase,ms)=>{
+                if(phase=="new complete worker CPU")wholeSupplyCpu=ms;
+                priorObserver?.Invoke(phase,ms);
+            };
+            try
+            {
+                using(var work=PartsMarket.RefreshSteps(deliveryWorker,true).GetEnumerator())
+                    while(work.MoveNext())
+                        if(work.Current is MarketWorkerWait waiting)waiting.task.GetAwaiter().GetResult();
+            }
+            finally {PartsMarket.Measurement=priorObserver;}
+            check(wholeSupplyCpu>=0,"Detached new-stock worker processes wear, delivery and fitting guarantee");
+            log.AppendLine("Measured detached new-stock worker CPU: "+wholeSupplyCpu.ToString("0.000",System.Globalization.CultureInfo.InvariantCulture)+" ms");
+            check(ReferenceEquals(deliveryWorker.catalog,catalog),"Completed detached supply worker restores the authoritative catalog reference");
             check(JsonUtility.ToJson(deliveryOriginal.inventory.market)==JsonUtility.ToJson(deliveryWorker.inventory.market)&&
                 string.Join("/",deliveryOriginal.inventory.dealer.Select(row=>JsonUtility.ToJson(row)))==
                 string.Join("/",deliveryWorker.inventory.dealer.Select(row=>JsonUtility.ToJson(row))),
-                "Offloaded catalog layout, initial stock and delivery match the full synchronous parts/used/engine epoch");
+                "Entire detached new-supply worker preserves exact synchronous new/used/engine epoch");
             var baseline=File.ReadAllLines(Path.Combine(Folder,"used-baseline-matrix.csv"),Encoding.UTF8).Skip(1).Where(s=>s.Length>0).ToDictionary(s=>string.Join(",",s.Split(',').Take(3)),s=>s.Split(',')[5]);
             foreach(int seed in new[]{1,41,981,-7})foreach(int minimum in new[]{0,5,20}){
                 var p=Create(catalog,seed,minimum);

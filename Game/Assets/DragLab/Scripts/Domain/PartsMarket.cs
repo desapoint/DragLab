@@ -112,7 +112,24 @@ namespace DragLab.Domain.Mechanics
             var previous=p.inventory.market;
             var state=new PartsStockState{version=2,seed=p.vehicleStock.seed,generation=p.vehicleStock.generation,guaranteeAtRefresh=p.driving.guaranteedFittingParts};p.inventory.market=state;
             uint random=Stream(state,0x91e10da5u),newQuantity=Stream(state,0x27d4eb2fu),usedRandom=Stream(state,0x165667b1u),usedQuantity=Stream(state,0x85ebca6bu),engineRandom=Stream(state,0xc2b2ae35u),engineQuantity=Stream(state,0xd3a2646cu),coverageRandom=Stream(state,0xfd7046c5u),coverageQuantity=Stream(state,0xb55a4f09u);
-            long stamp=Stamp();var productKeys=new Dictionary<string,string>(StringComparer.Ordinal);int indexed=0;foreach(var definition in p.catalog.parts){productKeys.Add(definition.id,ProductKey(definition));if(++indexed%32==0)yield return "parts/product keys";}Measured("product keys",stamp);stamp=Stamp();yield return "parts/product keys";
+            long stamp=Stamp();var productKeys=new Dictionary<string,string>(StringComparer.Ordinal);
+            // JsonUtility-backed equivalence keys must stay on Unity's main
+            // thread. Yield by elapsed CPU budget, not one frame per 32 keys:
+            // the old unconditional split added ~1.6 seconds of idle frames.
+            long keysStart=System.Diagnostics.Stopwatch.GetTimestamp();
+            int indexed=0;
+            foreach(var definition in p.catalog.parts)
+            {
+                productKeys.Add(definition.id,ProductKey(definition));
+                if(++indexed%512==0||
+                    (System.Diagnostics.Stopwatch.GetTimestamp()-keysStart)*1000.0/
+                        System.Diagnostics.Stopwatch.Frequency>=2.0)
+                {
+                    yield return "parts/product keys";
+                    keysStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                }
+            }
+            Measured("product keys",stamp);stamp=Stamp();yield return "parts/product keys";
             var models=Models(p.catalog);var specs=models.Select(p.catalog.Spec).ToArray();
             MarketCatalogLayout.Layout layout=null;
             foreach(var marker in MarketCatalogLayout.GetSteps(p.catalog,productKeys,specs,value=>layout=value,offloadDelivery))
@@ -157,63 +174,101 @@ namespace DragLab.Domain.Mechanics
             }
             Measured("used parts/guarantee",stamp);stamp=Stamp();
             bool carry=expire&&previous!=null&&previous.seed==state.seed&&previous.generation<state.generation;
-            var products=NewPartSupply.Prepare(p,layout,carry?previous:null);
-            // Sum only CPU time inside MoveNext; time between yields belongs to the render loop.
-            // Leave the existing need order and per-need yield boundaries unchanged.
-            var worn=new List<SupplyWear.Need>();
-            long wearCpuTicks=0,wearMaxStepTicks=0;
-            int wearAdvanceCount=0;
-            using(var wearSteps=SupplyWear.Steps(p,products).GetEnumerator()){
-                while(true){
-                    long start=Stamp();
-                    bool hasNeed=wearSteps.MoveNext();
-                    if(start!=0){
-                        long elapsed=System.Diagnostics.Stopwatch.GetTimestamp()-start;
-                        wearCpuTicks+=elapsed;
-                        if(elapsed>wearMaxStepTicks)wearMaxStepTicks=elapsed;
-                        wearAdvanceCount++;
-                    }
-                    if(!hasNeed)break;
-                    worn.Add(wearSteps.Current);
-                    yield return "parts/wear coverage";
-                }
-            }
-            if(Measurement!=null){
-                Measurement("wear/preparation CPU total ("+worn.Count+" needs, "+wearAdvanceCount+" advances)",wearCpuTicks*1000.0/System.Diagnostics.Stopwatch.Frequency);
-                Measurement("wear/preparation slowest MoveNext",wearMaxStepTicks*1000.0/System.Diagnostics.Stopwatch.Frequency);
-            }
-            var needs=worn.ToArray();var supply=products.ToList();
-            uint supplySelection=Stream(state,0x91e10da5u),supplyQuantity=Stream(state,0x27d4eb2fu);
-            NewPartSupply.Next(ref supplySelection); // The first selection-stream roll already chose the opportunity budget.
             if(offloadDelivery)
             {
-                // The candidate, need graph and current stock are detached from the live profile.
-                // Unity-backed engine/vehicle construction remains on the main thread.
-                // Measurements go into a worker-private list, replayed on main after Join.
+                // The prior used/engine RNG streams and generated used dealer rows
+                // are complete at this point. Only the private settlement candidate
+                // can be changed; the live profile is never handed to the worker.
+                var originalCatalog=p.catalog;
+                var detachedCatalog=originalCatalog.DetachedNewSupplySnapshot();
+                var detachedLayout=new MarketCatalogLayout.Layout{
+                    groups=layout.groups.Select(g=>new MarketCatalogLayout.Group{
+                        definition=detachedCatalog.Find(g.definition.id),
+                        ids=new List<string>(g.ids),
+                        maximum=g.maximum,deliverable=g.deliverable
+                    }).ToArray()
+                };
                 var observer=Measurement;
                 var samples=observer==null?null:new List<KeyValuePair<string,double>>();
-                Action<string,double> collect=null;
-                if(samples!=null)collect=(stage,ms)=>samples.Add(new KeyValuePair<string,double>(stage,ms));
-                uint batchSelection=supplySelection,batchQuantity=supplyQuantity;
-                var job=Task.Run(()=>{
-                    var prepared=NewPartSupply.PrepareDeliveryPool(supply,collect);
-                    NewPartSupply.DeliverBatch(prepared,needs,newCount,ref batchSelection,ref batchQuantity,collect);
-                });
-                var waiting=new MarketWorkerWait(job);
-                while(!job.IsCompleted)yield return waiting;
-                job.GetAwaiter().GetResult();
-                if(samples!=null)foreach(var sample in samples)observer(sample.Key,sample.Value);
+                Action<string,double> collect=samples==null?null:
+                    (stage,ms)=>samples.Add(new KeyValuePair<string,double>(stage,ms));
+                uint workerSelection=Stream(state,0x91e10da5u);
+                uint workerQuantity=Stream(state,0x27d4eb2fu);
+                uint guarantee=Stream(state,0xa24baed5u);
+                uint guaranteeQuantity=Stream(state,0x9fb21c65u);
+                NewPartSupply.Next(ref workerSelection); // Initial opportunity-budget roll.
+                p.catalog=detachedCatalog;
+                try
+                {
+                    var job=Task.Run(()=>{
+                        long entire=System.Diagnostics.Stopwatch.GetTimestamp();
+                        var products=NewPartSupply.Prepare(p,detachedLayout,carry?previous:null,true);
+                        long wearStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                        var needs=SupplyWear.Build(p,products);
+                        if(collect!=null)collect("wear/preparation CPU total ("+needs.Length+" needs)",(System.Diagnostics.Stopwatch.GetTimestamp()-wearStart)*1000.0/System.Diagnostics.Stopwatch.Frequency);
+                        var pool=NewPartSupply.PrepareDeliveryPool(products.ToList(),collect);
+                        NewPartSupply.DeliverBatch(pool,needs,newCount,ref workerSelection,ref workerQuantity,collect);
+                        // Final fitting guarantee belongs to the same complete
+                        // new-parts worker, not an extra main-thread iteration.
+                        var ownedSpecs=p.cars.Select(car=>p.catalog.Spec(car.vehicleId)).ToArray();
+                        var eligible=products.Where(product=>product.definition.reputationRequired==0&&
+                            ownedSpecs.Any(spec=>p.catalog.Fits(spec,product.definition))).ToArray();
+                        while(eligible.Count(product=>product.stock.units>0)<Math.Min(state.guaranteeAtRefresh,eligible.Length))
+                        {
+                            var missing=eligible.Where(product=>product.stock.units==0).ToList();
+                            NewPartSupply.DeliverDetached(missing,Array.Empty<SupplyWear.Need>(),ref guarantee,ref guaranteeQuantity,collect);
+                        }
+                        if(collect!=null)collect("new complete worker CPU",(System.Diagnostics.Stopwatch.GetTimestamp()-entire)*1000.0/System.Diagnostics.Stopwatch.Frequency);
+                    });
+                    var waiting=new MarketWorkerWait(job);
+                    // The player remains on Results until validated persistence.
+                    while(!job.IsCompleted)yield return waiting;
+                    job.GetAwaiter().GetResult();
+                    if(samples!=null)foreach(var sample in samples)observer(sample.Key,sample.Value);
+                }
+                finally {p.catalog=originalCatalog;}
             }
             else
             {
-                var deliveryPool=NewPartSupply.PrepareDeliveryPool(supply);
-                for(int n=0;n<newCount;n++){NewPartSupply.Deliver(deliveryPool,needs,ref supplySelection,ref supplyQuantity);yield return "parts/new supply";}
-            }
-            // Retain the separate difficulty guarantee without changing the used/engine streams.
-            uint guarantee=Stream(state,0xa24baed5u),guaranteeQuantity=Stream(state,0x9fb21c65u);
-            var guaranteed=products.Where(product=>product.definition.reputationRequired==0&&targets.Any(spec=>p.catalog.Fits(spec,product.definition))).ToArray();
-            while(guaranteed.Count(product=>product.stock.units>0)<Math.Min(state.guaranteeAtRefresh,guaranteed.Length)){
-                var missing=guaranteed.Where(product=>product.stock.units==0).ToList();NewPartSupply.Deliver(missing,Array.Empty<SupplyWear.Need>(),ref guarantee,ref guaranteeQuantity);yield return "parts/new fitting guarantee";
+                // Synchronous/editor path is unchanged; exact seeded parity is
+                // asserted against the isolated-worker after-race refresh.
+                var products=NewPartSupply.Prepare(p,layout,carry?previous:null);
+                var worn=new List<SupplyWear.Need>();
+                long wearCpuTicks=0,wearMaxStepTicks=0;
+                int wearAdvanceCount=0;
+                using(var wearSteps=SupplyWear.Steps(p,products).GetEnumerator()){
+                    while(true){
+                        long start=Stamp();
+                        bool hasNeed=wearSteps.MoveNext();
+                        if(start!=0){
+                            long elapsed=System.Diagnostics.Stopwatch.GetTimestamp()-start;
+                            wearCpuTicks+=elapsed;
+                            if(elapsed>wearMaxStepTicks)wearMaxStepTicks=elapsed;
+                            wearAdvanceCount++;
+                        }
+                        if(!hasNeed)break;
+                        worn.Add(wearSteps.Current);
+                        yield return "parts/wear coverage";
+                    }
+                }
+                if(Measurement!=null){
+                    Measurement("wear/preparation CPU total ("+worn.Count+" needs, "+wearAdvanceCount+" advances)",wearCpuTicks*1000.0/System.Diagnostics.Stopwatch.Frequency);
+                    Measurement("wear/preparation slowest MoveNext",wearMaxStepTicks*1000.0/System.Diagnostics.Stopwatch.Frequency);
+                }
+                uint supplySelection=Stream(state,0x91e10da5u),supplyQuantity=Stream(state,0x27d4eb2fu);
+                NewPartSupply.Next(ref supplySelection);
+                var deliveryPool=NewPartSupply.PrepareDeliveryPool(products.ToList());
+                for(int n=0;n<newCount;n++){
+                    NewPartSupply.Deliver(deliveryPool,worn.ToArray(),ref supplySelection,ref supplyQuantity);
+                    yield return "parts/new supply";
+                }
+                uint guarantee=Stream(state,0xa24baed5u),guaranteeQuantity=Stream(state,0x9fb21c65u);
+                var guaranteed=products.Where(product=>product.definition.reputationRequired==0&&targets.Any(spec=>p.catalog.Fits(spec,product.definition))).ToArray();
+                while(guaranteed.Count(product=>product.stock.units>0)<Math.Min(state.guaranteeAtRefresh,guaranteed.Length)){
+                    var missing=guaranteed.Where(product=>product.stock.units==0).ToList();
+                    NewPartSupply.Deliver(missing,Array.Empty<SupplyWear.Need>(),ref guarantee,ref guaranteeQuantity);
+                    yield return "parts/new fitting guarantee";
+                }
             }
             Measured("new supply opportunities",stamp);stamp=Stamp();int engines=Next(ref engineRandom)<.25?0:1+(int)(Next(ref engineRandom)*6)%6;var newModels=new HashSet<string>();var selectedEngines=new List<Tuple<string,bool>>();
             for(int n=0;n<engines;n++){
