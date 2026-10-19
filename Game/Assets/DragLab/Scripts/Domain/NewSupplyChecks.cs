@@ -7,6 +7,15 @@ namespace DragLab.Domain.Mechanics
 {
     public static class NewSupplyChecks
     {
+        // Editor assembly invokes the public verifier facade; internal catalog
+        // caching APIs stay private to the runtime assembly.
+        public static bool PrepareProductKeyCache(MechanicalCatalog catalog)
+        {
+            var definitions=catalog.parts.ToArray();
+            var keys=definitions.ToDictionary(d=>d.id,d=>PartsMarket.ProductKey(d),StringComparer.Ordinal);
+            return MarketCatalogLayout.PublishProductKeys(catalog,definitions,
+                catalog.AuthoringRevision,keys);
+        }
         public static void WriteLegacyFixture(PlayerProfile p,string path)
         {
             p.inventory.market.version=1;foreach(var stock in p.inventory.market.parts)stock.discovered=false;

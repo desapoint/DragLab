@@ -41,9 +41,8 @@ namespace DragLab.Editor
             NewSupplyChecks.LayoutRegression(catalog,check);
             // A fresh authored-revision snapshot can be prepared during menus
             // or by an earlier refresh, and reused across all race epochs.
-            var authoredKeys=catalog.parts.ToDictionary(d=>d.id,d=>PartsMarket.ProductKey(d),StringComparer.Ordinal);
-            check(MarketCatalogLayout.PublishProductKeys(catalog,catalog.parts.ToArray(),
-                catalog.AuthoringRevision,authoredKeys),"Product-key cache is ready for detached stock generation");
+            check(NewSupplyChecks.PrepareProductKeyCache(catalog),
+                "Product-key cache is ready for detached stock generation");
             // Compare entire deterministic market output with and without the
             // worker boundary, not just isolated category/quantity calculations.
             var deliveryOriginal=Create(catalog,209,5);
