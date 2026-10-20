@@ -1,5 +1,7 @@
 # Save storage — implemented 2026-10-14
 
+Approved evolution plan (2026-10-20): [Architecture and performance](ARCHITECTURE_PERFORMANCE_PLAN.md). It targets scoped command working sets, direct changed-record projection, responsive ordered persistence and reviewed hot-state schema improvements. These are future individual checkpoints, not changes to the implemented durability/recovery contract below.
+
 Player progression now uses SQLite. Authored cars, mechanical definitions, compatibility and career defaults remain editable project assets/code. Settings stay in separate driving, audio and unit JSON files; progression reset preserves them.
 
 ## Runtime contract

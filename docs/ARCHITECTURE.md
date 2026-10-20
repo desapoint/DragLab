@@ -1,5 +1,7 @@
 # Unity layout and development ownership
 
+Current persistence is SQLite, documented in [SAVE_STORAGE_DIRECTION.md](SAVE_STORAGE_DIRECTION.md). The approved [architecture/performance plan](ARCHITECTURE_PERFORMANCE_PLAN.md) records the proposed incremental evolution and checkpoint gates; its proposed command/index/schema boundaries are not yet implemented. Historical descriptions below must not be read as replacing the current storage contract.
+
 ```text
 Game/
   Assets/DragLab/

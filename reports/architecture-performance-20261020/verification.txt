@@ -1,0 +1,20 @@
+Architecture/performance planning and PR #4 review — 2026-10-20
+Local main reviewed: 1a295a2
+PR head reviewed: 1ac43ccfc97e6efba865b472e50e3adc1de7eedc
+Common base: d69490f9dad417e0f2706c97801dcebdae5c85e4
+Conflict-free combined tree: 2d4b9bf2bef16aee355af534c576506a47973740
+
+PASS NewSupplyVerify: 353 checks, zero failures; Unity CLI exit 0.
+PASS PartsMarketVerify: 1455 checks, zero failures; Unity CLI exit 0.
+PASS SqliteStateVerify: 772 checks, zero failures; Unity CLI exit 0.
+PASS Temporary candidate source and pre-existing report bytes restored exactly; zero conflicts.
+PASS Main branch retained; no runtime/source implementation changes or PR merge.
+PASS Plan checkpoint IDs ordered AP-00 through AP-17; local Markdown links resolve.
+PASS UTF-8 decoding/re-encoding and edited-text replacement-character checks.
+PASS Explicit documentation paths only; staged whitespace check recorded at commit.
+
+OBSERVATION Large synthetic market fixture: quote plus transaction averages 575.0 ms over 3 operations, with a no-op successful persister and 4291714-character profile. This is not an A/B or player frame benchmark.
+LIMIT GitHub exposes no CI check/status evidence for this head.
+LIMIT Fresh candidate packaged-player build, controlled matched frame/performance runs and physical Android tests were not performed in this review. Historical UI collapse/reopen flake remains unresolved.
+DECISION Finish PR #4 acceptance, merge first, then perform the broader refactor from updated main. Keep the PR draft until AP-00 passes. Execute and validate one checkpoint at a time.
+APPROVAL User explicitly confirmed the explained architecture direction; this does not pre-approve implementation steps or their results.
