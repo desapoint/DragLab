@@ -43,6 +43,8 @@ namespace DragLab.Editor
             // or by an earlier refresh, and reused across all race epochs.
             check(NewSupplyChecks.PrepareProductKeyCache(catalog),
                 "Product-key cache is ready for detached stock generation");
+            check(NewSupplyChecks.PrepareSupplyCategoryCache(catalog),
+                "Reusable category-membership index is ready for detached stock generation");
             // Compare entire deterministic market output with and without the
             // worker boundary, not just isolated category/quantity calculations.
             var deliveryOriginal=Create(catalog,209,5);
@@ -60,10 +62,11 @@ namespace DragLab.Editor
             deliveryWorker.vehicleStock.generation++;
             PartsMarket.Refresh(deliveryOriginal);
             double wholeSupplyCpu=-1;
-            bool reusedKeys=false;
+            bool reusedKeys=false,reusedCategories=false;
             var priorObserver=PartsMarket.Measurement;
             PartsMarket.Measurement=(phase,ms)=>{
                 if(phase=="product keys reused")reusedKeys=true;
+                if(phase=="catalog membership index reused")reusedCategories=true;
                 if(phase=="new complete worker CPU")wholeSupplyCpu=ms;
                 priorObserver?.Invoke(phase,ms);
             };
@@ -75,6 +78,7 @@ namespace DragLab.Editor
             }
             finally {PartsMarket.Measurement=priorObserver;}
             check(reusedKeys,"Detached market refresh reuses completed product keys without recataloging");
+            check(reusedCategories,"Detached market refresh consumes its immutable runtime category index");
             check(wholeSupplyCpu>=0,"Detached new-stock worker processes wear, delivery and fitting guarantee");
             log.AppendLine("Measured detached new-stock worker CPU: "+wholeSupplyCpu.ToString("0.000",System.Globalization.CultureInfo.InvariantCulture)+" ms");
             check(ReferenceEquals(deliveryWorker.catalog,catalog),"Completed detached supply worker restores the authoritative catalog reference");
