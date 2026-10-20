@@ -21,6 +21,17 @@ namespace DragLab.Runtime
         // Uses the existing disposable verification profile, never the real player save.
         IEnumerator MarketBaselineChecks(WindowsKeyboardProbe input)
         {
+            // Benchmarks must use the same presentation pacing across builds.
+            // The earlier runs varied between ~7 ms and ~17 ms frame cadence,
+            // which distorted the wall-clock duration of yield-driven stages.
+            int previousVsync=QualitySettings.vSyncCount;
+            int previousTargetFps=Application.targetFrameRate;
+            QualitySettings.vSyncCount=0;
+            Application.targetFrameRate=120;
+            report.AppendLine("MEASURE: market baseline pacing / vsync 0 / target fps 120"+
+                " / previous vsync "+previousVsync+" / previous fps "+previousTargetFps);
+            try
+            {
             foreach(string scenario in new[]{"practice","paid ordinary","paid third"})
             {
                 game.ReturnToGarage();
@@ -96,11 +107,15 @@ namespace DragLab.Runtime
                     frames.Sort();
                     double maxFrame=frames.Count==0?0:frames[frames.Count-1];
                     double p95=frames.Count==0?0:frames[(int)Math.Ceiling(.95*frames.Count)-1];
+                    double medianFrame=frames.Count==0?0:frames[(frames.Count-1)/2];
                     double resultToCommit=(doneAt-readyAt)*1000.0/System.Diagnostics.Stopwatch.Frequency;
                     double resultsVisible=(resultsShownAt-readyAt)*1000.0/System.Diagnostics.Stopwatch.Frequency;
                     report.AppendLine(string.Format(CultureInfo.InvariantCulture,
                         "MEASURE: market baseline {0} / result-to-commit {1:F3} ms / results-visible {2:F3} ms / pending frames {3} / max frame {4:F3} ms / p95 frame {5:F3} ms / max settlement step {6:F3} ms ({7}) / max camera step {8:F3}",
                         scenario,resultToCommit,resultsVisible,framesPending,maxFrame,p95,maxStep,maxStage,maxCamera));
+                    report.AppendLine(string.Format(CultureInfo.InvariantCulture,
+                        "MEASURE: market baseline {0} / frame pacing target fps 120 / median frame {1:F3} ms / observed mean frame {2:F3} ms",
+                        scenario,medianFrame,frames.Count==0?0:frames.Average()));
                     foreach(var entry in wall)
                         report.AppendLine("MEASURE: market baseline "+scenario+" / wall "+entry.Key+" = "+entry.Value.ToString("F3",CultureInfo.InvariantCulture)+" ms");
                     foreach(var entry in costs)
@@ -177,6 +192,12 @@ namespace DragLab.Runtime
                     scenario,(shopVisibleAt-shopStart)*1000.0/System.Diagnostics.Stopwatch.Frequency,
                     (shopReadyAt-shopStart)*1000.0/System.Diagnostics.Stopwatch.Frequency));
                 game.ReturnToGarage();
+            }
+            }
+            finally
+            {
+                Application.targetFrameRate=previousTargetFps;
+                QualitySettings.vSyncCount=previousVsync;
             }
         }
         IEnumerator FinishPacingChecks(WindowsKeyboardProbe input)
