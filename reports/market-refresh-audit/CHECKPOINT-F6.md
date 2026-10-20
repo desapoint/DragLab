@@ -151,3 +151,34 @@ Require exact saved profile/market reload, one payout, stable wear/IDs
 and no runner UI stalls while the writer is held. Compare paid-third max
 step and max frame with F.5 and the prior F.6 runs; separately inspect
 `settlement/catalog snapshot` for a newly introduced main-thread spike.
+
+## F.6 worker fixture observation correction
+
+The first worker run passed all detached validation parity checks and
+reported the held-writer practice main-step **8.544 ms** and maximum frame
+**23.800 ms**. The test then failed because the old `FinishMeasurement`
+observer recorded zero `settlement/normalize*` **frame-final stages**.
+This was a test accounting defect: the existing 2 ms frame scheduler can
+consume every normalization yield before finally reporting a later
+`settlement/validation wait` boundary, so stage-at-end-of-frame cannot
+reliably count normalizer operations.
+
+The new `FinishNormalizationStep` observer is called on the main thread
+*for each actual* `MechanicsOwnership.EnsureSteps` iterator advancement
+in both normalization passes. It measures only the corresponding
+`MoveNext` work, independently of where the frame ended. In the held
+writer fixture, assert multiple stages including metadata and parts-market
+normalization, preserve both worker-thread assertions, and report total
+`normalize steps` and peak per-step CPU cost.
+
+This instrumentation does not alter normalization ordering, validation
+rules, rewards, SQLite persistence, worker catalog ownership, or the frame
+scheduler's 2 ms time budget.
+
+Rerun after rebuilding the packaged Windows player using fresh disposable
+fixture:
+```powershell
+git pull --ff-only origin perf/f6-staged-settlement-normalization
+.\tools\Invoke-Unity.ps1 -Action BuildPlayerOnly
+.\tools\Test-NativeMenu.ps1 -FinishPacingOnly -FrameProbe -FixtureName settlement-held-f6-worker-c
+```
