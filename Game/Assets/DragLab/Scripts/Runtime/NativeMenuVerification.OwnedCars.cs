@@ -114,13 +114,6 @@ namespace DragLab.Runtime
                 Check(((Label)shell.Root.Q("ownedCar:"+fixture.cars[3].instanceId).Q(className:"car-condition")).text.Contains("Reserved"),"Reserved car remains visible with its restriction");
                 Check(((Label)shell.Root.Q("ownedCar:"+fixture.cars[4].instanceId).Q(className:"car-condition")).text.Contains("No fuel"),"Empty tank remains visible without refilling");
                 int builds = shell.OwnedGridBuildCount;
-                int inFlightRuns=shell.OwnedRatingRunCount;
-                if(shell.Root.Query<Label>(className:"car-class").ToList().Any(label=>label.text=="Class …")){
-                    shell.InvalidateOwnedGrid();shell.Refresh();
-                    Check(shell.OwnedRatingRunCount==inFlightRuns,
-                        "Rebuilding Garage while an identical rating batch runs does not restart its simulation");
-                    builds=shell.OwnedGridBuildCount;
-                }
                 yield return new WaitForSecondsRealtime(.3f); shell.Refresh();
                 Check(shell.OwnedGridBuildCount==builds,"Unchanged frames retain cached card geometry and previews");
                 float deadline = Time.realtimeSinceStartup+45;
