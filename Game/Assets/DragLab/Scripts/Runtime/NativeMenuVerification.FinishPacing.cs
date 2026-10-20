@@ -5,7 +5,9 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using DragLab.Domain;
+using DragLab.Domain.Mechanics;
 using DragLab.Infrastructure;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -180,12 +182,109 @@ namespace DragLab.Runtime
                 game.Profile.driving.wearMode=WearMode.None;game.Profile.driving.optimalThermals=true;
                 if(paid)game.Profile.vehicleStock.completedRuns+=((2-game.Profile.vehicleStock.completedRuns%3)+3)%3;
                 Check(ProfileStore.TrySave(game.Profile),"Finish pacing fixture has a durable baseline");
+                // Same authoritative normalizer: iterator must produce byte-for-byte
+                // identical candidate state before any race or durable write.
+                string originalJson=JsonUtility.ToJson(game.Profile);
+                var synchronous=JsonUtility.FromJson<PlayerProfile>(originalJson);
+                var staged=JsonUtility.FromJson<PlayerProfile>(originalJson);
+                var fixtureCatalog=game.Profile.catalog;
+                synchronous.storageCommit=staged.storageCommit=game.Profile.storageCommit;
+                MechanicsOwnership.Ensure(synchronous,fixtureCatalog);
+                int normalizationBoundaries=0;bool namedStages=true;
+                foreach(var stage in MechanicsOwnership.EnsureSteps(staged,fixtureCatalog))
+                {
+                    namedStages&=stage!=null&&stage.StartsWith("settlement/normalize",StringComparison.Ordinal);
+                    normalizationBoundaries++;
+                }
+                Check(namedStages&&normalizationBoundaries>2&&
+                    JsonUtility.ToJson(synchronous)==JsonUtility.ToJson(staged)&&
+                    originalJson==JsonUtility.ToJson(game.Profile),
+                    "Staged normalization preserves exact synchronous profile bytes without mutating source");
+                // Exercise validation on its actual detached, worker-owned
+                // catalog and compare both accepted and rejected profiles.
+                var detachedCatalog=fixtureCatalog.DetachedNewSupplySnapshot();
+                // Unity can materialize empty inline objects (such as an absent
+                // cart) on every JSON round trip. A real finish candidate is
+                // fully normalized before the worker sees it. Model exactly that
+                // boundary instead of comparing against an unnormalized re-clone.
+                PlayerProfile NormalizedValidationFixture()
+                {
+                    var copy=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(synchronous));
+                    copy.storageCommit=synchronous.storageCommit;
+                    MechanicsOwnership.Ensure(copy,fixtureCatalog);
+                    return copy;
+                }
+                var workerProfile=NormalizedValidationFixture();
+                var invalidCases=new List<PlayerProfile>();
+                var invalidLabels=new List<string>();
+                var invalidCash=NormalizedValidationFixture();
+                invalidCash.cash=-1;invalidCases.Add(invalidCash);invalidLabels.Add("negative cash");
+                var invalidParts=NormalizedValidationFixture();
+                if(invalidParts.parts.Count>1)
+                {
+                    invalidParts.parts[1].instanceId=invalidParts.parts[0].instanceId;
+                    invalidCases.Add(invalidParts);invalidLabels.Add("duplicate part identity");
+                }
+                var invalidMarket=NormalizedValidationFixture();
+                invalidMarket.inventory.market.version=-1;
+                invalidCases.Add(invalidMarket);invalidLabels.Add("invalid market epoch");
+                string expectedValid=MechanicsOwnership.Validate(workerProfile,fixtureCatalog);
+                var expectedErrors=new List<string>();
+                var initialBytes=new List<string>();
+                foreach(var malformed in invalidCases)
+                {
+                    initialBytes.Add(JsonUtility.ToJson(malformed));
+                    expectedErrors.Add(MechanicsOwnership.Validate(malformed,fixtureCatalog));
+                    malformed.catalog=detachedCatalog;
+                }
+                string validBytes=JsonUtility.ToJson(workerProfile);
+                workerProfile.catalog=detachedCatalog;
+                int verificationMainThread=Thread.CurrentThread.ManagedThreadId,validationFixtureThread=verificationMainThread;
+                var validationTask=Task.Run(()=>{
+                    validationFixtureThread=Thread.CurrentThread.ManagedThreadId;
+                    var results=new List<string>{MechanicsOwnership.Validate(workerProfile,detachedCatalog)};
+                    foreach(var malformed in invalidCases)
+                        results.Add(MechanicsOwnership.Validate(malformed,detachedCatalog));
+                    return results;
+                });
+                while(!validationTask.IsCompleted)yield return null;
+                var validationErrors=validationTask.GetAwaiter().GetResult();
+                Check(validationFixtureThread!=verificationMainThread,
+                    "Detached validation uses worker thread "+validationFixtureThread+
+                    " rather than Unity thread "+verificationMainThread);
+                Check(!ReferenceEquals(detachedCatalog,fixtureCatalog),
+                    "Detached validation uses an independent authored catalog snapshot");
+                Check(validationErrors[0]==expectedValid,
+                    "Worker validation matches main-thread result: main="+
+                    (expectedValid??"<valid>")+" / worker="+(validationErrors[0]??"<valid>"));
+                Check(validBytes==JsonUtility.ToJson(workerProfile),
+                    "Worker validation leaves normalized candidate bytes unchanged");
+                for(int caseIndex=0;caseIndex<invalidCases.Count;caseIndex++)
+                    Check(expectedErrors[caseIndex]!=null&&
+                        expectedErrors[caseIndex]==validationErrors[caseIndex+1]&&
+                        initialBytes[caseIndex]==JsonUtility.ToJson(invalidCases[caseIndex]),
+                        "Worker validator rejects "+invalidLabels[caseIndex]+" with exact error and no mutations");
                 int cash=game.Profile.cash,generation=game.Profile.vehicleStock.generation;double maxStep=0,maxCamera=0,maxFrame=0;string maxStage="";
+                int normalizationSteps=0;double maxNormalizeStep=0;
+                var validationWorkers=new List<int>();
+                var priorValidationObserver=PrototypeGame.FinishValidationWorkerThread;
+                var priorNormalizeObserver=PrototypeGame.FinishNormalizationStep;
+                PrototypeGame.FinishValidationWorkerThread=id=>validationWorkers.Add(id);
+                var normalizationStages=new Dictionary<string,double>(StringComparer.Ordinal);
+                PrototypeGame.FinishNormalizationStep=(stage,milliseconds)=>{
+                    normalizationSteps++;
+                    maxNormalizeStep=Math.Max(maxNormalizeStep,milliseconds);
+                    normalizationStages.TryGetValue(stage,out var previousMax);
+                    normalizationStages[stage]=Math.Max(previousMax,milliseconds);
+                };
                 var authoredBefore=game.Profile.catalog;
                 game.StartRace(null,!paid);var race=game.Race;
                 Check(ReferenceEquals(authoredBefore,game.Profile.catalog),
                     "Finish fixture retains catalog identity through race entry");
-PrototypeGame.FinishMeasurement=(name,value)=>{if(name=="camera step units")maxCamera=Math.Max(maxCamera,value);else if(value>maxStep){maxStep=value;maxStage=name;}};
+PrototypeGame.FinishMeasurement=(name,value)=>{
+                    if(name=="camera step units"){maxCamera=Math.Max(maxCamera,value);return;}
+                    if(value>maxStep){maxStep=value;maxStage=name;}
+                };
                 Check(race!=null,"Finish pacing stages a real "+(paid?"paid refresh":"practice")+" run");
                 game.verificationInput=()=>new DriverInput{throttle=1};int mainThread=Thread.CurrentThread.ManagedThreadId,writerThread=mainThread;
                 var entered=new ManualResetEventSlim();var release=new ManualResetEventSlim();
@@ -204,9 +303,30 @@ PrototypeGame.FinishMeasurement=(name,value)=>{if(name=="camera step units")maxC
                         Check(writerThread!=mainThread,"Durable write executes on the isolated writer, not Unity's main thread");
                         Check(game.Profile.cash==cash&&!game.Profile.careerRuns.Last().complete,"Cash and complete receipt remain unpublished before durable commit");
                         Check(!game.Results.Root.Q("resultAgain").enabledInHierarchy&&!game.Results.Root.Q("resultGarage").enabledInHierarchy,"Results cannot start a conflicting action while settlement is pending");
-                        report.AppendLine("MEASURE: finish "+(paid?"paid refresh":"practice")+" / max main step ms "+maxStep.ToString("F3")+" / max stage "+maxStage+" / max frame ms "+maxFrame.ToString("F3")+" / max camera step "+maxCamera.ToString("F3")+" / held-write frames "+(Time.frameCount-frames));
+                        report.AppendLine("MEASURE: finish "+(paid?"paid refresh":"practice")+
+                            " / max main step ms "+maxStep.ToString("F3")+
+                            " / max stage "+maxStage+
+                            " / max frame ms "+maxFrame.ToString("F3")+
+                            " / max camera step "+maxCamera.ToString("F3")+
+                            " / normalize steps "+normalizationSteps+
+                            " / max normalize step ms "+maxNormalizeStep.ToString("F3")+
+                            " / held-write frames "+(Time.frameCount-frames));
+                        foreach(var slow in normalizationStages.OrderByDescending(x=>x.Value).Take(5))
+                            report.AppendLine("MEASURE: finish "+(paid?"paid refresh":"practice")+
+                                " / normalization stage "+slow.Key+
+                                " / max ms "+slow.Value.ToString("F3"));
+                        Check(normalizationSteps>2&&
+                            normalizationStages.ContainsKey("settlement/normalize metadata")&&
+                            normalizationStages.ContainsKey("settlement/normalize parts market")&&
+                            maxNormalizeStep>=0,
+                            "Full settlement normalizer completes measured main-thread steps");
+                        Check(validationWorkers.Count==2&&validationWorkers.All(id=>id!=verificationMainThread),
+                            "Both settlement integrity passes finish on background threads");
                         Check(maxStep<50&&maxCamera<.35,"Finish preparation is split into bounded main steps and camera motion remains continuous");
-                    }finally{release.Set();SqliteStateStore.FailureInjection=null;game.verificationInput=null;PrototypeGame.FinishMeasurement=null;}
+                    }finally{release.Set();SqliteStateStore.FailureInjection=null;game.verificationInput=null;
+                        PrototypeGame.FinishMeasurement=null;
+                        PrototypeGame.FinishValidationWorkerThread=priorValidationObserver;
+                        PrototypeGame.FinishNormalizationStep=priorNormalizeObserver;}
                 }
                 float settledDeadline=Time.realtimeSinceStartup+12;
                 if(paid){game.ReturnToGarage();Check(game.Race==null,"Explicit Garage boundary drains pending settlement before exit");}

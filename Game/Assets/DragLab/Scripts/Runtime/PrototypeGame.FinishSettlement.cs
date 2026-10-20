@@ -18,6 +18,61 @@ namespace DragLab.Runtime
         // Opt-in wall-clock spans for player-build baselines. Never changes settlement pacing.
         internal static Action<string,double> FinishWallMeasurement;
         static long WallStamp()=>FinishWallMeasurement==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
+        // Observed on the main thread after Task completion by packaged-player tests.
+        internal static Action<int> FinishValidationWorkerThread;
+        // Per-MoveNext normalization measurements, unlike FinishMeasurement,
+        // are not lost when the frame scheduler consumes multiple yields.
+        internal static Action<string,double> FinishNormalizationStep;
+        sealed class WorkerValidationResult
+        {
+            internal string error;
+            internal int threadId;
+            internal double cpuMilliseconds;
+        }
+        // Validation is read-only, but PartsMarket.Validate uses profile.catalog.
+        // The profile is unpublished and cannot be touched by gameplay while this
+        // job runs. Restore the original catalog on main before the next step.
+        IEnumerable<object> ValidateFinishCandidate(PlayerProfile candidate,
+            MechanicalCatalog originalCatalog,MechanicalCatalog detachedCatalog)
+        {
+            candidate.catalog=detachedCatalog;
+            var work=Task.Run(()=>{
+                long started=System.Diagnostics.Stopwatch.GetTimestamp();
+                string error=MechanicsOwnership.Validate(candidate,detachedCatalog);
+                return new WorkerValidationResult{
+                    error=error,
+                    threadId=System.Threading.Thread.CurrentThread.ManagedThreadId,
+                    cpuMilliseconds=(System.Diagnostics.Stopwatch.GetTimestamp()-started)*
+                        1000.0/System.Diagnostics.Stopwatch.Frequency};
+            });
+            finishTask=work;
+            while(!work.IsCompleted)yield return "settlement/validation wait";
+            WorkerValidationResult result;
+            try {result=work.GetAwaiter().GetResult();}
+            finally {candidate.catalog=originalCatalog;}
+            FinishWallMeasurement?.Invoke("validation worker CPU",result.cpuMilliseconds);
+            FinishValidationWorkerThread?.Invoke(result.threadId);
+            if(result.error!=null)throw new InvalidOperationException(result.error);
+            yield return "settlement/validation complete";
+        }
+        // Execute only on the main thread; race candidates remain unpublished.
+        // Each MoveNext measures its own actual normalizer work independently of
+        // how many boundaries AdvanceFinishSettlement consumes in one frame.
+        IEnumerable<object> NormalizeFinishCandidate(PlayerProfile candidate)
+        {
+            using(var steps=MechanicsOwnership.EnsureSteps(candidate,candidate.catalog,false).GetEnumerator())
+                while(true)
+                {
+                    var observer=FinishNormalizationStep;
+                    long start=observer==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
+                    if(!steps.MoveNext())yield break;
+                    string stage=steps.Current;
+                    if(observer!=null)
+                        observer(stage,(System.Diagnostics.Stopwatch.GetTimestamp()-start)*
+                            1000.0/System.Diagnostics.Stopwatch.Frequency);
+                    yield return stage;
+                }
+        }
         static void EmitWall(string name,long start)
         {
             if(start!=0)FinishWallMeasurement?.Invoke(name,(System.Diagnostics.Stopwatch.GetTimestamp()-start)*1000.0/System.Diagnostics.Stopwatch.Frequency);
@@ -62,7 +117,18 @@ namespace DragLab.Runtime
             finishTask=clone;while(!clone.IsCompleted)yield return "settlement/clone wait";
             var candidate=clone.GetAwaiter().GetResult();candidate.catalog=source.catalog;
             EmitWall("clone task",cloning);
-            MechanicsOwnership.Ensure(candidate,candidate.catalog);yield return "settlement/normalize";
+            // Normalize Unity-dependent state on main. No full validator call
+            // may block this frame; it will run against detached managed data.
+            foreach(var stage in NormalizeFinishCandidate(candidate))
+                yield return stage;
+            long catalogStamp=System.Diagnostics.Stopwatch.GetTimestamp();
+            var detachedCatalog=source.catalog.DetachedNewSupplySnapshot();
+            double catalogMilliseconds=(System.Diagnostics.Stopwatch.GetTimestamp()-catalogStamp)*
+                1000.0/System.Diagnostics.Stopwatch.Frequency;
+            FinishWallMeasurement?.Invoke("validation catalog snapshot",catalogMilliseconds);
+            FinishMeasurement?.Invoke("settlement/catalog snapshot",catalogMilliseconds);
+            foreach(var step in ValidateFinishCandidate(candidate,source.catalog,detachedCatalog))
+                yield return step;
             var old=candidate.runCheckpoints.Find(r=>r.runId==liveRunId);
             if(old==null||old.tick<tick)MechanicsTransactions.ApplyCheckpoint(candidate,checkpoint);
             CareerProgression.Settle(candidate,liveRunId,session,false);candidate.revision=checked(revision+1);yield return "settlement/outcome";
@@ -70,7 +136,10 @@ namespace DragLab.Runtime
             if(session.player.state.finished&&!session.player.state.disqualified&&!practiceRun)
                 foreach(var unused in VehicleListings.AfterRaceSteps(candidate,candidate.catalog))yield return unused;
             EmitWall("after-race stock generation including yields",market);
-            MechanicsOwnership.Ensure(candidate,candidate.catalog);yield return "settlement/normalize";
+            foreach(var stage in NormalizeFinishCandidate(candidate))
+                yield return stage;
+            foreach(var step in ValidateFinishCandidate(candidate,source.catalog,detachedCatalog))
+                yield return step;
             if(profile!=source||profile.revision!=revision||profile.storageCommit!=commit||race!=session)throw new InvalidOperationException("Settlement became stale; retry required.");
             long checkpointWait=WallStamp();
             while(RaceCheckpointStore.Busy)yield return "settlement/checkpoint wait";
