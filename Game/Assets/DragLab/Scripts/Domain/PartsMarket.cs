@@ -253,6 +253,9 @@ namespace DragLab.Domain.Mechanics
                 if(categoryIndex!=null)Measurement?.Invoke("catalog membership index reused",0);
                 var detachedCatalog=originalCatalog.DetachedNewSupplySnapshot();
                 var detachedLayout=new MarketCatalogLayout.Layout{
+                    // The fitment index is an already-complete immutable
+                    // catalog-revision snapshot, safe for detached worker reads.
+                    fitments=layout.fitments,
                     groups=layout.groups.Select(g=>new MarketCatalogLayout.Group{
                         definition=detachedCatalog.Find(g.definition.id),
                         ids=new List<string>(g.ids),
@@ -279,11 +282,13 @@ namespace DragLab.Domain.Mechanics
                         if(collect!=null)collect("wear/preparation CPU total ("+needs.Length+" needs)",(System.Diagnostics.Stopwatch.GetTimestamp()-wearStart)*1000.0/System.Diagnostics.Stopwatch.Frequency);
                         var pool=NewPartSupply.PrepareDeliveryPool(products.ToList(),collect);
                         NewPartSupply.DeliverBatch(pool,needs,newCount,ref workerSelection,ref workerQuantity,collect);
-                        // Final fitting guarantee belongs to the same complete
-                        // new-parts worker, not an extra main-thread iteration.
-                        var ownedSpecs=p.cars.Select(car=>p.catalog.Spec(car.vehicleId)).ToArray();
-                        var eligible=products.Where(product=>product.definition.reputationRequired==0&&
-                            ownedSpecs.Any(spec=>p.catalog.Fits(spec,product.definition))).ToArray();
+                        // Reuse the very same indexed model compatibility for
+                        // the final supply guarantee. Empty owned garage is
+                        // intentionally ineligible here (unlike initial stock).
+                        var eligible=owned.Length==0?Array.Empty<NewPartSupply.Product>():
+                            detachedLayout.fitments.ForModels(owned)
+                                .Where(i=>products[i].definition.reputationRequired==0)
+                                .Select(i=>products[i]).ToArray();
                         while(eligible.Count(product=>product.stock.units>0)<Math.Min(state.guaranteeAtRefresh,eligible.Length))
                         {
                             var missing=eligible.Where(product=>product.stock.units==0).ToList();
