@@ -210,10 +210,17 @@ namespace DragLab.Runtime
                 // Main-thread preparation is required only for genuinely new
                 // work. An identical in-flight batch can skip this entire cost.
                 var prepared=new List<Tuple<string,string,InspectionBuild,CarSimulation>>(probes.Count);
-                foreach(var probe in probes)
-                    prepared.Add(Tuple.Create(probe.Item1,probe.Item2,probe.Item3,CarInspection.PrepareCar(probe.Item3)));
+                foreach(var probe in probes){
+                    try{prepared.Add(Tuple.Create(probe.Item1,probe.Item2,probe.Item3,CarInspection.PrepareCar(probe.Item3)));}
+                    catch(Exception){
+                        var label=ownedGrid.Q<Label>("carClass:"+probe.Item1);
+                        if(label!=null)label.text="Class unavailable · PP —";
+                        if(ownedEntries.TryGetValue(probe.Item1,out var entry))entry.RatingPending=false;
+                    }
+                }
+                if(prepared.Count==0)return;
                 ownedCancellation=new CancellationTokenSource();var token=ownedCancellation.Token;
-                foreach(var probe in probes)ownedPendingContexts[probe.Item1]=probe.Item2;
+                foreach(var probe in prepared)ownedPendingContexts[probe.Item1]=probe.Item2;
                 OwnedRatingRunCount++;
                 ownedRatings = Task.Run(() => {
                     var result = new Dictionary<string,OwnedRatingResult>();
