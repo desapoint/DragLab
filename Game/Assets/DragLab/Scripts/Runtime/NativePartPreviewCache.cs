@@ -65,7 +65,8 @@ namespace DragLab.Runtime
             string key=p.revision+"/"+physical;
             if(ReferenceEquals(profile,p)&&ReferenceEquals(catalog,p.catalog)&&context==key)return;
             CarInspection retained=null;
-            if(currentPhysical==physical)inspections.TryGetValue("current",out retained);
+            if(ReferenceEquals(catalog,p.catalog)&&currentPhysical==physical)
+                inspections.TryGetValue("current",out retained);
             profile=p;catalog=p.catalog;context=key;currentPhysical=physical;
             inspections.Clear();if(retained!=null)inspections["current"]=retained;
             plans.Clear();comparisons.Clear();recent.Clear();nodes.Clear();
