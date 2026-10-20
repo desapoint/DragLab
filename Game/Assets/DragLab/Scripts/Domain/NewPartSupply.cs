@@ -15,6 +15,8 @@ namespace DragLab.Domain.Mechanics
             internal bool owned,individual;
             internal readonly Dictionary<Branch,bool> categories=new Dictionary<Branch,bool>();
             internal NewSupplyCatalogIndex.Classification preclassified;
+            // Definition-only membership exported on main; never a live catalog in workers.
+            internal NewSupplyCatalogIndex.CategoryMembership preindexed;
         }
         internal sealed class Branch
         {
@@ -26,6 +28,7 @@ namespace DragLab.Domain.Mechanics
             {
                 // A published authoring snapshot is immutable. Unready/changed catalogs
                 // use the exact original per-product branch test.
+                if(p.preindexed!=null)return p.preindexed.Accepts(this);
                 if(p.preclassified!=null)return p.preclassified.Accepts(this);
                 if(!p.categories.TryGetValue(this,out bool valid)){valid=filter!=null?filter(p):children.Any(c=>c.weight>0&&c.Accepts(p));p.categories[this]=valid;}
                 return valid;
@@ -53,6 +56,7 @@ namespace DragLab.Domain.Mechanics
             Group("Wheels / cooling / lubrication",1.75,Part(PartCategory.Wheels,35),Parts("Cooling parts",40,PartCategory.Cooling,PartCategory.CoolantPump,PartCategory.CoolingCap,PartCategory.CoolingHoses,PartCategory.OilCooler),Parts("Lubrication parts",25,PartCategory.OilPan,PartCategory.OilPump,PartCategory.OilFilter)),
             Part(PartCategory.Brakes,1.5),Group("Body / interior / accessories",1,Part(PartCategory.Body,50),Part(PartCategory.Interior,25),Part(PartCategory.Accessories,25)));
 
+        static readonly double[] ownershipWeights={.76,.24};
         internal static double Next(ref uint s){s^=s<<13;s^=s>>17;s^=s<<5;return s/4294967296.0;}
         internal static int Roll(double[] weights,double roll)
         {
@@ -118,7 +122,22 @@ namespace DragLab.Domain.Mechanics
         internal sealed class DeliveryPool
         {
             internal readonly List<Product> eligible;
-            internal DeliveryPool(List<Product> eligibleProducts){eligible=eligibleProducts;}
+            // Stable product membership, partitioned in the original candidate order.
+            readonly List<Product> owned=new List<Product>();
+            readonly List<Product> unowned=new List<Product>();
+            internal DeliveryPool(List<Product> eligibleProducts)
+            {
+                eligible=eligibleProducts;
+                foreach(var product in eligible)
+                    if(product.owned)owned.Add(product);else unowned.Add(product);
+            }
+            internal List<Product> SelectOwnership(ref uint selection)
+            {
+                // Mirrors Filter's empty-branch pruning and exact RNG draw count.
+                if(owned.Count==0)return unowned;
+                if(unowned.Count==0)return owned;
+                return Roll(ownershipWeights,Next(ref selection))==0?owned:unowned;
+            }
         }
         internal static DeliveryPool PrepareDeliveryPool(List<Product> all)
             =>PrepareDeliveryPool(all,PartsMarket.Measurement);
@@ -137,17 +156,17 @@ namespace DragLab.Domain.Mechanics
             ref uint selection,ref uint quantity,Action<string,double> collect)
             =>DeliverCore(all,false,needs,ref selection,ref quantity,collect,true);
         internal static int Deliver(DeliveryPool prepared,SupplyWear.Need[] needs,ref uint selection,ref uint quantity)
-            =>DeliverCore(prepared.eligible,true,needs,ref selection,ref quantity,PartsMarket.Measurement,false);
+            =>DeliverCore(prepared.eligible,true,needs,ref selection,ref quantity,PartsMarket.Measurement,false,prepared);
         // Called exclusively on a detached candidate profile. The caller supplies
         // a worker-private measurement sink; user-facing callbacks run later on main.
         internal static void DeliverBatch(DeliveryPool prepared,SupplyWear.Need[] needs,int opportunities,
             ref uint selection,ref uint quantity,Action<string,double> measure)
         {
             for(int n=0;n<opportunities;n++)
-                DeliverCore(prepared.eligible,true,needs,ref selection,ref quantity,measure,true);
+                DeliverCore(prepared.eligible,true,needs,ref selection,ref quantity,measure,true,prepared);
         }
         static int DeliverCore(List<Product> all,bool alreadyEligible,SupplyWear.Need[] needs,
-            ref uint selection,ref uint quantity,Action<string,double> measure,bool detached)
+            ref uint selection,ref uint quantity,Action<string,double> measure,bool detached,DeliveryPool prepared=null)
         {
             long stamp=measure==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
             // Exact same eligibility predicate as the uncached entry path; only the
@@ -155,7 +174,9 @@ namespace DragLab.Domain.Mechanics
             var pool=alreadyEligible?all:all.Where(p=>p.maximum>0&&Categories.Accepts(p)).ToList();
             Sample(measure,"delivery/eligible pool",ref stamp);
             if(pool.Count==0)return 0;
-            if(pool.Count>1)pool=Filter(pool,new Func<Product,bool>[] {p=>p.owned,p=>!p.owned},new[]{.76,.24},ref selection);
+            if(pool.Count>1)pool=prepared==null?
+                Filter(pool,new Func<Product,bool>[] {p=>p.owned,p=>!p.owned},ownershipWeights,ref selection):
+                prepared.SelectOwnership(ref selection);
             if(pool.Count>1){double chance=DiscoveryProbability(pool.Count(p=>!p.stock.discovered),pool.Count);pool=Filter(pool,new Func<Product,bool>[] {p=>!p.stock.discovered,p=>p.stock.discovered},new[]{chance,1-chance},ref selection);}
             Sample(measure,"delivery/ownership and discovery",ref stamp);
             Product chosen;
@@ -180,7 +201,8 @@ namespace DragLab.Domain.Mechanics
             Sample(measure,"delivery/quantity and publication",ref stamp);
             return units;
         }
-        internal static Product[] Prepare(PlayerProfile p,MarketCatalogLayout.Layout layout,PartsStockState previous,bool detached=false)
+        internal static Product[] Prepare(PlayerProfile p,MarketCatalogLayout.Layout layout,PartsStockState previous,bool detached=false,
+            NewSupplyCatalogIndex.Snapshot categorySnapshot=null)
         {
             var old=new Dictionary<string,NewPartStock>(StringComparer.Ordinal);
             if(previous!=null)foreach(var row in previous.parts)foreach(string id in row.definitions)old[id]=row;
@@ -194,7 +216,8 @@ namespace DragLab.Domain.Mechanics
                 row.units=row.initialUnits=prior==null||!carried.Add(prior)?0:Math.Max(0,prior.units-held);row.discovered=prior!=null&&(prior.discovered||prior.initialUnits>0);
                 if(prior!=null)row.deliveryPercent=prior.deliveryPercent;
                 var d=group.definition;result.Add(new Product{definition=d,stock=row,maximum=group.deliverable?group.maximum:0,owned=owned.Any(s=>p.catalog.Fits(s,d)),individual=d.category==PartCategory.Tires||EngineElements.Supported(d.category),
-                    preclassified=detached?null:NewSupplyCatalogIndex.For(p.catalog,d)});
+                    preclassified=detached?null:NewSupplyCatalogIndex.For(p.catalog,d),
+                    preindexed=detached?categorySnapshot?.Find(d.id):null});
             }
             p.inventory.market.index=null;return result.ToArray();
         }
@@ -205,6 +228,23 @@ namespace DragLab.Domain.Mechanics
     // No background thread touches mutable authored definitions, profile or inventory.
     internal static class NewSupplyCatalogIndex
     {
+        // Definition-independent, immutable category flags safe for detached workers.
+        internal sealed class CategoryMembership
+        {
+            readonly HashSet<NewPartSupply.Branch> accepted;
+            internal CategoryMembership(PartDefinition definition)
+            {
+                var product=new NewPartSupply.Product{definition=definition};
+                accepted=new HashSet<NewPartSupply.Branch>();
+                Visit(NewPartSupply.Categories,product,accepted);
+            }
+            static void Visit(NewPartSupply.Branch branch,NewPartSupply.Product product,HashSet<NewPartSupply.Branch> flags)
+            {
+                if(branch.children!=null)foreach(var child in branch.children)Visit(child,product,flags);
+                if(branch.Accepts(product))flags.Add(branch);
+            }
+            internal bool Accepts(NewPartSupply.Branch branch)=>accepted.Contains(branch);
+        }
         internal sealed class Classification
         {
             readonly PartDefinition original;
@@ -212,26 +252,28 @@ namespace DragLab.Domain.Mechanics
             readonly PartCategory category;
             readonly EngineUpgradeInduction induction;
             readonly int stage;
-            readonly HashSet<NewPartSupply.Branch> accepted;
-
+            readonly CategoryMembership membership;
             internal Classification(PartDefinition definition)
             {
                 original=definition;id=definition.id;category=definition.category;
                 induction=definition.induction;stage=definition.stage;
-                var product=new NewPartSupply.Product{definition=definition};
-                var acceptedBranches=new HashSet<NewPartSupply.Branch>();
-                Visit(NewPartSupply.Categories,product,acceptedBranches);
-                accepted=acceptedBranches; // Never mutated after publication.
-            }
-            static void Visit(NewPartSupply.Branch branch,NewPartSupply.Product product,HashSet<NewPartSupply.Branch> flags)
-            {
-                if(branch.children!=null)foreach(var child in branch.children)Visit(child,product,flags);
-                if(branch.Accepts(product))flags.Add(branch);
+                membership=new CategoryMembership(definition);
             }
             internal bool Matches(PartDefinition definition)
                 =>ReferenceEquals(original,definition)&&id==definition.id&&category==definition.category&&
                     induction==definition.induction&&stage==definition.stage;
-            internal bool Accepts(NewPartSupply.Branch branch)=>accepted.Contains(branch);
+            internal bool Accepts(NewPartSupply.Branch branch)=>membership.Accepts(branch);
+            internal CategoryMembership Membership=>membership;
+        }
+        internal sealed class Snapshot
+        {
+            readonly Dictionary<string,CategoryMembership> categories;
+            internal Snapshot(Dictionary<string,CategoryMembership> categories){this.categories=categories;}
+            internal CategoryMembership Find(string definitionId)
+            {
+                categories.TryGetValue(definitionId,out var membership);
+                return membership;
+            }
         }
 
         sealed class State
@@ -247,6 +289,9 @@ namespace DragLab.Domain.Mechanics
                 building=new Dictionary<string,Classification>(StringComparer.Ordinal);
             }
         }
+        // Only the fully published immutable index crosses the worker boundary.
+        static readonly RuntimeIndexSlot<MechanicalCatalog,Snapshot> snapshots=
+            new RuntimeIndexSlot<MechanicalCatalog,Snapshot>();
         static readonly System.Runtime.CompilerServices.ConditionalWeakTable<MechanicalCatalog,State> states=
             new System.Runtime.CompilerServices.ConditionalWeakTable<MechanicalCatalog,State>();
 
@@ -285,6 +330,26 @@ namespace DragLab.Domain.Mechanics
                     state.building[definition.id]=new Classification(definition);
             }while((System.Diagnostics.Stopwatch.GetTimestamp()-start)*1000.0/System.Diagnostics.Stopwatch.Frequency<budgetMilliseconds);
             // The last row may have been added; publish on the next budgeted tick.
+        }
+        internal static Snapshot ForDetached(MechanicalCatalog catalog)
+        {
+            if(catalog==null||!states.TryGetValue(catalog,out var state)||
+                state.published==null||state.count!=catalog.parts.Count)return null;
+            // Validate even on a cache hit: direct authoring changes need not bump revision.
+            // If stale, let the worker use the original lazy category tests.
+            foreach(var definition in catalog.parts)
+                if(definition==null||definition.id==null||
+                    !state.published.TryGetValue(definition.id,out var indexed)||!indexed.Matches(definition))
+                {
+                    snapshots.Invalidate(catalog);
+                    return null;
+                }
+            if(snapshots.TryGet(catalog,catalog.AuthoringRevision,out var cached))return cached;
+            var rows=new Dictionary<string,CategoryMembership>(state.published.Count,StringComparer.Ordinal);
+            foreach(var entry in state.published)rows.Add(entry.Key,entry.Value.Membership);
+            var completed=new Snapshot(rows);
+            snapshots.Publish(catalog,catalog.AuthoringRevision,completed);
+            return completed;
         }
         internal static Classification For(MechanicalCatalog catalog,PartDefinition definition)
         {

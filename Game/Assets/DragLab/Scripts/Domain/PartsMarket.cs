@@ -194,6 +194,9 @@ namespace DragLab.Domain.Mechanics
                 // are complete at this point. Only the private settlement candidate
                 // can be changed; the live profile is never handed to the worker.
                 var originalCatalog=p.catalog;
+                // Export immutable, definition-free membership before launching the worker.
+                var categoryIndex=NewSupplyCatalogIndex.ForDetached(originalCatalog);
+                if(categoryIndex!=null)Measurement?.Invoke("catalog membership index reused",0);
                 var detachedCatalog=originalCatalog.DetachedNewSupplySnapshot();
                 var detachedLayout=new MarketCatalogLayout.Layout{
                     groups=layout.groups.Select(g=>new MarketCatalogLayout.Group{
@@ -216,7 +219,7 @@ namespace DragLab.Domain.Mechanics
                 {
                     var job=Task.Run(()=>{
                         long entire=System.Diagnostics.Stopwatch.GetTimestamp();
-                        var products=NewPartSupply.Prepare(p,detachedLayout,carry?previous:null,true);
+                        var products=NewPartSupply.Prepare(p,detachedLayout,carry?previous:null,true,categoryIndex);
                         long wearStart=System.Diagnostics.Stopwatch.GetTimestamp();
                         var needs=SupplyWear.Build(p,products);
                         if(collect!=null)collect("wear/preparation CPU total ("+needs.Length+" needs)",(System.Diagnostics.Stopwatch.GetTimestamp()-wearStart)*1000.0/System.Diagnostics.Stopwatch.Frequency);
