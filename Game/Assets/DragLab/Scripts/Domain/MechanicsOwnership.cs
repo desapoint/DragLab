@@ -151,6 +151,7 @@ namespace DragLab.Domain.Mechanics
             PartsMarket.Ensure(profile,migratePartsMarket);CartReservations.Expire(profile);
             yield return "settlement/normalize parts market";
             string error = Validate(profile, catalog); if (error != null) throw new InvalidOperationException(error);
+            yield return "settlement/normalize validation";
         }
         public static Dictionary<PartCategory, string> Definitions(PlayerProfile profile, OwnedCar car)
         {
