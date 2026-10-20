@@ -1,38 +1,96 @@
 Visible game / live production audio / input replay verification
 PASS stop/resume before finish / 01-i3-na
-PASS 01-i3-na / exact ET, shifts, limiter, releases / engine RMS 0,0451692193746567 / tire RMS 0 / tire channels 2 / rival silent
+PASS 01-i3-na / exact ET, shifts, limiter, releases / engine RMS 0,0481969006359577 / tire RMS 0 / fuel/ignition cuts 370/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 02-i4-na
-PASS 02-i4-na / exact ET, shifts, limiter, releases / engine RMS 0,0468651168048382 / tire RMS 0 / tire channels 2 / rival silent
+PASS 02-i4-na / exact ET, shifts, limiter, releases / engine RMS 0,047459565103054 / tire RMS 0 / fuel/ignition cuts 404/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 03-i4-turbo-hiss
-PASS 03-i4-turbo-hiss / exact ET, shifts, limiter, releases / engine RMS 0,0511956699192524 / tire RMS 0 / tire channels 2 / rival silent
+PASS 03-i4-turbo-hiss / exact ET, shifts, limiter, releases / engine RMS 0,0474119782447815 / tire RMS 0 / fuel/ignition cuts 368/0 / launch cuts 0/339 / pops 133 / tire channels 2 / rival silent
 PASS stop/resume before finish / 04-i4-twin-chirp
-PASS 04-i4-twin-chirp / exact ET, shifts, limiter, releases / engine RMS 0,0845575705170631 / tire RMS 0 / tire channels 2 / rival silent
+PASS 04-i4-twin-chirp / exact ET, shifts, limiter, releases / engine RMS 0,0839891955256462 / tire RMS 0 / fuel/ignition cuts 414/0 / launch cuts 0/343 / pops 139 / tire channels 2 / rival silent
 PASS stop/resume before finish / 05-i5-turbo-flutter
-PASS 05-i5-turbo-flutter / exact ET, shifts, limiter, releases / engine RMS 0,0602963455021381 / tire RMS 0 / tire channels 2 / rival silent
+PASS 05-i5-turbo-flutter / exact ET, shifts, limiter, releases / engine RMS 0,0604226812720299 / tire RMS 0 / fuel/ignition cuts 421/0 / launch cuts 0/346 / pops 139 / tire channels 2 / rival silent
 PASS stop/resume before finish / 06-i6-na
-PASS 06-i6-na / exact ET, shifts, limiter, releases / engine RMS 0,0570104382932186 / tire RMS 0 / tire channels 2 / rival silent
+PASS 06-i6-na / exact ET, shifts, limiter, releases / engine RMS 0,057648241519928 / tire RMS 0 / fuel/ignition cuts 555/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 07-i6-carb
-PASS 07-i6-carb / exact ET, shifts, limiter, releases / engine RMS 0,0902443081140518 / tire RMS 0 / tire channels 2 / rival silent
+PASS 07-i6-carb / exact ET, shifts, limiter, releases / engine RMS 0,089370034635067 / tire RMS 0 / fuel/ignition cuts 0/542 / launch cuts 0/0 / pops 36 / tire channels 2 / rival silent
 PASS stop/resume before finish / 08-v8-carb
-PASS 08-v8-carb / exact ET, shifts, limiter, releases / engine RMS 0,129350781440735 / tire RMS 0 / tire channels 2 / rival silent
+PASS 08-v8-carb / exact ET, shifts, limiter, releases / engine RMS 0,128193616867065 / tire RMS 0 / fuel/ignition cuts 0/635 / launch cuts 0/0 / pops 46 / tire channels 2 / rival silent
 PASS stop/resume before finish / 09-v8-supercharger
-PASS 09-v8-supercharger / exact ET, shifts, limiter, releases / engine RMS 0,0912162214517593 / tire RMS 0 / tire channels 2 / rival silent
+PASS 09-v8-supercharger / exact ET, shifts, limiter, releases / engine RMS 0,09089345484972 / tire RMS 0 / fuel/ignition cuts 665/0 / launch cuts 0/361 / pops 111 / tire channels 2 / rival silent
 PASS stop/resume before finish / 10-diesel-turbo
-PASS 10-diesel-turbo / exact ET, shifts, limiter, releases / engine RMS 0,0834841653704643 / tire RMS 0 / tire channels 2 / rival silent
+PASS 10-diesel-turbo / exact ET, shifts, limiter, releases / engine RMS 0,0836178585886955 / tire RMS 0 / fuel/ignition cuts 516/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 11-v10-na
-PASS 11-v10-na / exact ET, shifts, limiter, releases / engine RMS 0,148943990468979 / tire RMS 0 / tire channels 2 / rival silent
+PASS 11-v10-na / exact ET, shifts, limiter, releases / engine RMS 0,15058496594429 / tire RMS 0 / fuel/ignition cuts 656/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 12-v12-twin
-PASS 12-v12-twin / exact ET, shifts, limiter, releases / engine RMS 0,0862579792737961 / tire RMS 0 / tire channels 2 / rival silent
+PASS 12-v12-twin / exact ET, shifts, limiter, releases / engine RMS 0,0839552134275436 / tire RMS 0 / fuel/ignition cuts 745/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 13-v8-twin-supercharger
-PASS 13-v8-twin-supercharger / exact ET, shifts, limiter, releases / engine RMS 0,111023262143135 / tire RMS 0 / tire channels 2 / rival silent
+PASS 13-v8-twin-supercharger / exact ET, shifts, limiter, releases / engine RMS 0,110952273011208 / tire RMS 0 / fuel/ignition cuts 551/0 / launch cuts 0/363 / pops 114 / tire channels 2 / rival silent
 PASS stop/resume before finish / 14-i4-twincharged-dct
-PASS 14-i4-twincharged-dct / exact ET, shifts, limiter, releases / engine RMS 0,0523722134530544 / tire RMS 0 / tire channels 2 / rival silent
+PASS 14-i4-twincharged-dct / exact ET, shifts, limiter, releases / engine RMS 0,053784865885973 / tire RMS 0 / fuel/ignition cuts 416/0 / launch cuts 0/343 / pops 137 / tire channels 2 / rival silent
 PASS stop/resume before finish / 15-v8-street-wheelspin
-PASS 15-v8-street-wheelspin / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0739423409104347 / tire channels 2 / rival silent
+PASS 15-v8-street-wheelspin / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,075705274939537 / fuel/ignition cuts 0/697 / launch cuts 0/0 / pops 46 / tire channels 2 / rival silent
 PASS stop/resume before finish / 16-v8-wide-wheelspin
-PASS 16-v8-wide-wheelspin / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0588782541453838 / tire channels 2 / rival silent
+PASS 16-v8-wide-wheelspin / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0575082302093506 / fuel/ignition cuts 595/0 / launch cuts 0/367 / pops 114 / tire channels 2 / rival silent
 PASS stop/resume before finish / 17-v8-burnout
-PASS 17-v8-burnout / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0760983526706696 / tire channels 2 / rival silent
+PASS 17-v8-burnout / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,076008602976799 / fuel/ignition cuts 0/234 / launch cuts 0/0 / pops 55 / tire channels 2 / rival silent
 PASS stop/resume before finish / 18-i4-open-diff-single-wheel
-PASS 18-i4-open-diff-single-wheel / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0687450468540192 / tire channels 2 / rival silent
-PASS all 18 game races
+PASS 18-i4-open-diff-single-wheel / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0686795487999916 / fuel/ignition cuts 1524/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 19-injection-soft-fuel
+PASS 19-injection-soft-fuel / exact ET, shifts, limiter, releases / engine RMS 0,0467217043042183 / tire RMS 0 / fuel/ignition cuts 568/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 20-injection-hard-ignition
+PASS 20-injection-hard-ignition / exact ET, shifts, limiter, releases / engine RMS 0,0463943742215633 / tire RMS 0 / fuel/ignition cuts 0/404 / launch cuts 0/0 / pops 33 / tire channels 2 / rival silent
+PASS stop/resume before finish / 21-injection-soft-ignition
+PASS 21-injection-soft-ignition / exact ET, shifts, limiter, releases / engine RMS 0,0444649718701839 / tire RMS 0 / fuel/ignition cuts 0/568 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 22-carb-soft-ignition
+PASS 22-carb-soft-ignition / exact ET, shifts, limiter, releases / engine RMS 0,0906155630946159 / tire RMS 0 / fuel/ignition cuts 0/791 / launch cuts 0/0 / pops 12 / tire channels 2 / rival silent
+PASS stop/resume before finish / 23-diesel-soft-fuel
+PASS 23-diesel-soft-fuel / exact ET, shifts, limiter, releases / engine RMS 0,0871160849928856 / tire RMS 0 / fuel/ignition cuts 749/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 24-factory-limiter
+PASS 24-factory-limiter / exact ET, shifts, limiter, releases / engine RMS 0,0464826598763466 / tire RMS 0 / fuel/ignition cuts 404/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 25-no-limiter
+PASS 25-no-limiter / exact ET, shifts, limiter, releases / engine RMS 0,0879066362977028 / tire RMS 0 / fuel/ignition cuts 0/0 / launch cuts 0/0 / pops 10 / tire channels 2 / rival silent
+PASS stop/resume before finish / 26-launch-hard-ignition
+PASS 26-launch-hard-ignition / exact ET, shifts, limiter, releases / engine RMS 0,0493773855268955 / tire RMS 0 / fuel/ignition cuts 368/0 / launch cuts 0/350 / pops 137 / tire channels 2 / rival silent
+PASS stop/resume before finish / 27-launch-soft-fuel
+PASS 27-launch-soft-fuel / exact ET, shifts, limiter, releases / engine RMS 0,0468698590993881 / tire RMS 0 / fuel/ignition cuts 368/0 / launch cuts 382/0 / pops 28 / tire channels 2 / rival silent
+PASS stop/resume before finish / 28-exhaust-0
+PASS 28-exhaust-0 / exact ET, shifts, limiter, releases / engine RMS 0,0654648914933205 / tire RMS 0 / fuel/ignition cuts 0/635 / launch cuts 0/0 / pops 46 / tire channels 2 / rival silent
+PASS stop/resume before finish / 29-exhaust-1
+PASS 29-exhaust-1 / exact ET, shifts, limiter, releases / engine RMS 0,104918576776981 / tire RMS 0 / fuel/ignition cuts 0/635 / launch cuts 0/0 / pops 46 / tire channels 2 / rival silent
+PASS stop/resume before finish / 30-exhaust-2
+PASS 30-exhaust-2 / exact ET, shifts, limiter, releases / engine RMS 0,140094712376595 / tire RMS 0 / fuel/ignition cuts 0/635 / launch cuts 0/0 / pops 46 / tire channels 2 / rival silent
+PASS stop/resume before finish / 31-exhaust-3
+PASS 31-exhaust-3 / exact ET, shifts, limiter, releases / engine RMS 0,170686855912209 / tire RMS 0 / fuel/ignition cuts 0/635 / launch cuts 0/0 / pops 46 / tire channels 2 / rival silent
+PASS stop/resume before finish / 32-boost-Turbo-Recirculated
+PASS 32-boost-Turbo-Recirculated / exact ET, shifts, limiter, releases / engine RMS 0,0519832037389278 / tire RMS 0 / fuel/ignition cuts 417/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 33-boost-Turbo-Hiss
+PASS 33-boost-Turbo-Hiss / exact ET, shifts, limiter, releases / engine RMS 0,0526580698788166 / tire RMS 0 / fuel/ignition cuts 417/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 34-boost-Turbo-Chirp
+PASS 34-boost-Turbo-Chirp / exact ET, shifts, limiter, releases / engine RMS 0,0804700404405594 / tire RMS 0 / fuel/ignition cuts 417/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 35-boost-Turbo-Flutter
+PASS 35-boost-Turbo-Flutter / exact ET, shifts, limiter, releases / engine RMS 0,0530929788947105 / tire RMS 0 / fuel/ignition cuts 417/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 36-boost-TwinTurbo-Recirculated
+PASS 36-boost-TwinTurbo-Recirculated / exact ET, shifts, limiter, releases / engine RMS 0,0516070388257504 / tire RMS 0 / fuel/ignition cuts 414/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 37-boost-TwinTurbo-Hiss
+PASS 37-boost-TwinTurbo-Hiss / exact ET, shifts, limiter, releases / engine RMS 0,0517923794686794 / tire RMS 0 / fuel/ignition cuts 414/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 38-boost-TwinTurbo-Chirp
+PASS 38-boost-TwinTurbo-Chirp / exact ET, shifts, limiter, releases / engine RMS 0,0810240805149078 / tire RMS 0 / fuel/ignition cuts 414/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 39-boost-TwinTurbo-Flutter
+PASS 39-boost-TwinTurbo-Flutter / exact ET, shifts, limiter, releases / engine RMS 0,0523752085864544 / tire RMS 0 / fuel/ignition cuts 414/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 40-boost-Twincharged-Recirculated
+PASS 40-boost-Twincharged-Recirculated / exact ET, shifts, limiter, releases / engine RMS 0,0435232371091843 / tire RMS 0 / fuel/ignition cuts 416/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 41-boost-Twincharged-Hiss
+PASS 41-boost-Twincharged-Hiss / exact ET, shifts, limiter, releases / engine RMS 0,0466147921979427 / tire RMS 0 / fuel/ignition cuts 416/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 42-boost-Twincharged-Chirp
+PASS 42-boost-Twincharged-Chirp / exact ET, shifts, limiter, releases / engine RMS 0,0807557627558708 / tire RMS 0 / fuel/ignition cuts 416/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 43-boost-Twincharged-Flutter
+PASS 43-boost-Twincharged-Flutter / exact ET, shifts, limiter, releases / engine RMS 0,0478989891707897 / tire RMS 0 / fuel/ignition cuts 416/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS stop/resume before finish / 44-tires-street-ramp
+PASS 44-tires-street-ramp / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0780585184693336 / fuel/ignition cuts 0/180 / launch cuts 0/0 / pops 40 / tire channels 2 / rival silent
+PASS stop/resume before finish / 45-tires-radial-ramp
+PASS 45-tires-radial-ramp / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0669506639242172 / fuel/ignition cuts 34/0 / launch cuts 0/340 / pops 108 / tire channels 2 / rival silent
+PASS stop/resume before finish / 46-tires-slick-ramp
+PASS 46-tires-slick-ramp / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0346955247223377 / fuel/ignition cuts 367/0 / launch cuts 0/359 / pops 112 / tire channels 2 / rival silent
+PASS stop/resume before finish / 47-tires-fwd-ramp
+PASS 47-tires-fwd-ramp / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0775282308459282 / fuel/ignition cuts 291/0 / launch cuts 0/0 / pops 0 / tire channels 2 / rival silent
+PASS all 47 game races

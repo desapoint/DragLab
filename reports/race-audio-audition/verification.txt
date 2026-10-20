@@ -1,21 +1,49 @@
-Simulation-driven race audio audition / player engine only / 48 kHz stereo
-PASS 01-i3-na / 38.32 s / limiter ticks 370 / shifts 3 / releases 0 / peak boost 0.000
-PASS 02-i4-na / 37.17 s / limiter ticks 404 / shifts 3 / releases 0 / peak boost 0.000
-PASS 03-i4-turbo-hiss / 34.25 s / limiter ticks 707 / shifts 4 / releases 3 / peak boost 0.900
-PASS 04-i4-twin-chirp / 33.23 s / limiter ticks 757 / shifts 4 / releases 3 / peak boost 0.954
-PASS 05-i5-turbo-flutter / 33.10 s / limiter ticks 767 / shifts 4 / releases 3 / peak boost 0.900
-PASS 06-i6-na / 36.73 s / limiter ticks 555 / shifts 3 / releases 0 / peak boost 0.000
-PASS 07-i6-carb / 35.90 s / limiter ticks 542 / shifts 3 / releases 0 / peak boost 0.000
-PASS 08-v8-carb / 35.19 s / limiter ticks 637 / shifts 3 / releases 0 / peak boost 0.000
-PASS 09-v8-supercharger / 32.89 s / limiter ticks 361 / shifts 3 / releases 0 / peak boost 0.550
-PASS 10-diesel-turbo / 37.74 s / limiter ticks 516 / shifts 3 / releases 0 / peak boost 0.900
-PASS 11-v10-na / 35.16 s / limiter ticks 658 / shifts 3 / releases 0 / peak boost 0.000
-PASS 12-v12-twin / 32.45 s / limiter ticks 749 / shifts 4 / releases 2 / peak boost 0.742
-PASS 13-v8-twin-supercharger / 32.42 s / limiter ticks 914 / shifts 3 / releases 0 / peak boost 0.583
-PASS 14-i4-twincharged-dct / 33.21 s / limiter ticks 759 / shifts 4 / releases 3 / peak boost 0.954
-PASS 15-v8-street-wheelspin / 34.87 s / limiter ticks 697 / shifts 3 / releases 0 / peak boost 0.000
-PASS 16-v8-wide-wheelspin / 32.31 s / limiter ticks 962 / shifts 3 / releases 0 / peak boost 0.649
-PASS 17-v8-burnout / 35.27 s / limiter ticks 236 / shifts 4 / releases 0 / peak boost 0.000
-PASS 18-i4-open-diff-single-wheel / 51.67 s / limiter ticks 1524 / shifts 4 / releases 0 / peak boost 0.000
-PASS exact WAV repeatability for a complete turbo race, including lift, limiter and shifts.
-PASS: 18 complete real races; no rival voice constructed; no player saves/preferences accessed.
+Deterministic live-race input generation / actual cuts, backfires, releases and tire contact / optional --draglab-audio-wav capture
+PASS 01-i3-na / 38.32 s / limiter ticks 370 / shifts 3 / releases 0 / peak boost 0.000 / Injection / Hard Fuel / normal fuel/ignition ticks 370/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 02-i4-na / 37.17 s / limiter ticks 404 / shifts 3 / releases 0 / peak boost 0.000 / Injection / Hard Fuel / normal fuel/ignition ticks 404/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 03-i4-turbo-hiss / 34.25 s / limiter ticks 707 / shifts 4 / releases 3 / peak boost 0.900 / Injection / Hard Fuel / normal fuel/ignition ticks 368/0 / launch fuel/ignition 0/339 / pops 133 / tire slide range 0.0
+PASS 04-i4-twin-chirp / 33.23 s / limiter ticks 757 / shifts 4 / releases 3 / peak boost 0.954 / Injection / Hard Fuel / normal fuel/ignition ticks 414/0 / launch fuel/ignition 0/343 / pops 139 / tire slide range 0.0
+PASS 05-i5-turbo-flutter / 33.10 s / limiter ticks 767 / shifts 4 / releases 3 / peak boost 0.900 / Injection / Hard Fuel / normal fuel/ignition ticks 421/0 / launch fuel/ignition 0/346 / pops 139 / tire slide range 0.0
+PASS 06-i6-na / 36.73 s / limiter ticks 555 / shifts 3 / releases 0 / peak boost 0.000 / Injection / Hard Fuel / normal fuel/ignition ticks 555/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 07-i6-carb / 35.90 s / limiter ticks 542 / shifts 3 / releases 0 / peak boost 0.000 / Carburetor / Hard Ignition / normal fuel/ignition ticks 0/542 / launch fuel/ignition 0/0 / pops 36 / tire slide range 0.0
+PASS 08-v8-carb / 35.19 s / limiter ticks 637 / shifts 3 / releases 0 / peak boost 0.000 / Carburetor / Hard Ignition / normal fuel/ignition ticks 0/635 / launch fuel/ignition 0/0 / pops 46 / tire slide range 0.0
+PASS 09-v8-supercharger / 32.89 s / limiter ticks 361 / shifts 3 / releases 0 / peak boost 0.550 / Injection / Soft Fuel / normal fuel/ignition ticks 665/0 / launch fuel/ignition 0/361 / pops 111 / tire slide range 0.0
+PASS 10-diesel-turbo / 37.74 s / limiter ticks 516 / shifts 3 / releases 0 / peak boost 0.900 / Diesel / Hard Fuel / normal fuel/ignition ticks 516/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 11-v10-na / 35.16 s / limiter ticks 658 / shifts 3 / releases 0 / peak boost 0.000 / Injection / Hard Fuel / normal fuel/ignition ticks 656/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 12-v12-twin / 32.45 s / limiter ticks 749 / shifts 4 / releases 2 / peak boost 0.742 / Injection / Hard Fuel / normal fuel/ignition ticks 745/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 13-v8-twin-supercharger / 32.42 s / limiter ticks 914 / shifts 3 / releases 0 / peak boost 0.583 / Injection / Hard Fuel / normal fuel/ignition ticks 551/0 / launch fuel/ignition 0/363 / pops 114 / tire slide range 0.0
+PASS 14-i4-twincharged-dct / 33.21 s / limiter ticks 759 / shifts 4 / releases 3 / peak boost 0.954 / Injection / Hard Fuel / normal fuel/ignition ticks 416/0 / launch fuel/ignition 0/343 / pops 137 / tire slide range 0.0
+PASS 15-v8-street-wheelspin / 34.87 s / limiter ticks 697 / shifts 3 / releases 0 / peak boost 0.000 / Carburetor / Hard Ignition / normal fuel/ignition ticks 0/697 / launch fuel/ignition 0/0 / pops 46 / tire slide range 0.0
+PASS 16-v8-wide-wheelspin / 32.31 s / limiter ticks 962 / shifts 3 / releases 0 / peak boost 0.649 / Injection / Hard Fuel / normal fuel/ignition ticks 595/0 / launch fuel/ignition 0/367 / pops 114 / tire slide range 0.0
+PASS 17-v8-burnout / 35.27 s / limiter ticks 236 / shifts 4 / releases 0 / peak boost 0.000 / Carburetor / Hard Ignition / normal fuel/ignition ticks 0/234 / launch fuel/ignition 0/0 / pops 55 / tire slide range 0.0
+PASS 18-i4-open-diff-single-wheel / 51.67 s / limiter ticks 1524 / shifts 4 / releases 0 / peak boost 0.000 / Injection / Hard Fuel / normal fuel/ignition ticks 1524/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 19-injection-soft-fuel / 37.21 s / limiter ticks 0 / shifts 3 / releases 0 / peak boost 0.000 / Injection / Soft Fuel / normal fuel/ignition ticks 568/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 20-injection-hard-ignition / 37.17 s / limiter ticks 404 / shifts 3 / releases 0 / peak boost 0.000 / Injection / Hard Ignition / normal fuel/ignition ticks 0/404 / launch fuel/ignition 0/0 / pops 33 / tire slide range 0.0
+PASS 21-injection-soft-ignition / 37.21 s / limiter ticks 0 / shifts 3 / releases 0 / peak boost 0.000 / Injection / Soft Ignition / normal fuel/ignition ticks 0/568 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 22-carb-soft-ignition / 35.22 s / limiter ticks 0 / shifts 3 / releases 0 / peak boost 0.000 / Carburetor / Soft Ignition / normal fuel/ignition ticks 0/791 / launch fuel/ignition 0/0 / pops 12 / tire slide range 0.0
+PASS 23-diesel-soft-fuel / 37.96 s / limiter ticks 0 / shifts 3 / releases 0 / peak boost 0.900 / Diesel / Soft Fuel / normal fuel/ignition ticks 749/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 24-factory-limiter / 37.17 s / limiter ticks 404 / shifts 3 / releases 0 / peak boost 0.000 / Injection / Hard Fuel / normal fuel/ignition ticks 404/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 25-no-limiter / 35.10 s / limiter ticks 0 / shifts 3 / releases 0 / peak boost 0.000 / Carburetor / None Ignition / normal fuel/ignition ticks 0/0 / launch fuel/ignition 0/0 / pops 10 / tire slide range 0.0
+PASS 26-launch-hard-ignition / 34.15 s / limiter ticks 718 / shifts 4 / releases 2 / peak boost 0.900 / Injection / Hard Fuel / normal fuel/ignition ticks 368/0 / launch fuel/ignition 0/350 / pops 137 / tire slide range 0.0
+PASS 27-launch-soft-fuel / 34.34 s / limiter ticks 441 / shifts 4 / releases 2 / peak boost 0.900 / Injection / Hard Fuel / normal fuel/ignition ticks 368/0 / launch fuel/ignition 382/0 / pops 28 / tire slide range 0.0
+PASS 28-exhaust-0 / 35.19 s / limiter ticks 637 / shifts 3 / releases 0 / peak boost 0.000 / Carburetor / Hard Ignition / normal fuel/ignition ticks 0/635 / launch fuel/ignition 0/0 / pops 46 / tire slide range 0.0
+PASS 29-exhaust-1 / 35.19 s / limiter ticks 637 / shifts 3 / releases 0 / peak boost 0.000 / Carburetor / Hard Ignition / normal fuel/ignition ticks 0/635 / launch fuel/ignition 0/0 / pops 46 / tire slide range 0.0
+PASS 30-exhaust-2 / 35.19 s / limiter ticks 637 / shifts 3 / releases 0 / peak boost 0.000 / Carburetor / Hard Ignition / normal fuel/ignition ticks 0/635 / launch fuel/ignition 0/0 / pops 46 / tire slide range 0.0
+PASS 31-exhaust-3 / 35.19 s / limiter ticks 637 / shifts 3 / releases 0 / peak boost 0.000 / Carburetor / Hard Ignition / normal fuel/ignition ticks 0/635 / launch fuel/ignition 0/0 / pops 46 / tire slide range 0.0
+PASS 32-boost-Turbo-Recirculated / 34.10 s / limiter ticks 417 / shifts 4 / releases 2 / peak boost 0.954 / Injection / Hard Fuel / normal fuel/ignition ticks 417/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 33-boost-Turbo-Hiss / 34.11 s / limiter ticks 417 / shifts 4 / releases 2 / peak boost 0.954 / Injection / Hard Fuel / normal fuel/ignition ticks 417/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 34-boost-Turbo-Chirp / 34.11 s / limiter ticks 417 / shifts 4 / releases 2 / peak boost 0.954 / Injection / Hard Fuel / normal fuel/ignition ticks 417/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 35-boost-Turbo-Flutter / 34.11 s / limiter ticks 417 / shifts 4 / releases 2 / peak boost 0.954 / Injection / Hard Fuel / normal fuel/ignition ticks 417/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 36-boost-TwinTurbo-Recirculated / 33.97 s / limiter ticks 414 / shifts 4 / releases 2 / peak boost 0.954 / Injection / Hard Fuel / normal fuel/ignition ticks 414/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 37-boost-TwinTurbo-Hiss / 33.97 s / limiter ticks 414 / shifts 4 / releases 2 / peak boost 0.954 / Injection / Hard Fuel / normal fuel/ignition ticks 414/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 38-boost-TwinTurbo-Chirp / 33.97 s / limiter ticks 414 / shifts 4 / releases 2 / peak boost 0.954 / Injection / Hard Fuel / normal fuel/ignition ticks 414/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 39-boost-TwinTurbo-Flutter / 33.97 s / limiter ticks 414 / shifts 4 / releases 2 / peak boost 0.954 / Injection / Hard Fuel / normal fuel/ignition ticks 414/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 40-boost-Twincharged-Recirculated / 33.17 s / limiter ticks 416 / shifts 4 / releases 2 / peak boost 0.954 / Injection / Hard Fuel / normal fuel/ignition ticks 416/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 41-boost-Twincharged-Hiss / 33.17 s / limiter ticks 416 / shifts 4 / releases 2 / peak boost 0.954 / Injection / Hard Fuel / normal fuel/ignition ticks 416/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 42-boost-Twincharged-Chirp / 33.17 s / limiter ticks 416 / shifts 4 / releases 2 / peak boost 0.954 / Injection / Hard Fuel / normal fuel/ignition ticks 416/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 43-boost-Twincharged-Flutter / 33.17 s / limiter ticks 416 / shifts 4 / releases 2 / peak boost 0.954 / Injection / Hard Fuel / normal fuel/ignition ticks 416/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 0.0
+PASS 44-tires-street-ramp / 39.48 s / limiter ticks 182 / shifts 4 / releases 0 / peak boost 0.000 / Carburetor / Hard Ignition / normal fuel/ignition ticks 0/180 / launch fuel/ignition 0/0 / pops 40 / tire slide range 18.6
+PASS 45-tires-radial-ramp / 34.79 s / limiter ticks 374 / shifts 5 / releases 0 / peak boost 0.649 / Injection / Hard Fuel / normal fuel/ignition ticks 34/0 / launch fuel/ignition 0/340 / pops 108 / tire slide range 16.5
+PASS 46-tires-slick-ramp / 33.54 s / limiter ticks 726 / shifts 6 / releases 0 / peak boost 0.649 / Injection / Hard Fuel / normal fuel/ignition ticks 367/0 / launch fuel/ignition 0/359 / pops 112 / tire slide range 6.4
+PASS 47-tires-fwd-ramp / 40.46 s / limiter ticks 291 / shifts 5 / releases 2 / peak boost 0.626 / Injection / Hard Fuel / normal fuel/ignition ticks 291/0 / launch fuel/ignition 0/0 / pops 0 / tire slide range 12.9
+PASS: 47 complete real races; no rival voice constructed; no player saves/preferences accessed.

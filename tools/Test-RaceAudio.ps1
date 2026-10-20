@@ -30,12 +30,12 @@ $taskProcess=Start-Process -FilePath $taskPlayer -ArgumentList $taskArgs -Window
 Write-Output "Live game PID: $($taskProcess.Id)"
 Write-Output "Isolated test files: $taskFixture"
 if($VerifyOnly){
-    if(-not $taskProcess.WaitForExit(240000)){$taskProcess.Kill();throw 'Live audio verification timed out.'}
+    if(-not $taskProcess.WaitForExit(480000)){$taskProcess.Kill();throw 'Live audio verification timed out.'}
     $taskResult=Join-Path $taskFixture 'live-verification.txt'
     if($taskProcess.ExitCode -ne 0 -or -not (Test-Path -LiteralPath $taskResult)){throw "Live audio verification failed: $taskFixture"}
     Get-Content -LiteralPath $taskResult -Encoding UTF8
     if(-not (Select-String -LiteralPath $taskResult -Pattern 'PASS all')){throw 'Live suite did not complete.'}
     if(-not $Case){Copy-Item -LiteralPath $taskResult -Destination (Join-Path $taskReport 'live-verification.txt')}
 }else{
-    Write-Output 'Playing all configurations at normal speed. Engine-only / Tires-only selected automatically. Mixed, Stop/Resume and Next car are available; Esc > Sound has independent category sliders.'
+    Write-Output 'Playing selected configurations at normal speed. Engine-only / Tires-only selected automatically. Mixed, Stop/Resume and Next car are available; Esc > Sound has independent category sliders.'
 }

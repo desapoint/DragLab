@@ -11,6 +11,7 @@ namespace DragLab.Runtime
         internal static bool AudioAuditionRequested => Debug.isDebugBuild && Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-audio-race-test")>=0;
         string[] auditionFiles;
         RaceAudioTestFixture audition;
+        RaceAudioCutCounts auditionCuts;
         int auditionStopCheck;float auditionStopWait;
         int auditionIndex=-1,auditionTick,auditionLimiter,auditionShifts,auditionGear,auditionMode;
         bool auditionStopped,auditionDone,auditionVerify;
@@ -19,7 +20,7 @@ namespace DragLab.Runtime
         double auditionEnginePeak,auditionTirePeak;
         readonly StringBuilder auditionReport=new StringBuilder("Visible game / live production audio / input replay verification\n");
         internal bool AudioAuditionActive=>auditionFiles!=null;
-        internal string AudioAuditionTitle=>audition==null?"":(auditionIndex+1)+" / "+auditionFiles.Length+" · "+audition.title;
+        internal string AudioAuditionTitle=>audition==null?"":(auditionIndex+1)+" / "+auditionFiles.Length+" · "+audition.title+" · "+audition.configuration;
         internal string AudioAuditionStage=>auditionDone?"Complete · Restart or close the game":auditionStopped?"Stopped · Resume or Next":auditionStage;
         internal int AudioAuditionMode=>auditionMode;
         internal bool AudioAuditionStopped=>auditionStopped||auditionDone;
@@ -53,7 +54,7 @@ namespace DragLab.Runtime
             race=audition.CreateRace();
             // Test cars never become owned assets or enter settlement/checkpoint paths.
             screen="Race";liveRunClosed=true;awarded=true;practiceRun=true;paused=audioSettingsOpen=false;controls.Clear();
-            auditionTick=auditionLimiter=auditionShifts=auditionGear=auditionStopCheck=0;auditionEnginePeak=auditionTirePeak=0;
+            auditionTick=auditionLimiter=auditionShifts=auditionGear=auditionStopCheck=0;auditionCuts=new RaceAudioCutCounts();auditionEnginePeak=auditionTirePeak=0;
             auditionStopped=auditionDone=false;auditionStage="Idle";accumulator=0;auditionGap=0;
             auditionMode=audition.tireTest?2:1;
             playerView.gameObject.SetActive(true);aiView.gameObject.SetActive(true);
@@ -88,11 +89,12 @@ namespace DragLab.Runtime
                     RenderRace();
                     if(auditionGap<.4f)return;
                     var state=race.player.state;
+                    if(JsonUtility.ToJson(auditionCuts)!=JsonUtility.ToJson(audition.cuts)||state.exhaustPopCount!=audition.pops)throw new InvalidOperationException("Live limiter cut/backfire telemetry diverged: "+audition.id);
                     if(!state.finished||Math.Abs(state.elapsed-audition.elapsed)>.00001||auditionLimiter!=audition.limiterTicks||auditionShifts!=audition.shifts||state.boostReleaseCount!=audition.releases)
                         throw new InvalidOperationException("Live race diverged from validated input fixture: "+audition.id+" / ET "+state.elapsed+" vs "+audition.elapsed+" / limiter "+auditionLimiter+" / shifts "+auditionShifts+" / releases "+state.boostReleaseCount);
                     if(auditionVerify&&(audition.tireTest?auditionTirePeak:auditionEnginePeak)<1e-6)throw new InvalidOperationException("Live AudioSource produced no audible category output: "+audition.id);
                     if(auditionVerify&&audition.tireTest&&engineAudio.TireOutputChannels!=2)throw new InvalidOperationException("Tire AudioSource lost stereo wheel placement.");
-                    auditionReport.AppendLine("PASS "+audition.id+" / exact ET, shifts, limiter, releases / engine RMS "+auditionEnginePeak+" / tire RMS "+auditionTirePeak+" / tire channels "+engineAudio.TireOutputChannels+" / rival silent");
+                    auditionReport.AppendLine("PASS "+audition.id+" / exact ET, shifts, limiter, releases / engine RMS "+auditionEnginePeak+" / tire RMS "+auditionTirePeak+" / fuel/ignition cuts "+auditionCuts.fuel+"/"+auditionCuts.ignition+" / launch cuts "+auditionCuts.launchFuel+"/"+auditionCuts.launchIgnition+" / pops "+state.exhaustPopCount+" / tire channels "+engineAudio.TireOutputChannels+" / rival silent");
                     File.WriteAllText(Path.Combine(auditionFolder,"live-verification.txt"),auditionReport.ToString(),new UTF8Encoding(false));
                     if(auditionVerify&&auditionIndex==auditionFiles.Length-1){auditionReport.AppendLine("PASS all "+auditionFiles.Length+" game races");File.WriteAllText(Path.Combine(auditionFolder,"live-verification.txt"),auditionReport.ToString(),new UTF8Encoding(false));Application.Quit(0);auditionStopped=true;return;}
                     NextAudioAudition();return;
@@ -105,6 +107,7 @@ namespace DragLab.Runtime
                     if(tick.beginCountdown&&!race.BeginCountdown())throw new InvalidOperationException("Cannot stage live fixture "+audition.id);
                     if(race.phase==RacePhase.Finished)race.Shutdown(tick.input);else race.Step(tick.input);
                     controls.BeginFrame(tick.input.throttle,tick.input.clutch,tick.input.brake);
+                    auditionCuts.Observe(race.player);
                     if(race.player.state.limiter)auditionLimiter++;
                     if(race.player.state.launched&&race.player.state.gear!=auditionGear){if(auditionGear>0)auditionShifts++;auditionGear=race.player.state.gear;}
                     accumulator-=DragMath.FixedStep;
