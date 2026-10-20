@@ -20,6 +20,9 @@ namespace DragLab.Runtime
         static long WallStamp()=>FinishWallMeasurement==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
         // Observed on the main thread after Task completion by packaged-player tests.
         internal static Action<int> FinishValidationWorkerThread;
+        // Per-MoveNext normalization measurements, unlike FinishMeasurement,
+        // are not lost when the frame scheduler consumes multiple yields.
+        internal static Action<string,double> FinishNormalizationStep;
         sealed class WorkerValidationResult
         {
             internal string error;
@@ -51,6 +54,24 @@ namespace DragLab.Runtime
             FinishValidationWorkerThread?.Invoke(result.threadId);
             if(result.error!=null)throw new InvalidOperationException(result.error);
             yield return "settlement/validation complete";
+        }
+        // Execute only on the main thread; race candidates remain unpublished.
+        // Each MoveNext measures its own actual normalizer work independently of
+        // how many boundaries AdvanceFinishSettlement consumes in one frame.
+        IEnumerable<object> NormalizeFinishCandidate(PlayerProfile candidate)
+        {
+            using(var steps=MechanicsOwnership.EnsureSteps(candidate,candidate.catalog,false).GetEnumerator())
+                while(true)
+                {
+                    var observer=FinishNormalizationStep;
+                    long start=observer==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
+                    if(!steps.MoveNext())yield break;
+                    string stage=steps.Current;
+                    if(observer!=null)
+                        observer(stage,(System.Diagnostics.Stopwatch.GetTimestamp()-start)*
+                            1000.0/System.Diagnostics.Stopwatch.Frequency);
+                    yield return stage;
+                }
         }
         static void EmitWall(string name,long start)
         {
@@ -98,7 +119,7 @@ namespace DragLab.Runtime
             EmitWall("clone task",cloning);
             // Normalize Unity-dependent state on main. No full validator call
             // may block this frame; it will run against detached managed data.
-            foreach(var stage in MechanicsOwnership.EnsureSteps(candidate,candidate.catalog,false))
+            foreach(var stage in NormalizeFinishCandidate(candidate))
                 yield return stage;
             long catalogStamp=System.Diagnostics.Stopwatch.GetTimestamp();
             var detachedCatalog=source.catalog.DetachedNewSupplySnapshot();
@@ -115,7 +136,7 @@ namespace DragLab.Runtime
             if(session.player.state.finished&&!session.player.state.disqualified&&!practiceRun)
                 foreach(var unused in VehicleListings.AfterRaceSteps(candidate,candidate.catalog))yield return unused;
             EmitWall("after-race stock generation including yields",market);
-            foreach(var stage in MechanicsOwnership.EnsureSteps(candidate,candidate.catalog,false))
+            foreach(var stage in NormalizeFinishCandidate(candidate))
                 yield return stage;
             foreach(var step in ValidateFinishCandidate(candidate,source.catalog,detachedCatalog))
                 yield return step;
