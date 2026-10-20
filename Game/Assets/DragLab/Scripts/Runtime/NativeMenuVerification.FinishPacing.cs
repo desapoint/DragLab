@@ -217,7 +217,14 @@ PrototypeGame.FinishMeasurement=(name,value)=>{if(name=="camera step units")maxC
                 Check(game.Profile.cash==cash+expected,"Background settlement applies the captured reward exactly once");
                 Check(game.Profile.vehicleStock.generation==generation+(paid?1:0)&&game.Profile.inventory.market.generation==game.Profile.vehicleStock.generation,"Paid third-race stock refresh stays seeded and shares the car/part epoch");
                 game.ReturnToGarage();var reloaded=ProfileStore.Load();
-                Check(reloaded.cash==game.Profile.cash&&reloaded.runCheckpoints.All(r=>r.settled),"Background settlement and final shutdown resources survive durable exit/reload");entered.Dispose();release.Dispose();
+                Check(reloaded.cash==game.Profile.cash&&reloaded.runCheckpoints.All(r=>r.settled),"Background settlement and final shutdown resources survive durable exit/reload");
+                if(paid)
+                    Check(JsonUtility.ToJson(reloaded.inventory.market)==JsonUtility.ToJson(game.Profile.inventory.market)&&
+                        JsonUtility.ToJson(reloaded.vehicleStock)==JsonUtility.ToJson(game.Profile.vehicleStock)&&
+                        reloaded.inventory.dealer.Select(x=>JsonUtility.ToJson(x)).SequenceEqual(
+                            game.Profile.inventory.dealer.Select(x=>JsonUtility.ToJson(x))),
+                        "Committed third-race market offers and dealer hardware survive exact SQLite reload");
+                entered.Dispose();release.Dispose();
             }
         }
 #endif

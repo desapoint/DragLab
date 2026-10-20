@@ -56,6 +56,21 @@ namespace DragLab.Infrastructure
             };
             check(StateRows.Restore(oldRows)==legacy,
                 "Historical individually addressed market records still restore without changing SQLite schema");
+            // Previous market engine offers contained nested individual parts
+            // and wear members. Verify the old recursive row graph survives
+            // without flattening or losing its original member state.
+            var legacyNested=new[]{
+                new StateRows.Row{path="$",key="inventory",order=0,
+                    json="{\"market\":{\"engines\":{\"$draglabRows\":\"$/inventory/market/engines\"}}}"},
+                new StateRows.Row{path="$/inventory/market/engines",key="id:old-offer",order=0,
+                    json="{\"id\":\"old-offer\",\"parts\":{\"$draglabRows\":\"$/inventory/market/engines/id%3Aold-offer/parts\"}}"},
+                new StateRows.Row{path="$/inventory/market/engines/id%3Aold-offer/parts",key="id:old-part",order=0,
+                    json="{\"instanceId\":\"old-part\",\"condition\":{\"elements\":{\"$draglabRows\":\"$/inventory/market/engines/id%3Aold-offer/parts/id%3Aold-part/condition/elements\"}}}"},
+                new StateRows.Row{path="$/inventory/market/engines/id%3Aold-offer/parts/id%3Aold-part/condition/elements",key="id:member",order=0,
+                    json="{\"id\":\"member\",\"health\":0.45}"}
+            };
+            check(StateRows.Restore(legacyNested)=="{\"inventory\":{\"market\":{\"engines\":[{\"id\":\"old-offer\",\"parts\":[{\"instanceId\":\"old-part\",\"condition\":{\"elements\":[{\"id\":\"member\",\"health\":0.45}]}}]}]}}}",
+                "Legacy recursive engine-offer records still restore exact nested member condition");
         }
         public static void Run(string folder,VehicleDefinition[] vehicles,Action<bool,string> check,Action<string> note,int limit=0)
         {
