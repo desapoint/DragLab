@@ -203,22 +203,32 @@ namespace DragLab.Runtime
                 // Exercise validation on its actual detached, worker-owned
                 // catalog and compare both accepted and rejected profiles.
                 var detachedCatalog=fixtureCatalog.DetachedNewSupplySnapshot();
-                var workerProfile=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(synchronous));
-                workerProfile.catalog=detachedCatalog;
+                // Unity can materialize empty inline objects (such as an absent
+                // cart) on every JSON round trip. A real finish candidate is
+                // fully normalized before the worker sees it. Model exactly that
+                // boundary instead of comparing against an unnormalized re-clone.
+                PlayerProfile NormalizedValidationFixture()
+                {
+                    var copy=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(synchronous));
+                    copy.storageCommit=synchronous.storageCommit;
+                    MechanicsOwnership.Ensure(copy,fixtureCatalog);
+                    return copy;
+                }
+                var workerProfile=NormalizedValidationFixture();
                 var invalidCases=new List<PlayerProfile>();
                 var invalidLabels=new List<string>();
-                var invalidCash=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(synchronous));
+                var invalidCash=NormalizedValidationFixture();
                 invalidCash.cash=-1;invalidCases.Add(invalidCash);invalidLabels.Add("negative cash");
-                var invalidParts=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(synchronous));
+                var invalidParts=NormalizedValidationFixture();
                 if(invalidParts.parts.Count>1)
                 {
                     invalidParts.parts[1].instanceId=invalidParts.parts[0].instanceId;
                     invalidCases.Add(invalidParts);invalidLabels.Add("duplicate part identity");
                 }
-                var invalidMarket=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(synchronous));
+                var invalidMarket=NormalizedValidationFixture();
                 invalidMarket.inventory.market.version=-1;
                 invalidCases.Add(invalidMarket);invalidLabels.Add("invalid market epoch");
-                string expectedValid=MechanicsOwnership.Validate(synchronous,fixtureCatalog);
+                string expectedValid=MechanicsOwnership.Validate(workerProfile,fixtureCatalog);
                 var expectedErrors=new List<string>();
                 var initialBytes=new List<string>();
                 foreach(var malformed in invalidCases)
@@ -228,6 +238,7 @@ namespace DragLab.Runtime
                     malformed.catalog=detachedCatalog;
                 }
                 string validBytes=JsonUtility.ToJson(workerProfile);
+                workerProfile.catalog=detachedCatalog;
                 int verificationMainThread=Thread.CurrentThread.ManagedThreadId,validationFixtureThread=verificationMainThread;
                 var validationTask=Task.Run(()=>{
                     validationFixtureThread=Thread.CurrentThread.ManagedThreadId;
@@ -238,11 +249,16 @@ namespace DragLab.Runtime
                 });
                 while(!validationTask.IsCompleted)yield return null;
                 var validationErrors=validationTask.GetAwaiter().GetResult();
-                Check(validationFixtureThread!=verificationMainThread&&
-                    !ReferenceEquals(detachedCatalog,fixtureCatalog)&&
-                    validationErrors[0]==expectedValid&&
-                    validBytes==JsonUtility.ToJson(workerProfile),
-                    "Detached worker validates unchanged candidate with exact synchronous result");
+                Check(validationFixtureThread!=verificationMainThread,
+                    "Detached validation uses worker thread "+validationFixtureThread+
+                    " rather than Unity thread "+verificationMainThread);
+                Check(!ReferenceEquals(detachedCatalog,fixtureCatalog),
+                    "Detached validation uses an independent authored catalog snapshot");
+                Check(validationErrors[0]==expectedValid,
+                    "Worker validation matches main-thread result: main="+
+                    (expectedValid??"<valid>")+" / worker="+(validationErrors[0]??"<valid>"));
+                Check(validBytes==JsonUtility.ToJson(workerProfile),
+                    "Worker validation leaves normalized candidate bytes unchanged");
                 for(int caseIndex=0;caseIndex<invalidCases.Count;caseIndex++)
                     Check(expectedErrors[caseIndex]!=null&&
                         expectedErrors[caseIndex]==validationErrors[caseIndex+1]&&
