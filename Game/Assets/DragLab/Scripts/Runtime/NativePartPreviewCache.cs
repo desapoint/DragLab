@@ -12,7 +12,7 @@ namespace DragLab.Runtime
 {
     internal sealed class NativePartPreviewCache
     {
-        object profile,catalog;string context;
+        object profile,catalog;string context,currentPhysical;
         readonly Dictionary<string,CarInspection> inspections=new Dictionary<string,CarInspection>();
         readonly NativeSteadyOutputCache steadyCache=new NativeSteadyOutputCache();
         readonly Dictionary<string,PlayerProfile> plans=new Dictionary<string,PlayerProfile>();
@@ -59,9 +59,16 @@ namespace DragLab.Runtime
         }
         internal void Bind(PlayerProfile p,OwnedCar car)
         {
+            // Shopping plans and comparisons depend on the wider inventory/
+            // commerce context. The applied car's physical inspection does not.
+            string physical=CarSignature(p,car);
             string key=p.revision+"/"+JsonUtility.ToJson(car)+"/"+JsonUtility.ToJson(p.catalog.Spec(car.vehicleId))+"/"+string.Join("/",car.installed.slots.Select(s=>{var part=p.parts.Find(i=>i.instanceId==s.partInstanceId);return part==null?"missing/"+s.partInstanceId:JsonUtility.ToJson(part)+JsonUtility.ToJson(p.catalog.Find(part.definitionId));}));
             if(ReferenceEquals(profile,p)&&ReferenceEquals(catalog,p.catalog)&&context==key)return;
-            profile=p;catalog=p.catalog;context=key;inspections.Clear();plans.Clear();comparisons.Clear();recent.Clear();nodes.Clear();
+            CarInspection retained=null;
+            if(currentPhysical==physical)inspections.TryGetValue("current",out retained);
+            profile=p;catalog=p.catalog;context=key;currentPhysical=physical;
+            inspections.Clear();if(retained!=null)inspections["current"]=retained;
+            plans.Clear();comparisons.Clear();recent.Clear();nodes.Clear();
         }
         internal CarInspection Inspection(string key,Func<CarInspection> calculate)
         {if(inspections.TryGetValue(key,out var value)){Hits++;return value;}Misses++;value=calculate();if(inspections.Count>=128)inspections.Clear();inspections[key]=value;return value;}
