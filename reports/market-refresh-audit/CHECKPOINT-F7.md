@@ -21,15 +21,17 @@ serialized schema, or ownership/settlement validation.
 
 - Each group is generated in its original order with the same
   `newCount`, selection, delivery-percent and initial-quantity rolls.
-- The task receives copies of group representative definitions
-  and copied target `VehicleSpec`s. It does not touch the live
-  `MechanicalCatalog`, Unity objects, `Resources`, or `JsonUtility`.
-- A canonical product group differs in definition ID only;
-  `FitsDetached` is the same fitment predicate as `catalog.Fits`.
-  The layout already calculates the matching original **maximum**
-  quantity across all catalog models. Therefore the guarantee
-  can use the group's established `maximum` rather than repeat
-  the same expensive scan on the main thread.
+- The initial selection task receives product group IDs/maxima, base
+  reputation requirements, the fully built immutable per-model
+  `MarketCatalogLayout.FitmentIndex`, and detached owned model IDs.
+  It does not read the live `MechanicalCatalog`, profile, Unity
+  objects, `Resources`, or `JsonUtility`.
+- A canonical product group differs in definition ID only.
+  `MarketCatalogLayout` now preserves matching **group positions per
+  vehicle model** directly during its original `Fits` pass, alongside
+  the original global **maximum** quantity across catalog models.
+  Repeated market epochs reuse the resulting fitment index instead
+  of rescanning all product definitions and vehicle specifications.
 - The guarantee's `coverageRandom` and `coverageQuantity` streams
   advance in the same order and are returned with the completed
   initial plan. The later used guarantee starts from these returned
@@ -49,10 +51,54 @@ the finished worker restored its original catalog. The player
 `MarketBaselineChecks` now checks that the third-race initial
 guarantee emitted the `initial fitting guarantee worker CPU` metric.
 
-**Not yet compiled or benchmarked in Unity.** Treat this checkpoint
-as a draft until all tests pass and a new packaged Windows paid-third
-benchmark confirms the main-thread stage moved below the F.6
-20.019 ms baseline without changing saved results.
+The **first F.7 implementation** passed the user-run Unity commands
+(`NewSupplyVerify`, `PartsMarketVerify`, `SqliteStateVerify`,
+`BuildPlayerOnly`), plus **84 market baseline** and **91 held-writer**
+packaged-player checks with zero runtime errors. Paid-third peak frame
+was **15.451 ms**, peak settlement main step **11.772 ms**
+(`settlement/publish`), and result-to-commit **951.523 ms**.
+The initial guarantee worker CPU was **15.382 ms**.
+
+The **new fitment-index extension** has **not** yet been compiled or
+benchmarked in Unity. Keep PR #4 a draft until the same deterministic
+output, SQLite durability and player checks pass again with the index,
+and compare frame/wall time with those first F.7 measurements.
+
+## Existing catalog runtime index reuse
+
+`MarketCatalogLayout.Layout` now owns a `FitmentIndex` keyed by
+vehicle model, containing ascending canonical product group indices.
+It is built during the **same fitment pass** that already calculates
+group `deliverable` and `maximum`, in both the paced editor path
+and detached cold-layout worker. The index is published only alongside
+a complete layout and reused across market stock generations.
+
+One model lookup returns its indexed groups; multiple owned models
+produce a union in the **original group order**, without duplicates.
+The initial guarantee's empty-garage fallback uses the union of all
+authored model fitments. The detached supply worker's `Product.owned`
+classification and **final fitting guarantee** instead treat zero
+owned cars as zero owned products. All paths preserve the separate
+reputation gate and seeded RNG order.
+
+The index only describes **authored catalog-level fitment**. It is
+not an installed-part condition index and does not replace build
+resolution or tune-specific fitment checks in unrelated UI flows.
+It is memory-only, not added to SQLite.
+
+`Layout.Matches` now checks the authored catalog revision and
+model IDs as well as product identities and equivalence keys,
+invalidating obsolete model-fitment snapshots. A cold worker layout
+builds and publishes the index **off the main thread**; a paced
+synchronous cold build fills the same groups during its existing
+fitment loop.
+
+`NewSupplyChecks.LayoutRegression` verifies per-model indexes against
+full `catalog.Fits` scans, exact union/empty-garage ordering,
+direct-vs-worker index parity, cache reuse, and catalog revision
+invalidation. Existing complete-inventory seeded parity fixtures
+also cover the indexed initial guarantee, later used and new-part
+guarantees, and the owned-product selection tree.
 
 ## Windows local verification
 
@@ -62,18 +108,19 @@ separately; do not merge F.7 before the benchmarks pass.
 
 ```powershell
 git fetch origin
-git switch --track origin/perf/f7-worker-market-guarantee
+git switch perf/f7-worker-market-guarantee
+git pull --ff-only origin perf/f7-worker-market-guarantee
 .\tools\Invoke-Unity.ps1 -Action NewSupplyVerify
 .\tools\Invoke-Unity.ps1 -Action PartsMarketVerify
 .\tools\Invoke-Unity.ps1 -Action SqliteStateVerify
 .\tools\Invoke-Unity.ps1 -Action BuildPlayerOnly
-.\tools\Test-NativeMenu.ps1 -MarketBaselineOnly -FrameProbe -FixtureName settlement-f7-market-a
-.\tools\Test-NativeMenu.ps1 -FinishPacingOnly -FrameProbe -FixtureName settlement-f7-held-a
+.\tools\Test-NativeMenu.ps1 -MarketBaselineOnly -FrameProbe -FixtureName settlement-f7-index-market-a
+.\tools\Test-NativeMenu.ps1 -FinishPacingOnly -FrameProbe -FixtureName settlement-f7-index-held-a
 ```
 
 Inspect `reports/new-parts-supply/verification.txt`,
-`reports/player-fixtures/settlement-f7-market-a/verification.txt`,
-and `reports/player-fixtures/settlement-f7-held-a/verification.txt`.
+`reports/player-fixtures/settlement-f7-index-market-a/verification.txt`,
+and `reports/player-fixtures/settlement-f7-index-held-a/verification.txt`.
 Focus on `market baseline paid third / max frame`,
 `max settlement step`, `parts/new guarantee`,
 `initial fitting guarantee worker CPU`, and exact-once save checks.
