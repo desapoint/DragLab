@@ -63,6 +63,19 @@ namespace DragLab.Runtime
                 p.revision++;p.cash--;
                 check(physical==NativePartPreviewCache.CarSignature(p,car),"Unrelated profile revision and cash do not invalidate an owned-car inspection");
                 p.revision=initialRevision;p.cash=initialCash;
+                string previousName=car.customName,previousPaint=car.paintHex;
+                double previousBest=car.bestQuarterSeconds,previousMileage=car.mileageKm;
+                int previousRuns=car.completedRuns;
+                car.customName="Renamed test car";car.paintHex="#123456";
+                car.bestQuarterSeconds=8.25;car.mileageKm+=5;car.completedRuns++;
+                check(physical==NativePartPreviewCache.CarSignature(p,car),
+                    "Cosmetic edits and race history must not expire physical inspection or ratings");
+                car.customName=previousName;car.paintHex=previousPaint;
+                car.bestQuarterSeconds=previousBest;car.mileageKm=previousMileage;car.completedRuns=previousRuns;
+                double previousFuel=car.fuel.litres;car.fuel.litres=previousFuel*.5;
+                check(physical!=NativePartPreviewCache.CarSignature(p,car),
+                    "Fuel quantity changes invalidate vehicle mass and quarter-mile predictions");
+                car.fuel.litres=previousFuel;
                 var piston=p.componentsPart(PartCategory.Pistons);
                 if(piston!=null){
                     float previous=piston.condition.health;
