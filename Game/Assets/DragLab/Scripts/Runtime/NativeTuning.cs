@@ -81,7 +81,7 @@ namespace DragLab.Runtime
             try{
                 var current=InspectOwned(car)?.Stats;if(current==null)throw new InvalidOperationException("Inspection unavailable.");
                 var proposed=current;
-                if(dirty){var source=InspectionBuild.Capture(profile,car,game.DraftValues);proposed=CarInspection.CalculatePrepared(source,CarInspection.PrepareCar(source),false);TuningPreviewCaptureCount++;}
+                if(dirty){var source=InspectionBuild.Capture(profile,car,game.DraftValues);proposed=NativePartBrowser.Inspect(source,partPreviewCache);TuningPreviewCaptureCount++;}
                 RefreshTuningWheelPreview(proposed.source.build);
                 tuningPreviewContent.Add(new NativeDynoPanel(new[]{new NativeDynoSeries("Current","Current",current,NativeDynoStyle.Primary),new NativeDynoSeries("Proposed","Proposed",proposed,NativeDynoStyle.Alternative),new NativeDynoSeries("NoWear","No wear",OwnedHealthy(car),NativeDynoStyle.Reference)},SharedUnitSettings.Current.torque,"tuningDynoPlot"));
                 var groups=new List<NativeStatGroup>{NativeStatCatalog.TuningSummary()};
