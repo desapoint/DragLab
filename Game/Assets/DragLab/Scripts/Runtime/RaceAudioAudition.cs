@@ -91,7 +91,8 @@ namespace DragLab.Runtime
                     if(!state.finished||Math.Abs(state.elapsed-audition.elapsed)>.00001||auditionLimiter!=audition.limiterTicks||auditionShifts!=audition.shifts||state.boostReleaseCount!=audition.releases)
                         throw new InvalidOperationException("Live race diverged from validated input fixture: "+audition.id+" / ET "+state.elapsed+" vs "+audition.elapsed+" / limiter "+auditionLimiter+" / shifts "+auditionShifts+" / releases "+state.boostReleaseCount);
                     if(auditionVerify&&(audition.tireTest?auditionTirePeak:auditionEnginePeak)<1e-6)throw new InvalidOperationException("Live AudioSource produced no audible category output: "+audition.id);
-                    auditionReport.AppendLine("PASS "+audition.id+" / exact ET, shifts, limiter, releases / engine RMS "+auditionEnginePeak+" / tire RMS "+auditionTirePeak+" / rival silent");
+                    if(auditionVerify&&audition.tireTest&&engineAudio.TireOutputChannels!=2)throw new InvalidOperationException("Tire AudioSource lost stereo wheel placement.");
+                    auditionReport.AppendLine("PASS "+audition.id+" / exact ET, shifts, limiter, releases / engine RMS "+auditionEnginePeak+" / tire RMS "+auditionTirePeak+" / tire channels "+engineAudio.TireOutputChannels+" / rival silent");
                     File.WriteAllText(Path.Combine(auditionFolder,"live-verification.txt"),auditionReport.ToString(),new UTF8Encoding(false));
                     if(auditionVerify&&auditionIndex==auditionFiles.Length-1){auditionReport.AppendLine("PASS all "+auditionFiles.Length+" game races");File.WriteAllText(Path.Combine(auditionFolder,"live-verification.txt"),auditionReport.ToString(),new UTF8Encoding(false));Application.Quit(0);auditionStopped=true;return;}
                     NextAudioAudition();return;

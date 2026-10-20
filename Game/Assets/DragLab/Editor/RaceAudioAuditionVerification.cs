@@ -28,7 +28,7 @@ namespace DragLab.Editor
             public List<Cue> cues=new List<Cue>();public List<Point> points=new List<Point>();
         }
         [Serializable] public sealed class Manifest {public int sampleRate=Rate,channels=2;public string generatedUtc;public List<Result> cases=new List<Result>();}
-        sealed class Case {public string id,title,source;public VehicleSpec spec;public Tune tune;public bool laboratory,tireTest,burnout;}
+        sealed class Case {public string id,title,source;public VehicleSpec spec;public Tune tune;public bool laboratory,tireTest,burnout,singleWheel;}
         static void Require(bool condition,string message){if(!condition)throw new InvalidOperationException("RACE AUDIO: "+message);}
         static void Mark(Result r,double time,string label){r.cues.Add(new Cue{time=Math.Round(time,3),label=label});}
         static List<Case> Cases()
@@ -57,6 +57,7 @@ namespace DragLab.Editor
             add("15-v8-street-wheelspin","Bison · narrow street tires · wheelspin","V8Muscle",c=>{c.tireTest=true;c.tune.tireLevel=0;c.tune.engineLevel=2;c.tune.rearWheelWidth=.8f;});
             add("16-v8-wide-wheelspin","Bison R · wide drag tires · wheelspin","SuperV8",c=>{c.tireTest=true;c.tune.tireLevel=2;c.tune.engineLevel=3;c.tune.inductionUpgrade=EngineUpgradeInduction.TwinSupercharger;c.tune.rearWheelWidth=1.5f;c.tune.rearWheelDiameter=1.1f;});
             add("17-v8-burnout","Bison · street tires · line-lock burnout","V8Muscle",c=>{c.tireTest=c.burnout=true;c.tune.tireLevel=0;});
+            add("18-i4-open-diff-single-wheel","Juniper · open diff · front-left wheelspin","StarterHatch",c=>{c.tireTest=c.singleWheel=true;c.tune.tireLevel=0;c.tune.engineLevel=2;c.spec.frontDifferential=new DifferentialSpec{kind=DifferentialKind.Open};c.tune.frontLeftGrip=.18f;});
             return list;
         }
         static void Cylinders(Case c,int count,EngineLayout layout,double litres)
@@ -83,7 +84,7 @@ namespace DragLab.Editor
             var controller=new EngineSoundController(car.spec,car.tune);var synth=new EngineSoundSynth(profile,sampleRate:Rate);
             var r=new Result{id=c.id,title=c.title,source=c.source,file=c.id+".wav",laboratory=c.laboratory,cylinders=profile.cylinders,
                 layout=profile.layout.ToString(),fuel=profile.fueling.ToString(),induction=profile.induction.ToString(),valve=profile.valve.ToString(),exhaust="Stage "+profile.exhaust};
-            var pcm=new float[FramesPerTick*2];var tirePcm=new float[FramesPerTick*2];var tireSynth=new TireSoundSynth();var tireProfile=new TireSoundProfile(car.spec,car.tune);double tireEnergy=0;int frictionTicks=0;double now=0,energy=0,liftStart=-1,finishedAt=-1,lastShift=-10,loadedSeconds=0;
+            var pcm=new float[FramesPerTick*2];var tirePcm=new float[FramesPerTick*2];var tireSynth=new TireSoundSynth();var tireProfile=new TireSoundProfile(car.spec,car.tune);double tireEnergy=0;int frictionTicks=0,singleWheelTicks=0;double now=0,energy=0,liftStart=-1,finishedAt=-1,lastShift=-10,loadedSeconds=0;
             int samples=0,lastGear=0,lastRelease=0,lastPop=0,idleSamples=0,revSamples=0,shutdownSamples=0;double idleEnergy=0,revEnergy=0,shutdownEnergy=0;bool didLift=false,limited=false;string stage="";
             using(var file=new FileStream(Path.Combine(directory,r.file),FileMode.Create,FileAccess.Write))using(var writer=new BinaryWriter(file)){
                 Header(writer,0);
@@ -119,6 +120,7 @@ namespace DragLab.Editor
                     var tireFrame=TireSoundFrame.From(s,true,1,car.spec.drive,tireProfile);
                     tireSynth.Fill(tirePcm,2,Rate,tireFrame);foreach(var value in tirePcm)tireEnergy+=value*value;
                     if(Enumerable.Range(0,4).Any(w=>tireFrame.Wheel(w).intensity>.15))frictionTicks++;
+                    if(tireFrame.fl.intensity>.15&&tireFrame.fr.intensity==0&&tireFrame.rl.intensity==0&&tireFrame.rr.intensity==0)singleWheelTicks++;
                     // The rival is simulated but has no controller/synth in this recording.
                     synth.Fill(pcm,2,Rate,controller.Update(s,true,.85,DragMath.FixedStep));
                     foreach(float v in pcm){Require(!float.IsNaN(v)&&!float.IsInfinity(v)&&Math.Abs(v)<1,c.id+" invalid PCM");r.peak=Math.Max(r.peak,Math.Abs(v));energy+=v*v;
@@ -140,6 +142,7 @@ namespace DragLab.Editor
             Require(r.idleRms>1e-5&&r.revRms>1e-5&&r.shutdownRms>1e-5,c.id+" missing audible coverage / idle "+r.idleRms+" / rev "+r.revRms+" / shutdown "+r.shutdownRms);
             Require(r.rms>1e-5,c.id+" silent recording");Require(JsonUtility.ToJson(c.spec)==authored,c.id+" modified source configuration");
             if(c.tireTest){Debug.Log(c.id+" tire ticks "+frictionTicks+" energy "+tireEnergy);Require(frictionTicks>60&&tireEnergy>1,c.id+" lacks sustained audible tire contact");}
+            if(c.singleWheel){Require(singleWheelTicks>60,c.id+" lacks actual isolated wheelspin");Debug.Log(c.id+" single-wheel ticks "+singleWheelTicks);}
             if(!c.burnout)Require(r.limiterTicks>3,c.id+" missing limiter");
             fixture.elapsed=r.elapsed;fixture.shifts=r.shifts;fixture.limiterTicks=r.limiterTicks;fixture.releases=r.releases;
             File.WriteAllText(Path.Combine(directory,c.id+".race.json"),JsonUtility.ToJson(fixture),new UTF8Encoding(false));

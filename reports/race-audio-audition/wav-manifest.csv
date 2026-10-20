@@ -16,3 +16,4 @@ case,cylinders,fuel,induction,tires_only,seconds,shifts,limiter_ticks,releases,w
 15-v8-street-wheelspin,8,Carburetor,NaturallyAspirated,True,34.867,3,697,0,a29c3e804a9d631e5005dcf6089a5a1e3b6eee31be0705ba7c54491d16565fc1
 16-v8-wide-wheelspin,8,Injection,TwinSupercharger,True,32.308,3,962,0,7757281e6647e88b7c440f33b880d0804058c1f5319b0aa81caa1fcee3ebe279
 17-v8-burnout,8,Carburetor,NaturallyAspirated,True,35.267,4,236,0,355d41bdb53c4e7ee5077eba6786e5027c66dca4321f685797f01cf4feb8b772
+18-i4-open-diff-single-wheel,4,Injection,NaturallyAspirated,True,51.667,4,1524,0,d461ed67214569a042d92cca308f7cf024006f7311a1259622cdd03c055c9dc8

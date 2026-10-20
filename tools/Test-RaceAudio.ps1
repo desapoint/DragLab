@@ -1,4 +1,4 @@
-param([switch]$SkipPrepare,[switch]$SkipBuild,[switch]$VerifyOnly)
+param([switch]$SkipPrepare,[switch]$SkipBuild,[switch]$VerifyOnly,[string]$Case="")
 $ErrorActionPreference='Stop'
 $taskRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $taskProject=Join-Path $taskRoot 'Game'
@@ -15,7 +15,15 @@ if(-not $SkipBuild){
 $taskPlayer=Join-Path $taskProject 'Builds/Windows/DragLab.exe'
 $taskFixture=Join-Path $taskRoot ('reports/player-fixtures/live-audio-'+(Get-Date -Format 'yyyyMMdd-HHmmss-fff'))
 [IO.Directory]::CreateDirectory($taskFixture)|Out-Null
-$taskArgs=@('-screen-fullscreen','0','-screen-width','1280','-screen-height','720','-logFile',('"'+(Join-Path $taskFixture 'player.log')+'"'),'--draglab-verify',('"'+$taskFixture+'"'),'--draglab-audio-race-test',('"'+$taskReport+'"'))
+$taskInputs=$taskReport
+if($Case){
+    $taskSelected=@(Get-ChildItem -LiteralPath $taskReport -Filter '*.race.json' -File | Where-Object {$_.Name.StartsWith($Case,[StringComparison]::OrdinalIgnoreCase)})
+    if(-not $taskSelected.Count){throw "No audio configuration starts with $Case"}
+    $taskInputs=Join-Path $taskFixture 'inputs'
+    [IO.Directory]::CreateDirectory($taskInputs)|Out-Null
+    foreach($taskInput in $taskSelected){Copy-Item -LiteralPath $taskInput.FullName -Destination $taskInputs}
+}
+$taskArgs=@('-screen-fullscreen','0','-screen-width','1280','-screen-height','720','-logFile',('"'+(Join-Path $taskFixture 'player.log')+'"'),'--draglab-verify',('"'+$taskFixture+'"'),'--draglab-audio-race-test',('"'+$taskInputs+'"'))
 if($VerifyOnly){$taskArgs+='--draglab-audio-test-check'}
 # A visible game and real AudioSources, never WAV/browser playback.
 $taskProcess=Start-Process -FilePath $taskPlayer -ArgumentList $taskArgs -WindowStyle Normal -PassThru
@@ -27,7 +35,7 @@ if($VerifyOnly){
     if($taskProcess.ExitCode -ne 0 -or -not (Test-Path -LiteralPath $taskResult)){throw "Live audio verification failed: $taskFixture"}
     Get-Content -LiteralPath $taskResult -Encoding UTF8
     if(-not (Select-String -LiteralPath $taskResult -Pattern 'PASS all')){throw 'Live suite did not complete.'}
-    Copy-Item -LiteralPath $taskResult -Destination (Join-Path $taskReport 'live-verification.txt')
+    if(-not $Case){Copy-Item -LiteralPath $taskResult -Destination (Join-Path $taskReport 'live-verification.txt')}
 }else{
     Write-Output 'Playing all configurations at normal speed. Engine-only / Tires-only selected automatically. Mixed, Stop/Resume and Next car are available; Esc > Sound has independent category sliders.'
 }

@@ -46,6 +46,7 @@ namespace DragLab.Editor
                 synth.Fill(block,channels,rate,null);synth.Fill(block,channels,rate,Frame(0,0,0));
                 check(block.All(x=>x==0),"Reset cannot leak old tire-filter energy / "+rate+" / "+channels);
             }
+            PerWheelChecks(check);
             foreach(string dimension in new[]{"compound","width","radius"}){
                 var contact=new TireFeedback{slidingSpeed=18,intensity=1,slip=1,grip=1,normalLoadN=3500,radiusM=.3,widthScale=1,compoundGrip=1};
                 var changed=contact;if(dimension=="compound")changed.compoundGrip=2.9;else if(dimension=="width")changed.widthScale=1.5;else changed.radiusM=.36;
@@ -65,6 +66,34 @@ namespace DragLab.Editor
             File.WriteAllText(Path.Combine(Folder,"sound-verification.txt"),report+"Checks: "+checks+"\n",new UTF8Encoding(false));
             TireFeedbackVerification.VerifyEffectsAt(Folder);
             Debug.Log("TIRE SOUND PASS: "+checks+" + retained contact/DSP/effects gate");
+        }
+        static void PerWheelChecks(Action<bool,string> check)
+        {
+            foreach(int corner in Enumerable.Range(0,4))foreach(int rate in new[]{44100,48000})foreach(int channels in new[]{1,2}){
+                var s=new CarState{speed=12,wheelRadiusM=.3,frontWheelRadiusM=.29,rearWheelRadiusM=.34,wheelContactInitialized=true,slip=1.5};
+                for(int w=0;w<4;w++){s.contact.omega[w]=s.speed/(w<2?s.frontWheelRadiusM:s.rearWheelRadiusM);s.contact.force[w]=1000;s.contact.friction[w]=1;s.contact.normalLoadN[w]=3000;}
+                s.contact.omega[corner]+=60;s.contact.slip[corner]=.7;
+                var frame=TireSoundFrame.From(s,true,1);
+                check(Enumerable.Range(0,4).All(w=>w==corner?frame.Wheel(w).intensity>.5:frame.Wheel(w).intensity==0),"Only slipping contact emits despite large aggregate car slip / corner "+corner+" / "+rate+" / "+channels);
+                var isolated=new TireSoundFrame(corner==0?frame.fl:default,corner==1?frame.fr:default,corner==2?frame.rl:default,corner==3?frame.rr:default,s.speed,1);
+                var full=new float[rate*channels/4];var one=new float[full.Length];
+                new TireSoundSynth().Fill(full,channels,rate,frame);new TireSoundSynth().Fill(one,channels,rate,isolated);
+                check(full.SequenceEqual(one)&&Rms(full)>.005,"Three planted tires add exactly zero audio to single-wheel output / corner "+corner+" / "+rate+" / "+channels);
+                if(channels==2){double left=0,right=0;for(int i=0;i<full.Length;i+=2){left+=full[i]*full[i];right+=full[i+1]*full[i+1];}
+                    check(corner%2==0?left>right*1.2:right>left*1.2,"Single-tire stereo follows left/right corner / corner "+corner+" / "+rate);}
+                s.contact.slip[corner]=0;s.contact.omega[corner]=s.speed/(corner<2?s.frontWheelRadiusM:s.rearWheelRadiusM);
+                var quiet=new float[full.Length];new TireSoundSynth().Fill(quiet,channels,rate,TireSoundFrame.From(s,true,1));
+                check(quiet.All(v=>v==0),"All planted contacts stay silent despite stale aggregate slip / "+corner+" / "+rate+" / "+channels);
+            }
+            foreach(int corner in Enumerable.Range(0,4)){
+                var input=new WheelContactInput{frontTorqueNm=corner<2?600:0,rearTorqueNm=corner>=2?600:0};input.friction[corner]=.08;
+                var s=new CarState{wheelContactInitialized=true,wheelRadiusM=.3};int solo=0;
+                for(int tick=0;tick<240;tick++){
+                    WheelContactDynamics.Step(s.contact,input,DragMath.FixedStep);s.speed=s.contact.speed;
+                    var frame=TireSoundFrame.From(s,true,1);if(frame.Wheel(corner).intensity>.15&&Enumerable.Range(0,4).All(w=>w==corner||frame.Wheel(w).intensity==0))solo++;
+                }
+                check(solo>120,"Authoritative open differential has sustained single-wheel sound with other three planted / corner "+corner+" / solo ticks "+solo);
+            }
         }
         static bool Finite(float x)=>!float.IsNaN(x)&&!float.IsInfinity(x);
         static double Rms(float[] data,int start=0){double sum=0;for(int i=start;i<data.Length;i++)sum+=data[i]*data[i];return Math.Sqrt(sum/(data.Length-start));}

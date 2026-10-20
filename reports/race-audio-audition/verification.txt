@@ -16,5 +16,6 @@ PASS 14-i4-twincharged-dct / 33.21 s / limiter ticks 759 / shifts 4 / releases 3
 PASS 15-v8-street-wheelspin / 34.87 s / limiter ticks 697 / shifts 3 / releases 0 / peak boost 0.000
 PASS 16-v8-wide-wheelspin / 32.31 s / limiter ticks 962 / shifts 3 / releases 0 / peak boost 0.649
 PASS 17-v8-burnout / 35.27 s / limiter ticks 236 / shifts 4 / releases 0 / peak boost 0.000
+PASS 18-i4-open-diff-single-wheel / 51.67 s / limiter ticks 1524 / shifts 4 / releases 0 / peak boost 0.000
 PASS exact WAV repeatability for a complete turbo race, including lift, limiter and shifts.
-PASS: 17 complete real races; no rival voice constructed; no player saves/preferences accessed.
+PASS: 18 complete real races; no rival voice constructed; no player saves/preferences accessed.

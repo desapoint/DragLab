@@ -1,36 +1,38 @@
 Visible game / live production audio / input replay verification
 PASS stop/resume before finish / 01-i3-na
-PASS 01-i3-na / exact ET, shifts, limiter, releases / engine RMS 0,0455536060035229 / tire RMS 0 / rival silent
+PASS 01-i3-na / exact ET, shifts, limiter, releases / engine RMS 0,0451692193746567 / tire RMS 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 02-i4-na
-PASS 02-i4-na / exact ET, shifts, limiter, releases / engine RMS 0,0436173975467682 / tire RMS 0 / rival silent
+PASS 02-i4-na / exact ET, shifts, limiter, releases / engine RMS 0,0468651168048382 / tire RMS 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 03-i4-turbo-hiss
-PASS 03-i4-turbo-hiss / exact ET, shifts, limiter, releases / engine RMS 0,0492090694606304 / tire RMS 0 / rival silent
+PASS 03-i4-turbo-hiss / exact ET, shifts, limiter, releases / engine RMS 0,0511956699192524 / tire RMS 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 04-i4-twin-chirp
-PASS 04-i4-twin-chirp / exact ET, shifts, limiter, releases / engine RMS 0,0845496878027916 / tire RMS 0 / rival silent
+PASS 04-i4-twin-chirp / exact ET, shifts, limiter, releases / engine RMS 0,0845575705170631 / tire RMS 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 05-i5-turbo-flutter
-PASS 05-i5-turbo-flutter / exact ET, shifts, limiter, releases / engine RMS 0,0624113008379936 / tire RMS 0 / rival silent
+PASS 05-i5-turbo-flutter / exact ET, shifts, limiter, releases / engine RMS 0,0602963455021381 / tire RMS 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 06-i6-na
-PASS 06-i6-na / exact ET, shifts, limiter, releases / engine RMS 0,0568080022931099 / tire RMS 0 / rival silent
+PASS 06-i6-na / exact ET, shifts, limiter, releases / engine RMS 0,0570104382932186 / tire RMS 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 07-i6-carb
-PASS 07-i6-carb / exact ET, shifts, limiter, releases / engine RMS 0,0900768414139748 / tire RMS 0 / rival silent
+PASS 07-i6-carb / exact ET, shifts, limiter, releases / engine RMS 0,0902443081140518 / tire RMS 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 08-v8-carb
-PASS 08-v8-carb / exact ET, shifts, limiter, releases / engine RMS 0,130523890256882 / tire RMS 0 / rival silent
+PASS 08-v8-carb / exact ET, shifts, limiter, releases / engine RMS 0,129350781440735 / tire RMS 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 09-v8-supercharger
-PASS 09-v8-supercharger / exact ET, shifts, limiter, releases / engine RMS 0,0924046784639359 / tire RMS 0 / rival silent
+PASS 09-v8-supercharger / exact ET, shifts, limiter, releases / engine RMS 0,0912162214517593 / tire RMS 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 10-diesel-turbo
-PASS 10-diesel-turbo / exact ET, shifts, limiter, releases / engine RMS 0,0820039957761765 / tire RMS 0 / rival silent
+PASS 10-diesel-turbo / exact ET, shifts, limiter, releases / engine RMS 0,0834841653704643 / tire RMS 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 11-v10-na
-PASS 11-v10-na / exact ET, shifts, limiter, releases / engine RMS 0,148933321237564 / tire RMS 0 / rival silent
+PASS 11-v10-na / exact ET, shifts, limiter, releases / engine RMS 0,148943990468979 / tire RMS 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 12-v12-twin
-PASS 12-v12-twin / exact ET, shifts, limiter, releases / engine RMS 0,0871476083993912 / tire RMS 0 / rival silent
+PASS 12-v12-twin / exact ET, shifts, limiter, releases / engine RMS 0,0862579792737961 / tire RMS 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 13-v8-twin-supercharger
-PASS 13-v8-twin-supercharger / exact ET, shifts, limiter, releases / engine RMS 0,111664906144142 / tire RMS 0 / rival silent
+PASS 13-v8-twin-supercharger / exact ET, shifts, limiter, releases / engine RMS 0,111023262143135 / tire RMS 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 14-i4-twincharged-dct
-PASS 14-i4-twincharged-dct / exact ET, shifts, limiter, releases / engine RMS 0,0492776334285736 / tire RMS 0 / rival silent
+PASS 14-i4-twincharged-dct / exact ET, shifts, limiter, releases / engine RMS 0,0523722134530544 / tire RMS 0 / tire channels 2 / rival silent
 PASS stop/resume before finish / 15-v8-street-wheelspin
-PASS 15-v8-street-wheelspin / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0747910887002945 / rival silent
+PASS 15-v8-street-wheelspin / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0739423409104347 / tire channels 2 / rival silent
 PASS stop/resume before finish / 16-v8-wide-wheelspin
-PASS 16-v8-wide-wheelspin / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0565610192716122 / rival silent
+PASS 16-v8-wide-wheelspin / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0588782541453838 / tire channels 2 / rival silent
 PASS stop/resume before finish / 17-v8-burnout
-PASS 17-v8-burnout / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0766598805785179 / rival silent
-PASS all 17 game races
+PASS 17-v8-burnout / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0760983526706696 / tire channels 2 / rival silent
+PASS stop/resume before finish / 18-i4-open-diff-single-wheel
+PASS 18-i4-open-diff-single-wheel / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0687450468540192 / tire channels 2 / rival silent
+PASS all 18 game races

@@ -31,6 +31,7 @@ namespace DragLab.Presentation
         AudioSource source;
         AudioClip clockClip;
         TireAudio tires;
+        public int TireOutputChannels=>tires==null?0:tires.OutputChannels;
         public float TireOutputRms=>tires==null?0:tires.OutputRms;
         Session session;
         int sampleRate;

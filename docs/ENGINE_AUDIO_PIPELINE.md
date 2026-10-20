@@ -134,3 +134,12 @@ roughness/squeal mix. This is sound calibration, not a measured rubber acoustics
 model or a change to handling. One explicit Asphalt sound surface is defined;
 there is no surface selector or extra surface-dependent physics. Profiles are
 prepared outside the audio callback, which retains reusable buffers and filters.
+
+Per-tire isolation follow-up: the four voices read FL/FR/RL/RR contact independently.
+A planted corner contributes zero slip audio even if another wheel spins or the
+car's aggregate slip remains high. Existing release envelopes briefly decay if a
+previously slipping tire regains grip. Left/right pan follows corner side; the
+silent clock is stereo to preserve this in Unity. One AudioSource mixes the four
+independent voices; mono output is still supported. The synthetic aggregate-slip
+fallback belongs to the acoustic bench and does not replace initialized road
+contacts. Open-differential single-wheel coverage is part of the live audition.

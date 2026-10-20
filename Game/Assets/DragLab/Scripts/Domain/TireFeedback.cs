@@ -123,7 +123,8 @@ namespace DragLab.Domain
                     double rubber=(body2[w]-floor[w])*.12*rubberMix[w];
                     double squeal=(resonance*5.5+upper*1.9)*squealLevel[w]*squealMix[w];
                     double voice=(rubber+squeal)*(1+texture[w]*.8)*.24*level[w];
-                    double pan=w<2?-.12:.12;left+=voice*(1-pan);right+=voice*(1+pan);
+                    // Contacts are FL, FR, RL, RR: stereo follows the car side, not its axle.
+                    double pan=w%2==0?-.12:.12;left+=voice*(1-pan);right+=voice*(1+pan);
                 }
                 gain+=(target-gain)*masterSmooth;
                 if(Math.Abs(gain-target)<1e-7)gain=target;
