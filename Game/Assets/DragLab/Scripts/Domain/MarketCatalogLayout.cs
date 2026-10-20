@@ -47,6 +47,11 @@ namespace DragLab.Domain.Mechanics
                 for(int i=0;i<present.Length;i++)if(present[i])merged.Add(i);
                 return merged.ToArray();
             }
+            // Per-model arrays are sorted by canonical product-group position.
+            // This avoids refitting candidate models during seeded used-stock
+            // guarantees and preserves the original target enumeration order.
+            internal bool FitsModel(string model,int groupIndex)
+                =>Array.BinarySearch(byModel[model],groupIndex)>=0;
         }
         sealed class FitmentBuilder
         {
