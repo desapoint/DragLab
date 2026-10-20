@@ -29,7 +29,7 @@ namespace DragLab.Runtime
             EnsureCartOwner();var d=profile.catalog.Find(id);
             if(d==null||install&&!profile.catalog.Fits(Selected.spec,d)||profile.reputation<d.reputationRequired){notice="Offer incompatible or locked by reputation.";return;}
             string role=unitOffers.TryGetValue(id,out var chosen)?chosen:null;var action=role==null?CartAction.NewSet:CartAction.NewUnits;
-            var line=cart.Find(l=>l.definitionId==id&&l.action==action&&l.role==role);
+            var line=cart.Find(l=>l.definitionId==id&&l.action==action&&(action==CartAction.NewSet||l.role==role));
             if(line==null){if(cart.Count>=100){notice="Cart holds at most 100 distinct lines.";return;}line=new PartCartLine{definitionId=id,action=action,role=role};cart.Add(line);}else line.quantity=Math.Min(99,line.quantity+1);
             if(install)SetCartInstallation(line,true);CartChanged();
         }

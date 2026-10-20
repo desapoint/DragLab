@@ -42,7 +42,7 @@ namespace DragLab.Runtime
             bool unit=role!=null;
             if(unit&&!InventoryUnits.Roles(profile,Build,d).Contains(role)){notice="Individual role unavailable.";return false;}
             if(install&&NativeBlockPreparationPending(d)){notice="Prepare a complete engine installation before installing this block.";return false;}
-            var action=unit?CartAction.NewUnits:CartAction.NewSet;var existing=cart.Find(l=>l.action==action&&l.definitionId==definition&&l.role==role);
+            var action=unit?CartAction.NewUnits:CartAction.NewSet;var existing=cart.Find(l=>l.action==action&&l.definitionId==definition&&(!unit||l.role==role));
             if(existing!=null&&existing.quantity+quantity>99){notice="A cart line holds at most 99 sets or units.";return false;}
             if(existing==null&&cart.Count>=100){notice="Cart holds at most 100 distinct lines.";return false;}
             if(unit&&install&&!ValidateNativeUnitPlan(existing,d,role,quantity,positions))return false;

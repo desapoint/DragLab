@@ -47,3 +47,20 @@ The retained shop responsiveness gate reached 61 checks without runtime errors,
 then failed its combined-cart preview assertion on this baseline. Investigate that
 failure before treating the older shop checkpoint as complete. It is not caused
 by the requested acoustic changes, which have not started at this build gate.
+
+### Shop continuation resolved before audio
+
+Reusing the original failing saved fixture reproduced `Duplicate new offer`.
+Restored complete-set rows can contain an empty role string rather than null;
+native/legacy staging now matches complete sets by product/action, retaining exact
+roles for individual units. This prevents a duplicate row from invalidating the
+whole cart preview. The packaged regression explicitly exercises that restoration
+case, then all 38 checks on the original saved fixture pass with zero runtime
+errors. A separate fresh diagnostic fixture passed 74 checks before the fix but
+could not establish correctness for restored carts; the saved-fixture regression
+does. Price ordering, tab reuse, stat sorting, actual durable purchase and reload
+are included. Windows rebuild succeeded. This narrow fix changes no bench UI.
+
+Baseline Android APK passed v2 signature verification and 16 KB zip alignment;
+SHA-256 `322e731175b6462513c9de7f2caba286581dd209aa88d81a9ac4bf4c7f05fea3`.
+Retained locally as `Game/Builds/Android/DragLab-before-acoustic-refinement.apk`.
