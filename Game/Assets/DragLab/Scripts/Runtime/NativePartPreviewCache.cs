@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace DragLab.Runtime
     {
         object profile,catalog;string context;
         readonly Dictionary<string,CarInspection> inspections=new Dictionary<string,CarInspection>();
+        readonly NativeSteadyOutputCache steadyCache=new NativeSteadyOutputCache();
         readonly Dictionary<string,PlayerProfile> plans=new Dictionary<string,PlayerProfile>();
         readonly Dictionary<string,NativePartEntry> comparisons=new Dictionary<string,NativePartEntry>();
         readonly LinkedList<string> recent=new LinkedList<string>();
@@ -21,6 +23,11 @@ namespace DragLab.Runtime
         internal string Context=>context;
         internal int Hits,Misses;
         internal bool HasComparisons=>comparisons.Count>0;
+        internal int SteadyHits=>steadyCache.Hits;
+        internal int SteadyMisses=>steadyCache.Misses;
+        // This cache is independent of the current car/profile revision. Only the exact
+        // engine inputs participate in its key, so chassis and tire edits retain output.
+        internal Func<double,InspectionSteadyPoint> SteadyOutput(InductionProfile induction)=>steadyCache.For(induction);
         internal static string Fingerprint(string text){using(var sha=SHA256.Create())return Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(text)));}
         internal void Bind(PlayerProfile p,OwnedCar car)
         {
@@ -41,6 +48,65 @@ namespace DragLab.Runtime
         {
             if(nodes.TryGetValue(key,out var node)){recent.Remove(node);recent.AddLast(node);}else{if(comparisons.Count>=ComparisonLimit){string oldest=recent.First.Value;recent.RemoveFirst();nodes.Remove(oldest);comparisons.Remove(oldest);}nodes[key]=recent.AddLast(key);}
             comparisons[key]=new NativePartEntry{Ready=true,Proposed=e.Proposed,Reason=e.Reason,Compatibility=e.Compatibility,Position=e.Position,RequiresMatchingSet=e.RequiresMatchingSet,Change=(double?[])e.Change.Clone()};
+        }
+    }
+
+    // Stores only unconditioned steady induction points. Wear and failure state are
+    // deliberately never cached: CarInspection still runs its mechanics preparation
+    // at every RPM, so a worn piston, loss of fuel, etc. always takes effect.
+    internal sealed class NativeSteadyOutputCache
+    {
+        internal const int Limit=32;
+        readonly Dictionary<string,Dictionary<double,InspectionSteadyPoint>> values=new Dictionary<string,Dictionary<double,InspectionSteadyPoint>>(StringComparer.Ordinal);
+        readonly LinkedList<string> recent=new LinkedList<string>();
+        readonly Dictionary<string,LinkedListNode<string>> nodes=new Dictionary<string,LinkedListNode<string>>(StringComparer.Ordinal);
+        internal int Hits {get;private set;}
+        internal int Misses {get;private set;}
+
+        internal Func<double,InspectionSteadyPoint> For(InductionProfile induction)
+        {
+            string key=Key(induction);
+            if(!values.TryGetValue(key,out var points)){
+                if(values.Count>=Limit){string oldest=recent.First.Value;recent.RemoveFirst();nodes.Remove(oldest);values.Remove(oldest);}
+                points=new Dictionary<double,InspectionSteadyPoint>();values.Add(key,points);nodes.Add(key,recent.AddLast(key));
+            }else{recent.Remove(nodes[key]);recent.AddLast(nodes[key]);}
+            // Never hand the mutable CarState produced by SteadyOutput to another
+            // inspection, and never capture an owned CarSimulation in this cache.
+            return rpm=>{
+                if(points.TryGetValue(rpm,out var result)){Hits++;return result;}
+                var evaluated=InductionDynamics.SteadyOutput(induction,rpm);
+                result=new InspectionSteadyPoint{engineTorqueNm=evaluated.engineTorqueNm,boostBar=evaluated.boostBar};
+                points.Add(rpm,result);Misses++;return result;
+            };
+        }
+
+        static void Number(StringBuilder key,double number)=>key.Append(number.ToString("R",CultureInfo.InvariantCulture)).Append('|');
+        internal static string Key(InductionProfile induction)
+        {
+            var spec=induction.vehicle;
+            var key=new StringBuilder(1024);
+            // Only the inputs read by SteadyOutput, BaseTorque, CamMultiplier,
+            // CompressionMultiplier and Charge. Deliberately exclude tire,
+            // chassis, braking, gearbox, fuel quantity and component wear data.
+            key.Append(JsonUtility.ToJson(induction.data)).Append('|')
+                .Append(JsonUtility.ToJson(spec.valvetrain)).Append('|')
+                .Append(JsonUtility.ToJson(spec.combustion)).Append('|')
+                .Append(JsonUtility.ToJson(spec.engineBehavior)).Append('|');
+            Number(key,spec.redlineRpm);
+            Number(key,spec.DisplacementLitres);
+            Number(key,spec.fuelPowerCapacityHp);
+            Number(key,spec.ignitionPowerCapacityHp);
+            Number(key,induction.tune.PowerMultiplier);
+            Number(key,(int)induction.type);
+            Number(key,induction.turboCount);
+            Number(key,induction.superchargerCount);
+            Number(key,induction.size);
+            Number(key,induction.boostSetting);
+            Number(key,induction.pulley);
+            // Keep the complete authored torque table, not just peak values:
+            // two different engine curves can have identical peaks.
+            foreach(var point in spec.torque){Number(key,point.rpm);Number(key,point.torqueNm);}
+            return key.ToString();
         }
     }
 }
