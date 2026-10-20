@@ -83,3 +83,71 @@ or `PartsMarket.Validate` exceeds the 8 ms target. Run the packaged-player
 benchmark again, inspect the five slowest labels and only then consider
 splitting those specific functions. No improvement is claimed for this
 follow-up until those measurements are available.
+
+## F.6 third checkpoint — off-thread complete validation (current)
+
+The second player run completed **83 market** and **81 held-writer** checks
+with zero runtime errors on the successful rerun. Paid-third maximum main
+settlement step improved from **44.961 ms** to **28.066 ms**, but the
+remaining hot spots were `VehicleListings.Validate` (up to **29.393 ms**)
+and `PartsMarket.Validate` (up to **14.549 ms**).
+
+Instead of adding nested per-offer yield checkpoints, the current revision
+removes staged per-rule validation and restores the original synchronous
+`MechanicsOwnership.Validate` method as the single validation authority.
+Regular transactions and loading still invoke it synchronously.
+
+Only finish settlement changes:
+
+1. Normalize the unpublished settlement candidate on Unity's main thread,
+   retaining the existing incremental metadata/car/part work but skipping
+   its inline full validation.
+2. Create one `MechanicalCatalog.DetachedNewSupplySnapshot()` on main.
+   This contains independent managed vehicle specifications, authored
+   definitions and indexes, with no Unity asset loading from the worker.
+3. Set the private candidate's nonserialized `catalog` reference to that
+   detached snapshot, then run the unmodified full `Validate` using
+   `Task.Run`. No other code touches this candidate until completion.
+4. Restore its original catalog on main even if the worker fails. Any
+   validation error throws **before** checkpoint application, stock refresh,
+   save dispatch or profile publication (as appropriate for that pass).
+5. Repeat the complete worker validation after market generation and second
+   normalization. Existing revision checks, checkpoint writer drain, SQLite
+   durable commit and publication order remain intact.
+
+This is the same two validation points used before F.6. The worker does
+not perform normalization, market generation, serialization or profile
+writes, and must not use Unity's `Resources`, `Application`, `Time`,
+`UnityEngine.Object`, or main-thread Unity APIs. The validator call graph
+uses managed state, `MechanicalCatalog.Resolve` on the detached catalog,
+and read-only ownership/market checks. Do not swap in the authored catalog
+on the worker or make its helpers access Unity objects.
+
+The test fixture now runs detached validation on `Task.Run`, verifies
+different managed thread IDs, confirms exact error results and unchanged
+candidate JSON for valid and malformed profiles, and asserts that the
+two **actual settlement** validation passes complete off the main thread.
+
+**Performance caveat:** Snapshot creation is still synchronous on the main
+thread. It is explicitly measured as `settlement/catalog snapshot`;
+the full worker CPU is reported as `validation worker CPU`. CPU duration
+need not decrease; the goal is to remove validation from the main-frame
+critical path. Do not claim any worker performance result until Unity tests.
+
+## Current local acceptance
+
+```powershell
+git fetch origin
+git pull --ff-only origin perf/f6-staged-settlement-normalization
+.\tools\Invoke-Unity.ps1 -Action NewSupplyVerify
+.\tools\Invoke-Unity.ps1 -Action PartsMarketVerify
+.\tools\Invoke-Unity.ps1 -Action SqliteStateVerify
+.\tools\Invoke-Unity.ps1 -Action BuildPlayerOnly
+.\tools\Test-NativeMenu.ps1 -MarketBaselineOnly -FrameProbe -FixtureName settlement-f6-worker-a
+.\tools\Test-NativeMenu.ps1 -FinishPacingOnly -FrameProbe -FixtureName settlement-held-f6-worker-a
+```
+
+Require exact saved profile/market reload, one payout, stable wear/IDs
+and no runner UI stalls while the writer is held. Compare paid-third max
+step and max frame with F.5 and the prior F.6 runs; separately inspect
+`settlement/catalog snapshot` for a newly introduced main-thread spike.
