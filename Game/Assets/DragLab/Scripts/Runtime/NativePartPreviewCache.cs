@@ -85,26 +85,35 @@ namespace DragLab.Runtime
     internal sealed class NativeSteadyOutputCache
     {
         internal const int Limit=32;
+        readonly object gate=new object();
         readonly Dictionary<string,Dictionary<double,InspectionSteadyPoint>> values=new Dictionary<string,Dictionary<double,InspectionSteadyPoint>>(StringComparer.Ordinal);
         readonly LinkedList<string> recent=new LinkedList<string>();
         readonly Dictionary<string,LinkedListNode<string>> nodes=new Dictionary<string,LinkedListNode<string>>(StringComparer.Ordinal);
-        internal int Hits {get;private set;}
-        internal int Misses {get;private set;}
+        int hits,misses;
+        internal int Hits {get{lock(gate)return hits;}}
+        internal int Misses {get{lock(gate)return misses;}}
 
+        // Resolve the key on the Unity main thread (JsonUtility is not a worker
+        // API). The returned pure-domain delegate may be read by another thread.
         internal Func<double,InspectionSteadyPoint> For(InductionProfile induction)
         {
             string key=Key(induction);
-            if(!values.TryGetValue(key,out var points)){
-                if(values.Count>=Limit){string oldest=recent.First.Value;recent.RemoveFirst();nodes.Remove(oldest);values.Remove(oldest);}
-                points=new Dictionary<double,InspectionSteadyPoint>();values.Add(key,points);nodes.Add(key,recent.AddLast(key));
-            }else{recent.Remove(nodes[key]);recent.AddLast(nodes[key]);}
-            // Never hand the mutable CarState produced by SteadyOutput to another
-            // inspection, and never capture an owned CarSimulation in this cache.
+            Dictionary<double,InspectionSteadyPoint> points;
+            lock(gate){
+                if(!values.TryGetValue(key,out points)){
+                    if(values.Count>=Limit){string oldest=recent.First.Value;recent.RemoveFirst();nodes.Remove(oldest);values.Remove(oldest);}
+                    points=new Dictionary<double,InspectionSteadyPoint>();values.Add(key,points);nodes.Add(key,recent.AddLast(key));
+                }else{recent.Remove(nodes[key]);recent.AddLast(nodes[key]);}
+            }
+            // Never share the mutable CarState from SteadyOutput. The lock also
+            // protects in-flight delegates after their key has been evicted.
             return rpm=>{
-                if(points.TryGetValue(rpm,out var result)){Hits++;return result;}
-                var evaluated=InductionDynamics.SteadyOutput(induction,rpm);
-                result=new InspectionSteadyPoint{engineTorqueNm=evaluated.engineTorqueNm,boostBar=evaluated.boostBar};
-                points.Add(rpm,result);Misses++;return result;
+                lock(gate){
+                    if(points.TryGetValue(rpm,out var result)){hits++;return result;}
+                    var evaluated=InductionDynamics.SteadyOutput(induction,rpm);
+                    result=new InspectionSteadyPoint{engineTorqueNm=evaluated.engineTorqueNm,boostBar=evaluated.boostBar};
+                    points.Add(rpm,result);misses++;return result;
+                }
             };
         }
 
