@@ -206,16 +206,34 @@ namespace DragLab.Domain.Mechanics
         {
             var old=new Dictionary<string,NewPartStock>(StringComparer.Ordinal);
             if(previous!=null)foreach(var row in previous.parts)foreach(string id in row.definitions)old[id]=row;
-            var owned=p.cars.Select(car=>p.catalog.Spec(car.vehicleId)).ToArray();var result=new List<Product>();
+            // Detached new-stock generation reuses the immutable model-to-group
+            // fitment index published by MarketCatalogLayout. The synchronous
+            // editor path still uses the original Fits scans as parity authority.
+            bool[] ownedGroupMask=null;
+            if(detached&&layout.fitments!=null)
+            {
+                ownedGroupMask=new bool[layout.groups.Length];
+                var ownedModels=p.cars.Select(car=>car.vehicleId).Distinct().ToArray();
+                // Unlike initial stock guarantees, zero owned cars means NO
+                // "owned" products, rather than all authored models.
+                if(ownedModels.Length>0)
+                    foreach(int index in layout.fitments.ForModels(ownedModels))
+                        ownedGroupMask[index]=true;
+            }
+            var owned=ownedGroupMask==null?
+                p.cars.Select(car=>p.catalog.Spec(car.vehicleId)).ToArray():null;
+            var result=new List<Product>();
             var rows=p.inventory.market.parts.ToDictionary(s=>s.definitions[0],StringComparer.Ordinal);
             var carried=new HashSet<NewPartStock>();
-            foreach(var group in layout.groups){
+            for(int groupIndex=0;groupIndex<layout.groups.Length;groupIndex++){
+                var group=layout.groups[groupIndex];
                 var row=rows[group.ids[0]];var prior=group.ids.Select(id=>old.TryGetValue(id,out var s)?s:null).FirstOrDefault(s=>s!=null);
                 int held=prior==null||!CartReservations.Active(p)?0:p.inventory.cart.supply.Where(s=>s.generation==previous.generation&&prior.definitions.Contains(s.definitionId)).Sum(s=>s.units);
                 // If an authored alias group splits, carry its physical units once, never once per alias.
                 row.units=row.initialUnits=prior==null||!carried.Add(prior)?0:Math.Max(0,prior.units-held);row.discovered=prior!=null&&(prior.discovered||prior.initialUnits>0);
                 if(prior!=null)row.deliveryPercent=prior.deliveryPercent;
-                var d=group.definition;result.Add(new Product{definition=d,stock=row,maximum=group.deliverable?group.maximum:0,owned=owned.Any(s=>p.catalog.Fits(s,d)),individual=d.category==PartCategory.Tires||EngineElements.Supported(d.category),
+                var d=group.definition;result.Add(new Product{definition=d,stock=row,maximum=group.deliverable?group.maximum:0,owned=ownedGroupMask==null?owned.Any(s=>p.catalog.Fits(s,d)):
+                    ownedGroupMask[groupIndex],individual=d.category==PartCategory.Tires||EngineElements.Supported(d.category),
                     preclassified=detached?null:NewSupplyCatalogIndex.For(p.catalog,d),
                     preindexed=detached?categorySnapshot?.Find(d.id):null});
             }
