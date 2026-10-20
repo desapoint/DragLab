@@ -58,6 +58,19 @@ namespace DragLab.Runtime
                 VehicleCollection.Buy(p,cat,new VehicleOffer{model=v.spec.id,price=1,stock=v.CreateStockTune(),paint="#FFFFFF"});
                 var car=p.SelectedCar;var steady=new NativePartPreviewCache();
                 string saved=JsonUtility.ToJson(p);
+                string physical=NativePartPreviewCache.CarSignature(p,car);
+                long initialRevision=p.revision;int initialCash=p.cash;
+                p.revision++;p.cash--;
+                check(physical==NativePartPreviewCache.CarSignature(p,car),"Unrelated profile revision and cash do not invalidate an owned-car inspection");
+                p.revision=initialRevision;p.cash=initialCash;
+                var piston=p.componentsPart(PartCategory.Pistons);
+                if(piston!=null){
+                    float previous=piston.condition.health;
+                    piston.condition.health=.37f;
+                    check(physical!=NativePartPreviewCache.CarSignature(p,car),"Installed engine wear invalidates only that car's physical fingerprint");
+                    piston.condition.health=previous;
+                }
+                check(physical==NativePartPreviewCache.CarSignature(p,car),"Restoring the exact part state restores its cache fingerprint");
                 void Equivalent(InspectionBuild source,string label){
                     var uncached=NativePartBrowser.Inspect(source);
                     var cached=NativePartBrowser.Inspect(source,steady);
