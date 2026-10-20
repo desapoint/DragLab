@@ -133,6 +133,9 @@ namespace DragLab.Runtime
             input.MouseButtonAt((int)Mathf.Lerp(tracker.xMin,tracker.xMax,.32f),(int)tracker.center.y,false);yield return new WaitForSecondsRealtime(.2f);
             Check(Mathf.Abs(slider.value-.32f)<.06f && SharedAudioSettings.MasterVolume==master && SharedAudioSettings.DspMasterVolume==master,"Real volume slider edits draft without publishing audio gain");
             root.Q<FloatField>("opponentVolumeValue").value=41;
+            float appliedNoise=SharedAudioSettings.CompressorNoise;
+            root.Q<FloatField>("compressorNoiseValue").value=15;
+            Check(root.Q<Slider>("compressorNoise").value==.15f&&SharedAudioSettings.CompressorNoise==appliedNoise&&SharedAudioSettings.DspCompressorNoise==appliedNoise,"Compressor airflow uses shared draft slider without live DSP publication");
             Check(root.Q<Slider>("opponentVolume").value==.41f && SharedAudioSettings.OpponentVolume==opponent,"Numeric input and slider stay synchronized without live publication");
             yield return Click(input,"masterVolumeValue"); input.Key(0x11,true);yield return Key(input,0x41);input.Key(0x11,false);
             yield return Key(input,0x33);yield return Key(input,0x32);yield return Key(input,0x0d);
@@ -187,6 +190,7 @@ namespace DragLab.Runtime
             Check(game.settings.wearMode==WearMode.Partial && game.settings.fuelUsage==FuelUsageMode.Reduced && game.Profile.difficulty==2,"Reduced rules and opponent difficulty persist together");
             Check(Mathf.Abs(SharedAudioSettings.MasterVolume-.32f)<.06f && SharedAudioSettings.OpponentVolume==.41f,"Confirmed Apply publishes shared audio gains");
             SharedAudioSettings.Reload();SharedUnitSettings.Reload();var loaded=ProfileStore.Load();
+            Check(SharedAudioSettings.CompressorNoise==.15f&&SharedAudioSettings.DspCompressorNoise==.15f,"Confirmed compressor airflow persists and publishes independently of whistle");
             Check(SharedAudioSettings.OpponentVolume==.41f && SharedUnitSettings.Current.torque==TorqueUnit.PoundFeet && SharedUnitSettings.Current.pressure==PressureUnit.Psi && SharedUnitSettings.Current.speed==SpeedUnit.MilesPerHour,"Audio and all units survive reload");
             Check(loaded.driving.shifting==ShiftMode.ManualClutch && loaded.driving.wearMode==WearMode.Partial && loaded.difficulty==2,"Applied driving settings survive profile reload");
             string current=JsonUtility.ToJson(game.Profile);
@@ -195,7 +199,8 @@ namespace DragLab.Runtime
             float liveGain=SharedAudioSettings.MasterVolume;
             using(var locked=new FileStream(DrivingPreferences.FilePath,FileMode.Open,FileAccess.Read,FileShare.Read))
             {
-                Check(!game.ApplyNativeSettings(failedDriver,0,new UnitPreferences(),.91f,.92f,out var error) && error!=null,"Locked preference file rejects settings commit independently of progression");
+                Check(!game.ApplyNativeSettings(failedDriver,0,new UnitPreferences(),.91f,.92f,out var error,compressorNoise:.9f) && error!=null,"Locked preference file rejects settings commit independently of progression");
+                Check(SharedAudioSettings.CompressorNoise==.15f&&SharedAudioSettings.DspCompressorNoise==.15f,"Failed commit retains compressor airflow preference and DSP gain");
                 Check(JsonUtility.ToJson(game.Profile)==current && SharedAudioSettings.MasterVolume==liveGain && SharedAudioSettings.OpponentVolume==.41f,"Failed commit never publishes new profile or audio cache");
                 Check(File.Exists(Path.Combine(folder,"settings-commit.json")),"Interrupted rollback retains durable recovery journal");
             }
@@ -204,10 +209,12 @@ namespace DragLab.Runtime
             Check(!File.Exists(Path.Combine(folder,"settings-commit.json")),"Successful recovery retires journal");
             yield return Click(input,"cancelSettings");Check(game.ScreenName=="Garage","Clean Cancel returns to prior Garage");
             yield return Click(input,"navBusiness");yield return Click(input,"settingsButton");yield return Click(input,"tabSound");
-            root.Q<FloatField>("masterVolumeValue").value=91;yield return Click(input,"cancelSettings");
+            root.Q<FloatField>("masterVolumeValue").value=91;root.Q<FloatField>("compressorNoiseValue").value=95;yield return Click(input,"cancelSettings");
+            Check(SharedAudioSettings.CompressorNoise==.15f&&SharedAudioSettings.DspCompressorNoise==.15f,"Cancel discards compressor noise draft");
             Check(game.ScreenName=="Business" && SharedAudioSettings.MasterVolume==liveGain,"Dirty Cancel discards draft and returns to actual previous menu");
             yield return Click(input,"settingsButton");yield return Click(input,"tabSound");
             Check(root.Q<FloatField>("masterVolumeValue").value<40,"Reopened Settings starts from applied preferences");
+            Check(Mathf.Abs(root.Q<FloatField>("compressorNoiseValue").value-15)<.01f,"Reopened compressor slider uses committed value");
             root.Q<FloatField>("masterVolumeValue").value=93;
             SharedUnitSettings.Set(SpeedUnit.MetresPerSecond,PressureUnit.Bar,TorqueUnit.NewtonMetres);
             yield return new WaitForSecondsRealtime(.4f);

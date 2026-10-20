@@ -297,7 +297,7 @@ namespace DragLab.Editor
             var damaged = new float[48000];
             new EngineSoundSynth(profile).Fill(damaged, 1, 48000, new EngineSoundFrame(4800, .9, .9, 0, .85,
                 cylinderContribution: new double[] { 0, 1, 1, 1, 1, 1, 1, 1 }));
-            Check(Rms(damaged) < Rms(first) && Difference(first, damaged) > .005,
+            Check(Difference(first, damaged)/Math.Max(.000001,Rms(first)) > .05,
                 "Deeper V8 voice still exposes the actual missing cylinder contribution.", ref count);
             var petrol = new VehicleSpec(); petrol.sound.engineGain = 0; petrol.engineBehavior.mechanicalClatter = .4f;
             var diesel = petrol.Copy(); diesel.engineBehavior.fueling = FuelSystem.Diesel;
@@ -313,7 +313,7 @@ namespace DragLab.Editor
                     turboSpool: 1, turboBoost: .6, superchargerBoost: .4, chargerLoad: .8));
                 bool valid = true;
                 for (int i = 0; i < pcm.Length; i += 2)
-                    valid &= !float.IsNaN(pcm[i]) && !float.IsInfinity(pcm[i]) && Math.Abs(pcm[i]) < 1 && pcm[i] == pcm[i + 1];
+                    valid &= !float.IsNaN(pcm[i]) && !float.IsInfinity(pcm[i]) && Math.Abs(pcm[i]) < 1 && !float.IsNaN(pcm[i+1]) && !float.IsInfinity(pcm[i+1]) && Math.Abs(pcm[i+1]) < 1;
                 Check(valid && Rms(pcm) > 0, "Bounded stereo twincharge at " + rate + " Hz.", ref count);
             }
             var callback = new float[2048]; synth.Fill(callback, 1, 48000, frame);

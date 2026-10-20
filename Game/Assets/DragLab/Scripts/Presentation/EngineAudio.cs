@@ -38,6 +38,8 @@ namespace DragLab.Presentation
         float outputRms;
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
         long callbackTicks,peakCallbackTicks,callbackCount;
+        int callbackChannels;
+        public int OutputChannels=>Volatile.Read(ref callbackChannels);
         public double LastCallbackMilliseconds=>Volatile.Read(ref callbackTicks)*1000.0/System.Diagnostics.Stopwatch.Frequency;
         public double PeakCallbackMilliseconds=>Volatile.Read(ref peakCallbackTicks)*1000.0/System.Diagnostics.Stopwatch.Frequency;
         public long CallbackCount=>Volatile.Read(ref callbackCount);
@@ -55,7 +57,7 @@ namespace DragLab.Presentation
             SharedAudioSettings.EnsureLoaded();
             sampleRate = AudioSettings.outputSampleRate;
             Configure(new VehicleSpec(), new Tune());
-            clockClip = AudioClip.Create("DragLab DSP clock (silent)", sampleRate, 1, sampleRate, false);
+            clockClip = AudioClip.Create("DragLab DSP clock (silent)", sampleRate, 2, sampleRate, false);
             source = gameObject.AddComponent<AudioSource>(); source.clip = clockClip;
             source.loop = true; source.playOnAwake = false; source.spatialBlend = 0; source.volume = 0; source.Play();
             var tireObject=new GameObject("Tire contact audio");tireObject.transform.SetParent(transform,false);
@@ -94,8 +96,9 @@ namespace DragLab.Presentation
             if (current == null || rate != current.rate || channels <= 0) { Array.Clear(data, 0, data.Length);Volatile.Write(ref outputRms,0);return; }
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
             long started=System.Diagnostics.Stopwatch.GetTimestamp();
+            Volatile.Write(ref callbackChannels,channels);
 #endif
-            current.synth.Fill(data, channels, rate, Volatile.Read(ref current.frame), SharedAudioSettings.DspMasterVolume);
+            current.synth.Fill(data, channels, rate, Volatile.Read(ref current.frame), SharedAudioSettings.DspMasterVolume,SharedAudioSettings.DspCompressorNoise);
             double energy = 0; foreach (float sample in data) energy += sample * sample;
             Volatile.Write(ref outputRms, data.Length > 0 ? (float)Math.Sqrt(energy / data.Length) : 0);
 #if DEVELOPMENT_BUILD || UNITY_EDITOR

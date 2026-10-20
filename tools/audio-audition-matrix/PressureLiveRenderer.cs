@@ -39,13 +39,16 @@ static class PressureLiveRenderer
             var frames=ComparisonInputs.Frames(profile);var full=Render(profile,frames);
             if(id=="StarterHatch"||id=="V8Muscle"){
                 var stable=Enumerable.Repeat(new EngineSoundFrame(4500,.9,.85,0,.85),120).ToArray();
-                Check(Render(profile,stable).SequenceEqual(Render(profile,stable,true)),"Approved steady NA pressure voice changed: "+id);
+                var changed=Render(profile,stable);var reference=Render(profile,stable,true);
+                Check(!changed.SequenceEqual(reference)&&Rms(changed)/Rms(reference)>.3&&Rms(changed)/Rms(reference)<3,"Acoustic refinement changes the voice with retained level/headroom: "+id);
             }
             if(id=="StarterHatch"||id=="V8Muscle"||id=="RallySedan")
             {
                 Check(full.SequenceEqual(Render(profile,frames,false,128)),"Callback boundary changed output");
                 Check(full.SequenceEqual(Render(profile,frames)),"Same seed not exact");Check(!full.SequenceEqual(Render(profile,frames,seed:491)),"Seed variation absent");
                 using var writer=new BinaryWriter(File.Create(Path.Combine(root,id+"-live.f32")));foreach(float v in full)writer.Write(v);
+                var stereo=new EngineSoundSynth(profile,sampleRate:Rate);var pair=new float[Block*2];using var wav=new BinaryWriter(File.Create(Path.Combine(root,id+"-stereo.f32")));
+                foreach(var frame in frames){stereo.Fill(pair,2,Rate,frame);foreach(float v in pair)wav.Write(v);}
             }
             stats.Add(new{id,rms=Rms(full),peak=full.Max(x=>Math.Abs(x))});
         }
@@ -79,6 +82,6 @@ static class PressureLiveRenderer
         var cutFrame=new EngineSoundFrame(3000,.8,.9,0,.85,cut:true);
         Check(Rms(Render(one,Enumerable.Repeat(cutFrame,120).ToArray()))<Rms(Render(one,Enumerable.Repeat(healthyFrame,120).ToArray()))*.3,"Cut attenuation lost");
         File.WriteAllText(Path.Combine(root,"verification.json"),JsonSerializer.Serialize(new{checks,cars=stats,performance=perf},new JsonSerializerOptions{WriteIndented=true}));
-        Console.WriteLine($"PASS: {checks} signal checks; {rows.Length} authored cars; 288 cylinder/layout/induction combinations; sample rates, allocations and callback budget; reviewed NA voices sample-exact.");
+        Console.WriteLine($"PASS: {checks} signal checks; {rows.Length} authored cars; 288 cylinder/layout/induction combinations; sample rates, allocations and callback budget; refined voice levels bounded.");
     }
 }

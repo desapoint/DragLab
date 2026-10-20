@@ -1,5 +1,49 @@
 # Engine audio: pressure events within the existing pipeline
 
+## Acoustic extension, 2026-10-20
+
+The firing scheduler advances once per PCM frame. Independent left/right header
+signals feed separate collector histories, resonances, pressure-dependent turbine
+filters and installed exhaust chains. A bounded crossfeed keeps both banks audible
+on either speaker; inline engines use one centered path. Mono output folds the
+final stereo pair down without doubling firing events. The live silent clock clip
+is stereo so Unity supplies both channels to the callback.
+
+Pulse tables now use smoothed actual cylinder load plus pedal/boost excitation.
+Turbo hot-side damping interpolates precomputed light/heavy filter responses with
+existing turbo pressure and actual normalized mass flow. No new spool, boost,
+thermal, wear or power simulation is introduced.
+
+`EngineSoundSpec.acoustics` provides Automatic / Compact / ClassicV8 / ModernV /
+HighRev / Diesel presets. Automatic selects by actual cylinder layout/count,
+fuel system and redline; displacement scales the runners. Optional overrides:
+
+| Field | Meaning / supported range |
+| --- | --- |
+| `runnerLengthsMetres` | One 0.1–2 m length per cylinder; overrides generated lengths |
+| `runnerScale` | Generated runner length scale, 0.5–2 |
+| `collectorScale` | Collector reflection travel-time scale, 0.5–2 |
+| `resonanceScale` | Header/body resonance frequency scale, 0.5–2 |
+| `attackScale`, `blowdownScale`, `rarefactionScale` | Pulse envelope time scales, 0.5–2 |
+| `stereoWidth` | Bank separation, 0–1; inline engines remain centered |
+| `turbineDamping` | Maximum pressure/flow-dependent hot-side acoustic blend, 0–0.8 |
+
+These are acoustic authoring controls, not measured exhaust dimensions or a CFD
+model. Playback captures immutable runner/envelope values. Shared tables are keyed
+by rate **and envelope**, with at most 16 retained entries; uncommon/custom voices
+still own prepared tables for their lifetime. Coefficients, histories and tables
+are prepared before playback, with no callback allocation or Unity calls.
+
+Sound Settings adds **Compressor airflow**, 0–100%, using the shared slider and
+explicit confirmed Apply. Zero removes compressor airflow hiss while retaining
+shaft whistle, exhaust/turbine response, BOV releases and supercharger whine.
+`EngineSoundSpec.compressorNoiseGain` additionally sets an authored 0–2 multiplier.
+Legacy preferences lacking the field use 100%. Unrelated/pause preference commits
+preserve the applied value. DSP reads a published float and smooths changes;
+it performs no preference I/O.
+
+[Builds, checks, measured cost and listening review](../reports/audio-refinements-20261020/CHANGES.md).
+
 User direction, 2026-10-19: integrate the reviewed pressure core across the current
 engine roster. Retain the existing audio architecture, wear, cuts, exhaust upgrades
 and induction sounds. Add missing acoustic detail from the supplied turbo script;

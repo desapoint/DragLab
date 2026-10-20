@@ -43,6 +43,72 @@ Desktop callback timings are not a physical Android performance claim.
 
 User review remains required for listening, stereo balance and Android behavior.
 
+## Implemented behavior and checks
+
+Independent bank collectors/resonances and installed exhaust filters now reach
+stereo PCM. Inline voices remain centered; mono folds the final pair down. One
+firing scheduler still applies actual cylinder contributions and cuts. Automatic
+engine presets plus authored runner, propagation, resonance and envelope overrides
+are captured before playback. A bounded rate/envelope table cache shares kernels.
+
+Actual load shapes the pressure envelope, while pressure and flow interpolate
+hot-side damping without changing `InductionDynamics`. The first calibration made
+neutral revs too quiet; the final calibration retains a tested V8 neutral/loaded
+RMS ratio of **0.938** at 4,500 RPM. Existing wear/cuts/exhaust/pop/induction gates
+remain in force. The old test requiring duplicated mono channels was updated for
+independent bounded channels; missing-cylinder audibility is tested by normalized
+waveform change rather than assuming comb-filtered RMS always decreases.
+
+**Compressor airflow** is a shared 0–100% Sound slider with numeric entry,
+confirmed Apply, Cancel/Revert, reload and recovery. It affects airflow noise only;
+whistle, turbine response, BOV and blower layers remain. Existing/pause preference
+commits preserve it; old files without the field default to 100%.
+
+- Unity: **78** refinement, **116** pressure, **19** transition, **276** audio,
+  **64** exhaust-pop and **346** induction checks pass (**899** total).
+- Production-code standalone matrix: **382** checks pass across 52 authored cars,
+  288 cylinder/layout/induction combinations, multiple rates, private-seed and
+  block-size determinism, bounded output and zero warmed callback allocations.
+- Editor worst voice: 16-cylinder twincharged / 12,000 RPM / 512 stereo frames,
+  **0.7611 ms p95**, **0.8146 ms max**, versus **10.6667 ms** signal duration;
+  zero managed bytes allocated. Desktop measurements are not phone guarantees.
+- Real visible Windows AudioSource playback: **20 / 0 runtime errors**, including
+  actual stereo callbacks, master scaling, mute, pause/resume and three engines.
+  Observed peak callback **2.8596 ms** during real rendering.
+- Real Settings/onboarding flow: **169 / 0 runtime errors**, including the new
+  shared slider, draft isolation, confirmation, cancel, durable reload, write
+  failure/undo recovery, reset retention, compact and 4K layouts. Sound screenshot
+  inspected: same sliders, label alignment, number fields and spacing.
+- Final unchanged race-results probe on the saved fixture: **15 / 0 runtime
+  errors**, including post-finish DSP, injected save-error visibility, recovery,
+  authoritative total times, telemetry, retry and no duplicate payout. Its first
+  fresh run during concurrent Android compilation failed the save-notice assertion
+  after 43 checks. A diagnostic run and the final original probe passed; no
+  production results/settlement code or final probe expectations were changed.
+  The first timing-sensitive failure is retained as a verification limitation,
+  not counted as a passing run or asserted to be an acoustic rendering defect.
+
+An initial hidden-window playback run stalled before completing startup; it was
+stopped and is not counted as passing. The visible player completed normally.
+The final preparation-only change also moves initial installed-exhaust/pop
+coefficients out of the live callback. The 382-case matrix passes again, and all
+three review engines retain **sample-exact stereo PCM** across that relocation.
+
+Both final development packages include the preparation change:
+
+- Windows: `Game/Builds/Windows/DragLab.exe` and its adjacent data folder.
+  Managed game assembly SHA-256
+  `062988a96330b5d187552f06a0133ffbf653fc0ebe882afed5ef526f6b9d86ce`.
+- Android: `Game/Builds/Android/DragLab.apk`, ARM64 IL2CPP, v2 debug signature
+  verified and `zipalign -c -P 16 4` passed. SHA-256
+  `3018cf261e669d965a951dbcf00bf3560166ff3df90a3fbe2f31c9a816e1f5c6`.
+
+Raw logs, PCM, comparison WAVs and screenshots remain local. A three-engine
+before/after listening page is `reports/audio-refinements-20261020/index.html`.
+Review on a phone: idle/rev/load transitions, limiter, lift/BOV, 0/100% airflow,
+headphone bank balance, post-finish idle, and sustained thermal/audio performance.
+No physical Android device is connected; device acceptance remains pending.
+
 The retained shop responsiveness gate reached 61 checks without runtime errors,
 then failed its combined-cart preview assertion on this baseline. Investigate that
 failure before treating the older shop checkpoint as complete. It is not caused

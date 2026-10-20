@@ -13,11 +13,12 @@ def main():
     assert out.is_relative_to(ROOT/'reports')
     if out.exists():raise RuntimeError('Use a fresh output directory.')
     out.mkdir(parents=True);spec=importlib.util.spec_from_file_location('prepare',HERE/'prepare.py');helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
-    watched=[DOMAIN/n for n in ['EngineSound.cs','PressureCombustionCore.cs','TurboAcoustics.cs','ExhaustAcoustics.cs','ExhaustPopSynth.cs','EngineElements.cs','InductionDynamics.cs']]
+    watched=[DOMAIN/n for n in ['EngineSound.cs','PressureCombustionCore.cs','TurboAcoustics.cs','ExhaustAcoustics.cs','ExhaustPopSynth.cs','EngineElements.cs','InductionDynamics.cs','EngineAcoustics.cs']]
     watched+=sorted((ROOT/'Game/Assets/DragLab/Resources/Data/Vehicles').glob('*.asset'));hashes={str(p.relative_to(ROOT)).replace('\\','/'):sha(p) for p in watched}
     engine=watched[0].read_text(encoding='utf-8-sig');prefix=helper.extract(engine,'    public sealed class EngineSoundProfile').split('        public EngineSoundProfile(')[0]
     adapter=helper.ADAPTER.replace('            cylinders=', '            turboSize=N(o,"size",1);\n            cylinders=')
     adapter=adapter.replace('            exhaust=(int)', '            turboFlowCapacityKgS=N(d,"turboUnitFlowKgS",.22)*turboSize*Math.Max(1,turboCount);\n            exhaust=(int)')
+    adapter=adapter.replace('            idleBoostGain=', '            compressorNoiseGain=N(s,"compressorNoiseGain",1);\n            var acousticSpec=s.TryGetProperty("acoustics",out var ac)?System.Text.Json.JsonSerializer.Deserialize<EngineAcousticSpec>(ac.GetRawText(),new System.Text.Json.JsonSerializerOptions{IncludeFields=true}):null;\n            acoustics=new EngineAcousticProfile(acousticSpec,cylinders,layout,litres,redlineRpm,fueling);\n            idleBoostGain=')
     common='using System;using System.Linq;namespace DragLab.Domain{'+engine[engine.index('    public enum InductionType'):engine.index('    [Serializable]')]
     common+='public enum FuelSystem{Injection,Carburetor,Diesel}public enum CutMethod{Factory,Fuel,Ignition}public static class DragMath{public static double Clamp(double x,double lo,double hi)=>Math.Max(lo,Math.Min(hi,x));}'
     common+=prefix+adapter+helper.extract(engine,'    public sealed class EngineSoundFrame')+helper.extract(engine,'    public sealed class EngineSoundSynth')+'}'
@@ -38,7 +39,7 @@ def main():
     inputs=(HERE/'PressureComparisonRenderer.cs').read_text(encoding='utf-8-sig')
     methods=helper.extract(inputs,'    static double Smooth')+'\n'+helper.extract(inputs,'    static EngineSoundFrame[] Frames').replace('static EngineSoundFrame[] Frames','public static EngineSoundFrame[] Frames')
     (out/'ComparisonInputs.cs').write_text('using System;using DragLab.Domain;public static class ComparisonInputs{const int Rate=48000,Block=400,Seconds=14;'+methods+'}',encoding='utf-8')
-    for name in ['PressureCombustionCore.cs','TurboAcoustics.cs','ExhaustAcoustics.cs','ExhaustPopSynth.cs']:(out/name).write_bytes((DOMAIN/name).read_bytes())
+    for name in ['PressureCombustionCore.cs','TurboAcoustics.cs','ExhaustAcoustics.cs','ExhaustPopSynth.cs','EngineAcoustics.cs']:(out/name).write_bytes((DOMAIN/name).read_bytes())
     for name,target in [('PressureEventCore.cs','PressureEventCore.cs'),('PressureLiveRenderer.cs','Program.cs')]:(out/target).write_bytes((HERE/name).read_bytes())
     cases=[]
     for path in sorted((ROOT/'Game/Assets/DragLab/Resources/Data/Vehicles').glob('*.asset')):

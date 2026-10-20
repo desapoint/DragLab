@@ -50,7 +50,7 @@ namespace DragLab.Domain
             public readonly double[][] pulses;
             public readonly double[] mechanical;
             public readonly long bytes;
-            public Tables(int rate,int length)
+            public Tables(int rate,int length,EngineAcousticProfile voice)
             {
                 pulses=new double[rpmGrid.Length*5][];
                 for(int r=0;r<rpmGrid.Length;r++)for(int a=0;a<5;a++)
@@ -60,7 +60,7 @@ namespace DragLab.Domain
                     for(int j=0;j<kernel.Length;j++)
                     {
                         double x=j/(double)rate/scale;
-                        kernel[j]=((1-Math.Exp(-x/.00020))*Math.Exp(-x/.0030)-.28*(1-Math.Exp(-x/.00145))*Math.Exp(-x/.0092)+.10*throttle*(1-Math.Exp(-x/.00012))*Math.Exp(-x/.0008))*gain;
+                        kernel[j]=((1-Math.Exp(-x/voice.attackSeconds))*Math.Exp(-x/voice.blowdownSeconds)-.28*(1-Math.Exp(-x/.00145))*Math.Exp(-x/voice.rarefactionSeconds)+.10*throttle*(1-Math.Exp(-x/.00012))*Math.Exp(-x/.0008))*gain;
                     }
                     pulses[r*5+a]=kernel;bytes+=kernel.Length*8L;
                 }
@@ -70,24 +70,58 @@ namespace DragLab.Domain
             }
         }
         static readonly object tableLock=new object();
-        static readonly Dictionary<int,Tables> tableCache=new Dictionary<int,Tables>();
-        static Tables GetTables(int rate,int length)
+        static readonly Dictionary<Tuple<int,double,double,double>,Tables> tableCache=new Dictionary<Tuple<int,double,double,double>,Tables>();
+        static Tables GetTables(int rate,int length,EngineAcousticProfile voice)
         {
             // Construction/preparation only, never Sample or Fill. Bound retained
             // sample-rate tables so changing devices cannot grow a permanent cache.
-            lock(tableLock){if(tableCache.TryGetValue(rate,out var found))return found;var t=new Tables(rate,length);if(tableCache.Count<4)tableCache.Add(rate,t);return t;}
+            var key=Tuple.Create(rate,voice.attackSeconds,voice.blowdownSeconds,voice.rarefactionSeconds);
+            lock(tableLock){if(tableCache.TryGetValue(key,out var found))return found;var t=new Tables(rate,length,voice);if(tableCache.Count<16)tableCache.Add(key,t);return t;}
         }
-        readonly Delay leftHistory,rightHistory,collectorHistory;
-        readonly Filter headL1,headL2,headR1,headR2,hp,lp2,bodyLow,bodyHigh,bodyPass,body96,body208,body415,blockHigh,blockLow,intakeHigh,intakeLow;
-        readonly LowPole lp1;
-        readonly Filter turbineMuffle,turbineHigh,turbineLow;
-        readonly int[] leftTaps,rightTaps,collectorTaps;
+        sealed class Outlet
+        {
+            readonly Delay history;
+            readonly int[] taps;
+            readonly Filter hp,lp2,bodyLow,bodyHigh,bodyPass,body96,body208,body415,turbineMuffle,turbineHeavy,turbineHigh,turbineLow;
+            readonly LowPole lp1;
+            readonly EngineSoundProfile profile;
+            public long Bytes=>history.Bytes;
+            public double Turbine {get;private set;}
+            public Outlet(EngineSoundProfile p,int rate)
+            {
+                profile=p;double s=p.acoustics.collectorScale,r=p.acoustics.resonanceScale;
+                history=new Delay((int)(rate*.19)+2);taps=new[]{(int)(rate*.0088*s),(int)(rate*.0175*s),(int)(rate*.031*s),(int)(rate*.046*s)};
+                double brightness=Math.Sqrt(Clamp(p.voiceBrightness,.1,2));
+                hp=new Filter(rate,25,.707106781,1);lp1=new LowPole(rate,2450*brightness);lp2=new Filter(rate,2450*brightness,1,0);
+                bodyLow=new Filter(rate,180*r,.707106781,0);bodyHigh=new Filter(rate,56*r,.707106781,1);bodyPass=new Filter(rate,1450*r,.707106781,0);
+                body96=new Filter(rate,96*r,1.8,2);body208=new Filter(rate,208*r,2.2,2);body415=new Filter(rate,415*r,2,2);
+                turbineMuffle=new Filter(rate,1900,.707106781,0);turbineHeavy=new Filter(rate,850,.707106781,0);turbineHigh=new Filter(rate,230,.707106781,1);turbineLow=new Filter(rate,680,.707106781,0);
+            }
+            public double Sample(double collected,double pressure,double flow)
+            {
+                history.Push(collected);collected+=.23*history.Tap(taps[0])-.19*history.Tap(taps[1])+.10*history.Tap(taps[2])-.045*history.Tap(taps[3]);
+                double exhaust=lp2.Process(lp1.Process(hp.Process(collected)));
+                if(profile.turboCount>0){double light=turbineMuffle.Process(exhaust),heavy=turbineHeavy.Process(exhaust);
+                    double damp=profile.acoustics.turbineDamping*pressure*(.45+.55*flow);
+                    exhaust+=damp*(light+(heavy-light)*pressure-exhaust);Turbine=turbineLow.Process(turbineHigh.Process(collected));}
+                double body=.60*profile.bassGain*bodyLow.Process(exhaust)+.80*profile.rawPulseGain*bodyPass.Process(bodyHigh.Process(exhaust))+.26*body96.Process(exhaust)+.15*body208.Process(exhaust)+.10*body415.Process(exhaust);
+                return Math.Tanh(1.23*body)/1.23;
+            }
+            public void Clear(){history.Clear();hp.Clear();lp1.Clear();lp2.Clear();bodyLow.Clear();bodyHigh.Clear();bodyPass.Clear();body96.Clear();body208.Clear();body415.Clear();turbineMuffle.Clear();turbineHeavy.Clear();turbineHigh.Clear();turbineLow.Clear();Turbine=0;}
+        }
+        readonly Delay leftHistory,rightHistory;
+        readonly Filter headL1,headL2,headR1,headR2,blockHigh,blockLow,intakeHigh,intakeLow;
+        readonly Outlet outletLeft,outletRight;
+        readonly int[] leftTaps,rightTaps;
         readonly double throttleAlpha;
-        double phase,throttleLow,boostPressure,boostWeight,boostPressureTarget,boostWeightTarget;int cursor,nextCylinder;uint random;
+        double phase,throttleLow,boostPressure,boostWeight,boostPressureTarget,boostWeightTarget,loadLow,loadTarget,flowLow,flowTarget;int cursor,nextCylinder;uint random;
         readonly double boostAlpha;
         EngineSoundFrame lastFrame;
         public double Mechanical {get;private set;}
         public double TurbineResponse {get;private set;}
+        public double Left {get;private set;}
+        public double Right {get;private set;}
+        public bool Stereo=>outletRight!=null;
         public long Events {get;private set;}
         public readonly long[] CylinderEvents;
         public int Rate=>rate;
@@ -100,24 +134,20 @@ namespace DragLab.Domain
             this.profile=profile;this.rate=rate;random=seed==0?171818u:seed;
             order=(int[])Mechanics.EngineElements.FiringOrder(profile.cylinders).Clone();
             banks=new int[profile.cylinders];runners=new double[profile.cylinders];cylinderGain=new double[profile.cylinders];CylinderEvents=new long[profile.cylinders];
-            double[] lengths={.50,.61,.43,.49,.57,.46,.38,.55};double[] gains={1,.97,1.03,.98,1.02,1,.96,1.04};
-            double geometry=Math.Pow(profile.litres/5.0,1.0/3);
-            for(int i=0;i<profile.cylinders;i++){banks[i]=profile.layout==EngineLayout.Inline?0:i%2;runners[i]=lengths[i%8]*geometry;cylinderGain[i]=gains[i%8];}
-            kernelLength=(int)Math.Round(rate*.028);var tables=GetTables(rate,kernelLength);
+            double[] gains={1,.97,1.03,.98,1.02,1,.96,1.04};
+            for(int i=0;i<profile.cylinders;i++){banks[i]=profile.layout==EngineLayout.Inline?0:i%2;runners[i]=profile.acoustics.Runner(i);cylinderGain[i]=gains[i%8];}
+            kernelLength=(int)Math.Round(rate*.028);var tables=GetTables(rate,kernelLength,profile.acoustics);
             kernels=tables.pulses;mechanicalKernel=tables.mechanical;SharedTableBytes=tables.bytes;
             int size=1;while(size<rate*.12+kernelLength)size*=2;mask=size-1;
             pending=new[]{new double[size],new double[size],new double[size]};BufferBytes+=3L*size*8;
-            leftHistory=new Delay((int)(rate*.015)+2);rightHistory=new Delay((int)(rate*.015)+2);collectorHistory=new Delay((int)(rate*.05)+2);
-            BufferBytes+=leftHistory.Bytes+rightHistory.Bytes+collectorHistory.Bytes;
-            leftTaps=Taps(3.1,6.5,11.2);rightTaps=Taps(3.9,8.1,13);collectorTaps=Taps(8.8,17.5,31,46);
-            headL1=new Filter(rate,167,2.8,2);headL2=new Filter(rate,345,2,2);headR1=new Filter(rate,154,2.6,2);headR2=new Filter(rate,319,2.2,2);
-            double brightness=Math.Sqrt(Clamp(profile.voiceBrightness,.1,2));
-            hp=new Filter(rate,25,.707106781,1);lp1=new LowPole(rate,2450*brightness);lp2=new Filter(rate,2450*brightness,1,0);
-            bodyLow=new Filter(rate,180,.707106781,0);bodyHigh=new Filter(rate,56,.707106781,1);bodyPass=new Filter(rate,1450,.707106781,0);
-            body96=new Filter(rate,96,1.8,2);body208=new Filter(rate,208,2.2,2);body415=new Filter(rate,415,2,2);
+            leftHistory=new Delay((int)(rate*.015)+2);rightHistory=new Delay((int)(rate*.015)+2);
+            outletLeft=new Outlet(profile,rate);if(profile.acoustics.stereoWidth>0)outletRight=new Outlet(profile,rate);
+            BufferBytes+=leftHistory.Bytes+rightHistory.Bytes+outletLeft.Bytes+(outletRight?.Bytes??0);
+            leftTaps=Taps(3.1,6.5,11.2);rightTaps=Taps(3.9,8.1,13);
+            double resonance=profile.acoustics.resonanceScale;
+            headL1=new Filter(rate,167*resonance,2.8,2);headL2=new Filter(rate,345*resonance,2,2);headR1=new Filter(rate,154*resonance,2.6,2);headR2=new Filter(rate,319*resonance,2.2,2);
             blockHigh=new Filter(rate,47,.707106781,1);blockLow=new Filter(rate,720,.707106781,0);
             intakeHigh=new Filter(rate,145,.707106781,1);intakeLow=new Filter(rate,1200,.707106781,0);
-            turbineMuffle=new Filter(rate,1450,.707106781,0);turbineHigh=new Filter(rate,230,.707106781,1);turbineLow=new Filter(rate,680,.707106781,0);
             throttleAlpha=1-Math.Exp(-2*Math.PI*18/rate);
             boostAlpha=1-Math.Exp(-1.0/(rate*.035));
         }
@@ -131,7 +161,12 @@ namespace DragLab.Domain
             double gain=cylinderGain[cylinder]*(1+Variation()*(rpm>1500?.008:.027));
             double arrival=runners[cylinder]/(365+85*throttle+(profile.turboCount>0?35*boostPressure:0))*rate-overdue;
             int offset=(int)Math.Floor(arrival);double fraction=arrival-offset;
-            if(profile.turboCount>0){gain*=1+.18*Clamp(frame.load,0,1)+.24*boostWeight;rpm*=1+.12*boostWeight*Clamp(frame.load,0,1);}
+            gain*=.96+.10*loadLow+.16*boostWeight;rpm*=1+.10*loadLow+.12*boostWeight*loadLow;
+            // The pulse table's pressure axis includes actual load, not just pedal position.
+            double pressure=Clamp(.28*throttle+.72*loadLow+.12*boostWeight,0,1);
+            // Keep the established neutral-to-driving loudness range while pressure
+            // changes the pulse envelope. The explicit load/boost gain remains above.
+            gain*=(.78+.94*throttle)/(.78+.94*pressure);throttle=pressure;
             int r=0;while(r+1<rpmGrid.Length-1&&rpm>rpmGrid[r+1])r++;
             double rf=Clamp((rpm-rpmGrid[r])/(rpmGrid[r+1]-rpmGrid[r]),0,1);int a=Math.Min(3,(int)(throttle*4));double af=throttle*4-a;
             double[] k00=kernels[r*5+a],k01=kernels[r*5+a+1],k10=kernels[(r+1)*5+a],k11=kernels[(r+1)*5+a+1],target=pending[banks[cylinder]];
@@ -146,15 +181,15 @@ namespace DragLab.Domain
         }
         public double Sample(double rpm,double throttle,EngineSoundFrame frame)
         {
-            if(profile.turboCount>0)
+            if(!ReferenceEquals(lastFrame,frame))
             {
-                if(!ReferenceEquals(lastFrame,frame))
-                {
-                    lastFrame=frame;boostPressureTarget=Clamp(frame.turboBoost>=0?frame.turboBoost:frame.boost,0,3);
-                    boostWeightTarget=Math.Pow(Clamp(boostPressureTarget/Math.Max(.1,profile.boostBar),0,1),.7);
-                }
-                boostPressure+=boostAlpha*(boostPressureTarget-boostPressure);boostWeight+=boostAlpha*(boostWeightTarget-boostWeight);
+                lastFrame=frame;loadTarget=Clamp(frame.load,0,1);
+                boostPressureTarget=profile.turboCount>0?Clamp(frame.turboBoost>=0?frame.turboBoost:frame.boost,0,3):0;
+                boostWeightTarget=Math.Pow(Clamp(boostPressureTarget/Math.Max(.1,profile.boostBar),0,1),.7);
+                flowTarget=frame.airflowKgS>=0?Clamp(frame.airflowKgS/Math.Max(.01,profile.turboFlowCapacityKgS),0,1):loadTarget;
             }
+            boostPressure+=boostAlpha*(boostPressureTarget-boostPressure);boostWeight+=boostAlpha*(boostWeightTarget-boostWeight);
+            loadLow+=boostAlpha*(loadTarget-loadLow);flowLow+=boostAlpha*(flowTarget-flowLow);
             throttle=Clamp(throttle,0,1);double step=Math.Max(0,rpm)*order.Length/(120*rate);phase+=step;
             while(phase>=1){phase-=1;Schedule(rpm,throttle,frame,phase/Math.Max(1e-12,step));}
             double l=pending[0][cursor],r=pending[1][cursor],block=pending[2][cursor];pending[0][cursor]=pending[1][cursor]=pending[2][cursor]=0;cursor=(cursor+1)&mask;
@@ -162,25 +197,19 @@ namespace DragLab.Domain
             double hl=l+.36*leftHistory.Tap(leftTaps[0])-.22*leftHistory.Tap(leftTaps[1])+.12*leftHistory.Tap(leftTaps[2]);
             double hr=r+.33*rightHistory.Tap(rightTaps[0])-.20*rightHistory.Tap(rightTaps[1])+.11*rightHistory.Tap(rightTaps[2]);
             hl+=.09*headL1.Process(hl)+.08*headL2.Process(hl);hr+=.10*headR1.Process(hr)+.06*headR2.Process(hr);
-            double collected=hl+hr;collectorHistory.Push(collected);
-            collected+=.23*collectorHistory.Tap(collectorTaps[0])-.19*collectorHistory.Tap(collectorTaps[1])+.10*collectorHistory.Tap(collectorTaps[2])-.045*collectorHistory.Tap(collectorTaps[3]);
-            double exhaust=lp2.Process(lp1.Process(hp.Process(collected)));
-            if(profile.turboCount>0)
-            {
-                exhaust+=.18*boostWeight*(turbineMuffle.Process(exhaust)-exhaust);
-                TurbineResponse=turbineLow.Process(turbineHigh.Process(collected));
-            }
-            double body=.60*profile.bassGain*bodyLow.Process(exhaust)+.80*profile.rawPulseGain*bodyPass.Process(bodyHigh.Process(exhaust))+.26*body96.Process(exhaust)+.15*body208.Process(exhaust)+.10*body415.Process(exhaust);
+            double collected=hl+hr,side=(hl-hr)*profile.acoustics.stereoWidth;
+            Left=outletLeft.Sample(collected+(Stereo?side:0),boostWeight,flowLow);
+            Right=Stereo?outletRight.Sample(collected-side,boostWeight,flowLow):Left;
+            TurbineResponse=Stereo?(outletLeft.Turbine+outletRight.Turbine)*.5:outletLeft.Turbine;
             throttleLow+=throttleAlpha*(throttle-throttleLow);
             Mechanical=.24*blockLow.Process(blockHigh.Process(block))+intakeLow.Process(intakeHigh.Process(collected))*(.06+.12*throttleLow);
-            return Math.Tanh(1.23*body)/1.23;
+            return (Left+Right)*.5;
         }
         public void Clear()
         {
-            foreach(var p in pending)Array.Clear(p,0,p.Length);leftHistory.Clear();rightHistory.Clear();collectorHistory.Clear();
-            headL1.Clear();headL2.Clear();headR1.Clear();headR2.Clear();hp.Clear();lp1.Clear();lp2.Clear();bodyLow.Clear();bodyHigh.Clear();bodyPass.Clear();body96.Clear();body208.Clear();body415.Clear();blockHigh.Clear();blockLow.Clear();intakeHigh.Clear();intakeLow.Clear();
-            turbineMuffle.Clear();turbineHigh.Clear();turbineLow.Clear();
-            Mechanical=TurbineResponse=throttleLow=phase=boostPressure=boostWeight=boostPressureTarget=boostWeightTarget=0;lastFrame=null;cursor=nextCylinder=0;
+            foreach(var p in pending)Array.Clear(p,0,p.Length);leftHistory.Clear();rightHistory.Clear();outletLeft.Clear();outletRight?.Clear();
+            headL1.Clear();headL2.Clear();headR1.Clear();headR2.Clear();blockHigh.Clear();blockLow.Clear();intakeHigh.Clear();intakeLow.Clear();
+            Mechanical=Left=Right=TurbineResponse=throttleLow=phase=boostPressure=boostWeight=boostPressureTarget=boostWeightTarget=loadLow=loadTarget=flowLow=flowTarget=0;lastFrame=null;cursor=nextCylinder=0;
         }
     }
 }

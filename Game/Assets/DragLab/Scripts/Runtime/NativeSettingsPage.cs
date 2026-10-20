@@ -14,6 +14,7 @@ namespace DragLab.Runtime
         DriverSettings draftDriver, baselineDriver;
         UnitPreferences draftUnits, baselineUnits;
         float draftMaster, draftOpponent, baselineMaster, baselineOpponent;
+        float draftCompressorNoise,baselineCompressorNoise;
         int draftAi, baselineAi;
         bool conflicted, draftReverseTouchShifting, baselineReverseTouchShifting;
         float nextPreferenceCheck;
@@ -60,6 +61,7 @@ namespace DragLab.Runtime
             draftUnits = JsonUtility.FromJson<UnitPreferences>(JsonUtility.ToJson(baselineUnits));
             baselineMaster = draftMaster = SharedAudioSettings.MasterVolume;
             baselineOpponent = draftOpponent = SharedAudioSettings.OpponentVolume;
+            baselineCompressorNoise=draftCompressorNoise=SharedAudioSettings.CompressorNoise;
             baselineReverseTouchShifting=draftReverseTouchShifting=DrivingPreferences.ReverseTouchShifting;
             baselineAi = draftAi = game.Profile.difficulty; conflicted = false;
         }
@@ -80,6 +82,7 @@ namespace DragLab.Runtime
             foreach (var field in typeof(UnitPreferences).GetFields()) changed |= MergeField(field, baselineUnits, draftUnits, SharedUnitSettings.Current);
             changed |= MergeValue(ref baselineMaster, ref draftMaster, SharedAudioSettings.MasterVolume);
             changed |= MergeValue(ref baselineOpponent, ref draftOpponent, SharedAudioSettings.OpponentVolume);
+            changed |= MergeValue(ref baselineCompressorNoise,ref draftCompressorNoise,SharedAudioSettings.CompressorNoise);
             changed |= MergeValue(ref baselineAi, ref draftAi, game.Profile.difficulty);
             changed |= MergeValue(ref baselineReverseTouchShifting, ref draftReverseTouchShifting, DrivingPreferences.ReverseTouchShifting);
             if (changed) UpdateControls();
@@ -139,6 +142,7 @@ namespace DragLab.Runtime
             if(baselineReverseTouchShifting!=draftReverseTouchShifting)changes.Add("Touch shifting: "+(baselineReverseTouchShifting?"Down":"Up")+" to upshift → "+(draftReverseTouchShifting?"Down":"Up")+" to upshift");
             if (baselineMaster != draftMaster) changes.Add("Master: " + baselineMaster.ToString("P0") + " → " + draftMaster.ToString("P0"));
             if (baselineOpponent != draftOpponent) changes.Add("Opponent volume: " + baselineOpponent.ToString("P0") + " → " + draftOpponent.ToString("P0"));
+            if(baselineCompressorNoise!=draftCompressorNoise)changes.Add("Compressor airflow: "+baselineCompressorNoise.ToString("P0")+" → "+draftCompressorNoise.ToString("P0"));
             foreach (var field in typeof(UnitPreferences).GetFields()) if (!Equals(field.GetValue(baselineUnits), field.GetValue(draftUnits))) changes.Add(field.Name + ": " + Display(field.GetValue(baselineUnits)) + " → " + Display(field.GetValue(draftUnits)));
             return changes;
         }
@@ -161,7 +165,7 @@ namespace DragLab.Runtime
                 ReconcileApplied();
                 if (conflicted) { CloseDialog(); UpdateControls(); return; }
                 if (summary != string.Join("\n", Changes())) { CloseDialog(); ConfirmApply(destination); return; }
-                if (!game.ApplyNativeSettings(draftDriver, draftAi, draftUnits, draftMaster, draftOpponent, out var error, draftReverseTouchShifting))
+                if (!game.ApplyNativeSettings(draftDriver, draftAi, draftUnits, draftMaster, draftOpponent, out var error, draftReverseTouchShifting,compressorNoise:draftCompressorNoise))
                 { root.Q<ScrollView>("modalContent").Add(new Label(error) { name = "settingsError" }); return; }
                 CloseDialog(); ReadApplied(); UpdateControls(); if (destination != null) game.QueueNativeNavigation(destination,true);
             }, true) });
@@ -286,6 +290,7 @@ namespace DragLab.Runtime
         {
             Range(1, "masterVolume", "Master volume", 0, 1, () => draftMaster, v => draftMaster = v, true, "Shared by races and both test benches. 0% mutes all sound. Takes effect after Apply.");
             Range(1, "opponentVolume", "Opponent volume", 0, 1, () => draftOpponent, v => draftOpponent = v, true, "Opponent engine and tires also follow master volume and distance attenuation.");
+            Range(1,"compressorNoise","Compressor airflow",0,1,()=>draftCompressorNoise,v=>draftCompressorNoise=v,true,"Reduce turbo airflow hiss while keeping its whistle, exhaust character and pressure-release sounds. Takes effect after Apply.");
         }
         void BuildUnits()
         {

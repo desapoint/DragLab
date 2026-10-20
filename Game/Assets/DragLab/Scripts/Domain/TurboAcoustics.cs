@@ -20,6 +20,7 @@ namespace DragLab.Domain
         readonly double sizePitch;
         double phase,secondPhase,shaft,pressure,throttle,airflow,shaftTarget,pressureTarget,throttleTarget,airflowTarget;
         EngineSoundFrame lastFrame;
+        double noiseAmount=1;
         const double Tau=2*Math.PI;
         public TurboAcoustics(EngineSoundProfile profile,int sampleRate)
         {
@@ -27,7 +28,7 @@ namespace DragLab.Domain
             sizePitch=1/Math.Sqrt(Math.Max(.4,profile.turboSize>0?profile.turboSize:1));
         }
         static double Clamp(double x,double lo,double hi)=>Math.Max(lo,Math.Min(hi,x));
-        public double Sample(EngineSoundFrame frame,double collectorResponse,double noise)
+        public double Sample(EngineSoundFrame frame,double collectorResponse,double noise,double compressorNoise=1)
         {
             if(!ReferenceEquals(frame,lastFrame))
             {
@@ -39,13 +40,15 @@ namespace DragLab.Domain
             }
             shaft+=smooth*(shaftTarget-shaft);pressure+=smooth*(pressureTarget-pressure);throttle+=smooth*(throttleTarget-throttle);
             airflow+=smooth*(airflowTarget-airflow);
+            double noiseTarget=double.IsNaN(compressorNoise)||double.IsInfinity(compressorNoise)?1:Clamp(compressorNoise,0,1);
+            noiseAmount+=smooth*(noiseTarget-noiseAmount);
             double hz=Math.Min((610+1490*shaft)*sizePitch,rate*.19);phase=(phase+hz/rate)%1;
             double blade=Math.Sin(Tau*phase)+.24*Math.Sin(2*Tau*phase+.35);
             if(profile.turboCount==2){secondPhase=(secondPhase+hz*.997/rate)%1;blade=(blade+Math.Sin(Tau*secondPhase)+.24*Math.Sin(2*Tau*secondPhase+.35))*.65;}
             double toneGain=(.0035*shaft+(.032*shaft*shaft+.033*pressure)*(.30+.70*throttle));
             double flow=(flowHigh.Sample(noise)+.24*flowLow.Sample(noise))*(.006*shaft+.017*pressure)*(.22+.78*throttle)*airflow;
             double turbine=collectorResponse*(.014*shaft+.036*pressure);
-            return (blade*toneGain+flow+turbine)*profile.turboGain*1.5;
+            return (blade*toneGain+flow*profile.compressorNoiseGain*noiseAmount+turbine)*profile.turboGain*1.5;
         }
         public void Clear(){flowHigh.Clear();flowLow.Clear();shaft=pressure=throttle=airflow=shaftTarget=pressureTarget=throttleTarget=airflowTarget=0;lastFrame=null;}
     }

@@ -516,6 +516,7 @@ namespace DragLab.Runtime
             }
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
             Check(scene.Audio.CallbackCount > 100, "Real AudioSource callbacks rendered the pressure core.");
+            Check(scene.Audio.OutputChannels>=2,"Actual AudioSource callbacks preserve stereo output channels.");
             report.AppendLine("MEASURE: callbacks " + scene.Audio.CallbackCount + "; peak observed callback " + scene.Audio.PeakCallbackMilliseconds.ToString("F4", CultureInfo.InvariantCulture) + " ms (desktop observation, not an Android budget claim).");
 #endif
         }
