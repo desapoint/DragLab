@@ -19,11 +19,11 @@ namespace DragLab.Editor
             new PreviewDuctSegment{lengthM=.3*length,diameterM=.08,temperatureK=temperature,turbine=turbine},
             new PreviewDuctSegment{lengthM=.6*length,diameterM=.10,temperatureK=temperature,component=part}
         };
-        static SharedBackfirePreviewSynth Synth(int rate=48000,double length=1,double temp=650,ExhaustPart part=null,bool turbine=false)
-        {return new SharedBackfirePreviewSynth(Path(length,temp,part,turbine),Path(.4,330),rate);}
-        static double[] Render(PreviewCombustionEvent input,int rate=48000,double length=1,double temp=650,ExhaustPart part=null,bool turbine=false,double boost=.7)
+        static SharedBackfirePreviewSynth Synth(int rate=48000,double length=1,double temp=650,ExhaustPart part=null,bool turbine=false,PreviewCombustionVoicing voicing=null)
+        {return new SharedBackfirePreviewSynth(Path(length,temp,part,turbine),Path(.4,330),rate,voicing:voicing);}
+        static double[] Render(PreviewCombustionEvent input,int rate=48000,double length=1,double temp=650,ExhaustPart part=null,bool turbine=false,double boost=.7,PreviewCombustionVoicing voicing=null)
         {
-            var synth=Synth(rate,length,temp,part,turbine);synth.SetBoost(boost);synth.Trigger(input);
+            var synth=Synth(rate,length,temp,part,turbine,voicing);synth.SetBoost(boost);synth.Trigger(input);
             var output=new double[rate*2];for(int i=0;i<output.Length;i++)output[i]=synth.Sample();return output;
         }
         static double Energy(double[] values)=>values.Sum(x=>x*x);
@@ -35,6 +35,11 @@ namespace DragLab.Editor
             var roundTrip=UnityEngine.JsonUtility.FromJson<PreviewCombustionEvent>(UnityEngine.JsonUtility.ToJson(input));
             Check(baseline.SequenceEqual(Render(roundTrip)),"combustion packet JSON retains every rendering input");
             Check(baseline.SequenceEqual(Render(input)),"same parameters and seed are sample-identical");
+            Check(baseline.SequenceEqual(Render(input,voicing:new PreviewCombustionVoicing())),"explicit default calibration retains original shared source");
+            var calibration=new PreviewCombustionVoicing{pressureCoupling=4,turbulenceCoupling=.12,frontCoupling=1.2};
+            var pressureVersion=Render(input,voicing:calibration);
+            Check(!baseline.SequenceEqual(pressureVersion)&&pressureVersion.All(x=>!double.IsNaN(x)&&!double.IsInfinity(x)),"pressure/front calibration changes character with finite output");
+            Check(pressureVersion.SequenceEqual(Render(input,voicing:calibration)),"pressure-front version remains deterministic");
             var changed=input;changed.seed++;Check(!baseline.SequenceEqual(Render(changed)),"subtle turbulence varies with explicit seed");
             Check(baseline.All(x=>!double.IsNaN(x)&&!double.IsInfinity(x)&&Math.Abs(x)<5),"bounded finite raw source/routing");
             changed=input;changed.fuelMg=0;Check(Energy(Render(changed))==0,"fuel cut produces no explosion");
@@ -67,7 +72,7 @@ namespace DragLab.Editor
             changed=input;changed.oxygenPerFuel=0;Throws(()=>Synth().Trigger(changed),"invalid fuel chemistry rejected");
             var capacity=Synth();for(int i=0;i<48;i++)Check(capacity.Trigger(input),"prepared simultaneous voice "+i);
             Check(!capacity.Trigger(input)&&capacity.RejectedOverlap==1,"capacity failure reported without overwriting active tails");
-            var live=Synth();live.Trigger(input);for(int i=0;i<1000;i++)live.Sample();
+            var live=Synth(voicing:calibration);live.Trigger(input);for(int i=0;i<1000;i++)live.Sample();
             long allocated=GC.GetAllocatedBytesForCurrentThread();var watch=Stopwatch.StartNew();
             // Stopwatch is allocated outside the allocation measurement below.
             allocated=GC.GetAllocatedBytesForCurrentThread();

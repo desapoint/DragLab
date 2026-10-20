@@ -23,6 +23,7 @@ namespace DragLab.Editor
             public string id,title,file,source,fuel,induction,valve,exhaust,geometry,sha256;
             public int cylinders,accepted,suppressed,overflows;public double litres,duration=Seconds,peak,rms,elapsedSeconds,lengthM,diameterScale,temperatureK,callbackMillisecondsPerSecond;
             public List<Chapter> chapters=new List<Chapter>();public List<EventReceipt> events=new List<EventReceipt>();
+            public PreviewCombustionVoicing voicing;
         }
         [Serializable] public sealed class Manifest {public int sampleRate=Rate,channels=2;public string scope="Preview-only controlled acoustic bench. No race/save/runtime changes.";public List<Result> cases=new List<Result>();}
         sealed class Config {public string id,title,source,geometry="Assumed laboratory geometry";public VehicleSpec spec;public Tune tune;public double lengthScale=1,diameterScale=1,temperature=650,leak;}
@@ -158,16 +159,18 @@ namespace DragLab.Editor
             writer.Write(Encoding.ASCII.GetBytes("RIFF"));writer.Write(36+frames*4);writer.Write(Encoding.ASCII.GetBytes("WAVEfmt "));writer.Write(16);
             writer.Write((short)1);writer.Write((short)2);writer.Write(Rate);writer.Write(Rate*4);writer.Write((short)4);writer.Write((short)16);writer.Write(Encoding.ASCII.GetBytes("data"));writer.Write(frames*4);
         }
-        static Result Render(Config c)
+        static Result Render(Config c,PreviewCombustionVoicing voicing=null,string directory=null)
         {
+            directory=directory??DirectoryPath;
             var originalProfile=new EngineSoundProfile(c.spec,c.tune);var path=Exhaust(c,originalProfile);
             var bedSpec=c.spec.Copy();bedSpec.sound.exhaustPopGain=0;
             var profile=new EngineSoundProfile(bedSpec,c.tune);var bed=new EngineSoundSynth(profile,sampleRate:Rate);
-            var source=new SharedBackfirePreviewSynth(path.segments,Intake(c),Rate,profile.exhaust);
+            var source=new SharedBackfirePreviewSynth(path.segments,Intake(c),Rate,profile.exhaust,voicing);
             var result=new Result{id=c.id,title=c.title,file=c.id+".wav",source=c.source,cylinders=profile.cylinders,litres=profile.litres,fuel=profile.fueling.ToString(),induction=profile.induction.ToString(),valve=profile.valve.ToString(),exhaust=string.Join(" + ",profile.exhaustSystem.parts.Select(p=>p.kind.ToString())),geometry=c.geometry,lengthM=source.ExhaustLength,diameterScale=c.diameterScale,temperatureK=c.temperature};
+            result.voicing=(voicing??new PreviewCombustionVoicing()).Copy();
             var events=Events(profile,path,result);int eventAt=0,release=0;double previousGas=0,energy=0;var pcm=new float[Block*2];var bursts=new double[Block];var eventEnergy=new double[16];var eventSamples=new int[16];
             var timer=Stopwatch.StartNew();double dspMilliseconds=0;
-            using(var writer=new BinaryWriter(File.Create(Path.Combine(DirectoryPath,result.file)))){
+            using(var writer=new BinaryWriter(File.Create(Path.Combine(directory,result.file)))){
                 Header(writer,Seconds*Rate);
                 for(int tick=0;tick<Seconds*120;tick++){
                     var frame=Frame(profile,tick,ref release,previousGas);previousGas=frame.throttle;
@@ -195,7 +198,7 @@ namespace DragLab.Editor
             timer.Stop();result.elapsedSeconds=timer.Elapsed.TotalSeconds;result.callbackMillisecondsPerSecond=dspMilliseconds/Seconds;
             for(int i=0;i<16;i++)result.chapters[i].eventRms=Math.Sqrt(eventEnergy[i]/Math.Max(1,eventSamples[i]));
             result.accepted=source.Accepted;result.suppressed=source.Suppressed;result.overflows=source.RejectedOverlap;result.rms=Math.Sqrt(energy/(Rate*Seconds*2.0));
-            using(var hash=System.Security.Cryptography.SHA256.Create())using(var stream=File.OpenRead(Path.Combine(DirectoryPath,result.file)))result.sha256=BitConverter.ToString(hash.ComputeHash(stream)).Replace("-","").ToLowerInvariant();
+            using(var hash=System.Security.Cryptography.SHA256.Create())using(var stream=File.OpenRead(Path.Combine(directory,result.file)))result.sha256=BitConverter.ToString(hash.ComputeHash(stream)).Replace("-","").ToLowerInvariant();
             Check(eventAt==events.Count,c.id+" scheduled events consumed");Check(result.overflows==0,c.id+" no dropped overlapping voices");
             Check(result.chapters[2].accepted==0&&result.chapters[14].accepted==0,c.id+" fuel/oxygen controls suppress combustion");
             Check(result.chapters[15].eventRms<1e-6,c.id+" tails decay before final idle");
@@ -214,6 +217,31 @@ namespace DragLab.Editor
             File.WriteAllText(Path.Combine(DirectoryPath,"coverage-matrix.csv"),csv.ToString(),new UTF8Encoding(false));
             File.WriteAllText(Path.Combine(DirectoryPath,"verification.txt"),"PASS "+checks+" matrix checks; 34 controlled configurations, 16 chapters each, same generator; no production integration.\n"+SharedBackfirePreviewVerification.Summary,new UTF8Encoding(false));
             UnityEngine.Debug.Log("SHARED BACKFIRE AUDITION PASS");
+        }
+        public static void BisonVersions()
+        {
+            checks=0;SharedBackfirePreviewVerification.RunChecks();
+            string folder=Path.Combine(Root,"reports/bison-backfire-versions-20261020");System.IO.Directory.CreateDirectory(folder);
+            var donor=Configurations().Single(c=>c.id=="30-exhaust-2");var manifest=new Manifest();
+            var settings=new[]{
+                new PreviewCombustionVoicing{pressureCoupling=3.2,turbulenceCoupling=.12,frontCoupling=.9,frontMilliseconds=1.6,expansionScale=1},
+                new PreviewCombustionVoicing{pressureCoupling=5,turbulenceCoupling=.10,frontCoupling=1.5,frontMilliseconds=2.3,expansionScale=1.15},
+                new PreviewCombustionVoicing{pressureCoupling=7,turbulenceCoupling=.08,frontCoupling=.65,frontMilliseconds=4,expansionScale=1.6},
+                new PreviewCombustionVoicing{pressureCoupling=4.5,turbulenceCoupling=.38,frontCoupling=2,frontMilliseconds=.85,expansionScale=1.1},
+                new PreviewCombustionVoicing{pressureCoupling=5.5,turbulenceCoupling=.22,frontCoupling=1.1,frontMilliseconds=3,expansionScale=2.1}
+            };
+            var names=new[]{"01-pressure-pop","02-heavy-bang","03-deep-boom","04-raspy-bang","05-rolling-thump"};
+            for(int i=0;i<settings.Length;i++){
+                var c=new Config{id=names[i],title="Bison chambered: "+names[i],source=donor.source,spec=donor.spec.Copy(),tune=donor.tune.Copy()};
+                manifest.cases.Add(Render(c,settings[i],folder));UnityEngine.Debug.Log("BISON VERSION "+(i+1)+" / 5");
+            }
+            // Default source remains the original reference, including every limiter and intake event.
+            donor.id="reference-default";var reference=Render(donor,null,folder);
+            string previous=Path.Combine(DirectoryPath,"30-exhaust-2.wav");
+            if(File.Exists(previous))Check(File.ReadAllBytes(previous).SequenceEqual(File.ReadAllBytes(Path.Combine(folder,reference.file))),"default render stays PCM/byte-identical to original Bison");
+            File.WriteAllText(Path.Combine(folder,"manifest.json"),JsonUtility.ToJson(manifest,true),new UTF8Encoding(false));
+            File.WriteAllText(Path.Combine(folder,"verification.txt"),"PASS "+checks+" Bison sequence/reference checks; five complete 64-second versions; no HTML or runtime changes.\n"+SharedBackfirePreviewVerification.Summary,new UTF8Encoding(false));
+            UnityEngine.Debug.Log("BISON FIVE VERSIONS PASS");
         }
         // Refresh input receipts independently of PCM; refuses to alter event identity, timing or energy.
         public static void ExportInputs()

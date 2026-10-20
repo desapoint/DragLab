@@ -1,0 +1,9 @@
+PASS 25 Bison sequence/reference checks; five complete 64-second versions; no HTML or runtime changes.
+PASS 81 shared generator/routing checks; deterministic seeded pressure/turbulence, fuel/oxygen suppression, source-path routing, geometry/temperature/turbine effects, overlap, rates and zero sample-loop allocations. Desktop single-event 1 s loop: 36.48 ms; not Android profiling.
+PASS independent WAV checks: five distinct variants, no HTML.
+PASS default source stays byte-identical to the original Bison chambered 64-second WAV.
+PASS 01-pressure-pop: full 64-second stereo sequence, same engine baseline and event inputs, peak 0.43338, zero voice overflow, intact no-explosion controls.
+PASS 02-heavy-bang: full 64-second stereo sequence, same engine baseline and event inputs, peak 0.52707, zero voice overflow, intact no-explosion controls.
+PASS 03-deep-boom: full 64-second stereo sequence, same engine baseline and event inputs, peak 0.38217, zero voice overflow, intact no-explosion controls.
+PASS 04-raspy-bang: full 64-second stereo sequence, same engine baseline and event inputs, peak 0.65326, zero voice overflow, intact no-explosion controls.
+PASS 05-rolling-thump: full 64-second stereo sequence, same engine baseline and event inputs, peak 0.48584, zero voice overflow, intact no-explosion controls.

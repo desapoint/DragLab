@@ -28,6 +28,20 @@ namespace DragLab.Editor
         public ExhaustPart component;
     }
 
+    // Audition calibration for one common source; no cause/engine-specific sound branches.
+    [Serializable] public sealed class PreviewCombustionVoicing
+    {
+        public double pressureCoupling=1,turbulenceCoupling=1,frontCoupling=0,frontMilliseconds=1.5,expansionScale=1;
+        public PreviewCombustionVoicing Copy()=>new PreviewCombustionVoicing{pressureCoupling=pressureCoupling,turbulenceCoupling=turbulenceCoupling,frontCoupling=frontCoupling,frontMilliseconds=frontMilliseconds,expansionScale=expansionScale};
+        public void Validate()
+        {
+            foreach(double value in new[]{pressureCoupling,turbulenceCoupling,frontCoupling,frontMilliseconds,expansionScale})
+                if(double.IsNaN(value)||double.IsInfinity(value))throw new ArgumentException("Invalid source calibration");
+            if(pressureCoupling<0||pressureCoupling>12||turbulenceCoupling<0||turbulenceCoupling>3||frontCoupling<0||frontCoupling>4||frontMilliseconds<.3||frontMilliseconds>8||expansionScale<.5||expansionScale>2.5)
+                throw new ArgumentException("Source calibration outside preview bounds");
+        }
+    }
+
     // One source algorithm for every event. Labels/cause names deliberately do not enter this class.
     public sealed class SharedBackfirePreviewSynth
     {
@@ -135,10 +149,12 @@ namespace DragLab.Editor
             public uint random;
             public double fraction,amplitude,attack,burn,expansion,mixing,attackStep,burnStep,expansionStep,mixingStep;
             public double low,second,bass,air,drift,lowCoefficient,bassCoefficient,airCoefficient,driftCoefficient,pressureRatio;
+            public double previousPressure,front,frontCoefficient,frontNormalization;
         }
         readonly Voice[] voices=new Voice[48];
         readonly Duct exhaust,intake;
         readonly int rate;
+        readonly PreviewCombustionVoicing voicing;
         int next;
         double lastInput,lastOutput;
         public int Accepted {get;private set;}
@@ -146,10 +162,11 @@ namespace DragLab.Editor
         public int RejectedOverlap {get;private set;}
         public double ExhaustLength => exhaust.Length;
         public double IntakeLength => intake.Length;
-        public SharedBackfirePreviewSynth(PreviewDuctSegment[] exhaust,PreviewDuctSegment[] intake,int rate,int stage=0)
+        public SharedBackfirePreviewSynth(PreviewDuctSegment[] exhaust,PreviewDuctSegment[] intake,int rate,int stage=0,PreviewCombustionVoicing voicing=null)
         {
             if(rate<8000||rate>192000)throw new ArgumentException("Unsupported sample rate");
             this.rate=rate;this.exhaust=new Duct(exhaust,rate,stage);this.intake=new Duct(intake,rate,stage);
+            this.voicing=(voicing??new PreviewCombustionVoicing()).Copy();this.voicing.Validate();
         }
         public void SetBoost(double boost){exhaust.SetBoost(boost,rate);}
         public bool Trigger(PreviewCombustionEvent input)
@@ -160,7 +177,7 @@ namespace DragLab.Editor
             if(energy<=0){Suppressed++;return false;}
             int at=next;while(voices[at].active){at=(at+1)%voices.Length;if(at==next){RejectedOverlap++;return false;}}
             next=(at+1)%voices.Length;
-            double burn=input.burnSeconds,expansion=burn*2.8+.003;
+            double burn=input.burnSeconds,expansion=(burn*2.8+.003)*voicing.expansionScale;
             double mixing=input.mixingSeconds+burn*.65;
             double pressure=.33*energy/(input.volumeLitres*.001),ambient=input.pressureKPa*1000;
             double cutoff=DragMath.Clamp(1400*Math.Sqrt(input.temperatureK/650)*Math.Pow(.012/burn,.3),250,Math.Min(6000,rate*.3));
@@ -172,6 +189,7 @@ namespace DragLab.Editor
                 expansionStep=Math.Exp(-1/(rate*expansion)),mixingStep=Math.Exp(-1/(rate*mixing)),
                 lowCoefficient=1-Math.Exp(-2*Math.PI*cutoff/rate),bassCoefficient=1-Math.Exp(-2*Math.PI*45/rate),
                 airCoefficient=1-Math.Exp(-2*Math.PI*Math.Min(3200,rate*.3)/rate),driftCoefficient=1-Math.Exp(-2*Math.PI*32/rate),
+                frontCoefficient=1-Math.Exp(-1/(rate*voicing.frontMilliseconds*.001)),frontNormalization=rate*burn,
                 remaining=(int)(rate*Math.Min(3,Math.Max(expansion,mixing)*11+.05))
             };
             Accepted++;return true;
@@ -187,7 +205,14 @@ namespace DragLab.Editor
                 double onset=1-v.attack;
                 double pressure=onset*(v.burn-v.pressureRatio*v.expansion);
                 double turbulence=onset*v.mixing*(1+.9*v.drift)*(3.7*(v.second-v.bass)+.14*v.air);
-                double value=(pressure*.8+turbulence)*v.amplitude;
+                double value;
+                if(voicing.frontCoupling==0&&voicing.pressureCoupling==1&&voicing.turbulenceCoupling==1)value=(pressure*.8+turbulence)*v.amplitude;
+                else{
+                    // A smoothed rate-of-pressure-rise front; not white-noise amplification or a one-sample click.
+                    double rise=(pressure-v.previousPressure)*v.frontNormalization;
+                    v.front+=v.frontCoefficient*(rise-v.front);v.previousPressure=pressure;
+                    value=(pressure*.8*voicing.pressureCoupling+turbulence*voicing.turbulenceCoupling+v.front*voicing.frontCoupling)*v.amplitude;
+                }
                 if(v.remaining<rate*.015)value*=v.remaining/(rate*.015);
                 (v.intake?intake:exhaust).Inject(v.node,v.fraction,value);
                 v.attack*=v.attackStep;v.burn*=v.burnStep;v.expansion*=v.expansionStep;v.mixing*=v.mixingStep;

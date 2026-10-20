@@ -221,3 +221,15 @@ Lab-supplied energy/chemistry/source coordinates and geometry are not purported
 existing race-state measurements. See [scope, evidence and listening protocol](../reports/shared-backfire-audition-20261020/CHANGES.md).
 Wait for explicit acoustic approval before adding the event metadata and integrating
 this shared core with runtime audio and Android performance gates.
+
+### Bison pressure-front calibration review
+
+The user found the shared Bison chambered-exhaust sample too air-like and requested
+five WAV-only generator versions using the full existing sequence. Optional prepared
+source calibration now adjusts pressure, turbulence, a smoothed pressure-rise front
+and expansion response. The default path remains sample-identical; this is one
+shared numerical source, not cause-specific sound algorithms. The five calibrations
+are isolated listening candidates, with no runtime or old-matrix change. See
+[parameters and checks](../reports/bison-backfire-versions-20261020/CHANGES.md).
+No HTML page is created or updated for this request. Wait for explicit listening
+approval before selecting any calibration for the game.
