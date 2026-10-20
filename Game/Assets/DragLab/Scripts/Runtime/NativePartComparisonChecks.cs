@@ -84,6 +84,17 @@ namespace DragLab.Runtime
                     piston.condition.health=previous;
                 }
                 check(physical==NativePartPreviewCache.CarSignature(p,car),"Restoring the exact part state restores its cache fingerprint");
+                var appliedCache=new NativePartPreviewCache();appliedCache.Bind(p,car);
+                var applied=appliedCache.Inspection("current",()=>NativePartBrowser.Inspect(InspectionBuild.Capture(p,car)));
+                // Only the non-physical commerce revision changes: keep the
+                // expensive applied inspection but rebuild plans and offers.
+                p.cash--;p.revision++;
+                appliedCache.Bind(p,car);
+                var retained=appliedCache.Inspection("current",()=>NativePartBrowser.Inspect(InspectionBuild.Capture(p,car)));
+                check(ReferenceEquals(applied,retained),
+                    "A cash/revision-only change retains the applied-car inspection");
+                p.cash++;p.revision--;
+                appliedCache.Bind(p,car);
                 void Equivalent(InspectionBuild source,string label){
                     var uncached=NativePartBrowser.Inspect(source);
                     var cached=NativePartBrowser.Inspect(source,steady);
