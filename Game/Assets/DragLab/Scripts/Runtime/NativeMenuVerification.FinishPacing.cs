@@ -225,6 +225,7 @@ namespace DragLab.Runtime
                 CheckRejected(invalidMarket,"invalid market epoch");
                 int cash=game.Profile.cash,generation=game.Profile.vehicleStock.generation;double maxStep=0,maxCamera=0,maxFrame=0;string maxStage="";
                 int normalizationFrames=0;double maxNormalizeStep=0;
+                var normalizationStages=new Dictionary<string,double>(StringComparer.Ordinal);
                 var authoredBefore=game.Profile.catalog;
                 game.StartRace(null,!paid);var race=game.Race;
                 Check(ReferenceEquals(authoredBefore,game.Profile.catalog),
@@ -235,6 +236,8 @@ PrototypeGame.FinishMeasurement=(name,value)=>{
                     {
                         normalizationFrames++;
                         maxNormalizeStep=Math.Max(maxNormalizeStep,value);
+                        normalizationStages.TryGetValue(name,out var previousMax);
+                        normalizationStages[name]=Math.Max(previousMax,value);
                     }
                     if(value>maxStep){maxStep=value;maxStage=name;}
                 };
@@ -264,6 +267,10 @@ PrototypeGame.FinishMeasurement=(name,value)=>{
                             " / normalize frames "+normalizationFrames+
                             " / max normalize step ms "+maxNormalizeStep.ToString("F3")+
                             " / held-write frames "+(Time.frameCount-frames));
+                        foreach(var slow in normalizationStages.OrderByDescending(x=>x.Value).Take(5))
+                            report.AppendLine("MEASURE: finish "+(paid?"paid refresh":"practice")+
+                                " / normalization stage "+slow.Key+
+                                " / max ms "+slow.Value.ToString("F3"));
                         Check(normalizationFrames>0&&maxNormalizeStep>0,
                             "Full settlement normalizer progresses on observable paced frames");
                         Check(maxStep<50&&maxCamera<.35,"Finish preparation is split into bounded main steps and camera motion remains continuous");
