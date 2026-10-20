@@ -15,23 +15,24 @@ namespace DragLab.Runtime
         {
             internal CarInspection Stats, Healthy;
             internal Task<CarInspection> Driving;
+            internal string Fingerprint;
         }
         readonly Dictionary<string,OwnedInspection> carInspections=new Dictionary<string,OwnedInspection>();
         PlayerProfile inspectionProfile;
-        long inspectionRevision=-1;
         string comparingOwnedId,comparingDealerId;
         Button ownedCompare,dealerCompare;
         internal int InspectionCaptureCount {get;private set;}
         OwnedInspection InspectOwned(OwnedCar car)
         {
-            if(inspectionProfile!=game.Profile||inspectionRevision!=game.Profile.revision) {
-                carInspections.Clear();inspectionProfile=game.Profile;inspectionRevision=game.Profile.revision;
+            if(inspectionProfile!=game.Profile) {
+                carInspections.Clear();inspectionProfile=game.Profile;
             }
             if(car==null||string.IsNullOrEmpty(car.engineAssemblyId))return null;
-            if(carInspections.TryGetValue(car.instanceId,out var cached))return cached;
+            string fingerprint=NativePartPreviewCache.CarSignature(game.Profile,car);
+            if(carInspections.TryGetValue(car.instanceId,out var cached)&&cached?.Fingerprint==fingerprint)return cached;
             try {
                 var source=InspectionBuild.Capture(game.Profile,car);
-                cached=new OwnedInspection {Stats=NativePartBrowser.Inspect(source,partPreviewCache)};
+                cached=new OwnedInspection {Fingerprint=fingerprint,Stats=NativePartBrowser.Inspect(source,partPreviewCache)};
                 InspectionCaptureCount++;
             }catch(Exception){cached=null;}
             carInspections[car.instanceId]=cached;return cached;
@@ -41,8 +42,12 @@ namespace DragLab.Runtime
             var cached=InspectOwned(car);
             if(cached==null)return Task.FromException<CarInspection>(new InvalidOperationException("Inspection unavailable"));
             if(cached.Driving==null) {
-                var source=InspectionBuild.Capture(game.Profile,car);var prepared=CarInspection.PrepareCar(source);
-                cached.Driving=Task.Run(()=>CarInspection.CalculatePrepared(source,prepared));
+                if(ownedRatingCache.TryGetValue(car.instanceId,out var rating)&&rating.Context==cached.Fingerprint&&rating.Driving!=null)
+                    cached.Driving=Task.FromResult(rating.Driving);
+                else {
+                    var source=InspectionBuild.Capture(game.Profile,car);var prepared=CarInspection.PrepareCar(source);
+                    cached.Driving=Task.Run(()=>CarInspection.CalculatePrepared(source,prepared));
+                }
             }
             return cached.Driving;
         }
