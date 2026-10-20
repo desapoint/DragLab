@@ -124,3 +124,67 @@ and `reports/player-fixtures/settlement-f7-index-held-a/verification.txt`.
 Focus on `market baseline paid third / max frame`,
 `max settlement step`, `parts/new guarantee`,
 `initial fitting guarantee worker CPU`, and exact-once save checks.
+
+## F.7 continuation — indexed used-parts guarantee
+
+Prior *indexed* F.7 Windows result: complete Unity checks succeeded
+(84/84 market and 91/91 held-writer), with the initial fitting guarantee
+worker cost reduced from **15.382 to 1.615 ms**. The new run's max
+paid-third frame **27.275 ms** and result-to-commit **1,299.735 ms**
+were slower than first F.7, while practice/ordinary frames also slowed;
+the cadence was ~16.7 ms/frame versus ~7 ms/frame in first F.7,
+and the market generated 41 rather than 29 delivery opportunities.
+These runs are not matched enough to attribute wall/frame changes to
+indexing.
+
+The remaining main-thread `parts/used guarantee` still performed
+full catalog enumeration, repeated `catalog.Fits`, `GroupBy`, sort
+and then repeated fitment scans for candidate vehicle selection.
+
+This update:
+- Uses `MarketCatalogLayout.FitmentIndex.ForModels(owned)` for the
+  current player-owned model union and filters that already ordered
+  group index by original wear/reputation rules. No new RNG calls.
+- Uses a sorted per-model group-membership binary search
+  (`FitsModel(model,groupIndex)`) when choosing a compatible source
+  platform; preserves the **original target array order** and the
+  same RNG position for both candidate and source selection.
+- Reuses the already filtered product keys to identify previously
+  generated used offers; without iterating the entire catalog.
+- Keeps the synchronous/editor full `catalog.Fits` + grouping
+  implementation as an exact reference for deterministic parity.
+- Records `used guarantee eligible products` separately from
+  `used parts/guarantee`, making it possible to distinguish
+  group lookup from offer creation and yields.
+
+The `NewSupplyVerification` matrix now tests six seed/guarantee
+scenarios, including a two-model owned garage and a two-model
+low-reputation garage; it compares complete serialized new/used/engine
+market and dealer rows against synchronous refresh. The layout
+verification also compares binary-search group membership against
+full `catalog.Fits` results for each model and group.
+
+### Controlled player frame pacing
+
+`MarketBaselineChecks` (only in Windows development verification)
+now saves and restores `QualitySettings.vSyncCount` and
+`Application.targetFrameRate` around the entire suite, sets
+VSync=0 / target FPS=120, and reports **observed mean and median
+frame time** per case. This is a requested cap, not a guarantee:
+display/OS/GPU constraints may still prevent reaching 120 FPS.
+Compare like-for-like runs with similar observed pacing and delivery
+opportunity counts before concluding wall-time improvements.
+
+**Current continuation changes are source-reviewed, not yet rerun
+through Unity or a packaged player.** Keep PR #4 draft.
+
+```powershell
+git switch perf/f7-worker-market-guarantee
+git pull --ff-only origin perf/f7-worker-market-guarantee
+.\tools\Invoke-Unity.ps1 -Action NewSupplyVerify
+.\tools\Invoke-Unity.ps1 -Action PartsMarketVerify
+.\tools\Invoke-Unity.ps1 -Action SqliteStateVerify
+.\tools\Invoke-Unity.ps1 -Action BuildPlayerOnly
+.\tools\Test-NativeMenu.ps1 -MarketBaselineOnly -FrameProbe -FixtureName settlement-f7-used-index-a
+.\tools\Test-NativeMenu.ps1 -FinishPacingOnly -FrameProbe -FixtureName settlement-f7-used-held-a
+```
