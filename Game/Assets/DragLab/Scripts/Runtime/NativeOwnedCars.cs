@@ -29,6 +29,8 @@ namespace DragLab.Runtime
             internal CarInspection Driving;
         }
         readonly Dictionary<string,OwnedRatingResult> ownedRatingCache=new Dictionary<string,OwnedRatingResult>();
+        readonly LinkedList<string> ownedRatingRecency=new LinkedList<string>();
+        readonly Dictionary<string,LinkedListNode<string>> ownedRatingNodes=new Dictionary<string,LinkedListNode<string>>();
         Task<Dictionary<string,OwnedRatingResult>> ownedRatings;
         string ownedDetailId;
         Vector2 ownedReturnScroll;
@@ -102,9 +104,22 @@ namespace DragLab.Runtime
                 foreach(var entry in ownedEntries.Values)entry.RatingPending=false;ApplyOwnedQuery();
             }
         }
+        bool TryGetOwnedRating(string id,out OwnedRatingResult value)
+        {
+            if(!ownedRatingCache.TryGetValue(id,out value))return false;
+            var node=ownedRatingNodes[id];ownedRatingRecency.Remove(node);ownedRatingRecency.AddLast(node);
+            return true;
+        }
         void RememberOwnedRating(string id,OwnedRatingResult value)
         {
-            if(ownedRatingCache.Count>=128&&!ownedRatingCache.ContainsKey(id))ownedRatingCache.Clear();
+            if(ownedRatingNodes.TryGetValue(id,out var node))ownedRatingRecency.Remove(node);
+            else {
+                if(ownedRatingCache.Count>=128){
+                    var oldest=ownedRatingRecency.First.Value;
+                    ownedRatingRecency.RemoveFirst();ownedRatingNodes.Remove(oldest);ownedRatingCache.Remove(oldest);
+                }
+            }
+            ownedRatingNodes[id]=ownedRatingRecency.AddLast(id);
             ownedRatingCache[id]=value;
         }
         void BuildOwnedCars(PlayerProfile profile,TorqueUnit units)
@@ -155,7 +170,7 @@ namespace DragLab.Runtime
                     CarFact(values,"Torque",DisplayUnits.Torque(stats.peakTorque,units).ToString("F0")+" "+DisplayUnits.TorqueLabel(units));
                     CarFact(values,"Weight",stats.vehicleMassKg.ToString("F0")+" kg");
                     string signature=inspected==null?NativePartPreviewCache.CarSignature(profile,car):inspected.Fingerprint;
-                    bool reusedRating=ownedRatingCache.TryGetValue(car.instanceId,out var prior)&&prior.Context==signature;
+                    bool reusedRating=TryGetOwnedRating(car.instanceId,out var prior)&&prior.Context==signature;
                     if(reusedRating){entry.Rating=prior.Rating;entry.RatingPending=false;}
                     string ratingText=reusedRating?(prior.Rating==null?"Class unavailable · PP —":"Class "+prior.Rating.performanceClass+" · PP "+prior.Rating.points):"Class …";
                     var rating = new Label(ratingText) { name = "carClass:"+car.instanceId }; rating.AddToClassList("car-class"); info.Add(rating);
