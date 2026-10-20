@@ -77,12 +77,17 @@ namespace DragLab.Domain.Mechanics
         sealed class InitialGroup
         {
             internal string[] ids;internal int maximum;
+            // Copied representative: canonical product grouping differs only by ID.
+            // This snapshot is read exclusively by the selection worker.
+            internal PartDefinition definition;
         }
         sealed class InitialPlan
         {
             internal List<NewPartStock> rows;internal int newCount;
+            internal uint coverageRandom,coverageQuantity;
         }
-        static InitialPlan BuildInitialPlan(InitialGroup[] groups,uint selection,uint quantity)
+        static InitialPlan BuildInitialPlan(InitialGroup[] groups,uint selection,uint quantity,
+            int guarantee=0,VehicleSpec[] targets=null,uint coverageRandom=0,uint coverageQuantity=0)
         {
             // Initial rolls and row ordering are the same as the original path.
             // Pure managed data only; does not touch a profile or any Unity API.
@@ -104,7 +109,32 @@ namespace DragLab.Domain.Mechanics
                     (roll<.5?1:roll<.85?2:3):(roll<.8?1:roll<.97?2:3);
                 rows[i].units=rows[i].initialUnits=groups[i].maximum*sets;
             }
-            return new InitialPlan{rows=rows,newCount=newCount};
+            // Settlement-only: the matching groups already have deterministic
+            // maximum units from MarketCatalogLayout. Resolve the fitting guarantee
+            // on this same worker, before publishing any row to the candidate.
+            // FitsDetached is the exact pure predicate used by catalog.Fits.
+            if(targets!=null)
+            {
+                var fitting=new List<int>();
+                for(int i=0;i<groups.Length;i++)
+                    if(groups[i].definition.reputationRequired==0&&
+                        targets.Any(spec=>MechanicalCatalog.FitsDetached(spec,groups[i].definition)))
+                        fitting.Add(i);
+                int targetCount=Math.Min(guarantee,fitting.Count);
+                int present=fitting.Count(i=>rows[i].units>0);
+                while(present<targetCount)
+                {
+                    var missing=fitting.Where(i=>rows[i].units==0).ToArray();
+                    int pick=(int)(Next(ref coverageRandom)*missing.Length)%missing.Length;
+                    int index=missing[pick];
+                    var row=rows[index];
+                    row.units=row.initialUnits=groups[index].maximum*
+                        (1+(int)(Next(ref coverageQuantity)*3)%3);
+                    present++;
+                }
+            }
+            return new InitialPlan{rows=rows,newCount=newCount,
+                coverageRandom=coverageRandom,coverageQuantity=coverageQuantity};
         }
         static IEnumerable<object> GenerateSteps(PlayerProfile p,bool expire,bool offloadDelivery)
         {
@@ -148,11 +178,20 @@ namespace DragLab.Domain.Mechanics
             MarketCatalogLayout.Layout layout=null;
             foreach(var marker in MarketCatalogLayout.GetSteps(p.catalog,productKeys,specs,value=>layout=value,offloadDelivery))
                 yield return marker;
-            var planGroups=layout.groups.Select(g=>new InitialGroup{ids=g.ids.ToArray(),maximum=g.maximum}).ToArray();
+            var planGroups=layout.groups.Select(g=>new InitialGroup{
+                ids=g.ids.ToArray(),maximum=g.maximum,
+                definition=offloadDelivery?g.definition.Copy():null
+            }).ToArray();
+            // Capture fitment targets before dispatch; no authored catalog data
+            // will be read by the selection worker.
+            var owned=p.cars.Select(c=>c.vehicleId).Distinct().ToArray();
+            var targets=owned.Length==0?specs:owned.Select(p.catalog.Spec).ToArray();
             InitialPlan initial=null;
             if(offloadDelivery)
             {
-                var task=Task.Run(()=>BuildInitialPlan(planGroups,random,newQuantity));
+                int guaranteed=state.guaranteeAtRefresh;
+                var task=Task.Run(()=>BuildInitialPlan(planGroups,random,newQuantity,
+                    guaranteed,targets,coverageRandom,coverageQuantity));
                 var waiting=new MarketWorkerWait(task);
                 yield return waiting;
                 while(!task.IsCompleted)yield return waiting;
@@ -163,12 +202,19 @@ namespace DragLab.Domain.Mechanics
             // roll has finished. Used and engine streams are independent.
             state.parts.AddRange(initial.rows);
             int newCount=initial.newCount;
+            if(offloadDelivery){
+                coverageRandom=initial.coverageRandom;
+                coverageQuantity=initial.coverageQuantity;
+            }
             Measured("new product selection/quantities",stamp);stamp=Stamp();yield return "parts/layout and selection";
             // A single shared pool: no model quotas for used parts or engines.
-            var owned=p.cars.Select(c=>c.vehicleId).Distinct().ToArray();var targets=owned.Length==0?specs:owned.Select(p.catalog.Spec).ToArray();
-            var fitting=state.parts.Where(row=>row.definitions.Any(id=>{var d=p.catalog.Find(id);return d.reputationRequired==0&&targets.Any(spec=>p.catalog.Fits(spec,d));})).ToList();
-            while(fitting.Count(row=>row.units>0)<Math.Min(state.guaranteeAtRefresh,fitting.Count)){
-                var missing=fitting.Where(row=>row.units==0).ToArray();var row=missing[(int)(Next(ref coverageRandom)*missing.Length)%missing.Length];var d=p.catalog.Find(row.definitions[0]);int max=specs.Where(spec=>p.catalog.Fits(spec,d)).Select(spec=>Count(spec,d)).DefaultIfEmpty(1).Max();row.units=row.initialUnits=max*(1+(int)(Next(ref coverageQuantity)*3)%3);
+            if(!offloadDelivery)
+            {
+                // Retain the original synchronous/editor reference algorithm.
+                var fitting=state.parts.Where(row=>row.definitions.Any(id=>{var d=p.catalog.Find(id);return d.reputationRequired==0&&targets.Any(spec=>p.catalog.Fits(spec,d));})).ToList();
+                while(fitting.Count(row=>row.units>0)<Math.Min(state.guaranteeAtRefresh,fitting.Count)){
+                    var missing=fitting.Where(row=>row.units==0).ToArray();var row=missing[(int)(Next(ref coverageRandom)*missing.Length)%missing.Length];var d=p.catalog.Find(row.definitions[0]);int max=specs.Where(spec=>p.catalog.Fits(spec,d)).Select(spec=>Count(spec,d)).DefaultIfEmpty(1).Max();row.units=row.initialUnits=max*(1+(int)(Next(ref coverageQuantity)*3)%3);
+                }
             }
             Measured("new fitting guarantee",stamp);stamp=Stamp();yield return "parts/new guarantee";string prefix="market/"+state.seed+"/"+state.generation+"/";
             var usedCandidates=layout.groups.Where(g=>PartSemantics.Wears(g.definition.category)).ToList();
