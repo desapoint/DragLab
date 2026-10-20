@@ -32,6 +32,7 @@ namespace DragLab.Runtime
         readonly LinkedList<string> ownedRatingRecency=new LinkedList<string>();
         readonly Dictionary<string,LinkedListNode<string>> ownedRatingNodes=new Dictionary<string,LinkedListNode<string>>();
         Task<Dictionary<string,OwnedRatingResult>> ownedRatings;
+        readonly Dictionary<string,string> ownedPendingContexts=new Dictionary<string,string>();
         string ownedDetailId;
         Vector2 ownedReturnScroll;
         long ownedDetailRevision;
@@ -80,7 +81,7 @@ namespace DragLab.Runtime
             if (!ReferenceEquals(ownedProfile,profile) || ownedRevision != profile.revision || ownedSelection != profile.selectedOwnedVehicleId || ownedTorque != units)
                 BuildOwnedCars(profile,units);
             if (ownedRatings == null || !ownedRatings.IsCompleted) return;
-            var completed = ownedRatings; ownedRatings = null;
+            var completed = ownedRatings; ownedRatings = null;ownedPendingContexts.Clear();
             try {
                 foreach (var rating in completed.Result) {
                     var label = ownedGrid.Q<Label>("carClass:"+rating.Key);
@@ -127,12 +128,10 @@ namespace DragLab.Runtime
             // A previous batch may have finished since the last UI refresh.
             // Retain its fully computed, signature-keyed results before replacing
             // the cards, instead of running the same quarter-mile probes again.
-            if(ownedRatings!=null&&ownedRatings.Status==TaskStatus.RanToCompletion)
-                foreach(var finished in ownedRatings.Result)
+            var previousRatings=ownedRatings;
+            if(previousRatings!=null&&previousRatings.Status==TaskStatus.RanToCompletion)
+                foreach(var finished in previousRatings.Result)
                     if(finished.Value!=null)RememberOwnedRating(finished.Key,finished.Value);
-            ownedCancellation?.Cancel(); ownedCancellation?.Dispose();
-            ownedCancellation = new CancellationTokenSource(); var token = ownedCancellation.Token;
-            ownedRatings = null;
             foreach (var surface in ownedSurfaces) surfaces.Remove(surface);
             ownedSurfaces.Clear();
             Vector2 scroll = ownedScroll.scrollOffset; ownedGrid.Clear();ownedEntries.Clear();
@@ -198,7 +197,17 @@ namespace DragLab.Runtime
             if (profile.cars.Count == 0) { var empty = new Label("No owned cars"); empty.AddToClassList("car-empty"); ownedGrid.Add(empty); }
             if(profile.cars.Count==0){var recovery=new Button(()=>game.OpenRecovery()){name="emptyGarageRecovery",text="Recovery work"};recovery.AddToClassList("action-button");ownedGrid.Add(recovery);AddSurface(recovery,RacingSurface.Kind.SecondaryAction);ownedSurfaces.Add(recovery.Q<RacingSurface>());}
             ApplyOwnedQuery();ownedScroll.scrollOffset = scroll; RefreshOwnedDetails(); ExcludeTabTraversal();
+            // Rebuilding for unit/selection/cosmetic changes must not cancel an
+            // identical in-flight physics batch and immediately schedule it again.
+            if(previousRatings!=null&&!previousRatings.IsCompleted
+                &&probes.Count==ownedPendingContexts.Count
+                &&probes.All(p=>ownedPendingContexts.TryGetValue(p.Item1,out var prior)&&prior==p.Item2))
+                return;
+            ownedCancellation?.Cancel();ownedCancellation?.Dispose();
+            ownedCancellation=null;ownedRatings=null;ownedPendingContexts.Clear();
             if(probes.Count>0) {
+                ownedCancellation=new CancellationTokenSource();var token=ownedCancellation.Token;
+                foreach(var probe in probes)ownedPendingContexts[probe.Item1]=probe.Item2;
                 OwnedRatingRunCount++;
                 ownedRatings = Task.Run(() => {
                     var result = new Dictionary<string,OwnedRatingResult>();
