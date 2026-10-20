@@ -9,6 +9,14 @@ namespace DragLab.Domain.Mechanics
     {
         // Editor assembly invokes the public verifier facade; internal catalog
         // caching APIs stay private to the runtime assembly.
+        public static bool PrepareSupplyCategoryCache(MechanicalCatalog catalog)
+        {
+            NewSupplyCatalogIndex.Request(catalog);
+            int advances=0;
+            while(!NewSupplyCatalogIndex.Ready(catalog)&&advances++<catalog.parts.Count+2)
+                NewSupplyCatalogIndex.Advance(catalog,8);
+            return NewSupplyCatalogIndex.ForDetached(catalog)!=null;
+        }
         public static bool PrepareProductKeyCache(MechanicalCatalog catalog)
         {
             var definitions=catalog.parts.ToArray();
@@ -52,16 +60,28 @@ namespace DragLab.Domain.Mechanics
             var unavailable=Product(PartCategory.Exhaust,0);check(NewPartSupply.Deliver(new List<NewPartSupply.Product>{unavailable},Array.Empty<SupplyWear.Need>(),ref random,ref quantity)==0&&random==before,"Undeliverable product is pruned before the single-product exit");
             check(NewPartSupply.Deliver(new List<NewPartSupply.Product>{multiple},Array.Empty<SupplyWear.Need>(),ref random,ref quantity)>0&&random==before&&multiple.stock.discovered,"Sole product skips all product-filtering rolls, still delivers and discovers");
             int stock=multiple.stock.units;NewPartSupply.Deliver(new List<NewPartSupply.Product>{multiple},Array.Empty<SupplyWear.Need>(),ref random,ref quantity);check(multiple.stock.units>stock,"Repeated opportunity adds stock rather than replacing it");
+            var slot=new RuntimeIndexSlot<object,string>();var owner=new object();
+            check(!slot.TryGet(owner,1,out _),"Cold runtime index has no published state");
+            slot.Publish(owner,1,"epoch-one");
+            check(slot.TryGet(owner,1,out var prior)&&prior=="epoch-one",
+                "Runtime index publishes a complete source/version snapshot");
+            slot.Publish(owner,2,"epoch-two");
+            check(!slot.TryGet(owner,1,out _)&&slot.TryGet(owner,2,out var next)&&next=="epoch-two",
+                "Runtime index rejects stale generation after replacement");
+            slot.Invalidate(owner);
+            check(!slot.TryGet(owner,2,out _),"Runtime index invalidation discards derived state");
             var all=Enum.GetValues(typeof(PartCategory)).Cast<PartCategory>().Select(c=>Product(c)).ToList();
             // Cold/preparing/ready paths must agree on every category branch. Warmup
             // never publishes half-built state and does not consume a random draw.
             var indexCatalog=new MechanicalCatalog(Array.Empty<VehicleSpec>(),false);
             indexCatalog.parts.AddRange(all.Select(p=>p.definition));
             NewSupplyCatalogIndex.Request(indexCatalog);
-            check(!NewSupplyCatalogIndex.Ready(indexCatalog)&&NewSupplyCatalogIndex.For(indexCatalog,all[0].definition)==null,
+            check(!NewSupplyCatalogIndex.Ready(indexCatalog)&&NewSupplyCatalogIndex.For(indexCatalog,all[0].definition)==null&&
+                NewSupplyCatalogIndex.ForDetached(indexCatalog)==null,
                 "Cold startup index leaves original eligibility available while unready");
             NewSupplyCatalogIndex.Advance(indexCatalog,.00001);
-            check(!NewSupplyCatalogIndex.Ready(indexCatalog)&&NewSupplyCatalogIndex.For(indexCatalog,all[0].definition)==null,
+            check(!NewSupplyCatalogIndex.Ready(indexCatalog)&&NewSupplyCatalogIndex.For(indexCatalog,all[0].definition)==null&&
+                NewSupplyCatalogIndex.ForDetached(indexCatalog)==null,
                 "Partial startup index is never published");
             int preparedAdvances=0;
             while(!NewSupplyCatalogIndex.Ready(indexCatalog)&&preparedAdvances++<all.Count+2)
@@ -77,17 +97,33 @@ namespace DragLab.Domain.Mechanics
                 preclassified=NewSupplyCatalogIndex.For(indexCatalog,p.definition)}).ToList();
             for(int i=0;i<all.Count;i++)CompareBranches(NewPartSupply.Categories,all[i],indexedAll[i]);
             check(exactMembership&&indexedAll.All(p=>p.preclassified!=null),"Published index exactly matches cold category tree for every authored category");
+            var snapshot=NewSupplyCatalogIndex.ForDetached(indexCatalog);
+            check(snapshot!=null&&ReferenceEquals(snapshot,NewSupplyCatalogIndex.ForDetached(indexCatalog)),
+                "Detached category snapshot is fully published once and reused");
+            var snapshotAll=all.Select(p=>new NewPartSupply.Product{definition=p.definition,
+                stock=new NewPartStock(),maximum=p.maximum,individual=p.individual,owned=p.owned,
+                preindexed=snapshot.Find(p.definition.id)}).ToList();
+            for(int i=0;i<all.Count;i++)CompareBranches(NewPartSupply.Categories,all[i],snapshotAll[i]);
+            check(exactMembership&&snapshotAll.All(p=>p.preindexed!=null),
+                "Worker category membership exactly matches the original tree");
             uint bareSeed=0x8f24173du,cachedSeed=bareSeed;bool equivalent=true;
             for(int i=0;i<256;i++)
                 if(!ReferenceEquals(NewPartSupply.PickCategory(all,NewPartSupply.Categories,ref bareSeed).definition,
                     NewPartSupply.PickCategory(indexedAll,NewPartSupply.Categories,ref cachedSeed).definition)||bareSeed!=cachedSeed){equivalent=false;break;}
             check(equivalent,"Cached product selection preserves 256 exact RNG positions and definition identities");
+            uint snapshotSeed=0x8f24173du,plainSeed=snapshotSeed;bool snapshotParity=true;
+            for(int i=0;i<256;i++)
+                if(!ReferenceEquals(NewPartSupply.PickCategory(all,NewPartSupply.Categories,ref plainSeed).definition,
+                    NewPartSupply.PickCategory(snapshotAll,NewPartSupply.Categories,ref snapshotSeed).definition)||
+                    plainSeed!=snapshotSeed){snapshotParity=false;break;}
+            check(snapshotParity,"Detached runtime index preserves 256 exact selections and RNG positions");
             NewSupplyCatalogIndex.Request(indexCatalog);
             check(NewSupplyCatalogIndex.Ready(indexCatalog),"Reset/reentry reuses the completed catalog index");
             var mutated=all.First(p=>p.definition.category==PartCategory.Tires).definition;
             var originalStage=mutated.stage;mutated.stage=originalStage+1;
-            check(NewSupplyCatalogIndex.For(indexCatalog,mutated)==null,
-                "Authored classification changes reject stale cached membership");
+            check(NewSupplyCatalogIndex.For(indexCatalog,mutated)==null&&
+                NewSupplyCatalogIndex.ForDetached(indexCatalog)==null,
+                "Authored classification changes reject stale cached membership and worker snapshots");
             mutated.stage=originalStage;
             foreach(var p in all)check(NewPartSupply.Categories.Accepts(p),"Category tree covers "+p.definition.category);
             double[] rootWeights={3,3,2.5,2,2,1.75,1.5,1};
