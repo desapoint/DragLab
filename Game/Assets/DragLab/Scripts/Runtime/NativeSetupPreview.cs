@@ -29,7 +29,7 @@ namespace DragLab.Runtime
             result.Plan=SavedSetups.Preview(profile,car.instanceId,setup.id);
             if(!string.IsNullOrEmpty(car.engineAssemblyId)){
                 cache?.Bind(profile,car);
-                result.Current=cache==null?NativePartBrowser.Inspect(InspectionBuild.Capture(profile,car)):cache.Inspection("current",()=>NativePartBrowser.Inspect(InspectionBuild.Capture(profile,car)));
+                result.Current=cache==null?NativePartBrowser.Inspect(InspectionBuild.Capture(profile,car),cache):cache.Inspection("current",()=>NativePartBrowser.Inspect(InspectionBuild.Capture(profile,car)));
             }
             if(result.Plan.resolution==null){result.Unavailable=string.Join("\n",result.Plan.errors);return result;}
             if(result.Current==null){result.Unavailable="Attach an engine to compare this setup.";return result;}
@@ -51,7 +51,7 @@ namespace DragLab.Runtime
                 target.installed.slots.Add(new SlotBinding{slot=line.category.ToString(),partInstanceId=item.instanceId});
             }
             SavedTireFitments.Apply(copy,target,result.Plan,true);
-            result.Proposed=NativePartBrowser.Inspect(InspectionBuild.Capture(copy,target,result.Plan.tune));
+            result.Proposed=NativePartBrowser.Inspect(InspectionBuild.Capture(copy,target,result.Plan.tune),cache);
             return result;
         }
     }
