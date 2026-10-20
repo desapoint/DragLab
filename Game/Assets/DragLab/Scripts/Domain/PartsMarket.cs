@@ -85,6 +85,7 @@ namespace DragLab.Domain.Mechanics
         {
             internal List<NewPartStock> rows;internal int newCount;
             internal uint coverageRandom,coverageQuantity;
+            internal double initialGuaranteeCpuMilliseconds;
         }
         static InitialPlan BuildInitialPlan(InitialGroup[] groups,uint selection,uint quantity,
             int guarantee=0,VehicleSpec[] targets=null,uint coverageRandom=0,uint coverageQuantity=0)
@@ -113,6 +114,7 @@ namespace DragLab.Domain.Mechanics
             // maximum units from MarketCatalogLayout. Resolve the fitting guarantee
             // on this same worker, before publishing any row to the candidate.
             // FitsDetached is the exact pure predicate used by catalog.Fits.
+            long guaranteeStart=targets==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
             if(targets!=null)
             {
                 var fitting=new List<int>();
@@ -134,7 +136,10 @@ namespace DragLab.Domain.Mechanics
                 }
             }
             return new InitialPlan{rows=rows,newCount=newCount,
-                coverageRandom=coverageRandom,coverageQuantity=coverageQuantity};
+                coverageRandom=coverageRandom,coverageQuantity=coverageQuantity,
+                initialGuaranteeCpuMilliseconds=guaranteeStart==0?0:
+                    (System.Diagnostics.Stopwatch.GetTimestamp()-guaranteeStart)*1000.0/
+                    System.Diagnostics.Stopwatch.Frequency};
         }
         static IEnumerable<object> GenerateSteps(PlayerProfile p,bool expire,bool offloadDelivery)
         {
@@ -205,6 +210,8 @@ namespace DragLab.Domain.Mechanics
             if(offloadDelivery){
                 coverageRandom=initial.coverageRandom;
                 coverageQuantity=initial.coverageQuantity;
+                Measurement?.Invoke("initial fitting guarantee worker CPU",
+                    initial.initialGuaranteeCpuMilliseconds);
             }
             Measured("new product selection/quantities",stamp);stamp=Stamp();yield return "parts/layout and selection";
             // A single shared pool: no model quotas for used parts or engines.
