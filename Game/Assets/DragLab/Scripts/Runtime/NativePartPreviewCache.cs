@@ -36,7 +36,14 @@ namespace DragLab.Runtime
         internal static string CarSignature(PlayerProfile p,OwnedCar car)
         {
             var state=new StringBuilder();
-            state.Append(JsonUtility.ToJson(car)).Append('|')
+            // A car's presentation/history is not part of its physics input:
+            // paint, rename, saved presets and pass records must never expire a
+            // full race estimate. Capture only what InspectionBuild reads.
+            state.Append(car.instanceId).Append('|').Append(car.vehicleId).Append('|')
+                .Append(car.engineAssemblyId).Append('|')
+                .Append(JsonUtility.ToJson(car.tune)).Append('|')
+                .Append(car.fuel.litres.ToString("R",CultureInfo.InvariantCulture)).Append('|')
+                .Append(JsonUtility.ToJson(car.fluids)).Append('|')
                 .Append(JsonUtility.ToJson(p.catalog.Spec(car.vehicleId)));
             foreach(var slot in car.installed.slots){
                 var part=p.parts.Find(i=>i.instanceId==slot.partInstanceId);
