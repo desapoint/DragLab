@@ -31,7 +31,7 @@ namespace DragLab.Runtime
             if(carInspections.TryGetValue(car.instanceId,out var cached))return cached;
             try {
                 var source=InspectionBuild.Capture(game.Profile,car);
-                cached=new OwnedInspection {Stats=CarInspection.CalculatePrepared(source,CarInspection.PrepareCar(source),false)};
+                cached=new OwnedInspection {Stats=NativePartBrowser.Inspect(source,partPreviewCache)};
                 InspectionCaptureCount++;
             }catch(Exception){cached=null;}
             carInspections[car.instanceId]=cached;return cached;
@@ -49,7 +49,7 @@ namespace DragLab.Runtime
         CarInspection OwnedHealthy(OwnedCar car)
         {
             var cached=InspectOwned(car);if(cached==null)throw new InvalidOperationException("Inspection unavailable");
-            if(cached.Healthy==null){var source=InspectionBuild.Capture(game.Profile,car,healthy:true);cached.Healthy=CarInspection.CalculatePrepared(source,CarInspection.PrepareCar(source),false);}
+            if(cached.Healthy==null){var source=InspectionBuild.Capture(game.Profile,car,healthy:true);cached.Healthy=NativePartBrowser.Inspect(source,partPreviewCache);}
             return cached.Healthy;
         }
         Task<CarInspection> DealerDriving(DealerModel model)
