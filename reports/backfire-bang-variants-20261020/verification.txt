@@ -1,0 +1,12 @@
+Preview only; no production audio/physics changes.
+PASS 29-exhaust-1: original PCM16 matches identified source exactly; same engine bed, two actual pop triggers, finite bounded stereo; pre-pop bed unchanged. Original-pop difference RMS 0,00378867223015548
+PASS 30-exhaust-2: original PCM16 matches identified source exactly; same engine bed, two actual pop triggers, finite bounded stereo; pre-pop bed unchanged. Original-pop difference RMS 0,0047590659850637
+
+PASS 29-exhaust-1 D-sharp-bang: unchanged pre-event bed; peak 0.57281; pop-layer RMS 18.11 dB above prior B; 50-250 ms tail RMS 0.009627.
+PASS 29-exhaust-1 E-deep-bang: unchanged pre-event bed; peak 0.57968; pop-layer RMS 19.86 dB above prior B; 50-250 ms tail RMS 0.022923.
+PASS 29-exhaust-1 F-long-bark: unchanged pre-event bed; peak 0.56918; pop-layer RMS 19.99 dB above prior B; 50-250 ms tail RMS 0.031176.
+PASS 29-exhaust-1: original and no-pop controls identical to prior render; successively stronger long tails D/E/F; all repeats are 10 seconds, stereo 48 kHz PCM16.
+PASS 30-exhaust-2 D-sharp-bang: unchanged pre-event bed; peak 0.66376; pop-layer RMS 18.39 dB above prior B; 50-250 ms tail RMS 0.013457.
+PASS 30-exhaust-2 E-deep-bang: unchanged pre-event bed; peak 0.66785; pop-layer RMS 19.94 dB above prior B; 50-250 ms tail RMS 0.030938.
+PASS 30-exhaust-2 F-long-bark: unchanged pre-event bed; peak 0.66107; pop-layer RMS 20.34 dB above prior B; 50-250 ms tail RMS 0.042999.
+PASS 30-exhaust-2: original and no-pop controls identical to prior render; successively stronger long tails D/E/F; all repeats are 10 seconds, stereo 48 kHz PCM16.
