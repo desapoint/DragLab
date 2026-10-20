@@ -1,0 +1,4 @@
+Preview only; no production audio/physics changes.
+PASS 29-exhaust-1: original PCM16 matches identified source exactly; same engine bed, two actual pop triggers, finite bounded stereo; pre-pop bed unchanged. Original-pop difference RMS 0,00378867223015548
+PASS 30-exhaust-2: original PCM16 matches identified source exactly; same engine bed, two actual pop triggers, finite bounded stereo; pre-pop bed unchanged. Original-pop difference RMS 0,0047590659850637
+PASS independent PCM checks: 10 stereo source clips, 10 four-repeat files; bounded output, distinct alternatives, unchanged pre-event engine samples.

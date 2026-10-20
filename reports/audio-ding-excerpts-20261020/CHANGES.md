@@ -1,6 +1,6 @@
 # Bison lift/backfire identification excerpts — 2026-10-20
 
-User requested an isolated repeating Unity segment, then prioritized playable audio files for identification. This checkpoint supplies the files first; it does not change production synthesis or start AP-00. Confirmation of the suspected sound remains pending.
+User requested an isolated repeating Unity segment, then prioritized playable audio files for identification. This checkpoint supplies the files first; it does not change production synthesis or start AP-00. The user subsequently confirmed the middle ding; [preview variants](../backfire-pop-variants-20261020/CHANGES.md) are the next listening checkpoint, with final sound selection still pending.
 
 The existing Unity `RaceAudioAuditionVerification.Run` renderer regenerated cases 29 and 30 through the unchanged production DSP and their real simulation inputs (`--draglab-audio-case 29-,30- --draglab-audio-wav`). Both complete renders passed their audio/simulation assertions. These are deterministic synthesized excerpts, not a recording of the earlier desktop session.
 
