@@ -121,7 +121,7 @@ namespace DragLab.Runtime
                     visual.Add(CarPreview(build,car.paintHex));
                     var source = InspectionBuild.Capture(profile,car);
                     var simulation = CarInspection.PrepareCar(source);
-                    var stats = CarInspection.CalculatePrepared(source,simulation,false);
+                    var stats = CarInspection.CalculatePrepared(source,simulation,false,partPreviewCache.SteadyOutput(simulation.induction));
                     ownedWarningSnapshots[car.instanceId]=stats.warnings.ToArray();
                     entry.Hp=stats.peakHp;entry.Torque=stats.peakTorque;entry.Weight=stats.vehicleMassKg;entry.Condition=stats.condition*100;entry.Drive=build.spec.drive.ToString();entry.Type=BodyName(build.spec.bodyType);entry.Gearbox=OwnedCarEntry.GearboxName(TransmissionDynamics.Configuration(build.spec,build.tune));entry.Induction=InductionName(new InductionProfile(build.spec,build.tune).type);entry.LockedCenter=build.spec.drive==DriveType.AWD&&AxleDriveDynamics.Configuration(build.spec,build.tune).mode==AwdMode.LockedCenter;
                     var values = new VisualElement(); values.AddToClassList("car-card-stats"); info.Add(values);
