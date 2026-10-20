@@ -62,7 +62,10 @@ namespace DragLab.Runtime
             finishTask=clone;while(!clone.IsCompleted)yield return "settlement/clone wait";
             var candidate=clone.GetAwaiter().GetResult();candidate.catalog=source.catalog;
             EmitWall("clone task",cloning);
-            MechanicsOwnership.Ensure(candidate,candidate.catalog);yield return "settlement/normalize";
+            // Detached candidate only: keep the original order and validation,
+            // but spread normalization across bounded main-thread frame work.
+            foreach(var stage in MechanicsOwnership.EnsureSteps(candidate,candidate.catalog))
+                yield return stage;
             var old=candidate.runCheckpoints.Find(r=>r.runId==liveRunId);
             if(old==null||old.tick<tick)MechanicsTransactions.ApplyCheckpoint(candidate,checkpoint);
             CareerProgression.Settle(candidate,liveRunId,session,false);candidate.revision=checked(revision+1);yield return "settlement/outcome";
@@ -70,7 +73,10 @@ namespace DragLab.Runtime
             if(session.player.state.finished&&!session.player.state.disqualified&&!practiceRun)
                 foreach(var unused in VehicleListings.AfterRaceSteps(candidate,candidate.catalog))yield return unused;
             EmitWall("after-race stock generation including yields",market);
-            MechanicsOwnership.Ensure(candidate,candidate.catalog);yield return "settlement/normalize";
+            // Detached candidate only: keep the original order and validation,
+            // but spread normalization across bounded main-thread frame work.
+            foreach(var stage in MechanicsOwnership.EnsureSteps(candidate,candidate.catalog))
+                yield return stage;
             if(profile!=source||profile.revision!=revision||profile.storageCommit!=commit||race!=session)throw new InvalidOperationException("Settlement became stale; retry required.");
             long checkpointWait=WallStamp();
             while(RaceCheckpointStore.Busy)yield return "settlement/checkpoint wait";
