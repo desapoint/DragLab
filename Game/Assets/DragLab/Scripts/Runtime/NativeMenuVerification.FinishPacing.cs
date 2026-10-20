@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using DragLab.Domain;
+using DragLab.Domain.Mechanics;
 using DragLab.Infrastructure;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -180,12 +181,40 @@ namespace DragLab.Runtime
                 game.Profile.driving.wearMode=WearMode.None;game.Profile.driving.optimalThermals=true;
                 if(paid)game.Profile.vehicleStock.completedRuns+=((2-game.Profile.vehicleStock.completedRuns%3)+3)%3;
                 Check(ProfileStore.TrySave(game.Profile),"Finish pacing fixture has a durable baseline");
+                // Same authoritative normalizer: iterator must produce byte-for-byte
+                // identical candidate state before any race or durable write.
+                string originalJson=JsonUtility.ToJson(game.Profile);
+                var synchronous=JsonUtility.FromJson<PlayerProfile>(originalJson);
+                var staged=JsonUtility.FromJson<PlayerProfile>(originalJson);
+                var fixtureCatalog=game.Profile.catalog;
+                synchronous.storageCommit=staged.storageCommit=game.Profile.storageCommit;
+                MechanicsOwnership.Ensure(synchronous,fixtureCatalog);
+                int normalizationBoundaries=0;
+                foreach(var stage in MechanicsOwnership.EnsureSteps(staged,fixtureCatalog))
+                {
+                    Check(stage.StartsWith("settlement/normalize",StringComparison.Ordinal),
+                        "Staged normalizer has an explicit bounded checkpoint");
+                    normalizationBoundaries++;
+                }
+                Check(normalizationBoundaries>0&&
+                    JsonUtility.ToJson(synchronous)==JsonUtility.ToJson(staged)&&
+                    originalJson==JsonUtility.ToJson(game.Profile),
+                    "Staged normalization exactly matches synchronous normalized profile without mutating source");
                 int cash=game.Profile.cash,generation=game.Profile.vehicleStock.generation;double maxStep=0,maxCamera=0,maxFrame=0;string maxStage="";
+                int normalizationFrames=0;double maxNormalizeStep=0;
                 var authoredBefore=game.Profile.catalog;
                 game.StartRace(null,!paid);var race=game.Race;
                 Check(ReferenceEquals(authoredBefore,game.Profile.catalog),
                     "Finish fixture retains catalog identity through race entry");
-PrototypeGame.FinishMeasurement=(name,value)=>{if(name=="camera step units")maxCamera=Math.Max(maxCamera,value);else if(value>maxStep){maxStep=value;maxStage=name;}};
+PrototypeGame.FinishMeasurement=(name,value)=>{
+                    if(name=="camera step units"){maxCamera=Math.Max(maxCamera,value);return;}
+                    if(name.StartsWith("settlement/normalize",StringComparison.Ordinal))
+                    {
+                        normalizationFrames++;
+                        maxNormalizeStep=Math.Max(maxNormalizeStep,value);
+                    }
+                    if(value>maxStep){maxStep=value;maxStage=name;}
+                };
                 Check(race!=null,"Finish pacing stages a real "+(paid?"paid refresh":"practice")+" run");
                 game.verificationInput=()=>new DriverInput{throttle=1};int mainThread=Thread.CurrentThread.ManagedThreadId,writerThread=mainThread;
                 var entered=new ManualResetEventSlim();var release=new ManualResetEventSlim();
@@ -204,7 +233,16 @@ PrototypeGame.FinishMeasurement=(name,value)=>{if(name=="camera step units")maxC
                         Check(writerThread!=mainThread,"Durable write executes on the isolated writer, not Unity's main thread");
                         Check(game.Profile.cash==cash&&!game.Profile.careerRuns.Last().complete,"Cash and complete receipt remain unpublished before durable commit");
                         Check(!game.Results.Root.Q("resultAgain").enabledInHierarchy&&!game.Results.Root.Q("resultGarage").enabledInHierarchy,"Results cannot start a conflicting action while settlement is pending");
-                        report.AppendLine("MEASURE: finish "+(paid?"paid refresh":"practice")+" / max main step ms "+maxStep.ToString("F3")+" / max stage "+maxStage+" / max frame ms "+maxFrame.ToString("F3")+" / max camera step "+maxCamera.ToString("F3")+" / held-write frames "+(Time.frameCount-frames));
+                        report.AppendLine("MEASURE: finish "+(paid?"paid refresh":"practice")+
+                            " / max main step ms "+maxStep.ToString("F3")+
+                            " / max stage "+maxStage+
+                            " / max frame ms "+maxFrame.ToString("F3")+
+                            " / max camera step "+maxCamera.ToString("F3")+
+                            " / normalize frames "+normalizationFrames+
+                            " / max normalize step ms "+maxNormalizeStep.ToString("F3")+
+                            " / held-write frames "+(Time.frameCount-frames));
+                        Check(normalizationFrames>0&&maxNormalizeStep>0,
+                            "Full settlement normalizer progresses on observable paced frames");
                         Check(maxStep<50&&maxCamera<.35,"Finish preparation is split into bounded main steps and camera motion remains continuous");
                     }finally{release.Set();SqliteStateStore.FailureInjection=null;game.verificationInput=null;PrototypeGame.FinishMeasurement=null;}
                 }
