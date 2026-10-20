@@ -196,6 +196,23 @@ namespace DragLab.Runtime
             }
             if (profile.cars.Count == 0) { var empty = new Label("No owned cars"); empty.AddToClassList("car-empty"); ownedGrid.Add(empty); }
             if(profile.cars.Count==0){var recovery=new Button(()=>game.OpenRecovery()){name="emptyGarageRecovery",text="Recovery work"};recovery.AddToClassList("action-button");ownedGrid.Add(recovery);AddSurface(recovery,RacingSurface.Kind.SecondaryAction);ownedSurfaces.Add(recovery.Q<RacingSurface>());}
+            // A batch can finish while cards are being constructed. Consume
+            // those newly available results before queuing redundant work.
+            if(previousRatings!=null&&previousRatings.Status==TaskStatus.RanToCompletion){
+                foreach(var finished in previousRatings.Result)
+                    if(finished.Value!=null)RememberOwnedRating(finished.Key,finished.Value);
+                for(int i=probes.Count-1;i>=0;i--){
+                    var probe=probes[i];
+                    if(!TryGetOwnedRating(probe.Item1,out var result)||result.Context!=probe.Item2)continue;
+                    if(ownedEntries.TryGetValue(probe.Item1,out var entry)){
+                        entry.Rating=result.Rating;entry.RatingPending=false;
+                    }
+                    var label=ownedGrid.Q<Label>("carClass:"+probe.Item1);
+                    if(label!=null)label.text=result.Rating==null?"Class unavailable · PP —":
+                        "Class "+result.Rating.performanceClass+" · PP "+result.Rating.points;
+                    probes.RemoveAt(i);
+                }
+            }
             ApplyOwnedQuery();ownedScroll.scrollOffset = scroll; RefreshOwnedDetails(); ExcludeTabTraversal();
             // Rebuilding for unit/selection/cosmetic changes must not cancel an
             // identical in-flight physics batch and immediately schedule it again.
