@@ -139,6 +139,11 @@ namespace DragLab.Runtime
                             saveStages["removed state records"]+saveStages["inserted state records"]+saveStages["updated state records"],
                         "Market baseline "+scenario+" SQLite delta counts exactly reconcile without hidden writes");
                     if(scenario=="paid third")
+                        Check(costs.ContainsKey("initial fitting guarantee worker CPU")&&
+                            costs["initial fitting guarantee worker CPU"][1]>=1&&
+                            costs["initial fitting guarantee worker CPU"][0]>=0,
+                            "Third-race initial fitting guarantee runs inside the selection worker");
+                    if(scenario=="paid third")
                         Check(saveStages["market chunk records"]>0&&
                             saveStages["projected state records"]<15348&&
                             saveStages["changed state records"]<17735,
