@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using DragLab.Domain;
 using DragLab.Domain.Mechanics;
 using DragLab.Infrastructure;
@@ -199,32 +200,59 @@ namespace DragLab.Runtime
                     JsonUtility.ToJson(synchronous)==JsonUtility.ToJson(staged)&&
                     originalJson==JsonUtility.ToJson(game.Profile),
                     "Staged normalization preserves exact synchronous profile bytes without mutating source");
-                // Validation's early exit/error strings must match on corrupt candidates,
-                // not only on the happy path. Neither path is allowed to repair them.
-                void CheckRejected(PlayerProfile malformed,string scenario)
-                {
-                    malformed.catalog=fixtureCatalog;
-                    string expectedError=MechanicsOwnership.Validate(malformed,fixtureCatalog);
-                    string stagedError="Validation did not complete";
-                    foreach(var unused in MechanicsOwnership.ValidateSteps(malformed,fixtureCatalog,
-                        value=>stagedError=value)){}
-                    Check(expectedError!=null&&expectedError==stagedError,
-                        "Staged validator rejects "+scenario+" with the exact synchronous error");
-                }
+                // Exercise validation on its actual detached, worker-owned
+                // catalog and compare both accepted and rejected profiles.
+                var detachedCatalog=fixtureCatalog.DetachedNewSupplySnapshot();
+                var workerProfile=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(synchronous));
+                workerProfile.catalog=detachedCatalog;
+                var invalidCases=new List<PlayerProfile>();
+                var invalidLabels=new List<string>();
                 var invalidCash=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(synchronous));
-                invalidCash.cash=-1;
-                CheckRejected(invalidCash,"negative cash");
+                invalidCash.cash=-1;invalidCases.Add(invalidCash);invalidLabels.Add("negative cash");
                 var invalidParts=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(synchronous));
                 if(invalidParts.parts.Count>1)
                 {
                     invalidParts.parts[1].instanceId=invalidParts.parts[0].instanceId;
-                    CheckRejected(invalidParts,"duplicate part identity");
+                    invalidCases.Add(invalidParts);invalidLabels.Add("duplicate part identity");
                 }
                 var invalidMarket=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(synchronous));
                 invalidMarket.inventory.market.version=-1;
-                CheckRejected(invalidMarket,"invalid market epoch");
+                invalidCases.Add(invalidMarket);invalidLabels.Add("invalid market epoch");
+                string expectedValid=MechanicsOwnership.Validate(synchronous,fixtureCatalog);
+                var expectedErrors=new List<string>();
+                var initialBytes=new List<string>();
+                foreach(var malformed in invalidCases)
+                {
+                    initialBytes.Add(JsonUtility.ToJson(malformed));
+                    expectedErrors.Add(MechanicsOwnership.Validate(malformed,fixtureCatalog));
+                    malformed.catalog=detachedCatalog;
+                }
+                string validBytes=JsonUtility.ToJson(workerProfile);
+                int verificationMainThread=Thread.CurrentThread.ManagedThreadId,validationFixtureThread=verificationMainThread;
+                var validationTask=Task.Run(()=>{
+                    validationFixtureThread=Thread.CurrentThread.ManagedThreadId;
+                    var results=new List<string>{MechanicsOwnership.Validate(workerProfile,detachedCatalog)};
+                    foreach(var malformed in invalidCases)
+                        results.Add(MechanicsOwnership.Validate(malformed,detachedCatalog));
+                    return results;
+                });
+                while(!validationTask.IsCompleted)yield return null;
+                var validationErrors=validationTask.GetAwaiter().GetResult();
+                Check(validationFixtureThread!=verificationMainThread&&
+                    !ReferenceEquals(detachedCatalog,fixtureCatalog)&&
+                    validationErrors[0]==expectedValid&&
+                    validBytes==JsonUtility.ToJson(workerProfile),
+                    "Detached worker validates unchanged candidate with exact synchronous result");
+                for(int caseIndex=0;caseIndex<invalidCases.Count;caseIndex++)
+                    Check(expectedErrors[caseIndex]!=null&&
+                        expectedErrors[caseIndex]==validationErrors[caseIndex+1]&&
+                        initialBytes[caseIndex]==JsonUtility.ToJson(invalidCases[caseIndex]),
+                        "Worker validator rejects "+invalidLabels[caseIndex]+" with exact error and no mutations");
                 int cash=game.Profile.cash,generation=game.Profile.vehicleStock.generation;double maxStep=0,maxCamera=0,maxFrame=0;string maxStage="";
                 int normalizationFrames=0;double maxNormalizeStep=0;
+                var validationWorkers=new List<int>();
+                var priorValidationObserver=PrototypeGame.FinishValidationWorkerThread;
+                PrototypeGame.FinishValidationWorkerThread=id=>validationWorkers.Add(id);
                 var normalizationStages=new Dictionary<string,double>(StringComparer.Ordinal);
                 var authoredBefore=game.Profile.catalog;
                 game.StartRace(null,!paid);var race=game.Race;
@@ -273,8 +301,12 @@ PrototypeGame.FinishMeasurement=(name,value)=>{
                                 " / max ms "+slow.Value.ToString("F3"));
                         Check(normalizationFrames>0&&maxNormalizeStep>0,
                             "Full settlement normalizer progresses on observable paced frames");
+                        Check(validationWorkers.Count==2&&validationWorkers.All(id=>id!=verificationMainThread),
+                            "Both settlement integrity passes finish on background threads");
                         Check(maxStep<50&&maxCamera<.35,"Finish preparation is split into bounded main steps and camera motion remains continuous");
-                    }finally{release.Set();SqliteStateStore.FailureInjection=null;game.verificationInput=null;PrototypeGame.FinishMeasurement=null;}
+                    }finally{release.Set();SqliteStateStore.FailureInjection=null;game.verificationInput=null;
+                        PrototypeGame.FinishMeasurement=null;
+                        PrototypeGame.FinishValidationWorkerThread=priorValidationObserver;}
                 }
                 float settledDeadline=Time.realtimeSinceStartup+12;
                 if(paid){game.ReturnToGarage();Check(game.Race==null,"Explicit Garage boundary drains pending settlement before exit");}
