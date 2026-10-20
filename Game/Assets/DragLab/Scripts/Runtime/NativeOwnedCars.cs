@@ -137,7 +137,7 @@ namespace DragLab.Runtime
             Vector2 scroll = ownedScroll.scrollOffset; ownedGrid.Clear();ownedEntries.Clear();
             ownedProfile = profile; ownedRevision = profile.revision; ownedSelection = profile.selectedOwnedVehicleId; ownedTorque = units;
             OwnedGridBuildCount++;ownedWarningSnapshots.Clear();warningProfile=profile;warningRevision=profile.revision;
-            var probes = new List<Tuple<string,string,InspectionBuild,CarSimulation>>();
+            var probes = new List<Tuple<string,string,InspectionBuild>>();
             foreach (var car in profile.cars) {
                 string id = car.instanceId;
                 var entry=new OwnedCarEntry {Id=id,Order=ownedEntries.Count,Name=VehicleCollection.DisplayName(profile.catalog,car),Model=profile.catalog.Spec(car.vehicleId).displayName,Drive=profile.catalog.Spec(car.vehicleId).drive.ToString(),Type=BodyName(profile.catalog.Spec(car.vehicleId).bodyType),Status="Unavailable",RatingPending=true};ownedEntries.Add(id,entry);
@@ -185,7 +185,7 @@ namespace DragLab.Runtime
                     if (!build.Drivable || build.warnings.Count > 0) {
                         var reason = new Label(string.IsNullOrEmpty(car.engineAssemblyId)?"No engine attached":build.errors.Concat(build.warnings).FirstOrDefault()); reason.AddToClassList("car-reason"); info.Add(reason);
                     }
-                    if(!reusedRating)probes.Add(Tuple.Create(car.instanceId,signature,source,CarInspection.PrepareCar(source)));
+                    if(!reusedRating)probes.Add(Tuple.Create(car.instanceId,signature,source));
                 } catch (Exception) {
                     entry.RatingPending=false;
                     var unavailable = new Label("Build data unavailable"); unavailable.AddToClassList("car-critical"); info.Add(unavailable);
@@ -207,12 +207,17 @@ namespace DragLab.Runtime
             ownedCancellation?.Cancel();ownedCancellation?.Dispose();
             ownedCancellation=null;ownedRatings=null;ownedPendingContexts.Clear();
             if(probes.Count>0) {
+                // Main-thread preparation is required only for genuinely new
+                // work. An identical in-flight batch can skip this entire cost.
+                var prepared=new List<Tuple<string,string,InspectionBuild,CarSimulation>>(probes.Count);
+                foreach(var probe in probes)
+                    prepared.Add(Tuple.Create(probe.Item1,probe.Item2,probe.Item3,CarInspection.PrepareCar(probe.Item3)));
                 ownedCancellation=new CancellationTokenSource();var token=ownedCancellation.Token;
                 foreach(var probe in probes)ownedPendingContexts[probe.Item1]=probe.Item2;
                 OwnedRatingRunCount++;
                 ownedRatings = Task.Run(() => {
                     var result = new Dictionary<string,OwnedRatingResult>();
-                    foreach (var probe in probes) {
+                    foreach (var probe in prepared) {
                         if (token.IsCancellationRequested) break;
                         try {
                             var stats=CarInspection.CalculatePrepared(probe.Item3,probe.Item4);
