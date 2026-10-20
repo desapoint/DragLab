@@ -55,3 +55,31 @@ Compare `MEASURE: market baseline paid third / max settlement step` and
 `MEASURE: finish paid refresh / max normalize step ms` to the F.5
 baseline. The existing durable-write, seeded-market parity, ownership and
 save-reload checks must remain green.
+
+
+## F.6 second checkpoint: distributed full ownership validation
+
+The first packaged-player test verified exact settlement behavior (83 market-baseline
+checks, 75 held-writer checks; zero runtime errors) but measured a **44.961 ms**
+paid-third main step and **54.823 ms** maximum frame. The old full
+`MechanicsOwnership.Validate` call was the slow step.
+
+The second checkpoint now runs **the same ordered validation rules** through
+`ValidateCore`, a shared read-only iterator. Normal transactions consume it
+synchronously via `Validate`; only an unpublished finish candidate consumes
+the paced `ValidateSteps`. Early-exit reasons are preserved word-for-word,
+including invalid cash, duplicate part identities, and stale/invalid market
+epochs. No validation rules are deleted, skipped, or moved after persistence.
+
+Validation yields between cars/slots, stored engines, owned components,
+element identities, inventory, market, tire/wheel specifications and run
+checkpoints. `NativeMenuVerification.FinishPacing` now records the five
+slowest normalization stages and checks exact synchronous/staged rejection
+for several intentionally corrupted profiles.
+
+**Not yet retested on Unity**. It remains possible that an indivisible
+subvalidator such as `VehicleListings.Validate`, `SharedInventory.Validate`
+or `PartsMarket.Validate` exceeds the 8 ms target. Run the packaged-player
+benchmark again, inspect the five slowest labels and only then consider
+splitting those specific functions. No improvement is claimed for this
+follow-up until those measurements are available.
