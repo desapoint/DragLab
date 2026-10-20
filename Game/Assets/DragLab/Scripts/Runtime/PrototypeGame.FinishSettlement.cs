@@ -100,9 +100,12 @@ namespace DragLab.Runtime
             // may block this frame; it will run against detached managed data.
             foreach(var stage in MechanicsOwnership.EnsureSteps(candidate,candidate.catalog,false))
                 yield return stage;
-            long catalogStamp=WallStamp();
+            long catalogStamp=System.Diagnostics.Stopwatch.GetTimestamp();
             var detachedCatalog=source.catalog.DetachedNewSupplySnapshot();
-            EmitWall("validation catalog snapshot",catalogStamp);
+            double catalogMilliseconds=(System.Diagnostics.Stopwatch.GetTimestamp()-catalogStamp)*
+                1000.0/System.Diagnostics.Stopwatch.Frequency;
+            FinishWallMeasurement?.Invoke("validation catalog snapshot",catalogMilliseconds);
+            FinishMeasurement?.Invoke("settlement/catalog snapshot",catalogMilliseconds);
             foreach(var step in ValidateFinishCandidate(candidate,source.catalog,detachedCatalog))
                 yield return step;
             var old=candidate.runCheckpoints.Find(r=>r.runId==liveRunId);
