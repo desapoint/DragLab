@@ -47,6 +47,56 @@ namespace DragLab.Runtime
                 foreach(var changed in all.Where(d=>d.Id!="effectiveMass"))check(NativeStatCatalog.CanAffect(category,changed.Id),"Actual build effect remains visible: "+category+" / "+changed.Id);
 
             }
+
+            // The new independent induction cache must not change observable
+            // vehicle inspections: worn and healthy curves, warnings and chassis
+            // metrics are still computed from the current simulation state.
+            if(vehicles.Length>0){
+                var v=vehicles[0];
+                var p=PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);
+                MechanicsOwnership.Ensure(p,cat);p.cash=1000000;p.reputation=1000;
+                VehicleCollection.Buy(p,cat,new VehicleOffer{model=v.spec.id,price=1,stock=v.CreateStockTune(),paint="#FFFFFF"});
+                var car=p.SelectedCar;var steady=new NativePartPreviewCache();
+                string saved=JsonUtility.ToJson(p);
+                void Equivalent(InspectionBuild source,string label){
+                    var uncached=NativePartBrowser.Inspect(source);
+                    var cached=NativePartBrowser.Inspect(source,steady);
+                    check(uncached.curve.Count==cached.curve.Count&&uncached.curve.Zip(cached.curve,(a,b)=>a.rpm==b.rpm&&a.hp==b.hp&&a.torque==b.torque).All(equal=>equal)
+                        &&uncached.peakHp==cached.peakHp&&uncached.peakTorque==cached.peakTorque&&uncached.boostBar==cached.boostBar
+                        &&uncached.vehicleMassKg==cached.vehicleMassKg&&uncached.effectiveMassKg==cached.effectiveMassKg
+                        &&uncached.tireGripFactor==cached.tireGripFactor&&uncached.brakeG==cached.brakeG
+                        &&uncached.condition==cached.condition
+                        &&uncached.warnings.Select(w=>w.title+"|"+w.explanation).SequenceEqual(cached.warnings.Select(w=>w.title+"|"+w.explanation)),
+                        "Independent steady output is bit-identical to uncached inspection: "+label);
+                }
+                Equivalent(InspectionBuild.Capture(p,car),"applied");
+                int hits=steady.SteadyHits;
+                Equivalent(InspectionBuild.Capture(p,car),"repeated applied");
+                check(steady.SteadyHits>hits,"Identical engine inputs reuse cached steady samples");
+                var tire=p.componentsPart(PartCategory.Tires);
+                if(tire!=null){
+                    foreach(var wheel in tire.condition.tires)wheel.health=.43f;
+                    hits=steady.SteadyHits;
+                    Equivalent(InspectionBuild.Capture(p,car),"worn tires");
+                    check(steady.SteadyHits>hits,"Tire condition changes reuse independent engine output");
+                }
+                var brakes=cat.parts.FirstOrDefault(part=>part.category==PartCategory.Brakes&&cat.Fits(cat.Spec(car.vehicleId),part));
+                if(brakes!=null){
+                    hits=steady.SteadyHits;
+                    Equivalent(InspectionBuild.Capture(p,car,definitionId:brakes.id),"alternate brakes");
+                    check(steady.SteadyHits>hits,"Brake hardware comparisons retain independent engine output");
+                }
+                var massTune=car.tune.Copy();massTune.driverMassKg+=20;massTune.tirePressurePsi+=1;
+                hits=steady.SteadyHits;
+                Equivalent(InspectionBuild.Capture(p,car,massTune),"driver mass and pressure");
+                check(steady.SteadyHits>hits,"Mass and tire-pressure tuning reuse independent engine output");
+                var altered=InspectionBuild.Capture(p,car);
+                altered.build.spec.torque[0].torqueNm+=15;
+                int misses=steady.SteadyMisses;
+                Equivalent(altered,"authored engine torque changed");
+                check(steady.SteadyMisses>misses,"Changing the engine torque map invalidates steady samples");
+                check(JsonUtility.ToJson(p)==saved || tire!=null,"Preview calculations do not mutate an otherwise unchanged profile");
+            }
             foreach(var v in vehicles){
                 var p=PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);MechanicsOwnership.Ensure(p,cat);p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,cat,new VehicleOffer{model=v.spec.id,price=1,stock=v.CreateStockTune(),paint="#FFFFFF"});
                 var car=p.SelectedCar;var map=MechanicsOwnership.Definitions(p,car);var pistons=cat.Find(map[PartCategory.Pistons]);var rods=cat.Find(map[PartCategory.Rods]);var crank=cat.Find(map[PartCategory.Crankshaft]);
