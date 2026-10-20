@@ -250,6 +250,9 @@ namespace DragLab.Domain.Mechanics
                     .Where(i=>catalog.Fits(spec,direct.groups[i].definition)).ToArray();
                 check(direct.fitments.ForModels(new[]{spec.id}).SequenceEqual(expected),
                     "Catalog fitment index matches complete ordered products for "+spec.id);
+                check(Enumerable.Range(0,direct.groups.Length).All(i=>
+                    direct.fitments.FitsModel(spec.id,i)==catalog.Fits(spec,direct.groups[i].definition)),
+                    "Indexed per-group membership matches full Fits for every product: "+spec.id);
             }
             check(direct.fitments.ForModels(Array.Empty<string>()).SequenceEqual(
                 Enumerable.Range(0,direct.groups.Length).Where(i=>direct.groups[i].deliverable)),
