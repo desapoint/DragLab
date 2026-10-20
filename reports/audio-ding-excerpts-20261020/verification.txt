@@ -1,0 +1,3 @@
+PASS 29-street-lift-repeat.wav: 10 seconds, 48 kHz stereo PCM16, four identical repeats, silent gaps; interior matches original source bit-for-bit. SHA256 25fde07c02498473b16cdd06ca5e5af20c6d95e48ff3fe54db576ca657b0ea9b
+PASS 30-chambered-lift-repeat.wav: 10 seconds, 48 kHz stereo PCM16, four identical repeats, silent gaps; interior matches original source bit-for-bit. SHA256 8b540e64a2b0d72223cf62e0539933d5a60b06d023cd3f95e56fd5d3712c04a5
+PASS original 47-case metadata and all previously existing selected artifacts restored byte-for-byte.
