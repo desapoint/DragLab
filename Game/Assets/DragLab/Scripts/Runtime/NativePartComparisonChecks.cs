@@ -73,6 +73,7 @@ namespace DragLab.Runtime
                 int hits=steady.SteadyHits;
                 Equivalent(InspectionBuild.Capture(p,car),"repeated applied");
                 check(steady.SteadyHits>hits,"Identical engine inputs reuse cached steady samples");
+                check(JsonUtility.ToJson(p)==saved,"Repeated engine previews do not mutate the player profile");
                 var tire=p.componentsPart(PartCategory.Tires);
                 if(tire!=null){
                     foreach(var wheel in tire.condition.tires)wheel.health=.43f;
@@ -80,6 +81,7 @@ namespace DragLab.Runtime
                     Equivalent(InspectionBuild.Capture(p,car),"worn tires");
                     check(steady.SteadyHits>hits,"Tire condition changes reuse independent engine output");
                 }
+                string profileAfterIntentionalWear=JsonUtility.ToJson(p);
                 var brakes=cat.parts.FirstOrDefault(part=>part.category==PartCategory.Brakes&&cat.Fits(cat.Spec(car.vehicleId),part));
                 if(brakes!=null){
                     hits=steady.SteadyHits;
@@ -95,7 +97,7 @@ namespace DragLab.Runtime
                 int misses=steady.SteadyMisses;
                 Equivalent(altered,"authored engine torque changed");
                 check(steady.SteadyMisses>misses,"Changing the engine torque map invalidates steady samples");
-                check(JsonUtility.ToJson(p)==saved || tire!=null,"Preview calculations do not mutate an otherwise unchanged profile");
+                check(JsonUtility.ToJson(p)==profileAfterIntentionalWear,"Cached and uncached previews do not mutate the source player profile");
             }
             foreach(var v in vehicles){
                 var p=PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);MechanicsOwnership.Ensure(p,cat);p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,cat,new VehicleOffer{model=v.spec.id,price=1,stock=v.CreateStockTune(),paint="#FFFFFF"});
