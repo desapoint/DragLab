@@ -189,17 +189,16 @@ namespace DragLab.Runtime
                 var fixtureCatalog=game.Profile.catalog;
                 synchronous.storageCommit=staged.storageCommit=game.Profile.storageCommit;
                 MechanicsOwnership.Ensure(synchronous,fixtureCatalog);
-                int normalizationBoundaries=0;
+                int normalizationBoundaries=0;bool namedStages=true;
                 foreach(var stage in MechanicsOwnership.EnsureSteps(staged,fixtureCatalog))
                 {
-                    Check(stage.StartsWith("settlement/normalize",StringComparison.Ordinal),
-                        "Staged normalizer has an explicit bounded checkpoint");
+                    namedStages&=stage!=null&&stage.StartsWith("settlement/normalize",StringComparison.Ordinal);
                     normalizationBoundaries++;
                 }
-                Check(normalizationBoundaries>0&&
+                Check(namedStages&&normalizationBoundaries>2&&
                     JsonUtility.ToJson(synchronous)==JsonUtility.ToJson(staged)&&
                     originalJson==JsonUtility.ToJson(game.Profile),
-                    "Staged normalization exactly matches synchronous normalized profile without mutating source");
+                    "Staged normalization preserves exact synchronous profile bytes without mutating source");
                 int cash=game.Profile.cash,generation=game.Profile.vehicleStock.generation;double maxStep=0,maxCamera=0,maxFrame=0;string maxStage="";
                 int normalizationFrames=0;double maxNormalizeStep=0;
                 var authoredBefore=game.Profile.catalog;
