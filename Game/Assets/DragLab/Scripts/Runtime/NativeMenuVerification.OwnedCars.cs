@@ -121,6 +121,11 @@ namespace DragLab.Runtime
                     yield return new WaitForSecondsRealtime(.1f);
                 Check(shell.Root.Query<Label>(className:"car-class").ToList().All(label=>label.text!="Class …"),"Shared background inspection finishes class estimates without UI rebuilding");
                 Check(shell.OwnedGridBuildCount==builds,"Class results update labels without rebuilding cards");
+                int reusedCaptures=shell.InspectionCaptureCount, reusedRatings=shell.OwnedRatingRunCount;
+                shell.InvalidateOwnedGrid();shell.Refresh();
+                Check(shell.InspectionCaptureCount==reusedCaptures&&shell.OwnedRatingRunCount==reusedRatings
+                    &&shell.Root.Query<Label>(className:"car-class").ToList().All(label=>label.text!="Class …"),
+                    "Forced Garage refresh reuses unchanged per-car inspections and completed quarter-mile ratings");
                 yield return CarFilterChecks(input);
                 CarFilterToolbarLayout(1280);yield return Capture("owned-cars-1280");
                 var cardRect=shell.Root.Q("ownedCar:"+first.instanceId).worldBound;
