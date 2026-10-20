@@ -296,6 +296,15 @@ namespace DragLab.Domain.Mechanics
             check(ReferenceEquals(workerLayout,MarketCatalogLayout.Get(catalog,layoutKeys,layoutSpecs))&&
                 ReferenceEquals(workerLayout.fitments,MarketCatalogLayout.Get(catalog,layoutKeys,layoutSpecs).fitments),
                 "Completed model-fitment index is reused unchanged across market epochs");
+            // Even when definition keys are byte-identical, an explicit
+            // authored revision must rebuild the model-fitment snapshot.
+            catalog.RebuildIndexes();
+            var afterRevision=MarketCatalogLayout.Get(catalog,layoutKeys,layoutSpecs);
+            check(!ReferenceEquals(afterRevision,workerLayout)&&
+                !ReferenceEquals(afterRevision.fitments,workerLayout.fitments)&&
+                afterRevision.fitments.ForModels(Array.Empty<string>())
+                    .SequenceEqual(workerLayout.fitments.ForModels(Array.Empty<string>())),
+                "Catalog authoring revision invalidates fitment index while preserving identical compatibility");
             // Author metadata keys belong to a catalog revision, not an epoch.
             // Verify that the ready dictionary is reused as-is and explicit
             // authored updates invalidate it while wear never changes it.
