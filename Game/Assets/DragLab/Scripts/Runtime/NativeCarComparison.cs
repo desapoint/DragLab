@@ -42,7 +42,7 @@ namespace DragLab.Runtime
             var cached=InspectOwned(car);
             if(cached==null)return Task.FromException<CarInspection>(new InvalidOperationException("Inspection unavailable"));
             if(cached.Driving==null) {
-                if(ownedRatingCache.TryGetValue(car.instanceId,out var rating)&&rating.Context==cached.Fingerprint&&rating.Driving!=null)
+                if(TryGetOwnedRating(car.instanceId,out var rating)&&rating.Context==cached.Fingerprint&&rating.Driving!=null)
                     cached.Driving=Task.FromResult(rating.Driving);
                 else {
                     var source=InspectionBuild.Capture(game.Profile,car);var prepared=CarInspection.PrepareCar(source);
