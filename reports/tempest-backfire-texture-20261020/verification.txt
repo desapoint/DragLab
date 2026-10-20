@@ -1,0 +1,15 @@
+PASS production reference sample-identical on real input replay; 250 physical pops / 243 published audio events.
+PASS five matched options; shared real triggers, unchanged dry engine bed, zero dropped voices, fuel/oxygen-limited heat-release accounting.
+PASS 97 shared generator/routing checks; deterministic seeded pressure/turbulence, fuel/oxygen suppression, source-path routing, geometry/temperature/turbine effects, overlap, rates and zero sample-loop allocations. Desktop single-event 1 s loop: 40.96 ms; not Android profiling.
+PASS independent WAV/reference checks: six distinct matched files; no HTML.
+PASS reference: production-render bytes and exact original-synth replay; 250 physical / 243 published real events; 34.025 seconds.
+PASS 01-v4-light-texture.wav: same real triggers and engine prefix; pressure/discharge/body responses active; heat ledger closes; no voice losses; peak 0.82181.
+PASS 02-v4-rich-texture.wav: same real triggers and engine prefix; pressure/discharge/body responses active; heat ledger closes; no voice losses; peak 0.83005.
+PASS 03-v5-light-texture.wav: same real triggers and engine prefix; pressure/discharge/body responses active; heat ledger closes; no voice losses; peak 0.65933.
+PASS 04-v5-rich-texture.wav: same real triggers and engine prefix; pressure/discharge/body responses active; heat ledger closes; no voice losses; peak 0.66675.
+PASS 05-v5-warmer-resonance.wav: same real triggers and engine prefix; pressure/discharge/body responses active; heat ledger closes; no voice losses; peak 0.66901.
+PASS 01-v4-light-texture.wav: difference from selected untextured baseline 0.022115 RMS; shell 87.0813, crackle 21.9737 squared samples.
+PASS 02-v4-rich-texture.wav: difference from selected untextured baseline 0.038759 RMS; shell 348.325, crackle 108.512 squared samples.
+PASS 03-v5-light-texture.wav: difference from selected untextured baseline 0.013923 RMS; shell 28.271, crackle 2.97077 squared samples.
+PASS 04-v5-rich-texture.wav: difference from selected untextured baseline 0.026171 RMS; shell 113.084, crackle 14.6705 squared samples.
+PASS 05-v5-warmer-resonance.wav: difference from selected untextured baseline 0.035902 RMS; shell 283.495, crackle 4.43781 squared samples.

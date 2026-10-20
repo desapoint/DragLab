@@ -64,6 +64,19 @@ namespace DragLab.Editor
             Check(bright.SequenceEqual(Render(quick,voicing:sharp)),"sharp attack and reflection tail remain sample-deterministic");
             Check(Arrival(bright)==Arrival(direct),"longer decay does not delay or pre-echo the direct bang");
             Check(Energy(Render(noOxygen,voicing:sharp))==0,"reflection network cannot generate sound without combustion excitation");
+            var textured=sharp.Copy();textured.shellCoupling=.24;textured.crackleCoupling=.4;
+            var wall=Synth(voicing:textured);wall.Trigger(quick);var texturedOutput=new double[96000];
+            for(int i=0;i<texturedOutput.Length;i++)texturedOutput[i]=wall.Sample();
+            Check(wall.ShellSquaredSamples>0&&wall.CrackleSquaredSamples>0,"duct pressure excites both exhaust-wall modes and nonlinear crackle");
+            Check(!bright.SequenceEqual(texturedOutput),"wall texture changes the pressure-only audition");
+            Check(texturedOutput.SequenceEqual(Render(quick,voicing:textured)),"wall response is deterministic without independent noise");
+            var linear=textured.Copy();linear.crackleCoupling=0;
+            Check(!texturedOutput.SequenceEqual(Render(quick,voicing:linear)),"nonlinear crackle contributes independently of the linear modes");
+            Check(!texturedOutput.SequenceEqual(Render(quick,length:1.5,voicing:textured)),"physical exhaust geometry affects propagation and wall colour");
+            var silentWall=Synth(voicing:textured);double silent=0;for(int i=0;i<48000;i++)silent+=Math.Abs(silentWall.Sample());
+            Check(silent==0,"exhaust-wall response cannot emit sound without pressure excitation");
+            Check(Energy(texturedOutput.Skip(72000).ToArray())<Energy(texturedOutput.Take(24000).ToArray())*1e-8,"wall response and acoustic tail decay without sustained bell ringing");
+            Check(texturedOutput.All(x=>!double.IsNaN(x)&&!double.IsInfinity(x)),"nonlinear wall response remains finite");
             var changed=input;changed.seed++;Check(!baseline.SequenceEqual(Render(changed)),"subtle turbulence varies with explicit seed");
             Check(baseline.All(x=>!double.IsNaN(x)&&!double.IsInfinity(x)&&Math.Abs(x)<5),"bounded finite raw source/routing");
             changed=input;changed.fuelMg=0;Check(Energy(Render(changed))==0,"fuel cut produces no explosion");
@@ -96,7 +109,7 @@ namespace DragLab.Editor
             changed=input;changed.oxygenPerFuel=0;Throws(()=>Synth().Trigger(changed),"invalid fuel chemistry rejected");
             var capacity=Synth();for(int i=0;i<48;i++)Check(capacity.Trigger(input),"prepared simultaneous voice "+i);
             Check(!capacity.Trigger(input)&&capacity.RejectedOverlap==1,"capacity failure reported without overwriting active tails");
-            var live=Synth(voicing:sharp);live.Trigger(input);for(int i=0;i<1000;i++)live.Sample();
+            var live=Synth(voicing:textured);live.Trigger(input);for(int i=0;i<1000;i++)live.Sample();
             long allocated=GC.GetAllocatedBytesForCurrentThread();var watch=Stopwatch.StartNew();
             // Stopwatch is allocated outside the allocation measurement below.
             allocated=GC.GetAllocatedBytesForCurrentThread();

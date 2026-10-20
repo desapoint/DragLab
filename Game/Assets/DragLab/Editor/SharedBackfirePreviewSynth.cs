@@ -35,15 +35,17 @@ namespace DragLab.Editor
         public double pressureCoupling=1,turbulenceCoupling=1,frontCoupling=0,frontMilliseconds=1.5,expansionScale=1;
         public double heatReleaseCoupling=0,structureCoupling=0;
         public double burnTimeScale=1,reflectionDecaySeconds=0,reflectionMix=0;
-        public PreviewCombustionVoicing Copy()=>new PreviewCombustionVoicing{pressureCoupling=pressureCoupling,turbulenceCoupling=turbulenceCoupling,frontCoupling=frontCoupling,frontMilliseconds=frontMilliseconds,expansionScale=expansionScale,heatReleaseCoupling=heatReleaseCoupling,structureCoupling=structureCoupling,burnTimeScale=burnTimeScale,reflectionDecaySeconds=reflectionDecaySeconds,reflectionMix=reflectionMix};
+        public double shellCoupling=0,crackleCoupling=0;
+        public PreviewCombustionVoicing Copy()=>new PreviewCombustionVoicing{pressureCoupling=pressureCoupling,turbulenceCoupling=turbulenceCoupling,frontCoupling=frontCoupling,frontMilliseconds=frontMilliseconds,expansionScale=expansionScale,heatReleaseCoupling=heatReleaseCoupling,structureCoupling=structureCoupling,burnTimeScale=burnTimeScale,reflectionDecaySeconds=reflectionDecaySeconds,reflectionMix=reflectionMix,shellCoupling=shellCoupling,crackleCoupling=crackleCoupling};
         public void Validate()
         {
-            foreach(double value in new[]{pressureCoupling,turbulenceCoupling,frontCoupling,frontMilliseconds,expansionScale,heatReleaseCoupling,structureCoupling,burnTimeScale,reflectionDecaySeconds,reflectionMix})
+            foreach(double value in new[]{pressureCoupling,turbulenceCoupling,frontCoupling,frontMilliseconds,expansionScale,heatReleaseCoupling,structureCoupling,burnTimeScale,reflectionDecaySeconds,reflectionMix,shellCoupling,crackleCoupling})
                 if(double.IsNaN(value)||double.IsInfinity(value))throw new ArgumentException("Invalid source calibration");
             if(pressureCoupling<0||pressureCoupling>12||turbulenceCoupling<0||turbulenceCoupling>3||frontCoupling<0||frontCoupling>4||frontMilliseconds<.04||frontMilliseconds>8||expansionScale<.5||expansionScale>2.5)
                 throw new ArgumentException("Source calibration outside preview bounds");
             if(heatReleaseCoupling<0||heatReleaseCoupling>1||structureCoupling<0||structureCoupling>1)throw new ArgumentException("Invalid thermal/body coupling");
             if(burnTimeScale<.05||burnTimeScale>1||reflectionDecaySeconds<0||reflectionDecaySeconds>.6||reflectionMix<0||reflectionMix>.8)throw new ArgumentException("Invalid attack/reflection calibration");
+            if(shellCoupling<0||shellCoupling>2||crackleCoupling<0||crackleCoupling>2)throw new ArgumentException("Invalid exhaust-wall coupling");
         }
     }
 
@@ -99,9 +101,13 @@ namespace DragLab.Editor
             readonly Segment[] segments;
             readonly double[] positions,forward,reverse,outForward,outReverse,injections;
             readonly double radiationPole,radiationGain;
+            readonly ExhaustWall wall;
+            readonly double[] wallWeights;
+            public double ShellSquared => wall==null?0:wall.ShellSquared;
+            public double CrackleSquared => wall==null?0:wall.CrackleSquared;
             double radiationInput,radiationOutput;
             public double Length => positions[positions.Length-1];
-            public Duct(PreviewDuctSegment[] descriptions,int rate,int stage)
+            public Duct(PreviewDuctSegment[] descriptions,int rate,int stage,PreviewCombustionVoicing voicing=null)
             {
                 if(descriptions==null||descriptions.Length==0)throw new ArgumentException("Duct needs segments");
                 segments=new Segment[descriptions.Length];positions=new double[segments.Length+1];
@@ -112,6 +118,14 @@ namespace DragLab.Editor
                     if(d.lengthM<=0||d.lengthM>5||d.diameterM<.01||d.diameterM>.4||d.temperatureK<200||d.temperatureK>1800||d.leak<0||d.leak>.5||d.turbineAmount<0||d.turbineAmount>1)
                         throw new ArgumentException("Invalid preview duct geometry");
                     segments[i]=new Segment(d,rate,stage);positions[i+1]=positions[i]+d.lengthM;
+                }
+                if(voicing!=null&&(voicing.shellCoupling>0||voicing.crackleCoupling>0)){
+                    wallWeights=new double[segments.Length];double surface=0,diameter=0;
+                    for(int i=0;i<segments.Length;i++){
+                        double weight=descriptions[i].lengthM*descriptions[i].diameterM;wallWeights[i]=weight;surface+=weight;diameter+=weight*descriptions[i].diameterM;
+                    }
+                    for(int i=0;i<wallWeights.Length;i++)wallWeights[i]/=surface;
+                    wall=new ExhaustWall(rate,Length,diameter/surface,voicing.shellCoupling,voicing.crackleCoupling);
                 }
                 var outlet=descriptions[descriptions.Length-1];
                 // Calibrated aperture-radiation proxy: absolute diameter matters even for uniform-area scaling.
@@ -148,14 +162,15 @@ namespace DragLab.Editor
                     outForward[node]=(common-reverse[node])*.985+injections[node]*.5;
                 }
                 outReverse[last]=-.32*forward[last]+injections[last]*.5;
-                double radiation=.68*forward[last]+injections[last]*.5;
+                double radiation=.68*forward[last]+injections[last]*.5,wallDrive=0;
                 for(int i=0;i<segments.Length;i++){
                     radiation+=segments[i].leak*(forward[i]+reverse[i])*.15;
+                    if(wall!=null)wallDrive+=wallWeights[i]*(forward[i]+reverse[i]);
                     segments[i].Store(outForward[i],outReverse[i]);
                 }
                 Array.Clear(injections,0,injections.Length);
                 double emitted=radiation-radiationInput+radiationPole*radiationOutput;
-                radiationInput=radiation;radiationOutput=emitted;return emitted*radiationGain;
+                radiationInput=radiation;radiationOutput=emitted;return emitted*radiationGain+(wall==null?0:wall.Sample(wallDrive));
             }
         }
         // Preview-only exterior reflection bloom. Fed by the radiated pressure, never by independent noise.
@@ -189,6 +204,44 @@ namespace DragLab.Editor
                 return .5*(a+b-c+d);
             }
         }
+        // Stylized exhaust-wall proxy: broad damped modes driven by local duct pressure.
+        // Nonlinear flex residual adds brief crackle without a separate random-noise emitter or new pop event.
+        sealed class ExhaustWall
+        {
+            sealed class Mode
+            {
+                readonly double b0,b2,a1,a2;double x1,x2,y1,y2;
+                public Mode(int rate,double hz,double q)
+                {
+                    double w=2*Math.PI*Math.Min(rate*.3,hz)/rate,alpha=Math.Sin(w)/(2*q),normal=1+alpha;
+                    b0=alpha/normal;b2=-b0;a1=-2*Math.Cos(w)/normal;a2=(1-alpha)/normal;
+                }
+                public double Sample(double input)
+                {
+                    double value=b0*input+b2*x2-a1*y1-a2*y2;x2=x1;x1=input;y2=y1;y1=value;return value;
+                }
+            }
+            readonly Mode low,mid,high;
+            readonly double shellGain,crackleGain,highPassPole;
+            double previousResidual,highPassed;
+            public double ShellSquared {get;private set;}
+            public double CrackleSquared {get;private set;}
+            public ExhaustWall(int rate,double length,double diameter,double shell,double crackle)
+            {
+                // Calibrated geometry response, not measured steel shell eigenfrequencies/material properties.
+                double hz=DragMath.Clamp(240*Math.Sqrt(.06/diameter)*Math.Sqrt(2.3/length),160,360);
+                low=new Mode(rate,hz,.85);mid=new Mode(rate,hz*2.27,1.15);high=new Mode(rate,hz*4.13,1.35);
+                shellGain=shell;crackleGain=crackle;highPassPole=Math.Exp(-2*Math.PI*700/rate);
+            }
+            public double Sample(double pressure)
+            {
+                double response=.55*low.Sample(pressure*4)+.30*mid.Sample(pressure*4)+.15*high.Sample(pressure*4);
+                double residual=response-Math.Tanh(6*response)/6;
+                highPassed=residual-previousResidual+highPassPole*highPassed;previousResidual=residual;
+                double shell=shellGain*response,crackle=crackleGain*highPassed;
+                ShellSquared+=shell*shell;CrackleSquared+=crackle*crackle;return shell+crackle;
+            }
+        }
         struct Voice
         {
             public bool active,intake;
@@ -217,11 +270,13 @@ namespace DragLab.Editor
         public double StructureSquaredSamples {get;private set;}
         public double ExhaustLength => exhaust.Length;
         public double IntakeLength => intake.Length;
+        public double ShellSquaredSamples => exhaust.ShellSquared;
+        public double CrackleSquaredSamples => exhaust.CrackleSquared;
         public SharedBackfirePreviewSynth(PreviewDuctSegment[] exhaust,PreviewDuctSegment[] intake,int rate,int stage=0,PreviewCombustionVoicing voicing=null)
         {
             if(rate<8000||rate>192000)throw new ArgumentException("Unsupported sample rate");
-            this.rate=rate;this.exhaust=new Duct(exhaust,rate,stage);this.intake=new Duct(intake,rate,stage);
             this.voicing=(voicing??new PreviewCombustionVoicing()).Copy();this.voicing.Validate();
+            this.rate=rate;this.exhaust=new Duct(exhaust,rate,stage,this.voicing);this.intake=new Duct(intake,rate,stage);
             if(this.voicing.reflectionMix>0)reflection=new ReflectionBloom(rate,this.voicing.reflectionDecaySeconds);
         }
         public void SetBoost(double boost){exhaust.SetBoost(boost,rate);}

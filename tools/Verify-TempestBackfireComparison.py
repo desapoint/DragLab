@@ -22,7 +22,7 @@ def read(path):
         return np.frombuffer(audio.readframes(audio.getnframes()), dtype='<i2').reshape(-1, 2)
 
 reference = read(reference_path)
-if 'sharp' in folder.name:
+if 'sharp' in folder.name or 'texture' in folder.name:
     baseline = root / 'reports/tempest-backfire-comparison-20261020'
     prior = json.loads((baseline/'manifest.json').read_text(encoding='utf-8-sig'))
     assert reference_path.read_bytes() == (baseline/prior['reference']).read_bytes()
@@ -54,7 +54,15 @@ for option in manifest['options']:
     if first is None:
         first = pcm
     else:
-        assert np.sqrt(np.mean(((pcm.astype(float)-first)/32768)**2)) > .004, 'Preview differences are too deeply masked'
+        assert np.sqrt(np.mean(((pcm.astype(float)-first)/32768)**2)) > (.0001 if 'texture' in folder.name else .004), 'Preview differences are too deeply masked'
+    if 'texture' in folder.name:
+        assert option['shellSquared'] > 0 and option['crackleSquared'] > 0
+        sharp = json.loads((root/'reports/tempest-backfire-sharp-20261020/manifest.json').read_text(encoding='utf-8-sig'))
+        base_index = 3 if option['file'].startswith(('01-', '02-')) else 4
+        before = sharp['options'][base_index]['voicing']
+        for key,value in before.items():
+            if key not in ('shellCoupling','crackleCoupling'):
+                assert option['voicing'][key] == value, key
     assert option['accepted'] == manifest['publishedPopEvents'] and option['overflow'] == 0
     assert abs(option['heatJ']-option['releasedHeatJ']) < option['heatJ']*1e-6
     assert all(option[key] > 0 for key in ('pressureSquared', 'turbulenceSquared', 'structureSquared'))

@@ -262,3 +262,15 @@ network extends the decay separately from the combustion attack. Its environment
 is a calibrated audition assumption; no production hardware/engine filtering is
 bypassed and no runtime sound is changed. [Parameters and preservation checks](../reports/tempest-backfire-sharp-20261020/CHANGES.md).
 Deliver direct WAVs for listening approval; do not advance AP-00 or integrate yet.
+
+
+### Exhaust-wall texture audition on preferred sharper versions 4 and 5
+
+The user prefers the direction of 4 and 5 but requests crackle/resonance from
+exhaust vibration. Optional surface-weighted duct-pressure excitation now drives
+three broad low-Q wall modes and a mild nonlinear flex residual. This is an
+assumed shell-radiation proxy, not measured material/mount/contact dynamics or
+new backfire events. Five preview-only variants preserve the original reference,
+captured sequence, engine and all other version-4/5 voicing parameters. Defaults
+retain prior output. [Parameters, limitations and checks](../reports/tempest-backfire-texture-20261020/CHANGES.md).
+Deliver WAVs for listening; runtime integration and AP-00 remain held.

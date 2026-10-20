@@ -19,7 +19,7 @@ namespace DragLab.Editor
         }
         [Serializable] public sealed class Output
         {
-            public string file,sha256;public double peak,rms,heatJ,releasedHeatJ,pressureSquared,turbulenceSquared,structureSquared;
+            public string file,sha256;public double peak,rms,heatJ,releasedHeatJ,pressureSquared,turbulenceSquared,structureSquared,shellSquared,crackleSquared;
             public int accepted,overflow;public PreviewCombustionVoicing voicing;
         }
         [Serializable] public sealed class Manifest
@@ -74,11 +74,12 @@ namespace DragLab.Editor
         }
         public static void Run()=>RenderComparison(false);
         public static void RunSharper()=>RenderComparison(true);
-        static void RenderComparison(bool sharper)
+        public static void RunExhaustTexture()=>RenderComparison(true,true);
+        static void RenderComparison(bool sharper,bool texture=false)
         {
             SharedBackfirePreviewVerification.RunChecks();
             string root=Path.GetFullPath(Path.Combine(Application.dataPath,"../..")),baseline=Path.Combine(root,"reports/tempest-backfire-comparison-20261020");
-            string folder=sharper?Path.Combine(root,"reports/tempest-backfire-sharp-20261020"):baseline;Directory.CreateDirectory(folder);
+            string folder=texture?Path.Combine(root,"reports/tempest-backfire-texture-20261020"):sharper?Path.Combine(root,"reports/tempest-backfire-sharp-20261020"):baseline;Directory.CreateDirectory(folder);
             // Revised auditions replay the original captured commands and retain the reference bytes.
             var fixture=sharper?JsonUtility.FromJson<RaceAudioTestFixture>(File.ReadAllText(Path.Combine(baseline,"tempest-turbo-open.race.json"),Encoding.UTF8)):RaceAudioAuditionVerification.CaptureBackfireComparison(folder);
             Require(fixture.pops>=100,"configuration must generate at least 100 real physical pops");
@@ -103,7 +104,17 @@ namespace DragLab.Editor
                     new PreviewCombustionVoicing{heatReleaseCoupling=1,pressureCoupling=2,turbulenceCoupling=.025,frontCoupling=1.8,frontMilliseconds=.04,structureCoupling=.08,expansionScale=.85,burnTimeScale=.08,reflectionDecaySeconds=.20,reflectionMix=.45},
                     new PreviewCombustionVoicing{heatReleaseCoupling=1,pressureCoupling=3,turbulenceCoupling=.02,frontCoupling=1.1,frontMilliseconds=.08,structureCoupling=.15,expansionScale=2,burnTimeScale=.12,reflectionDecaySeconds=.40,reflectionMix=.65}
                 };
+                if(texture){
+                    var fast=settings[3];var longDecay=settings[4];
+                    settings=new[]{fast.Copy(),fast.Copy(),longDecay.Copy(),longDecay.Copy(),longDecay.Copy()};
+                    settings[0].shellCoupling=.12;settings[0].crackleCoupling=.18;
+                    settings[1].shellCoupling=.24;settings[1].crackleCoupling=.40;
+                    settings[2].shellCoupling=.12;settings[2].crackleCoupling=.18;
+                    settings[3].shellCoupling=.24;settings[3].crackleCoupling=.40;
+                    settings[4].shellCoupling=.38;settings[4].crackleCoupling=.22;
+                }
                 var names=new[]{"01-pressure-pop.wav","02-combustion-bang.wav","03-deep-report.wav","04-fast-crack.wav","05-long-release.wav"};
+                if(texture)names=new[]{"01-v4-light-texture.wav","02-v4-rich-texture.wav","03-v5-light-texture.wav","04-v5-rich-texture.wav","05-v5-warmer-resonance.wav"};
                 var generators=new SharedBackfirePreviewSynth[5];double manifold=0,downstream=0;
                 for(int i=0;i<5;i++){
                     generators[i]=SharedBackfireAudition.PreparePhysicalComparison(car.spec,car.tune,settings[i],out manifold,out downstream);
@@ -152,7 +163,8 @@ namespace DragLab.Editor
                 for(int i=0;i<5;i++){
                     var output=manifest.options[i];var generator=generators[i];output.rms=Math.Sqrt(output.rms/(manifest.frames*2.0));output.sha256=Hash(Path.Combine(folder,output.file));
                     output.accepted=generator.Accepted;output.overflow=generator.RejectedOverlap;output.heatJ=generator.AcceptedHeatJ;output.releasedHeatJ=generator.ReleasedHeatJ;
-                    output.pressureSquared=generator.PressureSquaredSamples;output.turbulenceSquared=generator.TurbulenceSquaredSamples;output.structureSquared=generator.StructureSquaredSamples;
+                    output.pressureSquared=generator.PressureSquaredSamples;output.turbulenceSquared=generator.TurbulenceSquaredSamples;output.structureSquared=generator.StructureSquaredSamples;output.shellSquared=generator.ShellSquaredSamples;output.crackleSquared=generator.CrackleSquaredSamples;
+                    if(texture)Require(output.shellSquared>0&&output.crackleSquared>0,"wall response missing");
                     Require(output.accepted==manifest.publishedPopEvents&&output.overflow==0,"voice accounting mismatch");
                     Require(Math.Abs(output.heatJ-output.releasedHeatJ)<output.heatJ*1e-6,"heat-release ledger mismatch");
                 }
