@@ -37,9 +37,14 @@ namespace DragLab.Domain.Mechanics
         // partially normalized profile can become visible to gameplay or saving.
         public static void Ensure(PlayerProfile profile, MechanicalCatalog catalog)
         {
-            foreach(var unused in EnsureSteps(profile,catalog)){}
+            // Normal gameplay/transactions still run the complete normalizer
+            // in one MoveNext; no per-part yield overhead in the hot path.
+            foreach(var unused in Normalize(profile,catalog,false)){}
         }
         internal static IEnumerable<string> EnsureSteps(PlayerProfile profile, MechanicalCatalog catalog)
+            =>Normalize(profile,catalog,true);
+
+        static IEnumerable<string> Normalize(PlayerProfile profile, MechanicalCatalog catalog,bool paced)
         {
             bool migratePartsMarket=profile.saveVersion<8;
             if(profile.saveVersion>SaveVersion)throw new InvalidOperationException("Unsupported save version.");
@@ -61,7 +66,7 @@ namespace DragLab.Domain.Mechanics
             if(profile.looseEngineElements==null)profile.looseEngineElements=new List<LooseEngineElement>();
             SharedInventory.Ensure(profile);
             // Suspend only after the candidate's common metadata is normalized.
-            yield return "settlement/normalize metadata";
+            if(paced)yield return "settlement/normalize metadata";
             foreach (var car in profile.cars)
             {
                 if(car.usedHistory==null)car.usedHistory=new List<string>();
@@ -105,7 +110,7 @@ namespace DragLab.Domain.Mechanics
                         var item = new PartInstance { instanceId = NewId("part"), definitionId = catalog.Id(car.vehicleId, category, car.tune.controlLevel > 0 ? 1 : 0), location = PartLocation.Vehicle, ownerId = car.instanceId, slot = category.ToString() };
                         profile.parts.Add(item); car.installed.slots.Add(new SlotBinding { slot = item.slot, partInstanceId = item.instanceId });
                     }
-                    yield return "settlement/normalize car";
+                    if(paced)yield return "settlement/normalize car";
                     continue;
                 }
                 car.instanceId = NewId("vehicle"); car.chassisId = NewId("chassis"); car.engineAssemblyId = NewId("engine");
@@ -118,12 +123,12 @@ namespace DragLab.Domain.Mechanics
                         ownerId = MechanicalCatalog.EngineSlot(slot.Key) ? car.engineAssemblyId : car.instanceId, slot = slot.Key.ToString() };
                     profile.parts.Add(item); car.installed.slots.Add(new SlotBinding { slot = item.slot, partInstanceId = item.instanceId });
                 }
-                yield return "settlement/normalize car";
+                if(paced)yield return "settlement/normalize car";
             }
             // Resolve an owner's hardware once per normalization, rather than once
             // per part. Multi-car checkpoints must not re-resolve hundreds of builds.
             SparkPlugMigration.Apply(profile,catalog);
-            yield return "settlement/normalize spark hardware";
+            if(paced)yield return "settlement/normalize spark hardware";
             var ownerById=new Dictionary<string,OwnedCar>();
             foreach(var car in profile.cars){ownerById[car.instanceId]=car;if(!string.IsNullOrEmpty(car.engineAssemblyId))ownerById[car.engineAssemblyId]=car;}
             var resolvedOwners=new Dictionary<string,VehicleSpec>();
@@ -140,18 +145,18 @@ namespace DragLab.Domain.Mechanics
                 }
                 if(d!=null)ClutchHardware.Ensure(d,item.condition);
                 if(d?.category==PartCategory.Tires){TireDynamics.Ensure(item.condition);foreach(var tire in item.condition.tires)if(string.IsNullOrWhiteSpace(tire.id))tire.id=NewId("tire");}if(d?.category==PartCategory.Wheels)WheelFitments.Ensure(item);
-                yield return "settlement/normalize part";
+                if(paced)yield return "settlement/normalize part";
             }
             profile.equipmentVersion = 1; profile.drivelineVersion = 2; profile.mechanicsVersion = MechanicsSchema.Version; profile.saveVersion = SaveVersion;
             var selected = profile.SelectedCar ?? profile.cars.FirstOrDefault();
             profile.selectedVehicleId = selected?.vehicleId ?? ""; profile.selectedOwnedVehicleId = selected?.instanceId ?? "";
             GarageBusiness.UpgradeLegacySnapshots(profile);
             VehicleListings.Ensure(profile,catalog);
-            yield return "settlement/normalize vehicle market";
+            if(paced)yield return "settlement/normalize vehicle market";
             PartsMarket.Ensure(profile,migratePartsMarket);CartReservations.Expire(profile);
-            yield return "settlement/normalize parts market";
+            if(paced)yield return "settlement/normalize parts market";
             string error = Validate(profile, catalog); if (error != null) throw new InvalidOperationException(error);
-            yield return "settlement/normalize validation";
+            if(paced)yield return "settlement/normalize validation";
         }
         public static Dictionary<PartCategory, string> Definitions(PlayerProfile profile, OwnedCar car)
         {
