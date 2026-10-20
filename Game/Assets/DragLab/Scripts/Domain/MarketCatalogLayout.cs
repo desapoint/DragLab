@@ -32,7 +32,9 @@ namespace DragLab.Domain.Mechanics
             readonly Dictionary<string,int[]> byModel;
             internal FitmentIndex(int count,int[] all,Dictionary<string,int[]> byModel)
             {this.count=count;this.all=all;this.byModel=byModel;}
-            internal int[] ForModels(string[] ownedModels)
+            // Returns a read-only view of sorted group IDs; callers must not
+            // mutate the arrays shared by all markets of this catalog revision.
+            internal IReadOnlyList<int> ForModels(string[] ownedModels)
             {
                 // An empty garage uses the full authored model selection, like
                 // the original market generation's fallback to all specs.
