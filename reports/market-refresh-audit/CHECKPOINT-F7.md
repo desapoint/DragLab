@@ -188,3 +188,59 @@ git pull --ff-only origin perf/f7-worker-market-guarantee
 .\tools\Test-NativeMenu.ps1 -MarketBaselineOnly -FrameProbe -FixtureName settlement-f7-used-index-a
 .\tools\Test-NativeMenu.ps1 -FinishPacingOnly -FrameProbe -FixtureName settlement-f7-used-held-a
 ```
+
+## F.7 indexed used guarantee: local Windows verification (20 Oct 2026)
+
+User ran `NewSupplyVerify`, `PartsMarketVerify`,
+`SqliteStateVerify` and `BuildPlayerOnly`: all four Unity
+commands finished. `FinishPacingOnly` passed **91/91** with
+zero runtime errors. The **first** `MarketBaselineOnly` run failed
+at the pre-market fitted-parts UI assertion
+`Reopening Engine retains all captured part rows` (34 checks);
+the **second** run, using the same fixture, passed **72/72**
+with zero runtime errors, including the indexed used-guarantee
+instrumentation assertion. The first failure predates market
+settlement in the test flow and reproduced neither in the
+held-writer run nor on rerun. This is an intermittent UI-test
+failure, *not yet root-caused*. `NativeMenuVerification.Inspection`
+now reports whether the Engine group actually expanded, how
+many rows remained, and the clickable rectangle if this fails
+again; it does not retry or relax the assertion. The diagnostics
+change itself still requires a new packaged-player build.
+
+### Performance comparison (different workloads, observational)
+
+| Paid third-race metric | Prior model-index F.7 | New used-index F.7 |
+| --- | ---: | ---: |
+| Maximum frame | 27.275 ms | 22.884 ms |
+| P95 frame | 23.969 ms | 12.845 ms |
+| Max measured settlement step | 12.186 ms (`parts/used guarantee`) | 18.490 ms (`settlement/publish`) |
+| Result-to-commit | 1,299.735 ms | 1,088.222 ms |
+| Market-generation wall incl. coroutine yields | 715.172 ms | 487.799 ms |
+| Initial fitting guarantee worker CPU | 1.615 ms | 1.614 ms |
+| Complete new-supply worker CPU | 95.995 ms | 94.412 ms |
+| Used-guarantee candidate preparation | Not separately measured | 2.313 ms |
+| Used parts/guarantee stage | 15.217 ms | 19.556 ms |
+| Delivery opportunities | 41 | 41 |
+| Observed median frame | ~16.7 ms | 8.343 ms |
+
+**Caution:** The previous run was effectively paced at ~60 FPS
+and the new run targeted 120 FPS (VSync 0) with median 8.343 ms.
+This changes elapsed time for coroutine yields; market data
+and save record count may also differ across fixtures. Thus
+the lower total wall time is **not a controlled speedup claim**.
+`used parts/guarantee` is timed from before the entire
+initial-used-offer selection and `parts/used supply` yields; its
+19.556 ms figure cannot be interpreted as only the indexed
+guarantee CPU cost. `used guarantee eligible products` reports
+a specific 2.313 ms for the indexed candidate/present scan.
+The maximum frame step moved to `settlement/publish`, which
+deserves independent profiling; it may not be directly caused
+by the index.
+
+Do not merge solely on these single-run comparisons. The
+functional market and save checks are passing on rerun, but
+intermittent fitted-parts UI navigation and main-thread
+publication spikes should be monitored. Keep PR draft until
+a controlled A/B performance comparison or an explicit
+acceptance of these performance tradeoffs.
