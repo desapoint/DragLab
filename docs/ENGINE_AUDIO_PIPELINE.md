@@ -251,3 +251,14 @@ them; this is not a fully coupled physical combustion/engine/exhaust solver.
 Default source behavior remains unchanged. [Assumptions, reference and five WAV
 options](../reports/tempest-backfire-comparison-20261020/CHANGES.md). No HTML, runtime
 integration or platform build; wait for acoustic approval.
+
+
+### Sharper attack and longer decay listening revision
+
+The Tempest reference and captured event packets are held identical while five
+revised previews use shorter internal heat release, faster front smoothing and
+less turbulent noise. An optional prepared pressure-fed exterior reflection
+network extends the decay separately from the combustion attack. Its environment
+is a calibrated audition assumption; no production hardware/engine filtering is
+bypassed and no runtime sound is changed. [Parameters and preservation checks](../reports/tempest-backfire-sharp-20261020/CHANGES.md).
+Deliver direct WAVs for listening approval; do not advance AP-00 or integrate yet.

@@ -1,0 +1,10 @@
+PASS production reference sample-identical on real input replay; 250 physical pops / 243 published audio events.
+PASS five matched options; shared real triggers, unchanged dry engine bed, zero dropped voices, fuel/oxygen-limited heat-release accounting.
+PASS 89 shared generator/routing checks; deterministic seeded pressure/turbulence, fuel/oxygen suppression, source-path routing, geometry/temperature/turbine effects, overlap, rates and zero sample-loop allocations. Desktop single-event 1 s loop: 61.30 ms; not Android profiling.
+PASS independent WAV/reference checks: six distinct matched files; no HTML.
+PASS reference: production-render bytes and exact original-synth replay; 250 physical / 243 published real events; 34.025 seconds.
+PASS 01-pressure-pop.wav: same real triggers and engine prefix; pressure/discharge/body responses active; heat ledger closes; no voice losses; peak 0.60098.
+PASS 02-combustion-bang.wav: same real triggers and engine prefix; pressure/discharge/body responses active; heat ledger closes; no voice losses; peak 0.70581.
+PASS 03-deep-report.wav: same real triggers and engine prefix; pressure/discharge/body responses active; heat ledger closes; no voice losses; peak 0.53445.
+PASS 04-fast-crack.wav: same real triggers and engine prefix; pressure/discharge/body responses active; heat ledger closes; no voice losses; peak 0.81534.
+PASS 05-long-release.wav: same real triggers and engine prefix; pressure/discharge/body responses active; heat ledger closes; no voice losses; peak 0.65369.

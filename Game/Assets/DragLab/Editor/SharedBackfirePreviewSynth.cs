@@ -34,14 +34,16 @@ namespace DragLab.Editor
     {
         public double pressureCoupling=1,turbulenceCoupling=1,frontCoupling=0,frontMilliseconds=1.5,expansionScale=1;
         public double heatReleaseCoupling=0,structureCoupling=0;
-        public PreviewCombustionVoicing Copy()=>new PreviewCombustionVoicing{pressureCoupling=pressureCoupling,turbulenceCoupling=turbulenceCoupling,frontCoupling=frontCoupling,frontMilliseconds=frontMilliseconds,expansionScale=expansionScale,heatReleaseCoupling=heatReleaseCoupling,structureCoupling=structureCoupling};
+        public double burnTimeScale=1,reflectionDecaySeconds=0,reflectionMix=0;
+        public PreviewCombustionVoicing Copy()=>new PreviewCombustionVoicing{pressureCoupling=pressureCoupling,turbulenceCoupling=turbulenceCoupling,frontCoupling=frontCoupling,frontMilliseconds=frontMilliseconds,expansionScale=expansionScale,heatReleaseCoupling=heatReleaseCoupling,structureCoupling=structureCoupling,burnTimeScale=burnTimeScale,reflectionDecaySeconds=reflectionDecaySeconds,reflectionMix=reflectionMix};
         public void Validate()
         {
-            foreach(double value in new[]{pressureCoupling,turbulenceCoupling,frontCoupling,frontMilliseconds,expansionScale,heatReleaseCoupling,structureCoupling})
+            foreach(double value in new[]{pressureCoupling,turbulenceCoupling,frontCoupling,frontMilliseconds,expansionScale,heatReleaseCoupling,structureCoupling,burnTimeScale,reflectionDecaySeconds,reflectionMix})
                 if(double.IsNaN(value)||double.IsInfinity(value))throw new ArgumentException("Invalid source calibration");
-            if(pressureCoupling<0||pressureCoupling>12||turbulenceCoupling<0||turbulenceCoupling>3||frontCoupling<0||frontCoupling>4||frontMilliseconds<.3||frontMilliseconds>8||expansionScale<.5||expansionScale>2.5)
+            if(pressureCoupling<0||pressureCoupling>12||turbulenceCoupling<0||turbulenceCoupling>3||frontCoupling<0||frontCoupling>4||frontMilliseconds<.04||frontMilliseconds>8||expansionScale<.5||expansionScale>2.5)
                 throw new ArgumentException("Source calibration outside preview bounds");
             if(heatReleaseCoupling<0||heatReleaseCoupling>1||structureCoupling<0||structureCoupling>1)throw new ArgumentException("Invalid thermal/body coupling");
+            if(burnTimeScale<.05||burnTimeScale>1||reflectionDecaySeconds<0||reflectionDecaySeconds>.6||reflectionMix<0||reflectionMix>.8)throw new ArgumentException("Invalid attack/reflection calibration");
         }
     }
 
@@ -156,6 +158,37 @@ namespace DragLab.Editor
                 radiationInput=radiation;radiationOutput=emitted;return emitted*radiationGain;
             }
         }
+        // Preview-only exterior reflection bloom. Fed by the radiated pressure, never by independent noise.
+        // Orthogonal feedback mixes four unequal paths; no single ringing oscillator or fixed-pitch comb sum.
+        sealed class ReflectionBloom
+        {
+            readonly double[][] lines=new double[4][];
+            readonly int[] at=new int[4];
+            readonly double[] feedback=new double[4],low=new double[4],read=new double[4];
+            readonly double coefficient;
+            public ReflectionBloom(int rate,double decay)
+            {
+                var seconds=new[]{.0113,.0179,.0237,.0311};
+                for(int i=0;i<4;i++){
+                    int length=Math.Max(1,(int)Math.Round(rate*seconds[i]));lines[i]=new double[length];
+                    feedback[i]=Math.Pow(10,-3*length/(rate*Math.Max(.01,decay)));
+                }
+                coefficient=1-Math.Exp(-2*Math.PI*Math.Min(6500,rate*.3)/rate);
+            }
+            public double Sample(double input)
+            {
+                for(int i=0;i<4;i++){
+                    double delayed=lines[i][at[i]];low[i]+=coefficient*(delayed-low[i]);read[i]=low[i];
+                }
+                double a=read[0],b=read[1],c=read[2],d=read[3];
+                lines[0][at[0]]=.5*input+.5*(a+b+c+d)*feedback[0];
+                lines[1][at[1]]=.5*input+.5*(a-b+c-d)*feedback[1];
+                lines[2][at[2]]=-.5*input+.5*(a+b-c-d)*feedback[2];
+                lines[3][at[3]]=.5*input+.5*(a-b-c+d)*feedback[3];
+                for(int i=0;i<4;i++)at[i]=(at[i]+1)%lines[i].Length;
+                return .5*(a+b-c+d);
+            }
+        }
         struct Voice
         {
             public bool active,intake;
@@ -171,6 +204,7 @@ namespace DragLab.Editor
         readonly Duct exhaust,intake;
         readonly int rate;
         readonly PreviewCombustionVoicing voicing;
+        readonly ReflectionBloom reflection;
         int next;
         double lastInput,lastOutput;
         public int Accepted {get;private set;}
@@ -188,6 +222,7 @@ namespace DragLab.Editor
             if(rate<8000||rate>192000)throw new ArgumentException("Unsupported sample rate");
             this.rate=rate;this.exhaust=new Duct(exhaust,rate,stage);this.intake=new Duct(intake,rate,stage);
             this.voicing=(voicing??new PreviewCombustionVoicing()).Copy();this.voicing.Validate();
+            if(this.voicing.reflectionMix>0)reflection=new ReflectionBloom(rate,this.voicing.reflectionDecaySeconds);
         }
         public void SetBoost(double boost){exhaust.SetBoost(boost,rate);}
         public bool Trigger(PreviewCombustionEvent input)
@@ -203,7 +238,7 @@ namespace DragLab.Editor
             double pressure=.33*energy/(input.volumeLitres*.001),ambient=input.pressureKPa*1000;
             double cutoff=DragMath.Clamp(1400*Math.Sqrt(input.temperatureK/650)*Math.Pow(.012/burn,.3),250,Math.Min(6000,rate*.3));
             double vent=path.VentSeconds(node,fraction,input.volumeLitres,input.temperatureK)*voicing.expansionScale;
-            double thermalStep=Math.Exp(-1/(rate*burn));
+            double thermalStep=Math.Exp(-1/(rate*burn*voicing.burnTimeScale));
             voices[at]=new Voice{
                 active=true,intake=input.intake,node=node,fraction=fraction,random=input.seed==0?17731u:input.seed,
                 amplitude=.8*Math.Sqrt(pressure/(ambient+pressure)),pressureRatio=burn/expansion,
@@ -260,7 +295,7 @@ namespace DragLab.Editor
             }
             double sum=exhaust.Sample()+intake.Sample();
             double filtered=sum-lastInput+.997*lastOutput;lastInput=sum;lastOutput=filtered;
-            return filtered;
+            return reflection==null?filtered:filtered+voicing.reflectionMix*reflection.Sample(filtered);
         }
     }
 }

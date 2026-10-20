@@ -46,6 +46,20 @@ namespace DragLab.Editor
         }
         static string Hash(string path)
         {using(var sha=System.Security.Cryptography.SHA256.Create())using(var file=File.OpenRead(path))return BitConverter.ToString(sha.ComputeHash(file)).Replace("-","").ToLowerInvariant();}
+        static void SameEvents(Manifest actual,Manifest prior)
+        {
+            Require(actual.events.Count==prior.events.Count,"published event count changed");
+            for(int i=0;i<actual.events.Count;i++){
+                var a=actual.events[i];var b=prior.events[i];
+                Require(a.twoStep==b.twoStep&&a.limiter==b.limiter&&a.antiLag==b.antiLag&&a.packet.seed==b.packet.seed&&a.packet.intake==b.packet.intake&&a.packet.ignited==b.packet.ignited,"event flags/seed changed at "+i);
+                var x=Scalars(a);var y=Scalars(b);
+                for(int j=0;j<x.Length;j++)Require(Math.Abs(x[j]-y[j])<=1e-12*Math.Max(1,Math.Abs(y[j])),"event scalar changed at "+i+" field "+j+": "+x[j].ToString("R")+" vs "+y[j].ToString("R"));
+            }
+        }
+        static double[] Scalars(Receipt r)
+        {
+            var p=r.packet;return new[]{r.time,r.rpm,r.boost,p.fuelMg,p.oxygenMg,p.oxygenPerFuel,p.heatingJPerKg,p.burnEfficiency,p.burnSeconds,p.mixingSeconds,p.volumeLitres,p.temperatureK,p.pressureKPa,p.sourceMetres};
+        }
         static PreviewCombustionEvent Packet(CarState state,EngineSoundFrame frame,EngineSoundProfile profile,int index,double manifold,double downstream)
         {
             bool shortCut=frame.twoStep||state.limiter;
@@ -58,13 +72,17 @@ namespace DragLab.Editor
                 sourceMetres=state.antiLagActive||shortCut?manifold:downstream,intake=false,ignited=true,seed=(uint)(171818+index*7919)
             };
         }
-        public static void Run()
+        public static void Run()=>RenderComparison(false);
+        public static void RunSharper()=>RenderComparison(true);
+        static void RenderComparison(bool sharper)
         {
             SharedBackfirePreviewVerification.RunChecks();
-            string root=Path.GetFullPath(Path.Combine(Application.dataPath,"../..")),folder=Path.Combine(root,"reports/tempest-backfire-comparison-20261020");Directory.CreateDirectory(folder);
-            var fixture=RaceAudioAuditionVerification.CaptureBackfireComparison(folder);
+            string root=Path.GetFullPath(Path.Combine(Application.dataPath,"../..")),baseline=Path.Combine(root,"reports/tempest-backfire-comparison-20261020");
+            string folder=sharper?Path.Combine(root,"reports/tempest-backfire-sharp-20261020"):baseline;Directory.CreateDirectory(folder);
+            // Revised auditions replay the original captured commands and retain the reference bytes.
+            var fixture=sharper?JsonUtility.FromJson<RaceAudioTestFixture>(File.ReadAllText(Path.Combine(baseline,"tempest-turbo-open.race.json"),Encoding.UTF8)):RaceAudioAuditionVerification.CaptureBackfireComparison(folder);
             Require(fixture.pops>=100,"configuration must generate at least 100 real physical pops");
-            string captured=Path.Combine(folder,"tempest-turbo-open.wav"),reference=Path.Combine(folder,"00-in-game-reference.wav");File.Copy(captured,reference,true);
+            string captured=Path.Combine(baseline,"tempest-turbo-open.wav"),reference=Path.Combine(folder,"00-in-game-reference.wav");File.Copy(captured,reference,true);
             var manifest=new Manifest{frames=fixture.ticks.Count*Block,physicalPops=fixture.pops,referenceSha256=Hash(reference)};
             var race=fixture.CreateRace();var writers=new List<BinaryWriter>();
             try{
@@ -77,6 +95,13 @@ namespace DragLab.Editor
                     new PreviewCombustionVoicing{heatReleaseCoupling=1,pressureCoupling=4,turbulenceCoupling=.05,frontCoupling=.55,frontMilliseconds=1.5,structureCoupling=.2,expansionScale=1.8},
                     new PreviewCombustionVoicing{heatReleaseCoupling=1,pressureCoupling=2,turbulenceCoupling=.15,frontCoupling=1.8,frontMilliseconds=.4,structureCoupling=.08,expansionScale=.85},
                     new PreviewCombustionVoicing{heatReleaseCoupling=1,pressureCoupling=3,turbulenceCoupling=.2,frontCoupling=1,frontMilliseconds=1.1,structureCoupling=.15,expansionScale=2}
+                };
+                if(sharper)settings=new[]{
+                    new PreviewCombustionVoicing{heatReleaseCoupling=1,pressureCoupling=1.8,turbulenceCoupling=.02,frontCoupling=.9,frontMilliseconds=.08,structureCoupling=.10,expansionScale=1,burnTimeScale=.12,reflectionDecaySeconds=.18,reflectionMix=.40},
+                    new PreviewCombustionVoicing{heatReleaseCoupling=1,pressureCoupling=3,turbulenceCoupling=.02,frontCoupling=1.25,frontMilliseconds=.10,structureCoupling=.15,expansionScale=1.2,burnTimeScale=.10,reflectionDecaySeconds=.24,reflectionMix=.50},
+                    new PreviewCombustionVoicing{heatReleaseCoupling=1,pressureCoupling=4,turbulenceCoupling=.01,frontCoupling=.8,frontMilliseconds=.15,structureCoupling=.20,expansionScale=1.8,burnTimeScale=.16,reflectionDecaySeconds=.30,reflectionMix=.55},
+                    new PreviewCombustionVoicing{heatReleaseCoupling=1,pressureCoupling=2,turbulenceCoupling=.025,frontCoupling=1.8,frontMilliseconds=.04,structureCoupling=.08,expansionScale=.85,burnTimeScale=.08,reflectionDecaySeconds=.20,reflectionMix=.45},
+                    new PreviewCombustionVoicing{heatReleaseCoupling=1,pressureCoupling=3,turbulenceCoupling=.02,frontCoupling=1.1,frontMilliseconds=.08,structureCoupling=.15,expansionScale=2,burnTimeScale=.12,reflectionDecaySeconds=.40,reflectionMix=.65}
                 };
                 var names=new[]{"01-pressure-pop.wav","02-combustion-bang.wav","03-deep-report.wav","04-fast-crack.wav","05-long-release.wav"};
                 var generators=new SharedBackfirePreviewSynth[5];double manifold=0,downstream=0;
@@ -116,6 +141,11 @@ namespace DragLab.Editor
                     }
                 }
                 manifest.publishedPopEvents=manifest.events.Count;
+                if(sharper){
+                    var prior=JsonUtility.FromJson<Manifest>(File.ReadAllText(Path.Combine(baseline,"manifest.json"),Encoding.UTF8));
+                    Require(manifest.referenceSha256==prior.referenceSha256&&manifest.frames==prior.frames,"original reference changed");
+                    SameEvents(manifest,prior);
+                }
                 Require(manifest.referenceMismatches==0,"production reference diverged from exact replay");
                 Require(manifest.publishedPopEvents>=100,"not enough actual published events");
                 foreach(var writer in writers)writer.Dispose();writers.Clear();

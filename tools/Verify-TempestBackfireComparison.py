@@ -3,15 +3,17 @@ from pathlib import Path
 import hashlib
 import json
 import wave
+import sys
 import numpy as np
 
 root = Path(__file__).resolve().parents[1]
-folder = root / 'reports/tempest-backfire-comparison-20261020'
+folder = root / (sys.argv[1] if len(sys.argv)>1 else 'reports/tempest-backfire-comparison-20261020')
 manifest = json.loads((folder / 'manifest.json').read_text(encoding='utf-8-sig'))
 assert manifest['physicalPops'] >= manifest['publishedPopEvents'] >= 100
 assert manifest['referenceMismatches'] == 0 and len(manifest['options']) == 5
 reference_path = folder / manifest['reference']
-assert reference_path.read_bytes() == (folder / 'tempest-turbo-open.wav').read_bytes()
+capture = root/'reports/tempest-backfire-comparison-20261020/tempest-turbo-open.wav'
+assert reference_path.read_bytes() == capture.read_bytes()
 assert hashlib.sha256(reference_path.read_bytes()).hexdigest() == manifest['referenceSha256']
 
 def read(path):
@@ -20,6 +22,24 @@ def read(path):
         return np.frombuffer(audio.readframes(audio.getnframes()), dtype='<i2').reshape(-1, 2)
 
 reference = read(reference_path)
+if 'sharp' in folder.name:
+    baseline = root / 'reports/tempest-backfire-comparison-20261020'
+    prior = json.loads((baseline/'manifest.json').read_text(encoding='utf-8-sig'))
+    assert reference_path.read_bytes() == (baseline/prior['reference']).read_bytes()
+    def same(a,b):
+        if isinstance(a,dict):
+            assert a.keys()==b.keys()
+            for key in a: same(a[key],b[key])
+        elif isinstance(a,list):
+            assert len(a)==len(b)
+            for x,y in zip(a,b): same(x,y)
+        elif isinstance(a,float) or isinstance(b,float):
+            assert abs(a-b)<=1e-12*max(1,abs(b)), (a,b)
+        else:
+            assert a==b, (a,b)
+    same(manifest['events'],prior['events'])
+    assert manifest['frames'] == prior['frames']
+
 first = None
 prefix = int((manifest['events'][0]['time']-.02)*48000)
 assert prefix > 0

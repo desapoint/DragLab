@@ -27,6 +27,12 @@ namespace DragLab.Editor
             var output=new double[rate*2];for(int i=0;i<output.Length;i++)output[i]=synth.Sample();return output;
         }
         static double Energy(double[] values)=>values.Sum(x=>x*x);
+        static double Brightness(double[] values,int rate)
+        {
+            double low=0,energy=0,total=0,coefficient=1-Math.Exp(-2*Math.PI*2000/rate);
+            foreach(double v in values){low+=coefficient*(v-low);energy+=(v-low)*(v-low);total+=v*v;}
+            return energy/Math.Max(1e-20,total);
+        }
         static int Arrival(double[] values)=>Array.FindIndex(values,x=>Math.Abs(x)>1e-10);
         static void Throws(Action action,string label){bool threw=false;try{action();}catch(ArgumentException){threw=true;}Check(threw,label);}
         public static void RunChecks()
@@ -48,6 +54,16 @@ namespace DragLab.Editor
             var inert=Synth(voicing:thermal);var noOxygen=input;noOxygen.oxygenMg=0;inert.Trigger(noOxygen);
             for(int i=0;i<2000;i++)inert.Sample();
             Check(inert.ReleasedHeatJ==0&&inert.PressureSquaredSamples==0&&inert.StructureSquaredSamples==0,"no oxygen suppresses heat and every coupled source component");
+            var sharp=thermal.Copy();sharp.burnTimeScale=.1;sharp.frontMilliseconds=.08;sharp.reflectionDecaySeconds=.24;sharp.reflectionMix=.5;sharp.turbulenceCoupling=.02;
+            var quick=input;quick.burnSeconds=.0012;quick.mixingSeconds=.006;quick.volumeLitres=.6;
+            var dull=Render(quick,voicing:thermal);var bright=Render(quick,voicing:sharp);
+            Check(Brightness(bright,48000)>Brightness(dull,48000)*1.5,"faster heat release and unsmoothed front increase relative energy above 2 kHz");
+            var noBloom=sharp.Copy();noBloom.reflectionMix=0;var direct=Render(quick,voicing:noBloom);
+            double tail=Energy(bright.Skip(4800).Take(9600).ToArray()),oldTail=Energy(direct.Skip(4800).Take(9600).ToArray());
+            Check(tail>oldTail*1.5,"pressure-fed reflections retain more 100-300 ms decay than direct source");
+            Check(bright.SequenceEqual(Render(quick,voicing:sharp)),"sharp attack and reflection tail remain sample-deterministic");
+            Check(Arrival(bright)==Arrival(direct),"longer decay does not delay or pre-echo the direct bang");
+            Check(Energy(Render(noOxygen,voicing:sharp))==0,"reflection network cannot generate sound without combustion excitation");
             var changed=input;changed.seed++;Check(!baseline.SequenceEqual(Render(changed)),"subtle turbulence varies with explicit seed");
             Check(baseline.All(x=>!double.IsNaN(x)&&!double.IsInfinity(x)&&Math.Abs(x)<5),"bounded finite raw source/routing");
             changed=input;changed.fuelMg=0;Check(Energy(Render(changed))==0,"fuel cut produces no explosion");
@@ -80,7 +96,7 @@ namespace DragLab.Editor
             changed=input;changed.oxygenPerFuel=0;Throws(()=>Synth().Trigger(changed),"invalid fuel chemistry rejected");
             var capacity=Synth();for(int i=0;i<48;i++)Check(capacity.Trigger(input),"prepared simultaneous voice "+i);
             Check(!capacity.Trigger(input)&&capacity.RejectedOverlap==1,"capacity failure reported without overwriting active tails");
-            var live=Synth(voicing:thermal);live.Trigger(input);for(int i=0;i<1000;i++)live.Sample();
+            var live=Synth(voicing:sharp);live.Trigger(input);for(int i=0;i<1000;i++)live.Sample();
             long allocated=GC.GetAllocatedBytesForCurrentThread();var watch=Stopwatch.StartNew();
             // Stopwatch is allocated outside the allocation measurement below.
             allocated=GC.GetAllocatedBytesForCurrentThread();
