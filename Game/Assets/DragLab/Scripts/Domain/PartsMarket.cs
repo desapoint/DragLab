@@ -77,9 +77,9 @@ namespace DragLab.Domain.Mechanics
         sealed class InitialGroup
         {
             internal string[] ids;internal int maximum;
-            // Copied representative: canonical product grouping differs only by ID.
-            // This snapshot is read exclusively by the selection worker.
-            internal PartDefinition definition;
+            // The model fitment index already stores immutable compatibility.
+            // The detached worker needs only the representative's unlock rank.
+            internal int reputationRequired;
         }
         sealed class InitialPlan
         {
@@ -88,7 +88,8 @@ namespace DragLab.Domain.Mechanics
             internal double initialGuaranteeCpuMilliseconds;
         }
         static InitialPlan BuildInitialPlan(InitialGroup[] groups,uint selection,uint quantity,
-            int guarantee=0,VehicleSpec[] targets=null,uint coverageRandom=0,uint coverageQuantity=0)
+            int guarantee=0,MarketCatalogLayout.FitmentIndex fitments=null,
+            string[] ownedModels=null,uint coverageRandom=0,uint coverageQuantity=0)
         {
             // Initial rolls and row ordering are the same as the original path.
             // Pure managed data only; does not touch a profile or any Unity API.
@@ -110,19 +111,16 @@ namespace DragLab.Domain.Mechanics
                     (roll<.5?1:roll<.85?2:3):(roll<.8?1:roll<.97?2:3);
                 rows[i].units=rows[i].initialUnits=groups[i].maximum*sets;
             }
-            // Settlement-only: the matching groups already have deterministic
-            // maximum units from MarketCatalogLayout. Resolve the fitting guarantee
-            // on this same worker, before publishing any row to the candidate.
-            // FitsDetached is the exact pure predicate used by catalog.Fits.
-            long guaranteeStart=targets==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
-            if(targets!=null)
+            // Settlement-only: compatibility comes from the *same fitment pass*
+            // that produced the cached catalog layout. The index is immutable
+            // and safe to share with the worker across market epochs. An empty
+            // garage uses all authored models, matching the original fallback.
+            long guaranteeStart=fitments==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
+            if(fitments!=null)
             {
-                var fitting=new List<int>();
-                for(int i=0;i<groups.Length;i++)
-                    if(groups[i].definition.reputationRequired==0&&
-                        targets.Any(spec=>MechanicalCatalog.FitsDetached(spec,groups[i].definition)))
-                        fitting.Add(i);
-                int targetCount=Math.Min(guarantee,fitting.Count);
+                int[] fitting=fitments.ForModels(ownedModels)
+                    .Where(i=>groups[i].reputationRequired==0).ToArray();
+                int targetCount=Math.Min(guarantee,fitting.Length);
                 int present=fitting.Count(i=>rows[i].units>0);
                 while(present<targetCount)
                 {
@@ -185,7 +183,7 @@ namespace DragLab.Domain.Mechanics
                 yield return marker;
             var planGroups=layout.groups.Select(g=>new InitialGroup{
                 ids=g.ids.ToArray(),maximum=g.maximum,
-                definition=offloadDelivery?g.definition.Copy():null
+                reputationRequired=g.definition.reputationRequired
             }).ToArray();
             // Capture fitment targets before dispatch; no authored catalog data
             // will be read by the selection worker.
@@ -195,8 +193,11 @@ namespace DragLab.Domain.Mechanics
             if(offloadDelivery)
             {
                 int guaranteed=state.guaranteeAtRefresh;
+                // Hand over only immutable index data and copied model IDs.
+                // Neither live player nor authored catalog crosses this boundary.
+                var fitmentIndex=layout.fitments;
                 var task=Task.Run(()=>BuildInitialPlan(planGroups,random,newQuantity,
-                    guaranteed,targets,coverageRandom,coverageQuantity));
+                    guaranteed,fitmentIndex,owned,coverageRandom,coverageQuantity));
                 var waiting=new MarketWorkerWait(task);
                 yield return waiting;
                 while(!task.IsCompleted)yield return waiting;
