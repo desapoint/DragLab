@@ -107,8 +107,10 @@ namespace DragLab.Editor
                         if(steps.Current is MarketWorkerWait waiting)
                             waiting.task.GetAwaiter().GetResult();
                 check(ReferenceEquals(worker.catalog,catalog)&&
-                    JsonUtility.ToJson(worker.inventory)==JsonUtility.ToJson(original.inventory),
-                    "Worker initial fitting guarantee preserves entire seeded market "+
+                    JsonUtility.ToJson(worker.inventory.market)==JsonUtility.ToJson(original.inventory.market)&&
+                    worker.inventory.dealer.Select(row=>JsonUtility.ToJson(row)).SequenceEqual(
+                        original.inventory.dealer.Select(row=>JsonUtility.ToJson(row))),
+                    "Worker initial fitting guarantee preserves seeded new/used/engine market "+
                     paritySeed+"/"+minimum);
             }
             var baseline=File.ReadAllLines(Path.Combine(Folder,"used-baseline-matrix.csv"),Encoding.UTF8).Skip(1).Where(s=>s.Length>0).ToDictionary(s=>string.Join(",",s.Split(',').Take(3)),s=>s.Split(',')[5]);
