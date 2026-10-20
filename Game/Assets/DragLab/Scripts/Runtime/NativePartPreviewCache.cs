@@ -29,6 +29,27 @@ namespace DragLab.Runtime
         // engine inputs participate in its key, so chassis and tire edits retain output.
         internal Func<double,InspectionSteadyPoint> SteadyOutput(InductionProfile induction)=>steadyCache.For(induction);
         internal static string Fingerprint(string text){using(var sha=SHA256.Create())return Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(text)));}
+        // A vehicle's physical inspection should not expire when cash, another
+        // car, market stock, selected-car ID or the global revision changes.
+        // The key includes the car, catalog platform and fitted part instances
+        // and their authored definitions (including individual tire/wheel sets).
+        internal static string CarSignature(PlayerProfile p,OwnedCar car)
+        {
+            var state=new StringBuilder();
+            state.Append(JsonUtility.ToJson(car)).Append('|')
+                .Append(JsonUtility.ToJson(p.catalog.Spec(car.vehicleId)));
+            foreach(var slot in car.installed.slots){
+                var part=p.parts.Find(i=>i.instanceId==slot.partInstanceId);
+                state.Append('|').Append(slot.slot).Append('|').Append(slot.partInstanceId);
+                if(part==null)continue;
+                state.Append(JsonUtility.ToJson(part)).Append(JsonUtility.ToJson(p.catalog.Find(part.definitionId)));
+                if(TireFitments.HasOverrides(part))
+                    for(int i=0;i<4;i++)state.Append(JsonUtility.ToJson(p.catalog.Find(TireFitments.DefinitionId(part,i))));
+                if(WheelFitments.HasOverrides(part))
+                    for(int i=0;i<4;i++)state.Append(JsonUtility.ToJson(p.catalog.Find(WheelFitments.DefinitionId(part,i))));
+            }
+            return Fingerprint(state.ToString());
+        }
         internal void Bind(PlayerProfile p,OwnedCar car)
         {
             string key=p.revision+"/"+JsonUtility.ToJson(car)+"/"+JsonUtility.ToJson(p.catalog.Spec(car.vehicleId))+"/"+string.Join("/",car.installed.slots.Select(s=>{var part=p.parts.Find(i=>i.instanceId==s.partInstanceId);return part==null?"missing/"+s.partInstanceId:JsonUtility.ToJson(part)+JsonUtility.ToJson(p.catalog.Find(part.definitionId));}));
