@@ -279,6 +279,12 @@ namespace DragLab.Editor
             this.rate=rate;this.exhaust=new Duct(exhaust,rate,stage,this.voicing);this.intake=new Duct(intake,rate,stage);
             if(this.voicing.reflectionMix>0)reflection=new ReflectionBloom(rate,this.voicing.reflectionDecaySeconds);
         }
+        // Offline audition hook: route an already-generated pressure source through the identical prepared duct.
+        public double ProcessPressureSource(double sourceMetres,double pressure)
+        {
+            if(double.IsNaN(pressure)||double.IsInfinity(pressure))throw new ArgumentException("Non-finite pressure source");
+            exhaust.Locate(sourceMetres,out int node,out double fraction);exhaust.Inject(node,fraction,pressure);return Sample();
+        }
         public void SetBoost(double boost){exhaust.SetBoost(boost,rate);}
         public bool Trigger(PreviewCombustionEvent input)
         {

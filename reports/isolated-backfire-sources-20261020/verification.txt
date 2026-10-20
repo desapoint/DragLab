@@ -1,0 +1,10 @@
+PASS 43 isolated-source/duct checks: equal 200 J inferred event energy, distinct release shapes, settled sources, deterministic rerenders, finite output, silence and no pre-echo. Three identical repetitions per file at 0.6, 2.2 and 3.8 seconds.
+PASS loudness packaging: six stereo PCM16 WAVs, 5.4 s each; common -32.05 LUFS target, spread <=0.10 LU, true peak <=-2 dBTP; constant gain only, no limiter/compressor.
+PASS independent common-exhaust impulse-convolution check for all three sources.
+PASS source shapes differ after gain and +/-5 ms alignment; maximum pair similarity 0.82523.
+PASS 01-sharp-snap-dry.wav: -32.05 LUFS / -2.20 dBTP; preserved waveform, silent lead/tail.
+PASS 02-ragged-burst-dry.wav: -32.05 LUFS / -7.78 dBTP; preserved waveform, silent lead/tail.
+PASS 03-fuller-bang-dry.wav: -32.05 LUFS / -8.14 dBTP; preserved waveform, silent lead/tail.
+PASS 01-sharp-snap-exhaust.wav: -32.05 LUFS / -3.47 dBTP; preserved waveform, silent lead/tail.
+PASS 02-ragged-burst-exhaust.wav: -32.05 LUFS / -9.44 dBTP; preserved waveform, silent lead/tail.
+PASS 03-fuller-bang-exhaust.wav: -32.05 LUFS / -9.17 dBTP; preserved waveform, silent lead/tail.

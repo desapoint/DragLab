@@ -274,3 +274,15 @@ new backfire events. Five preview-only variants preserve the original reference,
 captured sequence, engine and all other version-4/5 voicing parameters. Defaults
 retain prior output. [Parameters, limitations and checks](../reports/tempest-backfire-texture-20261020/CHANGES.md).
 Deliver WAVs for listening; runtime integration and AP-00 remain held.
+
+
+### Isolated pressure-source comparison before further texture work
+
+The user found the latest wall variants too similar and approved three isolated,
+loudness-matched examples (sharp snap, ragged release, fuller bang), followed by
+those same sources through one identical chambered exhaust. This is a source-shape
+listening experiment with explicitly inferred heat-release tables, not game audio
+integration or a real-vehicle accuracy claim. Constant-gain matched delivery and
+independent common-exhaust convolution keep the comparison controlled.
+[Setup, limits and verification](../reports/isolated-backfire-sources-20261020/CHANGES.md).
+Only six WAVs are delivered; wait for acoustic approval before integration.
