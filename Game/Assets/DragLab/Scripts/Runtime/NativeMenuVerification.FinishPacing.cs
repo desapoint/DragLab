@@ -265,24 +265,24 @@ namespace DragLab.Runtime
                         initialBytes[caseIndex]==JsonUtility.ToJson(invalidCases[caseIndex]),
                         "Worker validator rejects "+invalidLabels[caseIndex]+" with exact error and no mutations");
                 int cash=game.Profile.cash,generation=game.Profile.vehicleStock.generation;double maxStep=0,maxCamera=0,maxFrame=0;string maxStage="";
-                int normalizationFrames=0;double maxNormalizeStep=0;
+                int normalizationSteps=0;double maxNormalizeStep=0;
                 var validationWorkers=new List<int>();
                 var priorValidationObserver=PrototypeGame.FinishValidationWorkerThread;
+                var priorNormalizeObserver=PrototypeGame.FinishNormalizationStep;
                 PrototypeGame.FinishValidationWorkerThread=id=>validationWorkers.Add(id);
                 var normalizationStages=new Dictionary<string,double>(StringComparer.Ordinal);
+                PrototypeGame.FinishNormalizationStep=(stage,milliseconds)=>{
+                    normalizationSteps++;
+                    maxNormalizeStep=Math.Max(maxNormalizeStep,milliseconds);
+                    normalizationStages.TryGetValue(stage,out var previousMax);
+                    normalizationStages[stage]=Math.Max(previousMax,milliseconds);
+                };
                 var authoredBefore=game.Profile.catalog;
                 game.StartRace(null,!paid);var race=game.Race;
                 Check(ReferenceEquals(authoredBefore,game.Profile.catalog),
                     "Finish fixture retains catalog identity through race entry");
 PrototypeGame.FinishMeasurement=(name,value)=>{
                     if(name=="camera step units"){maxCamera=Math.Max(maxCamera,value);return;}
-                    if(name.StartsWith("settlement/normalize",StringComparison.Ordinal))
-                    {
-                        normalizationFrames++;
-                        maxNormalizeStep=Math.Max(maxNormalizeStep,value);
-                        normalizationStages.TryGetValue(name,out var previousMax);
-                        normalizationStages[name]=Math.Max(previousMax,value);
-                    }
                     if(value>maxStep){maxStep=value;maxStage=name;}
                 };
                 Check(race!=null,"Finish pacing stages a real "+(paid?"paid refresh":"practice")+" run");
@@ -308,21 +308,25 @@ PrototypeGame.FinishMeasurement=(name,value)=>{
                             " / max stage "+maxStage+
                             " / max frame ms "+maxFrame.ToString("F3")+
                             " / max camera step "+maxCamera.ToString("F3")+
-                            " / normalize frames "+normalizationFrames+
+                            " / normalize steps "+normalizationSteps+
                             " / max normalize step ms "+maxNormalizeStep.ToString("F3")+
                             " / held-write frames "+(Time.frameCount-frames));
                         foreach(var slow in normalizationStages.OrderByDescending(x=>x.Value).Take(5))
                             report.AppendLine("MEASURE: finish "+(paid?"paid refresh":"practice")+
                                 " / normalization stage "+slow.Key+
                                 " / max ms "+slow.Value.ToString("F3"));
-                        Check(normalizationFrames>0&&maxNormalizeStep>0,
-                            "Full settlement normalizer progresses on observable paced frames");
+                        Check(normalizationSteps>2&&
+                            normalizationStages.ContainsKey("settlement/normalize metadata")&&
+                            normalizationStages.ContainsKey("settlement/normalize parts market")&&
+                            maxNormalizeStep>=0,
+                            "Full settlement normalizer completes measured main-thread steps");
                         Check(validationWorkers.Count==2&&validationWorkers.All(id=>id!=verificationMainThread),
                             "Both settlement integrity passes finish on background threads");
                         Check(maxStep<50&&maxCamera<.35,"Finish preparation is split into bounded main steps and camera motion remains continuous");
                     }finally{release.Set();SqliteStateStore.FailureInjection=null;game.verificationInput=null;
                         PrototypeGame.FinishMeasurement=null;
-                        PrototypeGame.FinishValidationWorkerThread=priorValidationObserver;}
+                        PrototypeGame.FinishValidationWorkerThread=priorValidationObserver;
+                        PrototypeGame.FinishNormalizationStep=priorNormalizeObserver;}
                 }
                 float settledDeadline=Time.realtimeSinceStartup+12;
                 if(paid){game.ReturnToGarage();Check(game.Race==null,"Explicit Garage boundary drains pending settlement before exit");}
