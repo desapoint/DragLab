@@ -155,8 +155,17 @@ namespace DragLab.Domain.Mechanics
             if(paced)yield return "settlement/normalize vehicle market";
             PartsMarket.Ensure(profile,migratePartsMarket);CartReservations.Expire(profile);
             if(paced)yield return "settlement/normalize parts market";
-            string error = Validate(profile, catalog); if (error != null) throw new InvalidOperationException(error);
-            if(paced)yield return "settlement/normalize validation";
+            string error=null;
+            if(paced)
+            {
+                // Validate the same candidate and the same ordered rules, but
+                // return frame budgets between read-only checks.
+                foreach(var stage in ValidateSteps(profile,catalog,value=>error=value))
+                    yield return stage;
+            }
+            else error=Validate(profile,catalog);
+            if(error!=null)throw new InvalidOperationException(error);
+            if(paced)yield return "settlement/normalize validation complete";
         }
         public static Dictionary<PartCategory, string> Definitions(PlayerProfile profile, OwnedCar car)
         {
@@ -228,84 +237,117 @@ namespace DragLab.Domain.Mechanics
             profile.parts.Add(item); Replace(profile, car, item, profile.catalog); profile.cash -= cost; profile.revision++;
             return true;
         }
+        // Keep one validation rule set for synchronous transactions and paced
+        // private settlement candidates; the latter only changes yield boundaries.
         public static string Validate(PlayerProfile profile, MechanicalCatalog catalog)
         {
-            if (profile.saveVersion != SaveVersion || profile.mechanicsVersion != MechanicsSchema.Version || profile.revision < 0 || profile.cash < 0) return "Invalid profile version/revision/cash.";
-            if(profile.cars.Count == 0 ? !string.IsNullOrEmpty(profile.selectedOwnedVehicleId) || !string.IsNullOrEmpty(profile.selectedVehicleId) : !profile.cars.Any(c=>c.instanceId==profile.selectedOwnedVehicleId&&c.vehicleId==profile.selectedVehicleId))return "Invalid selected owned vehicle reference.";
-            string stockError=VehicleListings.Validate(profile,catalog);if(stockError!=null)return stockError;
-            string economyError = PaidEconomy.ValidateState(profile); if (economyError != null) return economyError;
-            string careerError = CareerProgression.Validate(profile); if (careerError != null) return careerError;
-            string businessError=GarageBusiness.Validate(profile);if(businessError!=null)return businessError;
+            string error=null;
+            foreach(var unused in ValidateCore(profile,catalog,value=>error=value,false)){}
+            return error;
+        }
+        internal static IEnumerable<string> ValidateSteps(PlayerProfile profile, MechanicalCatalog catalog,Action<string> completed)
+            =>ValidateCore(profile,catalog,completed,true);
+        static IEnumerable<string> ValidateCore(PlayerProfile profile, MechanicalCatalog catalog,Action<string> completed,bool paced)
+        {
+            if (profile.saveVersion != SaveVersion || profile.mechanicsVersion != MechanicsSchema.Version || profile.revision < 0 || profile.cash < 0) { completed("Invalid profile version/revision/cash."); yield break; }
+            if(profile.cars.Count == 0 ? !string.IsNullOrEmpty(profile.selectedOwnedVehicleId) || !string.IsNullOrEmpty(profile.selectedVehicleId) : !profile.cars.Any(c=>c.instanceId==profile.selectedOwnedVehicleId&&c.vehicleId==profile.selectedVehicleId)){ completed("Invalid selected owned vehicle reference."); yield break; }
+            string stockError=VehicleListings.Validate(profile,catalog);if(stockError!=null){ completed(stockError); yield break; }
+            if(paced)yield return "settlement/normalize validate vehicle market";
+            string economyError = PaidEconomy.ValidateState(profile); if (economyError != null) { completed(economyError); yield break; }
+            string careerError = CareerProgression.Validate(profile); if (careerError != null) { completed(careerError); yield break; }
+            string businessError=GarageBusiness.Validate(profile);if(businessError!=null){ completed(businessError); yield break; }
+            if(paced)yield return "settlement/normalize validate economy and career";
             var identities = new HashSet<string>(); var bindings = new HashSet<string>();
             Func<string, bool> unique = id => !string.IsNullOrEmpty(id) && identities.Add(id);
             foreach (var car in profile.cars)
             {
-                if(car.usedHistory==null||car.usedHistory.Count>16||car.usedHistory.Any(n=>string.IsNullOrWhiteSpace(n)||n.Length>160||n.Any(char.IsControl)))return "Invalid owned history.";
-                if(!MechanicsSchema.Finite(car.mileageKm)||car.mileageKm<0)return "Invalid owned mileage.";
-                if (MassDynamics.ValidateInputs(catalog.Spec(car.vehicleId),car.tune) != null) return "Invalid owned mass/placement inputs.";
-                if(car.serviceHardwareVersion!=1||car.fluids==null||car.fluids.Validate(catalog.Spec(car.vehicleId).fluids)!=null)return "Invalid owned fluids/service migration.";
-                if(car.thermalUtcTicks<0||car.thermalUtcTicks>DateTime.MaxValue.Ticks)return "Invalid owned thermal clock.";
-                if (car.fuel == null || car.fuel.Validate(catalog.Spec(car.vehicleId).fuel) != null || !car.fuelInitialized || car.massVersion != 1) return "Invalid fuel/mass state.";
-                if (!unique(car.instanceId) || !unique(car.chassisId) || car.installed == null || car.installed.version != MechanicsSchema.Version || car.installed.instanceId != car.instanceId || car.installed.vehicleDefinitionId != car.vehicleId) return "Invalid vehicle/chassis/build identity.";
+                if(car.usedHistory==null||car.usedHistory.Count>16||car.usedHistory.Any(n=>string.IsNullOrWhiteSpace(n)||n.Length>160||n.Any(char.IsControl))){ completed("Invalid owned history."); yield break; }
+                if(!MechanicsSchema.Finite(car.mileageKm)||car.mileageKm<0){ completed("Invalid owned mileage."); yield break; }
+                if (MassDynamics.ValidateInputs(catalog.Spec(car.vehicleId),car.tune) != null) { completed("Invalid owned mass/placement inputs."); yield break; }
+                if(car.serviceHardwareVersion!=1||car.fluids==null||car.fluids.Validate(catalog.Spec(car.vehicleId).fluids)!=null){ completed("Invalid owned fluids/service migration."); yield break; }
+                if(car.thermalUtcTicks<0||car.thermalUtcTicks>DateTime.MaxValue.Ticks){ completed("Invalid owned thermal clock."); yield break; }
+                if (car.fuel == null || car.fuel.Validate(catalog.Spec(car.vehicleId).fuel) != null || !car.fuelInitialized || car.massVersion != 1) { completed("Invalid fuel/mass state."); yield break; }
+                if (!unique(car.instanceId) || !unique(car.chassisId) || car.installed == null || car.installed.version != MechanicsSchema.Version || car.installed.instanceId != car.instanceId || car.installed.vehicleDefinitionId != car.vehicleId) { completed("Invalid vehicle/chassis/build identity."); yield break; }
                 var engine = profile.engines.Find(e => e.instanceId == car.engineAssemblyId);
                 if (string.IsNullOrEmpty(car.engineAssemblyId)) {
-                    if(car.engineRebuild!=null||car.installed.slots.Any(b=>MechanicalCatalog.EngineSlot(AssemblyOperations.Parse(b.slot)))||car.fluids.oilLitres!=0||car.fluids.coolantLitres!=0)return "Engine-less chassis has engine descendants/resources.";
-                } else if (engine == null || engine.parentVehicleId != car.instanceId || engine.vehicleDefinitionId != car.vehicleId || engine.slots.Count != 0) return "Invalid engine parent.";
+                    if(car.engineRebuild!=null||car.installed.slots.Any(b=>MechanicalCatalog.EngineSlot(AssemblyOperations.Parse(b.slot)))||car.fluids.oilLitres!=0||car.fluids.coolantLitres!=0){ completed("Engine-less chassis has engine descendants/resources."); yield break; }
+                } else if (engine == null || engine.parentVehicleId != car.instanceId || engine.vehicleDefinitionId != car.vehicleId || engine.slots.Count != 0) { completed("Invalid engine parent."); yield break; }
                 var slots = new HashSet<string>();
                 foreach (var binding in car.installed.slots)
                 {
                     PartCategory category;
-                    if (!Enum.TryParse(binding.slot, out category) || !Enum.IsDefined(typeof(PartCategory), category) || !slots.Add(binding.slot) || !bindings.Add(binding.partInstanceId)) return "Duplicate/invalid slot binding.";
+                    if (!Enum.TryParse(binding.slot, out category) || !Enum.IsDefined(typeof(PartCategory), category) || !slots.Add(binding.slot) || !bindings.Add(binding.partInstanceId)) { completed("Duplicate/invalid slot binding."); yield break; }
                     var item = profile.parts.Find(p => p.instanceId == binding.partInstanceId);
                     var definition = item == null ? null : catalog.Find(item.definitionId);
                     var location = MechanicalCatalog.EngineSlot(category) ? PartLocation.Assembly : PartLocation.Vehicle;
                     string owner = location == PartLocation.Assembly ? car.engineAssemblyId : car.instanceId;
-                    if (item == null || definition == null || definition.category != category || item.location != location || item.ownerId != owner || item.slot != binding.slot || !catalog.Fits(catalog.Spec(car.vehicleId), definition)) return "Part parent/fitment does not match its slot.";
+                    if (item == null || definition == null || definition.category != category || item.location != location || item.ownerId != owner || item.slot != binding.slot || !catalog.Fits(catalog.Spec(car.vehicleId), definition)) { completed("Part parent/fitment does not match its slot."); yield break; }
+                if(paced)yield return "settlement/normalize validate installed slot";
                 }
+                if(paced)yield return "settlement/normalize validate car";
             }
             foreach (var engine in profile.engines) {
-                if(engine.customName!=null&&(engine.customName.Length>VehicleCollection.NameLimit||engine.customName.Any(char.IsControl)))return "Invalid engine name.";
-                if(!unique(engine.instanceId)||engine.slots==null||engine.tune==null)return "Invalid/duplicate engine assembly.";
-                if(!string.IsNullOrEmpty(engine.parentVehicleId)) { if(!profile.cars.Any(c=>c.instanceId==engine.parentVehicleId&&c.engineAssemblyId==engine.instanceId))return "Orphan attached engine assembly."; continue; }
-                if(engine.fluids==null||engine.fluids.Validate(catalog.Spec(engine.vehicleDefinitionId).fluids)!=null)return "Invalid stored engine fluids.";
+                if(engine.customName!=null&&(engine.customName.Length>VehicleCollection.NameLimit||engine.customName.Any(char.IsControl))){ completed("Invalid engine name."); yield break; }
+                if(!unique(engine.instanceId)||engine.slots==null||engine.tune==null){ completed("Invalid/duplicate engine assembly."); yield break; }
+                if(!string.IsNullOrEmpty(engine.parentVehicleId)) { if(!profile.cars.Any(c=>c.instanceId==engine.parentVehicleId&&c.engineAssemblyId==engine.instanceId)){ completed("Orphan attached engine assembly."); yield break; } continue; }
+                if(engine.fluids==null||engine.fluids.Validate(catalog.Spec(engine.vehicleDefinitionId).fluids)!=null){ completed("Invalid stored engine fluids."); yield break; }
                 var slots=new HashSet<string>();
                 foreach(var binding in engine.slots){
                     PartCategory category;
-                    if(!Enum.TryParse(binding.slot,out category)||!MechanicalCatalog.EngineSlot(category)||!slots.Add(binding.slot)||!bindings.Add(binding.partInstanceId))return "Invalid/duplicate stored engine slot.";
+                    if(!Enum.TryParse(binding.slot,out category)||!MechanicalCatalog.EngineSlot(category)||!slots.Add(binding.slot)||!bindings.Add(binding.partInstanceId)){ completed("Invalid/duplicate stored engine slot."); yield break; }
                     var item=profile.parts.Find(i=>i.instanceId==binding.partInstanceId);var d=item==null?null:catalog.Find(item.definitionId);
-                    if(d==null||d.category!=category||item.location!=PartLocation.Assembly||item.ownerId!=engine.instanceId||item.slot!=binding.slot||!catalog.Fits(catalog.Spec(engine.vehicleDefinitionId),d))return "Invalid stored engine descendant/fitment.";
+                    if(d==null||d.category!=category||item.location!=PartLocation.Assembly||item.ownerId!=engine.instanceId||item.slot!=binding.slot||!catalog.Fits(catalog.Spec(engine.vehicleDefinitionId),d)){ completed("Invalid stored engine descendant/fitment."); yield break; }
+                    if(paced)yield return "settlement/normalize validate stored engine slot";
                 }
+                if(paced)yield return "settlement/normalize validate engine";
             }
-            foreach(var setup in profile.savedSetups)if(SavedSetups.Validate(setup,catalog)!=null||!unique(setup.id))return "Invalid/duplicate saved setup.";
+            foreach(var setup in profile.savedSetups)if(SavedSetups.Validate(setup,catalog)!=null||!unique(setup.id)){ completed("Invalid/duplicate saved setup."); yield break; }
             foreach (var item in profile.parts)
-                if (!unique(item.instanceId) || item.Validate() != null || catalog.Find(item.definitionId) == null || (item.location != PartLocation.Inventory) != bindings.Contains(item.instanceId)) return "Duplicate/invalid/orphan part instance.";
-            foreach(var loose in profile.looseEngineElements)if(loose==null||loose.element==null||loose.element.Validate()!=null||catalog.Find(loose.definitionId)==null||loose.unitPrice<0||!unique(loose.element.id))return "Invalid loose engine element.";
+            {
+                if (!unique(item.instanceId) || item.Validate() != null || catalog.Find(item.definitionId) == null || (item.location != PartLocation.Inventory) != bindings.Contains(item.instanceId)) { completed("Duplicate/invalid/orphan part instance."); yield break; }
+                if(paced)yield return "settlement/normalize validate part identity";
+            }
+            foreach(var loose in profile.looseEngineElements)
+            {
+                if(loose==null||loose.element==null||loose.element.Validate()!=null||catalog.Find(loose.definitionId)==null||loose.unitPrice<0||!unique(loose.element.id)){ completed("Invalid loose engine element."); yield break; }
+                if(paced)yield return "settlement/normalize validate loose element";
+            }
             foreach(var part in profile.parts)
             {
                 var definition=catalog.Find(part.definitionId);
                 if(definition!=null&&definition.category!=PartCategory.Clutch&&part.condition.clutch!=null)
-                    return "Non-clutch components cannot own clutch-fluid state.";
+                    { completed("Non-clutch components cannot own clutch-fluid state."); yield break; }
                 foreach(var element in part.condition.elements??new EngineElement[0])
+                {
                     if(!EngineElements.FaultAllowed(definition.category,element)||!unique(element.id))
-                        return "Invalid/duplicate typed element identity, category or fault.";
+                        { completed("Invalid/duplicate typed element identity, category or fault."); yield break; }
+                    if(paced)yield return "settlement/normalize validate element";
+                }
+                if(paced)yield return "settlement/normalize validate condition";
             }
             foreach(var part in profile.parts.Where(p=>catalog.Find(p.definitionId).category==PartCategory.Tires))
-                if(part.condition.elements==null||part.condition.elements.Length!=4||part.condition.elements.Any(e=>!(e is TireCondition)))return "Tire sets must contain four typed tire elements.";
-            if(profile.driving==null||profile.driving.guaranteedFittingParts<0||profile.driving.guaranteedFittingParts>20)return "Invalid market guarantee difficulty.";
+                if(part.condition.elements==null||part.condition.elements.Length!=4||part.condition.elements.Any(e=>!(e is TireCondition))){ completed("Tire sets must contain four typed tire elements."); yield break; }
+            if(profile.driving==null||profile.driving.guaranteedFittingParts<0||profile.driving.guaranteedFittingParts>20){ completed("Invalid market guarantee difficulty."); yield break; }
             // Validate dealer identities first, before market descendant enumeration.
-            string inventoryError=SharedInventory.Validate(profile,identities);if(inventoryError!=null)return inventoryError;
-            string marketError=PartsMarket.Validate(profile);if(marketError!=null)return marketError;
+            string inventoryError=SharedInventory.Validate(profile,identities);if(inventoryError!=null){ completed(inventoryError); yield break; }
+            if(paced)yield return "settlement/normalize validate dealer inventory";
+            string marketError=PartsMarket.Validate(profile);if(marketError!=null){ completed(marketError); yield break; }
+            if(paced)yield return "settlement/normalize validate parts market";
             foreach(var item in profile.parts)foreach(var tire in item.condition.tires??new TireCondition[0])if(!string.IsNullOrEmpty(tire.definitionId)){
-                var d=catalog.Find(tire.definitionId);if(d==null||d.category!=PartCategory.Tires)return "Invalid tire specification.";
+                var d=catalog.Find(tire.definitionId);if(d==null||d.category!=PartCategory.Tires){ completed("Invalid tire specification."); yield break; }
                 var owner=profile.cars.FirstOrDefault(c=>c.installed.slots.Any(s=>s.partInstanceId==item.instanceId));
-                if(owner!=null&&!catalog.Fits(catalog.Spec(owner.vehicleId),d))return "Incompatible individual tire.";
+                if(owner!=null&&!catalog.Fits(catalog.Spec(owner.vehicleId),d)){ completed("Incompatible individual tire."); yield break; }
+                if(paced)yield return "settlement/normalize validate tire";
             }
-            foreach(var item in profile.parts.Where(i=>catalog.Find(i.definitionId).category==PartCategory.Wheels)){if(item.condition.elements.Length!=4)return "Four wheel members required.";foreach(var e in item.condition.elements){var d=catalog.Find(string.IsNullOrEmpty(e.definitionId)?item.definitionId:e.definitionId);if(d==null||d.category!=PartCategory.Wheels||e.role!="wheel"||e.cylinder<0||e.cylinder>3)return "Invalid individual wheel specification.";var owner=profile.cars.FirstOrDefault(c=>c.installed.slots.Any(s=>s.partInstanceId==item.instanceId));if(owner!=null&&!catalog.Fits(catalog.Spec(owner.vehicleId),d))return "Individual wheel does not fit.";}if(item.condition.elements.Select(e=>e.cylinder).Distinct().Count()!=4)return "Duplicate wheel positions.";}
-            foreach(var car in profile.cars){if(car.engineRebuild!=null&&EngineRebuilds.Validate(profile,car)!=null)return "Invalid engine rebuild reservation.";}
+            foreach(var item in profile.parts.Where(i=>catalog.Find(i.definitionId).category==PartCategory.Wheels)){if(item.condition.elements.Length!=4){ completed("Four wheel members required."); yield break; }foreach(var e in item.condition.elements){var d=catalog.Find(string.IsNullOrEmpty(e.definitionId)?item.definitionId:e.definitionId);if(d==null||d.category!=PartCategory.Wheels||e.role!="wheel"||e.cylinder<0||e.cylinder>3){ completed("Invalid individual wheel specification."); yield break; }var owner=profile.cars.FirstOrDefault(c=>c.installed.slots.Any(s=>s.partInstanceId==item.instanceId));if(owner!=null&&!catalog.Fits(catalog.Spec(owner.vehicleId),d)){ completed("Individual wheel does not fit."); yield break; }}if(item.condition.elements.Select(e=>e.cylinder).Distinct().Count()!=4){ completed("Duplicate wheel positions."); yield break; }if(paced)yield return "settlement/normalize validate wheel";}
+            foreach(var car in profile.cars){if(car.engineRebuild!=null&&EngineRebuilds.Validate(profile,car)!=null){ completed("Invalid engine rebuild reservation."); yield break; }}
             var runs = new HashSet<string>();
             foreach (var run in profile.runCheckpoints)
-                if (run.version != MechanicsSchema.Version || string.IsNullOrEmpty(run.runId) || !runs.Add(run.runId) || !profile.cars.Any(c => c.instanceId == run.ownedVehicleId) || run.tick < 0 || run.revision > profile.revision) return "Invalid run checkpoint.";
-            return null;
+            {
+                if (run.version != MechanicsSchema.Version || string.IsNullOrEmpty(run.runId) || !runs.Add(run.runId) || !profile.cars.Any(c => c.instanceId == run.ownedVehicleId) || run.tick < 0 || run.revision > profile.revision) { completed("Invalid run checkpoint."); yield break; }
+                if(paced)yield return "settlement/normalize validate checkpoint";
+            }
+            { completed(null); yield break; }
         }
     }
 }
