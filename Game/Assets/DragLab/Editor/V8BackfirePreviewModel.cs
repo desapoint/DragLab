@@ -12,6 +12,7 @@ namespace DragLab.Editor
     {
         public const int Rate=48000;
         public enum Cleanup { Light, LessTicking }
+        public enum Texture { Reference, Damped, NoShell }
         [Serializable] public sealed class Receipt {public int index;public double time,strength,position,travel;public ulong timbreSeed;public string kind,region;}
         public sealed class Stem {public double[] left,right;public List<Receipt> events=new List<Receipt>();}
         sealed class Rng
@@ -48,7 +49,7 @@ namespace DragLab.Editor
         static double[] Unit(double[] x){double max=x.Max(v=>Math.Abs(v))+1e-9;for(int i=0;i<x.Length;i++)x[i]/=max;return x;}
         static double[] Noise(Rng rng,int n){var x=new double[n];for(int i=0;i<n;i++)x[i]=rng.N();return x;}
         static double[] Low(double[] x,double hz,int order=2)=>Band(x,0,hz,order);
-        public static double[] Burst(ulong seed,string kind,Cleanup cleanup)
+        public static double[] Burst(ulong seed,string kind,Cleanup cleanup,Texture texture=Texture.Reference)
         {
             var rng=new Rng(seed);int n=(int)(.28*Rate);var direct=new double[n];var shock=new double[n];
             double grit=kind=="crack"?1.28:kind=="crackle"?.88:1,depth=kind=="crack"?1.06:kind=="crackle"?.68:1,metal=kind=="crack"?1.05:kind=="crackle"?.77:1;
@@ -59,7 +60,11 @@ namespace DragLab.Editor
             for(int k=0;k<tiny;k++){int at=(int)(offsets[k]*Rate),length=Math.Min(n-at,(int)Math.Round(rng.U(.0014,.0045)*Rate));if(length<=0)continue;double strength=rng.U(.04,.22)*(1-k/(tiny+3.0)),decay=rng.U(.00045,.0016);for(int i=0;i<length;i++)direct[at+i]+=1.15*.75*microGain*strength*Math.Exp(-i/(Rate*decay))*(1+.7*bed[at+i]);}
             var shell=new double[n];var jitter=Low(Unit(Low(Noise(rng,n),240)),350,1);
             double[,] modes={{490,.020,.24},{792,.018,.22},{1247,.017,.25},{1694,.013,.20},{2522,.010,.20},{3651,.007,.14},{4807,.005,.07}};
-            for(int k=0;k<7;k++){double freq=modes[k,0]*(1+rng.U(-.12,.12)),phase=rng.U(0,2*Math.PI),g=modes[k,2]*(modes[k,0]>=2500?highMetal:1);for(int i=0;i<n;i++){double t=i/(double)Rate;shell[i]+=g*Math.Sin(2*Math.PI*freq*t+.13*jitter[i]+phase)*Math.Exp(-t/modes[k,1]);}}
+            for(int k=0;k<7;k++){double freq=modes[k,0]*(1+rng.U(-.12,.12)),phase=rng.U(0,2*Math.PI),g=modes[k,2]*(modes[k,0]>=2500?highMetal:1);for(int i=0;i<n;i++){double t=i/(double)Rate;
+                // Reference is preserved exactly. New audition: lower-Q, pressure-drooping,
+                // noise-modulated shell response rather than seven clearly pitched struck modes.
+                if(texture==Texture.Reference)shell[i]+=g*Math.Sin(2*Math.PI*freq*t+.13*jitter[i]+phase)*Math.Exp(-t/modes[k,1]);
+                else if(texture==Texture.Damped)shell[i]+=.32*g*(.65+.35*bed[i])*Math.Sin(2*Math.PI*freq*(t-.8*t*t)+.38*jitter[i]+phase)*Math.Exp(-t/(modes[k,1]*.30));}}
             for(int i=0;i<n;i++)direct[i]+=1.12*metal*.38*Math.Tanh(3*shell[i])*(1-Math.Exp(-i/(Rate*.0003)));
             var y=(double[])direct.Clone();double[,] reflections={{.0031,.27,6300},{.0068,-.17,5200},{.0117,.13,3700},{.0195,-.09,2700}};
             for(int k=0;k<4;k++)Tap(y,Low(direct,reflections[k,2]),(int)Math.Round(reflections[k,0]*Rate),reflections[k,1]);
@@ -82,10 +87,10 @@ namespace DragLab.Editor
         }
         public static double[] Hardware(double[] source,V8BackfireMatrixExport.Job job,double position)
         {var setup=job.exhaust.Copy();for(int i=0;i<setup.parts.Length;i++){var section=job.sections[i];setup.parts[i].amount*=(float)Clamp((section.end-position)/(section.end-section.start),0,1);}var filter=new ExhaustFilter(setup,job.exhaustStage);filter.Configure(Rate);var y=new double[source.Length];for(int i=0;i<y.Length;i++)y[i]=filter.Process(source[i]);return y;}
-        public static double[] Source(V8BackfireMatrixExport.Job job,V8BackfireMatrixExport.Event ev,long master,Cleanup cleanup,out string kind)
+        public static double[] Source(V8BackfireMatrixExport.Job job,V8BackfireMatrixExport.Event ev,long master,Cleanup cleanup,out string kind,Texture texture=Texture.Reference)
         {
             kind=ev.strength<.28?"crackle":ev.limiter||ev.twoStep||ev.strength>.72?"crack":"normal";ulong seed=Seed(master,job.id,ev.index,11);var rng=new Rng(Seed((long)(seed&0x7fffffffffffffffUL),job.id,ev.index,77));
-            var dry=Burst(seed,kind,cleanup);double stretch=1+.90*rng.U(-.14,.17),depth=1+.9*rng.U(-.27,.29),bite=1+.9*rng.U(-.32,.37),grain=1+.9*rng.U(-.24,.32),amplitude=1+.9*rng.U(-.11,.12);
+            var dry=Burst(seed,kind,cleanup,texture);double stretch=1+.90*rng.U(-.14,.17),depth=1+.9*rng.U(-.27,.29),bite=1+.9*rng.U(-.32,.37),grain=1+.9*rng.U(-.24,.32),amplitude=1+.9*rng.U(-.11,.12);
             double engine=Clamp(Math.Pow(job.litres/2,.06)*Math.Pow(4500/Math.Max(700,ev.rpm),.05)*Math.Pow(650/Math.Max(300,ev.temperatureK),.05),.8,1.25);stretch*=engine*Clamp(job.popDecay,.25,3)/Math.Pow(Clamp(job.popSharpness,.25,2.5),.25);
             var y=new double[(int)Math.Ceiling(dry.Length*Math.Max(1,stretch))];for(int i=0;i<y.Length;i++){double at=i/stretch;int j=(int)at;if(j<dry.Length-1)y[i]=dry[j]+(dry[j+1]-dry[j])*(at-j);else if(j==dry.Length-1)y[i]=dry[j]*(at==j?1:0);}
             var bass=Low(y,450);var lowmid=Low(y,2550);for(int i=0;i<y.Length;i++)y[i]=(depth*bass[i]+grain*(lowmid[i]-bass[i])+bite*(y[i]-lowmid[i]))*amplitude;return y;
@@ -103,10 +108,10 @@ namespace DragLab.Editor
             int delay=(int)Math.Round(Rate*path*job.lengthM/Math.Sqrt(1.34*287*Clamp(ev.temperatureK,300,1500)));Shift(y,delay);travel=delay/(double)Rate;return y;
         }
         static void Shift(double[] x,int delay){if(delay==0)return;for(int i=x.Length-1;i>=0;i--)x[i]=i>=delay?x[i-delay]:0;}
-        public static Stem Render(V8BackfireMatrixExport.Job job,long master,Cleanup cleanup)
+        public static Stem Render(V8BackfireMatrixExport.Job job,long master,Cleanup cleanup,Texture texture=Texture.Reference)
         {
             var mono=new double[job.frames];var stem=new Stem();double? previous=null;string lastScenario=null;double lastTime=-10;
-            foreach(var ev in job.events){string region,kind;bool recent=ev.scenario==lastScenario&&ev.time-lastTime<.42;double position=Locate(job,ev,master,recent?previous:null,out region);var source=Source(job,ev,master,cleanup,out kind);double travel;var emitted=Propagate(source,job,ev,master,position,out travel);int start=(int)Math.Round(ev.time*Rate);for(int i=0;i<emitted.Length&&start+i<mono.Length;i++)mono[start+i]+=ev.strength*job.popGain*emitted[i];stem.events.Add(new Receipt{index=ev.index,time=ev.time,strength=ev.strength,position=position,travel=travel,timbreSeed=Seed(master,job.id,ev.index,11),kind=kind,region=region});previous=position;lastScenario=ev.scenario;lastTime=ev.time;}
+            foreach(var ev in job.events){string region,kind;bool recent=ev.scenario==lastScenario&&ev.time-lastTime<.42;double position=Locate(job,ev,master,recent?previous:null,out region);var source=Source(job,ev,master,cleanup,out kind,texture);double travel;var emitted=Propagate(source,job,ev,master,position,out travel);int start=(int)Math.Round(ev.time*Rate);for(int i=0;i<emitted.Length&&start+i<mono.Length;i++)mono[start+i]+=ev.strength*job.popGain*emitted[i];stem.events.Add(new Receipt{index=ev.index,time=ev.time,strength=ev.strength,position=position,travel=travel,timbreSeed=Seed(master,job.id,ev.index,11),kind=kind,region=region});previous=position;lastScenario=ev.scenario;lastTime=ev.time;}
             stem.left=(double[])mono.Clone();stem.right=(double[])mono.Clone();var room=Low(Band(mono,140,0),3600);Tap(stem.left,room,(int)Math.Round(.011*Rate),.07);Tap(stem.right,room,(int)Math.Round(.020*Rate),.082);double gain=1.35*.85*.31*3;for(int i=0;i<mono.Length;i++){stem.left[i]*=gain;stem.right[i]*=gain;}return stem;
         }
     }

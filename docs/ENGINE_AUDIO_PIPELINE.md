@@ -317,3 +317,20 @@ supply-unavailable engines and rejects non-finite strengths. No new generator or
 other engine/induction/tire sound change is integrated. The audit defines a
 timestamped event/mixture/path contract and negative cases for the next backfire
 checkpoint; acoustic acceptance and Android device profiling remain separate.
+
+### Mixture-conditioned event preview and separate engine ringing
+
+The user identifies the Timber ding in the unchanged engine-only layer. Private
+intake/clatter ablations investigate it without modifying engine DSP. The new
+[mixture preview checkpoint](../reports/mixture-backfire-20261020/CHANGES.md) keeps
+the reviewed backfire timbre and replaces the preview's old counter-driven event
+schedule with transported residual fuel/oxygen, heat exchange, dilution/flammability
+gates and conditional seeded ignition. Every reaction consumes retained material;
+fuel cut supplies no new fuel but can leave earlier mixture to burn.
+
+Ten complete original → new comparisons and negative controls pass. This is a
+reduced-order Editor experiment with explicit estimated burn/thermal/geometry
+inputs, not new real-world accuracy certification or runtime integration. Engine
+audio, induction, tires and race results remain unchanged. The intake tone has
+not been silently removed from gameplay, nor has a shell variant been selected
+as a supposed fix for a sound confirmed to exist in the engine layer.

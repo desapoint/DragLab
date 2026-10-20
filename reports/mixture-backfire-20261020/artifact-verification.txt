@@ -1,0 +1,12 @@
+PASS 01-i3-na: original PCM exact, full original/new sections and silence gap; residual fuel ledger; 1 funded ignitions; peak 0.1450.
+PASS 19-injection-soft-fuel: original PCM exact, full original/new sections and silence gap; residual fuel ledger; 0 funded ignitions; peak 0.1468.
+PASS 07-i6-carb: original PCM exact, full original/new sections and silence gap; residual fuel ledger; 1 funded ignitions; peak 0.2443.
+PASS 30-exhaust-2: original PCM exact, full original/new sections and silence gap; residual fuel ledger; 1 funded ignitions; peak 0.3601.
+PASS 31-exhaust-3: original PCM exact, full original/new sections and silence gap; residual fuel ledger; 1 funded ignitions; peak 0.4305.
+PASS 09-v8-supercharger: original PCM exact, full original/new sections and silence gap; residual fuel ledger; 0 funded ignitions; peak 0.2381.
+PASS 26-launch-hard-ignition: original PCM exact, full original/new sections and silence gap; residual fuel ledger; 915 funded ignitions; peak 0.4192.
+PASS 14-i4-twincharged-dct: original PCM exact, full original/new sections and silence gap; residual fuel ledger; 710 funded ignitions; peak 0.3124.
+PASS 12-v12-twin: original PCM exact, full original/new sections and silence gap; residual fuel ledger; 88 funded ignitions; peak 0.3302.
+PASS 23-diesel-soft-fuel: original PCM exact, full original/new sections and silence gap; residual fuel ledger; 0 funded ignitions; peak 0.2330.
+PASS all ten earlier original/A/B files retain their recorded SHA-256; no prior audio artifacts overwritten.
+PASS all Timber diagnostic clips: 48 kHz PCM16 stereo, three seconds; no separate normalization.

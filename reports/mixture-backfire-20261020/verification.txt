@@ -1,0 +1,138 @@
+PASS hot partially burned mixture produces afterfires
+PASS zero fuel cannot produce afterfire
+PASS zero oxygen cannot produce afterfire
+PASS fully chamber-burned fuel cannot produce afterfire
+PASS cold charge and exhaust without ignition cannot light residual mixture
+PASS charge/gas temperature can enable ignition with cold walls
+PASS trace fuel below the flammability limit cannot explode in inert exhaust
+PASS same seed/input gives exact event times, sites and energies
+PASS changed seed varies conditional ignition, not fuel availability
+PASS control fuel mass conserved
+PASS control exhaust oxygen conserved
+PASS control chemical release split exactly into heat and acoustic energy
+PASS control every ignition consumes residual fuel and oxygen
+PASS control finite nonnegative zones
+PASS control fuel mass conserved
+PASS control exhaust oxygen conserved
+PASS control chemical release split exactly into heat and acoustic energy
+PASS control every ignition consumes residual fuel and oxygen
+PASS control finite nonnegative zones
+PASS control fuel mass conserved
+PASS control exhaust oxygen conserved
+PASS control chemical release split exactly into heat and acoustic energy
+PASS control every ignition consumes residual fuel and oxygen
+PASS control finite nonnegative zones
+PASS control fuel mass conserved
+PASS control exhaust oxygen conserved
+PASS control chemical release split exactly into heat and acoustic energy
+PASS control every ignition consumes residual fuel and oxygen
+PASS control finite nonnegative zones
+PASS cold walls can quench a retained mixture despite hot incoming air
+PASS cold residual fuel mass conserved
+PASS cold residual exhaust oxygen conserved
+PASS cold residual chemical release split exactly into heat and acoustic energy
+PASS cold residual every ignition consumes residual fuel and oxygen
+PASS cold residual finite nonnegative zones
+PASS hot fuel-cut residual mixture may ignite later without fresh fuel
+PASS hot residual fuel mass conserved
+PASS hot residual exhaust oxygen conserved
+PASS hot residual chemical release split exactly into heat and acoustic energy
+PASS hot residual every ignition consumes residual fuel and oxygen
+PASS hot residual finite nonnegative zones
+PASS default source preserves prior generator exactly
+PASS shell diagnostic and damped texture differ from prior source
+PASS new shell texture remains seeded and exact
+PASS Timber engine diagnostic reference exactly matches the unchanged archived pop-free bed
+PASS 01-i3-na countdown
+PASS 01-i3-na fuel mass conserved
+PASS 01-i3-na exhaust oxygen conserved
+PASS 01-i3-na chemical release split exactly into heat and acoustic energy
+PASS 01-i3-na every ignition consumes residual fuel and oxygen
+PASS 01-i3-na finite nonnegative zones
+PASS 01-i3-na full fuel cut injects no fresh afterfire fuel
+PASS 01-i3-na physical fuel delivery remains present when gameplay depletion is disabled
+PASS 01-i3-na authoritative race and original event counters unchanged / ET 18,330491769024263 vs 18,330491769024263 / pops 32 vs 32
+PASS 19-injection-soft-fuel countdown
+PASS 19-injection-soft-fuel fuel mass conserved
+PASS 19-injection-soft-fuel exhaust oxygen conserved
+PASS 19-injection-soft-fuel chemical release split exactly into heat and acoustic energy
+PASS 19-injection-soft-fuel every ignition consumes residual fuel and oxygen
+PASS 19-injection-soft-fuel finite nonnegative zones
+PASS 19-injection-soft-fuel full fuel cut injects no fresh afterfire fuel
+PASS 19-injection-soft-fuel physical fuel delivery remains present when gameplay depletion is disabled
+PASS 19-injection-soft-fuel authoritative race and original event counters unchanged / ET 17,215629882685597 vs 17,215629882685597 / pops 0 vs 0
+PASS 07-i6-carb countdown
+PASS 07-i6-carb fuel mass conserved
+PASS 07-i6-carb exhaust oxygen conserved
+PASS 07-i6-carb chemical release split exactly into heat and acoustic energy
+PASS 07-i6-carb every ignition consumes residual fuel and oxygen
+PASS 07-i6-carb finite nonnegative zones
+PASS 07-i6-carb full fuel cut injects no fresh afterfire fuel
+PASS 07-i6-carb physical fuel delivery remains present when gameplay depletion is disabled
+PASS 07-i6-carb authoritative race and original event counters unchanged / ET 15,901019637062115 vs 15,901019637062117 / pops 36 vs 36
+PASS 30-exhaust-2 countdown
+PASS 30-exhaust-2 fuel mass conserved
+PASS 30-exhaust-2 exhaust oxygen conserved
+PASS 30-exhaust-2 chemical release split exactly into heat and acoustic energy
+PASS 30-exhaust-2 every ignition consumes residual fuel and oxygen
+PASS 30-exhaust-2 finite nonnegative zones
+PASS 30-exhaust-2 full fuel cut injects no fresh afterfire fuel
+PASS 30-exhaust-2 physical fuel delivery remains present when gameplay depletion is disabled
+PASS 30-exhaust-2 authoritative race and original event counters unchanged / ET 15,196625590039545 vs 15,196625590039543 / pops 46 vs 46
+PASS 31-exhaust-3 countdown
+PASS 31-exhaust-3 fuel mass conserved
+PASS 31-exhaust-3 exhaust oxygen conserved
+PASS 31-exhaust-3 chemical release split exactly into heat and acoustic energy
+PASS 31-exhaust-3 every ignition consumes residual fuel and oxygen
+PASS 31-exhaust-3 finite nonnegative zones
+PASS 31-exhaust-3 full fuel cut injects no fresh afterfire fuel
+PASS 31-exhaust-3 physical fuel delivery remains present when gameplay depletion is disabled
+PASS 31-exhaust-3 authoritative race and original event counters unchanged / ET 15,196625590039545 vs 15,196625590039543 / pops 46 vs 46
+PASS 09-v8-supercharger countdown
+PASS 09-v8-supercharger fuel mass conserved
+PASS 09-v8-supercharger exhaust oxygen conserved
+PASS 09-v8-supercharger chemical release split exactly into heat and acoustic energy
+PASS 09-v8-supercharger every ignition consumes residual fuel and oxygen
+PASS 09-v8-supercharger finite nonnegative zones
+PASS 09-v8-supercharger full fuel cut injects no fresh afterfire fuel
+PASS 09-v8-supercharger physical fuel delivery remains present when gameplay depletion is disabled
+PASS 09-v8-supercharger authoritative race and original event counters unchanged / ET 12,893285564593782 vs 12,893285564593782 / pops 111 vs 111
+PASS 26-launch-hard-ignition countdown
+PASS 26-launch-hard-ignition fuel mass conserved
+PASS 26-launch-hard-ignition exhaust oxygen conserved
+PASS 26-launch-hard-ignition chemical release split exactly into heat and acoustic energy
+PASS 26-launch-hard-ignition every ignition consumes residual fuel and oxygen
+PASS 26-launch-hard-ignition finite nonnegative zones
+PASS 26-launch-hard-ignition full fuel cut injects no fresh afterfire fuel
+PASS 26-launch-hard-ignition physical fuel delivery remains present when gameplay depletion is disabled
+PASS 26-launch-hard-ignition authoritative race and original event counters unchanged / ET 14,03094542488069 vs 14,03094542488069 / pops 218 vs 218
+PASS 14-i4-twincharged-dct countdown
+PASS 14-i4-twincharged-dct fuel mass conserved
+PASS 14-i4-twincharged-dct exhaust oxygen conserved
+PASS 14-i4-twincharged-dct chemical release split exactly into heat and acoustic energy
+PASS 14-i4-twincharged-dct every ignition consumes residual fuel and oxygen
+PASS 14-i4-twincharged-dct finite nonnegative zones
+PASS 14-i4-twincharged-dct full fuel cut injects no fresh afterfire fuel
+PASS 14-i4-twincharged-dct physical fuel delivery remains present when gameplay depletion is disabled
+PASS 14-i4-twincharged-dct authoritative race and original event counters unchanged / ET 13,212769857531717 vs 13,212769857531717 / pops 137 vs 137
+PASS 12-v12-twin countdown
+PASS 12-v12-twin fuel mass conserved
+PASS 12-v12-twin exhaust oxygen conserved
+PASS 12-v12-twin chemical release split exactly into heat and acoustic energy
+PASS 12-v12-twin every ignition consumes residual fuel and oxygen
+PASS 12-v12-twin finite nonnegative zones
+PASS 12-v12-twin full fuel cut injects no fresh afterfire fuel
+PASS 12-v12-twin physical fuel delivery remains present when gameplay depletion is disabled
+PASS 12-v12-twin authoritative race and original event counters unchanged / ET 12,451291913257398 vs 12,451291913257398 / pops 31 vs 31
+PASS 23-diesel-soft-fuel countdown
+PASS 23-diesel-soft-fuel fuel mass conserved
+PASS 23-diesel-soft-fuel exhaust oxygen conserved
+PASS 23-diesel-soft-fuel chemical release split exactly into heat and acoustic energy
+PASS 23-diesel-soft-fuel every ignition consumes residual fuel and oxygen
+PASS 23-diesel-soft-fuel finite nonnegative zones
+PASS 23-diesel-soft-fuel full fuel cut injects no fresh afterfire fuel
+PASS 23-diesel-soft-fuel physical fuel delivery remains present when gameplay depletion is disabled
+PASS 23-diesel-soft-fuel authoritative race and original event counters unchanged / ET 17,959016035968418 vs 17,959016035968418 / pops 0 vs 0
+PASS ignition two-step/anti-lag configuration has audible mixture-driven afterfire coverage
+PASS mixture/audio preview does not consume Unity gameplay RNG
+Checks: 137

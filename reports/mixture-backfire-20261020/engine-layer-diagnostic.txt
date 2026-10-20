@@ -1,0 +1,12 @@
+User identifies ding in engine-only layer. These are private copied-spec/frame ablations, not runtime sound changes.
+at-40s / engine-reference / RMS 0,034877562296813013
+at-40s / engine-no-gulp / RMS 0,033253632835878122
+at-40s / gulp-only / RMS 0,011702209269416709
+at-40s / engine-no-clatter / RMS 0,034877559622046035
+at-40s / clatter-only / RMS 1,2721071212211538E-05
+at-88s / engine-reference / RMS 0,065618120191154122
+at-88s / engine-no-gulp / RMS 0,065405219389035582
+at-88s / gulp-only / RMS 0,0051583950696875141
+at-88s / engine-no-clatter / RMS 0,06561812260971156
+at-88s / clatter-only / RMS 1,2786276769685208E-05
+Gulp-only mutes engine gain and mechanical clatter on private spec; the surviving 90 + throttle*75 Hz intake sine (plus second harmonic) is outside the exhaust/backfire generator. No-gulp removes only its frame excitation. Clatter-only removes that excitation and engine gain while retaining authored clatter.
