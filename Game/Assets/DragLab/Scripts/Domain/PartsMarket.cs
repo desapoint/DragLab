@@ -235,10 +235,47 @@ namespace DragLab.Domain.Mechanics
             }
             for(int n=0;n<selectedUsed.Count;n++){AddUsedSupply(p,selectedUsed[n].Item1,selectedUsed[n].Item2,prefix+"used/"+n,ref usedQuantity);yield return "parts/used supply";}
             if(owned.Length>0&&state.guaranteeAtRefresh>0){
+                long indexedStart=Stamp();
+                // The existing catalog layout retains the exact grouping order
+                // and model compatibility. The detached settlement path can
+                // skip every redundant full-catalog Fits/GroupBy scan.
+                // Synchronous/editor generation remains the parity reference.
+                var candidates=offloadDelivery
+                    ?layout.fitments.ForModels(owned)
+                        .Where(i=>PartSemantics.Wears(layout.groups[i].definition.category)&&
+                            layout.groups[i].definition.reputationRequired<=p.reputation)
+                        .Select(i=>Tuple.Create(layout.groups[i].definition,i)).ToList()
+                    :p.catalog.parts.Where(d=>PartSemantics.Wears(d.category)&&
+                            d.reputationRequired<=p.reputation&&targets.Any(spec=>p.catalog.Fits(spec,d)))
+                        .GroupBy(d=>productKeys[d.id],StringComparer.Ordinal)
+                        .OrderBy(g=>g.Min(d=>d.id),StringComparer.Ordinal)
+                        .Select(g=>Tuple.Create(g.OrderBy(d=>d.id,StringComparer.Ordinal).First(),-1))
+                        .ToList();
+                var eligibleKeys=offloadDelivery
+                    ?new HashSet<string>(candidates.Select(item=>productKeys[item.Item1.id]),StringComparer.Ordinal)
+                    :null;
                 var generated=p.inventory.dealer.Where(row=>row.Id.StartsWith(prefix+"used/",StringComparison.Ordinal)).ToArray();
-                var present=new HashSet<string>(generated.Where(row=>{var d=p.catalog.Find(row.DefinitionId);return d.reputationRequired<=p.reputation&&targets.Any(spec=>p.catalog.Fits(spec,d));}).Select(row=>productKeys[row.DefinitionId]),StringComparer.Ordinal);
-                var candidates=p.catalog.parts.Where(d=>PartSemantics.Wears(d.category)&&d.reputationRequired<=p.reputation&&targets.Any(spec=>p.catalog.Fits(spec,d))).GroupBy(d=>productKeys[d.id],StringComparer.Ordinal).OrderBy(g=>g.Min(d=>d.id),StringComparer.Ordinal).Select(g=>g.OrderBy(d=>d.id,StringComparer.Ordinal).First()).ToList();
-                while(present.Count<state.guaranteeAtRefresh){var remaining=candidates.Where(d=>!present.Contains(productKeys[d.id])).ToArray();if(remaining.Length==0)break;var d=remaining[(int)(Next(ref coverageRandom)*remaining.Length)%remaining.Length];var platforms=targets.Where(spec=>p.catalog.Fits(spec,d)).ToArray();var source=platforms[(int)(Next(ref coverageRandom)*platforms.Length)%platforms.Length];var spec=layout.Stock(p.catalog,source.id);AddUsedSupply(p,spec,d,prefix+"used/guaranteed/"+present.Count,ref coverageQuantity);present.Add(productKeys[d.id]);yield return "parts/used guarantee";}
+                var present=new HashSet<string>(generated.Where(row=>{
+                    if(eligibleKeys!=null)return eligibleKeys.Contains(productKeys[row.DefinitionId]);
+                    var d=p.catalog.Find(row.DefinitionId);
+                    return d.reputationRequired<=p.reputation&&targets.Any(spec=>p.catalog.Fits(spec,d));
+                }).Select(row=>productKeys[row.DefinitionId]),StringComparer.Ordinal);
+                Measured("used guarantee eligible products",indexedStart);
+                while(present.Count<state.guaranteeAtRefresh){
+                    var remaining=candidates.Where(item=>!present.Contains(productKeys[item.Item1.id])).ToArray();
+                    if(remaining.Length==0)break;
+                    var selected=remaining[(int)(Next(ref coverageRandom)*remaining.Length)%remaining.Length];
+                    var d=selected.Item1;
+                    // Preserve target order and both coverage RNG draws.
+                    var platforms=offloadDelivery
+                        ?targets.Where(spec=>layout.fitments.FitsModel(spec.id,selected.Item2)).ToArray()
+                        :targets.Where(spec=>p.catalog.Fits(spec,d)).ToArray();
+                    var source=platforms[(int)(Next(ref coverageRandom)*platforms.Length)%platforms.Length];
+                    var spec=layout.Stock(p.catalog,source.id);
+                    AddUsedSupply(p,spec,d,prefix+"used/guaranteed/"+present.Count,ref coverageQuantity);
+                    present.Add(productKeys[d.id]);
+                    yield return "parts/used guarantee";
+                }
             }
             Measured("used parts/guarantee",stamp);stamp=Stamp();
             bool carry=expire&&previous!=null&&previous.seed==state.seed&&previous.generation<state.generation;
