@@ -158,6 +158,10 @@ namespace DragLab.Runtime
                             costs["initial fitting guarantee worker CPU"][1]>=1&&
                             costs["initial fitting guarantee worker CPU"][0]>=0,
                             "Third-race initial fitting guarantee runs inside the selection worker");
+                    if(scenario=="paid third"&&game.Profile.driving.guaranteedFittingParts>0)
+                        Check(costs.ContainsKey("used guarantee eligible products")&&
+                            costs["used guarantee eligible products"][1]==1,
+                            "Third-race used guarantee resolves candidates from the cached model index");
                     if(scenario=="paid third")
                         Check(saveStages["market chunk records"]>0&&
                             saveStages["projected state records"]<15348&&
