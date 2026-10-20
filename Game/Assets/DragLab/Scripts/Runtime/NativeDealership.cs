@@ -129,8 +129,8 @@ namespace DragLab.Runtime
                     model.Exterior=VehicleInspection.Hardware(dealerCatalog,offer);
                     var factory=VehicleCollection.Preview(dealerCatalog,publicOffer);
                     var source=InspectionBuild.Capture(factory,factory.SelectedCar);
-                    model.Stats=CarInspection.CalculatePrepared(source,CarInspection.PrepareCar(source),false);
-                    var healthySource=InspectionBuild.Capture(factory,factory.SelectedCar,healthy:true);model.Healthy=CarInspection.CalculatePrepared(healthySource,CarInspection.PrepareCar(healthySource),false);
+                    model.Stats=NativePartBrowser.Inspect(source,partPreviewCache);
+                    var healthySource=InspectionBuild.Capture(factory,factory.SelectedCar,healthy:true);model.Healthy=NativePartBrowser.Inspect(healthySource,partPreviewCache);
                     var build=source.build;var stats=model.Stats;
                     entry.Hp=stats.peakHp;entry.Torque=stats.peakTorque;entry.Weight=stats.vehicleMassKg;entry.Condition=offer.reportedCondition*100;entry.Drive=build.spec.drive.ToString();entry.Type=BodyName(build.spec.bodyType);
                     entry.Gearbox=OwnedCarEntry.GearboxName(TransmissionDynamics.Configuration(build.spec,build.tune));entry.Induction=InductionName(new InductionProfile(build.spec,build.tune).type);entry.LockedCenter=build.spec.drive==DriveType.AWD&&AxleDriveDynamics.Configuration(build.spec,build.tune).mode==AwdMode.LockedCenter;

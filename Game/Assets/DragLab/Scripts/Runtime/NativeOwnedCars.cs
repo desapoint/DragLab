@@ -21,7 +21,18 @@ namespace DragLab.Runtime
         string ownedSelection;
         TorqueUnit ownedTorque;
         CancellationTokenSource ownedCancellation;
-        Task<Dictionary<string,BenchmarkResult>> ownedRatings;
+
+        sealed class OwnedRatingResult
+        {
+            internal string Context;
+            internal BenchmarkResult Rating;
+            internal CarInspection Driving;
+        }
+        readonly Dictionary<string,OwnedRatingResult> ownedRatingCache=new Dictionary<string,OwnedRatingResult>();
+        readonly LinkedList<string> ownedRatingRecency=new LinkedList<string>();
+        readonly Dictionary<string,LinkedListNode<string>> ownedRatingNodes=new Dictionary<string,LinkedListNode<string>>();
+        Task<Dictionary<string,OwnedRatingResult>> ownedRatings;
+        readonly Dictionary<string,string> ownedPendingContexts=new Dictionary<string,string>();
         string ownedDetailId;
         Vector2 ownedReturnScroll;
         long ownedDetailRevision;
@@ -70,13 +81,15 @@ namespace DragLab.Runtime
             if (!ReferenceEquals(ownedProfile,profile) || ownedRevision != profile.revision || ownedSelection != profile.selectedOwnedVehicleId || ownedTorque != units)
                 BuildOwnedCars(profile,units);
             if (ownedRatings == null || !ownedRatings.IsCompleted) return;
-            var completed = ownedRatings; ownedRatings = null;
+            var completed = ownedRatings; ownedRatings = null;ownedPendingContexts.Clear();
             try {
                 foreach (var rating in completed.Result) {
                     var label = ownedGrid.Q<Label>("carClass:"+rating.Key);
-                    string text=rating.Value==null?"Class unavailable · PP —":"Class "+rating.Value.performanceClass+" · PP "+rating.Value.points;
+                    var value=rating.Value?.Rating;
+                    string text=value==null?"Class unavailable · PP —":"Class "+value.performanceClass+" · PP "+value.points;
                     if (label != null) label.text = text;
-                    if(ownedEntries.TryGetValue(rating.Key,out var entry)){entry.Rating=rating.Value;entry.RatingPending=false;}
+                    if(rating.Value!=null)RememberOwnedRating(rating.Key,rating.Value);
+                    if(ownedEntries.TryGetValue(rating.Key,out var entry)){entry.Rating=value;entry.RatingPending=false;}
                     if (ownedDetailId == rating.Key) {
                         var detail = ownedDetailContent.Q<Label>(className:"car-class");
                         if (detail != null) detail.text = text;
@@ -92,17 +105,39 @@ namespace DragLab.Runtime
                 foreach(var entry in ownedEntries.Values)entry.RatingPending=false;ApplyOwnedQuery();
             }
         }
+        bool TryGetOwnedRating(string id,out OwnedRatingResult value)
+        {
+            if(!ownedRatingCache.TryGetValue(id,out value))return false;
+            var node=ownedRatingNodes[id];ownedRatingRecency.Remove(node);ownedRatingRecency.AddLast(node);
+            return true;
+        }
+        void RememberOwnedRating(string id,OwnedRatingResult value)
+        {
+            if(ownedRatingNodes.TryGetValue(id,out var node))ownedRatingRecency.Remove(node);
+            else {
+                if(ownedRatingCache.Count>=128){
+                    var oldest=ownedRatingRecency.First.Value;
+                    ownedRatingRecency.RemoveFirst();ownedRatingNodes.Remove(oldest);ownedRatingCache.Remove(oldest);
+                }
+            }
+            ownedRatingNodes[id]=ownedRatingRecency.AddLast(id);
+            ownedRatingCache[id]=value;
+        }
         void BuildOwnedCars(PlayerProfile profile,TorqueUnit units)
         {
-            ownedCancellation?.Cancel(); ownedCancellation?.Dispose();
-            ownedCancellation = new CancellationTokenSource(); var token = ownedCancellation.Token;
-            ownedRatings = null;
+            // A previous batch may have finished since the last UI refresh.
+            // Retain its fully computed, signature-keyed results before replacing
+            // the cards, instead of running the same quarter-mile probes again.
+            var previousRatings=ownedRatings;
+            if(previousRatings!=null&&previousRatings.Status==TaskStatus.RanToCompletion)
+                foreach(var finished in previousRatings.Result)
+                    if(finished.Value!=null)RememberOwnedRating(finished.Key,finished.Value);
             foreach (var surface in ownedSurfaces) surfaces.Remove(surface);
             ownedSurfaces.Clear();
             Vector2 scroll = ownedScroll.scrollOffset; ownedGrid.Clear();ownedEntries.Clear();
             ownedProfile = profile; ownedRevision = profile.revision; ownedSelection = profile.selectedOwnedVehicleId; ownedTorque = units;
             OwnedGridBuildCount++;ownedWarningSnapshots.Clear();warningProfile=profile;warningRevision=profile.revision;
-            var probes = new List<Tuple<string,InspectionBuild,CarSimulation>>();
+            var probes = new List<Tuple<string,string,InspectionBuild>>();
             foreach (var car in profile.cars) {
                 string id = car.instanceId;
                 var entry=new OwnedCarEntry {Id=id,Order=ownedEntries.Count,Name=VehicleCollection.DisplayName(profile.catalog,car),Model=profile.catalog.Spec(car.vehicleId).displayName,Drive=profile.catalog.Spec(car.vehicleId).drive.ToString(),Type=BodyName(profile.catalog.Spec(car.vehicleId).bodyType),Status="Unavailable",RatingPending=true};ownedEntries.Add(id,entry);
@@ -119,16 +154,25 @@ namespace DragLab.Runtime
                 try {
                     var build = MechanicsOwnership.Resolve(profile,car,profile.catalog);
                     visual.Add(CarPreview(build,car.paintHex));
-                    var source = InspectionBuild.Capture(profile,car);
-                    var simulation = CarInspection.PrepareCar(source);
-                    var stats = CarInspection.CalculatePrepared(source,simulation,false);
+                    var inspected=InspectOwned(car);
+                    var source=inspected==null?InspectionBuild.Capture(profile,car):inspected.Stats.source;
+                    CarInspection stats;
+                    if(inspected!=null)stats=inspected.Stats;
+                    else {
+                        var simulation=CarInspection.PrepareCar(source);
+                        stats=CarInspection.CalculatePrepared(source,simulation,false,partPreviewCache.SteadyOutput(simulation.induction));
+                    }
                     ownedWarningSnapshots[car.instanceId]=stats.warnings.ToArray();
                     entry.Hp=stats.peakHp;entry.Torque=stats.peakTorque;entry.Weight=stats.vehicleMassKg;entry.Condition=stats.condition*100;entry.Drive=build.spec.drive.ToString();entry.Type=BodyName(build.spec.bodyType);entry.Gearbox=OwnedCarEntry.GearboxName(TransmissionDynamics.Configuration(build.spec,build.tune));entry.Induction=InductionName(new InductionProfile(build.spec,build.tune).type);entry.LockedCenter=build.spec.drive==DriveType.AWD&&AxleDriveDynamics.Configuration(build.spec,build.tune).mode==AwdMode.LockedCenter;
                     var values = new VisualElement(); values.AddToClassList("car-card-stats"); info.Add(values);
                     CarFact(values,"HP",stats.peakHp.ToString("F0"));
                     CarFact(values,"Torque",DisplayUnits.Torque(stats.peakTorque,units).ToString("F0")+" "+DisplayUnits.TorqueLabel(units));
                     CarFact(values,"Weight",stats.vehicleMassKg.ToString("F0")+" kg");
-                    var rating = new Label("Class …") { name = "carClass:"+car.instanceId }; rating.AddToClassList("car-class"); info.Add(rating);
+                    string signature=inspected==null?NativePartPreviewCache.CarSignature(profile,car):inspected.Fingerprint;
+                    bool reusedRating=TryGetOwnedRating(car.instanceId,out var prior)&&prior.Context==signature;
+                    if(reusedRating){entry.Rating=prior.Rating;entry.RatingPending=false;}
+                    string ratingText=reusedRating?(prior.Rating==null?"Class unavailable · PP —":"Class "+prior.Rating.performanceClass+" · PP "+prior.Rating.points):"Class …";
+                    var rating = new Label(ratingText) { name = "carClass:"+car.instanceId }; rating.AddToClassList("car-class"); info.Add(rating);
                     var installed = car.installed.slots.Select(slot => profile.parts.Find(part => part.instanceId == slot.partInstanceId)).Where(part => part != null).ToArray();
                     int failed = installed.Sum(part => profile.catalog.Find(part.definitionId).category==PartCategory.Tires?part.condition.tires.Count(t=>t.failed||t.health<=0||t.consumedLife>=1):(part.condition.failed||part.condition.health<=0?1:0));
                     int worn = installed.Sum(part => profile.catalog.Find(part.definitionId).category==PartCategory.Tires?part.condition.tires.Count(t=>!t.failed&&t.health>0&&t.consumedLife<1&&(t.health<=.5f||t.consumedLife>=.5)):(PartSemantics.Wears(profile.catalog.Find(part.definitionId).category)&&!part.condition.failed&&part.condition.health>0&&(part.condition.health<=.5f||part.condition.deposits>=.05||part.condition.leakSeverity>=.01||part.condition.adjustmentError>=.05||EngineElements.NeedsService(part.condition))?1:0));
@@ -141,7 +185,7 @@ namespace DragLab.Runtime
                     if (!build.Drivable || build.warnings.Count > 0) {
                         var reason = new Label(string.IsNullOrEmpty(car.engineAssemblyId)?"No engine attached":build.errors.Concat(build.warnings).FirstOrDefault()); reason.AddToClassList("car-reason"); info.Add(reason);
                     }
-                    probes.Add(Tuple.Create(car.instanceId,source,CarInspection.PrepareCar(source)));
+                    if(!reusedRating)probes.Add(Tuple.Create(car.instanceId,signature,source));
                 } catch (Exception) {
                     entry.RatingPending=false;
                     var unavailable = new Label("Build data unavailable"); unavailable.AddToClassList("car-critical"); info.Add(unavailable);
@@ -152,18 +196,65 @@ namespace DragLab.Runtime
             }
             if (profile.cars.Count == 0) { var empty = new Label("No owned cars"); empty.AddToClassList("car-empty"); ownedGrid.Add(empty); }
             if(profile.cars.Count==0){var recovery=new Button(()=>game.OpenRecovery()){name="emptyGarageRecovery",text="Recovery work"};recovery.AddToClassList("action-button");ownedGrid.Add(recovery);AddSurface(recovery,RacingSurface.Kind.SecondaryAction);ownedSurfaces.Add(recovery.Q<RacingSurface>());}
-            ApplyOwnedQuery();ownedScroll.scrollOffset = scroll; RefreshOwnedDetails(); ExcludeTabTraversal();
-            OwnedRatingRunCount++;
-            ownedRatings = Task.Run(() => {
-                var result = new Dictionary<string,BenchmarkResult>();
-                foreach (var probe in probes) {
-                    if (token.IsCancellationRequested) break;
-                    try { var stats = CarInspection.CalculatePrepared(probe.Item2,probe.Item3);
-                        result[probe.Item1] = stats.completed ? Benchmark.Rating(stats.elapsed,stats.trapMps*3.6) : null;
-                    } catch (Exception) { result[probe.Item1] = null; }
+            // A batch can finish while cards are being constructed. Consume
+            // those newly available results before queuing redundant work.
+            if(previousRatings!=null&&previousRatings.Status==TaskStatus.RanToCompletion){
+                foreach(var finished in previousRatings.Result)
+                    if(finished.Value!=null)RememberOwnedRating(finished.Key,finished.Value);
+                for(int i=probes.Count-1;i>=0;i--){
+                    var probe=probes[i];
+                    if(!TryGetOwnedRating(probe.Item1,out var result)||result.Context!=probe.Item2)continue;
+                    if(ownedEntries.TryGetValue(probe.Item1,out var entry)){
+                        entry.Rating=result.Rating;entry.RatingPending=false;
+                    }
+                    var label=ownedGrid.Q<Label>("carClass:"+probe.Item1);
+                    if(label!=null)label.text=result.Rating==null?"Class unavailable · PP —":
+                        "Class "+result.Rating.performanceClass+" · PP "+result.Rating.points;
+                    probes.RemoveAt(i);
                 }
-                return result;
-            });
+            }
+            ApplyOwnedQuery();ownedScroll.scrollOffset = scroll; RefreshOwnedDetails(); ExcludeTabTraversal();
+            // Rebuilding for unit/selection/cosmetic changes must not cancel an
+            // identical in-flight physics batch and immediately schedule it again.
+            if(previousRatings!=null&&!previousRatings.IsCompleted
+                &&ownedCancellation!=null&&!ownedCancellation.IsCancellationRequested
+                &&probes.Count==ownedPendingContexts.Count
+                &&probes.All(p=>ownedPendingContexts.TryGetValue(p.Item1,out var prior)&&prior==p.Item2))
+                return;
+            ownedCancellation?.Cancel();ownedCancellation?.Dispose();
+            ownedCancellation=null;ownedRatings=null;ownedPendingContexts.Clear();
+            if(probes.Count>0) {
+                // Main-thread preparation is required only for genuinely new
+                // work. An identical in-flight batch can skip this entire cost.
+                var prepared=new List<Tuple<string,string,InspectionBuild,CarSimulation>>(probes.Count);
+                foreach(var probe in probes){
+                    try{prepared.Add(Tuple.Create(probe.Item1,probe.Item2,probe.Item3,CarInspection.PrepareCar(probe.Item3)));}
+                    catch(Exception){
+                        var label=ownedGrid.Q<Label>("carClass:"+probe.Item1);
+                        if(label!=null)label.text="Class unavailable · PP —";
+                        if(ownedEntries.TryGetValue(probe.Item1,out var entry))entry.RatingPending=false;
+                    }
+                }
+                if(prepared.Count==0)return;
+                ownedCancellation=new CancellationTokenSource();var token=ownedCancellation.Token;
+                foreach(var probe in prepared)ownedPendingContexts[probe.Item1]=probe.Item2;
+                OwnedRatingRunCount++;
+                ownedRatings = Task.Run(() => {
+                    var result = new Dictionary<string,OwnedRatingResult>();
+                    foreach (var probe in prepared) {
+                        if (token.IsCancellationRequested) break;
+                        try {
+                            var stats=CarInspection.CalculatePrepared(probe.Item3,probe.Item4);
+                            result[probe.Item1]=new OwnedRatingResult{
+                                Context=probe.Item2,
+                                Driving=stats,
+                                Rating=stats.completed?Benchmark.Rating(stats.elapsed,stats.trapMps*3.6):null
+                            };
+                        }catch(Exception){result[probe.Item1]=null;}
+                    }
+                    return result;
+                });
+            }
         }
         void OpenOwnedCar(string id)
         {

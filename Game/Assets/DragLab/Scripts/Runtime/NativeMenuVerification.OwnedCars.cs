@@ -121,6 +121,24 @@ namespace DragLab.Runtime
                     yield return new WaitForSecondsRealtime(.1f);
                 Check(shell.Root.Query<Label>(className:"car-class").ToList().All(label=>label.text!="Class …"),"Shared background inspection finishes class estimates without UI rebuilding");
                 Check(shell.OwnedGridBuildCount==builds,"Class results update labels without rebuilding cards");
+                int reusedCaptures=shell.InspectionCaptureCount, reusedRatings=shell.OwnedRatingRunCount;
+                shell.InvalidateOwnedGrid();shell.Refresh();
+                Check(shell.InspectionCaptureCount==reusedCaptures&&shell.OwnedRatingRunCount==reusedRatings
+                    &&shell.Root.Query<Label>(className:"car-class").ToList().All(label=>label.text!="Class …"),
+                    "Forced Garage refresh reuses unchanged per-car inspections and completed quarter-mile ratings");
+                // Recorded performance, cosmetic presentation and name changes
+                // rebuild their cards, not the car's physical simulation.
+                string oldName=first.customName,oldPaint=first.paintHex;
+                double oldBest=first.bestQuarterSeconds;
+                first.customName="Cosmetic-only audit";first.paintHex="#19375A";first.bestQuarterSeconds=8.999;
+                fixture.revision++;
+                shell.Refresh();
+                Check(shell.InspectionCaptureCount==reusedCaptures&&shell.OwnedRatingRunCount==reusedRatings
+                    &&shell.Root.Q<Label>("carClass:"+first.instanceId).text!="Class …",
+                    "Rename, repaint and records preserve cached physics and completed PP");
+                first.customName=oldName;first.paintHex=oldPaint;first.bestQuarterSeconds=oldBest;
+                fixture.revision--;
+                shell.Refresh();
                 yield return CarFilterChecks(input);
                 CarFilterToolbarLayout(1280);yield return Capture("owned-cars-1280");
                 var cardRect=shell.Root.Q("ownedCar:"+first.instanceId).worldBound;

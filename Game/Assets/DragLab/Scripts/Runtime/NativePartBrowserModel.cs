@@ -83,11 +83,11 @@ namespace DragLab.Runtime
             actual=profile;actualCar=profile.SelectedCar;plannedReference=planned;this.cache=cache;
             if(actualCar==null)return;
             cache?.Bind(profile,actualCar);
-            Current=string.IsNullOrEmpty(actualCar.engineAssemblyId)?null:cache==null?Inspect(InspectionBuild.Capture(profile,actualCar)):cache.Inspection("current",()=>Inspect(InspectionBuild.Capture(profile,actualCar)));reference=profile;
+            Current=string.IsNullOrEmpty(actualCar.engineAssemblyId)?null:cache==null?Inspect(InspectionBuild.Capture(profile,actualCar)):cache.Inspection("current",()=>Inspect(InspectionBuild.Capture(profile,actualCar),cache));reference=profile;
             var cart=lines.Select(l=>l.Copy()).ToArray();
             string incoming=cart.Length==0?"":cache==null?JsonUtility.ToJson(profile):cache.Context+"/"+string.Join("/",cart.Select(l=>JsonUtility.ToJson(profile.parts.Find(i=>i.instanceId==l.assetId))+JsonUtility.ToJson(profile.looseEngineElements.Find(i=>i.element.id==l.assetId))+JsonUtility.ToJson(profile.inventory.dealer.Find(i=>i.Id==l.assetId))+JsonUtility.ToJson(profile.catalog.Find(l.definitionId))));
             string planKey="plan/"+NativePartPreviewCache.Fingerprint(JsonUtility.ToJson(new PartCart.Lines{entries=cart.ToList()})+incoming);
-            if(cart.Length>0)try {PartCart.Total(profile,actualCar.instanceId,cart);var copy=cache==null?PartCart.PreviewProfile(profile,actualCar,cart):cache.Plan(planKey,()=>PartCart.PreviewProfile(profile,actualCar,cart));Plan=cache==null?Inspect(InspectionBuild.Capture(copy,copy.SelectedCar)):cache.Inspection(planKey,()=>Inspect(InspectionBuild.Capture(copy,copy.SelectedCar)));if(planned)reference=copy;}catch(Exception e){PlanError=e.Message;}
+            if(cart.Length>0)try {PartCart.Total(profile,actualCar.instanceId,cart);var copy=cache==null?PartCart.PreviewProfile(profile,actualCar,cart):cache.Plan(planKey,()=>PartCart.PreviewProfile(profile,actualCar,cart));Plan=cache==null?Inspect(InspectionBuild.Capture(copy,copy.SelectedCar)):cache.Inspection(planKey,()=>Inspect(InspectionBuild.Capture(copy,copy.SelectedCar),cache));if(planned)reference=copy;}catch(Exception e){PlanError=e.Message;}
             referenceKey=planned&&Plan!=null?planKey:"current";
             referenceCar=reference.SelectedCar;referenceMap=MechanicsOwnership.Definitions(reference,referenceCar);Reference=planned&&PlanError!=null||string.IsNullOrEmpty(referenceCar.engineAssemblyId)?null:ReferenceEquals(reference,profile)?Current:Plan;
             referenceSpec=actual.catalog.Resolve(referenceCar.vehicleId,referenceMap,referenceCar.tune).spec;
@@ -127,7 +127,11 @@ namespace DragLab.Runtime
             if(c==PartCategory.Clutch||c==PartCategory.Flywheel||c==PartCategory.Gearbox||c==PartCategory.Differential||c==PartCategory.Driveshaft||MechanicalCatalog.DriveBranch(c))return NativePartSection.Drivetrain;
             return NativePartSection.Engine;
         }
-        internal static CarInspection Inspect(InspectionBuild b)=>CarInspection.CalculatePrepared(b,CarInspection.PrepareCar(b),false);
+        internal static CarInspection Inspect(InspectionBuild b,NativePartPreviewCache cache=null)
+        {
+            var prepared=CarInspection.PrepareCar(b);
+            return CarInspection.CalculatePrepared(b,prepared,false,cache==null?null:cache.SteadyOutput(prepared.induction));
+        }
         internal string[] Positions(NativePartEntry e)=>e.Unit==null?new string[0]:InventoryUnits.Positions(reference,referenceCar,e.Definition.id,e.Unit.element.role);
         internal string PositionLabel(NativePartEntry e,string position)=>InventoryUnits.PositionLabel(reference,referenceCar,e.Definition.id,position);
         internal NativePartEntry PreviewNewUnit(NativePartEntry offer,string role,IEnumerable<string> selection)
@@ -140,7 +144,7 @@ namespace DragLab.Runtime
             if(selected.Length==0&&available.Length>0)selected=new[]{available[0]};e.Position=selected.FirstOrDefault();Evaluate(e);
             if(selected.Length>1&&e.Proposed!=null){
                 var copy=PartCart.PreviewProfile(reference,referenceCar,new[]{new PartCartLine{action=CartAction.NewUnits,definitionId=e.Definition.id,role=role,quantity=selected.Length,install=true,positions=selected.ToList()}});
-                e.Proposed=Inspect(InspectionBuild.Capture(copy,copy.SelectedCar));
+                e.Proposed=Inspect(InspectionBuild.Capture(copy,copy.SelectedCar),cache);
             }
             return e;
         }
@@ -185,7 +189,7 @@ namespace DragLab.Runtime
                 e.Compatibility=mating?"Requires supporting changes":"Compatible";
                 e.Reason=string.Join("\n",structural.errors.Concat(structural.warnings));
                 if(candidate.build.errors.Any(error=>!error.StartsWith("Failed ",StringComparison.Ordinal))){e.Reason=string.Join("\n",candidate.build.errors.Concat(structural.warnings));return;}
-                e.Proposed=Inspect(candidate);var a=Reference;var b=e.Proposed;
+                e.Proposed=Inspect(candidate,cache);var a=Reference;var b=e.Proposed;
                 e.Reason=string.Join("\n",structural.errors.Concat(structural.warnings).Concat(b.warnings.Select(w=>w.title+": "+w.explanation+" "+w.suggestion)).Distinct());
                 e.Change[0]=b.peakHp-a.peakHp;e.Change[1]=b.peakTorque-a.peakTorque;e.Change[2]=b.vehicleMassKg-a.vehicleMassKg;
                 var replaced=reference.componentsPart(d.category);double health=e.Unit!=null?e.Unit.element.health:e.Part!=null?(d.category==PartCategory.Tires?TireDynamics.LowestHealth(e.Part.condition):e.Part.condition.health):1;

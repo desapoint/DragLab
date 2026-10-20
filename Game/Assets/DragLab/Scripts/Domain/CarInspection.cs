@@ -49,6 +49,12 @@ namespace DragLab.Domain
         }
     }
     public struct InspectionCurvePoint { public double rpm, hp, torque; }
+    // Immutable result of the hardware-only induction calculation at one RPM.
+    // Wear, supply availability and mechanical failure are applied separately on every inspection.
+    public struct InspectionSteadyPoint
+    {
+        public double engineTorqueNm, boostBar;
+    }
     public sealed class SetupWarning
     {
         public string title, explanation, suggestion;
@@ -80,7 +86,7 @@ namespace DragLab.Domain
         }
         public static CarInspection Calculate(InspectionBuild source) => CalculatePrepared(source,PrepareCar(source));
         // Preparation loads authored catalog data on the main thread. This method is pure domain math.
-        public static CarInspection CalculatePrepared(InspectionBuild source,CarSimulation car,bool runProbe=true)
+        public static CarInspection CalculatePrepared(InspectionBuild source,CarSimulation car,bool runProbe=true,Func<double,InspectionSteadyPoint> steadyOutput=null)
         {
             var result = new CarInspection { source = source, probeComplete=runProbe }; var b = source.build; var spec = b.spec; var tune = b.tune; var wheels = car.wheels;
             result.mass = car.mass;BuildLimits.Capture(car,out result.safeOperatingRpm,out result.rpmLimitPart,out result.engineTorqueHeadroomNm,out result.torqueLimitPart);
@@ -100,15 +106,19 @@ namespace DragLab.Domain
             for (double rpm = spec.idleRpm; rpm <= spec.redlineRpm + .01; rpm = Math.Min(spec.redlineRpm, rpm + 100))
             {
                 car.state.rpm=rpm;car.mechanics.Prepare(car.state);ServiceDynamics.Prepare(car);
-                var steady = InductionDynamics.SteadyOutput(car.induction, rpm);
-                double torque = Math.Max(0,steady.engineTorqueNm * car.state.mechanicalPowerFactor-car.state.extraEngineFrictionNm);
+                // Keep stateful mechanical preparation on this car even when the independent
+                // induction output is reused. Race probes always use the uncached path.
+                double steadyTorque,steadyBoost;
+                if(steadyOutput!=null&&!runProbe){var steady=steadyOutput(rpm);steadyTorque=steady.engineTorqueNm;steadyBoost=steady.boostBar;}
+                else {var steady=InductionDynamics.SteadyOutput(car.induction,rpm);steadyTorque=steady.engineTorqueNm;steadyBoost=steady.boostBar;}
+                double torque = Math.Max(0,steadyTorque * car.state.mechanicalPowerFactor-car.state.extraEngineFrictionNm);
                 if (car.state.deliveryPowerCapacityHp > 0) torque = Math.Min(torque, car.state.deliveryPowerCapacityHp * 7127 / rpm);
                 if (car.state.engineFailed || !car.state.engineSupplyAvailable) torque = 0;
                 double hp = torque * rpm / 7127;
                 result.curve.Add(new InspectionCurvePoint { rpm = rpm, hp = hp, torque = torque });
                 if (torque > result.peakTorque) { result.peakTorque = torque; result.torqueRpm = rpm; }
                 if (hp > result.peakHp) { result.peakHp = hp; result.hpRpm = rpm; }
-                result.boostBar = Math.Max(result.boostBar, steady.boostBar);
+                result.boostBar = Math.Max(result.boostBar, steadyBoost);
                 if (rpm >= spec.redlineRpm) break;
             }
             result.gearRedlineMps = spec.gears.Select(ratio => spec.redlineRpm / FlywheelDynamics.RpmPerRadian * wheels.radius / (ratio * tune.finalDrive)).ToArray();
