@@ -1,0 +1,20 @@
+Simulation-driven race audio audition / player engine only / 48 kHz stereo
+PASS 01-i3-na / 38.32 s / limiter ticks 370 / shifts 3 / releases 0 / peak boost 0.000
+PASS 02-i4-na / 37.17 s / limiter ticks 404 / shifts 3 / releases 0 / peak boost 0.000
+PASS 03-i4-turbo-hiss / 34.25 s / limiter ticks 707 / shifts 4 / releases 3 / peak boost 0.900
+PASS 04-i4-twin-chirp / 33.23 s / limiter ticks 757 / shifts 4 / releases 3 / peak boost 0.954
+PASS 05-i5-turbo-flutter / 33.10 s / limiter ticks 767 / shifts 4 / releases 3 / peak boost 0.900
+PASS 06-i6-na / 36.73 s / limiter ticks 555 / shifts 3 / releases 0 / peak boost 0.000
+PASS 07-i6-carb / 35.90 s / limiter ticks 542 / shifts 3 / releases 0 / peak boost 0.000
+PASS 08-v8-carb / 35.19 s / limiter ticks 637 / shifts 3 / releases 0 / peak boost 0.000
+PASS 09-v8-supercharger / 32.89 s / limiter ticks 361 / shifts 3 / releases 0 / peak boost 0.550
+PASS 10-diesel-turbo / 37.74 s / limiter ticks 516 / shifts 3 / releases 0 / peak boost 0.900
+PASS 11-v10-na / 35.16 s / limiter ticks 658 / shifts 3 / releases 0 / peak boost 0.000
+PASS 12-v12-twin / 32.45 s / limiter ticks 749 / shifts 4 / releases 2 / peak boost 0.742
+PASS 13-v8-twin-supercharger / 32.42 s / limiter ticks 914 / shifts 3 / releases 0 / peak boost 0.583
+PASS 14-i4-twincharged-dct / 33.21 s / limiter ticks 759 / shifts 4 / releases 3 / peak boost 0.954
+PASS 15-v8-street-wheelspin / 34.87 s / limiter ticks 697 / shifts 3 / releases 0 / peak boost 0.000
+PASS 16-v8-wide-wheelspin / 32.31 s / limiter ticks 962 / shifts 3 / releases 0 / peak boost 0.649
+PASS 17-v8-burnout / 35.27 s / limiter ticks 236 / shifts 4 / releases 0 / peak boost 0.000
+PASS exact WAV repeatability for a complete turbo race, including lift, limiter and shifts.
+PASS: 17 complete real races; no rival voice constructed; no player saves/preferences accessed.

@@ -8,7 +8,7 @@ namespace DragLab.Runtime
         bool onboardingPrompted;
         void ShowOnboardingIfNeeded()
         {
-            if(onboardingPrompted||game.ResetRequired||!game.Profile.firstPurchasePending||DrivingPreferences.OnboardingComplete)return;
+            if(PrototypeGame.AudioAuditionRequested||onboardingPrompted||game.ResetRequired||!game.Profile.firstPurchasePending||DrivingPreferences.OnboardingComplete)return;
             onboardingPrompted=true;
             var driver=(DrivingPreset)(int)game.settings.shifting;
             var simulation=game.settings.simulationDifficulty==SimulationDifficulty.Custom?SimulationDifficulty.Simulation:game.settings.simulationDifficulty;

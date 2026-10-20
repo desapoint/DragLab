@@ -117,3 +117,20 @@ are 8-192 kHz. Development players expose callback timing counters without addin
 a new user-facing interface. Physical Android profiling remains distinct from
 desktop/Editor timing and successful ARM64 compilation. See the checkpoint report
 for the checks and build evidence actually obtained.
+
+## Category isolation and tire acoustics, 2026-10-20
+
+Production engine and tire AudioSources have independent published category gains,
+multiplied by master gain in their existing smoothed DSP paths. Opponent gain and
+distance attenuation still apply to both rival voices. Legacy settings default
+both categories to 100%; normal and pause controls remain drafts until Apply.
+The development live audition solos engine or tires without changing preferences.
+
+Tire contact remains authoritative: each corner supplies slip work, effective
+friction, normal load and rolling radius. A prepared immutable acoustic profile
+adds that corner's fitted compound grip and front/rear width multiplier. Wider
+patches and softer compounds gently lower/broaden rubber resonance and alter its
+roughness/squeal mix. This is sound calibration, not a measured rubber acoustics
+model or a change to handling. One explicit Asphalt sound surface is defined;
+there is no surface selector or extra surface-dependent physics. Profiles are
+prepared outside the audio callback, which retains reusable buffers and filters.

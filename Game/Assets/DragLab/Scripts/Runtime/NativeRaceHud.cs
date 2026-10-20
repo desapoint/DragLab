@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 namespace DragLab.Runtime
 {
     // Instruments and touch presentation; PrototypeGame owns simulation and input consumption.
-    internal sealed class NativeRaceHud : MonoBehaviour
+    internal sealed partial class NativeRaceHud : MonoBehaviour
     {
         PrototypeGame game;
         UIDocument document;
@@ -107,6 +107,7 @@ namespace DragLab.Runtime
             pauseButton = HudButton("racePause", "", () => game.PauseRace(true)); pauseButton.AddToClassList("race-pause-button");pauseButton.tooltip="Pause";pauseButton.Add(new FilledMenuIcon("Pause"));
             readyButton = HudButton("raceReady", "Ready", () => game.Race?.BeginCountdown());readyButton.AddToClassList("race-ready-button");
             lineLockButton=HudButton("raceLineLock","Line lock",()=>{if(game.RaceTouchActive&&game.Race.warmup)game.Race.player.state.warmupLineLock=!game.Race.player.state.warmupLineLock;});lineLockButton.AddToClassList("race-line-lock");
+            InitializeAudioAuditionControls();
             InterfaceComparison.SetReplacement("Race", true);
         }
 
@@ -153,8 +154,8 @@ namespace DragLab.Runtime
             phase.style.right=warning.style.right=mobile?width/panel.scale-center-200:(compact?260:wide?660:520)+insetRight;
             phase.style.bottom=(mobile||compact?228:76)+insetBottom;warning.style.bottom=(mobile||compact?194:36)+insetBottom;
             pauseButton.SetEnabled(!game.NativeRacePause);
-            pauseButton.EnableInClassList("hidden", game.Race.ResultReady);
-            readyButton.EnableInClassList("hidden",!game.Race.warmup||game.NativeRacePause);
+            pauseButton.EnableInClassList("hidden", !game.AudioAuditionActive&&game.Race.ResultReady);
+            readyButton.EnableInClassList("hidden",game.AudioAuditionActive||!game.Race.warmup||game.NativeRacePause);
             readyButton.SetEnabled(game.Race.WarmupStopped&&!game.Race.player.state.engineFailed&&!game.Race.player.state.drivetrainFailed);
             var car = game.Race.player;
             bool inputActive=game.RaceTouchActive;
@@ -186,6 +187,7 @@ namespace DragLab.Runtime
             Rpm.SetValue(state.rpm);
             ShiftLamp.SetState(car);
             Gear.SetState(state.gear, car.transmission, car.spec.gears.Length, state.shiftRemaining, TransmissionDynamics.ShiftSeconds(car.transmission,car.spec,car.tune));
+            RefreshAudioAuditionControls();
             string signal = game.NativeRacePause ? "PAUSED" : game.Race.warmup ? "WARM-UP" : state.disqualified ? "RED LIGHT" : game.Race.time < 1.5 ? "STAGED" : game.Race.time < 2 ? "AMBER 1" : game.Race.time < 2.5 ? "AMBER 2" : game.Race.time < 3 ? "AMBER 3" : "GREEN";
             if(state.finished&&!game.NativeRacePause)signal="FINISHED";
             Set(phase, signal + "  ·  " + state.distance.ToString("F1") + " / " + game.Race.distance.ToString("F1") + " m");

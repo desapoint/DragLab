@@ -52,13 +52,16 @@ namespace DragLab.Runtime
             racePausePage="sound";
             float baselineMaster=SharedAudioSettings.MasterVolume,baselineOpponent=SharedAudioSettings.OpponentVolume;
             float master=baselineMaster,opponent=baselineOpponent;
+            float baseEngine=SharedAudioSettings.EngineVolume,baseTires=SharedAudioSettings.TireVolume,engine=baseEngine,tires=baseTires;
             Label error=null;
-            Action changed=()=>{error.text="";root.Q("dialogApply").SetEnabled(Math.Abs(master-baselineMaster)>.0001||Math.Abs(opponent-baselineOpponent)>.0001);};
+            Action changed=()=>{error.text="";root.Q("dialogApply").SetEnabled(Math.Abs(master-baselineMaster)>.0001||Math.Abs(opponent-baselineOpponent)>.0001||Math.Abs(engine-baseEngine)>.0001||Math.Abs(tires-baseTires)>.0001);};
             OpenDialog("Sound",null,new[]{new DialogAction("Back",CloseDialog),new DialogAction("Apply",()=>{
-                if(!game.ApplyRaceAudio(master,opponent,out string failure)){error.text=failure;return;}
+                if(!game.ApplyRaceAudio(master,opponent,out string failure,engine,tires)){error.text=failure;return;}
                 CloseDialog();
             },true)},()=>racePausePage=null,content=>{
                 AddRaceAudioRange(content,"pauseMaster","Master volume",()=>master,v=>master=v,()=>baselineMaster,changed);
+                AddRaceAudioRange(content,"pauseEngine","Engine volume",()=>engine,v=>engine=v,()=>baseEngine,changed);
+                AddRaceAudioRange(content,"pauseTires","Tire volume",()=>tires,v=>tires=v,()=>baseTires,changed);
                 AddRaceAudioRange(content,"pauseOpponent","Opponent volume",()=>opponent,v=>opponent=v,()=>baselineOpponent,changed);
                 error=new Label{name="pauseSoundError"};error.AddToClassList("settings-status");content.Add(error);
             });
@@ -95,11 +98,11 @@ namespace DragLab.Runtime
 
     public sealed partial class PrototypeGame
     {
-        internal bool ApplyRaceAudio(float master,float opponent,out string error)
+        internal bool ApplyRaceAudio(float master,float opponent,out string error,float? engine=null,float? tires=null)
         {
             if(!NativeRacePause){error="Pause is no longer open.";return false;}
             // The limited dialog cannot change driver rules, units, ownership or progression.
-            return PreferenceCommit.TryApply(profile,SharedUnitSettings.Current,master,opponent,out error);
+            return PreferenceCommit.TryApply(profile,SharedUnitSettings.Current,master,opponent,out error,engineVolume:engine,tireVolume:tires);
         }
     }
 }

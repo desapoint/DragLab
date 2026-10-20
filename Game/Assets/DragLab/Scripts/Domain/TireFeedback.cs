@@ -5,7 +5,7 @@ namespace DragLab.Domain
     // Presentation derives from contact, never engine torque demand. Braking skids count too.
     public struct TireFeedback
     {
-        public double intensity, slidingSpeed, slip, grip, normalLoadN, radiusM;
+        public double intensity, slidingSpeed, slip, grip, normalLoadN, radiusM, widthScale, compoundGrip;
         public static TireFeedback Read(CarState state,int wheel)
         {
             if(state==null||state.contact==null||!state.wheelContactInitialized||wheel<0||wheel>3)return default;
@@ -26,6 +26,23 @@ namespace DragLab.Domain
             return new TireFeedback{slip=slip,slidingSpeed=slip*Math.Max(4,Math.Abs(state.speed)),intensity=DragMath.Clamp((slip-.045)*1.5,0,1)};
         }
     }
+    // One authored surface for now. Acoustic calibration is independent of road friction.
+    public sealed class TireSoundProfile
+    {
+        public const string SurfaceName="Asphalt";
+        public const double SurfaceResonance=1, SurfaceRoughness=1;
+        readonly double[] radius=new double[4],width=new double[4],compound=new double[4];
+        public TireSoundProfile(VehicleSpec spec,Tune tune)
+        {
+            for(int i=0;i<4;i++){
+                radius[i]=spec.wheelRadiusM*tune.AxleDiameter(i<2);width[i]=tune.AxleWidth(i<2);
+                compound[i]=spec.cornerTireDefinitions!=null&&spec.cornerTireDefinitions.Length==4&&spec.cornerTireDefinitions[i]!=null
+                    ?spec.cornerTireDefinitions[i].grip:tune.GripMultiplier;
+            }
+        }
+        public TireFeedback Apply(TireFeedback contact,int wheel)
+        { contact.radiusM=radius[wheel];contact.widthScale=width[wheel];contact.compoundGrip=compound[wheel];return contact; }
+    }
     // Immutable publication between the main and DSP threads; no shared mutable wheel arrays.
     public sealed class TireSoundFrame
     {
@@ -35,13 +52,15 @@ namespace DragLab.Domain
         public TireSoundFrame(TireFeedback fl,TireFeedback fr,TireFeedback rl,TireFeedback rr,double speed,double volume,bool active=true)
         {this.fl=fl;this.fr=fr;this.rl=rl;this.rr=rr;this.speed=Math.Abs(speed);this.volume=DragMath.Clamp(volume,0,1);this.active=active;}
         public TireFeedback Wheel(int i){return i==0?fl:i==1?fr:i==2?rl:rr;}
-        public static TireSoundFrame From(CarState state,bool active,double volume,DriveType drive=DriveType.FWD)
+        public static TireSoundFrame From(CarState state,bool active,double volume,DriveType drive=DriveType.FWD,TireSoundProfile profile=null)
         {
-            if(!state.wheelContactInitialized) {
-                // Acoustic-only bench has an explicitly authored slip slider, not road contact.
-                return new TireSoundFrame(TireFeedback.Authored(state,0,drive),TireFeedback.Authored(state,1,drive),TireFeedback.Authored(state,2,drive),TireFeedback.Authored(state,3,drive),state.speed,volume,active);
-            }
-            return new TireSoundFrame(TireFeedback.Read(state,0),TireFeedback.Read(state,1),TireFeedback.Read(state,2),TireFeedback.Read(state,3),state.speed,volume,active);
+            // The acoustic-only bench explicitly authors slip; races use actual per-wheel contact.
+            var fl=state.wheelContactInitialized?TireFeedback.Read(state,0):TireFeedback.Authored(state,0,drive);
+            var fr=state.wheelContactInitialized?TireFeedback.Read(state,1):TireFeedback.Authored(state,1,drive);
+            var rl=state.wheelContactInitialized?TireFeedback.Read(state,2):TireFeedback.Authored(state,2,drive);
+            var rr=state.wheelContactInitialized?TireFeedback.Read(state,3):TireFeedback.Authored(state,3,drive);
+            if(profile!=null){fl=profile.Apply(fl,0);fr=profile.Apply(fr,1);rl=profile.Apply(rl,2);rr=profile.Apply(rr,3);}
+            return new TireSoundFrame(fl,fr,rl,rr,state.speed,volume,active);
         }
     }
     public sealed class TireSoundSynth
@@ -50,7 +69,7 @@ namespace DragLab.Domain
         readonly double[] texture=new double[4],resonance1=new double[4],resonance2=new double[4];
         readonly double[] b0=new double[4],a1=new double[4],a2=new double[4];
         readonly double[] upper1=new double[4],upper2=new double[4],ub0=new double[4],ua1=new double[4],ua2=new double[4];
-        readonly double[] squealLevel=new double[4];
+        readonly double[] squealLevel=new double[4],rubberMix=new double[4],squealMix=new double[4];
         readonly uint[] random={0x28a7c5u,0x37ac51u,0x9df85u,0x982ddfu};
         double gain;
         public void Fill(float[] data,int channels,int rate,TireSoundFrame frame,double master=1)
@@ -70,7 +89,14 @@ namespace DragLab.Domain
                 double grip=contact.grip>0?DragMath.Clamp(contact.grip, .25, 2):1;
                 double load=contact.normalLoadN>0?DragMath.Clamp(contact.normalLoadN/3500,.4,2):1;
                 double radius=contact.radiusM>0?DragMath.Clamp(.3/contact.radiusM,.8,1.2):1;
-                double center=(1150+moving*420+Math.Min(170,contact.slidingSpeed*6))*radius*(1+.07*(grip-1)-.04*(load-1));
+                double width=contact.widthScale>0?DragMath.Clamp(contact.widthScale,.45,1.6):1;
+                double compound=contact.compoundGrip>0?DragMath.Clamp(contact.compoundGrip,.7,3.5):1;
+                // Softer rubber and larger contact patches have a broader, lower resonance.
+                // Geometry/compound colour existing friction work rather than inventing slip.
+                double tone=Math.Pow(width,-.13)*Math.Pow(compound,-.11)*TireSoundProfile.SurfaceResonance;
+                rubberMix[w]=Math.Pow(width,.2)*(1+.14*(compound-1))*TireSoundProfile.SurfaceRoughness;
+                squealMix[w]=1/Math.Sqrt(1+.16*(compound-1));
+                double center=(1150+moving*420+Math.Min(170,contact.slidingSpeed*6))*radius*tone*(1+.07*(grip-1)-.04*(load-1));
                 double angle=2*Math.PI*center/rate,alpha=Math.Sin(angle)/(2*(8+grip)),normal=1+alpha;
                 b0[w]=alpha/normal;a1[w]=-2*Math.Cos(angle)/normal;a2[w]=(1-alpha)/normal;
                 angle=2*Math.PI*center*1.8/rate;alpha=Math.Sin(angle)/(2*4.5);normal=1+alpha;
@@ -94,8 +120,8 @@ namespace DragLab.Domain
                     double upper=ub0[w]*edge2[w]+upper1[w];
                     upper1[w]=-ua1[w]*upper+upper2[w];upper2[w]=-ub0[w]*edge2[w]-ua2[w]*upper;
                     // Keep contact texture underneath the screech, without a continuous broadband hiss bed.
-                    double rubber=(body2[w]-floor[w])*.12;
-                    double squeal=(resonance*5.5+upper*1.9)*squealLevel[w];
+                    double rubber=(body2[w]-floor[w])*.12*rubberMix[w];
+                    double squeal=(resonance*5.5+upper*1.9)*squealLevel[w]*squealMix[w];
                     double voice=(rubber+squeal)*(1+texture[w]*.8)*.24*level[w];
                     double pan=w<2?-.12:.12;left+=voice*(1-pan);right+=voice*(1+pan);
                 }

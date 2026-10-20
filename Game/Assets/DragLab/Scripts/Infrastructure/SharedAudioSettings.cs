@@ -9,12 +9,14 @@ namespace DragLab.Infrastructure
     // Procedural sources consume one published output gain, after synthesis.
     public static class SharedAudioSettings
     {
-        [Serializable] sealed class Settings { public int version = 1; public float masterVolume = DefaultVolume; public float opponentVolume = 1; public float compressorNoise=1; }
+        [Serializable] sealed class Settings { public int version = 1; public float masterVolume = DefaultVolume; public float opponentVolume = 1; public float compressorNoise=1; public float engineVolume=1, tireVolume=1; }
         public const float DefaultVolume = .75f;
         static bool loaded, dirty;
         static Settings settings;
         static float publishedMaster = DefaultVolume;
-        static float publishedCompressorNoise=1;
+        static float publishedCompressorNoise=1, publishedEngine=1, publishedTires=1;
+        public static float DspEngineVolume=>Volatile.Read(ref publishedEngine);
+        public static float DspTireVolume=>Volatile.Read(ref publishedTires);
         // DSP must never trigger lazy loading, file I/O or a Unity API call.
         public static float DspMasterVolume => Volatile.Read(ref publishedMaster);
         public static float DspCompressorNoise=>Volatile.Read(ref publishedCompressorNoise);
@@ -40,9 +42,11 @@ namespace DragLab.Infrastructure
             }
         }
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        static void ResetSession() { loaded = dirty = false; settings = null; Status = null; Volatile.Write(ref publishedMaster, DefaultVolume); Volatile.Write(ref publishedCompressorNoise,1); }
+        static void ResetSession() { loaded = dirty = false; settings = null; Status = null; Volatile.Write(ref publishedMaster, DefaultVolume); Volatile.Write(ref publishedCompressorNoise,1); Volatile.Write(ref publishedEngine,1); Volatile.Write(ref publishedTires,1); }
         public static float MasterVolume { get { EnsureLoaded(); return settings.masterVolume; } }
         public static float OpponentVolume { get { EnsureLoaded(); return settings.opponentVolume; } }
+        public static float EngineVolume {get{EnsureLoaded();return settings.engineVolume;}}
+        public static float TireVolume {get{EnsureLoaded();return settings.tireVolume;}}
         public static float CompressorNoise {get{EnsureLoaded();return settings.compressorNoise;}}
         public static float OpponentGain(double separationMetres) => (float)(.65 / (1 + Math.Abs(separationMetres) / 35));
         public static void SetOpponentVolume(float value, bool save = true)
@@ -66,14 +70,18 @@ namespace DragLab.Infrastructure
                         throw new InvalidDataException("Invalid audio settings.");
                     settings.masterVolume = Mathf.Clamp01(saved.masterVolume); Status = "Shared audio settings loaded.";
                     settings.opponentVolume = !json.Contains("opponentVolume") ? 1 : float.IsNaN(saved.opponentVolume) || float.IsInfinity(saved.opponentVolume) ? 1 : Mathf.Clamp01(saved.opponentVolume);
+                    settings.engineVolume=ReadGain(json,"engineVolume",saved.engineVolume);
+                    settings.tireVolume=ReadGain(json,"tireVolume",saved.tireVolume);
                     settings.compressorNoise=!json.Contains("compressorNoise")?1:float.IsNaN(saved.compressorNoise)||float.IsInfinity(saved.compressorNoise)?1:Mathf.Clamp01(saved.compressorNoise);
                 }
                 catch (Exception) { Status = "Unreadable audio settings; using the shared default."; }
             }
             Volatile.Write(ref publishedMaster, settings.masterVolume);
             Volatile.Write(ref publishedCompressorNoise,settings.compressorNoise);
+            Volatile.Write(ref publishedEngine,settings.engineVolume); Volatile.Write(ref publishedTires,settings.tireVolume);
             AudioListener.volume = 1;
         }
+        static float ReadGain(string json,string key,float value)=>!json.Contains("\""+key+"\"")||float.IsNaN(value)||float.IsInfinity(value)?1:Mathf.Clamp01(value);
         public static void SetMasterVolume(float volume, bool save = true)
         {
             EnsureLoaded();

@@ -19,6 +19,12 @@ namespace DragLab.Editor
             {
                 SharedAudioSettings.VerificationPath = path; SharedAudioSettings.ReloadForVerification();
                 check(SharedAudioSettings.MasterVolume == .75f && SharedAudioSettings.DspMasterVolume == .75f && AudioListener.volume == 1, "Fresh preference publishes one 75% DSP gain with an unattenuated listener.");
+                File.WriteAllText(path,"{\"version\":1,\"masterVolume\":0.4}",new UTF8Encoding(false));SharedAudioSettings.ReloadForVerification();
+                check(SharedAudioSettings.EngineVolume==1&&SharedAudioSettings.TireVolume==1&&SharedAudioSettings.DspEngineVolume==1&&SharedAudioSettings.DspTireVolume==1,"Older settings retain audible engine and tire category defaults.");
+                File.WriteAllText(path,"{\"version\":1,\"masterVolume\":0.4,\"engineVolume\":0,\"tireVolume\":0.28}",new UTF8Encoding(false));SharedAudioSettings.ReloadForVerification();
+                check(SharedAudioSettings.EngineVolume==0&&SharedAudioSettings.DspEngineVolume==0&&SharedAudioSettings.TireVolume==.28f&&SharedAudioSettings.DspTireVolume==.28f,"Independent category mute and level survive reload without muting master.");
+                SharedAudioSettings.SetOpponentVolume(.2f);SharedAudioSettings.ReloadForVerification();
+                check(SharedAudioSettings.EngineVolume==0&&SharedAudioSettings.TireVolume==.28f,"Updating opponent level preserves category gains.");
                 SharedAudioSettings.SetMasterVolume(.42f); SharedAudioSettings.ReloadForVerification();
                 check(SharedAudioSettings.MasterVolume == .42f && SharedAudioSettings.DspMasterVolume == .42f && AudioListener.volume == 1 && File.ReadAllText(path).Contains("masterVolume"), "Master gain survives a reload from the independent settings file.");
                 SharedAudioSettings.SetMasterVolume(0); SharedAudioSettings.ReloadForVerification();
@@ -36,7 +42,7 @@ namespace DragLab.Editor
             {
                 SharedAudioSettings.VerificationPath = priorPath; SharedAudioSettings.ClearVerificationCache(); AudioListener.volume = priorListener;
             }
-            File.WriteAllText(Path.Combine(root, "reports/shared-audio-verification.txt"), report.AppendLine("PASS: " + count + " shared audio checks.").ToString());
+            File.WriteAllText(Path.Combine(root, "reports/shared-audio-verification.txt"), report.AppendLine("PASS: " + count + " shared audio checks.").ToString(),new UTF8Encoding(false));
             return count;
         }
     }

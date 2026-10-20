@@ -27,13 +27,13 @@ namespace DragLab.Runtime
         EngineAudio engineAudio, opponentAudio;
         readonly RaceInputAdapter controls = new RaceInputAdapter();
         internal RaceInputAdapter RaceControls => controls;
-        internal bool RaceTouchActive => screen == "Race" && race != null && !paused && InterfaceComparison.IsReplacement(ComparisonRoute);
+        internal bool RaceTouchActive => screen == "Race" && race != null && !paused && !AudioAuditionActive && InterfaceComparison.IsReplacement(ComparisonRoute);
         readonly InterfaceComparison interfaceComparison = new InterfaceComparison();
         NativeMenuShell nativeMenu;
         internal NativeRaceHud RaceHud { get; private set; }
         internal string SettingsReturnRoute { get; private set; } = "Garage";
         internal bool NativeRacePause => screen == "Race" && paused && InterfaceComparison.IsReplacement("Race");
-        internal string ComparisonRoute => screen == "Race" ? audioSettingsOpen ? "Race settings" : paused ? "Pause" : race != null && race.ResultReady ? "Results" : "Race" : screen;
+        internal string ComparisonRoute => screen == "Race" ? audioSettingsOpen ? "Race settings" : paused ? "Pause" : !AudioAuditionActive && race != null && race.ResultReady ? "Results" : "Race" : screen;
         Action pendingAction;
         float saveDelay;
         bool drivingPreferencesDirty;
@@ -73,7 +73,7 @@ namespace DragLab.Runtime
         internal void PauseRace(bool value) { SetPaused(value); }
         internal void OpenAudioSettings() { if (screen == "Race") { SetPaused(true); audioSettingsOpen = true; } else { if (screen != "Settings") SettingsReturnRoute = screen; DiscardPreviews(); screen = "Settings"; scroll = Vector2.zero; } }
         internal void PreviewVehicle(string id) { DiscardPreviews(); profile.selectedVehicleId = id; MechanicsOwnership.Ensure(profile,profile.catalog); lastBenchmarkKey = null; screen = "Garage"; ShowGarageCar(); }
-        public void ReturnToGarage() { DiscardPreviews(); if(!SyncRaceWear(true,"Returned to garage"))return; race?.CloseOpponentWorker(); race = null; screen = "Garage"; nativeMenu?.ResetMenuEntry("Garage"); ShowGarageCar(); }
+        public void ReturnToGarage() { if(AudioAuditionActive)auditionFiles=null; DiscardPreviews(); if(!SyncRaceWear(true,"Returned to garage"))return; race?.CloseOpponentWorker(); race = null; screen = "Garage"; nativeMenu?.ResetMenuEntry("Garage"); ShowGarageCar(); }
         public void StartPractice() { StartRace(null, true); }
         internal bool ResetIncompatibleSave(out string error)
         {
@@ -149,6 +149,7 @@ namespace DragLab.Runtime
             RaceHud.Initialize(this);
             Results=new GameObject("Native timing slip").AddComponent<NativeRaceResults>();Results.transform.SetParent(transform);Results.Initialize(this);
             NativeMenuVerification.AttachIfRequested(this, nativeMenu);
+            BeginAudioAudition();
         }
         void ShowGarageCar()
         {
@@ -234,6 +235,7 @@ namespace DragLab.Runtime
         {
             if(DeterministicCapture.Frame)return;
             if (profile == null || resetRequired) return;
+            if(AudioAuditionActive){AdvanceAudioAudition();return;}
             if(FramePacingProbe.Active&&screen=="Race"&&race!=null)FramePacingProbe.Phase=race.ResultReady?"race/results":"race/driving";
             if(screen!="Race"&&Time.realtimeSinceStartup>.25f&&!Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&GUIUtility.hotControl==0)
             {
@@ -307,8 +309,8 @@ namespace DragLab.Runtime
             strip.Render(race);
             playerView.Animate(race.player.state);
             aiView.Animate(race.opponent.state);
-            engineAudio.Render(race.player.state, !paused, 1, tiresActive:!paused);
-            opponentAudio.Render(race.opponent.state, !paused,
+            engineAudio.Render(race.player.state, !paused&&AuditionEngineActive, 1, tiresActive:!paused&&AuditionTiresActive);
+            if(AudioAuditionActive)opponentAudio.Silence();else opponentAudio.Render(race.opponent.state, !paused,
                 SharedAudioSettings.OpponentVolume * SharedAudioSettings.OpponentGain(race.opponent.state.distance - race.player.state.distance), tiresActive:!paused);
         }
 
@@ -408,7 +410,7 @@ namespace DragLab.Runtime
             float height = Screen.height / scale;
             panelWidth = Mathf.Min(630, width - 32);
             if (heading == null) { heading = new GUIStyle(GUI.skin.label) { fontSize = 24, fontStyle = FontStyle.Bold }; stat = new GUIStyle(GUI.skin.label) { fontSize = 17 }; }
-            if (screen == "Race") { RaceGUI(width, height, InterfaceComparison.IsReplacement(ComparisonRoute) && NativeRaceHud.Supports(ComparisonRoute)); return; }
+            if (screen == "Race") { if(!AudioAuditionActive)RaceGUI(width, height, InterfaceComparison.IsReplacement(ComparisonRoute) && NativeRaceHud.Supports(ComparisonRoute)); return; }
             if(Build!=null&&(screen=="Garage"||screen=="Parts"||screen=="Tuning"||screen=="Stats"))RefreshInspection();
             GUILayout.BeginArea(new Rect(16, 16, panelWidth, height - 32), GUI.skin.box);
             GUILayout.Label("DRAGLAB / first systems slice", heading);

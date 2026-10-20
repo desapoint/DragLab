@@ -1,0 +1,76 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: First start opens preset onboarding before shopping
+PASS: Fresh defaults are Shift myself / Simulation / Normal market
+PASS: Dialog content clears fixed X/title and actions: onboarding presets
+PASS: Presets precede independent Normal market selection
+PASS: Next keeps all settings as unsaved drafts
+PASS: Back retains both preset drafts
+PASS: Returning to market retains its independent draft
+PASS: Dialog content clears fixed X/title and actions: onboarding market
+PASS: Failed preference write keeps onboarding open and retryable
+PASS: Failed onboarding preserves original state and preferences
+PASS: Explicit confirmation persists completion and returns to starter selection
+PASS: Normal market applies after Simulation rather than becoming Hard
+PASS: Onboarding changes preferences only; exact starter stock, money and progression remain intact
+PASS: Confirmed presets reload independently from SQLite progression
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Dealership Fitted parts sits beside Stats with the same compact ten-point spacing as owned cars
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Fitted values reflect actual member condition and failures instead of a neutral tire wrapper
+PASS: Disclosed dealer fitted tires show all four actual corner specifications, identities and remaining conditions
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Each fitted part has a shared Shop action, available after an owned car is selected
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Application interruption still pauses an unfinished race
+PASS: Pause icon renders the shared shaded button surface rather than a default unstyled button
+PASS: Visible pause button opens the shared dialog above the dashboard
+PASS: Race pause hides the normal-menu navigation, pages and full Settings interface
+PASS: Dialog content clears fixed X/title and actions: race pause
+PASS: Pedals, shifts and G cannot advance or quit the race behind the pause dialog
+PASS: F8 cannot switch presentation behind an open pause dialog
+PASS: Controls are available as a contained read-only page with actual driving bindings
+PASS: Dialog content clears fixed X/title and actions: race controls
+PASS: Escape from a child page returns to pause without resuming
+PASS: Contained race settings expose only master, engine, tire and opponent sound, without reset or driving-rule changes
+PASS: Quick category sliders retain draft isolation
+PASS: Shared sound slider is a draft until explicit Apply
+PASS: Pause reuses the shared thin slider and round thumb
+PASS: Sound X discards the draft and returns to pause
+PASS: Sound X discards both category drafts
+PASS: Failed preference save keeps sound drafts, applied audio and paused race intact
+PASS: Retry applies and durably reloads sound settings without resuming
+PASS: Quick Apply persists engine mute and separate tire gain
+PASS: Sound apply preserves progression, database bytes, applied units and captured simulation rules
+PASS: Quit race opens an explicit shared confirmation
+PASS: Cancelling quit preserves the same paused session
+PASS: Shared pause card fits the viewport at 1024
+PASS: Dialog content clears fixed X/title and actions: pause 1024
+PASS: Shared pause card fits the viewport at 1920
+PASS: Dialog content clears fixed X/title and actions: pause 1920
+PASS: Main pause X resumes the same race
+PASS: Escape reopens the shared pause menu
+PASS: Resume closes the dialog without restarting the car
+PASS: Quick audio command is rejected outside a paused race
+PASS: Failed durable exit remains in the quit review with the live race retained
+PASS: Confirmed quit uses the existing durable interrupted-race exit and returns to Garage
+PASS: Quit retains exact live fuel and component health instead of refilling or repairing
+PASS: Retained race fuel survives SQLite reload after quitting
+Checks: 74 / runtime errors: 0

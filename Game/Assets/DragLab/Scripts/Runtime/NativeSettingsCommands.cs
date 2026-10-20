@@ -7,7 +7,7 @@ namespace DragLab.Runtime
 {
     public sealed partial class PrototypeGame
     {
-        internal bool ApplyNativeSettings(DriverSettings driver, int ai, UnitPreferences units, float master, float opponent, out string error, bool? reverseTouchShifting=null,bool? onboardingComplete=null,float? compressorNoise=null)
+        internal bool ApplyNativeSettings(DriverSettings driver, int ai, UnitPreferences units, float master, float opponent, out string error, bool? reverseTouchShifting=null,bool? onboardingComplete=null,float? compressorNoise=null,float? engineVolume=null,float? tireVolume=null)
         {
             error = null;
             bool onboarding=onboardingComplete==true&&screen=="Garage"&&profile.firstPurchasePending&&!DrivingPreferences.OnboardingComplete;
@@ -21,7 +21,7 @@ namespace DragLab.Runtime
                 if (field.FieldType.IsEnum && !Enum.IsDefined(field.FieldType, field.GetValue(units))) { error = "Invalid " + field.Name; return false; }
             var candidate = profile.CopyWithPreferences(driver,ai);
             candidate.catalog = profile.catalog; candidate.driving = driver.Copy(); candidate.difficulty = ai;
-            if (!PreferenceCommit.TryApply(candidate, units, master, opponent, out error, reverseTouchShifting,onboardingComplete,compressorNoise)) return false;
+            if (!PreferenceCommit.TryApply(candidate, units, master, opponent, out error, reverseTouchShifting,onboardingComplete,compressorNoise,engineVolume,tireVolume)) return false;
             profile = candidate; settings = profile.driving; difficulty = ai; saveDelay = 0;drivingPreferencesDirty=false;
             // A running race owns its captured driver rules; menu edits do not
             // reconstruct its cars, damage, resources or entry contract.

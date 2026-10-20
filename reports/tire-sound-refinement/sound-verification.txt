@@ -30,4 +30,9 @@ PASS: Lower contact intensity gives quieter friction / 48000 / 2
 PASS: A short slip chirp attenuates by at least 40 dB within one second of grip recovery / 48000 / 2
 PASS: Static slip is sample-exact across callback boundaries / 48000 / 2
 PASS: Reset cannot leak old tire-filter energy / 48000 / 2
-Checks: 32
+PASS: Independent compound changes asphalt tire timbre with finite audible output at identical contact work
+PASS: Independent width changes asphalt tire timbre with finite audible output at identical contact work
+PASS: Independent radius changes asphalt tire timbre with finite audible output at identical contact work
+PASS: Stopping contact audio before a race finishes releases all tire resonances
+PASS: Tire category mute produces exact zero after its smoothed transition
+Checks: 37

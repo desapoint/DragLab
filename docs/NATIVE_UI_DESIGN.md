@@ -1,5 +1,7 @@
 # Native interface direction — grey/red and Settings first
 
+Sound categories (2026-10-20): independent Engine volume and Tire volume use the existing shared slider/number inputs and confirmed Apply; pause Sound offers the same two categories with Apply/Back. Both default to 100% for legacy preferences and remain separate from master/opponent gains. Engine includes exhaust and induction; tire includes wheelspin/burnout/braking contact. Development race auditions offer transient Engine only / Tires only / Mixed modes, Stop/Resume and Next without changing saved mix preferences. [Checks and listening review](../reports/race-audio-audition/CHANGES.md).
+
 Compressor airflow (2026-10-20): Sound reuses the shared percentage slider/number input for independent turbo hiss suppression. Draft until confirmed Apply; Cancel/Revert discards it. Preserve whistle, pressure releases and induction/exhaust behavior. No separate audio-control theme. [Acoustic checkpoint](../reports/audio-refinements-20261020/CHANGES.md).
 
 Part browsing refinement (2026-10-19): default/reset sort is Price ascending, together with Compatible + In stock. Cache calculations/source data while resetting navigation, filters, scroll and individual-position drafts on main-menu entry. Part card titles keep the shared font/two-line allowance, an 8-point top inset and no flex growth; preserve existing card height and virtual row extent. [Performance checkpoint](../reports/shop-responsive-20261019/CHANGES.md).
@@ -100,7 +102,7 @@ Recorded 2026-10-09 from the user's instructions. This is the current design con
 
 - Settings is a full-screen interface with category tabs and the same top-right entry point from normal menus. All player settings belong here. The new navigation has **no separate Driving menu**.
 - Categories initially cover **Difficulty / driving**, **Sound**, **Units**, **Controls / input**, and **General / game data** (including the existing progression-reset flow). Category names/ordering can be refined while implementing them. Support additional necessary categories later without rebuilding the page.
-- Difficulty/driving contains existing launch/shift/driver assists, opponent level and simulation rules: wear, fuel/liquids, thermals and start-temperature dependencies. Sound contains the shared master and opponent levels. Units preserves current speed/pressure/torque choices. Moving settings does not remove advanced options or change their meaning.
+- Difficulty/driving contains existing launch/shift/driver assists, opponent level and simulation rules: wear, fuel/liquids, thermals and start-temperature dependencies. Sound contains shared master, engine, tire and opponent levels, plus compressor airflow. Units preserves current speed/pressure/torque choices. Moving settings does not remove advanced options or change their meaning.
 - The first new page is Settings. It introduces the shared components needed elsewhere: styled buttons, tabs, labels/help text, numeric/text inputs, sliders, choices and flexible confirmation dialogs. Build/review these in control-sized increments, using only the minimum common infrastructure each increment needs. The user explicitly authorized all existing Settings/Driving controls together on 2026-10-10; that request supersedes the earlier single-control scope for this checkpoint only.
 
 ## Explicit settings Save contract

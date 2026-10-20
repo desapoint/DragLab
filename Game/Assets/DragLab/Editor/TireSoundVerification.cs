@@ -46,6 +46,21 @@ namespace DragLab.Editor
                 synth.Fill(block,channels,rate,null);synth.Fill(block,channels,rate,Frame(0,0,0));
                 check(block.All(x=>x==0),"Reset cannot leak old tire-filter energy / "+rate+" / "+channels);
             }
+            foreach(string dimension in new[]{"compound","width","radius"}){
+                var contact=new TireFeedback{slidingSpeed=18,intensity=1,slip=1,grip=1,normalLoadN=3500,radiusM=.3,widthScale=1,compoundGrip=1};
+                var changed=contact;if(dimension=="compound")changed.compoundGrip=2.9;else if(dimension=="width")changed.widthScale=1.5;else changed.radiusM=.36;
+                var a=new float[48000];var b=new float[48000];
+                new TireSoundSynth().Fill(a,1,48000,new TireSoundFrame(default,default,contact,contact,0,1));
+                new TireSoundSynth().Fill(b,1,48000,new TireSoundFrame(default,default,changed,changed,0,1));
+                check(!a.SequenceEqual(b)&&Rms(b)>.005&&b.All(Finite),"Independent "+dimension+" changes asphalt tire timbre with finite audible output at identical contact work");
+            }
+            {
+                var a=new float[48000];var synth=new TireSoundSynth();synth.Fill(a,1,48000,Frame(0,18,1));double runningRms=Rms(a);
+                synth.Fill(a,1,48000,new TireSoundFrame(default,default,default,default,0,1,false));
+                check(Rms(a,a.Length-4800)<runningRms*.01,"Stopping contact audio before a race finishes releases all tire resonances");
+                synth.Fill(a,1,48000,Frame(0,18,1),0);synth.Fill(a,1,48000,Frame(0,18,1),0);
+                check(a.All(v=>v==0),"Tire category mute produces exact zero after its smoothed transition");
+            }
             RenderAuditions("after");
             File.WriteAllText(Path.Combine(Folder,"sound-verification.txt"),report+"Checks: "+checks+"\n",new UTF8Encoding(false));
             TireFeedbackVerification.VerifyEffectsAt(Folder);

@@ -12,7 +12,7 @@ namespace DragLab.Infrastructure
     {
         [Serializable] sealed class Entry { public bool exists; public string text; }
         [Serializable] sealed class Journal { public bool committed; public Entry[] entries; }
-        [Serializable] sealed class Audio { public int version = 1; public float masterVolume, opponentVolume, compressorNoise; }
+        [Serializable] sealed class Audio { public int version = 1; public float masterVolume, opponentVolume, compressorNoise, engineVolume, tireVolume; }
         static string JournalPath => Path.Combine(Path.GetDirectoryName(ProfileStore.FilePath), "settings-commit.json");
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void RecoverBeforeScenes() { if (!Recover(out var error)) Debug.LogError(error); }
@@ -45,7 +45,7 @@ namespace DragLab.Infrastructure
             }
             catch (Exception e) { error = "Settings recovery failed: " + e.Message; return false; }
         }
-        internal static bool TryApply(PlayerProfile candidate, UnitPreferences units, float master, float opponent, out string error, bool? reverseTouchShifting=null,bool? onboardingComplete=null,float? compressorNoise=null)
+        internal static bool TryApply(PlayerProfile candidate, UnitPreferences units, float master, float opponent, out string error, bool? reverseTouchShifting=null,bool? onboardingComplete=null,float? compressorNoise=null,float? engineVolume=null,float? tireVolume=null)
         {
             error = null;
             if (!Recover(out error)) return false;
@@ -53,16 +53,18 @@ namespace DragLab.Infrastructure
             var paths = Paths; var journal = new Journal { entries = new Entry[paths.Length] };
             bool prepared = false;string appliedDriving=null;
             float noise=compressorNoise??SharedAudioSettings.CompressorNoise;
+            float engine=engineVolume??SharedAudioSettings.EngineVolume,tires=tireVolume??SharedAudioSettings.TireVolume;
             try
             {
                 if (float.IsNaN(master) || float.IsInfinity(master) || float.IsNaN(opponent) || float.IsInfinity(opponent) || master < 0 || master > 1 || opponent < 0 || opponent > 1)
                     throw new InvalidDataException("Volume must be between 0 and 100%.");
                 if(float.IsNaN(noise)||float.IsInfinity(noise)||noise<0||noise>1)throw new InvalidDataException("Compressor noise must be between 0 and 100%.");
+                if(float.IsNaN(engine)||float.IsInfinity(engine)||engine<0||engine>1||float.IsNaN(tires)||float.IsInfinity(tires)||tires<0||tires>1)throw new InvalidDataException("Sound categories must be between 0 and 100%.");
                 for (int i = 0; i < paths.Length; i++) journal.entries[i] = new Entry { exists = File.Exists(paths[i]), text = File.Exists(paths[i]) ? File.ReadAllText(paths[i], Encoding.UTF8) : null };
                 Atomic(JournalPath, JsonUtility.ToJson(journal)); prepared = true;
                 appliedDriving=DrivingPreferences.Encode(candidate.driving,candidate.difficulty,reverseTouchShifting,onboardingComplete);
                 Atomic(DrivingPreferences.FilePath,appliedDriving);
-                Atomic(SharedAudioSettings.FilePath, JsonUtility.ToJson(new Audio { masterVolume = master, opponentVolume = opponent, compressorNoise=noise }, true));
+                Atomic(SharedAudioSettings.FilePath, JsonUtility.ToJson(new Audio { masterVolume = master, opponentVolume = opponent, compressorNoise=noise, engineVolume=engine, tireVolume=tires }, true));
                 Atomic(SharedUnitSettings.FilePath, JsonUtility.ToJson(units, true));
                 // Settings never serialize or commit progression/database state.
                 journal.committed = true; Atomic(JournalPath, JsonUtility.ToJson(journal));

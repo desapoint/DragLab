@@ -35,25 +35,28 @@ namespace DragLab.Runtime
             Check(shell.RacePausePage=="controls"&&shell.Root.Q<ScrollView>("modalContent").Query<Label>().ToList().Any(l=>l.text=="W / Space"),"Controls are available as a contained read-only page with actual driving bindings");
             DialogScrollBounds("race controls");yield return Capture("race-pause-controls");
             yield return Key(input,0x1B);Check(game.NativeRacePause&&shell.RacePausePage=="menu","Escape from a child page returns to pause without resuming");
-            float originalMaster=SharedAudioSettings.MasterVolume,originalOpponent=SharedAudioSettings.OpponentVolume;
+            float originalMaster=SharedAudioSettings.MasterVolume,originalOpponent=SharedAudioSettings.OpponentVolume,originalEngine=SharedAudioSettings.EngineVolume,originalTires=SharedAudioSettings.TireVolume;
             string profile=JsonUtility.ToJson(game.Profile),driver=JsonUtility.ToJson(race.player.driver),units=JsonUtility.ToJson(SharedUnitSettings.Current);
             byte[] database=File.ReadAllBytes(ProfileStore.FilePath);
             yield return Click(input,"pauseSound");
             var content=shell.Root.Q<ScrollView>("modalContent");var master=content.Q<NativeTuningRange>("tuneRange:pauseMaster");
-            Check(content.Query<NativeTuningRange>().ToList().Count==2&&content.Q("resetGame")==null&&content.Q("shiftingChoices")==null&&game.ScreenName=="Race","Contained race settings expose only master/opponent sound, without reset or driving-rule changes");
-            master.Slider.value=67;
+            Check(content.Query<NativeTuningRange>().ToList().Count==4&&content.Q("resetGame")==null&&content.Q("shiftingChoices")==null&&game.ScreenName=="Race","Contained race settings expose only master, engine, tire and opponent sound, without reset or driving-rule changes");
+            master.Slider.value=67;content.Q<NativeTuningRange>("tuneRange:pauseEngine").Slider.value=0;content.Q<NativeTuningRange>("tuneRange:pauseTires").Slider.value=85;
+            Check(SharedAudioSettings.EngineVolume==originalEngine&&SharedAudioSettings.TireVolume==originalTires,"Quick category sliders retain draft isolation");
             Check(SharedAudioSettings.MasterVolume==originalMaster&&shell.Root.Q("dialogApply").enabledInHierarchy,"Shared sound slider is a draft until explicit Apply");
             Check(master.Slider.ClassListContains("setting-slider")&&master.Slider.Q(className:"unity-base-slider__dragger").resolvedStyle.width==18,"Pause reuses the shared thin slider and round thumb");
             yield return Capture("race-pause-sound-draft");yield return Click(input,"modalClose");
             Check(game.NativeRacePause&&shell.RacePausePage=="menu"&&SharedAudioSettings.MasterVolume==originalMaster,"Sound X discards the draft and returns to pause");
-            yield return Click(input,"pauseSound");master=shell.Root.Q<NativeTuningRange>("tuneRange:pauseMaster");master.Slider.value=58;shell.Root.Q<NativeTuningRange>("tuneRange:pauseOpponent").Slider.value=24;
+            Check(SharedAudioSettings.EngineVolume==originalEngine&&SharedAudioSettings.TireVolume==originalTires,"Sound X discards both category drafts");
+            yield return Click(input,"pauseSound");master=shell.Root.Q<NativeTuningRange>("tuneRange:pauseMaster");master.Slider.value=58;shell.Root.Q<NativeTuningRange>("tuneRange:pauseOpponent").Slider.value=24;shell.Root.Q<NativeTuningRange>("tuneRange:pauseEngine").Slider.value=0;shell.Root.Q<NativeTuningRange>("tuneRange:pauseTires").Slider.value=80;
             using(var locked=new FileStream(DrivingPreferences.FilePath,FileMode.Open,FileAccess.Read,FileShare.Read))
             {
                 yield return Click(input,"dialogApply");
                 Check(shell.RacePausePage=="sound"&&SharedAudioSettings.MasterVolume==originalMaster&&!string.IsNullOrEmpty(shell.Root.Q<Label>("pauseSoundError").text)&&Math.Abs(master.Slider.value-58)<.01,"Failed preference save keeps sound drafts, applied audio and paused race intact");
             }
             yield return Click(input,"dialogApply");SharedAudioSettings.Reload();
-            Check(game.NativeRacePause&&shell.RacePausePage=="menu"&&Math.Abs(SharedAudioSettings.MasterVolume-.58)<.001&&Math.Abs(SharedAudioSettings.OpponentVolume-.24)<.001,"Retry applies and durably reloads the two sound settings without resuming");
+            Check(game.NativeRacePause&&shell.RacePausePage=="menu"&&Math.Abs(SharedAudioSettings.MasterVolume-.58)<.001&&Math.Abs(SharedAudioSettings.OpponentVolume-.24)<.001,"Retry applies and durably reloads sound settings without resuming");
+            Check(SharedAudioSettings.EngineVolume==0&&Math.Abs(SharedAudioSettings.TireVolume-.8)<.001&&SharedAudioSettings.DspEngineVolume==0,"Quick Apply persists engine mute and separate tire gain");
             Check(profile==JsonUtility.ToJson(game.Profile)&&driver==JsonUtility.ToJson(race.player.driver)&&units==JsonUtility.ToJson(SharedUnitSettings.Current)&&database.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Sound apply preserves progression, database bytes, applied units and captured simulation rules");
             yield return Click(input,"pauseQuit");Check(game.NativeRacePause&&shell.RacePausePage=="quit","Quit race opens an explicit shared confirmation");yield return Capture("race-pause-quit");yield return Click(input,"dialogCancel");
             Check(game.Race==race&&game.NativeRacePause&&shell.RacePausePage=="menu","Cancelling quit preserves the same paused session");

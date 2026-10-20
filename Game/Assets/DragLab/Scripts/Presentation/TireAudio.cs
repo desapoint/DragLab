@@ -16,8 +16,9 @@ namespace DragLab.Presentation
         int rate;
         float rms;
         DriveType drive;
+        TireSoundProfile profile;
         public float OutputRms=>source!=null&&source.volume>0?Volatile.Read(ref rms):0;
-        public void Configure(DriveType value){drive=value;Silence();Volatile.Write(ref synth,new TireSoundSynth());}
+        public void Configure(VehicleSpec spec,Tune tune){drive=spec.drive;profile=new TireSoundProfile(spec,tune);Silence();Volatile.Write(ref synth,new TireSoundSynth());}
         public void Initialize()
         {
             rate=AudioSettings.outputSampleRate;
@@ -26,12 +27,12 @@ namespace DragLab.Presentation
             AudioSettings.OnAudioConfigurationChanged+=Reconfigure;
         }
         void Reconfigure(bool changed){Volatile.Write(ref rate,AudioSettings.outputSampleRate);}
-        public void Render(CarState state,bool active,double volume){Volatile.Write(ref frame,TireSoundFrame.From(state,active,volume,drive));source.volume=active?1:0;}
+        public void Render(CarState state,bool active,double volume){Volatile.Write(ref frame,TireSoundFrame.From(state,active,volume,drive,profile));source.volume=active?1:0;}
         public void Silence(){if(source!=null)source.volume=0;Volatile.Write(ref frame,null);}
         void OnAudioFilterRead(float[] data,int channels)
         {
             var current=Volatile.Read(ref frame);
-            Volatile.Read(ref synth).Fill(data,channels,Volatile.Read(ref rate),current,SharedAudioSettings.DspMasterVolume);
+            Volatile.Read(ref synth).Fill(data,channels,Volatile.Read(ref rate),current,SharedAudioSettings.DspMasterVolume*SharedAudioSettings.DspTireVolume);
             double energy=0;foreach(float sample in data)energy+=sample*sample;
             Volatile.Write(ref rms,data.Length==0?0:(float)Math.Sqrt(energy/data.Length));
         }

@@ -48,7 +48,7 @@ namespace DragLab.Presentation
         public bool Ready { get { return source != null && source.clip != null && session != null; } }
         // RPM ratio for diagnostics; DSP itself keeps a fixed playback rate.
         public float CurrentPitch { get { return pitch; } }
-        public float CurrentVolume { get { return source != null ? source.volume * (float)session.frame.volume * SharedAudioSettings.MasterVolume : 0; } }
+        public float CurrentVolume { get { return source != null ? source.volume * (float)session.frame.volume * SharedAudioSettings.MasterVolume * SharedAudioSettings.EngineVolume : 0; } }
         public double EstimatedBoost { get { return session != null ? session.controller.Boost : 0; } }
         public int BlowOffCount { get { return session != null ? session.controller.ReleaseCount : 0; } }
         public void Initialize()
@@ -74,7 +74,7 @@ namespace DragLab.Presentation
         }
         public void Configure(VehicleSpec spec, Tune tune)
         {
-            if(tires!=null)tires.Configure(spec.drive);
+            if(tires!=null)tires.Configure(spec,tune);
             // Each callback captures a consistent session when hardware changes on the main thread.
             int rate=Volatile.Read(ref sampleRate);if(rate<=0)rate=AudioSettings.outputSampleRate;
             Volatile.Write(ref session, new Session(spec, tune,rate)); pitch = (float)spec.idleRpm / 3000;
@@ -98,7 +98,7 @@ namespace DragLab.Presentation
             long started=System.Diagnostics.Stopwatch.GetTimestamp();
             Volatile.Write(ref callbackChannels,channels);
 #endif
-            current.synth.Fill(data, channels, rate, Volatile.Read(ref current.frame), SharedAudioSettings.DspMasterVolume,SharedAudioSettings.DspCompressorNoise);
+            current.synth.Fill(data, channels, rate, Volatile.Read(ref current.frame), SharedAudioSettings.DspMasterVolume*SharedAudioSettings.DspEngineVolume,SharedAudioSettings.DspCompressorNoise);
             double energy = 0; foreach (float sample in data) energy += sample * sample;
             Volatile.Write(ref outputRms, data.Length > 0 ? (float)Math.Sqrt(energy / data.Length) : 0);
 #if DEVELOPMENT_BUILD || UNITY_EDITOR

@@ -21,7 +21,7 @@ namespace DragLab.Runtime
         public static bool Active { get { return Debug.isDebugBuild && Array.IndexOf(Environment.GetCommandLineArgs(), "--draglab-verify") >= 0; } }
         public static void AttachIfRequested(PrototypeGame target)
         {
-            if (!Active || InterfaceComparisonVerification.Active || NativeMenuVerification.Active) return;
+            if (PrototypeGame.AudioAuditionRequested || !Active || InterfaceComparisonVerification.Active || NativeMenuVerification.Active) return;
             var probe = target.gameObject.AddComponent<RuntimeVerification>(); probe.game = target;
             var args = Environment.GetCommandLineArgs(); int index = Array.IndexOf(args, "--draglab-verify");
             probe.output = Path.GetFullPath(args[index + 1]); Directory.CreateDirectory(probe.output);
