@@ -35,6 +35,16 @@ namespace DragLab.Editor
         static void Mark(Result r,double time,string label){r.cues.Add(new Cue{time=Math.Round(time,3),label=label});}
         // Reuse versioned acoustic hardware definitions without rendering or touching generated audition fixtures.
         internal static RaceAudioTestFixture[] AcousticHardware()=>Cases(false).Select(c=>new RaceAudioTestFixture{id=c.id,title=c.title,spec=c.spec.Copy(),tune=c.tune.Copy()}).ToArray();
+        internal static RaceAudioTestFixture CaptureBackfireComparison(string directory)
+        {
+            Require(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-audio-wav")>=0,"Comparison requires production WAV capture");
+            var c=Cases(false).Single(x=>x.id=="26-launch-hard-ignition");
+            c.id="tempest-turbo-open";c.title="Tempest turbo: free-flow exhaust, ignition cuts, two-step and anti-lag";c.laboratory=true;
+            c.tune.exhaustLevel=3;c.tune.limiterCut=CutMethod.Ignition;c.tune.antiLag=EquipmentSetting.On;
+            c.spec.sound.exhaustSystem=new ExhaustSetup{version=1,parts=new[]{ExhaustPart.Create(ExhaustPartKind.Pipe)}};
+            Render(c,directory);
+            return JsonUtility.FromJson<RaceAudioTestFixture>(File.ReadAllText(Path.Combine(directory,c.id+".race.json"),Encoding.UTF8));
+        }
         static List<Case> Cases(bool prepareTires=true)
         {
             var cars=Resources.LoadAll<VehicleDefinition>("Data/Vehicles");var list=new List<Case>();

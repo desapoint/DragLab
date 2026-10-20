@@ -233,3 +233,21 @@ are isolated listening candidates, with no runtime or old-matrix change. See
 [parameters and checks](../reports/bison-backfire-versions-20261020/CHANGES.md).
 No HTML page is created or updated for this request. Wait for explicit listening
 approval before selecting any calibration for the game.
+
+### Actual high-event Tempest comparison, still preview-only
+
+Following the user's request for more real events and an unchanged game reference,
+the new Tempest free-flow/ignition-cut/two-step/anti-lag audition uses a fresh actual
+race input replay. The production reference is checked sample for sample; all five
+alternatives share its real published triggers and dry engine bed. No artificial
+pop schedule or changed production sound is introduced.
+
+The optional common source can now use a normalized heat-release pulse, a lumped
+pressure/discharge state, pressure-driven turbulence and a damped body-response
+proxy. Fast combustion rise is distinct from the longer release/propagation tail.
+The engine's existing vibration bed remains independent. Fuel/oxygen/source/gas
+packets are still inferred audition inputs because the runtime does not publish
+them; this is not a fully coupled physical combustion/engine/exhaust solver.
+Default source behavior remains unchanged. [Assumptions, reference and five WAV
+options](../reports/tempest-backfire-comparison-20261020/CHANGES.md). No HTML, runtime
+integration or platform build; wait for acoustic approval.

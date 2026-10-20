@@ -25,6 +25,7 @@ namespace DragLab.Editor
     {
         public double lengthM,diameterM,temperatureK,leak;
         public bool turbine;
+        public double turbineAmount=1;
         public ExhaustPart component;
     }
 
@@ -32,13 +33,15 @@ namespace DragLab.Editor
     [Serializable] public sealed class PreviewCombustionVoicing
     {
         public double pressureCoupling=1,turbulenceCoupling=1,frontCoupling=0,frontMilliseconds=1.5,expansionScale=1;
-        public PreviewCombustionVoicing Copy()=>new PreviewCombustionVoicing{pressureCoupling=pressureCoupling,turbulenceCoupling=turbulenceCoupling,frontCoupling=frontCoupling,frontMilliseconds=frontMilliseconds,expansionScale=expansionScale};
+        public double heatReleaseCoupling=0,structureCoupling=0;
+        public PreviewCombustionVoicing Copy()=>new PreviewCombustionVoicing{pressureCoupling=pressureCoupling,turbulenceCoupling=turbulenceCoupling,frontCoupling=frontCoupling,frontMilliseconds=frontMilliseconds,expansionScale=expansionScale,heatReleaseCoupling=heatReleaseCoupling,structureCoupling=structureCoupling};
         public void Validate()
         {
-            foreach(double value in new[]{pressureCoupling,turbulenceCoupling,frontCoupling,frontMilliseconds,expansionScale})
+            foreach(double value in new[]{pressureCoupling,turbulenceCoupling,frontCoupling,frontMilliseconds,expansionScale,heatReleaseCoupling,structureCoupling})
                 if(double.IsNaN(value)||double.IsInfinity(value))throw new ArgumentException("Invalid source calibration");
             if(pressureCoupling<0||pressureCoupling>12||turbulenceCoupling<0||turbulenceCoupling>3||frontCoupling<0||frontCoupling>4||frontMilliseconds<.3||frontMilliseconds>8||expansionScale<.5||expansionScale>2.5)
                 throw new ArgumentException("Source calibration outside preview bounds");
+            if(heatReleaseCoupling<0||heatReleaseCoupling>1||structureCoupling<0||structureCoupling>1)throw new ArgumentException("Invalid thermal/body coupling");
         }
     }
 
@@ -49,7 +52,9 @@ namespace DragLab.Editor
         {
             public readonly double[] forward,reverse;
             public readonly double impedance,loss,leak;
+            public readonly double area;
             public readonly bool turbine;
+            readonly double turbineAmount;
             public readonly ExhaustFilter forwardFilter,reverseFilter;
             public int at;
             double turbineForward,turbineReverse,turbineCoefficient=.3,turbineGain=1,targetCoefficient=.3,targetGain=1;
@@ -58,11 +63,11 @@ namespace DragLab.Editor
                 double speed=Math.Sqrt(1.34*287*description.temperatureK);
                 int delay=Math.Max(1,(int)Math.Round(description.lengthM/speed*rate));
                 forward=new double[delay];reverse=new double[delay];
-                double area=Math.PI*description.diameterM*description.diameterM/4;
+                area=Math.PI*description.diameterM*description.diameterM/4;
                 double density=101325/(287*description.temperatureK);
                 impedance=density*speed/area;
                 loss=Math.Exp(-.08*description.lengthM)*(1-description.leak*.5);
-                leak=description.leak;turbine=description.turbine;
+                leak=description.leak;turbine=description.turbine;turbineAmount=description.turbineAmount;
                 var setup=new ExhaustSetup{parts=description.component==null?new ExhaustPart[0]:new[]{description.component.Copy()}};
                 forwardFilter=new ExhaustFilter(setup,stage);reverseFilter=new ExhaustFilter(setup,stage);
                 forwardFilter.Configure(rate);reverseFilter.Configure(rate);
@@ -70,7 +75,7 @@ namespace DragLab.Editor
             public void SetBoost(double boost,int rate)
             {
                 targetCoefficient=1-Math.Exp(-2*Math.PI*(3200/(1+.8*Math.Max(0,boost)))/rate);
-                targetGain=Math.Pow(10,-(1.5+3*Math.Max(0,boost))/20);
+                targetGain=Math.Pow(10,-(1.5+3*Math.Max(0,boost))*turbineAmount/20);
             }
             public void Store(double goingForward,double goingReverse)
             {
@@ -81,7 +86,8 @@ namespace DragLab.Editor
                     turbineGain+=(targetGain-turbineGain)*.002;
                     turbineForward+=turbineCoefficient*(goingForward-turbineForward);
                     turbineReverse+=turbineCoefficient*(goingReverse-turbineReverse);
-                    goingForward=turbineForward*turbineGain;goingReverse=turbineReverse*turbineGain;
+                    goingForward=(goingForward+turbineAmount*(turbineForward-goingForward))*turbineGain;
+                    goingReverse=(goingReverse+turbineAmount*(turbineReverse-goingReverse))*turbineGain;
                 }
                 forward[at]=goingForward;reverse[at]=goingReverse;at=(at+1)%forward.Length;
             }
@@ -101,7 +107,7 @@ namespace DragLab.Editor
                 outForward=new double[segments.Length];outReverse=new double[segments.Length];injections=new double[positions.Length];
                 for(int i=0;i<segments.Length;i++){
                     var d=descriptions[i];
-                    if(d.lengthM<=0||d.lengthM>5||d.diameterM<.01||d.diameterM>.4||d.temperatureK<200||d.temperatureK>1800||d.leak<0||d.leak>.5)
+                    if(d.lengthM<=0||d.lengthM>5||d.diameterM<.01||d.diameterM>.4||d.temperatureK<200||d.temperatureK>1800||d.leak<0||d.leak>.5||d.turbineAmount<0||d.turbineAmount>1)
                         throw new ArgumentException("Invalid preview duct geometry");
                     segments[i]=new Segment(d,rate,stage);positions[i+1]=positions[i]+d.lengthM;
                 }
@@ -118,6 +124,14 @@ namespace DragLab.Editor
             }
             public void Inject(int node,double fraction,double value)
             {injections[node]+=value*(1-fraction);injections[node+1]+=value*fraction;}
+            public double VentSeconds(int node,double fraction,double volumeLitres,double temperatureK)
+            {
+                int first=Math.Min(segments.Length-1,node+(fraction>1-1e-8?1:0));
+                double opening=segments[first].area;
+                for(int i=first+1;i<segments.Length;i++)opening=Math.Min(opening,segments[i].area);
+                // Reduced-order discharge proxy, not a measured exhaust-flow solution.
+                return DragMath.Clamp(volumeLitres*.001/(opening*Math.Sqrt(1.34*287*temperatureK)*.07),.004,.09);
+            }
             public void SetBoost(double boost,int rate){foreach(var segment in segments)segment.SetBoost(boost,rate);}
             public double Sample()
             {
@@ -150,6 +164,8 @@ namespace DragLab.Editor
             public double fraction,amplitude,attack,burn,expansion,mixing,attackStep,burnStep,expansionStep,mixingStep;
             public double low,second,bass,air,drift,lowCoefficient,bassCoefficient,airCoefficient,driftCoefficient,pressureRatio;
             public double previousPressure,front,frontCoefficient,frontNormalization;
+            public double heatWeight,heatPower,heatStep,gasPressure,gasAmbient,pressurePerJ,ventStep,previousGas,gasFront,bodyLow,bodySlow,bodyCoefficient;
+            public int heatTick;
         }
         readonly Voice[] voices=new Voice[48];
         readonly Duct exhaust,intake;
@@ -160,6 +176,11 @@ namespace DragLab.Editor
         public int Accepted {get;private set;}
         public int Suppressed {get;private set;}
         public int RejectedOverlap {get;private set;}
+        public double AcceptedHeatJ {get;private set;}
+        public double ReleasedHeatJ {get;private set;}
+        public double PressureSquaredSamples {get;private set;}
+        public double TurbulenceSquaredSamples {get;private set;}
+        public double StructureSquaredSamples {get;private set;}
         public double ExhaustLength => exhaust.Length;
         public double IntakeLength => intake.Length;
         public SharedBackfirePreviewSynth(PreviewDuctSegment[] exhaust,PreviewDuctSegment[] intake,int rate,int stage=0,PreviewCombustionVoicing voicing=null)
@@ -181,6 +202,8 @@ namespace DragLab.Editor
             double mixing=input.mixingSeconds+burn*.65;
             double pressure=.33*energy/(input.volumeLitres*.001),ambient=input.pressureKPa*1000;
             double cutoff=DragMath.Clamp(1400*Math.Sqrt(input.temperatureK/650)*Math.Pow(.012/burn,.3),250,Math.Min(6000,rate*.3));
+            double vent=path.VentSeconds(node,fraction,input.volumeLitres,input.temperatureK)*voicing.expansionScale;
+            double thermalStep=Math.Exp(-1/(rate*burn));
             voices[at]=new Voice{
                 active=true,intake=input.intake,node=node,fraction=fraction,random=input.seed==0?17731u:input.seed,
                 amplitude=.8*Math.Sqrt(pressure/(ambient+pressure)),pressureRatio=burn/expansion,
@@ -190,8 +213,11 @@ namespace DragLab.Editor
                 lowCoefficient=1-Math.Exp(-2*Math.PI*cutoff/rate),bassCoefficient=1-Math.Exp(-2*Math.PI*45/rate),
                 airCoefficient=1-Math.Exp(-2*Math.PI*Math.Min(3200,rate*.3)/rate),driftCoefficient=1-Math.Exp(-2*Math.PI*32/rate),
                 frontCoefficient=1-Math.Exp(-1/(rate*voicing.frontMilliseconds*.001)),frontNormalization=rate*burn,
-                remaining=(int)(rate*Math.Min(3,Math.Max(expansion,mixing)*11+.05))
+                heatWeight=energy*(1-thermalStep)*(1-thermalStep),heatPower=1,heatStep=thermalStep,
+                gasAmbient=ambient,pressurePerJ=.33/(input.volumeLitres*.001),ventStep=Math.Exp(-1/(rate*vent)),bodyCoefficient=1-Math.Exp(-2*Math.PI*85/rate),
+                remaining=(int)(rate*Math.Min(3,Math.Max(Math.Max(expansion,mixing)*11,voicing.heatReleaseCoupling>0?vent*12:0)+.05))
             };
+            if(voicing.heatReleaseCoupling>0)AcceptedHeatJ+=energy;
             Accepted++;return true;
         }
         public double Sample()
@@ -212,6 +238,20 @@ namespace DragLab.Editor
                     double rise=(pressure-v.previousPressure)*v.frontNormalization;
                     v.front+=v.frontCoefficient*(rise-v.front);v.previousPressure=pressure;
                     value=(pressure*.8*voicing.pressureCoupling+turbulence*voicing.turbulenceCoupling+v.front*voicing.frontCoupling)*v.amplitude;
+                }
+                if(voicing.heatReleaseCoupling>0){
+                    // Normalized gamma heat-release pulse: total released heat tends to the fuel/oxygen-limited energy.
+                    double released=v.heatWeight*(++v.heatTick)*v.heatPower;v.heatPower*=v.heatStep;ReleasedHeatJ+=released;
+                    v.gasPressure=(v.gasPressure+released*v.pressurePerJ)*v.ventStep;
+                    double gas=v.gasPressure/(v.gasAmbient+.25*v.gasPressure);
+                    double gasRise=(gas-v.previousGas)*rate*.003;v.previousGas=gas;
+                    v.gasFront+=v.frontCoefficient*(gasRise-v.gasFront);
+                    v.bodyLow+=v.bodyCoefficient*(gas-v.bodyLow);v.bodySlow+=v.bodyCoefficient*(v.bodyLow-v.bodySlow);
+                    double compression=.25*gas*voicing.pressureCoupling+v.gasFront*voicing.frontCoupling;
+                    double discharge=(v.second-v.bass)*Math.Sqrt(Math.Max(0,gas))*.12*voicing.turbulenceCoupling;
+                    double structure=(v.bodyLow-v.bodySlow)*voicing.structureCoupling;
+                    PressureSquaredSamples+=compression*compression;TurbulenceSquaredSamples+=discharge*discharge;StructureSquaredSamples+=structure*structure;
+                    value+=(compression+discharge+structure-value)*voicing.heatReleaseCoupling;
                 }
                 if(v.remaining<rate*.015)value*=v.remaining/(rate*.015);
                 (v.intake?intake:exhaust).Inject(v.node,v.fraction,value);

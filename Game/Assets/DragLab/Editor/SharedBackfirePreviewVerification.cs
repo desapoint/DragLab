@@ -40,6 +40,14 @@ namespace DragLab.Editor
             var pressureVersion=Render(input,voicing:calibration);
             Check(!baseline.SequenceEqual(pressureVersion)&&pressureVersion.All(x=>!double.IsNaN(x)&&!double.IsInfinity(x)),"pressure/front calibration changes character with finite output");
             Check(pressureVersion.SequenceEqual(Render(input,voicing:calibration)),"pressure-front version remains deterministic");
+            var thermal=new PreviewCombustionVoicing{heatReleaseCoupling=1,pressureCoupling=2,turbulenceCoupling=.1,frontCoupling=1,structureCoupling=.15};
+            var coupled=Synth(voicing:thermal);coupled.Trigger(input);
+            for(int i=0;i<96000;i++){double value=coupled.Sample();if(double.IsNaN(value)||double.IsInfinity(value))throw new InvalidOperationException("Non-finite thermal source");}
+            Check(Math.Abs(coupled.ReleasedHeatJ-coupled.AcceptedHeatJ)<input.EnergyJ*1e-7,"thermal heat release integrates to fuel/oxygen-limited energy");
+            Check(coupled.PressureSquaredSamples>0&&coupled.TurbulenceSquaredSamples>0&&coupled.StructureSquaredSamples>0,"pressure, discharge turbulence and damped body response share combustion excitation");
+            var inert=Synth(voicing:thermal);var noOxygen=input;noOxygen.oxygenMg=0;inert.Trigger(noOxygen);
+            for(int i=0;i<2000;i++)inert.Sample();
+            Check(inert.ReleasedHeatJ==0&&inert.PressureSquaredSamples==0&&inert.StructureSquaredSamples==0,"no oxygen suppresses heat and every coupled source component");
             var changed=input;changed.seed++;Check(!baseline.SequenceEqual(Render(changed)),"subtle turbulence varies with explicit seed");
             Check(baseline.All(x=>!double.IsNaN(x)&&!double.IsInfinity(x)&&Math.Abs(x)<5),"bounded finite raw source/routing");
             changed=input;changed.fuelMg=0;Check(Energy(Render(changed))==0,"fuel cut produces no explosion");
@@ -72,7 +80,7 @@ namespace DragLab.Editor
             changed=input;changed.oxygenPerFuel=0;Throws(()=>Synth().Trigger(changed),"invalid fuel chemistry rejected");
             var capacity=Synth();for(int i=0;i<48;i++)Check(capacity.Trigger(input),"prepared simultaneous voice "+i);
             Check(!capacity.Trigger(input)&&capacity.RejectedOverlap==1,"capacity failure reported without overwriting active tails");
-            var live=Synth(voicing:calibration);live.Trigger(input);for(int i=0;i<1000;i++)live.Sample();
+            var live=Synth(voicing:thermal);live.Trigger(input);for(int i=0;i<1000;i++)live.Sample();
             long allocated=GC.GetAllocatedBytesForCurrentThread();var watch=Stopwatch.StartNew();
             // Stopwatch is allocated outside the allocation measurement below.
             allocated=GC.GetAllocatedBytesForCurrentThread();

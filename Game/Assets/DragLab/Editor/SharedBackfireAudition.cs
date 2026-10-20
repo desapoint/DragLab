@@ -26,7 +26,7 @@ namespace DragLab.Editor
             public PreviewCombustionVoicing voicing;
         }
         [Serializable] public sealed class Manifest {public int sampleRate=Rate,channels=2;public string scope="Preview-only controlled acoustic bench. No race/save/runtime changes.";public List<Result> cases=new List<Result>();}
-        sealed class Config {public string id,title,source,geometry="Assumed laboratory geometry";public VehicleSpec spec;public Tune tune;public double lengthScale=1,diameterScale=1,temperature=650,leak;}
+        sealed class Config {public string id,title,source,geometry="Assumed laboratory geometry";public VehicleSpec spec;public Tune tune;public double lengthScale=1,diameterScale=1,temperature=650,leak,extraInjection=-1;}
         sealed class PathData {public PreviewDuctSegment[] segments;public double before,inside,after,manifold;public bool silencer;}
         sealed class Scheduled {public int tick,chapter;public string label;public PreviewCombustionEvent input;}
         static void Check(bool yes,string message){checks++;if(!yes)throw new InvalidOperationException("SHARED BACKFIRE: "+message);}
@@ -76,13 +76,13 @@ namespace DragLab.Editor
             if(!hasSilencer){before=position*.35;inside=position*.65;after=position+.2*c.lengthScale;}
             add(.8,.06,null,false,0);
             // Prepare exact injection nodes for this controlled flow; no source jumps straight to a distant junction.
-            var injectionSites=new[]{before,inside,after,.12*c.lengthScale};var refined=new List<PreviewDuctSegment>();position=0;
+            var injectionSites=new[]{before,inside,after,.12*c.lengthScale,c.extraInjection};var refined=new List<PreviewDuctSegment>();position=0;
             foreach(var segment in list){
                 double end=position+segment.lengthM,last=position;
                 var cuts=injectionSites.Where(s=>s>position+1e-9&&s<end-1e-9).Concat(new[]{end}).OrderBy(s=>s);
                 foreach(double cut in cuts){
                     double fraction=(cut-last)/segment.lengthM;var part=segment.component?.Copy();if(part!=null)part.amount*=(float)fraction;
-                    refined.Add(new PreviewDuctSegment{lengthM=cut-last,diameterM=segment.diameterM,temperatureK=segment.temperatureK,turbine=segment.turbine,component=part,leak=segment.leak*fraction});last=cut;
+                    refined.Add(new PreviewDuctSegment{lengthM=cut-last,diameterM=segment.diameterM,temperatureK=segment.temperatureK,turbine=segment.turbine,turbineAmount=segment.turbineAmount*fraction,component=part,leak=segment.leak*fraction});last=cut;
                 }
                 position=end;
             }
@@ -92,6 +92,14 @@ namespace DragLab.Editor
             new PreviewDuctSegment{lengthM=.18,diameterM=.05,temperatureK=330},
             new PreviewDuctSegment{lengthM=.4,diameterM=.085,temperatureK=310,component=new ExhaustPart{kind=ExhaustPartKind.Pipe,lowPassHz=2300,attenuationDb=3,pulseSoftening=.2f}}
         };
+        internal static SharedBackfirePreviewSynth PreparePhysicalComparison(VehicleSpec spec,Tune tune,PreviewCombustionVoicing voicing,out double manifold,out double downstream)
+        {
+            var profile=new EngineSoundProfile(spec,tune);var c=new Config{spec=spec,tune=tune,temperature=850,extraInjection=profile.turboCount>0?.85:.6};var path=Exhaust(c,profile);
+            manifold=path.manifold;downstream=c.extraInjection;
+            double turbineAmount=path.segments.Where(s=>s.turbine).Sum(s=>s.turbineAmount);
+            Check(Math.Abs(turbineAmount-(profile.turboCount>0?1:0))<1e-8,"path splitting retains one equivalent turbine's total damping");
+            return new SharedBackfirePreviewSynth(path.segments,Intake(c),Rate,profile.exhaust,voicing);
+        }
         static readonly string[] Titles={"Idle baseline","Throttle blips","Fuel limiter: hard then soft","Ignition limiter: hard then soft","Two-step: ignition then fuel","Loaded pull / shift","Small overrun pop","Medium afterfire","Large afterfire: upstream","Same event: inside silencer","Same event: downstream","Anti-lag / manifold source","Delayed fuel / misfire fault","Intake backfire fault","Oxygen-starved control","Return to idle"};
         static List<Scheduled> Events(EngineSoundProfile p,PathData path,Result r)
         {
