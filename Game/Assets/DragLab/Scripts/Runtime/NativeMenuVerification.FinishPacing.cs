@@ -199,6 +199,30 @@ namespace DragLab.Runtime
                     JsonUtility.ToJson(synchronous)==JsonUtility.ToJson(staged)&&
                     originalJson==JsonUtility.ToJson(game.Profile),
                     "Staged normalization preserves exact synchronous profile bytes without mutating source");
+                // Validation's early exit/error strings must match on corrupt candidates,
+                // not only on the happy path. Neither path is allowed to repair them.
+                void CheckRejected(PlayerProfile malformed,string scenario)
+                {
+                    malformed.catalog=fixtureCatalog;
+                    string expectedError=MechanicsOwnership.Validate(malformed,fixtureCatalog);
+                    string stagedError="Validation did not complete";
+                    foreach(var unused in MechanicsOwnership.ValidateSteps(malformed,fixtureCatalog,
+                        value=>stagedError=value)){}
+                    Check(expectedError!=null&&expectedError==stagedError,
+                        "Staged validator rejects "+scenario+" with the exact synchronous error");
+                }
+                var invalidCash=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(synchronous));
+                invalidCash.cash=-1;
+                CheckRejected(invalidCash,"negative cash");
+                var invalidParts=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(synchronous));
+                if(invalidParts.parts.Count>1)
+                {
+                    invalidParts.parts[1].instanceId=invalidParts.parts[0].instanceId;
+                    CheckRejected(invalidParts,"duplicate part identity");
+                }
+                var invalidMarket=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(synchronous));
+                invalidMarket.inventory.market.version=-1;
+                CheckRejected(invalidMarket,"invalid market epoch");
                 int cash=game.Profile.cash,generation=game.Profile.vehicleStock.generation;double maxStep=0,maxCamera=0,maxFrame=0;string maxStage="";
                 int normalizationFrames=0;double maxNormalizeStep=0;
                 var authoredBefore=game.Profile.catalog;
