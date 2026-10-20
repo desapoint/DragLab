@@ -12,18 +12,67 @@ namespace DragLab.Editor
     {
         const int Rate=48000, Block=400;
         const double Start=17.9, End=20.1;
+        // Separate preview voice for accumulated-fuel afterfire; limiter cracks keep their existing renderer.
+        sealed class Explosion
+        {
+            struct Cloud { public double age,strength,low,body,slow,air,timeScale,brightness; public uint random; }
+            readonly Cloud[] clouds=new Cloud[4];
+            readonly int kind;
+            readonly EngineSoundProfile profile;
+            int next;
+            public Explosion(int kind,EngineSoundProfile profile){this.kind=kind;this.profile=profile;for(int i=0;i<clouds.Length;i++)clouds[i].age=10;}
+            public void Trigger(double strength,EngineSoundFrame frame)
+            {
+                // Acoustic response proxies, not additional fuel/heat simulation or event generation.
+                double flow=Math.Max(0,frame.airflowKgS);
+                double charge=Math.Max(0,frame.boost);
+                double scale=DragMath.Clamp(.65+.045*profile.litres+.22*strength+.18*charge+.3*flow,.6,1.6);
+                clouds[next]=new Cloud{strength=strength*profile.popGain,timeScale=scale*profile.popDecay,brightness=DragMath.Clamp(1+.18*charge+.2*flow,.8,1.5)*profile.popSharpness,random=(uint)(0x72913+next*7919)};
+                next=(next+1)%clouds.Length;
+            }
+            public double Sample()
+            {
+                double sum=0;
+                for(int i=0;i<clouds.Length;i++){
+                    var c=clouds[i];if(c.age>=1.2)continue;
+                    c.random^=c.random<<13;c.random^=c.random>>17;c.random^=c.random<<5;
+                    double noise=c.random/(double)uint.MaxValue*2-1;
+                    double decay=(kind==6?.13:kind==7?.19:.25)*c.timeScale;
+                    double cutoff=((kind==7?650:1050)*Math.Exp(-c.age/.35)+180)*c.brightness;
+                    double coefficient=1-Math.Exp(-2*Math.PI*cutoff/Rate);
+                    c.low+=coefficient*(noise-c.low);c.body+=coefficient*(c.low-c.body);
+                    c.slow+=(1-Math.Exp(-2*Math.PI*55/Rate))*(c.body-c.slow);
+                    c.air+=(1-Math.Exp(-2*Math.PI*2400/Rate))*(noise-c.air);
+                    double attack=1-Math.Exp(-c.age/(kind==6?.003:.009));
+                    double envelope=attack*Math.Exp(-c.age/decay);
+                    // Broad overlapping gas-release lobes, rather than sharp repeated impacts.
+                    for(int lobe=0;lobe<2;lobe++){
+                        double delay=lobe==0?.045:.12;
+                        double t=c.age-delay;
+                        if(t>0)envelope+=.32*(1-Math.Exp(-t/.018))*Math.Exp(-t/(decay*.8));
+                    }
+                    double pressure=attack*(Math.Exp(-c.age/.024)-.34*Math.Exp(-c.age/.07));
+                    double fade=Math.Min(1,(1.2-c.age)/.08);
+                    sum+=(.65*pressure+4.5*(c.body-c.slow)*envelope+.14*c.air*envelope)*c.strength*6*fade;
+                    c.age+=1.0/Rate;clouds[i]=c;
+                }
+                return sum;
+            }
+        }
         sealed class Burst
         {
             readonly int kind;
+            readonly Explosion explosion;
             double age=10, strength, low, bass, tail, last;
             readonly double[] reflections=new double[4096];
             int reflectionAt;
             uint random=0x91732a5u;
-            public Burst(int kind){this.kind=kind;}
+            public Burst(int kind,EngineSoundProfile profile){this.kind=kind;if(kind>=6)explosion=new Explosion(kind,profile);}
             double Noise(){random^=random<<13;random^=random>>17;random^=random<<5;return random/(double)uint.MaxValue*2-1;}
-            public void Trigger(double value){tail=last;age=0;strength=value;}
+            public void Trigger(EngineSoundFrame frame){if(explosion!=null){explosion.Trigger(frame.popStrength,frame);return;}tail=last;age=0;strength=frame.popStrength;}
             public double Sample()
             {
+                if(explosion!=null)return explosion.Sample();
                 if(kind>=3)return Bang();
                 if(age>.35){last=0;return 0;}
                 double positive=kind==1?.0045:kind==2?.0025:.0016;
@@ -67,14 +116,38 @@ namespace DragLab.Editor
         {
             readonly Burst burst;
             readonly ExhaustFilter exhaust;
+            readonly double[] travel;
+            readonly int delay;
+            readonly double upstreamReflection;
+            int travelAt;
             double input,output;
             int lastPop;
-            public Alternative(int kind,EngineSoundProfile profile)
-            {burst=new Burst(kind);exhaust=new ExhaustFilter(profile.exhaustSystem,profile.exhaust);exhaust.Configure(Rate);}
-            public void Frame(EngineSoundFrame frame){if(frame.popId!=lastPop){lastPop=frame.popId;burst.Trigger(frame.popStrength);}}
+            public Alternative(int kind,EngineSoundProfile profile,int sourcePart=0,double remainingMetres=0,double temperatureK=650,double firstAmount=1)
+            {
+                burst=new Burst(kind,profile);
+                var setup=profile.exhaustSystem.Copy();
+                Require(sourcePart>=0&&sourcePart<=setup.parts.Length,"Source must lie on exhaust path");
+                var downstream=new ExhaustPart[setup.parts.Length-sourcePart];Array.Copy(setup.parts,sourcePart,downstream,0,downstream.Length);
+                if(downstream.Length>0)downstream[0].amount*=(float)firstAmount;
+                setup.parts=downstream;exhaust=new ExhaustFilter(setup,profile.exhaust);exhaust.Configure(Rate);
+                if(remainingMetres>0){
+                    // Approximate gas sound speed; geometry/temperature are explicit preview assumptions.
+                    double speed=Math.Sqrt(1.34*287*temperatureK);
+                    delay=Math.Max(1,(int)Math.Round(remainingMetres/speed*Rate));travel=new double[delay*4+1];
+                    upstreamReflection=sourcePart==0?.12:.2;
+                }
+            }
+            public void Frame(EngineSoundFrame frame){if(frame.popId!=lastPop){lastPop=frame.popId;burst.Trigger(frame);}}
             public double Sample(double volume)
             {
-                double value=exhaust.Process(burst.Sample()*.3*volume);
+                double raw=burst.Sample()*.3*volume;
+                if(travel!=null){
+                    travel[travelAt]=raw;
+                    raw=travel[(travelAt-delay+travel.Length)%travel.Length]
+                        +upstreamReflection*travel[(travelAt-delay*3+travel.Length)%travel.Length];
+                    travelAt=(travelAt+1)%travel.Length;
+                }
+                double value=exhaust.Process(raw);
                 double filtered=value-input+.995*output;input=value;output=filtered;return filtered;
             }
         }
@@ -91,13 +164,20 @@ namespace DragLab.Editor
             }
         }
         public static void Run()
-        {Render(false);}
+        {Render(0);}
         public static void RunBang()
-        {Render(true);}
-        static void Render(bool bang)
+        {Render(1);}
+        public static void RunExplosion()
+        {Render(2);}
+        public static void RunLocationStudy()
+        {Render(3);}
+        public static void RunAfterfireStudies()
+        {Render(2);Render(3);}
+        static void Render(int generation)
         {
             string root=Path.GetFullPath(Path.Combine(Application.dataPath,"../.."));
-            string folder=Path.Combine(root,bang?"reports/backfire-bang-variants-20261020":"reports/backfire-pop-variants-20261020");Directory.CreateDirectory(folder);
+            string folder=Path.Combine(root,generation==3?"reports/backfire-location-variants-20261020":generation==2?"reports/backfire-explosion-variants-20261020":generation==1?"reports/backfire-bang-variants-20261020":"reports/backfire-pop-variants-20261020");Directory.CreateDirectory(folder);
+            double end=generation>=2?20.9:End;
             var report=new StringBuilder("Preview only; no production audio/physics changes.\n");
             foreach(string id in new[]{"29-exhaust-1","30-exhaust-2"}){
                 var fixture=JsonUtility.FromJson<RaceAudioTestFixture>(File.ReadAllText(Path.Combine(root,"reports/race-audio-audition",id+".race.json"),Encoding.UTF8));
@@ -108,11 +188,13 @@ namespace DragLab.Editor
                     var spec=car.spec.Copy();spec.sound.exhaustPopGain=0;
                     var bed=new EngineSoundSynth(new EngineSoundProfile(spec,car.tune),sampleRate:Rate);
                     var profile=new EngineSoundProfile(car.spec,car.tune);
-                    int offset=bang?3:0;
-                    var alternatives=new[]{new Alternative(offset,profile),new Alternative(offset+1,profile),new Alternative(offset+2,profile)};
+                    int offset=generation*3;
+                    double metres=generation>=2?3.2:0;
+                    var alternatives=generation==3?new[]{new Alternative(7,profile,0,3.2),new Alternative(7,profile,0,1.3,650,.5),new Alternative(7,profile,profile.exhaustSystem.parts.Length,.35)}
+                        :new[]{new Alternative(offset,profile,0,metres),new Alternative(offset+1,profile,0,metres),new Alternative(offset+2,profile,0,metres)};
                     var buffers=new[]{new List<float>(),new List<float>(),new List<float>(),new List<float>(),new List<float>()};
                     var full=new float[Block*2];var without=new float[Block*2];
-                    int first=(int)Math.Round(Start*Rate),last=(int)Math.Round(End*Rate),events=0,previousPop=0,mismatches=0;
+                    int first=(int)Math.Round(Start*Rate),last=(int)Math.Round(end*Rate),events=0,previousPop=0,mismatches=0;
                     double beforeDifference=0,eventDifference=0;int beforeSamples=0,eventSamples=0;
                     using(var reference=new BinaryReader(File.OpenRead(Path.Combine(root,"reports/audio-ding-excerpts-20261020",id+".wav")))){
                         reference.BaseStream.Position=44+first*4L;
@@ -143,7 +225,9 @@ namespace DragLab.Editor
                     Require(events==2,"Expected exactly two physical pops inside crop");
                     Require(beforeDifference/Math.Max(1,beforeSamples)<1e-10,"Engine bed differs before the pop");
                     Require(eventDifference/Math.Max(1,eventSamples)>1e-7,"No original pop energy isolated");
-                    var names=bang?new[]{"original","no-pop-control","D-sharp-bang","E-deep-bang","F-long-bark"}
+                    var names=generation==3?new[]{"original","no-pop-control","J-before-silencer","K-inside-silencer","L-after-silencer"}
+                        :generation==2?new[]{"original","no-pop-control","G-full-afterfire","H-deep-afterfire","I-rolling-afterfire"}
+                        :generation==1?new[]{"original","no-pop-control","D-sharp-bang","E-deep-bang","F-long-bark"}
                         :new[]{"original","no-pop-control","A-dry-crack","B-deep-pop","C-raspy-bark"};
                     for(int i=0;i<names.Length;i++){Require(buffers[i].Count==(last-first)*2,"Wrong preview length");Wav(Path.Combine(folder,id+"-"+names[i]+".wav"),buffers[i]);}
                     report.AppendLine("PASS "+id+": original PCM16 matches identified source exactly; same engine bed, two actual pop triggers, finite bounded stereo; pre-pop bed unchanged. Original-pop difference RMS "+Math.Sqrt(eventDifference/eventSamples));

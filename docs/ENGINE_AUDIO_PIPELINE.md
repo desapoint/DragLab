@@ -143,3 +143,58 @@ silent clock is stereo to preserve this in Unity. One AudioSource mixes the four
 independent voices; mono output is still supported. The synthetic aggregate-slip
 fallback belongs to the acoustic bench and does not replace initialized road
 contacts. Open-differential single-wheel coverage is part of the live audition.
+
+## Requested afterfire direction — preview stage, 2026-10-20
+
+The user rejected ringing pops, then louder short cracks that sounded like breaking
+material. Larger overrun afterfires need a separate pressure/burning-gas envelope
+with a rolling decay; do not simply amplify or stretch every limiter crack.
+The current longer-envelope and source-location studies are Editor-only listening
+prototypes. Production `ExhaustPopSynth`, event generation, physics and builds are
+unchanged. No preview has received listening approval.
+
+The production simulation currently publishes a pop count and strength. It has
+carburetor-transient, ignition-cut, two-step and anti-lag triggers, but does not
+publish the cause, combustion location, trapped fuel/oxygen or local exhaust gas
+temperature for an individual event. Carburetor intake combustion must eventually
+be distinguished from exhaust afterfire rather than automatically sharing the same
+exhaust outlet path. Do not describe an inferred source location as simulated.
+
+Required integration contract after sound approval:
+
+- Capture event cause, strength/available combustion energy and source region in
+  the authoritative model. Distinguish limiter cuts, overrun, anti-lag and genuine
+  fault-related events; fuel-cut behavior must not invent unburned fuel.
+- Installed fueling/ignition hardware, mixture, timing, faults, preceding load,
+  airflow/boost and fuel properties affect event formation through that model.
+  Capture existing values rather than creating a competing audio-side engine.
+- Use authored ordered exhaust geometry and fitted hardware: manifolds/collectors,
+  turbine where present, catalyst, pipe length/diameter, resonators, silencers and
+  outlet. Event sound is injected at its source, with downstream transmission and
+  upstream reflections; do not repeatedly filter it through components behind it.
+  Apply turbine damping only when the propagation path crosses the turbine.
+- Gas conditions affect propagation and losses. Installed component condition can
+  change leakage, damping or rattles only when supported by an actual modeled fault;
+  healthy parts must not gain a generic breakage sound.
+- Keep limiter cracks short while allowing separately accumulated afterfire energy
+  a broader pressure bloom and turbulent decay. Long events overlap using bounded
+  prepared voices. Use subtle repeatable variation without changing event timing,
+  adding random explosions, or creating a sustained pitched bell.
+- Prepare routing, coefficients and reusable buffers outside the callback; preserve
+  Android constraints, category gains, stereo banks, cuts and normal engine audio.
+
+The present prototype uses actual pop strength, displacement, airflow, boost and
+existing pop gain/shape controls, plus the fitted silencer transfer and exhaust
+upgrade level. Its source location, path lengths and 650 K gas assumption are
+explicit audition inputs, not measured geometry or new physical state. A partial
+silencer transfer approximates a source inside it. This is a direction comparison,
+not a full bidirectional wave or nonlinear exhaust-combustion model. The Bison
+fixtures have one silencer and no turbine/catalyst; these previews cannot validate
+missing hardware paths or correct event-cause classification.
+
+Acoustic references for the future component model: [COMSOL's automotive muffler
+model](https://doc.comsol.com/6.4/doc/com.comsol.help.models.mph.automotive_muffler/automotive_muffler.html)
+demonstrates chamber-dependent transmission loss and gas-property inputs;
+[the perforated-muffler model](https://doc.comsol.com/6.4/doc/com.comsol.help.models.aco.perforated_muffler/perforated_muffler.html)
+explains the limitations of linear approximations. Preview coefficients are our
+listening calibration and are not fitted to those reference models.

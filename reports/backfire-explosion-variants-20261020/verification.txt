@@ -1,0 +1,12 @@
+Preview only; no production audio/physics changes.
+PASS 29-exhaust-1: original PCM16 matches identified source exactly; same engine bed, two actual pop triggers, finite bounded stereo; pre-pop bed unchanged. Original-pop difference RMS 0,00378867223015548
+PASS 30-exhaust-2: original PCM16 matches identified source exactly; same engine bed, two actual pop triggers, finite bounded stereo; pre-pop bed unchanged. Original-pop difference RMS 0,0047590659850637
+
+PASS 29-exhaust-1 G-full-afterfire: same pre-event bed; peak 0.45831; 250-500 ms tail RMS 0.018850.
+PASS 29-exhaust-1 H-deep-afterfire: same pre-event bed; peak 0.39029; 250-500 ms tail RMS 0.031740.
+PASS 29-exhaust-1 I-rolling-afterfire: same pre-event bed; peak 0.44955; 250-500 ms tail RMS 0.054708.
+PASS 29-exhaust-1: distinct responses; original and no-pop prefixes match prior controls; four-repeat outputs are 13.2 seconds at stereo 48 kHz PCM16.
+PASS 30-exhaust-2 G-full-afterfire: same pre-event bed; peak 0.53568; 250-500 ms tail RMS 0.024287.
+PASS 30-exhaust-2 H-deep-afterfire: same pre-event bed; peak 0.46341; 250-500 ms tail RMS 0.041399.
+PASS 30-exhaust-2 I-rolling-afterfire: same pre-event bed; peak 0.52689; 250-500 ms tail RMS 0.070291.
+PASS 30-exhaust-2: distinct responses; original and no-pop prefixes match prior controls; four-repeat outputs are 13.2 seconds at stereo 48 kHz PCM16.
