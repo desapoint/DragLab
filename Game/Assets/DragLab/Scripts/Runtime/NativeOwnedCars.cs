@@ -200,6 +200,7 @@ namespace DragLab.Runtime
             // Rebuilding for unit/selection/cosmetic changes must not cancel an
             // identical in-flight physics batch and immediately schedule it again.
             if(previousRatings!=null&&!previousRatings.IsCompleted
+                &&ownedCancellation!=null&&!ownedCancellation.IsCancellationRequested
                 &&probes.Count==ownedPendingContexts.Count
                 &&probes.All(p=>ownedPendingContexts.TryGetValue(p.Item1,out var prior)&&prior==p.Item2))
                 return;
