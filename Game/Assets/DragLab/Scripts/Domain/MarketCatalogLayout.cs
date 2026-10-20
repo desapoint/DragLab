@@ -21,6 +21,47 @@ namespace DragLab.Domain.Mechanics
         // No Unity objects, catalog mutations or JsonUtility calls cross the boundary.
         sealed class DetachedInput {internal PartDefinition part;internal string key;}
         sealed class DetachedGroup {internal string representative;internal List<string> ids;internal int maximum;internal bool deliverable;}
+        sealed class DetachedBuild {internal DetachedGroup[] groups;internal FitmentIndex fitments;}
+        // Immutable per-authored-catalog compatibility snapshot. Its indexes use
+        // the exact canonical group order, never runtime stock/owner identities.
+        // Fully constructed before publication; worker readers never mutate it.
+        internal sealed class FitmentIndex
+        {
+            readonly int count;
+            readonly int[] all;
+            readonly Dictionary<string,int[]> byModel;
+            internal FitmentIndex(int count,int[] all,Dictionary<string,int[]> byModel)
+            {this.count=count;this.all=all;this.byModel=byModel;}
+            internal int[] ForModels(string[] ownedModels)
+            {
+                // An empty garage uses the full authored model selection, like
+                // the original market generation's fallback to all specs.
+                if(ownedModels==null||ownedModels.Length==0)return all;
+                if(ownedModels.Length==1)return byModel[ownedModels[0]];
+                var present=new bool[count];
+                foreach(var model in ownedModels)
+                    foreach(int index in byModel[model])present[index]=true;
+                var merged=new List<int>();
+                for(int i=0;i<present.Length;i++)if(present[i])merged.Add(i);
+                return merged.ToArray();
+            }
+        }
+        sealed class FitmentBuilder
+        {
+            readonly Dictionary<string,List<int>> byModel=
+                new Dictionary<string,List<int>>(StringComparer.Ordinal);
+            readonly List<int> all=new List<int>();
+            internal FitmentBuilder(VehicleSpec[] specs)
+            {foreach(var spec in specs)byModel.Add(spec.id,new List<int>());}
+            internal void Add(string model,int groupIndex){byModel[model].Add(groupIndex);}
+            internal void AddDeliverable(int groupIndex){all.Add(groupIndex);}
+            internal FitmentIndex Complete(int groupCount)
+            {
+                var snapshot=new Dictionary<string,int[]>(byModel.Count,StringComparer.Ordinal);
+                foreach(var pair in byModel)snapshot.Add(pair.Key,pair.Value.ToArray());
+                return new FitmentIndex(groupCount,all.ToArray(),snapshot);
+            }
+        }
         sealed class GroupDraft
         {
             internal PartDefinition definition;
@@ -30,7 +71,8 @@ namespace DragLab.Domain.Mechanics
         }
         internal sealed class Layout
         {
-            public string[] ids,keys;public Group[] groups;
+            public string[] ids,keys,modelIds;public int authoringRevision;
+            public Group[] groups;public FitmentIndex fitments;
             readonly Dictionary<string,VehicleSpec> stockSpecs=new Dictionary<string,VehicleSpec>();
             readonly Dictionary<string,PartDefinition[][]> choices=new Dictionary<string,PartDefinition[][]>();
             public void Invalidate(){stockSpecs.Clear();choices.Clear();}
@@ -116,8 +158,12 @@ namespace DragLab.Domain.Mechanics
             entry.snapshot=d.Copy();entry.json=null;var copy=d.Copy();copy.id="";return entry.key=JsonUtility.ToJson(copy);
         }
         internal static string Json(PartDefinition d){Key(d);var entry=products.GetValue(d,_=>new Product());if(entry.json==null||entry.jsonId!=d.id){entry.jsonId=d.id;entry.json=JsonUtility.ToJson(d);}return entry.json;}
-        static bool Matches(Layout entry,MechanicalCatalog catalog,Dictionary<string,string> keys)
-            =>entry.groups!=null&&catalog.parts.Select(d=>d.id).SequenceEqual(entry.ids)&&
+        static bool Matches(Layout entry,MechanicalCatalog catalog,Dictionary<string,string> keys,
+            VehicleSpec[] specs)
+            =>entry.groups!=null&&entry.fitments!=null&&
+                entry.authoringRevision==catalog.AuthoringRevision&&
+                entry.modelIds!=null&&entry.modelIds.SequenceEqual(specs.Select(s=>s.id))&&
+                catalog.parts.Select(d=>d.id).SequenceEqual(entry.ids)&&
                 catalog.parts.Select(d=>keys[d.id]).SequenceEqual(entry.keys);
 
         // Synchronous API retained for original callers and deterministic editor tests.
@@ -128,13 +174,14 @@ namespace DragLab.Domain.Mechanics
             return result;
         }
 
-        static DetachedGroup[] BuildDetachedGroups(DetachedInput[] inputs,VehicleSpec[] specs)
+        static DetachedBuild BuildDetachedGroups(DetachedInput[] inputs,VehicleSpec[] specs)
         {
             // Exactly the former LINQ semantics: default-comparer Min for the
             // group order, ordinal ID for the representative and alias list.
             var source=inputs.GroupBy(d=>d.key,StringComparer.Ordinal)
                 .OrderBy(g=>g.Min(d=>d.part.id),StringComparer.Ordinal).ToArray();
             var groups=new DetachedGroup[source.Length];
+            var fitments=new FitmentBuilder(specs);
             for(int i=0;i<source.Length;i++)
             {
                 var sourceGroup=source[i];
@@ -144,15 +191,17 @@ namespace DragLab.Domain.Mechanics
                     if(MechanicalCatalog.FitsDetached(spec,definition))
                     {
                         fitting=true;
+                        fitments.Add(spec.id,i);
                         maximum=Math.Max(maximum,PartsMarket.Count(spec,definition));
                     }
+                if(fitting)fitments.AddDeliverable(i);
                 groups[i]=new DetachedGroup{
                     representative=definition.id,
                     ids=sourceGroup.Select(d=>d.part.id).OrderBy(id=>id,StringComparer.Ordinal).ToList(),
                     maximum=maximum,deliverable=fitting
                 };
             }
-            return groups;
+            return new DetachedBuild{groups=groups,fitments=fitments.Complete(groups.Length)};
         }
         internal static void ClearForVerification(MechanicalCatalog catalog)=>layouts.Remove(catalog);
 
@@ -163,10 +212,12 @@ namespace DragLab.Domain.Mechanics
             VehicleSpec[] specs,Action<Layout> complete,bool offloadManaged=false)
         {
             var existing=layouts.GetValue(catalog,_=>new Layout());
-            if(Matches(existing,catalog,keys)){complete(existing);yield break;}
+            if(Matches(existing,catalog,keys,specs)){complete(existing);yield break;}
             var candidate=new Layout{
                 ids=catalog.parts.Select(d=>d.id).ToArray(),
-                keys=catalog.parts.Select(d=>keys[d.id]).ToArray()
+                keys=catalog.parts.Select(d=>keys[d.id]).ToArray(),
+                modelIds=specs.Select(s=>s.id).ToArray(),
+                authoringRevision=catalog.AuthoringRevision
             };
             if(offloadManaged)
             {
@@ -197,10 +248,13 @@ namespace DragLab.Domain.Mechanics
                 while(!worker.IsCompleted)yield return wait;
                 var completed=worker.GetAwaiter().GetResult();
                 var byId=catalog.parts.ToDictionary(d=>d.id,StringComparer.Ordinal);
-                candidate.groups=completed.Select(g=>new Group{
+                candidate.groups=completed.groups.Select(g=>new Group{
                     definition=byId[g.representative],ids=g.ids,
                     maximum=g.maximum,deliverable=g.deliverable
                 }).ToArray();
+                // This readonly worker-computed snapshot is the same one used
+                // for subsequent market epochs, not reconstructed on main.
+                candidate.fitments=completed.fitments;
             }
             else
             {
@@ -248,6 +302,7 @@ namespace DragLab.Domain.Mechanics
             // Never combine the last grouping batch with an expensive first fit.
             yield return "parts/layout grouping";
             var groups=new List<Group>(ordered.Count);
+            var fitments=new FitmentBuilder(specs);
             start=System.Diagnostics.Stopwatch.GetTimestamp();
             foreach(var group in ordered.Values)
             {
@@ -263,6 +318,7 @@ namespace DragLab.Domain.Mechanics
                     if(catalog.Fits(spec,definition))
                     {
                         fitting=true;
+                        fitments.Add(spec.id,groups.Count);
                         maximum=Math.Max(maximum,PartsMarket.Count(spec,definition));
                     }
                     long fitNow=System.Diagnostics.Stopwatch.GetTimestamp();
@@ -272,6 +328,7 @@ namespace DragLab.Domain.Mechanics
                         start=System.Diagnostics.Stopwatch.GetTimestamp();
                     }
                 }
+                if(fitting)fitments.AddDeliverable(groups.Count);
                 group.ids.Sort(StringComparer.Ordinal);
                 groups.Add(new Group{
                     definition=definition,
@@ -286,11 +343,12 @@ namespace DragLab.Domain.Mechanics
                 }
             }
             candidate.groups=groups.ToArray();
+            candidate.fitments=fitments.Complete(groups.Count);
             }
             // A newer full layout may have been published during a suspended warmup.
             // Never overwrite that version with an older construction.
             var current=layouts.GetValue(catalog,_=>new Layout());
-            if(Matches(current,catalog,keys)){complete(current);yield break;}
+            if(Matches(current,catalog,keys,specs)){complete(current);yield break;}
             current.Invalidate();
             layouts.Remove(catalog);
             layouts.Add(catalog,candidate);
