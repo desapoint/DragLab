@@ -286,3 +286,17 @@ integration or a real-vehicle accuracy claim. Constant-gain matched delivery and
 independent common-exhaust convolution keep the comparison controlled.
 [Setup, limits and verification](../reports/isolated-backfire-sources-20261020/CHANGES.md).
 Only six WAVs are delivered; wait for acoustic approval before integration.
+
+
+### Supplied final V8 generator: C# preview matrix before integration
+
+The user prefers the Graph Backfire Sounds final light-cleanup / less-ticking
+source and requires the equivalent in C#, with only backfire generation changing.
+The complete acoustic source/seed/path model is ported to Editor-only C# and
+reuses the game's fitted `ExhaustFilter`. Actual Unity engine/controller/physics
+captures provide unchanged engine beds and physical triggers. Each full case plays
+original → light cleanup → less ticking, including exact fuel/diesel quiet controls.
+Python and supplied reference code remain local and are not versioned dependencies.
+[Model, variables, seed streams, gates and limits](../reports/v8-backfire-matrix-20261020/CHANGES.md).
+Wait for explicit listening confirmation before runtime integration, platform
+build/profiling or architecture-plan work. Engine/induction/cut/wear DSP is intact.

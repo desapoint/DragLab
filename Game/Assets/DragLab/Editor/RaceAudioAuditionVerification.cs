@@ -45,6 +45,24 @@ namespace DragLab.Editor
             Render(c,directory);
             return JsonUtility.FromJson<RaceAudioTestFixture>(File.ReadAllText(Path.Combine(directory,c.id+".race.json"),Encoding.UTF8));
         }
+        internal static Result[] CaptureV8Matrix(string directory)
+        {
+            Require(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-audio-wav")>=0,"V8 matrix requires production capture");
+            var ids=new[]{"01-i3-na","19-injection-soft-fuel","07-i6-carb","30-exhaust-2","31-exhaust-3","09-v8-supercharger","26-launch-hard-ignition","14-i4-twincharged-dct","12-v12-twin","23-diesel-soft-fuel"};
+            var cases=Cases(false);var results=new List<Result>();
+            foreach(string id in ids){
+                var c=cases.Single(x=>x.id==id);
+                if(id=="01-i3-na"||id=="12-v12-twin"){
+                    c.laboratory=true;c.requirePops=true;c.tune.limiterCut=CutMethod.Ignition;c.title+=" · ignition-cut laboratory control";
+                }
+                if(id=="26-launch-hard-ignition"){
+                    c.laboratory=true;c.tune.exhaustLevel=3;c.tune.antiLag=EquipmentSetting.On;
+                    c.spec.sound.exhaustSystem=new ExhaustSetup{version=1,parts=new[]{ExhaustPart.Create(ExhaustPartKind.Pipe)}};
+                }
+                results.Add(Render(c,directory));Debug.Log("V8 PHYSICAL CAPTURE "+results.Count+" / "+ids.Length+" "+id);
+            }
+            return results.ToArray();
+        }
         static List<Case> Cases(bool prepareTires=true)
         {
             var cars=Resources.LoadAll<VehicleDefinition>("Data/Vehicles");var list=new List<Case>();

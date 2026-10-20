@@ -1,0 +1,11 @@
+PASS 01-i3-na: full original / C# light / C# less-ticking; exact reference and engine prefix, same origins/seeds, no new physical triggers.
+PASS 19-injection-soft-fuel: full original / C# light / C# less-ticking; exact reference and engine prefix, same origins/seeds, no new physical triggers.
+PASS 07-i6-carb: full original / C# light / C# less-ticking; exact reference and engine prefix, same origins/seeds, no new physical triggers.
+PASS 30-exhaust-2: full original / C# light / C# less-ticking; exact reference and engine prefix, same origins/seeds, no new physical triggers.
+PASS 31-exhaust-3: full original / C# light / C# less-ticking; exact reference and engine prefix, same origins/seeds, no new physical triggers.
+PASS 09-v8-supercharger: full original / C# light / C# less-ticking; exact reference and engine prefix, same origins/seeds, no new physical triggers.
+PASS 26-launch-hard-ignition: full original / C# light / C# less-ticking; exact reference and engine prefix, same origins/seeds, no new physical triggers.
+PASS 14-i4-twincharged-dct: full original / C# light / C# less-ticking; exact reference and engine prefix, same origins/seeds, no new physical triggers.
+PASS 12-v12-twin: full original / C# light / C# less-ticking; exact reference and engine prefix, same origins/seeds, no new physical triggers.
+PASS 23-diesel-soft-fuel: full original / C# light / C# less-ticking; exact reference and engine prefix, same origins/seeds, no new physical triggers.
+PASS C# source/filter/seed/control and PCM checks: 1576 semantic assertions, 67651200 finite/non-clipped PCM sample checks; 657 physical / 638 published triggers. Eight audible configurations, two exact quiet controls. Runtime engine/audio untouched; Python is not required for this runner.

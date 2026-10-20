@@ -1,0 +1,1 @@
+PASS independent PowerShell artifact check: ten C# manifest hashes, stereo PCM16/48 kHz headers and full original/A/B sequence lengths match.

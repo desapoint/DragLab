@@ -87,3 +87,11 @@ Thumbs.db
 # Android IL2CPP/Gradle intermediate outputs; final players stay under Builds.
 /Game/.utmp/
 /Game/build/
+
+# Local-only supplied audio references / Python comparison experiments.
+/tools/backfire-v8-preview/
+
+# Superseded local Python audition evidence; C# checkpoint evidence stays tracked.
+/reports/v8-backfire-matrix-20261020/verification.txt
+/reports/v8-backfire-matrix-20261020/independent-verification.txt
+/reports/v8-backfire-matrix-20261020/upstream-verification.txt
