@@ -62,7 +62,7 @@ namespace DragLab.Runtime
             // Shopping plans and comparisons depend on the wider inventory/
             // commerce context. The applied car's physical inspection does not.
             string physical=CarSignature(p,car);
-            string key=p.revision+"/"+JsonUtility.ToJson(car)+"/"+JsonUtility.ToJson(p.catalog.Spec(car.vehicleId))+"/"+string.Join("/",car.installed.slots.Select(s=>{var part=p.parts.Find(i=>i.instanceId==s.partInstanceId);return part==null?"missing/"+s.partInstanceId:JsonUtility.ToJson(part)+JsonUtility.ToJson(p.catalog.Find(part.definitionId));}));
+            string key=p.revision+"/"+physical;
             if(ReferenceEquals(profile,p)&&ReferenceEquals(catalog,p.catalog)&&context==key)return;
             CarInspection retained=null;
             if(currentPhysical==physical)inspections.TryGetValue("current",out retained);
