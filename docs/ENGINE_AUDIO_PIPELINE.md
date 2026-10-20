@@ -300,3 +300,20 @@ Python and supplied reference code remain local and are not versioned dependenci
 [Model, variables, seed streams, gates and limits](../reports/v8-backfire-matrix-20261020/CHANGES.md).
 Wait for explicit listening confirmation before runtime integration, platform
 build/profiling or architecture-plan work. Engine/induction/cut/wear DSP is intact.
+
+### Causality/detail audit before backfire integration
+
+The user requires audio events to follow the simulation, with consistent detail
+and explicit validation across combustion, induction, exhaust and tires. The
+[2026-10-20 audit](../reports/audio-causality-20261020/CHANGES.md) distinguishes
+state-driven behavior, calibrated acoustic response and missing physical state.
+The new preview is a better waveform model, not a replacement for backfire
+occurrence physics. Runtime pops still use edge/timer requests, lack transported
+fuel/oxygen/ignition-site state and can coalesce on publication. These remain open
+integration blockers. Do not describe behavioral DSP checks as physical accuracy.
+
+A narrow runtime guard now prevents fresh requests from failed/stalled or
+supply-unavailable engines and rejects non-finite strengths. No new generator or
+other engine/induction/tire sound change is integrated. The audit defines a
+timestamped event/mixture/path contract and negative cases for the next backfire
+checkpoint; acoustic acceptance and Android device profiling remain separate.

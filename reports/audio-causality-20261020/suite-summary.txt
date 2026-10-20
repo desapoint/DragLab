@@ -1,0 +1,2 @@
+PASS production regression gates: engine 276; existing pop 64; induction 346; powertrain 116. Pressure/refinement/transition and per-wheel tire suites also completed.
+This is behavioral regression evidence, not a claim of measured acoustic accuracy or Android device profiling.

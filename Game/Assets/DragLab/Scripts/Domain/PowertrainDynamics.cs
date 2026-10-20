@@ -224,7 +224,13 @@ namespace DragLab.Domain
                 s.feedback = "STALLED / CLUTCH IN + ENTER TO RESTART"; s.feedbackRemaining = 2;
             }
         }
-        public static void Pop(CarState s, double strength) { if (strength > .03) { s.exhaustPopCount++; s.exhaustPopStrength = DragMath.Clamp(strength, 0, 1); } }
+        public static void Pop(CarState s, double strength)
+        {
+            // These are fresh running-engine requests, not retained exhaust-gas packets.
+            // BeginTick can still visit throttle/limiter edges after a failure or stall.
+            if (s.engineFailed || s.stalled || !s.engineSupplyAvailable || double.IsNaN(strength) || double.IsInfinity(strength)) return;
+            if (strength > .03) { s.exhaustPopCount++; s.exhaustPopStrength = DragMath.Clamp(strength, 0, 1); }
+        }
     }
 
     public static class TransmissionDynamics

@@ -1,0 +1,1 @@
+PASS 47 complete real-race audio configurations; exact pre-correction ET, reaction, shifts, limiter ticks, release/pop counts, boost/RPM traces, cut telemetry, duration and finish state. No listening WAV regeneration.

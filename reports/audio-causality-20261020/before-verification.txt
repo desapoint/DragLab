@@ -1,0 +1,19 @@
+Audio causality audit: production behavior gates; open model limitations are separate.
+FAIL failed engine cannot create fresh transition/limiter pops / opening=False
+FAIL failed engine cannot create fresh transition/limiter pops / opening=True
+FAIL stalled engine cannot create fresh transition/limiter pops / opening=False
+FAIL stalled engine cannot create fresh transition/limiter pops / opening=True
+FAIL no supply engine cannot create fresh transition/limiter pops / opening=False
+FAIL no supply engine cannot create fresh transition/limiter pops / opening=True
+PASS running carburetor retains existing ignition-cut event behavior
+PASS Injection fuel-cut entry does not invent an ignition afterfire
+PASS Diesel fuel-cut entry does not invent an ignition afterfire
+OBSERVATION event transport: 3 physical pops; 1 published trigger IDs. Current frame stores only the last strength; event queue remains an integration blocker.
+PASS DSP does not mutate authoritative vehicle state
+PASS DSP does not advance the gameplay random stream
+PASS event playback is finite with output headroom
+PASS republishing unchanged state does not invent another event
+OBSERVATION skipped simulation ticks: 5 physical increments; 1 published IDs. Sub-tick time/cause/energy is absent.
+OPEN no fuel/oxygen exhaust inventory, transport, ignition-site or energy-conservation state. Timer/edge events are heuristics, not a chemistry solver.
+OPEN waveform/detail and platform limits are enumerated in CHANGES.md; passing these gates does not close them.
+Focused checks: 13; failures: 6.
