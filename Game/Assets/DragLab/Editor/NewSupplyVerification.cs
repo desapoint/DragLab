@@ -93,11 +93,24 @@ namespace DragLab.Editor
             // The initial fitting guarantee advances the coverage RNG stream
             // subsequently used by used-part guarantees. Vary seed and target
             // count to catch both stock-quantity and later-offer divergence.
+            string compatibilityModel=Resources.LoadAll<DragLab.Data.VehicleDefinition>("Data/Vehicles")
+                .Where(v=>v.spec.sound.cylinders==6)
+                .OrderBy(v=>v.spec.id,StringComparer.Ordinal).First().spec.id;
             foreach(var scenario in new[]{
-                new[]{1,0},new[]{41,5},new[]{981,20},new[]{-7,20}
+                new[]{1,0},new[]{41,5},new[]{981,20},new[]{-7,20},
+                new[]{77,10},new[]{209,5}
             }){
                 int paritySeed=scenario[0],minimum=scenario[1];
                 var original=Create(catalog,paritySeed,minimum);
+                if(paritySeed==981||paritySeed==77)
+                {
+                    // The indexed union must preserve original group order
+                    // across multiple models, without changing either RNG.
+                    VehicleCollection.Buy(original,catalog,new VehicleOffer{
+                        model=compatibilityModel,price=1,reputation=0,
+                        stock=new Tune(),paint="#FFFFFF"});
+                    if(paritySeed==77)original.reputation=0;
+                }
                 var worker=EngineWorkshop.Copy(original);worker.catalog=catalog;
                 original.vehicleStock.generation++;
                 worker.vehicleStock.generation++;
@@ -110,8 +123,9 @@ namespace DragLab.Editor
                     JsonUtility.ToJson(worker.inventory.market)==JsonUtility.ToJson(original.inventory.market)&&
                     worker.inventory.dealer.Select(row=>JsonUtility.ToJson(row)).SequenceEqual(
                         original.inventory.dealer.Select(row=>JsonUtility.ToJson(row))),
-                    "Worker initial fitting guarantee preserves seeded new/used/engine market "+
-                    paritySeed+"/"+minimum);
+                    "Indexed initial and used guarantees preserve exact seeded new/used/engine market "+
+                    paritySeed+"/"+minimum+" (cars="+original.cars.Count+
+                    ", reputation="+original.reputation+")");
             }
             var baseline=File.ReadAllLines(Path.Combine(Folder,"used-baseline-matrix.csv"),Encoding.UTF8).Skip(1).Where(s=>s.Length>0).ToDictionary(s=>string.Join(",",s.Split(',').Take(3)),s=>s.Split(',')[5]);
             foreach(int seed in new[]{1,41,981,-7})foreach(int minimum in new[]{0,5,20}){
@@ -123,7 +137,7 @@ namespace DragLab.Editor
             }
             log.AppendLine("Preserved supply checks elapsed ms: "+timer.Elapsed.TotalMilliseconds.ToString("0"));
             var source=Create(catalog,41,5);NewSupplyChecks.Coverage(EngineWorkshop.Copy(source),check);
-            var six=EngineWorkshop.Copy(source);string sixModel=Resources.LoadAll<DragLab.Data.VehicleDefinition>("Data/Vehicles").Where(v=>v.spec.sound.cylinders==6).OrderBy(v=>v.spec.id,StringComparer.Ordinal).First().spec.id;
+            var six=EngineWorkshop.Copy(source);string sixModel=compatibilityModel;
             VehicleCollection.Buy(six,catalog,new VehicleOffer{model=sixModel,price=1,reputation=0,stock=new Tune(),paint="#FFFFFF"});NewSupplyChecks.Coverage(six,check);
             var identities=Create(catalog,77,0);VehicleCollection.Buy(identities,catalog,new VehicleOffer{model=sixModel,price=1,reputation=0,stock=new Tune(),paint="#FFFFFF"});identities.inventory.cart=null;
             foreach(var stock in identities.inventory.market.parts){stock.units=stock.initialUnits=0;stock.discovered=false;}
