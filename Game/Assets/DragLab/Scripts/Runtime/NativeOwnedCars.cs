@@ -85,10 +85,7 @@ namespace DragLab.Runtime
                     var value=rating.Value?.Rating;
                     string text=value==null?"Class unavailable · PP —":"Class "+value.performanceClass+" · PP "+value.points;
                     if (label != null) label.text = text;
-                    if(rating.Value!=null) {
-                        if(ownedRatingCache.Count>=128&&!ownedRatingCache.ContainsKey(rating.Key))ownedRatingCache.Clear();
-                        ownedRatingCache[rating.Key]=rating.Value;
-                    }
+                    if(rating.Value!=null)RememberOwnedRating(rating.Key,rating.Value);
                     if(ownedEntries.TryGetValue(rating.Key,out var entry)){entry.Rating=value;entry.RatingPending=false;}
                     if (ownedDetailId == rating.Key) {
                         var detail = ownedDetailContent.Q<Label>(className:"car-class");
@@ -105,8 +102,19 @@ namespace DragLab.Runtime
                 foreach(var entry in ownedEntries.Values)entry.RatingPending=false;ApplyOwnedQuery();
             }
         }
+        void RememberOwnedRating(string id,OwnedRatingResult value)
+        {
+            if(ownedRatingCache.Count>=128&&!ownedRatingCache.ContainsKey(id))ownedRatingCache.Clear();
+            ownedRatingCache[id]=value;
+        }
         void BuildOwnedCars(PlayerProfile profile,TorqueUnit units)
         {
+            // A previous batch may have finished since the last UI refresh.
+            // Retain its fully computed, signature-keyed results before replacing
+            // the cards, instead of running the same quarter-mile probes again.
+            if(ownedRatings!=null&&ownedRatings.Status==TaskStatus.RanToCompletion)
+                foreach(var finished in ownedRatings.Result)
+                    if(finished.Value!=null)RememberOwnedRating(finished.Key,finished.Value);
             ownedCancellation?.Cancel(); ownedCancellation?.Dispose();
             ownedCancellation = new CancellationTokenSource(); var token = ownedCancellation.Token;
             ownedRatings = null;
