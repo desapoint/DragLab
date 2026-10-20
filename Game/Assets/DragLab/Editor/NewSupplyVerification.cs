@@ -61,13 +61,14 @@ namespace DragLab.Editor
             deliveryOriginal.vehicleStock.generation++;
             deliveryWorker.vehicleStock.generation++;
             PartsMarket.Refresh(deliveryOriginal);
-            double wholeSupplyCpu=-1;
+            double wholeSupplyCpu=-1,initialGuaranteeCpu=-1;
             bool reusedKeys=false,reusedCategories=false;
             var priorObserver=PartsMarket.Measurement;
             PartsMarket.Measurement=(phase,ms)=>{
                 if(phase=="product keys reused")reusedKeys=true;
                 if(phase=="catalog membership index reused")reusedCategories=true;
                 if(phase=="new complete worker CPU")wholeSupplyCpu=ms;
+                if(phase=="initial fitting guarantee worker CPU")initialGuaranteeCpu=ms;
                 priorObserver?.Invoke(phase,ms);
             };
             try
@@ -80,12 +81,36 @@ namespace DragLab.Editor
             check(reusedKeys,"Detached market refresh reuses completed product keys without recataloging");
             check(reusedCategories,"Detached market refresh consumes its immutable runtime category index");
             check(wholeSupplyCpu>=0,"Detached new-stock worker processes wear, delivery and fitting guarantee");
+            check(initialGuaranteeCpu>=0,
+                "Initial seeded fitting guarantee is computed by detached selection worker");
             log.AppendLine("Measured detached new-stock worker CPU: "+wholeSupplyCpu.ToString("0.000",System.Globalization.CultureInfo.InvariantCulture)+" ms");
+            log.AppendLine("Measured initial fitting guarantee worker CPU: "+initialGuaranteeCpu.ToString("0.000",System.Globalization.CultureInfo.InvariantCulture)+" ms");
             check(ReferenceEquals(deliveryWorker.catalog,catalog),"Completed detached supply worker restores the authoritative catalog reference");
             check(JsonUtility.ToJson(deliveryOriginal.inventory.market)==JsonUtility.ToJson(deliveryWorker.inventory.market)&&
                 string.Join("/",deliveryOriginal.inventory.dealer.Select(row=>JsonUtility.ToJson(row)))==
                 string.Join("/",deliveryWorker.inventory.dealer.Select(row=>JsonUtility.ToJson(row))),
                 "Entire detached new-supply worker preserves exact synchronous new/used/engine epoch");
+            // The initial fitting guarantee advances the coverage RNG stream
+            // subsequently used by used-part guarantees. Vary seed and target
+            // count to catch both stock-quantity and later-offer divergence.
+            foreach(var scenario in new[]{
+                new[]{1,0},new[]{41,5},new[]{981,20},new[]{-7,20}
+            }){
+                int paritySeed=scenario[0],minimum=scenario[1];
+                var original=Create(catalog,paritySeed,minimum);
+                var worker=EngineWorkshop.Copy(original);worker.catalog=catalog;
+                original.vehicleStock.generation++;
+                worker.vehicleStock.generation++;
+                PartsMarket.Refresh(original);
+                using(var steps=PartsMarket.RefreshSteps(worker,true).GetEnumerator())
+                    while(steps.MoveNext())
+                        if(steps.Current is MarketWorkerWait waiting)
+                            waiting.task.GetAwaiter().GetResult();
+                check(ReferenceEquals(worker.catalog,catalog)&&
+                    JsonUtility.ToJson(worker.inventory)==JsonUtility.ToJson(original.inventory),
+                    "Worker initial fitting guarantee preserves entire seeded market "+
+                    paritySeed+"/"+minimum);
+            }
             var baseline=File.ReadAllLines(Path.Combine(Folder,"used-baseline-matrix.csv"),Encoding.UTF8).Skip(1).Where(s=>s.Length>0).ToDictionary(s=>string.Join(",",s.Split(',').Take(3)),s=>s.Split(',')[5]);
             foreach(int seed in new[]{1,41,981,-7})foreach(int minimum in new[]{0,5,20}){
                 var p=Create(catalog,seed,minimum);
