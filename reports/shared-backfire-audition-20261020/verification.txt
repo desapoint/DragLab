@@ -1,0 +1,39 @@
+PASS 138 matrix checks; 34 controlled configurations, 16 chapters each, same generator; no production integration.
+PASS 78 shared generator/routing checks; deterministic seeded pressure/turbulence, fuel/oxygen suppression, source-path routing, geometry/temperature/turbine effects, overlap, rates and zero sample-loop allocations. Desktop single-event 1 s loop: 34.08 ms; not Android profiling.
+PASS exact event-input export checked against recorded event identities/times/energies; PCM files not rewritten.
+PASS independent PCM/manifest checks: 34 files; 7 cylinder counts, 6 induction layouts, 3 fuel systems, 4 release modes, full chapter sequence.
+PASS 01-i3-na: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 02-i4-na: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 05-i5-turbo-flutter: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 06-i6-na: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 07-i6-carb: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 09-v8-supercharger: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 10-diesel-turbo: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 11-v10-na: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 12-v12-twin: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 13-v8-twin-supercharger: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 28-exhaust-0: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 29-exhaust-1: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 30-exhaust-2: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 31-exhaust-3: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 32-boost-Turbo-Recirculated: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 33-boost-Turbo-Hiss: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 34-boost-Turbo-Chirp: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 35-boost-Turbo-Flutter: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 36-boost-TwinTurbo-Recirculated: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 37-boost-TwinTurbo-Hiss: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 38-boost-TwinTurbo-Chirp: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 39-boost-TwinTurbo-Flutter: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 40-boost-Twincharged-Recirculated: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 41-boost-Twincharged-Hiss: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 42-boost-Twincharged-Chirp: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 43-boost-Twincharged-Flutter: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 50-short-pipe: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 51-long-pipe: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 52-narrow-pipe: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 53-wide-pipe: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 54-cool-exhaust: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 55-hot-exhaust: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 56-catalyst-resonator: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS 57-leaking-silencer: SHA256, 64 s stereo PCM16, sixteen audible-engine chapters, energy/control/suppression rules, bounded mix, no voice overflow.
+PASS static review HTML: unique control IDs/references, one native audio player, 34 configuration records.

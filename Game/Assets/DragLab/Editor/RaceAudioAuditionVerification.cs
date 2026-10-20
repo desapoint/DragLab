@@ -33,14 +33,16 @@ namespace DragLab.Editor
         sealed class Case {public string id,title,source;public VehicleSpec spec;public Tune tune;public bool laboratory,tireTest,burnout,singleWheel,variableBurnout,requirePops,requireLaunch;public string tireProduct;public PartInstance[] components;}
         static void Require(bool condition,string message){if(!condition)throw new InvalidOperationException("RACE AUDIO: "+message);}
         static void Mark(Result r,double time,string label){r.cues.Add(new Cue{time=Math.Round(time,3),label=label});}
-        static List<Case> Cases()
+        // Reuse versioned acoustic hardware definitions without rendering or touching generated audition fixtures.
+        internal static RaceAudioTestFixture[] AcousticHardware()=>Cases(false).Select(c=>new RaceAudioTestFixture{id=c.id,title=c.title,spec=c.spec.Copy(),tune=c.tune.Copy()}).ToArray();
+        static List<Case> Cases(bool prepareTires=true)
         {
             var cars=Resources.LoadAll<VehicleDefinition>("Data/Vehicles");var list=new List<Case>();
             Action<string,string,string,Action<Case>> add=(id,title,source,configure)=>{
                 var car=cars.Single(v=>v.name==source);var c=new Case{id=id,title=title,source=car.spec.displayName,spec=car.spec.Copy(),tune=car.CreateStockTune()};
                 // Explicit laboratory control/traction hardware, not player purchases.
                 c.tune.controlLevel=1;c.tune.limiter=LimiterStyle.Hard;c.tune.revLimitRpm=car.spec.redlineRpm-200;
-                c.tune.tireLevel=2;c.tune.gearboxLevel=2;configure?.Invoke(c);c.tune.ClampTo(c.spec);PrepareTires(c);list.Add(c);
+                c.tune.tireLevel=2;c.tune.gearboxLevel=2;configure?.Invoke(c);c.tune.ClampTo(c.spec);if(prepareTires)PrepareTires(c);list.Add(c);
             };
             add("01-i3-na","Sprig · inline 3 · NA","CityThree",null);
             add("02-i4-na","Juniper · inline 4 · NA","StarterHatch",null);

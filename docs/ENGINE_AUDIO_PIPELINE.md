@@ -198,3 +198,26 @@ demonstrates chamber-dependent transmission loss and gas-property inputs;
 [the perforated-muffler model](https://doc.comsol.com/6.4/doc/com.comsol.help.models.aco.perforated_muffler/perforated_muffler.html)
 explains the limitations of linear approximations. Preview coefficients are our
 listening calibration and are not fitted to those reference models.
+
+## Shared-source audition authorized — 2026-10-20
+
+The user clarified that a single parameter-driven sound generator should cover
+all combustion-event shapes, then authorized a controlled listening matrix before
+game integration. This supersedes separate short/long generators as the intended
+final architecture. Different event causes provide numerical inputs and source
+locations; they do not select different canned source algorithms.
+
+The Editor-only `SharedBackfirePreviewSynth` implements that prototype with
+fuel/oxygen-limited energy, pressure/turbulence envelopes and prepared bidirectional
+duct propagation. `SharedBackfireAudition` provides one engine-plus-events WAV for
+each of 34 hardware/geometry configurations using the same sixteen-chapter flow.
+The four-second chapters include controls, hard/soft fuel and ignition limiting,
+two-step, shifts, overrun, source-location comparisons, anti-lag and faults.
+Source-location comparisons retain the same event seed and combustion parameters.
+
+The existing production synth supplies the engine bed with only its old pop layer
+disabled on a private copy. No runtime source, physics, saves or builds are changed.
+Lab-supplied energy/chemistry/source coordinates and geometry are not purported
+existing race-state measurements. See [scope, evidence and listening protocol](../reports/shared-backfire-audition-20261020/CHANGES.md).
+Wait for explicit acoustic approval before adding the event metadata and integrating
+this shared core with runtime audio and Android performance gates.

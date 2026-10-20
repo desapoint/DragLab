@@ -1,0 +1,201 @@
+using System;
+using DragLab.Domain;
+
+namespace DragLab.Editor
+{
+    // Listening prototype only: no runtime callers, Unity objects or cause-specific sound recipes.
+    [Serializable] public struct PreviewCombustionEvent
+    {
+        public double fuelMg, oxygenMg, heatingJPerKg, oxygenPerFuel, burnEfficiency;
+        public double burnSeconds, mixingSeconds, volumeLitres, temperatureK, pressureKPa;
+        public double sourceMetres;
+        public bool intake, ignited;
+        public uint seed;
+        public double EnergyJ => ignited ? Math.Min(fuelMg, oxygenMg / oxygenPerFuel) * 1e-6 * heatingJPerKg * burnEfficiency : 0;
+        public void Validate()
+        {
+            foreach(double value in new[]{fuelMg,oxygenMg,heatingJPerKg,oxygenPerFuel,burnEfficiency,burnSeconds,mixingSeconds,volumeLitres,temperatureK,pressureKPa,sourceMetres})
+                if(double.IsNaN(value)||double.IsInfinity(value)||value<0)throw new ArgumentException("Invalid combustion-event input");
+            if(heatingJPerKg<1||oxygenPerFuel<=0||burnEfficiency>1||burnSeconds<.0005||burnSeconds>.5||mixingSeconds<.001||mixingSeconds>.8||volumeLitres<.01||temperatureK<200||temperatureK>1800||pressureKPa<20)
+                throw new ArgumentException("Combustion-event input outside preview bounds");
+        }
+    }
+
+    public sealed class PreviewDuctSegment
+    {
+        public double lengthM,diameterM,temperatureK,leak;
+        public bool turbine;
+        public ExhaustPart component;
+    }
+
+    // One source algorithm for every event. Labels/cause names deliberately do not enter this class.
+    public sealed class SharedBackfirePreviewSynth
+    {
+        sealed class Segment
+        {
+            public readonly double[] forward,reverse;
+            public readonly double impedance,loss,leak;
+            public readonly bool turbine;
+            public readonly ExhaustFilter forwardFilter,reverseFilter;
+            public int at;
+            double turbineForward,turbineReverse,turbineCoefficient=.3,turbineGain=1,targetCoefficient=.3,targetGain=1;
+            public Segment(PreviewDuctSegment description,int rate,int stage)
+            {
+                double speed=Math.Sqrt(1.34*287*description.temperatureK);
+                int delay=Math.Max(1,(int)Math.Round(description.lengthM/speed*rate));
+                forward=new double[delay];reverse=new double[delay];
+                double area=Math.PI*description.diameterM*description.diameterM/4;
+                double density=101325/(287*description.temperatureK);
+                impedance=density*speed/area;
+                loss=Math.Exp(-.08*description.lengthM)*(1-description.leak*.5);
+                leak=description.leak;turbine=description.turbine;
+                var setup=new ExhaustSetup{parts=description.component==null?new ExhaustPart[0]:new[]{description.component.Copy()}};
+                forwardFilter=new ExhaustFilter(setup,stage);reverseFilter=new ExhaustFilter(setup,stage);
+                forwardFilter.Configure(rate);reverseFilter.Configure(rate);
+            }
+            public void SetBoost(double boost,int rate)
+            {
+                targetCoefficient=1-Math.Exp(-2*Math.PI*(3200/(1+.8*Math.Max(0,boost)))/rate);
+                targetGain=Math.Pow(10,-(1.5+3*Math.Max(0,boost))/20);
+            }
+            public void Store(double goingForward,double goingReverse)
+            {
+                goingForward=forwardFilter.Process(goingForward)*loss;
+                goingReverse=reverseFilter.Process(goingReverse)*loss;
+                if(turbine){
+                    turbineCoefficient+=(targetCoefficient-turbineCoefficient)*.002;
+                    turbineGain+=(targetGain-turbineGain)*.002;
+                    turbineForward+=turbineCoefficient*(goingForward-turbineForward);
+                    turbineReverse+=turbineCoefficient*(goingReverse-turbineReverse);
+                    goingForward=turbineForward*turbineGain;goingReverse=turbineReverse*turbineGain;
+                }
+                forward[at]=goingForward;reverse[at]=goingReverse;at=(at+1)%forward.Length;
+            }
+        }
+        sealed class Duct
+        {
+            readonly Segment[] segments;
+            readonly double[] positions,forward,reverse,outForward,outReverse,injections;
+            readonly double radiationPole,radiationGain;
+            double radiationInput,radiationOutput;
+            public double Length => positions[positions.Length-1];
+            public Duct(PreviewDuctSegment[] descriptions,int rate,int stage)
+            {
+                if(descriptions==null||descriptions.Length==0)throw new ArgumentException("Duct needs segments");
+                segments=new Segment[descriptions.Length];positions=new double[segments.Length+1];
+                forward=new double[segments.Length];reverse=new double[segments.Length];
+                outForward=new double[segments.Length];outReverse=new double[segments.Length];injections=new double[positions.Length];
+                for(int i=0;i<segments.Length;i++){
+                    var d=descriptions[i];
+                    if(d.lengthM<=0||d.lengthM>5||d.diameterM<.01||d.diameterM>.4||d.temperatureK<200||d.temperatureK>1800||d.leak<0||d.leak>.5)
+                        throw new ArgumentException("Invalid preview duct geometry");
+                    segments[i]=new Segment(d,rate,stage);positions[i+1]=positions[i]+d.lengthM;
+                }
+                var outlet=descriptions[descriptions.Length-1];
+                // Calibrated aperture-radiation proxy: absolute diameter matters even for uniform-area scaling.
+                double cutoff=45*.06/outlet.diameterM*Math.Sqrt(outlet.temperatureK/650);
+                radiationPole=Math.Exp(-2*Math.PI*cutoff/rate);radiationGain=Math.Sqrt(outlet.diameterM/.06);
+            }
+            public void Locate(double position,out int node,out double fraction)
+            {
+                if(position<0||position>Length)throw new ArgumentException("Source is outside acoustic path");
+                node=0;while(node<segments.Length-1&&position>positions[node+1])node++;
+                fraction=(position-positions[node])/(positions[node+1]-positions[node]);
+            }
+            public void Inject(int node,double fraction,double value)
+            {injections[node]+=value*(1-fraction);injections[node+1]+=value*fraction;}
+            public void SetBoost(double boost,int rate){foreach(var segment in segments)segment.SetBoost(boost,rate);}
+            public double Sample()
+            {
+                int last=segments.Length-1;
+                for(int i=0;i<segments.Length;i++){forward[i]=segments[i].forward[segments[i].at];reverse[i]=segments[i].reverse[segments[i].at];}
+                // Pressure scattering at impedance changes; both propagation directions retain their own delay/filter state.
+                outForward[0]=.12*reverse[0]+injections[0]*.5;
+                for(int node=1;node<segments.Length;node++){
+                    double left=segments[node-1].impedance,right=segments[node].impedance;
+                    double common=2*(right*forward[node-1]+left*reverse[node])/(left+right);
+                    outReverse[node-1]=(common-forward[node-1])*.985+injections[node]*.5;
+                    outForward[node]=(common-reverse[node])*.985+injections[node]*.5;
+                }
+                outReverse[last]=-.32*forward[last]+injections[last]*.5;
+                double radiation=.68*forward[last]+injections[last]*.5;
+                for(int i=0;i<segments.Length;i++){
+                    radiation+=segments[i].leak*(forward[i]+reverse[i])*.15;
+                    segments[i].Store(outForward[i],outReverse[i]);
+                }
+                Array.Clear(injections,0,injections.Length);
+                double emitted=radiation-radiationInput+radiationPole*radiationOutput;
+                radiationInput=radiation;radiationOutput=emitted;return emitted*radiationGain;
+            }
+        }
+        struct Voice
+        {
+            public bool active,intake;
+            public int node,remaining;
+            public uint random;
+            public double fraction,amplitude,attack,burn,expansion,mixing,attackStep,burnStep,expansionStep,mixingStep;
+            public double low,second,bass,air,drift,lowCoefficient,bassCoefficient,airCoefficient,driftCoefficient,pressureRatio;
+        }
+        readonly Voice[] voices=new Voice[48];
+        readonly Duct exhaust,intake;
+        readonly int rate;
+        int next;
+        double lastInput,lastOutput;
+        public int Accepted {get;private set;}
+        public int Suppressed {get;private set;}
+        public int RejectedOverlap {get;private set;}
+        public double ExhaustLength => exhaust.Length;
+        public double IntakeLength => intake.Length;
+        public SharedBackfirePreviewSynth(PreviewDuctSegment[] exhaust,PreviewDuctSegment[] intake,int rate,int stage=0)
+        {
+            if(rate<8000||rate>192000)throw new ArgumentException("Unsupported sample rate");
+            this.rate=rate;this.exhaust=new Duct(exhaust,rate,stage);this.intake=new Duct(intake,rate,stage);
+        }
+        public void SetBoost(double boost){exhaust.SetBoost(boost,rate);}
+        public bool Trigger(PreviewCombustionEvent input)
+        {
+            input.Validate();var path=input.intake?intake:exhaust;
+            path.Locate(input.sourceMetres,out int node,out double fraction);
+            double energy=input.EnergyJ;
+            if(energy<=0){Suppressed++;return false;}
+            int at=next;while(voices[at].active){at=(at+1)%voices.Length;if(at==next){RejectedOverlap++;return false;}}
+            next=(at+1)%voices.Length;
+            double burn=input.burnSeconds,expansion=burn*2.8+.003;
+            double mixing=input.mixingSeconds+burn*.65;
+            double pressure=.33*energy/(input.volumeLitres*.001),ambient=input.pressureKPa*1000;
+            double cutoff=DragMath.Clamp(1400*Math.Sqrt(input.temperatureK/650)*Math.Pow(.012/burn,.3),250,Math.Min(6000,rate*.3));
+            voices[at]=new Voice{
+                active=true,intake=input.intake,node=node,fraction=fraction,random=input.seed==0?17731u:input.seed,
+                amplitude=.8*Math.Sqrt(pressure/(ambient+pressure)),pressureRatio=burn/expansion,
+                attack=1,burn=1,expansion=1,mixing=1,
+                attackStep=Math.Exp(-1/(rate*Math.Max(.00012,burn*.09))),burnStep=Math.Exp(-1/(rate*burn)),
+                expansionStep=Math.Exp(-1/(rate*expansion)),mixingStep=Math.Exp(-1/(rate*mixing)),
+                lowCoefficient=1-Math.Exp(-2*Math.PI*cutoff/rate),bassCoefficient=1-Math.Exp(-2*Math.PI*45/rate),
+                airCoefficient=1-Math.Exp(-2*Math.PI*Math.Min(3200,rate*.3)/rate),driftCoefficient=1-Math.Exp(-2*Math.PI*32/rate),
+                remaining=(int)(rate*Math.Min(3,Math.Max(expansion,mixing)*11+.05))
+            };
+            Accepted++;return true;
+        }
+        public double Sample()
+        {
+            for(int i=0;i<voices.Length;i++){
+                var v=voices[i];if(!v.active)continue;
+                v.random^=v.random<<13;v.random^=v.random>>17;v.random^=v.random<<5;
+                double noise=v.random/(double)uint.MaxValue*2-1;
+                v.low+=v.lowCoefficient*(noise-v.low);v.second+=v.lowCoefficient*(v.low-v.second);
+                v.bass+=v.bassCoefficient*(v.second-v.bass);v.air+=v.airCoefficient*(noise-v.air);v.drift+=v.driftCoefficient*(noise-v.drift);
+                double onset=1-v.attack;
+                double pressure=onset*(v.burn-v.pressureRatio*v.expansion);
+                double turbulence=onset*v.mixing*(1+.9*v.drift)*(3.7*(v.second-v.bass)+.14*v.air);
+                double value=(pressure*.8+turbulence)*v.amplitude;
+                if(v.remaining<rate*.015)value*=v.remaining/(rate*.015);
+                (v.intake?intake:exhaust).Inject(v.node,v.fraction,value);
+                v.attack*=v.attackStep;v.burn*=v.burnStep;v.expansion*=v.expansionStep;v.mixing*=v.mixingStep;
+                if(--v.remaining<=0)v.active=false;voices[i]=v;
+            }
+            double sum=exhaust.Sample()+intake.Sample();
+            double filtered=sum-lastInput+.997*lastOutput;lastInput=sum;lastOutput=filtered;
+            return filtered;
+        }
+    }
+}
