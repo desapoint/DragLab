@@ -1,0 +1,96 @@
+Actual 47-race production pipeline; legacy physical traces remain unchanged.
+MEASURE 01-i3-na callback p95 0,3894 ms; max 0,5797 ms / 400 stereo frames, budget 8.333 ms
+PASS 01-i3-na / ET unchanged / chemical 0 / funded reactions 0 / zone paths 0 / preset bursts 0 / acoustic J 0 / continued 0 / BOV 0 / no drops or steals / peak 0,1019
+MEASURE 02-i4-na callback p95 0,4018 ms; max 1,0802 ms / 400 stereo frames, budget 8.333 ms
+PASS 02-i4-na / ET unchanged / chemical 0 / funded reactions 0 / zone paths 0 / preset bursts 0 / acoustic J 0 / continued 0 / BOV 0 / no drops or steals / peak 0,0896
+MEASURE 03-i4-turbo-hiss callback p95 2,2535 ms; max 4,8286 ms / 400 stereo frames, budget 8.333 ms
+PASS 03-i4-turbo-hiss / ET unchanged / chemical 4022 / funded reactions 4022 / zone paths 58 / preset bursts 46 / acoustic J 94,099107571128442 / continued 3964 / BOV 3 / no drops or steals / peak 0,1856
+MEASURE 04-i4-twin-chirp callback p95 3,1427 ms; max 4,8470 ms / 400 stereo frames, budget 8.333 ms
+PASS 04-i4-twin-chirp / ET unchanged / chemical 4306 / funded reactions 4306 / zone paths 76 / preset bursts 62 / acoustic J 82,907645762767629 / continued 4230 / BOV 3 / no drops or steals / peak 0,1955
+MEASURE 05-i5-turbo-flutter callback p95 2,3050 ms; max 5,6172 ms / 400 stereo frames, budget 8.333 ms
+PASS 05-i5-turbo-flutter / ET unchanged / chemical 4646 / funded reactions 4646 / zone paths 52 / preset bursts 44 / acoustic J 115,23918750341849 / continued 4594 / BOV 3 / no drops or steals / peak 0,1889
+MEASURE 06-i6-na callback p95 0,3892 ms; max 0,6285 ms / 400 stereo frames, budget 8.333 ms
+PASS 06-i6-na / ET unchanged / chemical 0 / funded reactions 0 / zone paths 0 / preset bursts 0 / acoustic J 0 / continued 0 / BOV 0 / no drops or steals / peak 0,0915
+MEASURE 07-i6-carb callback p95 0,5655 ms; max 1,7071 ms / 400 stereo frames, budget 8.333 ms
+PASS 07-i6-carb / ET unchanged / chemical 1361 / funded reactions 1361 / zone paths 13 / preset bursts 8 / acoustic J 39,797904918854279 / continued 1348 / BOV 0 / no drops or steals / peak 0,2983
+MEASURE 08-v8-carb callback p95 0,5628 ms; max 1,0012 ms / 400 stereo frames, budget 8.333 ms
+PASS 08-v8-carb / ET unchanged / chemical 23 / funded reactions 23 / zone paths 4 / preset bursts 2 / acoustic J 0,32001718562512921 / continued 19 / BOV 0 / no drops or steals / peak 0,2425
+MEASURE 09-v8-supercharger callback p95 0,4678 ms; max 0,9327 ms / 400 stereo frames, budget 8.333 ms
+PASS 09-v8-supercharger / ET unchanged / chemical 0 / funded reactions 0 / zone paths 0 / preset bursts 0 / acoustic J 0 / continued 0 / BOV 0 / no drops or steals / peak 0,1674
+MEASURE 10-diesel-turbo callback p95 0,4149 ms; max 0,6865 ms / 400 stereo frames, budget 8.333 ms
+PASS 10-diesel-turbo / ET unchanged / chemical 0 / funded reactions 0 / zone paths 0 / preset bursts 0 / acoustic J 0 / continued 0 / BOV 0 / no drops or steals / peak 0,1682
+MEASURE 11-v10-na callback p95 0,4480 ms; max 0,6808 ms / 400 stereo frames, budget 8.333 ms
+PASS 11-v10-na / ET unchanged / chemical 0 / funded reactions 0 / zone paths 0 / preset bursts 0 / acoustic J 0 / continued 0 / BOV 0 / no drops or steals / peak 0,2642
+MEASURE 12-v12-twin callback p95 0,5442 ms; max 0,8409 ms / 400 stereo frames, budget 8.333 ms
+PASS 12-v12-twin / ET unchanged / chemical 0 / funded reactions 0 / zone paths 0 / preset bursts 0 / acoustic J 0 / continued 0 / BOV 2 / no drops or steals / peak 0,1573
+MEASURE 13-v8-twin-supercharger callback p95 1,3303 ms; max 3,8637 ms / 400 stereo frames, budget 8.333 ms
+PASS 13-v8-twin-supercharger / ET unchanged / chemical 2900 / funded reactions 2900 / zone paths 36 / preset bursts 30 / acoustic J 123,3904776250363 / continued 2864 / BOV 0 / no drops or steals / peak 0,3063
+MEASURE 14-i4-twincharged-dct callback p95 2,3022 ms; max 5,8699 ms / 400 stereo frames, budget 8.333 ms
+PASS 14-i4-twincharged-dct / ET unchanged / chemical 4122 / funded reactions 4122 / zone paths 57 / preset bursts 51 / acoustic J 84,895046091842659 / continued 4065 / BOV 3 / no drops or steals / peak 0,1846
+MEASURE 15-v8-street-wheelspin callback p95 1,6021 ms; max 3,6309 ms / 400 stereo frames, budget 8.333 ms
+PASS 15-v8-street-wheelspin / ET unchanged / chemical 24406 / funded reactions 24406 / zone paths 102 / preset bursts 51 / acoustic J 334,77557011950847 / continued 24304 / BOV 0 / no drops or steals / peak 0,3537
+MEASURE 16-v8-wide-wheelspin callback p95 1,5881 ms; max 3,8667 ms / 400 stereo frames, budget 8.333 ms
+PASS 16-v8-wide-wheelspin / ET unchanged / chemical 5151 / funded reactions 5151 / zone paths 41 / preset bursts 35 / acoustic J 159,7107696722951 / continued 5110 / BOV 0 / no drops or steals / peak 0,2866
+MEASURE 17-v8-burnout callback p95 0,5208 ms; max 0,8035 ms / 400 stereo frames, budget 8.333 ms
+PASS 17-v8-burnout / ET unchanged / chemical 1 / funded reactions 1 / zone paths 1 / preset bursts 1 / acoustic J 0,0023734421839608786 / continued 0 / BOV 0 / no drops or steals / peak 0,1684
+MEASURE 18-i4-open-diff-single-wheel callback p95 0,4945 ms; max 0,7617 ms / 400 stereo frames, budget 8.333 ms
+PASS 18-i4-open-diff-single-wheel / ET unchanged / chemical 16 / funded reactions 16 / zone paths 4 / preset bursts 4 / acoustic J 0,39659282174357113 / continued 12 / BOV 0 / no drops or steals / peak 0,0747
+MEASURE 19-injection-soft-fuel callback p95 0,5132 ms; max 0,7707 ms / 400 stereo frames, budget 8.333 ms
+PASS 19-injection-soft-fuel / ET unchanged / chemical 0 / funded reactions 0 / zone paths 0 / preset bursts 0 / acoustic J 0 / continued 0 / BOV 0 / no drops or steals / peak 0,0878
+MEASURE 20-injection-hard-ignition callback p95 0,4621 ms; max 0,7952 ms / 400 stereo frames, budget 8.333 ms
+PASS 20-injection-hard-ignition / ET unchanged / chemical 1 / funded reactions 1 / zone paths 1 / preset bursts 1 / acoustic J 0,00197315257199468 / continued 0 / BOV 0 / no drops or steals / peak 0,0896
+MEASURE 21-injection-soft-ignition callback p95 0,4193 ms; max 0,7204 ms / 400 stereo frames, budget 8.333 ms
+PASS 21-injection-soft-ignition / ET unchanged / chemical 0 / funded reactions 0 / zone paths 0 / preset bursts 0 / acoustic J 0 / continued 0 / BOV 0 / no drops or steals / peak 0,0878
+MEASURE 22-carb-soft-ignition callback p95 1,1709 ms; max 2,0924 ms / 400 stereo frames, budget 8.333 ms
+PASS 22-carb-soft-ignition / ET unchanged / chemical 32358 / funded reactions 32358 / zone paths 32 / preset bursts 26 / acoustic J 1134,3944142546575 / continued 32326 / BOV 0 / no drops or steals / peak 0,2509
+MEASURE 23-diesel-soft-fuel callback p95 0,4131 ms; max 0,6532 ms / 400 stereo frames, budget 8.333 ms
+PASS 23-diesel-soft-fuel / ET unchanged / chemical 0 / funded reactions 0 / zone paths 0 / preset bursts 0 / acoustic J 0 / continued 0 / BOV 0 / no drops or steals / peak 0,1696
+MEASURE 24-factory-limiter callback p95 0,3891 ms; max 0,5874 ms / 400 stereo frames, budget 8.333 ms
+PASS 24-factory-limiter / ET unchanged / chemical 0 / funded reactions 0 / zone paths 0 / preset bursts 0 / acoustic J 0 / continued 0 / BOV 0 / no drops or steals / peak 0,0896
+MEASURE 25-no-limiter callback p95 0,4727 ms; max 1,0877 ms / 400 stereo frames, budget 8.333 ms
+PASS 25-no-limiter / ET unchanged / chemical 0 / funded reactions 0 / zone paths 0 / preset bursts 0 / acoustic J 0 / continued 0 / BOV 0 / no drops or steals / peak 0,1717
+MEASURE 26-launch-hard-ignition callback p95 2,6110 ms; max 6,0820 ms / 400 stereo frames, budget 8.333 ms
+PASS 26-launch-hard-ignition / ET unchanged / chemical 5387 / funded reactions 5387 / zone paths 54 / preset bursts 54 / acoustic J 132,02810505063448 / continued 5333 / BOV 2 / no drops or steals / peak 0,1856
+MEASURE 27-launch-soft-fuel callback p95 0,4726 ms; max 0,9854 ms / 400 stereo frames, budget 8.333 ms
+PASS 27-launch-soft-fuel / ET unchanged / chemical 0 / funded reactions 0 / zone paths 0 / preset bursts 0 / acoustic J 0 / continued 0 / BOV 2 / no drops or steals / peak 0,0952
+MEASURE 28-exhaust-0 callback p95 0,5361 ms; max 0,9525 ms / 400 stereo frames, budget 8.333 ms
+PASS 28-exhaust-0 / ET unchanged / chemical 19 / funded reactions 19 / zone paths 3 / preset bursts 1 / acoustic J 0,14258007599846984 / continued 16 / BOV 0 / no drops or steals / peak 0,1219
+MEASURE 29-exhaust-1 callback p95 0,5781 ms; max 1,4271 ms / 400 stereo frames, budget 8.333 ms
+PASS 29-exhaust-1 / ET unchanged / chemical 19 / funded reactions 19 / zone paths 3 / preset bursts 1 / acoustic J 0,22585705268848522 / continued 16 / BOV 0 / no drops or steals / peak 0,1978
+MEASURE 30-exhaust-2 callback p95 0,6116 ms; max 1,7453 ms / 400 stereo frames, budget 8.333 ms
+PASS 30-exhaust-2 / ET unchanged / chemical 19 / funded reactions 19 / zone paths 3 / preset bursts 1 / acoustic J 0,22585705268848522 / continued 16 / BOV 0 / no drops or steals / peak 0,2602
+MEASURE 31-exhaust-3 callback p95 0,5503 ms; max 1,0541 ms / 400 stereo frames, budget 8.333 ms
+PASS 31-exhaust-3 / ET unchanged / chemical 0 / funded reactions 0 / zone paths 0 / preset bursts 0 / acoustic J 0 / continued 0 / BOV 0 / no drops or steals / peak 0,3058
+MEASURE 32-boost-Turbo-Recirculated callback p95 0,5673 ms; max 0,7686 ms / 400 stereo frames, budget 8.333 ms
+PASS 32-boost-Turbo-Recirculated / ET unchanged / chemical 13 / funded reactions 13 / zone paths 3 / preset bursts 3 / acoustic J 0,26679072022129219 / continued 10 / BOV 2 / no drops or steals / peak 0,1083
+MEASURE 33-boost-Turbo-Hiss callback p95 0,6119 ms; max 1,0280 ms / 400 stereo frames, budget 8.333 ms
+PASS 33-boost-Turbo-Hiss / ET unchanged / chemical 13 / funded reactions 13 / zone paths 3 / preset bursts 3 / acoustic J 0,26679072022129219 / continued 10 / BOV 2 / no drops or steals / peak 0,1083
+MEASURE 34-boost-Turbo-Chirp callback p95 0,6046 ms; max 0,7003 ms / 400 stereo frames, budget 8.333 ms
+PASS 34-boost-Turbo-Chirp / ET unchanged / chemical 13 / funded reactions 13 / zone paths 3 / preset bursts 3 / acoustic J 0,26679072022129219 / continued 10 / BOV 2 / no drops or steals / peak 0,1327
+MEASURE 35-boost-Turbo-Flutter callback p95 0,5578 ms; max 0,7952 ms / 400 stereo frames, budget 8.333 ms
+PASS 35-boost-Turbo-Flutter / ET unchanged / chemical 13 / funded reactions 13 / zone paths 3 / preset bursts 3 / acoustic J 0,26679072022129219 / continued 10 / BOV 2 / no drops or steals / peak 0,1083
+MEASURE 36-boost-TwinTurbo-Recirculated callback p95 0,6120 ms; max 0,9174 ms / 400 stereo frames, budget 8.333 ms
+PASS 36-boost-TwinTurbo-Recirculated / ET unchanged / chemical 13 / funded reactions 13 / zone paths 3 / preset bursts 3 / acoustic J 0,26518725497093842 / continued 10 / BOV 2 / no drops or steals / peak 0,1091
+MEASURE 37-boost-TwinTurbo-Hiss callback p95 0,6227 ms; max 1,0333 ms / 400 stereo frames, budget 8.333 ms
+PASS 37-boost-TwinTurbo-Hiss / ET unchanged / chemical 13 / funded reactions 13 / zone paths 3 / preset bursts 3 / acoustic J 0,26518725497093842 / continued 10 / BOV 2 / no drops or steals / peak 0,1091
+MEASURE 38-boost-TwinTurbo-Chirp callback p95 0,5778 ms; max 0,8796 ms / 400 stereo frames, budget 8.333 ms
+PASS 38-boost-TwinTurbo-Chirp / ET unchanged / chemical 13 / funded reactions 13 / zone paths 3 / preset bursts 3 / acoustic J 0,26518725497093842 / continued 10 / BOV 2 / no drops or steals / peak 0,1349
+MEASURE 39-boost-TwinTurbo-Flutter callback p95 0,6263 ms; max 1,0064 ms / 400 stereo frames, budget 8.333 ms
+PASS 39-boost-TwinTurbo-Flutter / ET unchanged / chemical 13 / funded reactions 13 / zone paths 3 / preset bursts 3 / acoustic J 0,26518725497093842 / continued 10 / BOV 2 / no drops or steals / peak 0,1091
+MEASURE 40-boost-Twincharged-Recirculated callback p95 0,6400 ms; max 0,8801 ms / 400 stereo frames, budget 8.333 ms
+PASS 40-boost-Twincharged-Recirculated / ET unchanged / chemical 13 / funded reactions 13 / zone paths 3 / preset bursts 3 / acoustic J 0,20991768867398267 / continued 10 / BOV 2 / no drops or steals / peak 0,0998
+MEASURE 41-boost-Twincharged-Hiss callback p95 0,6338 ms; max 0,7789 ms / 400 stereo frames, budget 8.333 ms
+PASS 41-boost-Twincharged-Hiss / ET unchanged / chemical 13 / funded reactions 13 / zone paths 3 / preset bursts 3 / acoustic J 0,20991768867398267 / continued 10 / BOV 2 / no drops or steals / peak 0,0998
+MEASURE 42-boost-Twincharged-Chirp callback p95 0,7266 ms; max 1,0809 ms / 400 stereo frames, budget 8.333 ms
+PASS 42-boost-Twincharged-Chirp / ET unchanged / chemical 13 / funded reactions 13 / zone paths 3 / preset bursts 3 / acoustic J 0,20991768867398267 / continued 10 / BOV 2 / no drops or steals / peak 0,1353
+MEASURE 43-boost-Twincharged-Flutter callback p95 0,6355 ms; max 1,3447 ms / 400 stereo frames, budget 8.333 ms
+PASS 43-boost-Twincharged-Flutter / ET unchanged / chemical 13 / funded reactions 13 / zone paths 3 / preset bursts 3 / acoustic J 0,20991768867398267 / continued 10 / BOV 2 / no drops or steals / peak 0,1098
+MEASURE 44-tires-street-ramp callback p95 0,4995 ms; max 0,8311 ms / 400 stereo frames, budget 8.333 ms
+PASS 44-tires-street-ramp / ET unchanged / chemical 0 / funded reactions 0 / zone paths 0 / preset bursts 0 / acoustic J 0 / continued 0 / BOV 0 / no drops or steals / peak 0,1580
+MEASURE 45-tires-radial-ramp callback p95 1,9212 ms; max 3,6499 ms / 400 stereo frames, budget 8.333 ms
+PASS 45-tires-radial-ramp / ET unchanged / chemical 11376 / funded reactions 11376 / zone paths 43 / preset bursts 37 / acoustic J 311,55996116999449 / continued 11333 / BOV 0 / no drops or steals / peak 0,3372
+MEASURE 46-tires-slick-ramp callback p95 1,7410 ms; max 3,6850 ms / 400 stereo frames, budget 8.333 ms
+PASS 46-tires-slick-ramp / ET unchanged / chemical 16832 / funded reactions 16832 / zone paths 35 / preset bursts 29 / acoustic J 395,74689023677371 / continued 16797 / BOV 0 / no drops or steals / peak 0,3737
+MEASURE 47-tires-fwd-ramp callback p95 0,6724 ms; max 1,2288 ms / 400 stereo frames, budget 8.333 ms
+PASS 47-tires-fwd-ramp / ET unchanged / chemical 29 / funded reactions 29 / zone paths 8 / preset bursts 7 / acoustic J 0,51182177061198386 / continued 21 / BOV 2 / no drops or steals / peak 0,1003
+PASS all 47 real race pipelines

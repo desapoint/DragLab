@@ -1,5 +1,9 @@
 # Preserve the approved HTML preset sound in gameplay — 2026-10-21
 
+Historical checkpoint: subsequent listening exposed duplicate downstream coloration.
+The paired-filter comparisons below do not prove equality to unfiltered HTML audio.
+See the [single-stage correction](../afterfire-single-stage-20261021/CHANGES.md).
+
 The user rejected the previous live integration as gunfire-like and requested
 the HTML presets' timbre, with simulation controlling when and how strongly a
 backfire sounds. This supersedes the live adaptation in `3a5d3f0`. Listening

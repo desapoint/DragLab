@@ -10,7 +10,8 @@ namespace DragLab.Editor
 {
     public static class AfterfireLabVerification
     {
-        static readonly string Root=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/afterfire-preset-fidelity-20261021"));
+        public static string OutputDirectory;
+        static string Root=>OutputDirectory??Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/afterfire-preset-fidelity-20261021"));
         static readonly StringBuilder Log=new StringBuilder();static int checks;
         // Inject a known chemical history packet, then use the ordinary live
         // Connect/Read/Sample path. No reference-mode production switch exists.
@@ -50,26 +51,32 @@ namespace DragLab.Editor
                 Log.AppendLine("MEASURE coherent pressure error "+pressureError.ToString("R"));
                 Check(max<2e-5&&err<energy*4e-10&&pressureError<2e-5,"one actual source path matches full JavaScript preset including final padded tail / "+preset+" / "+rate);
                 var model=new ExhaustMixtureModel(123,"preset-parity");var live=new AfterfireAudioSynth(profile,rate,p);live.Connect(model);var e=Reaction();Queue(model,e);
-                var expectedPipe=new AfterfirePipeResponse(profile,rate);expectedPipe.Begin(e,AfterfireAudioSynth.SourceCutoffHz);
+                var expectedPipe=new AfterfirePipeResponse(profile,rate);expectedPipe.Begin(e);
                 // Compare the REAL history reader, burst/zone mixer and installed
                 // path against JS PCM passed through that same physical path.
                 var outdoorsA=new TracksidePropagation(rate);var outdoorsB=new TracksidePropagation(rate);
                 var geometry=new TracksidePropagation.Scene(298,.5,101325).At();
-                var actualBlock=new float[256];var expectedBlock=new float[256];int offset=0,dryIndex=0;double dryError=0;max=err=energy=0;
+                var actualBlock=new float[256];var expectedBlock=new float[256];int offset=0,dryIndex=0;double dryError=0,outletError=0;max=err=energy=0;
                 while(offset<golden.Length+rate/4)
                 {
                     for(int i=0;i<128;i++,offset++)
                     {
                         double expected=expectedPipe.Sample(At(golden,offset-latency),At(coherent,offset-latency))*profile.popGain*.35;
-                        double actual=live.Sample();if(Math.Abs(actual-expected)>dryError){dryError=Math.Abs(actual-expected);dryIndex=offset;}actualBlock[2*i]=actualBlock[2*i+1]=(float)actual;expectedBlock[2*i]=expectedBlock[2*i+1]=(float)expected;
+                        double actual=live.Sample();
+                        // Independent of the transfer helper: no second EQ, LPF,
+                        // smoothing or reflection may alter the approved outlet PCM.
+                        double uncoloured=At(golden,offset-latency-expectedPipe.TravelFrames)*expectedPipe.OutletScale*profile.popGain*.35;
+                        outletError=Math.Max(outletError,Math.Abs(live.LastOutletSample-uncoloured));
+                        if(Math.Abs(actual-expected)>dryError){dryError=Math.Abs(actual-expected);dryIndex=offset;}actualBlock[2*i]=actualBlock[2*i+1]=(float)actual;expectedBlock[2*i]=expectedBlock[2*i+1]=(float)expected;
                     }
                     outdoorsA.Process(actualBlock,2,geometry);outdoorsB.Process(expectedBlock,2,geometry);
                     for(int i=0;i<actualBlock.Length;i++){double d=actualBlock[i]-expectedBlock[i];max=Math.Max(max,Math.Abs(d));err+=d*d;energy+=expectedBlock[i]*expectedBlock[i];}
                 }
                 Log.AppendLine("MEASURE gameplay/outdoor / preset "+preset+" / "+rate+" / max "+max.ToString("R")+" / relative RMS "+Math.Sqrt(err/Math.Max(1e-30,energy)).ToString("R")+" / dry error "+dryError.ToString("R")+" at "+dryIndex);
-                Check(max<2e-5&&err<energy*4e-10&&live.StartedBursts==1&&live.Delivered==1,"actual gameplay plus installed exhaust/outdoors preserves JS preset / "+preset+" / "+rate);
+                Check(max<2e-5&&err<energy*4e-10&&live.StartedBursts==1&&live.Delivered==1,"actual gameplay plus path/outdoors agrees with JS input / "+preset+" / "+rate);
+                Check(outletError<2e-6,"outlet is independently the unfiltered JS waveform with only physical gain and travel / "+preset+" / "+rate);
             }
-            CheckFunding(profile);CheckZones(profile);
+            CheckFunding(profile);CheckZones(profile);CheckHardware(profile);
             Save();UnityEngine.Debug.Log("PRESET FIDELITY PASS "+checks);
         }
         static void CheckFunding(EngineSoundProfile profile)
@@ -116,18 +123,51 @@ namespace DragLab.Editor
             var model=new ExhaustMixtureModel(123,"zones");var live=new AfterfireAudioSynth(profile,rate);live.Connect(model);
             var first=Reaction();var later=first;later.time=.04;later.zone=6;later.position=6.5/8;
             Queue(model,first);Queue(model,later);
-            var pipeA=new AfterfirePipeResponse(profile,rate);pipeA.Begin(first,AfterfireAudioSynth.SourceCutoffHz);
+            var pipeA=new AfterfirePipeResponse(profile,rate);pipeA.Begin(first);
             var pipeB=new AfterfirePipeResponse(profile,rate);bool began=false;double gain=0,alpha=1-Math.Exp(-1/(rate*.005)),max=0;
             for(int i=0;i<rate;i++)
             {
                 double dry=At(x,i-8),wave=At(pressure,i-8);double expected=pipeA.Sample(dry,wave);
-                if(!began&&live.Clock>=later.time){pipeB.Begin(later,AfterfireAudioSynth.SourceCutoffHz);began=true;}
+                if(!began&&live.Clock>=later.time){pipeB.Begin(later);began=true;}
                 if(began){gain+=alpha*(1-gain);expected+=pipeB.Sample(dry*gain,wave*gain);}
                 max=Math.Max(max,Math.Abs(live.Sample()-expected*profile.popGain*.35));
             }
             Check(began&&max<2e-5&&live.StartedBursts==1&&live.Delivered==2,"later exhaust zone uses the same JS envelope phase with its own physical transfer, without another attack");
             var newFlame=Reaction();newFlame.frontId=2;newFlame.time=live.Clock;Queue(model,newFlame);live.Sample();
             Check(live.StartedBursts==2,"a genuinely new chemical flame starts another preset burst");
+        }
+        static void CheckHardware(EngineSoundProfile profile)
+        {
+            var e=Reaction();var stock=new AfterfireHardwareAcoustics(profile).At(e);var reference=AfterfireLabSettings.Preset(3);
+            Check(JsonUtility.ToJson(stock)==JsonUtility.ToJson(reference),"real stock Tempest outlet settings retain the exact approved Turbo Pop & Flame reference");
+            var f=JsonUtility.FromJson<RaceAudioTestFixture>(File.ReadAllText(Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/race-audio-audition/26-launch-hard-ignition.race.json")),Encoding.UTF8));
+            var open=f.spec.Copy();open.sound.exhaustSystem=ExhaustSetup.Preset(3);
+            var openSettings=new AfterfireHardwareAcoustics(new EngineSoundProfile(open,f.tune)).At(e);
+            Check(openSettings.air>stock.air&&openSettings.smooth<stock.smooth,"removing stock silencing brightens the generator itself, rather than bypassing hardware");
+            var chamber=f.spec.Copy();chamber.sound.exhaustSystem=ExhaustSetup.Preset(1);
+            var chamberSettings=new AfterfireHardwareAcoustics(new EngineSoundProfile(chamber,f.tune)).At(e);
+            Check(chamberSettings.bark>stock.bark&&chamberSettings.tube!=stock.tube,"chambered hardware changes the single generated bark and tube response");
+            var runner=f.spec.Copy();runner.sound.acoustics.runnerScale=2;
+            var runnerSettings=new AfterfireHardwareAcoustics(new EngineSoundProfile(runner,f.tune)).At(e);
+            Check(runnerSettings.tune<stock.tune&&runnerSettings.decay>stock.decay,"longer actual runner geometry lowers the generator focus and lengthens its decay");
+            var sharp=f.spec.Copy();sharp.sound.exhaustPopSharpness=2;sharp.sound.exhaustPopDecay=1.5f;
+            var sharpSettings=new AfterfireHardwareAcoustics(new EngineSoundProfile(sharp,f.tune)).At(e);
+            Check(sharpSettings.pulse<stock.pulse&&sharpSettings.decay>stock.decay,"authored exhaust sharpness and decay remain effective once");
+            var upstream=e;upstream.zone=0;upstream.position=.03;upstream.turboBoost=0;
+            var hardware=new AfterfireHardwareAcoustics(profile);var light=hardware.At(upstream);upstream.turboBoost=1.5;var loaded=hardware.At(upstream);
+            Check(loaded.air<light.air&&loaded.smooth>light.smooth,"boost-dependent upstream turbine colour changes the generated broad bands");
+            var downstream=e;downstream.turboBoost=0;var low=hardware.At(downstream);downstream.turboBoost=1.5;
+            Check(JsonUtility.ToJson(low)==JsonUtility.ToJson(hardware.At(downstream)),"post-turbine reactions do not acquire a fictitious downstream turbine colour");
+            var model=new ExhaustMixtureModel(123,"stock-preset");var live=new AfterfireAudioSynth(profile,48000);live.Connect(model);Queue(model,e);
+            var x=Golden("reference-48000-3.f32");var pipe=new AfterfirePipeResponse(profile,48000);pipe.Begin(e);double error=0;
+            for(int i=0;i<48000;i++){live.Sample();error=Math.Max(error,Math.Abs(live.LastOutletSample-At(x,i-8-pipe.TravelFrames)*pipe.OutletScale*profile.popGain*.35));}
+            Check(error<2e-6,"production default Tempest, without calibration override, retains the raw HTML outlet timbre");
+        }
+        public static void VerifySingleStageAndBuild()
+        {
+            OutputDirectory=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/afterfire-single-stage-20261021"));
+            AfterfirePathVerification.OutputDirectory=Root;AfterfirePathVerification.Run();
+            VerifyAndBuild();
         }
         public static void VerifyAndBuild()
         {

@@ -9,7 +9,8 @@ namespace DragLab.Editor
 {
     public static class AfterfirePathVerification
     {
-        static readonly string Root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/afterfire-path-20261021"));
+        public static string OutputDirectory;
+        static string Root=>OutputDirectory??Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/afterfire-path-20261021"));
         static readonly StringBuilder Log = new StringBuilder();
         static int checks;
         static void Check(bool yes,string label)
@@ -77,11 +78,11 @@ namespace DragLab.Editor
             {
                 var a=new AfterfirePipeResponse(profile,rate);var b=new AfterfirePipeResponse(profile,rate);
                 foreach(double x in new[]{.2,.7,1.099,1.101,1.4})
-                {a.Begin(At(profile,x),4000);Check(a.BeforeTurbine==(x<1.1),"actual header/turbine boundary applies at "+x+" m / "+rate);}
-                a.Begin(At(profile,.7,0),4000);b.Begin(At(profile,.7,1.2),4000);
+                {a.Begin(At(profile,x));Check(a.BeforeTurbine==(x<1.1),"actual header/turbine boundary applies at "+x+" m / "+rate);}
+                a.Begin(At(profile,.7,0));b.Begin(At(profile,.7,1.2));
                 double light=Impulse(a,rate),loaded=Impulse(b,rate);
                 Check(loaded<light*.7&&loaded>0,"previously missed header reactions receive load-dependent turbine damping / "+rate);
-                a.Begin(At(profile,1.6,0),4000);b.Begin(At(profile,1.6,1.2),4000);
+                a.Begin(At(profile,1.6,0));b.Begin(At(profile,1.6,1.2));
                 int arrival=-1;bool directSame=true;
                 for(int i=0;i<rate/10;i++)
                 {
@@ -90,14 +91,12 @@ namespace DragLab.Editor
                     if(arrival>=0&&i<arrival+8)directSame&=a.Outlet==b.Outlet;
                 }
                 Check(arrival>=0&&directSame,"post-turbine direct sound is not falsely routed through the turbine / "+rate);
-                var longSpec=fixture.spec.Copy();longSpec.sound.acoustics.runnerLengthsMetres=new float[profile.cylinders];
-                for(int i=0;i<profile.cylinders;i++)longSpec.sound.acoustics.runnerLengthsMetres[i]=1.2f;
-                var longProfile=new EngineSoundProfile(longSpec,fixture.tune);b=new AfterfirePipeResponse(longProfile,rate);
-                a.Begin(At(profile,.7),4000);b.Begin(At(longProfile,.7),4000);
-                double difference=0;
-                for(int i=0;i<rate/10;i++){a.Sample(i==0?1:0,0);b.Sample(i==0?1:0,0);difference+=Math.Abs(a.Outlet-b.Outlet);}
-                Check(difference>1e-8,"existing runner geometry changes the reflected header response / "+rate);
-                a.Begin(At(profile,.7),4000);b=new AfterfirePipeResponse(profile,rate);b.Begin(At(profile,.7),4000);
+                // The outlet must be an impulse, not a second coloured ringing
+                // tail. Runner/collector voicing is checked at the generator now.
+                a.Begin(At(profile,.7));int nonzero=0;
+                for(int i=0;i<rate/10;i++){a.Sample(i==0?1:0,0);if(a.Outlet!=0)nonzero++;}
+                Check(nonzero==1,"outlet routing adds only gain and delay, with no duplicate EQ or reflected tail / "+rate);
+                a.Begin(At(profile,.7));b=new AfterfirePipeResponse(profile,rate);b.Begin(At(profile,.7));
                 bool wallSame=true;double wall=0;
                 for(int i=0;i<rate/10;i++)
                 {
@@ -105,8 +104,8 @@ namespace DragLab.Editor
                     wallSame&=a.Wall==b.Wall;wall+=a.Wall*a.Wall;
                 }
                 Check(wallSame&&wall>0,"wall vibration remains pressure-driven instead of leaking dry stochastic grain / "+rate);
-                a.Clear();Check(a.Sample(0,0)==0,"clearing pipe state discards all direct/reflected/wall history / "+rate);
-                a.Begin(At(profile,.7),4000);for(int i=0;i<1000;i++)a.Sample(.01,0);
+                a.Clear();Check(a.Sample(0,0)==0,"clearing pipe state discards all direct/wall history / "+rate);
+                a.Begin(At(profile,.7));for(int i=0;i<1000;i++)a.Sample(.01,0);
                 long allocated=GC.GetAllocatedBytesForCurrentThread();
                 for(int i=0;i<rate/10;i++)a.Sample(.01,0);
                 Check(GC.GetAllocatedBytesForCurrentThread()==allocated,"zero warmed internal-path callback allocations / "+rate);

@@ -26,8 +26,8 @@ namespace DragLab.Domain
         }
         public static int HardwarePreset(EngineSoundProfile p)
         {
-            // Exact approved envelopes; installed filters already supply the
-            // detailed exhaust-hardware response. No Shotgun or mode-flag blend.
+            // Approved reference envelopes. Hardware adjusts their controls in one
+            // generation stage; no second outlet EQ or mode-flag blend follows.
             if(p.turboCount>0)return 3; // Turbo Pop & Flame, including Tempest.
             if(p.cylinders>=8&&p.litres>=6)return 9;
             if(p.fueling==FuelSystem.Carburetor)return 1;
@@ -38,5 +38,75 @@ namespace DragLab.Domain
             return 0;
         }
         public static AfterfireLabSettings Hardware(EngineSoundProfile p)=>Preset(HardwarePreset(p));
+    }
+
+    // Prepared on hardware capture. Reference presets describe an already voiced
+    // exhaust: authored hardware changes adjust that response, never cascade a
+    // second muffler over it. The calibration anchor is explicit, not a new clip.
+    public sealed class AfterfireHardwareAcoustics
+    {
+        readonly AfterfireLabSettings[] paths=new AfterfireLabSettings[8];
+        readonly double length,turbineDamping;
+        readonly bool turbo;
+        struct Colour { public double damping,chamber,resonator,center; }
+        static Colour Character(ExhaustSetup setup,double position,bool turbo,int stage)
+        {
+            double length=RuntimeExhaustState.HeaderLengthM+(turbo?RuntimeExhaustState.TurbineLengthM:0)+.8;
+            foreach(var part in setup.parts)length+=RuntimeExhaustState.PartLength(part);
+            double source=position*length,at=RuntimeExhaustState.HeaderLengthM+(turbo?RuntimeExhaustState.TurbineLengthM:0);
+            var result=new Colour();double weight=0;
+            foreach(var part in setup.parts)
+            {
+                double extent=RuntimeExhaustState.PartLength(part),end=at+extent;
+                double amount=part.amount*DragMath.Clamp((end-source)/extent,0,1);at=end;
+                double cutoff=part.lowPassHz*(1+stage*.15);
+                result.damping+=amount*(Math.Log(12000/Math.Max(100,cutoff))/Math.Log(6)+part.pulseSoftening*.5);
+                result.chamber+=amount*Math.Max(0,part.resonanceGainDb)/3;
+                result.resonator+=amount*Math.Max(0,-part.resonanceGainDb)/9;
+                result.center+=amount*Math.Abs(part.resonanceGainDb)*Math.Log(part.resonanceHz/180.0);weight+=amount*Math.Abs(part.resonanceGainDb);
+            }
+            if(weight>0)result.center/=weight;return result;
+        }
+        public AfterfireHardwareAcoustics(EngineSoundProfile profile,AfterfireLabSettings? calibration=null)
+        {
+            turbo=profile.turboCount>0;length=RuntimeExhaustState.PathLength(profile);turbineDamping=profile.acoustics.turbineDamping;
+            int preset=AfterfireLabSettings.HardwarePreset(profile);
+            // Stock turbo/street, chambered carb and open competition anchors
+            // preserve the approved voices. Their physical attenuation stays real.
+            var reference=ExhaustSetup.Preset(preset==1?1:preset==8||preset==9?3:0);
+            var baseline=new EngineAcousticProfile(null,profile.cylinders,profile.layout,profile.litres,profile.redlineRpm,profile.fueling);
+            double runner=0,baseRunner=0;for(int i=0;i<profile.cylinders;i++){runner+=profile.acoustics.Runner(i);baseRunner+=baseline.Runner(i);}
+            double geometry=DragMath.Clamp((runner/baseRunner+profile.acoustics.collectorScale/baseline.collectorScale)*.5,.4,3);
+            for(int zone=0;zone<paths.Length;zone++)
+            {
+                var p=calibration??AfterfireLabSettings.Preset(preset);
+                if(!calibration.HasValue)
+                {
+                    double position=(zone+.5)/8;
+                    var a=Character(profile.exhaustSystem,position,turbo,profile.exhaust);var b=Character(reference,position,turbo,0);
+                    double damping=DragMath.Clamp(a.damping-b.damping,-3,3),chamber=a.chamber-b.chamber,resonator=a.resonator-b.resonator;
+                    p.air=DragMath.Clamp(p.air-8*damping,0,100);p.smooth=DragMath.Clamp(p.smooth+5*damping,0,100);
+                    p.crack=DragMath.Clamp(p.crack-4*damping,0,100);p.bark=DragMath.Clamp(p.bark+5*chamber,0,100);
+                    p.tube=DragMath.Clamp(p.tube+8*chamber+4*resonator,0,100);
+                    p.tune=DragMath.Clamp(p.tune*Math.Exp(-.08*damping+.08*(a.center-b.center))*Math.Pow(geometry,-.25)*profile.acoustics.resonanceScale/baseline.resonanceScale,120,1350);
+                    p.decay=DragMath.Clamp(p.decay*(1+.07*damping+.10*chamber)*Math.Pow(geometry,.15)*DragMath.Clamp(profile.popDecay,.25,3),55,620);
+                    p.pulse=DragMath.Clamp(p.pulse*profile.acoustics.attackSeconds/baseline.attackSeconds/Math.Sqrt(DragMath.Clamp(profile.popSharpness,.25,2.5)),1,15);
+                }
+                paths[zone]=p;
+            }
+        }
+        public AfterfireLabSettings At(ExhaustMixtureModel.Event e)
+        {
+            var p=paths[e.zone];
+            // Upstream explosions traverse the turbine; downstream ones do not.
+            // Boost/geometry affect the source's broad bands once, not another LPF.
+            if(turbo&&e.position*length<RuntimeExhaustState.HeaderLengthM)
+            {
+                double loading=DragMath.Clamp(turbineDamping*(1+Math.Max(0,e.turboBoost)),0,2);
+                p.air=DragMath.Clamp(p.air-6*loading,0,100);p.smooth=DragMath.Clamp(p.smooth+4*loading,0,100);
+                p.edge=DragMath.Clamp(p.edge-3*loading,0,100);p.jet=DragMath.Clamp(p.jet+3*loading,0,100);
+            }
+            return p;
+        }
     }
 }

@@ -473,3 +473,30 @@ hardware calibration selects an exact HTML preset, including Turbo Pop & Flame
 for Tempest. Tests compare the actual history-reader/mixer/exhaust/outdoor output
 with JavaScript PCM passed through the same physical transfer, in addition to
 direct source comparisons. See the [fidelity correction](../reports/afterfire-preset-fidelity-20261021/CHANGES.md).
+
+
+### Single hardware acoustic stage (2026-10-21)
+
+The exported Turbo Pop & Flame WAV exposed a remaining integration error:
+source equivalence did not establish listening equivalence after a second
+muffler/turbine/header response. The preset already voices that exhaust.
+`AfterfireHardwareAcoustics` now prepares source controls from the installed
+hardware relative to explicit reference configurations. Runner/collector geometry,
+exhaust kind/amount/cutoff/softening/resonance, authored sharpness/decay and actual
+upstream turbine loading affect that one generator. The first funded reaction
+anchors a flame's source settings; transported zones retain its phase. Actual
+fuel/oxygen/heat and seeded ignition still determine occurrence and acoustic
+energy. No chemical or car simulation is changed.
+
+`AfterfirePipeResponse` retains source-relative attenuation, hot-gas travel time
+and a separate coherent-pressure-driven shell response. It no longer cascades
+another outlet low-pass, pulse smoothing, broad header modes, runner reflections
+or scatter filter. The HTML's own room/stereo demo is not added. The existing
+whole-vehicle outdoor path still runs once; engine/induction/BOV/tire generation
+and the mix remain unchanged. This reduced-order parameter mapping is an acoustic
+calibration, not a resolved exhaust-fluid model or absolute SPL calibration.
+
+The independent outlet regression compares actual history-driven output directly
+with raw HTML PCM after gain/delay only. The older paired-filter comparison remains
+useful for routing but cannot alone establish preserved timbre. See
+[single-stage correction](../reports/afterfire-single-stage-20261021/CHANGES.md).

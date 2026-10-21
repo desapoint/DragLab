@@ -16,7 +16,6 @@ namespace DragLab.Domain
                 riseCutoff=2000+.6/Math.Max(.00025,e.riseSeconds),
                 kind=e.pressurePa>1000&&e.riseSeconds<.0015?2:e.acousticJ<.03?0:1 };
         }
-        public const double SourceCutoffHz=12000;
         const int VoiceCount=64;
         sealed class Burst
         {
@@ -55,7 +54,7 @@ namespace DragLab.Domain
             public void Begin(ExhaustMixtureModel.Event e,Burst owner,EngineSoundProfile profile)
             {
                 Clear();burst=owner;burst.references++;active=true;start=lastChemical=e.time;path=e.zone;
-                pipe.Begin(e,SourceCutoffHz);voiceGain=profile.popGain*.35;
+                pipe.Begin(e);voiceGain=profile.popGain*.35;
                 Continue(e);if(e.time==owner.start)gain=target;
             }
             public bool CanContinue(ExhaustMixtureModel.Event e)=>active&&burst.id==e.frontId&&path==e.zone&&e.time>=lastChemical;
@@ -81,7 +80,7 @@ namespace DragLab.Domain
         }
         readonly Voice[] voices=new Voice[VoiceCount];
         readonly Burst[] bursts=new Burst[VoiceCount];
-        readonly AfterfireLabSettings settings;
+        readonly AfterfireHardwareAcoustics hardware;
         readonly EngineSoundProfile profile;
         readonly int rate;
         ExhaustMixtureModel source,retained;
@@ -100,7 +99,7 @@ namespace DragLab.Domain
         public double LastOutletSample {get;private set;}
         public AfterfireAudioSynth(EngineSoundProfile profile,int rate,AfterfireLabSettings? calibration=null)
         {
-            this.profile=profile;this.rate=rate;settings=calibration??AfterfireLabSettings.Hardware(profile);
+            this.profile=profile;this.rate=rate;hardware=new AfterfireHardwareAcoustics(profile,calibration);
             for(int i=0;i<VoiceCount;i++){voices[i]=new Voice(profile,rate);bursts[i]=new Burst(rate);}
         }
         public void Connect(ExhaustMixtureModel model)
@@ -129,7 +128,7 @@ namespace DragLab.Domain
                     owner=bursts[0];foreach(var b in bursts)if(b.start<owner.start)owner=b;
                     foreach(var v in voices)if(v.active&&ReferenceEquals(v.burst,owner)){v.Clear();TailSteals++;}
                 }
-                owner.Begin(e,settings);StartedBursts++;
+                owner.Begin(e,hardware.At(e));StartedBursts++;
             }
             Voice free=null;foreach(var v in voices)if(!v.active){free=v;break;}
             if(free==null){free=voices[0];foreach(var v in voices)if(v.start<free.start)free=v;TailSteals++;}

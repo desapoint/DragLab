@@ -1,0 +1,11 @@
+Live Windows player PID 26408
+Tempest-only real game audition, launched 2026-10-21.
+Fixture: reports\player-fixtures\live-audio-20261021-125918-799
+Packaged Assembly-CSharp.dll SHA256: 30052998DC38E199277326EB7971EFF6818CE09A874E6E4E1D6FF6425629AD35
+Observed advancing playback:
+1 / 1 · Tempest · two-step hard ignition cut · Petrol injection · Hard / Fuel cut · launch Hard / Ignition
+Acceleration / shifting
+Tick 2232 / 4098
+Engine RMS 0,007096678 / tires 0 / rival 0
+
+Listening acceptance pending.
