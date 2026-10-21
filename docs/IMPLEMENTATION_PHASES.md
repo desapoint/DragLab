@@ -1,5 +1,7 @@
 # Slice 2, Slice 3 and Slice 4 implementation phases
 
+**Intake-rush listening revision (2026-10-20):** user rejects the valve-body candidate as fart-like. Editor-only zero-mean turbulence removes its coherent repeating pressure carrier; short rejected/revised clips and full three-car sequences retain the other production layers. [Checks, listening protocol and limits](../reports/intake-rush-20261020/CHANGES.md). Runtime audio/builds remain unchanged; stop for explicit listening approval.
+
 **Intake-body preview revision (2026-10-20):** user rejects the airy intake candidate as wastegate-like. Editor-only shorter opening-driven valve pulses remove its sustained noise bed; previous and revised clips are retained for direct listening. **26 synthesis/replay checks + 53 artifact gates** pass. [Evidence, level/spectral limits and reproduction](../reports/intake-body-20261020/CHANGES.md). Runtime audio/builds remain unchanged; listening acceptance is pending.
 
 **Natural intake listening preview (2026-10-20):** user confirms the intake-gulp sine is the Timber ding. Editor-only seeded airflow/valve-breath synthesis supplies short matched before/after clips and complete Timber/Bison/Juniper comparisons, retaining the other production sound layers and race behavior. **26 checks** pass; [listening files, evidence and limits](../reports/natural-intake-20261020/CHANGES.md). Gameplay audio/builds remain unchanged; stop for explicit listening approval before integration.

@@ -354,3 +354,12 @@ Direct previous-candidate -> revised-candidate WAVs preserve both versions.
 [Checks, gain/spectral limits and listening protocol](../reports/intake-body-20261020/CHANGES.md).
 This is an acoustic preview; turbo/wastegate and runtime engine audio are unchanged.
 Wait for listening approval before integration.
+
+### Intake revision after buzzing feedback
+
+The valve-body candidate is also rejected. Its positive-only noisy pulse kernel
+retained a coherent repeating pressure carrier. Editor-only `Voice.IntakeRush`
+removes that carrier, leaving a brief opening-driven airflow transient with faint
+zero-mean valve texture and less low-bass emphasis. Both earlier voices remain
+available. [Listening comparison and checks](../reports/intake-rush-20261020/CHANGES.md).
+No runtime engine/turbo/backfire sound changes; wait for listening approval.
