@@ -15,10 +15,11 @@ namespace DragLab.Editor
         static string Root => Path.GetFullPath(Path.Combine(Application.dataPath, "../.."));
         static string Capture => Path.Combine(Root, "reports/v8-backfire-matrix-20261020");
         static NaturalIntakePreview.Voice voice = NaturalIntakePreview.Voice.Airflow;
-        static string Folder => Path.Combine(Root, voice == NaturalIntakePreview.Voice.Airflow ? "reports/natural-intake-20261020" : voice == NaturalIntakePreview.Voice.ValveBody ? "reports/intake-body-20261020" : "reports/intake-rush-20261020");
+        static int levelDb;
+        static string Folder => levelDb != 0 ? Path.Combine(Root, "reports/intake-levels-20261020/minus" + -levelDb + "db") : Path.Combine(Root, voice == NaturalIntakePreview.Voice.Airflow ? "reports/natural-intake-20261020" : voice == NaturalIntakePreview.Voice.ValveBody ? "reports/intake-body-20261020" : "reports/intake-rush-20261020");
         static readonly List<string> checks = new List<string>();
         [Serializable] sealed class Row { public string id, file; public double seconds, newPeak; public int referenceMismatches; }
-        [Serializable] sealed class Manifest { public string voice; public double commonIntakeGain; public List<Row> outputs = new List<Row>(); }
+        [Serializable] sealed class Manifest { public string voice; public int intakeLevelDb; public double commonIntakeGain; public List<Row> outputs = new List<Row>(); }
         static void Check(bool yes, string why)
         { checks.Add((yes ? "PASS " : "FAIL ") + why); if (!yes) { SaveChecks(); throw new InvalidOperationException("INTAKE PREVIEW: " + why); } }
         static void SaveChecks() { Directory.CreateDirectory(Folder); File.WriteAllText(Path.Combine(Folder, "verification.txt"), string.Join("\n", checks) + "\nChecks: " + checks.Count + "\n", new UTF8Encoding(false)); }
@@ -99,9 +100,31 @@ namespace DragLab.Editor
             }
             return (low + high) * .5;
         }
-        public static void Run() { voice = NaturalIntakePreview.Voice.Airflow; Render(); }
-        public static void RunBody() { voice = NaturalIntakePreview.Voice.ValveBody; Render(); CompareRejected(); }
-        public static void RunRush() { voice = NaturalIntakePreview.Voice.IntakeRush; Render(); CompareRejected(); }
+        public static void Run() { levelDb = 0; voice = NaturalIntakePreview.Voice.Airflow; Render(); }
+        public static void RunBody() { levelDb = 0; voice = NaturalIntakePreview.Voice.ValveBody; Render(); CompareRejected(); }
+        public static void RunRush() { levelDb = 0; voice = NaturalIntakePreview.Voice.IntakeRush; Render(); CompareRejected(); }
+        public static void RunRushLevels()
+        {
+            voice = NaturalIntakePreview.Voice.IntakeRush;
+            try
+            {
+                foreach (int db in new[] { -9, -15 }) { levelDb = db; Render(); CompareRushLevel(); }
+            }
+            finally { levelDb = 0; }
+        }
+        static void CompareRushLevel()
+        {
+            foreach (string time in new[] { "40s", "88s" }) foreach (string layer in new[] { "engine", "intake" })
+            {
+                string name = "timber-at-" + time + "-" + layer + "-before-after.wav";
+                byte[] before = File.ReadAllBytes(Path.Combine(Root, "reports/intake-rush-20261020", name)), after = File.ReadAllBytes(Path.Combine(Folder, name));
+                int frames = Rate * 3, second = (Rate * 3 + Rate / 2) * 4;
+                var pcm = new short[(Rate * 6 + Rate / 2) * 2];
+                Buffer.BlockCopy(before, 44 + second, pcm, 0, frames * 4);
+                Buffer.BlockCopy(after, 44 + second, pcm, second, frames * 4);
+                Wav(Path.Combine(Folder, "timber-at-" + time + "-" + layer + "-quieter.wav"), pcm);
+            }
+        }
         static void CompareRejected()
         {
             foreach (string time in new[] { "40s", "88s" }) foreach (string layer in new[] { "engine", "intake" })
@@ -121,7 +144,7 @@ namespace DragLab.Editor
             Directory.CreateDirectory(Folder); checks.Clear(); Verify();
             string globalRandom = JsonUtility.ToJson(UnityEngine.Random.state);
             var captures = JsonUtility.FromJson<V8BackfireMatrixExport.Manifest>(File.ReadAllText(Path.Combine(Capture, "jobs.json"), Encoding.UTF8));
-            var manifest = new Manifest { voice = voice.ToString() };
+            var manifest = new Manifest { voice = voice.ToString(), intakeLevelDb = levelDb };
             foreach (string id in new[] { "07-i6-carb", "30-exhaust-2", "19-injection-soft-fuel" })
             {
                 var job = captures.jobs.Single(j => j.id == id); byte[] reference = File.ReadAllBytes(Path.Combine(Capture, job.reference));
@@ -153,6 +176,9 @@ namespace DragLab.Editor
                         manifest.commonIntakeGain = voice != NaturalIntakePreview.Voice.Airflow ? MatchOutput(oldIntake, natural, (int)(1.9 * Rate), Rate * 3) :
                             Rms(oldIntake, (int)(1.9 * Rate), Rate * 3) / Rms(natural, (int)(1.9 * Rate), Rate * 3);
                         Check(manifest.commonIntakeGain > 0 && manifest.commonIntakeGain < 100, "one finite global level match from Timber target clip");
+                        // Calibration is retained for reproducibility, then only the intake
+                        // gain is attenuated before summing with the unchanged engine bed.
+                        if (levelDb != 0) manifest.commonIntakeGain *= Math.Pow(10, levelDb / 20.0);
                     }
                     var updated = new float[original.Length];
                     for (int i = 0; i < original.Length; i++)

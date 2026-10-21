@@ -1,5 +1,7 @@
 # Slice 2, Slice 3 and Slice 4 implementation phases
 
+**Intake level review (2026-10-20):** user tentatively likes the rush texture but finds it too loud. Editor previews retain the generator and lower only intake gain by 9 / 15 dB, with direct previous/quieter comparisons and the same three-car replays. [Protocol and checks](../reports/intake-levels-20261020/CHANGES.md). Game audio/builds remain unchanged; final mix and integration await listening approval.
+
 **Intake-rush listening revision (2026-10-20):** user rejects the valve-body candidate as fart-like. Editor-only zero-mean turbulence removes its coherent repeating pressure carrier; short rejected/revised clips and full three-car sequences retain the other production layers. [Checks, listening protocol and limits](../reports/intake-rush-20261020/CHANGES.md). Runtime audio/builds remain unchanged; stop for explicit listening approval.
 
 **Intake-body preview revision (2026-10-20):** user rejects the airy intake candidate as wastegate-like. Editor-only shorter opening-driven valve pulses remove its sustained noise bed; previous and revised clips are retained for direct listening. **26 synthesis/replay checks + 53 artifact gates** pass. [Evidence, level/spectral limits and reproduction](../reports/intake-body-20261020/CHANGES.md). Runtime audio/builds remain unchanged; listening acceptance is pending.

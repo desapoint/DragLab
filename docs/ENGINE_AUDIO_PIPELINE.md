@@ -363,3 +363,11 @@ removes that carrier, leaving a brief opening-driven airflow transient with fain
 zero-mean valve texture and less low-bass emphasis. Both earlier voices remain
 available. [Listening comparison and checks](../reports/intake-rush-20261020/CHANGES.md).
 No runtime engine/turbo/backfire sound changes; wait for listening approval.
+
+### Intake level review
+
+The rush texture is tentatively liked but too loud. Editor-only `RunRushLevels`
+keeps its source/seed/inputs and supplies -9 / -15 dB intake-only gain comparisons;
+the engine bed is not turned down. [Review protocol](../reports/intake-levels-20261020/CHANGES.md).
+Prior RMS matching was diagnostic, not an approved production balance. Listening
+approval and runtime integration remain pending.

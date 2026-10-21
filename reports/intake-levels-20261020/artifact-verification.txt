@@ -1,0 +1,111 @@
+PASS -9dB gain exactly applies to intake
+PASS reports\intake-levels-20261020\minus9db\07-i6-carb-original-natural-intake.wav format
+PASS reports\v8-backfire-matrix-20261020\07-i6-carb.wav format
+PASS 07-i6-carb full length
+PASS 07-i6-carb original PCM exact
+PASS 07-i6-carb silent gap
+PASS 07-i6-carb headroom
+PASS reports\intake-levels-20261020\minus9db\30-exhaust-2-original-natural-intake.wav format
+PASS reports\v8-backfire-matrix-20261020\30-exhaust-2.wav format
+PASS 30-exhaust-2 full length
+PASS 30-exhaust-2 original PCM exact
+PASS 30-exhaust-2 silent gap
+PASS 30-exhaust-2 headroom
+PASS reports\intake-levels-20261020\minus9db\19-injection-soft-fuel-original-natural-intake.wav format
+PASS reports\v8-backfire-matrix-20261020\19-injection-soft-fuel.wav format
+PASS 19-injection-soft-fuel full length
+PASS 19-injection-soft-fuel original PCM exact
+PASS 19-injection-soft-fuel silent gap
+PASS 19-injection-soft-fuel headroom
+PASS reports\intake-rush-20261020\timber-at-40s-engine-before-after.wav format
+PASS reports\intake-levels-20261020\minus9db\timber-at-40s-engine-before-after.wav format
+PASS reports\intake-levels-20261020\minus9db\timber-at-40s-engine-quieter.wav format
+PASS timber-at-40s-engine 6.5 second length
+PASS timber-at-40s-engine previous candidate exact
+PASS timber-at-40s-engine quieter candidate exact
+PASS timber-at-40s-engine silent gap
+PASS timber-at-40s-engine faded edges
+PASS reports\intake-rush-20261020\timber-at-40s-intake-before-after.wav format
+PASS reports\intake-levels-20261020\minus9db\timber-at-40s-intake-before-after.wav format
+PASS reports\intake-levels-20261020\minus9db\timber-at-40s-intake-quieter.wav format
+PASS timber-at-40s-intake 6.5 second length
+PASS timber-at-40s-intake previous candidate exact
+PASS timber-at-40s-intake quieter candidate exact
+PASS timber-at-40s-intake silent gap
+PASS timber-at-40s-intake faded edges
+MEASURE -9dB 40s isolated output attenuation -8.590 dB
+PASS -9dB 40s same waveform attenuated before saturation; quantization-relative RMS error 0.001396
+PASS reports\intake-rush-20261020\timber-at-88s-engine-before-after.wav format
+PASS reports\intake-levels-20261020\minus9db\timber-at-88s-engine-before-after.wav format
+PASS reports\intake-levels-20261020\minus9db\timber-at-88s-engine-quieter.wav format
+PASS timber-at-88s-engine 6.5 second length
+PASS timber-at-88s-engine previous candidate exact
+PASS timber-at-88s-engine quieter candidate exact
+PASS timber-at-88s-engine silent gap
+PASS timber-at-88s-engine faded edges
+PASS reports\intake-rush-20261020\timber-at-88s-intake-before-after.wav format
+PASS reports\intake-levels-20261020\minus9db\timber-at-88s-intake-before-after.wav format
+PASS reports\intake-levels-20261020\minus9db\timber-at-88s-intake-quieter.wav format
+PASS timber-at-88s-intake 6.5 second length
+PASS timber-at-88s-intake previous candidate exact
+PASS timber-at-88s-intake quieter candidate exact
+PASS timber-at-88s-intake silent gap
+PASS timber-at-88s-intake faded edges
+MEASURE -9dB 88s isolated output attenuation -8.660 dB
+PASS -9dB 88s same waveform attenuated before saturation; quantization-relative RMS error 0.001515
+PASS -15dB gain exactly applies to intake
+PASS reports\intake-levels-20261020\minus15db\07-i6-carb-original-natural-intake.wav format
+PASS reports\v8-backfire-matrix-20261020\07-i6-carb.wav format
+PASS 07-i6-carb full length
+PASS 07-i6-carb original PCM exact
+PASS 07-i6-carb silent gap
+PASS 07-i6-carb headroom
+PASS reports\intake-levels-20261020\minus15db\30-exhaust-2-original-natural-intake.wav format
+PASS reports\v8-backfire-matrix-20261020\30-exhaust-2.wav format
+PASS 30-exhaust-2 full length
+PASS 30-exhaust-2 original PCM exact
+PASS 30-exhaust-2 silent gap
+PASS 30-exhaust-2 headroom
+PASS reports\intake-levels-20261020\minus15db\19-injection-soft-fuel-original-natural-intake.wav format
+PASS reports\v8-backfire-matrix-20261020\19-injection-soft-fuel.wav format
+PASS 19-injection-soft-fuel full length
+PASS 19-injection-soft-fuel original PCM exact
+PASS 19-injection-soft-fuel silent gap
+PASS 19-injection-soft-fuel headroom
+PASS reports\intake-rush-20261020\timber-at-40s-engine-before-after.wav format
+PASS reports\intake-levels-20261020\minus15db\timber-at-40s-engine-before-after.wav format
+PASS reports\intake-levels-20261020\minus15db\timber-at-40s-engine-quieter.wav format
+PASS timber-at-40s-engine 6.5 second length
+PASS timber-at-40s-engine previous candidate exact
+PASS timber-at-40s-engine quieter candidate exact
+PASS timber-at-40s-engine silent gap
+PASS timber-at-40s-engine faded edges
+PASS reports\intake-rush-20261020\timber-at-40s-intake-before-after.wav format
+PASS reports\intake-levels-20261020\minus15db\timber-at-40s-intake-before-after.wav format
+PASS reports\intake-levels-20261020\minus15db\timber-at-40s-intake-quieter.wav format
+PASS timber-at-40s-intake 6.5 second length
+PASS timber-at-40s-intake previous candidate exact
+PASS timber-at-40s-intake quieter candidate exact
+PASS timber-at-40s-intake silent gap
+PASS timber-at-40s-intake faded edges
+MEASURE -15dB 40s isolated output attenuation -14.470 dB
+PASS -15dB 40s same waveform attenuated before saturation; quantization-relative RMS error 0.002582
+PASS reports\intake-rush-20261020\timber-at-88s-engine-before-after.wav format
+PASS reports\intake-levels-20261020\minus15db\timber-at-88s-engine-before-after.wav format
+PASS reports\intake-levels-20261020\minus15db\timber-at-88s-engine-quieter.wav format
+PASS timber-at-88s-engine 6.5 second length
+PASS timber-at-88s-engine previous candidate exact
+PASS timber-at-88s-engine quieter candidate exact
+PASS timber-at-88s-engine silent gap
+PASS timber-at-88s-engine faded edges
+PASS reports\intake-rush-20261020\timber-at-88s-intake-before-after.wav format
+PASS reports\intake-levels-20261020\minus15db\timber-at-88s-intake-before-after.wav format
+PASS reports\intake-levels-20261020\minus15db\timber-at-88s-intake-quieter.wav format
+PASS timber-at-88s-intake 6.5 second length
+PASS timber-at-88s-intake previous candidate exact
+PASS timber-at-88s-intake quieter candidate exact
+PASS timber-at-88s-intake silent gap
+PASS timber-at-88s-intake faded edges
+MEASURE -15dB 88s isolated output attenuation -14.562 dB
+PASS -15dB 88s same waveform attenuated before saturation; quantization-relative RMS error 0.002797
+PASS both 28-check Unity suites pass
