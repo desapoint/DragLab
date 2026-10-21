@@ -135,8 +135,9 @@ namespace DragLab.Editor
                         throw new InvalidOperationException("Event delivery/tail budget failure: "+fixture.id+" / "+d.Delivered+" / "+car.state.audioExhaust.mixture.Sequence+" / steals "+d.TailSteals);
                     if(r.Delivered!=car.state.audioExhaust.ReleaseSequence)throw new InvalidOperationException("Lost BOV event: "+fixture.id);
                     if(Math.Abs(car.state.elapsed-fixture.elapsed)>1e-9||car.state.exhaustPopCount!=fixture.pops)throw new InvalidOperationException("Physics trace changed: "+fixture.id);
+                    if(Math.Abs(d.FundedAcousticEnergy-car.state.audioExhaust.mixture.AcousticEnergyJ)>1e-8)throw new InvalidOperationException("Lost chemical acoustic funding: "+fixture.id);
                     Array.Sort(timings);report.AppendLine("MEASURE "+fixture.id+" callback p95 "+timings[(int)(timings.Length*.95)].ToString("F4")+" ms; max "+timings[timings.Length-1].ToString("F4")+" ms / 400 stereo frames, budget 8.333 ms");
-                    report.AppendLine("PASS "+fixture.id+" / ET unchanged / chemical "+d.Delivered+" / rendered reactions "+(d.Delivered-d.Inaudible)+" / pressure voices "+(d.Delivered-d.Inaudible-d.ContinuedReactions)+" / continued "+d.ContinuedReactions+" / BOV "+r.Delivered+" / no drops or steals / peak "+peak.ToString("F4"));
+                    report.AppendLine("PASS "+fixture.id+" / ET unchanged / chemical "+d.Delivered+" / funded reactions "+(d.Delivered-d.Inaudible)+" / zone paths "+(d.Delivered-d.Inaudible-d.ContinuedReactions)+" / preset bursts "+d.StartedBursts+" / acoustic J "+d.FundedAcousticEnergy.ToString("R")+" / continued "+d.ContinuedReactions+" / BOV "+r.Delivered+" / no drops or steals / peak "+peak.ToString("F4"));
                     File.WriteAllText(receipt,report.ToString(),new UTF8Encoding(false));
                 }
                 finally{race.CloseOpponentWorker();}

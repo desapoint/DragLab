@@ -1,0 +1,308 @@
+PASS Tempest uses exact Turbo Pop & Flame preset, without Shotgun blend or reaction remapping
+MEASURE source / preset 0 / 24000 / max 8,4249634380029192E-08 / relative RMS 2,6098007285859675E-08
+MEASURE coherent pressure error 2,867481219137602E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 0 / 24000
+MEASURE gameplay/outdoor / preset 0 / 24000 / max 7,4505805969238281E-09 / relative RMS 3,1555812463094751E-08 / dry error 6,7584137175558112E-09 at 99
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 0 / 24000
+MEASURE source / preset 1 / 24000 / max 5,8997107643676827E-08 / relative RMS 2,5333953388433337E-08
+MEASURE coherent pressure error 2,9584566574314408E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 1 / 24000
+MEASURE gameplay/outdoor / preset 1 / 24000 / max 1,4901161193847656E-08 / relative RMS 3,2967183198853553E-08 / dry error 6,5613940669617676E-09 at 137
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 1 / 24000
+MEASURE source / preset 2 / 24000 / max 5,3607900563079625E-08 / relative RMS 2,3873281963678203E-08
+MEASURE coherent pressure error 2,761859985156434E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 2 / 24000
+MEASURE gameplay/outdoor / preset 2 / 24000 / max 3,7252902984619141E-09 / relative RMS 3,1821481489039358E-08 / dry error 3,0904704628742508E-09 at 132
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 2 / 24000
+MEASURE source / preset 3 / 24000 / max 6,5906660573489262E-08 / relative RMS 2,5545705142508934E-08
+MEASURE coherent pressure error 2,851263136705029E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 3 / 24000
+MEASURE gameplay/outdoor / preset 3 / 24000 / max 7,4505805969238281E-09 / relative RMS 3,1709165926602732E-08 / dry error 5,793090729344641E-09 at 193
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 3 / 24000
+MEASURE source / preset 4 / 24000 / max 5,8621975940198467E-08 / relative RMS 2,4988611899698211E-08
+MEASURE coherent pressure error 2,877892768538004E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 4 / 24000
+MEASURE gameplay/outdoor / preset 4 / 24000 / max 7,4505805969238281E-09 / relative RMS 3,1395254658426549E-08 / dry error 4,2631473351484317E-09 at 196
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 4 / 24000
+MEASURE source / preset 5 / 24000 / max 1,0439395037309396E-07 / relative RMS 2,5937065836794824E-08
+MEASURE coherent pressure error 2,7946155611857648E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 5 / 24000
+MEASURE gameplay/outdoor / preset 5 / 24000 / max 7,4505805969238281E-09 / relative RMS 3,9836982273861146E-08 / dry error 7,7523924224554008E-09 at 99
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 5 / 24000
+MEASURE source / preset 6 / 24000 / max 5,6167873685453173E-08 / relative RMS 2,5238183056368305E-08
+MEASURE coherent pressure error 1,470991339846961E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 6 / 24000
+MEASURE gameplay/outdoor / preset 6 / 24000 / max 7,4505805969238281E-09 / relative RMS 4,0728195016143957E-08 / dry error 4,1696262831347752E-09 at 73
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 6 / 24000
+MEASURE source / preset 7 / 24000 / max 1,190052376642825E-07 / relative RMS 2,6260041710247679E-08
+MEASURE coherent pressure error 2,9144561985994244E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 7 / 24000
+MEASURE gameplay/outdoor / preset 7 / 24000 / max 1,4901161193847656E-08 / relative RMS 3,0946983543874843E-08 / dry error 8,6519473252444357E-09 at 119
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 7 / 24000
+MEASURE source / preset 8 / 24000 / max 5,7536908792954478E-08 / relative RMS 2,4482419172738872E-08
+MEASURE coherent pressure error 1,7013037756363758E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 8 / 24000
+MEASURE gameplay/outdoor / preset 8 / 24000 / max 3,7252902984619141E-09 / relative RMS 3,6468959185326776E-08 / dry error 2,9368045356692463E-09 at 135
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 8 / 24000
+MEASURE source / preset 9 / 24000 / max 1,1487931139697594E-07 / relative RMS 2,6435701454387896E-08
+MEASURE coherent pressure error 2,955684663685787E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 9 / 24000
+MEASURE gameplay/outdoor / preset 9 / 24000 / max 1,4901161193847656E-08 / relative RMS 3,2069214983814716E-08 / dry error 5,9521823025932008E-09 at 92
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 9 / 24000
+MEASURE source / preset 0 / 44100 / max 8,0503455901492771E-08 / relative RMS 2,4711176266845913E-08
+MEASURE coherent pressure error 2,9477689178492028E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 0 / 44100
+MEASURE gameplay/outdoor / preset 0 / 44100 / max 7,4505805969238281E-09 / relative RMS 2,6493892759709794E-08 / dry error 4,6181140023193734E-09 at 146
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 0 / 44100
+MEASURE source / preset 1 / 44100 / max 5,9259418261348173E-08 / relative RMS 2,4823170832930588E-08
+MEASURE coherent pressure error 2,9533669287928888E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 1 / 44100
+MEASURE gameplay/outdoor / preset 1 / 44100 / max 7,4505805969238281E-09 / relative RMS 2,356976162164983E-08 / dry error 3,8349546038762838E-09 at 228
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 1 / 44100
+MEASURE source / preset 2 / 44100 / max 7,86161664656504E-08 / relative RMS 2,5189135441558681E-08
+MEASURE coherent pressure error 2,9177151028569881E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 2 / 44100
+MEASURE gameplay/outdoor / preset 2 / 44100 / max 7,4505805969238281E-09 / relative RMS 3,0938149239038091E-08 / dry error 3,85918330625401E-09 at 145
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 2 / 44100
+MEASURE source / preset 3 / 44100 / max 5,6512463153524095E-08 / relative RMS 2,469854849913897E-08
+MEASURE coherent pressure error 2,8690820164101183E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 3 / 44100
+MEASURE gameplay/outdoor / preset 3 / 44100 / max 3,7252902984619141E-09 / relative RMS 2,4250590353289539E-08 / dry error 3,502017592582618E-09 at 147
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 3 / 44100
+MEASURE source / preset 4 / 44100 / max 5,8760738497198872E-08 / relative RMS 2,5805087028129123E-08
+MEASURE coherent pressure error 2,8976335220143312E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 4 / 44100
+MEASURE gameplay/outdoor / preset 4 / 44100 / max 7,4505805969238281E-09 / relative RMS 2,7411089816237706E-08 / dry error 2,6171024791743491E-09 at 141
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 4 / 44100
+MEASURE source / preset 5 / 44100 / max 5,9061746382482738E-08 / relative RMS 2,5020876066469673E-08
+MEASURE coherent pressure error 2,7419665205030697E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 5 / 44100
+MEASURE gameplay/outdoor / preset 5 / 44100 / max 7,4505805969238281E-09 / relative RMS 2,7773649889619635E-08 / dry error 3,4116821590046698E-09 at 170
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 5 / 44100
+MEASURE source / preset 6 / 44100 / max 5,493749632989875E-08 / relative RMS 2,5217402499119103E-08
+MEASURE coherent pressure error 1,419467132723895E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 6 / 44100
+MEASURE gameplay/outdoor / preset 6 / 44100 / max 7,4505805969238281E-09 / relative RMS 3,6648384882258435E-08 / dry error 2,6480806991635575E-09 at 213
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 6 / 44100
+MEASURE source / preset 7 / 44100 / max 1,090568186867813E-07 / relative RMS 2,5011962898757097E-08
+MEASURE coherent pressure error 2,9640342846803946E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 7 / 44100
+MEASURE gameplay/outdoor / preset 7 / 44100 / max 1,4901161193847656E-08 / relative RMS 2,6052241897224812E-08 / dry error 4,5155628680682014E-09 at 169
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 7 / 44100
+MEASURE source / preset 8 / 44100 / max 5,8690232229707817E-08 / relative RMS 2,4210124605418139E-08
+MEASURE coherent pressure error 2,4398887799037539E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 8 / 44100
+MEASURE gameplay/outdoor / preset 8 / 44100 / max 7,4505805969238281E-09 / relative RMS 3,4314587713205524E-08 / dry error 2,5158158889482252E-09 at 182
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 8 / 44100
+MEASURE source / preset 9 / 44100 / max 1,1359467411153901E-07 / relative RMS 2,6484596847383227E-08
+MEASURE coherent pressure error 2,9609983798195572E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 9 / 44100
+MEASURE gameplay/outdoor / preset 9 / 44100 / max 7,4505805969238281E-09 / relative RMS 2,4870089993801736E-08 / dry error 6,7489583921442886E-09 at 147
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 9 / 44100
+MEASURE source / preset 0 / 48000 / max 5,8156126803154962E-08 / relative RMS 2,4038261943100023E-08
+MEASURE coherent pressure error 2,9707556414848568E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 0 / 48000
+MEASURE gameplay/outdoor / preset 0 / 48000 / max 1,4901161193847656E-08 / relative RMS 2,7255429450393765E-08 / dry error 2,1601547772753804E-09 at 196
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 0 / 48000
+MEASURE source / preset 1 / 48000 / max 1,007868526414768E-07 / relative RMS 2,587028689053619E-08
+MEASURE coherent pressure error 2,9800411693869933E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 1 / 48000
+MEASURE gameplay/outdoor / preset 1 / 48000 / max 7,4505805969238281E-09 / relative RMS 2,675691938568602E-08 / dry error 4,3803206062342781E-09 at 196
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 1 / 48000
+MEASURE source / preset 2 / 48000 / max 5,9524507101116342E-08 / relative RMS 2,586760518736E-08
+MEASURE coherent pressure error 2,97668355520031E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 2 / 48000
+MEASURE gameplay/outdoor / preset 2 / 48000 / max 7,4505805969238281E-09 / relative RMS 2,5075298518353538E-08 / dry error 4,2564971547420782E-09 at 155
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 2 / 48000
+MEASURE source / preset 3 / 48000 / max 5,7818393628394915E-08 / relative RMS 2,5560363336025645E-08
+MEASURE coherent pressure error 2,8782941807747875E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 3 / 48000
+MEASURE gameplay/outdoor / preset 3 / 48000 / max 1,4901161193847656E-08 / relative RMS 2,982877543444652E-08 / dry error 3,8737615892792121E-09 at 176
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 3 / 48000
+MEASURE source / preset 4 / 48000 / max 5,9108278938069247E-08 / relative RMS 2,517222536762669E-08
+MEASURE coherent pressure error 2,8009128127948202E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 4 / 48000
+MEASURE gameplay/outdoor / preset 4 / 48000 / max 3,7252902984619141E-09 / relative RMS 2,4685152028869465E-08 / dry error 1,9991482080872203E-09 at 180
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 4 / 48000
+MEASURE source / preset 5 / 48000 / max 5,8353076148875971E-08 / relative RMS 2,5459611633743115E-08
+MEASURE coherent pressure error 2,9257703260121559E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 5 / 48000
+MEASURE gameplay/outdoor / preset 5 / 48000 / max 7,4505805969238281E-09 / relative RMS 2,5757599838755327E-08 / dry error 2,845695803999071E-09 at 189
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 5 / 48000
+MEASURE source / preset 6 / 48000 / max 5,83186461344809E-08 / relative RMS 2,4239700216698442E-08
+MEASURE coherent pressure error 1,4465396658280838E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 6 / 48000
+MEASURE gameplay/outdoor / preset 6 / 48000 / max 3,7252902984619141E-09 / relative RMS 2,443099005758289E-08 / dry error 2,2450712400257089E-09 at 171
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 6 / 48000
+MEASURE source / preset 7 / 48000 / max 5,8543927705656529E-08 / relative RMS 2,4558419595577147E-08
+MEASURE coherent pressure error 2,9555346059417786E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 7 / 48000
+MEASURE gameplay/outdoor / preset 7 / 48000 / max 1,4901161193847656E-08 / relative RMS 2,771241258130274E-08 / dry error 3,3132909471600414E-09 at 239
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 7 / 48000
+MEASURE source / preset 8 / 48000 / max 5,7427524069453284E-08 / relative RMS 2,5352113046125947E-08
+MEASURE coherent pressure error 2,7886797093756854E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 8 / 48000
+MEASURE gameplay/outdoor / preset 8 / 48000 / max 7,4505805969238281E-09 / relative RMS 2,9877089397836131E-08 / dry error 1,9483711866108422E-09 at 243
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 8 / 48000
+MEASURE source / preset 9 / 48000 / max 1,038815891085676E-07 / relative RMS 2,4917211207948556E-08
+MEASURE coherent pressure error 2,9680823132594014E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 9 / 48000
+MEASURE gameplay/outdoor / preset 9 / 48000 / max 7,4505805969238281E-09 / relative RMS 2,3276862207887848E-08 / dry error 4,6901312000802164E-09 at 175
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 9 / 48000
+MEASURE source / preset 0 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,0149152550548072E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 0 / 96000
+MEASURE gameplay/outdoor / preset 0 / 96000 / max 9,3132257461547852E-10 / relative RMS 9,9181008506181477E-10 / dry error 1,6923781560179707E-10 at 7105
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 0 / 96000
+MEASURE source / preset 1 / 96000 / max 2,9802322387695313E-08 / relative RMS 1,8002710490355801E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 1 / 96000
+MEASURE gameplay/outdoor / preset 1 / 96000 / max 1,862645149230957E-09 / relative RMS 1,9472837644726513E-09 / dry error 4,089092536796457E-10 at 6817
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 1 / 96000
+MEASURE source / preset 2 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,3322277916941196E-09
+MEASURE coherent pressure error 7,4505805969238281E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 2 / 96000
+MEASURE gameplay/outdoor / preset 2 / 96000 / max 9,3132257461547852E-10 / relative RMS 2,3590263711667097E-09 / dry error 3,0582356785879838E-10 at 8247
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 2 / 96000
+MEASURE source / preset 3 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,5729681442254493E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 3 / 96000
+MEASURE gameplay/outdoor / preset 3 / 96000 / max 1,862645149230957E-09 / relative RMS 2,2877432953858356E-09 / dry error 3,1282719470393516E-10 at 6851
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 3 / 96000
+MEASURE source / preset 4 / 96000 / max 0 / relative RMS 0
+MEASURE coherent pressure error 2,2579657748315394E-19
+PASS one actual source path matches full JavaScript preset including final padded tail / 4 / 96000
+MEASURE gameplay/outdoor / preset 4 / 96000 / max 0 / relative RMS 0 / dry error 2,7105054312137611E-20 at 6463
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 4 / 96000
+MEASURE source / preset 5 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,0163508917225895E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 5 / 96000
+MEASURE gameplay/outdoor / preset 5 / 96000 / max 9,3132257461547852E-10 / relative RMS 1,3429020540874369E-09 / dry error 2,0227937380656869E-10 at 6354
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 5 / 96000
+MEASURE source / preset 6 / 96000 / max 7,4505805969238281E-09 / relative RMS 1,8074857808674396E-09
+MEASURE coherent pressure error 7,4505805969238281E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 6 / 96000
+MEASURE gameplay/outdoor / preset 6 / 96000 / max 4,6566128730773926E-10 / relative RMS 1,9398212326058447E-09 / dry error 1,6960140930555312E-10 at 15330
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 6 / 96000
+MEASURE source / preset 7 / 96000 / max 1,4901161193847656E-08 / relative RMS 9,260068144966737E-10
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 7 / 96000
+MEASURE gameplay/outdoor / preset 7 / 96000 / max 1,862645149230957E-09 / relative RMS 1,5576934556129274E-09 / dry error 1,6891395226981132E-10 at 1778
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 7 / 96000
+MEASURE source / preset 8 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,1069745255916359E-09
+MEASURE coherent pressure error 1,862645149230957E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 8 / 96000
+MEASURE gameplay/outdoor / preset 8 / 96000 / max 4,6566128730773926E-10 / relative RMS 1,1361501357541215E-09 / dry error 1,847557662415511E-10 at 6109
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 8 / 96000
+MEASURE source / preset 9 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,1998692862321665E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 9 / 96000
+MEASURE gameplay/outdoor / preset 9 / 96000 / max 1,862645149230957E-09 / relative RMS 1,472894098317054E-09 / dry error 3,107591302342616E-10 at 6441
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 9 / 96000
+MEASURE source / preset 0 / 192000 / max 1,4901161193847656E-08 / relative RMS 1,6243236924871194E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 0 / 192000
+MEASURE gameplay/outdoor / preset 0 / 192000 / max 9,3132257461547852E-10 / relative RMS 1,21541010614662E-09 / dry error 8,2477186538754133E-11 at 12562
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 0 / 192000
+MEASURE source / preset 1 / 192000 / max 1,4901161193847656E-08 / relative RMS 1,7657188082420938E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 1 / 192000
+MEASURE gameplay/outdoor / preset 1 / 192000 / max 1,862645149230957E-09 / relative RMS 1,6851212200169629E-09 / dry error 1,7281235817345753E-10 at 13546
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 1 / 192000
+MEASURE source / preset 2 / 192000 / max 7,4505805969238281E-09 / relative RMS 1,8792725932906258E-09
+MEASURE coherent pressure error 7,4505805969238281E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 2 / 192000
+MEASURE gameplay/outdoor / preset 2 / 192000 / max 9,3132257461547852E-10 / relative RMS 1,8802498366251528E-09 / dry error 1,5766258784633003E-10 at 17306
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 2 / 192000
+MEASURE source / preset 3 / 192000 / max 1,4901161193847656E-08 / relative RMS 1,8366036965576291E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 3 / 192000
+MEASURE gameplay/outdoor / preset 3 / 192000 / max 9,3132257461547852E-10 / relative RMS 1,934695284313311E-09 / dry error 1,7206965019500586E-10 at 13691
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 3 / 192000
+MEASURE source / preset 4 / 192000 / max 0 / relative RMS 0
+MEASURE coherent pressure error 2,2579657748315394E-19
+PASS one actual source path matches full JavaScript preset including final padded tail / 4 / 192000
+MEASURE gameplay/outdoor / preset 4 / 192000 / max 0 / relative RMS 0 / dry error 2,7105054312137611E-20 at 13004
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 4 / 192000
+MEASURE source / preset 5 / 192000 / max 7,4505805969238281E-09 / relative RMS 1,1571510932674068E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 5 / 192000
+MEASURE gameplay/outdoor / preset 5 / 192000 / max 4,6566128730773926E-10 / relative RMS 1,2796797089348431E-09 / dry error 6,1594387576469067E-11 at 12782
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 5 / 192000
+MEASURE source / preset 6 / 192000 / max 7,4505805969238281E-09 / relative RMS 2,2340788843392387E-09
+MEASURE coherent pressure error 7,4505805969238281E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 6 / 192000
+MEASURE gameplay/outdoor / preset 6 / 192000 / max 4,6566128730773926E-10 / relative RMS 2,078319517157378E-09 / dry error 1,0673765343804931E-10 at 30655
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 6 / 192000
+MEASURE source / preset 7 / 192000 / max 2,9802322387695313E-08 / relative RMS 1,5751721046051946E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 7 / 192000
+MEASURE gameplay/outdoor / preset 7 / 192000 / max 1,862645149230957E-09 / relative RMS 1,1189155108244653E-09 / dry error 1,5961065802372332E-10 at 11500
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 7 / 192000
+MEASURE source / preset 8 / 192000 / max 1,4901161193847656E-08 / relative RMS 1,4089550577971694E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 8 / 192000
+MEASURE gameplay/outdoor / preset 8 / 192000 / max 4,6566128730773926E-10 / relative RMS 1,4764070694934483E-09 / dry error 1,559090478248093E-10 at 12123
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 8 / 192000
+MEASURE source / preset 9 / 192000 / max 1,4901161193847656E-08 / relative RMS 1,2547406857991994E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 9 / 192000
+MEASURE gameplay/outdoor / preset 9 / 192000 / max 1,862645149230957E-09 / relative RMS 1,1829321109402455E-09 / dry error 9,466815612674262E-11 at 12882
+PASS actual gameplay plus installed exhaust/outdoors preserves JS preset / 9 / 192000
+PASS first actual gameplay reaction/sample allocates nothing after construction / 8000
+PASS quarter simulated energy halves real gameplay pressure without changing timbre / 8000
+PASS splitting one same-time chemical packet cannot add a bang or amplify it / 8000
+PASS flags and numerical pressure/rise/burn details cannot remap the preset waveform at equal acoustic energy / 8000
+PASS no chemical energy gives exact silence / 8000
+PASS all 240 continuing reactions fund one flame envelope instead of 240 sharp attacks / 8000
+PASS zero warmed callback allocations, pressure overflow or stolen tails / 8000
+PASS finite preset and installed paths retire to exact silence / 8000
+PASS clear discards all burst/zone history / 8000
+PASS first actual gameplay reaction/sample allocates nothing after construction / 16000
+PASS quarter simulated energy halves real gameplay pressure without changing timbre / 16000
+PASS splitting one same-time chemical packet cannot add a bang or amplify it / 16000
+PASS flags and numerical pressure/rise/burn details cannot remap the preset waveform at equal acoustic energy / 16000
+PASS no chemical energy gives exact silence / 16000
+PASS all 240 continuing reactions fund one flame envelope instead of 240 sharp attacks / 16000
+PASS zero warmed callback allocations, pressure overflow or stolen tails / 16000
+PASS finite preset and installed paths retire to exact silence / 16000
+PASS clear discards all burst/zone history / 16000
+PASS first actual gameplay reaction/sample allocates nothing after construction / 24000
+PASS quarter simulated energy halves real gameplay pressure without changing timbre / 24000
+PASS splitting one same-time chemical packet cannot add a bang or amplify it / 24000
+PASS flags and numerical pressure/rise/burn details cannot remap the preset waveform at equal acoustic energy / 24000
+PASS no chemical energy gives exact silence / 24000
+PASS all 240 continuing reactions fund one flame envelope instead of 240 sharp attacks / 24000
+PASS zero warmed callback allocations, pressure overflow or stolen tails / 24000
+PASS finite preset and installed paths retire to exact silence / 24000
+PASS clear discards all burst/zone history / 24000
+PASS first actual gameplay reaction/sample allocates nothing after construction / 44100
+PASS quarter simulated energy halves real gameplay pressure without changing timbre / 44100
+PASS splitting one same-time chemical packet cannot add a bang or amplify it / 44100
+PASS flags and numerical pressure/rise/burn details cannot remap the preset waveform at equal acoustic energy / 44100
+PASS no chemical energy gives exact silence / 44100
+PASS all 240 continuing reactions fund one flame envelope instead of 240 sharp attacks / 44100
+PASS zero warmed callback allocations, pressure overflow or stolen tails / 44100
+PASS finite preset and installed paths retire to exact silence / 44100
+PASS clear discards all burst/zone history / 44100
+PASS first actual gameplay reaction/sample allocates nothing after construction / 48000
+PASS quarter simulated energy halves real gameplay pressure without changing timbre / 48000
+PASS splitting one same-time chemical packet cannot add a bang or amplify it / 48000
+PASS flags and numerical pressure/rise/burn details cannot remap the preset waveform at equal acoustic energy / 48000
+PASS no chemical energy gives exact silence / 48000
+PASS all 240 continuing reactions fund one flame envelope instead of 240 sharp attacks / 48000
+PASS zero warmed callback allocations, pressure overflow or stolen tails / 48000
+PASS finite preset and installed paths retire to exact silence / 48000
+PASS clear discards all burst/zone history / 48000
+PASS first actual gameplay reaction/sample allocates nothing after construction / 192000
+PASS quarter simulated energy halves real gameplay pressure without changing timbre / 192000
+PASS splitting one same-time chemical packet cannot add a bang or amplify it / 192000
+PASS flags and numerical pressure/rise/burn details cannot remap the preset waveform at equal acoustic energy / 192000
+PASS no chemical energy gives exact silence / 192000
+PASS all 240 continuing reactions fund one flame envelope instead of 240 sharp attacks / 192000
+PASS zero warmed callback allocations, pressure overflow or stolen tails / 192000
+PASS finite preset and installed paths retire to exact silence / 192000
+PASS clear discards all burst/zone history / 192000
+PASS later exhaust zone uses the same JS envelope phase with its own physical transfer, without another attack
+PASS a genuinely new chemical flame starts another preset burst
+Checks: 157

@@ -9,7 +9,8 @@ namespace DragLab.Editor
 {
     public static class ConditionDrivenAfterfireVerification
     {
-        static readonly string Folder=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/condition-afterfire-20261021"));
+        public static string OutputDirectory=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/condition-afterfire-20261021"));
+        static string Folder=>OutputDirectory;
         static readonly StringBuilder report=new StringBuilder();
         static int checks;
         static void Check(bool ok,string label)
@@ -68,10 +69,10 @@ namespace DragLab.Editor
             var shortEvent=new ExhaustMixtureModel.Event { gasK=900,position=.4,acousticJ=.2,pressurePa=4000,riseSeconds=.0005,burnSeconds=.003 };
             var slowEvent=shortEvent;slowEvent.riseSeconds=.012;slowEvent.burnSeconds=.08;
             var fast=AfterfireAudioSynth.Describe(shortEvent,profile);var slow=AfterfireAudioSynth.Describe(slowEvent,profile);
-            Check(slow.seconds>fast.seconds*2&&slow.stretch>fast.stretch&&slow.riseCutoff<fast.riseCutoff,"physical rise/burn duration changes bang length and brightness at identical energy");
+            Check(slow.seconds>fast.seconds*2&&slow.stretch>fast.stretch&&slow.riseCutoff<fast.riseCutoff,"physical reaction descriptor records rise/burn scales; it no longer defines the preset playback envelope");
             shortEvent.twoStep=shortEvent.limiter=true;shortEvent.cause=AfterfireCause.AntiLag;
             var tagged=AfterfireAudioSynth.Describe(shortEvent,profile);
-            Check(tagged.stretch==fast.stretch&&tagged.kind==fast.kind&&tagged.riseCutoff==fast.riseCutoff,"acoustic envelope ignores all operating-mode labels");
+            Check(tagged.stretch==fast.stretch&&tagged.kind==fast.kind&&tagged.riseCutoff==fast.riseCutoff,"diagnostic reaction descriptor ignores all operating-mode labels");
             var cold=new ExhaustMixtureModel(3456,"cold",initialK:298);var coldInput=Feed();coldInput.inletK=298;coldInput.intakeK=coldInput.wallTargetK=298;
             coldInput.twoStep=coldInput.limiter=true;coldInput.cause=AfterfireCause.AntiLag;
             for(int i=0;i<240;i++)cold.Step(coldInput);

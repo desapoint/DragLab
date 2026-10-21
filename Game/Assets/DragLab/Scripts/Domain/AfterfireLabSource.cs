@@ -4,8 +4,8 @@ namespace DragLab.Domain
 {
     // Streaming C# port of renderPop's V3 pressure/noise core. No audio clips,
     // sample-array rendering or allocations occur when a live reaction arrives.
-    // Reference mode retains the lab's micro-pulses for numerical comparison;
-    // live mode receives ALL pressure renewals/energy from exhaust chemistry.
+    // Gameplay and numerical verification use this same preset envelope.
+    // Chemistry controls its onset and external gain, never these six decays.
     public sealed class AfterfireLabSource
     {
         struct Pulse
@@ -13,11 +13,7 @@ namespace DragLab.Domain
             public int first,last;
             public double y,d,z,zd,fall,fast;
         }
-        struct PressureState {public double y,d,z,zd;}
         readonly Pulse[] pulses=new Pulse[40];
-        readonly PressureState[] starts=new PressureState[256];
-        PressureState accumulated,lastQueued;
-        double pressureFall,pressureFast;
         readonly float[] samples=new float[64],pressures=new float[64];
         static readonly float[] Kernel=MakeKernel();
         static readonly double[] Saturation=MakeSaturation();
@@ -25,23 +21,19 @@ namespace DragLab.Domain
         // rather than permitting beforefieldinit to defer it into an audio call.
         static AfterfireLabSource() { }
         readonly int os,fs;
-        int sampleIndex,write,pulseCount,lastPulse=-1,lastFunding,bodyFirst,flameFirst,durationFrames,retireFrames;
-        double fadeReciprocal;
+        int sampleIndex,write,pulseCount,bodyFirst,flameFirst,durationFrames;
         uint random;
-        bool live,started;
+        bool started;
         double size,edge,crack,thump,bark,tube,jet,smooth,air,period,decay,flame,duration;
         double al,ac,am,ah,slowA,envA,omega1,omega2,crackBand,dcCoef;
         double dropCrack,dropBody,dropBark,dropTail,dropColour,dropDiffuse,startBody,startFlame;
         double l1,l2,c1,c2,m1,m2,h1,h2,slow,absMod,bp1,bp2,lo1,lo2;
         double crackEnv,bodyEnv,barkEnv,tailEnv,colourEnv,diffuseEnv,bodyAttack,flameAttack,dcX,dcY;
-        double bodyRoot,crackRoot,diffuseRoot,fundedRoot,inverseFunded;
-        double lastTime,lastPressure,lastCoherent,lastPulseEnergy;
-        public double FundedEnergy {get;private set;}
         public double PressureSample {get;private set;}
         public int PulseOverflows {get;private set;}
         public int LatencyFrames=>os==2?8:0;
         public double Duration=>duration;
-        public bool Quiet=>!started||(live&&sampleIndex-lastFunding>retireFrames);
+        public bool Quiet=>!started||sampleIndex>=durationFrames+os*LatencyFrames;
         public AfterfireLabSource(int rate)
         {
             if(rate<8000||rate>192000)throw new ArgumentOutOfRangeException(nameof(rate));
@@ -86,14 +78,14 @@ namespace DragLab.Domain
         }
         double Coeff(double hz)=>1-Math.Exp(-2*Math.PI*Math.Min(hz,fs*.40)/fs);
         double Drop(double tau)=>Math.Exp(-1/(fs*Math.Max(.00001,tau)));
-        void Configure(AfterfireLabSettings p,uint seed,bool live)
+        void Configure(AfterfireLabSettings p,uint seed)
         {
-            Clear();this.live=live;started=true;random=seed;
+            Clear();started=true;random=seed;
             size=p.size*.01;edge=p.edge*.01;crack=p.crack*.01;thump=p.thump*.01;bark=p.bark*.01;tube=p.tube*.01;jet=p.jet*.01;
             smooth=DragMath.Clamp(p.smooth*.01,0,1);air=DragMath.Clamp(p.air*.01,0,1);
             period=p.pulse*.001;decay=p.decay*.001;flame=p.flameTime*.001;
-            duration=DragMath.Clamp(Math.Max(.38,Math.Max(decay*3,flame*2.8))+.14,.48,2.6);
-            durationFrames=(int)Math.Ceiling(duration*fs);retireFrames=(int)Math.Ceiling((duration+.35)*fs);fadeReciprocal=1/(.05*fs);
+            duration=DragMath.Clamp(Math.Max(.38,Math.Max(decay*3,flame*2.8))+.14+p.space*.0014,.48,2.6);
+            durationFrames=(int)Math.Ceiling(duration*fs/os)*os;
             bodyFirst=(int)Math.Ceiling((.0004+.0008*(1-edge))*fs);flameFirst=(int)Math.Ceiling(.004*fs);
             al=Coeff(90+size*52);ac=Coeff(390+bark*170);am=Coeff(1400+air*650);ah=Coeff(5000+(1-smooth)*4300+air*700);
             slowA=Coeff(22);envA=Coeff(75);
@@ -108,11 +100,11 @@ namespace DragLab.Domain
             crackBand=(.26+.84*air)*(.98-.40*smooth);
             crackEnv=bodyEnv=barkEnv=tailEnv=colourEnv=diffuseEnv=1;
         }
-        // Used ONLY for source parity against the supplied JS, before its level
-        // normalization, stereo offsets and demo outdoor reflections.
-        public void BeginReference(AfterfireLabSettings p,uint seed)
+        // One actual burst, before its physically controlled external strength and
+        // installed/outdoor transfer. This is also the JS comparison entry point.
+        public void Begin(AfterfireLabSettings p,uint seed)
         {
-            Configure(p,seed,false);
+            Configure(p,seed);
             int count=(int)Math.Floor(p.scatter*.01*(2+6*Random())+.5);
             for(int k=0;k<count;k++)
             {
@@ -126,56 +118,10 @@ namespace DragLab.Domain
             double followWidth=widthMain*(.65+.25*Random()),rise=.000085+.00038*(1-edge);
             AddPulse(shockAt,widthMain,rise,1,1.55,30);AddPulse(followAt,followWidth,rise,followAmp,1.55,30);
         }
-        public void Begin(AfterfireLabSettings p,ExhaustMixtureModel.Event e)
-        {
-            Configure(p,(uint)(e.seed^(e.seed>>32)),true);Excite(e);
-        }
-        public void Excite(ExhaustMixtureModel.Event e)
-        {
-            if(!live||e.acousticJ<=0)return;
-            double change=FundedEnergy>0?DragMath.Clamp((e.pressurePa-lastPressure)/Math.Max(1,e.pressurePa),0,1):1;
-            double coherent=.65*change;
-            bool simultaneous=FundedEnergy>0&&e.time==lastTime&&e.pressurePa==lastPressure;
-            if(simultaneous)coherent=lastCoherent;
-            double front=e.acousticJ*coherent;
-            if(front>0)
-            {
-                // Add energies BEFORE sqrt for a split simultaneous packet, so
-                // integrator subdivision cannot amplify an identical explosion.
-                if(simultaneous&&lastPulse>=0&&sampleIndex==lastFunding)
-                {
-                    lastPulseEnergy+=front;
-                    var pulse=starts[lastPulse];double ratio=Math.Sqrt(lastPulseEnergy/(lastPulseEnergy-front)),add=ratio-1;
-                    pulse.y+=lastQueued.y*add;pulse.d+=lastQueued.d*add;pulse.z+=lastQueued.z*add;pulse.zd+=lastQueued.zd*add;starts[lastPulse]=pulse;
-                    lastQueued.y*=ratio;lastQueued.d*=ratio;lastQueued.z*=ratio;lastQueued.zd*=ratio;
-                }
-                else
-                {
-                    double width=period*(.70+.55*size),rise=.000085+.00038*(1-edge);
-                    lastPulse=AddPulse(sampleIndex/(double)fs+.0004+.0008*(1-edge),width,rise,Math.Sqrt(front/.2),1.55,30);
-                    lastPulseEnergy=front;
-                }
-            }
-            bodyRoot=Math.Sqrt(bodyRoot*bodyRoot+e.acousticJ*(1-coherent)/.2);
-            crackRoot=Math.Sqrt(crackRoot*crackRoot+front/.2);diffuseRoot=Math.Sqrt(diffuseRoot*diffuseRoot+front/.2);
-            FundedEnergy+=e.acousticJ;fundedRoot=Math.Sqrt(FundedEnergy/.2);inverseFunded=1/fundedRoot;
-            lastTime=e.time;lastPressure=e.pressurePa;lastCoherent=coherent;lastFunding=sampleIndex;
-        }
         int AddPulse(double at,double width,double rise,double amplitude,double exponent,double extent)
         {
             int first=(int)Math.Ceiling(at*fs);double t=first/(double)fs-at,x=t/width,step=1/(fs*width);
             double decay=Math.Exp(-exponent*x),fast=rise>0?decay*Math.Exp(-t/rise):0;
-            if(live)
-            {
-                // All renewals in this flame/zone use the same local pressure
-                // response. Linearity lets us sum its four exponential states
-                // exactly instead of holding a growing list of tiny impulses.
-                if(first-sampleIndex>=starts.Length){PulseOverflows++;return -1;}
-                int slot=first&255;var pending=starts[slot];
-                lastQueued=new PressureState{y=amplitude*(1-x)*decay,d=-amplitude*step*decay,z=amplitude*(1-x)*fast,zd=-amplitude*step*fast};
-                pending.y+=lastQueued.y;pending.d+=lastQueued.d;pending.z+=lastQueued.z;pending.zd+=lastQueued.zd;
-                starts[slot]=pending;pressureFall=Math.Exp(-exponent*step);pressureFast=Math.Exp(-exponent*step-1/(fs*rise));return slot;
-            }
             if(pulseCount==pulses.Length){PulseOverflows++;return -1;}
             int index=pulseCount++;
             pulses[index]=new Pulse{first=first,last=(int)Math.Ceiling((at+width*extent)*fs),
@@ -185,72 +131,43 @@ namespace DragLab.Domain
         }
         double Shock()
         {
-            if(live)
-            {
-                int slot=sampleIndex&255;var p=starts[slot];starts[slot]=default(PressureState);
-                accumulated.y+=p.y;accumulated.d+=p.d;accumulated.z+=p.z;accumulated.zd+=p.zd;
-                double value=accumulated.y-accumulated.z;
-                accumulated.y=(accumulated.y+accumulated.d)*pressureFall;accumulated.d*=pressureFall;
-                accumulated.z=(accumulated.z+accumulated.zd)*pressureFast;accumulated.zd*=pressureFast;
-                // Exponentially decaying modes can otherwise become persistent
-                // CPU-slow subnormal values after their audible part is over.
-                // This floor is over 400 dB below unit amplitude, not a removed
-                // acoustic band, lower sample rate or weakened combustion model.
-                if(Math.Abs(accumulated.y)+Math.Abs(accumulated.d)<1e-24)accumulated.y=accumulated.d=0;
-                if(Math.Abs(accumulated.z)+Math.Abs(accumulated.zd)<1e-24)accumulated.z=accumulated.zd=0;
-                return value;
-            }
             double sum=0;
             for(int i=0;i<pulseCount;i++)
             {
                 var p=pulses[i];if(sampleIndex<p.first)continue;
-                if(sampleIndex>=p.last){pulses[i]=pulses[--pulseCount];if(lastPulse==pulseCount)lastPulse=i;else if(lastPulse==i)lastPulse=-1;i--;continue;}
+                if(sampleIndex>=p.last){pulses[i]=pulses[--pulseCount];i--;continue;}
                 sum+=p.y-p.z;p.y=(p.y+p.d)*p.fall;p.d*=p.fall;p.z=(p.z+p.zd)*p.fast;p.zd*=p.fast;pulses[i]=p;
             }
             return sum;
         }
         double Internal(out double pressure)
         {
+            if(sampleIndex>=durationFrames){sampleIndex++;pressure=0;return 0;}
             double n=Random()*2-1;
             l1+=al*(n-l1);l2+=al*(l1-l2);c1+=ac*(n-c1);c2+=ac*(c1-c2);
             m1+=am*(n-m1);m2+=am*(m1-m2);h1+=ah*(n-h1);h2+=ah*(h1-h2);
             double low=l2*8,chest=(c2-l2)*5.2,middle=(m2-c2)*3.25,upper=(.70*h2+.30*h1-m2)*3.6;
             slow+=slowA*(Math.Abs(chest)-slow);absMod+=envA*(Math.Abs(middle)-absMod);
-            double shock=Shock(),amplitude=live?fundedRoot:1;
-            if(live)
-            {
-                bodyEnv=barkEnv=tailEnv=bodyRoot*inverseFunded;
-                colourEnv=diffuseEnv=diffuseRoot*inverseFunded;crackEnv=crackRoot*inverseFunded;
-                bodyRoot*=dropBody;crackRoot*=dropCrack;diffuseRoot*=dropDiffuse;
-                if(bodyRoot<1e-24)bodyRoot=0;if(crackRoot<1e-24)crackRoot=0;if(diffuseRoot<1e-24)diffuseRoot=0;
-                // Smoothly retire an inaudible finite tail; never truncate a
-                // live flame. This bounds the prepared mobile voice workload.
-                int remaining=durationFrames-sampleIndex+lastFunding;
-                if(remaining<.05*fs){double fade=DragMath.Clamp(remaining*fadeReciprocal,0,1);bodyEnv*=fade;barkEnv*=fade;tailEnv*=fade;colourEnv*=fade;diffuseEnv*=fade;crackEnv*=fade;}
-            }
+            double shock=Shock();
             if(sampleIndex>=bodyFirst)bodyAttack=1-(1-bodyAttack)*startBody;
             if(sampleIndex>=flameFirst)flameAttack=1-(1-flameAttack)*startFlame;
             double turbulence=.85+.15*Math.Min(1.8,slow*2.8);
             double sub=low*bodyEnv*bodyAttack*(.11+.26*thump)*(1+.32*size);
             double boom=chest*bodyEnv*bodyAttack*(.11+.26*thump);
             double barkNoise=(middle*.48+chest*.28)*barkEnv*bodyAttack*(.18+.70*bark)*turbulence;
-            double pipeInput=shock*(live?inverseFunded:1)*.48+(middle*.38+chest*.22)*barkEnv;
+            double pipeInput=shock*.48+(middle*.38+chest*.22)*barkEnv;
             double hi1=pipeInput-lo1-2.1*bp1;bp1+=omega1*hi1;lo1+=omega1*bp1;
             double hi2=pipeInput-lo2-2.35*bp2;bp2+=omega2*hi2;lo2+=omega2*bp2;
-            if(live)
-            {
-                if(Math.Abs(bp1)+Math.Abs(lo1)<1e-24)bp1=lo1=0;
-                if(Math.Abs(bp2)+Math.Abs(lo2)<1e-24)bp2=lo2=0;
-            }
             double colour=(bp1*.65+bp2*.31)*(.07+.36*tube)*colourEnv;
             double flow=(middle*.37+upper*.13+chest*.3)*tailEnv*flameAttack*jet*(.12+.35*absMod*3);
             double breath=(middle*.43+upper*.48)*diffuseEnv*crackBand*1.7;
             double highCrack=(upper*.95+middle*.40)*crackEnv*crackBand*(.24+1.35*crack);
             double bodySat=Saturate((sub+boom+barkNoise+colour+flow)*1.35)*.71;
             pressure=shock*(.48+.74*thump);
-            double raw=pressure+(bodySat+breath+highCrack)*amplitude;
+            double raw=pressure+bodySat+breath+highCrack;
             double high=raw-dcX+dcCoef*dcY;dcX=raw;dcY=high;
-            if(!live){crackEnv*=dropCrack;bodyEnv*=dropBody;barkEnv*=dropBark;tailEnv*=dropTail;colourEnv*=dropColour;diffuseEnv*=dropDiffuse;}
+            crackEnv*=dropCrack;bodyEnv*=dropBody;barkEnv*=dropBark;tailEnv*=dropTail;colourEnv*=dropColour;diffuseEnv*=dropDiffuse;
+            if(crackEnv<1e-24)crackEnv=0;if(colourEnv<1e-24)colourEnv=0;
             sampleIndex++;return high;
         }
         public double Sample()
@@ -274,16 +191,18 @@ namespace DragLab.Domain
                 }
                 write=(write+1)&63;
             }
+            // The HTML crops its look-ahead FIR at time zero. Do not play the
+            // negative-time startup skirt while the causal FIR fills its eight
+            // frames of latency; it is absent from the approved reference WAV.
+            if(sampleIndex<=os*LatencyFrames)value=pressure=0;
             PressureSample=pressure;return value;
         }
         public void Clear()
         {
             Array.Clear(samples,0,samples.Length);Array.Clear(pressures,0,pressures.Length);
-            Array.Clear(starts,0,starts.Length);accumulated=lastQueued=default(PressureState);pressureFall=pressureFast=0;
-            sampleIndex=write=pulseCount=lastFunding=0;lastPulse=-1;started=false;
+            sampleIndex=write=pulseCount=0;started=false;
             l1=l2=c1=c2=m1=m2=h1=h2=slow=absMod=bp1=bp2=lo1=lo2=bodyAttack=flameAttack=dcX=dcY=0;
-            bodyRoot=crackRoot=diffuseRoot=fundedRoot=inverseFunded=lastTime=lastPressure=lastCoherent=lastPulseEnergy=0;
-            FundedEnergy=PressureSample=0;
+            PressureSample=0;
         }
     }
 }

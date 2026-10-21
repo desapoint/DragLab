@@ -1,5 +1,9 @@
 # Approved V3 backfire source — 2026-10-21
 
+**Live adaptation rejected by the user:** its source-only parity checks did not
+cover the altered gameplay envelopes. The [preset fidelity correction](../afterfire-preset-fidelity-20261021/CHANGES.md)
+supersedes this implementation. Retain this report as historical evidence.
+
 The user supplied `backfire_lab_v3.html`, requested keeping it in the project,
 applying its sound behavior, using its presets to calibrate engine/exhaust
 combinations, and opening the Tempest-only live game test. This checkpoint changes

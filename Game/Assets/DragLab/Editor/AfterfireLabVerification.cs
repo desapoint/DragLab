@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using DragLab.Domain;
 using UnityEngine;
@@ -9,119 +10,130 @@ namespace DragLab.Editor
 {
     public static class AfterfireLabVerification
     {
-        static readonly string Root=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/afterfire-lab-v3-20261021"));
+        static readonly string Root=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/afterfire-preset-fidelity-20261021"));
         static readonly StringBuilder Log=new StringBuilder();static int checks;
-        static void Check(bool value,string label)
+        // Inject a known chemical history packet, then use the ordinary live
+        // Connect/Read/Sample path. No reference-mode production switch exists.
+        static readonly MethodInfo Record=typeof(ExhaustMixtureModel).GetMethod("Record",BindingFlags.Instance|BindingFlags.NonPublic);
+        static void Queue(ExhaustMixtureModel model,ExhaustMixtureModel.Event e)=>Record.Invoke(model,new object[]{e});
+        static void Check(bool yes,string label)
         {
-            Log.AppendLine((value?"PASS ":"FAIL ")+label);checks++;
-            File.WriteAllText(Path.Combine(Root,"source-verification.txt"),Log+"Checks: "+checks+"\n",new UTF8Encoding(false));
-            if(!value)throw new InvalidOperationException(label);
+            Log.AppendLine((yes?"PASS ":"FAIL ")+label);checks++;
+            // One final receipt avoids repeatedly truncating a large file while
+            // Windows indexers/readers may have it mapped. Failures still flush.
+            if(!yes){Save();throw new InvalidOperationException(label);}
         }
-        static ExhaustMixtureModel.Event Reaction(double energy=.2,double pressure=60000,double rise=.0015,double burn=.02)
-            =>new ExhaustMixtureModel.Event{acousticJ=energy,pressurePa=pressure,riseSeconds=rise,burnSeconds=burn,reactingVolumeM3=.0004,gasK=900,flowMps=40,seed=15124311};
+        static float[] Golden(string name)
+        {var bytes=File.ReadAllBytes(Path.Combine(Root,name));var x=new float[bytes.Length/4];Buffer.BlockCopy(bytes,0,x,0,bytes.Length);return x;}
+        static void Save()=>File.WriteAllText(Path.Combine(Root,"fidelity-verification.txt"),Log+"Checks: "+checks+"\n",new UTF8Encoding(false));
+        static ExhaustMixtureModel.Event Reaction(double energy=.2)
+            =>new ExhaustMixtureModel.Event{frontId=1,zone=4,position=4.5/8,acousticJ=energy,pressurePa=60000,riseSeconds=.0015,burnSeconds=.02,reactingVolumeM3=.0004,gasK=900,flowMps=40,seed=15124311};
         static EngineSoundProfile Profile()
         {
             var fixture=JsonUtility.FromJson<RaceAudioTestFixture>(File.ReadAllText(Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/race-audio-audition/26-launch-hard-ignition.race.json")),Encoding.UTF8));
             return new EngineSoundProfile(fixture.spec,fixture.tune);
         }
-        public static void ProfileCost()
-        {
-            var e=Reaction();var p=AfterfireLabSettings.Reaction(AfterfireLabSettings.Hardware(Profile()),Profile(),e);
-            var live=new AfterfireLabSource(48000);var reference=new AfterfireLabSource(48000);var old=new ReactivePressureBurst(48000);
-            var pipe=new AfterfirePipeResponse(Profile(),48000);pipe.Begin(e,5000);live.Begin(p,e);reference.BeginReference(p,15124311);old.Begin(e);
-            var w=new System.Diagnostics.Stopwatch();var result=new StringBuilder();double sink=0;
-            for(int pass=0;pass<3;pass++)
-            {
-                w.Restart();for(int i=0;i<96000;i++){if(i%400==0){e.time=i/48000.0;live.Excite(e);}sink+=live.Sample();}w.Stop();result.AppendLine("live source 96000 frames: "+w.Elapsed.TotalMilliseconds);
-                w.Restart();for(int i=0;i<96000;i++)sink+=reference.Sample();w.Stop();result.AppendLine("reference source 96000 frames: "+w.Elapsed.TotalMilliseconds);
-                w.Restart();for(int i=0;i<96000;i++){if(i%400==0){e.time=i/48000.0;old.Excite(e);}sink+=old.Sample();}w.Stop();result.AppendLine("old source 96000 frames: "+w.Elapsed.TotalMilliseconds);
-                w.Restart();for(int i=0;i<96000;i++)sink+=pipe.Sample(.001,.001);w.Stop();result.AppendLine("installed pipe 96000 frames: "+w.Elapsed.TotalMilliseconds);
-            }
-            result.AppendLine("sink "+sink);File.WriteAllText(Path.Combine(Root,"dsp-cost.txt"),result.ToString(),new UTF8Encoding(false));
-        }
+        static double At(float[] x,int i)=>i<0||i>=x.Length?0:x[i];
         public static void Run()
         {
-            Directory.CreateDirectory(Root);Log.Clear();checks=0;
+            Directory.CreateDirectory(Root);Log.Clear();checks=0;var profile=Profile();
+            Check(AfterfireLabSettings.HardwarePreset(profile)==3,"Tempest uses exact Turbo Pop & Flame preset, without Shotgun blend or reaction remapping");
             foreach(int rate in new[]{24000,44100,48000,96000,192000})for(int preset=0;preset<10;preset++)
             {
-                string file=Path.Combine(Root,"reference-"+rate+"-"+preset+".f32");
-                byte[] bytes=File.ReadAllBytes(file);var expected=new float[bytes.Length/4];Buffer.BlockCopy(bytes,0,expected,0,bytes.Length);
-                var source=new AfterfireLabSource(rate);source.BeginReference(AfterfireLabSettings.Preset(preset),15124311);
-                double max=0,error=0,energy=0;
-                for(int i=0;i<source.LatencyFrames;i++)source.Sample();
-                // The final look-ahead FIR padding is zero in the finite HTML
-                // render; live DSP keeps generating until its physical tail ends.
-                for(int i=0;i<expected.Length-32;i++)
+                var golden=Golden("reference-"+rate+"-"+preset+".f32");var coherent=Golden("pressure-"+rate+"-"+preset+".f32");
+                var p=AfterfireLabSettings.Preset(preset);var shape=new AfterfireLabSource(rate);shape.Begin(p,15124311);
+                int latency=shape.LatencyFrames;double max=0,err=0,energy=0,pressureError=0;
+                for(int i=0;i<latency;i++)shape.Sample();
+                for(int i=0;i<golden.Length;i++)
+                {double d=shape.Sample()-golden[i];pressureError=Math.Max(pressureError,Math.Abs(shape.PressureSample-coherent[i]));max=Math.Max(max,Math.Abs(d));err+=d*d;energy+=golden[i]*golden[i];}
+                Log.AppendLine("MEASURE source / preset "+preset+" / "+rate+" / max "+max.ToString("R")+" / relative RMS "+Math.Sqrt(err/Math.Max(1e-30,energy)).ToString("R"));
+                Log.AppendLine("MEASURE coherent pressure error "+pressureError.ToString("R"));
+                Check(max<2e-5&&err<energy*4e-10&&pressureError<2e-5,"one actual source path matches full JavaScript preset including final padded tail / "+preset+" / "+rate);
+                var model=new ExhaustMixtureModel(123,"preset-parity");var live=new AfterfireAudioSynth(profile,rate,p);live.Connect(model);var e=Reaction();Queue(model,e);
+                var expectedPipe=new AfterfirePipeResponse(profile,rate);expectedPipe.Begin(e,AfterfireAudioSynth.SourceCutoffHz);
+                // Compare the REAL history reader, burst/zone mixer and installed
+                // path against JS PCM passed through that same physical path.
+                var outdoorsA=new TracksidePropagation(rate);var outdoorsB=new TracksidePropagation(rate);
+                var geometry=new TracksidePropagation.Scene(298,.5,101325).At();
+                var actualBlock=new float[256];var expectedBlock=new float[256];int offset=0,dryIndex=0;double dryError=0;max=err=energy=0;
+                while(offset<golden.Length+rate/4)
                 {
-                    double actual=source.Sample(),d=actual-expected[i];max=Math.Max(max,Math.Abs(d));error+=d*d;energy+=expected[i]*expected[i];
+                    for(int i=0;i<128;i++,offset++)
+                    {
+                        double expected=expectedPipe.Sample(At(golden,offset-latency),At(coherent,offset-latency))*profile.popGain*.35;
+                        double actual=live.Sample();if(Math.Abs(actual-expected)>dryError){dryError=Math.Abs(actual-expected);dryIndex=offset;}actualBlock[2*i]=actualBlock[2*i+1]=(float)actual;expectedBlock[2*i]=expectedBlock[2*i+1]=(float)expected;
+                    }
+                    outdoorsA.Process(actualBlock,2,geometry);outdoorsB.Process(expectedBlock,2,geometry);
+                    for(int i=0;i<actualBlock.Length;i++){double d=actualBlock[i]-expectedBlock[i];max=Math.Max(max,Math.Abs(d));err+=d*d;energy+=expectedBlock[i]*expectedBlock[i];}
                 }
-                double relative=Math.Sqrt(error/Math.Max(1e-30,energy));
-                Log.AppendLine("MEASURE preset "+preset+" / "+rate+" / max "+max.ToString("R")+" / relative RMS "+relative.ToString("R"));
-                Check(max<2e-5&&relative<2e-5,"streaming C# matches original JavaScript pressure core / preset "+preset+" / "+rate);
+                Log.AppendLine("MEASURE gameplay/outdoor / preset "+preset+" / "+rate+" / max "+max.ToString("R")+" / relative RMS "+Math.Sqrt(err/Math.Max(1e-30,energy)).ToString("R")+" / dry error "+dryError.ToString("R")+" at "+dryIndex);
+                Check(max<2e-5&&err<energy*4e-10&&live.StartedBursts==1&&live.Delivered==1,"actual gameplay plus installed exhaust/outdoors preserves JS preset / "+preset+" / "+rate);
             }
-            var profile=Profile();var hardware=AfterfireLabSettings.Hardware(profile);
+            CheckFunding(profile);CheckZones(profile);
+            Save();UnityEngine.Debug.Log("PRESET FIDELITY PASS "+checks);
+        }
+        static void CheckFunding(EngineSoundProfile profile)
+        {
             foreach(int rate in new[]{8000,16000,24000,44100,48000,192000})
             {
-                var e=Reaction();var p=AfterfireLabSettings.Reaction(hardware,profile,e);
-                var a=new AfterfireLabSource(rate);var b=new AfterfireLabSource(rate);a.Begin(p,e);b.Begin(p,e);
-                var cold=new AfterfireLabSource(rate);long firstAllocated=GC.GetAllocatedBytesForCurrentThread();cold.Begin(p,e);for(int i=0;i<100;i++)cold.Sample();
-                Check(GC.GetAllocatedBytesForCurrentThread()==firstAllocated,"first reaction and first samples allocate nothing after hardware construction / "+rate);
-                bool exact=true,finite=true;double energy=0;
-                for(int i=0;i<rate;i++){double x=a.Sample();exact&=x==b.Sample();finite&=!double.IsNaN(x)&&!double.IsInfinity(x);energy+=x*x;}
-                Check(exact&&finite&&energy>0,"deterministic finite live source / "+rate);
-                a.Begin(p,e);var half=e;half.acousticJ*=.5;b.Begin(p,half);b.Excite(half);double delta=0;
-                for(int i=0;i<rate/4;i++)delta=Math.Max(delta,Math.Abs(a.Sample()-b.Sample()));
-                Check(delta<1e-6&&b.FundedEnergy==.2,"same-time packet subdivision retains energy and waveform / "+rate);
-                var rising=e;rising.pressurePa*=1.5;rising.time=.0001;
-                a.Begin(p,e);b.Begin(p,e);a.Excite(rising);var split=rising;split.acousticJ*=.5;b.Excite(split);b.Excite(split);delta=0;
-                for(int i=0;i<rate/4;i++)delta=Math.Max(delta,Math.Abs(a.Sample()-b.Sample()));
-                Check(delta<1e-6,"splitting a renewal cannot amplify a different pressure front queued in the same sample / "+rate);
-                a.Begin(p,e);var quiet=e;quiet.acousticJ*=.25;b.Begin(p,quiet);delta=0;
-                for(int i=0;i<rate/4;i++)delta=Math.Max(delta,Math.Abs(a.Sample()*.5-b.Sample()));
-                Check(delta<1e-6,"quarter chemical acoustic energy halves pressure amplitude / "+rate);
-                var flags=e;flags.twoStep=true;flags.limiter=true;flags.cause=AfterfireCause.AntiLag;
-                a.Begin(p,e);b.Begin(AfterfireLabSettings.Reaction(hardware,profile,flags),flags);exact=true;
-                for(int i=0;i<rate/4;i++)exact&=a.Sample()==b.Sample();
-                Check(exact,"diagnostic limiter/launch/anti-lag labels cannot choose a recording or invent pulses / "+rate);
-                a.Begin(p,e);var different=e;different.seed++;b.Begin(p,different);delta=0;
-                for(int i=0;i<rate/4;i++)delta+=Math.Abs(a.Sample()-b.Sample());
-                Check(delta>0,"seed changes turbulent detail / "+rate);
-                a.Begin(p,Reaction(energy:0));energy=0;for(int i=0;i<rate/4;i++)energy+=Math.Abs(a.Sample());
-                Check(energy==0,"no chemical acoustic funding gives exact silence / "+rate);
-                a.Begin(p,e);double initial=0,settled=0;
-                for(int i=0;i<rate;i++)
+                var ma=new ExhaustMixtureModel(123,"a");var mb=new ExhaustMixtureModel(123,"b");
+                var a=new AfterfireAudioSynth(profile,rate);var b=new AfterfireAudioSynth(profile,rate);a.Connect(ma);b.Connect(mb);
+                var e=Reaction();Queue(ma,e);Queue(mb,Reaction(.05));double delta=0,energy=0;bool finite=true;
+                long allocated=GC.GetAllocatedBytesForCurrentThread();a.Sample();
+                Check(GC.GetAllocatedBytesForCurrentThread()==allocated,"first actual gameplay reaction/sample allocates nothing after construction / "+rate);
+                // Reset both test readers, preserving the same immutable hardware.
+                a.Clear();b.Clear();ma=new ExhaustMixtureModel(123,"a");mb=new ExhaustMixtureModel(123,"b");a.Connect(ma);b.Connect(mb);Queue(ma,e);Queue(mb,Reaction(.05));
+                for(int i=0;i<rate;i++){double x=a.Sample(),y=b.Sample();delta=Math.Max(delta,Math.Abs(y-.5*x));finite&=!double.IsNaN(x)&&!double.IsInfinity(x);energy+=x*x;}
+                Check(finite&&energy>0&&delta<1e-7,"quarter simulated energy halves real gameplay pressure without changing timbre / "+rate);
+                a.Clear();b.Clear();ma=new ExhaustMixtureModel(123,"a");mb=new ExhaustMixtureModel(123,"b");a.Connect(ma);b.Connect(mb);
+                long beforeA=a.StartedBursts,beforeB=b.StartedBursts;double energyA=a.FundedAcousticEnergy,energyB=b.FundedAcousticEnergy;
+                Queue(ma,e);Queue(mb,Reaction(.1));Queue(mb,Reaction(.1));delta=0;
+                for(int i=0;i<rate/2;i++)delta=Math.Max(delta,Math.Abs(a.Sample()-b.Sample()));
+                Check(delta<1e-7&&a.StartedBursts==beforeA+1&&b.StartedBursts==beforeB+1&&Math.Abs((a.FundedAcousticEnergy-energyA)-(b.FundedAcousticEnergy-energyB))<1e-12,"splitting one same-time chemical packet cannot add a bang or amplify it / "+rate);
+                a.Clear();b.Clear();ma=new ExhaustMixtureModel(123,"a");mb=new ExhaustMixtureModel(123,"b");a.Connect(ma);b.Connect(mb);Queue(ma,e);
+                var flags=e;flags.pressurePa=100;flags.twoStep=true;flags.limiter=true;flags.cause=AfterfireCause.AntiLag;flags.riseSeconds=.00025;flags.burnSeconds=.1;Queue(mb,flags);delta=0;
+                for(int i=0;i<rate/2;i++)delta=Math.Max(delta,Math.Abs(a.Sample()-b.Sample()));
+                Check(delta<1e-7,"flags and numerical pressure/rise/burn details cannot remap the preset waveform at equal acoustic energy / "+rate);
+                a.Clear();ma=new ExhaustMixtureModel(123,"a");a.Connect(ma);Queue(ma,Reaction(0));energy=0;
+                for(int i=0;i<rate/10;i++)energy+=Math.Abs(a.Sample());Check(energy==0,"no chemical energy gives exact silence / "+rate);
+                long previous=a.StartedBursts;double funded=a.FundedAcousticEnergy;
+                for(int tick=0;tick<240;tick++)
                 {
-                    if(i>0&&i%(rate/120)==0){var feed=e;feed.time=i/(double)rate;feed.acousticJ=.002;a.Excite(feed);}
-                    a.Sample();if(i<rate/20)initial+=a.PressureSample*a.PressureSample;if(i>rate*.95)settled+=a.PressureSample*a.PressureSample;
+                    var next=Reaction(.002);next.time=a.Clock;next.pressurePa=1000+(tick%7)*10000;next.limiter=tick%2==0;Queue(ma,next);
+                    for(int i=0;i<rate/120;i++)a.Sample();funded+=next.acousticJ;
                 }
-                Check(settled<initial*.001,"steady pressure funds combustion without another shock per integration tick / "+rate);
-                for(int i=0;i<rate*3;i++)a.Sample();Check(a.Quiet&&a.Sample()==0,"finite fuel-funded tail retires to silence / "+rate);
-                long allocated=GC.GetAllocatedBytesForCurrentThread();
-                for(int i=0;i<rate;i++){if(i%200==0){e.time=4+i/(double)rate;a.Excite(e);}a.Sample();}
-                Check(allocated==GC.GetAllocatedBytesForCurrentThread()&&a.PulseOverflows==0,"zero warmed sample/event allocations or pressure-pulse overflow / "+rate);
-                a.Clear();Check(a.Sample()==0,"clear removes all source history / "+rate);
+                Check(a.StartedBursts==previous+1&&Math.Abs(a.FundedAcousticEnergy-funded)<1e-10,"all 240 continuing reactions fund one flame envelope instead of 240 sharp attacks / "+rate);
+                allocated=GC.GetAllocatedBytesForCurrentThread();for(int i=0;i<rate;i++)a.Sample();
+                Check(GC.GetAllocatedBytesForCurrentThread()==allocated&&a.PressurePulseOverflows==0&&a.TailSteals==0,"zero warmed callback allocations, pressure overflow or stolen tails / "+rate);
+                for(int i=0;i<rate*2;i++)a.Sample();Check(a.Sample()==0,"finite preset and installed paths retire to exact silence / "+rate);
+                a.Clear();Check(a.Sample()==0,"clear discards all burst/zone history / "+rate);
             }
-            // All fitted combinations use the same core and physically selected
-            // paths. Document rather than silently replace the engine bed.
-            var modern=new VehicleSpec();var old=modern.Copy();old.sound.cylinders=8;old.sound.layout=EngineLayout.Crossplane;old.engineBehavior.fueling=FuelSystem.Carburetor;
-            var small=AfterfireLabSettings.Hardware(new EngineSoundProfile(modern,new Tune()));var classic=AfterfireLabSettings.Hardware(new EngineSoundProfile(old,new Tune()));
-            Check(small.tune!=classic.tune&&small.bark!=classic.bark,"hardware/fueling choose different preset-derived acoustic settings");
-            var path=new AfterfirePipeResponse(profile,48000);var wallEvent=Reaction();wallEvent.position=.6;wallEvent.zone=4;path.Begin(wallEvent,5000);
-            for(int i=0;i<48000;i++)path.Sample(.001,i==0?1:0);
-            var modes=(Array)typeof(AfterfirePipeResponse).GetField("walls",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(path);
-            bool silent=true;foreach(object mode in modes)foreach(string field in new[]{"z1","z2"})silent&=(double)mode.GetType().GetField(field,System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(mode)==0;
-            Check(silent,"silent wall modes retire to zero while the gas body still flows");
-            UnityEngine.Debug.Log("AFTERFIRE LAB V3 PASS "+checks);
+        }
+        static void CheckZones(EngineSoundProfile profile)
+        {
+            const int rate=48000;var p=AfterfireLabSettings.Hardware(profile);int preset=AfterfireLabSettings.HardwarePreset(profile);
+            var x=Golden("reference-48000-"+preset+".f32");var pressure=Golden("pressure-48000-"+preset+".f32");
+            var model=new ExhaustMixtureModel(123,"zones");var live=new AfterfireAudioSynth(profile,rate);live.Connect(model);
+            var first=Reaction();var later=first;later.time=.04;later.zone=6;later.position=6.5/8;
+            Queue(model,first);Queue(model,later);
+            var pipeA=new AfterfirePipeResponse(profile,rate);pipeA.Begin(first,AfterfireAudioSynth.SourceCutoffHz);
+            var pipeB=new AfterfirePipeResponse(profile,rate);bool began=false;double gain=0,alpha=1-Math.Exp(-1/(rate*.005)),max=0;
+            for(int i=0;i<rate;i++)
+            {
+                double dry=At(x,i-8),wave=At(pressure,i-8);double expected=pipeA.Sample(dry,wave);
+                if(!began&&live.Clock>=later.time){pipeB.Begin(later,AfterfireAudioSynth.SourceCutoffHz);began=true;}
+                if(began){gain+=alpha*(1-gain);expected+=pipeB.Sample(dry*gain,wave*gain);}
+                max=Math.Max(max,Math.Abs(live.Sample()-expected*profile.popGain*.35));
+            }
+            Check(began&&max<2e-5&&live.StartedBursts==1&&live.Delivered==2,"later exhaust zone uses the same JS envelope phase with its own physical transfer, without another attack");
+            var newFlame=Reaction();newFlame.frontId=2;newFlame.time=live.Clock;Queue(model,newFlame);live.Sample();
+            Check(live.StartedBursts==2,"a genuinely new chemical flame starts another preset burst");
         }
         public static void VerifyAndBuild()
         {
-            Run();ProfileCost();
-            RuntimeAudioIntegrationVerification.OutputDirectory=Root;RuntimeAudioIntegrationVerification.TracksideListening=true;
-            RuntimeAudioIntegrationVerification.Run();RuntimeAudioIntegrationVerification.CheckRaces();
-            PlayerBuild.BuildPlayerOnly();
+            Run();VerifyCausality();RuntimeAudioIntegrationVerification.OutputDirectory=Root;RuntimeAudioIntegrationVerification.TracksideListening=true;
+            RuntimeAudioIntegrationVerification.Run();RuntimeAudioIntegrationVerification.CheckRaces();PlayerBuild.BuildPlayerOnly();
         }
-        public static void FinalCheckAndBuild()
-            =>VerifyAndBuild();
-        public static void SourceCheckAndBuild(){Run();PlayerBuild.BuildPlayerOnly();}
+        public static void VerifyCausality(){ConditionDrivenAfterfireVerification.OutputDirectory=Root;ConditionDrivenAfterfireVerification.Run();}
     }
 }

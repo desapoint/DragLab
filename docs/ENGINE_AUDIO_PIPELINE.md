@@ -456,3 +456,20 @@ turbine transfer and trackside propagation still follow the source.
 The engine bed, injection/wear/cuts, induction/BOV, tires, physical chemistry and
 resource ownership are unchanged. [V3 checkpoint and verification](../reports/afterfire-lab-v3-20261021/CHANGES.md)
 track technical delivery separately from the requested Tempest listening review.
+
+### Preserve preset timbre in gameplay (2026-10-21)
+
+The first V3 integration was rejected for sounding like gunfire. Reference-mode
+parity did not validate its altered live envelopes. The correction removes that
+alternate mode, numerical pressure retriggers, reaction-driven shortening and
+Shotgun blending. Gameplay uses the exact same preset generator as verification,
+including its separate decays, follower and within-burst pressure texture.
+
+One transported chemical flame shares one running preset across its zones;
+each zone retains its own installed acoustic path and simulated-energy gain.
+Timing/strength remain simulation-owned. Mode labels do not schedule sounds,
+and continuing reaction packets do not invent another initial attack. Native
+hardware calibration selects an exact HTML preset, including Turbo Pop & Flame
+for Tempest. Tests compare the actual history-reader/mixer/exhaust/outdoor output
+with JavaScript PCM passed through the same physical transfer, in addition to
+direct source comparisons. See the [fidelity correction](../reports/afterfire-preset-fidelity-20261021/CHANGES.md).

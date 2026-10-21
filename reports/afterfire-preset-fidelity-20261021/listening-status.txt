@@ -1,0 +1,12 @@
+Windows Development build: PASS.
+Runtime Assembly-CSharp.dll SHA256: 7E7DE1A4A0F0413578B9684EAA7929D256D06E5BDCE369E38F4CBE66F78F5CCD
+Only later Editor test-label/output edits follow this build; runtime hash is unchanged.
+Visible game PID: 44436
+Fixture: reports/player-fixtures/live-audio-20261021-124231-826
+Preset: exact Turbo Pop & Flame; engine-only, rival muted.
+First playback snapshot: Tick 2232 / 4098, engine RMS 0.007166056, tires 0, rival 0.
+Later live snapshot (not subjective acceptance):
+1 / 1 · Tempest · two-step hard ignition cut · Petrol injection · Hard / Fuel cut · launch Hard / Ignition
+Finish / shutdown
+Tick 3378 / 4098
+Engine RMS 0,02495329 / tires 0 / rival 0

@@ -16,70 +16,92 @@ namespace DragLab.Domain
                 riseCutoff=2000+.6/Math.Max(.00025,e.riseSeconds),
                 kind=e.pressurePa>1000&&e.riseSeconds<.0015?2:e.acousticJ<.03?0:1 };
         }
-        const int VoiceCount = 64;
+        public const double SourceCutoffHz=12000;
+        const int VoiceCount=64;
+        sealed class Burst
+        {
+            public readonly AfterfireLabSource shape;
+            public bool active;
+            public int id,references;
+            public double start,dry,pressure;
+            public Burst(int rate){shape=new AfterfireLabSource(rate);}
+            public void Begin(ExhaustMixtureModel.Event e,AfterfireLabSettings settings)
+            {
+                active=true;id=e.frontId;references=0;start=e.time;dry=pressure=0;
+                shape.Begin(settings,(uint)(e.seed^(e.seed>>32)));
+            }
+            public void Sample(double clock)
+            {
+                dry=pressure=0;if(!active||clock<start)return;
+                dry=shape.Sample();pressure=shape.PressureSample;
+            }
+            public void Clear(){active=false;references=0;dry=pressure=0;shape.Clear();}
+        }
         sealed class Voice
         {
             public bool active;
             public double start;
-            readonly AfterfireLabSource reaction;
-            readonly AfterfireLabSettings hardware;
+            public Burst burst;
             readonly AfterfirePipeResponse pipe;
-            double lastChemical,voiceGain;
-            int frontId,path;
+            readonly double gainAlpha;
+            double lastChemical,voiceGain,funded,gain,target;
+            int path;
             public double WallSample {get;private set;}
             public double OutletSample {get;private set;}
-            public int PulseOverflows=>reaction.PulseOverflows;
             public Voice(EngineSoundProfile profile,int rate)
             {
-                reaction=new AfterfireLabSource(rate);hardware=AfterfireLabSettings.Hardware(profile);
-                pipe=new AfterfirePipeResponse(profile,rate);
+                pipe=new AfterfirePipeResponse(profile,rate);gainAlpha=1-Math.Exp(-1/(rate*.005));
             }
-            public void Begin(ExhaustMixtureModel.Event e,EngineSoundProfile profile)
+            public void Begin(ExhaustMixtureModel.Event e,Burst owner,EngineSoundProfile profile)
             {
-                WallSample=OutletSample=0;active=true;start=lastChemical=e.time;frontId=e.frontId;path=e.zone;
-                reaction.Begin(AfterfireLabSettings.Reaction(hardware,profile,e),e);pipe.Begin(e,Describe(e,profile).riseCutoff);
-                voiceGain=profile.popGain*.35;
+                Clear();burst=owner;burst.references++;active=true;start=lastChemical=e.time;path=e.zone;
+                pipe.Begin(e,SourceCutoffHz);voiceGain=profile.popGain*.35;
+                Continue(e);if(e.time==owner.start)gain=target;
             }
-            public bool CanContinue(ExhaustMixtureModel.Event e) => active && frontId==e.frontId && path==e.zone && e.time>=lastChemical;
+            public bool CanContinue(ExhaustMixtureModel.Event e)=>active&&burst.id==e.frontId&&path==e.zone&&e.time>=lastChemical;
             public void Continue(ExhaustMixtureModel.Event e)
             {
-                lastChemical=e.time;reaction.Excite(e);
+                lastChemical=e.time;funded+=e.acousticJ;target=Math.Sqrt(funded/.2);
+                // Same-time packet subdivision must not change the first attack.
+                if(e.time==burst.start)gain=target;
             }
             public double Sample(double clock)
             {
-                WallSample=OutletSample=0;
-                if(!active||clock<start)return 0;
-                double dry=reaction.Sample();
-                if(clock-lastChemical>.8&&reaction.Quiet){active=false;return 0;}
-                double value=pipe.Sample(dry,reaction.PressureSample)*voiceGain;
-                WallSample=pipe.Wall*voiceGain;OutletSample=pipe.Outlet*voiceGain;
-                return value;
+                WallSample=OutletSample=0;if(!active||clock<start)return 0;
+                if(burst.shape.Quiet&&clock-lastChemical>.2&&clock-burst.start>burst.shape.Duration+.2){Clear();return 0;}
+                gain+=gainAlpha*(target-gain);
+                double value=pipe.Sample(burst.dry*gain,burst.pressure*gain)*voiceGain;
+                WallSample=pipe.Wall*voiceGain;OutletSample=pipe.Outlet*voiceGain;return value;
             }
             public void Clear()
             {
-                active=false;WallSample=OutletSample=0;reaction.Clear();pipe.Clear();
+                if(active&&burst!=null)burst.references--;
+                active=false;burst=null;funded=gain=target=0;WallSample=OutletSample=0;pipe.Clear();
             }
         }
         readonly Voice[] voices=new Voice[VoiceCount];
+        readonly Burst[] bursts=new Burst[VoiceCount];
+        readonly AfterfireLabSettings settings;
         readonly EngineSoundProfile profile;
         readonly int rate;
         ExhaustMixtureModel source,retained;
-        int retainedCursor;
-        int cursor;
+        int retainedCursor,cursor;
         double clock;
-        public double Clock => clock;
+        public double Clock=>clock;
         public long Delivered {get;private set;}
         public long HistoryOverflows {get;private set;}
         public long TailSteals {get;private set;}
         public long Inaudible {get;private set;}
         public long ContinuedReactions {get;private set;}
-        public long PressurePulseOverflows {get {long count=0;foreach(var v in voices)count+=v.PulseOverflows;return count;} }
+        public long StartedBursts {get;private set;}
+        public double FundedAcousticEnergy {get;private set;}
+        public long PressurePulseOverflows {get {long n=0;foreach(var b in bursts)n+=b.shape.PulseOverflows;return n;}}
         public double LastWallSample {get;private set;}
         public double LastOutletSample {get;private set;}
-        public AfterfireAudioSynth(EngineSoundProfile profile,int rate)
+        public AfterfireAudioSynth(EngineSoundProfile profile,int rate,AfterfireLabSettings? calibration=null)
         {
-            this.profile=profile;this.rate=rate;
-            for(int i=0;i<voices.Length;i++)voices[i]=new Voice(profile,rate);
+            this.profile=profile;this.rate=rate;settings=calibration??AfterfireLabSettings.Hardware(profile);
+            for(int i=0;i<VoiceCount;i++){voices[i]=new Voice(profile,rate);bursts[i]=new Burst(rate);}
         }
         public void Connect(ExhaustMixtureModel model)
         {
@@ -91,33 +113,47 @@ namespace DragLab.Domain
             // Reconfiguration/device change does not replay stale historical bangs.
             while(cursor<model.Sequence&&model.Read(cursor+1,out var e)&&e.time<clock)cursor++;
         }
+        // All chemistry events, including weak continuations, enter here. Sound
+        // texture is one preset envelope per transported flame, NOT per zone or
+        // numerical pressure increment. Every zone keeps its own installed path.
+        void Deliver(ExhaustMixtureModel.Event e)
+        {
+            Delivered++;if(e.acousticJ<1e-12){Inaudible++;return;}FundedAcousticEnergy+=e.acousticJ;
+            foreach(var v in voices)if(v.CanContinue(e)){v.Continue(e);ContinuedReactions++;return;}
+            Burst owner=null;foreach(var b in bursts)if(b.active&&b.id==e.frontId){owner=b;break;}
+            if(owner==null)
+            {
+                foreach(var b in bursts)if(!b.active||b.references==0){owner=b;break;}
+                if(owner==null)
+                {
+                    owner=bursts[0];foreach(var b in bursts)if(b.start<owner.start)owner=b;
+                    foreach(var v in voices)if(v.active&&ReferenceEquals(v.burst,owner)){v.Clear();TailSteals++;}
+                }
+                owner.Begin(e,settings);StartedBursts++;
+            }
+            Voice free=null;foreach(var v in voices)if(!v.active){free=v;break;}
+            if(free==null){free=voices[0];foreach(var v in voices)if(v.start<free.start)free=v;TailSteals++;}
+            free.Begin(e,owner,profile);
+        }
         public double Sample()
         {
-            LastWallSample=LastOutletSample=0;
-            if(source==null)return 0;
+            LastWallSample=LastOutletSample=0;if(source==null)return 0;
             int end=source.Sequence;
             if(end-cursor>=ExhaustMixtureModel.HistoryCapacity){HistoryOverflows+=end-cursor-ExhaustMixtureModel.HistoryCapacity+1;cursor=end-ExhaustMixtureModel.HistoryCapacity+1;}
             while(cursor<end)
             {
-                if(!source.Read(cursor+1,out var e))break;
-                if(e.time>clock)break;
-                cursor++;Delivered++;
-                // Preserve weak reactions too: numerical substepping must not turn
-                // a sustained burn silent through a per-packet loudness threshold.
-                if(e.acousticJ<1e-12){Inaudible++;continue;}
-                Voice continuing=null;
-                foreach(var v in voices)if(v.CanContinue(e)){continuing=v;break;}
-                if(continuing!=null){continuing.Continue(e);ContinuedReactions++;continue;}
-                Voice free=null;
-                foreach(var v in voices)if(!v.active){free=v;break;}
-                if(free==null){free=voices[0];foreach(var v in voices)if(v.start<free.start)free=v;TailSteals++;}
-                free.Begin(e,profile);
+                if(!source.Read(cursor+1,out var e)||e.time>clock)break;
+                cursor++;Deliver(e);
             }
-            double value=0;foreach(var v in voices)if(v.active){value+=v.Sample(clock);LastWallSample+=v.WallSample;LastOutletSample+=v.OutletSample;}
-            // Presentation time advances independently; the simulation owns all event times.
-            clock+=1.0/rate;
-            return value;
+            foreach(var b in bursts)if(b.active)b.Sample(clock);
+            double value=0;
+            foreach(var v in voices)if(v.active){value+=v.Sample(clock);LastWallSample+=v.WallSample;LastOutletSample+=v.OutletSample;}
+            foreach(var b in bursts)if(b.active&&b.references==0)b.Clear();
+            clock+=1.0/rate;return value;
         }
-        public void Clear(){foreach(var voice in voices)voice.Clear();source=null;cursor=0;clock=0;LastWallSample=LastOutletSample=0;}
+        public void Clear()
+        {
+            foreach(var v in voices)v.Clear();foreach(var b in bursts)b.Clear();source=null;cursor=0;clock=0;LastWallSample=LastOutletSample=0;
+        }
     }
 }
