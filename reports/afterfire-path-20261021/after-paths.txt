@@ -1,0 +1,19 @@
+Actual race chemistry and isolated acoustic branches; no gain normalization.
+22-carb-soft-ignition / wall 0,041781524066329435 / outlet 11838,89117405282 / wall-outlet ratio 3,5291754482802903E-06 / delivered 32358 / ET 15,229886763637861
+zone 0 / reactions 0 / acoustic J 0
+zone 1 / reactions 11002 / acoustic J 460,52152602441981
+zone 2 / reactions 10968 / acoustic J 624,252666140942
+zone 3 / reactions 10342 / acoustic J 49,505627772825605
+zone 4 / reactions 19 / acoustic J 0,054568606791032537
+zone 5 / reactions 17 / acoustic J 0,033919618293360383
+zone 6 / reactions 7 / acoustic J 0,019575887270496285
+zone 7 / reactions 3 / acoustic J 0,006530204124834512
+26-launch-hard-ignition / wall 0,20896558274005808 / outlet 909,77528600330243 / wall-outlet ratio 0,00022968922760922256 / delivered 5387 / ET 14,151347613077348
+zone 0 / reactions 0 / acoustic J 0
+zone 1 / reactions 723 / acoustic J 31,424371932539465
+zone 2 / reactions 951 / acoustic J 32,737892150514121
+zone 3 / reactions 1251 / acoustic J 28,906647617113514
+zone 4 / reactions 1112 / acoustic J 24,241938460900915
+zone 5 / reactions 796 / acoustic J 11,044871547311349
+zone 6 / reactions 363 / acoustic J 2,5461622047688381
+zone 7 / reactions 191 / acoustic J 1,1262211374865088

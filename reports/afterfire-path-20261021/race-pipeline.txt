@@ -1,0 +1,96 @@
+Actual 47-race production pipeline; legacy physical traces remain unchanged.
+MEASURE 01-i3-na callback p95 0,4332 ms; max 0,8053 ms / 400 stereo frames, budget 8.333 ms
+PASS 01-i3-na / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 0 / no drops or steals / peak 0,1019
+MEASURE 02-i4-na callback p95 0,4966 ms; max 0,7570 ms / 400 stereo frames, budget 8.333 ms
+PASS 02-i4-na / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 0 / no drops or steals / peak 0,0896
+MEASURE 03-i4-turbo-hiss callback p95 1,9629 ms; max 4,6272 ms / 400 stereo frames, budget 8.333 ms
+PASS 03-i4-turbo-hiss / ET unchanged / chemical 4022 / rendered reactions 4022 / pressure voices 58 / continued 3964 / BOV 3 / no drops or steals / peak 0,1999
+MEASURE 04-i4-twin-chirp callback p95 2,7362 ms; max 5,1866 ms / 400 stereo frames, budget 8.333 ms
+PASS 04-i4-twin-chirp / ET unchanged / chemical 4306 / rendered reactions 4306 / pressure voices 76 / continued 4230 / BOV 3 / no drops or steals / peak 0,1746
+MEASURE 05-i5-turbo-flutter callback p95 2,0559 ms; max 3,9462 ms / 400 stereo frames, budget 8.333 ms
+PASS 05-i5-turbo-flutter / ET unchanged / chemical 4646 / rendered reactions 4646 / pressure voices 52 / continued 4594 / BOV 3 / no drops or steals / peak 0,1933
+MEASURE 06-i6-na callback p95 0,4207 ms; max 0,7742 ms / 400 stereo frames, budget 8.333 ms
+PASS 06-i6-na / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 0 / no drops or steals / peak 0,0915
+MEASURE 07-i6-carb callback p95 0,5301 ms; max 1,3468 ms / 400 stereo frames, budget 8.333 ms
+PASS 07-i6-carb / ET unchanged / chemical 1361 / rendered reactions 1361 / pressure voices 13 / continued 1348 / BOV 0 / no drops or steals / peak 0,2653
+MEASURE 08-v8-carb callback p95 0,6006 ms; max 0,9933 ms / 400 stereo frames, budget 8.333 ms
+PASS 08-v8-carb / ET unchanged / chemical 23 / rendered reactions 23 / pressure voices 4 / continued 19 / BOV 0 / no drops or steals / peak 0,2425
+MEASURE 09-v8-supercharger callback p95 0,5754 ms; max 0,7217 ms / 400 stereo frames, budget 8.333 ms
+PASS 09-v8-supercharger / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 0 / no drops or steals / peak 0,1674
+MEASURE 10-diesel-turbo callback p95 0,3975 ms; max 1,8612 ms / 400 stereo frames, budget 8.333 ms
+PASS 10-diesel-turbo / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 0 / no drops or steals / peak 0,1682
+MEASURE 11-v10-na callback p95 0,5465 ms; max 0,6994 ms / 400 stereo frames, budget 8.333 ms
+PASS 11-v10-na / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 0 / no drops or steals / peak 0,2642
+MEASURE 12-v12-twin callback p95 0,6666 ms; max 0,7744 ms / 400 stereo frames, budget 8.333 ms
+PASS 12-v12-twin / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 2 / no drops or steals / peak 0,1573
+MEASURE 13-v8-twin-supercharger callback p95 0,8940 ms; max 4,5816 ms / 400 stereo frames, budget 8.333 ms
+PASS 13-v8-twin-supercharger / ET unchanged / chemical 2900 / rendered reactions 2900 / pressure voices 36 / continued 2864 / BOV 0 / no drops or steals / peak 0,3006
+MEASURE 14-i4-twincharged-dct callback p95 2,1221 ms; max 4,3359 ms / 400 stereo frames, budget 8.333 ms
+PASS 14-i4-twincharged-dct / ET unchanged / chemical 4122 / rendered reactions 4122 / pressure voices 57 / continued 4065 / BOV 3 / no drops or steals / peak 0,1652
+MEASURE 15-v8-street-wheelspin callback p95 1,8263 ms; max 4,8632 ms / 400 stereo frames, budget 8.333 ms
+PASS 15-v8-street-wheelspin / ET unchanged / chemical 24406 / rendered reactions 24406 / pressure voices 102 / continued 24304 / BOV 0 / no drops or steals / peak 0,3394
+MEASURE 16-v8-wide-wheelspin callback p95 1,5234 ms; max 4,4318 ms / 400 stereo frames, budget 8.333 ms
+PASS 16-v8-wide-wheelspin / ET unchanged / chemical 5151 / rendered reactions 5151 / pressure voices 41 / continued 5110 / BOV 0 / no drops or steals / peak 0,3023
+MEASURE 17-v8-burnout callback p95 0,4545 ms; max 0,7004 ms / 400 stereo frames, budget 8.333 ms
+PASS 17-v8-burnout / ET unchanged / chemical 1 / rendered reactions 1 / pressure voices 1 / continued 0 / BOV 0 / no drops or steals / peak 0,1684
+MEASURE 18-i4-open-diff-single-wheel callback p95 0,4039 ms; max 0,7196 ms / 400 stereo frames, budget 8.333 ms
+PASS 18-i4-open-diff-single-wheel / ET unchanged / chemical 16 / rendered reactions 16 / pressure voices 4 / continued 12 / BOV 0 / no drops or steals / peak 0,0736
+MEASURE 19-injection-soft-fuel callback p95 0,3592 ms; max 0,5836 ms / 400 stereo frames, budget 8.333 ms
+PASS 19-injection-soft-fuel / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 0 / no drops or steals / peak 0,0878
+MEASURE 20-injection-hard-ignition callback p95 0,3933 ms; max 0,5525 ms / 400 stereo frames, budget 8.333 ms
+PASS 20-injection-hard-ignition / ET unchanged / chemical 1 / rendered reactions 1 / pressure voices 1 / continued 0 / BOV 0 / no drops or steals / peak 0,0896
+MEASURE 21-injection-soft-ignition callback p95 0,3595 ms; max 0,5452 ms / 400 stereo frames, budget 8.333 ms
+PASS 21-injection-soft-ignition / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 0 / no drops or steals / peak 0,0878
+MEASURE 22-carb-soft-ignition callback p95 1,0223 ms; max 1,9380 ms / 400 stereo frames, budget 8.333 ms
+PASS 22-carb-soft-ignition / ET unchanged / chemical 32358 / rendered reactions 32358 / pressure voices 32 / continued 32326 / BOV 0 / no drops or steals / peak 0,3243
+MEASURE 23-diesel-soft-fuel callback p95 0,3852 ms; max 1,1011 ms / 400 stereo frames, budget 8.333 ms
+PASS 23-diesel-soft-fuel / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 0 / no drops or steals / peak 0,1696
+MEASURE 24-factory-limiter callback p95 0,4887 ms; max 1,0354 ms / 400 stereo frames, budget 8.333 ms
+PASS 24-factory-limiter / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 0 / no drops or steals / peak 0,0896
+MEASURE 25-no-limiter callback p95 0,5597 ms; max 0,7739 ms / 400 stereo frames, budget 8.333 ms
+PASS 25-no-limiter / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 0 / no drops or steals / peak 0,1717
+MEASURE 26-launch-hard-ignition callback p95 1,8534 ms; max 4,0673 ms / 400 stereo frames, budget 8.333 ms
+PASS 26-launch-hard-ignition / ET unchanged / chemical 5387 / rendered reactions 5387 / pressure voices 54 / continued 5333 / BOV 2 / no drops or steals / peak 0,1672
+MEASURE 27-launch-soft-fuel callback p95 0,5270 ms; max 0,7263 ms / 400 stereo frames, budget 8.333 ms
+PASS 27-launch-soft-fuel / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 2 / no drops or steals / peak 0,0952
+MEASURE 28-exhaust-0 callback p95 0,6022 ms; max 0,8326 ms / 400 stereo frames, budget 8.333 ms
+PASS 28-exhaust-0 / ET unchanged / chemical 19 / rendered reactions 19 / pressure voices 3 / continued 16 / BOV 0 / no drops or steals / peak 0,1219
+MEASURE 29-exhaust-1 callback p95 0,5586 ms; max 0,8795 ms / 400 stereo frames, budget 8.333 ms
+PASS 29-exhaust-1 / ET unchanged / chemical 19 / rendered reactions 19 / pressure voices 3 / continued 16 / BOV 0 / no drops or steals / peak 0,1978
+MEASURE 30-exhaust-2 callback p95 0,4649 ms; max 1,6779 ms / 400 stereo frames, budget 8.333 ms
+PASS 30-exhaust-2 / ET unchanged / chemical 19 / rendered reactions 19 / pressure voices 3 / continued 16 / BOV 0 / no drops or steals / peak 0,2602
+MEASURE 31-exhaust-3 callback p95 0,4428 ms; max 0,6745 ms / 400 stereo frames, budget 8.333 ms
+PASS 31-exhaust-3 / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 0 / no drops or steals / peak 0,3058
+MEASURE 32-boost-Turbo-Recirculated callback p95 0,5272 ms; max 0,8266 ms / 400 stereo frames, budget 8.333 ms
+PASS 32-boost-Turbo-Recirculated / ET unchanged / chemical 13 / rendered reactions 13 / pressure voices 3 / continued 10 / BOV 2 / no drops or steals / peak 0,1083
+MEASURE 33-boost-Turbo-Hiss callback p95 0,5205 ms; max 0,8369 ms / 400 stereo frames, budget 8.333 ms
+PASS 33-boost-Turbo-Hiss / ET unchanged / chemical 13 / rendered reactions 13 / pressure voices 3 / continued 10 / BOV 2 / no drops or steals / peak 0,1083
+MEASURE 34-boost-Turbo-Chirp callback p95 0,5016 ms; max 0,9338 ms / 400 stereo frames, budget 8.333 ms
+PASS 34-boost-Turbo-Chirp / ET unchanged / chemical 13 / rendered reactions 13 / pressure voices 3 / continued 10 / BOV 2 / no drops or steals / peak 0,1327
+MEASURE 35-boost-Turbo-Flutter callback p95 0,5078 ms; max 0,7200 ms / 400 stereo frames, budget 8.333 ms
+PASS 35-boost-Turbo-Flutter / ET unchanged / chemical 13 / rendered reactions 13 / pressure voices 3 / continued 10 / BOV 2 / no drops or steals / peak 0,1083
+MEASURE 36-boost-TwinTurbo-Recirculated callback p95 0,5409 ms; max 0,7622 ms / 400 stereo frames, budget 8.333 ms
+PASS 36-boost-TwinTurbo-Recirculated / ET unchanged / chemical 13 / rendered reactions 13 / pressure voices 3 / continued 10 / BOV 2 / no drops or steals / peak 0,1091
+MEASURE 37-boost-TwinTurbo-Hiss callback p95 0,5323 ms; max 0,8714 ms / 400 stereo frames, budget 8.333 ms
+PASS 37-boost-TwinTurbo-Hiss / ET unchanged / chemical 13 / rendered reactions 13 / pressure voices 3 / continued 10 / BOV 2 / no drops or steals / peak 0,1091
+MEASURE 38-boost-TwinTurbo-Chirp callback p95 0,5568 ms; max 1,4115 ms / 400 stereo frames, budget 8.333 ms
+PASS 38-boost-TwinTurbo-Chirp / ET unchanged / chemical 13 / rendered reactions 13 / pressure voices 3 / continued 10 / BOV 2 / no drops or steals / peak 0,1349
+MEASURE 39-boost-TwinTurbo-Flutter callback p95 0,5994 ms; max 0,8481 ms / 400 stereo frames, budget 8.333 ms
+PASS 39-boost-TwinTurbo-Flutter / ET unchanged / chemical 13 / rendered reactions 13 / pressure voices 3 / continued 10 / BOV 2 / no drops or steals / peak 0,1091
+MEASURE 40-boost-Twincharged-Recirculated callback p95 0,5355 ms; max 1,1437 ms / 400 stereo frames, budget 8.333 ms
+PASS 40-boost-Twincharged-Recirculated / ET unchanged / chemical 13 / rendered reactions 13 / pressure voices 3 / continued 10 / BOV 2 / no drops or steals / peak 0,0998
+MEASURE 41-boost-Twincharged-Hiss callback p95 0,5485 ms; max 0,8345 ms / 400 stereo frames, budget 8.333 ms
+PASS 41-boost-Twincharged-Hiss / ET unchanged / chemical 13 / rendered reactions 13 / pressure voices 3 / continued 10 / BOV 2 / no drops or steals / peak 0,0998
+MEASURE 42-boost-Twincharged-Chirp callback p95 0,5560 ms; max 0,7865 ms / 400 stereo frames, budget 8.333 ms
+PASS 42-boost-Twincharged-Chirp / ET unchanged / chemical 13 / rendered reactions 13 / pressure voices 3 / continued 10 / BOV 2 / no drops or steals / peak 0,1353
+MEASURE 43-boost-Twincharged-Flutter callback p95 0,5344 ms; max 0,9837 ms / 400 stereo frames, budget 8.333 ms
+PASS 43-boost-Twincharged-Flutter / ET unchanged / chemical 13 / rendered reactions 13 / pressure voices 3 / continued 10 / BOV 2 / no drops or steals / peak 0,1098
+MEASURE 44-tires-street-ramp callback p95 0,5814 ms; max 0,9148 ms / 400 stereo frames, budget 8.333 ms
+PASS 44-tires-street-ramp / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 0 / no drops or steals / peak 0,1580
+MEASURE 45-tires-radial-ramp callback p95 1,5348 ms; max 2,9243 ms / 400 stereo frames, budget 8.333 ms
+PASS 45-tires-radial-ramp / ET unchanged / chemical 11376 / rendered reactions 11376 / pressure voices 43 / continued 11333 / BOV 0 / no drops or steals / peak 0,3021
+MEASURE 46-tires-slick-ramp callback p95 1,3810 ms; max 2,2709 ms / 400 stereo frames, budget 8.333 ms
+PASS 46-tires-slick-ramp / ET unchanged / chemical 16832 / rendered reactions 16832 / pressure voices 35 / continued 16797 / BOV 0 / no drops or steals / peak 0,3148
+MEASURE 47-tires-fwd-ramp callback p95 0,5776 ms; max 1,1532 ms / 400 stereo frames, budget 8.333 ms
+PASS 47-tires-fwd-ramp / ET unchanged / chemical 29 / rendered reactions 29 / pressure voices 8 / continued 21 / BOV 2 / no drops or steals / peak 0,1003
+PASS all 47 real race pipelines

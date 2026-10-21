@@ -22,13 +22,19 @@ namespace DragLab.Domain
         {var slot=releases[sequence&255];int before=Volatile.Read(ref slot.sequence);value=slot.value;return before==sequence&&before==Volatile.Read(ref slot.sequence);}
         readonly ExhaustMixtureModel.Input input = new ExhaustMixtureModel.Input();
         public readonly double lengthM;
+        public const double HeaderLengthM = 1.1, TurbineLengthM = .18;
         public static double PartLength(ExhaustPart p) => p.kind == ExhaustPartKind.AbsorptiveSilencer || p.kind == ExhaustPartKind.ChamberedSilencer ? .65 : p.kind == ExhaustPartKind.Resonator ? .32 : .22;
+        public static double PathLength(EngineSoundProfile profile)
+        {
+            double length = HeaderLengthM + (profile.turboCount > 0 ? TurbineLengthM : 0) + .8;
+            foreach (var part in profile.exhaustSystem.parts) length += PartLength(part);
+            return length;
+        }
         public RuntimeExhaustState(EngineSoundProfile profile, CarState state)
         {
             engineOrigin=state.engineTime;
             for(int i=0;i<releases.Length;i++)releases[i]=new ReleaseSlot();
-            lengthM = 1.1 + (profile.turboCount > 0 ? .18 : 0) + .8;
-            foreach (var part in profile.exhaustSystem.parts) lengthM += PartLength(part);
+            lengthM = PathLength(profile);
             bool diesel = profile.fueling == FuelSystem.Diesel;
             mixture = new ExhaustMixtureModel(20261020, profile.layout + ":" + profile.cylinders + ":" + profile.litres.ToString("R", System.Globalization.CultureInfo.InvariantCulture), lengthM,
                 .027 * Math.Pow(profile.litres / 2, .18), initialK: 330 + 280 * state.engineTemperature,

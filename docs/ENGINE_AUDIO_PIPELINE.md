@@ -1,5 +1,14 @@
 # Engine audio: pressure events within the existing pipeline
 
+## Source-relative afterfire hardware paths — 2026-10-21
+
+Afterfires now use the same canonical header/turbine boundary as their transport
+layout, fixing a missed pre-turbine section. The source-relative outlet and
+upstream-return paths use fitted components and existing runner/collector
+geometry; structural radiation uses coherent pressure rather than dry grain.
+Remaining direct-noise texture bypass is removed. Reaction ledgers and the engine
+bed remain. [Audit, transfer approximations, checks and listening](../reports/afterfire-path-20261021/CHANGES.md).
+
 ## Afterfire grain-only refinement — 2026-10-21
 
 Following the user's scope correction, only stochastic texture is smoothed after

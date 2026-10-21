@@ -1,0 +1,48 @@
+PASS routing fixture has actual installed turbo hardware
+PASS central path dimensions retain bit-identical chemical geometry
+PASS actual header/turbine boundary applies at 0,2 m / 24000
+PASS actual header/turbine boundary applies at 0,7 m / 24000
+PASS actual header/turbine boundary applies at 1,099 m / 24000
+PASS actual header/turbine boundary applies at 1,101 m / 24000
+PASS actual header/turbine boundary applies at 1,4 m / 24000
+PASS previously missed header reactions receive load-dependent turbine damping / 24000
+PASS post-turbine direct sound is not falsely routed through the turbine / 24000
+PASS existing runner geometry changes the reflected header response / 24000
+PASS wall vibration remains pressure-driven instead of leaking dry stochastic grain / 24000
+PASS clearing pipe state discards all direct/reflected/wall history / 24000
+PASS zero warmed internal-path callback allocations / 24000
+PASS actual header/turbine boundary applies at 0,2 m / 44100
+PASS actual header/turbine boundary applies at 0,7 m / 44100
+PASS actual header/turbine boundary applies at 1,099 m / 44100
+PASS actual header/turbine boundary applies at 1,101 m / 44100
+PASS actual header/turbine boundary applies at 1,4 m / 44100
+PASS previously missed header reactions receive load-dependent turbine damping / 44100
+PASS post-turbine direct sound is not falsely routed through the turbine / 44100
+PASS existing runner geometry changes the reflected header response / 44100
+PASS wall vibration remains pressure-driven instead of leaking dry stochastic grain / 44100
+PASS clearing pipe state discards all direct/reflected/wall history / 44100
+PASS zero warmed internal-path callback allocations / 44100
+PASS actual header/turbine boundary applies at 0,2 m / 48000
+PASS actual header/turbine boundary applies at 0,7 m / 48000
+PASS actual header/turbine boundary applies at 1,099 m / 48000
+PASS actual header/turbine boundary applies at 1,101 m / 48000
+PASS actual header/turbine boundary applies at 1,4 m / 48000
+PASS previously missed header reactions receive load-dependent turbine damping / 48000
+PASS post-turbine direct sound is not falsely routed through the turbine / 48000
+PASS existing runner geometry changes the reflected header response / 48000
+PASS wall vibration remains pressure-driven instead of leaking dry stochastic grain / 48000
+PASS clearing pipe state discards all direct/reflected/wall history / 48000
+PASS zero warmed internal-path callback allocations / 48000
+PASS actual header/turbine boundary applies at 0,2 m / 192000
+PASS actual header/turbine boundary applies at 0,7 m / 192000
+PASS actual header/turbine boundary applies at 1,099 m / 192000
+PASS actual header/turbine boundary applies at 1,101 m / 192000
+PASS actual header/turbine boundary applies at 1,4 m / 192000
+PASS previously missed header reactions receive load-dependent turbine damping / 192000
+PASS post-turbine direct sound is not falsely routed through the turbine / 192000
+PASS existing runner geometry changes the reflected header response / 192000
+PASS wall vibration remains pressure-driven instead of leaking dry stochastic grain / 192000
+PASS clearing pipe state discards all direct/reflected/wall history / 192000
+PASS zero warmed internal-path callback allocations / 192000
+PASS all real race zone reaction counts and chemical acoustic energies remain exact
+Checks: 47

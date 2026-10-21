@@ -93,12 +93,14 @@ namespace DragLab.Domain
             // Round the stochastic body after waveshaping, where its extra high
             // harmonics were being introduced. The pressure pulse is untouched.
             roundedBody+=bodyAlpha*(broad-roundedBody);
-            double textureBody=smoothTexture?.2*broad+.8*roundedBody:broad;
+            // No direct noisy bypass around the rounding filter. A small fixed
+            // compensation retains the low/mid body rather than raising the mix.
+            double textureBody=smoothTexture?1.08*roundedBody:broad;
             PressureSample=wave+.35*velocity;
             CombustionBodySample=.18*texture*textureBody;
             // High-frequency grit follows only the short compression, never the
             // complete chemical burn. Slow residual flow remains very subdued.
-            TurbulenceSample=(smoothTexture?.006:.012)*Math.Abs(wave)*(grit-body)*gritNormal+.0008*texture*textureBody*flowTexture;
+            TurbulenceSample=(smoothTexture?.003:.012)*Math.Abs(wave)*(grit-body)*gritNormal+.0008*texture*textureBody*flowTexture;
             frontEnergy*=energyDecay;tailEnergy*=tailDecay;
             frontRoot*=rootDecay;tailRoot*=tailRootDecay;
             return PressureSample+CombustionBodySample+TurbulenceSample;

@@ -1,0 +1,40 @@
+PASS pressure waveform and reaction funding remain bit-identical / 24000 / short burn
+PASS grain/high-frequency texture falls without changing compression / 24000 / short burn
+PASS audible low/mid texture remains within 2.3 dB of reference / 24000 / short burn
+PASS smoothed texture is finite and seeded reproducibly / 24000 / short burn
+MEASURE 24000 / short burn / grain energy ratio 0,22451106304691706 / low-mid ratio 0,8904525787641141
+PASS clearing the source also clears the smoothing tail / 24000 / short burn
+PASS pressure waveform and reaction funding remain bit-identical / 24000 / longer burn
+PASS grain/high-frequency texture falls without changing compression / 24000 / longer burn
+PASS audible low/mid texture remains within 2.3 dB of reference / 24000 / longer burn
+PASS smoothed texture is finite and seeded reproducibly / 24000 / longer burn
+MEASURE 24000 / longer burn / grain energy ratio 0,11415880864781068 / low-mid ratio 0,73814955212786881
+PASS clearing the source also clears the smoothing tail / 24000 / longer burn
+PASS zero warmed texture event/sample allocations / 24000
+PASS pressure waveform and reaction funding remain bit-identical / 44100 / short burn
+PASS grain/high-frequency texture falls without changing compression / 44100 / short burn
+PASS audible low/mid texture remains within 2.3 dB of reference / 44100 / short burn
+PASS smoothed texture is finite and seeded reproducibly / 44100 / short burn
+MEASURE 44100 / short burn / grain energy ratio 0,20278346006373024 / low-mid ratio 0,89709901074956033
+PASS clearing the source also clears the smoothing tail / 44100 / short burn
+PASS pressure waveform and reaction funding remain bit-identical / 44100 / longer burn
+PASS grain/high-frequency texture falls without changing compression / 44100 / longer burn
+PASS audible low/mid texture remains within 2.3 dB of reference / 44100 / longer burn
+PASS smoothed texture is finite and seeded reproducibly / 44100 / longer burn
+MEASURE 44100 / longer burn / grain energy ratio 0,10790930860967746 / low-mid ratio 0,73992852071455684
+PASS clearing the source also clears the smoothing tail / 44100 / longer burn
+PASS zero warmed texture event/sample allocations / 44100
+PASS pressure waveform and reaction funding remain bit-identical / 48000 / short burn
+PASS grain/high-frequency texture falls without changing compression / 48000 / short burn
+PASS audible low/mid texture remains within 2.3 dB of reference / 48000 / short burn
+PASS smoothed texture is finite and seeded reproducibly / 48000 / short burn
+MEASURE 48000 / short burn / grain energy ratio 0,19779372615532859 / low-mid ratio 0,89683183480743223
+PASS clearing the source also clears the smoothing tail / 48000 / short burn
+PASS pressure waveform and reaction funding remain bit-identical / 48000 / longer burn
+PASS grain/high-frequency texture falls without changing compression / 48000 / longer burn
+PASS audible low/mid texture remains within 2.3 dB of reference / 48000 / longer burn
+PASS smoothed texture is finite and seeded reproducibly / 48000 / longer burn
+MEASURE 48000 / longer burn / grain energy ratio 0,10746283884362079 / low-mid ratio 0,7407472844638866
+PASS clearing the source also clears the smoothing tail / 48000 / longer burn
+PASS zero warmed texture event/sample allocations / 48000
+Checks: 33
