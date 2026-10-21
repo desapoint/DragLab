@@ -1,5 +1,16 @@
 # Engine audio: pressure events within the existing pipeline
 
+## Pressure-led afterfire correction — 2026-10-21
+
+Live afterfires separate short compression/rarefaction from the longer, rough
+combustion decay. Renewed physical overpressure funds a front; continued burning
+funds an audible low/mid body rather than airflow hiss or fixed repeated bangs.
+The edge-only iteration was rejected for thin/pitched sound. A local, heavily
+damped wall-radiation branch now sits beside the installed outlet path, with
+their different travel/attenuation preserved. Chemistry, engine/induction
+generation and outdoor propagation remain. [Checks, acoustic surrogate limits
+and requested Tempest listening checkpoint](../reports/afterfire-bangs-20261021/CHANGES.md).
+
 ## Live pressure source and trackside listener — 2026-10-21
 
 Afterfire voices now synthesize pressure rise/expansion and funded residual

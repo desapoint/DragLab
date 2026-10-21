@@ -1,0 +1,10 @@
+Isolated afterfire path, unchanged scene; each source calibration retained, no normalization.
+PCM is relative, not calibrated SPL. Edge-only and body-loud versions were rejected by the listener.
+before 22-carb-soft-ignition: peak 0.182080; RMS 0.009392; band powers <65Hz / 65-1400Hz / 1400-8000Hz = 255.087867 / 70.900807 / 4.725044
+edge-only-after 22-carb-soft-ignition: peak 0.759581; RMS 0.022928; band powers <65Hz / 65-1400Hz / 1400-8000Hz = 1603.117526 / 13.998688 / 5.134782
+body-loud-after 22-carb-soft-ignition: peak 1.473995; RMS 0.123113; band powers <65Hz / 65-1400Hz / 1400-8000Hz = 1065.025537 / 41241.902537 / 4154.692823
+after 22-carb-soft-ignition: peak 0.645052; RMS 0.053855; band powers <65Hz / 65-1400Hz / 1400-8000Hz = 208.580707 / 7888.546691 / 794.659590
+before 26-launch-hard-ignition: peak 0.120070; RMS 0.005798; band powers <65Hz / 65-1400Hz / 1400-8000Hz = 131.834855 / 6.287463 / 0.622751
+edge-only-after 26-launch-hard-ignition: peak 0.295405; RMS 0.015246; band powers <65Hz / 65-1400Hz / 1400-8000Hz = 953.278833 / 24.468793 / 0.733858
+body-loud-after 26-launch-hard-ignition: peak 0.713989; RMS 0.044212; band powers <65Hz / 65-1400Hz / 1400-8000Hz = 356.897306 / 5583.674677 / 351.814082
+after 26-launch-hard-ignition: peak 0.315525; RMS 0.019418; band powers <65Hz / 65-1400Hz / 1400-8000Hz = 80.315108 / 1069.249363 / 67.295955

@@ -1,0 +1,52 @@
+PASS seeded finite transient with audible attack / 24000
+PASS compression and combustion body dominate airflow/high grit by at least 20 dB / 24000
+PASS blast has an audible low/mid combustion body rather than an isolated high edge / 24000
+MEASURE 24000 pressure / body / high-grit energy 106,82299155922132 / 28,011812307216449 / 0,0089920750159570573 / peak 1,6085802317469151
+PASS splitting a simultaneous reaction packet cannot change its bang or energy / 24000
+PASS quarter reaction energy gives half the pressure amplitude, including texture / 24000
+PASS seed changes irregular texture while preserving physical pressure response / 24000
+PASS fast simulated pressure rise has a sharper compression edge / 24000
+PASS larger physical overpressure steepens the compression front / 24000
+PASS no acoustic reaction energy produces no bang or hiss / 24000
+PASS longer physical burn retains a longer pressure-release decay / 24000
+PASS steady burning retains rough body without repeated compression bangs or an air jet / 24000
+PASS pressure and residual flow stop when finite fuel funding stops / 24000
+PASS zero warmed event and sample allocations / 24000
+PASS clear discards the old reaction and tail / 24000
+PASS seeded finite transient with audible attack / 44100
+PASS compression and combustion body dominate airflow/high grit by at least 20 dB / 44100
+PASS blast has an audible low/mid combustion body rather than an isolated high edge / 44100
+MEASURE 44100 pressure / body / high-grit energy 199,60074639385905 / 50,424590456657079 / 0,01774193142625061 / peak 1,4788885177627158
+PASS splitting a simultaneous reaction packet cannot change its bang or energy / 44100
+PASS quarter reaction energy gives half the pressure amplitude, including texture / 44100
+PASS seed changes irregular texture while preserving physical pressure response / 44100
+PASS fast simulated pressure rise has a sharper compression edge / 44100
+PASS larger physical overpressure steepens the compression front / 44100
+PASS no acoustic reaction energy produces no bang or hiss / 44100
+PASS longer physical burn retains a longer pressure-release decay / 44100
+PASS steady burning retains rough body without repeated compression bangs or an air jet / 44100
+PASS pressure and residual flow stop when finite fuel funding stops / 44100
+PASS zero warmed event and sample allocations / 44100
+PASS clear discards the old reaction and tail / 44100
+PASS seeded finite transient with audible attack / 48000
+PASS compression and combustion body dominate airflow/high grit by at least 20 dB / 48000
+PASS blast has an audible low/mid combustion body rather than an isolated high edge / 48000
+MEASURE 48000 pressure / body / high-grit energy 217,60693252400642 / 54,7701479408311 / 0,019425698029336892 / peak 1,5013993684642808
+PASS splitting a simultaneous reaction packet cannot change its bang or energy / 48000
+PASS quarter reaction energy gives half the pressure amplitude, including texture / 48000
+PASS seed changes irregular texture while preserving physical pressure response / 48000
+PASS fast simulated pressure rise has a sharper compression edge / 48000
+PASS larger physical overpressure steepens the compression front / 48000
+PASS no acoustic reaction energy produces no bang or hiss / 48000
+PASS longer physical burn retains a longer pressure-release decay / 48000
+PASS steady burning retains rough body without repeated compression bangs or an air jet / 48000
+PASS pressure and residual flow stop when finite fuel funding stops / 48000
+PASS zero warmed event and sample allocations / 48000
+PASS clear discards the old reaction and tail / 48000
+PASS wall fixture has a genuine fuel-consuming local reaction
+PASS local wall sound bypasses downstream silencing while the outlet still obeys it
+PASS local shell response arrives before the longer in-pipe outlet path
+PASS bounded wall/outlet sum decays without a sustained bell
+PASS isolated actual race retains every reaction and voice / 22-carb-soft-ignition
+PASS isolated actual race retains every reaction and voice / 26-launch-hard-ignition
+Checks: 48

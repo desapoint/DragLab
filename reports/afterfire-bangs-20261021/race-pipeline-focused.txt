@@ -1,0 +1,12 @@
+Actual 47-race production pipeline; legacy physical traces remain unchanged.
+MEASURE 22-carb-soft-ignition callback p95 0,8624 ms; max 1,8520 ms / 400 stereo frames, budget 8.333 ms
+PASS 22-carb-soft-ignition / ET unchanged / chemical 32358 / rendered reactions 32358 / pressure voices 32 / continued 32326 / BOV 0 / no drops or steals / peak 0,3101
+MEASURE 23-diesel-soft-fuel callback p95 0,5000 ms; max 3,8617 ms / 400 stereo frames, budget 8.333 ms
+PASS 23-diesel-soft-fuel / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 0 / no drops or steals / peak 0,1696
+MEASURE 26-launch-hard-ignition callback p95 0,9267 ms; max 1,7574 ms / 400 stereo frames, budget 8.333 ms
+PASS 26-launch-hard-ignition / ET unchanged / chemical 5387 / rendered reactions 5387 / pressure voices 54 / continued 5333 / BOV 2 / no drops or steals / peak 0,2051
+MEASURE 30-exhaust-2 callback p95 0,4613 ms; max 0,6932 ms / 400 stereo frames, budget 8.333 ms
+PASS 30-exhaust-2 / ET unchanged / chemical 19 / rendered reactions 19 / pressure voices 3 / continued 16 / BOV 0 / no drops or steals / peak 0,2602
+MEASURE 31-exhaust-3 callback p95 0,4099 ms; max 0,6856 ms / 400 stereo frames, budget 8.333 ms
+PASS 31-exhaust-3 / ET unchanged / chemical 0 / rendered reactions 0 / pressure voices 0 / continued 0 / BOV 0 / no drops or steals / peak 0,3058
+PASS all 5 real race pipelines

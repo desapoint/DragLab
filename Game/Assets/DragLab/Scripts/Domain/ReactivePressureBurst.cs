@@ -8,14 +8,18 @@ namespace DragLab.Domain
     {
         readonly int rate;
         readonly double decayScale,sharpnessScale;
-        double expansion, pressure, velocity, body, grit, pending;
+        double expansion, pressure, velocity, body, bodyLow, grit;
         double attackAlpha, releaseAlpha, bodyAlpha, gritAlpha, energyDecay;
-        double tailEnergy, frontEnergy, lastPressure;
+        double tailEnergy, frontEnergy;
+        double lastEventTime,lastEventPressure,lastCoherent;
         bool hasExcitation;
-        double frontRoot,tailRoot,rootDecay,pressureScale,textureScale,flowTexture;
+        double frontRoot,tailRoot,rootDecay,tailDecay,tailRootDecay,pressureScale,textureScale,flowTexture,bodyLowAlpha,bodyNormal,gritNormal;
         uint noise;
         public double FundedEnergy { get; private set; }
         public double LastExcitation { get; private set; }
+        public double PressureSample { get; private set; }
+        public double CombustionBodySample { get; private set; }
+        public double TurbulenceSample { get; private set; }
         public ReactivePressureBurst(int rate,double decayScale=1,double sharpnessScale=1)
         {
             if(rate<8000||rate>192000||double.IsNaN(decayScale)||double.IsInfinity(decayScale)||double.IsNaN(sharpnessScale)||double.IsInfinity(sharpnessScale))throw new ArgumentException("Invalid pressure-source configuration.");
@@ -28,51 +32,77 @@ namespace DragLab.Domain
         }
         public void Excite(ExhaustMixtureModel.Event e)
         {
-            double rise=DragMath.Clamp(e.riseSeconds,.00025,.025)/Math.Sqrt(sharpnessScale);
+            // Faster/higher overpressure steepens the compression edge. These are
+            // reaction outputs, not limiter/anti-lag labels or a stored pop shape.
+            double overpressure=DragMath.Clamp(e.pressurePa/101325,0,3);
+            double rise=DragMath.Clamp(e.riseSeconds,.00025,.025)/Math.Sqrt(sharpnessScale*(1+.25*overpressure));
             double duration=DragMath.Clamp(e.burnSeconds,.001,.16)*decayScale;
             attackAlpha=1-Math.Exp(-1.0/(rate*rise));
-            releaseAlpha=1-Math.Exp(-1.0/(rate*(duration+rise*2)));
-            bodyAlpha=1-Math.Exp(-2*Math.PI*DragMath.Clamp(1/(duration*2),100,1200)/rate);
-            gritAlpha=1-Math.Exp(-2*Math.PI*DragMath.Clamp(.8/rise,1800,11000)/rate);
-            energyDecay=Math.Exp(-1.0/(rate*(duration+rise*3)));
-            rootDecay=Math.Sqrt(energyDecay);pressureScale=Math.Sqrt(rate*attackAlpha)*.055;
-            textureScale=Math.Sqrt((1-energyDecay)*rate);flowTexture=DragMath.Clamp(e.flowMps/100,.2,1.5);
-            // A declining pressure pocket funds weaker impulses. Renewed, stronger
-            // pressure can legitimately produce a larger secondary ignition.
-            double change=Math.Max(0,e.pressurePa-lastPressure)/Math.Max(1,e.pressurePa);
-            double coherent=DragMath.Clamp(.18+.72*change,.18,.9);
-            if(!hasExcitation)coherent=.9;
-            hasExcitation=true;
+            // Acoustic compression/rarefaction and chemical burning are different
+            // time scales. Using the full burn time for the pressure release put
+            // its body below the mix's DC blocker and left only a thin edge.
+            double release=Math.Max(rise*1.8,Math.Min(.012,duration*.22+.0015));
+            releaseAlpha=1-Math.Exp(-1.0/(rate*release));
+            energyDecay=Math.Exp(-1.0/(rate*(release+rise)));
+            tailDecay=Math.Exp(-1.0/(rate*(duration*1.5+.012*decayScale)));
+            rootDecay=Math.Sqrt(energyDecay);tailRootDecay=Math.Sqrt(tailDecay);
+            pressureScale=Math.Sqrt(rate*attackAlpha)*.11;
+            // Dense, low/mid combustion texture: this is not a wideband air jet.
+            // Normalize the coloured noise's variance; the earlier unnormalized
+            // low-pass made its audible body almost disappear.
+            bodyAlpha=1-Math.Exp(-2*Math.PI*DragMath.Clamp(.8/rise,550,1400)/rate);
+            bodyLowAlpha=1-Math.Exp(-2*Math.PI*65/rate);
+            gritAlpha=1-Math.Exp(-2*Math.PI*Math.Min(5500,rate*.35)/rate);
+            bodyNormal=BandNormal(bodyAlpha,bodyLowAlpha);
+            gritNormal=BandNormal(gritAlpha,bodyAlpha);
+            textureScale=Math.Sqrt((1-tailDecay)*rate);flowTexture=DragMath.Clamp(e.flowMps/100,.2,1.5);
+            // Only renewed pressure forms another compression front. Continuous
+            // heat release at steady pressure funds the rough combustion body,
+            // not identical impulses at the simulation tick frequency.
+            double change=hasExcitation?DragMath.Clamp((e.pressurePa-lastEventPressure)/Math.Max(1,e.pressurePa),0,1):1;
+            double coherent=(.55+.10*overpressure/(1+overpressure))*change;
+            if(hasExcitation&&e.time==lastEventTime&&e.pressurePa==lastEventPressure)coherent=lastCoherent;
+            lastEventTime=e.time;lastEventPressure=e.pressurePa;lastCoherent=coherent;hasExcitation=true;
             frontEnergy+=e.acousticJ*coherent;tailEnergy+=e.acousticJ*(1-coherent);
             frontRoot=Math.Sqrt(frontEnergy);tailRoot=Math.Sqrt(tailEnergy);
             FundedEnergy+=e.acousticJ;LastExcitation=e.acousticJ*coherent;
-            lastPressure=e.pressurePa;
+        }
+        static double BandNormal(double fast,double slow)
+        {
+            double variance=(fast/(2-fast)+slow/(2-slow)-2*fast*slow/(fast+slow-fast*slow))/3;
+            return 1/Math.Sqrt(Math.Max(1e-10,variance));
         }
         public double Sample()
         {
-            pending=frontRoot*pressureScale;
             // A pressure rise followed by rarefaction. The difference of states has
             // zero steady pressure, rather than repeating a fixed explosion shape.
-            pressure+=attackAlpha*(pending-pressure);pending*=1-releaseAlpha;
+            pressure+=attackAlpha*(frontRoot*pressureScale-pressure);
             expansion+=releaseAlpha*(pressure-expansion);
             double wave=pressure-expansion;
             noise^=noise<<13;noise^=noise>>17;noise^=noise<<5;
             double random=noise/(double)uint.MaxValue*2-1;
-            body+=bodyAlpha*(random-body);grit+=gritAlpha*(random-grit);
+            body+=bodyAlpha*(random-body);bodyLow+=bodyLowAlpha*(random-bodyLow);grit+=gritAlpha*(random-grit);
             velocity+=bodyAlpha*(wave-velocity);
             double texture=tailRoot*textureScale;
-            double frontTexture=frontRoot*textureScale;
-            frontEnergy*=energyDecay;tailEnergy*=energyDecay;
-            frontRoot*=rootDecay;tailRoot*=rootDecay;
-            return wave + .07*frontTexture*(grit-body) + .06*texture*body*flowTexture + .2*velocity;
+            double broad=(body-bodyLow)*bodyNormal;
+            // Bounded roughness without a pitched carrier or a train of fake pops.
+            broad/=1+.35*Math.Abs(broad);
+            PressureSample=wave+.35*velocity;
+            CombustionBodySample=.18*texture*broad;
+            // High-frequency grit follows only the short compression, never the
+            // complete chemical burn. Slow residual flow remains very subdued.
+            TurbulenceSample=.012*Math.Abs(wave)*(grit-body)*gritNormal+.0008*texture*broad*flowTexture;
+            frontEnergy*=energyDecay;tailEnergy*=tailDecay;
+            frontRoot*=rootDecay;tailRoot*=tailRootDecay;
+            return PressureSample+CombustionBodySample+TurbulenceSample;
         }
-        public bool Quiet => pending<1e-8&&Math.Abs(pressure)+Math.Abs(expansion)<1e-8&&frontEnergy+tailEnergy<1e-10;
+        public bool Quiet => Math.Abs(pressure)+Math.Abs(expansion)<1e-8&&frontEnergy+tailEnergy<1e-10;
         public void Clear()
         {
-            expansion=pressure=velocity=body=grit=pending=tailEnergy=frontEnergy=lastPressure=0;
-            hasExcitation=false;
+            expansion=pressure=velocity=body=bodyLow=grit=tailEnergy=frontEnergy=0;
             frontRoot=tailRoot=0;
-            FundedEnergy=LastExcitation=0;
+            hasExcitation=false;lastEventTime=lastEventPressure=lastCoherent=0;
+            FundedEnergy=LastExcitation=PressureSample=CombustionBodySample=TurbulenceSample=0;
         }
     }
 }

@@ -1,0 +1,3 @@
+Same input replay, afterfire-only installed path and trackside listener. No per-file normalization.
+22-carb-soft-ignition / reactions 32358 / chemical 32358 / ET 15,229886763637861 / peak 0,182079613
+26-launch-hard-ignition / reactions 5387 / chemical 5387 / ET 14,151347613077348 / peak 0,120076843

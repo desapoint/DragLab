@@ -32,7 +32,10 @@ namespace DragLab.Domain
             public bool active;
             public double start;
             readonly ExhaustFilter[] paths = new ExhaustFilter[8];
-            readonly Mode[] modes;
+            readonly Mode[,] walls = new Mode[8,2];
+            readonly double[] wallGains = new double[8],outletGains = new double[8];
+            public double WallSample {get;private set;}
+            public double OutletSample {get;private set;}
             readonly int rate;
             readonly ReactivePressureBurst reaction;
             readonly double bassAlpha, midAlpha, softAlpha, scatterAlpha;
@@ -56,8 +59,22 @@ namespace DragLab.Domain
                     for(int i=0;i<setup.parts.Length;i++)
                     {double end=cursor+RuntimeExhaustState.PartLength(setup.parts[i]);setup.parts[i].amount*=(float)DragMath.Clamp((end-at*length)/(end-cursor),0,1);cursor=end;}
                     paths[zone]=new ExhaustFilter(setup,profile.exhaust);paths[zone].Configure(rate);
+                    // Local wall radiation is parallel to the outlet, not passed
+                    // through every downstream silencer. Authored resonance and
+                    // component kind stand in for unavailable shell material data.
+                    double nearest=double.MaxValue,hz=160,coupling=.012;cursor=1.1+(profile.turboCount>0?.18:0);
+                    foreach(var part in profile.exhaustSystem.parts)
+                    {
+                        double extent=RuntimeExhaustState.PartLength(part),distance=Math.Abs(at*length-(cursor+extent*.5));cursor+=extent;
+                        if(distance>=nearest||part.amount<=0)continue;
+                        nearest=distance;hz=part.resonanceHz;
+                        double shell=part.kind==ExhaustPartKind.ChamberedSilencer?.07:part.kind==ExhaustPartKind.AbsorptiveSilencer?.045:part.kind==ExhaustPartKind.Resonator?.035:.018;
+                        coupling=.012+shell*part.amount/(1+distance*distance);
+                    }
+                    walls[zone,0]=new Mode(DragMath.Clamp(hz,90,420),.55,rate);
+                    walls[zone,1]=new Mode(DragMath.Clamp(hz*2.7,270,1250),.65,rate);
+                    wallGains[zone]=Math.Sqrt(coupling);outletGains[zone]=Math.Sqrt(1-coupling);
                 }
-                modes=new[]{new Mode(410,2,rate),new Mode(940,2.6,rate),new Mode(2100,3,rate)};
                 bassAlpha=1-Math.Exp(-2*Math.PI*450/rate);midAlpha=1-Math.Exp(-2*Math.PI*2550/rate);
                 softAlpha=1-Math.Exp(-2*Math.PI*Math.Min(6000,rate*.4)/rate);scatterAlpha=1-Math.Exp(-2*Math.PI*Math.Min(3600,rate*.4)/rate);
             }
@@ -67,7 +84,7 @@ namespace DragLab.Domain
                 reaction.Begin(e);
                 var envelope=Describe(e,profile);
                 riseAlpha=1-Math.Exp(-2*Math.PI*Math.Min(rate*.4,envelope.riseCutoff)/rate);
-                voiceGain=profile.popGain*.45;
+                voiceGain=profile.popGain*.35;
                 path=e.zone;double at=e.position;
                 turbine=profile.turboCount>0&&at*length<.45;
                 // Snapshot boost is the existing turbine-loading proxy. It is not
@@ -77,7 +94,6 @@ namespace DragLab.Domain
                 turbineHighAlpha=1-Math.Exp(-2*Math.PI*Math.Min(4800/(1+.3*boost),rate*.4)/rate);
                 turbineGain=Math.Pow(10,-(1.5+3*boost)/20);
                 travel=(int)Math.Round(rate*Math.Max(0,.98-at)*length/Math.Sqrt(1.34*287*DragMath.Clamp(e.gasK,300,1500)));
-                start+=travel/(double)rate;
                 taps1=(int)(rate*(.003+Math.Max(0,.98-at)*.007));taps2=(int)(rate*.009);taps3=(int)(rate*.0195);
             }
             public bool CanContinue(ExhaustMixtureModel.Event e) => active && frontId==e.frontId && path==e.zone && e.time>=lastChemical;
@@ -88,23 +104,27 @@ namespace DragLab.Domain
             }
             public double Sample(double clock)
             {
+                WallSample=OutletSample=0;
                 if(!active||clock<start)return 0;
                 double dry=reaction.Sample();
                 if(clock-lastChemical>.8&&reaction.Quiet){active=false;return 0;}
+                WallSample=wallGains[path]*(.8*walls[path,0].Sample(dry)+.3*walls[path,1].Sample(dry))*voiceGain;
                 bass+=bassAlpha*(dry-bass);mid+=midAlpha*(dry-mid);
                 double value=bass+.9*(mid-bass)+.85*(dry-mid);
                 riseLow+=riseAlpha*(value-riseLow);value=riseLow;
                 if(turbine){turbineLow+=turbineAlpha*(value-turbineLow);turbineHigh+=turbineHighAlpha*(value-turbineHigh);value=turbineGain*(.77*turbineLow+.15*turbineHigh);}
                 value=paths[path].Process(value);soft+=softAlpha*(value-soft);value=.83*value+.17*soft;
-                scatter+=scatterAlpha*(value-scatter);history[cursor]=scatter;
-                value+=.15*history[(cursor-taps1)&4095]-.094*history[(cursor-taps2)&4095]+.073*history[(cursor-taps3)&4095];
-                value+=.12*(.28*modes[0].Sample(value)+.19*modes[1].Sample(value)+.115*modes[2].Sample(value));
-                cursor=(cursor+1)&4095;return value*voiceGain;
+                scatter+=scatterAlpha*(value-scatter);history[cursor]=.9*value+.1*scatter;
+                int arrival=cursor-travel;
+                value=history[arrival&4095]+.15*history[(arrival-taps1)&4095]-.094*history[(arrival-taps2)&4095]+.073*history[(arrival-taps3)&4095];
+                OutletSample=value*outletGains[path]*voiceGain;
+                cursor=(cursor+1)&4095;return OutletSample+WallSample;
             }
             public void Clear()
             {
                 active=false;bass=mid=turbineLow=turbineHigh=soft=scatter=riseLow=0;cursor=0;reaction.Clear();
-                Array.Clear(history,0,history.Length);foreach(var filter in paths)filter.Clear();foreach(var mode in modes)mode.Clear();
+                WallSample=OutletSample=0;
+                Array.Clear(history,0,history.Length);foreach(var filter in paths)filter.Clear();foreach(var mode in walls)mode.Clear();
             }
         }
         readonly Voice[] voices=new Voice[VoiceCount];
@@ -120,6 +140,8 @@ namespace DragLab.Domain
         public long TailSteals {get;private set;}
         public long Inaudible {get;private set;}
         public long ContinuedReactions {get;private set;}
+        public double LastWallSample {get;private set;}
+        public double LastOutletSample {get;private set;}
         public AfterfireAudioSynth(EngineSoundProfile profile,int rate)
         {
             this.profile=profile;this.rate=rate;
@@ -137,6 +159,7 @@ namespace DragLab.Domain
         }
         public double Sample()
         {
+            LastWallSample=LastOutletSample=0;
             if(source==null)return 0;
             int end=source.Sequence;
             if(end-cursor>=ExhaustMixtureModel.HistoryCapacity){HistoryOverflows+=end-cursor-ExhaustMixtureModel.HistoryCapacity+1;cursor=end-ExhaustMixtureModel.HistoryCapacity+1;}
@@ -156,11 +179,11 @@ namespace DragLab.Domain
                 if(free==null){free=voices[0];foreach(var v in voices)if(v.start<free.start)free=v;TailSteals++;}
                 free.Begin(e,profile);
             }
-            double value=0;foreach(var v in voices)if(v.active)value+=v.Sample(clock);
+            double value=0;foreach(var v in voices)if(v.active){value+=v.Sample(clock);LastWallSample+=v.WallSample;LastOutletSample+=v.OutletSample;}
             // Presentation time advances independently; the simulation owns all event times.
             clock+=1.0/rate;
             return value;
         }
-        public void Clear(){foreach(var voice in voices)voice.Clear();source=null;cursor=0;clock=0;}
+        public void Clear(){foreach(var voice in voices)voice.Clear();source=null;cursor=0;clock=0;LastWallSample=LastOutletSample=0;}
     }
 }
