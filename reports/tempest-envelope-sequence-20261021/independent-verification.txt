@@ -1,0 +1,126 @@
+PASS complete original Tempest reaction/flame count retained
+PASS all recorded chemical packets fund exactly one selected flame
+PASS total simulated acoustic energy retained across all preview flames
+PASS flame 1 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 1 starts within the original complete race sequence
+PASS flame 2 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 2 starts within the original complete race sequence
+PASS flame 3 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 3 starts within the original complete race sequence
+PASS flame 4 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 4 starts within the original complete race sequence
+PASS flame 5 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 5 starts within the original complete race sequence
+PASS flame 6 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 6 starts within the original complete race sequence
+PASS flame 7 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 7 starts within the original complete race sequence
+PASS flame 8 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 8 starts within the original complete race sequence
+PASS flame 9 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 9 starts within the original complete race sequence
+PASS flame 10 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 10 starts within the original complete race sequence
+PASS flame 11 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 11 starts within the original complete race sequence
+PASS flame 12 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 12 starts within the original complete race sequence
+PASS flame 13 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 13 starts within the original complete race sequence
+PASS flame 14 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 14 starts within the original complete race sequence
+PASS flame 15 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 15 starts within the original complete race sequence
+PASS flame 16 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 16 starts within the original complete race sequence
+PASS flame 17 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 17 starts within the original complete race sequence
+PASS flame 18 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 18 starts within the original complete race sequence
+PASS flame 19 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 19 starts within the original complete race sequence
+PASS flame 20 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 20 starts within the original complete race sequence
+PASS flame 21 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 21 starts within the original complete race sequence
+PASS flame 22 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 22 starts within the original complete race sequence
+PASS flame 23 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 23 starts within the original complete race sequence
+PASS flame 24 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 24 starts within the original complete race sequence
+PASS flame 25 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 25 starts within the original complete race sequence
+PASS flame 26 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 26 starts within the original complete race sequence
+PASS flame 27 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 27 starts within the original complete race sequence
+PASS flame 28 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 28 starts within the original complete race sequence
+PASS flame 29 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 29 starts within the original complete race sequence
+PASS flame 30 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 30 starts within the original complete race sequence
+PASS flame 31 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 31 starts within the original complete race sequence
+PASS flame 32 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 32 starts within the original complete race sequence
+PASS flame 33 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 33 starts within the original complete race sequence
+PASS flame 34 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 34 starts within the original complete race sequence
+PASS flame 35 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 35 starts within the original complete race sequence
+PASS flame 36 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 36 starts within the original complete race sequence
+PASS flame 37 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 37 starts within the original complete race sequence
+PASS flame 38 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 38 starts within the original complete race sequence
+PASS flame 39 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 39 starts within the original complete race sequence
+PASS flame 40 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 40 starts within the original complete race sequence
+PASS flame 41 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 41 starts within the original complete race sequence
+PASS flame 42 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 42 starts within the original complete race sequence
+PASS flame 43 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 43 starts within the original complete race sequence
+PASS flame 44 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 44 starts within the original complete race sequence
+PASS flame 45 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 45 starts within the original complete race sequence
+PASS flame 46 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 46 starts within the original complete race sequence
+PASS flame 47 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 47 starts within the original complete race sequence
+PASS flame 48 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 48 starts within the original complete race sequence
+PASS flame 49 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 49 starts within the original complete race sequence
+PASS flame 50 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 50 starts within the original complete race sequence
+PASS flame 51 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 51 starts within the original complete race sequence
+PASS flame 52 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 52 starts within the original complete race sequence
+PASS flame 53 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 53 starts within the original complete race sequence
+PASS flame 54 retains complete HTML mono envelope, exact hardware parameters, seed and ONE energy-derived gain
+PASS flame 54 starts within the original complete race sequence
+MEASURE all 54 sources: maximum PCM error 3.5352104710284493e-7; maximum relative RMS 3.7268789002792254e-8; native source latency 8 frames
+PASS both full stereo sequences have identical complete lengths
+PASS original engine bus and full afterfire path independently reproduce captured native PCM
+PASS new backfires are present in the actual full engine mix
+PASS engine/turbo/intake opening before the first afterfire is bit-identical
+PASS valid complete RIFF
+PASS 48 kHz 24-bit stereo PCM
+PASS complete before and after sequences plus exactly one second of separator
+PASS silent one-second A/B separator
+PASS unclipped PCM uses ONE shared gain, with no per-half or per-event normalization
+PASS native stereo engine banks and trackside propagation are retained
+FILE SHA256 32d1e53fd705a44856c37c94b22d7c9b4c01b9280f97e75e7c73bb4822e72073; duration 73.31666666666666; AFTER starts 37.15833333333333; peak 0.4689344726722804; shared gain 1
+MEASURE full-mix relative change 0.43687151971740884; pre-first-afterfire difference 0
+Offline preview only; constant strengths use recorded complete flame energies. Engine bed/physics/hardware/processing unchanged; no player build or runtime integration.
+Checks: 121

@@ -1,0 +1,21 @@
+PASS original complete Tempest trace retains 5387 reactions and 54 flame bursts
+PASS all actual Tempest flames use one path each; no cross-zone approximation needed
+PASS all physical packets/flames delivered in original replay with native availability
+PASS every chemical continuation contributes exactly once to original flame energy
+PASS independent original source/path replay reproduces actual native afterfire over the ENTIRE race
+PASS all physical packets/flames delivered in fixed replay with native availability
+PASS every chemical continuation contributes exactly once to fixed flame energy
+PASS every revised burst retains the original native sample of ignition
+PASS all physical packets/flames delivered in fixed replay with native availability
+PASS every chemical continuation contributes exactly once to fixed flame energy
+PASS all 54 fixed bursts reproduce identical seeded PCM over the full replay
+PASS unchanged DC and shared soft limiter reconstruct the actual native full-engine output
+PASS both halves use exactly the same captured engine/intake/turbo/BOV bed before the shared bus
+PASS no revised afterfire occurs before the actual first ignition
+PASS both complete engine sequences contain audible output
+Replay SHA256 6906758BF5F0DF0087E4BF62D5D5C4207C746455D20A77FFF479862F34E203E6; events 5387; flames 54; physical acoustic J 132.02810505063448
+Original source/path maximum error 0; actual native engine reconstruction error 0; bed error 1.8041124150158794E-16
+Before starts 0 s; after starts 37.158333333333331 s; each sequence 36.158333333333331 s; common gain 1
+Both halves: same fitted hardware, path travel/loss/shell, shared DC/limiter, 12 m trackside air/stereo/reflections. No extra backfire EQ or level boost.
+OFFLINE ONLY: whole recorded flame energy fixes each strength; no runtime code, settings or player build changed.
+Checks: 15

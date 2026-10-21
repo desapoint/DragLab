@@ -43,10 +43,11 @@ namespace DragLab.Editor
         {var bytes=new byte[x.Length*4];Buffer.BlockCopy(x,0,bytes,0,bytes.Length);File.WriteAllBytes(Path.Combine(Root,name),bytes);}
         static string Hash(byte[] bytes)
         {using(var h=SHA256.Create())return BitConverter.ToString(h.ComputeHash(bytes)).Replace("-","");}
-        static List<ExhaustMixtureModel.Event> Capture(RaceAudioTestFixture f,out Dictionary<int,int> availability,out float[] nativeRaw)
+        internal static List<ExhaustMixtureModel.Event> Capture(RaceAudioTestFixture f,out Dictionary<int,int> availability,out float[] nativeRaw,
+            Action<int,EngineSoundAuditSample> onSample=null,int tailTicks=0)
         {
             var race=f.CreateRace();var events=new List<ExhaustMixtureModel.Event>();int cursor=0;
-            var arrivals=new Dictionary<int,int>();var captured=new float[(f.ticks.Count+1)*400];int offset=0;
+            var arrivals=new Dictionary<int,int>();var captured=new float[(f.ticks.Count+1+tailTicks)*400];int offset=0;
             availability=arrivals;nativeRaw=captured;
             try
             {
@@ -54,21 +55,25 @@ namespace DragLab.Editor
                 // controller creates the per-car physical exhaust transport.
                 var controller=new EngineSoundController(race.player.spec,race.player.tune);
                 var synth=new EngineSoundSynth(new EngineSoundProfile(race.player.spec,race.player.tune),sampleRate:Rate);
-                synth.Audit=(frame,x)=>captured[offset+frame]=(float)x.afterRaw;
+                synth.Audit=(frame,x)=>{captured[offset+frame]=(float)x.afterRaw;onSample?.Invoke(offset+frame,x);};
                 var block=new float[800];
-                synth.Fill(block,2,Rate,controller.Update(race.player.state,true,1,DragMath.FixedStep));
+                var lastFrame=controller.Update(race.player.state,true,1,DragMath.FixedStep);
+                synth.Fill(block,2,Rate,lastFrame);
                 foreach(var tick in f.ticks)
                 {
                     offset+=400;
                     race.player.state.warmupLineLock=tick.lineLock;
                     if(tick.beginCountdown&&!race.BeginCountdown())throw new InvalidOperationException("Countdown failed");
                     if(race.phase==RacePhase.Finished)race.Shutdown(tick.input);else race.Step(tick.input);
-                    var frame=controller.Update(race.player.state,true,1,DragMath.FixedStep);
+                    lastFrame=controller.Update(race.player.state,true,1,DragMath.FixedStep);
                     var model=race.player.state.audioExhaust.mixture;
                     while(cursor<model.Sequence)
                     {CheckRead(model,++cursor,out var e);events.Add(e);arrivals.Add(e.index,offset);}
-                    synth.Fill(block,2,Rate,frame);
+                    synth.Fill(block,2,Rate,lastFrame);
                 }
+                // Retain the final active engine frame to let existing acoustic
+                // tails play, as in the full Tempest processing audition.
+                for(int tick=0;tick<tailTicks;tick++){offset+=400;synth.Fill(block,2,Rate,lastFrame);}
                 Check(Math.Abs(race.player.state.elapsed-f.elapsed)<1e-9&&race.player.state.exhaustPopCount==f.pops,"original Tempest physics elapsed and pop trace preserved");
                 Check(Math.Abs(events.Sum(e=>e.acousticJ)-race.player.state.audioExhaust.mixture.AcousticEnergyJ)<1e-8,"all recorded physical acoustic energy retained without history loss");
                 return events;
