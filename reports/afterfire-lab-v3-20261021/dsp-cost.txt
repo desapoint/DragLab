@@ -1,0 +1,13 @@
+live source 96000 frames: 25,6712
+reference source 96000 frames: 22,7651
+old source 96000 frames: 2,8312
+installed pipe 96000 frames: 12,3158
+live source 96000 frames: 25,1843
+reference source 96000 frames: 37,3827
+old source 96000 frames: 2,6352
+installed pipe 96000 frames: 14,0769
+live source 96000 frames: 25,2295
+reference source 96000 frames: 50,0732
+old source 96000 frames: 4,3119
+installed pipe 96000 frames: 12,3295
+sink 121,831422527358

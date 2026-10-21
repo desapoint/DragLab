@@ -37,7 +37,7 @@ namespace DragLab.Editor
                 for(int tick=0;tick<60;tick++){a.Fill(x,2,rate,frame);b.Fill(y,2,rate,frame);}
                 var d=a.AfterfireDiagnostics(rate);
                 Check(model.Sequence>0&&d.Delivered==model.Sequence,"every chemical event delivered once through unchanged frame / "+rate);
-                Check(d.HistoryOverflows==0&&d.TailSteals==0,"no event history overflow or tail stealing in hot mixture / "+rate);
+                Check(d.HistoryOverflows==0&&d.TailSteals==0&&d.PressurePulseOverflows==0,"no event history overflow, pressure-pulse overflow or tail stealing in hot mixture / "+rate);
                 Check(exact&&finite&&energy>0,"deterministic finite audible full pipeline / "+rate);
                 long delivered=d.Delivered;a.Fill(x,2,rate,frame);Check(d.Delivered==delivered,"unchanged event history cannot retrigger / "+rate);
                 var paused=new EngineSoundFrame(0,0,0,0,0,active:false);a.Fill(x,2,rate,paused);a.Fill(x,2,rate,frame);
@@ -131,7 +131,7 @@ namespace DragLab.Editor
                     var final=controller.Update(car.state,true,.85,DragMath.FixedStep);
                     for(int i=0;i<60;i++){synth.Fill(pcm,2,48000,final);outdoor?.Process(pcm,2,listening);}
                     var d=synth.AfterfireDiagnostics(48000);var r=synth.ReleaseDiagnostics(48000);
-                    if(d.Delivered!=car.state.audioExhaust.mixture.Sequence||d.HistoryOverflows!=0||d.TailSteals!=0||r.Overflows!=0||r.TailSteals!=0)
+                    if(d.Delivered!=car.state.audioExhaust.mixture.Sequence||d.HistoryOverflows!=0||d.TailSteals!=0||d.PressurePulseOverflows!=0||r.Overflows!=0||r.TailSteals!=0)
                         throw new InvalidOperationException("Event delivery/tail budget failure: "+fixture.id+" / "+d.Delivered+" / "+car.state.audioExhaust.mixture.Sequence+" / steals "+d.TailSteals);
                     if(r.Delivered!=car.state.audioExhaust.ReleaseSequence)throw new InvalidOperationException("Lost BOV event: "+fixture.id);
                     if(Math.Abs(car.state.elapsed-fixture.elapsed)>1e-9||car.state.exhaustPopCount!=fixture.pops)throw new InvalidOperationException("Physics trace changed: "+fixture.id);

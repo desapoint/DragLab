@@ -1,0 +1,175 @@
+MEASURE preset 0 / 24000 / max 8,4249634380029192E-08 / relative RMS 2,6098007378466486E-08
+PASS streaming C# matches original JavaScript pressure core / preset 0 / 24000
+MEASURE preset 1 / 24000 / max 5,8997107643676827E-08 / relative RMS 2,5333953438083884E-08
+PASS streaming C# matches original JavaScript pressure core / preset 1 / 24000
+MEASURE preset 2 / 24000 / max 5,3607900563079625E-08 / relative RMS 2,38732819452745E-08
+PASS streaming C# matches original JavaScript pressure core / preset 2 / 24000
+MEASURE preset 3 / 24000 / max 6,5906660573489262E-08 / relative RMS 2,5545705220010523E-08
+PASS streaming C# matches original JavaScript pressure core / preset 3 / 24000
+MEASURE preset 4 / 24000 / max 5,8621975940198467E-08 / relative RMS 2,4988611915154809E-08
+PASS streaming C# matches original JavaScript pressure core / preset 4 / 24000
+MEASURE preset 5 / 24000 / max 1,0439395037309396E-07 / relative RMS 2,5937065831279478E-08
+PASS streaming C# matches original JavaScript pressure core / preset 5 / 24000
+MEASURE preset 6 / 24000 / max 5,6167873685453173E-08 / relative RMS 2,5238183056163115E-08
+PASS streaming C# matches original JavaScript pressure core / preset 6 / 24000
+MEASURE preset 7 / 24000 / max 1,190052376642825E-07 / relative RMS 2,626004174970395E-08
+PASS streaming C# matches original JavaScript pressure core / preset 7 / 24000
+MEASURE preset 8 / 24000 / max 5,7536908792954478E-08 / relative RMS 2,4482419169389161E-08
+PASS streaming C# matches original JavaScript pressure core / preset 8 / 24000
+MEASURE preset 9 / 24000 / max 1,1487931139697594E-07 / relative RMS 2,6435701382480014E-08
+PASS streaming C# matches original JavaScript pressure core / preset 9 / 24000
+MEASURE preset 0 / 44100 / max 8,0503455901492771E-08 / relative RMS 2,471117626048048E-08
+PASS streaming C# matches original JavaScript pressure core / preset 0 / 44100
+MEASURE preset 1 / 44100 / max 5,9259418261348173E-08 / relative RMS 2,4823170803441698E-08
+PASS streaming C# matches original JavaScript pressure core / preset 1 / 44100
+MEASURE preset 2 / 44100 / max 7,86161664656504E-08 / relative RMS 2,5189135446980935E-08
+PASS streaming C# matches original JavaScript pressure core / preset 2 / 44100
+MEASURE preset 3 / 44100 / max 5,6512463153524095E-08 / relative RMS 2,4698548495813234E-08
+PASS streaming C# matches original JavaScript pressure core / preset 3 / 44100
+MEASURE preset 4 / 44100 / max 5,8760738497198872E-08 / relative RMS 2,5805087154734033E-08
+PASS streaming C# matches original JavaScript pressure core / preset 4 / 44100
+MEASURE preset 5 / 44100 / max 5,9061746382482738E-08 / relative RMS 2,5020876066834423E-08
+PASS streaming C# matches original JavaScript pressure core / preset 5 / 44100
+MEASURE preset 6 / 44100 / max 5,493749632989875E-08 / relative RMS 2,5217402499092174E-08
+PASS streaming C# matches original JavaScript pressure core / preset 6 / 44100
+MEASURE preset 7 / 44100 / max 1,090568186867813E-07 / relative RMS 2,5011962686050385E-08
+PASS streaming C# matches original JavaScript pressure core / preset 7 / 44100
+MEASURE preset 8 / 44100 / max 5,8690232229707817E-08 / relative RMS 2,4210124604232388E-08
+PASS streaming C# matches original JavaScript pressure core / preset 8 / 44100
+MEASURE preset 9 / 44100 / max 1,1359467411153901E-07 / relative RMS 2,6484596913010771E-08
+PASS streaming C# matches original JavaScript pressure core / preset 9 / 44100
+MEASURE preset 0 / 48000 / max 5,8156126803154962E-08 / relative RMS 2,4038262013446136E-08
+PASS streaming C# matches original JavaScript pressure core / preset 0 / 48000
+MEASURE preset 1 / 48000 / max 1,007868526414768E-07 / relative RMS 2,587028695457642E-08
+PASS streaming C# matches original JavaScript pressure core / preset 1 / 48000
+MEASURE preset 2 / 48000 / max 5,9524507101116342E-08 / relative RMS 2,5867605214079713E-08
+PASS streaming C# matches original JavaScript pressure core / preset 2 / 48000
+MEASURE preset 3 / 48000 / max 5,7818393628394915E-08 / relative RMS 2,5560363342403029E-08
+PASS streaming C# matches original JavaScript pressure core / preset 3 / 48000
+MEASURE preset 4 / 48000 / max 5,9108278938069247E-08 / relative RMS 2,5172225278658915E-08
+PASS streaming C# matches original JavaScript pressure core / preset 4 / 48000
+MEASURE preset 5 / 48000 / max 5,8353076148875971E-08 / relative RMS 2,5459611632976478E-08
+PASS streaming C# matches original JavaScript pressure core / preset 5 / 48000
+MEASURE preset 6 / 48000 / max 5,83186461344809E-08 / relative RMS 2,4239700216685021E-08
+PASS streaming C# matches original JavaScript pressure core / preset 6 / 48000
+MEASURE preset 7 / 48000 / max 5,8543927705656529E-08 / relative RMS 2,4558419597469921E-08
+PASS streaming C# matches original JavaScript pressure core / preset 7 / 48000
+MEASURE preset 8 / 48000 / max 5,7427524069453284E-08 / relative RMS 2,5352113044371292E-08
+PASS streaming C# matches original JavaScript pressure core / preset 8 / 48000
+MEASURE preset 9 / 48000 / max 1,038815891085676E-07 / relative RMS 2,4917211282514415E-08
+PASS streaming C# matches original JavaScript pressure core / preset 9 / 48000
+MEASURE preset 0 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,0149152581786459E-09
+PASS streaming C# matches original JavaScript pressure core / preset 0 / 96000
+MEASURE preset 1 / 96000 / max 2,9802322387695313E-08 / relative RMS 1,80027106313253E-09
+PASS streaming C# matches original JavaScript pressure core / preset 1 / 96000
+MEASURE preset 2 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,3322277932990593E-09
+PASS streaming C# matches original JavaScript pressure core / preset 2 / 96000
+MEASURE preset 3 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,5729681451889766E-09
+PASS streaming C# matches original JavaScript pressure core / preset 3 / 96000
+MEASURE preset 4 / 96000 / max 0 / relative RMS 0
+PASS streaming C# matches original JavaScript pressure core / preset 4 / 96000
+MEASURE preset 5 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,0163508918957093E-09
+PASS streaming C# matches original JavaScript pressure core / preset 5 / 96000
+MEASURE preset 6 / 96000 / max 7,4505805969238281E-09 / relative RMS 1,8074857808686304E-09
+PASS streaming C# matches original JavaScript pressure core / preset 6 / 96000
+MEASURE preset 7 / 96000 / max 1,4901161193847656E-08 / relative RMS 9,260068146898212E-10
+PASS streaming C# matches original JavaScript pressure core / preset 7 / 96000
+MEASURE preset 8 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,1069745256020607E-09
+PASS streaming C# matches original JavaScript pressure core / preset 8 / 96000
+MEASURE preset 9 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,1998692904943732E-09
+PASS streaming C# matches original JavaScript pressure core / preset 9 / 96000
+MEASURE preset 0 / 192000 / max 1,4901161193847656E-08 / relative RMS 1,6243236939763053E-09
+PASS streaming C# matches original JavaScript pressure core / preset 0 / 192000
+MEASURE preset 1 / 192000 / max 1,4901161193847656E-08 / relative RMS 1,7657188116457079E-09
+PASS streaming C# matches original JavaScript pressure core / preset 1 / 192000
+MEASURE preset 2 / 192000 / max 7,4505805969238281E-09 / relative RMS 1,8792725933957783E-09
+PASS streaming C# matches original JavaScript pressure core / preset 2 / 192000
+MEASURE preset 3 / 192000 / max 1,4901161193847656E-08 / relative RMS 1,8366036967326544E-09
+PASS streaming C# matches original JavaScript pressure core / preset 3 / 192000
+MEASURE preset 4 / 192000 / max 0 / relative RMS 0
+PASS streaming C# matches original JavaScript pressure core / preset 4 / 192000
+MEASURE preset 5 / 192000 / max 7,4505805969238281E-09 / relative RMS 1,1571510933039213E-09
+PASS streaming C# matches original JavaScript pressure core / preset 5 / 192000
+MEASURE preset 6 / 192000 / max 7,4505805969238281E-09 / relative RMS 2,2340788843395667E-09
+PASS streaming C# matches original JavaScript pressure core / preset 6 / 192000
+MEASURE preset 7 / 192000 / max 2,9802322387695313E-08 / relative RMS 1,575172105782577E-09
+PASS streaming C# matches original JavaScript pressure core / preset 7 / 192000
+MEASURE preset 8 / 192000 / max 1,4901161193847656E-08 / relative RMS 1,4089550578381217E-09
+PASS streaming C# matches original JavaScript pressure core / preset 8 / 192000
+MEASURE preset 9 / 192000 / max 1,4901161193847656E-08 / relative RMS 1,2547406986304048E-09
+PASS streaming C# matches original JavaScript pressure core / preset 9 / 192000
+PASS first reaction and first samples allocate nothing after hardware construction / 8000
+PASS deterministic finite live source / 8000
+PASS same-time packet subdivision retains energy and waveform / 8000
+PASS splitting a renewal cannot amplify a different pressure front queued in the same sample / 8000
+PASS quarter chemical acoustic energy halves pressure amplitude / 8000
+PASS diagnostic limiter/launch/anti-lag labels cannot choose a recording or invent pulses / 8000
+PASS seed changes turbulent detail / 8000
+PASS no chemical acoustic funding gives exact silence / 8000
+PASS steady pressure funds combustion without another shock per integration tick / 8000
+PASS finite fuel-funded tail retires to silence / 8000
+PASS zero warmed sample/event allocations or pressure-pulse overflow / 8000
+PASS clear removes all source history / 8000
+PASS first reaction and first samples allocate nothing after hardware construction / 16000
+PASS deterministic finite live source / 16000
+PASS same-time packet subdivision retains energy and waveform / 16000
+PASS splitting a renewal cannot amplify a different pressure front queued in the same sample / 16000
+PASS quarter chemical acoustic energy halves pressure amplitude / 16000
+PASS diagnostic limiter/launch/anti-lag labels cannot choose a recording or invent pulses / 16000
+PASS seed changes turbulent detail / 16000
+PASS no chemical acoustic funding gives exact silence / 16000
+PASS steady pressure funds combustion without another shock per integration tick / 16000
+PASS finite fuel-funded tail retires to silence / 16000
+PASS zero warmed sample/event allocations or pressure-pulse overflow / 16000
+PASS clear removes all source history / 16000
+PASS first reaction and first samples allocate nothing after hardware construction / 24000
+PASS deterministic finite live source / 24000
+PASS same-time packet subdivision retains energy and waveform / 24000
+PASS splitting a renewal cannot amplify a different pressure front queued in the same sample / 24000
+PASS quarter chemical acoustic energy halves pressure amplitude / 24000
+PASS diagnostic limiter/launch/anti-lag labels cannot choose a recording or invent pulses / 24000
+PASS seed changes turbulent detail / 24000
+PASS no chemical acoustic funding gives exact silence / 24000
+PASS steady pressure funds combustion without another shock per integration tick / 24000
+PASS finite fuel-funded tail retires to silence / 24000
+PASS zero warmed sample/event allocations or pressure-pulse overflow / 24000
+PASS clear removes all source history / 24000
+PASS first reaction and first samples allocate nothing after hardware construction / 44100
+PASS deterministic finite live source / 44100
+PASS same-time packet subdivision retains energy and waveform / 44100
+PASS splitting a renewal cannot amplify a different pressure front queued in the same sample / 44100
+PASS quarter chemical acoustic energy halves pressure amplitude / 44100
+PASS diagnostic limiter/launch/anti-lag labels cannot choose a recording or invent pulses / 44100
+PASS seed changes turbulent detail / 44100
+PASS no chemical acoustic funding gives exact silence / 44100
+PASS steady pressure funds combustion without another shock per integration tick / 44100
+PASS finite fuel-funded tail retires to silence / 44100
+PASS zero warmed sample/event allocations or pressure-pulse overflow / 44100
+PASS clear removes all source history / 44100
+PASS first reaction and first samples allocate nothing after hardware construction / 48000
+PASS deterministic finite live source / 48000
+PASS same-time packet subdivision retains energy and waveform / 48000
+PASS splitting a renewal cannot amplify a different pressure front queued in the same sample / 48000
+PASS quarter chemical acoustic energy halves pressure amplitude / 48000
+PASS diagnostic limiter/launch/anti-lag labels cannot choose a recording or invent pulses / 48000
+PASS seed changes turbulent detail / 48000
+PASS no chemical acoustic funding gives exact silence / 48000
+PASS steady pressure funds combustion without another shock per integration tick / 48000
+PASS finite fuel-funded tail retires to silence / 48000
+PASS zero warmed sample/event allocations or pressure-pulse overflow / 48000
+PASS clear removes all source history / 48000
+PASS first reaction and first samples allocate nothing after hardware construction / 192000
+PASS deterministic finite live source / 192000
+PASS same-time packet subdivision retains energy and waveform / 192000
+PASS splitting a renewal cannot amplify a different pressure front queued in the same sample / 192000
+PASS quarter chemical acoustic energy halves pressure amplitude / 192000
+PASS diagnostic limiter/launch/anti-lag labels cannot choose a recording or invent pulses / 192000
+PASS seed changes turbulent detail / 192000
+PASS no chemical acoustic funding gives exact silence / 192000
+PASS steady pressure funds combustion without another shock per integration tick / 192000
+PASS finite fuel-funded tail retires to silence / 192000
+PASS zero warmed sample/event allocations or pressure-pulse overflow / 192000
+PASS clear removes all source history / 192000
+PASS hardware/fueling choose different preset-derived acoustic settings
+PASS silent wall modes retire to zero while the gas body still flows
+Checks: 124

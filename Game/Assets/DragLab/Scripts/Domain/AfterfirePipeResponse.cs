@@ -11,7 +11,15 @@ namespace DragLab.Domain
             readonly double b,a1,a2; double z1,z2;
             public Mode(double hz,double q,int rate)
             { double w=2*Math.PI*Math.Min(hz,rate*.4)/rate,alpha=Math.Sin(w)/(2*q),a=1+alpha;b=alpha/a;a1=-2*Math.Cos(w)/a;a2=(1-alpha)/a; }
-            public double Sample(double x){double y=b*x+z1;z1=-a1*y+z2;z2=-b*x-a2*y;return y;}
+            public double Sample(double x)
+            {
+                double y=b*x+z1;z1=-a1*y+z2;z2=-b*x-a2*y;
+                // A pressure-driven wall can become silent while the flame's
+                // noisy gas body continues. Retire inaudible filter remnants
+                // before subnormal arithmetic makes those silent modes costly.
+                if(Math.Abs(z1)+Math.Abs(z2)<1e-24)z1=z2=0;
+                return y;
+            }
             public void Clear(){z1=z2=0;}
         }
         readonly EngineSoundProfile profile;

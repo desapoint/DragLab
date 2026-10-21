@@ -21,21 +21,23 @@ namespace DragLab.Domain
         {
             public bool active;
             public double start;
-            readonly ReactivePressureBurst reaction;
+            readonly AfterfireLabSource reaction;
+            readonly AfterfireLabSettings hardware;
             readonly AfterfirePipeResponse pipe;
             double lastChemical,voiceGain;
             int frontId,path;
             public double WallSample {get;private set;}
             public double OutletSample {get;private set;}
+            public int PulseOverflows=>reaction.PulseOverflows;
             public Voice(EngineSoundProfile profile,int rate)
             {
-                reaction=new ReactivePressureBurst(rate,profile.popDecay,profile.popSharpness);
+                reaction=new AfterfireLabSource(rate);hardware=AfterfireLabSettings.Hardware(profile);
                 pipe=new AfterfirePipeResponse(profile,rate);
             }
             public void Begin(ExhaustMixtureModel.Event e,EngineSoundProfile profile)
             {
                 WallSample=OutletSample=0;active=true;start=lastChemical=e.time;frontId=e.frontId;path=e.zone;
-                reaction.Begin(e);pipe.Begin(e,Describe(e,profile).riseCutoff);
+                reaction.Begin(AfterfireLabSettings.Reaction(hardware,profile,e),e);pipe.Begin(e,Describe(e,profile).riseCutoff);
                 voiceGain=profile.popGain*.35;
             }
             public bool CanContinue(ExhaustMixtureModel.Event e) => active && frontId==e.frontId && path==e.zone && e.time>=lastChemical;
@@ -71,6 +73,7 @@ namespace DragLab.Domain
         public long TailSteals {get;private set;}
         public long Inaudible {get;private set;}
         public long ContinuedReactions {get;private set;}
+        public long PressurePulseOverflows {get {long count=0;foreach(var v in voices)count+=v.PulseOverflows;return count;} }
         public double LastWallSample {get;private set;}
         public double LastOutletSample {get;private set;}
         public AfterfireAudioSynth(EngineSoundProfile profile,int rate)

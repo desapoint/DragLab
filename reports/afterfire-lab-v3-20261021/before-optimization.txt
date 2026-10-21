@@ -1,0 +1,19 @@
+PASS every chemical event delivered once through unchanged frame / 44100
+PASS no event history overflow, pressure-pulse overflow or tail stealing in hot mixture / 44100
+PASS deterministic finite audible full pipeline / 44100
+PASS unchanged event history cannot retrigger / 44100
+PASS pause/resume cannot replay delivered events / 44100
+PASS runtime fuel mass conserved / 44100
+PASS zero warmed allocation in mixture tick plus full audio callback / 44100
+MEASURE 44100 / 367 stereo frames / hot mixture callback p95 4,9038 ms; max 6,7482 ms.
+PASS Editor hot-afterfire callback p95 below 60% of signal budget / 44100
+PASS every chemical event delivered once through unchanged frame / 48000
+PASS no event history overflow, pressure-pulse overflow or tail stealing in hot mixture / 48000
+PASS deterministic finite audible full pipeline / 48000
+PASS unchanged event history cannot retrigger / 48000
+PASS pause/resume cannot replay delivered events / 48000
+PASS runtime fuel mass conserved / 48000
+PASS zero warmed allocation in mixture tick plus full audio callback / 48000
+MEASURE 48000 / 400 stereo frames / hot mixture callback p95 5,2180 ms; max 7,2341 ms.
+FAIL Editor hot-afterfire callback p95 below 60% of signal budget / 48000
+Checks: 16

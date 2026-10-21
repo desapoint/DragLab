@@ -1,0 +1,14 @@
+Actual 47-race production pipeline; legacy physical traces remain unchanged.
+MEASURE 03-i4-turbo-hiss callback p95 4,5258 ms; max 9,3267 ms / 400 stereo frames, budget 8.333 ms
+PASS 03-i4-turbo-hiss / ET unchanged / chemical 4022 / rendered reactions 4022 / pressure voices 58 / continued 3964 / BOV 3 / no drops or steals / peak 0,1553
+MEASURE 04-i4-twin-chirp callback p95 6,1715 ms; max 9,3794 ms / 400 stereo frames, budget 8.333 ms
+PASS 04-i4-twin-chirp / ET unchanged / chemical 4306 / rendered reactions 4306 / pressure voices 76 / continued 4230 / BOV 3 / no drops or steals / peak 0,1699
+MEASURE 14-i4-twincharged-dct callback p95 4,5822 ms; max 9,6589 ms / 400 stereo frames, budget 8.333 ms
+PASS 14-i4-twincharged-dct / ET unchanged / chemical 4122 / rendered reactions 4122 / pressure voices 57 / continued 4065 / BOV 3 / no drops or steals / peak 0,1532
+MEASURE 22-carb-soft-ignition callback p95 2,1514 ms; max 5,0279 ms / 400 stereo frames, budget 8.333 ms
+PASS 22-carb-soft-ignition / ET unchanged / chemical 32358 / rendered reactions 32358 / pressure voices 32 / continued 32326 / BOV 0 / no drops or steals / peak 0,3707
+MEASURE 26-launch-hard-ignition callback p95 4,0909 ms; max 8,8972 ms / 400 stereo frames, budget 8.333 ms
+PASS 26-launch-hard-ignition / ET unchanged / chemical 5387 / rendered reactions 5387 / pressure voices 54 / continued 5333 / BOV 2 / no drops or steals / peak 0,1553
+MEASURE 46-tires-slick-ramp callback p95 2,9255 ms; max 6,8874 ms / 400 stereo frames, budget 8.333 ms
+PASS 46-tires-slick-ramp / ET unchanged / chemical 16832 / rendered reactions 16832 / pressure voices 35 / continued 16797 / BOV 0 / no drops or steals / peak 0,3612
+PASS all 6 real race pipelines

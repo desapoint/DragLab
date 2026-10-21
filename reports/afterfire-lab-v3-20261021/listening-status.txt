@@ -1,0 +1,10 @@
+Windows Development build: PASS (Unity CLI source gates + PlayerBuild).
+Runtime Assembly-CSharp.dll SHA256: AF1331743D6D0A59B65C4A0058C039519527E4FF18DC25E6DBCF603778D023DD
+Live game PID: 42460
+Fixture: reports/player-fixtures/live-audio-20261021-120945-713
+Normal-speed engine-only Tempest audition; player remains available for review.
+Playback snapshot, not subjective acceptance or another completed packaged suite:
+1 / 1 · Tempest · two-step hard ignition cut · Petrol injection · Hard / Fuel cut · launch Hard / Ignition
+Finish / shutdown
+Tick 3378 / 4098
+Engine RMS 0,02545707 / tires 0 / rival 0

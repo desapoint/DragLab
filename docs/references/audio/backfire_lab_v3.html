@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>AFTERFIRE / Procedural Backfire Sound Lab</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0e12;--surface:#12171d;--surface2:#181e26;--line:#2b333e;--sub:#9da8b6;--text:#eef1f4;--accent:#ffad49;--accent2:#ff5e30;--cyan:#77cbd8;--track:#353f4b;--shadow:0 18px 70px #0007}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse 85% 35% at 68% -8%,#38231b55,transparent),var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);font-size:13px}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:3px}button{transition:transform .12s ease,border-color .15s ease,background .15s ease}button:active{transform:translateY(1px)}.app{max-width:1530px;margin:auto;padding:28px 32px 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:25px}.brand{display:flex;gap:14px;align-items:center}.logomark{width:52px;height:52px;border-radius:12px;border:1px solid #7b492e;background:linear-gradient(145deg,#4c2b1d,#201719);display:grid;place-items:center;color:var(--accent);font-size:30px;font-weight:900;box-shadow:inset 0 0 22px #ee552d20}.brand h1{margin:0;font-size:24px;letter-spacing:2.5px;line-height:1;font-weight:900}.brand h1 span{color:var(--accent)}.brand p{margin:6px 0 0;color:var(--sub);text-transform:uppercase;letter-spacing:2.3px;font-size:10px;font-weight:700}.top-right{display:flex;align-items:center;gap:12px}.status{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:#11161b;padding:10px 14px;border-radius:99px;color:#aab4c0;font-weight:800;font-size:10px;letter-spacing:1.3px;white-space:nowrap}.dot{width:7px;height:7px;background:#707986;border-radius:50%;box-shadow:0 0 0 3px #60697515}.status.on .dot{background:#89e7ae;box-shadow:0 0 10px #89e7ae75}.outline-btn{border:1px solid #444a51;background:#171c22;border-radius:8px;color:#e4e8ec;padding:10px 13px;font-weight:800;font-size:11px;letter-spacing:.7px}.outline-btn:hover{border-color:#b57948}.section-intro{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:0 0 13px}.section-intro h2{font-size:11px;margin:0;color:#f2be82;letter-spacing:2.1px;text-transform:uppercase}.section-intro span{color:#808d9c;font-size:11px}.presets{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:24px}.preset{background:linear-gradient(145deg,#171c23,#101419);border:1px solid var(--line);border-radius:10px;min-height:99px;text-align:left;padding:15px 14px;position:relative;overflow:hidden}.preset:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:transparent}.preset.selected{background:linear-gradient(135deg,#32251d,#171a1f);border-color:#b66c35}.preset.selected:before{background:var(--accent)}.preset:hover{border-color:#b27e53}.preset .preset-num{font-family:ui-monospace,monospace;color:#798594;font-size:10px;display:block;margin-bottom:12px}.preset.selected .preset-num{color:#ffc889}.preset strong{display:block;font-size:12px;font-weight:850;margin-bottom:5px}.preset small{display:block;color:#919dab;font-size:10px;line-height:1.4}.main-layout{display:grid;grid-template-columns:minmax(326px,.85fr) minmax(550px,1.65fr);align-items:start;gap:17px}.panel{border:1px solid var(--line);background:var(--surface);border-radius:12px;box-shadow:0 14px 35px #0002;overflow:hidden}.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:51px;padding:0 20px;border-bottom:1px solid var(--line);font-size:11px;font-weight:900;letter-spacing:1.8px;color:#f1d0a9;text-transform:uppercase}.panel-heading .meta{font-size:10px;color:#83909e;letter-spacing:1.1px;font-weight:700}.tab-group{padding:0 20px 15px}.subheading{display:flex;align-items:center;gap:11px;border-bottom:1px solid #2a313a;margin:24px 0 17px;padding:0 0 11px;color:#f0b36f;font-size:10px;letter-spacing:1.7px;font-weight:900;text-transform:uppercase}.subheading:before{content:"";width:5px;height:5px;transform:rotate(45deg);background:#e99455}.control{margin-bottom:17px}.control-top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:10px}.control label{font-size:12px;font-weight:650;color:#dfe5eb}.value{font-size:11px;color:var(--accent);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}.control input[type=range]{width:100%;accent-color:var(--accent);display:block;height:5px;cursor:ew-resize;appearance:none;border-radius:99px;background:linear-gradient(to right,#ffaa4f var(--fill,50%),#353f49 var(--fill,50%))}.control input[type=range]::-webkit-slider-thumb{appearance:none;border:2px solid #151a20;background:var(--accent);border-radius:50%;height:15px;width:15px;box-shadow:0 0 0 1px var(--accent)}.control input[type=range]::-moz-range-thumb{border:2px solid #151a20;background:var(--accent);border-radius:50%;height:12px;width:12px}.control-note{font-size:10px;color:#83909f;line-height:1.5;margin-top:5px}.right{display:flex;flex-direction:column;gap:17px}.stage{min-height:330px}.stage-top{display:flex;justify-content:space-between;padding:18px 22px 0;align-items:flex-start;gap:10px}.stage-title{font-size:10px;letter-spacing:1.8px;color:#91a0af;font-weight:900}.stage-title strong{color:#f1f4f8;font-size:20px;display:block;letter-spacing:.4px;margin-top:7px}.stage-meta{color:#9caab9;font-size:10px;line-height:1.8;text-align:right;font-family:ui-monospace,monospace}.stage-visual{position:relative;height:235px;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 51% 75%,#2d2021 0%,#161a20 41%,transparent 76%)}.stage-visual:before{content:"";position:absolute;inset:22px 0 0;opacity:.32;background:linear-gradient(#53607016 1px,transparent 1px),linear-gradient(90deg,#53607016 1px,transparent 1px);background-size:30px 30px;mask-image:linear-gradient(to bottom,transparent,#000 40%,transparent)}.halo{position:absolute;left:50%;top:55%;transform:translate(-50%,-50%);width:300px;height:180px;border-radius:100%;filter:blur(25px);background:radial-gradient(ellipse,#c355292c,transparent 70%);transition:background .1s}.exhaust{position:absolute;z-index:4;left:50%;top:62%;transform:translate(-50%,-50%);width:min(440px,90%);height:140px;overflow:visible;filter:drop-shadow(0 22px 13px #0009)}.flame{position:absolute;z-index:3;left:50%;top:61%;transform:translate(-50%,-50%) scaleX(.35);transform-origin:50% 50%;width:380px;height:90px;pointer-events:none;opacity:0;filter:blur(3px);border-radius:60% 45% 40% 60%;background:radial-gradient(ellipse at 54% 45%,#fffacf 0%,#ffedb2 14%,#ff9c32 35%,#ff5e1e 53%,#a02927aa 74%,transparent 83%)}.flame.one{margin-left:69px;margin-top:10px;clip-path:polygon(0 34%,100% 0,84% 50%,100% 100%,0 67%)}.flame.two{margin-left:-70px;margin-top:10px;clip-path:polygon(0 34%,100% 0,75% 50%,100% 100%,0 67%)}.fire .flame.one{animation:flareOne .30s ease-out both}.fire .flame.two{animation:flareTwo .24s ease-out both}.fire .halo{background:radial-gradient(ellipse,#e75c3a55,transparent 70%)}@keyframes flareOne{0%{opacity:0;transform:translate(-50%,-50%) scaleX(.12) scaleY(.4)}10%{opacity:.95}37%{opacity:.86;transform:translate(-50%,-50%) scaleX(.9) scaleY(1)}100%{opacity:0;transform:translate(-50%,-50%) scaleX(1.55) scaleY(.15)}}@keyframes flareTwo{0%{opacity:0;transform:translate(-50%,-50%) scaleX(.1)}16%{opacity:.8}45%{opacity:.95;transform:translate(-50%,-50%) scaleX(.85)}100%{opacity:0;transform:translate(-50%,-50%) scaleX(1.25)}}.fire-line{z-index:5;position:absolute;left:0;right:0;bottom:10px;text-align:center;font:10px ui-monospace,Consolas,monospace;color:#7e8893;letter-spacing:2px}.transport{padding:15px 20px 20px;display:flex;align-items:stretch;flex-wrap:wrap;gap:10px}.play-btn{border:1px solid #f1a553;background:linear-gradient(#ffb55b,#f49240);color:#27180f;border-radius:8px;min-height:49px;padding:0 24px;font-weight:950;font-size:12px;letter-spacing:1.1px;box-shadow:0 3px 16px #e6743024}.play-btn:hover{background:linear-gradient(#ffcf86,#ffaa53)}.dark-btn{background:#242c35;border:1px solid #3d4652;color:#ecf0f4;border-radius:8px;min-height:49px;padding:0 15px;font-size:11px;letter-spacing:.7px;font-weight:850}.dark-btn:hover{background:#303a45}.dark-btn.active{border-color:#9de2b8;color:#a3e6bd;background:#1a3128}.transport .spacer{flex:1}.statrow{display:flex;gap:10px;flex-wrap:wrap;padding:0 20px 20px}.stat{background:#0e1319;border:1px solid #27313b;border-radius:8px;min-width:120px;flex:1;padding:12px}.stat b{display:block;color:#e7ecef;font:800 17px ui-monospace,Consolas,monospace}.stat small{color:#8793a0;font-size:9px;letter-spacing:1.15px;font-weight:850;text-transform:uppercase}.scope-holder{padding:16px 20px 18px}.scope-labels{display:flex;justify-content:space-between;align-items:center;color:#8e9daa;font:10px ui-monospace,Consolas,monospace;margin-bottom:9px}.scope-plot{height:157px;background:linear-gradient(180deg,#10161b,#0b1117);border:1px solid #2a343e;border-radius:7px;overflow:hidden;position:relative}.scope-plot canvas{width:100%;height:100%;display:block}.spectrum{height:80px;margin-top:9px}.timing-content{padding:17px 20px}.timing-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}.select-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 17px}.select-row label{font-weight:700;font-size:12px;color:#dce2e8}.select-row select,.export-row select{background:#0e141a;border:1px solid #3a4651;color:#f2f4f6;border-radius:7px;padding:9px 28px 9px 12px;font-size:11px}.toggle-row{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid var(--line);padding:15px 0 0}.toggle-row .hint{color:#8090a0;font-size:10px;margin-top:4px}.toggle-switch{position:relative;width:42px;height:24px;flex-shrink:0}.toggle-switch input{opacity:0;width:0;height:0}.toggle-slider{position:absolute;inset:0;border-radius:99px;background:#36414e;cursor:pointer;transition:background .15s}.toggle-slider:after{position:absolute;content:"";height:18px;width:18px;background:#e9eef1;border-radius:50%;left:3px;top:3px;transition:transform .15s}.toggle-switch input:checked+.toggle-slider{background:#d58c40}.toggle-switch input:checked+.toggle-slider:after{transform:translateX(18px)}.export-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}.export-row .export-btn{margin-left:auto;min-height:39px}.footer-note{color:#87919e;font-size:11px;line-height:1.7;padding:12px 4px}.footer-note strong{color:#c8d2db}.message{color:#d5b991;font-size:11px;min-height:18px;padding:0 3px}.divider{margin:0;border:0;border-top:1px solid #2b343e}.meter{height:3px;background:#29313c;margin-top:10px;overflow:hidden;border-radius:4px}.meter span{display:block;background:linear-gradient(90deg,#c07832,#ffbd67);width:0%;height:100%;transition:width .07s}.no-select{user-select:none}@media(max-width:1100px){.main-layout{grid-template-columns:320px 1fr}.presets{grid-template-columns:repeat(5,minmax(0,1fr))}.app{padding:24px 17px}}@media(max-width:850px){.main-layout{grid-template-columns:1fr}.presets{grid-template-columns:repeat(3,minmax(0,1fr))}.timing-grid{grid-template-columns:1fr 1fr}}@media(max-width:530px){.app{padding:19px 11px}.brand h1{font-size:18px}.brand p{font-size:8px}.logomark{width:42px;height:42px}.top-right .outline-btn{display:none}.presets{grid-template-columns:repeat(2,minmax(0,1fr))}.preset{min-height:87px}.stage-visual{height:206px}.play-btn{flex:1;min-width:100%}.transport .dark-btn{flex:1}.timing-grid{grid-template-columns:1fr}.panel-heading{padding:0 14px}.scope-holder,.timing-content{padding:15px 13px}.statrow,.transport{padding-left:13px;padding-right:13px}.stage-top{padding-left:13px;padding-right:13px}.export-row .export-btn{margin-left:0;flex:1}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+  <div class="brand"><div class="logomark">≋</div><div><h1>AFTER<span>FIRE</span> LAB</h1><p>Procedural combustion audio synthesizer / V1.0</p></div></div>
+  <div class="top-right"><span id="audioStatus" class="status"><i class="dot"></i> AUDIO STANDBY</span><button class="outline-btn" id="randomize">↝ RANDOMIZE</button></div>
+</header>
+<div class="section-intro"><h2>01 / Signature presets</h2><span>Choose an exhaust character, then shape every layer</span></div>
+<div class="presets" id="presets"></div>
+<div class="main-layout">
+ <aside class="panel">
+  <div class="panel-heading"><span>Sound architecture</span><button id="resetBtn" class="outline-btn" style="padding:6px 9px;font-size:9px">RESET PRESET</button></div>
+  <div id="soundControls" class="tab-group"></div>
+ </aside>
+ <div class="right">
+  <section class="panel stage" id="stage">
+   <div class="stage-top"><div class="stage-title">LIVE COMBUSTION STAGE<strong id="activeTitle">Street V8 Afterfire</strong></div><div class="stage-meta">ENGINE / EXHAUST<br><span id="stageDetails">3200 RPM · OPEN SYSTEM</span></div></div>
+   <div class="stage-visual" id="visual">
+     <div class="halo"></div><div class="flame one"></div><div class="flame two"></div>
+     <svg class="exhaust" viewBox="0 0 440 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs><linearGradient id="pipe" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5d6a74"/><stop offset=".22" stop-color="#303a45"/><stop offset=".55" stop-color="#0e1219"/><stop offset=".8" stop-color="#4c5861"/><stop offset="1" stop-color="#141923"/></linearGradient><linearGradient id="rim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b2bbc5"/><stop offset=".5" stop-color="#53616b"/><stop offset="1" stop-color="#141920"/></linearGradient></defs>
+      <path d="M110 30 H320 Q337 30 337 47 V92 Q337 108 320 108 H110 Z" fill="#0f161c" stroke="#3a4651" stroke-width="3"/>
+      <path d="M111 45 H322 M111 92 H322" stroke="#54616c" opacity=".35" stroke-width="2"/>
+      <path d="M65 58 H160" stroke="url(#pipe)" stroke-width="43" stroke-linecap="round"/><path d="M282 80 H374" stroke="url(#pipe)" stroke-width="43" stroke-linecap="round"/>
+      <ellipse cx="62" cy="58" rx="19" ry="24" fill="url(#rim)"/><ellipse cx="62" cy="58" rx="13" ry="19" fill="#070b10" stroke="#252f37" stroke-width="2"/><ellipse cx="377" cy="80" rx="19" ry="24" fill="url(#rim)"/><ellipse cx="377" cy="80" rx="13" ry="19" fill="#070b10" stroke="#252f37" stroke-width="2"/>
+      <path d="M110 38 H322" stroke="#7c8b95" stroke-width="2" opacity=".5"/><path d="M110 100 H322" stroke="#11171d" stroke-width="4"/><path d="M148 31 v76 M290 31 v76" stroke="#46515d" stroke-width="2" stroke-dasharray="2 4"/>
+      <text x="218" y="67" fill="#82909c" font-size="10" font-family="monospace" font-weight="700" letter-spacing="2" text-anchor="middle">EXHAUST</text><text x="218" y="84" fill="#4f5e69" font-size="9" font-family="monospace" letter-spacing="2" text-anchor="middle">SIGNAL PATH</text>
+     </svg>
+     <div class="fire-line">V3 · SMOOTH BAND-LIMITED COMBUSTION · 2× OVERSAMPLING</div>
+   </div>
+   <div class="transport"><button class="play-btn" id="fireBurst">▶ FIRE BURST</button><button class="dark-btn" id="singlePop">ONE EXPLOSION</button><button class="dark-btn" id="loopBtn">⟳ START LOOP</button><div class="spacer"></div><button class="dark-btn" id="stopBtn" title="Stop scheduled explosions">■ STOP</button></div>
+   <div class="statrow"><div class="stat"><b id="counter">000</b><small>Pops triggered</small></div><div class="stat"><b id="readoutPattern">DOUBLE</b><small>Burst pattern</small></div><div class="stat"><b id="readoutTiming">110 ms</b><small>Pulse spacing</small></div><div class="stat"><b id="readoutRuntime">READY</b><small>Engine state</small><div class="meter"><span id="activity"></span></div></div></div>
+  </section>
+  <section class="panel"><div class="panel-heading"><span>Acoustic analysis</span><span class="meta">GENERATED WAVEFORM / FREQUENCY</span></div><div class="scope-holder"><div class="scope-labels"><span>COMBINED PRESSURE SIGNATURE</span><span id="lengthLabel">0.85 SECONDS</span></div><div class="scope-plot"><canvas id="wave" aria-label="Procedurally synthesized pressure waveform"></canvas></div><div class="scope-plot spectrum"><canvas id="spectrum" aria-label="Frequency response preview"></canvas></div><div class="scope-labels" style="margin:8px 2px 0"><span>60 Hz</span><span>350 Hz</span><span>2 kHz</span><span>13 kHz</span></div></div></section>
+  <section class="panel"><div class="panel-heading"><span>Pulse sequencer</span><span class="meta">BURST TIMING ENGINE</span></div><div class="timing-content"><div class="select-row"><label for="pattern">Firing character</label><select id="pattern"><option value="even">Even / consistent</option><option value="paired">Paired doubles</option><option value="scatter">Irregular scatter</option><option value="machine">Machine-gun / two-step</option><option value="descending">Decelerating</option></select></div><div id="timingControls" class="timing-grid"></div><div class="toggle-row"><div><strong>Synchronize pulse spacing to RPM</strong><div class="hint">Override spacing using crankshaft revolution timing</div></div><label class="toggle-switch"><input id="rpmSync" type="checkbox"/><span class="toggle-slider"></span></label></div><div class="export-row"><label style="font-size:11px;font-weight:800">RENDER LENGTH</label><select id="duration"><option value="3">3 seconds</option><option value="6" selected>6 seconds</option><option value="10">10 seconds</option><option value="20">20 seconds</option></select><label for="quality" style="font-size:11px;font-weight:800">QUALITY</label><select id="quality"><option value="48000-24" selected>48 kHz / 24-bit</option><option value="96000-24">96 kHz / 24-bit</option><option value="44100-16">44.1 kHz / 16-bit</option></select><button class="dark-btn export-btn" id="exportBtn">↓ EXPORT WAV</button></div><p class="message" role="status" aria-live="polite" id="message"></p></div></section>
+ </div>
+</div>
+<footer class="footer-note"><strong>Headphone warning:</strong> Explosive transients can be loud. Start with your system volume low. The V3 engine uses 2× oversampled, band-limited turbulent pressure and a clean nonperiodic shock front. No audio recordings, libraries, or network access are required. Playback and WAV export share the procedural engine.</footer>
+</div>
+<script>
+'use strict';
+/* AFTERFIRE LAB V3: sample-free, non-tonal backfire transient synthesizer.
+   Components: solitary shockfront, stochastic pressure body, broad exhaust filtering,
+   combustion crackle, gas release, and short diffused reflections.
+   All sounds are rendered Float32 PCM, identical for playback and WAV export. */
+const $ = id => document.getElementById(id);
+const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
+const defaults = {
+ level:65, crack:79, edge:78, pulse:4.8, thump:84, size:76, bark:75,
+ tube:53, tune:350, decay:245, jet:12, flameTime:130, scatter:18,
+ width:32, space:16, smooth:72, air:47, rpm:3200, count:2, spacing:110, jitter:15,
+ variation:20, loopGap:1150, pattern:'paired', rpmSync:false
+};
+const presets = [
+ {name:'Street V8 Afterfire',small:'Dry blast · heavy pressure',...defaults},
+ {name:'Old-School Carb',small:'Dirty, broad slow doubles',crack:65,edge:63,pulse:7,thump:90,size:92,bark:85,tube:68,tune:235,decay:330,jet:7,flameTime:90,scatter:30,width:28,space:20,rpm:2400,count:3,spacing:180,jitter:38,variation:33,loopGap:1600,pattern:'descending',level:63},
+ {name:'Rally Anti-Lag',small:'Violent, tight firing clusters',crack:96,edge:93,pulse:2.6,thump:72,size:58,bark:75,tube:68,tune:565,decay:125,jet:52,flameTime:100,scatter:58,width:50,space:12,rpm:5300,count:7,spacing:62,jitter:12,variation:34,loopGap:1200,pattern:'scatter',level:67},
+ {name:'Turbo Pop & Flame',small:'Punch with hot-gas release',crack:83,edge:80,pulse:3.7,thump:61,size:55,bark:59,tube:80,tune:710,decay:290,jet:72,flameTime:370,scatter:30,width:48,space:23,rpm:4500,count:3,spacing:95,jitter:15,variation:25,loopGap:1350,pattern:'paired',level:60},
+ {name:'Shotgun Single',small:'Maximum crack · one big hit',crack:100,edge:100,pulse:2.0,thump:100,size:74,bark:88,tube:42,tune:315,decay:180,jet:9,flameTime:120,scatter:5,width:28,space:24,rpm:2800,count:1,spacing:140,jitter:0,variation:7,loopGap:1300,pattern:'even',level:69},
+ {name:'Two-Step Limiter',small:'Rapid rhythmic detonations',crack:91,edge:87,pulse:2.8,thump:65,size:56,bark:70,tube:38,tune:480,decay:105,jet:26,flameTime:130,scatter:20,width:37,space:7,rpm:5000,count:9,spacing:55,jitter:2,variation:13,loopGap:850,pattern:'machine',level:59},
+ {name:'Crackle Tune',small:'Small secondary fuel ignitions',crack:70,edge:82,pulse:2.4,thump:34,size:34,bark:48,tube:37,tune:780,decay:82,jet:20,flameTime:90,scatter:88,width:30,space:9,rpm:3400,count:8,spacing:100,jitter:45,variation:48,loopGap:1500,pattern:'scatter',level:55},
+ {name:'Exhaust Cannon',small:'Large blast · loose low end',crack:76,edge:60,pulse:9.5,thump:100,size:100,bark:95,tube:87,tune:185,decay:500,jet:9,flameTime:130,scatter:10,width:65,space:39,rpm:2200,count:2,spacing:240,jitter:20,variation:17,loopGap:1900,pattern:'paired',level:66},
+ {name:'High-RPM Naturally Aspirated',small:'Sharp, short open-pipe pops',crack:88,edge:90,pulse:2.6,thump:43,size:24,bark:61,tube:78,tune:1030,decay:118,jet:5,flameTime:65,scatter:16,width:44,space:14,rpm:7700,count:4,spacing:65,jitter:8,variation:15,loopGap:1100,pattern:'descending',level:62},
+ {name:'Big-Block Drag Car',small:'Brutal slow combustion punches',crack:85,edge:71,pulse:7.5,thump:100,size:100,bark:100,tube:72,tune:255,decay:390,jet:18,flameTime:180,scatter:23,width:55,space:16,rpm:3900,count:3,spacing:132,jitter:25,variation:28,loopGap:1250,pattern:'paired',level:65}
+];
+const soundGroups = [
+ {heading:'01 / Ignition transient',items:[
+  ['level','Output level',0,100,1,'%','Overall explosion loudness'],
+  ['crack','Ignition crack',0,100,1,'%','Sharp, broadband detonation attack'],
+  ['edge','Transient sharpness',0,100,1,'%','Shorter, brighter leading-edge shock'],
+  ['pulse','Shock pulse width',1,15,.1,'ms','Combustion pressure impulse duration']]},
+ {heading:'02 / Pressure & exhaust',items:[
+  ['thump','Pressure / sub impact',0,100,1,'%','Low-frequency pressure displacement'],
+  ['size','Pressure body size',0,100,1,'%','Larger volume gives a deeper, broader pressure front'],
+  ['bark','Exhaust bark',0,100,1,'%','Midrange impact and rough pressure turbulence'],
+  ['tube','Exhaust body coloration',0,100,1,'%','Broad, damped pipe coloration; no musical resonance'],
+  ['tune','Exhaust filter center',120,1350,5,'Hz','Wide-band acoustic focus; does not set a tone'],
+  ['decay','Pressure decay',55,620,5,'ms','Short irregular boom tail, not a ringing note']]},
+ {heading:'03 / Flame & environment',items:[
+  ['jet','Flame jet / turbulence',0,100,1,'%','Noisy flow of hot gas following the blast'],
+  ['flameTime','Flame jet duration',40,650,5,'ms','Length of the exhaust gas burst'],
+  ['scatter','Secondary micro-ignitions',0,100,1,'%','Small chaotic crackles following each explosion'],
+  ['width','Stereo separation',0,100,1,'%','Tiny channel delays and asymmetric reflections'],
+  ['space','Outdoor reflections',0,100,1,'%','Slap-back from surrounding surfaces']]},
+ {heading:'04 / Sound texture',items:[
+  ['smooth','Turbulence smoothness',0,100,1,'%','Removes high-frequency grit without softening the initial blast'],
+  ['air','High-end crack detail',0,100,1,'%','Fine crackle energy from filtered noise, not digital fizz']]}
+];
+const timingMeta = [
+ ['rpm','Engine RPM',700,9500,50,'RPM'],
+ ['count','Explosions / burst',1,12,1,''],
+ ['spacing','Pulse interval',30,400,5,'ms'],
+ ['jitter','Timing instability',0,90,1,'ms'],
+ ['variation','Hit-to-hit variation',0,100,1,'%'],
+ ['loopGap','Loop interval',300,3000,50,'ms']
+];
+let state = {...defaults}, activePreset=0, dirty=false;
+let context=null, master=null, dynamics=null, looping=false, nextGroup=0, schedulerId=0;
+let renderedCounter=0, visualTimer=null, lastWaveform=null, previewTimer=0;
+const playingNodes=new Set();
+const outputRate=48000;
+function rng(seed){let x=seed>>>0;return ()=>{x+=0x6D2B79F5;let t=x;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+function fmt(v,unit){return (Number.isInteger(+v)?Number(v).toString():Number(v).toFixed(1))+(unit?(' '+unit):'');}
+function makeSlider(parent,m){const [key,label,min,max,step,unit,note]=m;
+ const div=document.createElement('div');div.className='control';
+ div.innerHTML=`<div class="control-top"><label for="ctrl-${key}">${label}</label><span class="value" id="val-${key}"></span></div><input type="range" id="ctrl-${key}" min="${min}" max="${max}" step="${step}"/><div class="control-note">${note||''}</div>`;
+ parent.appendChild(div);const input=div.querySelector('input');input.addEventListener('input',()=>{state[key]=Number(input.value);dirty=true;updateSlider(key);refreshReadouts();queuePreview();});
+ input.addEventListener('change',()=>queuePreview());return {key,input,min,max,unit};
+}
+const sliders=[];
+function buildUI(){
+ const p=$('presets');presets.forEach((pr,i)=>{const b=document.createElement('button');b.className='preset';b.type='button';b.innerHTML=`<span class="preset-num">PROFILE ${String(i+1).padStart(2,'0')}</span><strong>${pr.name}</strong><small>${pr.small}</small>`;b.onclick=()=>selectPreset(i);p.appendChild(b);});
+ for(const group of soundGroups){const h=document.createElement('div');h.className='subheading';h.textContent=group.heading;$('soundControls').appendChild(h);group.items.forEach(m=>sliders.push(makeSlider($('soundControls'),m)));}
+ timingMeta.forEach(m=>sliders.push(makeSlider($('timingControls'),m)));
+ $('pattern').addEventListener('change',e=>{state.pattern=e.target.value;refreshReadouts();});
+ $('rpmSync').addEventListener('change',e=>{state.rpmSync=e.target.checked;refreshReadouts();});
+ $('fireBurst').addEventListener('click',()=>fire(false));$('singlePop').addEventListener('click',()=>fire(true));
+ $('loopBtn').addEventListener('click',toggleLoop);$('stopBtn').addEventListener('click',stopAll);
+ $('resetBtn').addEventListener('click',()=>selectPreset(activePreset));
+ $('randomize').addEventListener('click',randomize);
+ $('exportBtn').addEventListener('click',exportWav);
+ document.addEventListener('keydown',e=>{if(e.repeat||e.altKey||e.ctrlKey||e.metaKey)return;const tag=e.target?.tagName;if(['INPUT','SELECT','TEXTAREA','BUTTON'].includes(tag))return;if(e.code==='Space'){e.preventDefault();fire(false);}else if(e.code==='Escape'){stopAll();}});
+ window.addEventListener('resize',()=>{if(lastWaveform)drawGraphs(lastWaveform);});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden&&looping){stopLoop();message('Loop paused because this tab is hidden.');}});
+ selectPreset(0);
+}
+function updateSlider(key){const info=sliders.find(s=>s.key===key);if(!info)return;const v=state[key],pct=100*(v-info.min)/(info.max-info.min);info.input.value=v;info.input.style.setProperty('--fill',pct.toFixed(2)+'%');$('val-'+key).textContent=fmt(v,info.unit);}
+function selectPreset(i){activePreset=i;const preset=presets[i];state={...defaults,...preset};dirty=false;
+ sliders.forEach(s=>updateSlider(s.key));$('pattern').value=state.pattern;$('rpmSync').checked=state.rpmSync;
+ [...$('presets').children].forEach((node,k)=>node.classList.toggle('selected',k===i));
+ $('activeTitle').textContent=preset.name;refreshReadouts();queuePreview();message('Loaded '+preset.name+'.');
+}
+function refreshReadouts(){const sync=state.rpmSync?Math.round(120000/state.rpm):state.spacing;
+ $('readoutPattern').textContent=({even:'EVEN',paired:'DOUBLES',scatter:'SCATTER',machine:'TWO-STEP',descending:'OVER-RUN'})[state.pattern]||'CUSTOM';
+ $('readoutTiming').textContent=sync+' ms';$('stageDetails').textContent=state.rpm+' RPM · '+(state.rpmSync?'RPM-SYNC':'CUSTOM FIRING');}
+function randomize(){const r=rng((Math.random()*0xffffffff)>>>0);for(const s of sliders){if(['count','rpm','loopGap','level'].includes(s.key))continue;
+ const drift=(s.max-s.min)*(.08+.23*r())*(r()<.5?-1:1);state[s.key]=clamp(Math.round((state[s.key]+drift)/Number(s.input.step))*Number(s.input.step),s.min,s.max);updateSlider(s.key);}
+ dirty=true;refreshReadouts();queuePreview();message('Parameters randomized. Preset retained as starting point.');}
+function message(text){$('message').textContent=text;}
+function createContext(){if(!context){const AC=window.AudioContext||window.webkitAudioContext;if(!AC){throw Error('This browser does not support Web Audio.');}
+ context=new AC({latencyHint:'interactive'});master=context.createGain();master.gain.value=.80;
+ dynamics=context.createDynamicsCompressor();dynamics.threshold.value=-10;dynamics.knee.value=10;dynamics.ratio.value=7;dynamics.attack.value=.001;dynamics.release.value=.13;
+ master.connect(dynamics);dynamics.connect(context.destination);}
+ if(context.state==='suspended')context.resume();$('audioStatus').classList.add('on');$('audioStatus').innerHTML='<i class="dot"></i> AUDIO ACTIVE';return context;}
+// V3: oversampled, non-tonal gas-pressure and combustion synthesis.
+// The impact front is nonperiodic; broadband turbulent gas flow is generated
+// with cascaded low-pass bands instead of exposed sample-to-sample white noise.
+// A windowed-sinc anti-alias filter protects the downsampling stage.
+// "Smoothness" shapes ONLY turbulent bands; it does not blunt the shock front.
+const decimationKernel=(()=>{
+ const radius=16,cutoff=.215,k=[];let sum=0;
+ for(let i=-radius;i<=radius;i++){
+  const x=i/radius,window=.42+.5*Math.cos(Math.PI*x)+.08*Math.cos(2*Math.PI*x);
+  const coeff=(i===0?2*cutoff:Math.sin(2*Math.PI*cutoff*i)/(Math.PI*i))*window;
+  k.push(coeff);sum+=coeff;
+ }
+ return Float32Array.from(k,v=>v/sum);
+})();
+function renderPop(p,sr,seed,hitGain=1){
+ const random=rng(seed),noise=()=>random()*2-1;
+ const size=p.size*.01,edge=p.edge*.01,crack=p.crack*.01;
+ const thump=p.thump*.01,bark=p.bark*.01,tube=p.tube*.01;
+ const jet=p.jet*.01,scatter=p.scatter*.01;
+ const smooth=clamp((p.smooth??72)*.01,0,1),airDetail=clamp((p.air??47)*.01,0,1);
+ const period=p.pulse*.001,decay=p.decay*.001,jetDecay=p.flameTime*.001;
+ const duration=clamp(Math.max(.38,decay*3.0,jetDecay*2.8)+.14+p.space*.0014,.48,2.6);
+ const len=Math.ceil(duration*sr),os=sr>=92000?1:2,fs=sr*os;
+ const internalLength=len*os;
+ const mono=new Float32Array(internalLength),left=new Float32Array(len),right=new Float32Array(len);
+ const pi2=2*Math.PI;
+ const coeff=hz=>1-Math.exp(-pi2*Math.min(hz,fs*.40)/fs);
+ // Four cascaded two-pole lowpasses build correlated octave-spanning noise.
+ // There is no unfiltered white-noise component in the sustained pressure body.
+ const cutLow=90+size*52,cutChest=390+bark*170;
+ const cutMid=1400+airDetail*650;
+ const cutHigh=5000+(1-smooth)*4300+airDetail*700;
+ const al=coeff(cutLow),ac=coeff(cutChest),am=coeff(cutMid),ah=coeff(cutHigh);
+ const slowA=coeff(22),envA=coeff(75);
+ let l1=0,l2=0,c1=0,c2=0,m1=0,m2=0,h1=0,h2=0,slow=0,absMod=0;
+ const center=clamp(p.tune,120,1350);
+ const omega1=2*Math.sin(Math.PI*center/fs),omega2=2*Math.sin(Math.PI*Math.min(fs*.24,center*1.9)/fs);
+ let bp1=0,bp2=0,lo1=0,lo2=0;
+ const damp1=2.1,damp2=2.35; // broadband overdamped coloration, no pipe note
+ const secondary=[];
+ const count=Math.round(scatter*(2+6*random()));
+ for(let k=0;k<count;k++)secondary.push({
+  at:.014+Math.pow(random(),.8)*(.12+.17*scatter),
+  width:.0010+random()*(.0020+.004*(1-edge)),
+  level:(.045+.13*random())*(.35+.65*scatter)
+ });
+ const micro=new Float32Array(internalLength);
+ for(const e of secondary){
+  const first=Math.ceil(e.at*fs),last=Math.min(internalLength,Math.ceil((e.at+e.width*7)*fs));
+  for(let j=first;j<last;j++){
+   const x=(j/fs-e.at)/e.width;
+   micro[j]+=e.level*(1-x)*Math.exp(-1.75*x);
+  }
+ }
+ const followAt=.009+random()*.016,followAmp=.075+.12*random();
+ const shockAt=.0004+.0008*(1-edge);
+ const shockWidth=period*(.70+.55*size);
+ const followWidth=shockWidth*(.65+.25*random());
+ const rise=.000085+.00038*(1-edge);
+ const expCoef=tau=>Math.exp(-1/(fs*Math.max(.00001,tau)));
+ const dropCrack=expCoef(.0026+.008*(1-edge));
+ const dropBody=expCoef(decay*(.41+.20*size)+.012);
+ const dropBark=expCoef(decay*(.40+.16*bark)+.012);
+ const dropTail=expCoef(jetDecay*.55+.012);
+ const dropColour=expCoef(.034+decay*.18);
+ const dropDiffuse=expCoef(.028+.05*size);
+ const startBody=expCoef(.0022),startFlame=expCoef(.013);
+ let crackEnv=1,bodyEnv=1,barkEnv=1,tailEnv=1,colourEnv=1,diffuseEnv=1;
+ let bodyAttack=0,flameAttack=0,dcX=0,dcY=0;
+ const dcCoef=Math.exp(-pi2*17/fs);
+ const crackBand=(.26+.84*airDetail)*(.98-.40*smooth);
+ for(let i=0;i<internalLength;i++){
+  const t=i/fs,n=noise();
+  l1+=al*(n-l1);l2+=al*(l1-l2);
+  c1+=ac*(n-c1);c2+=ac*(c1-c2);
+  m1+=am*(n-m1);m2+=am*(m1-m2);
+  h1+=ah*(n-h1);h2+=ah*(h1-h2);
+  const low=l2*8.0;
+  const chest=(c2-l2)*5.2;
+  const middle=(m2-c2)*3.25;
+  const upper=(.70*h2+.30*h1-m2)*3.6;
+  slow+=slowA*(Math.abs(chest)-slow);
+  absMod+=envA*(Math.abs(middle)-absMod);
+  let front=0,second=0;
+  if(t>=shockAt){const dt=t-shockAt,x=dt/shockWidth;
+   front=(1-x)*Math.exp(-1.55*x)*(1-Math.exp(-dt/rise));}
+  if(t>=followAt){const dt=t-followAt,x=dt/followWidth;
+   second=followAmp*(1-x)*Math.exp(-1.55*x)*(1-Math.exp(-dt/rise));}
+  const shock=front+second+micro[i];
+  if(t>=shockAt)bodyAttack=1-(1-bodyAttack)*startBody;
+  if(t>=.004)flameAttack=1-(1-flameAttack)*startFlame;
+  const turbulence=.85+.15*Math.min(1.8,slow*2.8);
+  const sub=low*bodyEnv*bodyAttack*(.11+.26*thump)*(1+.32*size);
+  const boom=chest*bodyEnv*bodyAttack*(.11+.26*thump);
+  const barkNoise=(middle*.48+chest*.28)*barkEnv*bodyAttack*(.18+.70*bark)*turbulence;
+  const pipeInput=shock*.48+(middle*.38+chest*.22)*barkEnv;
+  const hi1=pipeInput-lo1-damp1*bp1;bp1+=omega1*hi1;lo1+=omega1*bp1;
+  const hi2=pipeInput-lo2-damp2*bp2;bp2+=omega2*hi2;lo2+=omega2*bp2;
+  const exhaustColour=(bp1*.65+bp2*.31)*(.07+.36*tube)*colourEnv;
+  const flow=(middle*.37+upper*.13+chest*.3)*tailEnv*flameAttack*jet*(.12+.35*absMod*3);
+  const breath=(middle*.43+upper*.48)*diffuseEnv*crackBand*1.7;
+  const highCrack=(upper*.95+middle*.40)*crackEnv*crackBand*(.24+1.35*crack);
+  const gasBody=sub+boom+barkNoise+exhaustColour+flow;
+  // Only the low/mid pressure body saturates; the crack retains an unclipped
+  // leading edge. Two-times internal rate protects the nonlinearity from aliasing.
+  const bodySat=Math.tanh(gasBody*1.35)*.71;
+  const raw=shock*(.48+.74*thump)+bodySat+breath+highCrack;
+  // DC block is gentle enough to preserve pressure fundamentals.
+  const high=raw-dcX+dcCoef*dcY;dcX=raw;dcY=high;
+  mono[i]=high;
+  crackEnv*=dropCrack;bodyEnv*=dropBody;barkEnv*=dropBark;
+  tailEnv*=dropTail;colourEnv*=dropColour;diffuseEnv*=dropDiffuse;
+ }
+ const processed=new Float32Array(len);
+ if(os===1){processed.set(mono);}
+ else {
+  const r=decimationKernel.length>>1;
+  for(let i=0;i<len;i++){
+   const center=i*os;let acc=0;
+   for(let k=-r;k<=r;k++){
+    const idx=center+k;
+    if(idx>=0&&idx<internalLength)acc+=mono[idx]*decimationKernel[k+r];
+   }
+   processed[i]=acc;
+  }
+ }
+ // Near-field spatial reflections, with frequency-dependent damping and
+ // per-event jitter (never a fixed comb filter or musical echo).
+ const leftShift=Math.round(p.width*.000006*sr),rightShift=Math.round(p.width*.000011*sr);
+ const refl=p.space*.01;
+ const d1=Math.round((.024+random()*.010)*sr),d2=Math.round((.047+random()*.020)*sr);
+ const d3=Math.round((.029+random()*.015)*sr),d4=Math.round((.060+random()*.025)*sr);
+ const at=k=>(k>=0&&k<len?processed[k]:0);
+ let peak=.001;
+ for(let i=0;i<len;i++)peak=Math.max(peak,Math.abs(processed[i]));
+ const gain=clamp(p.level*.01,0,1)*(.92/Math.max(.51,peak))*hitGain;
+ let r1=0,r2=0;
+ const reflA=coeff(1050),reflB=coeff(900);
+ for(let i=0;i<len;i++){
+  const a=at(i-leftShift),b=at(i-rightShift);
+  r1+=(at(i-d1)-r1)*reflA;r2+=(at(i-d3)-r2)*reflB;
+  left[i]=clamp((a+refl*(.20*r1+.045*at(i-d2)))*gain,-.995,.995);
+  right[i]=clamp((b+refl*(.18*r2+.045*at(i-d4)))*gain,-.995,.995);
+ }
+ return {left,right,length:len,seconds:duration};
+}
+function schedulePop(t,seed,gain=1,recordVisual=true){const sr=context.sampleRate;
+ const data=renderPop(state,sr,seed,gain);
+ const buffer=context.createBuffer(2,data.length,sr);buffer.copyToChannel(data.left,0);buffer.copyToChannel(data.right,1);
+ const node=context.createBufferSource();node.buffer=buffer;node.connect(master);playingNodes.add(node);
+ node.onended=()=>{playingNodes.delete(node);try{node.disconnect();}catch(e){}};node.start(t);
+ renderedCounter++;$('counter').textContent=String(renderedCounter).padStart(3,'0');
+ if(recordVisual){const delay=Math.max(0,(t-context.currentTime)*1000);setTimeout(()=>flash(gain),delay);}return data.seconds;}
+function flash(gain){const el=$('visual');el.classList.remove('fire');void el.offsetWidth;el.classList.add('fire');$('activity').style.width=clamp(gain*92,20,100)+'%';
+ clearTimeout(visualTimer);visualTimer=setTimeout(()=>{el.classList.remove('fire');$('activity').style.width='0%';},320);}
+function hitOffsets(p,seed){const r=rng(seed);const out=[];let t=0;
+ const spacing=p.rpmSync?clamp(120000/p.rpm,30,350):p.spacing;
+ for(let k=0;k<p.count;k++){
+  if(k>0){let delta=spacing;
+   switch(p.pattern){case 'paired':delta*=k%2? .64:1.66;break;case 'scatter':delta*=.44+r()*1.46;break;case 'machine':delta*=1;break;case 'descending':delta*=.68+k*.16;break;}
+   if(p.pattern!=='machine')delta+=(r()*2-1)*p.jitter;
+   t+=Math.max(.024,delta/1000);}
+  const gain=clamp(1+(r()*2-1)*p.variation/100*.7,.45,1.5);
+  out.push({t,gain,seed:(r()*0xffffffff)>>>0});}
+ return out;
+}
+function fire(single){try{createContext();const t=context.currentTime+.022;
+ if(single)schedulePop(t,(Math.random()*0xffffffff)>>>0);
+ else {const hits=hitOffsets(state,(Math.random()*0xffffffff)>>>0);for(const h of hits)schedulePop(t+h.t,h.seed,h.gain);}
+ $('readoutRuntime').textContent=looping?'LOOPING':'FIRED';message(single?'Generated one full layered backfire.':'Generated '+state.count+' timed combustion pulse'+(state.count>1?'s.':'.'));
+ }catch(err){message('Audio failed: '+err.message);console.error(err);}}
+function toggleLoop(){if(looping){stopLoop();return;}try{createContext();looping=true;nextGroup=context.currentTime+.04;$('loopBtn').classList.add('active');$('loopBtn').textContent='■ STOP LOOP';$('readoutRuntime').textContent='LOOPING';schedulerTick();schedulerId=setInterval(schedulerTick,80);message('Live pulse sequence running. Change any slider during playback.');}catch(err){message('Cannot start loop: '+err.message);}}
+function schedulerTick(){if(!looping||!context)return;const ahead=context.currentTime+.17;
+ let iter=0;while(nextGroup<ahead&&iter++<4){const hits=hitOffsets(state,(Math.random()*0xffffffff)>>>0);
+ for(const h of hits)schedulePop(nextGroup+h.t,h.seed,h.gain);
+ const lastOffset=hits.length?hits[hits.length-1].t:0;
+ nextGroup+=Math.max(state.loopGap/1000,lastOffset+.07);
+ if(nextGroup<context.currentTime)nextGroup=context.currentTime+.02;}}
+function stopLoop(){looping=false;clearInterval(schedulerId);schedulerId=0;$('loopBtn').classList.remove('active');$('loopBtn').textContent='⟳ START LOOP';$('readoutRuntime').textContent='READY';}
+function stopAll(){stopLoop();if(context){
+ const now=context.currentTime;master.gain.cancelScheduledValues(now);
+ master.gain.setValueAtTime(master.gain.value,now);master.gain.linearRampToValueAtTime(0,now+.012);
+ for(const node of playingNodes){try{node.stop(now+.015);}catch(e){}}
+ master.gain.setValueAtTime(0,now+.018);master.gain.linearRampToValueAtTime(.8,now+.065);
+ }message('All active and queued explosions stopped.');}
+function queuePreview(){clearTimeout(previewTimer);previewTimer=setTimeout(()=>{const data=renderPop(state,24000,15124311);lastWaveform=data;drawGraphs(data);$('lengthLabel').textContent=data.seconds.toFixed(2)+' SECONDS';},90);}
+function setupCanvas(can){const ratio=window.devicePixelRatio||1;const r=can.getBoundingClientRect();const w=Math.max(1,Math.round(r.width*ratio)),h=Math.max(1,Math.round(r.height*ratio));if(can.width!==w||can.height!==h){can.width=w;can.height=h;}const c=can.getContext('2d');return {c,w,h};}
+function drawGraphs(data){drawWaveform(data);drawSpectrum(data);}
+function drawWaveform(data){const {c,w,h}=setupCanvas($('wave'));c.clearRect(0,0,w,h);c.lineWidth=1;
+ const y0=h*.5;c.strokeStyle='#26323b';c.beginPath();for(let j=1;j<5;j++){const y=h*j/5;c.moveTo(0,y);c.lineTo(w,y);}for(let j=1;j<10;j++){const x=w*j/10;c.moveTo(x,0);c.lineTo(x,h);}c.stroke();
+ c.strokeStyle='#4e5c65';c.beginPath();c.moveTo(0,y0);c.lineTo(w,y0);c.stroke();
+ const a=data.left,b=data.right,step=a.length/w;
+ c.fillStyle='#e98f3c33';c.strokeStyle='#ffb76a';c.lineWidth=Math.max(1,w/850);
+ c.beginPath();const maxes=[];for(let x=0;x<w;x++){const from=Math.floor(x*step),to=Math.min(a.length,Math.max(from+1,Math.floor((x+1)*step)));let mi=1,ma=-1;
+ for(let i=from;i<to;i++){const v=(a[i]+b[i])*.5;if(v<mi)mi=v;if(v>ma)ma=v;}maxes.push([mi,ma]);const y=y0-ma*y0*.91;if(x===0)c.moveTo(x,y);else c.lineTo(x,y);}
+ for(let x=w-1;x>=0;x--)c.lineTo(x,y0-maxes[x][0]*y0*.91);c.closePath();c.fill();c.stroke();}
+function drawSpectrum(data){const {c,w,h}=setupCanvas($('spectrum'));c.clearRect(0,0,w,h);
+ c.strokeStyle='#26323c';c.lineWidth=1;c.beginPath();for(let i=1;i<5;i++){c.moveTo(0,h*i/5);c.lineTo(w,h*i/5);}for(let i=1;i<8;i++){c.moveTo(w*i/8,0);c.lineTo(w*i/8,h);}c.stroke();
+ // DFT of early attack; Welch-style window averaging of four 512-point frames.
+ const N=512,frames=[0,.012,.027,.05],bars=60,db=new Float32Array(bars),sr=data.length/data.seconds;
+ for(let f=0;f<frames.length;f++){const start=Math.floor(sr*frames[f]);for(let k=0;k<bars;k++){
+  const hz=60*Math.pow(13000/60,k/(bars-1));let re=0,im=0;
+  for(let i=0;i<N;i++){const at=start+i;if(at>=data.left.length)break;const win=.5-.5*Math.cos(2*Math.PI*i/(N-1));const s=data.left[at]*win;const phase=2*Math.PI*hz*i/sr;re+=s*Math.cos(phase);im-=s*Math.sin(phase);}
+  db[k]+=Math.sqrt(re*re+im*im)/N;
+ }}
+ const peak=Math.max(.015,...db)*1.18;
+ for(let k=0;k<bars;k++){const x=4+(w-8)*k/bars,bw=(w-8)/bars*.66;const n=clamp(Math.log(1+35*db[k]/peak)/Math.log(36),0,1);const bh=n*(h-9);
+ c.fillStyle=k<22?'#a95f34':k<44?'#e49447':'#ffbf6b';c.globalAlpha=.40+.55*n;c.fillRect(x,h-bh,bw,bh);}
+ c.globalAlpha=1;}
+function bytesFromStereo(a,b,sr,bits=24){
+ const count=Math.min(a.length,b.length),width=bits===24?3:2,stride=width*2;
+ const buffer=new ArrayBuffer(44+count*stride),dv=new DataView(buffer);
+ const chars=(offset,str)=>{for(let i=0;i<str.length;i++)dv.setUint8(offset+i,str.charCodeAt(i));};
+ chars(0,'RIFF');dv.setUint32(4,36+count*stride,true);chars(8,'WAVE');chars(12,'fmt ');dv.setUint32(16,16,true);
+ dv.setUint16(20,1,true);dv.setUint16(22,2,true);dv.setUint32(24,sr,true);dv.setUint32(28,sr*stride,true);
+ dv.setUint16(32,stride,true);dv.setUint16(34,bits,true);chars(36,'data');dv.setUint32(40,count*stride,true);
+ const dither=rng(78234421);const tiny=()=>dither()+dither()-1;
+ for(let i=0,off=44;i<count;i++){
+  for(let ch=0;ch<2;ch++){
+   const v=clamp(ch===0?a[i]:b[i],-1,1);
+   if(bits===24){
+    const quant=Math.max(-8388608,Math.min(8388607,Math.round(v*8388607+tiny())));
+    dv.setUint8(off,quant&255);dv.setUint8(off+1,(quant>>8)&255);dv.setUint8(off+2,(quant>>16)&255);
+   }else{dv.setInt16(off,clamp(Math.round(v*32767+tiny()),-32768,32767),true);}
+   off+=width;
+  }
+ }
+ return new Blob([buffer],{type:'audio/wav'});
+}
+async function exportWav(){
+ const button=$('exportBtn');button.disabled=true;button.textContent='RENDERING…';
+ const seconds=+$('duration').value,[hz,b]=String($('quality').value).split('-');
+ const sr=Number(hz),bits=Number(b),count=Math.ceil(sr*seconds);
+ const left=new Float32Array(count),right=new Float32Array(count);
+ try{
+  let t=.18,group=0,events=0;const p={...state},r=rng(31822026);
+  while(t<seconds&&group<250){
+   const hits=hitOffsets(p,(r()*0xffffffff)>>>0);
+   for(const h of hits){
+    const at=t+h.t;if(at>=seconds)break;
+    const sample=renderPop(p,sr,h.seed,h.gain),offset=Math.round(at*sr);
+    for(let j=0;j<sample.length&&offset+j<count;j++){
+     left[offset+j]+=sample.left[j];right[offset+j]+=sample.right[j];
+    }
+    events++;
+   }
+   const last=hits.length?hits[hits.length-1].t:0;
+   t+=Math.max(p.loopGap/1000,last+.07);group++;
+   if(group%2===0){message('Rendering '+sr/1000+' kHz WAV … '+Math.round(Math.min(100,t/seconds*100))+'%');await new Promise(resolve=>setTimeout(resolve,0));}
+  }
+  // Whole-file gain guard avoids crunchy nonlinear clipping when a rapid
+  // cluster has overlapping bursts. Individual hits retain their dynamics.
+  let peak=.001;
+  for(let i=0;i<count;i++)peak=Math.max(peak,Math.abs(left[i]),Math.abs(right[i]));
+  const safeGain=Math.min(1,.96/peak);
+  if(safeGain<1){for(let i=0;i<count;i++){left[i]*=safeGain;right[i]*=safeGain;}}
+  const blob=bytesFromStereo(left,right,sr,bits),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;
+  a.download='afterfire-v3-'+presets[activePreset].name.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-'+seconds+'s-'+sr+'hz-'+bits+'bit.wav';
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+  message(`Exported ${seconds}s stereo ${bits}-bit / ${(sr/1000).toFixed(1)} kHz PCM WAV (${events} explosions).`);
+ }catch(e){message('WAV export error: '+e.message);console.error(e);}
+ finally{button.disabled=false;button.textContent='↓ EXPORT WAV';}
+}
+buildUI();
+</script>
+</body>
+</html>

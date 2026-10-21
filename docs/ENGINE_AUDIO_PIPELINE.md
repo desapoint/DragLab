@@ -436,3 +436,23 @@ keeps its source/seed/inputs and supplies -9 / -15 dB intake-only gain compariso
 the engine bed is not turned down. [Review protocol](../reports/intake-levels-20261020/CHANGES.md).
 Prior RMS matching was diagnostic, not an approved production balance. Listening
 approval and runtime integration remain pending.
+
+### User-supplied V3 backfire core (2026-10-21)
+
+The user supplied `backfire_lab_v3.html`, approved applying its behavior, and
+asked that its presets guide engine/exhaust calibration. The original is kept
+verbatim under [audio references](references/audio/README.md). The streaming
+`AfterfireLabSource` replaces only the live afterfire source. It retains the lab's
+pressure shock, correlated noise bands, broad damped colour and oversampled
+anti-alias processing; all ten presets are numerical comparison references.
+
+Hardware chooses/blends acoustic settings; actual pressure, reacting volume,
+temperature, burn duration and flow refine the source. No demo firing sequence,
+mode-flag trigger, automatic secondary ignition train, file-level normalization
+or second outdoor reverb is added to gameplay. Actual flame/zone events fund
+the live pressure and combustion body. Installed paths, wall vibration,
+turbine transfer and trackside propagation still follow the source.
+
+The engine bed, injection/wear/cuts, induction/BOV, tires, physical chemistry and
+resource ownership are unchanged. [V3 checkpoint and verification](../reports/afterfire-lab-v3-20261021/CHANGES.md)
+track technical delivery separately from the requested Tempest listening review.
