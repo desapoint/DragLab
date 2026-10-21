@@ -72,6 +72,10 @@ namespace DragLab.Domain
         readonly double[] squealLevel=new double[4],rubberMix=new double[4],squealMix=new double[4];
         readonly uint[] random={0x28a7c5u,0x37ac51u,0x9df85u,0x982ddfu};
         double gain;
+#if UNITY_EDITOR
+        public Action<int,double[],double[],double> Audit;
+        readonly double[] auditLeft=new double[4],auditRight=new double[4];
+#endif
         public void Fill(float[] data,int channels,int rate,TireSoundFrame frame,double master=1)
         {
             if(rate<=0||channels<=0||frame==null){Clear();Array.Clear(data,0,data.Length);return;}
@@ -125,9 +129,15 @@ namespace DragLab.Domain
                     double voice=(rubber+squeal)*(1+texture[w]*.8)*.24*level[w];
                     // Contacts are FL, FR, RL, RR: stereo follows the car side, not its axle.
                     double pan=w%2==0?-.12:.12;left+=voice*(1-pan);right+=voice*(1+pan);
+#if UNITY_EDITOR
+                    auditLeft[w]=voice*(1-pan);auditRight[w]=voice*(1+pan);
+#endif
                 }
                 gain+=(target-gain)*masterSmooth;
                 if(Math.Abs(gain-target)<1e-7)gain=target;
+#if UNITY_EDITOR
+                Audit?.Invoke(n/channels,auditLeft,auditRight,gain);
+#endif
                 for(int c=0;c<channels;c++) {
                     double value=channels==1?(left+right)*.5:c%2==0?left:right;
                     data[n+c]=(float)(value/(1+Math.Abs(value))*gain);

@@ -44,6 +44,9 @@ namespace DragLab.Domain
             int capacity = 1; while (capacity < kernel.Length * 2) capacity *= 2;
             pending = new double[capacity]; mask = capacity - 1;
         }
+#if UNITY_EDITOR
+        public double AuditBeforeDc {get;private set;}
+#endif
         public void Clear()
         {
             Array.Clear(pending,0,pending.Length);previous=null;rebase=true;
@@ -93,6 +96,9 @@ namespace DragLab.Domain
                 double response = b0 * input + cavity1;
                 cavity1 = -a1 * response + cavity2; cavity2 = -b0 * input - a2 * response;
                 double rushValue = (input + .35 * response) * level * .10 * (.45 + .55 * Math.Sqrt(flow)) * (.55 + .45 * throttle);
+#if UNITY_EDITOR
+                AuditBeforeDc=rushValue;
+#endif
                 double result = rushValue - dcIn + .995 * dcOut; dcIn = rushValue; dcOut = result;
                 return result;
             }
@@ -102,6 +108,9 @@ namespace DragLab.Domain
             double texture = voice == Voice.ValveBody ? pulse * .55 + cavity * .8 + air * Math.Min(1, Math.Abs(pulse)) * .12 : air * 1.6 + cavity * 1.1 + pulse * .12;
             double value = texture * level * .10 * (.45 + .55 * Math.Sqrt(flow)) * (.55 + .45 * throttle);
             // Same final DC-removal response as production; the existing engine bed is untouched.
+#if UNITY_EDITOR
+            AuditBeforeDc=value;
+#endif
             double output = value - dcIn + .995 * dcOut; dcIn = value; dcOut = output;
             return output;
         }

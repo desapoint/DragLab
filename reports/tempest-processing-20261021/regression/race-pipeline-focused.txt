@@ -1,0 +1,6 @@
+Actual 47-race production pipeline; legacy physical traces remain unchanged.
+MEASURE 22-carb-soft-ignition callback p95 1,2021 ms; max 1,9545 ms / 400 stereo frames, budget 8.333 ms
+PASS 22-carb-soft-ignition / ET unchanged / chemical 32358 / funded reactions 32358 / zone paths 32 / preset bursts 26 / acoustic J 1134,3944142546575 / continued 32326 / BOV 0 / no drops or steals / peak 0,2509
+MEASURE 26-launch-hard-ignition callback p95 2,6178 ms; max 5,8719 ms / 400 stereo frames, budget 8.333 ms
+PASS 26-launch-hard-ignition / ET unchanged / chemical 5387 / funded reactions 5387 / zone paths 54 / preset bursts 54 / acoustic J 132,02810505063448 / continued 5333 / BOV 2 / no drops or steals / peak 0,1856
+PASS all 2 real race pipelines

@@ -179,10 +179,25 @@ namespace DragLab.Domain
         }
     }
 
+#if UNITY_EDITOR
+    // Editor-only passive taps. These fields and callbacks do not exist in players.
+    public struct EngineSoundAuditSample
+    {
+        public PressureCombustionCore.AuditSample core;
+        public double pressureGain,combustionL,combustionR,fittedL,fittedR,controlsL,controlsR,fittedControlsL,fittedControlsR;
+        public double mechanical,intakeRaw,intake,clatter,turboWhistle,turboFlow,turboTurbine,blower,release;
+        public double afterRaw,afterShaped,afterAttenuated,afterOutlet,afterWall,afterRawRouted,afterRawDelayed,afterUnattenuated;
+        public double beforeDcL,beforeDcR,afterDcL,afterDcR,finalL,finalR;
+    }
+#endif
     // Stateful sample generator shared by live DSP, tests and WAV auditions. No allocations per sample/block.
     public sealed class EngineSoundSynth
     {
         readonly EngineSoundProfile profile;
+#if UNITY_EDITOR
+        public Action<int,EngineSoundAuditSample> Audit;
+        ExhaustFilter auditBaseLeft,auditBaseRight;
+#endif
         readonly ExhaustFilter exhaustFilter,exhaustRight;
         readonly ExhaustPopSynth pop;
         readonly uint seed;
@@ -238,6 +253,10 @@ namespace DragLab.Domain
             var turboCore=sampleRate==44100?turbo44100:sampleRate==48000?turbo48000:otherTurbo;
             var afterCore=sampleRate==44100?after44100:sampleRate==48000?after48000:otherAfter;
             var intakeCore=sampleRate==44100?intake44100:sampleRate==48000?intake48000:otherIntake;
+#if UNITY_EDITOR
+            afterCore.AuditEnabled=Audit!=null;
+            if(Audit!=null&&auditBaseLeft==null){auditBaseLeft=new ExhaustFilter(profile.exhaustSystem,profile.exhaust);auditBaseRight=new ExhaustFilter(profile.exhaustSystem,profile.exhaust);auditBaseLeft.Configure(sampleRate);auditBaseRight.Configure(sampleRate);}
+#endif
             afterCore.Connect(frame.afterfire);
             var releaseCore=sampleRate==44100?release44100:sampleRate==48000?release48000:otherRelease;
             releaseCore.Connect(frame.acousticState);
@@ -301,9 +320,35 @@ namespace DragLab.Domain
                 value += (frame.afterfire==null ? pop.Sample() : 0) * (dieselVoice?0:.3) * frame.volume;
                 double side=(pressureCore.Left-pressureCore.Right)*.5*gain*(1+profile.exhaust*.16);
                 double left=exhaustFilter.Process(value+side),right=pressureCore.Stereo?exhaustRight.Process(value-side):left;
+#if UNITY_EDITOR
+                var audit=new EngineSoundAuditSample();
+                if(Audit!=null)
+                {
+                    audit.core=pressureCore.Audit;audit.pressureGain=gain*(1+profile.exhaust*.16);
+                    audit.combustionL=pressureCore.Left*audit.pressureGain;audit.combustionR=pressureCore.Right*audit.pressureGain;
+                    audit.fittedL=auditBaseLeft.Process(audit.combustionL);audit.fittedR=pressureCore.Stereo?auditBaseRight.Process(audit.combustionR):audit.fittedL;
+                    audit.controlsL=value+side-audit.combustionL;audit.controlsR=pressureCore.Stereo?value-side-audit.combustionR:audit.controlsL;
+                    audit.fittedControlsL=left-audit.fittedL;audit.fittedControlsR=right-audit.fittedR;
+                    audit.mechanical=pressureCore.Mechanical*gain;audit.intakeRaw=intakeCore.AuditBeforeDc*.21715;
+                    audit.intake=outsideExhaust-(dieselVoice?clatter*.004:clatterLow*.0005)*profile.mechanicalClatter*frame.volume;
+                    audit.clatter=(dieselVoice?clatter*.004:clatterLow*.0005)*profile.mechanicalClatter*frame.volume;
+                }
+#endif
                 // Non-exhaust layers stay centered; each bank retains its own installed exhaust state.
                 value=outsideExhaust+pressureCore.Mechanical*gain+afterCore.Sample()*voiceVolume;
                 if(turboCore!=null)value+=turboCore.Sample(frame,pressureCore.TurbineResponse,noise,compressorNoise)*voiceVolume;
+#if UNITY_EDITOR
+                if(Audit!=null)
+                {
+                    if(turboCore!=null){audit.turboWhistle=turboCore.AuditWhistle*voiceVolume;audit.turboFlow=turboCore.AuditFlow*voiceVolume;audit.turboTurbine=turboCore.AuditTurbine*voiceVolume;}
+                    audit.afterRaw=afterCore.AuditRaw*voiceVolume;audit.afterShaped=afterCore.AuditShaped*voiceVolume;
+                    audit.afterAttenuated=afterCore.AuditAttenuated*voiceVolume;audit.afterOutlet=afterCore.LastOutletSample*voiceVolume;audit.afterWall=afterCore.LastWallSample*voiceVolume;
+                    audit.afterRawRouted=afterCore.AuditRawRouted*voiceVolume;audit.afterRawDelayed=afterCore.AuditRawDelayed*voiceVolume;audit.afterUnattenuated=afterCore.AuditUnattenuated*voiceVolume;
+                }
+#endif
+#if UNITY_EDITOR
+                double auditBeforeBlower=value;
+#endif
                 if (profile.superchargerCount > 0)
                 {
                     double hz = Math.Min(rpm / 60 * profile.chargerRatio, sampleRate * .19);
@@ -313,6 +358,10 @@ namespace DragLab.Domain
                     double scFraction = blowerBoostMix > 0 ? blowerBoostMix / Math.Max(.1, profile.boostBar) : profile.turboCount == 0 ? frame.boost / Math.Max(.1, profile.boostBar) : 0;
                     value += (.82*whine+(hz*3<sampleRate*.42?.06*Math.Sin(Tau*chargerPhase*3):0)) * .15 * profile.chargerGain * (.06 + .6 * scFraction + .3 * blowerLoadMix) * voiceVolume;
                 }
+#if UNITY_EDITOR
+                if(Audit!=null)audit.blower=value-auditBeforeBlower;
+                double auditBeforeRelease=value;
+#endif
                 if (frame.acousticState == null && !dieselVoice && releaseAge < 1.2 && profile.turboCount > 0)
                 {
                     double envelope = Math.Min(1, releaseAge / .006) * Math.Exp(-releaseAge * (profile.valve == BlowOffType.Recirculated ? 9 : 6));
@@ -326,6 +375,9 @@ namespace DragLab.Domain
                     releaseAge += 1.0 / sampleRate;
                 }
                 value+=releaseCore.Sample(afterCore.Clock)*voiceVolume;
+#if UNITY_EDITOR
+                if(Audit!=null)audit.release=value-auditBeforeRelease;
+#endif
                 // Remove DC and softly saturate the combined layers with headroom for other game audio.
                 left+=value;right+=value;
                 double filtered = left - dcIn + .995 * dcOut; dcIn = left; dcOut = filtered;
@@ -333,6 +385,9 @@ namespace DragLab.Domain
                 outputGain += (targetOutputGain - outputGain) * masterSmooth;
                 if (Math.Abs(outputGain - targetOutputGain) < .000001) outputGain = targetOutputGain;
                 float l=(float)(filtered/(1+Math.Abs(filtered))*outputGain),r=(float)(filteredRight/(1+Math.Abs(filteredRight))*outputGain);
+#if UNITY_EDITOR
+                if(Audit!=null){audit.beforeDcL=left;audit.beforeDcR=right;audit.afterDcL=filtered;audit.afterDcR=filteredRight;audit.finalL=l;audit.finalR=r;Audit(i/channels,audit);}
+#endif
                 if(channels==1)data[i]=(l+r)*.5f;
                 else{data[i]=l;data[i+1]=r;for(int channel=2;channel<channels;channel++)data[i+channel]=(l+r)*.5f;}
             }

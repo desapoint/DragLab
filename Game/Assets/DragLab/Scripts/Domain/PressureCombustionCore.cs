@@ -87,6 +87,9 @@ namespace DragLab.Domain
             readonly EngineSoundProfile profile;
             public long Bytes=>history.Bytes;
             public double Turbine {get;private set;}
+#if UNITY_EDITOR
+            public double AuditCollector,AuditBand,AuditTurbine,AuditBody;
+#endif
             public Outlet(EngineSoundProfile p,int rate)
             {
                 profile=p;double s=p.acoustics.collectorScale,r=p.acoustics.resonanceScale;
@@ -100,11 +103,23 @@ namespace DragLab.Domain
             public double Sample(double collected,double pressure,double flow)
             {
                 history.Push(collected);collected+=.23*history.Tap(taps[0])-.19*history.Tap(taps[1])+.10*history.Tap(taps[2])-.045*history.Tap(taps[3]);
+#if UNITY_EDITOR
+                AuditCollector=collected;
+#endif
                 double exhaust=lp2.Process(lp1.Process(hp.Process(collected)));
+#if UNITY_EDITOR
+                AuditBand=exhaust;
+#endif
                 if(profile.turboCount>0){double light=turbineMuffle.Process(exhaust),heavy=turbineHeavy.Process(exhaust);
                     double damp=profile.acoustics.turbineDamping*pressure*(.45+.55*flow);
                     exhaust+=damp*(light+(heavy-light)*pressure-exhaust);Turbine=turbineLow.Process(turbineHigh.Process(collected));}
+#if UNITY_EDITOR
+                AuditTurbine=exhaust;
+#endif
                 double body=.60*profile.bassGain*bodyLow.Process(exhaust)+.80*profile.rawPulseGain*bodyPass.Process(bodyHigh.Process(exhaust))+.26*body96.Process(exhaust)+.15*body208.Process(exhaust)+.10*body415.Process(exhaust);
+#if UNITY_EDITOR
+                AuditBody=body;
+#endif
                 return Math.Tanh(1.23*body)/1.23;
             }
             public void Clear(){history.Clear();hp.Clear();lp1.Clear();lp2.Clear();bodyLow.Clear();bodyHigh.Clear();bodyPass.Clear();body96.Clear();body208.Clear();body415.Clear();turbineMuffle.Clear();turbineHeavy.Clear();turbineHigh.Clear();turbineLow.Clear();Turbine=0;}
@@ -117,6 +132,13 @@ namespace DragLab.Domain
         double phase,throttleLow,boostPressure,boostWeight,boostPressureTarget,boostWeightTarget,loadLow,loadTarget,flowLow,flowTarget;int cursor,nextCylinder;uint random;
         readonly double boostAlpha;
         EngineSoundFrame lastFrame;
+#if UNITY_EDITOR
+        public struct AuditSample
+        {
+            public double rawL,rawR,headerL,headerR,collectorL,collectorR,bandL,bandR,turbineL,turbineR,bodyL,bodyR;
+        }
+        public AuditSample Audit;
+#endif
         public double Mechanical {get;private set;}
         public double TurbineResponse {get;private set;}
         public double Left {get;private set;}
@@ -197,9 +219,22 @@ namespace DragLab.Domain
             double hl=l+.36*leftHistory.Tap(leftTaps[0])-.22*leftHistory.Tap(leftTaps[1])+.12*leftHistory.Tap(leftTaps[2]);
             double hr=r+.33*rightHistory.Tap(rightTaps[0])-.20*rightHistory.Tap(rightTaps[1])+.11*rightHistory.Tap(rightTaps[2]);
             hl+=.09*headL1.Process(hl)+.08*headL2.Process(hl);hr+=.10*headR1.Process(hr)+.06*headR2.Process(hr);
+#if UNITY_EDITOR
+            double rawSide=(l-r)*profile.acoustics.stereoWidth;
+            Audit.rawL=l+r+(Stereo?rawSide:0);Audit.rawR=Stereo?l+r-rawSide:Audit.rawL;
+#endif
             double collected=hl+hr,side=(hl-hr)*profile.acoustics.stereoWidth;
+#if UNITY_EDITOR
+            Audit.headerL=collected+(Stereo?side:0);Audit.headerR=Stereo?collected-side:Audit.headerL;
+#endif
             Left=outletLeft.Sample(collected+(Stereo?side:0),boostWeight,flowLow);
             Right=Stereo?outletRight.Sample(collected-side,boostWeight,flowLow):Left;
+#if UNITY_EDITOR
+            Audit.collectorL=outletLeft.AuditCollector;Audit.collectorR=Stereo?outletRight.AuditCollector:Audit.collectorL;
+            Audit.bandL=outletLeft.AuditBand;Audit.bandR=Stereo?outletRight.AuditBand:Audit.bandL;
+            Audit.turbineL=outletLeft.AuditTurbine;Audit.turbineR=Stereo?outletRight.AuditTurbine:Audit.turbineL;
+            Audit.bodyL=outletLeft.AuditBody;Audit.bodyR=Stereo?outletRight.AuditBody:Audit.bodyL;
+#endif
             TurbineResponse=Stereo?(outletLeft.Turbine+outletRight.Turbine)*.5:outletLeft.Turbine;
             throttleLow+=throttleAlpha*(throttle-throttleLow);
             Mechanical=.24*blockLow.Process(blockHigh.Process(block))+intakeLow.Process(intakeHigh.Process(collected))*(.06+.12*throttleLow);

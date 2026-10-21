@@ -24,7 +24,11 @@ namespace DragLab.Domain
                 double left=Math.Sqrt((dx+.09)*(dx+.09)+lateral*lateral+(height-listenerHeight)*(height-listenerHeight));
                 double right=Math.Sqrt((dx-.09)*(dx-.09)+lateral*lateral+(height-listenerHeight)*(height-listenerHeight));
                 double gain=6/Math.Max(6,distance)*reflection,pan=DragMath.Clamp(dx/Math.Max(1,distance)*.75,-.85,.85);
-                return new Path { distance=distance,leftSeconds=(left+spread)/soundSpeed,rightSeconds=(right+spread)/soundSpeed,
+                return new Path {
+#if UNITY_EDITOR
+                    geometricGain=gain,
+#endif
+                    distance=distance,leftSeconds=(left+spread)/soundSpeed,rightSeconds=(right+spread)/soundSpeed,
                     leftGain=Math.Sqrt(1-pan),rightGain=Math.Sqrt(1+pan),
                     g0=gain*Math.Pow(10,-a0*distance/20),g1=gain*Math.Pow(10,-a1*distance/20),
                     g2=gain*Math.Pow(10,-a2*distance/20),g3=gain*Math.Pow(10,-a3*distance/20) };
@@ -41,7 +45,12 @@ namespace DragLab.Domain
                     Prepare(longitudinal+3,48-lateral,sourceHeight,listenerHeight,.035*reflectionScale,7));
             }
         }
-        public struct Path { public double distance,leftSeconds,rightSeconds,leftGain,rightGain,g0,g1,g2,g3; }
+        public struct Path {
+#if UNITY_EDITOR
+            public double geometricGain;
+#endif
+            public double distance,leftSeconds,rightSeconds,leftGain,rightGain,g0,g1,g2,g3;
+        }
         public sealed class Frame
         {
             public readonly Scene scene;
@@ -66,8 +75,15 @@ namespace DragLab.Domain
         sealed class State
         {
             public double dl,dr,l0,l1,l2,r0,r1,r2,g0,g1,g2,g3,gl,gr;
+#if UNITY_EDITOR
+            public double geometricGain;
+#endif
             public bool initialized;
-            public void Clear(){dl=dr=l0=l1=l2=r0=r1=r2=g0=g1=g2=g3=gl=gr=0;initialized=false;}
+            public void Clear(){dl=dr=l0=l1=l2=r0=r1=r2=g0=g1=g2=g3=gl=gr=0;initialized=false;
+#if UNITY_EDITOR
+                geometricGain=0;
+#endif
+            }
         }
         readonly State[] paths=new State[6];
         readonly float[] left,right;
@@ -90,6 +106,10 @@ namespace DragLab.Domain
             double at=cursor-delay;int lower=(int)Math.Floor(at);double fraction=at-lower;
             return buffer[lower&mask]*(1-fraction)+buffer[(lower+1)&mask]*fraction;
         }
+#if UNITY_EDITOR
+        // Diagnostic ablations only. Player builds compile the original full path.
+        public bool AuditAir=true,AuditReflections=true,AuditSpatial=true;
+#endif
         public void Process(float[] pcm,int channels,Frame frame)
         {
             if(channels<1||pcm.Length%channels!=0)throw new ArgumentException("Invalid propagation block.");
@@ -101,20 +121,35 @@ namespace DragLab.Domain
             {
                 left[cursor]=pcm[i];right[cursor]=channels==1?pcm[i]:pcm[i+1];
                 double l=0,r=0;
-                for(int p=0;p<paths.Length;p++)
+#if UNITY_EDITOR
+                int count=AuditReflections?paths.Length:1;
+#else
+                const int count=6;
+#endif
+                for(int p=0;p<count;p++)
                 {
                     var target=frame.At(p);var s=paths[p];
                     if(!s.initialized){s.dl=target.leftSeconds*rate;s.dr=target.rightSeconds*rate;s.g0=target.g0;s.g1=target.g1;s.g2=target.g2;s.g3=target.g3;s.gl=target.leftGain;s.gr=target.rightGain;s.initialized=true;}
+#if UNITY_EDITOR
+                    if(s.geometricGain==0)s.geometricGain=target.geometricGain;
+                    s.geometricGain+=(target.geometricGain-s.geometricGain)*smooth;
+#endif
                     // Continuous variable delay provides physical approach/recession
                     // pitch, bounded below sonic speed and without a second Doppler stage.
                     s.dl+=DragMath.Clamp(target.leftSeconds*rate-s.dl,-.65,.65);s.dr+=DragMath.Clamp(target.rightSeconds*rate-s.dr,-.65,.65);
                     s.g0+=(target.g0-s.g0)*smooth;s.g1+=(target.g1-s.g1)*smooth;s.g2+=(target.g2-s.g2)*smooth;s.g3+=(target.g3-s.g3)*smooth;
                     s.gl+=(target.leftGain-s.gl)*smooth;s.gr+=(target.rightGain-s.gr)*smooth;
-                    double a=Read(left,s.dl),b=Read(right,s.dr);
+#if UNITY_EDITOR
+                    double a=AuditSpatial?Read(left,s.dl):Read(left,0),b=AuditSpatial?Read(right,s.dr):Read(right,0);
+                    double gl=AuditSpatial?s.gl:1,gr=AuditSpatial?s.gr:1;
+                    double g0=AuditAir?s.g0:s.geometricGain,g1=AuditAir?s.g1:g0,g2=AuditAir?s.g2:g0,g3=AuditAir?s.g3:g0;
+#else
+                    double a=Read(left,s.dl),b=Read(right,s.dr),gl=s.gl,gr=s.gr,g0=s.g0,g1=s.g1,g2=s.g2,g3=s.g3;
+#endif
                     s.l0+=lowAlpha*(a-s.l0);s.l1+=midAlpha*(a-s.l1);s.l2+=highAlpha*(a-s.l2);
                     s.r0+=lowAlpha*(b-s.r0);s.r1+=midAlpha*(b-s.r1);s.r2+=highAlpha*(b-s.r2);
-                    l+=(s.g0*s.l0+s.g1*(s.l1-s.l0)+s.g2*(s.l2-s.l1)+s.g3*(a-s.l2))*s.gl;
-                    r+=(s.g0*s.r0+s.g1*(s.r1-s.r0)+s.g2*(s.r2-s.r1)+s.g3*(b-s.r2))*s.gr;
+                    l+=(g0*s.l0+g1*(s.l1-s.l0)+g2*(s.l2-s.l1)+g3*(a-s.l2))*gl;
+                    r+=(g0*s.r0+g1*(s.r1-s.r0)+g2*(s.r2-s.r1)+g3*(b-s.r2))*gr;
                 }
                 pcm[i]=(float)(channels==1?(l+r)*.5:l);
                 if(channels>1){pcm[i+1]=(float)r;for(int ch=2;ch<channels;ch++)pcm[i+ch]=(float)((l+r)*.5);}

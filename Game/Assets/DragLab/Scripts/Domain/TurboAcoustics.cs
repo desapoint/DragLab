@@ -21,6 +21,9 @@ namespace DragLab.Domain
         double phase,secondPhase,shaft,pressure,throttle,airflow,shaftTarget,pressureTarget,throttleTarget,airflowTarget;
         EngineSoundFrame lastFrame;
         double noiseAmount=1;
+#if UNITY_EDITOR
+        public double AuditWhistle,AuditFlow,AuditTurbine;
+#endif
         const double Tau=2*Math.PI;
         public TurboAcoustics(EngineSoundProfile profile,int sampleRate)
         {
@@ -48,6 +51,11 @@ namespace DragLab.Domain
             double toneGain=(.0035*shaft+(.032*shaft*shaft+.033*pressure)*(.30+.70*throttle));
             double flow=(flowHigh.Sample(noise)+.24*flowLow.Sample(noise))*(.006*shaft+.017*pressure)*(.22+.78*throttle)*airflow;
             double turbine=collectorResponse*(.014*shaft+.036*pressure);
+#if UNITY_EDITOR
+            AuditWhistle=blade*toneGain*profile.turboGain*1.5;
+            AuditFlow=flow*profile.compressorNoiseGain*noiseAmount*profile.turboGain*1.5;
+            AuditTurbine=turbine*profile.turboGain*1.5;
+#endif
             return (blade*toneGain+flow*profile.compressorNoiseGain*noiseAmount+turbine)*profile.turboGain*1.5;
         }
         public void Clear(){flowHigh.Clear();flowLow.Clear();shaft=pressure=throttle=airflow=shaftTarget=pressureTarget=throttleTarget=airflowTarget=0;lastFrame=null;}

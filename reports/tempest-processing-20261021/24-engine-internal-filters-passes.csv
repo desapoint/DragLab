@@ -1,0 +1,9 @@
+pass,start_seconds,processing
+0,0,"00 Cylinder pressure before headers"
+1,51.158333333333331,"01 Header echoes and modes"
+2,102.31666666666666,"02 Collector echoes"
+3,153.475,"03 Outlet band limiting"
+4,204.63333333333333,"04 Boost-dependent turbine filtering"
+5,255.79166666666666,"05 Body EQ and resonances"
+6,306.95,"06 Generator body saturation"
+7,358.10833333333335,"07 Fitted exhaust filter"

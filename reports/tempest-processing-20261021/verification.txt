@@ -1,0 +1,43 @@
+PASS passive capture is bit-identical to capture-disabled production engine and tires for the entire replay
+PASS all real afterfire events delivered without history loss or tail stealing
+PASS all real blow-off events delivered
+PASS actual elapsed time and physical pop trace unchanged
+PASS actual chemical acoustic-energy funding preserved
+PASS Tempest has no supercharger: no fabricated blower recording is added
+Replay SHA256: 6906758BF5F0DF0087E4BF62D5D5C4207C746455D20A77FFF479862F34E203E6
+Native frames: 2407600; chemical events 5387; bursts 54; BOV 2
+PASS appended low-grip Tempest contact segment also preserves capture-disabled production PCM
+PASS appended Tempest scenario produces actual per-wheel contact work with traction assistance off
+Test-only contact segment: 14 s, unchanged Tempest engine, street tires, local grip multipliers 0.20, traction assistance OFF; slipping wheel-ticks 2754
+PASS separate captured generators sum back to the real engine premix
+PASS offline DC pass matches production DC output
+PASS offline final limiter matches production engine PCM
+PASS four contact generators sum to production tire PCM through their shared limiter
+PASS actual replay includes clearly nonzero chemical afterfires and BOV events
+PASS actual replay contains genuine wheelspin/contact audio
+Reconstructed engine maximum PCM difference: 2.9802322387695313E-08
+PASS finite, unclipped stereo WAV and level-matched passes / 01-combustion-exhaust
+PASS finite, unclipped stereo WAV and level-matched passes / 02-block-and-manifold
+PASS finite, unclipped stereo WAV and level-matched passes / 03-cut-and-control-colour
+PASS finite, unclipped stereo WAV and level-matched passes / 04-mechanical-clatter
+PASS finite, unclipped stereo WAV and level-matched passes / 05-intake-rush
+PASS finite, unclipped stereo WAV and level-matched passes / 06-turbo-whistle
+PASS finite, unclipped stereo WAV and level-matched passes / 07-turbo-airflow
+PASS finite, unclipped stereo WAV and level-matched passes / 08-turbine-interaction
+PASS finite, unclipped stereo WAV and level-matched passes / 09-blow-off-valve
+PASS finite, unclipped stereo WAV and level-matched passes / 10-backfire
+PASS finite, unclipped stereo WAV and level-matched passes / 11-pressure-driven-shell
+PASS finite, unclipped stereo WAV and level-matched passes / 12-tire-fl
+PASS finite, unclipped stereo WAV and level-matched passes / 13-tire-fr
+PASS finite, unclipped stereo WAV and level-matched passes / 14-tire-rl
+PASS finite, unclipped stereo WAV and level-matched passes / 15-tire-rr
+PASS finite, unclipped stereo WAV and level-matched passes / 16-all-tires
+PASS finite, unclipped stereo WAV and level-matched passes / 17-engine-and-intake
+PASS finite, unclipped stereo WAV and level-matched passes / 18-engine-and-turbo
+PASS finite, unclipped stereo WAV and level-matched passes / 19-engine-and-backfires
+PASS finite, unclipped stereo WAV and level-matched passes / 20-induction-bov-backfires
+PASS finite, unclipped stereo WAV and level-matched passes / 21-full-engine
+PASS finite, unclipped stereo WAV and level-matched passes / 22-full-vehicle
+PASS finite, unclipped stereo WAV and level-matched passes / 23-backfires-and-bov
+PASS engine-internal header/collector/band/turbine/EQ/saturation/fitted-filter boundaries exported separately
+Checks: 38

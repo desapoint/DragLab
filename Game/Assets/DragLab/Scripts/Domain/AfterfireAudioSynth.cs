@@ -16,10 +16,18 @@ namespace DragLab.Domain
                 riseCutoff=2000+.6/Math.Max(.00025,e.riseSeconds),
                 kind=e.pressurePa>1000&&e.riseSeconds<.0015?2:e.acousticJ<.03?0:1 };
         }
+#if UNITY_EDITOR
+        public bool AuditEnabled;
+        public double AuditRaw,AuditShaped,AuditAttenuated,AuditRawRouted,AuditRawDelayed,AuditUnattenuated;
+#endif
         const int VoiceCount=64;
         sealed class Burst
         {
             public readonly AfterfireLabSource shape;
+#if UNITY_EDITOR
+            public AfterfireLabSource auditShape;
+            public double auditRaw,auditPressure;
+#endif
             public bool active;
             public int id,references;
             public double start,dry,pressure;
@@ -33,6 +41,9 @@ namespace DragLab.Domain
             {
                 dry=pressure=0;if(!active||clock<start)return;
                 dry=shape.Sample();pressure=shape.PressureSample;
+#if UNITY_EDITOR
+                if(auditShape!=null){auditRaw=auditShape.Sample();auditPressure=auditShape.PressureSample;}
+#endif
             }
             public void Clear(){active=false;references=0;dry=pressure=0;shape.Clear();}
         }
@@ -42,6 +53,10 @@ namespace DragLab.Domain
             public double start;
             public Burst burst;
             readonly AfterfirePipeResponse pipe;
+#if UNITY_EDITOR
+            public AfterfirePipeResponse auditPipe;
+            public double auditRaw,auditShaped,auditAttenuated,auditRawRouted,auditRawDelayed,auditUnattenuated;
+#endif
             readonly double gainAlpha;
             double lastChemical,voiceGain,funded,gain,target;
             int path;
@@ -70,11 +85,25 @@ namespace DragLab.Domain
                 if(burst.shape.Quiet&&clock-lastChemical>.2&&clock-burst.start>burst.shape.Duration+.2){Clear();return 0;}
                 gain+=gainAlpha*(target-gain);
                 double value=pipe.Sample(burst.dry*gain,burst.pressure*gain)*voiceGain;
-                WallSample=pipe.Wall*voiceGain;OutletSample=pipe.Outlet*voiceGain;return value;
+                WallSample=pipe.Wall*voiceGain;OutletSample=pipe.Outlet*voiceGain;
+#if UNITY_EDITOR
+                if(auditPipe!=null)
+                {
+                    auditRaw=burst.auditRaw*gain*voiceGain;auditShaped=burst.dry*gain*voiceGain;
+                    auditAttenuated=auditShaped*pipe.OutletScale;
+                    auditRawRouted=auditPipe.Sample(burst.auditRaw*gain,burst.auditPressure*gain)*voiceGain;
+                    auditRawDelayed=auditPipe.Outlet*voiceGain;
+                    auditUnattenuated=OutletSample/pipe.OutletScale;
+                }
+#endif
+                return value;
             }
             public void Clear()
             {
                 if(active&&burst!=null)burst.references--;
+#if UNITY_EDITOR
+                auditPipe?.Clear();auditRaw=auditShaped=auditAttenuated=auditRawRouted=auditRawDelayed=auditUnattenuated=0;
+#endif
                 active=false;burst=null;funded=gain=target=0;WallSample=OutletSample=0;pipe.Clear();
             }
         }
@@ -129,14 +158,28 @@ namespace DragLab.Domain
                     foreach(var v in voices)if(v.active&&ReferenceEquals(v.burst,owner)){v.Clear();TailSteals++;}
                 }
                 owner.Begin(e,hardware.At(e));StartedBursts++;
+#if UNITY_EDITOR
+                if(AuditEnabled)
+                {
+                    if(owner.auditShape==null)owner.auditShape=new AfterfireLabSource(rate);
+                    owner.auditShape.Begin(AfterfireLabSettings.Hardware(profile),(uint)(e.seed^(e.seed>>32)));
+                }
+#endif
             }
             Voice free=null;foreach(var v in voices)if(!v.active){free=v;break;}
             if(free==null){free=voices[0];foreach(var v in voices)if(v.start<free.start)free=v;TailSteals++;}
             free.Begin(e,owner,profile);
+#if UNITY_EDITOR
+            if(AuditEnabled){if(free.auditPipe==null)free.auditPipe=new AfterfirePipeResponse(profile,rate);free.auditPipe.Begin(e);}
+#endif
         }
         public double Sample()
         {
-            LastWallSample=LastOutletSample=0;if(source==null)return 0;
+            LastWallSample=LastOutletSample=0;
+#if UNITY_EDITOR
+            AuditRaw=AuditShaped=AuditAttenuated=AuditRawRouted=AuditRawDelayed=AuditUnattenuated=0;
+#endif
+            if(source==null)return 0;
             int end=source.Sequence;
             if(end-cursor>=ExhaustMixtureModel.HistoryCapacity){HistoryOverflows+=end-cursor-ExhaustMixtureModel.HistoryCapacity+1;cursor=end-ExhaustMixtureModel.HistoryCapacity+1;}
             while(cursor<end)
@@ -146,7 +189,13 @@ namespace DragLab.Domain
             }
             foreach(var b in bursts)if(b.active)b.Sample(clock);
             double value=0;
-            foreach(var v in voices)if(v.active){value+=v.Sample(clock);LastWallSample+=v.WallSample;LastOutletSample+=v.OutletSample;}
+            foreach(var v in voices)if(v.active)
+            {
+                value+=v.Sample(clock);LastWallSample+=v.WallSample;LastOutletSample+=v.OutletSample;
+#if UNITY_EDITOR
+                if(AuditEnabled){AuditRaw+=v.auditRaw;AuditShaped+=v.auditShaped;AuditAttenuated+=v.auditAttenuated;AuditRawRouted+=v.auditRawRouted;AuditRawDelayed+=v.auditRawDelayed;AuditUnattenuated+=v.auditUnattenuated;}
+#endif
+            }
             foreach(var b in bursts)if(b.active&&b.references==0)b.Clear();
             clock+=1.0/rate;return value;
         }

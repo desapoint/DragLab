@@ -1,0 +1,4 @@
+Reference SHA256: 6e97825426ea143e4cf102cdb66a39e35e9d4d7d684ff531de2a5d8d46a5cbbe
+Executed renderPop from original HTML; extracted pre-normalization, pre-stereo PCM.
+50 deterministic fixtures; all 10 presets at 24 / 44.1 / 48 / 96 / 192 kHz.
+Seed 15124311. Generated PCM/JSON remain local; rerun this script before Unity verification.

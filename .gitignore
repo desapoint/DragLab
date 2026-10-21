@@ -95,3 +95,6 @@ Thumbs.db
 /reports/v8-backfire-matrix-20261020/verification.txt
 /reports/v8-backfire-matrix-20261020/independent-verification.txt
 /reports/v8-backfire-matrix-20261020/upstream-verification.txt
+
+# Generated chapter sidecars accompany ignored local audio auditions.
+/reports/tempest-processing-20261021/**/*.cue
