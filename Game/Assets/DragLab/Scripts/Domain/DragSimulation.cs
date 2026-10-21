@@ -455,6 +455,9 @@ namespace DragLab.Domain
         public bool wheelContactInitialized;
         public bool stalled, engineFailed, launchControlActive, antiLagActive, previousLimiter, converterLocked;
         public double activeLimitRpm, combustionFraction = 1, fuelingTorqueFactor = 1, exhaustEnergy;
+        // Actuator outputs for the cylinder/exhaust boundary. Positive angle = BTDC.
+        // These remain independent of audio attachment and operating-mode labels.
+        public double combustionAdvanceDegrees = 20, ignitionFiringFraction = 1, chamberCombustionEfficiency = 1;
         public double idleRoughness, fuelHesitation, intakeGulp, previousGas, popClock, twoStepPopClock;
         public int exhaustPopCount;
         public double translatingMassKg, massCgHeightM, massCgPositionM, fuelLitres, fuelUsedLitres, fuelFlowLitresPerSecond;

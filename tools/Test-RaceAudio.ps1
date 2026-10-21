@@ -30,7 +30,16 @@ $taskProcess=Start-Process -FilePath $taskPlayer -ArgumentList $taskArgs -Window
 Write-Output "Live game PID: $($taskProcess.Id)"
 Write-Output "Isolated test files: $taskFixture"
 if($VerifyOnly){
-    if(-not $taskProcess.WaitForExit(480000)){$taskProcess.Kill();throw 'Live audio verification timed out.'}
+    # Live PCM and physics share wall-clock speed, including verification. Allow
+    # the actual selected race durations plus UI/stop/shutdown overhead.
+    $taskDurationSeconds=0.0
+    foreach($taskReplay in Get-ChildItem -LiteralPath $taskInputs -Filter '*.race.json' -File){
+        $taskReplayData=Get-Content -LiteralPath $taskReplay.FullName -Encoding UTF8 -Raw | ConvertFrom-Json
+        $taskDurationSeconds+=$taskReplayData.ticks.Count/120.0+3
+    }
+    $taskTimeoutMs=[int][Math]::Ceiling([Math]::Max(480,$taskDurationSeconds*1.5+120)*1000)
+    Write-Output 'Verifying with audible real-time playback; the full roster takes about half an hour.'
+    if(-not $taskProcess.WaitForExit($taskTimeoutMs)){$taskProcess.Kill();throw 'Live audio verification timed out.'}
     $taskResult=Join-Path $taskFixture 'live-verification.txt'
     if($taskProcess.ExitCode -ne 0 -or -not (Test-Path -LiteralPath $taskResult)){throw "Live audio verification failed: $taskFixture"}
     Get-Content -LiteralPath $taskResult -Encoding UTF8

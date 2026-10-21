@@ -1,0 +1,10 @@
+PASS Unity Windows Development build; final player rebuild exited 0.
+Player: Game/Builds/Windows/DragLab.exe
+Runtime assembly SHA256: 163CB3613A4384F42C3CE5FB3C85B6EEF7AAFD6D9A8C99FEC1C689614E94E02A
+Build log: reports/condition-afterfire-20261021-player-rebuild.log
+PASS packaged twin-turbo case 04: 4306/4306 reactions delivered, exact physical traces, solo output, Stop/Resume.
+PASS packaged hard ignition-cut launch case 26: 5387/5387 reactions delivered, exact physical traces, solo output, Stop/Resume.
+All 47 offline production-DSP race replays passed on final chemistry/voices.
+Normal-speed full listening suite launched: PID 26584; reports/player-fixtures/live-audio-20261021-081514-589.
+Listening/normal-speed 47-case completion is pending; not a completed packaged full-matrix verification claim.
+Android was not rebuilt in this checkpoint; physical device acceptance is pending.

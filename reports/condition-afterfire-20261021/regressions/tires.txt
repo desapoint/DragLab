@@ -1,0 +1,98 @@
+PASS: Burnout/skid output stays finite with headroom / 44100 / 1
+PASS: Sustained friction remains audible / 44100 / 1
+PASS: Moving skids retain a different texture from stationary burnouts / 44100 / 1
+PASS: Regaining grip does not abruptly cut the screech waveform / 44100 / 1
+PASS: Lower contact intensity gives quieter friction / 44100 / 1
+PASS: A short slip chirp attenuates by at least 40 dB within one second of grip recovery / 44100 / 1
+PASS: Static slip is sample-exact across callback boundaries / 44100 / 1
+PASS: Reset cannot leak old tire-filter energy / 44100 / 1
+PASS: Burnout/skid output stays finite with headroom / 44100 / 2
+PASS: Sustained friction remains audible / 44100 / 2
+PASS: Moving skids retain a different texture from stationary burnouts / 44100 / 2
+PASS: Regaining grip does not abruptly cut the screech waveform / 44100 / 2
+PASS: Lower contact intensity gives quieter friction / 44100 / 2
+PASS: A short slip chirp attenuates by at least 40 dB within one second of grip recovery / 44100 / 2
+PASS: Static slip is sample-exact across callback boundaries / 44100 / 2
+PASS: Reset cannot leak old tire-filter energy / 44100 / 2
+PASS: Burnout/skid output stays finite with headroom / 48000 / 1
+PASS: Sustained friction remains audible / 48000 / 1
+PASS: Moving skids retain a different texture from stationary burnouts / 48000 / 1
+PASS: Regaining grip does not abruptly cut the screech waveform / 48000 / 1
+PASS: Lower contact intensity gives quieter friction / 48000 / 1
+PASS: A short slip chirp attenuates by at least 40 dB within one second of grip recovery / 48000 / 1
+PASS: Static slip is sample-exact across callback boundaries / 48000 / 1
+PASS: Reset cannot leak old tire-filter energy / 48000 / 1
+PASS: Burnout/skid output stays finite with headroom / 48000 / 2
+PASS: Sustained friction remains audible / 48000 / 2
+PASS: Moving skids retain a different texture from stationary burnouts / 48000 / 2
+PASS: Regaining grip does not abruptly cut the screech waveform / 48000 / 2
+PASS: Lower contact intensity gives quieter friction / 48000 / 2
+PASS: A short slip chirp attenuates by at least 40 dB within one second of grip recovery / 48000 / 2
+PASS: Static slip is sample-exact across callback boundaries / 48000 / 2
+PASS: Reset cannot leak old tire-filter energy / 48000 / 2
+PASS: Only slipping contact emits despite large aggregate car slip / corner 0 / 44100 / 1
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 0 / 44100 / 1
+PASS: All planted contacts stay silent despite stale aggregate slip / 0 / 44100 / 1
+PASS: Only slipping contact emits despite large aggregate car slip / corner 0 / 44100 / 2
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 0 / 44100 / 2
+PASS: Single-tire stereo follows left/right corner / corner 0 / 44100
+PASS: All planted contacts stay silent despite stale aggregate slip / 0 / 44100 / 2
+PASS: Only slipping contact emits despite large aggregate car slip / corner 0 / 48000 / 1
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 0 / 48000 / 1
+PASS: All planted contacts stay silent despite stale aggregate slip / 0 / 48000 / 1
+PASS: Only slipping contact emits despite large aggregate car slip / corner 0 / 48000 / 2
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 0 / 48000 / 2
+PASS: Single-tire stereo follows left/right corner / corner 0 / 48000
+PASS: All planted contacts stay silent despite stale aggregate slip / 0 / 48000 / 2
+PASS: Only slipping contact emits despite large aggregate car slip / corner 1 / 44100 / 1
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 1 / 44100 / 1
+PASS: All planted contacts stay silent despite stale aggregate slip / 1 / 44100 / 1
+PASS: Only slipping contact emits despite large aggregate car slip / corner 1 / 44100 / 2
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 1 / 44100 / 2
+PASS: Single-tire stereo follows left/right corner / corner 1 / 44100
+PASS: All planted contacts stay silent despite stale aggregate slip / 1 / 44100 / 2
+PASS: Only slipping contact emits despite large aggregate car slip / corner 1 / 48000 / 1
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 1 / 48000 / 1
+PASS: All planted contacts stay silent despite stale aggregate slip / 1 / 48000 / 1
+PASS: Only slipping contact emits despite large aggregate car slip / corner 1 / 48000 / 2
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 1 / 48000 / 2
+PASS: Single-tire stereo follows left/right corner / corner 1 / 48000
+PASS: All planted contacts stay silent despite stale aggregate slip / 1 / 48000 / 2
+PASS: Only slipping contact emits despite large aggregate car slip / corner 2 / 44100 / 1
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 2 / 44100 / 1
+PASS: All planted contacts stay silent despite stale aggregate slip / 2 / 44100 / 1
+PASS: Only slipping contact emits despite large aggregate car slip / corner 2 / 44100 / 2
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 2 / 44100 / 2
+PASS: Single-tire stereo follows left/right corner / corner 2 / 44100
+PASS: All planted contacts stay silent despite stale aggregate slip / 2 / 44100 / 2
+PASS: Only slipping contact emits despite large aggregate car slip / corner 2 / 48000 / 1
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 2 / 48000 / 1
+PASS: All planted contacts stay silent despite stale aggregate slip / 2 / 48000 / 1
+PASS: Only slipping contact emits despite large aggregate car slip / corner 2 / 48000 / 2
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 2 / 48000 / 2
+PASS: Single-tire stereo follows left/right corner / corner 2 / 48000
+PASS: All planted contacts stay silent despite stale aggregate slip / 2 / 48000 / 2
+PASS: Only slipping contact emits despite large aggregate car slip / corner 3 / 44100 / 1
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 3 / 44100 / 1
+PASS: All planted contacts stay silent despite stale aggregate slip / 3 / 44100 / 1
+PASS: Only slipping contact emits despite large aggregate car slip / corner 3 / 44100 / 2
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 3 / 44100 / 2
+PASS: Single-tire stereo follows left/right corner / corner 3 / 44100
+PASS: All planted contacts stay silent despite stale aggregate slip / 3 / 44100 / 2
+PASS: Only slipping contact emits despite large aggregate car slip / corner 3 / 48000 / 1
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 3 / 48000 / 1
+PASS: All planted contacts stay silent despite stale aggregate slip / 3 / 48000 / 1
+PASS: Only slipping contact emits despite large aggregate car slip / corner 3 / 48000 / 2
+PASS: Three planted tires add exactly zero audio to single-wheel output / corner 3 / 48000 / 2
+PASS: Single-tire stereo follows left/right corner / corner 3 / 48000
+PASS: All planted contacts stay silent despite stale aggregate slip / 3 / 48000 / 2
+PASS: Authoritative open differential has sustained single-wheel sound with other three planted / corner 0 / solo ticks 235
+PASS: Authoritative open differential has sustained single-wheel sound with other three planted / corner 1 / solo ticks 235
+PASS: Authoritative open differential has sustained single-wheel sound with other three planted / corner 2 / solo ticks 235
+PASS: Authoritative open differential has sustained single-wheel sound with other three planted / corner 3 / solo ticks 235
+PASS: Independent compound changes asphalt tire timbre with finite audible output at identical contact work
+PASS: Independent width changes asphalt tire timbre with finite audible output at identical contact work
+PASS: Independent radius changes asphalt tire timbre with finite audible output at identical contact work
+PASS: Stopping contact audio before a race finishes releases all tire resonances
+PASS: Tire category mute produces exact zero after its smoothed transition
+Checks: 97

@@ -1,5 +1,16 @@
 # Engine audio: pressure events within the existing pipeline
 
+## Condition-driven afterfires — 2026-10-21
+
+Operating-mode labels are diagnostic only in exhaust chemistry and afterfire DSP.
+Actual delivered fuel/air and numeric ignition timing/firing outputs feed the
+cylinder boundary; remaining fuel, oxygen, heat and transported flame activity
+determine seeded ignition and finite-rate burning. Event pressure rise, burn time,
+acoustic energy and source path determine bang strength, duration and character.
+Continuous reactions share transported flame identities instead of an arbitrary
+audio retrigger window. [Implementation, verification and explicit approximation
+limits](../reports/condition-afterfire-20261021/CHANGES.md).
+
 ## Current runtime integration — 2026-10-20
 
 The user now authorizes integration. The shared mixture model and reviewed C#

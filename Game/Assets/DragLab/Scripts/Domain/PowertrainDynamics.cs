@@ -189,6 +189,11 @@ namespace DragLab.Domain
             s.antiLagActive = requested && s.antiLagTime < d.antiLagMaxSeconds && s.exhaustHeat < .95 && !s.engineFailed && !s.stalled;
             s.exhaustEnergy = s.antiLagActive ? (preload ? d.launchRetard * gas : d.antiLagStrength) : 0;
             if (preload && s.activeCutMethod == CutMethod.Fuel) s.exhaustEnergy *= s.combustionFraction;
+            // Publish physical control outputs before the torque-efficiency aggregate.
+            // The exhaust observer consumes timing/firing/charge, never a mode-triggered pop.
+            s.ignitionFiringFraction = s.activeCutMethod == CutMethod.Ignition ? s.combustionFraction : 1;
+            s.combustionAdvanceDegrees = 8 + 24 * Math.Max(0, s.rpm) / (Math.Max(0, s.rpm) + 2000) - 85 * s.exhaustEnergy;
+            s.chamberCombustionEfficiency = s.fuelingTorqueFactor * (1 - .35 * s.engineDamage);
             // Exhaust-side combustion preserves compressor energy but does not add crankshaft torque.
             s.exhaustHeat = s.optimalThermals ? 0 : DragMath.Clamp(s.exhaustHeat + (s.antiLagActive ? dt * .22 : -dt / d.exhaustCoolSeconds), 0, 1);
             if (s.antiLagActive)
@@ -199,7 +204,7 @@ namespace DragLab.Domain
             }
             s.crankCycles+=s.rpm/120*dt;
             s.combustionFraction *= s.fuelingTorqueFactor * (1 - .35 * s.engineDamage);
-            if (s.engineFailed || s.stalled) { s.combustionFraction = s.exhaustEnergy = 0; s.antiLagActive = s.launchControlActive = false; }
+            if (s.engineFailed || s.stalled) { s.combustionFraction = s.exhaustEnergy = s.ignitionFiringFraction = 0; s.antiLagActive = s.launchControlActive = false; }
         }
         public static double LimitFraction(LimiterStyle style, double rpm, double limit, double drop, double band, ref bool cut)
         {

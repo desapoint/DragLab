@@ -231,17 +231,17 @@ namespace DragLab.Editor
                         double rate = PhysicalFuelFlow(car);
                         if (s.activeCutMethod == CutMethod.Fuel && s.combustionFraction <= 0 && rate > 1e-12) inventedCutFuelTicks++;
                         // Fuel-cut duty already reduced fuel delivery. Do not also call that delivered fuel unburned.
-                        double burn = s.activeCutMethod == CutMethod.Fuel ? s.fuelingTorqueFactor * (1 - .35 * s.engineDamage) : s.combustionFraction;
-                        burn *= s.cylinderCombustionFactor;
                         if (s.transmissionTorqueCut || s.stalled || s.engineFailed) rate = 0;
-                        if (s.antiLagActive) burn *= 1 - .35 * s.exhaustEnergy;
                         // Closed-throttle pumping is absent from the existing published airflow. Explicit 12% vacuum proxy.
                         double air = Math.Max(s.airflowKgS, car.induction.BaseAirflow(s.rpm) * .12);
                         if (s.rpm <= 0) air = 0;
-                        model.Step(new BackfireMixturePreview.Input { dt = dt, fuelKg = rate * car.spec.fuel.densityKgPerLitre * dt,
-                            airKg = air * dt, chamberBurnFraction = Math.Max(0, Math.Min(1, burn)),
-                            intakeK = Math.Max(250, s.chargeTemperatureK > 0 ? s.chargeTemperatureK : car.induction.data.ambientTemperatureK),
-                            wallTargetK = 330 + 280 * s.engineTemperature + 320 * s.exhaustHeat, ignitionSource = s.antiLagActive && s.exhaustEnergy > 0 });
+                        double fuelKg = rate * car.spec.fuel.densityKgPerLitre * dt, airKg = air * dt;
+                        double intakeK = Math.Max(250, s.chargeTemperatureK > 0 ? s.chargeTemperatureK : car.induction.data.ambientTemperatureK);
+                        var charge = CombustionExhaustBoundary.Evaluate(car.spec, s, fuelKg, airKg, intakeK);
+                        model.Step(new BackfireMixturePreview.Input { dt = dt, fuelKg = fuelKg,
+                            airKg = airKg, chamberBurnFraction = charge.burnFraction, inletK = charge.outletK,
+                            flameFraction = charge.flameFraction, intakeK = intakeK,
+                            wallTargetK = 330 + 280 * s.engineTemperature });
                         while (consumedEvents < model.events.Count)
                         {
                             var chemical = model.events[consumedEvents++]; row.maxTemperatureK = Math.Max(row.maxTemperatureK, chemical.gasK);

@@ -36,19 +36,17 @@ namespace DragLab.Domain
         }
         public void Step(VehicleSpec spec, InductionProfile induction, CarState state, double physicalFuelLitresS, double dt)
         {
-            double burn = state.activeCutMethod == CutMethod.Fuel ? state.fuelingTorqueFactor * (1 - .35 * state.engineDamage) : state.combustionFraction;
-            burn *= state.cylinderCombustionFactor;
-            // Fuel cut has already reduced physical delivery. Ignition cut leaves that delivered fuel unburned.
-            if (state.antiLagActive) burn *= 1 - .35 * state.exhaustEnergy;
             input.dt = dt; input.fuelKg = physicalFuelLitresS * spec.fuel.densityKgPerLitre * dt;
             input.airKg = state.rpm <= 0 || state.stalled || state.engineFailed ? 0 : Math.Max(state.airflowKgS, induction.BaseAirflow(state.rpm) * .12) * dt;
-            input.chamberBurnFraction = DragMath.Clamp(burn, 0, 1);
             input.intakeK = DragMath.Clamp(state.chargeTemperatureK > 0 ? state.chargeTemperatureK : induction.data.ambientTemperatureK, 250, 1500);
-            input.wallTargetK = DragMath.Clamp(330 + 280 * state.engineTemperature + 320 * state.exhaustHeat, 250, 1800);
+            var charge = CombustionExhaustBoundary.Evaluate(spec, state, input.fuelKg, input.airKg, input.intakeK);
+            input.chamberBurnFraction = charge.burnFraction;
+            input.inletK = charge.outletK;
+            input.flameFraction = charge.flameFraction;
+            input.wallTargetK = DragMath.Clamp(330 + 280 * state.engineTemperature, 250, 1800);
             input.cause = state.antiLagActive ? AfterfireCause.AntiLag : state.launchControlActive ? AfterfireCause.TwoStep : state.limiter && state.activeCutMethod==CutMethod.Ignition ? AfterfireCause.IgnitionLimiter : state.activeCutMethod==CutMethod.Fuel && state.combustionFraction<=0 ? AfterfireCause.FuelCutResidual : state.cylinderCombustionFactor<.95 ? AfterfireCause.PoorCombustion : AfterfireCause.ResidualMixture;
             input.rpm = state.rpm; input.limiter = state.limiter; input.twoStep = state.launchControlActive;
             input.turboBoost = Math.Max(0, state.turboBoostBar);
-            input.ignitionSource = state.antiLagActive && state.exhaustEnergy > 0;
             mixture.Step(input);
         }
     }

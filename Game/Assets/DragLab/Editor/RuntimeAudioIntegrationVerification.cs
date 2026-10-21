@@ -9,7 +9,8 @@ namespace DragLab.Editor
 {
     public static class RuntimeAudioIntegrationVerification
     {
-        static readonly string Root=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/runtime-audio-20261020"));
+        public static string OutputDirectory=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/runtime-audio-20261020"));
+        static string Root => OutputDirectory;
         static readonly StringBuilder log=new StringBuilder();static int checks;
         static void Check(bool value,string label){log.AppendLine((value?"PASS ":"FAIL ")+label);checks++;Save();if(!value)throw new InvalidOperationException(label);}
         static void Save(){Directory.CreateDirectory(Root);File.WriteAllText(Path.Combine(Root,"verification.txt"),log+"Checks: "+checks+"\n",new UTF8Encoding(false));}
@@ -132,7 +133,7 @@ namespace DragLab.Editor
                     if(r.Delivered!=car.state.audioExhaust.ReleaseSequence)throw new InvalidOperationException("Lost BOV event: "+fixture.id);
                     if(Math.Abs(car.state.elapsed-fixture.elapsed)>1e-9||car.state.exhaustPopCount!=fixture.pops)throw new InvalidOperationException("Physics trace changed: "+fixture.id);
                     Array.Sort(timings);report.AppendLine("MEASURE "+fixture.id+" callback p95 "+timings[(int)(timings.Length*.95)].ToString("F4")+" ms; max "+timings[timings.Length-1].ToString("F4")+" ms / 400 stereo frames, budget 8.333 ms");
-                    report.AppendLine("PASS "+fixture.id+" / ET unchanged / chemical "+d.Delivered+" / audible "+(d.Delivered-d.Inaudible)+" / continued "+d.ContinuedReactions+" / BOV "+r.Delivered+" / no drops or steals / peak "+peak.ToString("F4"));
+                    report.AppendLine("PASS "+fixture.id+" / ET unchanged / chemical "+d.Delivered+" / rendered reactions "+(d.Delivered-d.Inaudible)+" / pressure voices "+(d.Delivered-d.Inaudible-d.ContinuedReactions)+" / continued "+d.ContinuedReactions+" / BOV "+r.Delivered+" / no drops or steals / peak "+peak.ToString("F4"));
                     File.WriteAllText(receipt,report.ToString(),new UTF8Encoding(false));
                 }
                 finally{race.CloseOpponentWorker();}

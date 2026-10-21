@@ -94,14 +94,17 @@ namespace DragLab.Runtime
                         throw new InvalidOperationException("Live race diverged from validated input fixture: "+audition.id+" / ET "+state.elapsed+" vs "+audition.elapsed+" / limiter "+auditionLimiter+" / shifts "+auditionShifts+" / releases "+state.boostReleaseCount);
                     if(auditionVerify&&(audition.tireTest?auditionTirePeak:auditionEnginePeak)<1e-6)throw new InvalidOperationException("Live AudioSource produced no audible category output: "+audition.id);
                     if(auditionVerify&&audition.tireTest&&engineAudio.TireOutputChannels!=2)throw new InvalidOperationException("Tire AudioSource lost stereo wheel placement.");
-                    if(engineAudio.AfterfireOverflow!=0||engineAudio.AfterfireTailSteals!=0)throw new InvalidOperationException("Audio event/tail budget exceeded: "+audition.id);
+                    if(engineAudio.AfterfireOverflow!=0||engineAudio.AfterfireTailSteals!=0)throw new InvalidOperationException("Audio event/tail budget exceeded: "+audition.id+" / overflow "+engineAudio.AfterfireOverflow+" / steals "+engineAudio.AfterfireTailSteals);
+                    if(auditionVerify&&engineAudio.AfterfireDelivered!=engineAudio.ChemicalEvents)throw new InvalidOperationException("Live afterfire history not fully rendered: "+audition.id+" / "+engineAudio.AfterfireDelivered+" of "+engineAudio.ChemicalEvents);
                     auditionReport.AppendLine("PASS "+audition.id+" / exact ET, shifts, limiter, releases / engine RMS "+auditionEnginePeak+" / tire RMS "+auditionTirePeak+" / fuel/ignition cuts "+auditionCuts.fuel+"/"+auditionCuts.ignition+" / launch cuts "+auditionCuts.launchFuel+"/"+auditionCuts.launchIgnition+" / legacy requests "+state.exhaustPopCount+" / chemical "+engineAudio.ChemicalEvents+" / delivered so far "+engineAudio.AfterfireDelivered+" / tire channels "+engineAudio.TireOutputChannels+" / rival silent");
                     File.WriteAllText(Path.Combine(auditionFolder,"live-verification.txt"),auditionReport.ToString(),new UTF8Encoding(false));
                     if(auditionVerify&&auditionIndex==auditionFiles.Length-1){auditionReport.AppendLine("PASS all "+auditionFiles.Length+" game races");File.WriteAllText(Path.Combine(auditionFolder,"live-verification.txt"),auditionReport.ToString(),new UTF8Encoding(false));Application.Quit(0);auditionStopped=true;return;}
                     NextAudioAudition();return;
                 }
-                // Accelerated verification only; normal listening advances at wall-clock rate.
-                accumulator+=Math.Min(Time.unscaledDeltaTime,.1f)*(auditionVerify?8:1);
+                // Live AudioSources consume PCM at wall-clock speed. Accelerating
+                // only physics makes timestamped events inaudible and overflows history.
+                // Offline production-DSP replay supplies the accelerated coverage.
+                accumulator+=Math.Min(Time.unscaledDeltaTime,.1f);
                 while(accumulator>=DragMath.FixedStep&&auditionTick<audition.ticks.Count){
                     var tick=audition.ticks[auditionTick++];if(!string.IsNullOrEmpty(tick.stage)){auditionStage=tick.stage;WriteAudioAuditionProgress();}
                     race.player.state.warmupLineLock=tick.lineLock;
