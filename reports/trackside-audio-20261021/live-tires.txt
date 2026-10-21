@@ -1,0 +1,4 @@
+Visible game / live production audio / input replay verification
+PASS stop/resume before finish / 44-tires-street-ramp
+PASS 44-tires-street-ramp / exact ET, shifts, limiter, releases / engine RMS 0 / tire RMS 0,0585418120026588 / fuel/ignition cuts 0/180 / launch cuts 0/0 / legacy requests 40 / chemical 0 / delivered so far 0 / tire channels 2 / rival silent
+PASS all 1 game races

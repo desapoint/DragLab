@@ -1,5 +1,22 @@
 # Engine audio: pressure events within the existing pipeline
 
+## Live pressure source and trackside listener — 2026-10-21
+
+Afterfire voices now synthesize pressure rise/expansion and funded residual
+disturbances continuously with `ReactivePressureBurst`; the prepared burst bank
+is removed from the runtime. A larger initial bang and smaller follow-ups can
+follow a depleting pocket, while renewed fuel/pressure can produce another larger
+event. There is no fixed pop sequence. Existing exhaust response remains.
+
+`TracksidePropagation` then processes the entire engine and tire mixes in their
+presentation AudioSources. The virtual spectator follows the race view outside
+the car: physical travel delay, inverse-distance pressure, four-band atmospheric
+losses, sparse ground/barrier/stand reflections, stereo ear paths and changing-delay
+Doppler. Coefficients/buffers are prepared off the callback; pause/session
+generations prevent stale echo replay. The source engine oscillator, induction,
+per-wheel tire generation and car mechanics remain unchanged.
+[Implementation, verification, listener assumptions and model limits](../reports/trackside-audio-20261021/CHANGES.md).
+
 ## Condition-driven afterfires — 2026-10-21
 
 Operating-mode labels are diagnostic only in exhaust chemistry and afterfire DSP.

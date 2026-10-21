@@ -1,0 +1,9 @@
+PASS 264 focused/reused checks and all 47 production-DSP race replays including trackside propagation.
+PASS fresh Unity Windows Development build; exit 0.
+Runtime assembly SHA256: A6C1A0949D8E409317DDFF3D621B4EA5247FE3A01734B1C473B84528921034E4
+Build log: reports/trackside-audio-20261021-build.log
+PASS live launch case: 5387/5387 chemical events rendered, audible engine, tires/rival silent, exact traces and Stop/Resume.
+PASS live tire-only case: positive stereo tire output, engine/rival silent, exact traces and Stop/Resume.
+Full normal-speed listening launched: PID 49168; reports/player-fixtures/live-audio-20261021-084742-341.
+Human listening and normal-speed full-matrix completion are pending.
+Android package was not rebuilt; physical phone performance/listening is unverified.

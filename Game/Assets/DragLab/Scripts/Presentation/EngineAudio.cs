@@ -14,18 +14,24 @@ namespace DragLab.Presentation
             public readonly EngineSoundSynth synth;
             public readonly EngineSoundProfile profile;
             public readonly int rate;
+            public readonly TracksidePropagation outdoor;
+            public TracksidePropagation.Frame listener;
+            public int propagationGeneration,observedPropagationGeneration;
             public EngineSoundFrame frame;
             public Session(VehicleSpec spec, Tune tune,int rate)
             {
                 this.rate=rate;
                 controller = new EngineSoundController(spec, tune);
                 profile=new EngineSoundProfile(spec,tune);synth=new EngineSoundSynth(profile,sampleRate:rate);
+                outdoor=new TracksidePropagation(rate);
+                listener=new TracksidePropagation.Scene(spec.induction.ambientTemperatureK,.5,spec.induction.ambientPressureBar*100000).At();
                 frame = new EngineSoundFrame(spec.idleRpm, 0, 0, 0, 0, active: false);
             }
             public Session(Session previous,int rate)
             {
                 this.rate=rate;controller=previous.controller;profile=previous.profile;
                 synth=new EngineSoundSynth(profile,sampleRate:rate);frame=Volatile.Read(ref previous.frame);
+                outdoor=new TracksidePropagation(rate);listener=Volatile.Read(ref previous.listener);
             }
         }
         AudioSource source;
@@ -84,11 +90,19 @@ namespace DragLab.Presentation
             int rate=Volatile.Read(ref sampleRate);if(rate<=0)rate=AudioSettings.outputSampleRate;
             Volatile.Write(ref session, new Session(spec, tune,rate)); pitch = (float)spec.idleRpm / 3000;
         }
+        public void SetTracksideGeometry(double sourceMetres,double listenerMetres,double laneOffset=0)
+        {
+            var current=Volatile.Read(ref session);if(current==null)return;
+            var old=Volatile.Read(ref current.listener);double x=DragMath.Clamp(sourceMetres-listenerMetres,-900,900),y=12+laneOffset;
+            if(Math.Abs(x-old.longitudinal)<.02&&Math.Abs(y-old.lateral)<.01)return;
+            Volatile.Write(ref current.listener,old.scene.At(x,y));
+        }
         public void Render(CarState state, bool active, float volume, double loadOverride = -1, bool? tiresActive = null)
         {
             if (!Ready) return;
             PrepareDeviceRate();
             var current = session;
+            if(tires!=null)tires.SetListener(Volatile.Read(ref current.listener));
             Volatile.Write(ref current.frame, current.controller.Update(state, active, volume, Time.unscaledDeltaTime, loadOverride));
             source.volume = active ? 1 : 0; pitch = (float)state.rpm / 3000;
             if(tires!=null)tires.Render(state,tiresActive??active,volume);
@@ -103,7 +117,11 @@ namespace DragLab.Presentation
             long started=System.Diagnostics.Stopwatch.GetTimestamp();
             Volatile.Write(ref callbackChannels,channels);
 #endif
-            current.synth.Fill(data, channels, rate, Volatile.Read(ref current.frame), SharedAudioSettings.DspMasterVolume*SharedAudioSettings.DspEngineVolume,SharedAudioSettings.DspCompressorNoise);
+            var signal=Volatile.Read(ref current.frame);
+            int generation=Volatile.Read(ref current.propagationGeneration);
+            if(generation!=current.observedPropagationGeneration){current.outdoor.Clear();current.observedPropagationGeneration=generation;}
+            current.synth.Fill(data, channels, rate, signal, SharedAudioSettings.DspMasterVolume*SharedAudioSettings.DspEngineVolume,SharedAudioSettings.DspCompressorNoise);
+            if(signal.active||signal.afterfire!=null)current.outdoor.Process(data,channels,Volatile.Read(ref current.listener));else current.outdoor.Clear();
             double energy = 0; foreach (float sample in data) energy += sample * sample;
             Volatile.Write(ref outputRms, data.Length > 0 ? (float)Math.Sqrt(energy / data.Length) : 0);
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
@@ -116,7 +134,7 @@ namespace DragLab.Presentation
             if (source != null) source.volume = 0;
             if(tires!=null)tires.Silence();
             var current = session;
-            if (current != null) Volatile.Write(ref current.frame, current.controller.Update(new CarState(), false, 0, 0));
+            if (current != null){Interlocked.Increment(ref current.propagationGeneration);Volatile.Write(ref current.frame, current.controller.Update(new CarState(), false, 0, 0));}
         }
         void OnDestroy()
         {

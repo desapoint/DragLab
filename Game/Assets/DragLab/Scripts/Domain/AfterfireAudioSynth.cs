@@ -1,7 +1,7 @@
 using System;
 namespace DragLab.Domain
 {
-    // Prepared voices: shared reviewed pressure/texture banks + installed, source-relative paths.
+    // Live pressure voices plus installed, source-relative paths; no canned burst bank.
     // Chemistry and event production stay on the simulation owner; callback only reads stamped history.
     public sealed class AfterfireAudioSynth
     {
@@ -17,28 +17,7 @@ namespace DragLab.Domain
                 riseCutoff=2000+.6/Math.Max(.00025,e.riseSeconds),
                 kind=e.pressurePa>1000&&e.riseSeconds<.0015?2:e.acousticJ<.03?0:1 };
         }
-        const int VoiceCount = 64, Variants = 4;
-        static readonly object gate = new object();
-        static double[][] bank;
-        static double[] bankEnergy;
-        static double[] bankCross;
-        public static void PrepareSourceBank()
-        {
-            lock (gate)
-            {
-                if (bank != null) return;
-                var built = new double[3 * Variants][];
-                for (int k = 0; k < 3; k++) for (int v = 0; v < Variants; v++)
-                    built[k * Variants + v] = BackfirePressureSource.Burst(BackfirePressureSource.Seed(20261020,"runtime-source",v,k),
-                        k == 0 ? "crackle" : k == 1 ? "normal" : "crack", BackfirePressureSource.Cleanup.LessTicking);
-                var energy = new double[built.Length];
-                for (int i=0;i<built.Length;i++) foreach(double value in built[i]) energy[i]+=value*value/48000;
-                var cross = new double[built.Length];
-                for(int k=0;k<3;k++)for(int v=0;v<Variants;v++)
-                    for(int i=0;i<built[k*Variants+v].Length;i++)cross[k*Variants+v]+=built[k*Variants+v][i]*built[k*Variants+(v+1)%Variants][i]/48000;
-                bankEnergy = energy; bankCross = cross; bank = built;
-            }
-        }
+        const int VoiceCount = 64;
         sealed class Mode
         {
             readonly double b, a1, a2;
@@ -51,28 +30,23 @@ namespace DragLab.Domain
         sealed class Voice
         {
             public bool active;
-            public double start,position,step,amplitude;
-            public double[] source,other;
-            public double blend;
+            public double start;
             readonly ExhaustFilter[] paths = new ExhaustFilter[8];
             readonly Mode[] modes;
             readonly int rate;
+            readonly ReactivePressureBurst reaction;
             readonly double bassAlpha, midAlpha, softAlpha, scatterAlpha;
             readonly double[] history = new double[4096];
             int cursor, path, travel;
             double bass,mid,turbineLow,turbineHigh,turbineAlpha,turbineHighAlpha,turbineGain,soft,scatter;
-            double depth,grain,bite,room1,room2,env0=1,env1=1,env2=1;
-            double lastChemical,tailEnergy,tailLow,tailDecay,voiceGain,riseLow,riseAlpha,tailGain;
-            double frontStart,frontRise,frontEnergy,targetAmplitude,amplitudeAlpha;
+            double lastChemical,voiceGain,riseLow,riseAlpha;
             int frontId;
-            uint noise;
-            readonly double decay0,decay1,decay2;
             bool turbine;
             int taps1,taps2,taps3;
             readonly double length;
             public Voice(EngineSoundProfile profile,int rate)
             {
-                this.rate=rate; decay0=Math.Exp(-1.0/(rate*.02));decay1=Math.Exp(-1.0/(rate*.017));decay2=Math.Exp(-1.0/(rate*.013));
+                this.rate=rate;reaction=new ReactivePressureBurst(rate,profile.popDecay,profile.popSharpness);
                 length=1.1+(profile.turboCount>0?.18:0)+.8;
                 foreach(var p in profile.exhaustSystem.parts)length+=RuntimeExhaustState.PartLength(p);
                 for(int zone=0;zone<8;zone++)
@@ -89,30 +63,11 @@ namespace DragLab.Domain
             }
             public void Begin(ExhaustMixtureModel.Event e,EngineSoundProfile profile)
             {
-                Clear(); active=true; start=lastChemical=frontStart=e.time;frontId=e.frontId;
-                frontRise=Math.Max(.00025,e.riseSeconds);
-                frontEnergy=e.acousticJ;amplitudeAlpha=1-Math.Exp(-1.0/(rate*frontRise));
+                Clear(); active=true; start=lastChemical=e.time;frontId=e.frontId;
+                reaction.Begin(e);
                 var envelope=Describe(e,profile);
-                double physicalDuration=envelope.seconds;
-                tailDecay=Math.Exp(-1.0/(rate*DragMath.Clamp(physicalDuration,.008,.20)));
-                tailGain=profile.popGain*.03*Math.Sqrt((1-tailDecay)*rate);
                 riseAlpha=1-Math.Exp(-2*Math.PI*Math.Min(rate*.4,envelope.riseCutoff)/rate);
-                noise=(uint)(e.seed^(e.seed>>32));if(noise==0)noise=117;
-                double strength=Math.Sqrt(e.acousticJ);
-                int kind=envelope.kind;
-                uint bits=(uint)(e.seed^(e.seed>>32));int variant=(int)(bits%Variants);
-                source=bank[kind*Variants+variant];other=bank[kind*Variants+(variant+1)%Variants];blend=((bits>>8)&255)/255.0;
-                double u=((bits>>16)&65535)/65535.0;
-                // Geometry/heat-release times set duration; seeded perturbations only
-                // texture it. Mode names and RPM do not select a louder/sharper bang.
-                double stretch=envelope.stretch*(1+.06*(u-.5));
-                step=48000.0/rate/stretch;
-                double sharp=DragMath.Clamp(.002/Math.Max(.00025,e.riseSeconds),.3,2);
-                depth=1+.12*(u-.5);bite=sharp*(1+.12*(1-u));grain=.8+.4*DragMath.Clamp(e.flowMps/100,0,1);
-                // Energy-normalized excitation: stretching the same explosion cannot
-                // create additional acoustic energy merely by making it longer.
-                double energy=(1-blend)*(1-blend)*bankEnergy[kind*Variants+variant]+blend*blend*bankEnergy[kind*Variants+(variant+1)%Variants]+2*blend*(1-blend)*bankCross[kind*Variants+variant];
-                voiceGain=profile.popGain*.045/Math.Sqrt(Math.Max(1e-9,energy*stretch));targetAmplitude=strength*voiceGain;amplitude=0;
+                voiceGain=profile.popGain*.45;
                 path=e.zone;double at=e.position;
                 turbine=profile.turboCount>0&&at*length<.45;
                 // Snapshot boost is the existing turbine-loading proxy. It is not
@@ -124,47 +79,31 @@ namespace DragLab.Domain
                 travel=(int)Math.Round(rate*Math.Max(0,.98-at)*length/Math.Sqrt(1.34*287*DragMath.Clamp(e.gasK,300,1500)));
                 start+=travel/(double)rate;
                 taps1=(int)(rate*(.003+Math.Max(0,.98-at)*.007));taps2=(int)(rate*.009);taps3=(int)(rate*.0195);
-                room1=.07;room2=.082;
             }
             public bool CanContinue(ExhaustMixtureModel.Event e) => active && frontId==e.frontId && path==e.zone && e.time>=lastChemical;
             public void Continue(ExhaustMixtureModel.Event e)
             {
                 lastChemical=e.time;
-                // Pressure-building heat release strengthens the original front
-                // continuously. Later burning excites its tail, not another bang.
-                if(e.time-frontStart<=frontRise){frontEnergy+=e.acousticJ;targetAmplitude=Math.Sqrt(frontEnergy)*voiceGain;}
-                else tailEnergy+=e.acousticJ;
+                reaction.Excite(e);
             }
             public double Sample(double clock)
             {
                 if(!active||clock<start)return 0;
-                amplitude+=amplitudeAlpha*(targetAmplitude-amplitude);
-                int at=(int)position;double dry=0;
-                if(at<source.Length-1)
-                {double f=position-at;dry=(source[at]+(source[at+1]-source[at])*f)*(1-blend)+(other[at]+(other[at+1]-other[at])*f)*blend;}
-                else if(position>source.Length+48000*.10&&clock-lastChemical>.12&&tailEnergy<1e-9){active=false;return 0;}
-                position+=step;
-                // Continuous reaction energy excites a diffuse tail, not another shock front.
-                noise^=noise<<13;noise^=noise>>17;noise^=noise<<5;
-                double turbulent=noise/(double)uint.MaxValue*2-1;tailLow+=midAlpha*(turbulent-tailLow);
-                double tail=Math.Sqrt(tailEnergy)*tailGain*tailLow;tailEnergy*=tailDecay;
+                double dry=reaction.Sample();
+                if(clock-lastChemical>.8&&reaction.Quiet){active=false;return 0;}
                 bass+=bassAlpha*(dry-bass);mid+=midAlpha*(dry-mid);
-                double value=depth*bass+grain*(mid-bass)+bite*(dry-mid);
-                value+=amplitude>1e-15?tail/amplitude:0;
+                double value=bass+.9*(mid-bass)+.85*(dry-mid);
                 riseLow+=riseAlpha*(value-riseLow);value=riseLow;
                 if(turbine){turbineLow+=turbineAlpha*(value-turbineLow);turbineHigh+=turbineHighAlpha*(value-turbineHigh);value=turbineGain*(.77*turbineLow+.15*turbineHigh);}
                 value=paths[path].Process(value);soft+=softAlpha*(value-soft);value=.83*value+.17*soft;
                 scatter+=scatterAlpha*(value-scatter);history[cursor]=scatter;
                 value+=.15*history[(cursor-taps1)&4095]-.094*history[(cursor-taps2)&4095]+.073*history[(cursor-taps3)&4095];
-                env0*=decay0;env1*=decay1;env2*=decay2;
-                value+=.4*.9*(.28*modes[0].Sample(value)*env0+.19*modes[1].Sample(value)*env1+.115*modes[2].Sample(value)*env2);
-                // Low-level outlet-space reflections retained from the preview path.
-                value+=room1*history[(cursor-(int)(rate*.011))&4095]+room2*history[(cursor-(int)(rate*.020))&4095];
-                cursor=(cursor+1)&4095;return value*amplitude;
+                value+=.12*(.28*modes[0].Sample(value)+.19*modes[1].Sample(value)+.115*modes[2].Sample(value));
+                cursor=(cursor+1)&4095;return value*voiceGain;
             }
             public void Clear()
             {
-                active=false;position=bass=mid=turbineLow=turbineHigh=soft=scatter=riseLow=0;cursor=0;env0=env1=env2=1;tailEnergy=tailLow=0;
+                active=false;bass=mid=turbineLow=turbineHigh=soft=scatter=riseLow=0;cursor=0;reaction.Clear();
                 Array.Clear(history,0,history.Length);foreach(var filter in paths)filter.Clear();foreach(var mode in modes)mode.Clear();
             }
         }
@@ -183,7 +122,7 @@ namespace DragLab.Domain
         public long ContinuedReactions {get;private set;}
         public AfterfireAudioSynth(EngineSoundProfile profile,int rate)
         {
-            this.profile=profile;this.rate=rate;PrepareSourceBank();
+            this.profile=profile;this.rate=rate;
             for(int i=0;i<voices.Length;i++)voices[i]=new Voice(profile,rate);
         }
         public void Connect(ExhaustMixtureModel model)

@@ -1,0 +1,29 @@
+PASS every chemical event delivered once through unchanged frame / 44100
+PASS no event history overflow or tail stealing in hot mixture / 44100
+PASS deterministic finite audible full pipeline / 44100
+PASS unchanged event history cannot retrigger / 44100
+PASS pause/resume cannot replay delivered events / 44100
+PASS runtime fuel mass conserved / 44100
+PASS zero warmed allocation in mixture tick plus full audio callback / 44100
+MEASURE 44100 / 367 stereo frames / hot mixture callback p95 1,0846 ms; max 1,4502 ms.
+PASS Editor hot-afterfire callback p95 below 60% of signal budget / 44100
+PASS every chemical event delivered once through unchanged frame / 48000
+PASS no event history overflow or tail stealing in hot mixture / 48000
+PASS deterministic finite audible full pipeline / 48000
+PASS unchanged event history cannot retrigger / 48000
+PASS pause/resume cannot replay delivered events / 48000
+PASS runtime fuel mass conserved / 48000
+PASS zero warmed allocation in mixture tick plus full audio callback / 48000
+MEASURE 48000 / 400 stereo frames / hot mixture callback p95 1,2229 ms; max 1,3305 ms.
+PASS Editor hot-afterfire callback p95 below 60% of signal budget / 48000
+PASS pressure fronts and continuing burns both respect fitted acoustic gain
+PASS enabling live acoustic simulation leaves vehicle dynamics/resources bit-identical
+PASS disabled depletion still has physical fuel/air excitation
+PASS vehicle copies cannot share mutable acoustic transport
+PASS full fuel cut supplies no fresh exhaust fuel
+PASS runtime intake at least 35.9 dB below diagnostic-matched preview
+PASS five BOV releases between frame publications retain independent voices
+PASS BOV pause/resume cannot replay delivered releases
+PASS legacy pop counters cannot invent audible gameplay explosions without chemical fuel events
+PASS audio chemistry and playback preserve Unity gameplay RNG
+Checks: 26

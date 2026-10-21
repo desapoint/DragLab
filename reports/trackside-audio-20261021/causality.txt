@@ -1,0 +1,23 @@
+PASS mode labels/energy request alone cannot alter the cylinder boundary
+PASS actual retarded ignition leaves more burning charge at valve opening
+PASS complete ignition interruption supplies unburned charge without inventing flame
+PASS no delivered fuel means no outgoing flame
+PASS identical physical history regardless of limiter/two-step/cause labels / 44100
+PASS sample-identical backfire PCM when only mode labels differ / 44100
+PASS reaction strength and duration follow changing physical charge / 44100
+PASS condition-driven burst/continuous-burn delivery budget / 44100
+PASS fuel and chemical/acoustic energy ledgers conserved / 44100
+MEASURE 14 reactions, front transitions 11, burn seconds 0,0129598900668555..0,0541350370947675, pressure Pa 18366,2216623284..92392,6895090017
+PASS identical physical history regardless of limiter/two-step/cause labels / 48000
+PASS sample-identical backfire PCM when only mode labels differ / 48000
+PASS reaction strength and duration follow changing physical charge / 48000
+PASS condition-driven burst/continuous-burn delivery budget / 48000
+PASS fuel and chemical/acoustic energy ledgers conserved / 48000
+MEASURE 14 reactions, front transitions 11, burn seconds 0,0129598900668555..0,0541350370947675, pressure Pa 18366,2216623284..92392,6895090017
+PASS physical rise/burn duration changes bang length and brightness at identical energy
+PASS acoustic envelope ignores all operating-mode labels
+PASS cold unignited mixture cannot backfire even with all mode labels asserted
+PASS cold walls/gas quench an inherited flame without mode-triggered ignition
+PASS inherited flame cannot burn trace fuel below the flammability window
+PASS stored pressure vents continuously without fresh heat release
+Checks: 20

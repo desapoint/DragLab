@@ -309,9 +309,12 @@ namespace DragLab.Runtime
             strip.Render(race);
             playerView.Animate(race.player.state);
             aiView.Animate(race.opponent.state);
+            double listenerMetres=race.player.state.distance+(cameraX-2)/DragStripView.MetersToView;
+            engineAudio.SetTracksideGeometry(race.player.state.distance,listenerMetres);
+            opponentAudio.SetTracksideGeometry(race.opponent.state.distance,listenerMetres,3.5);
             engineAudio.Render(race.player.state, !paused&&AuditionEngineActive, 1, tiresActive:!paused&&AuditionTiresActive);
             if(AudioAuditionActive)opponentAudio.Silence();else opponentAudio.Render(race.opponent.state, !paused,
-                SharedAudioSettings.OpponentVolume * SharedAudioSettings.OpponentGain(race.opponent.state.distance - race.player.state.distance), tiresActive:!paused);
+                SharedAudioSettings.OpponentVolume, tiresActive:!paused);
         }
 
         void FinishRace()=>AdvanceFinishSettlement();

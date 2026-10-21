@@ -10,6 +10,7 @@ namespace DragLab.Editor
     public static class RuntimeAudioIntegrationVerification
     {
         public static string OutputDirectory=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/runtime-audio-20261020"));
+        public static bool TracksideListening;
         static string Root => OutputDirectory;
         static readonly StringBuilder log=new StringBuilder();static int checks;
         static void Check(bool value,string label){log.AppendLine((value?"PASS ":"FAIL ")+label);checks++;Save();if(!value)throw new InvalidOperationException(label);}
@@ -115,6 +116,8 @@ namespace DragLab.Editor
                 {
                     var car=race.player;var controller=new EngineSoundController(car.spec,car.tune);
                     var synth=new EngineSoundSynth(new EngineSoundProfile(car.spec,car.tune),sampleRate:48000);var pcm=new float[800];
+                    var outdoor=TracksideListening?new TracksidePropagation(48000):null;
+                    var listening=TracksideListening?new TracksidePropagation.Scene(car.spec.induction.ambientTemperatureK,.5,car.spec.induction.ambientPressureBar*100000).At():null;
                     synth.Fill(pcm,2,48000,controller.Update(car.state,true,.85,DragMath.FixedStep));
                     double peak=0;var timings=new double[fixture.ticks.Count];int timingIndex=0;
                     foreach(var tick in fixture.ticks)
@@ -122,11 +125,11 @@ namespace DragLab.Editor
                         car.state.warmupLineLock=tick.lineLock;if(tick.beginCountdown&&!race.BeginCountdown())throw new InvalidOperationException("Countdown failed");
                         if(race.phase==RacePhase.Finished)race.Shutdown(tick.input);else race.Step(tick.input);
                         var sound=controller.Update(car.state,true,.85,DragMath.FixedStep);long started=Stopwatch.GetTimestamp();
-                        synth.Fill(pcm,2,48000,sound);timings[timingIndex++]=(Stopwatch.GetTimestamp()-started)*1000.0/Stopwatch.Frequency;
+                        synth.Fill(pcm,2,48000,sound);outdoor?.Process(pcm,2,listening);timings[timingIndex++]=(Stopwatch.GetTimestamp()-started)*1000.0/Stopwatch.Frequency;
                         foreach(float value in pcm){if(float.IsNaN(value)||float.IsInfinity(value)||Math.Abs(value)>=1)throw new InvalidOperationException("Invalid PCM");peak=Math.Max(peak,Math.Abs(value));}
                     }
                     var final=controller.Update(car.state,true,.85,DragMath.FixedStep);
-                    for(int i=0;i<60;i++)synth.Fill(pcm,2,48000,final);
+                    for(int i=0;i<60;i++){synth.Fill(pcm,2,48000,final);outdoor?.Process(pcm,2,listening);}
                     var d=synth.AfterfireDiagnostics(48000);var r=synth.ReleaseDiagnostics(48000);
                     if(d.Delivered!=car.state.audioExhaust.mixture.Sequence||d.HistoryOverflows!=0||d.TailSteals!=0||r.Overflows!=0||r.TailSteals!=0)
                         throw new InvalidOperationException("Event delivery/tail budget failure: "+fixture.id+" / "+d.Delivered+" / "+car.state.audioExhaust.mixture.Sequence+" / steals "+d.TailSteals);
