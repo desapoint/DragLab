@@ -1,0 +1,8 @@
+PASS 07-i6-carb: full original PCM exact; 1 s silent gap; complete 48 kHz PCM16 stereo candidate; headroom; repeated file SHA-256 exact.
+PASS 30-exhaust-2: full original PCM exact; 1 s silent gap; complete 48 kHz PCM16 stereo candidate; headroom; repeated file SHA-256 exact.
+PASS 19-injection-soft-fuel: full original PCM exact; 1 s silent gap; complete 48 kHz PCM16 stereo candidate; headroom; repeated file SHA-256 exact.
+PASS timber-at-40s-engine-before-after.wav: 3 s original / 0.5 s gap / 3 s candidate; matching zero-valued crop edges; after/before RMS 1.0016 (+0.013 dB).
+PASS timber-at-40s-intake-before-after.wav: 3 s original / 0.5 s gap / 3 s candidate; matching zero-valued crop edges; after/before RMS 0.9600 (-0.354 dB).
+PASS timber-at-88s-engine-before-after.wav: 3 s original / 0.5 s gap / 3 s candidate; matching zero-valued crop edges; after/before RMS 1.0005 (+0.004 dB).
+PASS timber-at-88s-intake-before-after.wav: 3 s original / 0.5 s gap / 3 s candidate; matching zero-valued crop edges; after/before RMS 1.1369 (+1.115 dB).
+PASS all ten earlier backfire A/B recordings retain their saved SHA-256.

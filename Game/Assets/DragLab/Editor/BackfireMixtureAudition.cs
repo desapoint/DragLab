@@ -144,7 +144,7 @@ namespace DragLab.Editor
             Debug.Log("TIMBER DING DIAGNOSTIC READY");
         }
 
-        static EngineSoundFrame WithoutGulp(EngineSoundFrame f)
+        internal static EngineSoundFrame WithoutGulp(EngineSoundFrame f)
         {
             return new EngineSoundFrame(f.rpm, f.throttle, f.load, f.boost, f.volume, f.slip, f.speed, f.active, f.cut,
                 f.releaseId, f.releaseStrength, f.turboSpool, f.superchargerBoost, f.chargerLoad, f.turboBoost,

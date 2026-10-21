@@ -1,0 +1,27 @@
+PASS same seed exact / different seed changes breath texture / 44100
+PASS finite audible intake with headroom / 44100
+PASS old intake fundamental/harmonic concentration reduced at least 85% / 44100 / 0,999891413244964 to 0,00519347841652642
+PASS no gulp excitation produces exact silence, no continuous hiss / 44100
+PASS intake decays after throttle-opening excitation ends / 44100
+PASS prepared sample generation allocates zero managed bytes / 44100
+PASS same seed exact / different seed changes breath texture / 48000
+PASS finite audible intake with headroom / 48000
+PASS old intake fundamental/harmonic concentration reduced at least 85% / 48000 / 0,999890232690211 to 0,00296108300881992
+PASS no gulp excitation produces exact silence, no continuous hiss / 48000
+PASS intake decays after throttle-opening excitation ends / 48000
+PASS prepared sample generation allocates zero managed bytes / 48000
+PASS 07-i6-carb countdown
+PASS 07-i6-carb unchanged race result and backfire counters
+PASS one finite global level match from Timber target clip
+PASS 07-i6-carb original production PCM reproduces exactly
+PASS 07-i6-carb new complete sequence is finite without clipping
+PASS 30-exhaust-2 countdown
+PASS 30-exhaust-2 unchanged race result and backfire counters
+PASS 30-exhaust-2 original production PCM reproduces exactly
+PASS 30-exhaust-2 new complete sequence is finite without clipping
+PASS 19-injection-soft-fuel countdown
+PASS 19-injection-soft-fuel unchanged race result and backfire counters
+PASS 19-injection-soft-fuel original production PCM reproduces exactly
+PASS 19-injection-soft-fuel new complete sequence is finite without clipping
+PASS preview does not consume gameplay RNG
+Checks: 26

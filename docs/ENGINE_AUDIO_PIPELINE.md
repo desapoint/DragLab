@@ -334,3 +334,14 @@ inputs, not new real-world accuracy certification or runtime integration. Engine
 audio, induction, tires and race results remain unchanged. The intake tone has
 not been silently removed from gameplay, nor has a shell variant been selected
 as a supposed fix for a sound confirmed to exist in the engine layer.
+
+### Confirmed intake ding: natural response preview
+
+The user confirms the isolated intake-gulp oscillator is the ding and requests
+a listening preview before integration. The Editor-only `NaturalIntakePreview`
+uses filtered airflow, noisy short valve breaths and a broad cavity response,
+driven by existing gulp/RPM/flow inputs with seeded variation. One common level
+match supports short Timber before/after clips and complete Timber/Bison/Juniper
+race comparisons. Other production audio, including backfires, remains intact.
+[Parameters, reproduction, checks and listening protocol](../reports/natural-intake-20261020/CHANGES.md).
+No runtime engine sound or platform build is updated; wait for listening approval.
