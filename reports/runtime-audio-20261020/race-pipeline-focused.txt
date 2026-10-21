@@ -1,0 +1,10 @@
+Actual 47-race production pipeline; legacy physical traces remain unchanged.
+MEASURE 03-i4-turbo-hiss callback p95 2,8060 ms; max 4,6740 ms / 400 stereo frames, budget 8.333 ms
+PASS 03-i4-turbo-hiss / ET unchanged / chemical 796 / audible 796 / continued 406 / BOV 3 / no drops or steals / peak 0,2395
+MEASURE 26-launch-hard-ignition callback p95 2,9839 ms; max 5,3192 ms / 400 stereo frames, budget 8.333 ms
+PASS 26-launch-hard-ignition / ET unchanged / chemical 911 / audible 911 / continued 505 / BOV 2 / no drops or steals / peak 0,2395
+MEASURE 30-exhaust-2 callback p95 0,3110 ms; max 0,5649 ms / 400 stereo frames, budget 8.333 ms
+PASS 30-exhaust-2 / ET unchanged / chemical 2 / audible 2 / continued 0 / BOV 0 / no drops or steals / peak 0,3602
+MEASURE 31-exhaust-3 callback p95 0,3225 ms; max 0,5505 ms / 400 stereo frames, budget 8.333 ms
+PASS 31-exhaust-3 / ET unchanged / chemical 0 / audible 0 / continued 0 / BOV 0 / no drops or steals / peak 0,4305
+PASS all 4 real race pipelines

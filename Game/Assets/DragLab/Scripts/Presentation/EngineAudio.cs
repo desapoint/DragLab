@@ -45,7 +45,11 @@ namespace DragLab.Presentation
         public double PeakCallbackMilliseconds=>Volatile.Read(ref peakCallbackTicks)*1000.0/System.Diagnostics.Stopwatch.Frequency;
         public long CallbackCount=>Volatile.Read(ref callbackCount);
 #endif
-        public float OutputRms => session != null && session.frame.active ? Volatile.Read(ref outputRms) : 0;
+        public long AfterfireOverflow => session==null?0:session.synth.AfterfireDiagnostics(session.rate).HistoryOverflows;
+        public long AfterfireTailSteals => session==null?0:session.synth.AfterfireDiagnostics(session.rate).TailSteals;
+        public long AfterfireDelivered => session==null?0:session.synth.AfterfireDiagnostics(session.rate).Delivered;
+        public int ChemicalEvents => session?.frame.afterfire?.Sequence??0;
+        public float OutputRms => session != null && (session.frame.active || session.frame.afterfire != null) ? Volatile.Read(ref outputRms) : 0;
         public bool Ready { get { return source != null && source.clip != null && session != null; } }
         // RPM ratio for diagnostics; DSP itself keeps a fixed playback rate.
         public float CurrentPitch { get { return pitch; } }

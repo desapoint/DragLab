@@ -112,6 +112,7 @@ namespace DragLab.Domain
             state.frontWheelAngleDegrees += angle * (spec.drive == DriveType.RWD ? 1 : 1 + state.slip);
             state.rearWheelAngleDegrees += angle * (spec.drive == DriveType.FWD ? 1 : 1 + state.slip);
             state.wheelAngleDegrees += angle;
+            if (state.audioExhaust != null) state.audioExhaust.Step(spec, induction, state, control.engineEnabled ? FuelDynamics.PhysicalFlow(spec,tune,induction,engine,state,false) : 0, dt);
             FlywheelDynamics.Publish(spec, tune, state);
         }
     }

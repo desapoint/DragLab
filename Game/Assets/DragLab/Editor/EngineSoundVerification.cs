@@ -149,12 +149,14 @@ namespace DragLab.Editor
             var popSpec = new VehicleSpec { sound = new EngineSoundSpec { engineGain = 0 }, engineBehavior = new EngineBehaviorSpec { mechanicalClatter = 0 } };
             var popController = new EngineSoundController(popSpec, tune); var popSynth = new EngineSoundSynth(new EngineSoundProfile(popSpec, tune));
             var popState = new CarState { rpm = 3000, exhaustPopStrength = .6 };
-            popController.Update(popState, true, .8, .01); popState.exhaustPopCount++;
-            var popPcm = new float[4096]; popSynth.Fill(popPcm, 1, 44100, popController.Update(popState, true, .8, .01));
+            // Legacy isolated DSP contract only. Live controllers now require funded chemical events;
+            // manually changing an old request counter must not fabricate a real afterfire.
+            var legacyPop = new EngineSoundFrame(3000,0,0,0,.8,popId:1,popStrength:.6);
+            var popPcm = new float[4096]; popSynth.Fill(popPcm, 1, 44100, legacyPop);
             bool audiblePop = Rms(popPcm) > .005;
-            popSynth.Fill(popPcm, 1, 44100, popController.Update(popState, false, .8, .01));
-            popSynth.Fill(popPcm, 1, 44100, popController.Update(popState, true, .8, .01));
-            Check(audiblePop && Rms(popPcm) == 0, "Pause rebases the DSP pop counter and cannot replay a stale exhaust event.", ref count);
+            popSynth.Fill(popPcm, 1, 44100, new EngineSoundFrame(3000,0,0,0,0,active:false,popId:1));
+            popSynth.Fill(popPcm, 1, 44100, legacyPop);
+            Check(audiblePop && Rms(popPcm) == 0, "Legacy isolated pop DSP rebases on pause without replay; live chemistry pause is separately checked.", ref count);
             report.AppendLine("V8 neutral-roar/driving RMS ratio at 4,500 RPM: " + (Rms(neutralVoice) / Rms(driveVoice)).ToString("F3"));
             foreach (var definition in Resources.LoadAll<VehicleDefinition>("Data/Vehicles"))
                 if (definition.spec.id == "v8-muscle" || definition.spec.id == "utility-pickup")

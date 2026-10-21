@@ -1,0 +1,8 @@
+Fixed 120 Hz launch, limiter, wheel inertia, transmission and fueling checks. Fictional calibration.
+Launch boost: two-step alone 0,000 bar; ignition-retard preload 0,193 bar.
+Quarter-mile wheel comparison: stock 16,988 s; large/heavy 20,755 s.
+Manual quarter 16,899 s / ratio 3,800
+DCT quarter 16,543 s / ratio 3,800
+Automatic quarter 16,751 s / ratio 3,800
+CVT quarter 16,241 s / ratio 1,329
+PASS: 116 powertrain checks. Damage is pass-local; wheel contact slip and component families remain simplified.

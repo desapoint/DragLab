@@ -1,0 +1,4 @@
+Current rerun receipts copied under regressions/; historical tracked report bytes restored.
+reports/audio-pressure-integration/unity-verification.txt
+reports/audio-verification.txt
+Pre-existing user report modifications were excluded.

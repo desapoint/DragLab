@@ -95,6 +95,7 @@ namespace DragLab.Domain
             if (released)
             {
                 state.boostReleaseCount++; state.boostReleaseStrength = DragMath.Clamp(priorBoost / Math.Max(.1, d.turboBoostBar * profile.boostSetting), 0, 1);
+                state.audioExhaust?.RecordRelease(state.boostReleaseStrength,state.engineTime);
                 // Recirculation retains more rotor energy; a pressure release never adds energy.
                 state.turboSpool *= profile.valve == BlowOffType.Recirculated ? .92 : .8;
             }

@@ -15,6 +15,7 @@ namespace DragLab.Domain
             var synth = new EngineSoundSynth(new EngineSoundProfile(spec, tune));
             var output = new float[Rate * 8]; var block = new float[Rate / 60];
             var state = new CarState();
+            controller.Update(state,true,.85,DragMath.FixedStep);
             for (int frame = 0; frame < 480; frame++)
             {
                 double t = frame / 60.0;
@@ -30,6 +31,7 @@ namespace DragLab.Domain
                     state.transmissionTorqueCut = state.shiftRemaining > 0;
                     InductionDynamics.Step(induction, state, state.throttle, state.launched ? .9 : 0,
                         state.transmissionTorqueCut, state.combustionFraction <= 0, DragMath.FixedStep);
+                    state.audioExhaust.Step(spec,induction,state,FuelDynamics.PhysicalFlow(spec,tune,induction,behavior,state,false),DragMath.FixedStep);
                 }
                 state.transmittedTorqueNm = state.engineTorqueNm * .9;
                 var parameters = controller.Update(state, true, .85, 1.0 / 60);

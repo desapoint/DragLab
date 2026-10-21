@@ -1,0 +1,12 @@
+PASS Windows build log success; managed assembly contains all five new runtime audio types and is newer than all C# source.
+Windows assembly SHA-256 058e3f6c255d565455a0c424b086d25e25d6aab58089002e17cce8ca910ecf74
+PASS local Android ARM64 build log success; APK metadata contains all five new runtime audio types and package is newer than all C# source.
+Android APK SHA-256 6138ff1565f73307ccbd3abce0ac65c85ac633942b33f2d9f07015d19139280a
+Physical phone playback/profiling is not verified by package inspection.
+PASS normal-speed visible game audition launched 2026-10-21, PID 49360.
+Isolated test directory: reports/player-fixtures/live-audio-20261021-064401-048
+Initial advancing telemetry:
+3 / 47 · Tempest · inline 4 turbo · hiss BOV · Petrol injection · Hard / Fuel cut · launch Hard / Ignition
+Throttle blips
+Tick 242 / 4110
+Engine RMS 0,01602319 / tires 0 / rival 0

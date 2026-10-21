@@ -415,6 +415,7 @@ namespace DragLab.Domain
     [Serializable]
     public class CarState
     {
+        [NonSerialized] public RuntimeExhaustState audioExhaust;
         public double distance;
         public double speed;
         public double rpm;
@@ -492,7 +493,7 @@ namespace DragLab.Domain
         public double cylinderCombustionFactor=1, cylinderFuelFactor=1, individualValveFloat, crankCycles;
         public double clutchViscousDragNm, clutchOilFactor=1;
         public double knockSeverity, valveBind, valveContact, dieselColdFactor=1;
-        public CarState Copy() { var copy = (CarState)MemberwiseClone(); copy.cylinderContribution=cylinderContribution==null?new double[0]:(double[])cylinderContribution.Clone();copy.cylinderFuelDelivery=cylinderFuelDelivery==null?new double[0]:(double[])cylinderFuelDelivery.Clone();copy.fluids=fluids==null?new Mechanics.FluidState():fluids.Copy(); copy.contact = contact == null ? new WheelContactState() : contact.Copy(); copy.splits = splits == null ? new Dictionary<double, double>() : new Dictionary<double, double>(splits); return copy; }
+        public CarState Copy() { var copy = (CarState)MemberwiseClone(); copy.audioExhaust = null; copy.cylinderContribution=cylinderContribution==null?new double[0]:(double[])cylinderContribution.Clone();copy.cylinderFuelDelivery=cylinderFuelDelivery==null?new double[0]:(double[])cylinderFuelDelivery.Clone();copy.fluids=fluids==null?new Mechanics.FluidState():fluids.Copy(); copy.contact = contact == null ? new WheelContactState() : contact.Copy(); copy.splits = splits == null ? new Dictionary<double, double>() : new Dictionary<double, double>(splits); return copy; }
     }
 
     [Serializable]

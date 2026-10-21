@@ -1,5 +1,15 @@
 # Engine audio: pressure events within the existing pipeline
 
+## Current runtime integration — 2026-10-20
+
+The user now authorizes integration. The shared mixture model and reviewed C#
+pressure source feed timestamped production afterfire voices; intake is reduced
+approximately 36 dB from the diagnostic-matched preview. BOV events also retain
+independent timestamps/voices. The earlier preview-only notes below are historical.
+[Current implementation, tests and explicit model limits](../reports/runtime-audio-20261020/CHANGES.md).
+Vehicle simulation, engine bed and induction mechanics remain authoritative;
+listening acceptance and physical Android profiling are separate from automation.
+
 ## Acoustic extension, 2026-10-20
 
 The firing scheduler advances once per PCM frame. Independent left/right header
