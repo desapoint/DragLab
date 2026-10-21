@@ -4,8 +4,9 @@ namespace DragLab.Domain
 {
     // Streaming C# port of renderPop's V3 pressure/noise core. No audio clips,
     // sample-array rendering or allocations occur when a live reaction arrives.
-    // Gameplay and numerical verification use this same preset envelope.
-    // Chemistry controls its onset and external gain, never these six decays.
+    // The reference entry point retains the HTML exactly. Runtime reactions feed
+    // six energy envelopes inside the SAME source; no external growing gain or
+    // repeated numerical-packet attacks reshape a previously decaying burst.
     public sealed class AfterfireLabSource
     {
         struct Pulse
@@ -29,11 +30,15 @@ namespace DragLab.Domain
         double dropCrack,dropBody,dropBark,dropTail,dropColour,dropDiffuse,startBody,startFlame;
         double l1,l2,c1,c2,m1,m2,h1,h2,slow,absMod,bp1,bp2,lo1,lo2;
         double crackEnv,bodyEnv,barkEnv,tailEnv,colourEnv,diffuseEnv,bodyAttack,flameAttack,dcX,dcY;
+        AfterfireLabSettings settings;
+        bool reactive,ignited;
+        double pendingEnergy,pendingBurn,pendingRise,pendingVolume,pendingHeat,pendingPressure;
+        double totalEnergy,normalizer=1,pressureGain=1,lastReactionSample;
         public double PressureSample {get;private set;}
         public int PulseOverflows {get;private set;}
         public int LatencyFrames=>os==2?8:0;
         public double Duration=>duration;
-        public bool Quiet=>!started||sampleIndex>=durationFrames+os*LatencyFrames;
+        public bool Quiet=>!started||sampleIndex>=(long)durationFrames+os*LatencyFrames;
         public AfterfireLabSource(int rate)
         {
             if(rate<8000||rate>192000)throw new ArgumentOutOfRangeException(nameof(rate));
@@ -80,7 +85,7 @@ namespace DragLab.Domain
         double Drop(double tau)=>Math.Exp(-1/(fs*Math.Max(.00001,tau)));
         void Configure(AfterfireLabSettings p,uint seed)
         {
-            Clear();started=true;random=seed;
+            Clear();started=true;random=seed;settings=p;
             size=p.size*.01;edge=p.edge*.01;crack=p.crack*.01;thump=p.thump*.01;bark=p.bark*.01;tube=p.tube*.01;jet=p.jet*.01;
             smooth=DragMath.Clamp(p.smooth*.01,0,1);air=DragMath.Clamp(p.air*.01,0,1);
             period=p.pulse*.001;decay=p.decay*.001;flame=p.flameTime*.001;
@@ -105,6 +110,11 @@ namespace DragLab.Domain
         public void Begin(AfterfireLabSettings p,uint seed)
         {
             Configure(p,seed);
+            SchedulePressure(1);
+        }
+        void SchedulePressure(double riseScale)
+        {
+            var p=settings;
             int count=(int)Math.Floor(p.scatter*.01*(2+6*Random())+.5);
             for(int k=0;k<count;k++)
             {
@@ -115,8 +125,62 @@ namespace DragLab.Domain
             }
             double followAt=.009+Random()*.016,followAmp=.075+.12*Random();
             double shockAt=.0004+.0008*(1-edge),widthMain=period*(.70+.55*size);
-            double followWidth=widthMain*(.65+.25*Random()),rise=.000085+.00038*(1-edge);
+            double followWidth=widthMain*(.65+.25*Random()),rise=(.000085+.00038*(1-edge))*riseScale;
             AddPulse(shockAt,widthMain,rise,1,1.55,30);AddPulse(followAt,followWidth,rise,followAmp,1.55,30);
+        }
+        // No future flame totals: only events already delivered by the history
+        // reader can energize this voice. Combine same-sample subdivisions before
+        // applying square roots or selecting the first coherent pressure attack.
+        public void BeginReactive(AfterfireLabSettings p,uint seed)
+        {
+            Configure(p,seed);reactive=true;
+            crackEnv=bodyEnv=barkEnv=tailEnv=colourEnv=diffuseEnv=0;
+        }
+        public void React(ExhaustMixtureModel.Event e)
+        {
+            if(!reactive||double.IsNaN(e.acousticJ)||double.IsInfinity(e.acousticJ)||e.acousticJ<=0)return;
+            double energy=e.acousticJ;
+            pendingEnergy+=energy;
+            pendingBurn+=energy*DragMath.Clamp(e.burnSeconds,.001,.16);
+            pendingRise+=energy*DragMath.Clamp(e.riseSeconds,.00025,.025);
+            pendingVolume+=energy*DragMath.Clamp(e.reactingVolumeM3,1e-8,.05);
+            pendingHeat+=energy*DragMath.Clamp(e.gasK,250,2500);
+            pendingPressure+=energy*DragMath.Clamp(e.pressurePa,0,1e7);
+        }
+        void ConsumeReactions()
+        {
+            if(pendingEnergy<=0)return;
+            double energy=pendingEnergy,burn=pendingBurn/energy,rise=pendingRise/energy;
+            double volume=pendingVolume/energy,heat=pendingHeat/energy,pressure=pendingPressure/energy;
+            double volumeScale=Math.Pow(volume/.0004,1.0/3);
+            double decayScale=DragMath.Clamp(.7+.2*Math.Sqrt(burn/.02)+.1*volumeScale,.55,1.8);
+            // A bounded hardware impulse response, extended by each real burn.
+            // Its horizon varies with actual burn/volume; it is not the envelope.
+            durationFrames=Math.Max(durationFrames,sampleIndex+(int)Math.Ceiling(duration*decayScale*fs));
+            double riseScale=DragMath.Clamp(Math.Sqrt(rise/.0015),.6,2.2);
+            // Geometry/temperature/pressure vary the compression pulse width,
+            // not sample playback rate, oscillator pitch or a blanket cutoff.
+            double pulseScale=DragMath.Clamp(volumeScale*Math.Sqrt(900/heat)*Math.Pow(1.6/(1+pressure/100000),.15),.65,1.5);
+            dropCrack=Drop((.0026+.008*(1-edge))*riseScale);
+            dropBody=Drop((decay*(.41+.20*size)+.012)*decayScale);
+            dropBark=Drop((decay*(.40+.16*bark)+.012)*decayScale);
+            dropTail=Drop((flame*.55+.012)*decayScale);
+            dropDiffuse=Drop((.028+.05*size)*Math.Sqrt(riseScale));
+            // Quadrature energy accumulation retains linear pressure scaling
+            // under uniform energy changes and is invariant to same-time packet
+            // subdivision. Reservoirs decay between actual fuel-burning events.
+            double q=energy/.2;
+            crackEnv=Math.Sqrt(crackEnv*crackEnv+q);bodyEnv=Math.Sqrt(bodyEnv*bodyEnv+q);
+            barkEnv=Math.Sqrt(barkEnv*barkEnv+q);tailEnv=Math.Sqrt(tailEnv*tailEnv+q);
+            colourEnv=Math.Sqrt(colourEnv*colourEnv+q);diffuseEnv=Math.Sqrt(diffuseEnv*diffuseEnv+q);
+            totalEnergy+=energy;normalizer=Math.Sqrt(totalEnergy/.2);
+            if(!ignited)
+            {
+                ignited=true;pressureGain=Math.Sqrt(q);period*=pulseScale;
+                SchedulePressure(riseScale);
+            }
+            lastReactionSample=sampleIndex;
+            pendingEnergy=pendingBurn=pendingRise=pendingVolume=pendingHeat=pendingPressure=0;
         }
         int AddPulse(double at,double width,double rise,double amplitude,double exponent,double extent)
         {
@@ -142,13 +206,18 @@ namespace DragLab.Domain
         }
         double Internal(out double pressure)
         {
+            // End on exhausted physical excitation, not the preset's fixed demo
+            // duration. The threshold is below audible level before FIR draining.
+            if(reactive&&ignited&&pulseCount==0&&sampleIndex-lastReactionSample>fs*.05&&
+                Math.Max(Math.Max(bodyEnv,barkEnv),Math.Max(tailEnv,Math.Max(colourEnv,Math.Max(crackEnv,diffuseEnv))))<1e-6)
+                durationFrames=Math.Min(durationFrames,sampleIndex);
             if(sampleIndex>=durationFrames){sampleIndex++;pressure=0;return 0;}
             double n=Random()*2-1;
             l1+=al*(n-l1);l2+=al*(l1-l2);c1+=ac*(n-c1);c2+=ac*(c1-c2);
             m1+=am*(n-m1);m2+=am*(m1-m2);h1+=ah*(n-h1);h2+=ah*(h1-h2);
             double low=l2*8,chest=(c2-l2)*5.2,middle=(m2-c2)*3.25,upper=(.70*h2+.30*h1-m2)*3.6;
             slow+=slowA*(Math.Abs(chest)-slow);absMod+=envA*(Math.Abs(middle)-absMod);
-            double shock=Shock();
+            double shock=Shock()*pressureGain;
             if(sampleIndex>=bodyFirst)bodyAttack=1-(1-bodyAttack)*startBody;
             if(sampleIndex>=flameFirst)flameAttack=1-(1-flameAttack)*startFlame;
             double turbulence=.85+.15*Math.Min(1.8,slow*2.8);
@@ -158,20 +227,22 @@ namespace DragLab.Domain
             double pipeInput=shock*.48+(middle*.38+chest*.22)*barkEnv;
             double hi1=pipeInput-lo1-2.1*bp1;bp1+=omega1*hi1;lo1+=omega1*bp1;
             double hi2=pipeInput-lo2-2.35*bp2;bp2+=omega2*hi2;lo2+=omega2*bp2;
-            double colour=(bp1*.65+bp2*.31)*(.07+.36*tube)*colourEnv;
+            double colour=(bp1*.65+bp2*.31)*(.07+.36*tube)*colourEnv/normalizer;
             double flow=(middle*.37+upper*.13+chest*.3)*tailEnv*flameAttack*jet*(.12+.35*absMod*3);
             double breath=(middle*.43+upper*.48)*diffuseEnv*crackBand*1.7;
             double highCrack=(upper*.95+middle*.40)*crackEnv*crackBand*(.24+1.35*crack);
-            double bodySat=Saturate((sub+boom+barkNoise+colour+flow)*1.35)*.71;
+            double bodySat=Saturate((sub+boom+barkNoise+colour+flow)*1.35/normalizer)*.71*normalizer;
             pressure=shock*(.48+.74*thump);
             double raw=pressure+bodySat+breath+highCrack;
             double high=raw-dcX+dcCoef*dcY;dcX=raw;dcY=high;
             crackEnv*=dropCrack;bodyEnv*=dropBody;barkEnv*=dropBark;tailEnv*=dropTail;colourEnv*=dropColour;diffuseEnv*=dropDiffuse;
             if(crackEnv<1e-24)crackEnv=0;if(colourEnv<1e-24)colourEnv=0;
-            sampleIndex++;return high;
+            double end=reactive?Math.Min(1,(durationFrames-sampleIndex)/(fs*.012)):1;
+            pressure*=end;sampleIndex++;return high*end;
         }
         public double Sample()
         {
+            if(reactive)ConsumeReactions();
             PressureSample=0;if(!started||Quiet)return 0;
             double value=0,pressure=0;
             for(int sub=0;sub<os;sub++)
@@ -203,6 +274,8 @@ namespace DragLab.Domain
             sampleIndex=write=pulseCount=0;started=false;
             l1=l2=c1=c2=m1=m2=h1=h2=slow=absMod=bp1=bp2=lo1=lo2=bodyAttack=flameAttack=dcX=dcY=0;
             PressureSample=0;
+            reactive=ignited=false;pendingEnergy=pendingBurn=pendingRise=pendingVolume=pendingHeat=pendingPressure=0;
+            totalEnergy=lastReactionSample=0;normalizer=pressureGain=1;
         }
     }
 }

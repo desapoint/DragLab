@@ -1,0 +1,8 @@
+PASS packaged Windows reactive source produces nonzero PCM
+PASS packaged backfire calibration is 0.25
+PASS Editor capture hooks excluded from player
+Windows Assembly-CSharp.dll SHA256 CA2B0959534BA4C5AB7E921206324B0D5579F8775B3DA8CC453EDE71634DD5A6
+PASS Android ARM64 IL2CPP APK built successfully
+PASS APK CRC, manifest and ARM64 native libraries
+Android APK SHA256 19DF0B3D434D235C843AED6B9555F0B0E8E568D2E122CFE9814B8E4658E76B39
+Device playback/performance not measured in this checkpoint.

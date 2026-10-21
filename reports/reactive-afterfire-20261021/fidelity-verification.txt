@@ -1,0 +1,366 @@
+PASS Tempest uses exact Turbo Pop & Flame preset, without Shotgun blend or reaction remapping
+MEASURE source / preset 0 / 24000 / max 8,4249634380029192E-08 / relative RMS 2,6098007285859675E-08
+MEASURE coherent pressure error 2,867481219137602E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 0 / 24000
+MEASURE gameplay/outdoor / preset 0 / 24000 / max 1,4901161193847656E-08 / relative RMS 4,6768854859322389E-08 / dry error 1,1864756732649084E-08 at 99
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 0 / 24000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 0 / 24000
+MEASURE source / preset 1 / 24000 / max 5,8997107643676827E-08 / relative RMS 2,5333953388433337E-08
+MEASURE coherent pressure error 2,9584566574314408E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 1 / 24000
+MEASURE gameplay/outdoor / preset 1 / 24000 / max 7,4505805969238281E-09 / relative RMS 4,0894329293875974E-08 / dry error 8,2769274212246557E-09 at 200
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 1 / 24000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 1 / 24000
+MEASURE source / preset 2 / 24000 / max 5,3607900563079625E-08 / relative RMS 2,3873281963678203E-08
+MEASURE coherent pressure error 2,761859985156434E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 2 / 24000
+MEASURE gameplay/outdoor / preset 2 / 24000 / max 1,4901161193847656E-08 / relative RMS 4,440479481746261E-08 / dry error 7,5025614609813829E-09 at 75
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 2 / 24000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 2 / 24000
+MEASURE source / preset 3 / 24000 / max 6,5906660573489262E-08 / relative RMS 2,5545705142508934E-08
+MEASURE coherent pressure error 2,851263136705029E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 3 / 24000
+MEASURE gameplay/outdoor / preset 3 / 24000 / max 1,4901161193847656E-08 / relative RMS 4,8160637552515062E-08 / dry error 9,1934999058018718E-09 at 98
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 3 / 24000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 3 / 24000
+MEASURE source / preset 4 / 24000 / max 5,8621975940198467E-08 / relative RMS 2,4988611899698211E-08
+MEASURE coherent pressure error 2,877892768538004E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 4 / 24000
+MEASURE gameplay/outdoor / preset 4 / 24000 / max 1,4901161193847656E-08 / relative RMS 4,6306063887550545E-08 / dry error 8,18898815424518E-09 at 283
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 4 / 24000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 4 / 24000
+MEASURE source / preset 5 / 24000 / max 1,0439395037309396E-07 / relative RMS 2,5937065836794824E-08
+MEASURE coherent pressure error 2,7946155611857648E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 5 / 24000
+MEASURE gameplay/outdoor / preset 5 / 24000 / max 7,4505805969238281E-09 / relative RMS 4,0224389942694954E-08 / dry error 1,4573667495021425E-08 at 99
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 5 / 24000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 5 / 24000
+MEASURE source / preset 6 / 24000 / max 5,6167873685453173E-08 / relative RMS 2,5238183056368305E-08
+MEASURE coherent pressure error 1,470991339846961E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 6 / 24000
+MEASURE gameplay/outdoor / preset 6 / 24000 / max 7,4505805969238281E-09 / relative RMS 4,8000729945803994E-08 / dry error 7,8490658139696023E-09 at 187
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 6 / 24000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 6 / 24000
+MEASURE source / preset 7 / 24000 / max 1,190052376642825E-07 / relative RMS 2,6260041710247679E-08
+MEASURE coherent pressure error 2,9144561985994244E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 7 / 24000
+MEASURE gameplay/outdoor / preset 7 / 24000 / max 1,4901161193847656E-08 / relative RMS 4,5561189302897438E-08 / dry error 1,7010118702476262E-08 at 119
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 7 / 24000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 7 / 24000
+MEASURE source / preset 8 / 24000 / max 5,7536908792954478E-08 / relative RMS 2,4482419172738872E-08
+MEASURE coherent pressure error 1,7013037756363758E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 8 / 24000
+MEASURE gameplay/outdoor / preset 8 / 24000 / max 1,4901161193847656E-08 / relative RMS 5,4639009848846746E-08 / dry error 8,03705696439394E-09 at 193
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 8 / 24000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 8 / 24000
+MEASURE source / preset 9 / 24000 / max 1,1487931139697594E-07 / relative RMS 2,6435701454387896E-08
+MEASURE coherent pressure error 2,955684663685787E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 9 / 24000
+MEASURE gameplay/outdoor / preset 9 / 24000 / max 1,4901161193847656E-08 / relative RMS 4,4757007325885869E-08 / dry error 1,6044155448646791E-08 at 100
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 9 / 24000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 9 / 24000
+MEASURE source / preset 0 / 44100 / max 8,0503455901492771E-08 / relative RMS 2,4711176266845913E-08
+MEASURE coherent pressure error 2,9477689178492028E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 0 / 44100
+MEASURE gameplay/outdoor / preset 0 / 44100 / max 1,4901161193847656E-08 / relative RMS 4,1399068896778267E-08 / dry error 1,1253851406323179E-08 at 145
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 0 / 44100
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 0 / 44100
+MEASURE source / preset 1 / 44100 / max 5,9259418261348173E-08 / relative RMS 2,4823170832930588E-08
+MEASURE coherent pressure error 2,9533669287928888E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 1 / 44100
+MEASURE gameplay/outdoor / preset 1 / 44100 / max 1,4901161193847656E-08 / relative RMS 3,9888252593845674E-08 / dry error 8,2677746315873435E-09 at 123
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 1 / 44100
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 1 / 44100
+MEASURE source / preset 2 / 44100 / max 7,86161664656504E-08 / relative RMS 2,5189135441558681E-08
+MEASURE coherent pressure error 2,9177151028569881E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 2 / 44100
+MEASURE gameplay/outdoor / preset 2 / 44100 / max 7,4505805969238281E-09 / relative RMS 3,823540791934352E-08 / dry error 1,0993118526592127E-08 at 142
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 2 / 44100
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 2 / 44100
+MEASURE source / preset 3 / 44100 / max 5,6512463153524095E-08 / relative RMS 2,469854849913897E-08
+MEASURE coherent pressure error 2,8690820164101183E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 3 / 44100
+MEASURE gameplay/outdoor / preset 3 / 44100 / max 1,4901161193847656E-08 / relative RMS 4,5787177536781175E-08 / dry error 7,9137033870413376E-09 at 326
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 3 / 44100
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 3 / 44100
+MEASURE source / preset 4 / 44100 / max 5,8760738497198872E-08 / relative RMS 2,5805087028129123E-08
+MEASURE coherent pressure error 2,8976335220143312E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 4 / 44100
+MEASURE gameplay/outdoor / preset 4 / 44100 / max 7,4505805969238281E-09 / relative RMS 3,9755515524311922E-08 / dry error 8,2135556966900225E-09 at 141
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 4 / 44100
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 4 / 44100
+MEASURE source / preset 5 / 44100 / max 5,9061746382482738E-08 / relative RMS 2,5020876066469673E-08
+MEASURE coherent pressure error 2,7419665205030697E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 5 / 44100
+MEASURE gameplay/outdoor / preset 5 / 44100 / max 7,4505805969238281E-09 / relative RMS 4,0065884378396761E-08 / dry error 8,2610684959405489E-09 at 185
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 5 / 44100
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 5 / 44100
+MEASURE source / preset 6 / 44100 / max 5,493749632989875E-08 / relative RMS 2,5217402499119103E-08
+MEASURE coherent pressure error 1,419467132723895E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 6 / 44100
+MEASURE gameplay/outdoor / preset 6 / 44100 / max 7,4505805969238281E-09 / relative RMS 4,7475371841359205E-08 / dry error 7,6772171120342847E-09 at 123
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 6 / 44100
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 6 / 44100
+MEASURE source / preset 7 / 44100 / max 1,090568186867813E-07 / relative RMS 2,5011962898757097E-08
+MEASURE coherent pressure error 2,9640342846803946E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 7 / 44100
+MEASURE gameplay/outdoor / preset 7 / 44100 / max 1,4901161193847656E-08 / relative RMS 4,0314031038701808E-08 / dry error 1,4966486161505088E-08 at 181
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 7 / 44100
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 7 / 44100
+MEASURE source / preset 8 / 44100 / max 5,8690232229707817E-08 / relative RMS 2,4210124605418139E-08
+MEASURE coherent pressure error 2,4398887799037539E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 8 / 44100
+MEASURE gameplay/outdoor / preset 8 / 44100 / max 1,4901161193847656E-08 / relative RMS 4,625674992155415E-08 / dry error 8,1880597579964132E-09 at 181
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 8 / 44100
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 8 / 44100
+MEASURE source / preset 9 / 44100 / max 1,1359467411153901E-07 / relative RMS 2,6484596847383227E-08
+MEASURE coherent pressure error 2,9609983798195572E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 9 / 44100
+MEASURE gameplay/outdoor / preset 9 / 44100 / max 7,4505805969238281E-09 / relative RMS 3,6285583857810046E-08 / dry error 1,6136764147134386E-08 at 145
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 9 / 44100
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 9 / 44100
+MEASURE source / preset 0 / 48000 / max 5,8156126803154962E-08 / relative RMS 2,4038261943100023E-08
+MEASURE coherent pressure error 2,9707556414848568E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 0 / 48000
+MEASURE gameplay/outdoor / preset 0 / 48000 / max 7,4505805969238281E-09 / relative RMS 3,6203288636656846E-08 / dry error 8,2398083078860651E-09 at 187
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 0 / 48000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 0 / 48000
+MEASURE source / preset 1 / 48000 / max 1,007868526414768E-07 / relative RMS 2,587028689053619E-08
+MEASURE coherent pressure error 2,9800411693869933E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 1 / 48000
+MEASURE gameplay/outdoor / preset 1 / 48000 / max 1,4901161193847656E-08 / relative RMS 4,28277288168313E-08 / dry error 1,4266812287111463E-08 at 193
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 1 / 48000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 1 / 48000
+MEASURE source / preset 2 / 48000 / max 5,9524507101116342E-08 / relative RMS 2,586760518736E-08
+MEASURE coherent pressure error 2,97668355520031E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 2 / 48000
+MEASURE gameplay/outdoor / preset 2 / 48000 / max 7,4505805969238281E-09 / relative RMS 3,947210198951492E-08 / dry error 8,304695681138341E-09 at 172
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 2 / 48000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 2 / 48000
+MEASURE source / preset 3 / 48000 / max 5,7818393628394915E-08 / relative RMS 2,5560363336025645E-08
+MEASURE coherent pressure error 2,8782941807747875E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 3 / 48000
+MEASURE gameplay/outdoor / preset 3 / 48000 / max 1,4901161193847656E-08 / relative RMS 3,9135061182119206E-08 / dry error 8,0583612560580775E-09 at 188
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 3 / 48000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 3 / 48000
+MEASURE source / preset 4 / 48000 / max 5,9108278938069247E-08 / relative RMS 2,517222536762669E-08
+MEASURE coherent pressure error 2,8009128127948202E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 4 / 48000
+MEASURE gameplay/outdoor / preset 4 / 48000 / max 1,4901161193847656E-08 / relative RMS 4,4782697317306586E-08 / dry error 8,2554620361996456E-09 at 194
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 4 / 48000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 4 / 48000
+MEASURE source / preset 5 / 48000 / max 5,8353076148875971E-08 / relative RMS 2,5459611633743115E-08
+MEASURE coherent pressure error 2,9257703260121559E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 5 / 48000
+MEASURE gameplay/outdoor / preset 5 / 48000 / max 1,4901161193847656E-08 / relative RMS 4,602170242312679E-08 / dry error 8,157959890953137E-09 at 189
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 5 / 48000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 5 / 48000
+MEASURE source / preset 6 / 48000 / max 5,83186461344809E-08 / relative RMS 2,4239700216698442E-08
+MEASURE coherent pressure error 1,4465396658280838E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 6 / 48000
+MEASURE gameplay/outdoor / preset 6 / 48000 / max 7,4505805969238281E-09 / relative RMS 4,1952750531020524E-08 / dry error 8,1379530059155769E-09 at 170
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 6 / 48000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 6 / 48000
+MEASURE source / preset 7 / 48000 / max 5,8543927705656529E-08 / relative RMS 2,4558419595577147E-08
+MEASURE coherent pressure error 2,9555346059417786E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 7 / 48000
+MEASURE gameplay/outdoor / preset 7 / 48000 / max 1,4901161193847656E-08 / relative RMS 4,423682447044121E-08 / dry error 8,1027523302079629E-09 at 215
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 7 / 48000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 7 / 48000
+MEASURE source / preset 8 / 48000 / max 5,7427524069453284E-08 / relative RMS 2,5352113046125947E-08
+MEASURE coherent pressure error 2,7886797093756854E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 8 / 48000
+MEASURE gameplay/outdoor / preset 8 / 48000 / max 7,4505805969238281E-09 / relative RMS 4,2320487102909842E-08 / dry error 8,0022878046204227E-09 at 155
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 8 / 48000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 8 / 48000
+MEASURE source / preset 9 / 48000 / max 1,038815891085676E-07 / relative RMS 2,4917211207948556E-08
+MEASURE coherent pressure error 2,9680823132594014E-08
+PASS one actual source path matches full JavaScript preset including final padded tail / 9 / 48000
+MEASURE gameplay/outdoor / preset 9 / 48000 / max 1,4901161193847656E-08 / relative RMS 3,813185837358833E-08 / dry error 1,4369388401380689E-08 at 175
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 9 / 48000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 9 / 48000
+MEASURE source / preset 0 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,0149152550548072E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 0 / 96000
+MEASURE gameplay/outdoor / preset 0 / 96000 / max 9,3132257461547852E-10 / relative RMS 9,968511188704993E-10 / dry error 2,081646618967703E-09 at 7102
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 0 / 96000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 0 / 96000
+MEASURE source / preset 1 / 96000 / max 2,9802322387695313E-08 / relative RMS 1,8002710490355801E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 1 / 96000
+MEASURE gameplay/outdoor / preset 1 / 96000 / max 0 / relative RMS 0 / dry error 4,1610288686877439E-09 at 6886
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 1 / 96000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 1 / 96000
+MEASURE source / preset 2 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,3322277916941196E-09
+MEASURE coherent pressure error 7,4505805969238281E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 2 / 96000
+MEASURE gameplay/outdoor / preset 2 / 96000 / max 0 / relative RMS 0 / dry error 2,0805728320749672E-09 at 8245
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 2 / 96000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 2 / 96000
+MEASURE source / preset 3 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,5729681442254493E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 3 / 96000
+MEASURE gameplay/outdoor / preset 3 / 96000 / max 0 / relative RMS 0 / dry error 2,0818397873656469E-09 at 6849
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 3 / 96000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 3 / 96000
+MEASURE source / preset 4 / 96000 / max 0 / relative RMS 0
+MEASURE coherent pressure error 2,2579657748315394E-19
+PASS one actual source path matches full JavaScript preset including final padded tail / 4 / 96000
+MEASURE gameplay/outdoor / preset 4 / 96000 / max 0 / relative RMS 0 / dry error 1,6940658945086007E-21 at 6969
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 4 / 96000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 4 / 96000
+MEASURE source / preset 5 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,0163508917225895E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 5 / 96000
+MEASURE gameplay/outdoor / preset 5 / 96000 / max 9,3132257461547852E-10 / relative RMS 7,0400741025484687E-10 / dry error 2,0831050842606835E-09 at 6352
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 5 / 96000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 5 / 96000
+MEASURE source / preset 6 / 96000 / max 7,4505805969238281E-09 / relative RMS 1,8074857808674396E-09
+MEASURE coherent pressure error 7,4505805969238281E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 6 / 96000
+MEASURE gameplay/outdoor / preset 6 / 96000 / max 0 / relative RMS 0 / dry error 3,2018384905213582E-11 at 9549
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 6 / 96000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 6 / 96000
+MEASURE source / preset 7 / 96000 / max 1,4901161193847656E-08 / relative RMS 9,260068144966737E-10
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 7 / 96000
+MEASURE gameplay/outdoor / preset 7 / 96000 / max 1,862645149230957E-09 / relative RMS 1,2324597712194039E-09 / dry error 2,0816463622286285E-09 at 1775
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 7 / 96000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 7 / 96000
+MEASURE source / preset 8 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,1069745255916359E-09
+MEASURE coherent pressure error 1,862645149230957E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 8 / 96000
+MEASURE gameplay/outdoor / preset 8 / 96000 / max 9,3132257461547852E-10 / relative RMS 1,1414106838838479E-09 / dry error 2,0814791695800139E-09 at 6107
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 8 / 96000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 8 / 96000
+MEASURE source / preset 9 / 96000 / max 1,4901161193847656E-08 / relative RMS 1,1998692862321665E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 9 / 96000
+MEASURE gameplay/outdoor / preset 9 / 96000 / max 0 / relative RMS 0 / dry error 2,0842348680272238E-09 at 6442
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 9 / 96000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 9 / 96000
+MEASURE source / preset 0 / 192000 / max 1,4901161193847656E-08 / relative RMS 1,6243236924871194E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 0 / 192000
+MEASURE gameplay/outdoor / preset 0 / 192000 / max 1,862645149230957E-09 / relative RMS 1,8071699649021379E-09 / dry error 2,0840974050695404E-09 at 12428
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 0 / 192000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 0 / 192000
+MEASURE source / preset 1 / 192000 / max 1,4901161193847656E-08 / relative RMS 1,7657188082420938E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 1 / 192000
+MEASURE gameplay/outdoor / preset 1 / 192000 / max 0 / relative RMS 0 / dry error 2,0817706135323188E-09 at 14579
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 1 / 192000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 1 / 192000
+MEASURE source / preset 2 / 192000 / max 7,4505805969238281E-09 / relative RMS 1,8792725932906258E-09
+MEASURE coherent pressure error 7,4505805969238281E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 2 / 192000
+MEASURE gameplay/outdoor / preset 2 / 192000 / max 0 / relative RMS 0 / dry error 1,0464126544429408E-09 at 16808
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 2 / 192000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 2 / 192000
+MEASURE source / preset 3 / 192000 / max 1,4901161193847656E-08 / relative RMS 1,8366036965576291E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 3 / 192000
+MEASURE gameplay/outdoor / preset 3 / 192000 / max 0 / relative RMS 0 / dry error 2,0829320143689323E-09 at 13616
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 3 / 192000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 3 / 192000
+MEASURE source / preset 4 / 192000 / max 0 / relative RMS 0
+MEASURE coherent pressure error 2,2579657748315394E-19
+PASS one actual source path matches full JavaScript preset including final padded tail / 4 / 192000
+MEASURE gameplay/outdoor / preset 4 / 192000 / max 0 / relative RMS 0 / dry error 1,0842021724855044E-19 at 12838
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 4 / 192000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 4 / 192000
+MEASURE source / preset 5 / 192000 / max 7,4505805969238281E-09 / relative RMS 1,1571510932674068E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 5 / 192000
+MEASURE gameplay/outdoor / preset 5 / 192000 / max 2,3283064365386963E-10 / relative RMS 1,7447644967878859E-10 / dry error 1,0411952532790592E-09 at 12526
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 5 / 192000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 5 / 192000
+MEASURE source / preset 6 / 192000 / max 7,4505805969238281E-09 / relative RMS 2,2340788843392387E-09
+MEASURE coherent pressure error 7,4505805969238281E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 6 / 192000
+MEASURE gameplay/outdoor / preset 6 / 192000 / max 0 / relative RMS 0 / dry error 1,5618050472690492E-11 at 19116
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 6 / 192000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 6 / 192000
+MEASURE source / preset 7 / 192000 / max 2,9802322387695313E-08 / relative RMS 1,5751721046051946E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 7 / 192000
+MEASURE gameplay/outdoor / preset 7 / 192000 / max 1,862645149230957E-09 / relative RMS 1,8238421311591368E-09 / dry error 4,1620269314313063E-09 at 11782
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 7 / 192000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 7 / 192000
+MEASURE source / preset 8 / 192000 / max 1,4901161193847656E-08 / relative RMS 1,4089550577971694E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 8 / 192000
+MEASURE gameplay/outdoor / preset 8 / 192000 / max 9,3132257461547852E-10 / relative RMS 1,7033777289359316E-09 / dry error 2,0812870663022842E-09 at 12112
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 8 / 192000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 8 / 192000
+MEASURE source / preset 9 / 192000 / max 1,4901161193847656E-08 / relative RMS 1,2547406857991994E-09
+MEASURE coherent pressure error 3,7252902984619141E-09
+PASS one actual source path matches full JavaScript preset including final padded tail / 9 / 192000
+MEASURE gameplay/outdoor / preset 9 / 192000 / max 0 / relative RMS 0 / dry error 2,0829537469846393E-09 at 12869
+PASS reference excitation attack/body plus path/outdoors agrees with JS input / 9 / 192000
+PASS outlet is independently the unfiltered JS waveform with only physical gain and travel / 9 / 192000
+PASS first actual gameplay reaction/sample allocates nothing after construction / 8000
+PASS quarter simulated energy halves real gameplay pressure without changing timbre / 8000
+PASS splitting one same-time chemical packet cannot add a bang or amplify it / 8000
+PASS mode flags cannot remap sound when the actual physical reaction is unchanged / 8000
+PASS no chemical energy gives exact silence / 8000
+PASS all 240 continuing reactions fund one flame envelope instead of 240 sharp attacks / 8000
+PASS zero warmed callback allocations, pressure overflow or stolen tails / 8000
+PASS finite preset and installed paths retire to exact silence / 8000
+PASS clear discards all burst/zone history / 8000
+PASS first actual gameplay reaction/sample allocates nothing after construction / 16000
+PASS quarter simulated energy halves real gameplay pressure without changing timbre / 16000
+PASS splitting one same-time chemical packet cannot add a bang or amplify it / 16000
+PASS mode flags cannot remap sound when the actual physical reaction is unchanged / 16000
+PASS no chemical energy gives exact silence / 16000
+PASS all 240 continuing reactions fund one flame envelope instead of 240 sharp attacks / 16000
+PASS zero warmed callback allocations, pressure overflow or stolen tails / 16000
+PASS finite preset and installed paths retire to exact silence / 16000
+PASS clear discards all burst/zone history / 16000
+PASS first actual gameplay reaction/sample allocates nothing after construction / 24000
+PASS quarter simulated energy halves real gameplay pressure without changing timbre / 24000
+PASS splitting one same-time chemical packet cannot add a bang or amplify it / 24000
+PASS mode flags cannot remap sound when the actual physical reaction is unchanged / 24000
+PASS no chemical energy gives exact silence / 24000
+PASS all 240 continuing reactions fund one flame envelope instead of 240 sharp attacks / 24000
+PASS zero warmed callback allocations, pressure overflow or stolen tails / 24000
+PASS finite preset and installed paths retire to exact silence / 24000
+PASS clear discards all burst/zone history / 24000
+PASS first actual gameplay reaction/sample allocates nothing after construction / 44100
+PASS quarter simulated energy halves real gameplay pressure without changing timbre / 44100
+PASS splitting one same-time chemical packet cannot add a bang or amplify it / 44100
+PASS mode flags cannot remap sound when the actual physical reaction is unchanged / 44100
+PASS no chemical energy gives exact silence / 44100
+PASS all 240 continuing reactions fund one flame envelope instead of 240 sharp attacks / 44100
+PASS zero warmed callback allocations, pressure overflow or stolen tails / 44100
+PASS finite preset and installed paths retire to exact silence / 44100
+PASS clear discards all burst/zone history / 44100
+PASS first actual gameplay reaction/sample allocates nothing after construction / 48000
+PASS quarter simulated energy halves real gameplay pressure without changing timbre / 48000
+PASS splitting one same-time chemical packet cannot add a bang or amplify it / 48000
+PASS mode flags cannot remap sound when the actual physical reaction is unchanged / 48000
+PASS no chemical energy gives exact silence / 48000
+PASS all 240 continuing reactions fund one flame envelope instead of 240 sharp attacks / 48000
+PASS zero warmed callback allocations, pressure overflow or stolen tails / 48000
+PASS finite preset and installed paths retire to exact silence / 48000
+PASS clear discards all burst/zone history / 48000
+PASS first actual gameplay reaction/sample allocates nothing after construction / 192000
+PASS quarter simulated energy halves real gameplay pressure without changing timbre / 192000
+PASS splitting one same-time chemical packet cannot add a bang or amplify it / 192000
+PASS mode flags cannot remap sound when the actual physical reaction is unchanged / 192000
+PASS no chemical energy gives exact silence / 192000
+PASS all 240 continuing reactions fund one flame envelope instead of 240 sharp attacks / 192000
+PASS zero warmed callback allocations, pressure overflow or stolen tails / 192000
+PASS finite preset and installed paths retire to exact silence / 192000
+PASS clear discards all burst/zone history / 192000
+PASS separate reacting zones drive their own local pressure response and path within one flame identity
+PASS a genuinely new chemical flame starts another preset burst
+PASS real stock Tempest outlet settings retain the exact approved Turbo Pop & Flame reference
+PASS removing stock silencing brightens the generator itself, rather than bypassing hardware
+PASS chambered hardware changes the single generated bark and tube response
+PASS longer actual runner geometry lowers the generator focus and lengthens its decay
+PASS authored exhaust sharpness and decay remain effective once
+PASS boost-dependent upstream turbine colour changes the generated broad bands
+PASS post-turbine reactions do not acquire a fictitious downstream turbine colour
+PASS production default Tempest, without calibration override, retains the raw HTML outlet timbre
+Checks: 215

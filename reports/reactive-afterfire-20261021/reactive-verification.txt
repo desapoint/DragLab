@@ -1,0 +1,16 @@
+PASS same-time packet subdivision preserves the complete live waveform
+PASS identical past reactions give identical PCM before any future fuel is supplied
+PASS new burning fuel changes an already running sound instead of being ignored by a fixed envelope
+PASS a continuing numerical reaction energizes body/tail without restarting or turning up the old pressure bang
+PASS actual burn time changes the energy-release decay
+PASS gas temperature, reacting volume, pressure and rise alter the compression response without pitch resampling
+PASS control labels alone do not create or reshape combustion
+PASS no actual acoustic energy is exact silence
+PASS different physical seeds vary the pressure/scattering/turbulence texture
+PASS unfed live reservoirs drain to exact finite silence
+PASS first live excitation and full source playback allocate no callback memory
+PASS real Tempest chemistry remains the same 5387 reactions and 54 flames
+PASS old native baseline and current integrated engine have identical complete sequence lengths
+PASS engine/intake/turbo mix before the first backfire remains bit-identical
+Tempest before 0 s / actual live integration after 37.158333333333331 s; common gain 1
+Checks: 14

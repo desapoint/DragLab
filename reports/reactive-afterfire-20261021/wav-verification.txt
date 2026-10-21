@@ -1,0 +1,13 @@
+PASS complete RIFF length
+PASS 48 kHz 24-bit stereo PCM
+PASS two complete native sequences plus exactly one second of separation
+PASS exact one-second silent A/B separator
+PASS before is the historical native engine mix, with no additional gain or processing
+PASS opening engine/intake/turbo audio remains identical before the first combustion event
+PASS live backfire revision is audible in the full native mix
+PASS unclipped nonzero output retains stereo
+MEASURE peak 0.27172306438959415; original RMS 0.02809412626820063; live RMS 0.03095711540182138; before quantization error 5.960463055065812e-8
+MEASURE launch-window RMS: previous fixed-strength preview 0.06930105990134465; current live 0.0608940463054805; level difference -1.1233008738048678 dB. Listening approval is separate.
+FILE SHA256 22faa71ec8f311c117931af683f2a5921357f12cb8478c4e3a31fcea89c9c1bb; BEFORE 0 s; AFTER 37.15833333333333 s; duration 73.31666666666666 s
+Historical local PCM is used only for this listening comparison, not required by runtime/chemistry/source tests. No audio is generated or modified by this verifier.
+Checks: 8
