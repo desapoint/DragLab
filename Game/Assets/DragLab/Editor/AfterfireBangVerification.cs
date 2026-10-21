@@ -9,7 +9,8 @@ namespace DragLab.Editor
 {
     public static class AfterfireBangVerification
     {
-        static readonly string Root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/afterfire-bangs-20261021"));
+        public static string OutputDirectory = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/afterfire-bangs-20261021"));
+        static string Root => OutputDirectory;
         static readonly StringBuilder Log = new StringBuilder();
         static int checks;
         static void Check(bool yes, string text)

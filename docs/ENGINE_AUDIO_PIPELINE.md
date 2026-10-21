@@ -1,5 +1,12 @@
 # Engine audio: pressure events within the existing pipeline
 
+## Afterfire grain-only refinement — 2026-10-21
+
+Following the user's scope correction, only stochastic texture is smoothed after
+waveshaping and the small high-grit layer is reduced. The pressure samples remain
+bit-identical in A/B checks; event timing, decay, global gain and installed paths
+remain. [Reference path, verification and listening checkpoint](../reports/afterfire-grain-20261021/CHANGES.md).
+
 ## Pressure-led afterfire correction — 2026-10-21
 
 Live afterfires separate short compression/rarefaction from the longer, rough

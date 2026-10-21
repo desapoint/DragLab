@@ -8,7 +8,8 @@ namespace DragLab.Domain
     {
         readonly int rate;
         readonly double decayScale,sharpnessScale;
-        double expansion, pressure, velocity, body, bodyLow, grit;
+        readonly bool smoothTexture;
+        double expansion, pressure, velocity, body, bodyLow, grit, roundedBody;
         double attackAlpha, releaseAlpha, bodyAlpha, gritAlpha, energyDecay;
         double tailEnergy, frontEnergy;
         double lastEventTime,lastEventPressure,lastCoherent;
@@ -20,10 +21,12 @@ namespace DragLab.Domain
         public double PressureSample { get; private set; }
         public double CombustionBodySample { get; private set; }
         public double TurbulenceSample { get; private set; }
-        public ReactivePressureBurst(int rate,double decayScale=1,double sharpnessScale=1)
+        // The optional reference path supports deterministic texture-only A/B
+        // checks. Production uses the smoother texture with identical pressure.
+        public ReactivePressureBurst(int rate,double decayScale=1,double sharpnessScale=1,bool smoothTexture=true)
         {
             if(rate<8000||rate>192000||double.IsNaN(decayScale)||double.IsInfinity(decayScale)||double.IsNaN(sharpnessScale)||double.IsInfinity(sharpnessScale))throw new ArgumentException("Invalid pressure-source configuration.");
-            this.rate=rate;this.decayScale=DragMath.Clamp(decayScale,.25,3);this.sharpnessScale=DragMath.Clamp(sharpnessScale,.25,2.5);
+            this.rate=rate;this.decayScale=DragMath.Clamp(decayScale,.25,3);this.sharpnessScale=DragMath.Clamp(sharpnessScale,.25,2.5);this.smoothTexture=smoothTexture;
         }
         public void Begin(ExhaustMixtureModel.Event e)
         {
@@ -87,11 +90,15 @@ namespace DragLab.Domain
             double broad=(body-bodyLow)*bodyNormal;
             // Bounded roughness without a pitched carrier or a train of fake pops.
             broad/=1+.35*Math.Abs(broad);
+            // Round the stochastic body after waveshaping, where its extra high
+            // harmonics were being introduced. The pressure pulse is untouched.
+            roundedBody+=bodyAlpha*(broad-roundedBody);
+            double textureBody=smoothTexture?.2*broad+.8*roundedBody:broad;
             PressureSample=wave+.35*velocity;
-            CombustionBodySample=.18*texture*broad;
+            CombustionBodySample=.18*texture*textureBody;
             // High-frequency grit follows only the short compression, never the
             // complete chemical burn. Slow residual flow remains very subdued.
-            TurbulenceSample=.012*Math.Abs(wave)*(grit-body)*gritNormal+.0008*texture*broad*flowTexture;
+            TurbulenceSample=(smoothTexture?.006:.012)*Math.Abs(wave)*(grit-body)*gritNormal+.0008*texture*textureBody*flowTexture;
             frontEnergy*=energyDecay;tailEnergy*=tailDecay;
             frontRoot*=rootDecay;tailRoot*=tailRootDecay;
             return PressureSample+CombustionBodySample+TurbulenceSample;
@@ -99,7 +106,7 @@ namespace DragLab.Domain
         public bool Quiet => Math.Abs(pressure)+Math.Abs(expansion)<1e-8&&frontEnergy+tailEnergy<1e-10;
         public void Clear()
         {
-            expansion=pressure=velocity=body=bodyLow=grit=tailEnergy=frontEnergy=0;
+            expansion=pressure=velocity=body=bodyLow=grit=roundedBody=tailEnergy=frontEnergy=0;
             frontRoot=tailRoot=0;
             hasExcitation=false;lastEventTime=lastEventPressure=lastCoherent=0;
             FundedEnergy=LastExcitation=PressureSample=CombustionBodySample=TurbulenceSample=0;

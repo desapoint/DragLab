@@ -1,0 +1,50 @@
+PASS reject non-finite initial thermals
+PASS reject overflowing geometry
+PASS reject overflowing flow before substep conversion
+PASS rejected mixture does not corrupt ledgers or event state
+PASS reject absent mixture input
+PASS hot partially burned mixture produces afterfires
+PASS zero fuel cannot produce afterfire
+PASS zero oxygen cannot produce afterfire
+PASS fully chamber-burned fuel cannot produce afterfire
+PASS cold charge and exhaust without ignition cannot light residual mixture
+PASS charge/gas temperature can enable ignition with cold walls
+PASS trace fuel below the flammability limit cannot explode in inert exhaust
+PASS same seed/input gives exact event times, sites and energies
+PASS changed seed varies conditional ignition, not fuel availability
+PASS control fuel mass conserved
+PASS control exhaust oxygen conserved
+PASS control chemical release split exactly into heat and acoustic energy
+PASS control every ignition consumes residual fuel and oxygen
+PASS control finite nonnegative zones
+PASS control fuel mass conserved
+PASS control exhaust oxygen conserved
+PASS control chemical release split exactly into heat and acoustic energy
+PASS control every ignition consumes residual fuel and oxygen
+PASS control finite nonnegative zones
+PASS control fuel mass conserved
+PASS control exhaust oxygen conserved
+PASS control chemical release split exactly into heat and acoustic energy
+PASS control every ignition consumes residual fuel and oxygen
+PASS control finite nonnegative zones
+PASS control fuel mass conserved
+PASS control exhaust oxygen conserved
+PASS control chemical release split exactly into heat and acoustic energy
+PASS control every ignition consumes residual fuel and oxygen
+PASS control finite nonnegative zones
+PASS cold walls can quench a retained mixture despite hot incoming air
+PASS cold residual fuel mass conserved
+PASS cold residual exhaust oxygen conserved
+PASS cold residual chemical release split exactly into heat and acoustic energy
+PASS cold residual every ignition consumes residual fuel and oxygen
+PASS cold residual finite nonnegative zones
+PASS hot fuel-cut residual mixture may ignite later without fresh fuel
+PASS hot residual fuel mass conserved
+PASS hot residual exhaust oxygen conserved
+PASS hot residual chemical release split exactly into heat and acoustic energy
+PASS hot residual every ignition consumes residual fuel and oxygen
+PASS hot residual finite nonnegative zones
+PASS default source preserves prior generator exactly
+PASS shell diagnostic and damped texture differ from prior source
+PASS new shell texture remains seeded and exact
+Checks: 49

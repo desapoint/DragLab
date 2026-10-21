@@ -1,0 +1,36 @@
+PASS ISO atmospheric absorption at 1 kHz / 20 C / 50% RH / sea level
+PASS air absorbs high frequencies more strongly
+PASS cold atmosphere increases propagation time
+PASS no signal arrives before its sound-travel time / 44100
+PASS trackside reflection arrives on its own longer path / 44100
+PASS doubling distance halves pressure, not pressure squared / 44100
+PASS exact propagation state across callback block boundaries / 44100
+PASS pause/session clear cannot replay an old echo / 44100
+PASS zero warmed propagation callback allocations / 44100
+MEASURE six-path propagation p95 0,1550 ms / 400 frames / 44100
+PASS outdoor path fits callback budget / 44100
+PASS live pressure source is seeded, finite and reproducible / 44100
+PASS finite declining pocket gives a larger bang then smaller funded burns / 44100
+PASS secondary pressure sounds cannot invent additional reaction energy / 44100
+PASS fresh fuel/pressure can produce another larger bang instead of a forced decay train / 44100
+PASS new seeds change live texture rather than selecting a stored clip / 44100
+PASS authored decay and sharpness still affect live excitation / 44100
+PASS zero pressure-source sample allocations / 44100
+PASS no signal arrives before its sound-travel time / 48000
+PASS trackside reflection arrives on its own longer path / 48000
+PASS doubling distance halves pressure, not pressure squared / 48000
+PASS exact propagation state across callback block boundaries / 48000
+PASS pause/session clear cannot replay an old echo / 48000
+PASS zero warmed propagation callback allocations / 48000
+MEASURE six-path propagation p95 0,1092 ms / 400 frames / 48000
+PASS outdoor path fits callback budget / 48000
+PASS live pressure source is seeded, finite and reproducible / 48000
+PASS finite declining pocket gives a larger bang then smaller funded burns / 48000
+PASS secondary pressure sounds cannot invent additional reaction energy / 48000
+PASS fresh fuel/pressure can produce another larger bang instead of a forced decay train / 48000
+PASS new seeds change live texture rather than selecting a stored clip / 48000
+PASS authored decay and sharpness still affect live excitation / 48000
+PASS zero pressure-source sample allocations / 48000
+PASS receding source gets Doppler from changing travel time, with finite output
+PASS physical finite pocket depletes and stops its burn sequence without new fuel or scripted pops
+Checks: 33
