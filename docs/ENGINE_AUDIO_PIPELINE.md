@@ -345,3 +345,12 @@ match supports short Timber before/after clips and complete Timber/Bison/Juniper
 race comparisons. Other production audio, including backfires, remains intact.
 [Parameters, reproduction, checks and listening protocol](../reports/natural-intake-20261020/CHANGES.md).
 No runtime engine sound or platform build is updated; wait for listening approval.
+
+### Intake revision after wastegate-like feedback
+
+The first airflow candidate is not accepted. The Editor-only `ValveBody` voice
+uses shorter opening-triggered noisy valve pulses and no sustained airflow bed.
+Direct previous-candidate -> revised-candidate WAVs preserve both versions.
+[Checks, gain/spectral limits and listening protocol](../reports/intake-body-20261020/CHANGES.md).
+This is an acoustic preview; turbo/wastegate and runtime engine audio are unchanged.
+Wait for listening approval before integration.

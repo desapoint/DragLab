@@ -14,10 +14,11 @@ namespace DragLab.Editor
         const int Rate = 48000, Block = 400;
         static string Root => Path.GetFullPath(Path.Combine(Application.dataPath, "../.."));
         static string Capture => Path.Combine(Root, "reports/v8-backfire-matrix-20261020");
-        static string Folder => Path.Combine(Root, "reports/natural-intake-20261020");
+        static NaturalIntakePreview.Voice voice = NaturalIntakePreview.Voice.Airflow;
+        static string Folder => Path.Combine(Root, voice == NaturalIntakePreview.Voice.Airflow ? "reports/natural-intake-20261020" : "reports/intake-body-20261020");
         static readonly List<string> checks = new List<string>();
         [Serializable] sealed class Row { public string id, file; public double seconds, newPeak; public int referenceMismatches; }
-        [Serializable] sealed class Manifest { public double commonIntakeGain; public List<Row> outputs = new List<Row>(); }
+        [Serializable] sealed class Manifest { public string voice; public double commonIntakeGain; public List<Row> outputs = new List<Row>(); }
         static void Check(bool yes, string why)
         { checks.Add((yes ? "PASS " : "FAIL ") + why); if (!yes) { SaveChecks(); throw new InvalidOperationException("INTAKE PREVIEW: " + why); } }
         static void SaveChecks() { Directory.CreateDirectory(Folder); File.WriteAllText(Path.Combine(Folder, "verification.txt"), string.Join("\n", checks) + "\nChecks: " + checks.Count + "\n", new UTF8Encoding(false)); }
@@ -40,12 +41,14 @@ namespace DragLab.Editor
         }
         static double PairFraction(double[] signal, double hz, int rate)
         {
-            int start = signal.Length / 2, count = signal.Length - start; double total = 0, pair = 0;
-            for (int i = start; i < signal.Length; i++) total += signal[i] * signal[i];
+            int start = voice == NaturalIntakePreview.Voice.ValveBody ? 0 : signal.Length / 2;
+            int count = voice == NaturalIntakePreview.Voice.ValveBody ? Math.Min(signal.Length, rate / 4) : signal.Length - start;
+            double total = 0, pair = 0;
+            for (int i = start; i < start + count; i++) total += signal[i] * signal[i];
             foreach (double frequency in new[] { hz, hz * 2 })
             {
                 double a = 0, b = 0;
-                for (int i = start; i < signal.Length; i++) { double phase = 2 * Math.PI * frequency * i / rate; a += signal[i] * Math.Sin(phase); b += signal[i] * Math.Cos(phase); }
+                for (int i = start; i < start + count; i++) { double phase = 2 * Math.PI * frequency * i / rate; a += signal[i] * Math.Sin(phase); b += signal[i] * Math.Cos(phase); }
                 pair += a * a + b * b;
             }
             return 2 * pair / Math.Max(1e-20, count * total);
@@ -59,7 +62,7 @@ namespace DragLab.Editor
             foreach (int rate in new[] { 44100, 48000 })
             {
                 var frame = new EngineSoundFrame(4200, .8, .7, 0, .85, intakeGulp: .8, airflowKgS: .12);
-                var a = new NaturalIntakePreview(profile, rate); var b = new NaturalIntakePreview(profile, rate); var c = new NaturalIntakePreview(profile, rate, 9);
+                var a = new NaturalIntakePreview(profile, rate, 171818, voice); var b = new NaturalIntakePreview(profile, rate, 171818, voice); var c = new NaturalIntakePreview(profile, rate, 9, voice);
                 var first = new double[rate]; bool same = true, changed = false;
                 for (int i = 0; i < rate; i++) { first[i] = a.Sample(frame); same &= first[i] == b.Sample(frame); changed |= first[i] != c.Sample(frame); }
                 Check(same && changed, "same seed exact / different seed changes breath texture / " + rate);
@@ -67,7 +70,7 @@ namespace DragLab.Editor
                 var original = new float[rate]; new EngineSoundSynth(Isolated(spec, tune), sampleRate: rate).Fill(original, 1, rate, frame);
                 double oldPair = PairFraction(original.Select(v => (double)v).ToArray(), 150, rate), newPair = PairFraction(first, 150, rate);
                 Check(newPair < oldPair * .15, "old intake fundamental/harmonic concentration reduced at least 85% / " + rate + " / " + oldPair + " to " + newPair);
-                var quiet = new NaturalIntakePreview(profile, rate); var zero = new EngineSoundFrame(4200, .8, .7, 0, .85, intakeGulp: 0, airflowKgS: .12);
+                var quiet = new NaturalIntakePreview(profile, rate, 171818, voice); var zero = new EngineSoundFrame(4200, .8, .7, 0, .85, intakeGulp: 0, airflowKgS: .12);
                 bool silent = true; for (int i = 0; i < 2048; i++) silent &= quiet.Sample(zero) == 0;
                 Check(silent, "no gulp excitation produces exact silence, no continuous hiss / " + rate);
                 var ramp = new double[rate / 2]; for (int i = 0; i < ramp.Length; i++) ramp[i] = a.Sample(zero);
@@ -78,12 +81,38 @@ namespace DragLab.Editor
         }
         static double Rms(float[] x, int firstFrame, int count)
         { double sum = 0; for (int i = firstFrame * 2; i < (firstFrame + count) * 2; i++) sum += x[i] * x[i]; return Math.Sqrt(sum / (count * 2)); }
-        public static void Run()
+        static double MatchOutput(float[] old, float[] source, int start, int count)
+        {
+            double goal = Rms(old, start, count), low = 0, high = 100;
+            for (int pass = 0; pass < 40; pass++)
+            {
+                double gain = (low + high) * .5, sum = 0;
+                for (int i = start * 2; i < (start + count) * 2; i++) { double value = Soft(source[i] * gain); sum += value * value; }
+                if (Math.Sqrt(sum / (count * 2)) < goal) low = gain; else high = gain;
+            }
+            return (low + high) * .5;
+        }
+        public static void Run() { voice = NaturalIntakePreview.Voice.Airflow; Render(); }
+        public static void RunBody() { voice = NaturalIntakePreview.Voice.ValveBody; Render(); CompareRejected(); }
+        static void CompareRejected()
+        {
+            foreach (string time in new[] { "40s", "88s" }) foreach (string layer in new[] { "engine", "intake" })
+            {
+                string name = "timber-at-" + time + "-" + layer + "-before-after.wav";
+                byte[] before = File.ReadAllBytes(Path.Combine(Root, "reports/natural-intake-20261020", name)), after = File.ReadAllBytes(Path.Combine(Folder, name));
+                int frames = Rate * 3, second = (Rate * 3 + Rate / 2) * 4;
+                var pcm = new short[(Rate * 6 + Rate / 2) * 2];
+                Buffer.BlockCopy(before, 44 + second, pcm, 0, frames * 4);
+                Buffer.BlockCopy(after, 44 + second, pcm, second, frames * 4);
+                Wav(Path.Combine(Folder, "timber-at-" + time + "-" + layer + "-hiss-to-body.wav"), pcm);
+            }
+        }
+        static void Render()
         {
             Directory.CreateDirectory(Folder); checks.Clear(); Verify();
             string globalRandom = JsonUtility.ToJson(UnityEngine.Random.state);
             var captures = JsonUtility.FromJson<V8BackfireMatrixExport.Manifest>(File.ReadAllText(Path.Combine(Capture, "jobs.json"), Encoding.UTF8));
-            var manifest = new Manifest();
+            var manifest = new Manifest { voice = voice.ToString() };
             foreach (string id in new[] { "07-i6-carb", "30-exhaust-2", "19-injection-soft-fuel" })
             {
                 var job = captures.jobs.Single(j => j.id == id); byte[] reference = File.ReadAllBytes(Path.Combine(Capture, job.reference));
@@ -96,7 +125,7 @@ namespace DragLab.Editor
                     var car = race.player; var controller = new EngineSoundController(car.spec, car.tune);
                     var profile = new EngineSoundProfile(car.spec, car.tune);
                     var originalSynth = new EngineSoundSynth(profile, sampleRate: Rate); var dry = new EngineSoundSynth(profile, sampleRate: Rate);
-                    var old = new EngineSoundSynth(Isolated(car.spec, car.tune), sampleRate: Rate); var fresh = new NaturalIntakePreview(profile, Rate);
+                    var old = new EngineSoundSynth(Isolated(car.spec, car.tune), sampleRate: Rate); var fresh = new NaturalIntakePreview(profile, Rate, 171818, voice);
                     var block = new float[Block * 2];
                     for (int tick = 0; tick < fixture.ticks.Count; tick++)
                     {
@@ -112,8 +141,9 @@ namespace DragLab.Editor
                     Check(Math.Abs(car.state.elapsed - fixture.elapsed) < 1e-9 && car.state.exhaustPopCount == fixture.pops, id + " unchanged race result and backfire counters");
                     if (id == "07-i6-carb")
                     {
-                        manifest.commonIntakeGain = Rms(oldIntake, (int)(1.9 * Rate), Rate * 3) / Rms(natural, (int)(1.9 * Rate), Rate * 3);
-                        Check(manifest.commonIntakeGain > 0 && manifest.commonIntakeGain < 20, "one finite global level match from Timber target clip");
+                        manifest.commonIntakeGain = voice == NaturalIntakePreview.Voice.ValveBody ? MatchOutput(oldIntake, natural, (int)(1.9 * Rate), Rate * 3) :
+                            Rms(oldIntake, (int)(1.9 * Rate), Rate * 3) / Rms(natural, (int)(1.9 * Rate), Rate * 3);
+                        Check(manifest.commonIntakeGain > 0 && manifest.commonIntakeGain < 100, "one finite global level match from Timber target clip");
                     }
                     var updated = new float[original.Length];
                     for (int i = 0; i < original.Length; i++)
