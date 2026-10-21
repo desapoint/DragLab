@@ -1,0 +1,22 @@
+PASS original Tempest physics elapsed and pop trace preserved
+PASS all recorded physical acoustic energy retained without history loss
+PASS chosen real Tempest flame has one zone: freeze one physical strength without duplicating paths
+PASS entire selected flame fits the native event reader
+PASS unchanged production before renders exactly one actual flame with every continuation
+PASS before funds every physical reaction exactly once
+PASS before reproduces the real native replay up to the next independent flame, including event availability
+PASS preview starts 750 ms before the first chemical ignition
+PASS both original and fixed envelopes are audible and nonzero
+PASS same physical history and seed reproduce every preview PCM sample
+PASS quarter physical energy halves pressure with identical burst shape
+PASS zero physical energy produces exact silence
+PASS both isolated chapters retain an exact silent lead-in before the whole attack
+PASS neither chapter truncates its finite decay
+Flame 1; reactions 8; acoustic J 0.13033320421170963
+Physical ignition 11.63452380952379 s; same native start sample 558800; preset 3; seed 422528400
+Before vs actual native replay maximum PCM difference before next independent flame: 0
+Attack (first 10 ms) / next 500 ms energy: before 0.3131540511333244; after 0.67933352279647008
+Matched WAV: before 0 s; after 3.75 s; 750 ms lead in each; whole-chapter before match gain 1.1422242028426408; common peak guard 1.440382288351868
+Natural WAV: same chapters; shared peak guard 1.440382288351868; no relative gain adjustment
+OFFLINE ONLY: full recorded flame energy fixes its strength before playback; no causal live-runtime change or build is made.
+Checks: 14

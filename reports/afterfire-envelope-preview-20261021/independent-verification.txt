@@ -1,0 +1,22 @@
+PASS complete revised burst matches original HTML mono PCM times ONE fixed physical strength, including the full padded tail
+MEASURE same seed 422528400; preset 3; native causal latency 8 frames; max error 3.661370839846967e-8; relative RMS 3.6187383040716964e-8
+PASS before/after difference is a genuine envelope correction, not just a global volume change
+PASS C# source exports cover the identical complete physical burst window
+PASS 750 ms silence precedes the complete burst onset
+PASS 750 ms silence precedes the complete burst onset
+PASS valid complete RIFF 01-tempest-envelope-before-after-matched.wav
+PASS 48 kHz 24-bit stereo PCM 01-tempest-envelope-before-after-matched.wav
+PASS exact chapter and gap lengths 01-tempest-envelope-before-after-matched.wav
+PASS both chapters preserve identical mono routing, full lead-ins and a silent one-second separator 01-tempest-envelope-before-after-matched.wav
+PASS unclipped output matches the unaltered source arrays times documented scalar gains 01-tempest-envelope-before-after-matched.wav
+PASS matched chapters have equal RMS, without compression, fades or within-burst gain changes
+FILE 01-tempest-envelope-before-after-matched.wav; SHA256 4909f7f6eba826fee902813a988defd5cedfd163eec8d153a5fbdfd86dc8b5c2; duration 6.5; after begins 3.75; peak 0.8999999642372088
+PASS valid complete RIFF 02-tempest-envelope-before-after-natural.wav
+PASS 48 kHz 24-bit stereo PCM 02-tempest-envelope-before-after-natural.wav
+PASS exact chapter and gap lengths 02-tempest-envelope-before-after-natural.wav
+PASS both chapters preserve identical mono routing, full lead-ins and a silent one-second separator 02-tempest-envelope-before-after-natural.wav
+PASS unclipped output matches the unaltered source arrays times documented scalar gains 02-tempest-envelope-before-after-natural.wav
+FILE 02-tempest-envelope-before-after-natural.wav; SHA256 1a92b56cd45cf88ebd065b1af4970b429fcccbf2f8fb7a91ad25148973a7d78a; duration 6.5; after begins 3.75; peak 0.8999999642372088
+Scope: isolated FIRST real Tempest flame, all its chemical continuation packets, original seed/timing. No added HTML stereo room, hardware path, bus or outdoor processing in either chapter.
+Offline preview: full recorded flame energy is known before rendering. Not a claim of causal realtime readiness. No production source or player build is changed.
+Checks: 16
