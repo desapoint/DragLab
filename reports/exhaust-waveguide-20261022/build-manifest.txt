@@ -1,0 +1,5 @@
+Final Unity 6000.6.4f1 development players; source 4df1a3e plus exhaust-waveguide-20261022 C1 checkpoint.
+437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd  Game/Builds/Windows/DragLab.exe  667136 bytes
+26450b71811109808a1a4b22541c497f9a80405a828b57be2f3ebef121edb71a  Game/Builds/Windows/DragLab_Data/Managed/Assembly-CSharp.dll  3162112 bytes
+595a43fc93d658893e7c44dd1c03168bb8d0e7bba2c0a6268b1ce25cf618bc76  Game/Builds/Windows/DragLab_Data/resources.assets  1778896 bytes
+96f95e0e9fa1b9951f2af8b07714a1d99471d15933ab2979f03acb2f199b7ed1  Game/Builds/Android/DragLab.apk  87571065 bytes

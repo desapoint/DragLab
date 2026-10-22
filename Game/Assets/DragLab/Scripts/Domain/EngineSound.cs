@@ -26,12 +26,14 @@ namespace DragLab.Domain
         public float exhaustPopGain = 1, exhaustPopSharpness = 1, exhaustPopDecay = 1;
         public float compressorNoiseGain = 1;
         public EngineAcousticSpec acoustics = new EngineAcousticSpec();
+        public ExhaustWaveSpec exhaustAcoustics;
         public ExhaustSetup exhaustSystem = new ExhaustSetup();
-        public EngineSoundSpec Copy() { var copy = (EngineSoundSpec)MemberwiseClone(); copy.exhaustSystem = exhaustSystem == null ? new ExhaustSetup() : exhaustSystem.Copy(); copy.acoustics=acoustics?.Copy(); return copy; }
+        public EngineSoundSpec Copy() { var copy = (EngineSoundSpec)MemberwiseClone(); copy.exhaustSystem = exhaustSystem == null ? new ExhaustSetup() : exhaustSystem.Copy(); copy.acoustics=acoustics?.Copy(); copy.exhaustAcoustics=exhaustAcoustics?.Copy(); return copy; }
         public string Validate()
         {
             if (exhaustSystem != null && exhaustSystem.Validate() != null) return exhaustSystem.Validate();
             if(acoustics!=null&&acoustics.Validate(cylinders)!=null)return acoustics.Validate(cylinders);
+            if(exhaustAcoustics!=null&&exhaustAcoustics.Validate()!=null)return exhaustAcoustics.Validate();
             if(!Valid(compressorNoiseGain,0,2))return "Compressor noise gain must be 0–2.";
             if (cylinders < 1 || cylinders > 16) return "Sound cylinder count must be 1–16.";
             if (!Valid(displacementLitres, .3f, 12)) return "Sound displacement must be 0.3–12 litres.";
@@ -67,6 +69,7 @@ namespace DragLab.Domain
         public readonly double turboSize,turboFlowCapacityKgS;
         public readonly double compressorNoiseGain;
         public readonly EngineAcousticProfile acoustics;
+        public readonly ExhaustWaveSpec exhaustAcoustics;
         public EngineSoundProfile(VehicleSpec spec, Tune tune)
         {
             var hardware = spec.sound ?? new EngineSoundSpec();
@@ -93,6 +96,7 @@ namespace DragLab.Domain
             compressorNoiseGain=hardware.compressorNoiseGain;
             acoustics=new EngineAcousticProfile(hardware.acoustics,cylinders,layout,litres,redlineRpm,fueling);
             exhaustSystem = hardware.exhaustSystem == null ? new ExhaustSetup() : hardware.exhaustSystem.Copy();
+            exhaustAcoustics=ExhaustWaveSpec.Resolve(hardware.exhaustAcoustics,exhaustSystem,litres,turboCount>0);
         }
         public double FiringHz(double rpm) { return rpm * cylinders / 120; } // Four-stroke combustion events.
     }
@@ -115,11 +119,12 @@ namespace DragLab.Domain
         public readonly ExhaustMixtureModel afterfire;
         public readonly RuntimeExhaustState acousticState;
         public readonly double afterfireVolume;
+        public readonly double exhaustGasTemperatureK;
         public EngineSoundFrame(double rpm, double throttle, double load, double boost, double volume,
             double slip = 0, double speed = 0, bool active = true, bool cut = false, int releaseId = 0, double releaseStrength = 0,
             double turboSpool = 0, double superchargerBoost = 0, double chargerLoad = 0, double turboBoost = -1,
             double combustionFraction = 1, double idleRoughness = 0, double intakeGulp = 0, double fuelHesitation = 0,
-            int popId = 0, double popStrength = 0, bool overrun = false, bool twoStep = false, CutMethod cutMethod = CutMethod.Fuel, double[] cylinderContribution = null, double airflowKgS = -1, ExhaustMixtureModel afterfire = null, double afterfireVolume = -1, RuntimeExhaustState acousticState = null)
+            int popId = 0, double popStrength = 0, bool overrun = false, bool twoStep = false, CutMethod cutMethod = CutMethod.Fuel, double[] cylinderContribution = null, double airflowKgS = -1, ExhaustMixtureModel afterfire = null, double afterfireVolume = -1, RuntimeExhaustState acousticState = null, double exhaustGasTemperatureK = 650)
         {
             this.rpm = rpm; this.throttle = throttle; this.load = load; this.boost = boost; this.volume = volume;
             this.slip = slip; this.speed = speed; this.active = active; this.cut = cut;
@@ -129,6 +134,7 @@ namespace DragLab.Domain
             this.combustionFraction = combustionFraction; this.idleRoughness = idleRoughness; this.intakeGulp = intakeGulp;
             this.fuelHesitation = fuelHesitation; this.popId = popId; this.popStrength = popStrength; this.overrun = overrun;
             this.twoStep = twoStep; this.cutMethod = cutMethod;this.cylinderContribution=cylinderContribution==null?null:(double[])cylinderContribution.Clone();
+            this.exhaustGasTemperatureK=double.IsNaN(exhaustGasTemperatureK)||double.IsInfinity(exhaustGasTemperatureK)||exhaustGasTemperatureK<=0?650:DragMath.Clamp(exhaustGasTemperatureK,300,1200);
             this.acousticState=acousticState; this.airflowKgS=airflowKgS; this.afterfire=afterfire; this.afterfireVolume=afterfireVolume<0?volume:afterfireVolume;
         }
     }
@@ -145,6 +151,11 @@ namespace DragLab.Domain
         CarState boundState;
         public double Boost { get { return boost; } }
         public int ReleaseCount { get { return lastPhysicalRelease; } }
+        static double ExhaustTemperature(CarState state)
+        {
+            var zones=state.audioExhaust?.mixture.zones;if(zones==null||zones.Length==0)return 650;
+            double kelvin=0;foreach(var zone in zones)kelvin+=zone.gasK;return kelvin/zones.Length;
+        }
         public EngineSoundController(VehicleSpec spec, Tune tune)
         {
             this.spec = spec; this.tune = tune.Copy(); profile = new EngineSoundProfile(spec, this.tune);
@@ -175,7 +186,7 @@ namespace DragLab.Domain
                 DragMath.Clamp(state.superchargerDriveTorqueNm / torque, 0, 1), state.turboBoostBar,
                 state.combustionFraction, state.idleRoughness, state.intakeGulp, state.fuelHesitation,
                 popId, state.exhaustPopStrength, state.launched && gas < .1 && state.rpm > spec.idleRpm + 900,
-                state.launchControlActive, state.activeCutMethod,state.cylinderContribution,state.airflowKgS,state.audioExhaust?.mixture,acousticState:state.audioExhaust);
+                state.launchControlActive, state.activeCutMethod,state.cylinderContribution,state.airflowKgS,state.audioExhaust?.mixture,acousticState:state.audioExhaust,exhaustGasTemperatureK:ExhaustTemperature(state));
         }
     }
 
@@ -197,6 +208,7 @@ namespace DragLab.Domain
 #if UNITY_EDITOR
         public Action<int,EngineSoundAuditSample> Audit;
         ExhaustFilter auditBaseLeft,auditBaseRight;
+        ExhaustWaveguide auditWaves44100,auditWaves48000,auditOtherWaves;
 #endif
         readonly ExhaustFilter exhaustFilter,exhaustRight;
         readonly ExhaustPopSynth pop;
@@ -206,6 +218,8 @@ namespace DragLab.Domain
         AfterfireAudioSynth after44100,after48000,otherAfter;
         IntakeRushSynth intake44100,intake48000,otherIntake;
         ReleaseAudioSynth release44100,release48000,otherRelease;
+        ExhaustWaveguide waves44100,waves48000,otherWaves;
+        public ExhaustWaveguide WaveDiagnostics(int rate)=>rate==44100?waves44100:rate==48000?waves48000:otherWaves;
         public ReleaseAudioSynth ReleaseDiagnostics(int rate) => rate==44100?release44100:rate==48000?release48000:otherRelease;
         public AfterfireAudioSynth AfterfireDiagnostics(int rate) => rate==44100?after44100:rate==48000?after48000:otherAfter;
         public bool IsSampleRatePrepared(int rate)=>rate==44100?core44100!=null:rate==48000?core48000!=null:otherCore!=null&&otherCore.Rate==rate;
@@ -214,6 +228,11 @@ namespace DragLab.Domain
         {
             if(IsSampleRatePrepared(rate))return;
             var core=new PressureCombustionCore(profile,rate,seed);
+            var waves=profile.exhaustAcoustics.pipeMode==AcousticModelMode.Simulated||profile.exhaustAcoustics.mufflerMode==AcousticModelMode.Simulated?new ExhaustWaveguide(profile.exhaustAcoustics,rate,profile.exhaustSystem,profile.exhaust):null;
+            if(rate==44100)waves44100=waves;else if(rate==48000)waves48000=waves;else otherWaves=waves;
+#if UNITY_EDITOR
+            if(waves!=null){var dry=new ExhaustWaveguide(profile.exhaustAcoustics,rate,profile.exhaustSystem,profile.exhaust);if(rate==44100)auditWaves44100=dry;else if(rate==48000)auditWaves48000=dry;else auditOtherWaves=dry;}
+#endif
             var turbo=profile.turboCount>0?new TurboAcoustics(profile,rate):null;
             if(rate==44100){core44100=core;turbo44100=turbo;}else if(rate==48000){core48000=core;turbo48000=turbo;}else{otherCore=core;otherTurbo=turbo;}
             var after=new AfterfireAudioSynth(profile,rate);var intake=new IntakeRushSynth(profile,rate,seed);var release=new ReleaseAudioSynth(profile,rate);
@@ -253,8 +272,11 @@ namespace DragLab.Domain
             var turboCore=sampleRate==44100?turbo44100:sampleRate==48000?turbo48000:otherTurbo;
             var afterCore=sampleRate==44100?after44100:sampleRate==48000?after48000:otherAfter;
             var intakeCore=sampleRate==44100?intake44100:sampleRate==48000?intake48000:otherIntake;
+            var waves=WaveDiagnostics(sampleRate);waves?.SetGasTemperature(frame.exhaustGasTemperatureK);
 #if UNITY_EDITOR
             afterCore.AuditEnabled=Audit!=null;
+            var auditWaves=sampleRate==44100?auditWaves44100:sampleRate==48000?auditWaves48000:auditOtherWaves;
+            if(Audit!=null)auditWaves?.SetGasTemperature(frame.exhaustGasTemperatureK);
             if(Audit!=null&&auditBaseLeft==null){auditBaseLeft=new ExhaustFilter(profile.exhaustSystem,profile.exhaust);auditBaseRight=new ExhaustFilter(profile.exhaustSystem,profile.exhaust);auditBaseLeft.Configure(sampleRate);auditBaseRight.Configure(sampleRate);}
 #endif
             afterCore.Connect(frame.afterfire);
@@ -265,9 +287,12 @@ namespace DragLab.Domain
             if (!frame.active || frame.volume <= 0)
             {
                 intakeCore.Clear();
+#if UNITY_EDITOR
+                auditWaves?.Clear();auditBaseLeft?.Clear();auditBaseRight?.Clear();
+#endif
                 Array.Clear(data, 0, data.Length); gain = airLow = dcIn = dcOut = dcInRight = dcOutRight = clatterLow = 0; releaseAge = 10;
                 voiceInitialized=false;
-                lastRelease = frame.releaseId; lastPop = frame.popId; pop.Clear(); exhaustFilter.Clear(); exhaustRight.Clear(); pressureCore.Clear(); if(turboCore!=null)turboCore.Clear();
+                lastRelease = frame.releaseId; lastPop = frame.popId; pop.Clear(); exhaustFilter.Clear(); exhaustRight.Clear(); waves?.Clear(); pressureCore.Clear(); if(turboCore!=null)turboCore.Clear();
                 if(frame.afterfire!=null && frame.afterfireVolume>0)
                     for(int i=0;i<data.Length;i+=channels){double tail=afterCore.Sample()*frame.afterfireVolume;float value=(float)(tail/(1+Math.Abs(tail))*targetOutputGain);for(int c=0;c<channels;c++)data[i+c]=value;}
                 return;
@@ -319,14 +344,17 @@ namespace DragLab.Domain
                 if (carb > 0) value += overrunMix * Math.Sin(phase) * Math.Pow(.5 + .5 * Math.Sin(Tau * crankPhase), 2) * .06 * profile.mixtureVariation * voiceVolume * combustionColorGain;
                 value += (frame.afterfire==null ? pop.Sample() : 0) * (dieselVoice?0:.3) * frame.volume;
                 double side=(pressureCore.Left-pressureCore.Right)*.5*gain*(1+profile.exhaust*.16);
-                double left=exhaustFilter.Process(value+side),right=pressureCore.Stereo?exhaustRight.Process(value-side):left;
+                double left,right;
+                if(waves==null){left=exhaustFilter.Process(value+side);right=pressureCore.Stereo?exhaustRight.Process(value-side):left;}
+                else{waves.Process(value+side,pressureCore.Stereo?value-side:value+side);left=waves.Left;right=waves.Right;}
 #if UNITY_EDITOR
                 var audit=new EngineSoundAuditSample();
                 if(Audit!=null)
                 {
                     audit.core=pressureCore.Audit;audit.pressureGain=gain*(1+profile.exhaust*.16);
                     audit.combustionL=pressureCore.Left*audit.pressureGain;audit.combustionR=pressureCore.Right*audit.pressureGain;
-                    audit.fittedL=auditBaseLeft.Process(audit.combustionL);audit.fittedR=pressureCore.Stereo?auditBaseRight.Process(audit.combustionR):audit.fittedL;
+                    if(auditWaves==null){audit.fittedL=auditBaseLeft.Process(audit.combustionL);audit.fittedR=pressureCore.Stereo?auditBaseRight.Process(audit.combustionR):audit.fittedL;}
+                    else{auditWaves.Process(audit.combustionL,audit.combustionR);audit.fittedL=auditWaves.Left;audit.fittedR=auditWaves.Right;}
                     audit.controlsL=value+side-audit.combustionL;audit.controlsR=pressureCore.Stereo?value-side-audit.combustionR:audit.controlsL;
                     audit.fittedControlsL=left-audit.fittedL;audit.fittedControlsR=right-audit.fittedR;
                     audit.mechanical=pressureCore.Mechanical*gain;audit.intakeRaw=intakeCore.AuditBeforeDc*.21715;

@@ -187,3 +187,8 @@ Use `node tools/audio-workbench/sync-embedded-dsp.cjs` after editing standalone
 DSP/reference modules so the no-server HTML embeds the same inspected code.
 Automated UI wiring/worklet checks do not replace browser/device listening or
 visual acceptance. No Windows/Android rebuild is necessary for Editor-only tools.
+
+
+## Exhaust-wave integration extension — 2026-10-22
+
+The immutable engine frame and exact numerical trace add optional `exhaustGasTemperatureK`. New captures retain the actual owner-thread zone mean; absent/nonpositive older values fall back to 650 K. Reproduce the selected acoustic modes as well as all other hardware/tuning: the new game default is hardware-derived simulated pipe/muffler, while `ExhaustWaveSpec.Approximate()` retains the original sound path. No old trace should be labelled a current-DSP PCM reference solely because it shares the physics version. New Editor fitted-exhaust taps follow the selected network, including independent muffler modes, without altering playback; raw pressure, control and other layer taps keep their distinct roles. [Integration and numerical limits](../reports/exhaust-waveguide-20261022/CHANGES.md).

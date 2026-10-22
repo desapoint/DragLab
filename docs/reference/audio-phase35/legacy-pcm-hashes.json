@@ -1,0 +1,27 @@
+{
+  "sourceCommit": "4df1a3e",
+  "sampleRate": 44100,
+  "format": "8-second mono little-endian float32 EngineSoundAudition.Render",
+  "cases": [
+    {
+      "model": "rally-sedan",
+      "sha256": "ffbddcf67681c72174d6a6d708afac5a8dedf77cea7812a6467a98460da063d8"
+    },
+    {
+      "model": "starter-hatch",
+      "sha256": "f163509af6ed552d5089bbc4274b15f1d2ce9b041d237f8f6992e8096e5843b2"
+    },
+    {
+      "model": "super-v8",
+      "sha256": "071597ef6f520e7343e2e91df22d69e45c8efdd95dc272ff42926b404af71ff5"
+    },
+    {
+      "model": "timber-diesel",
+      "sha256": "5b161ffd93dcf81454fa3e5bf3bcd360b02b61317fbe892fb353da6a4c64ccad"
+    },
+    {
+      "model": "v8-muscle",
+      "sha256": "d0004896afa4a0bb9356b15176dccfee88f0721784c89edd0760cad08f97808d"
+    }
+  ]
+}

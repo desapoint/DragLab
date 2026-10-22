@@ -1,5 +1,11 @@
 # Engine audio: pressure events within the existing pipeline
 
+## Phase 3.5 pipe-wave / muffler flags — 2026-10-22
+
+`EngineSoundSpec.exhaustAcoustics` now supports independent pipe and muffler Approximate/Simulated authoring modes. Existing content resolves explicit acoustic geometry from installed parts; both approximations preserve the previous PCM exactly. New pipes replace fixed echoes and broad source EQ; new mufflers replace only silencer filters. Physical gas temperature is captured on the simulation owner thread. Approved afterfire source/path, per-cylinder wear/cuts, induction and outdoor propagation remain. This is a linearized acoustic model, not a new gas/work/torque solver. The current debug bench interface is preserved. [Details, calibration correction, numerical parity, before/after clips and limits](../reports/exhaust-waveguide-20261022/CHANGES.md).
+
+The [74-subsystem tracker](WORKBENCH_SUBSYSTEM_TRACKER.csv) distinguishes the older browser audit from Unity's actual mechanisms. The [ordered checkpoints](WORKBENCH_SIMULATION_INTEGRATION.md) retain remaining cylinder-work, mass-flow, event-to-sound and device calibration work. C1 acceptance is separate from future-phase implementation.
+
 ## Source-relative afterfire hardware paths — 2026-10-21
 
 Afterfires now use the same canonical header/turbine boundary as their transport

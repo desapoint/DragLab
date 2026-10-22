@@ -40,3 +40,8 @@
 
 # Preserve the supplied, hash-verified audio reference byte-for-byte on checkout.
 docs/references/audio/backfire_lab_v3.html -text
+
+# Preserve the supplied Phase 3.5 reference, including its one trailing space,
+# and the original CSV line endings for the recorded provenance hashes.
+docs/reference/audio-phase35/Engine_Workbench_Phase35_Waveguide_Muffler.html -text whitespace=-blank-at-eol
+docs/reference/audio-phase35/DragLab_Workbench_Subsystem_Audit.csv -text whitespace=cr-at-eol

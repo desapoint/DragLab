@@ -42,12 +42,12 @@ namespace DragLab.Editor
         [Serializable] public sealed class EngineData
         {
             public double rpm,throttle,load,boost,volume,slip,speed,releaseStrength,turboSpool,superchargerBoost,chargerLoad,turboBoost;
-            public double combustionFraction,idleRoughness,intakeGulp,fuelHesitation,popStrength,airflowKgS,afterfireVolume;
+            public double combustionFraction,idleRoughness,intakeGulp,fuelHesitation,popStrength,airflowKgS,afterfireVolume,exhaustGasTemperatureK;
             public bool active,cut,overrun,twoStep;public int releaseId,popId;public CutMethod cutMethod;public double[] cylinderContribution;
             public static EngineData From(EngineSoundFrame f){var d=new EngineData();CopyFields(f,d);d.cylinderContribution=d.cylinderContribution??Array.Empty<double>();return d;}
             public EngineSoundFrame Frame(RuntimeExhaustState state)=>new EngineSoundFrame(rpm,throttle,load,boost,volume,slip,speed,active,cut,releaseId,releaseStrength,
                 turboSpool,superchargerBoost,chargerLoad,turboBoost,combustionFraction,idleRoughness,intakeGulp,fuelHesitation,popId,popStrength,overrun,twoStep,cutMethod,
-                cylinderContribution,airflowKgS,state.mixture,afterfireVolume,state);
+                cylinderContribution,airflowKgS,state.mixture,afterfireVolume,state,exhaustGasTemperatureK);
         }
         [Serializable] public sealed class Wheel
         {

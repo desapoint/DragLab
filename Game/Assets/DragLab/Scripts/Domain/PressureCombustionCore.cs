@@ -102,11 +102,11 @@ namespace DragLab.Domain
             }
             public double Sample(double collected,double pressure,double flow)
             {
-                history.Push(collected);collected+=.23*history.Tap(taps[0])-.19*history.Tap(taps[1])+.10*history.Tap(taps[2])-.045*history.Tap(taps[3]);
+                history.Push(collected);if(profile.exhaustAcoustics.pipeMode==AcousticModelMode.Approximate)collected+=.23*history.Tap(taps[0])-.19*history.Tap(taps[1])+.10*history.Tap(taps[2])-.045*history.Tap(taps[3]);
 #if UNITY_EDITOR
                 AuditCollector=collected;
 #endif
-                double exhaust=lp2.Process(lp1.Process(hp.Process(collected)));
+                double exhaust=profile.exhaustAcoustics.pipeMode==AcousticModelMode.Simulated?collected:lp2.Process(lp1.Process(hp.Process(collected)));
 #if UNITY_EDITOR
                 AuditBand=exhaust;
 #endif
@@ -116,7 +116,7 @@ namespace DragLab.Domain
 #if UNITY_EDITOR
                 AuditTurbine=exhaust;
 #endif
-                double body=.60*profile.bassGain*bodyLow.Process(exhaust)+.80*profile.rawPulseGain*bodyPass.Process(bodyHigh.Process(exhaust))+.26*body96.Process(exhaust)+.15*body208.Process(exhaust)+.10*body415.Process(exhaust);
+                double body=profile.exhaustAcoustics.pipeMode==AcousticModelMode.Simulated?exhaust:.60*profile.bassGain*bodyLow.Process(exhaust)+.80*profile.rawPulseGain*bodyPass.Process(bodyHigh.Process(exhaust))+.26*body96.Process(exhaust)+.15*body208.Process(exhaust)+.10*body415.Process(exhaust);
 #if UNITY_EDITOR
                 AuditBody=body;
 #endif
@@ -223,6 +223,8 @@ namespace DragLab.Domain
             double rawSide=(l-r)*profile.acoustics.stereoWidth;
             Audit.rawL=l+r+(Stereo?rawSide:0);Audit.rawR=Stereo?l+r-rawSide:Audit.rawL;
 #endif
+            double mechanicalCollected=hl+hr;
+            if(profile.exhaustAcoustics.pipeMode==AcousticModelMode.Simulated){hl=l;hr=r;}
             double collected=hl+hr,side=(hl-hr)*profile.acoustics.stereoWidth;
 #if UNITY_EDITOR
             Audit.headerL=collected+(Stereo?side:0);Audit.headerR=Stereo?collected-side:Audit.headerL;
@@ -237,7 +239,7 @@ namespace DragLab.Domain
 #endif
             TurbineResponse=Stereo?(outletLeft.Turbine+outletRight.Turbine)*.5:outletLeft.Turbine;
             throttleLow+=throttleAlpha*(throttle-throttleLow);
-            Mechanical=.24*blockLow.Process(blockHigh.Process(block))+intakeLow.Process(intakeHigh.Process(collected))*(.06+.12*throttleLow);
+            Mechanical=.24*blockLow.Process(blockHigh.Process(block))+intakeLow.Process(intakeHigh.Process(mechanicalCollected))*(.06+.12*throttleLow);
             return (Left+Right)*.5;
         }
         public void Clear()

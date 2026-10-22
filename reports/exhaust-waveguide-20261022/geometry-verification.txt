@@ -1,0 +1,33 @@
+PASS: Explicit parameter changes the actual acoustic transfer / headerLengthM
+PASS: Explicit parameter changes the actual acoustic transfer / collectorLengthM
+PASS: Explicit parameter changes the actual acoustic transfer / tailLengthM
+PASS: Explicit parameter changes the actual acoustic transfer / headerDiameterMm
+PASS: Explicit parameter changes the actual acoustic transfer / collectorDiameterMm
+PASS: Explicit parameter changes the actual acoustic transfer / tailDiameterMm
+PASS: Explicit parameter changes the actual acoustic transfer / wallLoss
+PASS: Explicit parameter changes the actual acoustic transfer / reflectionStrength
+PASS: Explicit parameter changes the actual acoustic transfer / gasTemperatureK
+PASS: Explicit parameter changes the actual acoustic transfer / outputGain
+PASS: Explicit parameter changes the actual acoustic transfer / chamberLengthM
+PASS: Explicit parameter changes the actual acoustic transfer / expansionRatio
+PASS: Explicit parameter changes the actual acoustic transfer / packing
+PASS: Explicit parameter changes the actual acoustic transfer / resonatorHz
+PASS: Explicit parameter changes the actual acoustic transfer / resonatorQ
+PASS: Explicit parameter changes the actual acoustic transfer / resonatorDepth
+PASS: Approximate path ignores inactive physical geometry
+PASS: Versioned original PCM hash independently verifies the fallback / rally-sedan
+PASS: Versioned original PCM hash independently verifies the fallback / starter-hatch
+PASS: Versioned original PCM hash independently verifies the fallback / super-v8
+PASS: Versioned original PCM hash independently verifies the fallback / timber-diesel
+PASS: Versioned original PCM hash independently verifies the fallback / v8-muscle
+PASS: Actual outdoor listener produces bounded before/after PCM / starter-hatch
+PASS: Actual outdoor listener produces bounded before/after PCM / v8-muscle
+PASS: Actual outdoor listener produces bounded before/after PCM / rally-sedan
+PASS: Actual outdoor listener produces bounded before/after PCM / super-v8
+PASS: Actual outdoor listener produces bounded before/after PCM / timber-diesel
+PASS: Per-layer fitted-exhaust tap follows the selected model without altering playback / 0
+PASS: Per-layer fitted-exhaust tap follows the selected model without altering playback / 1
+PASS: Per-layer fitted-exhaust tap follows the selected model without altering playback / 2
+PASS: Per-layer fitted-exhaust tap follows the selected model without altering playback / 3
+PASS: Funded hot afterfires retain exact approved PCM across acoustic flags, with nonzero real reaction events
+Checks: 32

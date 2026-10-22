@@ -1,0 +1,75 @@
+﻿Area,Subsystem,Current_workbench_behavior,Status,Required_refinement_or_missing_work,Priority
+Workbench,Per-system Approximate / Simulated modes,"Eight independent selectors: wheels, drivetrain, limiter, induction, fuel, cylinder charge, combustion, afterfire",Complete (preview scope),Keep A/B isolation tests as further components arrive,
+Workbench,Seeded procedural reproducibility,Seeded DSP and chemical event streams; reset at each full-sequence start,Complete (preview scope),Check parity when adding new physics,
+Workbench,Full driving sequence,Repeatable warm 18.5-second suite; optional cold preheat/crank prelude; coverage markers,Complete (preview scope),Add test cases that isolate rare and failure states,
+Workbench,Interactive driver controls,"Throttle, race/neutral, up/down shifts, launch and brake, manual sound injection",Complete (preview scope),Add analog brake/clutch controls for detailed tests,
+Workbench,A/B sound rendering and WAV export,Matched scripted PCM output with selectable category and stage isolation,Complete (preview scope),Add per-subsystem physics-only benchmark and perceptual metrics,
+Workbench,Live graphs / CSV,"22 charts and per-cylinder CSV with time, slip, fuel, combustion, RPM, power, pressure and timing",Complete (preview scope),Add interval/event bookmarks and replay scrubbing,
+Workbench,Reference data replay,"Can replay imported reference RPM/boost/gear/sound events, not full vehicle state",Needs refining,"Extend trace schema for mass flow, clutch, tire, torque and valve/pressure events",Medium
+Workbench,Runtime performance measurement,Offline PCM render timing comparison includes physics and DSP combined,Needs refining,"Measure physics CPU, DSP CPU, allocations and realtime dropout separately",High
+Workbench,Sound/physics model calibration,Tunable authored constants and vehicle presets; no measured calibration basis,Needs refining,"Fit parameter families against independent dyno, telemetry and recordings",High
+Engine,RPM response / free rev,Idle control and throttle-driven RPM integrator with drag/limits,Needs refining,"Conserve rotational energy with inertia and torque curves, accessory loads",High
+Engine,Crankshaft/flywheel dynamics,"Simplified acceleration and gear-coupled RPM transfer, not an inertia solver",Needs refining,"Implement engine inertia, clutch torque and load work as shared state",High
+Engine,Torque versus RPM,Preview torque baseline and parabolic speed/load modifier,Needs refining,"Map torque/IMEP from delivered combustion energy, pumping/friction and volumetric efficiency",Critical
+Engine,Horsepower,Computed directly from preview torque and RPM; not calibrated,Needs refining,Use physically consistent torque before treating HP as a performance result,High
+Engine,Engine braking,"Throttle-dependent road drag and RPM decay, qualitative only",Needs refining,"Model pumping losses, friction mean effective pressure and driveline reaction",High
+Engine,Limiter control,"Hard/soft thresholding, ignition/fuel cut and two-step cadence are selectable",Needs refining,Use per-cycle cut strategy and realistic spark/fuel event scheduling,Medium
+Engine,Idle / start / stop,"Warm idle, cold-soak start attempts, fuel-dependent starter thresholds",Needs refining,"Starter torque, starter sound, idle control loops, failed-start wetting",Medium
+Engine,Accessory loads,Approximate drag folded into total engine resistance,Missing,"Explicit alternator, pump, A/C and cooling-fan loads",Low
+Engine,Cylinder-to-cylinder crank torque,Pressure-event audio and charge accumulators do not integrate cylinder pressure into crank torque,Missing,Per-cylinder pressure/work and crank inertia coupling,High
+Transmission,Manual clutch engagement,Disconnected during shift; progressive engagement and signed RPM mismatch,Needs refining,"Torque capacity, friction slip energy/heat and bite-point mapping",High
+Transmission,Clutch damage and heat,Clutch jolt is relative; no actual thermal capacity or wear state,Missing,"Slip power to heat, glazing, wear and failure thresholds",Medium
+Transmission,Manual rev matching,Optional factory auto-blip and driver assist change throttle/RPM,Needs refining,"Pedal/clutch timing, heel-toe, real synchronizer resistance",Medium
+Transmission,DCT handover,Approximate retained torque and RPM synchronization,Needs refining,"Independent odd/even clutch torques, preselection and real shift timings",Medium
+Transmission,Torque-converter automatic,Retention and generic re-engagement; no hydraulic converter solution,Needs refining,"Pump/turbine speed, torque multiplication, lockup and shift logic",Medium
+Transmission,CVT,Simple continuously adjusted effective ratio within bounds,Needs refining,"Belt/pulley pressure, torque limit, slip, efficiency and thermal behavior",Medium
+Transmission,Gearbox synchronizers / gear whine,Ratio/shift delays only; no torque-dependent meshing or sound,Missing,"Input-shaft inertia, synchronizer friction, bearing and gear-mesh noise",Medium
+Driveline,Differential and AWD torque split,AWD/FWD/RWD fixed shares in wheel-contact model,Needs refining,"Open/LSD/locked diffs, front/rear shaft inertia and traction-dependent torque split",Medium
+Driveline,Longitudinal vehicle speed,Integrated from contact-limited forces or simple acceleration surrogate,Needs refining,Torque-to-wheel force via full ratio/inertia and grade/aerodynamic drag,High
+Driveline,Aerodynamic drag,"Speed-dependent heuristic, not CdA and air density model",Needs refining,"CdA, air density, downforce, wind and grade",Medium
+Tires,Four-wheel longitudinal surface speeds,"Four individual tread speeds, friction constraints and signed slip estimates",Needs refining,"Slip curves, relaxation length and torque balance with actual wheel inertia",High
+Tires,Per-wheel tire sound,Independent procedural tire voices driven by slip/demand and wheel speed,Complete (preview scope),Calibrate tonal textures and contact patches from recordings,
+Tires,Tire physical slip versus sound intensity,Signed physical proxy separated from smoothed squeal demand; manual forced slip,Complete (preview scope),Retain separation and add independent lock-up/rolling noises,
+Tires,Static weight transfer,Approximate longitudinal CG-based load redistribution,Needs refining,"Pitch dynamics, springs/dampers and corner-load measurements",Medium
+Tires,ABS braking,Caps brake force below friction threshold in simulated wheel contact,Needs refining,Slip feedback controller and pulsating brake-pressure dynamics,Medium
+Tires,"Tire temperature, pressure and wear",Not advanced by the driving model,Missing,"Thermal network, tread wear, pressure and compound-specific grip",High
+Tires,Lateral/cornering forces,"Longitudinal-only contact, no steering/yaw",Missing,Combined-slip tire model with slip angle and aligning torque,Low for drag
+Tires,Surface conditions,One overall grip parameter; no varying track surface,Needs refining,"Track prep, water, surface temperature and per-wheel road friction",Medium
+Fuel,Selectable fuel-meter fidelity,Legacy approximation and multi-technology fuel-map simulation independently selectable,Complete (preview scope),Maintain old audio/event behavior in A/B,
+Fuel,Gasoline VE / lambda maps,Interpolated RPM/load surfaces and three air-metering strategies,Needs refining,"Measured VE calibration, transient correction and sensor error",High
+Fuel,Carburetor delivery,"Two-/four-barrel differences, bowl, accelerator pump and manifold film",Needs refining,"Venturi pressure/fuel circuits, jets, choke, air bleeds and vaporization",Medium
+Fuel,Throttle-body / port EFI,"Injector limits, rail state, fuel-film and closed-loop estimate",Needs refining,"Cranking tables, latency, fuel trims and individual injector pulse scheduling",Medium
+Fuel,Gasoline direct injection,Direct-cylinder fuel with rail estimate and near-zero manifold film,Needs refining,"Injection timing/split, spray/evaporation, knock/stratification",High
+Fuel,Mechanical / rotary diesel pumps,RPM-demand quantity maps with different rack response,Needs refining,"Pump delivery curves, mechanical governors and timing advance",Medium
+Fuel,Common-rail diesel,"Rail dynamics proxy, smoke limit and pilot/main/post split settings",Needs refining,"Hydraulic rail balance, injector needle timing and real injection rate",High
+Fuel,Fuel film conservation,"Fuel reservoir tracks incoming, retained and delivered masses",Complete (preview scope),Integrate with separate plenum/cylinder conservation for end-to-end budget,
+Fuel,Fuel pump / starvation / cavitation,Some injector flow and rail limits; no tank line/pickup supply dynamics,Missing,"Tank pickup, filters, vapor-lock, pressure drop and pump heating",Medium
+Fuel,Ethanol/flex-fuel / gaseous fuels,Gasoline/diesel chemical parameter families only,Missing,"Fuel density, heating value, stoichiometry, vapor pressure and flex sensor",Low
+Intake,Throttle / intake charge,"Plate, boost, simple speed-density/MAF/Alpha-N airflow estimates",Needs refining,"Plenum filling conservation, individual runner pressure and reversion",High
+Intake,Turbo compressor spool / manifold pressure,Rotor and manifold states independently switchable,Needs refining,"Compressor map, shaft inertia, wastegate flow, surge and air temperature",High
+Intake,Supercharger and twincharged operation,Boost and tone preview with basic pulley effects,Needs refining,"Mechanical power draw, bypass maps, intercooler and staging",Medium
+Intake,Intercooler / charge cooling,Authored charge temperature; no full intercooler thermal mass,Missing,"Charge-air cooler effectiveness, heat soak and pressure loss",Medium
+Valve train,Cam phase and valve-lift profiles,"720-degree crank/cam phases, analytic lift envelopes and port imbalance",Needs refining,"Cam lobes by cylinder/bank, measured lift-vs-angle and true timing events",High
+Valve train,Valve-flow-gated cylinder mass,Per-cylinder intake/exhaust gating with air and fuel accumulation,Needs refining,"Pressure-difference mass flow, valve curtain area, residual EGR and overlap/reversion",Critical
+Valve train,Valve float,Lift/fill effectiveness falls above modeled spring-RPM limit,Needs refining,"Follower dynamics, spring mass, bounce and valve lash",Medium
+Valve train,Variable valve timing/lift hardware,Fixed adjustable offsets only; no RPM/load-actuated VVT control,Missing,"VVT phaser map, cylinder-bank phasing and multi-profile switching",Medium
+Combustion,Chamber burn fraction / timing,"Fuel/air, advance, mixture, quality and flame-speed surrogates",Needs refining,"Cycle-resolved heat release, ignition delay and indicated work",Critical
+Combustion,Ignition and cylinder failures,Fuel/ignition limiter and general cold-quality factors,Needs refining,"Independent ignition coils/plugs, misfire probabilities and partial burns",Medium
+Combustion,"Knock, pre-ignition and detonation",No live pressure-temperature knock solver or timing correction,Missing,"Knock tendency and ECU response, pre-ignition/damage states",High
+Combustion,Diesel auto-ignition,"Cetane, cold quality and pilot/main/post influenced combustion surrogate",Needs refining,"Compression pressure/temp, ignition-delay kinetics and injection rate",High
+Combustion,Glow-plug thermal preheat,"Heating state influences cold start, not a spark event",Needs refining,"Ambient/head temperature, individual plugs, post-glow controller/failure",Medium
+Thermals,Engine warm-up,One lumped engine thermal state and startup quality,Needs refining,Coolant/oil/head/liner thermal nodes and losses,Medium
+Thermals,Component wear and failures,"Not physically evolved for engine, fuel, wheel, clutch and exhaust components",Missing,Thermomechanical wear and service states affecting simulation,Low for audio
+Exhaust,Eight-zone transport,Fuel/O2/heat/flame/pressure and deterministic ignition with event packets,Needs refining,Calibrated turbulence/ignition and geometry per header/catalyst/muffler,High
+Exhaust,Exhaust pulses and flow acoustics,"Cylinder pressure pulse envelopes, runner delays, collector, filter parts",Needs refining,Pressure/flow acoustic network with measured area/impedance losses,High
+Exhaust,Procedural V3 backfire timbre,Editable multilayer burst generator with seed variation and export,Complete (preview scope),Calibrate realism by recordings; sound quality is subjective,
+Exhaust,Afterfire mode selection,Original probabilistic event scheduler or chemistry-driven event mapping,Complete (preview scope),A/B events using identical underlying driving input,
+Exhaust,Catalyst / DPF / SCR chemistry,"No dedicated conversion, oxygen storage, diesel particulate or aftertreatment",Missing,"Aftertreatment masses, temperatures, backpressure and emissions",Medium
+Audio,Combustion audio pulse scheduler,Cylinder count/order and pressure-body tables with stochastic pulse color,Needs refining,Drive each cylinder from the new independent pressure/combustion state,High
+Audio,Intake rush and mechanical clatter,"Noise/filters and tonal excitation tied to throttle, load and fuel type",Needs refining,"Valve events, mechanical impulse sources and intake acoustics",Medium
+Audio,"Turbo, supercharger, BOV voices",Tonal/filter noise and valve envelopes with separately switchable processing,Needs refining,"Blade pass order, maps, surge/flutter and geometric exhaust interaction",Medium
+Audio,Tire skidding audio,Four unchanged tire voices; force slip tests and wheel contact inputs,Complete (preview scope),Sound tuning/recorded comparison still recommended,
+Audio,Distance / reflections / stereo,"Direct and fixed reflected paths, attenuation and air loss",Needs refining,"Moving listener/doppler, geometry, occlusion and variable environments",Medium
+Audio,Road noise / gear whine / wind / chassis,No dedicated complete rolling road/gearbox/chassis vibration voices,Missing,"Add isolated road, wind, gear whine and drivetrain vibration buses",Medium
+Audio,PCM limiter / output safety,"DC removal, saturation, master gain and finite clamp in renderer",Complete (preview scope),AudioWorklet realtime stress/dropout assessment,
+Audio,Listener movement and Doppler,Fixed listener relative to source; no moving sound geometry,Missing,"Dynamic position, relative velocity, and time-varying propagation",Medium

@@ -1,0 +1,112 @@
+Original generated PCM auditions: 44.1 kHz mono / 8 seconds: idle, pull, shift, lift.
+aster / 4 cyl / 1,8 L / RMS 0,0191 / peak 0,0755 / render ms 348
+aster-sport / 4 cyl / 1,8 L / RMS 0,0191 / peak 0,0755 / render ms 360
+atlas / 8 cyl / 5,2 L / RMS 0,0306 / peak 0,1307 / render ms 398
+atlas-sport / 8 cyl / 5,2 L / RMS 0,0305 / peak 0,1306 / render ms 388
+boreal / 4 cyl / 2,4 L / RMS 0,0212 / peak 0,1090 / render ms 415
+boreal-sport / 4 cyl / 2,4 L / RMS 0,0212 / peak 0,1093 / render ms 402
+cinder / 4 cyl / 1,8 L / RMS 0,0191 / peak 0,0755 / render ms 355
+cinder-sport / 4 cyl / 1,8 L / RMS 0,0191 / peak 0,0755 / render ms 343
+city-three / 3 cyl / 1,2 L / RMS 0,0181 / peak 0,0695 / render ms 368
+comet / 4 cyl / 1,6 L / RMS 0,0191 / peak 0,0755 / render ms 361
+comet-sport / 4 cyl / 1,6 L / RMS 0,0191 / peak 0,0754 / render ms 349
+finch / 4 cyl / 1,3 L / RMS 0,0192 / peak 0,0754 / render ms 360
+finch-sport / 4 cyl / 1,3 L / RMS 0,0192 / peak 0,0752 / render ms 367
+fjord / 4 cyl / 2,8 L / RMS 0,0275 / peak 0,0960 / render ms 376
+fjord-sport / 4 cyl / 2,8 L / RMS 0,0273 / peak 0,0959 / render ms 399
+juniper-club / 4 cyl / 1,6 L / RMS 0,0191 / peak 0,0755 / render ms 336
+juniper-economy / 4 cyl / 1,4 L / RMS 0,0192 / peak 0,0754 / render ms 352
+kestrel-track / 4 cyl / 2 L / RMS 0,0210 / peak 0,0995 / render ms 417
+lark / 4 cyl / 1,6 L / RMS 0,0191 / peak 0,0755 / render ms 338
+lark-sport / 4 cyl / 1,6 L / RMS 0,0191 / peak 0,0754 / render ms 344
+meridian-sport / 6 cyl / 3 L / RMS 0,0197 / peak 0,0859 / render ms 365
+mistral / 4 cyl / 1,8 L / RMS 0,0191 / peak 0,0755 / render ms 345
+mistral-sport / 4 cyl / 1,8 L / RMS 0,0191 / peak 0,0755 / render ms 356
+osprey / 4 cyl / 2,2 L / RMS 0,0210 / peak 0,1000 / render ms 414
+osprey-sport / 4 cyl / 2,2 L / RMS 0,0210 / peak 0,1001 / render ms 414
+piper / 4 cyl / 1,5 L / RMS 0,0191 / peak 0,0755 / render ms 343
+piper-sport / 4 cyl / 1,5 L / RMS 0,0191 / peak 0,0754 / render ms 358
+rally-sedan / 4 cyl / 2 L / RMS 0,0212 / peak 0,1084 / render ms 427
+reed / 4 cyl / 1,6 L / RMS 0,0191 / peak 0,0755 / render ms 339
+reed-sport / 4 cyl / 1,6 L / RMS 0,0191 / peak 0,0754 / render ms 337
+rook / 4 cyl / 1,4 L / RMS 0,0192 / peak 0,0754 / render ms 351
+rook-sport / 4 cyl / 1,4 L / RMS 0,0192 / peak 0,0753 / render ms 353
+sable / 4 cyl / 2 L / RMS 0,0191 / peak 0,0755 / render ms 371
+sable-sport / 4 cyl / 2 L / RMS 0,0191 / peak 0,0755 / render ms 357
+solstice / 6 cyl / 3,2 L / RMS 0,0197 / peak 0,0858 / render ms 354
+solstice-sport / 6 cyl / 3,2 L / RMS 0,0196 / peak 0,0858 / render ms 355
+sport-coupe / 4 cyl / 2 L / RMS 0,0210 / peak 0,0995 / render ms 408
+sprig-sport / 3 cyl / 1,2 L / RMS 0,0181 / peak 0,0694 / render ms 344
+starter-hatch / 4 cyl / 1,6 L / RMS 0,0191 / peak 0,0755 / render ms 344
+super-v8 / 8 cyl / 5 L / RMS 0,0307 / peak 0,1308 / render ms 388
+swift / 4 cyl / 1,6 L / RMS 0,0191 / peak 0,0755 / render ms 365
+swift-sport / 4 cyl / 1,6 L / RMS 0,0191 / peak 0,0755 / render ms 347
+tempest-rs / 4 cyl / 2 L / RMS 0,0212 / peak 0,1084 / render ms 410
+timber-diesel / 4 cyl / 2,8 L / RMS 0,0272 / peak 0,0959 / render ms 379
+timber-diesel-tow / 4 cyl / 2,8 L / RMS 0,0273 / peak 0,0959 / render ms 370
+touring-six / 6 cyl / 3 L / RMS 0,0197 / peak 0,0858 / render ms 353
+utility-pickup / 6 cyl / 4,2 L / RMS 0,0285 / peak 0,1081 / render ms 353
+v8-muscle / 8 cyl / 5 L / RMS 0,0281 / peak 0,1155 / render ms 392
+vale / 4 cyl / 2 L / RMS 0,0191 / peak 0,0755 / render ms 344
+vale-sport / 4 cyl / 2 L / RMS 0,0191 / peak 0,0755 / render ms 363
+wren / 4 cyl / 1,5 L / RMS 0,0191 / peak 0,0755 / render ms 345
+wren-sport / 4 cyl / 1,5 L / RMS 0,0191 / peak 0,0754 / render ms 351
+aster / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0244
+aster-sport / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0244
+atlas / idle RMS before 0,0086 / +6 dB 0,0166 / peak 0,0416
+atlas-sport / idle RMS before 0,0086 / +6 dB 0,0166 / peak 0,0416
+boreal / idle RMS before 0,0038 / +6 dB 0,0076 / peak 0,0255
+boreal-sport / idle RMS before 0,0038 / +6 dB 0,0076 / peak 0,0255
+cinder / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0244
+cinder-sport / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0244
+city-three / idle RMS before 0,0034 / +6 dB 0,0066 / peak 0,0239
+comet / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0245
+comet-sport / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0245
+finch / idle RMS before 0,0039 / +6 dB 0,0077 / peak 0,0246
+finch-sport / idle RMS before 0,0039 / +6 dB 0,0077 / peak 0,0246
+fjord / idle RMS before 0,0052 / +6 dB 0,0102 / peak 0,0413
+fjord-sport / idle RMS before 0,0052 / +6 dB 0,0102 / peak 0,0413
+juniper-club / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0245
+juniper-economy / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0246
+kestrel-track / idle RMS before 0,0038 / +6 dB 0,0076 / peak 0,0258
+lark / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0245
+lark-sport / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0245
+meridian-sport / idle RMS before 0,0046 / +6 dB 0,0091 / peak 0,0244
+mistral / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0244
+mistral-sport / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0244
+osprey / idle RMS before 0,0038 / +6 dB 0,0076 / peak 0,0257
+osprey-sport / idle RMS before 0,0038 / +6 dB 0,0076 / peak 0,0257
+piper / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0245
+piper-sport / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0245
+rally-sedan / idle RMS before 0,0038 / +6 dB 0,0076 / peak 0,0258
+reed / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0245
+reed-sport / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0245
+rook / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0246
+rook-sport / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0246
+sable / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0244
+sable-sport / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0244
+solstice / idle RMS before 0,0046 / +6 dB 0,0091 / peak 0,0243
+solstice-sport / idle RMS before 0,0046 / +6 dB 0,0091 / peak 0,0243
+sport-coupe / idle RMS before 0,0038 / +6 dB 0,0076 / peak 0,0258
+sprig-sport / idle RMS before 0,0034 / +6 dB 0,0066 / peak 0,0239
+starter-hatch / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0245
+super-v8 / idle RMS before 0,0086 / +6 dB 0,0166 / peak 0,0416
+swift / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0245
+swift-sport / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0245
+tempest-rs / idle RMS before 0,0038 / +6 dB 0,0076 / peak 0,0258
+timber-diesel / idle RMS before 0,0052 / +6 dB 0,0102 / peak 0,0413
+timber-diesel-tow / idle RMS before 0,0052 / +6 dB 0,0102 / peak 0,0413
+touring-six / idle RMS before 0,0046 / +6 dB 0,0091 / peak 0,0244
+utility-pickup / idle RMS before 0,0058 / +6 dB 0,0114 / peak 0,0399
+v8-muscle / idle RMS before 0,0077 / +6 dB 0,0149 / peak 0,0396
+vale / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0244
+vale-sport / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0244
+wren / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0245
+wren-sport / idle RMS before 0,0039 / +6 dB 0,0076 / peak 0,0245
+Steady NA sample roughness (adjacent-difference energy / signal energy): 0,003091
+6,000 RPM V8 low-bank/crank-to-firing-harmonic power ratio: 0,159
+6,000 RPM carb six low-bank/crank-to-firing-harmonic power ratio: 0,002
+V8 neutral-roar/driving RMS ratio at 4,500 RPM: 0,925
+V8 3,500 RPM two-step / idle upper-band energy ratio: 664,876
+Approved V8 callback: 1,530 ms per 2048 mono samples / 42.667 ms signal; allocated bytes 0. Editor CPU observation, not a mobile guarantee.
+PASS: 276 audio checks. Playback signal checks do not establish human listening quality or mobile DSP performance.

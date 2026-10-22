@@ -1,0 +1,134 @@
+PASS: Finite impulse energy / impulse-22050-0-20.f64
+PASS: Clearing retires every delayed/filter tail / impulse-22050-0-20.f64
+PASS: Finite impulse energy / impulse-22050-0-55.f64
+PASS: Clearing retires every delayed/filter tail / impulse-22050-0-55.f64
+PASS: Finite impulse energy / impulse-22050-0-90.f64
+PASS: Clearing retires every delayed/filter tail / impulse-22050-0-90.f64
+PASS: Finite impulse energy / impulse-22050-1-20.f64
+PASS: Clearing retires every delayed/filter tail / impulse-22050-1-20.f64
+PASS: Finite impulse energy / impulse-22050-1-55.f64
+PASS: Clearing retires every delayed/filter tail / impulse-22050-1-55.f64
+PASS: Finite impulse energy / impulse-22050-1-90.f64
+PASS: Clearing retires every delayed/filter tail / impulse-22050-1-90.f64
+PASS: Finite impulse energy / impulse-22050-2-20.f64
+PASS: Clearing retires every delayed/filter tail / impulse-22050-2-20.f64
+PASS: Finite impulse energy / impulse-22050-2-55.f64
+PASS: Clearing retires every delayed/filter tail / impulse-22050-2-55.f64
+PASS: Finite impulse energy / impulse-22050-2-90.f64
+PASS: Clearing retires every delayed/filter tail / impulse-22050-2-90.f64
+PASS: Finite impulse energy / impulse-22050-3-20.f64
+PASS: Clearing retires every delayed/filter tail / impulse-22050-3-20.f64
+PASS: Finite impulse energy / impulse-22050-3-55.f64
+PASS: Clearing retires every delayed/filter tail / impulse-22050-3-55.f64
+PASS: Finite impulse energy / impulse-22050-3-90.f64
+PASS: Clearing retires every delayed/filter tail / impulse-22050-3-90.f64
+PASS: Finite impulse energy / impulse-44100-0-20.f64
+PASS: Clearing retires every delayed/filter tail / impulse-44100-0-20.f64
+PASS: Finite impulse energy / impulse-44100-0-55.f64
+PASS: Clearing retires every delayed/filter tail / impulse-44100-0-55.f64
+PASS: Finite impulse energy / impulse-44100-0-90.f64
+PASS: Clearing retires every delayed/filter tail / impulse-44100-0-90.f64
+PASS: Finite impulse energy / impulse-44100-1-20.f64
+PASS: Clearing retires every delayed/filter tail / impulse-44100-1-20.f64
+PASS: Finite impulse energy / impulse-44100-1-55.f64
+PASS: Clearing retires every delayed/filter tail / impulse-44100-1-55.f64
+PASS: Finite impulse energy / impulse-44100-1-90.f64
+PASS: Clearing retires every delayed/filter tail / impulse-44100-1-90.f64
+PASS: Finite impulse energy / impulse-44100-2-20.f64
+PASS: Clearing retires every delayed/filter tail / impulse-44100-2-20.f64
+PASS: Finite impulse energy / impulse-44100-2-55.f64
+PASS: Clearing retires every delayed/filter tail / impulse-44100-2-55.f64
+PASS: Finite impulse energy / impulse-44100-2-90.f64
+PASS: Clearing retires every delayed/filter tail / impulse-44100-2-90.f64
+PASS: Finite impulse energy / impulse-44100-3-20.f64
+PASS: Clearing retires every delayed/filter tail / impulse-44100-3-20.f64
+PASS: Finite impulse energy / impulse-44100-3-55.f64
+PASS: Clearing retires every delayed/filter tail / impulse-44100-3-55.f64
+PASS: Finite impulse energy / impulse-44100-3-90.f64
+PASS: Clearing retires every delayed/filter tail / impulse-44100-3-90.f64
+PASS: Finite impulse energy / impulse-48000-0-20.f64
+PASS: Clearing retires every delayed/filter tail / impulse-48000-0-20.f64
+PASS: Finite impulse energy / impulse-48000-0-55.f64
+PASS: Clearing retires every delayed/filter tail / impulse-48000-0-55.f64
+PASS: Finite impulse energy / impulse-48000-0-90.f64
+PASS: Clearing retires every delayed/filter tail / impulse-48000-0-90.f64
+PASS: Finite impulse energy / impulse-48000-1-20.f64
+PASS: Clearing retires every delayed/filter tail / impulse-48000-1-20.f64
+PASS: Finite impulse energy / impulse-48000-1-55.f64
+PASS: Clearing retires every delayed/filter tail / impulse-48000-1-55.f64
+PASS: Finite impulse energy / impulse-48000-1-90.f64
+PASS: Clearing retires every delayed/filter tail / impulse-48000-1-90.f64
+PASS: Finite impulse energy / impulse-48000-2-20.f64
+PASS: Clearing retires every delayed/filter tail / impulse-48000-2-20.f64
+PASS: Finite impulse energy / impulse-48000-2-55.f64
+PASS: Clearing retires every delayed/filter tail / impulse-48000-2-55.f64
+PASS: Finite impulse energy / impulse-48000-2-90.f64
+PASS: Clearing retires every delayed/filter tail / impulse-48000-2-90.f64
+PASS: Finite impulse energy / impulse-48000-3-20.f64
+PASS: Clearing retires every delayed/filter tail / impulse-48000-3-20.f64
+PASS: Finite impulse energy / impulse-48000-3-55.f64
+PASS: Clearing retires every delayed/filter tail / impulse-48000-3-55.f64
+PASS: Finite impulse energy / impulse-48000-3-90.f64
+PASS: Clearing retires every delayed/filter tail / impulse-48000-3-90.f64
+PASS: Hotter gas halves travel delay at four times absolute temperature
+PASS: Unpinned acoustics follows the captured exhaust temperature
+PASS: Explicit fixed-temperature diagnostic remains pinned
+PASS: Nonfinite geometry is rejected before playback
+PASS: Unknown model flag is rejected
+PASS: Both approximations reproduce pre-change production PCM exactly / starter-hatch
+PASS: All independent modes render finite audible PCM / starter-hatch / 0
+PASS: All independent modes render finite audible PCM / starter-hatch / 1
+PASS: All independent modes render finite audible PCM / starter-hatch / 2
+PASS: All independent modes render finite audible PCM / starter-hatch / 3
+PASS: Audition never edits authored vehicle / starter-hatch
+PASS: Existing content resolves the new hardware-driven default / starter-hatch
+PASS: Both approximations reproduce pre-change production PCM exactly / v8-muscle
+PASS: All independent modes render finite audible PCM / v8-muscle / 0
+PASS: All independent modes render finite audible PCM / v8-muscle / 1
+PASS: All independent modes render finite audible PCM / v8-muscle / 2
+PASS: All independent modes render finite audible PCM / v8-muscle / 3
+PASS: Audition never edits authored vehicle / v8-muscle
+PASS: Existing content resolves the new hardware-driven default / v8-muscle
+PASS: Both approximations reproduce pre-change production PCM exactly / rally-sedan
+PASS: All independent modes render finite audible PCM / rally-sedan / 0
+PASS: All independent modes render finite audible PCM / rally-sedan / 1
+PASS: All independent modes render finite audible PCM / rally-sedan / 2
+PASS: All independent modes render finite audible PCM / rally-sedan / 3
+PASS: Audition never edits authored vehicle / rally-sedan
+PASS: Existing content resolves the new hardware-driven default / rally-sedan
+PASS: Both approximations reproduce pre-change production PCM exactly / super-v8
+PASS: All independent modes render finite audible PCM / super-v8 / 0
+PASS: All independent modes render finite audible PCM / super-v8 / 1
+PASS: All independent modes render finite audible PCM / super-v8 / 2
+PASS: All independent modes render finite audible PCM / super-v8 / 3
+PASS: Audition never edits authored vehicle / super-v8
+PASS: Existing content resolves the new hardware-driven default / super-v8
+PASS: Both approximations reproduce pre-change production PCM exactly / timber-diesel
+PASS: All independent modes render finite audible PCM / timber-diesel / 0
+PASS: All independent modes render finite audible PCM / timber-diesel / 1
+PASS: All independent modes render finite audible PCM / timber-diesel / 2
+PASS: All independent modes render finite audible PCM / timber-diesel / 3
+PASS: Audition never edits authored vehicle / timber-diesel
+PASS: Existing content resolves the new hardware-driven default / timber-diesel
+PASS: Open headers cannot acquire a fabricated muffler
+PASS: Acoustic authoring copies own their geometry
+PASS: Acoustic model selection leaves actual vehicle dynamics, resources and seeded failures identical
+PASS: Afterfire event timing/energy/seeds and fuel chemistry remain identical across modes
+PASS: Wave state survives arbitrary callback chunk boundaries / 8000
+PASS: Mono is the stereo fold without duplicate firing / 8000
+PASS: Wave state survives arbitrary callback chunk boundaries / 22050
+PASS: Mono is the stereo fold without duplicate firing / 22050
+PASS: Wave state survives arbitrary callback chunk boundaries / 44100
+PASS: Mono is the stereo fold without duplicate firing / 44100
+PASS: Wave state survives arbitrary callback chunk boundaries / 48000
+PASS: Mono is the stereo fold without duplicate firing / 48000
+PASS: Wave state survives arbitrary callback chunk boundaries / 96000
+PASS: Mono is the stereo fold without duplicate firing / 96000
+PASS: Warmed complete 16-cylinder turbo callback allocates zero managed bytes
+PASS: Editor callback p95 is below 60% of the 512-frame audio budget
+MEASURE 16 cylinders / 48 kHz / 512 stereo frames: p95 0,6989 ms, max 0,7428 ms; wave delay buffers 57344 bytes; allocated 0 bytes.
+PASS: Existing full engine-sound contracts pass with the new default
+PASS: Existing shared audio controls pass
+PASS: Existing exhaust-pop contracts pass
+PASS: Existing induction contracts pass
+Checks: 132
