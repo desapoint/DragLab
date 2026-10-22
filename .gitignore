@@ -98,3 +98,6 @@ Thumbs.db
 
 # Generated chapter sidecars accompany ignored local audio auditions.
 /reports/tempest-processing-20261021/**/*.cue
+
+# Raw legacy catalogue dump and full log; the audit keeps a concise receipt.
+/reports/part-statistics-audit-20261021/isolated-existing-checks/

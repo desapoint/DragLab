@@ -1,0 +1,1 @@
+PASS existing PartEffectsVerification: 26720 checks. Reports isolated; original report files and player saves untouched.

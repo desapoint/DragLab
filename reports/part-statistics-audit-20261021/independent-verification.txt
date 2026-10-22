@@ -1,0 +1,10 @@
+PASS catalogue count and distinct IDs agree with the Unity receipt
+PASS stock matrix covers every model exactly once
+PASS replacement matrix contains every reported fitting pair exactly once
+PASS category ranges account for the complete catalogue
+PASS stock output is preserved with positive mass/limits and no stock warnings
+PASS accepted replacement data is finite; rejected pairs require EFI controls or matching followers
+PASS reported capacity disagreements reproduce independently from per-model measured torque
+PASS detached flywheel mass/inertia edits demonstrably leave runtime values unchanged
+PASS baseline/control invariant failures are zero; review findings remain explicit
+LIMIT Dataset cross-checks do not establish real-world calibration or resolve the reported contracts.

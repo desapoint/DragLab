@@ -1,0 +1,9 @@
+Models: 52
+Catalogue definitions: 9294
+Categories: 49
+Fitting combinations: 26102
+Expected combination rejections: 8
+Checks: 146350
+Flagged invariant failures: 0
+Review groups: 6
+No player saves, calibration or physical bench changed.
