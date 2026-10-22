@@ -50,10 +50,54 @@ the editable browser generator; the separate native WAV player auditions Unity.
 They stop each other to avoid accidental overlay. Restart recorded sequence
 rewinds replay. Free simulation re-enables the original driving controls.
 
-The source workbench under `tools/audio-workbench/` can import any matching trace
-and WAV manually. Physical controls and manual event injection are disabled in
-reference mode; acoustic controls, solos, A/B snapshots and browser WAV exports
-remain available. Hardware rebuilds restart the recorded timeline.
+The source workbench under `tools/audio-workbench/` can import a trace, matching
+WAV and the original `.race.json` driver recording manually. There are three modes:
+
+| Mode | Driving and event source |
+| --- | --- |
+| Free simulation | Original browser model, manual controls or its full scripted sequence |
+| Unity simulation | Captured RPM/load/boost/cuts, wheel contacts and actual reaction/BOV events |
+| Unity inputs | Only captured throttle and shift-up/down commands; browser calculates everything else |
+
+The third mode uses the original 120 Hz `ticks[].input` commands, not inferred
+gear changes or recorded engine throttle. It excludes recorded brake, clutch,
+launch-control, physics and sound events. Choose the browser's Neutral / dyno or
+Race drive setting explicitly. This mode is a diagnostic comparison, not a
+physically equivalent Unity race. It preserves the initial idle block and the
+two-second tail. A shift request may be rejected by the browser gearbox's own
+gear bounds or shift-in-progress rules. Playback ends at the recording boundary;
+Restart rewinds it deterministically. Manual driver/event injection is disabled
+in both replay modes. **E shifts up; Q shifts down** in Free, with matching buttons.
+Held throttle survives either shift. Keys do not fire while editing inputs.
+
+**Sound tuning is separate from replay mode.** The original Free preset/current
+edits are retained by default when importing recordings or switching modes.
+Captured Unity hardware is an explicit alternative; switching back restores the
+saved browser tuning. Preserving browser sound also keeps its seed, prepared
+runner/firing geometry, bus faders and afterfire colour/gain. The full replay
+still supplies the identical physical timing, conditions and chemical energy.
+The low-level `ReferenceEngine` default remains the historical captured path;
+`{preserveSound:true}` selects the controlled acoustic-isolation path.
+
+Acoustic controls, solos, A/B snapshots and browser WAV exports remain available.
+Hardware rebuilds restart the recorded timeline. Exports snapshot replay mode,
+inputs and driving choice so changing a control mid-render cannot mix timelines.
+
+Generate the two-engine preview and checks after the reference capture exists:
+
+```powershell
+node tools/audio-workbench/preview_replay_modes.cjs
+node tools/audio-workbench/verify_reference_ui.cjs reports/unity-audio-reference-20261021 reports/audio-replay-modes-20261021
+```
+
+Open `reports/audio-replay-modes-20261021/listen.html` for Tempest and V8 WAVs,
+or `index.html` for the interactive three-mode workbench. Tuning A/B plays the
+historical reference-loaded sound first, one second silence, then original Free
+tuning on identical Unity physical inputs/events. Natural-level and separately
+labelled RMS-matched variants are provided; matching only attenuates the louder
+recording. The separate Free and driver-only sequences calculate different
+conditions and are not timing/outcome-equivalent. Raw artifacts remain local;
+no production game audio or builds change in this checkpoint.
 
 ## Trace v1 contract
 

@@ -45,18 +45,24 @@ function settingsFromTrace(base,trace){
  p.stages={...DSP.DEFAULT_STAGES,...base.stages};return p;
 }
 class ReferenceEngine extends DSP.EngineDSP{
- constructor(sr,settings,trace){super(sr,settings);this.trace=validate(trace);this.referenceCursor=0;this.referenceFrame=-1;this.reactionCursor=this.releaseCursor=0;this.frontSeeds=new Map();this.zoneVoices=new Map();this.referenceEvents=[];
+ constructor(sr,settings,trace,options={}){super(sr,settings);this.trace=validate(trace);this.referenceOptions={preserveSound:!!options.preserveSound};this.referenceCursor=0;this.referenceFrame=-1;this.reactionCursor=this.releaseCursor=0;this.frontSeeds=new Map();this.zoneVoices=new Map();this.referenceEvents=[];
   // Captured individual runners and firing order supersede the browser templates.
-  const mean=trace.hardware.runnersM.reduce((a,b)=>a+b,0)/trace.hardware.runnersM.length;
-  this.core.runners=trace.hardware.runnersM.map(x=>x*settings.runnerLengthMeters/mean);this.core.firingOrder=trace.hardware.firingOrder.slice();
+  // The controlled tuning comparison explicitly retains the Free engine's
+  // prepared geometry/order instead; it still consumes the same physical trace.
+  if(!this.referenceOptions.preserveSound){const mean=trace.hardware.runnersM.reduce((a,b)=>a+b,0)/trace.hardware.runnersM.length;
+   this.core.runners=trace.hardware.runnersM.map(x=>x*settings.runnerLengthMeters/mean);this.core.firingOrder=trace.hardware.firingOrder.slice();}
  }
  setInput(o){if(o.reset)this.restart();} // Driver/manual event injection is intentionally disabled in replay.
- restart(){const next=new ReferenceEngine(this.sr,this.p,this.trace);Object.assign(this,next);}
+ restart(){const next=new ReferenceEngine(this.sr,this.p,this.trace,this.referenceOptions);Object.assign(this,next);}
  stepPhysics(){} // No second drivetrain, limiter, turbo controller or probability roll.
  publish(sample){
   const at=Math.min(this.trace.frames.length-1,Math.floor(sample/400)),f=this.trace.frames[at];
   if(at===this.referenceFrame)return;
-  this.referenceFrame=at;this.unityFrame=f.engine;this.unityTires=f.tires;const e=f.engine,st=f.state;
+  this.referenceFrame=at;const keep=this.referenceOptions.preserveSound;
+  // Captured bus volumes are playback preferences, not physical excitation.
+  // Keep the Free preset's own master/category/tire faders in the isolation pass.
+  this.unityFrame=keep?{...f.engine,volume:1,afterfireVolume:1}:f.engine;
+  this.unityTires=keep?{...f.tires,volume:1}:f.tires;const e=f.engine,st=f.state;
   Object.assign(this,{rpm:e.rpm,throttle:e.throttle,targetThrottle:e.throttle,throttlePlate:e.throttle,load:e.load,boost:e.boost,spool:e.turboSpool,speed:e.speed,gear:st.gear,cut:e.cut,twoStep:e.twoStep,shiftTimer:st.shiftRemaining,shiftPressureTarget:e.combustionFraction});
   this.meter={rpm:e.rpm,boost:e.boost,speed:e.speed*3.6,gear:st.gear,gearCap:this.trace.spec.gears.length,events:this.afterCount,throttle:e.throttle,throttlePlate:e.throttle,spool:e.turboSpool,autoScenario:false,slip:Math.max(...['fl','fr','rl','rr'].map(k=>f.tires[k].slip)),slipSource:'Unity contacts',limiter:st.limiter?1:0,cutActive:e.cut,shiftActive:st.shiftRemaining>0,shiftPressure:e.combustionFraction,twoStep:e.twoStep,reference:true,referenceSeconds:sample/48000,referenceDuration:this.trace.totalSamples/48000,referenceStage:f.stage};
  }
@@ -68,8 +74,8 @@ class ReferenceEngine extends DSP.EngineDSP{
   if(!this.frontSeeds.has(e.frontId)){const s=BigInt(e.seed);this.frontSeeds.set(e.frontId,Number((s^(s>>32n))&0xffffffffn));}
   if(!voice||voice.i>voice.end+32){
    const p=copy(this.p),anchor=this.trace.reactions[0]?.settings||e.settings;
-   for(const [field,suffix]of Object.entries(afterFields)){const control='after'+suffix;p[control]=Math.max(.001,e.settings[field]*(p[control]/Math.max(.001,anchor[field])));}
-   voice=new DSP.Backfire(this.sr,p,this.frontSeeds.get(e.frontId));voice.gain=p.popGain*this.trace.hardware.afterfireReferenceGain;
+   if(!this.referenceOptions.preserveSound)for(const [field,suffix]of Object.entries(afterFields)){const control='after'+suffix;p[control]=Math.max(.001,e.settings[field]*(p[control]/Math.max(.001,anchor[field])));}
+   voice=new DSP.Backfire(this.sr,p,this.frontSeeds.get(e.frontId));if(!this.referenceOptions.preserveSound)voice.gain=p.popGain*this.trace.hardware.afterfireReferenceGain;
    const strength=Math.sqrt(e.acousticJ/.2);for(const k of ['crackE','bodyE','barkE','tailE','colourE','diffE'])voice[k]=strength;
    for(const pulse of voice.pulses)for(const k of ['y','d','z','zd'])pulse[k]*=strength;
    this.zoneVoices.set(key,voice);this.after.push(voice);this.afterCount++;this.emitEvent('Unity flame '+e.frontId+' / zone '+e.zone);
@@ -85,5 +91,35 @@ class ReferenceEngine extends DSP.EngineDSP{
   const out=super.renderStereo();this.referenceCursor++;return out;
  }
 }
-return{validate,settingsFromTrace,ReferenceEngine};
+// Driver-only replay: deliberately never reads captured engine frames, chemical
+// reactions, BOV releases, brakes, clutch or launch-control commands.
+function validateInputs(recording){
+ if(!recording||typeof recording.id!=='string'||!Array.isArray(recording.ticks)||!recording.ticks.length)throw Error('Expected a Unity *.race.json driver recording.');
+ for(const tick of recording.ticks){const i=tick.input;if(!i||!Number.isFinite(i.throttle)||i.throttle<0||i.throttle>1||typeof i.shiftUp!=='boolean'||typeof i.shiftDown!=='boolean'||i.shiftUp&&i.shiftDown)throw Error('Invalid throttle/shift recording.');}
+ return recording;
+}
+class InputEngine extends DSP.EngineDSP{
+ constructor(sr,settings,recording){super(sr,settings);this.recording=validateInputs(recording);this.inputCursor=0;this.inputTick=-2;this.inputEvents=[];this.inputMode='Idle';}
+ setInput(o){if(o.reset){const next=new InputEngine(this.sr,this.p,this.recording);next.inputMode=this.inputMode;Object.assign(this,next);}if(o.mode!==undefined)this.inputMode=o.mode==='Race'?'Race':'Idle';}
+ renderStereo(){
+  const sample=Math.floor(this.inputCursor*48000/this.sr+1e-8),total=(this.recording.ticks.length+241)*400;
+  if(sample>=total){this.meter.referenceDone=true;return[0,0];}
+  const tick=Math.min(this.recording.ticks.length-1,Math.floor(sample/400)-1);
+  if(tick!==this.inputTick){
+   // Consume every tick, including when a lower device rate crosses a boundary.
+   for(let i=Math.max(0,this.inputTick+1);i<=tick;i++){
+    const input=this.recording.ticks[i].input;
+    super.setInput({throttle:input.throttle,shift:input.shiftUp,shiftDown:input.shiftDown});
+    if(input.shiftUp||input.shiftDown)this.inputEvents.push({tick:i,sample:(i+1)*400,direction:input.shiftUp?1:-1});
+   }
+   this.inputTick=tick;
+  }
+  this.run=this.inputMode==='Race';const out=super.renderStereo();this.inputCursor++;
+  Object.assign(this.meter,{reference:true,referenceSeconds:sample/48000,referenceDuration:total/48000,referenceStage:'Unity throttle / shifts; browser '+this.inputMode,driverReplay:true});return out;
+ }
+}
+function createEngine(sr,settings,trace,mode='unity',options={}){
+ return mode==='inputs'?new InputEngine(sr,settings,trace):mode==='unity'?new ReferenceEngine(sr,settings,trace,options):new DSP.EngineDSP(sr,settings);
+}
+return{validate,validateInputs,settingsFromTrace,ReferenceEngine,InputEngine,createEngine};
 }

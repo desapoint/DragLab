@@ -1,0 +1,15 @@
+PASS 03-i4-turbo-hiss Free full sequence is sample-identical to supplied original DSP
+PASS 03-i4-turbo-hiss default reference PCM unchanged; preserved-Free pass has identical physical event schedule
+PASS 03-i4-turbo-hiss driver-only replay consumes every shift command without captured physical/audio state
+PASS 08-v8-carb Free full sequence is sample-identical to supplied original DSP
+PASS 08-v8-carb default reference PCM unchanged; preserved-Free pass has identical physical event schedule
+PASS 08-v8-carb driver-only replay consumes every shift command without captured physical/audio state
+PASS tempest downshift, busy rejection, gear bounds and held throttle
+PASS v8 downshift, busy rejection, gear bounds and held throttle
+PASS na downshift, busy rejection, gear bounds and held throttle
+PASS diesel downshift, busy rejection, gear bounds and held throttle
+PASS driver-only replay ignores brakes/clutch/launch, captured state/events and manual injected events
+PASS driver restart reproduces initial PCM
+PASS 44.1 kHz driver timeline consumes shifts once and ends
+PASS malformed driver recording rejected
+LIMIT Offline/contract checks; browser/device listening remains user review. No game changes.
