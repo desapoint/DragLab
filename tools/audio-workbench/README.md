@@ -1,5 +1,21 @@
 # DragLab Audio Workbench — Drivetrain and BOV fixes
 
+## Unity reference extension
+
+The supplied archive is preserved in local commit `40d475f`. This working copy
+now adds **Unity reference replay** with exact game snapshots and event timing,
+editable browser acoustics, a separate authoritative Unity WAV player and
+reference-based A/B/WAV export. Game audio and physics are unchanged.
+
+Run `./tools/Export-UnityAudioReference.ps1` from the repository root, then open
+`reports/unity-audio-reference-20261021/index.html`. That generated page preloads
+the first real game configuration; this source HTML also supports manual trace
+and WAV import. See [the trace contract and verification workflow](../../docs/UNITY_AUDIO_REFERENCE.md).
+
+The earlier documentation below describes the supplied **free simulation**
+baseline. In Unity-reference mode manual input/probability triggers are disabled.
+Browser sound still differs from production DSP; exact timing is the first gate.
+
 **Open:** `DragLab_Audio_Workbench_DrivetrainFix.html`, then click **Start audio**. The HTML is fully standalone; companion DSP JS and test files are for inspection. This changes only the browser workbench, **not the DragLab Unity repository**.
 
 ## Changes

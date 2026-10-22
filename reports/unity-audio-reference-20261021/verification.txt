@@ -1,0 +1,63 @@
+PASS all public production EngineSoundFrame values have trace fields:
+PASS 03-i4-turbo-hiss unchanged authoritative physics
+PASS 03-i4-turbo-hiss all reaction packets and acoustic joules retained
+PASS 03-i4-turbo-hiss all exact BOV timestamps retained
+PASS 03-i4-turbo-hiss effective hardware survives JSON roundtrip
+PASS 03-i4-turbo-hiss all frame numbers and wheel contacts survive JSON roundtrip
+PASS 03-i4-turbo-hiss all reaction fields and exact seeds survive JSON roundtrip
+PASS 03-i4-turbo-hiss serialized numeric frames/events reproduce source PCM bit for bit without physics / first difference -1 / expected 0 actual 0
+PASS 03-i4-turbo-hiss serialized trace reproduces both propagated engine and four-wheel tire PCM bit for bit
+PASS 03-i4-turbo-hiss exact event delivery after JSON/UInt64 seed roundtrip
+PASS 03-i4-turbo-hiss replay has no event overflow or stolen voices
+PASS 03-i4-turbo-hiss source fixture not rewritten
+CAPTURE 03-i4-turbo-hiss / 1740400 samples / 4022 reactions / 3 releases / trace SHA256 20dca7a76baa3bbdd9ba13ffb7c216010c7692168c84a92bed05f5e8770066df
+PASS 08-v8-carb unchanged authoritative physics
+PASS 08-v8-carb all reaction packets and acoustic joules retained
+PASS 08-v8-carb all exact BOV timestamps retained
+PASS 08-v8-carb effective hardware survives JSON roundtrip
+PASS 08-v8-carb all frame numbers and wheel contacts survive JSON roundtrip
+PASS 08-v8-carb all reaction fields and exact seeds survive JSON roundtrip
+PASS 08-v8-carb serialized numeric frames/events reproduce source PCM bit for bit without physics / first difference -1 / expected 0 actual 0
+PASS 08-v8-carb serialized trace reproduces both propagated engine and four-wheel tire PCM bit for bit
+PASS 08-v8-carb exact event delivery after JSON/UInt64 seed roundtrip
+PASS 08-v8-carb replay has no event overflow or stolen voices
+PASS 08-v8-carb source fixture not rewritten
+CAPTURE 08-v8-carb / 1785600 samples / 23 reactions / 0 releases / trace SHA256 acdebe84367bcbaceacfcabea6f390b0899f868a57678fa4703e27a1781f74bd
+PASS 09-v8-supercharger unchanged authoritative physics
+PASS 09-v8-supercharger all reaction packets and acoustic joules retained
+PASS 09-v8-supercharger all exact BOV timestamps retained
+PASS 09-v8-supercharger effective hardware survives JSON roundtrip
+PASS 09-v8-supercharger all frame numbers and wheel contacts survive JSON roundtrip
+PASS 09-v8-supercharger all reaction fields and exact seeds survive JSON roundtrip
+PASS 09-v8-supercharger serialized numeric frames/events reproduce source PCM bit for bit without physics / first difference -1 / expected 0 actual 0
+PASS 09-v8-supercharger serialized trace reproduces both propagated engine and four-wheel tire PCM bit for bit
+PASS 09-v8-supercharger exact event delivery after JSON/UInt64 seed roundtrip
+PASS 09-v8-supercharger replay has no event overflow or stolen voices
+PASS 09-v8-supercharger source fixture not rewritten
+CAPTURE 09-v8-supercharger / 1675200 samples / 0 reactions / 0 releases / trace SHA256 1773b6717f5218b626a224fce4afee1131d73401eff9f1b9e331c5396001d290
+PASS 17-v8-burnout unchanged authoritative physics
+PASS 17-v8-burnout all reaction packets and acoustic joules retained
+PASS 17-v8-burnout all exact BOV timestamps retained
+PASS 17-v8-burnout effective hardware survives JSON roundtrip
+PASS 17-v8-burnout all frame numbers and wheel contacts survive JSON roundtrip
+PASS 17-v8-burnout all reaction fields and exact seeds survive JSON roundtrip
+PASS 17-v8-burnout serialized numeric frames/events reproduce source PCM bit for bit without physics / first difference -1 / expected 0 actual 0
+PASS 17-v8-burnout serialized trace reproduces both propagated engine and four-wheel tire PCM bit for bit
+PASS 17-v8-burnout exact event delivery after JSON/UInt64 seed roundtrip
+PASS 17-v8-burnout replay has no event overflow or stolen voices
+PASS 17-v8-burnout source fixture not rewritten
+CAPTURE 17-v8-burnout / 1789200 samples / 1 reactions / 0 releases / trace SHA256 74d2ea296840be8eaae5fc53ea71834411eeacde6f71bdcc3a74302b706937c9
+PASS 26-launch-hard-ignition unchanged authoritative physics
+PASS 26-launch-hard-ignition all reaction packets and acoustic joules retained
+PASS 26-launch-hard-ignition all exact BOV timestamps retained
+PASS 26-launch-hard-ignition effective hardware survives JSON roundtrip
+PASS 26-launch-hard-ignition all frame numbers and wheel contacts survive JSON roundtrip
+PASS 26-launch-hard-ignition all reaction fields and exact seeds survive JSON roundtrip
+PASS 26-launch-hard-ignition serialized numeric frames/events reproduce source PCM bit for bit without physics / first difference -1 / expected 0 actual 0
+PASS 26-launch-hard-ignition serialized trace reproduces both propagated engine and four-wheel tire PCM bit for bit
+PASS 26-launch-hard-ignition exact event delivery after JSON/UInt64 seed roundtrip
+PASS 26-launch-hard-ignition replay has no event overflow or stolen voices
+PASS 26-launch-hard-ignition source fixture not rewritten
+CAPTURE 26-launch-hard-ignition / 1735600 samples / 5387 reactions / 2 releases / trace SHA256 dca850e065038d72df917649c29f3672003f19a63a13fc8e5c7a3f0e8dfb4185
+PASS capture/replay preserves the gameplay global RNG
+Checks: 57

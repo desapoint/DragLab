@@ -1,0 +1,8 @@
+PASS standalone HTML parses and embeds inspected modules
+PASS trace import and reference/free switching
+PASS captured physical controls locked; acoustic controls editable
+PASS matching Unity WAV and generator playback are exclusive
+PASS reference and free WAV render buttons route correctly
+PASS actual AudioWorklet processor advances recorded frames and publishes meters
+PASS worklet blocks manual invented events and can switch reference/free
+LIMIT browser visual/device/listening review remains manual; no real browser automation was performed.

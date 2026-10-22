@@ -1,0 +1,7 @@
+PASS original native capture SHA256 manifest rechecked
+PASS 30 synchronized WAVs, 5 standalone traces and 5 signal-comparison plots
+PASS generated standalone pages embed the inspected replay adapter
+PASS review archive CRC and required trace entries
+Archive: reports/DragLab-Unity-Audio-Reference-20261021.zip
+Archive size: 267.5 MiB
+Archive SHA256: bcddc96d64dba4494ee52907deb0251ce5d5e449c1b8ed364f1a444698745874

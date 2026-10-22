@@ -1,0 +1,52 @@
+PASS recorded full combustion cuts override healthy per-cylinder contributions
+PASS 5 requested real engine/traction configurations
+PASS 03-i4-turbo-hiss four complete, synchronized 48 kHz / 24-bit stereo Unity WAVs
+PASS 03-i4-turbo-hiss combined reference retains the same engine/tire gains without normalization
+PASS 03-i4-turbo-hiss lossless 64-bit event seeds
+PASS 03-i4-turbo-hiss browser replay has finite audible unclipped PCM
+PASS 03-i4-turbo-hiss no missing or invented reaction/BOV events
+PASS 03-i4-turbo-hiss chemical and BOV scheduling respects exact time and causal publication
+PASS 03-i4-turbo-hiss RPM, gear and boost follow captured game state without browser physics
+PASS 03-i4-turbo-hiss finite end of recording without a phantom continued race
+PASS 03-i4-turbo-hiss deterministic replay; manual throttle/shift/BOV/pop/auto commands cannot contaminate the reference
+PASS all-off reference solo is exact silence while event timing is retained
+MEASURE 03-i4-turbo-hiss / browser RMS 0.02387554278989728 / peak 0.1727449744939804 / PCM SHA256 9430cc9856c85dd2a6da9e0f2716f501ff0ee015d30d5b99446b070c90be9517
+PASS 08-v8-carb four complete, synchronized 48 kHz / 24-bit stereo Unity WAVs
+PASS 08-v8-carb combined reference retains the same engine/tire gains without normalization
+PASS 08-v8-carb lossless 64-bit event seeds
+PASS 08-v8-carb browser replay has finite audible unclipped PCM
+PASS 08-v8-carb no missing or invented reaction/BOV events
+PASS 08-v8-carb chemical and BOV scheduling respects exact time and causal publication
+PASS 08-v8-carb RPM, gear and boost follow captured game state without browser physics
+PASS 08-v8-carb finite end of recording without a phantom continued race
+MEASURE 08-v8-carb / browser RMS 0.062431346827592715 / peak 0.24642738699913025 / PCM SHA256 bf8fdb06a3cbf03ba5f3bda32c6d7482bcee2a3abc4a43d8a131664e42860d7d
+PASS 09-v8-supercharger four complete, synchronized 48 kHz / 24-bit stereo Unity WAVs
+PASS 09-v8-supercharger combined reference retains the same engine/tire gains without normalization
+PASS 09-v8-supercharger lossless 64-bit event seeds
+PASS 09-v8-supercharger browser replay has finite audible unclipped PCM
+PASS 09-v8-supercharger no missing or invented reaction/BOV events
+PASS 09-v8-supercharger chemical and BOV scheduling respects exact time and causal publication
+PASS 09-v8-supercharger RPM, gear and boost follow captured game state without browser physics
+PASS 09-v8-supercharger finite end of recording without a phantom continued race
+MEASURE 09-v8-supercharger / browser RMS 0.042697746019477664 / peak 0.268062561750412 / PCM SHA256 e621df618e7253e52ed085dbd8e2711ba9b6377885dc6a5a25c80168bdb77184
+PASS 17-v8-burnout four complete, synchronized 48 kHz / 24-bit stereo Unity WAVs
+PASS 17-v8-burnout combined reference retains the same engine/tire gains without normalization
+PASS 17-v8-burnout actual per-wheel contact produces audible isolated tire reference
+PASS 17-v8-burnout lossless 64-bit event seeds
+PASS 17-v8-burnout browser replay has finite audible unclipped PCM
+PASS 17-v8-burnout no missing or invented reaction/BOV events
+PASS 17-v8-burnout chemical and BOV scheduling respects exact time and causal publication
+PASS 17-v8-burnout RPM, gear and boost follow captured game state without browser physics
+PASS 17-v8-burnout finite end of recording without a phantom continued race
+MEASURE 17-v8-burnout / browser RMS 0.05192416363253728 / peak 0.32882362604141235 / PCM SHA256 acd3de554f62a42f4ca847b79620c5c0439c1b6fb378949fafc0e3619e0a3d6a
+PASS 26-launch-hard-ignition four complete, synchronized 48 kHz / 24-bit stereo Unity WAVs
+PASS 26-launch-hard-ignition combined reference retains the same engine/tire gains without normalization
+PASS 26-launch-hard-ignition lossless 64-bit event seeds
+PASS 26-launch-hard-ignition browser replay has finite audible unclipped PCM
+PASS 26-launch-hard-ignition no missing or invented reaction/BOV events
+PASS 26-launch-hard-ignition chemical and BOV scheduling respects exact time and causal publication
+PASS 26-launch-hard-ignition RPM, gear and boost follow captured game state without browser physics
+PASS 26-launch-hard-ignition finite end of recording without a phantom continued race
+MEASURE 26-launch-hard-ignition / browser RMS 0.024368987919811465 / peak 0.1727449744939804 / PCM SHA256 519ffcc00fc9d349d1e0cb63ef53b390ad8a15ed54ddcbee5eb748a9d023713b
+PASS incompatible, incomplete, misaligned or precision-losing traces are rejected
+Checks: 46
