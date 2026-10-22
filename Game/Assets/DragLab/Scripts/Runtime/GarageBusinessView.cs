@@ -10,7 +10,7 @@ namespace DragLab.Runtime
     {
         GarageBusinessPolicyDefinition businessPolicyAsset;
         internal GarageBusinessPolicy BusinessPolicy{get{if(businessPolicyAsset==null)businessPolicyAsset=Resources.Load<GarageBusinessPolicyDefinition>("Data/Economy/GarageBusinessPolicy");return businessPolicyAsset==null?GarageBusiness.DefaultPolicy():businessPolicyAsset.policy;}}
-        internal void OpenBusiness(){DiscardPreviews();screen="Business";scroll=Vector2.zero;partRects.Clear();}
+        internal void OpenBusiness(){DiscardPreviews();screen="Business";scroll=Vector2.zero;partRects.Clear();nativeMenu?.ResetMenuEntry("Business");}
         void BusinessGUI()
         {
             var policy=BusinessPolicy;long now=DragLab.Domain.RuntimeEntropy.UtcNow.Ticks;int level=profile.garageLevel-1;

@@ -24,7 +24,7 @@ namespace DragLab.Runtime
         internal PanelSettings Panel => panel;
         internal int Category => category;
         internal bool Visible => root != null && !root.ClassListContains("hidden");
-        internal static bool Supports(string route) => Array.IndexOf(routes, route) >= 0 || route == "Settings";
+        internal static bool Supports(string route) => Array.IndexOf(routes, route) >= 0 || route == "Settings" || route == "Recovery";
         internal static float DisplayScale(int width, int height) => NativeMobile.Scale(width,height);
 
         internal void Initialize(PrototypeGame owner)
@@ -87,6 +87,7 @@ namespace DragLab.Runtime
             InitializeDealership();
             InitializeDisposal();
             InitializeRaceSelection();
+            InitializeBusiness();
             InitializeTuning();
             InitializeParts();
             InitializeNativeCart();
@@ -153,10 +154,11 @@ namespace DragLab.Runtime
             RefreshEngines(route);
             RefreshDisposal(route);
             RefreshRaceSelection(route);
+            RefreshBusiness(route);
             if (renderedRoute == route) return;
             renderedRoute = route;
             bool settings = route == "Settings";
-            for (int i = 0; i < routes.Length; i++) root.Q<Button>("nav" + names[i]).EnableInClassList("selected", route == routes[i]);
+            for (int i = 0; i < routes.Length; i++) root.Q<Button>("nav" + names[i]).EnableInClassList("selected", route == routes[i] || route == "Recovery" && routes[i] == "Business");
             root.Q<Button>("settingsButton").EnableInClassList("selected", settings);
             root.Q("settingsTabs").EnableInClassList("hidden", !settings);
             root.Q("settingsBody").EnableInClassList("hidden", !settings);
@@ -192,6 +194,7 @@ namespace DragLab.Runtime
                 raceSelectionMode="Career";raceSelectionEvent=null;raceSearch="";raceTier="All";raceSelectionKey=raceActionKey=null;raceSelectionScroll.scrollOffset=Vector2.zero;
                 raceSelectionPage.Query<Button>(className:"choice-button").ForEach(b=>b.EnableInClassList("selected",b.name=="raceMode:Career"));
             }
+            else if(route=="Business"||route=="Recovery")ResetBusiness(route);
             else if(route=="Settings"){
                 category=0;root.Q<ScrollView>("settingsScroll").scrollOffset=Vector2.zero;ShowCategory();
             }

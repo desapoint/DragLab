@@ -92,7 +92,7 @@ namespace DragLab.Runtime
             GUI.enabled = previous;
             if (cost > profile.cash) GUILayout.Label("Need " + DisplayUnits.Money((cost - profile.cash)) + " more. Recovery work / idle claims / sell retained spares are available.");
         }
-        internal void OpenRecovery() { DiscardPreviews(); screen = "Recovery"; scroll = Vector2.zero; partRects.Clear(); }
+        internal void OpenRecovery() { DiscardPreviews(); screen = "Recovery"; scroll = Vector2.zero; partRects.Clear(); nativeMenu?.ResetMenuEntry("Recovery"); }
         void RecoveryGUI()
         {
             bool wrap = GUI.skin.label.wordWrap; GUI.skin.label.wordWrap = true;

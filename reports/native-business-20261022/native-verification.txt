@@ -1,0 +1,85 @@
+Native navigation / Settings shell verification
+PASS: Profile isolated from player assets
+PASS: First start opens preset onboarding before shopping
+PASS: Fresh defaults are Shift myself / Simulation / Normal market
+PASS: Dialog content clears fixed X/title and actions: onboarding presets
+PASS: Presets precede independent Normal market selection
+PASS: Next keeps all settings as unsaved drafts
+PASS: Back retains both preset drafts
+PASS: Returning to market retains its independent draft
+PASS: Dialog content clears fixed X/title and actions: onboarding market
+PASS: Failed preference write keeps onboarding open and retryable
+PASS: Failed onboarding preserves original state and preferences
+PASS: Explicit confirmation persists completion and returns to starter selection
+PASS: Normal market applies after Simulation rather than becoming Hard
+PASS: Onboarding changes preferences only; exact starter stock, money and progression remain intact
+PASS: Confirmed presets reload independently from SQLite progression
+PASS: Fresh game opens fixed three-choice used dealership without a gifted car
+PASS: F8 exposes legacy empty-garage dealership without gifting assets
+PASS: F8 restores fixed starter selection
+PASS: New/used choice stays a draft
+PASS: New condition filter excludes fixed used starters
+PASS: Used details show actual worn and no-wear dyno curves
+PASS: Dealership Fitted parts sits beside Stats with the same compact ten-point spacing as owned cars
+PASS: Fitted parts reuses the filled-icon button with no keyboard traversal
+PASS: Grouped fitted list shows every actual part exactly once with retained identity
+PASS: All part rows belong to their component system, including cooling, electronics and drivetrain
+PASS: Fitted values reflect actual member condition and failures instead of a neutral tire wrapper
+PASS: Disclosed dealer fitted tires show all four actual corner specifications, identities and remaining conditions
+PASS: Every current component category has a named system, including diesel and AWD hardware
+PASS: Fitted-parts dialog has distinct engine, cooling, drivetrain and wheel/brake sections
+PASS: Dialog starts with a concise collapsed system overview
+PASS: Each fitted part has a shared Shop action, available after an owned car is selected
+PASS: Part names and failure values wrap within the dialog width
+PASS: Collapsing Engine restores access to the other system headers
+PASS: Reopening Engine retains all captured part rows
+PASS: Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes
+PASS: Actual fitted hardware opens reusable information dialog
+PASS: Filtering, inspecting and cancelling first purchase leave saved assets unchanged
+PASS: First confirmation buys one starter and leaves a maintenance reserve
+PASS: First purchase transfers exact seller identities and wear
+PASS: First purchase unlocks persisted mixed stock with valid ownership
+PASS: Business opens the native page with persistent navigation
+PASS: Isolated fixture supplies existing accrued income, without healing parts
+PASS: Eligible exact car can take the existing photo-session contract
+PASS: Job picker names actual owned instance identities
+PASS: Countdown ticks retain the same controls and layout rather than rebuilding the list
+PASS: Settings Cancel preserves the Business subpage
+PASS: Desktop F8 still exposes the existing Business interface
+PASS: Returning with F8 preserves the new Business subpage
+PASS: Fresh Business navigation resets Overview and scroll
+PASS: Browsing jobs, car picker, recovery, Settings and F8 neither mutate nor save the profile
+PASS: Stale Business review cannot publish cash
+PASS: Changed captured Business terms require a new review
+PASS: Dialog content clears fixed X/title and actions: Business income
+PASS: Cancelled income review leaves the captured contract intact
+PASS: Failed durable income claim leaves cash and accrued bank unchanged and stays retryable
+PASS: Confirmed income transfers actual accrued whole dollars and preserves the fractional remainder
+PASS: Repeated old claim cannot pay twice and the successful claim survives SQLite reload
+PASS: Expansion pays the authored cost and settles existing accrued income first
+PASS: New garage income and cap are captured from the expansion time
+PASS: Cancelling assignment review does not reserve a build
+PASS: Assign reserves the exact chosen car, engine and fitted component identities
+PASS: Reserved car cannot enter races or accept another display contract
+PASS: Unfinished display job cannot be claimed
+PASS: Captured job deadline and reservation survive durable reload
+PASS: Business scroll stays inside the frame at 1024
+PASS: Job car selector remains in bounds at 1024
+PASS: Business scroll stays inside the frame at 1920
+PASS: Job car selector remains in bounds at 1920
+PASS: Business uses the shared crisp 4K scale and bounded viewport
+PASS: Real elapsed deadline enables Claim while retaining the car reservation
+PASS: Claim pays the captured reward exactly once and releases the build
+PASS: Replaying a completed display job cannot duplicate rewards
+PASS: Explicit cancellation releases the original build with no reward
+PASS: Income, expansion, real-time job completion and cancellation preserve all fuel, fluids, wear and component identities
+PASS: Native Business actions leave a valid durable reservation ledger
+PASS: Isolated recovery fixture legally disposes the last car and starts with no cash
+PASS: Empty-garage recovery route opens the native Business Recovery tab
+PASS: Recovery work captures the existing bounded reward without requiring a car
+PASS: Recovery claim stays disabled before its real deadline
+PASS: Touch builds keep Recovery in the new interface and cannot switch to legacy
+PASS: Business buttons retain the shared no-Tab-navigation policy
+PASS: Real recovery deadline pays its captured reward once and persists without an owned car
+PASS: Recovery receipt appears once in the native recent-operations list
+Checks: 83 / runtime errors: 0

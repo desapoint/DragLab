@@ -1,0 +1,5 @@
+Unity 6000.6.4f1 development players; source 94025d7 plus native-business-20261022 checkpoint.
+437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd  Game/Builds/Windows/DragLab.exe  667136 bytes
+c59f21d789600c0fdf5c3f1241d554346b2a483197654ee285257405a6ca7e24  Game/Builds/Windows/DragLab_Data/Managed/Assembly-CSharp.dll  3151360 bytes
+89768a8c3e0bad14d9eaedf10b9b4cda800701ee84ffbf3c76f22313b6992d5d  Game/Builds/Windows/DragLab_Data/resources.assets  1775328 bytes
+9f20b8d43f83edc0a776a832763477fdabeca096c6af2c60044460279a7deb16  Game/Builds/Android/DragLab.apk  87565127 bytes

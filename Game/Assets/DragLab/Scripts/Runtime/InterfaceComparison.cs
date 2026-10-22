@@ -7,7 +7,7 @@ namespace DragLab.Runtime
     // Presentation only. Session preferences never enter a player save or test config.
     internal sealed class InterfaceComparison
     {
-        static readonly HashSet<string> replacementRoutes = new HashSet<string> { "Garage", "Settings", "Parts", "Tuning", "Race setup", "Business", "Stats" };
+        static readonly HashSet<string> replacementRoutes = new HashSet<string> { "Garage", "Settings", "Parts", "Tuning", "Race setup", "Business", "Recovery", "Stats" };
         bool shortcutHeld;
         GUIStyle badgeStyle, emptyStyle;
         static bool NativeOnly(string route)=>NativeMobile.Touch&&(NativeMenuShell.Supports(route)||NativeRaceHud.Supports(route)||NativeRaceResults.Supports(route));

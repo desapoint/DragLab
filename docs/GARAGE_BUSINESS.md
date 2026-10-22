@@ -11,3 +11,10 @@ Reserved builds cannot race, enter the physical bench, Apply tuning, receive ser
 Edit `Game/Assets/DragLab/Resources/Data/Economy/GarageBusinessPolicy.asset` in its inspector. Rates, caps, expansion costs, bays and offers are authorable. `DragLab > Prepare Garage Business Policy` only creates missing data; **Verify Garage Jobs and Idle** exports a car/offer eligibility matrix and clock/transaction/reservation checks. Job definitions and save state have independent version guards. A stored job verifies its exact resource/tune/component snapshot rather than healing or reconstructing it.
 
 Recovery work remains a separate bounded income route requiring no car, useful when all builds are broken or salvaged. Earnings fund the same paid operating/component transactions as race rewards. Prices and durations are provisional until the 3G scenario pass; 3H remains the integrated release audit.
+
+
+## Native interface — 2026-10-22
+
+Open **Business** in the persistent top navigation. **Overview** shows the captured income rate/cap, current claimable balance and next expansion benefits/price. Confirm claims and expansion in the shared dialog. **Display jobs** chooses a job car locally, independently of the selected driving car, and shows existing contracts, restrictions, occupied bays, captured rewards and real-time countdowns. Claim or cancel releases the original reserved build. **Recovery** provides existing no-car work, links to Garage/Build and recent committed operations. Empty-garage recovery links open this native tab directly, including on mobile. New Business navigation resets Overview; desktop F8 and clean Settings return preserve the subpage. No economy values change in this migration.
+
+Validation and review: [checkpoint report](../reports/native-business-20261022/CHANGES.md). The dedicated real-input suite is `./tools/Test-NativeMenu.ps1 -FixtureName native-business-new-run -BusinessOnly`; use a fresh fixture name because the suite completes jobs and sells its isolated last car. Domain verification accepts `--garage-business-report <absolute-folder>` to keep historical phase receipts intact.

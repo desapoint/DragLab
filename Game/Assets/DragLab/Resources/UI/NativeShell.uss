@@ -129,6 +129,16 @@
 
 .owned-cars-scroll { flex-grow: 1; min-height: 0; }
 .owned-cars-grid { flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; padding: 2px; }
+.business-card { min-height: 0; padding: 18px 20px; }
+.business-text { white-space: normal; flex-shrink: 0; margin: 0 0 10px 0; padding: 0; }
+.business-title { font-size: 23px; margin-top: 4px; margin-bottom: 14px; }
+.business-amount { font-size: 28px; }
+.business-button { align-self: flex-start; max-width: 100%; margin: 4px 12px 4px 0; }
+.business-button > Label { flex-shrink: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.business-actions { flex-direction: row; flex-wrap: wrap; margin-top: 4px; }
+.business-receipt { flex-direction: row; justify-content: space-between; flex-wrap: wrap; border-bottom-width: 1px; border-bottom-color: rgba(138,148,157,0.13); padding: 8px 0; }
+.business-receipt > .business-text { margin-right: 16px; margin-bottom: 0; }
+.compact .business-card { width: 100%; }
 .owned-car-card { width: 49%; min-height: 238px; margin: 0 0 16px 0; padding: 14px 16px; border-radius: 12px; overflow: hidden; flex-direction: column; align-items: stretch; color: var(--racing-text); font-size: 16px; -unity-text-align: middle-left; }
 .owned-car-card, .owned-car-card:hover, .owned-car-card:focus, .owned-car-card:active { background-color: transparent; border-width: 0; }
 .car-card-heading { flex-direction: row; align-items: center; }
