@@ -31,7 +31,7 @@ element('soundSource').value='browser';element('soundSource').onchange();assert.
 element('referenceMode').value='unity';element('referenceMode').onchange();
 let e=context.makeAuditionEngine(48000,context.params);assert(e.trace);assert.equal(e.trace.frames.length,trace.frames.length);
 assert(e.referenceOptions.preserveSound);
-context.attachUnityReferenceWav({},'native.wav');assert.equal(element('unityWav').src,'blob:test');element('unityWav').onplay();assert.equal(calls.at(-1),'stop');
+context.attachUnityReferenceWav({},'native.wav');assert.equal(element('unityWav').src,'blob:test');element('unityWav').onplay();assert(calls.slice(-3).includes('stop'));assert.equal(calls.at(-1),'wav pause');
 element('referenceMode').value='free';element('referenceMode').onchange();assert(!element('throttle').disabled&&!element('field-cylinders').disabled);assert(!context.makeAuditionEngine(48000,context.params).trace);
 vm.runInContext('renderUnityReference=(compare)=>logEvent(compare);',context);let compared=null;context.logEvent=x=>compared=x;
 element('referenceMode').value='unity';element('renderAB').onclick();assert.equal(compared,true);

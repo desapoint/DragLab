@@ -1,0 +1,14 @@
+PASS 03-i4-turbo-hiss cached browser baseline is sample-identical to direct driver replay under the same engine-only mask
+PASS 03-i4-turbo-hiss actual reaction/BOV time, indices and seeds preserved in restored-effects pass
+PASS 03-i4-turbo-hiss all 14 passes retain tuning, source timeline and original inputs without mutation
+PASS 03-i4-turbo-hiss repeated load-stage render is deterministic
+PASS 03-i4-turbo-hiss later airflow/combustion inputs cannot contaminate earlier substitutions
+PASS 03-i4-turbo-hiss mismatched acoustic settings and driver/trace pairs rejected
+PASS 08-v8-carb cached browser baseline is sample-identical to direct driver replay under the same engine-only mask
+PASS 08-v8-carb actual reaction/BOV time, indices and seeds preserved in restored-effects pass
+PASS 08-v8-carb all 14 passes retain tuning, source timeline and original inputs without mutation
+PASS 08-v8-carb repeated load-stage render is deterministic
+PASS 08-v8-carb later airflow/combustion inputs cannot contaminate earlier substitutions
+PASS 08-v8-carb mismatched acoustic settings and driver/trace pairs rejected
+Checks: 12
+LIMIT Measurements and deterministic contracts do not establish subjective sound quality. Device/browser listening remains manual.

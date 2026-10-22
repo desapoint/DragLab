@@ -17,6 +17,7 @@
 <section class="panel"><div class="panel-head"><h2>Real-time telemetry</h2><span id="rateTag" class="chip">Audio not initialized</span></div><div class="panel-body"><div class="readout"><div class="metric"><div class="name">Engine speed</div><div><span class="value" id="rpm">900</span><span class="unit">RPM</span></div></div><div class="metric"><div class="name">Boost</div><div><span class="value" id="boost">0.00</span><span class="unit">bar</span></div></div><div class="metric"><div class="name">Vehicle</div><div><span class="value" id="speed">0</span><span class="unit">km/h</span></div></div><div class="metric"><div class="name">Gear / bursts</div><div><span class="value" id="gear">1 / 6</span><span class="unit" id="burstCount">0 events</span></div></div></div><div class="readout" style="margin-top:8px"><div class="metric"><div class="name">Pedal command</div><div><span class="value" id="pedalMeter">0%</span><span class="unit" id="scriptMeter">manual</span></div></div><div class="metric"><div class="name">Throttle plate</div><div><span class="value" id="plateMeter">0%</span><span class="unit" id="spoolMeter">spool 0%</span></div></div></div></div></section>
 <section class="panel"><div class="panel-head"><h2>Signal analysis</h2><div class="actions"><span class="hint">Actual browser output</span><button id="freezeScope" class="btn small">Freeze view</button></div></div><div class="panel-body"><div class="scope wave"><div class="scope-label">Oscilloscope · post-mix</div><span class="scope-sub">± amplitude</span><canvas id="wave"></canvas></div><div class="scope spec"><div class="scope-label">Frequency spectrum · post-mix</div><span class="scope-sub">log frequency • dBFS</span><canvas id="spectrum"></canvas></div><div class="key-note" id="scopeInfo">On supported browsers the AudioWorklet runs on the audio thread; compatible browsers use a main-thread fallback. Scopes show the final browser mix.</div></div></section>
 <section class="panel"><div class="panel-head"><h2>Unity reference replay</h2><select id="referenceMode" class="field-value" style="width:auto"><option value="free">Free simulation</option><option id="modeUnity" value="unity" disabled>Unity simulation</option><option id="modeInputs" value="inputs" disabled>Unity inputs · throttle / shifts</option></select></div><div class="panel-body"><div class="grid-two"><label class="hint">Import Unity *.audio-trace.json<input id="referenceTrace" type="file" accept=".json,application/json" style="display:block;margin-top:8px;max-width:100%"></label><label class="hint">Load matching *.unity.wav<input id="referenceWav" type="file" accept=".wav,audio/wav" style="display:block;margin-top:8px;max-width:100%"></label></div><div class="select-head"><label for="soundSource">Sound tuning</label><select id="soundSource"><option value="browser">Original Free preset / current edits</option><option value="captured">Captured Unity hardware</option></select></div><label class="hint">Import Unity *.race.json (throttle / shifts)<input id="referenceInputs" type="file" accept=".json,application/json" style="display:block;margin:8px 0;max-width:100%"></label><p id="referenceInfo" class="hint"></p><button id="referenceRestart" class="btn primary">Restart recorded sequence</button><p id="referenceProgress" class="hint">Replay has not started.</p><div class="sep"></div><div id="unityWavLabel" class="hint">Unity reference WAV (authoritative DSP output)</div><audio id="unityWav" controls style="width:100%;margin-top:8px"></audio><p class="small-print">Unity simulation uses recorded RPM, boost, cuts, wheel contacts and events. Unity inputs uses only recorded throttle and shift commands; choose the browser driving mode below. Browser generators remain approximate. The WAV player uses the unchanged Unity render; it stops generated playback to avoid overlap.</p></div></section>
+<section class="panel"><div class="panel-head"><h2>Fixed-tuning signal diagnostics</h2><button class="btn primary" id="diagnosticBuild">Build comparison</button></div><div class="panel-body"><p class="hint">Cumulative substitutions on one independently cached browser drive. Same sound tuning and seed throughout. Start dry with engine only; add Unity signals one at a time, then restore other layers. The final full-replay endpoint also includes tires. No game changes.</p><div class="select-head"><label for="diagnosticDrive">Browser source driving</label><select id="diagnosticDrive"><option value="Race">Race drive</option><option value="Idle">Neutral / dyno</option></select></div><div class="select-head"><select id="diagnosticPass" aria-label="Diagnostic pass"></select></div><p id="diagnosticNote" class="hint">Load a matching Unity trace and driver recording, then build the comparison.</p><audio id="diagnosticAudio" controls preload="none" style="width:100%"></audio><div class="actions" style="margin-top:10px"><button class="btn" id="diagnosticPrevious">Play previous → selected A/B</button><a class="btn" id="diagnosticDownload" download>Download selected WAV</a></div><p id="diagnosticStatus" class="hint">No diagnostic comparison loaded.</p><p class="small-print">A/B has one second silence between the previous and selected pass. All levels are natural, with no loudness normalization. Changing presets later does not change an already rendered comparison. The scopes above follow the live generator; these WAVs use their own player.</p></div></section>
 <section class="panel"><div class="panel-head"><h2>Race audition</h2><div><select id="raceMode" style="background:#112238;color:#d9eafe;border:1px solid #37516a;border-radius:7px;padding:5px"><option value="Idle">Neutral / dyno</option><option value="Race">Race drive</option></select></div></div><div class="panel-body"><div class="grid-two"><div class="racer"><h3>Controls</h3><div class="pedal"><label for="throttle">Throttle</label><input id="throttle" type="range" min="0" max="100" step="1" value="0"><span id="throttleLabel">0%</span></div><div class="row-buttons"><button class="btn" id="shift">Shift up <span class="quiet">E</span></button><button class="btn" id="shiftDown">Shift down <span class="quiet">Q</span></button><button class="btn" id="launch">Two-step <span class="quiet">L</span></button><button class="btn" id="brake">Brake <span class="quiet">B</span></button><button class="btn" id="releaseThrottle">Release pedal</button></div><p class="key-note"><span class="keycap">W</span> pedal &nbsp;<span class="keycap">E</span> upshift &nbsp;<span class="keycap">Q</span> downshift &nbsp;<span class="keycap">L</span> launch &nbsp;<span class="keycap">B</span> brake. Hold W for momentary input; the slider stays at its selected value. Release pedal sets it to zero. Manual input cancels the scripted race.</p></div><div class="racer"><h3>Event injection</h3><div class="row-buttons"><button class="btn warn" id="pop">Fire backfire</button><button class="btn" id="bov">Release BOV</button><button class="btn" id="restart">Reset race</button></div><div class="sep"></div><div class="hint">Processing diagnostics</div><div style="display:flex;gap:9px;margin-top:8px;flex-wrap:wrap"><span id="meterCut" class="chip">Cut: 0</span><span id="meterSlip" class="chip">Slip: 0%</span><span id="meterEngine" class="chip">Output: —</span></div><p class="key-note">Test-event triggers are intentionally independent of the chemistry model. Automatic backfires use seeded probability, not the exact Unity event sequence.</p></div></div><div class="racer" style="margin-top:11px" id="tireTestPanel">
 <div class="scope-head"><h3 style="margin:0">Direct wheel-spin / tire-squeal test</h3><label class="hint" style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="forceTireSlip"> Force tire slip</label></div>
 <div class="grid-two">
@@ -171,9 +172,9 @@ if(cutoff&&this.cutTime<=0&&this.limiterRecoveryTime<=0){
 this.lastThrottle=throttle;
 if(throttle<.1&&this.run&&this.rpm>p.idleRpm+1200&&this.rng.u()<p.overrunPopRate*dt)this.pop('overrun');
 this.cut=this.cutTime>0;this.rpm=clamp(this.rpm,p.idleRpm-120,p.redlineRpm+360);this.meter={rpm:this.rpm,boost:this.boost,speed:this.speed*3.6,gear:this.gear,gearCap:clamp(Math.round(p.forwardGears||6),1,8),events:this.afterCount,throttlePlate:this.throttlePlate,spool:this.spool,autoScenario:this.autoScenario,slip:this.tireTestEnabled?this.tireTestSlip:this.tireSlip,slipSource:this.tireTestEnabled?'forced':'physics',limiter:this.limiterCount,cutActive:this.cut,shiftActive:this.shiftTimer>0,shiftPressure:this.shiftPressureTarget,throttle:this.throttle,twoStep:this.twoStep};}
-renderStereo(){let p=this.p,s=this.stages,sr=this.sr;if(!this.unityFrame&&++this.tickCountdown>=this.tickEvery){this.tickCountdown=0;this.stepPhysics(this.tickEvery/sr);}let a=this.rpmAlpha,slow=this.loadAlpha,gainSlow=this.gainAlpha;this.voiceRpm+=(this.rpm-this.voiceRpm)*a;this.voiceThrottle+=(this.throttlePlate-this.voiceThrottle)*gainSlow;
-this.voiceShiftPressure+=(this.shiftPressureTarget-this.voiceShiftPressure)*(1-Math.exp(-1/(sr*.009)));this.voiceLoad+=(Math.max(this.load,this.throttle*(p.cylinders>=8||p.fueling==='Carburetor'?.8:.65))-this.voiceLoad)*slow;this.twoStepMix+=((this.twoStep?1:0)-this.twoStepMix)*gainSlow;let idleMix=clamp(1-(this.voiceRpm-p.idleRpm)/1200,0,1)*(1-this.twoStepMix),idlePresence=1+(Math.pow(10,p.idleBoostDb/20)-1)*(this.twoStep?0:idleMix*(1-this.voiceThrottle)),targetGain=p.engineGain*(.30+this.voiceThrottle*.18+this.voiceLoad*.30)*idlePresence*(this.cut?.12:(this.unityFrame?.combustionFraction??1));this.gain+=(targetGain-this.gain)*gainSlow;
-const f={load:this.load,spool:this.spool,airflow:this.unityFrame?clamp(this.unityFrame.airflowKgS/Math.max(.001,this.trace.hardware.profile.turboFlowCapacityKgS),0,1):clamp(this.throttlePlate*(.08+.92*this.load),0,1),cut:this.cut,combustionFraction:this.unityFrame?.combustionFraction??this.voiceShiftPressure,cylinderContribution:this.unityFrame?.cylinderContribution}, c=this.core.sample(this.voiceRpm,this.voiceThrottle,f,s);this.firingPhase=(this.firingPhase+this.voiceRpm*p.cylinders/(120*sr))%1;this.crankPhase=(this.crankPhase+this.voiceRpm/(120*sr))%1;let phase=this.firingPhase*TAU;
+renderStereo(){let p=this.p,s=this.stages,sr=this.sr;if(!this.unityFrame&&++this.tickCountdown>=this.tickEvery){this.tickCountdown=0;this.stepPhysics(this.tickEvery/sr);}if(this.inspectAudioInputs)this.inspectAudioInputs();let a=this.rpmAlpha,slow=this.loadAlpha,gainSlow=this.gainAlpha;this.voiceRpm+=(this.rpm-this.voiceRpm)*a;this.voiceThrottle+=(this.throttlePlate-this.voiceThrottle)*gainSlow;
+this.voiceShiftPressure+=(this.shiftPressureTarget-this.voiceShiftPressure)*(1-Math.exp(-1/(sr*.009)));this.voiceLoad+=(Math.max(this.load,this.throttle*(p.cylinders>=8||p.fueling==='Carburetor'?.8:.65))-this.voiceLoad)*slow;this.twoStepMix+=((this.twoStep?1:0)-this.twoStepMix)*gainSlow;let idleMix=clamp(1-(this.voiceRpm-p.idleRpm)/1200,0,1)*(1-this.twoStepMix),idlePresence=1+(Math.pow(10,p.idleBoostDb/20)-1)*(this.twoStep?0:idleMix*(1-this.voiceThrottle)),targetGain=p.engineGain*(.30+this.voiceThrottle*.18+this.voiceLoad*.30)*idlePresence*(this.cut?.12:(this.diagnosticGainFraction??this.unityFrame?.combustionFraction??1));this.gain+=(targetGain-this.gain)*gainSlow;
+const f={load:this.load,spool:this.spool,airflow:this.unityFrame?clamp(this.unityFrame.airflowKgS/Math.max(.001,this.trace.hardware.profile.turboFlowCapacityKgS),0,1):clamp(this.throttlePlate*(.08+.92*this.load),0,1),cut:this.cut,combustionFraction:this.unityFrame?.combustionFraction??this.voiceShiftPressure,cylinderContribution:this.unityFrame?.cylinderContribution};if(this.diagnosticCoreInputs)Object.assign(f,this.diagnosticCoreInputs);const c=this.core.sample(this.voiceRpm,this.voiceThrottle,f,s);this.firingPhase=(this.firingPhase+this.voiceRpm*p.cylinders/(120*sr))%1;this.crankPhase=(this.crankPhase+this.voiceRpm/(120*sr))%1;let phase=this.firingPhase*TAU;
 let L=c[0]*this.gain*(1+p.exhaustStage*.16),R=c[1]*this.gain*(1+p.exhaustStage*.16),ctl=0,other=0;let carb=p.fueling==='Carburetor',diesel=p.fueling==='Diesel';if(s.controls){ctl+=this.twoStepMix*this.voiceThrottle*(Math.sin(phase)*.12+Math.sin(2*phase)*.045)*(p.engineGain/.8);if(carb)ctl+=Math.sin(phase)*(.06*p.mixtureVariation)*Math.pow(.5+.5*Math.sin(TAU*this.crankPhase),2);}if(s.fittedExhaust){L=this.filters[0].sample(L+ctl);R=this.filters[1].sample(R+ctl);}else{L+=ctl;R+=ctl;}
 if(s.mechanical)other+=this.core.mechanical*this.gain;
 if(s.clatter){this.clatterPhase=(this.clatterPhase+Math.min(1900+this.voiceRpm*.04,sr*.2)/sr)%1;let clat=Math.sin(TAU*this.clatterPhase)*Math.pow(Math.max(0,Math.cos(TAU*this.crankPhase*2)),diesel?12:6);other+=(diesel?clat*.004:this.clatterLP.sample(clat)*.0005)*p.mechanicalClatter;}
@@ -270,7 +271,7 @@ function postSettings(hard=false){if(worklet?.port){worklet.port.postMessage({ty
 function postInput(o){if(worklet?.port)worklet.port.postMessage({type:'input',input:o});else if(fallbackEngine)fallbackEngine.setInput(o);}
 function logEvent(message){const row=document.createElement('div');row.textContent=new Date().toLocaleTimeString()+'  ·  '+message;$('events').prepend(row);while($('events').children.length>18)$('events').lastChild.remove();}
 function updateMeter(message){let m=message.meter;if(m.reference){$('referenceProgress').textContent=(m.referenceDone?'Finished · ':'')+m.referenceSeconds.toFixed(2)+' / '+m.referenceDuration.toFixed(2)+' s · '+m.referenceStage;}$('rpm').textContent=Math.round(m.rpm).toLocaleString();$('boost').textContent=m.boost.toFixed(2);$('speed').textContent=Math.round(m.speed);$('gear').textContent=m.gear+' / '+(m.gearCap||6);$('burstCount').textContent=message.afterCount+' events';$('meterCut').textContent=(m.cutActive?'Limiter cut · ':m.shiftActive?'Shift · '+Math.round((m.shiftPressure??1)*100)+'% pressure · ':'Firing · ')+m.limiter+' limiter hits';$('meterSlip').textContent=(m.slipSource==='forced'?'Forced slip: ':'Slip: ')+Math.round(m.slip*100)+'%';$('meterEngine').textContent=m.twoStep?'Two-step active':'Engine active';$('pedalMeter').textContent=Math.round(m.throttle*100)+'%';$('plateMeter').textContent=Math.round((m.throttlePlate??m.throttle)*100)+'%';$('spoolMeter').textContent='spool '+Math.round((m.spool??0)*100)+'%';$('scriptMeter').textContent=m.driverReplay?'Unity inputs':m.reference?'Unity simulation':m.autoScenario?'script':'manual';if(message.eventCounter!==eventSeen){eventSeen=message.eventCounter;logEvent(message.lastEvent||'event');}}
-async function startAudio(){$('unityWav').pause();if(!window.AudioContext&&!window.webkitAudioContext)throw Error('Web Audio is unavailable in this browser.');if(!audioContext){audioContext=new(window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});let active=false;
+async function startAudio(){$('preview').pause();$('diagnosticAudio').pause();$('unityWav').pause();if(!window.AudioContext&&!window.webkitAudioContext)throw Error('Web Audio is unavailable in this browser.');if(!audioContext){audioContext=new(window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});let active=false;
 if(audioContext.audioWorklet&&window.AudioWorkletNode){
 try{const script=`const createDragLabDSP=${createDragLabDSP.toString()};const createUnityReferenceReplay=${createUnityReferenceReplay.toString()};const LIB=createDragLabDSP();const REF=createUnityReferenceReplay(LIB);class DragLabProcessor extends AudioWorkletProcessor{constructor(o){super();this.engine=REF.createEngine(sampleRate,o.processorOptions.settings,o.processorOptions.trace,o.processorOptions.mode||(o.processorOptions.trace?'unity':'free'),o.processorOptions.options);this.mode=o.processorOptions.mode||(o.processorOptions.trace?'unity':'free');this.count=0;this.port.onmessage=(ev)=>{const d=ev.data;if(d.type==='settings'){if(d.hard||this.mode!==(d.mode||(d.trace?'unity':'free'))){const wasFree=this.mode==='free';const state={rpm:this.engine.rpm,gear:this.engine.gear,speed:this.engine.speed,targetThrottle:this.engine.targetThrottle,run:this.engine.run};this.engine=REF.createEngine(sampleRate,d.settings,d.trace,d.mode||(d.trace?'unity':'free'),d.options);this.mode=d.mode||(d.trace?'unity':'free');if(!d.trace&&wasFree){Object.assign(this.engine,state);this.engine.manualThrottle=state.targetThrottle;this.engine.gear=Math.min(this.engine.gear,Math.round(this.engine.p.forwardGears||6));}}else this.engine.set(d.settings);}else if(d.type==='input')this.engine.setInput(d.input);};}process(inputs,outputs){const output=outputs[0];if(!output||!output[0])return true;const left=output[0],right=output[1]||output[0];this.engine.render(left,right);if(++this.count%42===0)this.port.postMessage({type:'meter',meter:this.engine.meter,lastEvent:this.engine.lastEvent,eventCounter:this.engine.eventCounter,afterCount:this.engine.afterCount,bovCount:this.engine.bovCount});return true;}}registerProcessor('draglab-dsp',DragLabProcessor);`;
 const url=URL.createObjectURL(new Blob([script],{type:'text/javascript'}));try{await audioContext.audioWorklet.addModule(url);}finally{URL.revokeObjectURL(url);}worklet=new AudioWorkletNode(audioContext,'draglab-dsp',{outputChannelCount:[2],processorOptions:{settings:params,trace:replayPayload(),mode:replayMode(),options:replayOptions()}});worklet.port.onmessage=ev=>{if(ev.data.type==='meter')updateMeter(ev.data);};active=true;
@@ -471,7 +472,7 @@ function referenceControls(){
  $('referenceMode').disabled=!unityTrace&&!unityInputs;$('referenceRestart').disabled=!active;
  $('modeUnity').disabled=!unityTrace;$('modeInputs').disabled=!unityInputs;$('soundSource').disabled=!unityTrace;
  $('referenceInfo').textContent=full?`${unityTrace.title} · ${(unityTrace.totalSamples/unityTrace.sampleRate).toFixed(2)} s · ${unityTrace.reactions.length} reaction packets · ${unityTrace.releases.length} BOV releases · source ${unityTrace.sourceCommit}. Recorded simulation/events; selected sound tuning. Browser waveform parity with Unity is not claimed.`:replayMode()==='inputs'?`${unityInputs.title} · Unity throttle and shift commands only. Browser calculates RPM, boost, cuts, tires and events. Choose Neutral / dyno or Race drive; brake, clutch and launch inputs are excluded. This is a diagnostic browser model, not a Unity physics replay.`:'Free browser simulation. Manual controls and the browser sequence use the selected sound tuning.';
- $('referenceProgress').textContent='Replay has not started.';
+ $('referenceProgress').textContent='Replay has not started.';if(typeof diagnosticControls==='function')diagnosticControls();
 }
 function refreshReference(){refreshControls();partEditor();refreshStages();referenceControls();postSettings(true);}
 function loadUnityTrace(trace){
@@ -514,10 +515,143 @@ function bindUnityReference(){
  $('renderSingle').onclick=()=>referenceActive()?renderUnityReference(false):renderWav(false);
  $('renderAB').onclick=()=>referenceActive()?renderUnityReference(true):renderWav(true);
  $('restart').onclick=()=>{if(referenceActive())postInput({reset:true});else{holdThrottle=false;setThrottle(0);postInput({reset:true});}};
- $('unityWav').onplay=()=>stopAudio(); // Never overlay reference PCM and generated audio accidentally.
+ $('unityWav').onplay=()=>{stopAudio();$('preview').pause();$('diagnosticAudio').pause();}; // Never overlay reference PCM and generated audio accidentally.
  referenceControls();
 }
 /* END UNITY REFERENCE UI */
-controlsHtml();makeStages();bindControls();bindUnityReference();drawScopes();
+/* BEGIN SIGNAL DIAGNOSTICS DSP */
+// Workbench-only controlled substitutions. The source browser driver is captured
+// once; no candidate sound can feed back into its future RPM/load/boost/events.
+function createAudioSignalDiagnostics(DSP,REF){
+'use strict';
+const copy=x=>JSON.parse(JSON.stringify(x)),rate=48000;
+const passes=[
+ ['browser','00 · Browser inputs baseline','Engine only, dry. Recorded throttle/shifts; cached browser dynamics.'],
+ ['rpm','01 · + Unity RPM','Only pulse-speed input changes.'],
+ ['pedal','02 · + Unity pedal / plate','Uses recorded pedal as plate, matching the existing adapter; no separately captured plate exists.'],
+ ['load','03 · + Unity load','Adds transmitted-torque-derived load.'],
+ ['boost','04 · + Unity boost / spool','Adds actual boost and turbo spool.'],
+ ['airflow','05 · + Unity airflow','Replaces the browser airflow estimate with captured kg/s, normalized as in full replay.'],
+ ['cylinders','06 · + Unity cylinder contributions','Adds individual cylinder contribution values.'],
+ ['fraction','07 · + Unity combustion fraction','Feeds aggregate fraction to the pulse path and bus gain as in current replay; individual cylinder values can take precedence in the pulse core.'],
+ ['cuts','08 · + Unity cuts / two-step / shift','Adds actual cut state and shift-pressure target.'],
+ ['induction','09 · + Intake / induction layers','Restores intake, turbo, blower and clatter/mechanical layers from the frozen tuning.'],
+ ['history','10 · Current replay intake history','Sets previous throttle to zero, reproducing the full adapter’s bypassed history.'],
+ ['events','11 · + Unity backfires / BOV','Uses actual chemical funding and release history; no browser probability events.'],
+ ['outdoor','12 · + Outdoor propagation','Restores frozen distance, air, reflections and stereo processing.'],
+ ['endpoint','13 · Current Unity simulation endpoint','Existing full replay with the same sound tuning, including actual tires. Endpoint reference, not a one-signal step.']
+].map(([id,title,description],level)=>({id,title,description,level}));
+const rawFields=['rpm','throttle','targetThrottle','throttlePlate','lastThrottle','load','boost','spool','speed','gear','cut','twoStep','shiftTimer','shiftPressureTarget','tireSlip'];
+const induction=['intake','turboWhistle','turboFlow','turboTurbine','blower','mechanical','clatter'];
+const outdoor=['distance','air','reflections','stereo'];
+const after=['afterPressure','afterTexture','afterPower','afterTravel','afterShell'];
+function settingsFor(base,level){const p=copy(base);p.stages={...DSP.DEFAULT_STAGES,...p.stages};
+ if(level<13){p.stages.tires=false;if(level<9)for(const k of induction)p.stages[k]=false;if(level<11)for(const k of [...after,'bov'])p.stages[k]=false;if(level<12)for(const k of outdoor)p.stages[k]=false;}
+ return p;
+}
+function validatePair(trace,recording){REF.validate(trace);REF.validateInputs(recording);if(trace.id!==recording.id||trace.totalSamples!==(recording.ticks.length+241)*400)throw Error('Trace and driver recording must have the same ID and complete timeline.');}
+class Capture extends REF.InputEngine{
+ constructor(base,recording,mode){super(rate,settingsFor(base,0),recording);this.setInput({mode});this.frames=[];this.lastInput=-2;}
+ inspectAudioInputs(){if(this.frames.length&&this.tickCountdown!==0&&this.inputTick===this.lastInput)return;
+  this.lastInput=this.inputTick;const f={sample:this.inputCursor,random:this.rng.x};for(const key of rawFields)f[key]=this[key];this.frames.push(f);
+ }
+}
+function beginCapture(base,trace,recording,mode='Race'){validatePair(trace,recording);return new Capture(base,recording,mode);}
+function finishCapture(engine,base,trace,mode='Race'){
+ if(engine.inputCursor!==trace.totalSamples)throw Error('Incomplete browser control capture.');
+ return{schema:'draglab-audio-signal-diagnostic-v1',sampleRate:rate,id:trace.id,totalSamples:trace.totalSamples,mode,settings:copy(base),frames:engine.frames};
+}
+class DiagnosticEngine extends DSP.EngineDSP{
+ constructor(base,trace,timeline,level){
+  if(!Number.isInteger(level)||level<0||level>=13)throw Error('Invalid diagnostic substitution level.');
+  if(timeline.schema!=='draglab-audio-signal-diagnostic-v1'||timeline.id!==trace.id||timeline.totalSamples!==trace.totalSamples||timeline.sampleRate!==rate||JSON.stringify(base)!==JSON.stringify(timeline.settings))throw Error('Diagnostic cache/settings mismatch.');
+  super(rate,settingsFor(base,level));this.trace=trace;this.timeline=timeline;this.level=level;this.sampleCursor=0;this.browserCursor=-1;this.unityCursor=-1;this.referenceOptions={preserveSound:true};this.frontSeeds=new Map();this.zoneVoices=new Map();this.reactionCursor=this.releaseCursor=0;this.referenceEvents=[];this.diagnosticCoreInputs={};
+ }
+ stepPhysics(){} // Read-only cached controls: substitutions cannot alter driving.
+ react(e){REF.ReferenceEngine.prototype.react.call(this,e);}
+ publish(sample){
+  const frames=this.timeline.frames;let changed=false;
+  while(this.browserCursor+1<frames.length&&frames[this.browserCursor+1].sample<=sample){this.browserCursor++;changed=true;}
+  const ui=Math.min(this.trace.frames.length-1,Math.floor(sample/400));if(!changed&&ui===this.unityCursor)return;
+  const b=frames[this.browserCursor],f=this.trace.frames[ui],e=f.engine;this.unityCursor=ui;
+  // Lock stochastic acoustic phase at source-control boundaries. This reproduces
+  // the baseline exactly despite the browser sharing physics/audio RNG draws.
+  if(changed)this.rng.x=b.random;for(const key of rawFields)this[key]=b[key];
+  if(this.level>=1)this.rpm=e.rpm;
+  if(this.level>=2)this.throttle=this.targetThrottle=this.throttlePlate=e.throttle;
+  if(this.level>=3)this.load=e.load;
+  if(this.level>=4){this.boost=e.boost;this.spool=e.turboSpool;}
+  if(this.level>=5)this.diagnosticCoreInputs.airflow=Math.max(0,Math.min(1,e.airflowKgS/Math.max(.001,this.trace.hardware.profile.turboFlowCapacityKgS)));
+  if(this.level>=6)this.diagnosticCoreInputs.cylinderContribution=e.cylinderContribution;
+  if(this.level>=7){this.diagnosticCoreInputs.combustionFraction=e.combustionFraction;this.diagnosticGainFraction=e.combustionFraction;}
+  if(this.level>=8){this.cut=e.cut;this.twoStep=e.twoStep;this.shiftPressureTarget=e.combustionFraction;this.shiftTimer=f.state.shiftRemaining;}
+  if(this.level>=10)this.lastThrottle=0;
+ }
+ renderStereo(){
+  const sample=this.sampleCursor;if(sample>=this.trace.totalSamples){this.meter.referenceDone=true;return[0,0];}this.publish(sample);
+  if(this.level>=11){const clock=sample/rate;
+   while(this.reactionCursor<this.trace.reactions.length){const e=this.trace.reactions[this.reactionCursor];if(e.availableSample>sample||e.time>clock)break;this.react(e);this.reactionCursor++;this.referenceEvents.push({kind:'reaction',index:e.index,sample,seed:e.seed});}
+   while(this.releaseCursor<this.trace.releases.length){const e=this.trace.releases[this.releaseCursor];if(e.availableSample>sample||e.time>clock)break;this.bovs.push({age:Math.max(0,clock-e.time),strength:e.strength,phase:0,low:0});this.releaseCursor++;this.bovCount++;this.referenceEvents.push({kind:'release',index:e.index,sample});}
+  }
+  const audio=super.renderStereo();this.sampleCursor++;return audio;
+ }
+}
+function createEngine(base,trace,timeline,level){return level===13?new REF.ReferenceEngine(rate,copy(base),trace,{preserveSound:true}):new DiagnosticEngine(base,trace,timeline,level);}
+return{passes,rawFields,settingsFor,validatePair,beginCapture,finishCapture,DiagnosticEngine,createEngine};
+}
+/* END SIGNAL DIAGNOSTICS DSP */
+/* BEGIN SIGNAL DIAGNOSTICS UI */
+// Offline audition inside the existing workbench. Never changes its live preset.
+const SignalDiagnostics=createAudioSignalDiagnostics(DSP,UnityReference);
+let diagnosticAuditions=[],diagnosticObjectUrls=[],diagnosticBusy=false;
+function diagnosticControls(){
+ $('diagnosticDrive').disabled=diagnosticBusy;$('diagnosticBuild').disabled=diagnosticBusy||!unityTrace||!unityInputs;
+ $('diagnosticPass').disabled=diagnosticBusy||!diagnosticAuditions.length;
+ $('diagnosticPrevious').disabled=diagnosticBusy||+$('diagnosticPass').value<=0;
+ $('diagnosticDownload').disabled=diagnosticBusy||!diagnosticAuditions.length;
+}
+function selectDiagnosticPass(){const i=+$('diagnosticPass').value,item=diagnosticAuditions[i];if(!item)return;
+ $('diagnosticAudio').pause();$('diagnosticAudio').src=item.url;$('diagnosticNote').textContent=SignalDiagnostics.passes[i].description;
+ $('diagnosticDownload').href=item.url;$('diagnosticDownload').download=item.filename;diagnosticControls();
+}
+function loadDiagnosticAuditions(items,note){
+ $('diagnosticAudio').pause();for(const u of diagnosticObjectUrls)URL.revokeObjectURL(u);diagnosticObjectUrls=[];diagnosticAuditions=items;
+ const select=$('diagnosticPass');select.innerHTML='';for(let i=0;i<items.length;i++){const o=document.createElement('option');o.value=i;o.textContent=SignalDiagnostics.passes[i].title;select.append(o);}select.value='0';
+ $('diagnosticStatus').textContent=note;selectDiagnosticPass();
+}
+async function buildSignalDiagnostics(){
+ if(diagnosticBusy||!unityTrace||!unityInputs)return;
+ const settings=JSON.parse(JSON.stringify(params)),trace=unityTrace,inputs=unityInputs,mode=$('diagnosticDrive').value,rate=48000;
+ try{SignalDiagnostics.validatePair(trace,inputs);}catch(e){$('diagnosticStatus').textContent=e.message;return;}
+ diagnosticBusy=true;diagnosticControls();stopAudio();$('unityWav').pause();$('diagnosticAudio').pause();
+ const urls=[];try{
+  const source=SignalDiagnostics.beginCapture(settings,trace,inputs,mode),scratchL=new Float32Array(4096),scratchR=new Float32Array(4096),count=trace.totalSamples;
+  for(let at=0;at<count;at+=4096){const n=Math.min(4096,count-at);source.render(scratchL.subarray(0,n),scratchR.subarray(0,n));if((at/4096|0)%16===0){$('diagnosticStatus').textContent='Capturing independent browser driving… '+Math.round((at+n)/count*100)+'%';await new Promise(r=>setTimeout(r,0));}}
+  const timeline=SignalDiagnostics.finishCapture(source,settings,trace,mode),items=[];
+  for(const pass of SignalDiagnostics.passes){
+   const engine=SignalDiagnostics.createEngine(settings,trace,timeline,pass.level),l=new Float32Array(count),r=new Float32Array(count);
+   for(let at=0;at<count;at+=4096){const end=Math.min(count,at+4096);engine.render(l.subarray(at,end),r.subarray(at,end));if((at/4096|0)%16===0){$('diagnosticStatus').textContent=pass.title+' · '+Math.round(end/count*100)+'%';await new Promise(resolve=>setTimeout(resolve,0));}}
+   const blob=wav16(l,r,rate),url=URL.createObjectURL(blob);urls.push(url);items.push({url,blob,filename:trace.id+'.diagnostic-'+pass.id+'.wav'});
+  }
+  loadDiagnosticAuditions(items,`${trace.title} · fixed ${settings.label} / seed ${settings.seed} · browser ${mode} · ${count/rate}s each. Natural levels. Settings captured at render start; no game changes.`);diagnosticObjectUrls=urls;
+ }catch(e){for(const u of urls)URL.revokeObjectURL(u);$('diagnosticStatus').textContent='Diagnostic failed: '+e.message;}
+ finally{diagnosticBusy=false;diagnosticControls();}
+}
+async function playPreviousDiagnostic(){
+ const i=+$('diagnosticPass').value;if(i<1||diagnosticBusy)return;const a=diagnosticAuditions[i-1],b=diagnosticAuditions[i];
+ if(b.previousUrl){$('diagnosticAudio').src=b.previousUrl;await $('diagnosticAudio').play();return;}
+ // Built-in WAV writer uses 48 kHz stereo PCM16, so A/B needs no codec or
+ // browser decoding/re-render of the signals. Keep their exact stored samples.
+ const files=await Promise.all([a.blob.arrayBuffer(),b.blob.arrayBuffer()]),n=(files[0].byteLength-44)/4,m=(files[1].byteLength-44)/4,l=new Float32Array(n+48000+m),r=new Float32Array(l.length);
+ for(const [buffer,offset]of [[files[0],0],[files[1],n+48000]]){const v=new DataView(buffer);for(let k=44,j=offset;k<buffer.byteLength;k+=4,j++){l[j]=v.getInt16(k,true)/32767;r[j]=v.getInt16(k+2,true)/32767;}}
+ const url=URL.createObjectURL(wav16(l,r,48000));diagnosticObjectUrls.push(url);$('diagnosticAudio').src=url;await $('diagnosticAudio').play();
+}
+function bindSignalDiagnostics(){
+ $('diagnosticBuild').onclick=buildSignalDiagnostics;$('diagnosticPass').onchange=selectDiagnosticPass;
+ $('diagnosticPrevious').onclick=()=>playPreviousDiagnostic().catch(e=>{$('diagnosticStatus').textContent=e.message;});
+ $('diagnosticAudio').onplay=()=>{stopAudio();$('unityWav').pause();$('preview').pause();};$('preview').onplay=()=>{stopAudio();$('unityWav').pause();$('diagnosticAudio').pause();};diagnosticControls();
+}
+/* END SIGNAL DIAGNOSTICS UI */
+controlsHtml();makeStages();bindControls();bindUnityReference();bindSignalDiagnostics();drawScopes();
 </script>
 </body></html>

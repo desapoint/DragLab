@@ -1,5 +1,10 @@
 # Unity sound reference and browser replay
 
+The next diagnostic checkpoint adds a [fixed-tuning signal comparison](AUDIO_SIGNAL_DIAGNOSTICS.md)
+inside the workbench. It isolates individual Unity inputs before restoring sound
+layers, without changing the game. Its generated review starts at
+`reports/audio-signal-diagnostics-20261021/index.html`.
+
 Requested checkpoint: implement the WAV/trace/reference-replay workflow from the
 user's pasted “Reproduction HTML audio” exchange. The supplied
 `DragLab_Audio_Workbench_DrivetrainFix.zip` is imported unchanged in `40d475f`

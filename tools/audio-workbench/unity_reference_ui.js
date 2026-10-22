@@ -16,7 +16,7 @@ function referenceControls(){
  $('referenceMode').disabled=!unityTrace&&!unityInputs;$('referenceRestart').disabled=!active;
  $('modeUnity').disabled=!unityTrace;$('modeInputs').disabled=!unityInputs;$('soundSource').disabled=!unityTrace;
  $('referenceInfo').textContent=full?`${unityTrace.title} · ${(unityTrace.totalSamples/unityTrace.sampleRate).toFixed(2)} s · ${unityTrace.reactions.length} reaction packets · ${unityTrace.releases.length} BOV releases · source ${unityTrace.sourceCommit}. Recorded simulation/events; selected sound tuning. Browser waveform parity with Unity is not claimed.`:replayMode()==='inputs'?`${unityInputs.title} · Unity throttle and shift commands only. Browser calculates RPM, boost, cuts, tires and events. Choose Neutral / dyno or Race drive; brake, clutch and launch inputs are excluded. This is a diagnostic browser model, not a Unity physics replay.`:'Free browser simulation. Manual controls and the browser sequence use the selected sound tuning.';
- $('referenceProgress').textContent='Replay has not started.';
+ $('referenceProgress').textContent='Replay has not started.';if(typeof diagnosticControls==='function')diagnosticControls();
 }
 function refreshReference(){refreshControls();partEditor();refreshStages();referenceControls();postSettings(true);}
 function loadUnityTrace(trace){
@@ -59,6 +59,6 @@ function bindUnityReference(){
  $('renderSingle').onclick=()=>referenceActive()?renderUnityReference(false):renderWav(false);
  $('renderAB').onclick=()=>referenceActive()?renderUnityReference(true):renderWav(true);
  $('restart').onclick=()=>{if(referenceActive())postInput({reset:true});else{holdThrottle=false;setThrottle(0);postInput({reset:true});}};
- $('unityWav').onplay=()=>stopAudio(); // Never overlay reference PCM and generated audio accidentally.
+ $('unityWav').onplay=()=>{stopAudio();$('preview').pause();$('diagnosticAudio').pause();}; // Never overlay reference PCM and generated audio accidentally.
  referenceControls();
 }
