@@ -17,7 +17,7 @@ namespace DragLab.Runtime
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
             var log=new StringBuilder("3E actual Windows career buttons / shared simulation / settlement.\n");
             Action<bool,string> check=(ok,label)=>{Check(ok,label);log.AppendLine("PASS: "+label);};
-            check(game.career.Length==21,"All 21 authored events load in the player.");game.settings.ApplyPreset(DrivingPreset.Automatic);
+            check(game.career.Length==49&&game.career.Count(e=>e.stableId.StartsWith("side-",StringComparison.Ordinal))==28,"All 49 authored events, including 28 additional races, load in the player.");game.settings.ApplyPreset(DrivingPreset.Automatic);
             game.verificationInput=()=>new DriverInput{throttle=game.Race.player.state.launched?1:0};
             using(var mouse=new WindowsKeyboardProbe())for(int n=0;n<2;n++){
                 var first=game.career.Single(e=>e.stableId=="first-pass");bool claimed=game.Profile.careerWins.Contains(first.stableId);

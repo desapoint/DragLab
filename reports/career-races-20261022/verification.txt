@@ -1,0 +1,703 @@
+PASS 49 unique events including all original 21
+PASS 28 explicitly authored additional races
+PASS Four new races in every F–S tier
+PASS At least twenty different rival model/trim configurations
+PASS side-f-dockside existing reachable prerequisite
+PASS side-f-dockside acyclic unlock chain
+PASS side-f-dockside reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-f-dockside side-event income cannot obsolete this tier's main ladder prize
+PASS side-f-dockside valid captured physical hardware and human driver habits
+PASS side-f-dockside same attempt seed reproduces setup and driver behavior
+PASS side-f-dockside attempts vary driving while retaining the starting car
+PASS side-f-dockside rival respects its published HP ceiling (90.8)
+PASS side-f-dockside at least one real catalogue car can enter
+PASS side-f-dockside prerequisite enforced
+PASS side-f-dockside REP gate enforced
+PASS side-f-dockside physical race completes at attempt 42
+PASS side-f-dockside physical race completes at attempt 43
+PASS side-f-dockside a clean same-hardware reference can win; no forced result
+PASS side-f-dockside actual first finish pays captured terms and first-only REP
+PASS side-f-dockside repeat finish pays only repeat net
+PASS side-f-dockside duplicate finish never repays
+PASS side-f-dockside physical tests do not mutate authored rival
+PASS side-f-hatch-meet existing reachable prerequisite
+PASS side-f-hatch-meet acyclic unlock chain
+PASS side-f-hatch-meet reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-f-hatch-meet side-event income cannot obsolete this tier's main ladder prize
+PASS side-f-hatch-meet valid captured physical hardware and human driver habits
+PASS side-f-hatch-meet same attempt seed reproduces setup and driver behavior
+PASS side-f-hatch-meet attempts vary driving while retaining the starting car
+PASS side-f-hatch-meet rival respects its published HP ceiling (114.0)
+PASS side-f-hatch-meet at least one real catalogue car can enter
+PASS side-f-hatch-meet actual installed hardware enforces the advertised restriction
+PASS side-f-hatch-meet prerequisite enforced
+PASS side-f-hatch-meet REP gate enforced
+PASS side-f-hatch-meet physical race completes at attempt 42
+PASS side-f-hatch-meet physical race completes at attempt 43
+PASS side-f-hatch-meet a clean same-hardware reference can win; no forced result
+PASS side-f-hatch-meet actual first finish pays captured terms and first-only REP
+PASS side-f-hatch-meet repeat finish pays only repeat net
+PASS side-f-hatch-meet duplicate finish never repays
+PASS side-f-hatch-meet physical tests do not mutate authored rival
+PASS side-f-rear-drive-rookie existing reachable prerequisite
+PASS side-f-rear-drive-rookie acyclic unlock chain
+PASS side-f-rear-drive-rookie reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-f-rear-drive-rookie side-event income cannot obsolete this tier's main ladder prize
+PASS side-f-rear-drive-rookie valid captured physical hardware and human driver habits
+PASS side-f-rear-drive-rookie same attempt seed reproduces setup and driver behavior
+PASS side-f-rear-drive-rookie attempts vary driving while retaining the starting car
+PASS side-f-rear-drive-rookie rival respects its published HP ceiling (121.1)
+PASS side-f-rear-drive-rookie at least one real catalogue car can enter
+PASS side-f-rear-drive-rookie actual installed hardware enforces the advertised restriction
+PASS side-f-rear-drive-rookie prerequisite enforced
+PASS side-f-rear-drive-rookie REP gate enforced
+PASS side-f-rear-drive-rookie physical race completes at attempt 42
+PASS side-f-rear-drive-rookie physical race completes at attempt 43
+PASS side-f-rear-drive-rookie a clean same-hardware reference can win; no forced result
+PASS side-f-rear-drive-rookie actual first finish pays captured terms and first-only REP
+PASS side-f-rear-drive-rookie repeat finish pays only repeat net
+PASS side-f-rear-drive-rookie duplicate finish never repays
+PASS side-f-rear-drive-rookie physical tests do not mutate authored rival
+PASS side-f-small-capacity existing reachable prerequisite
+PASS side-f-small-capacity acyclic unlock chain
+PASS side-f-small-capacity reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-f-small-capacity side-event income cannot obsolete this tier's main ladder prize
+PASS side-f-small-capacity valid captured physical hardware and human driver habits
+PASS side-f-small-capacity same attempt seed reproduces setup and driver behavior
+PASS side-f-small-capacity attempts vary driving while retaining the starting car
+PASS side-f-small-capacity rival respects its published HP ceiling (121.0)
+PASS side-f-small-capacity at least one real catalogue car can enter
+PASS side-f-small-capacity actual installed hardware enforces the advertised restriction
+PASS side-f-small-capacity prerequisite enforced
+PASS side-f-small-capacity REP gate enforced
+PASS side-f-small-capacity physical race completes at attempt 42
+PASS side-f-small-capacity physical race completes at attempt 43
+PASS side-f-small-capacity a clean same-hardware reference can win; no forced result
+PASS side-f-small-capacity actual first finish pays captured terms and first-only REP
+PASS side-f-small-capacity repeat finish pays only repeat net
+PASS side-f-small-capacity duplicate finish never repays
+PASS side-f-small-capacity physical tests do not mutate authored rival
+PASS side-e-all-motor existing reachable prerequisite
+PASS side-e-all-motor acyclic unlock chain
+PASS side-e-all-motor acyclic unlock chain
+PASS side-e-all-motor acyclic unlock chain
+PASS side-e-all-motor reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-e-all-motor side-event income cannot obsolete this tier's main ladder prize
+PASS side-e-all-motor valid captured physical hardware and human driver habits
+PASS side-e-all-motor same attempt seed reproduces setup and driver behavior
+PASS side-e-all-motor attempts vary driving while retaining the starting car
+PASS side-e-all-motor rival respects its published HP ceiling (170.2)
+PASS side-e-all-motor at least one real catalogue car can enter
+PASS side-e-all-motor actual installed hardware enforces the advertised restriction
+PASS side-e-all-motor prerequisite enforced
+PASS side-e-all-motor REP gate enforced
+PASS side-e-all-motor physical race completes at attempt 42
+PASS side-e-all-motor physical race completes at attempt 43
+PASS side-e-all-motor a clean same-hardware reference can win; no forced result
+PASS side-e-all-motor actual first finish pays captured terms and first-only REP
+PASS side-e-all-motor repeat finish pays only repeat net
+PASS side-e-all-motor duplicate finish never repays
+PASS side-e-all-motor physical tests do not mutate authored rival
+PASS side-e-short-shift existing reachable prerequisite
+PASS side-e-short-shift acyclic unlock chain
+PASS side-e-short-shift acyclic unlock chain
+PASS side-e-short-shift acyclic unlock chain
+PASS side-e-short-shift reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-e-short-shift side-event income cannot obsolete this tier's main ladder prize
+PASS side-e-short-shift valid captured physical hardware and human driver habits
+PASS side-e-short-shift same attempt seed reproduces setup and driver behavior
+PASS side-e-short-shift attempts vary driving while retaining the starting car
+PASS side-e-short-shift rival respects its published HP ceiling (156.9)
+PASS side-e-short-shift at least one real catalogue car can enter
+PASS side-e-short-shift prerequisite enforced
+PASS side-e-short-shift REP gate enforced
+PASS side-e-short-shift physical race completes at attempt 42
+PASS side-e-short-shift physical race completes at attempt 43
+PASS side-e-short-shift a clean same-hardware reference can win; no forced result
+PASS side-e-short-shift actual first finish pays captured terms and first-only REP
+PASS side-e-short-shift repeat finish pays only repeat net
+PASS side-e-short-shift duplicate finish never repays
+PASS side-e-short-shift physical tests do not mutate authored rival
+PASS side-e-boost-street existing reachable prerequisite
+PASS side-e-boost-street acyclic unlock chain
+PASS side-e-boost-street acyclic unlock chain
+PASS side-e-boost-street acyclic unlock chain
+PASS side-e-boost-street reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-e-boost-street side-event income cannot obsolete this tier's main ladder prize
+PASS side-e-boost-street valid captured physical hardware and human driver habits
+PASS side-e-boost-street same attempt seed reproduces setup and driver behavior
+PASS side-e-boost-street attempts vary driving while retaining the starting car
+PASS side-e-boost-street rival respects its published HP ceiling (204.4)
+PASS side-e-boost-street at least one real catalogue car can enter
+PASS side-e-boost-street actual installed hardware enforces the advertised restriction
+PASS side-e-boost-street prerequisite enforced
+PASS side-e-boost-street REP gate enforced
+PASS side-e-boost-street physical race completes at attempt 42
+PASS side-e-boost-street physical race completes at attempt 43
+PASS side-e-boost-street a clean same-hardware reference can win; no forced result
+PASS side-e-boost-street actual first finish pays captured terms and first-only REP
+PASS side-e-boost-street repeat finish pays only repeat net
+PASS side-e-boost-street duplicate finish never repays
+PASS side-e-boost-street physical tests do not mutate authored rival
+PASS side-e-touring-pull existing reachable prerequisite
+PASS side-e-touring-pull acyclic unlock chain
+PASS side-e-touring-pull acyclic unlock chain
+PASS side-e-touring-pull acyclic unlock chain
+PASS side-e-touring-pull reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-e-touring-pull side-event income cannot obsolete this tier's main ladder prize
+PASS side-e-touring-pull valid captured physical hardware and human driver habits
+PASS side-e-touring-pull same attempt seed reproduces setup and driver behavior
+PASS side-e-touring-pull attempts vary driving while retaining the starting car
+PASS side-e-touring-pull rival respects its published HP ceiling (221.9)
+PASS side-e-touring-pull at least one real catalogue car can enter
+PASS side-e-touring-pull prerequisite enforced
+PASS side-e-touring-pull REP gate enforced
+PASS side-e-touring-pull physical race completes at attempt 42
+PASS side-e-touring-pull physical race completes at attempt 43
+PASS side-e-touring-pull a clean same-hardware reference can win; no forced result
+PASS side-e-touring-pull actual first finish pays captured terms and first-only REP
+PASS side-e-touring-pull repeat finish pays only repeat net
+PASS side-e-touring-pull duplicate finish never repays
+PASS side-e-touring-pull physical tests do not mutate authored rival
+PASS side-d-featherweight existing reachable prerequisite
+PASS side-d-featherweight acyclic unlock chain
+PASS side-d-featherweight acyclic unlock chain
+PASS side-d-featherweight acyclic unlock chain
+PASS side-d-featherweight acyclic unlock chain
+PASS side-d-featherweight acyclic unlock chain
+PASS side-d-featherweight reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-d-featherweight side-event income cannot obsolete this tier's main ladder prize
+PASS side-d-featherweight valid captured physical hardware and human driver habits
+PASS side-d-featherweight same attempt seed reproduces setup and driver behavior
+PASS side-d-featherweight attempts vary driving while retaining the starting car
+PASS side-d-featherweight rival respects its published HP ceiling (163.5)
+PASS side-d-featherweight at least one real catalogue car can enter
+PASS side-d-featherweight actual installed hardware enforces the advertised restriction
+PASS side-d-featherweight prerequisite enforced
+PASS side-d-featherweight REP gate enforced
+PASS side-d-featherweight physical race completes at attempt 42
+PASS side-d-featherweight physical race completes at attempt 43
+PASS side-d-featherweight a clean same-hardware reference can win; no forced result
+PASS side-d-featherweight actual first finish pays captured terms and first-only REP
+PASS side-d-featherweight repeat finish pays only repeat net
+PASS side-d-featherweight duplicate finish never repays
+PASS side-d-featherweight physical tests do not mutate authored rival
+PASS side-d-roadster-night existing reachable prerequisite
+PASS side-d-roadster-night acyclic unlock chain
+PASS side-d-roadster-night acyclic unlock chain
+PASS side-d-roadster-night acyclic unlock chain
+PASS side-d-roadster-night acyclic unlock chain
+PASS side-d-roadster-night acyclic unlock chain
+PASS side-d-roadster-night reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-d-roadster-night side-event income cannot obsolete this tier's main ladder prize
+PASS side-d-roadster-night valid captured physical hardware and human driver habits
+PASS side-d-roadster-night same attempt seed reproduces setup and driver behavior
+PASS side-d-roadster-night attempts vary driving while retaining the starting car
+PASS side-d-roadster-night rival respects its published HP ceiling (250.8)
+PASS side-d-roadster-night at least one real catalogue car can enter
+PASS side-d-roadster-night actual installed hardware enforces the advertised restriction
+PASS side-d-roadster-night prerequisite enforced
+PASS side-d-roadster-night REP gate enforced
+PASS side-d-roadster-night physical race completes at attempt 42
+PASS side-d-roadster-night physical race completes at attempt 43
+PASS side-d-roadster-night a clean same-hardware reference can win; no forced result
+PASS side-d-roadster-night actual first finish pays captured terms and first-only REP
+PASS side-d-roadster-night repeat finish pays only repeat net
+PASS side-d-roadster-night duplicate finish never repays
+PASS side-d-roadster-night physical tests do not mutate authored rival
+PASS side-d-turbo-chase existing reachable prerequisite
+PASS side-d-turbo-chase acyclic unlock chain
+PASS side-d-turbo-chase acyclic unlock chain
+PASS side-d-turbo-chase acyclic unlock chain
+PASS side-d-turbo-chase acyclic unlock chain
+PASS side-d-turbo-chase acyclic unlock chain
+PASS side-d-turbo-chase reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-d-turbo-chase side-event income cannot obsolete this tier's main ladder prize
+PASS side-d-turbo-chase valid captured physical hardware and human driver habits
+PASS side-d-turbo-chase same attempt seed reproduces setup and driver behavior
+PASS side-d-turbo-chase attempts vary driving while retaining the starting car
+PASS side-d-turbo-chase rival respects its published HP ceiling (265.6)
+PASS side-d-turbo-chase at least one real catalogue car can enter
+PASS side-d-turbo-chase actual installed hardware enforces the advertised restriction
+PASS side-d-turbo-chase prerequisite enforced
+PASS side-d-turbo-chase REP gate enforced
+PASS side-d-turbo-chase physical race completes at attempt 42
+PASS side-d-turbo-chase physical race completes at attempt 43
+PASS side-d-turbo-chase a clean same-hardware reference can win; no forced result
+PASS side-d-turbo-chase actual first finish pays captured terms and first-only REP
+PASS side-d-turbo-chase repeat finish pays only repeat net
+PASS side-d-turbo-chase duplicate finish never repays
+PASS side-d-turbo-chase physical tests do not mutate authored rival
+PASS side-d-workhorse existing reachable prerequisite
+PASS side-d-workhorse acyclic unlock chain
+PASS side-d-workhorse acyclic unlock chain
+PASS side-d-workhorse acyclic unlock chain
+PASS side-d-workhorse acyclic unlock chain
+PASS side-d-workhorse acyclic unlock chain
+PASS side-d-workhorse reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-d-workhorse side-event income cannot obsolete this tier's main ladder prize
+PASS side-d-workhorse valid captured physical hardware and human driver habits
+PASS side-d-workhorse same attempt seed reproduces setup and driver behavior
+PASS side-d-workhorse attempts vary driving while retaining the starting car
+PASS side-d-workhorse rival respects its published HP ceiling (193.6)
+PASS side-d-workhorse at least one real catalogue car can enter
+PASS side-d-workhorse actual installed hardware enforces the advertised restriction
+PASS side-d-workhorse prerequisite enforced
+PASS side-d-workhorse REP gate enforced
+PASS side-d-workhorse physical race completes at attempt 42
+PASS side-d-workhorse physical race completes at attempt 43
+PASS side-d-workhorse a clean same-hardware reference can win; no forced result
+PASS side-d-workhorse actual first finish pays captured terms and first-only REP
+PASS side-d-workhorse repeat finish pays only repeat net
+PASS side-d-workhorse duplicate finish never repays
+PASS side-d-workhorse physical tests do not mutate authored rival
+PASS side-c-four-wheel-launch existing reachable prerequisite
+PASS side-c-four-wheel-launch acyclic unlock chain
+PASS side-c-four-wheel-launch acyclic unlock chain
+PASS side-c-four-wheel-launch acyclic unlock chain
+PASS side-c-four-wheel-launch acyclic unlock chain
+PASS side-c-four-wheel-launch acyclic unlock chain
+PASS side-c-four-wheel-launch acyclic unlock chain
+PASS side-c-four-wheel-launch acyclic unlock chain
+PASS side-c-four-wheel-launch reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-c-four-wheel-launch side-event income cannot obsolete this tier's main ladder prize
+PASS side-c-four-wheel-launch valid captured physical hardware and human driver habits
+PASS side-c-four-wheel-launch same attempt seed reproduces setup and driver behavior
+PASS side-c-four-wheel-launch attempts vary driving while retaining the starting car
+PASS side-c-four-wheel-launch rival respects its published HP ceiling (311.9)
+PASS side-c-four-wheel-launch at least one real catalogue car can enter
+PASS side-c-four-wheel-launch actual installed hardware enforces the advertised restriction
+PASS side-c-four-wheel-launch prerequisite enforced
+PASS side-c-four-wheel-launch REP gate enforced
+PASS side-c-four-wheel-launch physical race completes at attempt 42
+PASS side-c-four-wheel-launch physical race completes at attempt 43
+PASS side-c-four-wheel-launch a clean same-hardware reference can win; no forced result
+PASS side-c-four-wheel-launch actual first finish pays captured terms and first-only REP
+PASS side-c-four-wheel-launch repeat finish pays only repeat net
+PASS side-c-four-wheel-launch duplicate finish never repays
+PASS side-c-four-wheel-launch physical tests do not mutate authored rival
+PASS side-c-front-row existing reachable prerequisite
+PASS side-c-front-row acyclic unlock chain
+PASS side-c-front-row acyclic unlock chain
+PASS side-c-front-row acyclic unlock chain
+PASS side-c-front-row acyclic unlock chain
+PASS side-c-front-row acyclic unlock chain
+PASS side-c-front-row acyclic unlock chain
+PASS side-c-front-row acyclic unlock chain
+PASS side-c-front-row reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-c-front-row side-event income cannot obsolete this tier's main ladder prize
+PASS side-c-front-row valid captured physical hardware and human driver habits
+PASS side-c-front-row same attempt seed reproduces setup and driver behavior
+PASS side-c-front-row attempts vary driving while retaining the starting car
+PASS side-c-front-row rival respects its published HP ceiling (207.1)
+PASS side-c-front-row at least one real catalogue car can enter
+PASS side-c-front-row actual installed hardware enforces the advertised restriction
+PASS side-c-front-row prerequisite enforced
+PASS side-c-front-row REP gate enforced
+PASS side-c-front-row physical race completes at attempt 42
+PASS side-c-front-row physical race completes at attempt 43
+PASS side-c-front-row a clean same-hardware reference can win; no forced result
+PASS side-c-front-row actual first finish pays captured terms and first-only REP
+PASS side-c-front-row repeat finish pays only repeat net
+PASS side-c-front-row duplicate finish never repays
+PASS side-c-front-row physical tests do not mutate authored rival
+PASS side-c-after-hours existing reachable prerequisite
+PASS side-c-after-hours acyclic unlock chain
+PASS side-c-after-hours acyclic unlock chain
+PASS side-c-after-hours acyclic unlock chain
+PASS side-c-after-hours acyclic unlock chain
+PASS side-c-after-hours acyclic unlock chain
+PASS side-c-after-hours acyclic unlock chain
+PASS side-c-after-hours acyclic unlock chain
+PASS side-c-after-hours reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-c-after-hours side-event income cannot obsolete this tier's main ladder prize
+PASS side-c-after-hours valid captured physical hardware and human driver habits
+PASS side-c-after-hours same attempt seed reproduces setup and driver behavior
+PASS side-c-after-hours attempts vary driving while retaining the starting car
+PASS side-c-after-hours rival respects its published HP ceiling (349.1)
+PASS side-c-after-hours at least one real catalogue car can enter
+PASS side-c-after-hours actual installed hardware enforces the advertised restriction
+PASS side-c-after-hours prerequisite enforced
+PASS side-c-after-hours REP gate enforced
+PASS side-c-after-hours physical race completes at attempt 42
+PASS side-c-after-hours physical race completes at attempt 43
+PASS side-c-after-hours a clean same-hardware reference can win; no forced result
+PASS side-c-after-hours actual first finish pays captured terms and first-only REP
+PASS side-c-after-hours repeat finish pays only repeat net
+PASS side-c-after-hours duplicate finish never repays
+PASS side-c-after-hours physical tests do not mutate authored rival
+PASS side-c-six-pot existing reachable prerequisite
+PASS side-c-six-pot acyclic unlock chain
+PASS side-c-six-pot acyclic unlock chain
+PASS side-c-six-pot acyclic unlock chain
+PASS side-c-six-pot acyclic unlock chain
+PASS side-c-six-pot acyclic unlock chain
+PASS side-c-six-pot acyclic unlock chain
+PASS side-c-six-pot acyclic unlock chain
+PASS side-c-six-pot reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-c-six-pot side-event income cannot obsolete this tier's main ladder prize
+PASS side-c-six-pot valid captured physical hardware and human driver habits
+PASS side-c-six-pot same attempt seed reproduces setup and driver behavior
+PASS side-c-six-pot attempts vary driving while retaining the starting car
+PASS side-c-six-pot rival respects its published HP ceiling (288.4)
+PASS side-c-six-pot at least one real catalogue car can enter
+PASS side-c-six-pot actual installed hardware enforces the advertised restriction
+PASS side-c-six-pot prerequisite enforced
+PASS side-c-six-pot REP gate enforced
+PASS side-c-six-pot physical race completes at attempt 42
+PASS side-c-six-pot physical race completes at attempt 43
+PASS side-c-six-pot a clean same-hardware reference can win; no forced result
+PASS side-c-six-pot actual first finish pays captured terms and first-only REP
+PASS side-c-six-pot repeat finish pays only repeat net
+PASS side-c-six-pot duplicate finish never repays
+PASS side-c-six-pot physical tests do not mutate authored rival
+PASS side-b-boost-launch existing reachable prerequisite
+PASS side-b-boost-launch acyclic unlock chain
+PASS side-b-boost-launch acyclic unlock chain
+PASS side-b-boost-launch acyclic unlock chain
+PASS side-b-boost-launch acyclic unlock chain
+PASS side-b-boost-launch acyclic unlock chain
+PASS side-b-boost-launch acyclic unlock chain
+PASS side-b-boost-launch acyclic unlock chain
+PASS side-b-boost-launch acyclic unlock chain
+PASS side-b-boost-launch acyclic unlock chain
+PASS side-b-boost-launch reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-b-boost-launch side-event income cannot obsolete this tier's main ladder prize
+PASS side-b-boost-launch valid captured physical hardware and human driver habits
+PASS side-b-boost-launch same attempt seed reproduces setup and driver behavior
+PASS side-b-boost-launch attempts vary driving while retaining the starting car
+PASS side-b-boost-launch rival respects its published HP ceiling (358.1)
+PASS side-b-boost-launch at least one real catalogue car can enter
+PASS side-b-boost-launch actual installed hardware enforces the advertised restriction
+PASS side-b-boost-launch prerequisite enforced
+PASS side-b-boost-launch REP gate enforced
+PASS side-b-boost-launch physical race completes at attempt 42
+PASS side-b-boost-launch physical race completes at attempt 43
+PASS side-b-boost-launch a clean same-hardware reference can win; no forced result
+PASS side-b-boost-launch actual first finish pays captured terms and first-only REP
+PASS side-b-boost-launch repeat finish pays only repeat net
+PASS side-b-boost-launch duplicate finish never repays
+PASS side-b-boost-launch physical tests do not mutate authored rival
+PASS side-b-street-pressure existing reachable prerequisite
+PASS side-b-street-pressure acyclic unlock chain
+PASS side-b-street-pressure acyclic unlock chain
+PASS side-b-street-pressure acyclic unlock chain
+PASS side-b-street-pressure acyclic unlock chain
+PASS side-b-street-pressure acyclic unlock chain
+PASS side-b-street-pressure acyclic unlock chain
+PASS side-b-street-pressure acyclic unlock chain
+PASS side-b-street-pressure acyclic unlock chain
+PASS side-b-street-pressure acyclic unlock chain
+PASS side-b-street-pressure reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-b-street-pressure side-event income cannot obsolete this tier's main ladder prize
+PASS side-b-street-pressure valid captured physical hardware and human driver habits
+PASS side-b-street-pressure same attempt seed reproduces setup and driver behavior
+PASS side-b-street-pressure attempts vary driving while retaining the starting car
+PASS side-b-street-pressure rival respects its published HP ceiling (338.5)
+PASS side-b-street-pressure at least one real catalogue car can enter
+PASS side-b-street-pressure actual installed hardware enforces the advertised restriction
+PASS side-b-street-pressure prerequisite enforced
+PASS side-b-street-pressure REP gate enforced
+PASS side-b-street-pressure physical race completes at attempt 42
+PASS side-b-street-pressure physical race completes at attempt 43
+PASS side-b-street-pressure a clean same-hardware reference can win; no forced result
+PASS side-b-street-pressure actual first finish pays captured terms and first-only REP
+PASS side-b-street-pressure repeat finish pays only repeat net
+PASS side-b-street-pressure duplicate finish never repays
+PASS side-b-street-pressure physical tests do not mutate authored rival
+PASS side-b-big-coupe existing reachable prerequisite
+PASS side-b-big-coupe acyclic unlock chain
+PASS side-b-big-coupe acyclic unlock chain
+PASS side-b-big-coupe acyclic unlock chain
+PASS side-b-big-coupe acyclic unlock chain
+PASS side-b-big-coupe acyclic unlock chain
+PASS side-b-big-coupe acyclic unlock chain
+PASS side-b-big-coupe acyclic unlock chain
+PASS side-b-big-coupe acyclic unlock chain
+PASS side-b-big-coupe acyclic unlock chain
+PASS side-b-big-coupe reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-b-big-coupe side-event income cannot obsolete this tier's main ladder prize
+PASS side-b-big-coupe valid captured physical hardware and human driver habits
+PASS side-b-big-coupe same attempt seed reproduces setup and driver behavior
+PASS side-b-big-coupe attempts vary driving while retaining the starting car
+PASS side-b-big-coupe rival respects its published HP ceiling (397.3)
+PASS side-b-big-coupe at least one real catalogue car can enter
+PASS side-b-big-coupe actual installed hardware enforces the advertised restriction
+PASS side-b-big-coupe prerequisite enforced
+PASS side-b-big-coupe REP gate enforced
+PASS side-b-big-coupe physical race completes at attempt 42
+PASS side-b-big-coupe physical race completes at attempt 43
+PASS side-b-big-coupe a clean same-hardware reference can win; no forced result
+PASS side-b-big-coupe actual first finish pays captured terms and first-only REP
+PASS side-b-big-coupe repeat finish pays only repeat net
+PASS side-b-big-coupe duplicate finish never repays
+PASS side-b-big-coupe physical tests do not mutate authored rival
+PASS side-b-heavy-express existing reachable prerequisite
+PASS side-b-heavy-express acyclic unlock chain
+PASS side-b-heavy-express acyclic unlock chain
+PASS side-b-heavy-express acyclic unlock chain
+PASS side-b-heavy-express acyclic unlock chain
+PASS side-b-heavy-express acyclic unlock chain
+PASS side-b-heavy-express acyclic unlock chain
+PASS side-b-heavy-express acyclic unlock chain
+PASS side-b-heavy-express acyclic unlock chain
+PASS side-b-heavy-express acyclic unlock chain
+PASS side-b-heavy-express reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-b-heavy-express side-event income cannot obsolete this tier's main ladder prize
+PASS side-b-heavy-express valid captured physical hardware and human driver habits
+PASS side-b-heavy-express same attempt seed reproduces setup and driver behavior
+PASS side-b-heavy-express attempts vary driving while retaining the starting car
+PASS side-b-heavy-express rival respects its published HP ceiling (484.0)
+PASS side-b-heavy-express at least one real catalogue car can enter
+PASS side-b-heavy-express actual installed hardware enforces the advertised restriction
+PASS side-b-heavy-express prerequisite enforced
+PASS side-b-heavy-express REP gate enforced
+PASS side-b-heavy-express physical race completes at attempt 42
+PASS side-b-heavy-express physical race completes at attempt 43
+PASS side-b-heavy-express a clean same-hardware reference can win; no forced result
+PASS side-b-heavy-express actual first finish pays captured terms and first-only REP
+PASS side-b-heavy-express repeat finish pays only repeat net
+PASS side-b-heavy-express duplicate finish never repays
+PASS side-b-heavy-express physical tests do not mutate authored rival
+PASS side-a-flash-launch existing reachable prerequisite
+PASS side-a-flash-launch acyclic unlock chain
+PASS side-a-flash-launch acyclic unlock chain
+PASS side-a-flash-launch acyclic unlock chain
+PASS side-a-flash-launch acyclic unlock chain
+PASS side-a-flash-launch acyclic unlock chain
+PASS side-a-flash-launch acyclic unlock chain
+PASS side-a-flash-launch acyclic unlock chain
+PASS side-a-flash-launch acyclic unlock chain
+PASS side-a-flash-launch acyclic unlock chain
+PASS side-a-flash-launch acyclic unlock chain
+PASS side-a-flash-launch acyclic unlock chain
+PASS side-a-flash-launch reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-a-flash-launch side-event income cannot obsolete this tier's main ladder prize
+PASS side-a-flash-launch valid captured physical hardware and human driver habits
+PASS side-a-flash-launch same attempt seed reproduces setup and driver behavior
+PASS side-a-flash-launch attempts vary driving while retaining the starting car
+PASS side-a-flash-launch rival respects its published HP ceiling (445.7)
+PASS side-a-flash-launch at least one real catalogue car can enter
+PASS side-a-flash-launch actual installed hardware enforces the advertised restriction
+PASS side-a-flash-launch prerequisite enforced
+PASS side-a-flash-launch REP gate enforced
+PASS side-a-flash-launch physical race completes at attempt 42
+PASS side-a-flash-launch physical race completes at attempt 43
+PASS side-a-flash-launch a clean same-hardware reference can win; no forced result
+PASS side-a-flash-launch actual first finish pays captured terms and first-only REP
+PASS side-a-flash-launch repeat finish pays only repeat net
+PASS side-a-flash-launch duplicate finish never repays
+PASS side-a-flash-launch physical tests do not mutate authored rival
+PASS side-a-track-pressure existing reachable prerequisite
+PASS side-a-track-pressure acyclic unlock chain
+PASS side-a-track-pressure acyclic unlock chain
+PASS side-a-track-pressure acyclic unlock chain
+PASS side-a-track-pressure acyclic unlock chain
+PASS side-a-track-pressure acyclic unlock chain
+PASS side-a-track-pressure acyclic unlock chain
+PASS side-a-track-pressure acyclic unlock chain
+PASS side-a-track-pressure acyclic unlock chain
+PASS side-a-track-pressure acyclic unlock chain
+PASS side-a-track-pressure acyclic unlock chain
+PASS side-a-track-pressure acyclic unlock chain
+PASS side-a-track-pressure reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-a-track-pressure side-event income cannot obsolete this tier's main ladder prize
+PASS side-a-track-pressure valid captured physical hardware and human driver habits
+PASS side-a-track-pressure same attempt seed reproduces setup and driver behavior
+PASS side-a-track-pressure attempts vary driving while retaining the starting car
+PASS side-a-track-pressure rival respects its published HP ceiling (302.6)
+PASS side-a-track-pressure at least one real catalogue car can enter
+PASS side-a-track-pressure actual installed hardware enforces the advertised restriction
+PASS side-a-track-pressure prerequisite enforced
+PASS side-a-track-pressure REP gate enforced
+PASS side-a-track-pressure physical race completes at attempt 42
+PASS side-a-track-pressure physical race completes at attempt 43
+PASS side-a-track-pressure a clean same-hardware reference can win; no forced result
+PASS side-a-track-pressure actual first finish pays captured terms and first-only REP
+PASS side-a-track-pressure repeat finish pays only repeat net
+PASS side-a-track-pressure duplicate finish never repays
+PASS side-a-track-pressure physical tests do not mutate authored rival
+PASS side-a-blower-battle existing reachable prerequisite
+PASS side-a-blower-battle acyclic unlock chain
+PASS side-a-blower-battle acyclic unlock chain
+PASS side-a-blower-battle acyclic unlock chain
+PASS side-a-blower-battle acyclic unlock chain
+PASS side-a-blower-battle acyclic unlock chain
+PASS side-a-blower-battle acyclic unlock chain
+PASS side-a-blower-battle acyclic unlock chain
+PASS side-a-blower-battle acyclic unlock chain
+PASS side-a-blower-battle acyclic unlock chain
+PASS side-a-blower-battle acyclic unlock chain
+PASS side-a-blower-battle acyclic unlock chain
+PASS side-a-blower-battle reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-a-blower-battle side-event income cannot obsolete this tier's main ladder prize
+PASS side-a-blower-battle valid captured physical hardware and human driver habits
+PASS side-a-blower-battle same attempt seed reproduces setup and driver behavior
+PASS side-a-blower-battle attempts vary driving while retaining the starting car
+PASS side-a-blower-battle rival respects its published HP ceiling (502.8)
+PASS side-a-blower-battle at least one real catalogue car can enter
+PASS side-a-blower-battle actual installed hardware enforces the advertised restriction
+PASS side-a-blower-battle prerequisite enforced
+PASS side-a-blower-battle REP gate enforced
+PASS side-a-blower-battle physical race completes at attempt 42
+PASS side-a-blower-battle physical race completes at attempt 43
+PASS side-a-blower-battle a clean same-hardware reference can win; no forced result
+PASS side-a-blower-battle actual first finish pays captured terms and first-only REP
+PASS side-a-blower-battle repeat finish pays only repeat net
+PASS side-a-blower-battle duplicate finish never repays
+PASS side-a-blower-battle physical tests do not mutate authored rival
+PASS side-a-grand-touring existing reachable prerequisite
+PASS side-a-grand-touring acyclic unlock chain
+PASS side-a-grand-touring acyclic unlock chain
+PASS side-a-grand-touring acyclic unlock chain
+PASS side-a-grand-touring acyclic unlock chain
+PASS side-a-grand-touring acyclic unlock chain
+PASS side-a-grand-touring acyclic unlock chain
+PASS side-a-grand-touring acyclic unlock chain
+PASS side-a-grand-touring acyclic unlock chain
+PASS side-a-grand-touring acyclic unlock chain
+PASS side-a-grand-touring acyclic unlock chain
+PASS side-a-grand-touring acyclic unlock chain
+PASS side-a-grand-touring reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-a-grand-touring side-event income cannot obsolete this tier's main ladder prize
+PASS side-a-grand-touring valid captured physical hardware and human driver habits
+PASS side-a-grand-touring same attempt seed reproduces setup and driver behavior
+PASS side-a-grand-touring attempts vary driving while retaining the starting car
+PASS side-a-grand-touring rival respects its published HP ceiling (415.7)
+PASS side-a-grand-touring at least one real catalogue car can enter
+PASS side-a-grand-touring actual installed hardware enforces the advertised restriction
+PASS side-a-grand-touring prerequisite enforced
+PASS side-a-grand-touring REP gate enforced
+PASS side-a-grand-touring physical race completes at attempt 42
+PASS side-a-grand-touring physical race completes at attempt 43
+PASS side-a-grand-touring a clean same-hardware reference can win; no forced result
+PASS side-a-grand-touring actual first finish pays captured terms and first-only REP
+PASS side-a-grand-touring repeat finish pays only repeat net
+PASS side-a-grand-touring duplicate finish never repays
+PASS side-a-grand-touring physical tests do not mutate authored rival
+PASS side-s-blower-crown existing reachable prerequisite
+PASS side-s-blower-crown acyclic unlock chain
+PASS side-s-blower-crown acyclic unlock chain
+PASS side-s-blower-crown acyclic unlock chain
+PASS side-s-blower-crown acyclic unlock chain
+PASS side-s-blower-crown acyclic unlock chain
+PASS side-s-blower-crown acyclic unlock chain
+PASS side-s-blower-crown acyclic unlock chain
+PASS side-s-blower-crown acyclic unlock chain
+PASS side-s-blower-crown acyclic unlock chain
+PASS side-s-blower-crown acyclic unlock chain
+PASS side-s-blower-crown acyclic unlock chain
+PASS side-s-blower-crown acyclic unlock chain
+PASS side-s-blower-crown acyclic unlock chain
+PASS side-s-blower-crown reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-s-blower-crown side-event income cannot obsolete this tier's main ladder prize
+PASS side-s-blower-crown valid captured physical hardware and human driver habits
+PASS side-s-blower-crown same attempt seed reproduces setup and driver behavior
+PASS side-s-blower-crown attempts vary driving while retaining the starting car
+PASS side-s-blower-crown rival respects its published HP ceiling (651.7)
+PASS side-s-blower-crown at least one real catalogue car can enter
+PASS side-s-blower-crown actual installed hardware enforces the advertised restriction
+PASS side-s-blower-crown prerequisite enforced
+PASS side-s-blower-crown REP gate enforced
+PASS side-s-blower-crown physical race completes at attempt 42
+PASS side-s-blower-crown physical race completes at attempt 43
+PASS side-s-blower-crown a clean same-hardware reference can win; no forced result
+PASS side-s-blower-crown actual first finish pays captured terms and first-only REP
+PASS side-s-blower-crown repeat finish pays only repeat net
+PASS side-s-blower-crown duplicate finish never repays
+PASS side-s-blower-crown physical tests do not mutate authored rival
+PASS side-s-launch-masters existing reachable prerequisite
+PASS side-s-launch-masters acyclic unlock chain
+PASS side-s-launch-masters acyclic unlock chain
+PASS side-s-launch-masters acyclic unlock chain
+PASS side-s-launch-masters acyclic unlock chain
+PASS side-s-launch-masters acyclic unlock chain
+PASS side-s-launch-masters acyclic unlock chain
+PASS side-s-launch-masters acyclic unlock chain
+PASS side-s-launch-masters acyclic unlock chain
+PASS side-s-launch-masters acyclic unlock chain
+PASS side-s-launch-masters acyclic unlock chain
+PASS side-s-launch-masters acyclic unlock chain
+PASS side-s-launch-masters acyclic unlock chain
+PASS side-s-launch-masters acyclic unlock chain
+PASS side-s-launch-masters reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-s-launch-masters side-event income cannot obsolete this tier's main ladder prize
+PASS side-s-launch-masters valid captured physical hardware and human driver habits
+PASS side-s-launch-masters same attempt seed reproduces setup and driver behavior
+PASS side-s-launch-masters attempts vary driving while retaining the starting car
+PASS side-s-launch-masters rival respects its published HP ceiling (355.3)
+PASS side-s-launch-masters at least one real catalogue car can enter
+PASS side-s-launch-masters actual installed hardware enforces the advertised restriction
+PASS side-s-launch-masters prerequisite enforced
+PASS side-s-launch-masters REP gate enforced
+PASS side-s-launch-masters physical race completes at attempt 42
+PASS side-s-launch-masters physical race completes at attempt 43
+PASS side-s-launch-masters a clean same-hardware reference can win; no forced result
+PASS side-s-launch-masters actual first finish pays captured terms and first-only REP
+PASS side-s-launch-masters repeat finish pays only repeat net
+PASS side-s-launch-masters duplicate finish never repays
+PASS side-s-launch-masters physical tests do not mutate authored rival
+PASS side-s-heavy-hitters existing reachable prerequisite
+PASS side-s-heavy-hitters acyclic unlock chain
+PASS side-s-heavy-hitters acyclic unlock chain
+PASS side-s-heavy-hitters acyclic unlock chain
+PASS side-s-heavy-hitters acyclic unlock chain
+PASS side-s-heavy-hitters acyclic unlock chain
+PASS side-s-heavy-hitters acyclic unlock chain
+PASS side-s-heavy-hitters acyclic unlock chain
+PASS side-s-heavy-hitters acyclic unlock chain
+PASS side-s-heavy-hitters acyclic unlock chain
+PASS side-s-heavy-hitters acyclic unlock chain
+PASS side-s-heavy-hitters acyclic unlock chain
+PASS side-s-heavy-hitters acyclic unlock chain
+PASS side-s-heavy-hitters acyclic unlock chain
+PASS side-s-heavy-hitters reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-s-heavy-hitters side-event income cannot obsolete this tier's main ladder prize
+PASS side-s-heavy-hitters valid captured physical hardware and human driver habits
+PASS side-s-heavy-hitters same attempt seed reproduces setup and driver behavior
+PASS side-s-heavy-hitters attempts vary driving while retaining the starting car
+PASS side-s-heavy-hitters rival respects its published HP ceiling (727.7)
+PASS side-s-heavy-hitters at least one real catalogue car can enter
+PASS side-s-heavy-hitters actual installed hardware enforces the advertised restriction
+PASS side-s-heavy-hitters prerequisite enforced
+PASS side-s-heavy-hitters REP gate enforced
+PASS side-s-heavy-hitters physical race completes at attempt 42
+PASS side-s-heavy-hitters physical race completes at attempt 43
+PASS side-s-heavy-hitters a clean same-hardware reference can win; no forced result
+PASS side-s-heavy-hitters actual first finish pays captured terms and first-only REP
+PASS side-s-heavy-hitters repeat finish pays only repeat net
+PASS side-s-heavy-hitters duplicate finish never repays
+PASS side-s-heavy-hitters physical tests do not mutate authored rival
+PASS side-s-midnight-mile existing reachable prerequisite
+PASS side-s-midnight-mile acyclic unlock chain
+PASS side-s-midnight-mile acyclic unlock chain
+PASS side-s-midnight-mile acyclic unlock chain
+PASS side-s-midnight-mile acyclic unlock chain
+PASS side-s-midnight-mile acyclic unlock chain
+PASS side-s-midnight-mile acyclic unlock chain
+PASS side-s-midnight-mile acyclic unlock chain
+PASS side-s-midnight-mile acyclic unlock chain
+PASS side-s-midnight-mile acyclic unlock chain
+PASS side-s-midnight-mile acyclic unlock chain
+PASS side-s-midnight-mile acyclic unlock chain
+PASS side-s-midnight-mile acyclic unlock chain
+PASS side-s-midnight-mile acyclic unlock chain
+PASS side-s-midnight-mile reproducible bounded rewards; no paid-loss farming or repeat REP
+PASS side-s-midnight-mile side-event income cannot obsolete this tier's main ladder prize
+PASS side-s-midnight-mile valid captured physical hardware and human driver habits
+PASS side-s-midnight-mile same attempt seed reproduces setup and driver behavior
+PASS side-s-midnight-mile attempts vary driving while retaining the starting car
+PASS side-s-midnight-mile rival respects its published HP ceiling (445.4)
+PASS side-s-midnight-mile at least one real catalogue car can enter
+PASS side-s-midnight-mile prerequisite enforced
+PASS side-s-midnight-mile REP gate enforced
+PASS side-s-midnight-mile physical race completes at attempt 42
+PASS side-s-midnight-mile physical race completes at attempt 43
+PASS side-s-midnight-mile a clean same-hardware reference can win; no forced result
+PASS side-s-midnight-mile actual first finish pays captured terms and first-only REP
+PASS side-s-midnight-mile repeat finish pays only repeat net
+PASS side-s-midnight-mile duplicate finish never repays
+PASS side-s-midnight-mile physical tests do not mutate authored rival
+PASS All old and new career assets unchanged by simulation and settlement
+PASS Private seeded rival variation leaves gameplay global RNG intact
+Checks: 702

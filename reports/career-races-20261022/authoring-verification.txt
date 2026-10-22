@@ -1,0 +1,2 @@
+PASS all 21 pre-existing events remain semantically unchanged
+PASS additional assets only; existing stable IDs, prerequisites, rewards and captured run terms retained

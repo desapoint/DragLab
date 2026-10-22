@@ -1,0 +1,7 @@
+PASS all 21 original career assets and metadata match HEAD (de697d5)
+PASS 28 unique new event IDs with 28 distinct Unity GUIDs and matching metadata
+PASS all 28 rivals use authored v5 behavior and positive deterministic seeds
+PASS 56 race matrix rows cover both attempt seeds for every new event
+PASS all 28 rivals produce different measured totals between attempt seeds
+PASS every event has a clean same-hardware reference win
+PASS source content matrix contains authoritative prizes, fees, distance and prerequisites

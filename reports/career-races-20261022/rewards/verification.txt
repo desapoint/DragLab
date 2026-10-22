@@ -1,0 +1,333 @@
+PASS: first-pass: take-home repeat reward grows through the main ladder
+PASS: first-pass: first-win bonus is bounded by the repeat prize
+PASS: club-run: take-home repeat reward grows through the main ladder
+PASS: club-run: first-win bonus is bounded by the repeat prize
+PASS: coupe-rival: take-home repeat reward grows through the main ladder
+PASS: coupe-rival: first-win bonus is bounded by the repeat prize
+PASS: local-final: take-home repeat reward grows through the main ladder
+PASS: local-final: first-win bonus is bounded by the repeat prize
+PASS: ladder-f-qualifier: take-home repeat reward grows through the main ladder
+PASS: ladder-f-qualifier: first-win bonus is bounded by the repeat prize
+PASS: ladder-f-rival: take-home repeat reward grows through the main ladder
+PASS: ladder-f-rival: first-win bonus is bounded by the repeat prize
+PASS: ladder-e-qualifier: take-home repeat reward grows through the main ladder
+PASS: ladder-e-qualifier: first-win bonus is bounded by the repeat prize
+PASS: ladder-e-rival: take-home repeat reward grows through the main ladder
+PASS: ladder-e-rival: first-win bonus is bounded by the repeat prize
+PASS: ladder-d-qualifier: take-home repeat reward grows through the main ladder
+PASS: ladder-d-qualifier: first-win bonus is bounded by the repeat prize
+PASS: ladder-d-rival: take-home repeat reward grows through the main ladder
+PASS: ladder-d-rival: first-win bonus is bounded by the repeat prize
+PASS: ladder-c-qualifier: take-home repeat reward grows through the main ladder
+PASS: ladder-c-qualifier: first-win bonus is bounded by the repeat prize
+PASS: ladder-c-rival: take-home repeat reward grows through the main ladder
+PASS: ladder-c-rival: first-win bonus is bounded by the repeat prize
+PASS: ladder-b-qualifier: take-home repeat reward grows through the main ladder
+PASS: ladder-b-qualifier: first-win bonus is bounded by the repeat prize
+PASS: ladder-b-rival: take-home repeat reward grows through the main ladder
+PASS: ladder-b-rival: first-win bonus is bounded by the repeat prize
+PASS: ladder-a-qualifier: take-home repeat reward grows through the main ladder
+PASS: ladder-a-qualifier: first-win bonus is bounded by the repeat prize
+PASS: ladder-a-rival: take-home repeat reward grows through the main ladder
+PASS: ladder-a-rival: first-win bonus is bounded by the repeat prize
+PASS: ladder-s-qualifier: take-home repeat reward grows through the main ladder
+PASS: ladder-s-qualifier: first-win bonus is bounded by the repeat prize
+PASS: ladder-s-rival: take-home repeat reward grows through the main ladder
+PASS: ladder-s-rival: first-win bonus is bounded by the repeat prize
+PASS: first-pass: a win is worthwhile after entry and exceeds consolation
+PASS: first-pass: losing cannot farm the former large net payouts
+PASS: first-pass: authored values match reproducible creation defaults
+PASS: club-run: a win is worthwhile after entry and exceeds consolation
+PASS: club-run: losing cannot farm the former large net payouts
+PASS: club-run: authored values match reproducible creation defaults
+PASS: coupe-rival: a win is worthwhile after entry and exceeds consolation
+PASS: coupe-rival: losing cannot farm the former large net payouts
+PASS: coupe-rival: authored values match reproducible creation defaults
+PASS: local-final: a win is worthwhile after entry and exceeds consolation
+PASS: local-final: losing cannot farm the former large net payouts
+PASS: local-final: authored values match reproducible creation defaults
+PASS: ladder-f-qualifier: a win is worthwhile after entry and exceeds consolation
+PASS: ladder-f-qualifier: losing cannot farm the former large net payouts
+PASS: ladder-f-qualifier: authored values match reproducible creation defaults
+PASS: ladder-f-rival: a win is worthwhile after entry and exceeds consolation
+PASS: ladder-f-rival: losing cannot farm the former large net payouts
+PASS: ladder-f-rival: authored values match reproducible creation defaults
+PASS: ladder-e-qualifier: a win is worthwhile after entry and exceeds consolation
+PASS: ladder-e-qualifier: losing cannot farm the former large net payouts
+PASS: ladder-e-qualifier: authored values match reproducible creation defaults
+PASS: ladder-e-rival: a win is worthwhile after entry and exceeds consolation
+PASS: ladder-e-rival: losing cannot farm the former large net payouts
+PASS: ladder-e-rival: authored values match reproducible creation defaults
+PASS: ladder-d-qualifier: a win is worthwhile after entry and exceeds consolation
+PASS: ladder-d-qualifier: losing cannot farm the former large net payouts
+PASS: ladder-d-qualifier: authored values match reproducible creation defaults
+PASS: ladder-d-rival: a win is worthwhile after entry and exceeds consolation
+PASS: ladder-d-rival: losing cannot farm the former large net payouts
+PASS: ladder-d-rival: authored values match reproducible creation defaults
+PASS: ladder-c-qualifier: a win is worthwhile after entry and exceeds consolation
+PASS: ladder-c-qualifier: losing cannot farm the former large net payouts
+PASS: ladder-c-qualifier: authored values match reproducible creation defaults
+PASS: ladder-c-rival: a win is worthwhile after entry and exceeds consolation
+PASS: ladder-c-rival: losing cannot farm the former large net payouts
+PASS: ladder-c-rival: authored values match reproducible creation defaults
+PASS: ladder-b-qualifier: a win is worthwhile after entry and exceeds consolation
+PASS: ladder-b-qualifier: losing cannot farm the former large net payouts
+PASS: ladder-b-qualifier: authored values match reproducible creation defaults
+PASS: ladder-b-rival: a win is worthwhile after entry and exceeds consolation
+PASS: ladder-b-rival: losing cannot farm the former large net payouts
+PASS: ladder-b-rival: authored values match reproducible creation defaults
+PASS: ladder-a-qualifier: a win is worthwhile after entry and exceeds consolation
+PASS: ladder-a-qualifier: losing cannot farm the former large net payouts
+PASS: ladder-a-qualifier: authored values match reproducible creation defaults
+PASS: ladder-a-rival: a win is worthwhile after entry and exceeds consolation
+PASS: ladder-a-rival: losing cannot farm the former large net payouts
+PASS: ladder-a-rival: authored values match reproducible creation defaults
+PASS: ladder-s-qualifier: a win is worthwhile after entry and exceeds consolation
+PASS: ladder-s-qualifier: losing cannot farm the former large net payouts
+PASS: ladder-s-qualifier: authored values match reproducible creation defaults
+PASS: ladder-s-rival: a win is worthwhile after entry and exceeds consolation
+PASS: ladder-s-rival: losing cannot farm the former large net payouts
+PASS: ladder-s-rival: authored values match reproducible creation defaults
+PASS: special-0: a win is worthwhile after entry and exceeds consolation
+PASS: special-0: losing cannot farm the former large net payouts
+PASS: special-0: authored values match reproducible creation defaults
+PASS: special-1: a win is worthwhile after entry and exceeds consolation
+PASS: special-1: losing cannot farm the former large net payouts
+PASS: special-1: authored values match reproducible creation defaults
+PASS: special-2: a win is worthwhile after entry and exceeds consolation
+PASS: special-2: losing cannot farm the former large net payouts
+PASS: special-2: authored values match reproducible creation defaults
+PASS: side-a-blower-battle: a win is worthwhile after entry and exceeds consolation
+PASS: side-a-blower-battle: losing cannot farm the former large net payouts
+PASS: side-a-blower-battle: authored values match reproducible creation defaults
+PASS: side-a-flash-launch: a win is worthwhile after entry and exceeds consolation
+PASS: side-a-flash-launch: losing cannot farm the former large net payouts
+PASS: side-a-flash-launch: authored values match reproducible creation defaults
+PASS: side-a-grand-touring: a win is worthwhile after entry and exceeds consolation
+PASS: side-a-grand-touring: losing cannot farm the former large net payouts
+PASS: side-a-grand-touring: authored values match reproducible creation defaults
+PASS: side-a-track-pressure: a win is worthwhile after entry and exceeds consolation
+PASS: side-a-track-pressure: losing cannot farm the former large net payouts
+PASS: side-a-track-pressure: authored values match reproducible creation defaults
+PASS: side-b-big-coupe: a win is worthwhile after entry and exceeds consolation
+PASS: side-b-big-coupe: losing cannot farm the former large net payouts
+PASS: side-b-big-coupe: authored values match reproducible creation defaults
+PASS: side-b-boost-launch: a win is worthwhile after entry and exceeds consolation
+PASS: side-b-boost-launch: losing cannot farm the former large net payouts
+PASS: side-b-boost-launch: authored values match reproducible creation defaults
+PASS: side-b-heavy-express: a win is worthwhile after entry and exceeds consolation
+PASS: side-b-heavy-express: losing cannot farm the former large net payouts
+PASS: side-b-heavy-express: authored values match reproducible creation defaults
+PASS: side-b-street-pressure: a win is worthwhile after entry and exceeds consolation
+PASS: side-b-street-pressure: losing cannot farm the former large net payouts
+PASS: side-b-street-pressure: authored values match reproducible creation defaults
+PASS: side-c-after-hours: a win is worthwhile after entry and exceeds consolation
+PASS: side-c-after-hours: losing cannot farm the former large net payouts
+PASS: side-c-after-hours: authored values match reproducible creation defaults
+PASS: side-c-four-wheel-launch: a win is worthwhile after entry and exceeds consolation
+PASS: side-c-four-wheel-launch: losing cannot farm the former large net payouts
+PASS: side-c-four-wheel-launch: authored values match reproducible creation defaults
+PASS: side-c-front-row: a win is worthwhile after entry and exceeds consolation
+PASS: side-c-front-row: losing cannot farm the former large net payouts
+PASS: side-c-front-row: authored values match reproducible creation defaults
+PASS: side-c-six-pot: a win is worthwhile after entry and exceeds consolation
+PASS: side-c-six-pot: losing cannot farm the former large net payouts
+PASS: side-c-six-pot: authored values match reproducible creation defaults
+PASS: side-d-featherweight: a win is worthwhile after entry and exceeds consolation
+PASS: side-d-featherweight: losing cannot farm the former large net payouts
+PASS: side-d-featherweight: authored values match reproducible creation defaults
+PASS: side-d-roadster-night: a win is worthwhile after entry and exceeds consolation
+PASS: side-d-roadster-night: losing cannot farm the former large net payouts
+PASS: side-d-roadster-night: authored values match reproducible creation defaults
+PASS: side-d-turbo-chase: a win is worthwhile after entry and exceeds consolation
+PASS: side-d-turbo-chase: losing cannot farm the former large net payouts
+PASS: side-d-turbo-chase: authored values match reproducible creation defaults
+PASS: side-d-workhorse: a win is worthwhile after entry and exceeds consolation
+PASS: side-d-workhorse: losing cannot farm the former large net payouts
+PASS: side-d-workhorse: authored values match reproducible creation defaults
+PASS: side-e-all-motor: a win is worthwhile after entry and exceeds consolation
+PASS: side-e-all-motor: losing cannot farm the former large net payouts
+PASS: side-e-all-motor: authored values match reproducible creation defaults
+PASS: side-e-boost-street: a win is worthwhile after entry and exceeds consolation
+PASS: side-e-boost-street: losing cannot farm the former large net payouts
+PASS: side-e-boost-street: authored values match reproducible creation defaults
+PASS: side-e-short-shift: a win is worthwhile after entry and exceeds consolation
+PASS: side-e-short-shift: losing cannot farm the former large net payouts
+PASS: side-e-short-shift: authored values match reproducible creation defaults
+PASS: side-e-touring-pull: a win is worthwhile after entry and exceeds consolation
+PASS: side-e-touring-pull: losing cannot farm the former large net payouts
+PASS: side-e-touring-pull: authored values match reproducible creation defaults
+PASS: side-f-dockside: a win is worthwhile after entry and exceeds consolation
+PASS: side-f-dockside: losing cannot farm the former large net payouts
+PASS: side-f-dockside: authored values match reproducible creation defaults
+PASS: side-f-hatch-meet: a win is worthwhile after entry and exceeds consolation
+PASS: side-f-hatch-meet: losing cannot farm the former large net payouts
+PASS: side-f-hatch-meet: authored values match reproducible creation defaults
+PASS: side-f-rear-drive-rookie: a win is worthwhile after entry and exceeds consolation
+PASS: side-f-rear-drive-rookie: losing cannot farm the former large net payouts
+PASS: side-f-rear-drive-rookie: authored values match reproducible creation defaults
+PASS: side-f-small-capacity: a win is worthwhile after entry and exceeds consolation
+PASS: side-f-small-capacity: losing cannot farm the former large net payouts
+PASS: side-f-small-capacity: authored values match reproducible creation defaults
+PASS: side-s-blower-crown: a win is worthwhile after entry and exceeds consolation
+PASS: side-s-blower-crown: losing cannot farm the former large net payouts
+PASS: side-s-blower-crown: authored values match reproducible creation defaults
+PASS: side-s-heavy-hitters: a win is worthwhile after entry and exceeds consolation
+PASS: side-s-heavy-hitters: losing cannot farm the former large net payouts
+PASS: side-s-heavy-hitters: authored values match reproducible creation defaults
+PASS: side-s-launch-masters: a win is worthwhile after entry and exceeds consolation
+PASS: side-s-launch-masters: losing cannot farm the former large net payouts
+PASS: side-s-launch-masters: authored values match reproducible creation defaults
+PASS: side-s-midnight-mile: a win is worthwhile after entry and exceeds consolation
+PASS: side-s-midnight-mile: losing cannot farm the former large net payouts
+PASS: side-s-midnight-mile: authored values match reproducible creation defaults
+PASS: A standard early airflow upgrade needs four to six repeat wins before operating costs
+PASS: Receipt fixtures use a real completed first-place pass
+PASS: first-pass: captured terms survive reload and later definition changes
+PASS: first-pass: duplicate settlement cannot pay twice
+PASS: first-pass: repeats never add first-win cash or reputation again
+PASS: club-run: captured terms survive reload and later definition changes
+PASS: club-run: duplicate settlement cannot pay twice
+PASS: club-run: repeats never add first-win cash or reputation again
+PASS: coupe-rival: captured terms survive reload and later definition changes
+PASS: coupe-rival: duplicate settlement cannot pay twice
+PASS: coupe-rival: repeats never add first-win cash or reputation again
+PASS: local-final: captured terms survive reload and later definition changes
+PASS: local-final: duplicate settlement cannot pay twice
+PASS: local-final: repeats never add first-win cash or reputation again
+PASS: ladder-f-qualifier: captured terms survive reload and later definition changes
+PASS: ladder-f-qualifier: duplicate settlement cannot pay twice
+PASS: ladder-f-qualifier: repeats never add first-win cash or reputation again
+PASS: ladder-f-rival: captured terms survive reload and later definition changes
+PASS: ladder-f-rival: duplicate settlement cannot pay twice
+PASS: ladder-f-rival: repeats never add first-win cash or reputation again
+PASS: ladder-e-qualifier: captured terms survive reload and later definition changes
+PASS: ladder-e-qualifier: duplicate settlement cannot pay twice
+PASS: ladder-e-qualifier: repeats never add first-win cash or reputation again
+PASS: ladder-e-rival: captured terms survive reload and later definition changes
+PASS: ladder-e-rival: duplicate settlement cannot pay twice
+PASS: ladder-e-rival: repeats never add first-win cash or reputation again
+PASS: ladder-d-qualifier: captured terms survive reload and later definition changes
+PASS: ladder-d-qualifier: duplicate settlement cannot pay twice
+PASS: ladder-d-qualifier: repeats never add first-win cash or reputation again
+PASS: ladder-d-rival: captured terms survive reload and later definition changes
+PASS: ladder-d-rival: duplicate settlement cannot pay twice
+PASS: ladder-d-rival: repeats never add first-win cash or reputation again
+PASS: ladder-c-qualifier: captured terms survive reload and later definition changes
+PASS: ladder-c-qualifier: duplicate settlement cannot pay twice
+PASS: ladder-c-qualifier: repeats never add first-win cash or reputation again
+PASS: ladder-c-rival: captured terms survive reload and later definition changes
+PASS: ladder-c-rival: duplicate settlement cannot pay twice
+PASS: ladder-c-rival: repeats never add first-win cash or reputation again
+PASS: ladder-b-qualifier: captured terms survive reload and later definition changes
+PASS: ladder-b-qualifier: duplicate settlement cannot pay twice
+PASS: ladder-b-qualifier: repeats never add first-win cash or reputation again
+PASS: ladder-b-rival: captured terms survive reload and later definition changes
+PASS: ladder-b-rival: duplicate settlement cannot pay twice
+PASS: ladder-b-rival: repeats never add first-win cash or reputation again
+PASS: ladder-a-qualifier: captured terms survive reload and later definition changes
+PASS: ladder-a-qualifier: duplicate settlement cannot pay twice
+PASS: ladder-a-qualifier: repeats never add first-win cash or reputation again
+PASS: ladder-a-rival: captured terms survive reload and later definition changes
+PASS: ladder-a-rival: duplicate settlement cannot pay twice
+PASS: ladder-a-rival: repeats never add first-win cash or reputation again
+PASS: ladder-s-qualifier: captured terms survive reload and later definition changes
+PASS: ladder-s-qualifier: duplicate settlement cannot pay twice
+PASS: ladder-s-qualifier: repeats never add first-win cash or reputation again
+PASS: ladder-s-rival: captured terms survive reload and later definition changes
+PASS: ladder-s-rival: duplicate settlement cannot pay twice
+PASS: ladder-s-rival: repeats never add first-win cash or reputation again
+PASS: special-0: captured terms survive reload and later definition changes
+PASS: special-0: duplicate settlement cannot pay twice
+PASS: special-0: repeats never add first-win cash or reputation again
+PASS: special-1: captured terms survive reload and later definition changes
+PASS: special-1: duplicate settlement cannot pay twice
+PASS: special-1: repeats never add first-win cash or reputation again
+PASS: special-2: captured terms survive reload and later definition changes
+PASS: special-2: duplicate settlement cannot pay twice
+PASS: special-2: repeats never add first-win cash or reputation again
+PASS: side-a-blower-battle: captured terms survive reload and later definition changes
+PASS: side-a-blower-battle: duplicate settlement cannot pay twice
+PASS: side-a-blower-battle: repeats never add first-win cash or reputation again
+PASS: side-a-flash-launch: captured terms survive reload and later definition changes
+PASS: side-a-flash-launch: duplicate settlement cannot pay twice
+PASS: side-a-flash-launch: repeats never add first-win cash or reputation again
+PASS: side-a-grand-touring: captured terms survive reload and later definition changes
+PASS: side-a-grand-touring: duplicate settlement cannot pay twice
+PASS: side-a-grand-touring: repeats never add first-win cash or reputation again
+PASS: side-a-track-pressure: captured terms survive reload and later definition changes
+PASS: side-a-track-pressure: duplicate settlement cannot pay twice
+PASS: side-a-track-pressure: repeats never add first-win cash or reputation again
+PASS: side-b-big-coupe: captured terms survive reload and later definition changes
+PASS: side-b-big-coupe: duplicate settlement cannot pay twice
+PASS: side-b-big-coupe: repeats never add first-win cash or reputation again
+PASS: side-b-boost-launch: captured terms survive reload and later definition changes
+PASS: side-b-boost-launch: duplicate settlement cannot pay twice
+PASS: side-b-boost-launch: repeats never add first-win cash or reputation again
+PASS: side-b-heavy-express: captured terms survive reload and later definition changes
+PASS: side-b-heavy-express: duplicate settlement cannot pay twice
+PASS: side-b-heavy-express: repeats never add first-win cash or reputation again
+PASS: side-b-street-pressure: captured terms survive reload and later definition changes
+PASS: side-b-street-pressure: duplicate settlement cannot pay twice
+PASS: side-b-street-pressure: repeats never add first-win cash or reputation again
+PASS: side-c-after-hours: captured terms survive reload and later definition changes
+PASS: side-c-after-hours: duplicate settlement cannot pay twice
+PASS: side-c-after-hours: repeats never add first-win cash or reputation again
+PASS: side-c-four-wheel-launch: captured terms survive reload and later definition changes
+PASS: side-c-four-wheel-launch: duplicate settlement cannot pay twice
+PASS: side-c-four-wheel-launch: repeats never add first-win cash or reputation again
+PASS: side-c-front-row: captured terms survive reload and later definition changes
+PASS: side-c-front-row: duplicate settlement cannot pay twice
+PASS: side-c-front-row: repeats never add first-win cash or reputation again
+PASS: side-c-six-pot: captured terms survive reload and later definition changes
+PASS: side-c-six-pot: duplicate settlement cannot pay twice
+PASS: side-c-six-pot: repeats never add first-win cash or reputation again
+PASS: side-d-featherweight: captured terms survive reload and later definition changes
+PASS: side-d-featherweight: duplicate settlement cannot pay twice
+PASS: side-d-featherweight: repeats never add first-win cash or reputation again
+PASS: side-d-roadster-night: captured terms survive reload and later definition changes
+PASS: side-d-roadster-night: duplicate settlement cannot pay twice
+PASS: side-d-roadster-night: repeats never add first-win cash or reputation again
+PASS: side-d-turbo-chase: captured terms survive reload and later definition changes
+PASS: side-d-turbo-chase: duplicate settlement cannot pay twice
+PASS: side-d-turbo-chase: repeats never add first-win cash or reputation again
+PASS: side-d-workhorse: captured terms survive reload and later definition changes
+PASS: side-d-workhorse: duplicate settlement cannot pay twice
+PASS: side-d-workhorse: repeats never add first-win cash or reputation again
+PASS: side-e-all-motor: captured terms survive reload and later definition changes
+PASS: side-e-all-motor: duplicate settlement cannot pay twice
+PASS: side-e-all-motor: repeats never add first-win cash or reputation again
+PASS: side-e-boost-street: captured terms survive reload and later definition changes
+PASS: side-e-boost-street: duplicate settlement cannot pay twice
+PASS: side-e-boost-street: repeats never add first-win cash or reputation again
+PASS: side-e-short-shift: captured terms survive reload and later definition changes
+PASS: side-e-short-shift: duplicate settlement cannot pay twice
+PASS: side-e-short-shift: repeats never add first-win cash or reputation again
+PASS: side-e-touring-pull: captured terms survive reload and later definition changes
+PASS: side-e-touring-pull: duplicate settlement cannot pay twice
+PASS: side-e-touring-pull: repeats never add first-win cash or reputation again
+PASS: side-f-dockside: captured terms survive reload and later definition changes
+PASS: side-f-dockside: duplicate settlement cannot pay twice
+PASS: side-f-dockside: repeats never add first-win cash or reputation again
+PASS: side-f-hatch-meet: captured terms survive reload and later definition changes
+PASS: side-f-hatch-meet: duplicate settlement cannot pay twice
+PASS: side-f-hatch-meet: repeats never add first-win cash or reputation again
+PASS: side-f-rear-drive-rookie: captured terms survive reload and later definition changes
+PASS: side-f-rear-drive-rookie: duplicate settlement cannot pay twice
+PASS: side-f-rear-drive-rookie: repeats never add first-win cash or reputation again
+PASS: side-f-small-capacity: captured terms survive reload and later definition changes
+PASS: side-f-small-capacity: duplicate settlement cannot pay twice
+PASS: side-f-small-capacity: repeats never add first-win cash or reputation again
+PASS: side-s-blower-crown: captured terms survive reload and later definition changes
+PASS: side-s-blower-crown: duplicate settlement cannot pay twice
+PASS: side-s-blower-crown: repeats never add first-win cash or reputation again
+PASS: side-s-heavy-hitters: captured terms survive reload and later definition changes
+PASS: side-s-heavy-hitters: duplicate settlement cannot pay twice
+PASS: side-s-heavy-hitters: repeats never add first-win cash or reputation again
+PASS: side-s-launch-masters: captured terms survive reload and later definition changes
+PASS: side-s-launch-masters: duplicate settlement cannot pay twice
+PASS: side-s-launch-masters: repeats never add first-win cash or reputation again
+PASS: side-s-midnight-mile: captured terms survive reload and later definition changes
+PASS: side-s-midnight-mile: duplicate settlement cannot pay twice
+PASS: side-s-midnight-mile: repeats never add first-win cash or reputation again
+Checks: 332 / failures: 0

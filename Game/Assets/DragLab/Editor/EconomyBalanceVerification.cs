@@ -25,7 +25,7 @@ namespace DragLab.Editor
                 e.cashWin=wins[t*2+k];e.cashLoss=e.entryFee/2;e.firstWinBonus=150+t*50+k*25;return true;
             }
             for(int i=0;i<3;i++)if(e.stableId=="special-"+i){e.cashWin=new[]{400,500,450}[i];e.cashLoss=e.entryFee/2;e.firstWinBonus=new[]{175,225,200}[i];return true;}
-            return false;
+            return CareerRacePack.SetRewards(e);
         }
         [MenuItem("DragLab/Apply Slower Career Rewards")]
         public static void ApplyRaceRewards()
@@ -38,7 +38,7 @@ namespace DragLab.Editor
             var catalog=MechanicsTransactions.Catalog();var events=Resources.LoadAll<CareerEventDefinition>("Data/Events");
             int checks=0;var report=new StringBuilder();void Check(bool ok,string label){checks++;if(!ok)throw new InvalidOperationException(label);report.AppendLine("PASS: "+label);}
             int previous=0;
-            foreach(var e in events.Where(e=>!e.stableId.StartsWith("special-",StringComparison.Ordinal)).OrderBy(e=>e.reputationRequired)){
+            foreach(var e in events.Where(e=>!e.stableId.StartsWith("special-",StringComparison.Ordinal)&&!CareerRacePack.IsSide(e)).OrderBy(e=>e.reputationRequired)){
                 int net=e.cashWin-e.entryFee;Check(net>previous,e.stableId+": take-home repeat reward grows through the main ladder");previous=net;
                 Check(e.firstWinBonus<=net,e.stableId+": first-win bonus is bounded by the repeat prize");
             }
@@ -65,8 +65,8 @@ namespace DragLab.Editor
                 UnityEngine.Object.DestroyImmediate(captured);
             }
             var after=new StringBuilder("event,fee,win,repeat_net,completed_loss,loss_net,first_bonus\n");foreach(var e in events.OrderBy(e=>e.reputationRequired).ThenBy(e=>e.stableId))after.AppendLine(string.Join(",",e.stableId,e.entryFee,e.cashWin,e.cashWin-e.entryFee,e.cashLoss,e.cashLoss-e.entryFee,e.firstWinBonus));
-            Directory.CreateDirectory("../reports/race-rewards-20261017");File.WriteAllText("../reports/race-rewards-20261017/after-matrix.csv",after.ToString(),new UTF8Encoding(false));
-            report.AppendLine("Checks: "+checks+" / failures: 0");File.WriteAllText("../reports/race-rewards-20261017/verification.txt",report.ToString(),new UTF8Encoding(false));
+            string folder=CareerRacePack.ReportDirectory("../reports/race-rewards-20261017");Directory.CreateDirectory(folder);File.WriteAllText(Path.Combine(folder,"after-matrix.csv"),after.ToString(),new UTF8Encoding(false));
+            report.AppendLine("Checks: "+checks+" / failures: 0");File.WriteAllText(Path.Combine(folder,"verification.txt"),report.ToString(),new UTF8Encoding(false));
         }
         public static void AuditRaceRewards()
         {

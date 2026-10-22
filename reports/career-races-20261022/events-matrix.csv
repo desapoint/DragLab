@@ -1,0 +1,29 @@
+event,name,tier,rival,distance_m,rep,prerequisite,fee,win,repeat_net,bonus
+side-f-dockside,Dockside warm-up,F,Nico,201.168,2,first-pass,0,125,125,75
+side-f-hatch-meet,Backroad hatch meet,F,Bea,402.336,2,first-pass,0,175,175,90
+side-f-rear-drive-rookie,Rear-drive rookie run,F,Tess,804.672,4,club-run,20,245,225,120
+side-f-small-capacity,Small-capacity cup,F,Kit,402.336,4,club-run,15,215,200,105
+side-e-all-motor,All-motor club,E,Lena,402.336,20,ladder-f-rival,65,565,500,175
+side-e-short-shift,Short-shift showdown,E,Ivo,201.168,20,ladder-f-rival,60,510,450,150
+side-e-boost-street,Boost street challenge,E,Remy,402.336,22,ladder-f-rival,70,595,525,175
+side-e-touring-pull,Touring long pull,E,Sana,804.672,22,ladder-f-rival,75,625,550,175
+side-d-featherweight,Featherweight sprint,D,Finn,201.168,28,ladder-e-rival,80,680,600,200
+side-d-roadster-night,Roadster night,D,Mara,402.336,28,ladder-e-rival,85,735,650,225
+side-d-turbo-chase,Turbo chase,D,Ari,402.336,30,ladder-e-rival,90,765,675,225
+side-d-workhorse,Workhorse long haul,D,Owen,804.672,30,ladder-e-rival,95,795,700,225
+side-c-four-wheel-launch,Four-wheel launch club,C,Eden,201.168,36,ladder-d-rival,100,850,750,250
+side-c-front-row,Front-row shootout,C,Zara,402.336,36,ladder-d-rival,105,905,800,275
+side-c-after-hours,After-hours muscle,C,Cruz,804.672,38,ladder-d-rival,115,990,875,300
+side-c-six-pot,Six-pot night meet,C,Ellis,402.336,38,ladder-d-rival,110,935,825,275
+side-b-boost-launch,Boost launch battle,B,Noor,201.168,44,ladder-c-rival,120,1070,950,325
+side-b-street-pressure,Street pressure,B,Drew,402.336,44,ladder-c-rival,125,1125,1000,350
+side-b-big-coupe,Big coupe grudge,B,Rhea,402.336,46,ladder-c-rival,130,1180,1050,350
+side-b-heavy-express,Heavy express,B,Jae,804.672,46,ladder-c-rival,135,1260,1125,375
+side-a-flash-launch,Flash launch trophy,A,Lex,201.168,52,ladder-b-rival,140,1340,1200,400
+side-a-track-pressure,Track pressure,A,Avery,402.336,52,ladder-b-rival,145,1395,1250,425
+side-a-blower-battle,Blower battle,A,Rory,402.336,54,ladder-b-rival,150,1475,1325,450
+side-a-grand-touring,Grand touring challenge,A,Skye,804.672,54,ladder-b-rival,155,1555,1400,475
+side-s-blower-crown,Blower crown,S,Kai,402.336,60,ladder-a-rival,165,1865,1700,575
+side-s-launch-masters,Launch masters,S,Quinn,201.168,60,ladder-a-rival,160,1760,1600,550
+side-s-heavy-hitters,Heavy hitters,S,Wren,402.336,62,ladder-a-rival,170,1970,1800,625
+side-s-midnight-mile,Midnight long run,S,Phoenix,804.672,62,ladder-a-rival,175,2125,1950,675

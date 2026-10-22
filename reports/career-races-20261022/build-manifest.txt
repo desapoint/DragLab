@@ -1,0 +1,5 @@
+Fresh Unity 6000.6.4f1 development players; source de697d5 plus career-races-20261022 checkpoint.
+437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd  Game/Builds/Windows/DragLab.exe  667136 bytes
+3089015a068019a0b4e72d1efe3236604c6b7d0b7cea32c503a26e70b6bb96c6  Game/Builds/Windows/DragLab_Data/Managed/Assembly-CSharp.dll  3118080 bytes
+2896b104382a2e0706aa110d277c683224bc3a5bf271fa60126120133d0a0db2  Game/Builds/Windows/DragLab_Data/resources.assets  1773648 bytes
+e0868dc0d13a9ad425a172ed0edbb7dd81fd53bb23d740c77e7a086bbc271587  Game/Builds/Android/DragLab.apk  87542512 bytes

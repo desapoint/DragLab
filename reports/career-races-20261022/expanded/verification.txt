@@ -1,0 +1,1089 @@
+﻿PASS: 49 unique events retain all four legacy IDs.
+PASS: Seven authored tiers each have qualification and rival.
+PASS: Installed stock entry: aster / first-pass
+PASS: Installed stock entry: aster / club-run
+PASS: Installed stock entry: aster / coupe-rival
+PASS: Installed stock entry: aster / local-final
+PASS: Installed stock entry: aster / ladder-f-qualifier
+PASS: Installed stock entry: aster / ladder-f-rival
+PASS: Installed stock entry: aster / ladder-e-qualifier
+PASS: Installed stock entry: aster / ladder-e-rival
+PASS: Installed stock entry: aster / ladder-d-qualifier
+PASS: Installed stock entry: aster / ladder-d-rival
+PASS: Installed stock entry: aster / ladder-c-qualifier
+PASS: Installed stock entry: aster / ladder-c-rival
+PASS: Installed stock entry: aster / ladder-b-qualifier
+PASS: Installed stock entry: aster / ladder-b-rival
+PASS: Installed stock entry: aster / ladder-a-qualifier
+PASS: Installed stock entry: aster / ladder-a-rival
+PASS: Installed stock entry: aster / ladder-s-qualifier
+PASS: Installed stock entry: aster / ladder-s-rival
+PASS: Actual drive/displacement restriction: aster
+PASS: Incomplete engine blocks entry: aster
+PASS: Installed stock entry: aster-sport / first-pass
+PASS: Installed stock entry: aster-sport / club-run
+PASS: Installed stock entry: aster-sport / coupe-rival
+PASS: Installed stock entry: aster-sport / local-final
+PASS: Installed stock entry: aster-sport / ladder-f-qualifier
+PASS: Installed stock entry: aster-sport / ladder-f-rival
+PASS: Installed stock entry: aster-sport / ladder-e-qualifier
+PASS: Installed stock entry: aster-sport / ladder-e-rival
+PASS: Installed stock entry: aster-sport / ladder-d-qualifier
+PASS: Installed stock entry: aster-sport / ladder-d-rival
+PASS: Installed stock entry: aster-sport / ladder-c-qualifier
+PASS: Installed stock entry: aster-sport / ladder-c-rival
+PASS: Installed stock entry: aster-sport / ladder-b-qualifier
+PASS: Installed stock entry: aster-sport / ladder-b-rival
+PASS: Installed stock entry: aster-sport / ladder-a-qualifier
+PASS: Installed stock entry: aster-sport / ladder-a-rival
+PASS: Installed stock entry: aster-sport / ladder-s-qualifier
+PASS: Installed stock entry: aster-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: aster-sport
+PASS: Incomplete engine blocks entry: aster-sport
+PASS: Installed stock entry: atlas / first-pass
+PASS: Installed stock entry: atlas / club-run
+PASS: Installed stock entry: atlas / coupe-rival
+PASS: Installed stock entry: atlas / local-final
+PASS: Installed stock entry: atlas / ladder-f-qualifier
+PASS: Installed stock entry: atlas / ladder-f-rival
+PASS: Installed stock entry: atlas / ladder-e-qualifier
+PASS: Installed stock entry: atlas / ladder-e-rival
+PASS: Installed stock entry: atlas / ladder-d-qualifier
+PASS: Installed stock entry: atlas / ladder-d-rival
+PASS: Installed stock entry: atlas / ladder-c-qualifier
+PASS: Installed stock entry: atlas / ladder-c-rival
+PASS: Installed stock entry: atlas / ladder-b-qualifier
+PASS: Installed stock entry: atlas / ladder-b-rival
+PASS: Installed stock entry: atlas / ladder-a-qualifier
+PASS: Installed stock entry: atlas / ladder-a-rival
+PASS: Installed stock entry: atlas / ladder-s-qualifier
+PASS: Installed stock entry: atlas / ladder-s-rival
+PASS: Actual drive/displacement restriction: atlas
+PASS: Incomplete engine blocks entry: atlas
+PASS: Installed stock entry: atlas-sport / first-pass
+PASS: Installed stock entry: atlas-sport / club-run
+PASS: Installed stock entry: atlas-sport / coupe-rival
+PASS: Installed stock entry: atlas-sport / local-final
+PASS: Installed stock entry: atlas-sport / ladder-f-qualifier
+PASS: Installed stock entry: atlas-sport / ladder-f-rival
+PASS: Installed stock entry: atlas-sport / ladder-e-qualifier
+PASS: Installed stock entry: atlas-sport / ladder-e-rival
+PASS: Installed stock entry: atlas-sport / ladder-d-qualifier
+PASS: Installed stock entry: atlas-sport / ladder-d-rival
+PASS: Installed stock entry: atlas-sport / ladder-c-qualifier
+PASS: Installed stock entry: atlas-sport / ladder-c-rival
+PASS: Installed stock entry: atlas-sport / ladder-b-qualifier
+PASS: Installed stock entry: atlas-sport / ladder-b-rival
+PASS: Installed stock entry: atlas-sport / ladder-a-qualifier
+PASS: Installed stock entry: atlas-sport / ladder-a-rival
+PASS: Installed stock entry: atlas-sport / ladder-s-qualifier
+PASS: Installed stock entry: atlas-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: atlas-sport
+PASS: Incomplete engine blocks entry: atlas-sport
+PASS: Installed stock entry: boreal / first-pass
+PASS: Installed stock entry: boreal / club-run
+PASS: Installed stock entry: boreal / coupe-rival
+PASS: Installed stock entry: boreal / local-final
+PASS: Installed stock entry: boreal / ladder-f-qualifier
+PASS: Installed stock entry: boreal / ladder-f-rival
+PASS: Installed stock entry: boreal / ladder-e-qualifier
+PASS: Installed stock entry: boreal / ladder-e-rival
+PASS: Installed stock entry: boreal / ladder-d-qualifier
+PASS: Installed stock entry: boreal / ladder-d-rival
+PASS: Installed stock entry: boreal / ladder-c-qualifier
+PASS: Installed stock entry: boreal / ladder-c-rival
+PASS: Installed stock entry: boreal / ladder-b-qualifier
+PASS: Installed stock entry: boreal / ladder-b-rival
+PASS: Installed stock entry: boreal / ladder-a-qualifier
+PASS: Installed stock entry: boreal / ladder-a-rival
+PASS: Installed stock entry: boreal / ladder-s-qualifier
+PASS: Installed stock entry: boreal / ladder-s-rival
+PASS: Actual drive/displacement restriction: boreal
+PASS: Incomplete engine blocks entry: boreal
+PASS: Installed stock entry: boreal-sport / first-pass
+PASS: Installed stock entry: boreal-sport / club-run
+PASS: Installed stock entry: boreal-sport / coupe-rival
+PASS: Installed stock entry: boreal-sport / local-final
+PASS: Installed stock entry: boreal-sport / ladder-f-qualifier
+PASS: Installed stock entry: boreal-sport / ladder-f-rival
+PASS: Installed stock entry: boreal-sport / ladder-e-qualifier
+PASS: Installed stock entry: boreal-sport / ladder-e-rival
+PASS: Installed stock entry: boreal-sport / ladder-d-qualifier
+PASS: Installed stock entry: boreal-sport / ladder-d-rival
+PASS: Installed stock entry: boreal-sport / ladder-c-qualifier
+PASS: Installed stock entry: boreal-sport / ladder-c-rival
+PASS: Installed stock entry: boreal-sport / ladder-b-qualifier
+PASS: Installed stock entry: boreal-sport / ladder-b-rival
+PASS: Installed stock entry: boreal-sport / ladder-a-qualifier
+PASS: Installed stock entry: boreal-sport / ladder-a-rival
+PASS: Installed stock entry: boreal-sport / ladder-s-qualifier
+PASS: Installed stock entry: boreal-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: boreal-sport
+PASS: Incomplete engine blocks entry: boreal-sport
+PASS: Installed stock entry: cinder / first-pass
+PASS: Installed stock entry: cinder / club-run
+PASS: Installed stock entry: cinder / coupe-rival
+PASS: Installed stock entry: cinder / local-final
+PASS: Installed stock entry: cinder / ladder-f-qualifier
+PASS: Installed stock entry: cinder / ladder-f-rival
+PASS: Installed stock entry: cinder / ladder-e-qualifier
+PASS: Installed stock entry: cinder / ladder-e-rival
+PASS: Installed stock entry: cinder / ladder-d-qualifier
+PASS: Installed stock entry: cinder / ladder-d-rival
+PASS: Installed stock entry: cinder / ladder-c-qualifier
+PASS: Installed stock entry: cinder / ladder-c-rival
+PASS: Installed stock entry: cinder / ladder-b-qualifier
+PASS: Installed stock entry: cinder / ladder-b-rival
+PASS: Installed stock entry: cinder / ladder-a-qualifier
+PASS: Installed stock entry: cinder / ladder-a-rival
+PASS: Installed stock entry: cinder / ladder-s-qualifier
+PASS: Installed stock entry: cinder / ladder-s-rival
+PASS: Actual drive/displacement restriction: cinder
+PASS: Incomplete engine blocks entry: cinder
+PASS: Installed stock entry: cinder-sport / first-pass
+PASS: Installed stock entry: cinder-sport / club-run
+PASS: Installed stock entry: cinder-sport / coupe-rival
+PASS: Installed stock entry: cinder-sport / local-final
+PASS: Installed stock entry: cinder-sport / ladder-f-qualifier
+PASS: Installed stock entry: cinder-sport / ladder-f-rival
+PASS: Installed stock entry: cinder-sport / ladder-e-qualifier
+PASS: Installed stock entry: cinder-sport / ladder-e-rival
+PASS: Installed stock entry: cinder-sport / ladder-d-qualifier
+PASS: Installed stock entry: cinder-sport / ladder-d-rival
+PASS: Installed stock entry: cinder-sport / ladder-c-qualifier
+PASS: Installed stock entry: cinder-sport / ladder-c-rival
+PASS: Installed stock entry: cinder-sport / ladder-b-qualifier
+PASS: Installed stock entry: cinder-sport / ladder-b-rival
+PASS: Installed stock entry: cinder-sport / ladder-a-qualifier
+PASS: Installed stock entry: cinder-sport / ladder-a-rival
+PASS: Installed stock entry: cinder-sport / ladder-s-qualifier
+PASS: Installed stock entry: cinder-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: cinder-sport
+PASS: Incomplete engine blocks entry: cinder-sport
+PASS: Installed stock entry: city-three / first-pass
+PASS: Installed stock entry: city-three / club-run
+PASS: Installed stock entry: city-three / coupe-rival
+PASS: Installed stock entry: city-three / local-final
+PASS: Installed stock entry: city-three / ladder-f-qualifier
+PASS: Installed stock entry: city-three / ladder-f-rival
+PASS: Installed stock entry: city-three / ladder-e-qualifier
+PASS: Installed stock entry: city-three / ladder-e-rival
+PASS: Installed stock entry: city-three / ladder-d-qualifier
+PASS: Installed stock entry: city-three / ladder-d-rival
+PASS: Installed stock entry: city-three / ladder-c-qualifier
+PASS: Installed stock entry: city-three / ladder-c-rival
+PASS: Installed stock entry: city-three / ladder-b-qualifier
+PASS: Installed stock entry: city-three / ladder-b-rival
+PASS: Installed stock entry: city-three / ladder-a-qualifier
+PASS: Installed stock entry: city-three / ladder-a-rival
+PASS: Installed stock entry: city-three / ladder-s-qualifier
+PASS: Installed stock entry: city-three / ladder-s-rival
+PASS: Actual drive/displacement restriction: city-three
+PASS: Incomplete engine blocks entry: city-three
+PASS: Installed stock entry: comet / first-pass
+PASS: Installed stock entry: comet / club-run
+PASS: Installed stock entry: comet / coupe-rival
+PASS: Installed stock entry: comet / local-final
+PASS: Installed stock entry: comet / ladder-f-qualifier
+PASS: Installed stock entry: comet / ladder-f-rival
+PASS: Installed stock entry: comet / ladder-e-qualifier
+PASS: Installed stock entry: comet / ladder-e-rival
+PASS: Installed stock entry: comet / ladder-d-qualifier
+PASS: Installed stock entry: comet / ladder-d-rival
+PASS: Installed stock entry: comet / ladder-c-qualifier
+PASS: Installed stock entry: comet / ladder-c-rival
+PASS: Installed stock entry: comet / ladder-b-qualifier
+PASS: Installed stock entry: comet / ladder-b-rival
+PASS: Installed stock entry: comet / ladder-a-qualifier
+PASS: Installed stock entry: comet / ladder-a-rival
+PASS: Installed stock entry: comet / ladder-s-qualifier
+PASS: Installed stock entry: comet / ladder-s-rival
+PASS: Actual drive/displacement restriction: comet
+PASS: Incomplete engine blocks entry: comet
+PASS: Installed stock entry: comet-sport / first-pass
+PASS: Installed stock entry: comet-sport / club-run
+PASS: Installed stock entry: comet-sport / coupe-rival
+PASS: Installed stock entry: comet-sport / local-final
+PASS: Installed stock entry: comet-sport / ladder-f-qualifier
+PASS: Installed stock entry: comet-sport / ladder-f-rival
+PASS: Installed stock entry: comet-sport / ladder-e-qualifier
+PASS: Installed stock entry: comet-sport / ladder-e-rival
+PASS: Installed stock entry: comet-sport / ladder-d-qualifier
+PASS: Installed stock entry: comet-sport / ladder-d-rival
+PASS: Installed stock entry: comet-sport / ladder-c-qualifier
+PASS: Installed stock entry: comet-sport / ladder-c-rival
+PASS: Installed stock entry: comet-sport / ladder-b-qualifier
+PASS: Installed stock entry: comet-sport / ladder-b-rival
+PASS: Installed stock entry: comet-sport / ladder-a-qualifier
+PASS: Installed stock entry: comet-sport / ladder-a-rival
+PASS: Installed stock entry: comet-sport / ladder-s-qualifier
+PASS: Installed stock entry: comet-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: comet-sport
+PASS: Incomplete engine blocks entry: comet-sport
+PASS: Installed stock entry: finch / first-pass
+PASS: Installed stock entry: finch / club-run
+PASS: Installed stock entry: finch / coupe-rival
+PASS: Installed stock entry: finch / local-final
+PASS: Installed stock entry: finch / ladder-f-qualifier
+PASS: Installed stock entry: finch / ladder-f-rival
+PASS: Installed stock entry: finch / ladder-e-qualifier
+PASS: Installed stock entry: finch / ladder-e-rival
+PASS: Installed stock entry: finch / ladder-d-qualifier
+PASS: Installed stock entry: finch / ladder-d-rival
+PASS: Installed stock entry: finch / ladder-c-qualifier
+PASS: Installed stock entry: finch / ladder-c-rival
+PASS: Installed stock entry: finch / ladder-b-qualifier
+PASS: Installed stock entry: finch / ladder-b-rival
+PASS: Installed stock entry: finch / ladder-a-qualifier
+PASS: Installed stock entry: finch / ladder-a-rival
+PASS: Installed stock entry: finch / ladder-s-qualifier
+PASS: Installed stock entry: finch / ladder-s-rival
+PASS: Actual drive/displacement restriction: finch
+PASS: Incomplete engine blocks entry: finch
+PASS: Installed stock entry: finch-sport / first-pass
+PASS: Installed stock entry: finch-sport / club-run
+PASS: Installed stock entry: finch-sport / coupe-rival
+PASS: Installed stock entry: finch-sport / local-final
+PASS: Installed stock entry: finch-sport / ladder-f-qualifier
+PASS: Installed stock entry: finch-sport / ladder-f-rival
+PASS: Installed stock entry: finch-sport / ladder-e-qualifier
+PASS: Installed stock entry: finch-sport / ladder-e-rival
+PASS: Installed stock entry: finch-sport / ladder-d-qualifier
+PASS: Installed stock entry: finch-sport / ladder-d-rival
+PASS: Installed stock entry: finch-sport / ladder-c-qualifier
+PASS: Installed stock entry: finch-sport / ladder-c-rival
+PASS: Installed stock entry: finch-sport / ladder-b-qualifier
+PASS: Installed stock entry: finch-sport / ladder-b-rival
+PASS: Installed stock entry: finch-sport / ladder-a-qualifier
+PASS: Installed stock entry: finch-sport / ladder-a-rival
+PASS: Installed stock entry: finch-sport / ladder-s-qualifier
+PASS: Installed stock entry: finch-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: finch-sport
+PASS: Incomplete engine blocks entry: finch-sport
+PASS: Installed stock entry: fjord / first-pass
+PASS: Installed stock entry: fjord / club-run
+PASS: Installed stock entry: fjord / coupe-rival
+PASS: Installed stock entry: fjord / local-final
+PASS: Installed stock entry: fjord / ladder-f-qualifier
+PASS: Installed stock entry: fjord / ladder-f-rival
+PASS: Installed stock entry: fjord / ladder-e-qualifier
+PASS: Installed stock entry: fjord / ladder-e-rival
+PASS: Installed stock entry: fjord / ladder-d-qualifier
+PASS: Installed stock entry: fjord / ladder-d-rival
+PASS: Installed stock entry: fjord / ladder-c-qualifier
+PASS: Installed stock entry: fjord / ladder-c-rival
+PASS: Installed stock entry: fjord / ladder-b-qualifier
+PASS: Installed stock entry: fjord / ladder-b-rival
+PASS: Installed stock entry: fjord / ladder-a-qualifier
+PASS: Installed stock entry: fjord / ladder-a-rival
+PASS: Installed stock entry: fjord / ladder-s-qualifier
+PASS: Installed stock entry: fjord / ladder-s-rival
+PASS: Actual drive/displacement restriction: fjord
+PASS: Incomplete engine blocks entry: fjord
+PASS: Installed stock entry: fjord-sport / first-pass
+PASS: Installed stock entry: fjord-sport / club-run
+PASS: Installed stock entry: fjord-sport / coupe-rival
+PASS: Installed stock entry: fjord-sport / local-final
+PASS: Installed stock entry: fjord-sport / ladder-f-qualifier
+PASS: Installed stock entry: fjord-sport / ladder-f-rival
+PASS: Installed stock entry: fjord-sport / ladder-e-qualifier
+PASS: Installed stock entry: fjord-sport / ladder-e-rival
+PASS: Installed stock entry: fjord-sport / ladder-d-qualifier
+PASS: Installed stock entry: fjord-sport / ladder-d-rival
+PASS: Installed stock entry: fjord-sport / ladder-c-qualifier
+PASS: Installed stock entry: fjord-sport / ladder-c-rival
+PASS: Installed stock entry: fjord-sport / ladder-b-qualifier
+PASS: Installed stock entry: fjord-sport / ladder-b-rival
+PASS: Installed stock entry: fjord-sport / ladder-a-qualifier
+PASS: Installed stock entry: fjord-sport / ladder-a-rival
+PASS: Installed stock entry: fjord-sport / ladder-s-qualifier
+PASS: Installed stock entry: fjord-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: fjord-sport
+PASS: Incomplete engine blocks entry: fjord-sport
+PASS: Installed stock entry: juniper-club / first-pass
+PASS: Installed stock entry: juniper-club / club-run
+PASS: Installed stock entry: juniper-club / coupe-rival
+PASS: Installed stock entry: juniper-club / local-final
+PASS: Installed stock entry: juniper-club / ladder-f-qualifier
+PASS: Installed stock entry: juniper-club / ladder-f-rival
+PASS: Installed stock entry: juniper-club / ladder-e-qualifier
+PASS: Installed stock entry: juniper-club / ladder-e-rival
+PASS: Installed stock entry: juniper-club / ladder-d-qualifier
+PASS: Installed stock entry: juniper-club / ladder-d-rival
+PASS: Installed stock entry: juniper-club / ladder-c-qualifier
+PASS: Installed stock entry: juniper-club / ladder-c-rival
+PASS: Installed stock entry: juniper-club / ladder-b-qualifier
+PASS: Installed stock entry: juniper-club / ladder-b-rival
+PASS: Installed stock entry: juniper-club / ladder-a-qualifier
+PASS: Installed stock entry: juniper-club / ladder-a-rival
+PASS: Installed stock entry: juniper-club / ladder-s-qualifier
+PASS: Installed stock entry: juniper-club / ladder-s-rival
+PASS: Actual drive/displacement restriction: juniper-club
+PASS: Incomplete engine blocks entry: juniper-club
+PASS: Installed stock entry: juniper-economy / first-pass
+PASS: Installed stock entry: juniper-economy / club-run
+PASS: Installed stock entry: juniper-economy / coupe-rival
+PASS: Installed stock entry: juniper-economy / local-final
+PASS: Installed stock entry: juniper-economy / ladder-f-qualifier
+PASS: Installed stock entry: juniper-economy / ladder-f-rival
+PASS: Installed stock entry: juniper-economy / ladder-e-qualifier
+PASS: Installed stock entry: juniper-economy / ladder-e-rival
+PASS: Installed stock entry: juniper-economy / ladder-d-qualifier
+PASS: Installed stock entry: juniper-economy / ladder-d-rival
+PASS: Installed stock entry: juniper-economy / ladder-c-qualifier
+PASS: Installed stock entry: juniper-economy / ladder-c-rival
+PASS: Installed stock entry: juniper-economy / ladder-b-qualifier
+PASS: Installed stock entry: juniper-economy / ladder-b-rival
+PASS: Installed stock entry: juniper-economy / ladder-a-qualifier
+PASS: Installed stock entry: juniper-economy / ladder-a-rival
+PASS: Installed stock entry: juniper-economy / ladder-s-qualifier
+PASS: Installed stock entry: juniper-economy / ladder-s-rival
+PASS: Actual drive/displacement restriction: juniper-economy
+PASS: Incomplete engine blocks entry: juniper-economy
+PASS: Installed stock entry: kestrel-track / first-pass
+PASS: Installed stock entry: kestrel-track / club-run
+PASS: Installed stock entry: kestrel-track / coupe-rival
+PASS: Installed stock entry: kestrel-track / local-final
+PASS: Installed stock entry: kestrel-track / ladder-f-qualifier
+PASS: Installed stock entry: kestrel-track / ladder-f-rival
+PASS: Installed stock entry: kestrel-track / ladder-e-qualifier
+PASS: Installed stock entry: kestrel-track / ladder-e-rival
+PASS: Installed stock entry: kestrel-track / ladder-d-qualifier
+PASS: Installed stock entry: kestrel-track / ladder-d-rival
+PASS: Installed stock entry: kestrel-track / ladder-c-qualifier
+PASS: Installed stock entry: kestrel-track / ladder-c-rival
+PASS: Installed stock entry: kestrel-track / ladder-b-qualifier
+PASS: Installed stock entry: kestrel-track / ladder-b-rival
+PASS: Installed stock entry: kestrel-track / ladder-a-qualifier
+PASS: Installed stock entry: kestrel-track / ladder-a-rival
+PASS: Installed stock entry: kestrel-track / ladder-s-qualifier
+PASS: Installed stock entry: kestrel-track / ladder-s-rival
+PASS: Actual drive/displacement restriction: kestrel-track
+PASS: Incomplete engine blocks entry: kestrel-track
+PASS: Installed stock entry: lark / first-pass
+PASS: Installed stock entry: lark / club-run
+PASS: Installed stock entry: lark / coupe-rival
+PASS: Installed stock entry: lark / local-final
+PASS: Installed stock entry: lark / ladder-f-qualifier
+PASS: Installed stock entry: lark / ladder-f-rival
+PASS: Installed stock entry: lark / ladder-e-qualifier
+PASS: Installed stock entry: lark / ladder-e-rival
+PASS: Installed stock entry: lark / ladder-d-qualifier
+PASS: Installed stock entry: lark / ladder-d-rival
+PASS: Installed stock entry: lark / ladder-c-qualifier
+PASS: Installed stock entry: lark / ladder-c-rival
+PASS: Installed stock entry: lark / ladder-b-qualifier
+PASS: Installed stock entry: lark / ladder-b-rival
+PASS: Installed stock entry: lark / ladder-a-qualifier
+PASS: Installed stock entry: lark / ladder-a-rival
+PASS: Installed stock entry: lark / ladder-s-qualifier
+PASS: Installed stock entry: lark / ladder-s-rival
+PASS: Actual drive/displacement restriction: lark
+PASS: Incomplete engine blocks entry: lark
+PASS: Installed stock entry: lark-sport / first-pass
+PASS: Installed stock entry: lark-sport / club-run
+PASS: Installed stock entry: lark-sport / coupe-rival
+PASS: Installed stock entry: lark-sport / local-final
+PASS: Installed stock entry: lark-sport / ladder-f-qualifier
+PASS: Installed stock entry: lark-sport / ladder-f-rival
+PASS: Installed stock entry: lark-sport / ladder-e-qualifier
+PASS: Installed stock entry: lark-sport / ladder-e-rival
+PASS: Installed stock entry: lark-sport / ladder-d-qualifier
+PASS: Installed stock entry: lark-sport / ladder-d-rival
+PASS: Installed stock entry: lark-sport / ladder-c-qualifier
+PASS: Installed stock entry: lark-sport / ladder-c-rival
+PASS: Installed stock entry: lark-sport / ladder-b-qualifier
+PASS: Installed stock entry: lark-sport / ladder-b-rival
+PASS: Installed stock entry: lark-sport / ladder-a-qualifier
+PASS: Installed stock entry: lark-sport / ladder-a-rival
+PASS: Installed stock entry: lark-sport / ladder-s-qualifier
+PASS: Installed stock entry: lark-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: lark-sport
+PASS: Incomplete engine blocks entry: lark-sport
+PASS: Installed stock entry: meridian-sport / first-pass
+PASS: Installed stock entry: meridian-sport / club-run
+PASS: Installed stock entry: meridian-sport / coupe-rival
+PASS: Installed stock entry: meridian-sport / local-final
+PASS: Installed stock entry: meridian-sport / ladder-f-qualifier
+PASS: Installed stock entry: meridian-sport / ladder-f-rival
+PASS: Installed stock entry: meridian-sport / ladder-e-qualifier
+PASS: Installed stock entry: meridian-sport / ladder-e-rival
+PASS: Installed stock entry: meridian-sport / ladder-d-qualifier
+PASS: Installed stock entry: meridian-sport / ladder-d-rival
+PASS: Installed stock entry: meridian-sport / ladder-c-qualifier
+PASS: Installed stock entry: meridian-sport / ladder-c-rival
+PASS: Installed stock entry: meridian-sport / ladder-b-qualifier
+PASS: Installed stock entry: meridian-sport / ladder-b-rival
+PASS: Installed stock entry: meridian-sport / ladder-a-qualifier
+PASS: Installed stock entry: meridian-sport / ladder-a-rival
+PASS: Installed stock entry: meridian-sport / ladder-s-qualifier
+PASS: Installed stock entry: meridian-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: meridian-sport
+PASS: Incomplete engine blocks entry: meridian-sport
+PASS: Installed stock entry: mistral / first-pass
+PASS: Installed stock entry: mistral / club-run
+PASS: Installed stock entry: mistral / coupe-rival
+PASS: Installed stock entry: mistral / local-final
+PASS: Installed stock entry: mistral / ladder-f-qualifier
+PASS: Installed stock entry: mistral / ladder-f-rival
+PASS: Installed stock entry: mistral / ladder-e-qualifier
+PASS: Installed stock entry: mistral / ladder-e-rival
+PASS: Installed stock entry: mistral / ladder-d-qualifier
+PASS: Installed stock entry: mistral / ladder-d-rival
+PASS: Installed stock entry: mistral / ladder-c-qualifier
+PASS: Installed stock entry: mistral / ladder-c-rival
+PASS: Installed stock entry: mistral / ladder-b-qualifier
+PASS: Installed stock entry: mistral / ladder-b-rival
+PASS: Installed stock entry: mistral / ladder-a-qualifier
+PASS: Installed stock entry: mistral / ladder-a-rival
+PASS: Installed stock entry: mistral / ladder-s-qualifier
+PASS: Installed stock entry: mistral / ladder-s-rival
+PASS: Actual drive/displacement restriction: mistral
+PASS: Incomplete engine blocks entry: mistral
+PASS: Installed stock entry: mistral-sport / first-pass
+PASS: Installed stock entry: mistral-sport / club-run
+PASS: Installed stock entry: mistral-sport / coupe-rival
+PASS: Installed stock entry: mistral-sport / local-final
+PASS: Installed stock entry: mistral-sport / ladder-f-qualifier
+PASS: Installed stock entry: mistral-sport / ladder-f-rival
+PASS: Installed stock entry: mistral-sport / ladder-e-qualifier
+PASS: Installed stock entry: mistral-sport / ladder-e-rival
+PASS: Installed stock entry: mistral-sport / ladder-d-qualifier
+PASS: Installed stock entry: mistral-sport / ladder-d-rival
+PASS: Installed stock entry: mistral-sport / ladder-c-qualifier
+PASS: Installed stock entry: mistral-sport / ladder-c-rival
+PASS: Installed stock entry: mistral-sport / ladder-b-qualifier
+PASS: Installed stock entry: mistral-sport / ladder-b-rival
+PASS: Installed stock entry: mistral-sport / ladder-a-qualifier
+PASS: Installed stock entry: mistral-sport / ladder-a-rival
+PASS: Installed stock entry: mistral-sport / ladder-s-qualifier
+PASS: Installed stock entry: mistral-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: mistral-sport
+PASS: Incomplete engine blocks entry: mistral-sport
+PASS: Installed stock entry: osprey / first-pass
+PASS: Installed stock entry: osprey / club-run
+PASS: Installed stock entry: osprey / coupe-rival
+PASS: Installed stock entry: osprey / local-final
+PASS: Installed stock entry: osprey / ladder-f-qualifier
+PASS: Installed stock entry: osprey / ladder-f-rival
+PASS: Installed stock entry: osprey / ladder-e-qualifier
+PASS: Installed stock entry: osprey / ladder-e-rival
+PASS: Installed stock entry: osprey / ladder-d-qualifier
+PASS: Installed stock entry: osprey / ladder-d-rival
+PASS: Installed stock entry: osprey / ladder-c-qualifier
+PASS: Installed stock entry: osprey / ladder-c-rival
+PASS: Installed stock entry: osprey / ladder-b-qualifier
+PASS: Installed stock entry: osprey / ladder-b-rival
+PASS: Installed stock entry: osprey / ladder-a-qualifier
+PASS: Installed stock entry: osprey / ladder-a-rival
+PASS: Installed stock entry: osprey / ladder-s-qualifier
+PASS: Installed stock entry: osprey / ladder-s-rival
+PASS: Actual drive/displacement restriction: osprey
+PASS: Incomplete engine blocks entry: osprey
+PASS: Installed stock entry: osprey-sport / first-pass
+PASS: Installed stock entry: osprey-sport / club-run
+PASS: Installed stock entry: osprey-sport / coupe-rival
+PASS: Installed stock entry: osprey-sport / local-final
+PASS: Installed stock entry: osprey-sport / ladder-f-qualifier
+PASS: Installed stock entry: osprey-sport / ladder-f-rival
+PASS: Installed stock entry: osprey-sport / ladder-e-qualifier
+PASS: Installed stock entry: osprey-sport / ladder-e-rival
+PASS: Installed stock entry: osprey-sport / ladder-d-qualifier
+PASS: Installed stock entry: osprey-sport / ladder-d-rival
+PASS: Installed stock entry: osprey-sport / ladder-c-qualifier
+PASS: Installed stock entry: osprey-sport / ladder-c-rival
+PASS: Installed stock entry: osprey-sport / ladder-b-qualifier
+PASS: Installed stock entry: osprey-sport / ladder-b-rival
+PASS: Installed stock entry: osprey-sport / ladder-a-qualifier
+PASS: Installed stock entry: osprey-sport / ladder-a-rival
+PASS: Installed stock entry: osprey-sport / ladder-s-qualifier
+PASS: Installed stock entry: osprey-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: osprey-sport
+PASS: Incomplete engine blocks entry: osprey-sport
+PASS: Installed stock entry: piper / first-pass
+PASS: Installed stock entry: piper / club-run
+PASS: Installed stock entry: piper / coupe-rival
+PASS: Installed stock entry: piper / local-final
+PASS: Installed stock entry: piper / ladder-f-qualifier
+PASS: Installed stock entry: piper / ladder-f-rival
+PASS: Installed stock entry: piper / ladder-e-qualifier
+PASS: Installed stock entry: piper / ladder-e-rival
+PASS: Installed stock entry: piper / ladder-d-qualifier
+PASS: Installed stock entry: piper / ladder-d-rival
+PASS: Installed stock entry: piper / ladder-c-qualifier
+PASS: Installed stock entry: piper / ladder-c-rival
+PASS: Installed stock entry: piper / ladder-b-qualifier
+PASS: Installed stock entry: piper / ladder-b-rival
+PASS: Installed stock entry: piper / ladder-a-qualifier
+PASS: Installed stock entry: piper / ladder-a-rival
+PASS: Installed stock entry: piper / ladder-s-qualifier
+PASS: Installed stock entry: piper / ladder-s-rival
+PASS: Actual drive/displacement restriction: piper
+PASS: Incomplete engine blocks entry: piper
+PASS: Installed stock entry: piper-sport / first-pass
+PASS: Installed stock entry: piper-sport / club-run
+PASS: Installed stock entry: piper-sport / coupe-rival
+PASS: Installed stock entry: piper-sport / local-final
+PASS: Installed stock entry: piper-sport / ladder-f-qualifier
+PASS: Installed stock entry: piper-sport / ladder-f-rival
+PASS: Installed stock entry: piper-sport / ladder-e-qualifier
+PASS: Installed stock entry: piper-sport / ladder-e-rival
+PASS: Installed stock entry: piper-sport / ladder-d-qualifier
+PASS: Installed stock entry: piper-sport / ladder-d-rival
+PASS: Installed stock entry: piper-sport / ladder-c-qualifier
+PASS: Installed stock entry: piper-sport / ladder-c-rival
+PASS: Installed stock entry: piper-sport / ladder-b-qualifier
+PASS: Installed stock entry: piper-sport / ladder-b-rival
+PASS: Installed stock entry: piper-sport / ladder-a-qualifier
+PASS: Installed stock entry: piper-sport / ladder-a-rival
+PASS: Installed stock entry: piper-sport / ladder-s-qualifier
+PASS: Installed stock entry: piper-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: piper-sport
+PASS: Incomplete engine blocks entry: piper-sport
+PASS: Installed stock entry: rally-sedan / first-pass
+PASS: Installed stock entry: rally-sedan / club-run
+PASS: Installed stock entry: rally-sedan / coupe-rival
+PASS: Installed stock entry: rally-sedan / local-final
+PASS: Installed stock entry: rally-sedan / ladder-f-qualifier
+PASS: Installed stock entry: rally-sedan / ladder-f-rival
+PASS: Installed stock entry: rally-sedan / ladder-e-qualifier
+PASS: Installed stock entry: rally-sedan / ladder-e-rival
+PASS: Installed stock entry: rally-sedan / ladder-d-qualifier
+PASS: Installed stock entry: rally-sedan / ladder-d-rival
+PASS: Installed stock entry: rally-sedan / ladder-c-qualifier
+PASS: Installed stock entry: rally-sedan / ladder-c-rival
+PASS: Installed stock entry: rally-sedan / ladder-b-qualifier
+PASS: Installed stock entry: rally-sedan / ladder-b-rival
+PASS: Installed stock entry: rally-sedan / ladder-a-qualifier
+PASS: Installed stock entry: rally-sedan / ladder-a-rival
+PASS: Installed stock entry: rally-sedan / ladder-s-qualifier
+PASS: Installed stock entry: rally-sedan / ladder-s-rival
+PASS: Actual drive/displacement restriction: rally-sedan
+PASS: Incomplete engine blocks entry: rally-sedan
+PASS: Installed stock entry: reed / first-pass
+PASS: Installed stock entry: reed / club-run
+PASS: Installed stock entry: reed / coupe-rival
+PASS: Installed stock entry: reed / local-final
+PASS: Installed stock entry: reed / ladder-f-qualifier
+PASS: Installed stock entry: reed / ladder-f-rival
+PASS: Installed stock entry: reed / ladder-e-qualifier
+PASS: Installed stock entry: reed / ladder-e-rival
+PASS: Installed stock entry: reed / ladder-d-qualifier
+PASS: Installed stock entry: reed / ladder-d-rival
+PASS: Installed stock entry: reed / ladder-c-qualifier
+PASS: Installed stock entry: reed / ladder-c-rival
+PASS: Installed stock entry: reed / ladder-b-qualifier
+PASS: Installed stock entry: reed / ladder-b-rival
+PASS: Installed stock entry: reed / ladder-a-qualifier
+PASS: Installed stock entry: reed / ladder-a-rival
+PASS: Installed stock entry: reed / ladder-s-qualifier
+PASS: Installed stock entry: reed / ladder-s-rival
+PASS: Actual drive/displacement restriction: reed
+PASS: Incomplete engine blocks entry: reed
+PASS: Installed stock entry: reed-sport / first-pass
+PASS: Installed stock entry: reed-sport / club-run
+PASS: Installed stock entry: reed-sport / coupe-rival
+PASS: Installed stock entry: reed-sport / local-final
+PASS: Installed stock entry: reed-sport / ladder-f-qualifier
+PASS: Installed stock entry: reed-sport / ladder-f-rival
+PASS: Installed stock entry: reed-sport / ladder-e-qualifier
+PASS: Installed stock entry: reed-sport / ladder-e-rival
+PASS: Installed stock entry: reed-sport / ladder-d-qualifier
+PASS: Installed stock entry: reed-sport / ladder-d-rival
+PASS: Installed stock entry: reed-sport / ladder-c-qualifier
+PASS: Installed stock entry: reed-sport / ladder-c-rival
+PASS: Installed stock entry: reed-sport / ladder-b-qualifier
+PASS: Installed stock entry: reed-sport / ladder-b-rival
+PASS: Installed stock entry: reed-sport / ladder-a-qualifier
+PASS: Installed stock entry: reed-sport / ladder-a-rival
+PASS: Installed stock entry: reed-sport / ladder-s-qualifier
+PASS: Installed stock entry: reed-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: reed-sport
+PASS: Incomplete engine blocks entry: reed-sport
+PASS: Installed stock entry: rook / first-pass
+PASS: Installed stock entry: rook / club-run
+PASS: Installed stock entry: rook / coupe-rival
+PASS: Installed stock entry: rook / local-final
+PASS: Installed stock entry: rook / ladder-f-qualifier
+PASS: Installed stock entry: rook / ladder-f-rival
+PASS: Installed stock entry: rook / ladder-e-qualifier
+PASS: Installed stock entry: rook / ladder-e-rival
+PASS: Installed stock entry: rook / ladder-d-qualifier
+PASS: Installed stock entry: rook / ladder-d-rival
+PASS: Installed stock entry: rook / ladder-c-qualifier
+PASS: Installed stock entry: rook / ladder-c-rival
+PASS: Installed stock entry: rook / ladder-b-qualifier
+PASS: Installed stock entry: rook / ladder-b-rival
+PASS: Installed stock entry: rook / ladder-a-qualifier
+PASS: Installed stock entry: rook / ladder-a-rival
+PASS: Installed stock entry: rook / ladder-s-qualifier
+PASS: Installed stock entry: rook / ladder-s-rival
+PASS: Actual drive/displacement restriction: rook
+PASS: Incomplete engine blocks entry: rook
+PASS: Installed stock entry: rook-sport / first-pass
+PASS: Installed stock entry: rook-sport / club-run
+PASS: Installed stock entry: rook-sport / coupe-rival
+PASS: Installed stock entry: rook-sport / local-final
+PASS: Installed stock entry: rook-sport / ladder-f-qualifier
+PASS: Installed stock entry: rook-sport / ladder-f-rival
+PASS: Installed stock entry: rook-sport / ladder-e-qualifier
+PASS: Installed stock entry: rook-sport / ladder-e-rival
+PASS: Installed stock entry: rook-sport / ladder-d-qualifier
+PASS: Installed stock entry: rook-sport / ladder-d-rival
+PASS: Installed stock entry: rook-sport / ladder-c-qualifier
+PASS: Installed stock entry: rook-sport / ladder-c-rival
+PASS: Installed stock entry: rook-sport / ladder-b-qualifier
+PASS: Installed stock entry: rook-sport / ladder-b-rival
+PASS: Installed stock entry: rook-sport / ladder-a-qualifier
+PASS: Installed stock entry: rook-sport / ladder-a-rival
+PASS: Installed stock entry: rook-sport / ladder-s-qualifier
+PASS: Installed stock entry: rook-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: rook-sport
+PASS: Incomplete engine blocks entry: rook-sport
+PASS: Installed stock entry: sable / first-pass
+PASS: Installed stock entry: sable / club-run
+PASS: Installed stock entry: sable / coupe-rival
+PASS: Installed stock entry: sable / local-final
+PASS: Installed stock entry: sable / ladder-f-qualifier
+PASS: Installed stock entry: sable / ladder-f-rival
+PASS: Installed stock entry: sable / ladder-e-qualifier
+PASS: Installed stock entry: sable / ladder-e-rival
+PASS: Installed stock entry: sable / ladder-d-qualifier
+PASS: Installed stock entry: sable / ladder-d-rival
+PASS: Installed stock entry: sable / ladder-c-qualifier
+PASS: Installed stock entry: sable / ladder-c-rival
+PASS: Installed stock entry: sable / ladder-b-qualifier
+PASS: Installed stock entry: sable / ladder-b-rival
+PASS: Installed stock entry: sable / ladder-a-qualifier
+PASS: Installed stock entry: sable / ladder-a-rival
+PASS: Installed stock entry: sable / ladder-s-qualifier
+PASS: Installed stock entry: sable / ladder-s-rival
+PASS: Actual drive/displacement restriction: sable
+PASS: Incomplete engine blocks entry: sable
+PASS: Installed stock entry: sable-sport / first-pass
+PASS: Installed stock entry: sable-sport / club-run
+PASS: Installed stock entry: sable-sport / coupe-rival
+PASS: Installed stock entry: sable-sport / local-final
+PASS: Installed stock entry: sable-sport / ladder-f-qualifier
+PASS: Installed stock entry: sable-sport / ladder-f-rival
+PASS: Installed stock entry: sable-sport / ladder-e-qualifier
+PASS: Installed stock entry: sable-sport / ladder-e-rival
+PASS: Installed stock entry: sable-sport / ladder-d-qualifier
+PASS: Installed stock entry: sable-sport / ladder-d-rival
+PASS: Installed stock entry: sable-sport / ladder-c-qualifier
+PASS: Installed stock entry: sable-sport / ladder-c-rival
+PASS: Installed stock entry: sable-sport / ladder-b-qualifier
+PASS: Installed stock entry: sable-sport / ladder-b-rival
+PASS: Installed stock entry: sable-sport / ladder-a-qualifier
+PASS: Installed stock entry: sable-sport / ladder-a-rival
+PASS: Installed stock entry: sable-sport / ladder-s-qualifier
+PASS: Installed stock entry: sable-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: sable-sport
+PASS: Incomplete engine blocks entry: sable-sport
+PASS: Installed stock entry: solstice / first-pass
+PASS: Installed stock entry: solstice / club-run
+PASS: Installed stock entry: solstice / coupe-rival
+PASS: Installed stock entry: solstice / local-final
+PASS: Installed stock entry: solstice / ladder-f-qualifier
+PASS: Installed stock entry: solstice / ladder-f-rival
+PASS: Installed stock entry: solstice / ladder-e-qualifier
+PASS: Installed stock entry: solstice / ladder-e-rival
+PASS: Installed stock entry: solstice / ladder-d-qualifier
+PASS: Installed stock entry: solstice / ladder-d-rival
+PASS: Installed stock entry: solstice / ladder-c-qualifier
+PASS: Installed stock entry: solstice / ladder-c-rival
+PASS: Installed stock entry: solstice / ladder-b-qualifier
+PASS: Installed stock entry: solstice / ladder-b-rival
+PASS: Installed stock entry: solstice / ladder-a-qualifier
+PASS: Installed stock entry: solstice / ladder-a-rival
+PASS: Installed stock entry: solstice / ladder-s-qualifier
+PASS: Installed stock entry: solstice / ladder-s-rival
+PASS: Actual drive/displacement restriction: solstice
+PASS: Incomplete engine blocks entry: solstice
+PASS: Installed stock entry: solstice-sport / first-pass
+PASS: Installed stock entry: solstice-sport / club-run
+PASS: Installed stock entry: solstice-sport / coupe-rival
+PASS: Installed stock entry: solstice-sport / local-final
+PASS: Installed stock entry: solstice-sport / ladder-f-qualifier
+PASS: Installed stock entry: solstice-sport / ladder-f-rival
+PASS: Installed stock entry: solstice-sport / ladder-e-qualifier
+PASS: Installed stock entry: solstice-sport / ladder-e-rival
+PASS: Installed stock entry: solstice-sport / ladder-d-qualifier
+PASS: Installed stock entry: solstice-sport / ladder-d-rival
+PASS: Installed stock entry: solstice-sport / ladder-c-qualifier
+PASS: Installed stock entry: solstice-sport / ladder-c-rival
+PASS: Installed stock entry: solstice-sport / ladder-b-qualifier
+PASS: Installed stock entry: solstice-sport / ladder-b-rival
+PASS: Installed stock entry: solstice-sport / ladder-a-qualifier
+PASS: Installed stock entry: solstice-sport / ladder-a-rival
+PASS: Installed stock entry: solstice-sport / ladder-s-qualifier
+PASS: Installed stock entry: solstice-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: solstice-sport
+PASS: Incomplete engine blocks entry: solstice-sport
+PASS: Installed stock entry: sport-coupe / first-pass
+PASS: Installed stock entry: sport-coupe / club-run
+PASS: Installed stock entry: sport-coupe / coupe-rival
+PASS: Installed stock entry: sport-coupe / local-final
+PASS: Installed stock entry: sport-coupe / ladder-f-qualifier
+PASS: Installed stock entry: sport-coupe / ladder-f-rival
+PASS: Installed stock entry: sport-coupe / ladder-e-qualifier
+PASS: Installed stock entry: sport-coupe / ladder-e-rival
+PASS: Installed stock entry: sport-coupe / ladder-d-qualifier
+PASS: Installed stock entry: sport-coupe / ladder-d-rival
+PASS: Installed stock entry: sport-coupe / ladder-c-qualifier
+PASS: Installed stock entry: sport-coupe / ladder-c-rival
+PASS: Installed stock entry: sport-coupe / ladder-b-qualifier
+PASS: Installed stock entry: sport-coupe / ladder-b-rival
+PASS: Installed stock entry: sport-coupe / ladder-a-qualifier
+PASS: Installed stock entry: sport-coupe / ladder-a-rival
+PASS: Installed stock entry: sport-coupe / ladder-s-qualifier
+PASS: Installed stock entry: sport-coupe / ladder-s-rival
+PASS: Actual drive/displacement restriction: sport-coupe
+PASS: Incomplete engine blocks entry: sport-coupe
+PASS: Installed stock entry: sprig-sport / first-pass
+PASS: Installed stock entry: sprig-sport / club-run
+PASS: Installed stock entry: sprig-sport / coupe-rival
+PASS: Installed stock entry: sprig-sport / local-final
+PASS: Installed stock entry: sprig-sport / ladder-f-qualifier
+PASS: Installed stock entry: sprig-sport / ladder-f-rival
+PASS: Installed stock entry: sprig-sport / ladder-e-qualifier
+PASS: Installed stock entry: sprig-sport / ladder-e-rival
+PASS: Installed stock entry: sprig-sport / ladder-d-qualifier
+PASS: Installed stock entry: sprig-sport / ladder-d-rival
+PASS: Installed stock entry: sprig-sport / ladder-c-qualifier
+PASS: Installed stock entry: sprig-sport / ladder-c-rival
+PASS: Installed stock entry: sprig-sport / ladder-b-qualifier
+PASS: Installed stock entry: sprig-sport / ladder-b-rival
+PASS: Installed stock entry: sprig-sport / ladder-a-qualifier
+PASS: Installed stock entry: sprig-sport / ladder-a-rival
+PASS: Installed stock entry: sprig-sport / ladder-s-qualifier
+PASS: Installed stock entry: sprig-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: sprig-sport
+PASS: Incomplete engine blocks entry: sprig-sport
+PASS: Installed stock entry: starter-hatch / first-pass
+PASS: Installed stock entry: starter-hatch / club-run
+PASS: Installed stock entry: starter-hatch / coupe-rival
+PASS: Installed stock entry: starter-hatch / local-final
+PASS: Installed stock entry: starter-hatch / ladder-f-qualifier
+PASS: Installed stock entry: starter-hatch / ladder-f-rival
+PASS: Installed stock entry: starter-hatch / ladder-e-qualifier
+PASS: Installed stock entry: starter-hatch / ladder-e-rival
+PASS: Installed stock entry: starter-hatch / ladder-d-qualifier
+PASS: Installed stock entry: starter-hatch / ladder-d-rival
+PASS: Installed stock entry: starter-hatch / ladder-c-qualifier
+PASS: Installed stock entry: starter-hatch / ladder-c-rival
+PASS: Installed stock entry: starter-hatch / ladder-b-qualifier
+PASS: Installed stock entry: starter-hatch / ladder-b-rival
+PASS: Installed stock entry: starter-hatch / ladder-a-qualifier
+PASS: Installed stock entry: starter-hatch / ladder-a-rival
+PASS: Installed stock entry: starter-hatch / ladder-s-qualifier
+PASS: Installed stock entry: starter-hatch / ladder-s-rival
+PASS: Actual drive/displacement restriction: starter-hatch
+PASS: Incomplete engine blocks entry: starter-hatch
+PASS: Installed stock entry: super-v8 / first-pass
+PASS: Installed stock entry: super-v8 / club-run
+PASS: Installed stock entry: super-v8 / coupe-rival
+PASS: Installed stock entry: super-v8 / local-final
+PASS: Installed stock entry: super-v8 / ladder-f-qualifier
+PASS: Installed stock entry: super-v8 / ladder-f-rival
+PASS: Installed stock entry: super-v8 / ladder-e-qualifier
+PASS: Installed stock entry: super-v8 / ladder-e-rival
+PASS: Installed stock entry: super-v8 / ladder-d-qualifier
+PASS: Installed stock entry: super-v8 / ladder-d-rival
+PASS: Installed stock entry: super-v8 / ladder-c-qualifier
+PASS: Installed stock entry: super-v8 / ladder-c-rival
+PASS: Installed stock entry: super-v8 / ladder-b-qualifier
+PASS: Installed stock entry: super-v8 / ladder-b-rival
+PASS: Installed stock entry: super-v8 / ladder-a-qualifier
+PASS: Installed stock entry: super-v8 / ladder-a-rival
+PASS: Installed stock entry: super-v8 / ladder-s-qualifier
+PASS: Installed stock entry: super-v8 / ladder-s-rival
+PASS: Actual drive/displacement restriction: super-v8
+PASS: Incomplete engine blocks entry: super-v8
+PASS: Installed stock entry: swift / first-pass
+PASS: Installed stock entry: swift / club-run
+PASS: Installed stock entry: swift / coupe-rival
+PASS: Installed stock entry: swift / local-final
+PASS: Installed stock entry: swift / ladder-f-qualifier
+PASS: Installed stock entry: swift / ladder-f-rival
+PASS: Installed stock entry: swift / ladder-e-qualifier
+PASS: Installed stock entry: swift / ladder-e-rival
+PASS: Installed stock entry: swift / ladder-d-qualifier
+PASS: Installed stock entry: swift / ladder-d-rival
+PASS: Installed stock entry: swift / ladder-c-qualifier
+PASS: Installed stock entry: swift / ladder-c-rival
+PASS: Installed stock entry: swift / ladder-b-qualifier
+PASS: Installed stock entry: swift / ladder-b-rival
+PASS: Installed stock entry: swift / ladder-a-qualifier
+PASS: Installed stock entry: swift / ladder-a-rival
+PASS: Installed stock entry: swift / ladder-s-qualifier
+PASS: Installed stock entry: swift / ladder-s-rival
+PASS: Actual drive/displacement restriction: swift
+PASS: Incomplete engine blocks entry: swift
+PASS: Installed stock entry: swift-sport / first-pass
+PASS: Installed stock entry: swift-sport / club-run
+PASS: Installed stock entry: swift-sport / coupe-rival
+PASS: Installed stock entry: swift-sport / local-final
+PASS: Installed stock entry: swift-sport / ladder-f-qualifier
+PASS: Installed stock entry: swift-sport / ladder-f-rival
+PASS: Installed stock entry: swift-sport / ladder-e-qualifier
+PASS: Installed stock entry: swift-sport / ladder-e-rival
+PASS: Installed stock entry: swift-sport / ladder-d-qualifier
+PASS: Installed stock entry: swift-sport / ladder-d-rival
+PASS: Installed stock entry: swift-sport / ladder-c-qualifier
+PASS: Installed stock entry: swift-sport / ladder-c-rival
+PASS: Installed stock entry: swift-sport / ladder-b-qualifier
+PASS: Installed stock entry: swift-sport / ladder-b-rival
+PASS: Installed stock entry: swift-sport / ladder-a-qualifier
+PASS: Installed stock entry: swift-sport / ladder-a-rival
+PASS: Installed stock entry: swift-sport / ladder-s-qualifier
+PASS: Installed stock entry: swift-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: swift-sport
+PASS: Incomplete engine blocks entry: swift-sport
+PASS: Installed stock entry: tempest-rs / first-pass
+PASS: Installed stock entry: tempest-rs / club-run
+PASS: Installed stock entry: tempest-rs / coupe-rival
+PASS: Installed stock entry: tempest-rs / local-final
+PASS: Installed stock entry: tempest-rs / ladder-f-qualifier
+PASS: Installed stock entry: tempest-rs / ladder-f-rival
+PASS: Installed stock entry: tempest-rs / ladder-e-qualifier
+PASS: Installed stock entry: tempest-rs / ladder-e-rival
+PASS: Installed stock entry: tempest-rs / ladder-d-qualifier
+PASS: Installed stock entry: tempest-rs / ladder-d-rival
+PASS: Installed stock entry: tempest-rs / ladder-c-qualifier
+PASS: Installed stock entry: tempest-rs / ladder-c-rival
+PASS: Installed stock entry: tempest-rs / ladder-b-qualifier
+PASS: Installed stock entry: tempest-rs / ladder-b-rival
+PASS: Installed stock entry: tempest-rs / ladder-a-qualifier
+PASS: Installed stock entry: tempest-rs / ladder-a-rival
+PASS: Installed stock entry: tempest-rs / ladder-s-qualifier
+PASS: Installed stock entry: tempest-rs / ladder-s-rival
+PASS: Actual drive/displacement restriction: tempest-rs
+PASS: Incomplete engine blocks entry: tempest-rs
+PASS: Installed stock entry: timber-diesel / first-pass
+PASS: Installed stock entry: timber-diesel / club-run
+PASS: Installed stock entry: timber-diesel / coupe-rival
+PASS: Installed stock entry: timber-diesel / local-final
+PASS: Installed stock entry: timber-diesel / ladder-f-qualifier
+PASS: Installed stock entry: timber-diesel / ladder-f-rival
+PASS: Installed stock entry: timber-diesel / ladder-e-qualifier
+PASS: Installed stock entry: timber-diesel / ladder-e-rival
+PASS: Installed stock entry: timber-diesel / ladder-d-qualifier
+PASS: Installed stock entry: timber-diesel / ladder-d-rival
+PASS: Installed stock entry: timber-diesel / ladder-c-qualifier
+PASS: Installed stock entry: timber-diesel / ladder-c-rival
+PASS: Installed stock entry: timber-diesel / ladder-b-qualifier
+PASS: Installed stock entry: timber-diesel / ladder-b-rival
+PASS: Installed stock entry: timber-diesel / ladder-a-qualifier
+PASS: Installed stock entry: timber-diesel / ladder-a-rival
+PASS: Installed stock entry: timber-diesel / ladder-s-qualifier
+PASS: Installed stock entry: timber-diesel / ladder-s-rival
+PASS: Actual drive/displacement restriction: timber-diesel
+PASS: Incomplete engine blocks entry: timber-diesel
+PASS: Installed stock entry: timber-diesel-tow / first-pass
+PASS: Installed stock entry: timber-diesel-tow / club-run
+PASS: Installed stock entry: timber-diesel-tow / coupe-rival
+PASS: Installed stock entry: timber-diesel-tow / local-final
+PASS: Installed stock entry: timber-diesel-tow / ladder-f-qualifier
+PASS: Installed stock entry: timber-diesel-tow / ladder-f-rival
+PASS: Installed stock entry: timber-diesel-tow / ladder-e-qualifier
+PASS: Installed stock entry: timber-diesel-tow / ladder-e-rival
+PASS: Installed stock entry: timber-diesel-tow / ladder-d-qualifier
+PASS: Installed stock entry: timber-diesel-tow / ladder-d-rival
+PASS: Installed stock entry: timber-diesel-tow / ladder-c-qualifier
+PASS: Installed stock entry: timber-diesel-tow / ladder-c-rival
+PASS: Installed stock entry: timber-diesel-tow / ladder-b-qualifier
+PASS: Installed stock entry: timber-diesel-tow / ladder-b-rival
+PASS: Installed stock entry: timber-diesel-tow / ladder-a-qualifier
+PASS: Installed stock entry: timber-diesel-tow / ladder-a-rival
+PASS: Installed stock entry: timber-diesel-tow / ladder-s-qualifier
+PASS: Installed stock entry: timber-diesel-tow / ladder-s-rival
+PASS: Actual drive/displacement restriction: timber-diesel-tow
+PASS: Incomplete engine blocks entry: timber-diesel-tow
+PASS: Installed stock entry: touring-six / first-pass
+PASS: Installed stock entry: touring-six / club-run
+PASS: Installed stock entry: touring-six / coupe-rival
+PASS: Installed stock entry: touring-six / local-final
+PASS: Installed stock entry: touring-six / ladder-f-qualifier
+PASS: Installed stock entry: touring-six / ladder-f-rival
+PASS: Installed stock entry: touring-six / ladder-e-qualifier
+PASS: Installed stock entry: touring-six / ladder-e-rival
+PASS: Installed stock entry: touring-six / ladder-d-qualifier
+PASS: Installed stock entry: touring-six / ladder-d-rival
+PASS: Installed stock entry: touring-six / ladder-c-qualifier
+PASS: Installed stock entry: touring-six / ladder-c-rival
+PASS: Installed stock entry: touring-six / ladder-b-qualifier
+PASS: Installed stock entry: touring-six / ladder-b-rival
+PASS: Installed stock entry: touring-six / ladder-a-qualifier
+PASS: Installed stock entry: touring-six / ladder-a-rival
+PASS: Installed stock entry: touring-six / ladder-s-qualifier
+PASS: Installed stock entry: touring-six / ladder-s-rival
+PASS: Actual drive/displacement restriction: touring-six
+PASS: Incomplete engine blocks entry: touring-six
+PASS: Installed stock entry: utility-pickup / first-pass
+PASS: Installed stock entry: utility-pickup / club-run
+PASS: Installed stock entry: utility-pickup / coupe-rival
+PASS: Installed stock entry: utility-pickup / local-final
+PASS: Installed stock entry: utility-pickup / ladder-f-qualifier
+PASS: Installed stock entry: utility-pickup / ladder-f-rival
+PASS: Installed stock entry: utility-pickup / ladder-e-qualifier
+PASS: Installed stock entry: utility-pickup / ladder-e-rival
+PASS: Installed stock entry: utility-pickup / ladder-d-qualifier
+PASS: Installed stock entry: utility-pickup / ladder-d-rival
+PASS: Installed stock entry: utility-pickup / ladder-c-qualifier
+PASS: Installed stock entry: utility-pickup / ladder-c-rival
+PASS: Installed stock entry: utility-pickup / ladder-b-qualifier
+PASS: Installed stock entry: utility-pickup / ladder-b-rival
+PASS: Installed stock entry: utility-pickup / ladder-a-qualifier
+PASS: Installed stock entry: utility-pickup / ladder-a-rival
+PASS: Installed stock entry: utility-pickup / ladder-s-qualifier
+PASS: Installed stock entry: utility-pickup / ladder-s-rival
+PASS: Actual drive/displacement restriction: utility-pickup
+PASS: Incomplete engine blocks entry: utility-pickup
+PASS: Installed stock entry: v8-muscle / first-pass
+PASS: Installed stock entry: v8-muscle / club-run
+PASS: Installed stock entry: v8-muscle / coupe-rival
+PASS: Installed stock entry: v8-muscle / local-final
+PASS: Installed stock entry: v8-muscle / ladder-f-qualifier
+PASS: Installed stock entry: v8-muscle / ladder-f-rival
+PASS: Installed stock entry: v8-muscle / ladder-e-qualifier
+PASS: Installed stock entry: v8-muscle / ladder-e-rival
+PASS: Installed stock entry: v8-muscle / ladder-d-qualifier
+PASS: Installed stock entry: v8-muscle / ladder-d-rival
+PASS: Installed stock entry: v8-muscle / ladder-c-qualifier
+PASS: Installed stock entry: v8-muscle / ladder-c-rival
+PASS: Installed stock entry: v8-muscle / ladder-b-qualifier
+PASS: Installed stock entry: v8-muscle / ladder-b-rival
+PASS: Installed stock entry: v8-muscle / ladder-a-qualifier
+PASS: Installed stock entry: v8-muscle / ladder-a-rival
+PASS: Installed stock entry: v8-muscle / ladder-s-qualifier
+PASS: Installed stock entry: v8-muscle / ladder-s-rival
+PASS: Actual drive/displacement restriction: v8-muscle
+PASS: Incomplete engine blocks entry: v8-muscle
+PASS: Installed stock entry: vale / first-pass
+PASS: Installed stock entry: vale / club-run
+PASS: Installed stock entry: vale / coupe-rival
+PASS: Installed stock entry: vale / local-final
+PASS: Installed stock entry: vale / ladder-f-qualifier
+PASS: Installed stock entry: vale / ladder-f-rival
+PASS: Installed stock entry: vale / ladder-e-qualifier
+PASS: Installed stock entry: vale / ladder-e-rival
+PASS: Installed stock entry: vale / ladder-d-qualifier
+PASS: Installed stock entry: vale / ladder-d-rival
+PASS: Installed stock entry: vale / ladder-c-qualifier
+PASS: Installed stock entry: vale / ladder-c-rival
+PASS: Installed stock entry: vale / ladder-b-qualifier
+PASS: Installed stock entry: vale / ladder-b-rival
+PASS: Installed stock entry: vale / ladder-a-qualifier
+PASS: Installed stock entry: vale / ladder-a-rival
+PASS: Installed stock entry: vale / ladder-s-qualifier
+PASS: Installed stock entry: vale / ladder-s-rival
+PASS: Actual drive/displacement restriction: vale
+PASS: Incomplete engine blocks entry: vale
+PASS: Installed stock entry: vale-sport / first-pass
+PASS: Installed stock entry: vale-sport / club-run
+PASS: Installed stock entry: vale-sport / coupe-rival
+PASS: Installed stock entry: vale-sport / local-final
+PASS: Installed stock entry: vale-sport / ladder-f-qualifier
+PASS: Installed stock entry: vale-sport / ladder-f-rival
+PASS: Installed stock entry: vale-sport / ladder-e-qualifier
+PASS: Installed stock entry: vale-sport / ladder-e-rival
+PASS: Installed stock entry: vale-sport / ladder-d-qualifier
+PASS: Installed stock entry: vale-sport / ladder-d-rival
+PASS: Installed stock entry: vale-sport / ladder-c-qualifier
+PASS: Installed stock entry: vale-sport / ladder-c-rival
+PASS: Installed stock entry: vale-sport / ladder-b-qualifier
+PASS: Installed stock entry: vale-sport / ladder-b-rival
+PASS: Installed stock entry: vale-sport / ladder-a-qualifier
+PASS: Installed stock entry: vale-sport / ladder-a-rival
+PASS: Installed stock entry: vale-sport / ladder-s-qualifier
+PASS: Installed stock entry: vale-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: vale-sport
+PASS: Incomplete engine blocks entry: vale-sport
+PASS: Installed stock entry: wren / first-pass
+PASS: Installed stock entry: wren / club-run
+PASS: Installed stock entry: wren / coupe-rival
+PASS: Installed stock entry: wren / local-final
+PASS: Installed stock entry: wren / ladder-f-qualifier
+PASS: Installed stock entry: wren / ladder-f-rival
+PASS: Installed stock entry: wren / ladder-e-qualifier
+PASS: Installed stock entry: wren / ladder-e-rival
+PASS: Installed stock entry: wren / ladder-d-qualifier
+PASS: Installed stock entry: wren / ladder-d-rival
+PASS: Installed stock entry: wren / ladder-c-qualifier
+PASS: Installed stock entry: wren / ladder-c-rival
+PASS: Installed stock entry: wren / ladder-b-qualifier
+PASS: Installed stock entry: wren / ladder-b-rival
+PASS: Installed stock entry: wren / ladder-a-qualifier
+PASS: Installed stock entry: wren / ladder-a-rival
+PASS: Installed stock entry: wren / ladder-s-qualifier
+PASS: Installed stock entry: wren / ladder-s-rival
+PASS: Actual drive/displacement restriction: wren
+PASS: Incomplete engine blocks entry: wren
+PASS: Installed stock entry: wren-sport / first-pass
+PASS: Installed stock entry: wren-sport / club-run
+PASS: Installed stock entry: wren-sport / coupe-rival
+PASS: Installed stock entry: wren-sport / local-final
+PASS: Installed stock entry: wren-sport / ladder-f-qualifier
+PASS: Installed stock entry: wren-sport / ladder-f-rival
+PASS: Installed stock entry: wren-sport / ladder-e-qualifier
+PASS: Installed stock entry: wren-sport / ladder-e-rival
+PASS: Installed stock entry: wren-sport / ladder-d-qualifier
+PASS: Installed stock entry: wren-sport / ladder-d-rival
+PASS: Installed stock entry: wren-sport / ladder-c-qualifier
+PASS: Installed stock entry: wren-sport / ladder-c-rival
+PASS: Installed stock entry: wren-sport / ladder-b-qualifier
+PASS: Installed stock entry: wren-sport / ladder-b-rival
+PASS: Installed stock entry: wren-sport / ladder-a-qualifier
+PASS: Installed stock entry: wren-sport / ladder-a-rival
+PASS: Installed stock entry: wren-sport / ladder-s-qualifier
+PASS: Installed stock entry: wren-sport / ladder-s-rival
+PASS: Actual drive/displacement restriction: wren-sport
+PASS: Incomplete engine blocks entry: wren-sport
+PASS: Fresh profile cannot skip qualification/REP.
+PASS: Shared simulation viable build: v8-muscle / ladder-f-qualifier
+PASS: Shared simulation viable build: v8-muscle / ladder-f-rival
+PASS: Shared simulation viable build: v8-muscle / ladder-e-qualifier
+PASS: Shared simulation viable build: v8-muscle / ladder-e-rival
+PASS: Shared simulation viable build: v8-muscle / ladder-d-qualifier
+PASS: Shared simulation viable build: v8-muscle / ladder-d-rival
+PASS: Shared simulation viable build: v8-muscle / ladder-c-qualifier
+PASS: Shared simulation viable build: v8-muscle / ladder-c-rival
+PASS: Shared simulation viable build: v8-muscle / ladder-b-qualifier
+PASS: Shared simulation viable build: v8-muscle / ladder-b-rival
+PASS: Shared simulation viable build: v8-muscle / ladder-a-qualifier
+PASS: Shared simulation viable build: v8-muscle / ladder-a-rival
+PASS: Shared simulation viable build: v8-muscle / ladder-s-qualifier
+PASS: Shared simulation viable build: v8-muscle / ladder-s-rival
+PASS: Shared simulation viable build: super-v8 / ladder-f-qualifier
+PASS: Shared simulation viable build: super-v8 / ladder-f-rival
+PASS: Shared simulation viable build: super-v8 / ladder-e-qualifier
+PASS: Shared simulation viable build: super-v8 / ladder-e-rival
+PASS: Shared simulation viable build: super-v8 / ladder-d-qualifier
+PASS: Shared simulation viable build: super-v8 / ladder-d-rival
+PASS: Shared simulation viable build: super-v8 / ladder-c-qualifier
+PASS: Shared simulation viable build: super-v8 / ladder-c-rival
+PASS: Shared simulation viable build: super-v8 / ladder-b-qualifier
+PASS: Shared simulation viable build: super-v8 / ladder-b-rival
+PASS: Shared simulation viable build: super-v8 / ladder-a-qualifier
+PASS: Shared simulation viable build: super-v8 / ladder-a-rival
+PASS: Shared simulation viable build: super-v8 / ladder-s-qualifier
+PASS: Shared simulation viable build: super-v8 / ladder-s-rival
+PASS: Locked new offer cannot be bought through domain.
+PASS: Direct highest mechanical rank purchase requires no preceding rank.
+PASS: Independent specialist offer unlocks at REP 8.
+PASS: Starter real shared simulation wins opening race.
+PASS: Failed final write rolls back reward, records and resources together.
+PASS: First/repeat settle once with first-only bonus and retain records/wear/fuel.
+PASS: Duplicate result rejected without mutation.
+PASS: Starter real shared simulation wins opening race.
+PASS: Failed final write rolls back reward, records and resources together.
+PASS: First/repeat settle once with first-only bonus and retain records/wear/fuel.
+PASS: Duplicate result rejected without mutation.
+PASS: Outcome ledger / no invented rewards: loss
+PASS: Outcome ledger / no invented rewards: dnf
+PASS: Outcome ledger / no invented rewards: redlight
+PASS: Outcome ledger / no invented rewards: practice
+PASS: Outcome ledger / no invented rewards: interrupted
+PASS: New-game career starts empty without invented progress or owned assets.
+Checks: 1088
