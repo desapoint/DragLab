@@ -77,8 +77,17 @@ namespace DragLab.Domain
                     rate+=Math.Pow(Math.Max(0,c.temperatureC/d.thermalLimitC-1),2)/d.overloadSeconds*car.driver.WearRate;
                     if(d.category==PartCategory.GlowPlugs)rate=.00000008*(1-s.engineTemperature)*car.driver.WearRate;
                     rate*=3000000000/Math.Max(1,d.wearEnergyJ);
+                    if(d.category==PartCategory.CylinderBlock) {
+                        // Service hardware owns block wear/temperature. Add only
+                        // mechanical excess here, avoiding a second thermal pass.
+                        double strength=MechanicalStress.TorqueStrength(d,c);
+                        double overload=strength>0?Math.Max(0,Math.Abs(s.engineTorqueNm)/strength-1):0;
+                        double overspeed=d.rpmLimit>0?Math.Max(0,s.rpm/d.rpmLimit-1):0;
+                        rate+=(overload*overload+8*overspeed*overspeed)/d.overloadSeconds*car.driver.WearRate;
+                        c.stressExposure+=dt*(overload+overspeed);
+                    }
                     EngineElements.Wear(p,rate*dt);ComponentWear.Apply(c,rate*dt);c.runningSeconds+=dt;
-                    if(c.health<=0){c.failed=true;c.failureReason=s.lubricationFactor<.4?"Oil starvation damage":s.valveFloat>.05?"Valve float / valve contact":"Mechanical wear depleted";}
+                    if(c.health<=0){c.failed=true;c.failureReason=d.category==PartCategory.CylinderBlock?"Cylinder block wear / mechanical overload":s.lubricationFactor<.4?"Oil starvation damage":s.valveFloat>.05?"Valve float / valve contact":"Mechanical wear depleted";}
                 }
                 if(running&&(d.category==PartCategory.FuelSystem||d.category==PartCategory.Ignition||d.category==PartCategory.SparkPlugs||d.category==PartCategory.HeadIntake||d.category==PartCategory.OilFilter))c.deposits=DragMath.Clamp(c.deposits+dt*(d.category==PartCategory.OilFilter?.0000007/Math.Max(1,d.wearEnergyJ/3000000000):.0000001)*car.driver.WearRate,0,1);
                 if(running&&(d.category==PartCategory.Followers||d.category==PartCategory.TimingDrive))c.adjustmentError=DragMath.Clamp(c.adjustmentError+dt*.00000008*car.driver.WearRate,0,1);

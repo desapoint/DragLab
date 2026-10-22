@@ -39,7 +39,9 @@ namespace DragLab.Editor
                 check(bench.car.state.clutchCapacityFactor < .4, "Assigned clutch condition and heat reduce actual capacity: " + v.spec.id);
                 double speed = bench.car.state.speed; bench.car.mechanics.ResetWear(bench.car.state);
                 check(bench.car.state.speed == speed && Math.Abs(bench.car.state.clutchCapacityFactor-ClutchHardware.Capacity(bench.car.mechanics.Definition(hot),bench.car.mechanics.Part(PartCategory.Clutch).condition))<1e-9 && bench.car.mechanics.parts.All(p => p.condition.health == 1 && !p.condition.failed), "Isolated repair clears wear/heat while retaining clutch fluid condition and road momentum: " + v.spec.id);
-                var weak = new PhysicalDrivingSession(start, false); weak.car.mechanics.parts.Find(p => p.slot == "Driveshaft").condition.health = .001f;
+                // A failure fixture needs sufficiently little remaining life for
+                // every stock powertrain to deplete within this short timeline.
+                var weak = new PhysicalDrivingSession(start, false); weak.car.mechanics.parts.Find(p => p.slot == "Driveshaft").condition.health = .000001f;
                 foreach (var c in PhysicalScenarios.MoneyShiftTimeline(start).Take(600)) { weak.Step(c); if (weak.car.state.drivetrainFailed) break; }
                 var shaft = weak.car.mechanics.parts.Find(p => p.slot == "Driveshaft");
                 check(shaft.condition.failed && shaft.condition.failureReason == "Torque overload" && weak.car.state.drivetrainFailed && !weak.car.state.engineFailed && weak.car.state.transmittedTorqueNm == 0, "Weak driveshaft breaks from real transmitted torque; engine continues but wheel torque stops: " + v.spec.id + " / health " + shaft.condition.health + " / cause " + shaft.condition.failureReason + " / engine failed " + weak.car.state.engineFailed);

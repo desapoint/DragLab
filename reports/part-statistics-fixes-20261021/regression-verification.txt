@@ -1,0 +1,11 @@
+PASS Part effects: 26720 checks
+PASS Mass and load: 836 checks
+PASS Individual engine components: 3532 checks
+PASS Parts recipes and calibration: 375 checks
+PASS race/bench parity and simulation rules: 289 checks
+PASS Mechanical recovery all 52 models: 1924 checks
+PASS Physical snapshot replay: 475 checks
+PASS Async race save/recovery: 2661 checks
+Checks: 36812
+Combined completed isolated suites. Recovery coverage is 38 completed models plus 14 resumed models, with no omissions/duplicates.
+The stale short driveshaft fixture was corrected and the entire parity/simulation-rules suite rerun successfully.

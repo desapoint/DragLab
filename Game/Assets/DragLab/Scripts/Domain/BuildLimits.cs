@@ -8,11 +8,13 @@ namespace DragLab.Domain.Mechanics
         public static void Capture(CarSimulation car,out double rpm,out string rpmPart,out double torque,out string torquePart)
         {
             rpm=double.MaxValue;torque=double.MaxValue;rpmPart=torquePart="—";
-            foreach(var slot in new[]{PartCategory.Pistons,PartCategory.Rods,PartCategory.Crankshaft}){
+            foreach(var slot in new[]{PartCategory.Pistons,PartCategory.Rods,PartCategory.Crankshaft,PartCategory.CylinderBlock}){
                 var p=car.mechanics.Part(slot);if(p==null){rpm=torque=0;rpmPart=torquePart="Missing "+PartSemantics.Friendly(slot.ToString());return;}
                 var d=car.mechanics.Definition(p);double speed=p.condition.failed||p.condition.health<=0?0:d.rpmLimit;
                 double strength=p.condition.failed||p.condition.health<=0?0:MechanicalStress.TorqueStrength(d,p.condition);
-                if(speed<rpm){rpm=speed;rpmPart=d.name;}if(strength<torque){torque=strength;torquePart=d.name;}
+                bool broken=p.condition.failed||p.condition.health<=0;
+                if((slot!=PartCategory.CylinderBlock||speed>0||broken)&&speed<rpm){rpm=speed;rpmPart=d.name;}
+                if((slot!=PartCategory.CylinderBlock||strength>0||broken)&&strength<torque){torque=strength;torquePart=d.name;}
             }
             var springs=car.mechanics.Part(PartCategory.ValveSprings);if(springs==null){rpm=0;rpmPart="Missing valve springs";return;}
             var v=car.spec.valvetrain;double demand=Math.Max(1,v.profileDemandRpm/car.spec.redlineRpm),severity=car.driver.ConditionSeverity;

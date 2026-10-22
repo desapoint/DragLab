@@ -1,0 +1,3 @@
+PASS
+Checks: 4743
+Full per-configuration log is local-only.

@@ -61,7 +61,7 @@ namespace DragLab.Domain.Mechanics
     // Stable, authored definitions; interchangeable sets are distinct from their owned instances.
     public sealed class MechanicalCatalog
     {
-        public const int Version = 7;
+        public const int Version = 8;
         public readonly List<PartDefinition> parts = new List<PartDefinition>();
         readonly Dictionary<string, VehicleSpec> specs = new Dictionary<string, VehicleSpec>();
         public static readonly PartCategory[] EngineSlots = { PartCategory.Pistons, PartCategory.Rods, PartCategory.Crankshaft, PartCategory.HeadIntake, PartCategory.FuelSystem, PartCategory.Ignition, PartCategory.Cooling, PartCategory.Induction, PartCategory.Exhaust, PartCategory.Flywheel };
@@ -268,9 +268,10 @@ namespace DragLab.Domain.Mechanics
                     continue;
                 }
                 if (part.category != category || !Fits(result.spec, part)) { result.errors.Add("Incompatible " + category); continue; }
-                if (PartSemantics.EngineInternal(category)) {
-                    result.safeRpm = Math.Min(result.safeRpm, part.rpmLimit);
-                    result.safeTorqueNm = Math.Min(result.safeTorqueNm, part.torqueLimitNm);
+                if (PartSemantics.EngineStrengthRated(category)) {
+                    // Earlier captured blocks were unrated; zero retains that contract.
+                    if (part.rpmLimit > 0 || PartSemantics.EngineInternal(category)) result.safeRpm = Math.Min(result.safeRpm, part.rpmLimit);
+                    if (part.torqueLimitNm > 0 || PartSemantics.EngineInternal(category)) result.safeTorqueNm = Math.Min(result.safeTorqueNm, part.torqueLimitNm);
                 }
                 PartSemantics.Apply(part, result.spec, t, factoryRecipe.ContainsKey(category) ? Find(factoryRecipe[category]) : null);
                 PartTuning.Project(part, t, specs[model]);
@@ -309,7 +310,7 @@ namespace DragLab.Domain.Mechanics
             // Preserve authored factory calibration; fitted boost headroom is independent of old engine ranks.
             if (result.safeRpm == float.MaxValue) result.safeRpm = result.spec.redlineRpm * 1.08f;
             if (result.safeTorqueNm == float.MaxValue) result.safeTorqueNm = 0;
-            result.spec.engineBehavior.safeRpmMultiplier = (float)DragMath.Clamp(result.safeRpm / result.spec.redlineRpm, 1.01, 1.4);
+            result.spec.engineBehavior.safeRpmMultiplier = result.safeRpm / result.spec.redlineRpm;
             t.shiftRpm = Math.Min(t.shiftRpm, result.safeRpm - 100);
             if (t.revLimitRpm > result.safeRpm) t.revLimitRpm = result.safeRpm;
             result.spec.fittedParts = installed.Values.Select(Find).Where(p => p != null).Select(p => p.Copy()).ToArray();

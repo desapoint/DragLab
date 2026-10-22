@@ -77,6 +77,19 @@ namespace DragLab.Domain
         public WheelSpec wheels = new WheelSpec();
         public FlywheelSpec flywheel = new FlywheelSpec();
         public Mechanics.PartDefinition[] fittedParts = new Mechanics.PartDefinition[0];
+        // Resolved snapshots own this array. Cache its flywheel lookup without
+        // serializing derived state or searching every physics/audio tick.
+        [NonSerialized] Mechanics.PartDefinition[] flywheelLookupOwner;
+        [NonSerialized] Mechanics.PartDefinition fittedFlywheel;
+        internal Mechanics.PartDefinition FittedFlywheel {
+            get {
+                if (!ReferenceEquals(flywheelLookupOwner, fittedParts)) {
+                    flywheelLookupOwner = fittedParts;
+                    fittedFlywheel = fittedParts == null ? null : Array.Find(fittedParts, p => p.category == Mechanics.PartCategory.Flywheel);
+                }
+                return fittedFlywheel;
+            }
+        }
         public double DisplacementLitres { get { return displacementLitres > 0 ? displacementLitres : (sound ?? new EngineSoundSpec()).displacementLitres; } }
         public double LimiterDrop { get { return limiterDropRpm > 0 ? limiterDropRpm : 150; } }
         public double BrakeDeceleration { get { return brakeDecelerationMps2 > 0 ? brakeDecelerationMps2 : 8; } }

@@ -1,0 +1,5 @@
+PASS Part effects: 26720 checks
+PASS Mass and load: 836 checks
+PASS Individual engine components: 3532 checks
+PASS Parts recipes and calibration: 375 checks
+Completed suite receipts from the initial harness; timeout occurred later during the per-car recovery suite.

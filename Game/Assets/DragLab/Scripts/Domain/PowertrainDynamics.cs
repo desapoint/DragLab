@@ -35,7 +35,7 @@ namespace DragLab.Domain
                 !Enum.IsDefined(typeof(CutMethod), cut) || cut == CutMethod.Factory || !Enum.IsDefined(typeof(CutMethod), launchCut) || launchCut == CutMethod.Factory) return "Invalid engine control hardware.";
             if (!Range(launchDropRpm, 50, 1200) || !Range(softBandRpm, 50, 1200) || !Range(launchRetard, 0, 1) || !Range(antiLagStrength, 0, 1)) return "Invalid launch/limiter controls.";
             if (launchCutFrequencyHz != 0 && !Range(launchCutFrequencyHz, 8, 80)) return "Invalid launch ignition-cut cadence (0 = 36 Hz).";
-            if (!Range(antiLagMaxSeconds, .1, 8) || !Range(exhaustCoolSeconds, 1, 120) || !Range(antiLagWearPerSecond, 0, .1) || !Range(safeRpmMultiplier, 1.01f, 1.4f) || !Range(overrevFailureSeconds, .1, 10)) return "Invalid engine protection.";
+            if (!Range(antiLagMaxSeconds, .1, 8) || !Range(exhaustCoolSeconds, 1, 120) || !Range(antiLagWearPerSecond, 0, .1) || !Range(safeRpmMultiplier, float.Epsilon, float.MaxValue) || !Range(overrevFailureSeconds, .1, 10)) return "Invalid engine protection.";
             if (!Range(camOverlap, 0, 1) || !Range(idleControl, 0, 1) || !Range(mixtureVariation, 0, 1) || !Range(acceleratorPump, 0, 1) || !Range(coldRoughness, 0, 1) || !Range(mechanicalClatter, 0, 1)) return "Invalid fueling/cam settings.";
             if (!Range(hesitationSeconds, .02, 2) || !Range(warmupSeconds, 1, 300)) return "Invalid fueling response.";
             return null;

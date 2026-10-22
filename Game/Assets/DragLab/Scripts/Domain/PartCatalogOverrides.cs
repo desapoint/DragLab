@@ -24,6 +24,8 @@ namespace DragLab.Domain.Mechanics {
    if(PartTuning.Allows(draft,PartTuningOptions.AwdCalibration)&&(draft.awdHardware==null||draft.awdHardware.adjustments==AwdAdjustments.None&&(draft.awdHardware.modes&(draft.awdHardware.modes-1))==0))return "AWD calibration needs adjustable or switchable center hardware.";
    if(PartTuning.Allows(draft,PartTuningOptions.CenterRatio)&&(draft.awdHardware==null||(draft.awdHardware.adjustments&AwdAdjustments.SpeedRatio)==0))return "Center gearset adjustment needs ratio-capable mechanical hardware.";
    if(string.IsNullOrWhiteSpace(draft.name))return "Name required.";
+   if(draft.category==PartCategory.Flywheel&&draft.massScale!=original.massScale&&(draft.massKg>0||draft.inertiaKgM2>0))return "Flywheel massScale is legacy-only. Edit massKg and inertiaKgM2 for fitted hardware.";
+   if(PartSemantics.EngineInternal(draft.category)&&(draft.rpmLimit<=0||draft.torqueLimitNm<=0))return "Engine internals require positive RPM and torque ratings.";
    if(new[]{draft.power,draft.grip,draft.massScale,draft.shiftScale,draft.capacityScale,draft.boostScale}.Any(n=>n<=0||n>4))return "Hardware multipliers must be >0 and <=4.";
    if(draft.centerRatioMin<.5||draft.centerRatioMax>2||draft.centerRatioMin>draft.centerRatioMax)return "Invalid center speed ratio range.";
    if(draft.boostMin>draft.boostMax||draft.pulleyMin>draft.pulleyMax||draft.finalDriveMin>draft.finalDriveMax||draft.fluidMinimumLitres>draft.fluidCapacityLitres)return "Invalid minimum/maximum range.";

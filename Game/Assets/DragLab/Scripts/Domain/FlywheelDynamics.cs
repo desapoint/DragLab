@@ -23,8 +23,19 @@ namespace DragLab.Domain
     public static class FlywheelDynamics
     {
         public const double RpmPerRadian = 30 / Math.PI;
+        public static double Mass(VehicleSpec spec, Tune tune)
+        {
+            var part = spec.hasInstalledParts ? spec.FittedFlywheel : null;
+            if (spec.hasInstalledParts && part == null) return 0;
+            return part != null && part.massKg > 0 ? part.massKg : (spec.flywheel ?? new FlywheelSpec()).massKg * tune.FlywheelMass;
+        }
         public static double Inertia(VehicleSpec spec, Tune tune)
-        { return MassDynamics.Installed(spec, Mechanics.PartCategory.Flywheel) ? (spec.flywheel ?? new FlywheelSpec()).Inertia * tune.FlywheelMass : 0; }
+        {
+            var part = spec.hasInstalledParts ? spec.FittedFlywheel : null;
+            if (spec.hasInstalledParts && part == null) return 0;
+            // Zero absolute ratings retain the earlier scale-only snapshot contract.
+            return part != null && part.inertiaKgM2 > 0 ? part.inertiaKgM2 : (spec.flywheel ?? new FlywheelSpec()).Inertia * tune.FlywheelMass;
+        }
         public static void Publish(VehicleSpec spec, Tune tune, CarState state)
         {
             double omega = Math.Max(0, state.rpm) / RpmPerRadian;

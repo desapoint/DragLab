@@ -3,12 +3,14 @@ from pathlib import Path
 import collections
 import csv
 import json
+import hashlib
 import math
 import re
 import sys
 
 root = Path(__file__).resolve().parents[1]
 folder = Path(sys.argv[1]) if len(sys.argv) > 1 else root / "reports/part-statistics-audit-20261021"
+fixed = "--expect-fixed" in sys.argv[2:]
 def rows(name):
     with (folder / name).open(encoding="utf-8-sig", newline="") as stream:
         return list(csv.DictReader(stream))
@@ -45,10 +47,27 @@ for r in effects:
 check(len(rejected) == totals["Expected combination rejections"], "accepted replacement data is finite; rejected pairs require EFI controls or matching followers")
 counts = {r["code"]: int(r["count"]) for r in findings}
 mismatches = [r for r in sensitivity if r["probe"] == "authored-head-fuel-combination" and abs(float(r["first_value"]) - float(r["second_value"])) > .02]
-check(len(mismatches) == counts["torque-helper-capacity-disagreement"], "reported capacity disagreements reproduce independently from per-model measured torque")
+check(len(mismatches) == counts.get("torque-helper-capacity-disagreement", 0), "reported capacity disagreements reproduce independently from per-model measured torque")
 flywheels = [r for r in sensitivity if r["probe"] == "authoring-flywheel-mass-inertia"]
-check(len(flywheels) == totals["Models"] and all(abs(float(r["first_value"])) < 1e-6 and math.isclose(float(r["second_value"]), float(r["third_value"]), abs_tol=1e-10) for r in flywheels), "detached flywheel mass/inertia edits demonstrably leave runtime values unchanged")
+if fixed:
+    check(not mismatches and not any(r["severity"] in {"review", "error"} for r in findings), "fixed audit has no capacity disagreement or unresolved software-contract findings")
+    check(len(flywheels) == totals["Models"] and all(math.isclose(float(r["first_value"]), 2, abs_tol=1e-5) and math.isclose(float(r["third_value"]), 1.5 * float(r["second_value"]), abs_tol=1e-7) for r in flywheels), "absolute flywheel edits independently change translating mass and rotational inertia")
+    blocks = [p for p in catalog if p["category"] == 37]
+    check(len(blocks) == totals["Models"] * 2 and all(p["rpmLimit"] > 0 and p["torqueLimitNm"] > 0 for p in blocks), "every authored block carries positive torque and RPM ratings")
+    check(all(math.isclose(float(r["safe_rpm"]), float(r["simulation_safe_rpm"]), abs_tol=.01) for r in stock), "stock resolver and global protection thresholds agree")
+    baseline = root / "reports/part-statistics-audit-20261021"
+    before_contract = json.loads((folder / "baseline-contracts.json").read_text(encoding="utf-8-sig"))
+    allowed = {"rpmLimit", "torqueLimitNm", "description"}
+    canonical = [{k: v for k, v in p.items() if not (p["category"] == 37 and k in allowed)} for p in sorted(catalog, key=lambda p: p["id"])]
+    fingerprint = hashlib.sha256(json.dumps(canonical, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")).hexdigest()
+    check(len(catalog) == before_contract["definitions"] and fingerprint == before_contract["unchangedCatalogueSha256"], "authored identity/specification baseline is preserved except the explicit block ratings/description")
+    with (baseline / "stock-matrix.csv").open(encoding="utf-8-sig", newline="") as stream:
+        old_stock = {r["model"]: r for r in csv.DictReader(stream)}
+    check(all(math.isclose(float(r["resolved_hp"]), float(old_stock[r["model"]]["resolved_hp"]), abs_tol=1e-6) and math.isclose(float(r["mass_kg"]), float(old_stock[r["model"]]["mass_kg"]), abs_tol=1e-5) for r in stock), "all pre-fix stock HP and translating masses are preserved")
+else:
+    check(len(flywheels) == totals["Models"] and all(abs(float(r["first_value"])) < 1e-6 and math.isclose(float(r["second_value"]), float(r["third_value"]), abs_tol=1e-10) for r in flywheels), "detached flywheel mass/inertia edits demonstrably leave runtime values unchanged")
 check(totals["Flagged invariant failures"] == 0, "baseline/control invariant failures are zero; review findings remain explicit")
-receipt = "\n".join(log) + "\nLIMIT Dataset cross-checks do not establish real-world calibration or resolve the reported contracts.\n"
+limit = "Dataset cross-checks do not establish real-world engineering calibration." if fixed else "Dataset cross-checks do not establish real-world calibration or resolve the reported contracts."
+receipt = "\n".join(log) + "\nLIMIT " + limit + "\n"
 (folder / "independent-verification.txt").write_text(receipt, encoding="utf-8")
 print(receipt)

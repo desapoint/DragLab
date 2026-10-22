@@ -36,7 +36,7 @@ namespace DragLab.Editor
                 map[PartCategory.HeadIntake]=head.id;map[PartCategory.FuelSystem]=fuel.id;var build=catalog.Resolve(id,map,tune);
                 if(build.Drivable){var profile=new InductionProfile(build.spec,build.tune);double difference=0,at=0,helper=0,physical=0;
                     for(int i=0;i<=40;i++){double rpm=build.spec.idleRpm+(build.spec.redlineRpm-build.spec.idleRpm)*i/40.0,a=DragMath.Torque(build.spec,build.tune,rpm),b=InductionDynamics.SteadyOutput(profile,rpm).engineTorqueNm;if(Math.Abs(a-b)>difference){difference=Math.Abs(a-b);at=rpm;helper=a;physical=b;}}
-                    if(difference>.02)Flag("review","torque-helper-capacity-disagreement",id+": "+fuel.id+"; helper "+(helper*at/7127).ToString("F2",Inv)+" vs capacity-limited "+(physical*at/7127).ToString("F2",Inv)+" HP at "+at.ToString("F0",Inv)+" RPM");
+                    Check(difference<.02,"torque-helper-capacity-disagreement",id+": "+fuel.id);
                     if(at>0){var state=InductionDynamics.SteadyOutput(profile,at);Check(Math.Abs(InductionDynamics.Torque(profile,state,at,1)-physical)<.02,"running-capacity-path-disagreement",id);}
                     evidence.AppendLine(string.Join(",",new object[]{id,"authored-head-fuel-combination",head.id+" + "+fuel.id,helper,physical,at}.Select(Q)));
                 }
@@ -50,17 +50,21 @@ namespace DragLab.Editor
                 part.massKg=original.massKg;part.inertiaKgM2*=1.5f;var inertiaBuild=probe.Resolve(id,probe.Recipe(id),tune);double newInertia=FlywheelDynamics.Inertia(inertiaBuild.spec,inertiaBuild.tune);
                 Check(PartCatalogOverrides.Validate(original,part)==null,"invalid-inertia-probe",id);
                 if(Math.Abs(newInertia-oldInertia)<1e-10)Flag("review","editable-flywheel-inertia-ignored",id+": stated inertia +50%; actual "+oldInertia.ToString("G6",Inv)+" -> "+newInertia.ToString("G6",Inv));
-                part.inertiaKgM2=original.inertiaKgM2;part.massScale*=.9f;var scaleBuild=probe.Resolve(id,probe.Recipe(id),tune);
-                Check(new WheelProfile(scaleBuild.spec,scaleBuild.tune).vehicleMass<oldMass&&FlywheelDynamics.Inertia(scaleBuild.spec,scaleBuild.tune)<oldInertia,"flywheel-scale-positive-control",id);
+                Check(Math.Abs(massDelta-2)<1e-5&&Math.Abs(newInertia-oldInertia*1.5)<1e-7,"flywheel-absolute-ratings-consumed",id);
+                part.inertiaKgM2=original.inertiaKgM2;part.massScale*=.9f;
+                Check(PartCatalogOverrides.Validate(original,part)!=null,"reject-ambiguous-flywheel-scale-edit",id);
+                part.massKg=part.inertiaKgM2=0;var scaleBuild=probe.Resolve(id,probe.Recipe(id),tune);
+                Check(new WheelProfile(scaleBuild.spec,scaleBuild.tune).vehicleMass<oldMass&&FlywheelDynamics.Inertia(scaleBuild.spec,scaleBuild.tune)<oldInertia,"legacy-flywheel-scale-fallback",id);
                 var piston=probe.Find(probe.Id(id,PartCategory.Pistons));piston.rpmLimit=v.spec.redlineRpm*.85f;var lowRpm=probe.Resolve(id,probe.Recipe(id),tune);
                 if(lowRpm.spec.redlineRpm*lowRpm.spec.engineBehavior.safeRpmMultiplier>lowRpm.safeRpm+1)Flag("review","editable-internal-rpm-floor",id+": weakest "+lowRpm.safeRpm.ToString("F0",Inv)+" vs global protection "+(lowRpm.spec.redlineRpm*lowRpm.spec.engineBehavior.safeRpmMultiplier).ToString("F0",Inv));
+                Check(Math.Abs(lowRpm.spec.redlineRpm*lowRpm.spec.engineBehavior.safeRpmMultiplier-lowRpm.safeRpm)<1,"exact-lower-rpm-rating",id);
                 evidence.AppendLine(string.Join(",",new object[]{id,"authoring-flywheel-mass-inertia",original.id,massDelta,oldInertia,newInertia}.Select(Q)));
             }
         }
         public static void Run()
         {
             findings.Clear();checks=combinations=rejected=0;
-            string root=Path.GetFullPath(Path.Combine(Application.dataPath,"../..")),folder=Path.Combine(root,"reports/part-statistics-audit-20261021");
+            string root=Path.GetFullPath(Path.Combine(Application.dataPath,"../..")),folder=Path.Combine(root,"reports/part-statistics-fixes-20261021");
             string[] args=Environment.GetCommandLineArgs();for(int i=0;i+1<args.Length;i++)if(args[i]=="--draglab-stats-audit-output")folder=Path.GetFullPath(args[i+1]);
             Directory.CreateDirectory(folder);var utf8=new UTF8Encoding(false);var rng=JsonUtility.ToJson(UnityEngine.Random.state);
             var definitions=Resources.LoadAll<VehicleDefinition>("Data/Vehicles").OrderBy(v=>v.spec.id,StringComparer.Ordinal).ToArray();
@@ -123,7 +127,9 @@ namespace DragLab.Editor
         }
         public static void RunExistingEffects()
         {
-            string folder=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/part-statistics-audit-20261021"));Directory.CreateDirectory(folder);
+            string folder=Path.GetFullPath(Path.Combine(Application.dataPath,"../../reports/part-statistics-fixes-20261021"));
+            string[] args=Environment.GetCommandLineArgs();for(int i=0;i+1<args.Length;i++)if(args[i]=="--draglab-stats-audit-output")folder=Path.GetFullPath(args[i+1]);
+            Directory.CreateDirectory(folder);
             try{int count=PartEffectsVerification.Run(Path.Combine(folder,"isolated-existing-checks"));File.WriteAllText(Path.Combine(folder,"existing-effects-verification.txt"),"PASS existing PartEffectsVerification: "+count+" checks. Reports isolated; original report files and player saves untouched.\n",new UTF8Encoding(false));}
             catch(Exception e){File.WriteAllText(Path.Combine(folder,"existing-effects-verification.txt"),"FAILED existing PartEffectsVerification: "+e+"\n",new UTF8Encoding(false));throw;}
         }

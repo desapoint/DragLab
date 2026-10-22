@@ -30,7 +30,7 @@ namespace DragLab.Domain
             double bodyReference = ReferenceBodyMass(spec);
             double bodyDelta = spec.hasStructuralBody ? bodyReference * (tune.MassMultiplier - 1) : -bodyReference;
             double baseDry = spec.massKg - referenceFuel + bodyDelta;
-            double flywheelDelta = spec.flywheel.massKg * ((Installed(spec, Mechanics.PartCategory.Flywheel) ? tune.FlywheelMass : 0) - 1);
+            double flywheelDelta = FlywheelDynamics.Mass(spec, tune) - spec.flywheel.massKg;
             double frontWheelDelta=wheels.assemblyMasses[0]+wheels.assemblyMasses[1]-2*spec.wheels.assemblyMassKg,rearWheelDelta=wheels.assemblyMasses[2]+wheels.assemblyMasses[3]-2*spec.wheels.assemblyMassKg;
             double wheelDelta=frontWheelDelta+rearWheelDelta;
             var fluidSpec=spec.fluids??new FluidSpec();var currentFluids=fluids??FluidState.Full(fluidSpec);

@@ -101,3 +101,8 @@ Thumbs.db
 
 # Raw legacy catalogue dump and full log; the audit keeps a concise receipt.
 /reports/part-statistics-audit-20261021/isolated-existing-checks/
+/reports/part-statistics-fixes-20261021/isolated-existing-checks/
+!/reports/part-statistics-fixes-20261021/baseline-contracts.json
+!/reports/part-statistics-fixes-20261021/recovery-completed-before-timeout.csv
+# Superseded partial-run diagnostic; final regression receipts are versioned.
+/reports/part-statistics-fixes-20261021/remaining-regression-verification.txt

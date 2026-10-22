@@ -17,8 +17,9 @@ namespace DragLab.Domain.Mechanics
     {
         public static string Friendly(string value) { return System.Text.RegularExpressions.Regex.Replace(value, "([a-z])([A-Z])", "$1 $2").ToLowerInvariant(); }
         public static bool EngineInternal(PartCategory c) { return c == PartCategory.Pistons || c == PartCategory.Rods || c == PartCategory.Crankshaft; }
+        public static bool EngineStrengthRated(PartCategory c) { return EngineInternal(c) || c == PartCategory.CylinderBlock; }
         public static bool IsDifferential(PartCategory c) { return c == PartCategory.Differential || c == PartCategory.FrontDifferential || c == PartCategory.RearDifferential; }
-        public static bool TorqueRated(PartCategory c) { return EngineInternal(c) || c == PartCategory.Gearbox || c == PartCategory.Driveshaft || c == PartCategory.Differential || MechanicalCatalog.DriveBranch(c); }
+        public static bool TorqueRated(PartCategory c) { return EngineStrengthRated(c) || c == PartCategory.Gearbox || c == PartCategory.Driveshaft || c == PartCategory.Differential || MechanicalCatalog.DriveBranch(c); }
         public static bool Wears(PartCategory c) { return ServiceHardware.Wears(c) || EngineInternal(c) || TorqueRated(c) || c == PartCategory.Clutch || c == PartCategory.Cooling || c == PartCategory.Brakes || c == PartCategory.HeadIntake || c == PartCategory.FuelSystem || c == PartCategory.Ignition || c == PartCategory.Induction || c == PartCategory.Exhaust || c == PartCategory.Tires; }
         static TransmissionType Transmission(VehicleSpec spec, IDictionary<PartCategory, string> installed, MechanicalCatalog catalog)
         {
@@ -73,7 +74,7 @@ namespace DragLab.Domain.Mechanics
             if (p.category == PartCategory.RevLimiter && upgrade) p.tuning |= PartTuningOptions.Limiter;
             if (p.category == PartCategory.TwoStep && (upgrade || spec.engineBehavior.twoStep)) p.tuning |= PartTuningOptions.TwoStep;
             if (p.category == PartCategory.ShiftLight && upgrade) p.tuning |= PartTuningOptions.ShiftLight;
-            if (!EngineInternal(p.category)) p.rpmLimit = 0;
+            if (!EngineStrengthRated(p.category)) p.rpmLimit = 0;
             if (!TorqueRated(p.category)) p.torqueLimitNm = 0;
             if (!Wears(p.category)) { p.thermalLimitC = p.wearEnergyJ = p.coolingWattsPerC = 0; }
             string label = "";
@@ -217,7 +218,7 @@ namespace DragLab.Domain.Mechanics
             }
             if (TorqueRated(p.category)) yield return new PartStat("torque", "Torque strength", p.torqueLimitNm, "Nm", 1, "Load headroom at this component's shaft; not engine output.");
             if(PartTuning.Allows(p,PartTuningOptions.CenterRatio)){yield return new PartStat("centerratiomin","Minimum center speed ratio",p.centerRatioMin,":1",0,"Interchangeable center gearsets; speed ratio is distinct from torque bias.");yield return new PartStat("centerratiomax","Maximum center speed ratio",p.centerRatioMax,":1",0,"Front wheel angular speed / rear wheel angular speed. Match rear tire radius divided by front radius for straight-line rolling.");}
-            if (EngineInternal(p.category)) yield return new PartStat("rpm", "Internal safe RPM", p.rpmLimit, "RPM", 1, "Internal engine speed limit; not a limit imposed by upholstery or a differential.");
+            if (EngineStrengthRated(p.category)) yield return new PartStat("rpm", "Internal safe RPM", p.rpmLimit, "RPM", 1, "Internal engine speed limit; not a limit imposed by upholstery or a differential.");
             if (Wears(p.category)) yield return new PartStat("heat", "Heat tolerance", p.thermalLimitC, "°C", 1, "Above this provisional limit, thermal damage accumulates.");
             if(p.category==PartCategory.Clutch){yield return new PartStat("plates","Friction plate count",p.clutchPlateCount,"plates",0,"Matched complete assembly; changing the count requires replacing hardware.");if(p.clutchEnvironment==ClutchEnvironment.Wet)yield return new PartStat("clutch-oil","Dedicated clutch oil capacity",p.clutchOilCapacityLitres,"L",0,"Separate bath from engine oil; low level reduces cooling and coupling capacity.");}
             if (p.category == PartCategory.Clutch || p.category == PartCategory.Brakes) yield return new PartStat("life", "Friction-work life budget", p.wearEnergyJ / 1e6, "MJ", 1, "Larger energy budget lasts longer under equal friction work.");
@@ -251,7 +252,7 @@ namespace DragLab.Domain.Mechanics
                 yield return new PartStat("slidinglife", "Sliding-work life per tire", p.wearEnergyJ/1e6, "MJ", 1, "Compound lifetime under equal sliding work, independently of peak grip.");
                 yield return new PartStat("tireoptimal", "Optimal tire temperature", p.tireOptimalC, "°C", 0, "Too cold or too hot changes grip; higher optimum needs more warm-up.");
             }
-            if (p.category == PartCategory.Wheels || p.category == PartCategory.Body || p.category == PartCategory.Flywheel) yield return new PartStat("massscale", "Mass multiplier", p.massScale, "×", -1, "Lowers scale weight; rotating components also lower inertia.");
+            if (p.category == PartCategory.Wheels || p.category == PartCategory.Body) yield return new PartStat("massscale", "Mass multiplier", p.massScale, "×", -1, "Lowers scale weight; rotating components also lower inertia.");
             if (p.category == PartCategory.Flywheel) yield return new PartStat("inertia", "Flywheel inertia", p.inertiaKgM2, "kg m²", 0, "More momentum smooths engagement; less allows faster RPM changes.");
             if (p.massKg > 0) yield return new PartStat("mass", "Component mass", p.massKg, "kg", -1, "Replacement difference or removal changes the car's translating mass.");
             if (IsDifferential(p.category)) {

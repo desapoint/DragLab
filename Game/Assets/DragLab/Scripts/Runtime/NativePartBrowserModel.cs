@@ -199,7 +199,7 @@ namespace DragLab.Runtime
                 if(PartSemantics.Wears(d.category))e.Change[3]=(health-oldHealth)*100;
                 var prior=replaced==null?null:actual.catalog.Find(replaced.definitionId);
                 if(PartSemantics.TorqueRated(d.category)&&prior!=null)e.Change[4]=d.torqueLimitNm-prior.torqueLimitNm;
-                if(PartSemantics.EngineInternal(d.category)&&prior!=null)e.Change[5]=d.rpmLimit-prior.rpmLimit;
+                if(PartSemantics.EngineStrengthRated(d.category)&&prior!=null)e.Change[5]=d.rpmLimit-prior.rpmLimit;
                 e.Change[6]=b.radiatorWattsPerC-a.radiatorWattsPerC;
             }catch(Exception error){e.Reason="Performance estimate unavailable: "+error.Message;}
             finally{EvaluationMilliseconds+=clock.Elapsed.TotalMilliseconds;if(cache!=null)cache.Store(key,e);}

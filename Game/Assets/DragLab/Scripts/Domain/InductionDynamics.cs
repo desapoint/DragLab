@@ -159,7 +159,7 @@ namespace DragLab.Domain
         public static double SteadyTorque(VehicleSpec spec, Tune tune, double rpm)
         {
             if ((spec.induction == null || spec.induction.factory == InductionType.NaturallyAspirated) &&
-                (!tune.partsResolved && tune.engineLevel == 0 || tune.inductionUpgrade == EngineUpgradeInduction.Factory)) return DragMath.AuthoredTorque(spec, rpm) * tune.PowerMultiplier*ServiceDynamics.CamMultiplier(spec,rpm)*CombustionHardware.CompressionMultiplier(spec);
+                (!tune.partsResolved && tune.engineLevel == 0 || tune.inductionUpgrade == EngineUpgradeInduction.Factory)) return Capacity(spec, DragMath.AuthoredTorque(spec, rpm) * tune.PowerMultiplier*ServiceDynamics.CamMultiplier(spec,rpm)*CombustionHardware.CompressionMultiplier(spec), rpm);
             var profile = new InductionProfile(spec, tune);
             return SteadyOutput(profile, rpm).engineTorqueNm;
         }

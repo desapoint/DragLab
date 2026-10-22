@@ -14,13 +14,13 @@ namespace DragLab.Editor
     {
         public static string OutputFolder;
         public static void RunStandalone(){string root=Path.GetFullPath(Path.Combine(Application.dataPath,"../.."));Debug.Log("2K RECOVERY PASS: "+(Run(root)+OwnershipVerification.Run(root)+InventoryVerification.Run(root)));}
-        public static int Run(string root)
+        public static int Run(string root,Func<VehicleDefinition,bool> includeVehicle=null)
         {
             string folder=OutputFolder??Path.Combine(root,"reports/phases/2k");Directory.CreateDirectory(folder);
             int count=0;var log=new StringBuilder();var rows=new StringBuilder("car,scenario,part_id,definition,health_before,health_after,work_j,stress,temperature_c,failure_tick,cause\n");
             Action<bool,string> check=(ok,label)=>{log.AppendLine((ok?"PASS: ":"FAIL: ")+label);File.WriteAllText(Path.Combine(folder,"recovery-verification.txt"),log+"Checks: "+count);if(!ok)throw new InvalidOperationException(label);count++;};
             var catalog=MechanicsTransactions.Catalog();string previous=ProfileStore.VerificationPath;
-            try{foreach(var v in Resources.LoadAll<VehicleDefinition>("Data/Vehicles")){
+            try{foreach(var v in Resources.LoadAll<VehicleDefinition>("Data/Vehicles").Where(v=>includeVehicle==null||includeVehicle(v))){
                 var p=PlayerProfile.New(DateTime.UtcNow.Ticks);p.cars[0].vehicleId=p.selectedVehicleId=v.spec.id;p.cash=100000;MechanicsOwnership.Ensure(p,catalog);
                 ProfileStore.VerificationPath=Path.Combine(folder,v.spec.id+"-save","profile-v1.json");Directory.CreateDirectory(Path.GetDirectoryName(ProfileStore.FilePath));
                 File.WriteAllText(ProfileStore.FilePath,JsonUtility.ToJson(p));ProfileStore.Load();

@@ -14,10 +14,10 @@ namespace DragLab.Runtime
     {
         static IEnumerable<NativeStatDefinition> Rows(IEnumerable<NativeStatGroup> groups)
         {foreach(var g in groups){foreach(var d in g.Definitions)yield return d;foreach(var d in Rows(g.Children))yield return d;}}
-        public static void Run(VehicleDefinition[] vehicles,Action<bool,string> check)
+        public static void Run(VehicleDefinition[] vehicles,Action<bool,string> check,PartCategory[] onlyCategories=null,string[] onlyModels=null)
         {
             var cat=new MechanicalCatalog(vehicles.Select(v=>v.spec));
-            foreach(var category in cat.parts.Select(p=>p.category).Distinct()){
+            foreach(var category in cat.parts.Select(p=>p.category).Distinct().Where(c=>onlyCategories==null||onlyCategories.Contains(c))){
                 var pair=(from candidate in cat.parts.Where(d=>d.category==category).OrderByDescending(d=>d.stage) from vehicle in vehicles where cat.Fits(cat.Spec(vehicle.spec.id),candidate) select new{part=candidate,v=vehicle}).FirstOrDefault();check(pair!=null,"Category has a real compatible test platform: "+category);var part=pair.part;var v=pair.v;
                 var p=PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);MechanicsOwnership.Ensure(p,cat);p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,cat,new VehicleOffer{model=v.spec.id,price=1,stock=v.CreateStockTune(),paint="#FFFFFF"});
                 var worn=p.componentsPart(category);if(worn!=null&&PartSemantics.Wears(category)){worn.condition.health=.35f;foreach(var e in worn.condition.elements)e.health=.35f;foreach(var tire in worn.condition.tires)tire.health=.35f;}
@@ -136,7 +136,7 @@ namespace DragLab.Runtime
                 check(steady.SteadyMisses>misses,"Changing the engine torque map invalidates steady samples");
                 check(JsonUtility.ToJson(p)==profileAfterIntentionalWear,"Cached and uncached previews do not mutate the source player profile");
             }
-            foreach(var v in vehicles){
+            foreach(var v in vehicles.Where(v=>onlyModels==null||onlyModels.Contains(v.spec.id))){
                 var p=PlayerProfile.New(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);MechanicsOwnership.Ensure(p,cat);p.cash=1000000;p.reputation=1000;VehicleCollection.Buy(p,cat,new VehicleOffer{model=v.spec.id,price=1,stock=v.CreateStockTune(),paint="#FFFFFF"});
                 var car=p.SelectedCar;var map=MechanicsOwnership.Definitions(p,car);var pistons=cat.Find(map[PartCategory.Pistons]);var rods=cat.Find(map[PartCategory.Rods]);var crank=cat.Find(map[PartCategory.Crankshaft]);
                 float pr=pistons.rpmLimit,rr=rods.rpmLimit,cr=crank.rpmLimit,pt=pistons.torqueLimitNm,rt=rods.torqueLimitNm,ct=crank.torqueLimitNm;
@@ -144,7 +144,8 @@ namespace DragLab.Runtime
                     pistons.rpmLimit=20000;rods.rpmLimit=1000;crank.rpmLimit=15000;pistons.torqueLimitNm=700;rods.torqueLimitNm=450;crank.torqueLimitNm=620;
                     p.parts.First(i=>i.instanceId==car.installed.slots.First(s=>s.slot=="Rods").partInstanceId).condition.health=.5f;
                     var a=NativePartBrowser.Inspect(InspectionBuild.Capture(p,car));
-                    check(a.safeOperatingRpm==1000&&Math.Abs(a.engineTorqueHeadroomNm-303.75)<.001,"Complete-engine limits use the minimum comparable internal ratings and actual condition: "+v.spec.id);
+                    double expectedTorque=Math.Min(303.75,cat.Find(map[PartCategory.CylinderBlock]).torqueLimitNm);
+                    check(a.safeOperatingRpm==1000&&Math.Abs(a.engineTorqueHeadroomNm-expectedTorque)<.001,"Complete-engine limits use the minimum comparable internal/block ratings and actual condition: "+v.spec.id);
                     var spring=p.parts.First(i=>i.instanceId==car.installed.slots.First(s=>s.slot=="ValveSprings").partInstanceId);spring.condition.elements[0].health=.3f;spring.condition.elements[0].fault=ElementFault.WeakSpring;spring.condition.elements[0].severity=.6f;rods.rpmLimit=14000;
                     var b=NativePartBrowser.Inspect(InspectionBuild.Capture(p,car));var spec=b.source.build.spec;double expected=spec.valvetrain.springSafeRpm*.72*.61/Math.Max(1,spec.valvetrain.profileDemandRpm/spec.redlineRpm);
                     check(Math.Abs(b.safeOperatingRpm-expected)<.02&&b.rpmLimitPart==cat.Find(map[PartCategory.ValveSprings]).name,"Weak individual spring and installed cam demand can set the lowest safe RPM: "+v.spec.id);

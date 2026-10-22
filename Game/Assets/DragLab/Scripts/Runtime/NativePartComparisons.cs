@@ -17,7 +17,7 @@ namespace DragLab.Runtime
             Add("peakHp|hpRpm|peakTorque|torqueRpm|tuningHp|tuningTorque",PartCategory.Pistons,PartCategory.Rods,PartCategory.Crankshaft,PartCategory.HeadIntake,PartCategory.FuelSystem,PartCategory.Ignition,PartCategory.SparkPlugs,PartCategory.GlowPlugs,PartCategory.Controls,PartCategory.Induction,PartCategory.Exhaust,PartCategory.Camshaft,PartCategory.ValveSprings,PartCategory.Valves,PartCategory.Followers,PartCategory.TimingDrive,PartCategory.PistonRings,PartCategory.CylinderBlock,PartCategory.Bearings,PartCategory.ValveSeals,PartCategory.Cooling,PartCategory.OilPump,PartCategory.OilFilter,PartCategory.CoolantPump,PartCategory.CoolingCap,PartCategory.CoolingHoses,PartCategory.OilCooler);
             Add("cylinders|engineLayout|displacement|bore|valvesPerCylinder|idleRpm|redlineRpm|fueling",PartCategory.CylinderBlock);
             Add("fueling|idleRpm",PartCategory.FuelSystem,PartCategory.Controls);Add("idleRpm",PartCategory.Camshaft);
-            Add("safeOperatingRpm|rpmLimitPart|limiterRpm|engineTorqueHeadroom|torqueLimitPart",PartCategory.Pistons,PartCategory.Rods,PartCategory.Crankshaft);
+            Add("safeOperatingRpm|rpmLimitPart|limiterRpm|engineTorqueHeadroom|torqueLimitPart",PartCategory.Pistons,PartCategory.Rods,PartCategory.Crankshaft,PartCategory.CylinderBlock);
             Add("safeOperatingRpm|rpmLimitPart",PartCategory.Camshaft,PartCategory.ValveSprings,PartCategory.Valves,PartCategory.Followers,PartCategory.TimingDrive,PartCategory.CylinderBlock);
             Add("limiterStyle|limiterRpm|limiterCut",PartCategory.RevLimiter,PartCategory.Controls);
             Add("camLift|camDuration|camOverlap|camSeparation|camTiming|valveClearance",PartCategory.Camshaft);Add("springTravel",PartCategory.ValveSprings);Add("camTiming|valveClearance",PartCategory.TimingDrive,PartCategory.Followers);
@@ -38,7 +38,7 @@ namespace DragLab.Runtime
             Add("oilCapacity|oilMinimum",PartCategory.OilPan,PartCategory.CylinderBlock);
             Add("fuelDensity|fuelLitres|tankCapacity",PartCategory.FuelSystem,PartCategory.CylinderBlock);
             Add("launchTarget|twoStepEnabled|twoStepTarget|twoStepStyle|preloadEnabled|antiLagEnabled",PartCategory.TwoStep,PartCategory.Controls);
-            Add("shiftLight|shiftLightTarget",PartCategory.ShiftLight);Add("shiftTarget",PartCategory.Gearbox,PartCategory.Pistons,PartCategory.Rods,PartCategory.Crankshaft);
+            Add("shiftLight|shiftLightTarget",PartCategory.ShiftLight);Add("shiftTarget",PartCategory.Gearbox,PartCategory.Pistons,PartCategory.Rods,PartCategory.Crankshaft,PartCategory.CylinderBlock);
             return map;
         }
         internal static bool CanAffect(PartCategory category,string id)

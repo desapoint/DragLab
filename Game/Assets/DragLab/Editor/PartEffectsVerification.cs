@@ -23,7 +23,7 @@ namespace DragLab.Editor
             foreach (var definition in vehicles) {
                 string id = definition.spec.id; var stock = catalog.Resolve(id, catalog.Recipe(id), definition.CreateStockTune());
                 foreach (var part in catalog.parts.Where(p => catalog.Fits(definition.spec, p))) {
-                    check(!string.IsNullOrWhiteSpace(part.description) && (!PartSemantics.EngineInternal(part.category) ? part.rpmLimit == 0 : part.rpmLimit > definition.spec.redlineRpm) && (!PartSemantics.TorqueRated(part.category) ? part.torqueLimitNm == 0 : part.torqueLimitNm > 0), "Relevant ratings and explained effects: " + part.id);
+                    check(!string.IsNullOrWhiteSpace(part.description) && (!PartSemantics.EngineStrengthRated(part.category) ? part.rpmLimit == 0 : part.rpmLimit > definition.spec.redlineRpm) && (!PartSemantics.TorqueRated(part.category) ? part.torqueLimitNm == 0 : part.torqueLimitNm > 0), "Relevant ratings and explained effects: " + part.id);
                 }
                 var map = catalog.Recipe(id); map.Remove(PartCategory.Interior); map.Remove(PartCategory.Accessories);
                 var stripped = catalog.Resolve(id, map, definition.CreateStockTune());

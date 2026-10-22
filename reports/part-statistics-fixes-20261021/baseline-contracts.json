@@ -1,0 +1,10 @@
+{
+  "sourceCheckpoint": "5e6eb4e",
+  "definitions": 9294,
+  "excludedOnlyForCylinderBlock": [
+    "description",
+    "rpmLimit",
+    "torqueLimitNm"
+  ],
+  "unchangedCatalogueSha256": "56a6745a6f16e4cf4148d0e062556e1a99cd8c132d8ac90824d3b3f1f290b1f2"
+}
