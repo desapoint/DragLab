@@ -2,7 +2,7 @@
 // Offline, repeatable acoustic isolation. No Unity/game files or historical WAVs
 // are changed. Uses the actual standalone Free presets, not older JSON defaults.
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict'),cp=require('node:child_process');
-const dir=__dirname,root=path.resolve(dir,'../..'),baseline=path.join(root,'reports/unity-audio-reference-20261021');
+const dir=__dirname,root=path.resolve(dir,'../..'),baseline=path.resolve(process.argv[3]||path.join(root,'reports/unity-audio-reference-20261021'));
 const out=path.resolve(process.argv[2]||path.join(root,'reports/audio-replay-modes-20261021'));fs.mkdirSync(out,{recursive:true});
 const html=fs.readFileSync(path.join(dir,'DragLab_Audio_Workbench_DrivetrainFix.html'),'utf8');
 const D=vm.runInThisContext(fs.readFileSync(path.join(dir,'draglab_dsp_core_drivetrain.js'),'utf8')+'\ncreateDragLabDSP()');

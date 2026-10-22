@@ -1,0 +1,4 @@
+PASS tempest full Free sequence at 24 kHz remains sample-identical to dd32554 without diagnostic hooks
+PASS v8 full Free sequence at 24 kHz remains sample-identical to dd32554 without diagnostic hooks
+PASS na full Free sequence at 24 kHz remains sample-identical to dd32554 without diagnostic hooks
+PASS diesel full Free sequence at 24 kHz remains sample-identical to dd32554 without diagnostic hooks

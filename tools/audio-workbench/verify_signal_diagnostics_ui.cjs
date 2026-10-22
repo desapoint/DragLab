@@ -5,7 +5,7 @@ const dir=__dirname,out=path.resolve(process.argv[2]||path.join(dir,'../../repor
 const read=f=>fs.readFileSync(path.join(dir,f),'utf8'),html=read('DragLab_Audio_Workbench_DrivetrainFix.html');
 const D=vm.runInThisContext(read('draglab_dsp_core_drivetrain.js')+'\ncreateDragLabDSP()'),R=vm.runInThisContext(read('unity_reference_replay.js')+'\ncreateUnityReferenceReplay')(D),factory=vm.runInThisContext(read('audio_signal_diagnostics.js')+'\ncreateAudioSignalDiagnostics');
 for(const f of ['audio_signal_diagnostics.js','audio_signal_diagnostics_ui.js'])assert(html.includes(read(f).trimEnd()),'embedded '+f+' is stale');
-const source=path.resolve(dir,'../../reports/unity-audio-reference-20261021/03-i4-turbo-hiss');
+const source=path.join(path.resolve(process.argv[3]||path.join(dir,'../../reports/unity-audio-reference-20261021')),'03-i4-turbo-hiss');
 const trace=JSON.parse(fs.readFileSync(source+'.audio-trace.json','utf8')),recording=JSON.parse(fs.readFileSync(source+'.race.json','utf8'));
 recording.ticks=recording.ticks.slice(0,60);trace.frames=trace.frames.slice(0,301);trace.totalSamples=301*400;trace.reactions=[];trace.releases=[];
 const calls=[],elements=new Map(),blobs=new Map();let nextUrl=0;

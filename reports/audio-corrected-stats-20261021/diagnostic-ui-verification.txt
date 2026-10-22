@@ -1,0 +1,9 @@
+PASS diagnostic modules embedded verbatim; standalone HTML parses in the reference UI suite
+PASS actual render UI produces all 14 finite-length PCM16 auditions
+PASS rendering freezes sound tuning even when the live preset changes during yield
+PASS pass selection, descriptions, download target and previous-pass enablement
+PASS diagnostic playback stops generated audio and native reference playback
+PASS previous/selected A/B retains every stored PCM sample with exactly one second silence
+PASS preloaded audition/pair URLs route through the same workbench player
+PASS mismatched trace/input pair is rejected before rendering
+LIMIT Node UI contracts; browser/device visual and listening acceptance remains manual.

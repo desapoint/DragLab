@@ -1,7 +1,7 @@
 'use strict';
 // Build local workbench auditions and verify controlled signal substitutions.
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict'),crypto=require('node:crypto'),cp=require('node:child_process');
-const dir=__dirname,root=path.resolve(dir,'../..'),source=path.join(root,'reports/unity-audio-reference-20261021');
+const dir=__dirname,root=path.resolve(dir,'../..'),source=path.resolve(process.argv[3]||path.join(root,'reports/unity-audio-reference-20261021'));
 const out=path.resolve(process.argv[2]||path.join(root,'reports/audio-signal-diagnostics-20261021'));fs.mkdirSync(out,{recursive:true});
 const read=f=>fs.readFileSync(path.join(dir,f),'utf8'),factory=(f,n)=>vm.runInThisContext(read(f)+'\n'+n);
 const D=factory('draglab_dsp_core_drivetrain.js','createDragLabDSP')(),R=factory('unity_reference_replay.js','createUnityReferenceReplay')(D),G=factory('audio_signal_diagnostics.js','createAudioSignalDiagnostics')(D,R);
@@ -17,6 +17,7 @@ function concatenate(clips){const count=clips.reduce((n,x)=>n+x.l.length,0)+4800
 for(const [id,kind]of [['03-i4-turbo-hiss','tempest'],['08-v8-carb','v8']]){
  const trace=JSON.parse(fs.readFileSync(path.join(source,id+'.audio-trace.json'),'utf8')),inputs=JSON.parse(fs.readFileSync(path.join(source,id+'.race.json'),'utf8')),p=preset(kind),before=hash({trace,inputs,p}),n=trace.totalSamples;
  const capture=G.beginCapture(p,trace,inputs,'Race'),baseline=render(capture,n),timeline=G.finishCapture(capture,p,trace,'Race');
+ fs.writeFileSync(path.join(out,id+'.browser-controls.json'),JSON.stringify(timeline)+'\n','utf8');
  const timelineHash=hash(timeline),items=[],rows=[],rev=[],shift=[];let previous=null;
  for(const stage of G.passes){
   const engine=G.createEngine(p,trace,timeline,stage.level),pcm=render(engine,n),stats=measure(pcm),filename=id+'.signal-'+stage.id+'.wav';wav(filename,pcm);

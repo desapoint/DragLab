@@ -1,0 +1,24 @@
+PASS recorded full combustion cuts override healthy per-cylinder contributions
+PASS 2 requested real engine/traction configurations
+PASS 03-i4-turbo-hiss four complete, synchronized 48 kHz / 24-bit stereo Unity WAVs
+PASS 03-i4-turbo-hiss combined reference retains the same engine/tire gains without normalization
+PASS 03-i4-turbo-hiss lossless 64-bit event seeds
+PASS 03-i4-turbo-hiss browser replay has finite audible unclipped PCM
+PASS 03-i4-turbo-hiss no missing or invented reaction/BOV events
+PASS 03-i4-turbo-hiss chemical and BOV scheduling respects exact time and causal publication
+PASS 03-i4-turbo-hiss RPM, gear and boost follow captured game state without browser physics
+PASS 03-i4-turbo-hiss finite end of recording without a phantom continued race
+PASS 03-i4-turbo-hiss deterministic replay; manual throttle/shift/BOV/pop/auto commands cannot contaminate the reference
+PASS all-off reference solo is exact silence while event timing is retained
+MEASURE 03-i4-turbo-hiss / browser RMS 0.02387554278989728 / peak 0.1727449744939804 / PCM SHA256 95c0e464a629728e70aa535390520902efe09de94e04c48cc398019c43a7e009
+PASS 08-v8-carb four complete, synchronized 48 kHz / 24-bit stereo Unity WAVs
+PASS 08-v8-carb combined reference retains the same engine/tire gains without normalization
+PASS 08-v8-carb lossless 64-bit event seeds
+PASS 08-v8-carb browser replay has finite audible unclipped PCM
+PASS 08-v8-carb no missing or invented reaction/BOV events
+PASS 08-v8-carb chemical and BOV scheduling respects exact time and causal publication
+PASS 08-v8-carb RPM, gear and boost follow captured game state without browser physics
+PASS 08-v8-carb finite end of recording without a phantom continued race
+MEASURE 08-v8-carb / browser RMS 0.062431346827592715 / peak 0.24642738699913025 / PCM SHA256 bf8fdb06a3cbf03ba5f3bda32c6d7482bcee2a3abc4a43d8a131664e42860d7d
+PASS incompatible, incomplete, misaligned or precision-losing traces are rejected
+Checks: 21

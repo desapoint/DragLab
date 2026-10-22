@@ -34,7 +34,7 @@ namespace DragLab.Editor
         static void Require(bool condition,string message){if(!condition)throw new InvalidOperationException("RACE AUDIO: "+message);}
         static void Mark(Result r,double time,string label){r.cues.Add(new Cue{time=Math.Round(time,3),label=label});}
         // Reuse versioned acoustic hardware definitions without rendering or touching generated audition fixtures.
-        internal static RaceAudioTestFixture[] AcousticHardware()=>Cases(false).Select(c=>new RaceAudioTestFixture{id=c.id,title=c.title,spec=c.spec.Copy(),tune=c.tune.Copy()}).ToArray();
+        internal static RaceAudioTestFixture[] AcousticHardware(bool prepareTires=false)=>Cases(prepareTires).Select(c=>new RaceAudioTestFixture{id=c.id,title=c.title,spec=c.spec.Copy(),tune=c.tune.Copy(),components=c.components}).ToArray();
         internal static RaceAudioTestFixture CaptureBackfireComparison(string directory)
         {
             Require(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-audio-wav")>=0,"Comparison requires production WAV capture");

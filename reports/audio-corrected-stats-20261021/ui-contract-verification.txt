@@ -1,0 +1,11 @@
+PASS standalone HTML parses and embeds inspected modules
+PASS trace import and three-mode switching
+PASS physical controls locked in full replay; sound controls editable
+PASS driver-only mode permits browser geometry and race/neutral selection
+PASS importing inputs preserves sound tuning; captured sound can be restored to Free tuning
+PASS matching Unity WAV and generator playback are exclusive
+PASS reference and free WAV render buttons route correctly
+PASS actual AudioWorklet advances recorded frames and publishes meters
+PASS worklet switches driver/full/free modes and forwards sound-preservation options
+PASS actual E/Q key bindings, editable-field exclusion and replay keyboard lock
+LIMIT browser visual/device/listening review remains manual; no real browser automation was performed.

@@ -1,0 +1,54 @@
+PASS 03-i4-turbo-hiss captured corrected v22 physics
+PASS 03-i4-turbo-hiss original throttle, shifts, staging and tick clock retained
+PASS 03-i4-turbo-hiss Unity acoustic hardware, tuning and seeds unchanged
+PASS 03-i4-turbo-hiss every browser acoustic setting and seed matches the original frozen audition
+PASS 03-i4-turbo-hiss fresh unity-source.wav is byte-identical to pre-stat reference
+PASS 03-i4-turbo-hiss fresh unity-engine.wav is byte-identical to pre-stat reference
+PASS 03-i4-turbo-hiss fresh unity-tires.wav is byte-identical to pre-stat reference
+PASS 03-i4-turbo-hiss fresh unity.wav is byte-identical to pre-stat reference
+PASS 03-i4-turbo-hiss every physical audio frame and reaction/release is unchanged (stage labels excluded)
+PASS 03-i4-turbo-hiss every current frame retains its stage label
+PASS 03-i4-turbo-hiss rerendered browser PCM matches fixed-tuning baseline
+PASS 03-i4-turbo-hiss rerendered rpm PCM matches fixed-tuning baseline
+PASS 03-i4-turbo-hiss rerendered pedal PCM matches fixed-tuning baseline
+PASS 03-i4-turbo-hiss rerendered load PCM matches fixed-tuning baseline
+PASS 03-i4-turbo-hiss rerendered boost PCM matches fixed-tuning baseline
+PASS 03-i4-turbo-hiss rerendered airflow PCM matches fixed-tuning baseline
+PASS 03-i4-turbo-hiss rerendered cylinders PCM matches fixed-tuning baseline
+PASS 03-i4-turbo-hiss rerendered fraction PCM matches fixed-tuning baseline
+PASS 03-i4-turbo-hiss rerendered cuts PCM matches fixed-tuning baseline
+PASS 03-i4-turbo-hiss rerendered induction PCM matches fixed-tuning baseline
+PASS 03-i4-turbo-hiss rerendered history PCM matches fixed-tuning baseline
+PASS 03-i4-turbo-hiss rerendered events PCM matches fixed-tuning baseline
+PASS 03-i4-turbo-hiss rerendered outdoor PCM matches fixed-tuning baseline
+PASS 03-i4-turbo-hiss rerendered endpoint PCM matches fixed-tuning baseline
+PASS 03-i4-turbo-hiss.inputs-then-simulation.wav synchronized PCM24 stereo
+PASS 03-i4-turbo-hiss.inputs-then-simulation.wav exact inputs then simulation PCM, one-second gap, no normalization
+PASS 08-v8-carb captured corrected v22 physics
+PASS 08-v8-carb original throttle, shifts, staging and tick clock retained
+PASS 08-v8-carb Unity acoustic hardware, tuning and seeds unchanged
+PASS 08-v8-carb every browser acoustic setting and seed matches the original frozen audition
+PASS 08-v8-carb fresh unity-source.wav is byte-identical to pre-stat reference
+PASS 08-v8-carb fresh unity-engine.wav is byte-identical to pre-stat reference
+PASS 08-v8-carb fresh unity-tires.wav is byte-identical to pre-stat reference
+PASS 08-v8-carb fresh unity.wav is byte-identical to pre-stat reference
+PASS 08-v8-carb every physical audio frame and reaction/release is unchanged (stage labels excluded)
+PASS 08-v8-carb every current frame retains its stage label
+PASS 08-v8-carb rerendered browser PCM matches fixed-tuning baseline
+PASS 08-v8-carb rerendered rpm PCM matches fixed-tuning baseline
+PASS 08-v8-carb rerendered pedal PCM matches fixed-tuning baseline
+PASS 08-v8-carb rerendered load PCM matches fixed-tuning baseline
+PASS 08-v8-carb rerendered boost PCM matches fixed-tuning baseline
+PASS 08-v8-carb rerendered airflow PCM matches fixed-tuning baseline
+PASS 08-v8-carb rerendered cylinders PCM matches fixed-tuning baseline
+PASS 08-v8-carb rerendered fraction PCM matches fixed-tuning baseline
+PASS 08-v8-carb rerendered cuts PCM matches fixed-tuning baseline
+PASS 08-v8-carb rerendered induction PCM matches fixed-tuning baseline
+PASS 08-v8-carb rerendered history PCM matches fixed-tuning baseline
+PASS 08-v8-carb rerendered events PCM matches fixed-tuning baseline
+PASS 08-v8-carb rerendered outdoor PCM matches fixed-tuning baseline
+PASS 08-v8-carb rerendered endpoint PCM matches fixed-tuning baseline
+PASS 08-v8-carb.inputs-then-simulation.wav synchronized PCM24 stereo
+PASS 08-v8-carb.inputs-then-simulation.wav exact inputs then simulation PCM, one-second gap, no normalization
+Checks: 52
+LIMIT Objective equality and signal measurements; subjective sound quality/browser/device listening remains user review. No game audio or stats changed.

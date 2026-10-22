@@ -1,0 +1,42 @@
+PASS all public production EngineSoundFrame values have trace fields:
+PASS rebased fixtures have a separate destination from their historical source
+PASS 03-i4-turbo-hiss current authored spec matches the original controlled configuration
+PASS 03-i4-turbo-hiss installed components and tuning match the original controlled configuration
+PASS 03-i4-turbo-hiss original input sequence can stage with corrected physics
+PASS 03-i4-turbo-hiss unchanged driver commands finish on current physical contracts
+PASS 03-i4-turbo-hiss every original driver command, stage and tick retained exactly
+PASS 03-i4-turbo-hiss historical input fixture remains unchanged
+PASS 08-v8-carb current authored spec matches the original controlled configuration
+PASS 08-v8-carb installed components and tuning match the original controlled configuration
+PASS 08-v8-carb original input sequence can stage with corrected physics
+PASS 08-v8-carb unchanged driver commands finish on current physical contracts
+PASS 08-v8-carb every original driver command, stage and tick retained exactly
+PASS 08-v8-carb historical input fixture remains unchanged
+PASS 03-i4-turbo-hiss stage labels survive JsonUtility null-to-empty string normalization
+PASS 03-i4-turbo-hiss unchanged authoritative physics
+PASS 03-i4-turbo-hiss all reaction packets and acoustic joules retained
+PASS 03-i4-turbo-hiss all exact BOV timestamps retained
+PASS 03-i4-turbo-hiss effective hardware survives JSON roundtrip
+PASS 03-i4-turbo-hiss all frame numbers and wheel contacts survive JSON roundtrip
+PASS 03-i4-turbo-hiss all reaction fields and exact seeds survive JSON roundtrip
+PASS 03-i4-turbo-hiss serialized numeric frames/events reproduce source PCM bit for bit without physics / first difference -1 / expected 0 actual 0
+PASS 03-i4-turbo-hiss serialized trace reproduces both propagated engine and four-wheel tire PCM bit for bit
+PASS 03-i4-turbo-hiss exact event delivery after JSON/UInt64 seed roundtrip
+PASS 03-i4-turbo-hiss replay has no event overflow or stolen voices
+PASS 03-i4-turbo-hiss source fixture not rewritten
+CAPTURE 03-i4-turbo-hiss / 1740400 samples / 4022 reactions / 3 releases / trace SHA256 2acb8c4887702a632cd12edc568ed758b0ef0ffb2451f622eb26f5c60a4059cf
+PASS 08-v8-carb stage labels survive JsonUtility null-to-empty string normalization
+PASS 08-v8-carb unchanged authoritative physics
+PASS 08-v8-carb all reaction packets and acoustic joules retained
+PASS 08-v8-carb all exact BOV timestamps retained
+PASS 08-v8-carb effective hardware survives JSON roundtrip
+PASS 08-v8-carb all frame numbers and wheel contacts survive JSON roundtrip
+PASS 08-v8-carb all reaction fields and exact seeds survive JSON roundtrip
+PASS 08-v8-carb serialized numeric frames/events reproduce source PCM bit for bit without physics / first difference -1 / expected 0 actual 0
+PASS 08-v8-carb serialized trace reproduces both propagated engine and four-wheel tire PCM bit for bit
+PASS 08-v8-carb exact event delivery after JSON/UInt64 seed roundtrip
+PASS 08-v8-carb replay has no event overflow or stolen voices
+PASS 08-v8-carb source fixture not rewritten
+CAPTURE 08-v8-carb / 1785600 samples / 23 reactions / 0 releases / trace SHA256 87a05e4c03e1e3463a10f5ddf57d3c9907b71115c0487565faa454ac95165d38
+PASS capture/replay preserves the gameplay global RNG
+Checks: 39

@@ -1,0 +1,9 @@
+case,artifact,identical,sha256
+03-i4-turbo-hiss,unity-source.wav,True,471205c8ca38979ac0d53173e99c81eeab28e34de552fafc52d283277b2de3d7
+03-i4-turbo-hiss,unity-engine.wav,True,7c6d4b55c53e3268b441f8894ae1067569a63638502ff7fec913b965ea63652e
+03-i4-turbo-hiss,unity-tires.wav,True,3367996f6dd96aa70d3f546d7f7be61eda3e1031dc0c0c3c59bf90d54e091bed
+03-i4-turbo-hiss,unity.wav,True,7c6d4b55c53e3268b441f8894ae1067569a63638502ff7fec913b965ea63652e
+08-v8-carb,unity-source.wav,True,aeb43359b7d22c25b72a01fbc545015d43175b8984a31121786b3b8019126246
+08-v8-carb,unity-engine.wav,True,ad7cc63f76501fcf98954cd9597995899a42203edbad03cc519d1c91af6033a0
+08-v8-carb,unity-tires.wav,True,4f427d12c7f0d443a756d04d6b39d9241d9e0048b5d8f603328e2989abe09f2e
+08-v8-carb,unity.wav,True,f3d124fd00e1722861c7fd57dee35d5a9f2d5ad665513893bca9b76a4dc9b5ec

@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using DragLab.Domain;
+using DragLab.Domain.Mechanics;
 using UnityEngine;
 
 namespace DragLab.Editor
@@ -101,6 +102,7 @@ namespace DragLab.Editor
         [Serializable] public sealed class Trace
         {
             public string schema="draglab-unity-audio-trace-v1",id,title,sourceCommit,sourceFixtureSha256,unityVersion=Application.unityVersion;
+            public string physicsModel=MechanicsSchema.Model;
             public string timing="Each frame supplies the following 400 stereo samples; events become available only at availableSample and fire no earlier than their exact time. Frame zero binds acoustic state before physics. Final 240 frames hold the last inputs; they do not advance physics.";
             public string units="seconds, metres, m/s, kg, kelvin, pascal, joules; boost is gauge bar. Enums are integers with enumNames. No normalized/loudness-matched PCM or boundary fades.";
             public int sampleRate=Rate,channels=2,physicsRate=120,samplesPerFrame=Block,totalSamples,physicsTicks,tailFrames=Tail;
@@ -160,7 +162,7 @@ namespace DragLab.Editor
                 {
                     if(i>0&&i<=f.ticks.Count)
                     {
-                        var tick=f.ticks[i-1];if(tick.stage!=null)stage=tick.stage;car.state.warmupLineLock=tick.lineLock;
+                        var tick=f.ticks[i-1];if(!string.IsNullOrEmpty(tick.stage))stage=tick.stage;car.state.warmupLineLock=tick.lineLock;
                         if(tick.beginCountdown&&!race.BeginCountdown())throw new InvalidOperationException("Cannot stage "+f.id);
                         if(race.phase==RacePhase.Finished)race.Shutdown(tick.input);else race.Step(tick.input);
                     }
@@ -177,6 +179,7 @@ namespace DragLab.Editor
                     tires.Fill(b,2,Rate,tf,trace.master);tireOutdoor.Process(b,2,geometry.TireHeight());Put(tire,b,sample);
                 }
                 trace.elapsed=car.state.elapsed;trace.acousticJ=car.state.audioExhaust.mixture.AcousticEnergyJ;
+                Check(trace.frames.All(frame=>!string.IsNullOrEmpty(frame.stage)),f.id+" stage labels survive JsonUtility null-to-empty string normalization");
                 Check(Math.Abs(trace.elapsed-f.elapsed)<1e-9&&car.state.exhaustPopCount==f.pops,f.id+" unchanged authoritative physics");
                 Check(trace.reactions.Count==car.state.audioExhaust.mixture.Sequence&&Math.Abs(trace.reactions.Sum(x=>x.acousticJ)-trace.acousticJ)<1e-8,f.id+" all reaction packets and acoustic joules retained");
                 Check(trace.releases.Count==car.state.audioExhaust.ReleaseSequence,f.id+" all exact BOV timestamps retained");
@@ -305,6 +308,47 @@ namespace DragLab.Editor
             Check(eventAt==trace.reactions.Count&&d.Delivered==eventAt&&releaseAt==trace.releases.Count&&r.Delivered==releaseAt,trace.id+" exact event delivery after JSON/UInt64 seed roundtrip");
             Check(d.HistoryOverflows==0&&d.TailSteals==0&&d.PressurePulseOverflows==0&&r.Overflows==0&&r.TailSteals==0,trace.id+" replay has no event overflow or stolen voices");
         }
+        static string RebaseInputs(string source,string output,string[] ids)
+        {
+            string folder=Path.Combine(output,"inputs");Directory.CreateDirectory(folder);
+            Check(Path.GetFullPath(source)!=Path.GetFullPath(folder),"rebased fixtures have a separate destination from their historical source");
+            var hardware=RaceAudioAuditionVerification.AcousticHardware(true).ToDictionary(f=>f.id);
+            var matrix=new StringBuilder("case,physics_model,original_fixture_sha256,driver_ticks_sha256,ticks,old_elapsed,new_elapsed,old_pops,new_pops\n");
+            foreach(string id in ids)
+            {
+                string path=Path.Combine(source,id+".race.json");byte[] original=File.ReadAllBytes(path);
+                var f=JsonUtility.FromJson<RaceAudioTestFixture>(Encoding.UTF8.GetString(original));var current=hardware[id];
+                current=JsonUtility.FromJson<RaceAudioTestFixture>(JsonUtility.ToJson(current));
+                File.WriteAllText(Path.Combine(folder,id+".current-hardware.json"),JsonUtility.ToJson(current),new UTF8Encoding(false));
+                // Re-resolve current authored hardware; never just relabel an old spec/model.
+                // Abort if this would silently alter acoustic tuning or installed hardware.
+                Check(f.id==id&&JsonUtility.ToJson(f.spec)==JsonUtility.ToJson(current.spec),id+" current authored spec matches the original controlled configuration");
+                Check(JsonUtility.ToJson(f.tune)==JsonUtility.ToJson(current.tune)&&Json(f.components)==Json(current.components),id+" installed components and tuning match the original controlled configuration");
+                string commands=Json(f.ticks);double oldElapsed=f.elapsed;int oldPops=f.pops;
+                f.spec=current.spec.Copy();f.tune=current.tune.Copy();f.components=current.components;
+                f=JsonUtility.FromJson<RaceAudioTestFixture>(JsonUtility.ToJson(f));
+                var race=f.CreateRace();int lastGear=0,shifts=0,limiterTicks=0;var cuts=new RaceAudioCutCounts();
+                try
+                {
+                    foreach(var tick in f.ticks)
+                    {
+                        var car=race.player;car.state.warmupLineLock=tick.lineLock;
+                        if(tick.beginCountdown)Check(race.BeginCountdown(),id+" original input sequence can stage with corrected physics");
+                        if(race.phase==RacePhase.Finished)race.Shutdown(tick.input);else race.Step(tick.input);
+                        var s=car.state;cuts.Observe(car);if(s.limiter)limiterTicks++;
+                        if(s.launched&&s.gear!=lastGear){if(lastGear>0)shifts++;lastGear=s.gear;}
+                    }
+                    var final=race.player.state;Check(final.finished&&!final.engineFailed&&!final.drivetrainFailed&&!final.stalled,id+" unchanged driver commands finish on current physical contracts");
+                    f.elapsed=final.elapsed;f.pops=final.exhaustPopCount;f.releases=final.boostReleaseCount;f.shifts=shifts;f.limiterTicks=limiterTicks;f.cuts=cuts;
+                }
+                finally{race.CloseOpponentWorker();}
+                Check(Json(f.ticks)==commands,id+" every original driver command, stage and tick retained exactly");
+                File.WriteAllText(Path.Combine(folder,id+".race.json"),JsonUtility.ToJson(f),new UTF8Encoding(false));
+                Check(File.ReadAllBytes(path).SequenceEqual(original),id+" historical input fixture remains unchanged");
+                matrix.AppendLine(string.Join(",",new[]{id,MechanicsSchema.Model,Hash(original),Hash(Encoding.UTF8.GetBytes(commands)),f.ticks.Count.ToString(Inv),oldElapsed.ToString("R",Inv),f.elapsed.ToString("R",Inv),oldPops.ToString(Inv),f.pops.ToString(Inv)}));
+            }
+            File.WriteAllText(Path.Combine(output,"rebased-inputs-matrix.csv"),matrix.ToString(),new UTF8Encoding(false));return folder;
+        }
         public static void Run()
         {
             checks=0;Report.Clear();string output=Path.GetFullPath(Arg("--draglab-reference-output",Path.Combine(Root,"reports/unity-audio-reference-20261021")));
@@ -314,8 +358,9 @@ namespace DragLab.Editor
                 // New sound inputs cannot silently disappear if production adds fields.
                 var absent=EngineFields.Where(f=>f.Name!="afterfire"&&f.Name!="acousticState"&&typeof(EngineData).GetField(f.Name)==null).Select(f=>f.Name).ToArray();
                 Check(absent.Length==0,"all public production EngineSoundFrame values have trace fields: "+string.Join(",",absent));
-                string commit=Arg("--draglab-reference-commit","unrecorded"),folder=Path.Combine(Root,"reports/race-audio-audition");
+                string commit=Arg("--draglab-reference-commit","unrecorded"),folder=Arg("--draglab-reference-input",Path.Combine(Root,"reports/race-audio-audition"));
                 string[] ids=Arg("--draglab-audio-case","03-i4-turbo-hiss,08-v8-carb,09-v8-supercharger,17-v8-burnout,26-launch-hard-ignition").Split(',');
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-reference-rebase")>=0)folder=RebaseInputs(folder,output,ids);
                 foreach(string id in ids)Capture(Path.Combine(folder,id+".race.json"),output,commit);
                 Check(JsonUtility.ToJson(UnityEngine.Random.state)==before,"capture/replay preserves the gameplay global RNG");
                 var files=Directory.GetFiles(output).Where(p=>p.EndsWith(".json",StringComparison.Ordinal)||p.EndsWith(".wav",StringComparison.Ordinal)).OrderBy(p=>p,StringComparer.Ordinal);

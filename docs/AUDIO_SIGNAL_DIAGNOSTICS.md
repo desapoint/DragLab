@@ -3,6 +3,45 @@
 User-approved development audition, 2026-10-21. Keep this in the browser workbench;
 do not change game physics/audio or integrate a preferred candidate yet.
 
+## Corrected-stat refresh, 2026-10-21–22
+
+The latest local review is `reports/audio-corrected-stats-20261021/index.html`.
+It retains the original two-car input clock and all frozen sound settings,
+replays current v22 physics, and compares fresh PCM with the retained baseline.
+All eight native source/engine/tire/combined WAVs and all 28 fixed-tuning
+diagnostic WAVs remain byte-identical. These healthy configurations do not
+exercise the part-capacity/rating issues corrected in `14d2703`.
+
+The new review adds driver-input → full-simulation A/B WAVs, phase-level signal
+measurements and RPM/pedal/load/cut graphs. No level matching is applied. See
+[findings and validation](../reports/audio-corrected-stats-20261021/CHANGES.md).
+Native trace stage labels now persist through empty-string JSON normalization;
+this is report metadata only and does not change a physical signal or sample.
+
+To refresh without overwriting the historical baseline (use Node 18+; this run
+used the bundled Node 24 for UI Blob contracts):
+
+```powershell
+node tools/audio-workbench/sync-embedded-dsp.cjs
+./tools/Export-UnityAudioReference.ps1 -Cases '03-i4-turbo-hiss,08-v8-carb' -InputFolder reports/unity-audio-reference-20261021 -Output reports/audio-corrected-stats-20261021/reference -Rebase
+node tools/audio-workbench/preview_replay_modes.cjs reports/audio-corrected-stats-20261021/modes reports/audio-corrected-stats-20261021/reference
+node tools/audio-workbench/run_signal_diagnostics.cjs reports/audio-corrected-stats-20261021/diagnostics reports/audio-corrected-stats-20261021/reference
+node tools/audio-workbench/verify_signal_diagnostics_ui.cjs reports/audio-corrected-stats-20261021 reports/audio-corrected-stats-20261021/reference
+node tools/audio-workbench/verify_signal_preservation.cjs reports/audio-corrected-stats-20261021
+python tools/audio-workbench/compare_corrected_stats.py
+```
+
+`-Rebase` reconstructs current authored hardware, requires the same controlled
+spec/components/tuning, preserves every original driver tick and recomputes the
+expected results through current physics before capture. It aborts on an
+unreviewed hardware change rather than silently substituting an old build or
+changing sound tuning. Fixtures are written below the new output's `inputs/`;
+the historical source is checked unchanged. The comparison script intentionally
+asserts the observed PCM equality for this v22 checkpoint. A future sound/stat
+change must review/update that contract rather than ignore a failing assertion.
+
+## Original diagnostic workflow
+
 Open `reports/audio-signal-diagnostics-20261021/index.html`. Tempest and the
 carbureted V8 have pre-rendered comparisons. Use the configuration selector to
 change car, then **Fixed-tuning signal diagnostics**. Select a pass and play its
