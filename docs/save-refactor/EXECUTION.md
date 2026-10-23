@@ -10,7 +10,7 @@ Additional hard completion gate: **no JSON encode/decode for runtime data manipu
 
 ## Next checkpoint
 
-**S05p — typed storage/integrity proposal passed independent Luna-high review; local commit pending. Next is the first S05 typed storage implementation checkpoint.** S04 is committed as `1fc63d0` after final Luna-high PASS. S03a is committed as `3dfcfa1` after independent Luna-high PASS. S02c is committed as `34abd7f` after Luna-high PASS. S02b is committed as `7e6ea10` after Luna-high PASS. S02a passed Luna-high review and is committed as `62b2bc0`. S01 passed review and is committed as `fd092bc`. S00 is `39d09b7`, whitespace closure `f163454`. S02a changes checkpoint lookup only; no persistent command conversion yet. Parent coordinates all Unity runs, real mouse tests, staging and commits. Interactive tests run sequentially; no two Unity Editors use this project concurrently.
+**S05a1 — dormant typed scalar/record codec passes independent Luna-high review; local commit pending.** S05p is committed as `ad4ed4e` after independent Luna-high PASS. S04 is committed as `1fc63d0` after final Luna-high PASS. S03a is committed as `3dfcfa1` after independent Luna-high PASS. S02c is committed as `34abd7f` after Luna-high PASS. S02b is committed as `7e6ea10` after Luna-high PASS. S02a passed Luna-high review and is committed as `62b2bc0`. S01 passed review and is committed as `fd092bc`. S00 is `39d09b7`, whitespace closure `f163454`. S02a changes checkpoint lookup only; no persistent command conversion yet. Parent coordinates all Unity runs, real mouse tests, staging and commits. Interactive tests run sequentially; no two Unity Editors use this project concurrently.
 
 ## File ownership manifest
 
@@ -35,8 +35,9 @@ Runtime paths above are relative to Game/Assets/DragLab/Scripts/. No overlapping
 | S02c | 132 exact parity + 72 isolated storage checks; final-source 10 lifetime probes; 180 paired timing records | PASS — S02C_REVIEW.md | `34abd7f` | Existing error order/global invariants retained; 5-car/no-spares separate median +8.7%, paired median -0.1103 ms |
 | S03a | 95 typed parity/lifetime/dependency/bounds checks + 72 isolated storage pass; 20 capture-inclusive timing pairs | PASS — S03A_REVIEW.md | `3dfcfa1` | One cache only; no whole-profile working set or persistence switch |
 | S04 | Final-source 164 focused + 72 isolated storage, exit 0; descriptive 20-sample cost | PASS — S04_FINAL_REVIEW.md | `1fc63d0` | Dormant until typed storage/writer pilot passes; no production caller switch |
-| S05p | Concrete typed schema/authority/codec/receipt and bounded-query proposal; two native in-memory probes and static checks pass | PASS — S05P_REVIEW.md after capture/null/placeholder corrections | Pending local commit | Proposal only, no production migration/writer; managed Windows/Android, parity and faults remain implementation gates |
-| S05 implementation–S14 | Not started | Not reviewed | None | Execute in order after prior gate passes; remaining cache/JSON consumers stay explicit conversion work |
+| S05p | Concrete typed schema/authority/codec/receipt and bounded-query proposal; two native in-memory probes and static checks pass | PASS — S05P_REVIEW.md after capture/null/placeholder corrections | `ad4ed4e` | Proposal only, no production migration/writer; managed Windows/Android, parity and faults remain implementation gates |
+| S05a1 | 89 codec/native binding + 72 isolated storage checks pass, exit 0; source/meta boundaries pass | PASS — S05A1_REVIEW.md | Pending local commit | Dormant typed scalar/fluid row only; no migration, writer or live save switch |
+| S05a migration onward–S14 | Not started | Not reviewed | None | Execute in order after prior gate passes; remaining cache/JSON consumers stay explicit conversion work |
 
 Every accepted row records exact checks, measurements, failures/corrections and remaining costs. All named command suffixes have separate commits/reviews. Do not mark an entire family complete from one converted pilot.
 
@@ -154,3 +155,18 @@ Baseline `1fc63d0`. The existing schema cannot implement the pilot without JSON 
 Use individual typed records, not a binary/JSON whole-profile replacement. Preserve existing migration checksums/scripts and recoverable save floors. Current digest is XOR of per-row SHA-256, not a monolithic SHA; persist/verify enough row integrity to update only declared records without rescanning unrelated state. Typed pilot reads/writes and receipt reconciliation must avoid JSON, full row inventory and global relation sync. Every temporary legacy bridge must name its callers, canonical field authority and retirement checkpoint under the final no-runtime-JSON gate.
 
 S05p integration transfer: all medium authors released files. Parent pinned S05P_DECISIONS, corrected the full transitional capture handoff, nullable receipt children and attached-engine legacy placeholder semantics, then reran the native probes. Fresh Luna-high re-review PASS retained its initial blocked findings as resolved history. No production migration, writer or UI caller changed. Existing user reports/attachments remain untouched.
+
+## S05a1 file ownership — typed codec foundation before migration activation
+
+Baseline `ad4ed4e`. Implement the approved exact scalar/key/record hash codec and one immutable fluid row transport, with no production callsite or schema-version change. This is a testable infrastructure step within S05a, not a migration/writer completion. Existing 001/002 migrations, profile save behavior and UI stay unchanged. Parent owns Unity/Git; agents do not run either.
+
+| Owner | Exclusive paths | Task |
+| --- | --- | --- |
+| storage_pilot_medium / Luna medium | Infrastructure/TypedStateRecord.cs + .meta; Infrastructure/TypedFluidStateRecord.cs + .meta; docs/save-refactor/S05A1_TYPED_CODEC.md | Explicit immutable typed scalar fields, canonical key/hash bytes and exact 14-bit-field fluid row, no JSON/reflection/profile copy |
+| s05_tests_medium / Luna medium | Runtime/TypedStateRecordChecks.cs + .meta; docs/save-refactor/S05A1_TEST_MATRIX.md | Independent canonical vectors/alias/culture/invalid input/native managed SQLite integer binding checks, isolated output only |
+| coordinator | Editor/StateCommandCheckpointVerification.cs wrapper; status/ledger/results/vector fixture if required | Integrate fixed API and independently derive golden bytes, run focused + existing isolated storage, local commit |
+| fresh Luna-high reviewer | docs/save-refactor/S05A1_REVIEW.md after implementer release | Review exact codecs/immutability/native gates and dormant scope |
+
+No generalized serializer, whole-profile transport or generic JSON fallback. Transport owns only one affected row. Native tests use disposable in-memory DBs; managed Windows evidence does not replace Android verification before a migration-containing Android release. Raw doubles, null/empty strings, schema field order and composite-key framing must match the pinned S05p codec. New fields/tables are not activated by this checkpoint.
+
+S05a1 integration transfer: both medium owners released source/docs; parent fixed the isolated wrapper, independently derived the canonical golden vector, checked GUIDs and no-JSON/profile/reflection dependencies, and ran final-source89+72 in Unity6000.6.4f1 (exit0). A fresh Luna-high review passes actual source and dedicated raw evidence. No production save/migration/caller changed. Local commit remains before next implementation step.

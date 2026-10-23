@@ -60,6 +60,15 @@ namespace DragLab.Editor
             VerifyLegacyStorage("S04");
         }
 
+        public static void RunTypedStateRecord()
+        {
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            SqlitePluginSetup.Configure();
+            TypedStateRecordChecks.RunStandalone();
+            VerifyLegacyStorage("S05A1");
+        }
+
         static void VerifyLegacyStorage(string checkpoint)
         {
             string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/save-refactor/" + checkpoint));
