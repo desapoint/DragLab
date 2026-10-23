@@ -10,7 +10,7 @@ Additional hard completion gate: **no JSON encode/decode for runtime data manipu
 
 ## Next checkpoint
 
-**S00 — Luna-high approved; local checkpoint commit is being recorded. S01 starts only after that commit.** No later checkpoint is started. Parent coordinates all Unity runs, real mouse tests, staging and commits. Interactive tests run sequentially; no two Unity Editors use this project concurrently.
+**S01 — Luna-high PASS; recording the local checkpoint commit before S02.** S00 passed Luna-high review and is committed as `39d09b7`, with additive whitespace closure `f163454`. No gameplay caller switches in S01; S02 has not started. Parent coordinates all Unity runs, real mouse tests, staging and commits. Interactive tests run sequentially; no two Unity Editors use this project concurrently.
 
 ## File ownership manifest
 
@@ -28,9 +28,26 @@ Runtime paths above are relative to Game/Assets/DragLab/Scripts/. No overlapping
 
 | Checkpoint | Implementation/checks | Luna-high review | Local commit | Limits / next |
 | --- | --- | --- | --- | --- |
-| S00 | Final frozen 342 samples + independent validator and 9-fixture all-table rollback pass; see S00_RESULTS.md | PASS — gpt-6-luna / high, S00_REVIEW.md | This checkpoint | Bounded warmed-Editor baseline only; no phone, allocation, tail-frame or whole-command-family claim |
-| S01–S14 | Not started | Not reviewed | None | Execute in plan order after prior gate passes |
+| S00 | Final frozen 342 samples + independent validator and 9-fixture all-table rollback pass; see S00_RESULTS.md | PASS — gpt-6-luna / high, S00_REVIEW.md | `39d09b7`, whitespace closure `f163454` | Bounded warmed-Editor baseline only; no phone, allocation, tail-frame or whole-command-family claim |
+| S01 | 75 contract checks + 72 existing isolated storage checks pass; dormant typed contracts/storage mapping | PASS — S01_REVIEW.md | This checkpoint | No caller switch or new persistent authority |
+| S02–S14 | Not started | Not reviewed | None | Execute in plan order after prior gate passes |
 
 Every accepted row records exact checks, measurements, failures/corrections and remaining costs. All named command suffixes have separate commits/reviews. Do not mark an entire family complete from one converted pilot.
 
 S00 integration ownership transfer: after baseline_medium released its files, parent corrected compiler errors, diagnostics/fixture loading, allocation probe and rollback verification. tools/check_save_refactor_baseline.py and tools/fixtures/save-refactor-s00/** are parent-owned static evidence. No overlapping agent writes.
+
+## S01 file ownership
+
+Baseline `f163454`. Contracts are pure managed metadata for affected records, not a second state ledger. State medium freezes and communicates the API before dependent code is written. No real storage adapter is authorized until the coordinator reviews that mapping; no production caller changes.
+
+| Owner | Exclusive paths | Outcome |
+| --- | --- | --- |
+| state_medium / Luna medium | Domain/StateCommandContracts.cs + .meta; docs/save-refactor/S01_CONTRACTS.md | Immutable identity/version/read-write/receipt contracts and invariants |
+| storage_medium2 / Luna medium | docs/save-refactor/S01_STORAGE_MAPPING.md; proposed Infrastructure/StateCommandStorageBoundary.cs + .meta only after coordinator approval | Map existing fences and explicit missing durability requirements |
+| baseline_medium / Luna medium | Runtime/StateCommandContractChecks.cs + .meta; docs/save-refactor/S01_TEST_MATRIX.md | Adversarial contract/failure checks without save writes |
+| coordinator | Ledger, status headers, reports/save-refactor/S01_RESULTS.md and raw execution artifacts | Integration, static/Unity checks, commit |
+| checkpoint_high / Luna high | docs/save-refactor/S01_REVIEW.md, after a slot is released | Independent review before S02 |
+
+S01 preserves current production persistence. The existing runtime JSON dependencies and whole-profile clones remain migration work, not accepted final behavior. This checkpoint establishes the contracts that later command conversions must satisfy.
+
+S01 integration ownership transfer: the implementation agents released all assigned files; parent corrected test preprocessor scope coordination, boundary tests/docs, and added Editor/StateCommandCheckpointVerification.cs + .meta for the existing isolated storage regression. Combined run exited 0 (75 + 72 checks). No packaged build/UI change at this dormant checkpoint.
