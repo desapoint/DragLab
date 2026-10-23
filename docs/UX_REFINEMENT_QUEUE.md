@@ -5,7 +5,7 @@ Preserve the current performance/commerce checkpoint first. Deliver one requeste
 ## Current
 
 - Commerce/performance technical checkpoint completed in b413fc3 and 1f54da3; final Windows/Android builds are refreshed with the shifter control. User review remains pending.
-- Shifter control technically complete: 623 packaged checks passed, both platform builds refreshed. Stop for user visual/device validation before the next control.
+- Shifter control technically complete: 623 packaged checks passed, both platform builds refreshed. User explicitly directed continuation through the remaining requested controls; retain separate tested local commits and user acceptance status.
 
 ## Requested control sequence (technical completion is separate from acceptance)
 
@@ -15,3 +15,5 @@ Preserve the current performance/commerce checkpoint first. Deliver one requeste
 4. Warning repair links: shared warning dialog should offer Shop navigation with default Compatible + In stock filters and the relevant part category/categories; preserve the user's current car context and existing draft/confirmation guards. A warning is guidance, not physical incompatibility.
 
 These requests do not authorize unrelated new audio synthesis changes, later workbench phases, new bench navigation or removing desktop F8.
+
+2026-10-22 clarification: continue the complete explicitly requested batch without per-control permission stops. Quick leave, engine listening and warning repair links are authorized in order. Physical/visual acceptance remains separate from technical completion.
