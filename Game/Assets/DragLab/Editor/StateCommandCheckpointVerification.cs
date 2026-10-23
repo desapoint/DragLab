@@ -17,7 +17,20 @@ namespace DragLab.Editor
             if (!Application.isBatchMode || EditorApplication.isPlaying)
                 throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
             StateCommandContractChecks.RunStandalone();
-            string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/save-refactor/S01"));
+            VerifyLegacyStorage("S01");
+        }
+
+        public static void RunPartIndex()
+        {
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            OwnedPartIndexChecks.RunStandalone();
+            VerifyLegacyStorage("S02");
+        }
+
+        static void VerifyLegacyStorage(string checkpoint)
+        {
+            string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/save-refactor/" + checkpoint));
             Directory.CreateDirectory(root);
             string fixtures = Path.Combine(root, "storage-fixtures-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmssfff"));
             var log = new StringBuilder();
@@ -33,7 +46,7 @@ namespace DragLab.Editor
                         count++;
                     }, note => log.AppendLine(note), limit: 2);
                 log.AppendLine("RESULT PASS count=" + count);
-                Debug.Log("S01 isolated legacy storage regression passed: " + count);
+                Debug.Log(checkpoint + " isolated legacy storage regression passed: " + count);
             }
             catch (Exception error)
             {

@@ -10,7 +10,7 @@ Additional hard completion gate: **no JSON encode/decode for runtime data manipu
 
 ## Next checkpoint
 
-**S01 — Luna-high PASS; recording the local checkpoint commit before S02.** S00 passed Luna-high review and is committed as `39d09b7`, with additive whitespace closure `f163454`. No gameplay caller switches in S01; S02 has not started. Parent coordinates all Unity runs, real mouse tests, staging and commits. Interactive tests run sequentially; no two Unity Editors use this project concurrently.
+**S02a — Luna-high PASS; recording the local checkpoint commit before the next increment.** S01 passed review and is committed as `fd092bc`. S00 is `39d09b7`, whitespace closure `f163454`. S02a changes checkpoint lookup only; no persistent command conversion yet. Parent coordinates all Unity runs, real mouse tests, staging and commits. Interactive tests run sequentially; no two Unity Editors use this project concurrently.
 
 ## File ownership manifest
 
@@ -29,8 +29,9 @@ Runtime paths above are relative to Game/Assets/DragLab/Scripts/. No overlapping
 | Checkpoint | Implementation/checks | Luna-high review | Local commit | Limits / next |
 | --- | --- | --- | --- | --- |
 | S00 | Final frozen 342 samples + independent validator and 9-fixture all-table rollback pass; see S00_RESULTS.md | PASS — gpt-6-luna / high, S00_REVIEW.md | `39d09b7`, whitespace closure `f163454` | Bounded warmed-Editor baseline only; no phone, allocation, tail-frame or whole-command-family claim |
-| S01 | 75 contract checks + 72 existing isolated storage checks pass; dormant typed contracts/storage mapping | PASS — S01_REVIEW.md | This checkpoint | No caller switch or new persistent authority |
-| S02–S14 | Not started | Not reviewed | None | Execute in plan order after prior gate passes |
+| S01 | 75 contract checks + 72 existing isolated storage checks pass; dormant typed contracts/storage mapping | PASS — S01_REVIEW.md | `fd092bc` | No caller switch or new persistent authority |
+| S02a | Prior full harness 1,375 focused + 72 existing storage checks; supplemental final-source preservation 1,067, all exit 0; sparse capture fixes first-car regression | PASS — S02_REVIEW.md | This checkpoint | Operation-local requested-ID map only; no persistent command conversion |
+| S02b–S14 | Not started | Not reviewed | None | Execute in plan order after prior gate passes |
 
 Every accepted row records exact checks, measurements, failures/corrections and remaining costs. All named command suffixes have separate commits/reviews. Do not mark an entire family complete from one converted pilot.
 
@@ -51,3 +52,17 @@ Baseline `f163454`. Contracts are pure managed metadata for affected records, no
 S01 preserves current production persistence. The existing runtime JSON dependencies and whole-profile clones remain migration work, not accepted final behavior. This checkpoint establishes the contracts that later command conversions must satisfy.
 
 S01 integration ownership transfer: the implementation agents released all assigned files; parent corrected test preprocessor scope coordination, boundary tests/docs, and added Editor/StateCommandCheckpointVerification.cs + .meta for the existing isolated storage regression. Combined run exited 0 (75 + 72 checks). No packaged build/UI change at this dormant checkpoint.
+
+## S02a file ownership
+
+Baseline `fd092bc`. First index family only: owned part ID to position. Build within a synchronous validation invocation, return validated part handles, dispose index before mutation/publication. No callbacks or structural identity changes within index lifetime, no global cache or mutation-version assumption. Main owns live graph; existing isolated worker candidates may run the same pure-managed helper privately. No worker receives the live graph.
+
+| Owner | Exclusive paths | Outcome |
+| --- | --- | --- |
+| state_medium / Luna medium | Domain/OwnedPartIdentityIndex.cs + .meta; docs/save-refactor/S02_IDENTITY_INDEX.md | One-shot ordinal ID map, rejection/lifetime contract |
+| baseline_medium / Luna medium | Runtime/OwnedPartIndexChecks.cs + .meta; docs/save-refactor/S02_TEST_MATRIX.md | Independent scans, mutation/lifetime and real checkpoint differential tests, build/lookup measurements |
+| storage_medium2 / Luna medium | docs/save-refactor/S02_STORAGE_IMPACT.md | Read-only checkpoint ownership, failure and persistence audit |
+| coordinator | Infrastructure/MechanicsTransactions.cs, optional Editor test wrapper; ledger/status/results | Integrate one index into checkpoint validation/apply and run gates |
+| checkpoint_high / Luna high | docs/save-refactor/S02_REVIEW.md after a slot is released | Independent correctness/performance review before next family |
+
+S02a integration ownership transfer: implementers released files; parent owns final integration and doc corrections. Initial full-map run (1,358 + 72 pass) is retained locally but its common-case regression was rejected. Corrected sparse run passes 1,375 + 72, exit 0; independent 16-row CSV validation passes. All affected values/receipt stage before assignment. No later family has started.

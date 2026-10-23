@@ -33,25 +33,38 @@ namespace DragLab.Infrastructure
         }
         public static void ApplyCheckpoint(PlayerProfile profile, RunCheckpoint checkpoint)
         {
-            ValidateCheckpoint(profile, checkpoint);
-            foreach (var snapshot in checkpoint.components)
-                profile.parts.Find(p => p.instanceId == snapshot.instanceId).condition = snapshot.condition.Copy();
-            var car = profile.cars.Find(c => c.instanceId == checkpoint.ownedVehicleId);
-            if(checkpoint.fluids!=null)car.fluids=checkpoint.fluids.Copy();
-            car.thermalUtcTicks=Math.Max(car.thermalUtcTicks,checkpoint.thermalUtcTicks);
-            if(checkpoint.hasFuel)car.fuel=new FuelState{litres=checkpoint.fuel.litres,cumulativeUsedLitres=checkpoint.fuel.cumulativeUsedLitres,flowLitresPerSecond=checkpoint.fuel.flowLitresPerSecond};
+            var targets = ValidateCheckpointTargets(profile, checkpoint, out var car);
+            // Validation returns invocation-owned handles, with its lookup already disposed.
+            // No identity/list mutation or external callback occurs between capture and use.
+            // Prepare all affected values before assignments; malformed prior resources must
+            // not fail receipt construction after some conditions have already been applied.
+            var conditions = checkpoint.components.Select(p => p.condition.Copy()).ToArray();
+            var fluids = checkpoint.fluids == null ? car.fluids : checkpoint.fluids.Copy();
+            var fuel = checkpoint.hasFuel ? checkpoint.fuel.Copy() : car.fuel;
+            if (fluids == null || fuel == null)
+                throw new InvalidOperationException("Checkpoint requires existing fuel and fluid state.");
+            var receipt = new RunCheckpoint { runId=checkpoint.runId, ownedVehicleId=checkpoint.ownedVehicleId,
+                revision=profile.revision+1, tick=checkpoint.tick, thermalUtcTicks=checkpoint.thermalUtcTicks,
+                hasFuel=checkpoint.hasFuel, fuel=fuel.Copy(), fluids=fluids.Copy(),
+                settled=checkpoint.settled, closedReason=checkpoint.closedReason };
             var old = profile.runCheckpoints.Find(r => r.runId == checkpoint.runId);
+            for (int i = 0; i < targets.Length; i++)
+                targets[i].condition = conditions[i];
+            if(checkpoint.fluids!=null)car.fluids=fluids;
+            car.thermalUtcTicks=Math.Max(car.thermalUtcTicks,checkpoint.thermalUtcTicks);
+            if(checkpoint.hasFuel)car.fuel=fuel;
             if (old != null) profile.runCheckpoints.Remove(old);
             // Receipts contain no duplicate component trees; conditions live in the owned ledger.
-            profile.runCheckpoints.Add(new RunCheckpoint { runId=checkpoint.runId, ownedVehicleId=checkpoint.ownedVehicleId,
-                revision=profile.revision+1, tick=checkpoint.tick, thermalUtcTicks=checkpoint.thermalUtcTicks,
-                hasFuel=checkpoint.hasFuel, fuel=new FuelState {litres=car.fuel.litres,cumulativeUsedLitres=car.fuel.cumulativeUsedLitres,flowLitresPerSecond=car.fuel.flowLitresPerSecond},
-                fluids=car.fluids.Copy(), settled=checkpoint.settled, closedReason=checkpoint.closedReason });
+            profile.runCheckpoints.Add(receipt);
         }
         // Validate every field before touching the ledger, also used by lightweight race snapshots.
         public static void ValidateCheckpoint(PlayerProfile profile, RunCheckpoint checkpoint)
+            => ValidateCheckpointTargets(profile, checkpoint, out _);
+
+        static PartInstance[] ValidateCheckpointTargets(PlayerProfile profile, RunCheckpoint checkpoint,
+            out OwnedCar car)
         {
-            var car = profile.cars.Find(c => c.instanceId == checkpoint.ownedVehicleId);
+            car = profile.cars.Find(c => c.instanceId == checkpoint.ownedVehicleId);
             if(car!=null)EngineRebuilds.RequireAvailable(car);
             if (car == null || checkpoint.version != MechanicsSchema.Version || checkpoint.model != MechanicsSchema.Model || checkpoint.tick < 0 || checkpoint.components == null || string.IsNullOrWhiteSpace(checkpoint.runId)) throw new InvalidOperationException("Invalid checkpoint owner/model/tick.");
             var old = profile.runCheckpoints.Find(r => r.runId == checkpoint.runId);
@@ -64,15 +77,35 @@ namespace DragLab.Infrastructure
                 var f=checkpoint.fluids;var prior=car.fluids;
                 if(f.Validate(profile.catalog.Spec(car.vehicleId).fluids)!=null || f.oilLitres>prior.oilLitres+1e-9 || f.coolantLitres>prior.coolantLitres+1e-9 || RunPersistence.HistoryLess(f.oilConsumedLitres,prior.oilConsumedLitres) || RunPersistence.HistoryLess(f.oilLeakedLitres,prior.oilLeakedLitres) || RunPersistence.HistoryLess(f.coolantLostLitres,prior.coolantLostLitres) || RunPersistence.HistoryLess(f.serviceElapsedSeconds,prior.serviceElapsedSeconds) || f.oilCondition>prior.oilCondition+1e-9) throw new InvalidOperationException("Checkpoint cannot refill, renew or rewind fluid history.");
             }
-            var seen = new System.Collections.Generic.HashSet<string>();
-            foreach (var snapshot in checkpoint.components)
+            var targets = new PartInstance[checkpoint.components.Count];
+            var seen = new System.Collections.Generic.HashSet<string>(StringComparer.Ordinal);
+            var requestedIds = new string[checkpoint.components.Count];
+            for (int i = 0; i < checkpoint.components.Count; i++)
             {
-                var item = profile.parts.Find(p => p.instanceId == snapshot.instanceId);
-                if (!seen.Add(snapshot.instanceId) || item == null || !car.installed.slots.Any(b=>b.partInstanceId==snapshot.instanceId) || item.ownerId != car.instanceId && item.ownerId != car.engineAssemblyId || snapshot.definitionId != item.definitionId || snapshot.slot!=item.slot || snapshot.ownerId!=item.ownerId || snapshot.condition.Validate() != null) throw new InvalidOperationException("Checkpoint has invalid identity/condition for "+snapshot.slot+".");
-                if(!EngineElements.CanAdvance(item.condition,snapshot.condition))throw new InvalidOperationException("Checkpoint rewinds individual elements: "+snapshot.slot);
-                if(!RunPersistence.ConditionAdvances(item.condition,snapshot.condition))throw new InvalidOperationException("Checkpoint rewinds mechanical history/condition: "+snapshot.slot);
+                var snapshot = checkpoint.components[i];
+                if (snapshot == null || string.IsNullOrWhiteSpace(snapshot.instanceId) || !seen.Add(snapshot.instanceId))
+                    throw new InvalidOperationException("Checkpoint has a missing or duplicate component identity.");
+                requestedIds[i] = snapshot.instanceId;
+            }
+            // This index belongs only to this synchronous invocation. Existing detached
+            // settlement candidates may call here on their owner worker; live profiles
+            // remain main-owned. Never retain it across callbacks or candidate mutations.
+            // The source already has validated ownership topology. Capture only requested
+            // identities and stop once found, rather than index unrelated loose inventory.
+            using (var index = OwnedPartIdentityIndex.BuildRequested(profile.parts, requestedIds))
+            {
+                for (int i = 0; i < checkpoint.components.Count; i++)
+                {
+                    var snapshot = checkpoint.components[i];
+                    var item = index.TryGetPosition(snapshot.instanceId, out int position) ? profile.parts[position] : null;
+                    if (item == null || !car.installed.slots.Any(b=>b.partInstanceId==snapshot.instanceId) || item.ownerId != car.instanceId && item.ownerId != car.engineAssemblyId || snapshot.definitionId != item.definitionId || snapshot.slot!=item.slot || snapshot.ownerId!=item.ownerId || snapshot.condition == null || snapshot.condition.Validate() != null) throw new InvalidOperationException("Checkpoint has invalid identity/condition for "+snapshot.slot+".");
+                    if(!EngineElements.CanAdvance(item.condition,snapshot.condition))throw new InvalidOperationException("Checkpoint rewinds individual elements: "+snapshot.slot);
+                    if(!RunPersistence.ConditionAdvances(item.condition,snapshot.condition))throw new InvalidOperationException("Checkpoint rewinds mechanical history/condition: "+snapshot.slot);
+                    targets[i] = item;
+                }
             }
             if(checkpoint.thermalUtcTicks<0||checkpoint.thermalUtcTicks>DateTime.MaxValue.Ticks)throw new InvalidOperationException("Invalid thermal clock.");
+            return targets;
         }
     }
 }
