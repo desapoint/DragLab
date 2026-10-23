@@ -1,6 +1,6 @@
 # Parts commerce clarity — 2026-10-22
 
-Status: implementation under verification; user acceptance pending.
+Status: technical regression checkpoint passed; user acceptance pending.
 
 Scope: one native parts-commerce flow checkpoint. Retain the existing domain transactions, prices, physical identities, condition, market stock/reservations and express charges.
 
@@ -14,7 +14,9 @@ Scope: one native parts-commerce flow checkpoint. Retain the existing domain tra
 
 ## Checks
 
-Pending Windows player build and real-input purchase/cart/workshop regressions, compact/touch screenshots and Android build.
+Windows player build passed. Real-input suites passed: cart 914, purchase 893 and full workshop/block roster 1,726 assertions, all with zero runtime errors. The companion performance checkpoint passed responsiveness 76 and dealership 271 checks. Screenshots were inspected for staged sale/cart, checkout receipt and compact touch layout; purchase summaries and return actions remain visible. Refreshed platform build receipts follow the requested shifter control.
+
+The earlier workshop run hit its old overall timeout after 1,707 assertions and is retained as a failed diagnostic; the final bounded full-roster rerun passed all 1,726 checks. No tests were removed.
 
 ## Interface review
 

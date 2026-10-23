@@ -1,0 +1,15 @@
+Commerce/performance checkpoint receipts — 2026-10-22
+Windows Unity 6000.6.4f1; real-input native player tests; isolated disposable SQLite profiles.
+
+responsive: Checks: 76 / runtime errors: 0
+dealer: Checks: 271 / runtime errors: 0
+cart: Checks: 914 / runtime errors: 0
+purchase: Checks: 893 / runtime errors: 0
+workshop: Checks: 1726 / runtime errors: 0
+
+Pinned physics: 8 exact complete state/component/inspection SHA-256 matches.
+Shared display pricing: 24 varied-condition owned-part prices match full binding quotes exactly; profile JSON unchanged.
+Baseline/optimized timings are diagnostic examples, not physical phone guarantees.
+Broad valuation sweep: stopped deliberately with 4,850 recorded passing assertions; no full-suite pass claimed. Focused petrol/diesel/quote-safety run: 915 checks passed. Refreshed platform receipts follow the shifter control.
+Prior workshop timeout: retained failed diagnostic, superseded by final full-roster 1,726/0 run.
+User visual acceptance and physical Android interaction remain pending.

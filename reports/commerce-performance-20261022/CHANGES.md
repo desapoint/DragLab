@@ -1,6 +1,6 @@
 # Commerce and class performance — 2026-10-22
 
-Status: final regression/build verification in progress; user acceptance pending.
+Status: technical regression checkpoint passed; refreshed platform builds in progress with the following requested shifter control. User acceptance pending.
 
 This is a measured prerequisite to the requested commerce refinements, not a rewrite of the approved architecture plan or a new worker migration.
 
@@ -35,11 +35,14 @@ Run with Unity CLI: execute DragLab.Runtime.MenuResponsivenessChecks.Optimized. 
 
 ## Verification
 
-- Pinned eight-case exact physics parity: passed before final player build; final compressed-fixture run pending receipt collection.
+- Pinned eight-case exact physics parity: passed, including the final compressed-fixture run (Unity exit 0).
 - Varied-condition display price parity and read-only profile check: passed.
 - Native responsiveness: 76 checks, zero runtime errors; includes tab/cache reuse, HP/torque sort, draft rollback and a durable purchase/reload.
 - Native dealership: 271 checks, zero runtime errors; includes progressive class publication, disclosure, filters, comparisons and compact/4K layouts.
-- Final cart, purchase, full workshop, full valuation and platform build receipts: pending.
+- Final native cart: 914 checks; purchase: 893 checks; full workshop/block roster: 1,726 checks. All passed with zero runtime errors.
+- Focused valuation: **915 checks passed** for city-three (petrol I3), fjord (diesel I4) and super-v8 (petrol V8), plus all global quote-safety assertions. Includes condition/member failures, ownership/resource/tune invalidation, expiry, policy/catalogue changes, detach/retained assets, recovery and unsettled-run guards. Output is isolated from historical phase archives.
+- Refreshed platform build receipts follow the requested shifter control.
+- The optional expanded-roster valuation sweep was deliberately bounded before completion; its 4,850 recorded passing assertions are preserved locally and are not a full-suite pass. A selected petrol/diesel fixture run retains all per-model and global quote-safety assertions; the default test still covers every model.
 
 An earlier workshop run completed 1,707 assertions without runtime errors but hit its old six-minute overall budget after synchronous roster-wide block fixtures. It was not marked passing. Workshop/block-only probes now have a bounded 20-minute suite budget, retaining all model coverage; interactive latency remains measured separately. ValuationVerification accepts an isolated output directory so reruns preserve historical phase archives.
 
@@ -48,3 +51,5 @@ An earlier workshop run completed 1,707 assertions without runtime errors but hi
 Review the commerce screens through the companion commerce-flow report. Physical Android performance/interaction and user visual acceptance remain separate gates. No later architecture/workbench phase is advanced and the debug bench is unchanged.
 
 The additional shifter, false-start exit, engine-listening and warning/shop requests are recorded in docs/UX_REFINEMENT_QUEUE.md for individual reviewable checkpoints.
+
+Focused reproduction: set DRAGLAB_VALUATION_REPORT to an isolated output directory and DRAGLAB_VALUATION_MODELS=city-three,fjord,super-v8 before executing DragLab.Editor.ValuationVerification.RunStandalone. Omit the model variable for the unchanged full-roster default.

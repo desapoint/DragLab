@@ -32,7 +32,10 @@ namespace DragLab.Editor
             var catalog = MechanicsTransactions.Catalog(); var policy = Resources.Load<ValuationPolicyDefinition>("Data/Economy/ValuationPolicy").policy;
             Func<string, PlayerProfile> fresh = model => { var p = PlayerProfile.New(now); p.cars[0].vehicleId = model; p.selectedVehicleId = model; p.cash = 200000; p.reputation = 99; MechanicsOwnership.Ensure(p, catalog); return p; };
             Func<PlayerProfile, ValuationKind, string, string, ValuationQuote> quote = (p, k, id, b) => Valuations.Capture(p, catalog, policy, k, id, b, now);
-            foreach (var asset in Resources.LoadAll<VehicleDefinition>("Data/Vehicles").OrderBy(v => v.spec.id)) {
+            var vehicles=Resources.LoadAll<VehicleDefinition>("Data/Vehicles").OrderBy(v=>v.spec.id).ToArray();
+            var selected=Environment.GetEnvironmentVariable("DRAGLAB_VALUATION_MODELS")?.Split(',');
+            if(selected!=null&&selected.Any(id=>!vehicles.Any(v=>v.spec.id==id)))throw new InvalidOperationException("Unknown valuation fixture model.");
+            foreach (var asset in vehicles.Where(v=>selected==null||selected.Contains(v.spec.id))) {
                 string model = asset.spec.id; var p = fresh(model); var car = p.SelectedCar; string engine = car.engineAssemblyId;
                 string before = JsonUtility.ToJson(p);
                 foreach (var buyer in policy.buyers) foreach (var kind in new[] { ValuationKind.Car, ValuationKind.Chassis, ValuationKind.Engine }) {
