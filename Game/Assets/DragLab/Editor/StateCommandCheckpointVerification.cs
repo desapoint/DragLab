@@ -52,6 +52,14 @@ namespace DragLab.Editor
             VerifyLegacyStorage("S03A");
         }
 
+        public static void RunFluidRefillPlanner()
+        {
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            FluidRefillPlannerChecks.RunStandalone();
+            VerifyLegacyStorage("S04");
+        }
+
         static void VerifyLegacyStorage(string checkpoint)
         {
             string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/save-refactor/" + checkpoint));

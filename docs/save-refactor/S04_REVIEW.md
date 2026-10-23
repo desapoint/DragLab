@@ -1,0 +1,21 @@
+# S04 independent checkpoint review
+
+Status: **PENDING — corrected final-source full run in progress**. A test fixture prerequisite was corrected; the earlier combined run and separate freshness run do not verify the newly corrected final harness. No gameplay caller or persistence writer was switched.
+
+I will review the released `FluidRefillPlanner` capture, read-set/freshness, private planning and result/receipt API against the existing ordinary oil/coolant top-up path. The gate includes exact valid-path math and all fluid/history/identity preservation, required caller and storage fences without invented versions, capture-time clock freshness and replanning, failure/source immutability, and no live `Ensure`, `PlayerProfile` clone, JSON manipulation or full simulation copy. Legacy parity will be qualified to the planner's documented valid-ownership preconditions.
+
+The S04 storage audit identifies a separate prerequisite for S05: schema-v2 car and economy-receipt payloads are JSON, while current integrity and diff machinery hashes/projects the whole row set. A typed narrow writer cannot safely update these records under the hard no-runtime-JSON rule using current structures. This review will not authorize S05 writer work; a minimal typed schema/integrity proposal needs its own review first. S04 remains a dormant shadow and does not switch a gameplay caller or writer.
+
+Static review of the first planner draft found result/freshness issues; current source and tests resolve them:
+
+1. `IsCurrent` now requires the planned tick, fresh capture tick, and supplied confirmation tick to match. The harness checks that a later confirmation tick is stale and that a fresh plan records the actual tick.
+2. Noncommittable results now retain the original fluid values, saved clock, and cash, with no receipt. The harness checks this for zero quantity and insufficient funds.
+3. The initial “tiny near-ceiling” sample was about `1.61e-7`, too far above the legacy `1e-9` subtraction. Current boundary samples use bills of `0.5e-9`, `1e-9`, and `2e-9` as well as integer-ceiling edges and compare the result with `PaidEconomy.Preview`.
+
+The current source has 32 deterministic seeded shadow cases and malformed attached-engine parent, vehicle, and slot-list checks. Supplemental probes cover same-revision changes to actual resolved OilPan capacity and a valid attached engine identity with matching descendant owners. Both test fixtures are restored and pass full mechanics validation afterward. The receipt-list freshness fixture was corrected to establish an earlier saved economy clock and validate the inserted receipt before testing staleness; this corrected full harness is being rerun. Other freshness probes cover fluid history, cash, price bits, save slot, reset generation, and confirmation time.
+
+The prior Unity 6000.6.4f1 batch run exited 0 with **157 planner checks and 72 isolated SQLite/storage checks passing**; a separate run passed **6 capacity/engine freshness checks**. Those runs predate the corrected receipt fixture. The final verdict is pending the corrected full-source combined run and refreshed result artifacts. Invalid-save/import warnings in the earlier storage run were expected rejection fixtures.
+
+The 20-sample timing is descriptive for one authored car and 39 parts. Capture median was 0.25960 ms (maximum 0.30740), private Plan median 0.00200 ms (maximum 0.03400), and the typed legacy Preview + two TopUp + receipt/revision shadow median 1.20445 ms (maximum 6.46360). The comparison excludes JSON-backed Quote/Pay, transaction cloning and durable I/O. It is not a full-transaction, multi-car, device, allocation, or tail-latency result.
+
+Any approval remains limited to this dormant typed planner/shadow. Its valid ownership graph prerequisite is explicit; it is not a replacement for full load validation or `ValidateForQuote`'s global dealer-recovery behavior. No durable idempotency, atomic SQL write, save-slot/reset provider, production JSON removal, or gameplay confirmation integration is complete. The storage audit identifies schema-v2 JSON car/receipt payloads and full-row integrity/diff work as unresolved. A separately reviewed minimal typed storage/integrity proposal must precede S05 implementation; this checkpoint cannot close the user's no-full-profile-clone/no-runtime-JSON completion gates.

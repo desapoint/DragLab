@@ -10,7 +10,7 @@ Additional hard completion gate: **no JSON encode/decode for runtime data manipu
 
 ## Next checkpoint
 
-**S03a — implementation/checks and independent Luna-high review PASS; local commit pending.** S02c is committed as `34abd7f` after Luna-high PASS. S02b is committed as `7e6ea10` after Luna-high PASS. S02a passed Luna-high review and is committed as `62b2bc0`. S01 passed review and is committed as `fd092bc`. S00 is `39d09b7`, whitespace closure `f163454`. S02a changes checkpoint lookup only; no persistent command conversion yet. Parent coordinates all Unity runs, real mouse tests, staging and commits. Interactive tests run sequentially; no two Unity Editors use this project concurrently.
+**S04 — implementation/checks and final independent Luna-high review PASS; local commit pending.** S03a is committed as `3dfcfa1` after independent Luna-high PASS. S02c is committed as `34abd7f` after Luna-high PASS. S02b is committed as `7e6ea10` after Luna-high PASS. S02a passed Luna-high review and is committed as `62b2bc0`. S01 passed review and is committed as `fd092bc`. S00 is `39d09b7`, whitespace closure `f163454`. S02a changes checkpoint lookup only; no persistent command conversion yet. Parent coordinates all Unity runs, real mouse tests, staging and commits. Interactive tests run sequentially; no two Unity Editors use this project concurrently.
 
 ## File ownership manifest
 
@@ -33,8 +33,9 @@ Runtime paths above are relative to Game/Assets/DragLab/Scripts/. No overlapping
 | S02a | Prior full harness 1,375 focused + 72 existing storage checks; supplemental final-source preservation 1,067, all exit 0; sparse capture fixes first-car regression | PASS — S02_REVIEW.md | `62b2bc0` | Operation-local requested-ID map only; no persistent command conversion |
 | S02b | Prior full harness 250 + 72 storage; final-source focused parity 220, all exit 0; 36-row cost comparison passes | PASS — S02B_REVIEW.md | `7e6ea10` | No persistent cache, no command/save conversion |
 | S02c | 132 exact parity + 72 isolated storage checks; final-source 10 lifetime probes; 180 paired timing records | PASS — S02C_REVIEW.md | `34abd7f` | Existing error order/global invariants retained; 5-car/no-spares separate median +8.7%, paired median -0.1103 ms |
-| S03a | 95 typed parity/lifetime/dependency/bounds checks + 72 isolated storage pass; 20 capture-inclusive timing pairs | PASS — S03A_REVIEW.md | Pending | One cache only; no whole-profile working set or persistence switch |
-| Later S03 suffixes–S14 | Not started | Not reviewed | None | Execute in order after prior gate passes; other index families only with justified consumers |
+| S03a | 95 typed parity/lifetime/dependency/bounds checks + 72 isolated storage pass; 20 capture-inclusive timing pairs | PASS — S03A_REVIEW.md | `3dfcfa1` | One cache only; no whole-profile working set or persistence switch |
+| S04 | Final-source 164 focused + 72 isolated storage, exit 0; descriptive 20-sample cost | PASS — S04_FINAL_REVIEW.md | Pending | Dormant until typed storage/writer pilot passes; no production caller switch |
+| S05–S14 | Not started | Not reviewed | None | Execute in order after prior gate passes; remaining cache/JSON consumers stay explicit conversion work |
 
 Every accepted row records exact checks, measurements, failures/corrections and remaining costs. All named command suffixes have separate commits/reviews. Do not mark an entire family complete from one converted pilot.
 
@@ -116,3 +117,23 @@ Baseline `34abd7f`. One cache: `NativeSteadyOutputCache`, currently keyed by JSO
 No command/save-path conversion is claimed by S03a. Main/owner captures inputs; only the private evaluator is used on workers. No Unity objects, live profile, whole-profile clone or runtime reflection serializer enters this cache.
 
 S03a integration transfer: implementation agents released all assigned files; coordinator integrated only NativeSteadyOutputCache and the isolated wrapper, corrected final before-first-point test coverage, verified GUID/UTF-8/no-JSON boundaries and ran the combined Editor checkpoint (95 + 72, exit 0). Cold-fill and retained-delegate limits remain explicit in S03A_RESULTS.md. No S04 or save-path conversion started.
+
+## S04 file ownership
+
+Baseline `3dfcfa1`. One action: ordinary oil/coolant top-up (`PaymentKind.Fluids`), excluding fuel, oil change/filter, flush, parts and rebuilds. Capture only the affected car's read dependencies, capacities, policy, exact fluid history, cash/clock/receipt and command fences. Plan privately without Ensure, PlayerProfile clone, JSON, live mutation or full CarSimulation. Compare the existing quantity/rounding/top-up behavior and resource/history/identity outcomes before switching any caller. No generic per-record version authority is fabricated where none exists; fences/observations and missing writer requirements must be explicit.
+
+| Owner | Exclusive paths | Task |
+| --- | --- | --- |
+| state_medium / Luna medium | Domain/FluidRefillPlanner.cs + .meta; docs/save-refactor/S04_FLUID_PLANNER.md | Propose/freeze typed request/input/result/read-set API, narrow capture/planning and stale-dependency checks |
+| baseline_medium / Luna medium | Runtime/FluidRefillPlannerChecks.cs + .meta; docs/save-refactor/S04_TEST_MATRIX.md | Independent deterministic/golden/randomized legacy shadow, rejection/source preservation and bounded-cost evidence |
+| coordinator | Optional Editor wrapper, status/ledger, results and any approved existing entry-point adapter | Coordinate contract decisions, run Unity/checks, commit; no gameplay caller switch in S04 |
+| persistence audit owner when assigned / Luna medium | docs/save-refactor/S04_STORAGE_IMPACT.md | Read-only affected-row/receipt/clock/fence map and future S05 integration needs; no writer/schema changes |
+| checkpoint_high / Luna high | docs/save-refactor/S04_REVIEW.md after implementation slot release | Independent exact behavior/working-set/no-clone/no-JSON review |
+
+The pilot may retain a synchronous full-validator preflight during its dormant shadow stage if documented; this is not the eventual UI-thread cost target. Prefer targeted read-set validation in the planner itself and explicitly distinguish already-valid ownership prerequisites from corrupted fixture checks. Dealer-recovery normalization and old quote snapshots must never be silently invoked by the new path. Existing callers and persistence stay unchanged until later gates.
+
+S04 integration transfer: all agents released assigned files; parent added the isolated wrapper and final valid-capacity/engine-identity stale-read probes, then ran the full157+72 and supplemental6 separately, exit0. Targeted hash equality, rejection after-images and actual confirmation timing were corrected before the full run. No new gameplay/writer call is present. S05 needs a separate reviewed typed schema/integrity proposal before implementation; its existing JSON/full-row bridge cannot serve this command.
+
+S04 final-source rerun: 164 focused + 72 storage passed, exit0, after a receipt-fixture clock correction and added full-validator assertion. No production/timed algorithm changed. Earlier 157+72 and supplemental6 remain historical, not final count additions. Prior Luna-high PASS predates the correction; final evidence recheck is pending because that reviewer hit a usage limit. No commit/next checkpoint until the requested Luna-high gate is satisfied.
+
+S04 final-review gate resolved: the first reviewer exhausted its usage allowance during recheck. A fresh independent gpt-6-luna/high reviewer inspected the complete final source/raw164+72 results and approved S04_FINAL_REVIEW.md. Same requested model/reasoning; no substitution or bypass. Local commit is now the remaining S04 gate.
