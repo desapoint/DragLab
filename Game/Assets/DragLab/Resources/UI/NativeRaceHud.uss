@@ -18,9 +18,11 @@
 .gauge-unit { position: absolute; left: 15%; right: 15%; top: 79%; height: 22px; font-size: 14px; color: var(--racing-muted); -unity-text-align: middle-center; }
 .gauge-factor { position: absolute; left: 25%; right: 25%; top: 31%; height: 20px; font-size: 13px; color: var(--racing-muted); -unity-text-align: middle-center; }
 .race-dashboard { position: absolute; top: auto; left: 0; right: 0; bottom: 0; height: 178px; }
-.race-shifter { position: absolute; left: auto; top: auto; right: 24px; bottom: 15px; width: 220px; height: 202px; }
-.shifter-gear { position: absolute; left: 0; right: 0; top: 20px; height: 128px; font-size: 76px; -unity-text-align: middle-center; }
-.sequential-selector .shifter-gear { right: auto; top: auto; width: 40px; height: 40px; font-size: 24px; }
+.race-shifter { position: absolute; left: auto; top: auto; right: 24px; bottom: 15px; width: 180px; height: 202px; }
+.shifter-readout { position: absolute; left: 26px; top: 20px; width: 128px; height: 128px; flex-direction: row; align-items: center; justify-content: center; }
+.shifter-gear { position: relative; padding: 0; margin: 0; font-size: 76px; -unity-text-align: middle-center; }
+.sequential-selector .shifter-readout { width: 68px; height: 68px; }
+.sequential-selector .shifter-gear { font-size: 37px; }
 .shifter-type { position: absolute; left: 0; right: 0; bottom: 8px; height: 25px; font-size: 17px; color: var(--racing-muted); -unity-text-align: middle-center; }
 .gate-number { position: absolute; width: 30px; height: 20px; font-size: 15px; color: var(--racing-muted); -unity-text-align: middle-center; }
 .race-phase { position: absolute; bottom: 76px; left: 44%; right: 260px; height: 30px; font-size: 20px; -unity-text-align: middle-center; }
@@ -37,21 +39,17 @@
 .race-ready-button.hidden { display: none; }
 
 .race-shifter.h-pattern { height: 230px; }
-.h-pattern .shifter-gear { right: auto; top: auto; width: 92px; height: 92px; font-size: 57px; }
+.h-pattern .shifter-readout { width: 92px; height: 92px; }
+.h-pattern .shifter-gear { font-size: 57px; }
 
 .race-pause-button, .race-pause-button:hover, .race-pause-button:active { background-image: none; }
 
 .gauge-shift-lamp { left: 44%; right: auto; top: 19%; bottom: auto; width: 12%; height: 12%; }
 .gauge-shift-lamp.hidden { display: none; }
 
-.race-pedals { position: absolute; right: 260px; bottom: 24px; height: 156px; flex-direction: row; }
+.race-pedals { position: absolute; right: 220px; bottom: 24px; height: 156px; flex-direction: row; }
 .race-pedal { position: relative; width: 72px; height: 156px; margin-left: 10px; }
 .race-pedal.hidden { display: none; }
-.race-shift-down, .race-shift-up { position: absolute; bottom: 8px; width: 44px; min-width: 44px; height: 42px; margin: 0; padding: 0; }
-.race-shift-down { left: 2px; }
-.race-shift-up { right: 2px; }
-.race-shift-down .unity-text-element, .race-shift-up .unity-text-element { font-size: 26px; }
-.race-shifter .shifter-type { left: 48px; right: 48px; }
 .race-phase, .race-warning { right: 520px; }
 .compact .race-phase { left: 42%; right: 260px; bottom: 228px; }
 .compact .race-warning { left: 42%; right: 260px; bottom: 194px; }
@@ -60,15 +58,16 @@
 .touch-wide .race-phase, .touch-wide .race-warning { right: 660px; }
 
 .race-line-lock { position: absolute; top: 18px; width: 116px; }
-.touch-ui .race-shift-down, .touch-ui .race-shift-up { width: 48px; min-width: 48px; height: 44px; }
 
 .touch-ui.compact .analog-gauge { width: 160px; height: 160px; }
 .touch-ui.compact .rpm-gauge { width: 180px; height: 180px; }
 
 .race-shift-flick { position: absolute; left: 0; right: 0; top: 0; bottom: 0; }
-.race-flick-hint { position: absolute; right: 6px; top: 50%; width: 20px; height: 24px; margin: 0; margin-top: -12px; }
-.touch-ui .race-shifter .shifter-type { left: 0; right: 26px; }
 
 .touch-ui .race-pedal { width: 64px; margin-left: 0; margin-right: 6px; }
 .touch-ui #gasPedal { margin-right: 0; }
 .touch-ui .rpm-gauge { margin-right: 0; }
+.race-flick-hint { position: relative; width: 14px; height: 22px; margin: 0; margin-left: 4px; flex-shrink: 0; }
+.sequential-selector .race-flick-hint { width: 12px; height: 18px; margin-left: 2px; }
+.touch-ui .h-pattern .shifter-gear { font-size: 49px; }
+.touch-ui .sequential-selector .shifter-gear { font-size: 33px; }

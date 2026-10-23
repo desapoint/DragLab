@@ -1,0 +1,14 @@
+Shifter refinement verification — 2026-10-22
+Unity 6000.6.4f1; Windows development player; isolated profiles; real keyboard/mouse and simulated mobile touch.
+
+hud: Checks: 270 / runtime errors: 0
+flick: Checks: 102 / runtime errors: 0
+pedals: Checks: 80 / runtime errors: 0
+mobile: Checks: 171 / runtime errors: 0
+Total: 623 checks, zero runtime errors.
+Windows final build and Android ARM64 IL2CPP build succeeded.
+APK ZIP integrity, APK v2 signature and 16 KB page alignment passed.
+Reviewed rendered manual/DCT desktop and mobile flick captures; hint is beside the number within the knob.
+Earlier failed HUD/pedal fixtures are retained locally and explained in CHANGES.md.
+No production audio, physics, debug bench or other requested control was changed.
+Physical Android testing and user visual acceptance remain pending.

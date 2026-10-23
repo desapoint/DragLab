@@ -50,7 +50,9 @@ namespace DragLab.Runtime
             PedalTouch(hud.Pedals.Brake,2,TouchPhase.Began);Check(controls.Peek().brake==1&&controls.Peek().throttle==1,"Brake and accelerator have independent contacts");
             PedalTouch(hud.Pedals.Brake,2,TouchPhase.Canceled);Check(controls.Peek().brake==0&&controls.Peek().throttle==1,"Touch cancellation clears only the canceled contact");
             PedalTouch(hud.Pedals.Clutch,2,TouchPhase.Began);
-            yield return Click(mouse,hud.Root.Q("raceShiftUp"));
+            NativeMobile.SimulatedTouch=true;hud.Refresh();yield return null;
+            ShiftSwipe(hud.ShiftFlick,-45);
+            NativeMobile.SimulatedTouch=false;hud.Refresh();yield return null;
             var drive=controls.Consume();Check(drive.shiftUp&&drive.throttle==1&&drive.clutch==1,"Touch shifter queues one upshift without releasing held pedals");
             Check(!controls.Consume().shiftUp,"Touch shift is consumed once");car.Launch(0);Check(car.Shift(1,drive)&&car.state.gear==2,"Real manual transmission accepts the touch clutch input for its shift gate");
             PedalTouch(hud.Pedals.Gas,1,TouchPhase.Canceled);PedalTouch(hud.Pedals.Clutch,2,TouchPhase.Canceled);
@@ -69,7 +71,7 @@ namespace DragLab.Runtime
                 var clutch=hud.Pedals.Clutch.worldBound;var brake=hud.Pedals.Brake.worldBound;var gas=hud.Pedals.Gas.worldBound;
                 Check(hud.Rpm.worldBound.xMax<clutch.xMin&&clutch.xMax<brake.xMin&&brake.xMax<gas.xMin&&gas.xMax<hud.Gear.worldBound.xMin,"Pedal set sits left of shifter without overlapping gauges at "+width);
                 Check(clutch.width>=72&&clutch.height>=150&&gas.yMax<=hud.Root.worldBound.yMax,"Pedal hit targets remain large and inside the screen at "+width);
-                Check(hud.Pedals.Gas.focusable==false&&hud.Root.Q<Button>("raceShiftUp").focusable==false,"Driving controls never introduce Tab navigation at "+width);
+                Check(hud.Pedals.Gas.focusable==false&&!hud.ShiftFlick.focusable&&hud.Root.Q("raceShiftUp")==null,"Driving controls never introduce Tab navigation at "+width);
                 yield return Capture("pedals-"+width);
             }
             hud.enabled=false;hud.Root.AddToClassList("touch-wide");yield return null;Check(hud.Pedals.Gas.worldBound.width>=112,"High-resolution phone layout offers wider touch targets");hud.Root.RemoveFromClassList("touch-wide");hud.enabled=true;

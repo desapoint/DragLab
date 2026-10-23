@@ -27,3 +27,5 @@ The earlier workshop run hit its old overall timeout after 1,707 assertions and 
 - Review compact layouts and the shared grey/red theme.
 
 No later Slice 4 phase is advanced. Physical Android interaction and user visual acceptance remain separate gates.
+
+Final Windows and Android ARM64 builds include this commerce/performance checkpoint and the subsequent requested shifter control. Both succeed; APK integrity/signature/alignment pass. See ../shifter-refinement-20261022/build-manifest.txt for exact package hashes. Physical phone review remains pending.

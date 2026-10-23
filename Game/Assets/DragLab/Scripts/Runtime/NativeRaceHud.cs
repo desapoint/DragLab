@@ -59,7 +59,6 @@ namespace DragLab.Runtime
             if(!physicalContacts.TryGetValue(id,out var target))return;physicalContacts.Remove(id);
             if(target is RaceTouchPedal pedal)pedal.End(id);else if(canceled)ShiftFlick.CancelContact(id);else ShiftFlick.EndContact(id,point);
         }
-        Button shiftUpButton, shiftDownButton;
         internal VisualElement Root => root;
         internal PanelSettings Panel => panel;
         internal bool Visible => root != null && !root.ClassListContains("hidden");
@@ -96,12 +95,7 @@ namespace DragLab.Runtime
             Rpm.RegisterCallback<GeometryChangedEvent>(_ => AlignSteeringRim());
             Gear = new RaceGearIndicator(); root.Add(Gear);
             Pedals=new NativeRacePedals(game.RaceControls,()=>game.RaceTouchActive);root.Add(Pedals);
-            shiftDownButton=HudButton("raceShiftDown","−",()=>{if(game.RaceTouchActive)game.RaceControls.NativeShift(-1);});
-            shiftUpButton=HudButton("raceShiftUp","+",()=>{if(game.RaceTouchActive)game.RaceControls.NativeShift(1);});
-            shiftDownButton.AddToClassList("race-shift-down");shiftUpButton.AddToClassList("race-shift-up");
-            Gear.Add(shiftDownButton);Gear.Add(shiftUpButton);
             ShiftFlick=new RaceShiftFlick(game.RaceControls,()=>NativeMobile.Touch&&game.RaceTouchActive,()=>DrivingPreferences.ReverseTouchShifting,()=>game.Race?.player.transmission.type!=TransmissionType.CVT);Gear.Add(ShiftFlick);
-            shiftDownButton.tooltip="Downshift";shiftUpButton.tooltip="Engage / upshift / restart";
             phase = new Label { name = "racePhase", pickingMode = PickingMode.Ignore }; phase.AddToClassList("race-phase"); root.Add(phase);
             warning = new Label { name = "raceWarning", pickingMode = PickingMode.Ignore }; warning.AddToClassList("race-warning"); root.Add(warning);
             pauseButton = HudButton("racePause", "", () => game.PauseRace(true)); pauseButton.AddToClassList("race-pause-button");pauseButton.tooltip="Pause";pauseButton.Add(new FilledMenuIcon("Pause"));
@@ -147,7 +141,7 @@ namespace DragLab.Runtime
             pauseButton.style.top=readyButton.style.top=lineLockButton.style.top=18+insetTop;
             Gear.style.right=24+insetRight;Gear.style.bottom=15+insetBottom;
             Pedals.style.left=mobile?new StyleLength(16+insetLeft):new StyleLength(StyleKeyword.Auto);
-            Pedals.style.right=mobile?new StyleLength(StyleKeyword.Auto):new StyleLength(260+insetRight);Pedals.style.bottom=24+insetBottom;
+            Pedals.style.right=mobile?new StyleLength(StyleKeyword.Auto):new StyleLength(220+insetRight);Pedals.style.bottom=24+insetBottom;
             pauseButton.style.right=24+insetRight;readyButton.style.right=80+insetRight;
             bool wide=NativeMobile.Touch&&width/panel.scale>=1600;root.EnableInClassList("touch-wide",wide);
             phase.style.left=warning.style.left=mobile?new StyleLength(center-200):new StyleLength(new Length(compact?42:44,LengthUnit.Percent));
@@ -163,10 +157,9 @@ namespace DragLab.Runtime
             lineLockButton.EnableInClassList("selected",car.state.warmupLineLock);lineLockButton.SetEnabled(inputActive);
             lineLockButton.style.right=190+insetRight;
             Pedals.Refresh(car,inputActive,game.RaceControls.Peek(),Time.unscaledDeltaTime);
-            shiftUpButton.EnableInClassList("hidden",NativeMobile.Touch);shiftDownButton.EnableInClassList("hidden",NativeMobile.Touch);
             ShiftFlick.EnableInClassList("hidden",!NativeMobile.Touch);ShiftFlick.SetEnabled(NativeMobile.Touch&&inputActive);
             if(!inputActive||!NativeMobile.Touch)ShiftFlick.Release();
-            shiftUpButton.SetEnabled(inputActive);shiftDownButton.SetEnabled(inputActive&&car.transmission.type!=TransmissionType.CVT);
+            Gear.SetTouchHint(NativeMobile.Touch,DrivingPreferences.ReverseTouchShifting);
             if (boundCar != car || speedUnit != SharedUnitSettings.Current.speed)
             {
                 boundCar = car; speedUnit = SharedUnitSettings.Current.speed;

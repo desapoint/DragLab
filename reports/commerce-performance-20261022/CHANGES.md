@@ -1,6 +1,6 @@
 # Commerce and class performance — 2026-10-22
 
-Status: technical regression checkpoint passed; refreshed platform builds in progress with the following requested shifter control. User acceptance pending.
+Status: technical regressions and refreshed platform builds passed. User acceptance pending.
 
 This is a measured prerequisite to the requested commerce refinements, not a rewrite of the approved architecture plan or a new worker migration.
 
@@ -53,3 +53,5 @@ Review the commerce screens through the companion commerce-flow report. Physical
 The additional shifter, false-start exit, engine-listening and warning/shop requests are recorded in docs/UX_REFINEMENT_QUEUE.md for individual reviewable checkpoints.
 
 Focused reproduction: set DRAGLAB_VALUATION_REPORT to an isolated output directory and DRAGLAB_VALUATION_MODELS=city-three,fjord,super-v8 before executing DragLab.Editor.ValuationVerification.RunStandalone. Omit the model variable for the unchanged full-roster default.
+
+Final Windows and Android ARM64 builds include this commerce/performance checkpoint and the subsequent requested shifter control. Both succeed; APK integrity/signature/alignment pass. See ../shifter-refinement-20261022/build-manifest.txt for exact package hashes. Physical phone review remains pending.

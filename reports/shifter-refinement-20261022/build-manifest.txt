@@ -1,0 +1,9 @@
+Unity 6000.6.4f1 development builds; base 1f54da3 plus shifter-refinement-20261022 sources.
+Windows final rebuild includes Windows-only verifier audio-gain restoration and layout-frame sequencing.
+Android ARM64 IL2CPP contains the same production shifter/performance/commerce changes; Windows-only verifiers are excluded.
+APK ZIP integrity, APK v2 signature and 16 KB page alignment passed. Physical phone verification pending.
+
+437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd  Game/Builds/Windows/DragLab.exe  667136 bytes
+9fb1fccdaa5bb42d5ad1fdab2b3695451b2cbe2e7464f4c4b3a8885beae4da61  Game/Builds/Windows/DragLab_Data/Managed/Assembly-CSharp.dll  3187712 bytes
+17ed9b8a2f817a5e737fe65033ef3c7395b20d26fa71cba2ffb455fda9662622  Game/Builds/Windows/DragLab_Data/resources.assets  1779472 bytes
+b4f4f5644ccdcf94e69916a3cb01c7eb9dc1f276a15ba1bdb494c8d87d751f37  Game/Builds/Android/DragLab.apk  87593493 bytes

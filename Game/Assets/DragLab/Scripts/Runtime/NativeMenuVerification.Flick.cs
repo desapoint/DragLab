@@ -66,7 +66,7 @@ namespace DragLab.Runtime
             game.StartPractice();yield return new WaitForSecondsRealtime(.15f);game.enabled=false;
             var hud=game.RaceHud;var controls=game.RaceControls;
             yield return PollPedalKeys(.15f);yield return Capture("keyboard-pedals-released");
-            Check(hud.ShiftFlick.resolvedStyle.display==DisplayStyle.None&&hud.Root.Q("raceShiftUp").resolvedStyle.display!=DisplayStyle.None,"Desktop retains its existing shift buttons without a flick hitbox");
+            Check(hud.ShiftFlick.resolvedStyle.display==DisplayStyle.None&&hud.Root.Q("raceShiftUp")==null&&hud.Root.Q("raceShiftDown")==null,"Desktop has no plus/minus controls or mobile flick hitbox");
             keyboard.Key(0x57,true);yield return PollPedalKeys(.16f);
             Check(hud.Pedals.Gas.Depression>.95f&&hud.Pedals.Brake.Depression<.05f,"Real W presses animate only the accelerator");
             keyboard.Key(0x53,true);keyboard.Key(0xA0,true);yield return PollPedalKeys(.16f);
@@ -78,7 +78,8 @@ namespace DragLab.Runtime
             keyboard.Key(0x57,false);keyboard.Key(0x53,false);yield return PollPedalKeys(.16f);
             Check(hud.Pedals.Gas.Depression<.05f&&hud.Pedals.Brake.Depression<.05f,"Keyboard release restores the pedal faces");
             NativeMobile.SimulatedTouch=true;hud.Refresh();yield return null;
-            Check(hud.Root.Q("raceShiftUp").resolvedStyle.display==DisplayStyle.None&&hud.Root.Q("raceShiftDown").resolvedStyle.display==DisplayStyle.None,"Mobile has no up/down shift buttons");
+            Check(hud.Root.Q("raceShiftUp")==null&&hud.Root.Q("raceShiftDown")==null,"Mobile has no up/down shift buttons");
+            Check(hud.Gear.resolvedStyle.width==180&&hud.Root.Q("raceGearReadout").worldBound.Contains(hud.Root.Q("raceFlickHint").worldBound.center)&&hud.Root.Q("raceFlickHint").worldBound.xMin>=hud.Root.Q("raceGear").worldBound.xMax,"Mobile flick hint sits beside the number inside the narrower knob readout");
             Check(hud.ShiftFlick.resolvedStyle.display!=DisplayStyle.None&&!hud.ShiftFlick.focusable,"Mobile shifter receives flick gestures without focus navigation");
             Check(!DrivingPreferences.ReverseTouchShifting,"Existing preference files default to flick up for upshift");
             yield return PhysicalShiftHoldChecks();
@@ -125,7 +126,7 @@ namespace DragLab.Runtime
             ShiftSwipe(hud.ShiftFlick,-45);Check(!controls.Consume().shiftDown,"CVT has no downshift from a reversed up flick");
             ShiftSwipe(hud.ShiftFlick,45);Check(controls.Consume().shiftUp,"CVT retains its existing Drive/restart input through a flick");car.transmission.type=kind;
             ShiftTouch(hud.ShiftFlick,0,TouchPhase.Began,Vector2.zero);InterfaceComparison.SetReplacement("Race",false);hud.Refresh();Check(hud.Visible&&hud.ShiftFlick.Held,"Mobile stays native without interrupting an in-progress flick");hud.ReleaseInput();hud.Refresh();
-            yield return Capture("mobile-flick-shifter");game.enabled=true;game.ReturnToGarage();NativeMobile.SimulatedTouch=false;
+            Check(hud.Gear.tooltip.Contains("Flick down to shift up"),"Knob guidance follows the saved reversed direction");yield return Capture("mobile-flick-shifter");game.enabled=true;game.ReturnToGarage();NativeMobile.SimulatedTouch=false;
         }
 #endif
     }

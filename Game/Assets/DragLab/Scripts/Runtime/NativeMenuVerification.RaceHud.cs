@@ -127,6 +127,7 @@ namespace DragLab.Runtime
                 hud.Gear.SetState(0,kind); Check(hud.Gear.Readout == "N", kind + " neutral remains neutral");
                 hud.Gear.SetState(2,kind); Check(hud.Gear.Readout == (kind == TransmissionType.CVT ? "D" : "2"), kind + " gear display does not invent CVT stepped gears");
             }
+            Check(hud.Root.Q("raceShiftUp")==null&&hud.Root.Q("raceShiftDown")==null&&hud.Gear.resolvedStyle.width==180,"Shifter removes both buttons and their unnecessary horizontal width");
             hud.enabled=false;
             var manual=new TransmissionSpec{type=TransmissionType.Manual,manualLayout=ManualGearboxLayout.HPattern};
             hud.Gear.SetState(2,manual,6,0,1);hud.Gear.SetState(3,manual,6,.5,1);
@@ -134,7 +135,7 @@ namespace DragLab.Runtime
             yield return Capture("race-dashboard-h-shift");
             hud.Gear.SetState(3,manual,6,0,1);Check((hud.Gear.Knob-hud.Gear.Gate(3)).sqrMagnitude<.01,"Completed H-pattern shift settles into the correct gate");yield return Capture("race-shifter-upper-row");
             hud.Gear.SetState(2,manual,6,0,1);float exitLeft=hud.Gear.ShaftExit.x;hud.Gear.SetState(6,manual,6,0,1);
-            Check(exitLeft<110&&hud.Gear.ShaftExit.x>110&&hud.Gear.ShaftExit.y==166,"Shaft exit moves within the boot around a lower pivot as the round knob changes gates");
+            Check(exitLeft<90&&hud.Gear.ShaftExit.x>90&&hud.Gear.ShaftExit.y==166,"Shaft exit moves within the boot around a lower pivot as the round knob changes gates");
             Check(hud.Gear.Gate(1).y==80&&hud.Gear.Gate(3).y==80&&hud.Gear.Gate(5).y==80&&hud.Gear.Gate(2).y==133&&hud.Gear.Gate(4).y==133&&hud.Gear.Gate(6).y==133,"Upper gear row is closer to the boot while lower gear positions stay unchanged");
             var timingSpec=JsonUtility.FromJson<VehicleSpec>(JsonUtility.ToJson(game.Race.player.spec));
             timingSpec.shiftSeconds=.6f;double slow=TransmissionDynamics.ShiftSeconds(manual,timingSpec,game.Race.player.tune);

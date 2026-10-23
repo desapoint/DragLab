@@ -81,6 +81,7 @@ namespace DragLab.Runtime
             Check(game.ScreenName=="Garage"&&game.Race==null&&!shell.ModalOpen,"Confirmed quit uses the existing durable interrupted-race exit and returns to Garage");
             Check(Math.Abs(game.Profile.SelectedCar.fuel.litres-finalFuel)<1e-7&&finalParts.All(pair=>Math.Abs(game.Profile.parts.First(p=>p.instanceId==pair.Key).condition.health-pair.Value)<1e-7),"Quit retains exact live fuel and component health instead of refilling or repairing");
             var loaded=ProfileStore.Load();Check(Math.Abs(loaded.SelectedCar.fuel.litres-finalFuel)<1e-7,"Retained race fuel survives SQLite reload after quitting");
+            Check(PreferenceCommit.TryApply(game.Profile,SharedUnitSettings.Current,originalMaster,originalOpponent,out var restoreError,engineVolume:originalEngine,tireVolume:originalTires),"Pause fixture restores original audio gains before subsequent audible race assertions / "+restoreError);
         }
 #endif
     }

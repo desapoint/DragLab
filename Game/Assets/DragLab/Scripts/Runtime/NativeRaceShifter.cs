@@ -8,7 +8,8 @@ namespace DragLab.Runtime
     internal sealed class RaceGearIndicator : GaugeInk
     {
         readonly Label gearLabel,typeLabel;
-        readonly VisualElement gateLabels;
+        readonly VisualElement readout;
+        readonly FilledMenuIcon flickHint;
         int current=-1,from,gears=6;
         TransmissionType type;
         ManualGearboxLayout layout;
@@ -19,14 +20,15 @@ namespace DragLab.Runtime
         // The visible exit slides within the boot; the true lever pivot is below its surface.
         internal Vector2 ShaftExit
         {
-            get { var pivot=new Vector2(110,178);float t=12/Mathf.Max(1,pivot.y-knob.y);return new Vector2(Mathf.LerpUnclamped(pivot.x,knob.x,t),166); }
+            get { var pivot=new Vector2(90,178);float t=12/Mathf.Max(1,pivot.y-knob.y);return new Vector2(Mathf.LerpUnclamped(pivot.x,knob.x,t),166); }
         }
         internal bool HPattern=>type==TransmissionType.Manual&&layout==ManualGearboxLayout.HPattern;
         internal RaceGearIndicator()
         {
             name="raceShifter";AddToClassList("race-shifter");
-            gateLabels=new VisualElement{pickingMode=PickingMode.Ignore};gateLabels.AddToClassList("gauge-layer");Add(gateLabels);
-            gearLabel=new Label{name="raceGear",pickingMode=PickingMode.Ignore};gearLabel.AddToClassList("shifter-gear");Add(gearLabel);
+            readout=new VisualElement{name="raceGearReadout",pickingMode=PickingMode.Ignore};readout.AddToClassList("shifter-readout");Add(readout);
+            gearLabel=new Label{name="raceGear",pickingMode=PickingMode.Ignore};gearLabel.AddToClassList("shifter-gear");readout.Add(gearLabel);
+            flickHint=new FilledMenuIcon("Flick"){name="raceFlickHint",pickingMode=PickingMode.Ignore};flickHint.AddToClassList("race-flick-hint");flickHint.AddToClassList("hidden");readout.Add(flickHint);
             typeLabel=new Label{name="raceTransmission",pickingMode=PickingMode.Ignore};typeLabel.AddToClassList("shifter-type");Add(typeLabel);
             generateVisualContent+=Draw;
         }
@@ -39,7 +41,7 @@ namespace DragLab.Runtime
                 type=transmission.type;layout=transmission.manualLayout;gears=Math.Max(1,count);current=gear;from=gear;handoverSeconds=Math.Max(.001,duration);
                 EnableInClassList("h-pattern",HPattern);EnableInClassList("sequential-selector",type==TransmissionType.Manual&&!HPattern);
                 typeLabel.text=HPattern?"H-PATTERN":type==TransmissionType.Manual?"SEQUENTIAL":type==TransmissionType.DCT?"DCT":type==TransmissionType.CVT?"CVT":"AUTOMATIC";
-                RebuildGateLabels();MarkDirtyRepaint();
+                MarkDirtyRepaint();
             }
             if(gear!=current){from=current;current=gear;handoverSeconds=Math.Max(.001,duration);MarkDirtyRepaint();}
             string text=gear==0?"N":type==TransmissionType.CVT?"D":gear.ToString();if(gearLabel.text!=text)gearLabel.text=text;
@@ -52,25 +54,31 @@ namespace DragLab.Runtime
             else if(type==TransmissionType.Manual&&!HPattern)
             {
                 float t=remaining>0?Mathf.Clamp01(1-(float)(remaining/handoverSeconds)):1;
-                next=new Vector2(110,92+Mathf.Sin(t*Mathf.PI)*(gear>from?28:-28));
+                next=new Vector2(90,92+Mathf.Sin(t*Mathf.PI)*(gear>from?28:-28));
             }
             if(knob!=next||changed)
             {
                 knob=next;MarkDirtyRepaint();
-                if(type==TransmissionType.Manual){float half=HPattern?46:20;gearLabel.style.left=knob.x-half;gearLabel.style.top=knob.y-half;}
-                else{gearLabel.style.left=StyleKeyword.Null;gearLabel.style.top=StyleKeyword.Null;}
+                if(type==TransmissionType.Manual){float half=HPattern?46:34;readout.style.left=knob.x-half;readout.style.top=knob.y-half;}
+                else{readout.style.left=StyleKeyword.Null;readout.style.top=StyleKeyword.Null;}
             }
         }
         internal Vector2 Gate(int gear)
         {
             int columns=Math.Max(2,(gears+1)/2);
-            return gear==0?new Vector2(110,92):new Vector2(44+(gear-1)/2*132f/(columns-1),gear%2==1?80:133);
+            return gear==0?new Vector2(90,92):new Vector2(50+(gear-1)/2*80f/(columns-1),gear%2==1?80:133);
         }
-        void RebuildGateLabels()
+        internal void SetTouchHint(bool touch,bool reversed)
         {
-            gateLabels.Clear();
-            if(type==TransmissionType.Manual&&!HPattern)foreach(var sign in new[]{"−","+"})
-            {var label=new Label(sign){pickingMode=PickingMode.Ignore};label.AddToClassList("gate-number");label.style.left=95;label.style.top=sign=="−"?16:144;gateLabels.Add(label);}
+            flickHint.EnableInClassList("hidden",!touch);
+            tooltip=touch?(reversed?"Flick down to shift up; flick up to shift down":"Flick up to shift up; flick down to shift down"):null;
+        }
+        void LitKnob(Painter2D p,Vector2 center,float radius)
+        {
+            Circle(p,center,radius+3,rim);
+            p.fillGradient=FillGradient.MakeRadialGradient(Color.Lerp(face,rim,.8f),Color.Lerp(face,Color.black,.5f),center,radius*1.45f,center+new Vector2(-radius*.35f,-radius*.4f),AddressMode.Clamp);
+            p.BeginPath();p.Arc(center,radius,Angle.Degrees(0),Angle.Degrees(360));p.ClosePath();p.Fill();
+            p.lineWidth=1;p.strokeColor=new Color(.85f,.88f,.92f,.45f);p.BeginPath();p.Arc(center,radius-1,Angle.Degrees(210),Angle.Degrees(300));p.Stroke();
         }
         static void Plate(Painter2D p,float x,float y,float w,float h,Color color)
         {
@@ -79,33 +87,32 @@ namespace DragLab.Runtime
         void Draw(MeshGenerationContext context)
         {
             if(contentRect.width<2)return;var p=context.painter2D;
-            if(!HPattern) { Plate(p,4,4,212,194,new Color(.015f,.02f,.025f));Plate(p,6,6,208,190,rim);Plate(p,8,8,204,186,face);
-            Line(p,new Vector2(18,10),new Vector2(202,10),1,new Color(.7f,.72f,.75f,.5f)); }
+            if(!HPattern) { Plate(p,4,4,172,194,new Color(.015f,.02f,.025f));Plate(p,6,6,168,190,rim);Plate(p,8,8,164,186,face);
+            Line(p,new Vector2(18,10),new Vector2(162,10),1,new Color(.7f,.72f,.75f,.5f)); }
             if(type==TransmissionType.Manual)
             {
                 if(HPattern)
                 {
-                    var basePoint=new Vector2(110,166);
+                    var basePoint=new Vector2(90,166);
                     Circle(p,basePoint,29,new Color(.015f,.02f,.025f));Circle(p,basePoint,17,rim);
                     p.lineCap=LineCap.Round;
                     Line(p,ShaftExit,knob,13,new Color(.02f,.025f,.03f));Line(p,ShaftExit+new Vector2(2,0),knob+new Vector2(2,0),5,rim);
                     p.lineCap=LineCap.Butt;
-                    Circle(p,knob,49,rim);Circle(p,knob,46,face);
+                    LitKnob(p,knob,46);
                     p.lineWidth=2;p.strokeColor=accent;p.BeginPath();p.Arc(knob,46,Angle.Degrees(205),Angle.Degrees(335));p.Stroke();
                     return;
                 }
-                Line(p,new Vector2(110,49),new Vector2(110,136),12,Color.black);Line(p,new Vector2(112,49),new Vector2(112,136),1,rim);
+                Line(p,new Vector2(90,49),new Vector2(90,136),12,Color.black);Line(p,new Vector2(92,49),new Vector2(92,136),1,rim);
                 // Foreshortened lever and shaded knob. The knob follows the gate, never the driving assist.
-                Line(p,new Vector2(110,155),knob,10,new Color(.02f,.025f,.03f));Line(p,new Vector2(112,155),knob+new Vector2(2,0),3,rim);
-                Circle(p,knob,23,Color.black);Circle(p,knob+new Vector2(0,-2),21,rim);Circle(p,knob+new Vector2(0,-2),18,new Color(.075f,.085f,.10f));
-                p.strokeColor=new Color(1,1,1,.35f);p.lineWidth=1;p.BeginPath();p.Arc(knob+new Vector2(0,-2),18,Angle.Degrees(205),Angle.Degrees(325));p.Stroke();
+                Line(p,new Vector2(90,155),knob,10,new Color(.02f,.025f,.03f));Line(p,new Vector2(92,155),knob+new Vector2(2,0),3,rim);
+                LitKnob(p,knob,34);
             }
             else
             {
-                Plate(p,27,22,166,129,new Color(.018f,.025f,.03f));
-                Line(p,new Vector2(24,40),new Vector2(24,126),3,accent);Line(p,new Vector2(196,40),new Vector2(196,126),3,accent);
-                if(type==TransmissionType.DCT){Line(p,new Vector2(11,57),new Vector2(11,109),4,rim);Line(p,new Vector2(209,57),new Vector2(209,109),4,rim);}
-                else Line(p,new Vector2(49,156),new Vector2(171,156),2,rim);
+                Plate(p,27,22,126,129,new Color(.018f,.025f,.03f));
+                Line(p,new Vector2(24,40),new Vector2(24,126),3,accent);Line(p,new Vector2(156,40),new Vector2(156,126),3,accent);
+                if(type==TransmissionType.DCT){Line(p,new Vector2(11,57),new Vector2(11,109),4,rim);Line(p,new Vector2(169,57),new Vector2(169,109),4,rim);}
+                else Line(p,new Vector2(39,156),new Vector2(141,156),2,rim);
             }
         }
     }

@@ -16,7 +16,6 @@ namespace DragLab.Runtime
         {
             this.input=input;this.active=active;this.reversed=reversed;this.canDownshift=canDownshift;
             name="raceShiftFlick";AddToClassList("race-shift-flick");focusable=false;tabIndex=-1;
-            var hint=new FilledMenuIcon("Flick");hint.AddToClassList("race-flick-hint");Add(hint);
             RegisterCallback<PointerDownEvent>(e=>{
                 if(NativeMobile.OwnsRacePointer(e)||e.button!=0)return;
                 if(StartContact(e.pointerId,e.position,true))e.StopPropagation();
