@@ -10,7 +10,7 @@ Additional hard completion gate: **no JSON encode/decode for runtime data manipu
 
 ## Next checkpoint
 
-**S02a — Luna-high PASS; recording the local checkpoint commit before the next increment.** S01 passed review and is committed as `fd092bc`. S00 is `39d09b7`, whitespace closure `f163454`. S02a changes checkpoint lookup only; no persistent command conversion yet. Parent coordinates all Unity runs, real mouse tests, staging and commits. Interactive tests run sequentially; no two Unity Editors use this project concurrently.
+**S02b — Luna-high PASS; recording local checkpoint before the next increment.** S02a passed Luna-high review and is committed as `62b2bc0`. S01 passed review and is committed as `fd092bc`. S00 is `39d09b7`, whitespace closure `f163454`. S02a changes checkpoint lookup only; no persistent command conversion yet. Parent coordinates all Unity runs, real mouse tests, staging and commits. Interactive tests run sequentially; no two Unity Editors use this project concurrently.
 
 ## File ownership manifest
 
@@ -30,8 +30,9 @@ Runtime paths above are relative to Game/Assets/DragLab/Scripts/. No overlapping
 | --- | --- | --- | --- | --- |
 | S00 | Final frozen 342 samples + independent validator and 9-fixture all-table rollback pass; see S00_RESULTS.md | PASS — gpt-6-luna / high, S00_REVIEW.md | `39d09b7`, whitespace closure `f163454` | Bounded warmed-Editor baseline only; no phone, allocation, tail-frame or whole-command-family claim |
 | S01 | 75 contract checks + 72 existing isolated storage checks pass; dormant typed contracts/storage mapping | PASS — S01_REVIEW.md | `fd092bc` | No caller switch or new persistent authority |
-| S02a | Prior full harness 1,375 focused + 72 existing storage checks; supplemental final-source preservation 1,067, all exit 0; sparse capture fixes first-car regression | PASS — S02_REVIEW.md | This checkpoint | Operation-local requested-ID map only; no persistent command conversion |
-| S02b–S14 | Not started | Not reviewed | None | Execute in plan order after prior gate passes |
+| S02a | Prior full harness 1,375 focused + 72 existing storage checks; supplemental final-source preservation 1,067, all exit 0; sparse capture fixes first-car regression | PASS — S02_REVIEW.md | `62b2bc0` | Operation-local requested-ID map only; no persistent command conversion |
+| S02b | Prior full harness 250 + 72 storage; final-source focused parity 220, all exit 0; 36-row cost comparison passes | PASS — S02B_REVIEW.md | This checkpoint | No persistent cache, no command/save conversion |
+| S02c–S14 | Not started | Not reviewed | None | Execute in plan order after prior gate passes |
 
 Every accepted row records exact checks, measurements, failures/corrections and remaining costs. All named command suffixes have separate commits/reviews. Do not mark an entire family complete from one converted pilot.
 
@@ -66,3 +67,19 @@ Baseline `fd092bc`. First index family only: owned part ID to position. Build wi
 | checkpoint_high / Luna high | docs/save-refactor/S02_REVIEW.md after a slot is released | Independent correctness/performance review before next family |
 
 S02a integration ownership transfer: implementers released files; parent owns final integration and doc corrections. Initial full-map run (1,358 + 72 pass) is retained locally but its common-case regression was rejected. Corrected sparse run passes 1,375 + 72, exit 0; independent 16-row CSV validation passes. All affected values/receipt stage before assignment. No later family has started.
+
+## S02b file ownership
+
+Baseline `62b2bc0`. Continue one installed-relation lookup family, reusing S02a's sparse ID map. Capture ordered bindings/parts once per synchronous operation, supply definitions and exact typed part copies without repeated scans. This is not a new state owner, mutation observer or worker-safe snapshot. Remaining JSON-based preview fingerprints and profile-copy costs are later conversion work, not silently accepted completion; several spec/tune copies are already typed.
+
+| Owner | Exclusive paths | Outcome |
+| --- | --- | --- |
+| state_medium / Luna medium | Domain/InstalledPartLookup.cs + .meta; docs/save-refactor/S02B_INSTALLED_LOOKUP.md | Frozen narrow installed binding/part view and candidate-local lifetime |
+| baseline_medium / Luna medium | Runtime/InstalledPartLookupChecks.cs + .meta; docs/save-refactor/S02B_TEST_MATRIX.md | Independent old-scan parity, typed resource/member identity preservation, build-inclusive scaling |
+| storage_medium2 / Luna medium | docs/save-refactor/S02B_OWNERSHIP_AUDIT.md | Read-only order/ownership/alias/persistence impact review |
+| coordinator | Domain/MechanicsOwnership.cs and Domain/CarInspection.cs; optional test wrapper; ledger/status/results | Integrate shared capture, run tests, stage explicit files and commit |
+| checkpoint_high / Luna high | docs/save-refactor/S02B_REVIEW.md after a slot is released | Independent checkpoint approval before advancing |
+
+All agents must freeze/share the API before dependent implementation; no overlapping edits. No S03 or later step is active.
+
+S02b integration ownership transfer: all implementers released files; parent integrated Definitions/Resolve/Inspection, corrected CS0136/CS0104 compile errors before runtime, aligned timed legacy baseline with production List.Find and added a final distinct front/rear tire-definition fixture. Prior full250+72 and final-source focused220 pass, exit0; no production/timing changes between runs. Independent CSV validation passes36rows/15columns, all3models/4sizes/3placements; no helper median regression observed.

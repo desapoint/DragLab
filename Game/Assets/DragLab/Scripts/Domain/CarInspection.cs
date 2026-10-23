@@ -14,8 +14,19 @@ namespace DragLab.Domain
         public static InspectionBuild Capture(PlayerProfile profile, OwnedCar car, Tune adjustments = null, string definitionId = null, string instanceId = null, PartCategory? remove = null, IEnumerable<PartCartLine> cart = null, bool healthy = false)
         {
             if(cart!=null)return PartCart.Preview(profile,car,cart);
-            var map = MechanicsOwnership.Definitions(profile, car);
-            var components = car.installed.slots.Select(s => profile.parts.Find(p => p.instanceId == s.partInstanceId)).Where(p => p != null).Select(p => p.Copy()).ToList();
+            Dictionary<PartCategory, string> map;
+            var components = new List<PartInstance>(car.installed.slots.Count);
+            // Capture definitions and ordered fitted identities once; only detached typed
+            // component copies leave this synchronous borrowed-lookup scope.
+            using (var installed = InstalledPartLookup.Capture(profile.parts, car.installed.slots))
+            {
+                map = installed.CopyDefinitions();
+                for (int i = 0; i < installed.Count; i++)
+                {
+                    var part = installed.EntryAt(i).Part;
+                    if (part != null) components.Add(part.Copy());
+                }
+            }
             PartInstance existing = instanceId == null ? null : profile.parts.Find(p => p.instanceId == instanceId) ?? profile.inventory.dealer.Where(s=>s.part!=null).Select(s=>s.part).FirstOrDefault(p=>p.instanceId==instanceId);
             var definition = profile.catalog.Find(existing == null ? definitionId : existing.definitionId);
             if (definition != null)
