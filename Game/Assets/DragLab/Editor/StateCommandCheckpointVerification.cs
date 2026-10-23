@@ -36,6 +36,14 @@ namespace DragLab.Editor
             VerifyLegacyStorage("S02B");
         }
 
+        public static void RunOwnershipValidation()
+        {
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            OwnershipValidationLookupChecks.RunStandalone();
+            VerifyLegacyStorage("S02C");
+        }
+
         static void VerifyLegacyStorage(string checkpoint)
         {
             string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/save-refactor/" + checkpoint));

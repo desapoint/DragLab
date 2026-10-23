@@ -1,0 +1,27 @@
+# S02c validation audit
+
+Baseline reviewed: `7e6ea10`. Static source audit only; this document did not run tests or change code.
+
+## Validation order and lookup semantics
+
+`MechanicsOwnership.Validate` is a synchronous read-only validator. It first checks profile version/revision/cash, selected-car consistency, then `VehicleListings.Validate`, `PaidEconomy.ValidateState`, `CareerProgression.Validate`, and `GarageBusiness.Validate`. Only after these gates does it initialize uniqueness/binding sets and traverse cars, engines, setups, parts, elements, inventory, and market state. Preserve this order: an index captured before the four gates could change which error or exception is observed first.
+
+The validation body currently uses first-match scans for an attached engine (`profile.engines.Find`), installed and stored-engine part bindings (`profile.parts.Find`), and owner-car lookup for each individually specified tire/wheel (`profile.cars.FirstOrDefault` over installed bindings). A scoped lookup can replace those repeated reads while preserving first-match behavior, but it must not itself enforce uniqueness or reject malformed rows early. `Validate` remains authoritative for identity, slot/category, parent/location, fitment, duplicate typed member, orphan, and relation errors. Duplicate IDs are eventually rejected by its ordered `unique` checks; an eager dictionary exception would change both error text and error position. Preserve the order of each original collection when choosing the first match.
+
+After core identity checks, `SharedInventory.Validate(profile, identities)` validates dealer/storage relationships, then `PartsMarket.Validate` validates epoch/reservations and stock. `VehicleListings.Validate`, `PaidEconomy.ValidateState`, `CareerProgression.Validate`, `GarageBusiness.Validate`, `SharedInventory.Validate`, `PartsMarket.Validate`, and `EngineRebuilds.Validate` are inspection-only in their current implementations; they do not normalize the candidate, publish callbacks, or mutate source records. `EngineRebuilds.Validate` checks the existing reservation against installed bindings and matching part IDs/definitions. Keeping one disposable lookup alive through these read-only checks is safe for this synchronous validator, provided it is disposed on every return/exception path and no borrowed graph handle escapes.
+
+## Quote recovery and runtime copy boundary
+
+`ValidateForQuote` first invokes `Validate` on the original profile. Only when the error text contains `dealer` does it JSON round-trip the full profile, restore two absent nullable fields, call `SharedInventory.Ensure` on that copy, and validate the copy. This is a recovery dependency, not a mutation inside `Validate`; changing it is outside this index step. It remains an existing whole-profile runtime JSON manipulation callsite that must be addressed/allowlisted under the user's no-runtime-JSON completion gate before the save refactor is complete. Do not route the new lookup or validator through that copy, and do not silently change dealer recovery behavior.
+
+## Safe index contract and test evidence
+
+A validator-local disposable index should be created only after the unchanged early gates succeed. It should capture the required cars/engines/parts and part-to-containing-car reads once, preserve source order and first-match behavior, and retain only the references needed by the current synchronous validation. It must not be global, cached across mutable profiles, used on a live profile worker, or substitute for final uniqueness/relation validation. Error strings and early-return order stay as before.
+
+At audit time the proposed `OwnershipValidationLookup` implementation and S02c tests were not yet present, so there is no new test evidence to claim. Proposed focused differentials should cover selected/missing references, attached versus detached engines, multiple bindings, duplicate IDs resolving to the first row before the existing ordered validator rejection, missing/orphan bindings, each early gate versus a later duplicate, tire/wheel owner selection, rebuild reservation validation, and before/after source equality on both success and rejection. Include null/blank/duplicate rows according to the frozen API's documented semantics; compare error text and order, not only pass/fail. Verify disposal on every early return and thrown malformed-input path. Existing tests and any whole-validator measurement remain separate from this read-only audit.
+
+No persistence writer/schema/state authority changes are involved. This index remains an ephemeral read aid over the same mutable profile; it does not create a detached profile snapshot or permit additional JSON serialization.
+
+## Frozen API review (source checked)
+
+The implemented `OwnershipValidationLookup` and `S02C_VALIDATION_LOOKUP.md` match the contract above: ordinal first-match maps, explicit null-ID slots, and fallback to original scans if a source list contains a null record. The part-owner relation is lazy and falls back to the nested source scan when malformed relation rows are found. `MechanicsOwnership.Validate` currently constructs it after the four named early gates and scopes it with `using`; the consumer substitutions reviewed preserve the original first-match lookups and keep the original validators/error returns in place. I found no storage/persistence blocker in this API. The S02c differential suite and high review remain the evidence gates; this audit did not run them.
