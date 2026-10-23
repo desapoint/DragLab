@@ -1,7 +1,7 @@
 # S00 independent review
 
-Reviewer: gpt-6-luna / high  
-Review status: **PASS — bounded S00 Editor checkpoint approved; S01 may begin after the coordinator records the local checkpoint commit.**  
+Reviewer: gpt-6-luna / high
+Review status: **PASS — bounded S00 Editor checkpoint approved; S01 may begin after the coordinator records the local checkpoint commit.**
 Baseline: `6d19aae`; review date: 2026-10-23.
 
 ## Evidence reviewed
