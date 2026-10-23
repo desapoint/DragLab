@@ -10,7 +10,7 @@ Additional hard completion gate: **no JSON encode/decode for runtime data manipu
 
 ## Next checkpoint
 
-**S04 — implementation/checks and final independent Luna-high review PASS; local commit pending.** S03a is committed as `3dfcfa1` after independent Luna-high PASS. S02c is committed as `34abd7f` after Luna-high PASS. S02b is committed as `7e6ea10` after Luna-high PASS. S02a passed Luna-high review and is committed as `62b2bc0`. S01 passed review and is committed as `fd092bc`. S00 is `39d09b7`, whitespace closure `f163454`. S02a changes checkpoint lookup only; no persistent command conversion yet. Parent coordinates all Unity runs, real mouse tests, staging and commits. Interactive tests run sequentially; no two Unity Editors use this project concurrently.
+**S05p — typed storage/integrity proposal passed independent Luna-high review; local commit pending. Next is the first S05 typed storage implementation checkpoint.** S04 is committed as `1fc63d0` after final Luna-high PASS. S03a is committed as `3dfcfa1` after independent Luna-high PASS. S02c is committed as `34abd7f` after Luna-high PASS. S02b is committed as `7e6ea10` after Luna-high PASS. S02a passed Luna-high review and is committed as `62b2bc0`. S01 passed review and is committed as `fd092bc`. S00 is `39d09b7`, whitespace closure `f163454`. S02a changes checkpoint lookup only; no persistent command conversion yet. Parent coordinates all Unity runs, real mouse tests, staging and commits. Interactive tests run sequentially; no two Unity Editors use this project concurrently.
 
 ## File ownership manifest
 
@@ -34,8 +34,9 @@ Runtime paths above are relative to Game/Assets/DragLab/Scripts/. No overlapping
 | S02b | Prior full harness 250 + 72 storage; final-source focused parity 220, all exit 0; 36-row cost comparison passes | PASS — S02B_REVIEW.md | `7e6ea10` | No persistent cache, no command/save conversion |
 | S02c | 132 exact parity + 72 isolated storage checks; final-source 10 lifetime probes; 180 paired timing records | PASS — S02C_REVIEW.md | `34abd7f` | Existing error order/global invariants retained; 5-car/no-spares separate median +8.7%, paired median -0.1103 ms |
 | S03a | 95 typed parity/lifetime/dependency/bounds checks + 72 isolated storage pass; 20 capture-inclusive timing pairs | PASS — S03A_REVIEW.md | `3dfcfa1` | One cache only; no whole-profile working set or persistence switch |
-| S04 | Final-source 164 focused + 72 isolated storage, exit 0; descriptive 20-sample cost | PASS — S04_FINAL_REVIEW.md | Pending | Dormant until typed storage/writer pilot passes; no production caller switch |
-| S05–S14 | Not started | Not reviewed | None | Execute in order after prior gate passes; remaining cache/JSON consumers stay explicit conversion work |
+| S04 | Final-source 164 focused + 72 isolated storage, exit 0; descriptive 20-sample cost | PASS — S04_FINAL_REVIEW.md | `1fc63d0` | Dormant until typed storage/writer pilot passes; no production caller switch |
+| S05p | Concrete typed schema/authority/codec/receipt and bounded-query proposal; two native in-memory probes and static checks pass | PASS — S05P_REVIEW.md after capture/null/placeholder corrections | Pending local commit | Proposal only, no production migration/writer; managed Windows/Android, parity and faults remain implementation gates |
+| S05 implementation–S14 | Not started | Not reviewed | None | Execute in order after prior gate passes; remaining cache/JSON consumers stay explicit conversion work |
 
 Every accepted row records exact checks, measurements, failures/corrections and remaining costs. All named command suffixes have separate commits/reviews. Do not mark an entire family complete from one converted pilot.
 
@@ -137,3 +138,19 @@ S04 integration transfer: all agents released assigned files; parent added the i
 S04 final-source rerun: 164 focused + 72 storage passed, exit0, after a receipt-fixture clock correction and added full-validator assertion. No production/timed algorithm changed. Earlier 157+72 and supplemental6 remain historical, not final count additions. Prior Luna-high PASS predates the correction; final evidence recheck is pending because that reviewer hit a usage limit. No commit/next checkpoint until the requested Luna-high gate is satisfied.
 
 S04 final-review gate resolved: the first reviewer exhausted its usage allowance during recheck. A fresh independent gpt-6-luna/high reviewer inspected the complete final source/raw164+72 results and approved S04_FINAL_REVIEW.md. Same requested model/reasoning; no substitution or bypass. Local commit is now the remaining S04 gate.
+
+## S05p file ownership — explicit prerequisite added from S04 evidence
+
+Baseline `1fc63d0`. The existing schema cannot implement the pilot without JSON car/receipt manipulation and all-row hash/diff work. Review a minimal typed schema, incremental integrity, migration/compatibility, durable intent receipt, owner fence and API contract **before** changing any production migration/writer/loader. This is a prerequisite within S05, not advancement of S11's other hot record families. No authored-content database conversion or profile-format replacement is authorized here.
+
+| Owner | Exclusive paths | Task |
+| --- | --- | --- |
+| storage_pilot_medium / Luna medium | docs/save-refactor/S05P_TYPED_STORAGE_PROPOSAL.md | Concrete canonical typed tables/columns and constraints, exact affected transaction/query plan, incremental row integrity, immutable v3 migration/backup and v2 bridge retirement plan |
+| s05_domain_medium / Luna medium | docs/save-refactor/S05P_DOMAIN_BOUNDARY.md | Map exact pilot input/result/receipt and owner/reset/slot/read-set transport; history/field/null/identity authority and publication/reconciliation contracts |
+| s05_tests_medium / Luna medium | docs/save-refactor/S05P_TEST_MATRIX.md | Independent migration/durability/rollback/digest/cache/checkpoint/reset/idempotency/failure matrix with actual fixture paths and exact verification entry points |
+| coordinator | docs/save-refactor/S05P_DECISIONS.md if needed; plan/ledger/status/results; isolated static proposal checks only | Resolve proposals against source, validate documented DDL/query assumptions, stage/commit reviewed proposal |
+| fresh independent reviewer / Luna high | docs/save-refactor/S05P_REVIEW.md after author slot release | Review schema/authority/migration/compatibility/integrity/failure plan before S05 implementation |
+
+Use individual typed records, not a binary/JSON whole-profile replacement. Preserve existing migration checksums/scripts and recoverable save floors. Current digest is XOR of per-row SHA-256, not a monolithic SHA; persist/verify enough row integrity to update only declared records without rescanning unrelated state. Typed pilot reads/writes and receipt reconciliation must avoid JSON, full row inventory and global relation sync. Every temporary legacy bridge must name its callers, canonical field authority and retirement checkpoint under the final no-runtime-JSON gate.
+
+S05p integration transfer: all medium authors released files. Parent pinned S05P_DECISIONS, corrected the full transitional capture handoff, nullable receipt children and attached-engine legacy placeholder semantics, then reran the native probes. Fresh Luna-high re-review PASS retained its initial blocked findings as resolved history. No production migration, writer or UI caller changed. Existing user reports/attachments remain untouched.
