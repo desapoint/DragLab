@@ -4,6 +4,7 @@ Preserve the current performance/commerce checkpoint first. Deliver one requeste
 
 ## Current
 
+- Follow-up cel-shaded shifter: technically complete, HUD 270/0 and flick 102/0; both builds refreshed. [Review](../reports/shifter-cel-20261023/CHANGES.md). The save/state refactor is planned only in [its review document](SAVE_STATE_REFACTOR_PLAN.md).
 - Commerce/performance technical checkpoint completed in b413fc3 and 1f54da3; final Windows/Android builds are refreshed with the shifter control. User review remains pending.
 - Remaining requested controls are technically complete with documented regression/build receipts; platform builds are refreshed. See [warning repair delivery](../reports/warning-repairs-20261023/CHANGES.md).
 - Shifter control technically complete: 623 packaged checks passed, both platform builds refreshed. User explicitly directed continuation through the remaining requested controls; retain separate tested local commits and user acceptance status.

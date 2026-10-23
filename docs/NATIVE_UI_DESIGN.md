@@ -1,5 +1,7 @@
 # Native interface direction — grey/red and Settings first
 
+Shifter appearance (2026-10-23): use cel-shaded manual/sequential knobs with an ink outline, flat light/midtone/shadow regions, an upper-left hard highlight and matching shaft/boot shading. Derive colors from the shared gauge palette. Keep the narrow selector, actual gate/pivot/shift timing, mobile hint beside the number and existing keyboard/flick/held-pedal behavior.
+
 Car listening (2026-10-23): place Hear engine in owned/dealership detail headers, preserving the two existing action rows. Reuse the shared dialog for Replay/Stop/Close. Audition private captured hardware/condition through production physics/audio with safe demonstration inputs; spend no assets/resources, respect engine gain and inspection disclosure, and stop on close/context/focus loss.
 
 Warning repairs (2026-10-23): unresolved issues offer relevant part-type Shop actions with fresh Compatible + In stock + Price ascending defaults. Keep the current car's cart intact. Fluids/service route to that car's maintenance; an absent engine routes to the engine market. Stored-engine issues reuse typed engine preparation. Never infer fitment from warning severity, invite a resolved repair purchase, discard unapplied settings, switch away from another car's cart, or publish a car switch before its durable save succeeds. Shared dialogs, scrolling and button styles remain authoritative.

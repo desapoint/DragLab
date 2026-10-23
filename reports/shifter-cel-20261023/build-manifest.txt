@@ -1,0 +1,9 @@
+Cel-shaded shifter build checkpoint: 2026-10-23
+Unity 6000.6.4f1 Development players: Windows and Android ARM64 IL2CPP
+APK signature, 16 KB alignment, ZIP integrity and ARM64 native libraries pass.
+Physical Android validation remains pending.
+
+Game/Builds/Windows/DragLab.exe | 667136 bytes | sha256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+Game/Builds/Windows/DragLab_Data/Managed/Assembly-CSharp.dll | 3224064 bytes | sha256 139d34542884f1120a20be4e8c2750f20d1101ec2f05c92398bc83dad59e54a2
+Game/Builds/Windows/DragLab_Data/resources.assets | 1779856 bytes | sha256 de8df0154598ef79650499c0a301a2935d5b213b32467bfe67b1db13688d58aa
+Game/Builds/Android/DragLab.apk | 72633540 bytes | sha256 e1e03a51650d24605d4d7367216e554d72ed2b2031d48b0989a0ff45d7975dcd

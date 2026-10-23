@@ -1,0 +1,7 @@
+Windows HUD: 270 checks / 0 runtime errors.
+Keyboard/mobile flick: 102 checks / 0 runtime errors.
+Windows and Android ARM64 IL2CPP Development builds: PASS.
+APK signature / 16 KB alignment / ZIP integrity / native libraries: PASS.
+H-pattern, sequential and mobile screenshots: reviewed locally.
+Physical phone and user visual acceptance: pending.
+No assertions changed; only shifter painting and documentation changed.

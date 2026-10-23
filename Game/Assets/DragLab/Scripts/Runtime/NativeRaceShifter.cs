@@ -73,12 +73,18 @@ namespace DragLab.Runtime
             flickHint.EnableInClassList("hidden",!touch);
             tooltip=touch?(reversed?"Flick down to shift up; flick up to shift down":"Flick up to shift up; flick down to shift down"):null;
         }
-        void LitKnob(Painter2D p,Vector2 center,float radius)
+        void CelKnob(Painter2D p,Vector2 center,float radius)
         {
-            Circle(p,center,radius+3,rim);
-            p.fillGradient=FillGradient.MakeRadialGradient(Color.Lerp(face,rim,.8f),Color.Lerp(face,Color.black,.5f),center,radius*1.45f,center+new Vector2(-radius*.35f,-radius*.4f),AddressMode.Clamp);
-            p.BeginPath();p.Arc(center,radius,Angle.Degrees(0),Angle.Degrees(360));p.ClosePath();p.Fill();
-            p.lineWidth=1;p.strokeColor=new Color(.85f,.88f,.92f,.45f);p.BeginPath();p.Arc(center,radius-1,Angle.Degrees(210),Angle.Degrees(300));p.Stroke();
+            Circle(p,center,radius+3,Color.Lerp(face,Color.black,.85f));
+            Circle(p,center,radius+1,Color.Lerp(rim,face,.3f));
+            Circle(p,center,radius-1,Color.Lerp(face,rim,.48f));
+            p.fillColor=Color.Lerp(face,Color.black,.35f);p.BeginPath();
+            p.Arc(center,radius-1,Angle.Degrees(5),Angle.Degrees(165));
+            p.BezierCurveTo(center+new Vector2(-radius*.4f,radius*.12f),center+new Vector2(radius*.5f,radius*.5f),center+new Vector2(radius*.966f,radius*.085f));p.ClosePath();p.Fill();
+            p.fillColor=Color.Lerp(rim,tick,.25f);p.BeginPath();
+            p.Arc(center,radius-1,Angle.Degrees(205),Angle.Degrees(325));
+            p.BezierCurveTo(center+new Vector2(radius*.4f,-radius*.12f),center+new Vector2(-radius*.35f,-radius*.1f),center+new Vector2(-radius*.87f,-radius*.405f));p.ClosePath();p.Fill();
+            p.lineWidth=3;p.strokeColor=Color.Lerp(rim,tick,.7f);p.BeginPath();p.Arc(center,radius*.79f,Angle.Degrees(220),Angle.Degrees(256));p.Stroke();
         }
         static void Plate(Painter2D p,float x,float y,float w,float h,Color color)
         {
@@ -94,18 +100,19 @@ namespace DragLab.Runtime
                 if(HPattern)
                 {
                     var basePoint=new Vector2(90,166);
-                    Circle(p,basePoint,29,new Color(.015f,.02f,.025f));Circle(p,basePoint,17,rim);
+                    Circle(p,basePoint,29,new Color(.015f,.02f,.025f));Circle(p,basePoint,24,Color.Lerp(face,rim,.2f));Circle(p,basePoint,17,Color.Lerp(face,rim,.55f));
+                    Line(p,basePoint+new Vector2(-22,8),basePoint+new Vector2(-10,-13),3,face);Line(p,basePoint+new Vector2(21,9),basePoint+new Vector2(10,-13),3,face);
                     p.lineCap=LineCap.Round;
-                    Line(p,ShaftExit,knob,13,new Color(.02f,.025f,.03f));Line(p,ShaftExit+new Vector2(2,0),knob+new Vector2(2,0),5,rim);
+                    Line(p,ShaftExit,knob,13,new Color(.02f,.025f,.03f));Line(p,ShaftExit,knob,8,Color.Lerp(face,rim,.6f));Line(p,ShaftExit-new Vector2(2,0),knob-new Vector2(2,0),3,tick);
                     p.lineCap=LineCap.Butt;
-                    LitKnob(p,knob,46);
+                    CelKnob(p,knob,46);
                     p.lineWidth=2;p.strokeColor=accent;p.BeginPath();p.Arc(knob,46,Angle.Degrees(205),Angle.Degrees(335));p.Stroke();
                     return;
                 }
                 Line(p,new Vector2(90,49),new Vector2(90,136),12,Color.black);Line(p,new Vector2(92,49),new Vector2(92,136),1,rim);
                 // Foreshortened lever and shaded knob. The knob follows the gate, never the driving assist.
-                Line(p,new Vector2(90,155),knob,10,new Color(.02f,.025f,.03f));Line(p,new Vector2(92,155),knob+new Vector2(2,0),3,rim);
-                LitKnob(p,knob,34);
+                Line(p,new Vector2(90,155),knob,10,new Color(.02f,.025f,.03f));Line(p,new Vector2(90,155),knob,6,Color.Lerp(face,rim,.6f));Line(p,new Vector2(88,155),knob-new Vector2(2,0),2,tick);
+                CelKnob(p,knob,34);
             }
             else
             {
