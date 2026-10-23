@@ -77,12 +77,19 @@ namespace DragLab.Domain.Mechanics
         sealed class InitialGroup
         {
             internal string[] ids;internal int maximum;
+            // The model fitment index already stores immutable compatibility.
+            // The detached worker needs only the representative's unlock rank.
+            internal int reputationRequired;
         }
         sealed class InitialPlan
         {
             internal List<NewPartStock> rows;internal int newCount;
+            internal uint coverageRandom,coverageQuantity;
+            internal double initialGuaranteeCpuMilliseconds;
         }
-        static InitialPlan BuildInitialPlan(InitialGroup[] groups,uint selection,uint quantity)
+        static InitialPlan BuildInitialPlan(InitialGroup[] groups,uint selection,uint quantity,
+            int guarantee=0,MarketCatalogLayout.FitmentIndex fitments=null,
+            string[] ownedModels=null,uint coverageRandom=0,uint coverageQuantity=0)
         {
             // Initial rolls and row ordering are the same as the original path.
             // Pure managed data only; does not touch a profile or any Unity API.
@@ -104,7 +111,33 @@ namespace DragLab.Domain.Mechanics
                     (roll<.5?1:roll<.85?2:3):(roll<.8?1:roll<.97?2:3);
                 rows[i].units=rows[i].initialUnits=groups[i].maximum*sets;
             }
-            return new InitialPlan{rows=rows,newCount=newCount};
+            // Settlement-only: compatibility comes from the *same fitment pass*
+            // that produced the cached catalog layout. The index is immutable
+            // and safe to share with the worker across market epochs. An empty
+            // garage uses all authored models, matching the original fallback.
+            long guaranteeStart=fitments==null?0:System.Diagnostics.Stopwatch.GetTimestamp();
+            if(fitments!=null)
+            {
+                int[] fitting=fitments.ForModels(ownedModels)
+                    .Where(i=>groups[i].reputationRequired==0).ToArray();
+                int targetCount=Math.Min(guarantee,fitting.Length);
+                int present=fitting.Count(i=>rows[i].units>0);
+                while(present<targetCount)
+                {
+                    var missing=fitting.Where(i=>rows[i].units==0).ToArray();
+                    int pick=(int)(Next(ref coverageRandom)*missing.Length)%missing.Length;
+                    int index=missing[pick];
+                    var row=rows[index];
+                    row.units=row.initialUnits=groups[index].maximum*
+                        (1+(int)(Next(ref coverageQuantity)*3)%3);
+                    present++;
+                }
+            }
+            return new InitialPlan{rows=rows,newCount=newCount,
+                coverageRandom=coverageRandom,coverageQuantity=coverageQuantity,
+                initialGuaranteeCpuMilliseconds=guaranteeStart==0?0:
+                    (System.Diagnostics.Stopwatch.GetTimestamp()-guaranteeStart)*1000.0/
+                    System.Diagnostics.Stopwatch.Frequency};
         }
         static IEnumerable<object> GenerateSteps(PlayerProfile p,bool expire,bool offloadDelivery)
         {
@@ -148,11 +181,23 @@ namespace DragLab.Domain.Mechanics
             MarketCatalogLayout.Layout layout=null;
             foreach(var marker in MarketCatalogLayout.GetSteps(p.catalog,productKeys,specs,value=>layout=value,offloadDelivery))
                 yield return marker;
-            var planGroups=layout.groups.Select(g=>new InitialGroup{ids=g.ids.ToArray(),maximum=g.maximum}).ToArray();
+            var planGroups=layout.groups.Select(g=>new InitialGroup{
+                ids=g.ids.ToArray(),maximum=g.maximum,
+                reputationRequired=g.definition.reputationRequired
+            }).ToArray();
+            // Capture fitment targets before dispatch; no authored catalog data
+            // will be read by the selection worker.
+            var owned=p.cars.Select(c=>c.vehicleId).Distinct().ToArray();
+            var targets=owned.Length==0?specs:owned.Select(p.catalog.Spec).ToArray();
             InitialPlan initial=null;
             if(offloadDelivery)
             {
-                var task=Task.Run(()=>BuildInitialPlan(planGroups,random,newQuantity));
+                int guaranteed=state.guaranteeAtRefresh;
+                // Hand over only immutable index data and copied model IDs.
+                // Neither live player nor authored catalog crosses this boundary.
+                var fitmentIndex=layout.fitments;
+                var task=Task.Run(()=>BuildInitialPlan(planGroups,random,newQuantity,
+                    guaranteed,fitmentIndex,owned,coverageRandom,coverageQuantity));
                 var waiting=new MarketWorkerWait(task);
                 yield return waiting;
                 while(!task.IsCompleted)yield return waiting;
@@ -163,12 +208,21 @@ namespace DragLab.Domain.Mechanics
             // roll has finished. Used and engine streams are independent.
             state.parts.AddRange(initial.rows);
             int newCount=initial.newCount;
+            if(offloadDelivery){
+                coverageRandom=initial.coverageRandom;
+                coverageQuantity=initial.coverageQuantity;
+                Measurement?.Invoke("initial fitting guarantee worker CPU",
+                    initial.initialGuaranteeCpuMilliseconds);
+            }
             Measured("new product selection/quantities",stamp);stamp=Stamp();yield return "parts/layout and selection";
             // A single shared pool: no model quotas for used parts or engines.
-            var owned=p.cars.Select(c=>c.vehicleId).Distinct().ToArray();var targets=owned.Length==0?specs:owned.Select(p.catalog.Spec).ToArray();
-            var fitting=state.parts.Where(row=>row.definitions.Any(id=>{var d=p.catalog.Find(id);return d.reputationRequired==0&&targets.Any(spec=>p.catalog.Fits(spec,d));})).ToList();
-            while(fitting.Count(row=>row.units>0)<Math.Min(state.guaranteeAtRefresh,fitting.Count)){
-                var missing=fitting.Where(row=>row.units==0).ToArray();var row=missing[(int)(Next(ref coverageRandom)*missing.Length)%missing.Length];var d=p.catalog.Find(row.definitions[0]);int max=specs.Where(spec=>p.catalog.Fits(spec,d)).Select(spec=>Count(spec,d)).DefaultIfEmpty(1).Max();row.units=row.initialUnits=max*(1+(int)(Next(ref coverageQuantity)*3)%3);
+            if(!offloadDelivery)
+            {
+                // Retain the original synchronous/editor reference algorithm.
+                var fitting=state.parts.Where(row=>row.definitions.Any(id=>{var d=p.catalog.Find(id);return d.reputationRequired==0&&targets.Any(spec=>p.catalog.Fits(spec,d));})).ToList();
+                while(fitting.Count(row=>row.units>0)<Math.Min(state.guaranteeAtRefresh,fitting.Count)){
+                    var missing=fitting.Where(row=>row.units==0).ToArray();var row=missing[(int)(Next(ref coverageRandom)*missing.Length)%missing.Length];var d=p.catalog.Find(row.definitions[0]);int max=specs.Where(spec=>p.catalog.Fits(spec,d)).Select(spec=>Count(spec,d)).DefaultIfEmpty(1).Max();row.units=row.initialUnits=max*(1+(int)(Next(ref coverageQuantity)*3)%3);
+                }
             }
             Measured("new fitting guarantee",stamp);stamp=Stamp();yield return "parts/new guarantee";string prefix="market/"+state.seed+"/"+state.generation+"/";
             var usedCandidates=layout.groups.Where(g=>PartSemantics.Wears(g.definition.category)).ToList();
@@ -181,10 +235,47 @@ namespace DragLab.Domain.Mechanics
             }
             for(int n=0;n<selectedUsed.Count;n++){AddUsedSupply(p,selectedUsed[n].Item1,selectedUsed[n].Item2,prefix+"used/"+n,ref usedQuantity);yield return "parts/used supply";}
             if(owned.Length>0&&state.guaranteeAtRefresh>0){
+                long indexedStart=Stamp();
+                // The existing catalog layout retains the exact grouping order
+                // and model compatibility. The detached settlement path can
+                // skip every redundant full-catalog Fits/GroupBy scan.
+                // Synchronous/editor generation remains the parity reference.
+                var candidates=offloadDelivery
+                    ?layout.fitments.ForModels(owned)
+                        .Where(i=>PartSemantics.Wears(layout.groups[i].definition.category)&&
+                            layout.groups[i].definition.reputationRequired<=p.reputation)
+                        .Select(i=>Tuple.Create(layout.groups[i].definition,i)).ToList()
+                    :p.catalog.parts.Where(d=>PartSemantics.Wears(d.category)&&
+                            d.reputationRequired<=p.reputation&&targets.Any(spec=>p.catalog.Fits(spec,d)))
+                        .GroupBy(d=>productKeys[d.id],StringComparer.Ordinal)
+                        .OrderBy(g=>g.Min(d=>d.id),StringComparer.Ordinal)
+                        .Select(g=>Tuple.Create(g.OrderBy(d=>d.id,StringComparer.Ordinal).First(),-1))
+                        .ToList();
+                var eligibleKeys=offloadDelivery
+                    ?new HashSet<string>(candidates.Select(item=>productKeys[item.Item1.id]),StringComparer.Ordinal)
+                    :null;
                 var generated=p.inventory.dealer.Where(row=>row.Id.StartsWith(prefix+"used/",StringComparison.Ordinal)).ToArray();
-                var present=new HashSet<string>(generated.Where(row=>{var d=p.catalog.Find(row.DefinitionId);return d.reputationRequired<=p.reputation&&targets.Any(spec=>p.catalog.Fits(spec,d));}).Select(row=>productKeys[row.DefinitionId]),StringComparer.Ordinal);
-                var candidates=p.catalog.parts.Where(d=>PartSemantics.Wears(d.category)&&d.reputationRequired<=p.reputation&&targets.Any(spec=>p.catalog.Fits(spec,d))).GroupBy(d=>productKeys[d.id],StringComparer.Ordinal).OrderBy(g=>g.Min(d=>d.id),StringComparer.Ordinal).Select(g=>g.OrderBy(d=>d.id,StringComparer.Ordinal).First()).ToList();
-                while(present.Count<state.guaranteeAtRefresh){var remaining=candidates.Where(d=>!present.Contains(productKeys[d.id])).ToArray();if(remaining.Length==0)break;var d=remaining[(int)(Next(ref coverageRandom)*remaining.Length)%remaining.Length];var platforms=targets.Where(spec=>p.catalog.Fits(spec,d)).ToArray();var source=platforms[(int)(Next(ref coverageRandom)*platforms.Length)%platforms.Length];var spec=layout.Stock(p.catalog,source.id);AddUsedSupply(p,spec,d,prefix+"used/guaranteed/"+present.Count,ref coverageQuantity);present.Add(productKeys[d.id]);yield return "parts/used guarantee";}
+                var present=new HashSet<string>(generated.Where(row=>{
+                    if(eligibleKeys!=null)return eligibleKeys.Contains(productKeys[row.DefinitionId]);
+                    var d=p.catalog.Find(row.DefinitionId);
+                    return d.reputationRequired<=p.reputation&&targets.Any(spec=>p.catalog.Fits(spec,d));
+                }).Select(row=>productKeys[row.DefinitionId]),StringComparer.Ordinal);
+                Measured("used guarantee eligible products",indexedStart);
+                while(present.Count<state.guaranteeAtRefresh){
+                    var remaining=candidates.Where(item=>!present.Contains(productKeys[item.Item1.id])).ToArray();
+                    if(remaining.Length==0)break;
+                    var selected=remaining[(int)(Next(ref coverageRandom)*remaining.Length)%remaining.Length];
+                    var d=selected.Item1;
+                    // Preserve target order and both coverage RNG draws.
+                    var platforms=offloadDelivery
+                        ?targets.Where(spec=>layout.fitments.FitsModel(spec.id,selected.Item2)).ToArray()
+                        :targets.Where(spec=>p.catalog.Fits(spec,d)).ToArray();
+                    var source=platforms[(int)(Next(ref coverageRandom)*platforms.Length)%platforms.Length];
+                    var spec=layout.Stock(p.catalog,source.id);
+                    AddUsedSupply(p,spec,d,prefix+"used/guaranteed/"+present.Count,ref coverageQuantity);
+                    present.Add(productKeys[d.id]);
+                    yield return "parts/used guarantee";
+                }
             }
             Measured("used parts/guarantee",stamp);stamp=Stamp();
             bool carry=expire&&previous!=null&&previous.seed==state.seed&&previous.generation<state.generation;
@@ -199,6 +290,9 @@ namespace DragLab.Domain.Mechanics
                 if(categoryIndex!=null)Measurement?.Invoke("catalog membership index reused",0);
                 var detachedCatalog=originalCatalog.DetachedNewSupplySnapshot();
                 var detachedLayout=new MarketCatalogLayout.Layout{
+                    // The fitment index is an already-complete immutable
+                    // catalog-revision snapshot, safe for detached worker reads.
+                    fitments=layout.fitments,
                     groups=layout.groups.Select(g=>new MarketCatalogLayout.Group{
                         definition=detachedCatalog.Find(g.definition.id),
                         ids=new List<string>(g.ids),
@@ -225,11 +319,13 @@ namespace DragLab.Domain.Mechanics
                         if(collect!=null)collect("wear/preparation CPU total ("+needs.Length+" needs)",(System.Diagnostics.Stopwatch.GetTimestamp()-wearStart)*1000.0/System.Diagnostics.Stopwatch.Frequency);
                         var pool=NewPartSupply.PrepareDeliveryPool(products.ToList(),collect);
                         NewPartSupply.DeliverBatch(pool,needs,newCount,ref workerSelection,ref workerQuantity,collect);
-                        // Final fitting guarantee belongs to the same complete
-                        // new-parts worker, not an extra main-thread iteration.
-                        var ownedSpecs=p.cars.Select(car=>p.catalog.Spec(car.vehicleId)).ToArray();
-                        var eligible=products.Where(product=>product.definition.reputationRequired==0&&
-                            ownedSpecs.Any(spec=>p.catalog.Fits(spec,product.definition))).ToArray();
+                        // Reuse the very same indexed model compatibility for
+                        // the final supply guarantee. Empty owned garage is
+                        // intentionally ineligible here (unlike initial stock).
+                        var eligible=owned.Length==0?Array.Empty<NewPartSupply.Product>():
+                            detachedLayout.fitments.ForModels(owned)
+                                .Where(i=>products[i].definition.reputationRequired==0)
+                                .Select(i=>products[i]).ToArray();
                         while(eligible.Count(product=>product.stock.units>0)<Math.Min(state.guaranteeAtRefresh,eligible.Length))
                         {
                             var missing=eligible.Where(product=>product.stock.units==0).ToList();

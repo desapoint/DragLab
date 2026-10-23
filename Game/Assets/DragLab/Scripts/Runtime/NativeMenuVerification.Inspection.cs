@@ -42,7 +42,13 @@ namespace DragLab.Runtime
             yield return Click(input,"fittedPartsGroup:Engine");
             Check(list.Q("fittedPartsBody:Engine").ClassListContains("hidden")&&list.Q<Button>("fittedPartsGroup:Drivetrain").worldBound.yMax<shell.Root.Q("modalActions").worldBound.yMin,"Collapsing Engine restores access to the other system headers");
             yield return Capture(capture+"-collapsed");yield return Click(input,"fittedPartsGroup:Engine");
-            Check(!list.Q("fittedPartsBody:Engine").ClassListContains("hidden")&&rows.Count==list.Query(className:"fitted-part").ToList().Count,"Reopening Engine retains all captured part rows");
+            var engineBody=list.Q("fittedPartsBody:Engine");
+            int retainedRows=list.Query(className:"fitted-part").ToList().Count;
+            bool engineExpanded=!engineBody.ClassListContains("hidden");
+            Check(engineExpanded&&rows.Count==retainedRows,
+                "Reopening Engine retains all captured part rows / expanded="+engineExpanded+
+                " / initial rows="+rows.Count+" / retained rows="+retainedRows+
+                " / toggle bounds="+list.Q<Button>("fittedPartsGroup:Engine").worldBound);
             Check(before==JsonUtility.ToJson(game.Profile)&&File.ReadAllBytes(ProfileStore.FilePath).SequenceEqual(disk),"Opening and grouping fitted parts changes no profile assets, knowledge, cash or saved bytes");
         }
         IEnumerator UsedInspectionChecks(WindowsKeyboardProbe input)

@@ -242,6 +242,30 @@ namespace DragLab.Domain.Mechanics
                     direct.groups[i].maximum==fitting.Select(spec=>PartsMarket.Count(spec,d)).DefaultIfEmpty(1).Max();
             }
             check(sameGroups,"Staged layout exactly matches the former fitted grouping/max-set algorithm");
+            // The model index must preserve the same group positions as a
+            // fresh full catalog.Fits scan, never product IDs or market stock.
+            foreach(var spec in layoutSpecs)
+            {
+                var expected=Enumerable.Range(0,direct.groups.Length)
+                    .Where(i=>catalog.Fits(spec,direct.groups[i].definition)).ToArray();
+                check(direct.fitments.ForModels(new[]{spec.id}).SequenceEqual(expected),
+                    "Catalog fitment index matches complete ordered products for "+spec.id);
+                check(Enumerable.Range(0,direct.groups.Length).All(i=>
+                    direct.fitments.FitsModel(spec.id,i)==catalog.Fits(spec,direct.groups[i].definition)),
+                    "Indexed per-group membership matches full Fits for every product: "+spec.id);
+            }
+            check(direct.fitments.ForModels(Array.Empty<string>()).SequenceEqual(
+                Enumerable.Range(0,direct.groups.Length).Where(i=>direct.groups[i].deliverable)),
+                "Empty garage index uses all authored-model compatible product groups");
+            if(layoutSpecs.Length>=2)
+            {
+                var selected=layoutSpecs.Take(2).ToArray();
+                var expectedUnion=Enumerable.Range(0,direct.groups.Length)
+                    .Where(i=>selected.Any(spec=>catalog.Fits(spec,direct.groups[i].definition)));
+                check(direct.fitments.ForModels(selected.Select(spec=>spec.id).ToArray())
+                    .SequenceEqual(expectedUnion),
+                    "Multicar index union retains original group order with no duplicates");
+            }
             check(ReferenceEquals(direct,MarketCatalogLayout.Get(catalog,layoutKeys,layoutSpecs)),
                 "Warm catalog layout remains reusable without another fitting build");
             check(layoutYields>0,"Cold authored market layout yields between fitting batches");
@@ -262,7 +286,28 @@ namespace DragLab.Domain.Mechanics
                 workerMatches=ReferenceEquals(a.definition,w.definition)&&
                     a.ids.SequenceEqual(w.ids)&&a.maximum==w.maximum&&a.deliverable==w.deliverable;
             }
-            check(workerWaits>0&&workerMatches,"Detached worker computes the same cold fitted catalog without publishing partial groups");
+            if(workerMatches)
+            {
+                workerMatches=direct.fitments.ForModels(Array.Empty<string>())
+                    .SequenceEqual(workerLayout.fitments.ForModels(Array.Empty<string>()));
+                foreach(var spec in layoutSpecs)
+                    workerMatches&=direct.fitments.ForModels(new[]{spec.id})
+                        .SequenceEqual(workerLayout.fitments.ForModels(new[]{spec.id}));
+            }
+            check(workerWaits>0&&workerMatches,
+                "Detached worker publishes identical ordered per-model fitment indexes and product groups");
+            check(ReferenceEquals(workerLayout,MarketCatalogLayout.Get(catalog,layoutKeys,layoutSpecs))&&
+                ReferenceEquals(workerLayout.fitments,MarketCatalogLayout.Get(catalog,layoutKeys,layoutSpecs).fitments),
+                "Completed model-fitment index is reused unchanged across market epochs");
+            // Even when definition keys are byte-identical, an explicit
+            // authored revision must rebuild the model-fitment snapshot.
+            catalog.RebuildIndexes();
+            var afterRevision=MarketCatalogLayout.Get(catalog,layoutKeys,layoutSpecs);
+            check(!ReferenceEquals(afterRevision,workerLayout)&&
+                !ReferenceEquals(afterRevision.fitments,workerLayout.fitments)&&
+                afterRevision.fitments.ForModels(Array.Empty<string>())
+                    .SequenceEqual(workerLayout.fitments.ForModels(Array.Empty<string>())),
+                "Catalog authoring revision invalidates fitment index while preserving identical compatibility");
             // Author metadata keys belong to a catalog revision, not an epoch.
             // Verify that the ready dictionary is reused as-is and explicit
             // authored updates invalidate it while wear never changes it.
