@@ -1,0 +1,23 @@
+# S00 independent review
+
+Reviewer: gpt-6-luna / high  
+Review status: **PASS — bounded S00 Editor checkpoint approved; S01 may begin after the coordinator records the local checkpoint commit.**  
+Baseline: `6d19aae`; review date: 2026-10-23.
+
+## Evidence reviewed
+
+- Source isolation: the Editor-only harness uses nine versioned synthetic fixtures and sends durable writes to report-local `ProfileStore.VerificationPath` files. It never calls `ProfileStore.Load` and does not load or overwrite the active player save. The final run drained and removed its SQLite files, backup journals/WAL/SHM, and settings sidecars. The test-only full-profile JSON clone intentionally measures the existing legacy path; it is not endorsed for production migration.
+- Reproducible inputs: all nine gzip fixtures have pinned raw and compressed SHA-256 hashes and stable bootstrapped identities. The standalone Python validator passed all fixtures and their imported canonical hashes. Unity import changes only 792 duplicated historical numeric fields by at most four ULP, limited to `runningSeconds`, `distanceM`, and `consumedLife`; all other values, IDs, health, and structure match exactly. Unity separately asserts imported-to-normalized bytes are unchanged. This is a documented legacy diagnostic boundary, not permission to repeat JSON round-trips in runtime state manipulation.
+- Final performance run: `editor-final-b.log` completed with exit 0 and produced 342 samples across 57 groups, six samples per group. The validator confirmed the sample groups, profile hashes, medians/maxima, direct-read SQL labels, and failed-row status. The tested bounded matrix is 1/5/20 cars × 0/24/96 loose parts, with the actions and fixture omissions described in `S00_RESULTS.md`.
+- Final-source rollback run: `editor-rollback.log` completed with exit 0. All nine injected failures reached the pre-COMMIT point; profile references and the deterministic fingerprints of all persisted user tables and their schemas remained unchanged. The independent validator passed all nine cases.
+- Measurement honesty: allocation readings are explicitly unavailable because the supported counter stayed at zero even for the known 1 MiB self-check. Six samples support descriptive median and maximum only. Results are warmed Windows Editor timings against fresh prepopulated isolated databases; they do not claim cold process/JIT/storage performance, worker allocations, memory retention, frame pacing, or phone performance.
+- Source and plan disposition: the storage audit accurately records `BeginValidatedSave` in production race settlement and its shallow aliased freeze view. The state audit inventories JSON and mutable-copy dependencies, including the full-profile JSON-to-row persistence bridge, as future migration work. These findings do not approve whole-profile cloning or JSON manipulation in the completed design. Draft PR #4 remains deferred because it is a distinct unvalidated market change and does not resolve the measured save-path costs.
+- Documentation consistency: the test matrix now states final bounded execution status; the storage audit qualifies statements about actions performed by its static-audit author and points to the later benchmark results. The results report and execution ledger keep device, broader workload, frame, allocation, tail-percentile, and history-scaling gates open.
+
+I independently reran `python tools/check_save_refactor_baseline.py`; it passed with: `9 frozen inputs`, `792 bounded legacy JSON history-rounding fields`, `342 samples`, `57 groups`, and `9 final-source all-table rollback cases`. The fixture README, result report, test matrix, state/storage audits, and execution ledger were also reviewed against the source and available logs.
+
+## Limits carried forward
+
+This PASS approves only the S00 bounded baseline and its isolation/reproducibility evidence. It does not mark Android/physical-device timing, cold-start behavior, frame pacing, GC/worker allocation, p95/p99, scaled history, or the broader race, rebuild/swap/sale, setup/tune, business, reset/load/recovery workload family as measured. Each migrated command needs its own relevant baseline and review.
+
+The user's completion gates remain binding at every implementation checkpoint: production saves must not clone a whole profile, and runtime data manipulation must not encode/decode JSON. Normal persistence must move to affected typed records and command working sets; JSON remains limited to explicit import/export, settings, and external diagnostic boundaries. S00's fixture/import clone is permitted solely to characterize the existing legacy baseline.

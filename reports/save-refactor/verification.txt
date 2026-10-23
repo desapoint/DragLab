@@ -1,0 +1,6 @@
+S00 final frozen Editor run: exit 0, 342 samples, 57 groups, n=6.
+Independent fixture/import/hash/statistics check: PASS, 9 static fixtures.
+Final-source all-table before-COMMIT rollback: PASS, 9 fixtures; injection reached and source/SQL unchanged.
+Allocation baseline: unavailable (known-allocation counter probe did not advance).
+Physical Android / packaged frame / scaled history / remaining command measurements: not claimed; see S00_RESULTS.md.
+Luna-high final approval: PASS for bounded S00; see docs/save-refactor/S00_REVIEW.md.

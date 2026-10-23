@@ -1,14 +1,14 @@
 # Save, state and memory refactor — review plan
 
-Date: 2026-10-23. **Planning only. No checkpoint below is implemented or authorized for execution by this document.** The user requested review before implementation. The separate shifter appearance request does not authorize this refactor.
+Date: 2026-10-23. **Execution now authorized by the user:** carry out the whole plan with synchronized Luna-medium implementation agents and a Luna-high review at every checkpoint before advancing. The earlier planning-only delivery remains historical; this instruction supplies authorization, not evidence of completion. See the [execution ledger](save-refactor/EXECUTION.md).
 
 ## Goal and relationship to the existing plan
 
 Make definitive actions transactional and responsive as collections grow. Keep one authoritative in-memory state, stable component identities, incremental indexed reads, bounded private working sets and one ordered durable writer. Use workers for audited managed computation and storage; keep Unity access and live state publication on main. Faster code and smaller work come before adding concurrency.
 
-This is the execution/agent breakdown of [ARCHITECTURE_PERFORMANCE_PLAN.md](ARCHITECTURE_PERFORMANCE_PLAN.md), not a competing rewrite. Preserve its correctness contracts and [storage direction](SAVE_STORAGE_DIRECTION.md). The earlier AP document contains historical PR/approval status; re-establish the current baseline in S00 rather than automatically repeating or declaring those gates complete. The user now explicitly asks for a plan using several **Luna agents at medium reasoning**. No agents have been launched for this plan.
+This is the execution/agent breakdown of [ARCHITECTURE_PERFORMANCE_PLAN.md](ARCHITECTURE_PERFORMANCE_PLAN.md), not a competing rewrite. Preserve its correctness contracts and [storage direction](SAVE_STORAGE_DIRECTION.md). The earlier AP document contains historical PR/approval status; re-establish the current baseline in S00 rather than automatically repeating or declaring those gates complete. Several **Luna agents at medium reasoning** are now assigned, with a separate **Luna-high reviewer**; exact assignments and progress are in the execution ledger.
 
-Implementation, when separately authorized, proceeds **one checkpoint at a time**. Parallel agent work is limited to disjoint subtasks inside that checkpoint. Each checkpoint ends with checks, a runnable build where appropriate, a local commit, measurements and a ledger update. Do not interpret the whole backlog as authorization. User acceptance and technical completion remain separate.
+Implementation proceeds **one checkpoint at a time** through the authorized backlog. Parallel agent work is limited to disjoint subtasks inside that checkpoint. Each checkpoint ends with checks, a runnable build where appropriate, a local commit, measurements and a ledger update. A Luna-high reviewer must approve technical correctness before advancing; fix and re-review any blockers. The user authorized the full sequence, including review of schema proposals before their implementation, without a further per-step permission pause. User visual/device acceptance and technical completion remain separate.
 
 ## Current evidence — distinguish progress from remaining work
 
@@ -34,6 +34,10 @@ Code inspected on local `main` after `25b1bd8`; preserve unrelated local report 
 6. **Simulation:** active race owns its existing live physical state. Capture necessary immutable inputs or resource deltas at established boundaries. Do not replace the physical model with preview estimates or perform SQL per tick.
 
 Memory budgets must include catalogue copies, indexes, retained generations, captured jobs, preview caches, row payloads, SQL buffers and backup buffers. Limit in-flight captures and release them on completion/cancellation. A bounded queue of enormous snapshots is still too expensive. No blanket object pooling: use reusable numeric/buffer scratch where profiling justifies it; never return published/read-only state to a pool while readers still own it.
+
+**Explicit user requirement, 2026-10-23: no full-profile cloning to save.** Every converted production save path must prepare only affected mutable records and write explicit row deltas. Do not replace the current JSON clone with a complete binary/deep copy, a full immutable profile snapshot, or full-profile serialization under a different name. Test-fixture isolation and measuring the old implementation are allowed but must be labelled as such. Unconverted legacy callers may remain only while their checkpoint is pending; the refactor cannot be called complete while gameplay, legacy F8 actions or race settlement still clone the full profile for saving. Load/import/migration validation is a separate lifecycle operation, not a loophole for routine saves.
+
+**Further explicit user requirement: no JSON encode/decode to manipulate runtime data once completed.** Domain copies, validation, quotes, working sets, cache keys, physical previews, markets and ownership operations must use typed records and explicit dependency versions/typed hashing. Removing only MechanicsTransactions' clone is insufficient. Inventory every runtime JsonUtility/JSON round-trip and its callers; remove all manipulation dependencies, including equality/fingerprint helpers and catalogue/spec Copy methods. JSON is limited to explicit legacy import/export, separate settings, diagnostics and external-tool file boundaries. Normal save-state projection must read/write typed affected records directly; existing JSON state decomposition is a migration bridge to retire, not the final authority. These requirements supersede earlier optional cold-JSON recommendations for active player-state records.
 
 ## Transaction contract
 
@@ -81,7 +85,7 @@ Keep authored content in project assets and settings in their separate recoverab
 | Stock / discovery / reservations | Seed/epoch, canonical product, delivered/free/held units and exact source/expiry; preserve used listings and new-supply behavior independently |
 | Balances / progression / receipts | Transactional deltas plus idempotent operation receipts and exact-once race/business outcomes |
 | Fluids / wear / checkpoints | Quantities and cumulative history, run ID/tick, monotonic resource advance; no healing during normalization or late publication |
-| Cold history / flexible payloads | JSON may remain when not on the hot path; avoid repeated global serialization just to change one record |
+| Cold history / flexible player-state records | Typed records/columns with explicit versions. Existing JSON is converted through versioned migration; retain JSON only at explicit legacy/external boundaries, not for runtime manipulation. |
 
 New migrations append immutable versioned scripts, create recoverable backups, convert/validate transactionally and refuse future schemas safely. Include legacy import, reset floors, corrupt-primary recovery and missing-content policy. Never replace player data with authored defaults, invent removed OEM parts, change IDs or clear faults to pass validation.
 
@@ -149,8 +153,8 @@ Run existing targeted SQLite/state, valuation, cart/purchase, maintenance/rebuil
 
 | Item | Technical status | Human approval |
 | --- | --- | --- |
-| This file / agent breakdown | Written for review; static links/encoding/diff checked before commit | Awaiting review |
-| S00–S14 | **Not started** | Not authorized by this planning request |
-| Proposed typed schema/migrations | Proposal boundaries only | Explicit review before S11 implementation |
+| This file / agent breakdown | Planning delivery committed in 6930df2; execution now underway | Full execution authorized by latest user instruction |
+| S00–S14 | See current execution ledger; do not infer completion from authorization | Luna-high technical review required at each checkpoint before advancing |
+| Proposed typed schema/migrations | Proposal boundaries only until S11 | Luna-high proposal review before S11 implementation; full sequence user-authorized |
 
 For every future completed checkpoint record: baseline/result commit, exact allowed files/agent assignments, tests/builds actually run, before/after metrics, memory/thread ownership, failure/recovery evidence, remaining costs and acceptance. Update one next-step pointer. Do not mark a step complete because an agent finished or automation passed while required work is still pending.
