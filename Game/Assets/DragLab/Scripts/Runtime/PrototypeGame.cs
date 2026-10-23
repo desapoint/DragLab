@@ -27,6 +27,7 @@ namespace DragLab.Runtime
         EngineAudio engineAudio, opponentAudio;
         readonly RaceInputAdapter controls = new RaceInputAdapter();
         internal RaceInputAdapter RaceControls => controls;
+        internal bool CanQuickLeave=>screen=="Race"&&race!=null&&race.player.state.disqualified&&!race.ResultReady&&!paused&&!AudioAuditionActive;
         internal bool RaceTouchActive => screen == "Race" && race != null && !paused && !AudioAuditionActive && InterfaceComparison.IsReplacement(ComparisonRoute);
         readonly InterfaceComparison interfaceComparison = new InterfaceComparison();
         NativeMenuShell nativeMenu;

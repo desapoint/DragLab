@@ -18,7 +18,8 @@ namespace DragLab.Runtime
         internal RaceDashboard Dashboard { get; private set; }
         internal RaceSteeringRim SteeringRim { get; private set; }
         Label phase, warning;
-        Button pauseButton, readyButton, lineLockButton;
+        Button pauseButton, readyButton, lineLockButton, leaveButton;
+        Label leaveError;
         readonly System.Collections.Generic.List<RacingSurface> hudSurfaces = new System.Collections.Generic.List<RacingSurface>();
         CarSimulation boundCar;
         SpeedUnit speedUnit;
@@ -101,6 +102,8 @@ namespace DragLab.Runtime
             pauseButton = HudButton("racePause", "", () => game.PauseRace(true)); pauseButton.AddToClassList("race-pause-button");pauseButton.tooltip="Pause";pauseButton.Add(new FilledMenuIcon("Pause"));
             readyButton = HudButton("raceReady", "Ready", () => game.Race?.BeginCountdown());readyButton.AddToClassList("race-ready-button");
             lineLockButton=HudButton("raceLineLock","Line lock",()=>{if(game.RaceTouchActive&&game.Race.warmup)game.Race.player.state.warmupLineLock=!game.Race.player.state.warmupLineLock;});lineLockButton.AddToClassList("race-line-lock");
+            leaveButton=HudButton("raceQuickLeave","Leave race",()=>{if(!game.CanQuickLeave)return;game.ReturnToGarage();if(game.ScreenName=="Race")leaveError.text=game.NativeNotice;});leaveButton.AddToClassList("race-leave-button");
+            leaveError=new Label{name="raceLeaveError",pickingMode=PickingMode.Ignore,enableRichText=false};leaveError.AddToClassList("race-leave-error");root.Add(leaveError);
             InitializeAudioAuditionControls();
             InterfaceComparison.SetReplacement("Race", true);
         }
@@ -147,6 +150,10 @@ namespace DragLab.Runtime
             phase.style.left=warning.style.left=mobile?new StyleLength(center-200):new StyleLength(new Length(compact?42:44,LengthUnit.Percent));
             phase.style.right=warning.style.right=mobile?width/panel.scale-center-200:(compact?260:wide?660:520)+insetRight;
             phase.style.bottom=(mobile||compact?228:76)+insetBottom;warning.style.bottom=(mobile||compact?194:36)+insetBottom;
+            leaveButton.style.top=18+insetTop;leaveButton.style.right=80+insetRight;
+            leaveError.style.top=58+insetTop;leaveError.style.right=80+insetRight;
+            leaveButton.EnableInClassList("hidden",!game.CanQuickLeave);leaveButton.SetEnabled(game.CanQuickLeave);
+            leaveError.EnableInClassList("hidden",!game.CanQuickLeave||string.IsNullOrEmpty(leaveError.text));
             pauseButton.SetEnabled(!game.NativeRacePause);
             pauseButton.EnableInClassList("hidden", !game.AudioAuditionActive&&game.Race.ResultReady);
             readyButton.EnableInClassList("hidden",game.AudioAuditionActive||!game.Race.warmup||game.NativeRacePause);
@@ -162,6 +169,7 @@ namespace DragLab.Runtime
             Gear.SetTouchHint(NativeMobile.Touch,DrivingPreferences.ReverseTouchShifting);
             if (boundCar != car || speedUnit != SharedUnitSettings.Current.speed)
             {
+                if(boundCar!=car)leaveError.text="";
                 boundCar = car; speedUnit = SharedUnitSettings.Current.speed;
                 BuildLimits.Capture(car, out double safeRpm, out _, out _, out _);
                 // Safe hardware redline and electronic limiter/shift targets are different things.

@@ -71,3 +71,6 @@
 .sequential-selector .race-flick-hint { width: 12px; height: 18px; margin-left: 2px; }
 .touch-ui .h-pattern .shifter-gear { font-size: 49px; }
 .touch-ui .sequential-selector .shifter-gear { font-size: 33px; }
+
+.race-leave-button { position: absolute; min-width: 132px; margin: 0; }
+.race-leave-error { position: absolute; max-width: 360px; white-space: normal; font-size: 17px; color: var(--racing-accent); }

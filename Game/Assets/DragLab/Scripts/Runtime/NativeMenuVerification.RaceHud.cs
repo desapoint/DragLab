@@ -13,6 +13,24 @@ namespace DragLab.Runtime
     internal sealed partial class NativeMenuVerification
     {
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
+        IEnumerator QuickLeaveChecks(WindowsKeyboardProbe input)
+        {
+            foreach(bool practice in new[]{true,false}){
+                game.Profile.driving.launch=LaunchMode.Manual;game.Profile.driving.shifting=ShiftMode.Sequential;game.Profile.driving.warmupBeforeRace=false;
+                game.StartRace(null,practice);Check(!game.CanQuickLeave,"Clean staged start has no quick-leave action");
+                game.verificationInput=()=>new DriverInput{launch=true,throttle=.5};yield return new WaitForSecondsRealtime(.12f);game.enabled=false;game.verificationInput=null;
+                var run=game.Race;Check(run.player.state.disqualified&&!run.ResultReady&&game.CanQuickLeave,"Actual early launch exposes quick leave before opponent finish / practice "+practice);
+                game.RaceHud.Refresh();yield return null;var button=game.RaceHud.Root.Q("raceQuickLeave");Check(button.resolvedStyle.display!=DisplayStyle.None,"False-start leave uses a visible shared button");
+                int cash=game.Profile.cash;string before=JsonUtility.ToJson(game.Profile);double fuel=run.player.state.fuelLitres;var parts=run.player.mechanics.parts.ToDictionary(p=>p.instanceId,p=>JsonUtility.ToJson(p.condition));
+                using(var locked=new FileStream(ProfileStore.FilePath,FileMode.Open,FileAccess.Read,FileShare.Read)){
+                    yield return Click(input,button);Check(game.Race==run&&game.CanQuickLeave&&before==JsonUtility.ToJson(game.Profile)&&!string.IsNullOrEmpty(game.RaceHud.Root.Q<Label>("raceLeaveError").text),"Failed quick-leave save retains the live race, resources and retry action");
+                }
+                yield return Capture("false-start-quick-leave");yield return Click(input,button);
+                Check(game.Race==null&&game.ScreenName=="Garage"&&!game.CanQuickLeave&&game.Profile.cash==cash,"Quick leave exits once without rewards or refund / practice "+practice);
+                Check(Math.Abs(game.Profile.SelectedCar.fuel.litres-fuel)<1e-7&&parts.All(pair=>JsonUtility.ToJson(game.Profile.parts.Single(p=>p.instanceId==pair.Key).condition)==pair.Value),"Quick leave retains exact live fuel, wear and faults");
+                var saved=ProfileStore.Load();Check(saved.cash==cash&&saved.runCheckpoints.All(r=>r.settled),"Quick leave closes its durable checkpoint without waiting for the rival");game.enabled=true;
+            }
+        }
         IEnumerator RaceHudChecks(WindowsKeyboardProbe input)
         {
             game.Profile.driving.shifting = ShiftMode.Sequential;
