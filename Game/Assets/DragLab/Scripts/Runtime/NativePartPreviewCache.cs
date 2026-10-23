@@ -92,66 +92,65 @@ namespace DragLab.Runtime
     // at every RPM, so a worn piston, loss of fuel, etc. always takes effect.
     internal sealed class NativeSteadyOutputCache
     {
-        internal const int Limit=32;
-        readonly object gate=new object();
-        readonly Dictionary<string,Dictionary<double,InspectionSteadyPoint>> values=new Dictionary<string,Dictionary<double,InspectionSteadyPoint>>(StringComparer.Ordinal);
-        readonly LinkedList<string> recent=new LinkedList<string>();
-        readonly Dictionary<string,LinkedListNode<string>> nodes=new Dictionary<string,LinkedListNode<string>>(StringComparer.Ordinal);
-        int hits,misses;
-        internal int Hits {get{lock(gate)return hits;}}
-        internal int Misses {get{lock(gate)return misses;}}
+        internal const int Limit = 32;
+        internal const int PointLimit = 512;
 
-        // Resolve the key on the Unity main thread (JsonUtility is not a worker
-        // API). The returned pure-domain delegate may be read by another thread.
-        internal Func<double,InspectionSteadyPoint> For(InductionProfile induction)
+        sealed class Entry
         {
-            string key=Key(induction);
-            Dictionary<double,InspectionSteadyPoint> points;
-            lock(gate){
-                if(!values.TryGetValue(key,out points)){
-                    if(values.Count>=Limit){string oldest=recent.First.Value;recent.RemoveFirst();nodes.Remove(oldest);values.Remove(oldest);}
-                    points=new Dictionary<double,InspectionSteadyPoint>();values.Add(key,points);nodes.Add(key,recent.AddLast(key));
-                }else{recent.Remove(nodes[key]);recent.AddLast(nodes[key]);}
-            }
-            // Never share the mutable CarState from SteadyOutput. The lock also
-            // protects in-flight delegates after their key has been evicted.
-            return rpm=>{
-                lock(gate){
-                    if(points.TryGetValue(rpm,out var result)){hits++;return result;}
-                    var evaluated=InductionDynamics.SteadyOutput(induction,rpm);
-                    result=new InspectionSteadyPoint{engineTorqueNm=evaluated.engineTorqueNm,boostBar=evaluated.boostBar};
-                    points.Add(rpm,result);misses++;return result;
-                }
-            };
+            internal readonly SteadyOutputInputs Inputs;
+            internal readonly Dictionary<double, InspectionSteadyPoint> Points = new Dictionary<double, InspectionSteadyPoint>();
+            internal readonly Queue<double> Order = new Queue<double>();
+            internal Entry(SteadyOutputInputs inputs) { Inputs = inputs; }
         }
 
-        static void Number(StringBuilder key,double number)=>key.Append(number.ToString("R",CultureInfo.InvariantCulture)).Append('|');
-        internal static string Key(InductionProfile induction)
+        readonly object gate = new object();
+        readonly Dictionary<SteadyOutputInputs, Entry> values = new Dictionary<SteadyOutputInputs, Entry>();
+        readonly LinkedList<SteadyOutputInputs> recent = new LinkedList<SteadyOutputInputs>();
+        readonly Dictionary<SteadyOutputInputs, LinkedListNode<SteadyOutputInputs>> nodes = new Dictionary<SteadyOutputInputs, LinkedListNode<SteadyOutputInputs>>();
+        int hits, misses;
+        internal int Hits { get { lock (gate) return hits; } }
+        internal int Misses { get { lock (gate) return misses; } }
+        internal int CachedEntries { get { lock (gate) return values.Count; } }
+        internal int CachedPoints { get { lock (gate) return values.Values.Sum(entry => entry.Points.Count); } }
+
+        // Capture on the input owner. The key owns only frozen engine dependencies;
+        // no live profile, Unity object or mutable source escapes into the delegate.
+        internal static SteadyOutputInputs Key(InductionProfile induction) => InductionDynamics.CaptureSteadyOutputInputs(induction);
+        internal Func<double, InspectionSteadyPoint> For(InductionProfile induction)
         {
-            var spec=induction.vehicle;
-            var key=new StringBuilder(1024);
-            // Only the inputs read by SteadyOutput, BaseTorque, CamMultiplier,
-            // CompressionMultiplier and Charge. Deliberately exclude tire,
-            // chassis, braking, gearbox, fuel quantity and component wear data.
-            key.Append(JsonUtility.ToJson(induction.data)).Append('|')
-                .Append(JsonUtility.ToJson(spec.valvetrain)).Append('|')
-                .Append(JsonUtility.ToJson(spec.combustion)).Append('|')
-                .Append(JsonUtility.ToJson(spec.engineBehavior)).Append('|');
-            Number(key,spec.redlineRpm);
-            Number(key,spec.DisplacementLitres);
-            Number(key,spec.fuelPowerCapacityHp);
-            Number(key,spec.ignitionPowerCapacityHp);
-            Number(key,induction.tune.PowerMultiplier);
-            Number(key,(int)induction.type);
-            Number(key,induction.turboCount);
-            Number(key,induction.superchargerCount);
-            Number(key,induction.size);
-            Number(key,induction.boostSetting);
-            Number(key,induction.pulley);
-            // Keep the complete authored torque table, not just peak values:
-            // two different engine curves can have identical peaks.
-            foreach(var point in spec.torque){Number(key,point.rpm);Number(key,point.torqueNm);}
-            return key.ToString();
+            var key = Key(induction);
+            Entry entry;
+            lock (gate)
+            {
+                if (!values.TryGetValue(key, out entry))
+                {
+                    if (values.Count >= Limit)
+                    {
+                        var oldest = recent.First.Value;
+                        recent.RemoveFirst(); nodes.Remove(oldest); values.Remove(oldest);
+                    }
+                    entry = new Entry(key);
+                    values.Add(key, entry); nodes.Add(key, recent.AddLast(key));
+                }
+                else
+                {
+                    var node = nodes[key]; recent.Remove(node); recent.AddLast(node);
+                }
+            }
+            // Eviction does not invalidate an in-flight private evaluator. Its own
+            // FIFO point table remains bounded and cannot reinsert an outer entry.
+            return rpm =>
+            {
+                lock (gate)
+                {
+                    if (entry.Points.TryGetValue(rpm, out var result)) { hits++; return result; }
+                    var evaluated = entry.Inputs.Evaluate(rpm);
+                    result = new InspectionSteadyPoint { engineTorqueNm = evaluated.engineTorqueNm, boostBar = evaluated.boostBar };
+                    if (entry.Points.Count >= PointLimit) entry.Points.Remove(entry.Order.Dequeue());
+                    entry.Points.Add(rpm, result); entry.Order.Enqueue(rpm); misses++;
+                    return result;
+                }
+            };
         }
     }
 }

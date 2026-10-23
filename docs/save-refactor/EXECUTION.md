@@ -10,7 +10,7 @@ Additional hard completion gate: **no JSON encode/decode for runtime data manipu
 
 ## Next checkpoint
 
-**S02c — implementation/checks and independent Luna-high review PASS; local commit pending.** S02b is committed as `7e6ea10` after Luna-high PASS. S02a passed Luna-high review and is committed as `62b2bc0`. S01 passed review and is committed as `fd092bc`. S00 is `39d09b7`, whitespace closure `f163454`. S02a changes checkpoint lookup only; no persistent command conversion yet. Parent coordinates all Unity runs, real mouse tests, staging and commits. Interactive tests run sequentially; no two Unity Editors use this project concurrently.
+**S03a — implementation/checks and independent Luna-high review PASS; local commit pending.** S02c is committed as `34abd7f` after Luna-high PASS. S02b is committed as `7e6ea10` after Luna-high PASS. S02a passed Luna-high review and is committed as `62b2bc0`. S01 passed review and is committed as `fd092bc`. S00 is `39d09b7`, whitespace closure `f163454`. S02a changes checkpoint lookup only; no persistent command conversion yet. Parent coordinates all Unity runs, real mouse tests, staging and commits. Interactive tests run sequentially; no two Unity Editors use this project concurrently.
 
 ## File ownership manifest
 
@@ -32,8 +32,9 @@ Runtime paths above are relative to Game/Assets/DragLab/Scripts/. No overlapping
 | S01 | 75 contract checks + 72 existing isolated storage checks pass; dormant typed contracts/storage mapping | PASS — S01_REVIEW.md | `fd092bc` | No caller switch or new persistent authority |
 | S02a | Prior full harness 1,375 focused + 72 existing storage checks; supplemental final-source preservation 1,067, all exit 0; sparse capture fixes first-car regression | PASS — S02_REVIEW.md | `62b2bc0` | Operation-local requested-ID map only; no persistent command conversion |
 | S02b | Prior full harness 250 + 72 storage; final-source focused parity 220, all exit 0; 36-row cost comparison passes | PASS — S02B_REVIEW.md | `7e6ea10` | No persistent cache, no command/save conversion |
-| S02c | 132 exact parity + 72 isolated storage checks; final-source 10 lifetime probes; 180 paired timing records | PASS — S02C_REVIEW.md | Pending | Existing error order/global invariants retained; 5-car/no-spares separate median +8.7%, paired median -0.1103 ms |
-| S02d–S14 | Not started | Not reviewed | None | Execute in plan order after prior gate passes |
+| S02c | 132 exact parity + 72 isolated storage checks; final-source 10 lifetime probes; 180 paired timing records | PASS — S02C_REVIEW.md | `34abd7f` | Existing error order/global invariants retained; 5-car/no-spares separate median +8.7%, paired median -0.1103 ms |
+| S03a | 95 typed parity/lifetime/dependency/bounds checks + 72 isolated storage pass; 20 capture-inclusive timing pairs | PASS — S03A_REVIEW.md | Pending | One cache only; no whole-profile working set or persistence switch |
+| Later S03 suffixes–S14 | Not started | Not reviewed | None | Execute in order after prior gate passes; other index families only with justified consumers |
 
 Every accepted row records exact checks, measurements, failures/corrections and remaining costs. All named command suffixes have separate commits/reviews. Do not mark an entire family complete from one converted pilot.
 
@@ -100,3 +101,18 @@ Baseline `7e6ea10`. One ownership-validation read-index family: cars/engines/par
 No S03 or later step is active. Remaining profile clone/JSON manipulation gates stay open.
 
 S02c integration ownership transfer: all implementers released files; parent integrated only Validate lookups after the unchanged early gates, independently checked the frozen oracle/GUIDs, and ran the full and supplemental gates. Initial five-sample timing method was not accepted; corrected alternating 20-pair data retains every ordinary GC event. No production algorithm changed after the corrected full run. Supplemental final-source tests and median summary arithmetic were checked separately (10 pass, exit 0). No S03 or persistent writer conversion has started.
+
+## S03a file ownership
+
+Baseline `34abd7f`. One cache: `NativeSteadyOutputCache`, currently keyed by JSON representations and evaluating a borrowed `InductionProfile` later. Replace only its key/evaluator capture with typed, private, dependency-specific inputs; retain exact authoritative `InductionDynamics.SteadyOutput` equations. Cash/name/history/tires do not invalidate unconditioned engine output. Changes to actual engine/curve/cam/compression/fueling/capacity/induction inputs do. Cache entry/point counts are bounded, stale source edits cannot poison an old key. Existing car-signature/part-entry JSON and profile-plan caches are separate open later work.
+
+| Owner | Exclusive paths | Task |
+| --- | --- | --- |
+| state_medium / Luna medium | Domain/SteadyOutputInputs.cs + .meta; Domain/InductionDynamics.cs capture-only addition; docs/save-refactor/S03A_STEADY_INPUTS.md | Immutable typed key and private narrow steady snapshot preserving computed profile/factory values |
+| baseline_medium / Luna medium | Runtime/SteadyOutputCacheChecks.cs + .meta; docs/save-refactor/S03A_TEST_MATRIX.md | Independent direct physics equivalence, source edits, dependencies, bounded cache, timing; no JSON test oracle |
+| coordinator | Runtime/NativePartPreviewCache.cs steady-cache section only; test wrapper, status/ledger/results | Cache integration, execution, commits |
+| checkpoint_high / Luna high | docs/save-refactor/S03A_REVIEW.md after implementation slot releases | Independent exact-dependency/lifetime/performance gate |
+
+No command/save-path conversion is claimed by S03a. Main/owner captures inputs; only the private evaluator is used on workers. No Unity objects, live profile, whole-profile clone or runtime reflection serializer enters this cache.
+
+S03a integration transfer: implementation agents released all assigned files; coordinator integrated only NativeSteadyOutputCache and the isolated wrapper, corrected final before-first-point test coverage, verified GUID/UTF-8/no-JSON boundaries and ran the combined Editor checkpoint (95 + 72, exit 0). Cold-fill and retained-delegate limits remain explicit in S03A_RESULTS.md. No S04 or save-path conversion started.

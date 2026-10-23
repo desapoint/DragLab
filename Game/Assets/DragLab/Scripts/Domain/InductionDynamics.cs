@@ -63,6 +63,19 @@ namespace DragLab.Domain
             if (!factoryReference && data.torqueCurveIncludesFactoryInduction && data.factory != InductionType.NaturallyAspirated)
                 this.factoryReference = new InductionProfile(vehicle, new Tune(), true);
         }
+
+        // Capture-only constructor: preserves the already-resolved profile values instead
+        // of recomputing them from a synthetic tune or vehicle definition.
+        internal InductionProfile(VehicleSpec vehicle, Tune tune, InductionSpec data,
+            InductionType type, BlowOffType valve, int turboCount, int superchargerCount,
+            double size, double boostSetting, double pulley, double litres,
+            InductionProfile factoryReference)
+        {
+            this.vehicle = vehicle; this.tune = tune; this.data = data; this.type = type;
+            this.valve = valve; this.turboCount = turboCount; this.superchargerCount = superchargerCount;
+            this.size = size; this.boostSetting = boostSetting; this.pulley = pulley;
+            this.litres = litres; this.factoryReference = factoryReference;
+        }
         public double TurboEnvelope(double rpm)
         {
             double shift = (size - 1) * 1800;
@@ -81,6 +94,11 @@ namespace DragLab.Domain
 
     public static class InductionDynamics
     {
+        internal static SteadyOutputInputs CaptureSteadyOutputInputs(InductionProfile profile)
+        {
+            return SteadyOutputInputs.Capture(profile);
+        }
+
         static double Bypass(InductionProfile profile, double rpm, double developedTurbo)
         {
             return profile.type == InductionType.Twincharged ? DragMath.Clamp((developedTurbo / Math.Max(.01, profile.SuperchargerEnvelope(rpm)) - .35) / .5, 0, 1) : 0;
