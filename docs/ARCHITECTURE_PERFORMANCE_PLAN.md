@@ -2,6 +2,8 @@
 
 Approved direction: 2026-10-20. **Planning only; no refactor or PR merge is performed by this document.**
 
+2026-10-23 review update: [Save/state/memory refactor and Luna-medium agent breakdown](SAVE_STATE_REFACTOR_PLAN.md) maps this direction to current code, bounded parallel assignments and ordered checkpoints. Its S00 re-establishes current integration/PR history rather than assuming the historical branch status below is still current. The new plan is for review only; no refactor execution is authorized by its delivery.
+
 ## Authority, entry point and execution rules
 
 - Source discussion: [Architecture Performance Audit](chatgpt-conversation://6ad757e8-0078-83e9-bff3-f132902df1a6). Its recovered user questions request fewer redundant atomic actions, less object duplication and JSON conversion, incremental processing, a better SQLite structure, explicit worker boundaries, and loading states when necessary. Assistant replies were returned as unresolved content references. The user subsequently **explicitly validated the reconstructed direction in this repository chat**, including the storage and thread boundaries below; this plan does not pretend to quote the unavailable tables.
