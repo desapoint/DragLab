@@ -45,6 +45,7 @@ namespace DragLab.Domain.Mechanics
             var lines=source.ToArray();if(lines.Length==0||lines.Length>100)throw new InvalidOperationException("Cart needs 1–100 distinct offers.");
             policy=policy??ValuationPolicy.Defaults();if(now==0)now=DragLab.Domain.RuntimeEntropy.UtcNow.Ticks;
             var ids=new HashSet<string>();var assets=new HashSet<string>();var positions=new HashSet<string>();var slots=new HashSet<PartCategory>();int total=0;PlayerProfile movePreview=null;
+            Func<string,bool,int> salePrices=null;
             // An additive draft may reuse its owner's hold before Capture publishes the new rows.
             // Checkout still requires the exact captured cart and never opts into this preview path.
             var supply=new PartsMarket.Ledger(p,CartReservations.Matches(p,carId,lines)||includeOwnerReservation&&p.inventory.cart?.carId==carId);
@@ -54,7 +55,8 @@ namespace DragLab.Domain.Mechanics
                 if(line==null||!Enum.IsDefined(typeof(CartAction),line.action)||line.quantity<1||line.quantity>99)throw new InvalidOperationException("Invalid cart action or quantity.");
                 if(line.action==CartAction.SellPart||line.action==CartAction.SellUnit) {
                     if(line.quantity!=1||!assets.Add(line.assetId))throw new InvalidOperationException("Owned item may be used only once in a cart.");
-                    total=checked(total-InventoryPricing.Sell(p,line.assetId,line.action==CartAction.SellUnit,policy,"wholesale",now).Total);continue;
+                    if(salePrices==null)salePrices=Valuations.LoosePriceView(p,policy,"wholesale",now);
+                    total=checked(total-salePrices(line.assetId,line.action==CartAction.SellUnit));continue;
                 }
                 if(line.action==CartAction.Move) {
                     if(line.quantity!=1||!assets.Add(line.assetId))throw new InvalidOperationException("Duplicate move or invalid quantity.");

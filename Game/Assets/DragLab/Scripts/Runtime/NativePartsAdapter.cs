@@ -13,7 +13,8 @@ namespace DragLab.Runtime
         internal void SetNativeCartInstall(PartCartLine line,bool install){SetCartInstallation(line,install);}
         internal int NativeCartTotal()=>cart.Count==0?0:PartCart.Total(profile,Build.instanceId,cart,PricingPolicy);
         internal int NativeUsedPrice(DealerStock stock)=>InventoryPricing.BuyUsed(stock,PricingPolicy);
-        internal int NativeSalePrice(string id,bool unit)=>InventoryPricing.Sell(profile,id,unit,PricingPolicy,"wholesale",DragLab.Domain.RuntimeEntropy.UtcNow.Ticks).Total;
+        internal Func<string,bool,int> NativeSalePrices()=>Valuations.LoosePriceView(profile,PricingPolicy,"wholesale",DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);
+        internal int NativeSalePrice(string id,bool unit)=>NativeSalePrices()(id,unit);
         internal bool NativeBlockPreparationPending(PartDefinition definition)=>definition?.category==PartCategory.CylinderBlock&&(!MechanicsOwnership.Definitions(profile,Build).TryGetValue(PartCategory.CylinderBlock,out var installed)||installed!=definition.id);
         internal bool InstallNativeUnit(string id,string position,long revision)=>CommitParts(revision,p=>InventoryUnits.Install(p,p.SelectedCar.instanceId,id,position));
         internal PartCartQuote QuoteNativeCart()=>PartCart.Quote(profile,Build.instanceId,cart,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks,Costs.quoteSeconds,PricingPolicy);

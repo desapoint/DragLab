@@ -25,7 +25,7 @@ namespace DragLab.Runtime
             PartCartLine Line()=>new PartCartLine{action=CartAction.Move,assetId=entry.AssetId,definitionId=entry.Definition.id,destination=destination.kind,destinationId=destination.id};
             bool NeedsPreparation()=>entry.Definition.category==PartCategory.CylinderBlock&&destination?.kind==InventoryKind.Car&&(!MechanicsOwnership.Definitions(game.Profile,game.Profile.cars.Find(c=>c.instanceId==destination.id)).TryGetValue(PartCategory.CylinderBlock,out var fitted)||fitted!=entry.Definition.id);
             PlayerProfile Candidate(){var lines=game.CartLines.Where(l=>l.assetId!=entry.AssetId).Select(l=>l.Copy()).ToList();lines.Add(Line());PartCart.Total(game.Profile,game.Profile.SelectedCar.instanceId,lines);return PartCart.PreviewProfile(game.Profile,game.Profile.SelectedCar,lines);}
-            OpenDialog("Move part",null,new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Add move",()=>{
+            OpenDialog("Move part","Choose a destination. This move takes effect when you confirm checkout.",new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Add move",()=>{
                 if(game.Profile.revision!=revision||signature!=JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()})){error.text="Inventory or cart changed. Reopen Move.";return;}
                 try{if(NeedsPreparation()){if(destination.id!=game.Profile.SelectedCar.instanceId)throw new InvalidOperationException("Select this car before preparing its block installation.");OpenBlockPreparation(entry,editing:Line());return;}Candidate();game.StageInventory(Line());CloseDialog();partsStateKey=null;cartPageKey=null;}catch(Exception e){error.text=e.Message;}
             },true)},populate:content=>{

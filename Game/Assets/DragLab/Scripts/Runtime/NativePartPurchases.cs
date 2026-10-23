@@ -45,7 +45,6 @@ namespace DragLab.Runtime
             var draft=PurchaseDraft(offer);
             var quote=PartsMarket.Quote(game.Profile,offer.Definition,InventoryUnits.Count(game.Profile,game.Profile.SelectedCar,offer.Definition),draft.Individual,draft.Quantity);
             var price=partsDetail.Q<Label>("partDetailPrice");if(price!=null)price.text=DisplayUnits.Money(quote.cost);
-            var label=partsDetail.Q<Label>("partQueued");if(label!=null){int queued=game.CartLines.Where(l=>l.definitionId==offer.Definition.id&&l.action==(draft.Individual?CartAction.NewUnits:CartAction.NewSet)&&l.role==(draft.Individual?draft.Role:null)).Sum(l=>l.quantity);label.text=queued>0?"Queued × "+queued:"";}
         }
         void StagePurchase(NativePartEntry offer,bool install)
         {
@@ -67,7 +66,7 @@ namespace DragLab.Runtime
             var selected=new HashSet<string>(editing!=null?editing.positions:fresh?draft.Positions:Enumerable.Empty<string>());
             var rows=new List<Tuple<Button,string>>();var groups=new List<VisualElement>();
             VisualElement positionsArea=null,roleGroup=null;Label summary=null,error=null,quantityLabel=null,unitPrice=null,notice=null;FloatField number=null;Button minus=null,plus=null;Action update=null;
-            OpenDialog(editing==null?"Purchase":"Edit purchase",null,new[]{new DialogAction("Cancel",CloseDialog),new DialogAction(editing==null?"Add to cart":"Apply",()=>{
+            OpenDialog(editing==null?"Choose purchase":"Edit purchase","Choose what to buy and where it goes. Payment and installation happen at checkout.",new[]{new DialogAction("Cancel",CloseDialog),new DialogAction(editing==null?"Add to cart":"Apply",()=>{
                 var targets=all.Where(selected.Contains).ToList();
                 if(install&&game.NativeBlockPreparationPending(d)){OpenBlockPreparation(offer,quantity,editing);return;}
                 if(editing!=null){if(!game.EditNativeCartPurchase(editing,expected,carId,individual,role,quantity,install,targets)){error.text=game.NativeNotice;return;}}
@@ -138,7 +137,7 @@ namespace DragLab.Runtime
                     string replacements=individual?string.Join(", ",all.Where(selected.Contains).Select(p=>d.category==PartCategory.Pistons?"piston "+(fitted.condition.elements.First(e=>e.id==p).cylinder+1):InventoryUnits.PositionLabel(game.Profile,car,d.id,p))):setSize>1?"complete set":"part";
                     summary.tooltip=individual?string.Join("\n",all.Where(selected.Contains).Select(p=>InventoryUnits.PositionLabel(game.Profile,car,d.id,p))):"";
                     if(individual&&selected.Count>4)replacements=selected.Count+" "+(role??"units")+" units";
-                    summary.text="Buy "+buy+" · "+DisplayUnits.Money(supply?.cost??each*quantity)+(install?"\nReplace "+(individual&&selected.Count==0?"— select positions":replacements)+" · Keep removed parts":"")+"\nStore "+stored+(individual?stored==1?" unit":" units":setSize>1?stored==1?" set":" sets":stored==1?" part":" parts");
+                    summary.text="Buy "+buy+" · "+DisplayUnits.Money(supply?.cost??each*quantity)+(install?"\nInstall on "+VehicleCollection.DisplayName(game.Profile.catalog,car)+"\nReplace "+(individual&&selected.Count==0?"— select positions":replacements)+" · Keep removed parts":"")+(stored>0?"\nStore "+stored+(individual?stored==1?" unit":" units":setSize>1?stored==1?" set":" sets":stored==1?" part":" parts")+" in "+InventoryLocation(SharedInventory.Garage):"");
                     root.Q<Button>(editing==null?"dialogAddtocart":"dialogApply")?.SetEnabled(problem.Length==0&&(!install||!individual||selected.Count>0&&selected.Count<=quantity));
                 };
             });

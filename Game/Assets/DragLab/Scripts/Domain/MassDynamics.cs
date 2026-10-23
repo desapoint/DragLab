@@ -8,7 +8,7 @@ namespace DragLab.Domain
     {
         public static void ApplyClutchFluids(MassBreakdown mass,VehicleSpec spec,IEnumerable<PartInstance> parts,PartDefinition clutchDefinition=null)
         {
-            var clutch=parts.FirstOrDefault(p=>p.slot==PartCategory.Clutch.ToString());var d=clutchDefinition??Array.Find(spec.fittedParts,p=>p.category==PartCategory.Clutch);
+            var clutch=parts.FirstOrDefault(p=>p.slot==nameof(PartCategory.Clutch));var d=clutchDefinition??Array.Find(spec.fittedParts,p=>p.category==PartCategory.Clutch);
             if(clutch==null||d==null||d.clutchEnvironment!=ClutchEnvironment.Wet)return;
             double delta=(clutch.condition.clutchOilLitres-d.clutchOilCapacityLitres)*.86,oldTotal=mass.TranslatingKg;
             // Authored installed mass contains the filled clutch bath; subtract only missing oil.

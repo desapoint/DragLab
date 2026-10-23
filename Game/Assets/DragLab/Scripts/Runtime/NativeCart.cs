@@ -17,6 +17,7 @@ namespace DragLab.Runtime
         VisualElement cartPage,cartRows,cartPreview;
         ScrollView cartScroll,cartPreviewScroll;
         Label cartError,cartEmpty;
+        string cartReceipt;
         Button cartCheckout,cartClear,cartWarnings;
         SetupWarning[] cartCurrentWarnings=Array.Empty<SetupWarning>(),cartPlannedWarnings;
         string cartWarningUnavailable;
@@ -26,6 +27,19 @@ namespace DragLab.Runtime
         internal bool CartPageOpen=>cartPageOpen;
         internal int CartPreviewBuildCount {get;private set;}
         internal static string NativeCartRowKey(PartCartLine line)=>line.action+"/"+(line.assetId??line.definitionId)+"/"+line.role;
+        internal static string CartPaymentTitle(long total)=>total<0?"You receive":total>0?"You pay":"No payment";
+        internal static string CartPaymentAmount(long total)=>DisplayUnits.Money(total<0?-total:total);
+        string CartLineSummary(PartCartLine line)
+        {
+            if(line.action==CartAction.Move)return "Move to "+InventoryLocation(line.destinationId)+" · At checkout";
+            if(line.action==CartAction.SellPart||line.action==CartAction.SellUnit)return "Sell to dealer · Paid at checkout";
+            bool fresh=line.action==CartAction.NewSet||line.action==CartAction.NewUnits;
+            return "Buy "+(fresh?"new":"used")+" · "+(line.install?"Install on "+VehicleCollection.DisplayName(game.Profile.catalog,game.Profile.SelectedCar):"Keep in "+InventoryLocation(SharedInventory.Garage));
+        }
+        void BrowseFromCart(string source)
+        {
+            ResetMenuEntry("Parts");game.SelectPartsPage(source);cartPage.AddToClassList("hidden");RefreshParts("Parts");
+        }
         void CartSurface(VisualElement owner,RacingSurface.Kind kind){AddSurface(owner,kind);cartPageSurfaces.Add(owner.Q<RacingSurface>());}
         Button CartButton(VisualElement parent,string id,string text,Action action)
         {
@@ -39,24 +53,27 @@ namespace DragLab.Runtime
             var title=new Label("Cart");title.AddToClassList("car-detail-title");heading.Add(title);
             cartWarnings=WarningButton(heading,"cartWarnings",cartCurrentWarnings,()=>OpenCombinedWarnings(cartCurrentWarnings,cartPlannedWarnings,true,"Warnings",cartWarningUnavailable),(element,kind)=>AddSurface(element,kind));
             cartWarnings.AddToClassList("warning-header-button");
+            var guidance=new Label("Review purchases, sales and moves. Your money and parts change together when you confirm checkout."){name="cartGuidance"};guidance.AddToClassList("commerce-guidance");cartPage.Add(guidance);
             var columns=new VisualElement{name="cartColumns"};columns.AddToClassList("cart-columns");cartPage.Add(columns);
             var list=new VisualElement();list.AddToClassList("cart-list-frame");columns.Add(list);AddSurface(list,RacingSurface.Kind.Panel);
             cartScroll=new ScrollView{name="cartScroll",horizontalScrollerVisibility=ScrollerVisibility.Hidden};cartScroll.AddToClassList("cart-list-scroll");list.Add(cartScroll);
-            cartRows=new VisualElement{name="cartRows"};cartScroll.Add(cartRows);cartEmpty=new Label("Cart is empty");cartEmpty.AddToClassList("car-empty");cartScroll.Add(cartEmpty);
+            cartRows=new VisualElement{name="cartRows"};cartScroll.Add(cartRows);cartEmpty=new Label{name="cartEmpty",enableRichText=false};cartEmpty.AddToClassList("car-empty");cartScroll.Add(cartEmpty);
+            var browse=new VisualElement{name="cartBrowseActions"};browse.AddToClassList("cart-row-controls");cartScroll.Add(browse);
+            PartButton(browse,"cartShop","Browse shop",()=>BrowseFromCart("Shop"));PartButton(browse,"cartInventory","View inventory",()=>BrowseFromCart("Inventory"));PartButton(browse,"cartInstalled","View installed",()=>BrowseFromCart("Installed"));
             var right=new VisualElement();right.AddToClassList("cart-preview-frame");columns.Add(right);AddSurface(right,RacingSurface.Kind.Panel);
             cartPreviewScroll=new ScrollView{name="cartPreviewScroll",horizontalScrollerVisibility=ScrollerVisibility.Hidden};cartPreviewScroll.AddToClassList("cart-preview-scroll");right.Add(cartPreviewScroll);cartPreview=new VisualElement();cartPreviewScroll.Add(cartPreview);
             var footer=new VisualElement{name="cartFooter"};footer.AddToClassList("cart-footer");cartPage.Add(footer);
             var totals=new VisualElement{name="cartTotals"};totals.AddToClassList("cart-totals");footer.Add(totals);
-            foreach(string id in new[]{"Purchases","Credits","Total","Balance"}){var cell=new VisualElement();cell.AddToClassList("cart-total-cell");totals.Add(cell);cell.Add(new Label(id=="Balance"?"Balance after":id));var value=new Label{name="cart"+id};value.AddToClassList("cart-total-value");cell.Add(value);}
+            foreach(string id in new[]{"Purchases","Credits","Total","Balance"}){var cell=new VisualElement();cell.AddToClassList("cart-total-cell");totals.Add(cell);cell.Add(new Label(id=="Balance"?"Balance after":id=="Credits"?"Sales":id=="Total"?"You pay":id){name="cartHeading"+id});var value=new Label{name="cart"+id};value.AddToClassList("cart-total-value");cell.Add(value);}
             var deliveryNote=new Label{name="cartDelivery",enableRichText=false};deliveryNote.AddToClassList("car-warning");deliveryNote.AddToClassList("hidden");footer.Add(deliveryNote);
             cartError=new Label{name="cartError",enableRichText=false};cartError.AddToClassList("car-critical");footer.Add(cartError);
             var actions=new VisualElement{name="cartActions"};actions.AddToClassList("car-details-actions");footer.Add(actions);
-            cartClear=new Button(()=>OpenDialog("Clear cart?",null,new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Clear",()=>{game.ClearNativeCart();CloseDialog();partsStateKey=null;cartPageKey=null;RefreshNativeCart("Parts");},true)})){name="cartClear",text="Clear",focusable=false,tabIndex=-1};cartClear.AddToClassList("action-button");actions.Add(cartClear);AddSurface(cartClear,RacingSurface.Kind.SecondaryAction);
+            cartClear=new Button(()=>OpenDialog("Clear cart?","Remove all planned purchases, sales and moves, and release their stock reservations. Your owned parts and money stay as they are.",new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Clear",()=>{game.ClearNativeCart();CloseDialog();partsStateKey=null;cartPageKey=null;RefreshNativeCart("Parts");},true)})){name="cartClear",text="Clear",focusable=false,tabIndex=-1};cartClear.AddToClassList("action-button");actions.Add(cartClear);AddSurface(cartClear,RacingSurface.Kind.SecondaryAction);
             cartCheckout=new Button(ConfirmNativeCart){name="cartCheckout",text="Checkout",focusable=false,tabIndex=-1};cartCheckout.AddToClassList("action-button");cartCheckout.AddToClassList("primary-action");actions.Add(cartCheckout);AddSurface(cartCheckout,RacingSurface.Kind.Action);
         }
         void OpenNativeCart()
         {
-            if(ModalOpen)CloseDialog();game.PrepareNativeCart();cartPageOwner=game.Profile.SelectedCar?.instanceId;cartPageOpen=true;RefreshNativeCart("Parts");partsPage.AddToClassList("hidden");
+            if(ModalOpen)CloseDialog();game.PrepareNativeCart();if(cartPageOwner!=game.Profile.SelectedCar?.instanceId)cartReceipt=null;cartPageOwner=game.Profile.SelectedCar?.instanceId;cartPageOpen=true;RefreshNativeCart("Parts");partsPage.AddToClassList("hidden");
         }
         void BackFromNativeCart()
         {
@@ -87,25 +104,30 @@ namespace DragLab.Runtime
                 string id=NativeCartRowKey(line);var d=p.catalog.Find(line.definitionId);int? amount=null;try{amount=game.NativeCartLinePrice(line);if(amount>=0)purchases+=amount.Value;else credits-=amount.Value;}catch(Exception e){problem=problem??e.Message;}
                 var row=new VisualElement{name="cartRow:"+id};row.AddToClassList("cart-row");cartRows.Add(row);
                 var top=new VisualElement();top.AddToClassList("cart-row-heading");row.Add(top);var name=new Label(d?.name??line.assetId){enableRichText=false};name.AddToClassList("cart-row-name");top.Add(name);
-                var price=new Label(amount.HasValue?DisplayUnits.Money(amount.Value):"Unavailable"){name="cartPrice:"+id};price.AddToClassList("cart-row-price");top.Add(price);
+                var price=new Label(amount.HasValue?(amount.Value<0?"Receive ":"")+CartPaymentAmount(amount.Value):"Unavailable"){name="cartPrice:"+id};price.AddToClassList("cart-row-price");top.Add(price);
                 bool buying=line.action==CartAction.NewSet||line.action==CartAction.NewUnits||line.action==CartAction.BuyUsed,fresh=line.action==CartAction.NewSet||line.action==CartAction.NewUnits;
                 var stock=line.action==CartAction.BuyUsed?p.inventory.dealer.Find(s=>s.Id==line.assetId):null;bool individual=line.action==CartAction.NewUnits||stock?.unit!=null;
-                var summary=new Label(line.action==CartAction.Move?"Move → "+InventoryLocation(line.destinationId):line.action==CartAction.SellPart||line.action==CartAction.SellUnit?"Sale":(individual?"Individual · "+line.role:d!=null&&InventoryUnits.Count(p,car,d)>1?"Complete set · "+InventoryUnits.Count(p,car,d)+" units":"Part")+" · "+(line.install?"Install":"Store")){enableRichText=false};summary.AddToClassList("cart-row-summary");row.Add(summary);
+                var summary=new Label(CartLineSummary(line)){name="cartDestination:"+id,enableRichText=false};summary.AddToClassList("cart-row-summary");row.Add(summary);
+                int setSize=buying&&d!=null?InventoryUnits.Count(p,car,d):1;
+                if(buying){var contents=new Label(individual?line.quantity+(line.quantity==1?" individual unit":" individual units")+" · "+line.role:setSize>1?line.quantity+(line.quantity==1?" complete set":" complete sets")+" · "+setSize+" units per set":line.quantity+(line.quantity==1?" part":" parts"));contents.AddToClassList("cart-row-summary");row.Add(contents);}
                 if(line.preparationOwner!=null){var prepared=new Label(line.preparedBlock?"Prepared block installation":"Block companion · "+(line.action==CartAction.Move?"Reuse":"Purchase"));prepared.AddToClassList("cart-row-summary");row.Add(prepared);}
                 if(buying&&amount.HasValue){var each=new Label(DisplayUnits.Money(amount.Value/line.quantity)+" each");each.AddToClassList("cart-row-summary");row.Add(each);}
                 if(individual&&line.install){var target=new Label(string.Join(" · ",line.positions.Select(pos=>InventoryUnits.PositionLabel(p,car,line.definitionId,pos)))+" · "+(line.quantity-line.positions.Count)+" in storage"){name="cartTargets:"+id,enableRichText=false};target.AddToClassList("cart-row-summary");row.Add(target);}
-                else if(buying&&line.install&&line.quantity>1){var extras=new Label((line.quantity-1)+" sets in storage");extras.AddToClassList("cart-row-summary");row.Add(extras);}
+                else if(buying&&line.install&&line.quantity>1){var extras=new Label((line.quantity-1)+(setSize>1?" sets":" parts")+" in storage");extras.AddToClassList("cart-row-summary");row.Add(extras);}
                 var controls=new VisualElement();controls.AddToClassList("cart-row-controls");row.Add(controls);
-                if(buying){var number=new FloatField{name="cartQuantity:"+id,isDelayed=true,formatString="0"};number.AddToClassList("setting-number");number.SetValueWithoutNotify(line.quantity);number.SetEnabled(fresh);controls.Add(number);
+                if(buying){controls.Add(new Label(individual?"Units":setSize>1?"Sets":"Quantity"));var number=new FloatField{name="cartQuantity:"+id,isDelayed=true,formatString="0"};number.AddToClassList("setting-number");number.SetValueWithoutNotify(line.quantity);number.SetEnabled(fresh);controls.Add(number);
                     number.RegisterValueChangedCallback(e=>{float value=e.newValue;if(float.IsNaN(value)||float.IsInfinity(value)||value!=Mathf.Floor(value)||value<1||value>99){number.SetValueWithoutNotify(line.quantity);cartError.text="Enter a whole quantity from 1 to 99.";return;}
                         if(!game.EditNativeCartPurchase(line,JsonUtility.ToJson(line),car.instanceId,individual,line.role,(int)value,line.install,line.positions)){number.SetValueWithoutNotify(line.quantity);cartError.text=game.NativeNotice;return;}partsStateKey=null;cartPageKey=null;});
                     CartButton(controls,"cartEdit:"+id,"Edit",()=>EditCartPurchase(line)).Insert(1,new FilledMenuIcon("Pencil"));}
                 CartButton(controls,"cartRemove:"+id,"Remove",()=>{game.RemoveNativeCartLine(line);partsStateKey=null;cartPageKey=null;});
             }
             var note=root.Q<Label>("cartDelivery");note.AddToClassList("hidden");if(game.CartCount>0)try{int delivery=PartCart.DeliveryFee(p,car.instanceId,game.CartLines);if(delivery>0){note.text="Express delivery included · "+DisplayUnits.Money(delivery)+" (5–10% on missing stock)";note.RemoveFromClassList("hidden");}}catch(InvalidOperationException){}
-            cartEmpty.EnableInClassList("hidden",game.CartCount>0);cartClear.SetEnabled(game.CartCount>0);
+            if(game.CartCount>0)cartReceipt=null;
+            cartEmpty.text=cartReceipt??"Your cart is empty. Browse the shop to buy parts, or open inventory to fit, move or sell your spares.";
+            cartEmpty.EnableInClassList("hidden",game.CartCount>0);root.Q("cartBrowseActions").EnableInClassList("hidden",game.CartCount>0);cartClear.SetEnabled(game.CartCount>0);
             root.Q<Label>("cartPurchases").text=DisplayUnits.Money(purchases);root.Q<Label>("cartCredits").text=DisplayUnits.Money(credits);
-            root.Q<Label>("cartTotal").text=problem==null?DisplayUnits.Money(total):"Unavailable";root.Q<Label>("cartBalance").text=problem==null?DisplayUnits.Money((long)p.cash-total):"—";
+            root.Q<Label>("cartHeadingTotal").text=problem==null?CartPaymentTitle(total):"Total";
+            root.Q<Label>("cartTotal").text=problem==null?CartPaymentAmount(total):"Unavailable";root.Q<Label>("cartBalance").text=problem==null?DisplayUnits.Money((long)p.cash-total):"—";
             var reservation=p.inventory.cart;if(reservation!=null&&reservation.carId==car?.instanceId){var status=new Label(CartReservations.Active(p)?(reservation.expiresRun==p.vehicleStock.completedRuns?"Stock reserved · until next race completes":"Stock reserved · "+(reservation.expiresRun-p.vehicleStock.completedRuns)+" races remaining"):"Reservation expired · review stock"){name="cartReservationStatus"};status.AddToClassList("cart-row-summary");cartRows.Insert(0,status);}
             cartError.text=problem??(total>p.cash?"Insufficient cash.":"");cartCheckout.SetEnabled(problem==null&&game.CartCount>0&&total<=p.cash);
             cartWarnings.SetEnabled(car!=null);

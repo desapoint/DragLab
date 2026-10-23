@@ -15,6 +15,7 @@ namespace DragLab.Domain
         readonly AwdSpec awd;
         readonly bool frictionClutch;
         readonly Dictionary<string, PartInstance> bySlot;
+        readonly Dictionary<PartCategory,PartInstance> byCategory=new Dictionary<PartCategory,PartInstance>();
         public MechanicalStress(VehicleSpec spec, Tune tune, IEnumerable<PartInstance> installed)
         {
             this.spec = spec; awd = AxleDriveDynamics.Configuration(spec, tune);
@@ -28,9 +29,11 @@ namespace DragLab.Domain
             parts = installed == null ? (spec.hasInstalledParts ? spec.fittedParts.ToDictionary(p => p.category, p => p.id) : catalog.Recipe(spec.id, tune)).Select(p => new PartInstance { instanceId = "simulation/" + p.Key, definitionId = p.Value, location = PartLocation.Vehicle, ownerId = "simulation", slot = p.Key.ToString() }).ToList() : installed.Select(p => p.Copy()).ToList();
             foreach(var p in parts){var d=Definition(p);EngineElements.Ensure(spec,d,p);ClutchHardware.Ensure(d,p.condition);}
             bySlot = parts.ToDictionary(p => p.slot);
+            BindCategories();
         }
-        public void RefreshBindings() { bySlot.Clear(); foreach (var p in parts) bySlot.Add(p.slot, p); }
-        public PartInstance Part(PartCategory category) { PartInstance part; return bySlot.TryGetValue(category.ToString(),out part)?part:null; }
+        void BindCategories(){byCategory.Clear();foreach(var pair in bySlot)if(Enum.TryParse(pair.Key,out PartCategory category)&&pair.Key==category.ToString())byCategory[category]=pair.Value;}
+        public void RefreshBindings() { bySlot.Clear(); foreach (var p in parts) bySlot.Add(p.slot, p);BindCategories(); }
+        public PartInstance Part(PartCategory category) { return byCategory.TryGetValue(category,out var part)?part:null; }
         public PartDefinition Definition(PartInstance part) { PartDefinition result; return definitions.TryGetValue(part.definitionId, out result) ? result : null; }
         public PartDefinition TireDefinition(int corner){var pack=Part(PartCategory.Tires);if(pack==null)return null;var id=TireFitments.DefinitionId(pack,corner);if(!definitions.TryGetValue(id,out var d)||d.category!=PartCategory.Tires)throw new InvalidOperationException("Unknown individual tire specification.");return d;}
         public static double TorqueStrength(PartDefinition definition, ComponentCondition condition) { return definition.torqueLimitNm * (.35 + .65 * condition.health); }
@@ -44,21 +47,21 @@ namespace DragLab.Domain
             bool commonFailed = !Healthy(PartCategory.Gearbox) || !Healthy(PartCategory.Driveshaft) || !Healthy(PartCategory.Differential) || frictionClutch && !Healthy(PartCategory.Clutch) || transferFailed;
             s.openCenterFreeBranch = !commonFailed && spec.drive == DriveType.AWD && (awd.mode == AwdMode.OpenCenter || awd.mode == AwdMode.LimitedSlipCenter) && !awd.isolateFailedAxle && (!s.frontDriveAvailable || !s.rearDriveAvailable);
             s.drivetrainFailed = commonFailed || !s.openCenterFreeBranch && !AxleDriveDynamics.HasDrivePath(spec, awd, s.frontDriveAvailable, s.rearDriveAvailable);
-            PartInstance gearbox; s.gearCapacityFactor = bySlot.TryGetValue(PartCategory.Gearbox.ToString(), out gearbox) ? (gearbox.condition.failed ? 0 : .4 + .6 * ConditionHealth(gearbox.condition,s)) : 0;
-            var brakes = parts.Find(p => p.slot == PartCategory.Brakes.ToString());
+            var gearbox=Part(PartCategory.Gearbox); s.gearCapacityFactor = gearbox!=null ? (gearbox.condition.failed ? 0 : .4 + .6 * ConditionHealth(gearbox.condition,s)) : 0;
+            var brakes = Part(PartCategory.Brakes);
             s.brakesFailed = !Healthy(PartCategory.Brakes);
             s.brakeCapacityFactor = s.brakesFailed ? 0 : Capacity(brakes,s);
-            var cooling = parts.Find(p => p.slot == PartCategory.Cooling.ToString());
+            var cooling = Part(PartCategory.Cooling);
             s.engineCoolingFactor = cooling == null || cooling.condition.failed ? .15 : Definition(cooling).engineHeatTransferScale * (.4 + .6 * ConditionHealth(cooling.condition,s));
             s.frontDifferentialHealth = DifferentialHealth(s,spec.drive == DriveType.FWD ? PartCategory.Differential : PartCategory.FrontDifferential);
             s.rearDifferentialHealth = DifferentialHealth(s,spec.drive == DriveType.RWD ? PartCategory.Differential : PartCategory.RearDifferential);
             if (!Healthy(PartCategory.Pistons) || !Healthy(PartCategory.Rods) || !Healthy(PartCategory.Crankshaft)) { s.engineFailed = true; s.engineDamage = 1; }
-            PartInstance controller; bySlot.TryGetValue(PartCategory.Controls.ToString(), out controller);
+            var controller=Part(PartCategory.Controls);
             s.engineSupplyAvailable = Healthy(PartCategory.FuelSystem) && (CombustionHardware.Diesel(spec)||Healthy(PartCategory.Ignition)) && (!spec.combustion.separateSparkPlugs || Healthy(PartCategory.SparkPlugs)) && (spec.engineBehavior.fueling == FuelSystem.Carburetor || Healthy(PartCategory.Controls) && FuelingHardware.ControllerSupports(controller == null ? null : Definition(controller), spec));
             if (!s.engineSupplyAvailable) s.stalled = true;
             s.deliveryPowerCapacityHp = 0;
             foreach (var category in new[] { PartCategory.FuelSystem, PartCategory.Ignition }) {
-                PartInstance supply; if (!bySlot.TryGetValue(category.ToString(), out supply)) continue;
+                var supply=Part(category); if (supply==null) continue;
                 var d = Definition(supply); if (d.maxPowerHp <= 0) continue;
                 double capacity = d.maxPowerHp * (.4 + .6 * ConditionHealth(supply.condition,s));
                 s.deliveryPowerCapacityHp = s.deliveryPowerCapacityHp == 0 ? capacity : Math.Min(s.deliveryPowerCapacityHp, capacity);
@@ -81,8 +84,8 @@ namespace DragLab.Domain
             if (s.drivetrainFailed) s.clutchCapacityFactor = 0;
         }
         static double ConditionHealth(ComponentCondition c,CarState s){return c.failed?0:1-(1-c.health)*s.conditionSeverity;}
-        double DifferentialHealth(CarState s,PartCategory category) { PartInstance p; return bySlot.TryGetValue(category.ToString(), out p) ? (p.condition.failed ? 0 : ConditionHealth(p.condition,s)) : 1; }
-        bool Healthy(PartCategory category) { PartInstance p; return bySlot.TryGetValue(category.ToString(), out p) && !p.condition.failed && p.condition.health > 0; }
+        double DifferentialHealth(CarState s,PartCategory category) { var p=Part(category); return p!=null ? (p.condition.failed ? 0 : ConditionHealth(p.condition,s)) : 1; }
+        bool Healthy(PartCategory category) { var p=Part(category); return p!=null && !p.condition.failed && p.condition.health > 0; }
         double Capacity(PartInstance p,CarState s) { var d = Definition(p); return (.4 + .6 * ConditionHealth(p.condition,s)) * DragMath.Clamp(1 - Math.Max(0, p.condition.temperatureC - d.thermalLimitC * .7) / d.thermalLimitC, .15, 1); }
         public void Tick(CarSimulation car, double dt, double mismatchBefore, double distanceBefore)
         {
@@ -92,7 +95,7 @@ namespace DragLab.Domain
             double drivePower = Math.Abs(s.transmittedTorqueNm * car.GearboxInputRpm / FlywheelDynamics.RpmPerRadian);
             double slipPower = s.wheelContactInitialized ? (car.transmission.type == TransmissionType.Manual || car.transmission.type == TransmissionType.DCT ? s.clutchFrictionPowerW : s.converterLossPowerW) : Math.Abs(s.transmittedTorqueNm) * Math.Abs(mismatchBefore) / FlywheelDynamics.RpmPerRadian;
             bool frictionClutch = car.transmission.type == TransmissionType.Manual || car.transmission.type == TransmissionType.DCT;
-            PartInstance coolant; bySlot.TryGetValue(PartCategory.Cooling.ToString(), out coolant);
+            var coolant=Part(PartCategory.Cooling);
             double transferredHeat = 0, coolantTemperature = coolant == null || coolant.condition.failed ? 20 : coolant.condition.temperatureC;
             bool existingCoreFailure = parts.Any(p => PartSemantics.EngineInternal(Definition(p).category) && (p.condition.failed || p.condition.health <= 0));
             s.coolingHeatRejectedW = 0;

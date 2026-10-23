@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,6 +33,7 @@ namespace DragLab.Runtime
         readonly LinkedList<string> ownedRatingRecency=new LinkedList<string>();
         readonly Dictionary<string,LinkedListNode<string>> ownedRatingNodes=new Dictionary<string,LinkedListNode<string>>();
         Task<Dictionary<string,OwnedRatingResult>> ownedRatings;
+        ConcurrentQueue<KeyValuePair<string,OwnedRatingResult>> ownedRatingUpdates;
         readonly Dictionary<string,string> ownedPendingContexts=new Dictionary<string,string>();
         string ownedDetailId;
         Vector2 ownedReturnScroll;
@@ -80,10 +82,15 @@ namespace DragLab.Runtime
             TorqueUnit units = SharedUnitSettings.Current.torque;
             if (!ReferenceEquals(ownedProfile,profile) || ownedRevision != profile.revision || ownedSelection != profile.selectedOwnedVehicleId || ownedTorque != units)
                 BuildOwnedCars(profile,units);
-            if (ownedRatings == null || !ownedRatings.IsCompleted) return;
-            var completed = ownedRatings; ownedRatings = null;ownedPendingContexts.Clear();
+            if(ownedRatingUpdates==null)return;
+            var ready=new List<KeyValuePair<string,OwnedRatingResult>>();while(ownedRatingUpdates.TryDequeue(out var update)){ready.Add(update);ownedPendingContexts.Remove(update.Key);}
+            bool finished=ownedRatings!=null&&ownedRatings.IsCompleted;
+            if(ready.Count==0&&!finished)return;
+            var completed=ownedRatings;
+            if(finished){ownedRatings=null;ownedPendingContexts.Clear();}
             try {
-                foreach (var rating in completed.Result) {
+                if(finished)completed.GetAwaiter().GetResult();
+                foreach (var rating in ready) {
                     var label = ownedGrid.Q<Label>("carClass:"+rating.Key);
                     var value=rating.Value?.Rating;
                     string text=value==null?"Class unavailable · PP —":"Class "+value.performanceClass+" · PP "+value.points;
@@ -125,6 +132,7 @@ namespace DragLab.Runtime
         }
         void BuildOwnedCars(PlayerProfile profile,TorqueUnit units)
         {
+            while(ownedRatingUpdates!=null&&ownedRatingUpdates.TryDequeue(out var update)){if(update.Value!=null)RememberOwnedRating(update.Key,update.Value);ownedPendingContexts.Remove(update.Key);}
             // A previous batch may have finished since the last UI refresh.
             // Retain its fully computed, signature-keyed results before replacing
             // the cards, instead of running the same quarter-mile probes again.
@@ -237,6 +245,7 @@ namespace DragLab.Runtime
                 }
                 if(prepared.Count==0)return;
                 ownedCancellation=new CancellationTokenSource();var token=ownedCancellation.Token;
+                var updates=new ConcurrentQueue<KeyValuePair<string,OwnedRatingResult>>();ownedRatingUpdates=updates;
                 foreach(var probe in prepared)ownedPendingContexts[probe.Item1]=probe.Item2;
                 OwnedRatingRunCount++;
                 ownedRatings = Task.Run(() => {
@@ -251,6 +260,7 @@ namespace DragLab.Runtime
                                 Rating=stats.completed?Benchmark.Rating(stats.elapsed,stats.trapMps*3.6):null
                             };
                         }catch(Exception){result[probe.Item1]=null;}
+                        updates.Enqueue(new KeyValuePair<string,OwnedRatingResult>(probe.Item1,result[probe.Item1]));
                     }
                     return result;
                 });

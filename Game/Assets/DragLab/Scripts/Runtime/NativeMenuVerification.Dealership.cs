@@ -76,8 +76,9 @@ namespace DragLab.Runtime
                     Check(shell.Root.Q<Label>("dealerPrice:"+model).text==DisplayUnits.Money(price),"Dealer price uses existing economy and money formatting: "+model);
                     Check(shell.Root.Q("dealerCar:"+model).Q("carPreview")?.Query<Image>().ToList().Count>0,"Factory model has a layered preview: "+model);
                 }
-                float deadline=Time.realtimeSinceStartup+45;
-                while(shell.Root.Q("dealerCarGrid").Query<Label>(className:"car-class").ToList().Any(l=>l.text=="Class …")&&Time.realtimeSinceStartup<deadline)yield return new WaitForSecondsRealtime(.1f);
+                float deadline=Time.realtimeSinceStartup+45;bool partialRatings=false;
+                while(shell.Root.Q("dealerCarGrid").Query<Label>(className:"car-class").ToList().Any(l=>l.text=="Class …")&&Time.realtimeSinceStartup<deadline){var labels=shell.Root.Q("dealerCarGrid").Query<Label>(className:"car-class").ToList();partialRatings|=labels.Any(l=>l.text!="Class …");yield return new WaitForSecondsRealtime(.1f);}
+                Check(partialRatings,"Class ratings become visible while other cars are still being calculated");
                 Check(shell.Root.Q("dealerCarGrid").Query<Label>(className:"car-class").ToList().All(l=>l.text!="Class …"),"Copied OEM quarter-mile ratings finish without selecting or saving player cars");
                 yield return Capture("dealer-grid");int probes=shell.DealerProbeCount;
                 yield return Click(input,"ownedCarSearch");yield return Key(input,0x50);yield return Key(input,0x49);yield return Key(input,0x43);

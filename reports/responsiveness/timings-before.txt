@@ -1,18 +1,40 @@
 Menu workload timings / before / milliseconds
-catalogue: 89.23
-new profile / normalization: 2153.45
-definitions: 2238 / new stock products: 1800 / used stock: 14
-current profile normalization: 94.76
-current profile validation: 92.70
-transaction validation / clone: 338.21
-three dealership static previews: 3534.64
-stock refresh: 1593.01
-shop cold: 229.16
-shop revisit: 197.88
-10000 catalogue lookups: 82.93
-100 stock quotes: 0.30
-part detail comparison: 16.80
-planned shop: 496.12
-planned shop revisit: 239.81
-10 full profile serializations: 163.83
-profile bytes: 1306018
+catalogue: 722.25
+PHYSICS aster / 4 cylinders / FWD / Petrol / 1215.25 ms / baseline captured
+PHYSICS atlas / 8 cylinders / AWD / Petrol / 1146.63 ms / baseline captured
+PHYSICS boreal / 4 cylinders / AWD / Petrol / 1266.15 ms / baseline captured
+PHYSICS city-three / 3 cylinders / FWD / Petrol / 1164.63 ms / baseline captured
+PHYSICS comet / 4 cylinders / RWD / Petrol / 1173.13 ms / baseline captured
+PHYSICS fjord / 4 cylinders / FWD / Diesel / 1148.05 ms / baseline captured
+PHYSICS meridian-sport / 6 cylinders / RWD / Petrol / 1182.63 ms / baseline captured
+PHYSICS super-v8 / 8 cylinders / RWD / Petrol / 1037.83 ms / baseline captured
+new profile / normalization: 1400.10
+definitions: 9294 / new stock products: 6238 / used stock: 64
+current profile normalization: 27.93
+current profile validation: 27.76
+class simulation preparation: 0.35
+class static inspection: 4.34
+class full quarter-mile probe: 768.17
+1000 simulation steps: 326.01
+1000 mechanical prepare: 38.77
+1000 service prepare: 42.64
+1000 tire wear ticks: 12.82
+1000 mechanical wear ticks: 45.04
+1000 fluid ticks: 106.06
+transaction validation / clone: 217.36
+three dealership static previews: 4.16
+stock refresh: 842.83
+shop cold: 124.89
+shop revisit: 123.00
+10000 catalogue lookups: 2.16
+100 stock quotes: 5.33
+part detail comparison: 11.08
+100 fitting part comparisons: 559.41
+block preparation Reuse: 421.17
+block preparation OEM: 430.63
+block preparation Manual: 409.69
+planned shop: 302.25
+planned shop revisit: 119.61
+10 full profile serializations: 621.33
+durable profile save: 164.22
+profile bytes: 4358283

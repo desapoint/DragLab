@@ -73,9 +73,12 @@ namespace DragLab.Runtime
         {
             PartCartQuote quote;try{quote=game.QuoteNativeCart();}catch(Exception error){if(cartPageOpen)cartError.text=error.Message;else partsNotice.text=error.Message;return;}
             string signature=UnityEngine.JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()});
-            OpenDialog("Checkout?","Total "+DisplayUnits.Money(quote.total)+" · Cash "+DisplayUnits.Money(game.Profile.cash),new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Confirm",()=>{
+            int purchases=game.CartLines.Count(l=>l.action==CartAction.NewSet||l.action==CartAction.NewUnits||l.action==CartAction.BuyUsed),sales=game.CartLines.Count(l=>l.action==CartAction.SellPart||l.action==CartAction.SellUnit),moves=game.CartLines.Count(l=>l.action==CartAction.Move);
+            string contents=string.Join(" · ",new[]{purchases>0?purchases+(purchases==1?" purchase":" purchases"):null,sales>0?sales+(sales==1?" sale":" sales"):null,moves>0?moves+(moves==1?" move":" moves"):null}.Where(s=>s!=null));
+            string payment=CartPaymentTitle(quote.total)+" "+CartPaymentAmount(quote.total);
+            OpenDialog("Confirm checkout",contents+"\n"+payment+" · Balance after "+DisplayUnits.Money((long)game.Profile.cash-quote.total)+"\nBought parts go to the destinations shown in your cart. Replaced parts stay in storage.",new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Confirm",()=>{
                 if(signature!=UnityEngine.JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()})){root.Q<ScrollView>("modalContent").Add(new Label("Cart changed; review it again."));return;}
-                if(game.CommitNativeCart(quote)){CloseDialog();partsStateKey=null;partsNotice.text="";}else root.Q<ScrollView>("modalContent").Add(new Label(game.NativeNotice){enableRichText=false});
+                if(game.CommitNativeCart(quote)){cartReceipt="Checkout complete · "+contents+"\n"+payment+" · Balance "+DisplayUnits.Money(game.Profile.cash)+"\nOpen inventory to find your stored parts, or Installed to review your fitted parts.";CloseDialog();cartPageKey=null;partsStateKey=null;partsNotice.text="";}else root.Q<ScrollView>("modalContent").Add(new Label(game.NativeNotice){enableRichText=false});
             },true)});
         }
     }

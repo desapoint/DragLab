@@ -82,10 +82,10 @@ namespace DragLab.Domain {
    var corners=new[]{"Front left","Front right","Rear left","Rear right"};
    return string.Join(", ",c.tires.Select((t,i)=>new{t,i}).Where(x=>x.t.failed||x.t.health<=0||x.t.consumedLife>=1).Select(x=>x.i<4?corners[x.i]:"Tire "+(x.i+1)).ToArray());
   }
-  public static void ResetContactReference(CarState state,System.Collections.Generic.IEnumerable<PartInstance> parts){foreach(var p in parts)if(p.slot==PartCategory.Tires.ToString()){Ensure(p);for(int i=0;i<4;i++)p.condition.tires[i].lastContactWorkJ=state.contact.slipWorkJ[i];}}
+  public static void ResetContactReference(CarState state,System.Collections.Generic.IEnumerable<PartInstance> parts){foreach(var p in parts)if(p.slot==nameof(PartCategory.Tires)){Ensure(p);for(int i=0;i<4;i++)p.condition.tires[i].lastContactWorkJ=state.contact.slipWorkJ[i];}}
   public static double Grip(PartDefinition d,TireCondition t){if(t.Failed)return .025;double temperature=t.temperatureC<20?DragMath.Clamp(1+(t.temperatureC-20)*.003,.65,1):t.temperatureC<=d.tireOptimalC?1+.05*(t.temperatureC-20)/Math.Max(1,d.tireOptimalC-20):DragMath.Clamp(1.05-(t.temperatureC-d.tireOptimalC)*.005,.35,1.05);return temperature*(.35+.65*Math.Sqrt(RemainingHealth(t)));}
   public static void Tick(CarSimulation car,double dt,double distanceBefore){
-   var p=car.mechanics.parts.Find(v=>v.slot==PartCategory.Tires.ToString());if(p==null)return;var c=p.condition;Ensure(c);
+   var p=car.mechanics.Part(PartCategory.Tires);if(p==null)return;var c=p.condition;Ensure(c);
    double distance=Math.Max(0,car.state.distance-distanceBefore);
    for(int i=0;i<4;i++) {var d=car.mechanics.TireDefinition(i);double pressure=1+Math.Pow((car.tune.AxlePressure(i<2)-28)/12,2)*.5;var t=c.tires[i];double work=car.state.contact.slipWorkJ[i],delta=Math.Max(0,work-t.lastContactWorkJ);t.lastContactWorkJ=work;t.slipEnergyJ+=delta;t.distanceM+=distance;t.runningSeconds+=dt;
     double cooling=d.coolingWattsPerC*(1+car.state.speed*.08)*(t.temperatureC-20);if(car.state.optimalThermals)t.temperatureC=d.tireOptimalC;else t.temperatureC=DragMath.Clamp(t.temperatureC+(delta*d.tireHeatFraction-cooling*dt)/(d.heatCapacityJPerC*Math.Max(.1,car.wheels.tireMasses[i]/Math.Max(.1,car.wheels.referenceTireMassKg))),-50,2000);

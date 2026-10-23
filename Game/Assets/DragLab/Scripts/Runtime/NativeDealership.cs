@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,6 +37,7 @@ namespace DragLab.Runtime
         Button ownedPageButton,dealerPageButton,dealerBuy,dealerInspect;
         readonly Dictionary<string,OwnedCarEntry> dealerEntries=new Dictionary<string,OwnedCarEntry>();
         readonly Dictionary<string,DealerModel> dealerModels=new Dictionary<string,DealerModel>();
+        ConcurrentQueue<KeyValuePair<string,CarInspection>> dealerRatingUpdates;
         readonly List<RacingSurface> dealerSurfaces=new List<RacingSurface>();
         readonly List<RacingSurface> dealerStatsSurfaces=new List<RacingSurface>();
         readonly HashSet<string> dealerStatsShown=new HashSet<string>();
@@ -93,13 +95,15 @@ namespace DragLab.Runtime
             var profile=game.Profile;var units=SharedUnitSettings.Current.torque;
             if(dealerCatalog!=profile.catalog||dealerStockKey!=StockKey)PrepareDealerModels();
             if(dealerProfile!=profile||dealerRevision!=profile.revision||dealerTorque!=units||dealerSpeed!=SharedUnitSettings.Current.speed)BuildDealerGrid();
-            if(dealerRatings==null||!dealerRatings.IsCompleted)return;
-            var finished=dealerRatings;dealerRatings=null;
-            try {foreach(var pair in finished.GetAwaiter().GetResult())if(dealerModels.TryGetValue(pair.Key,out var model)) {
+            bool changed=false;
+            while(dealerRatingUpdates!=null&&dealerRatingUpdates.TryDequeue(out var pair))if(dealerModels.TryGetValue(pair.Key,out var model)) {
+                changed=true;
                 model.Driving=pair.Value;model.Entry.RatingPending=false;
                 model.Entry.Rating=pair.Value!=null&&pair.Value.completed?Benchmark.Rating(pair.Value.elapsed,pair.Value.trapMps*3.6):null;
                 var label=dealerGrid.Q<Label>("dealerClass:"+pair.Key);if(label!=null)label.text=DealerRating(model);
-            }}catch(Exception){foreach(var model in dealerModels.Values){model.Entry.RatingPending=false;model.Entry.Rating=null;}}
+            }
+            if(dealerRatings!=null&&dealerRatings.IsCompleted){try{dealerRatings.GetAwaiter().GetResult();}catch(Exception){foreach(var model in dealerModels.Values.Where(m=>m.Entry.RatingPending)){model.Entry.RatingPending=false;model.Entry.Rating=null;}changed=true;}dealerRatings=null;}
+            if(!changed)return;
             ApplyOwnedQuery();
             if(dealerDetailId!=null&&dealerModels.TryGetValue(dealerDetailId,out var viewed)) {
                 var panel=dealerContent.Q<NativeStatsPanel>("dealerCarStats");
@@ -110,6 +114,7 @@ namespace DragLab.Runtime
         }
         void PrepareDealerModels()
         {
+            while(dealerRatingUpdates!=null&&dealerRatingUpdates.TryDequeue(out var update))if(dealerModels.TryGetValue(update.Key,out var completed)){completed.Driving=update.Value;completed.Entry.RatingPending=false;completed.Entry.Rating=update.Value!=null&&update.Value.completed?Benchmark.Rating(update.Value.elapsed,update.Value.trapMps*3.6):null;}
             var previous=dealerInventoryKey==InventoryKey&&dealerCatalog==game.Profile.catalog?new Dictionary<string,DealerModel>(dealerModels):null;dealerInventoryKey=InventoryKey;
             dealerCancellation?.Cancel();dealerCancellation?.Dispose();dealerCancellation=new CancellationTokenSource();var token=dealerCancellation.Token;
             dealerStockKey=StockKey;dealerCatalog=game.Profile.catalog;dealerModels.Clear();dealerEntries.Clear();dealerRevision=-1;
@@ -138,8 +143,9 @@ namespace DragLab.Runtime
                 }catch(Exception){entry.RatingPending=false;model.Blocker="Stock build unavailable";}
             }
             DealerProbeCount++;
+            var updates=new ConcurrentQueue<KeyValuePair<string,CarInspection>>();dealerRatingUpdates=updates;
             dealerRatings=Task.Run(()=> {
-                var results=new Dictionary<string,CarInspection>();foreach(var probe in probes){if(token.IsCancellationRequested)break;try{results[probe.Item1]=CarInspection.CalculatePrepared(probe.Item2,probe.Item3);}catch(Exception){results[probe.Item1]=null;}}return results;
+                var results=new Dictionary<string,CarInspection>();foreach(var probe in probes){if(token.IsCancellationRequested)break;try{results[probe.Item1]=CarInspection.CalculatePrepared(probe.Item2,probe.Item3);}catch(Exception){results[probe.Item1]=null;}updates.Enqueue(new KeyValuePair<string,CarInspection>(probe.Item1,results[probe.Item1]));}return results;
             });
         }
         string DealerRating(DealerModel model)=>model.Entry.RatingPending?"Class …":model.Entry.Rating==null?"Class unavailable · PP —":"Class "+model.Entry.Rating.performanceClass+" · PP "+model.Entry.Rating.points;

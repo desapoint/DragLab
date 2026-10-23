@@ -1,24 +1,44 @@
 Menu workload timings / after / milliseconds
-catalogue: 88.76
-new profile / normalization: 923.55
-definitions: 2238 / new stock products: 1800 / used stock: 14
-current profile normalization: 11.67
-current profile validation: 10.35
-transaction validation / clone: 78.49
-three dealership static previews: 3.61
-stock refresh: 837.38
-shop cold: 102.92
-shop revisit: 80.18
-10000 catalogue lookups: 1.30
-100 stock quotes: 0.28
-part detail comparison: 6.64
-planned shop: 163.38
-planned shop revisit: 90.24
-10 full profile serializations: 160.66
-save normalization + validation: 10.76
-save checkpoint merge: 0.53
-save JSON + UTF-8: 29.11
-save write + durable flush: 83.54
-save backup + atomic publication: 8.06
-durable profile save: 133.64
-profile bytes: 1306018
+catalogue: 745.45
+PHYSICS aster / 4 cylinders / FWD / Petrol / 654.82 ms / exact state, wear, fluids and inspection parity
+PHYSICS atlas / 8 cylinders / AWD / Petrol / 623.58 ms / exact state, wear, fluids and inspection parity
+PHYSICS boreal / 4 cylinders / AWD / Petrol / 672.60 ms / exact state, wear, fluids and inspection parity
+PHYSICS city-three / 3 cylinders / FWD / Petrol / 617.20 ms / exact state, wear, fluids and inspection parity
+PHYSICS comet / 4 cylinders / RWD / Petrol / 592.63 ms / exact state, wear, fluids and inspection parity
+PHYSICS fjord / 4 cylinders / FWD / Diesel / 637.05 ms / exact state, wear, fluids and inspection parity
+PHYSICS meridian-sport / 6 cylinders / RWD / Petrol / 666.04 ms / exact state, wear, fluids and inspection parity
+PHYSICS super-v8 / 8 cylinders / RWD / Petrol / 581.19 ms / exact state, wear, fluids and inspection parity
+new profile / normalization: 1292.67
+definitions: 9294 / new stock products: 6238 / used stock: 64
+current profile normalization: 28.86
+current profile validation: 32.50
+class simulation preparation: 0.30
+class static inspection: 2.02
+class full quarter-mile probe: 395.86
+1000 simulation steps: 170.06
+1000 mechanical prepare: 7.47
+1000 service prepare: 21.08
+1000 tire wear ticks: 3.72
+1000 mechanical wear ticks: 18.79
+1000 fluid ticks: 48.19
+transaction validation / clone: 216.20
+three dealership static previews: 4.11
+stock refresh: 591.25
+shop cold: 123.77
+shop revisit: 103.83
+10000 catalogue lookups: 1.71
+100 stock quotes: 2.23
+part detail comparison: 5.79
+100 fitting part comparisons: 344.16
+block preparation Reuse: 437.28
+block preparation OEM: 443.08
+block preparation Manual: 411.18
+planned shop: 313.75
+planned shop revisit: 140.18
+10 full profile serializations: 649.43
+24 full binding sale quotes: 4120.76
+24 shared display sale prices: 45.19
+inventory browser with 24 spares: 30.12
+PRICE PARITY: 24 varied-condition owned parts match full quotes without editing state
+durable profile save: 140.76
+profile bytes: 4370082

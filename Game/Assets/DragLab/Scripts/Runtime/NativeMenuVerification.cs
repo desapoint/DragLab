@@ -46,6 +46,10 @@ namespace DragLab.Runtime
         {
             Application.runInBackground=true;
             timeoutSeconds=Array.Exists(Environment.GetCommandLineArgs(),arg=>arg.EndsWith("-only-verify",StringComparison.Ordinal))?360:720;
+            // These suites also exercise block/engine transactions across the full
+            // authored roster. Keep their bounded overall budget separate from
+            // interactive latency assertions and retain every model's coverage.
+            if(Array.Exists(Environment.GetCommandLineArgs(),arg=>arg=="--draglab-workshop-only-verify"||arg=="--draglab-block-only-verify"))timeoutSeconds=1200;
             started = Time.realtimeSinceStartup;
             var routines = new System.Collections.Generic.Stack<IEnumerator>(); routines.Push(Run());
             while (routines.Count > 0)

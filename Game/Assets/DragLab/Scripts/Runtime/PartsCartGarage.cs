@@ -47,7 +47,7 @@ namespace DragLab.Runtime
         {
             string key=profile.revision+"/"+JsonUtility.ToJson(new CartInspectionKey{lines=cart})+"/"+JsonUtility.ToJson(PricingPolicy);
             if(cartPriceKey==key)return;cartPriceKey=key;cartError=null;cartTotal=0;cartSalePrices.Clear();if(cart.Count==0)return;
-            try{cartTotal=PartCart.Total(profile,Build.instanceId,cart,PricingPolicy);foreach(var l in cart.Where(l=>l.action==CartAction.SellPart||l.action==CartAction.SellUnit))cartSalePrices[l]=-InventoryPricing.Sell(profile,l.assetId,l.action==CartAction.SellUnit,PricingPolicy,"wholesale",DragLab.Domain.RuntimeEntropy.UtcNow.Ticks).Total;}catch(Exception e){cartError=e.Message;}
+            try{cartTotal=PartCart.Total(profile,Build.instanceId,cart,PricingPolicy);var sales=cart.Where(l=>l.action==CartAction.SellPart||l.action==CartAction.SellUnit).ToArray();if(sales.Length>0){var prices=NativeSalePrices();foreach(var l in sales)cartSalePrices[l]=-prices(l.assetId,l.action==CartAction.SellUnit);}}catch(Exception e){cartError=e.Message;}
         }
         internal bool CheckoutCartNow()
         {

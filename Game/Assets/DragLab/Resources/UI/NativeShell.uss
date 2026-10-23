@@ -365,9 +365,11 @@
 .part-detail-dyno .car-dyno-plot { height: 160px; }
 .part-quick-stats .stat-group { padding: 0; background-color: transparent; }
 .part-quick-stats .stat-group > .racing-surface { display: none; }
-.part-detail-actions { padding-top: 12px; margin-top: 0; border-top-width: 1px; border-top-color: rgba(138,148,157,0.18); }
+.part-detail-actions { padding-top: 12px; margin-top: 0; border-top-width: 1px; border-top-color: rgba(138,148,157,0.18); flex-wrap: wrap; }
 .part-detail-price { flex-grow: 1; min-width: 0; margin: 0; font-size: 24px; }
-.part-queued { font-size: 17px; color: var(--racing-muted); margin: 0 16px; }
+.part-queued { font-size: 17px; color: var(--racing-muted); margin: 0 16px 0 0; flex-grow: 1; flex-basis: 0; min-width: 0; white-space: normal; }
+.part-cart-review { flex-direction: row; align-items: center; flex-shrink: 0; padding: 8px 0; }
+.commerce-guidance { font-size: 17px; color: var(--racing-muted); white-space: normal; margin: 0 0 10px 0; flex-shrink: 0; }
 .part-detail-actions .action-button { margin-left: 10px; }
 .compact .part-detail-facts { margin-right: 12px; padding: 12px; }
 
@@ -395,6 +397,7 @@
 .modal-content .part-position-choice.selected .position-fault { color: var(--racing-text); }
 
 .cart-page { flex-grow: 1; min-height: 0; }
+.cart-page .car-empty { white-space: normal; margin: 0 0 16px 0; }
 .cart-columns { flex-grow: 1; min-height: 0; flex-direction: row; }
 .cart-list-frame { flex-grow: 1; flex-basis: 0; min-width: 0; margin-right: 20px; border-radius: 12px; overflow: hidden; }
 .cart-preview-frame { flex-grow: 1; flex-basis: 0; min-width: 0; border-radius: 12px; overflow: hidden; }
@@ -405,6 +408,7 @@
 .cart-row-price { flex-shrink: 0; font-size: 20px; margin: 0; }
 .cart-row-summary { color: var(--racing-muted); font-size: 17px; white-space: normal; margin: 2px 0; }
 .cart-row-controls { flex-direction: row; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+.cart-row-controls > Label { font-size: 17px; color: var(--racing-muted); margin: 0 8px 0 0; }
 .cart-row-controls .setting-number { width: 62px; margin-right: 12px; }
 .cart-row-controls .action-button { height: 30px; margin: 0 8px 0 0; min-width: 78px; }
 .cart-row-controls .filled-icon { width: 16px; height: 16px; }

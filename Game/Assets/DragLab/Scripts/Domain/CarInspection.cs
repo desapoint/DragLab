@@ -90,7 +90,7 @@ namespace DragLab.Domain
         {
             var result = new CarInspection { source = source, probeComplete=runProbe }; var b = source.build; var spec = b.spec; var tune = b.tune; var wheels = car.wheels;
             result.mass = car.mass;BuildLimits.Capture(car,out result.safeOperatingRpm,out result.rpmLimitPart,out result.engineTorqueHeadroomNm,out result.torqueLimitPart);
-            var radiator = car.mechanics.parts.Find(p => p.slot == PartCategory.Cooling.ToString());
+            var radiator = car.mechanics.parts.Find(p => p.slot == nameof(PartCategory.Cooling));
             result.coolingTransferPercent = car.state.engineCoolingFactor * 100;
             result.radiatorWattsPerC = radiator == null || radiator.condition.failed ? 0 : car.mechanics.Definition(radiator).coolingWattsPerC * (.4 + .6 * radiator.condition.health);
             var tirePack=car.mechanics.parts.Find(p=>p.slot=="Tires");if(tirePack!=null){var tireDefinition=car.mechanics.Definition(tirePack);result.tireRollingLifeKm=Enumerable.Range(0,4).Min(i=>car.mechanics.TireDefinition(i).tireLifeDistanceM/1000);result.tireSlidingLifeMj=Enumerable.Range(0,4).Min(i=>car.mechanics.TireDefinition(i).wearEnergyJ/1e6);result.tireGripFactor=Enumerable.Range(0,4).Min(i=>car.mechanics.TireDefinition(i).grip*TireDynamics.Grip(car.mechanics.TireDefinition(i),tirePack.condition.tires[i]));result.lowestTireHealth=TireDynamics.LowestHealth(tirePack.condition);}

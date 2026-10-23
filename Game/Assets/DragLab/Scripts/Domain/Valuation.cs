@@ -83,10 +83,10 @@ namespace DragLab.Domain.Mechanics
         public ReadOnlyCollection<string> Warnings { get; } public ReadOnlyCollection<ValuationLine> Lines { get; }
         internal string Fingerprint { get; }
         internal string ProfileJson { get; }
-        internal ValuationQuote(ValuationKind kind, string asset, string buyer, ValuationPolicy p, PlayerProfile profile, long now, string fingerprint, List<string> included, string[] kept, List<string> warnings, List<ValuationLine> lines, double loose, double core, double total, bool complete, bool faulty, bool reserved)
+        internal ValuationQuote(ValuationKind kind, string asset, string buyer, ValuationPolicy p, PlayerProfile profile, long now, string fingerprint, List<string> included, string[] kept, List<string> warnings, List<ValuationLine> lines, double loose, double core, double total, bool complete, bool faulty, bool reserved,string profileJson)
         {
             Id = DragLab.Domain.RuntimeEntropy.NewGuid().ToString("N"); PolicyId = p.id; PolicyVersion = p.version; Kind = kind; AssetId = asset; BuyerId = buyer; BuyerName = p.buyers.Find(b => b.id == buyer).name;
-            Revision = profile.revision; IssuedUtcTicks = now; ExpiresUtcTicks = checked(now + TimeSpan.FromSeconds(p.quoteSeconds).Ticks); Fingerprint = fingerprint;ProfileJson=JsonUtility.ToJson(profile);
+            Revision = profile.revision; IssuedUtcTicks = now; ExpiresUtcTicks = checked(now + TimeSpan.FromSeconds(p.quoteSeconds).Ticks); Fingerprint = fingerprint;ProfileJson=profileJson;
             IncludedIds = included.AsReadOnly(); RetainedIds = Array.AsReadOnly((string[])kept.Clone()); Warnings = warnings.AsReadOnly(); Lines = lines.AsReadOnly();
             LoosePartTotal = loose; ChassisCore = core; Total = checked((int)Math.Round(total, MidpointRounding.AwayFromZero)); Complete = complete; Faulty = faulty; Reserved = reserved;
         }
@@ -144,9 +144,20 @@ namespace DragLab.Domain.Mechanics
             return Change(lines, part.instanceId, "Loose-part buyer", value, buyer.parts, buyer.name);
         }
         public static ValuationQuote Capture(PlayerProfile profile, MechanicalCatalog catalog, ValuationPolicy policy, ValuationKind kind, string assetId, string buyerId, long nowUtcTicks, IEnumerable<string> retain = null)
+            =>Calculate(profile,catalog,policy,kind,assetId,buyerId,nowUtcTicks,retain,true,true);
+        // A synchronous read-only view validates its common context once. Display
+        // amounts use the exact valuation arithmetic, but cannot authorize disposal.
+        // Callers must still capture and validate a full quote at confirmation.
+        public static Func<string,bool,int> LoosePriceView(PlayerProfile profile,ValuationPolicy policy,string buyerId,long nowUtcTicks)
+        {
+            policy.Validate();string invalid=MechanicsOwnership.ValidateForQuote(profile,profile.catalog);if(invalid!=null)throw new InvalidOperationException(invalid);
+            long revision=profile.revision;
+            return (id,unit)=>{if(profile.revision!=revision)throw new InvalidOperationException("Price view changed; refresh inventory.");return Calculate(profile,profile.catalog,policy,unit?ValuationKind.LooseElement:ValuationKind.LoosePart,id,buyerId,nowUtcTicks,null,false,false).Total;};
+        }
+        static ValuationQuote Calculate(PlayerProfile profile,MechanicalCatalog catalog,ValuationPolicy policy,ValuationKind kind,string assetId,string buyerId,long nowUtcTicks,IEnumerable<string> retain,bool snapshot,bool validate)
         {
             if (profile == null || catalog == null || policy == null || !Enum.IsDefined(typeof(ValuationKind), kind) || nowUtcTicks <= 0 || nowUtcTicks > DateTime.MaxValue.Ticks - TimeSpan.FromDays(1).Ticks) throw new InvalidOperationException("Invalid valuation request.");
-            policy.Validate(); string invalid = MechanicsOwnership.ValidateForQuote(profile, catalog); if (invalid != null) throw new InvalidOperationException(invalid);
+            if(validate){policy.Validate(); string invalid = MechanicsOwnership.ValidateForQuote(profile, catalog); if (invalid != null) throw new InvalidOperationException(invalid);}
             var buyer = policy.buyers.Find(b => b.id == buyerId); if (buyer == null) throw new InvalidOperationException("Unknown buyer.");
             string[] kept = (retain ?? Enumerable.Empty<string>()).OrderBy(id => id, StringComparer.Ordinal).ToArray();
             if (kept.Distinct().Count() != kept.Length) throw new InvalidOperationException("Duplicate retained asset.");
@@ -219,7 +230,8 @@ namespace DragLab.Domain.Mechanics
             if(GarageBusiness.Reserved(profile,assetId)||car!=null&&GarageBusiness.Reserved(profile,car.instanceId)){reserved=true;warnings.Add("Reserved by an assigned garage job; claim or cancel before disposal.");}
             if (profile.runCheckpoints.Any(r => !r.settled) && !reserved) { reserved = true; warnings.Add("Unsettled run: inspection only; quote cannot authorize disposal."); }
             if (!MechanicsSchema.Finite(total) || total < 0 || total > int.MaxValue) throw new InvalidOperationException("Quote total outside supported currency range.");
-            return new ValuationQuote(kind, assetId, buyerId, policy, profile, nowUtcTicks, Fingerprint(profile, catalog, policy), ids, kept, warnings, lines, loose, core, total, complete, faulty, reserved);
+            string profileJson=snapshot?JsonUtility.ToJson(profile):null;
+            return new ValuationQuote(kind, assetId, buyerId, policy, profile, nowUtcTicks, snapshot?Fingerprint(profile,catalog,policy,profileJson):null, ids, kept, warnings, lines, loose, core, total, complete, faulty, reserved,profileJson);
         }
         public static string Validate(ValuationQuote quote, PlayerProfile profile, MechanicalCatalog catalog, ValuationPolicy policy, long nowUtcTicks)
         {

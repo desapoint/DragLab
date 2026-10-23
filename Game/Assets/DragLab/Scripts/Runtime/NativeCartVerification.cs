@@ -47,6 +47,8 @@ namespace DragLab.Runtime
             Check(shell.CartPageOpen&&!shell.ModalOpen&&shell.Root.Q("partsPage").ClassListContains("hidden"),"Cart replaces Build content as a full page with persistent navigation");
             Check(shell.Root.Q("cartBack").ClassListContains("car-back-button")&&shell.Root.Q("cartBack").worldBound.width==40&&shell.Root.Q("cartBack").worldBound.height==34,"Cart uses the original compact shared Back control");
             Check(shell.Root.Q("cartRows").Query(className:"cart-row").ToList().Count==4&&shell.Root.Q<NativeDynoPlot>("cartDyno")!=null&&shell.Root.Q<NativeStatsPanel>("cartQuickStats")!=null,"All existing rows and cumulative dyno/four-stat preview are retained on the cart page / rows "+shell.Root.Q("cartRows").childCount+" / "+shell.Root.Q<Label>("cartError").text+" / "+game.NativeNotice);
+            Check(shell.Root.Q<Label>("cartGuidance").text.Contains("confirm checkout")&&game.CartLines.Where(l=>l.install).All(l=>shell.Root.Q<Label>("cartDestination:"+NativeMenuShell.NativeCartRowKey(l)).text.Contains(VehicleCollection.DisplayName(p.catalog,car))),"Cart explains the confirmation boundary and names the actual installation car");
+            Check(shell.Root.Q("cartRows").Query<Label>().ToList().Any(l=>l.text=="3 complete sets · "+InventoryUnits.Count(p,car,p.catalog.Find(definition))+" units per set"),"Cart distinguishes ordered set quantity from the number of physical members in each set");
             yield return NativeCartStatChecks(input);
             int expected=game.NativeCartTotal();Check(shell.Root.Q<Label>("cartTotal").text==DisplayUnits.Money(expected)&&shell.Root.Q<Label>("cartBalance").text==DisplayUnits.Money((long)p.cash-expected)&&shell.Root.Q<Label>("cartCredits").text==DisplayUnits.Money(game.NativeSalePrice(spare.element.id,true)),"Purchases, sale credits, net total and remaining cash use actual shared pricing");
             int captures=shell.CartPreviewBuildCount,models=shell.PartBrowserBuildCount;yield return new WaitForSecondsRealtime(.5f);Check(shell.CartPreviewBuildCount==captures&&shell.PartBrowserBuildCount==models,"Idle cart does not recalculate previews or evaluate hidden shop offers");yield return Capture("cart-page");
@@ -78,7 +80,39 @@ namespace DragLab.Runtime
             yield return CartClick(input,"cartRemove:"+NativeMenuShell.NativeCartRowKey(tire));Check(!game.CartLines.Contains(tire),"Remove affects only the targeted row");yield return Click(input,"cartClear");yield return Click(input,"dialogClear");Check(shell.CartPageOpen&&game.CartCount==0&&!shell.Root.Q<Button>("cartCheckout").enabledInHierarchy,"Confirmed Clear leaves an honest empty cart and disabled checkout");
             shell.Root.Q<NativeStatsPanel>("cartStats").SetDifferencesOnly(true);Check(!shell.Root.Q<NativeStatsPanel>("cartStats").Q("statsNoDifferences").ClassListContains("hidden"),"An empty cart compares Current to itself and shows no differing stats honestly");
             yield return Click(input,"cartBack");Check(!shell.CartPageOpen&&!shell.Root.Q("partsPage").ClassListContains("hidden"),"Back restores the previous Build content without touching the car");
+            yield return CommerceSaleFlowChecks(input);
             yield return CartReservationInterfaceChecks(input);
+        }
+        IEnumerator CommerceSaleFlowChecks(WindowsKeyboardProbe input)
+        {
+            yield return Click(input,"partsCart");yield return Click(input,"cartShop");yield return WaitParts();
+            Check(!shell.CartPageOpen&&game.PartsPage=="Shop"&&shell.PartQuery.Search==""&&shell.PartQuery.Sort=="Price"&&!shell.PartQuery.Descending&&shell.PartQuery.InStockOnly&&shell.PartQuery.Compatibility=="Compatible"&&shell.Root.Q<Label>("partsGuidance").text.Contains("Review and confirm"),"Empty-cart shop shortcut opens a fresh, explained shop flow with Price ascending, Compatible and In stock");
+            yield return Click(input,"partsCart");yield return Click(input,"cartInventory");yield return WaitParts();
+            var p=game.Profile;var unit=p.looseEngineElements.First(u=>p.catalog.Find(u.definitionId).category==PartCategory.Pistons);var definition=p.catalog.Find(unit.definitionId);
+            Check(!shell.CartPageOpen&&game.PartsPage=="Inventory"&&shell.Root.Q<Label>("partsGuidance").text.Contains("spare parts"),"Empty-cart inventory shortcut opens owned spares with appropriate guidance");
+            shell.Root.Q<TextField>("partsSearch").value=definition.name;yield return WaitParts();
+            var entry=shell.PartBrowser.Entries.First(e=>e.AssetId==unit.element.id);var card=PartCard("partCard:"+entry.Id);shell.Root.Q<ScrollView>("partsScroll").ScrollTo(card);yield return new WaitForSecondsRealtime(.2f);yield return Click(input,card);
+            string before=JsonUtility.ToJson(p);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);int cash=p.cash,credit=game.NativeSalePrice(unit.element.id,true);
+            yield return Click(input,"partPlanSale");
+            Check(game.CartLines.Single().assetId==unit.element.id&&shell.Root.Q<Label>("partQueued").text.Contains("Sell to dealer")&&!shell.Root.Q("partCartReview").ClassListContains("hidden")&&before==JsonUtility.ToJson(p),"Adding a sale shows staged status and a review shortcut without removing or paying for the part");
+            yield return Capture("commerce-sale-staged");yield return Click(input,"partReviewCart");
+            Check(shell.CartPageOpen&&shell.Root.Q<Label>("cartHeadingTotal").text=="You receive"&&shell.Root.Q<Label>("cartTotal").text==DisplayUnits.Money(credit)&&shell.Root.Q<Label>("cartBalance").text==DisplayUnits.Money((long)cash+credit),"Sale-only cart shows positive proceeds and the resulting balance");
+            yield return Capture("commerce-sale-cart");yield return Click(input,"cartCheckout");
+            Check(shell.Root.Q<ScrollView>("modalContent").Query<Label>().ToList().Any(l=>l.text.Contains("1 sale")&&l.text.Contains("You receive "+DisplayUnits.Money(credit))&&l.text.Contains(DisplayUnits.Money((long)cash+credit))),"Checkout reviews the exact sale, proceeds and balance before applying it");
+            yield return Click(input,"dialogCancel");Check(game.CartCount==1&&before==JsonUtility.ToJson(p)&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Cancelling sale checkout retains the exact asset, cart, money and durable save");
+            yield return Click(input,"cartCheckout");
+            using(var locked=new FileStream(ProfileStore.FilePath,FileMode.Open,FileAccess.Read,FileShare.Read)){
+                yield return Click(input,"dialogConfirm");Check(shell.ModalOpen&&game.CartCount==1&&before==JsonUtility.ToJson(game.Profile)&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Failed sale save keeps the confirmation open and preserves assets, proceeds and cart for retry");
+            }
+            yield return Click(input,"dialogConfirm");
+            Check(!shell.ModalOpen&&game.CartCount==0&&game.Profile.cash==cash+credit&&!game.Profile.looseEngineElements.Any(u=>u.element.id==unit.element.id)&&game.Profile.inventory.dealer.Any(s=>s.Id==unit.element.id),"Retry sells the exact spare and pays once through the existing atomic transaction");
+            Check(shell.Root.Q<Label>("cartEmpty").text.Contains("Checkout complete")&&shell.Root.Q<Label>("cartEmpty").text.Contains("You receive "+DisplayUnits.Money(credit))&&shell.Root.Q<Button>("cartInventory").enabledInHierarchy,"Successful checkout provides a receipt and a direct route to remaining inventory");
+            yield return Capture("commerce-checkout-complete");
+            Screen.SetResolution(1024,640,false);yield return new WaitForSecondsRealtime(.4f);NativeMobile.SimulatedTouch=true;shell.Refresh();yield return new WaitForSecondsRealtime(.3f);
+            Check(shell.Root.Q("cartFooter").worldBound.yMax<=shell.Root.Q("footerBar").worldBound.yMin&&shell.Root.Q("cartInventory").worldBound.xMax<=shell.Root.worldBound.xMax,"Compact touch cart keeps its receipt, navigation and checkout footer within the screen");yield return Capture("commerce-touch-compact");
+            NativeMobile.SimulatedTouch=false;Screen.SetResolution(1280,720,false);yield return new WaitForSecondsRealtime(.4f);yield return Click(input,"cartInventory");yield return WaitParts();
+            Check(!shell.PartBrowser.Entries.Any(e=>e.AssetId==unit.element.id)&&MechanicsOwnership.Validate(game.Profile,game.Profile.catalog)==null,"Return to inventory reflects the completed sale and retains a valid ownership graph");
+            yield return Click(input,"partsCart");yield return Click(input,"cartInstalled");yield return WaitParts();Check(!shell.CartPageOpen&&game.PartsPage=="Installed"&&shell.Root.Q<Label>("partsGuidance").text.Contains("Parts fitted"),"Receipt shortcut opens the installed-parts browser with its own guidance");
         }
 #endif
     }

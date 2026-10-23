@@ -24,7 +24,7 @@ namespace DragLab.Editor
         public static void RunStandalone()
         {
             PreparePolicy();
-            var folder = Path.Combine(Directory.GetParent(Application.dataPath).Parent.FullName, "reports/phases/3c"); Directory.CreateDirectory(folder);
+            var folder = Environment.GetEnvironmentVariable("DRAGLAB_VALUATION_REPORT") ?? Path.Combine(Directory.GetParent(Application.dataPath).Parent.FullName, "reports/phases/3c"); Directory.CreateDirectory(folder);
             var log = new StringBuilder(); var csv = new StringBuilder("scenario,model,buyer,kind,complete,faulty,total,loose_parts,chassis_core\n"); int checks = 0; long now = DateTime.UtcNow.Ticks;
             Action<string, string, ValuationQuote> record = (scenario, model, q) => csv.AppendLine(string.Join(",", scenario, model, q.BuyerId, q.Kind, q.Complete, q.Faulty, q.Total, q.LoosePartTotal.ToString("F2", System.Globalization.CultureInfo.InvariantCulture), q.ChassisCore.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)));
             Action<bool, string> check = (ok, label) => { if (!ok) throw new InvalidOperationException(label); checks++; log.AppendLine("PASS: " + label); if (checks % 50 == 0) File.WriteAllText(Path.Combine(folder, "verification-progress.txt"), log.ToString()); };
