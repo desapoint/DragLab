@@ -16,6 +16,8 @@ namespace DragLab.Runtime
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
         void WarningModelChecks()
         {
+            foreach(PartCategory category in Enum.GetValues(typeof(PartCategory)))Check(NativeWarningOverview.RepairParts(new SetupWarning("Individual "+category+" fault","","" )).SequenceEqual(new[]{category}),"Exact repair category mapping / "+category);
+            Check(NativeWarningOverview.RepairParts(new SetupWarning("Excessive wheelspin is likely","","" )).SequenceEqual(new[]{PartCategory.Tires}),"Wheelspin routes directly to tire products");
             var old=new[]{new SetupWarning("Remaining","100 Nm","Change gearing",true),new SetupWarning("Resolved","Old issue","Repair"),new SetupWarning("Component needs attention","Failed Cooling: probe","Service"),new SetupWarning("Component needs attention","Failed Clutch: probe","Service")};
             var next=new[]{new SetupWarning("Remaining","200 Nm","Change gearing"),new SetupWarning("Introduced","New issue","Fit supporting hardware",true),new SetupWarning("Component needs attention","Failed Clutch: probe","Service")};
             var changes=NativeWarningOverview.Combine(old,next,true);
@@ -29,7 +31,7 @@ namespace DragLab.Runtime
         string WarningText()=>string.Join("\n",shell.Root.Q<ScrollView>("modalContent").Query<Label>().ToList().Select(l=>l.text));
         void ShowWarningFixture(SetupWarning[] current,SetupWarning[] planned,bool comparison,string unavailable=null)
         {
-            typeof(NativeMenuShell).GetMethod("OpenCombinedWarnings",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shell,new object[]{current,planned,comparison,"Warnings",unavailable});
+            typeof(NativeMenuShell).GetMethod("OpenCombinedWarnings",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shell,new object[]{current,planned,comparison,"Warnings",unavailable,null,true,null});
         }
         IEnumerator NativeWarningsChecks(WindowsKeyboardProbe input)
         {
@@ -92,7 +94,35 @@ namespace DragLab.Runtime
             yield return Key(input,0x77);yield return Key(input,0x77);yield return Click(input,"cartWarnings");Check(shell.ModalOpen&&shell.Root.Q("warningsGroup:Resolved")!=null,"F8 preserves cart state and the actual combined warnings");yield return Click(input,"modalClose");
             Check(before==JsonUtility.ToJson(p)&&cart==JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()})&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath))&&preview==shell.CartPreviewBuildCount,"Warning dialogs, resizing and F8 never modify the applied car, cart or disk or recapture previews");
             Check(shell.Root.Q<Button>("cartWarnings").tabIndex<0&&!shell.Root.Q<Button>("cartWarnings").focusable,"Warnings retain the shared mouse-only button navigation rules");game.ClearNativeCart();yield return Click(input,"cartBack");
+            yield return WarningRepairNavigationChecks(input,car.instanceId,bare.instanceId,piston.definitionId);
         }
+        IEnumerator WarningRepairNavigationChecks(WindowsKeyboardProbe input,string currentId,string otherId,string pistonDefinition)
+        {
+            yield return Click(input,"navGarage");var scroll=shell.Root.Q<ScrollView>("ownedCars");var icon=shell.Root.Q("ownedWarnings:"+currentId);scroll.ScrollTo(icon);yield return new WaitForSecondsRealtime(.15f);yield return Click(input,icon);
+            var shop=shell.Root.Q("warningShop:Pistons");shell.Root.Q<ScrollView>("modalContent").ScrollTo(shop);yield return new WaitForSecondsRealtime(.15f);string before=JsonUtility.ToJson(game.Profile);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);
+            yield return Click(input,shop);yield return WaitParts();
+            Check(game.ScreenName=="Parts"&&game.PartsPage=="Shop"&&shell.PartQuery.Categories.SetEquals(new[]{PartCategory.Pistons})&&shell.PartQuery.Compatibility=="Compatible"&&shell.PartQuery.InStockOnly&&shell.PartQuery.Sort=="Price"&&!shell.PartQuery.Descending&&shell.PartQuery.Search=="","Piston warning opens default Compatible / In stock / Price ascending shop narrowed to pistons");
+            Check(before==JsonUtility.ToJson(game.Profile)&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Current-car warning shopping changes no assets, resources or save");
+            game.StageNativePurchase(pistonDefinition,null,1,false);string cart=JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()});
+            var tire=new SetupWarning("Excessive wheelspin is likely","Fixture traction","Improve grip");ShowWarningFixture(new[]{tire},Array.Empty<SetupWarning>(),true);yield return null;Check(shell.Root.Q("warningShop:Tires")==null,"Resolved warnings do not invite duplicate purchases");yield return Click(input,"dialogClose");
+            ShowWarningFixture(new[]{tire},null,false);yield return new WaitForSecondsRealtime(.1f);yield return Click(input,"warningShop:Tires");yield return WaitParts();
+            Check(shell.PartQuery.Categories.SetEquals(new[]{PartCategory.Tires})&&cart==JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()}),"Repair link resets only browsing filters and preserves the current car's complete cart");
+            ShowWarningFixture(new[]{new SetupWarning("Oil quantity below safe pickup minimum","Low oil","Refill oil")},null,false);yield return new WaitForSecondsRealtime(.1f);Check(shell.Root.Q("warningMaintenance")!=null&&shell.Root.Q("warningShop:OilPan")==null,"Low fluid points to maintenance without inventing a failed part to buy");yield return Click(input,"warningMaintenance");yield return new WaitForSecondsRealtime(.3f);
+            Check(shell.OwnedDetailsOpen&&game.Profile.selectedOwnedVehicleId==currentId&&cart==JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()}),"Fluid warning opens this car's existing maintenance and keeps its cart");
+            yield return Click(input,"navTuning");game.DraftValues.launchRpm+=50;Check(game.DraftDirty,"Repair navigation fixture has a genuine unapplied tune");ShowWarningFixture(new[]{tire},null,false);yield return new WaitForSecondsRealtime(.1f);yield return Click(input,"warningShop:Tires");
+            Check(shell.ModalOpen&&game.ScreenName=="Tuning"&&game.DraftDirty&&!shell.Root.Q("warningRepairError").ClassListContains("hidden"),"Repair navigation protects unapplied tuning instead of silently discarding it");yield return Click(input,"modalClose");yield return Click(input,"tuningRevert");yield return Click(input,"navGarage");
+            icon=shell.Root.Q("ownedWarnings:"+otherId);shell.Root.Q<ScrollView>("ownedCars").ScrollTo(icon);yield return new WaitForSecondsRealtime(.15f);yield return Click(input,icon);
+            shell.Root.Q<ScrollView>("modalContent").ScrollTo(shell.Root.Q("warningFindEngine"));yield return new WaitForSecondsRealtime(.15f);yield return Click(input,"warningFindEngine");
+            Check(shell.ModalOpen&&game.Profile.selectedOwnedVehicleId==currentId&&game.CartCount>0&&!shell.Root.Q("warningRepairError").ClassListContains("hidden"),"Other-car repair cannot switch ownership context while the current car has a cart");yield return Click(input,"modalClose");game.ClearNativeCart();
+            yield return Click(input,icon);before=JsonUtility.ToJson(game.Profile);int cash=game.Profile.cash;
+            using(var locked=new FileStream(ProfileStore.FilePath,FileMode.Open,FileAccess.Read,FileShare.Read)){
+                shell.Root.Q<ScrollView>("modalContent").ScrollTo(shell.Root.Q("warningFindEngine"));yield return new WaitForSecondsRealtime(.15f);yield return Click(input,"warningFindEngine");Check(shell.ModalOpen&&before==JsonUtility.ToJson(game.Profile)&&!shell.Root.Q("warningRepairError").ClassListContains("hidden"),"Failed car-selection save leaves repair context and the dialog retryable");
+            }
+            shell.Root.Q<ScrollView>("modalContent").ScrollTo(shell.Root.Q("warningFindEngine"));yield return new WaitForSecondsRealtime(.15f);yield return Click(input,"warningFindEngine");yield return new WaitForSecondsRealtime(.4f);
+            Check(game.ScreenName=="Parts"&&game.Profile.selectedOwnedVehicleId==otherId&&game.Profile.cash==cash&&shell.Root.Q("engineMarketToggle")!=null,"Missing-engine warning selects the exact car durably and opens its engine market without a purchase / "+game.ScreenName+" / "+game.Profile.selectedOwnedVehicleId+" / "+game.NativeNotice+" / "+shell.Root.Q<Label>("warningRepairError")?.text);
+            Check(ProfileStore.Load().selectedOwnedVehicleId==otherId&&MechanicsOwnership.Validate(game.Profile,game.Profile.catalog)==null,"Repair car context survives SQLite reload with valid ownership");yield return Capture("warning-engine-repair-route");
+        }
+
 #endif
     }
 }

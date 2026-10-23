@@ -1,0 +1,11 @@
+Build checkpoint: 2026-10-23
+Windows: successful Development build, Unity 6000.6.4f1
+Android: successful Development ARM64 IL2CPP build, Unity 6000.6.4f1
+APK: signature, 16 KB alignment, ZIP integrity and ARM64 native libraries verified
+Android precedes the Windows-only mouse fixture scrolling correction; production sources are identical.
+Physical Android playback/input validation: pending
+
+Game/Builds/Windows/DragLab.exe | 667136 bytes | sha256 437691663c5fb21231524f4886e60a10b1841f13e42fbbc93ee39fbd827930cd
+Game/Builds/Windows/DragLab_Data/Managed/Assembly-CSharp.dll | 3223552 bytes | sha256 0bffa1d06f5fc509bfb0b0956b97f4c7cbf9908650ed497e3f63f4a4544be49b
+Game/Builds/Windows/DragLab_Data/resources.assets | 1779856 bytes | sha256 762354a5819de3bf3f7e3f84237c02cc802c0925b6816f6965085259b0bd6e32
+Game/Builds/Android/DragLab.apk | 87611008 bytes | sha256 9c2c6b51348921f08b2b0ee38e8c6e3398212ae005e45bb1125b197a7197539d

@@ -119,7 +119,7 @@ namespace DragLab.Runtime
             else EngineButton(actions,"engineDetach","Detach",()=>ConfirmEngineAction("Detach engine",id,q=>AssemblyOperations.Detach(q,engine.parentVehicleId),"The car cannot run until an engine is installed. Parts, wear and fluids stay with this engine."));
             if(reference!=null)engineContent.Add(new Label("Preview in "+VehicleCollection.DisplayName(p.catalog,reference)){enableRichText=false});
             if(error!=null){var unavailable=new Label(error){enableRichText=false};unavailable.AddToClassList("car-critical");engineContent.Add(unavailable);}else EngineComparison(engineContent,current,proposed,"engine",EngineSurface,healthy:healthy);
-            if(proposed!=null)WarningButton(actions,"engineWarnings",proposed.warnings.ToArray(),()=>OpenCombinedWarnings(current?.warnings.ToArray()??Array.Empty<SetupWarning>(),proposed.warnings.ToArray(),current!=null),EngineSurface);
+            if(proposed!=null)WarningButton(actions,"engineWarnings",proposed.warnings.ToArray(),()=>OpenCombinedWarnings(current?.warnings.ToArray()??Array.Empty<SetupWarning>(),proposed.warnings.ToArray(),current!=null,carId:p.cars.FirstOrDefault(c=>c.engineAssemblyId==id)?.instanceId,repairLinks:!stored,prepareEngine:stored?(Action<PartCategory>)(category=>{CloseDialog();OpenEnginePartPicker(id,category);}):null),EngineSurface);
             var missing=EngineWorkshop.Missing(p,engine);if(missing.Length>0){engineContent.Add(new Label("Missing: "+string.Join(" · ",missing.Select(def=>PartSemantics.Friendly(p.catalog.Find(def).category.ToString())))));if(stored){int price=EngineWorkshop.MissingPrice(p,engine);EngineButton(engineContent,"engineBuyMissing","Buy missing OEM · "+DisplayUnits.Money(price),()=>ConfirmEngineAction("Buy missing OEM parts",id,q=>{if(EngineWorkshop.MissingPrice(q,q.engines.Find(e=>e.instanceId==id))!=price)throw new InvalidOperationException("Required parts or prices changed.");foreach(string def in missing)EngineWorkshop.BuyPart(q,id,def,PartsMarket.Quote(q,q.catalog.Find(def),EngineWorkshop.Count(q,q.engines.Find(e=>e.instanceId==id),q.catalog.Find(def))).cost);},DisplayUnits.Money(price)+" · Existing parts and fluids are retained."),true);}}
             foreach(var section in EngineWorkshop.Parts(p,engine).GroupBy(part=>NativePartBrowser.Section(p.catalog.Find(part.definitionId).category))){
                 var body=new VisualElement();var toggle=EngineButton(engineContent,"engineGroup:"+section.Key,NativePartBrowser.SectionNames[(int)section.Key]+" · "+section.Count(),()=>body.EnableInClassList("hidden",!body.ClassListContains("hidden")));body.AddToClassList("hidden");engineContent.Add(body);
@@ -158,9 +158,9 @@ namespace DragLab.Runtime
                 };
             });update();ExcludeTabTraversal();
         }
-        void OpenEnginePartPicker(string id)
+        void OpenEnginePartPicker(string id,PartCategory? initialCategory=null)
         {
-            var engine=game.Profile.engines.Find(e=>e.instanceId==id);PartCategory category=PartCategory.Pistons;VisualElement choices=null;Action update=null;
+            var engine=game.Profile.engines.Find(e=>e.instanceId==id);PartCategory category=initialCategory??PartCategory.Pistons;VisualElement choices=null;Action update=null;
             OpenDialog("Prepare engine parts",null,new[]{new DialogAction("Close",CloseDialog)},populate:content=>{
                 QueryChoices(content,"enginePartCategory","Category",MechanicalCatalog.Slots(game.Profile.catalog.Spec(engine.vehicleDefinitionId)).Where(MechanicalCatalog.EngineSlot).Select(c=>c.ToString()).ToArray(),()=>category.ToString(),value=>{category=(PartCategory)Enum.Parse(typeof(PartCategory),value);update();},3);
                 foreach(var b in content.Query<Button>().ToList().Where(b=>b.name.StartsWith("enginePartCategory:")))b.Q<Label>().text=PartSemantics.Friendly(b.name.Substring("enginePartCategory:".Length));

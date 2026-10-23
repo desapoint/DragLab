@@ -14,7 +14,7 @@ Owned-car and dealership details now offer **Hear engine** in the header, preser
 
 - Full live-audio sequence: **64 checks, zero runtime errors**, including petrol/diesel, I3/I4/V8, multi-gear factory builds, physical turbo release, playback cleanup, exact captured-input immutability and unchanged player/save bytes. Turbo pressure release is recorded while playing, not after Stop resets it.
 - Header controls: **49 checks, zero runtime errors**, including both real buttons, audible playback and no ownership/inspection changes.
-- Owned fitted/dealership layout regressions: running. Windows header build passed. Android is rebuilt after the remaining authorized warning control.
+- Owned fitted/layout: **119/0**; dealership: **271/0**. Windows header build passed. Android is rebuilt with the warning control; signature, 16 KB alignment, archive integrity and ARM64 libraries pass. [Final build receipt](../warning-repairs-20261023/build-manifest.txt).
 - Normal listening dialog screenshot reviewed locally. Physical Android listening and human sound/visual acceptance remain pending.
 
 Reproduce with tools/Test-NativeMenu.ps1 -EngineListeningOnly or -ListeningControlsOnly and a fresh disposable FixtureName. Earlier interrupted probes remain local: invalid post-tick telemetry equality, a modal F8 expectation, missing stable Tempest ID, a worn-starter gear assumption and an after-Stop counter measurement were corrected rather than reported as completed suites. A temporary missing namespace compile failure was fixed before successful builds. The physical diagnostic additionally exposed unsafe neutral blips, so only the demonstration driver's inputs were made hardware-aware; audio and physics models remain unchanged.

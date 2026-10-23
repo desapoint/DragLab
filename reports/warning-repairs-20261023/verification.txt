@@ -1,0 +1,7 @@
+Warning suite: 948 checks / 0 runtime errors.
+Final-player quick leave: 54 checks / 0 runtime errors.
+Windows and Android builds: PASS.
+APK signature / 16 KB alignment / ZIP / ARM64 libraries: PASS.
+Listening 64/0, header 49/0, owned layout 119/0, dealership 271/0: retained successful baselines, not final warning-build reruns.
+Physical phone and human acceptance: pending.
+See CHANGES.md for initial off-viewport test failure and interrupted outer regression command.

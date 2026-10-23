@@ -20,12 +20,13 @@ namespace DragLab.Runtime
             if (!CommitParts(revision,p => VehicleCollection.Rename(p,id,normalized))) return false;
             notice = "Car name saved."; return true;
         }
-        internal bool SelectNativeCar(string id,long revision)
+        internal bool SelectNativeCar(string id,long revision,bool fromWarning=false)
         {
-            if ((screen != "Garage" && screen != "Race setup") || pendingAction != null) { notice = "Garage is no longer available."; return false; }
+            if ((screen != "Garage" && screen != "Race setup" && !(fromWarning&&screen=="Parts")) || pendingAction != null) { notice = "Garage is no longer available."; return false; }
             if (profile.revision != revision) { notice = "Car details changed. Go back and reopen this car."; return false; }
             if (!profile.cars.Exists(car => car.instanceId == id)) { notice = "Owned car no longer exists."; return false; }
             if (profile.selectedOwnedVehicleId == id) return true;
+            if(fromWarning&&(DraftDirty||CartCount>0||CartReservations.Active(profile)&&profile.inventory.cart.carId!=id)){notice="Review or clear the current car's cart and apply or revert tuning before switching cars.";return false;}
             if (!CommitParts(revision,p => VehicleCollection.Select(p,id))) return false;
             ShowGarageCar(); notice = "Current car saved.";
             return true;
