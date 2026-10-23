@@ -120,7 +120,7 @@ namespace DragLab.Runtime
         void LateUpdate()
         {
             using(FramePacingProbe.Measure(4)){
-            Refresh();
+            Refresh();TickEngineListening();
             if (!NativeMobile.Touch && !game.ResetRequired && Visible && !game.NativeRacePause && Input.GetKeyDown(KeyCode.Escape)) { if (ModalOpen) CloseDialog(); else if(game.ScreenName=="Tuning"&&setupLibraryOpen) BackFromSetupLibrary(); else if (game.ScreenName=="Parts" && cartPageOpen) BackFromNativeCart(); else if (game.ScreenName=="Parts" && partsDetailId!=null) BackToParts(); else if (DealerDetailsOpen) BackToDealer(); else if (DisposalOpen) BackFromDisposal(); else if (OwnedDetailsOpen) BackToOwnedCars(); }
             foreach (var surface in surfaces) surface.Tick(Visible);
             foreach (var surface in switchSurfaces) surface.Tick(Visible);
@@ -200,7 +200,7 @@ namespace DragLab.Runtime
             }
         }
         void SetText(string id, string value) { var label = root.Q<Label>(id); if (label.text != value) label.text = value; }
-        void OnDestroy() { ownedCancellation?.Cancel(); ownedCancellation?.Dispose(); dealerCancellation?.Cancel(); dealerCancellation?.Dispose(); if (panel != null) Destroy(panel); }
+        void OnDestroy() { StopEngineListening(); ownedCancellation?.Cancel(); ownedCancellation?.Dispose(); dealerCancellation?.Cancel(); dealerCancellation?.Dispose(); if (panel != null) Destroy(panel); }
     }
 
     // Filled, procedurally tessellated shapes stay sharp at native display resolution.
@@ -226,6 +226,7 @@ namespace DragLab.Runtime
             {
                 case "Pause": rect(5,3,5,18);rect(14,3,5,18);break;
                 case "Warning": p.fillColor=resolvedStyle.color; polygon(new float[]{12,2,23,22,1,22});p.fillColor=new Color(.12f,.14f,.16f);rect(11,8,2,7);rect(11,17,2,2);break;
+                case "Play": polygon(new float[]{6,3,21,12,6,21});break;
                 case "Flick": polygon(new float[]{5,8,12,1,19,8});rect(10,7,4,10);polygon(new float[]{5,16,19,16,12,23});break;
                 case "Expand": polygon(new float[] {4,8,20,8,12,17}); break;
                 case "Back": polygon(new float[] {2,12,11,3,11,8,22,8,22,16,11,16,11,21}); break;

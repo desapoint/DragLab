@@ -1,4 +1,4 @@
-param([string]$FixtureName = 'native-menu-shell', [switch]$OnboardingOnly, [switch]$ClipBudgetOnly, [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly, [switch]$MaintenanceOnly, [switch]$RebuildOnly, [switch]$PricingOnly, [switch]$FrameProbe, [switch]$ResponsivenessOnly, [switch]$AwdHardwareOnly, [switch]$PartBrandsOnly, [switch]$SqliteStateOnly, [switch]$DisposalOnly, [switch]$RaceSelectionOnly, [switch]$BusinessOnly, [switch]$SetupManagementOnly, [switch]$RaceHudOnly, [switch]$TouchPedalsOnly, [switch]$MobileOnly, [switch]$FlickOnly, [switch]$QuickLeaveOnly, [switch]$ResultsOnly, [switch]$FinishPacingOnly, [switch]$MarketBaselineOnly, [switch]$OwnedFittedOnly, [switch]$TireSwapOnly, [switch]$FinishExitOnly, [switch]$RacePauseOnly, [switch]$NavigationOnly, [switch]$ResetRequiredOnly, [string]$PlayerPath = '', [switch]$DeterministicCapture)
+param([string]$FixtureName = 'native-menu-shell', [switch]$OnboardingOnly, [switch]$ClipBudgetOnly, [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly, [switch]$MaintenanceOnly, [switch]$RebuildOnly, [switch]$PricingOnly, [switch]$FrameProbe, [switch]$ResponsivenessOnly, [switch]$AwdHardwareOnly, [switch]$PartBrandsOnly, [switch]$SqliteStateOnly, [switch]$DisposalOnly, [switch]$RaceSelectionOnly, [switch]$BusinessOnly, [switch]$SetupManagementOnly, [switch]$RaceHudOnly, [switch]$TouchPedalsOnly, [switch]$MobileOnly, [switch]$FlickOnly, [switch]$QuickLeaveOnly, [switch]$EngineListeningOnly, [switch]$ListeningControlsOnly, [switch]$ResultsOnly, [switch]$FinishPacingOnly, [switch]$MarketBaselineOnly, [switch]$OwnedFittedOnly, [switch]$TireSwapOnly, [switch]$FinishExitOnly, [switch]$RacePauseOnly, [switch]$NavigationOnly, [switch]$ResetRequiredOnly, [string]$PlayerPath = '', [switch]$DeterministicCapture)
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 . (Join-Path $PSScriptRoot 'InterfaceScreenshots.ps1')
@@ -20,6 +20,8 @@ if ($ResetRequiredOnly) {
     }
     [IO.File]::WriteAllText((Join-Path $taskFixture 'driving-settings.json'), '{"version":1,"driving":{"wearMode":1,"shifting":1},"difficulty":2}', [Text.UTF8Encoding]::new($false))
 }
+if ($ListeningControlsOnly) { $taskArgs += '--draglab-listening-controls-only-verify' }
+if ($EngineListeningOnly) { $taskArgs += '--draglab-engine-listening-only-verify' }
 if ($QuickLeaveOnly) { $taskArgs += '--draglab-quick-leave-only-verify' }
 if ($NavigationOnly) { $taskArgs += '--draglab-navigation-only-verify' }
 if ($RacePauseOnly) { $taskArgs += '--draglab-race-pause-only-verify' }

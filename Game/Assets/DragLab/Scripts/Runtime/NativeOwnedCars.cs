@@ -60,6 +60,7 @@ namespace DragLab.Runtime
             var title = new Label { name = "ownedDetailTitle", enableRichText = false }; title.AddToClassList("car-detail-title"); heading.Add(title);
             var rename = new Button(OpenOwnedCarRename) { name = "renameOwnedCar", tooltip = "Rename car" }; rename.AddToClassList("action-button"); rename.AddToClassList("car-rename-button");
             rename.Add(new FilledMenuIcon("Pencil")); heading.Add(rename); AddSurface(rename,RacingSurface.Kind.SecondaryAction);
+            AddEngineListening(heading,"ownedHearEngine",()=>InspectionBuild.Capture(game.Profile,game.Profile.cars.Single(c=>c.instanceId==ownedDetailId)),AddSurface);
             var frame = new VisualElement(); frame.AddToClassList("car-details-frame"); ownedDetails.Add(frame); AddSurface(frame,RacingSurface.Kind.Panel);
             var detailScroll = new ScrollView { name = "ownedDetailScroll", horizontalScrollerVisibility = ScrollerVisibility.Hidden }; detailScroll.AddToClassList("car-details-scroll"); frame.Add(detailScroll);
             ownedDetailContent = new VisualElement { name = "ownedCarDetails" }; ownedDetailContent.AddToClassList("car-details-content"); detailScroll.Add(ownedDetailContent);

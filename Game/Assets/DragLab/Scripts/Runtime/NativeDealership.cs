@@ -70,6 +70,7 @@ namespace DragLab.Runtime
             var heading=new VisualElement();heading.AddToClassList("car-details-heading");dealerDetails.Add(heading);
             var back=new Button(BackToDealer) {name="dealerBack",tooltip="Back to dealership",tabIndex=-1,focusable=false};back.AddToClassList("action-button");back.AddToClassList("car-back-button");back.Add(new FilledMenuIcon("Back"));heading.Add(back);AddSurface(back,RacingSurface.Kind.SecondaryAction);
             var title=new Label {name="dealerDetailTitle",enableRichText=false};title.AddToClassList("car-detail-title");heading.Add(title);
+            AddEngineListening(heading,"dealerHearEngine",()=>dealerModels[dealerDetailId].Stats.source,AddSurface,()=>dealerDetailId==null||!dealerModels.TryGetValue(dealerDetailId,out var heard)||!heard.Known);
             var frame=new VisualElement();frame.AddToClassList("car-details-frame");dealerDetails.Add(frame);AddSurface(frame,RacingSurface.Kind.Panel);
             var scroll=new ScrollView {name="dealerDetailScroll",horizontalScrollerVisibility=ScrollerVisibility.Hidden};scroll.AddToClassList("car-details-scroll");frame.Add(scroll);
             dealerContent=new VisualElement {name="dealerContent"};dealerContent.AddToClassList("car-details-content");scroll.Add(dealerContent);
@@ -207,6 +208,7 @@ namespace DragLab.Runtime
             if(dealerDetailId==null)return;
             if(!dealerModels.TryGetValue(dealerDetailId,out var model)){BackToDealer();return;}
             ClearDealerDetails();root.Q<Label>("dealerDetailTitle").text=model.Entry.Name;
+            var listen=root.Q<Button>("dealerHearEngine");listen.SetEnabled(model.Stats!=null&&(!model.Offer.used||model.Offer.engineRuns));listen.tooltip=listen.enabledSelf?"Listen to this car":"Engine does not run";
             var selected=InspectOwned(game.Profile.SelectedCar)?.Stats;
             bool comparing=comparingDealerId==dealerDetailId&&selected!=null&&model.Stats!=null;
             dealerCompare.SetEnabled(selected!=null&&model.Stats!=null);dealerCompare.EnableInClassList("selected",comparing);dealerCompare.tooltip=dealerCompare.enabledSelf?"Compare with the selected car":"Comparison unavailable: engine or build data missing";

@@ -15,6 +15,39 @@ namespace DragLab.Runtime
     internal sealed partial class NativeMenuVerification
     {
 #if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
+        IEnumerator EngineListeningChecks(WindowsKeyboardProbe input,bool controlsOnly=false)
+        {
+            foreach(string model in new[]{"city-three","super-v8","fjord","rally-sedan"})Check(game.vehicles.Any(v=>v.spec.id==model),"Listening fixture references an existing catalogue ID / "+model);
+            var p=game.Profile;string before=JsonUtility.ToJson(p);byte[] disk=File.ReadAllBytes(ProfileStore.FilePath);string id=p.SelectedCar.instanceId;
+            yield return Click(input,"ownedCar:"+id);yield return Click(input,"ownedHearEngine");
+            var playback=shell.Listening;Check(playback!=null&&playback.Audio.Ready&&playback.Car.state.gear==0,"Owned-car Hear engine starts isolated production DSP at neutral idle");
+            var captured=InspectionBuild.Capture(p,p.SelectedCar);using(var initial=new EngineListeningPlayback(captured,game.transform)){Check(initial.Car.mechanics.parts.All(part=>{var actual=p.parts.Single(v=>v.instanceId==part.instanceId);return !ReferenceEquals(actual,part)&&actual.definitionId==part.definitionId&&Math.Abs(actual.condition.health-part.condition.health)<1e-7&&actual.condition.failed==part.condition.failed&&actual.condition.elements.Select(e=>e.fault).SequenceEqual(part.condition.elements.Select(e=>e.fault));}),"Listening copies actual component identities, remaining health and faults before ticking");}
+            if(!controlsOnly){
+            float deadline=Time.realtimeSinceStartup+35;double peak=0;while(playback.Playing&&Time.realtimeSinceStartup<deadline){peak=Math.Max(peak,playback.Audio.OutputRms);yield return null;}
+            report.AppendLine("OWNED LISTEN "+p.SelectedCar.vehicleId+" / elapsed "+playback.Elapsed+" / duration "+playback.Duration+" / playing "+playback.Playing+" / max gear "+playback.HighestGear+" / RMS "+peak+" / failed "+playback.Car.state.engineFailed+" / stalled "+playback.Car.state.stalled);
+            Check(!playback.Playing&&playback.Elapsed>=playback.Duration&&peak>1e-6,"Full owned-car sequence completes audibly without requiring a worn car to achieve a healthy car's gear changes");
+            Check(before==JsonUtility.ToJson(p)&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Complete listening sequence spends no owned fuel, wear, money or durable state");
+            yield return Capture("owned-engine-listening");yield return Click(input,"dialogReplay");Check(shell.Listening!=null&&shell.Listening!=playback&&shell.Listening.Elapsed<1,"Replay starts a fresh copy of the same car");
+            yield return Click(input,"dialogStop");Check(shell.Listening==null,"Stop immediately silences and releases preview audio without leaving the page");yield return Click(input,"modalClose");
+            yield return Click(input,"ownedHearEngine");yield return Key(input,0x77);Check(shell.Listening!=null&&shell.ModalOpen,"F8 preserves the existing modal guard while listening");InterfaceComparison.SetReplacement("Garage",false);shell.Refresh();yield return null;Check(shell.Listening==null,"Hiding the native interface silences listening");InterfaceComparison.SetReplacement("Garage",true);shell.Refresh();if(shell.ModalOpen)yield return Click(input,"modalClose");
+            foreach(string model in new[]{"city-three","super-v8","fjord","rally-sedan"}){
+                var vehicle=game.vehicles.Single(v=>v.spec.id==model);var tune=vehicle.CreateStockTune();var build=p.catalog.Resolve(model,p.catalog.Recipe(model,tune),tune);var initialized=new CarSimulation(build.spec,build.tune,new DriverSettings());
+                var source=new InspectionBuild{build=build,components=initialized.mechanics.parts,startingFuel=new FuelState{litres=build.spec.fuel.capacityLitres*.6},startingFluids=FluidState.Full(build.spec.fluids)};
+                Func<string> snapshot=()=>JsonUtility.ToJson(source.build.spec)+JsonUtility.ToJson(source.build.tune)+JsonUtility.ToJson(source.startingFuel)+JsonUtility.ToJson(source.startingFluids)+string.Join("\n",source.components.Select(part=>JsonUtility.ToJson(part)));string sourceBefore=snapshot();double energy=0;int releases=0;
+                using(var sample=new EngineListeningPlayback(source,game.transform)){
+                    float end=Time.realtimeSinceStartup+35;while(sample.Playing&&Time.realtimeSinceStartup<end){sample.Tick(Time.unscaledDeltaTime);energy=Math.Max(energy,sample.Audio.OutputRms);releases=Math.Max(releases,sample.Audio.BlowOffCount);yield return null;}
+                    if(model=="rally-sedan")Check(releases>0&&!sample.Car.state.engineFailed,"Turbo audition produces a real pressure-release event without failing its copied engine / releases "+releases);
+                    Check(!sample.Playing&&sample.HighestGear>1&&energy>1e-6&&sample.Audio.CallbackCount>0,"Production listening completes audible multi-gear sequence / "+model);
+                    Check(sourceBefore==snapshot(),"Playback does not mutate captured hardware/fluids / "+model);
+                }
+                report.AppendLine("LISTEN "+model+" / peak RMS "+energy+" / pressure releases "+releases);
+            }
+            Check(before==JsonUtility.ToJson(p)&&disk.SequenceEqual(File.ReadAllBytes(ProfileStore.FilePath)),"Petrol/diesel/3/4/8-cylinder auditions preserve the player's complete state");
+            }else{yield return new WaitForSecondsRealtime(.5f);Check(playback.Audio.OutputRms>1e-6,"Header listening control produces audible output");yield return Capture("owned-hear-engine-header");yield return Click(input,"modalClose");}
+            yield return Click(input,"ownedBack");yield return Click(input,"garageDealer");yield return null;
+            var offer=p.vehicleStock.listings.First(o=>!o.used||o.engineRuns);var card=shell.Root.Q("dealerCar:"+offer.listingId);shell.Root.Q<ScrollView>("dealerCars").ScrollTo(card);yield return Click(input,card);yield return Click(input,"dealerHearEngine");
+            Check(shell.Listening!=null&&shell.Root.Q("engineListeningStage")!=null,"Dealership offers the same isolated listening dialog");yield return new WaitForSecondsRealtime(.3f);yield return Click(input,"modalClose");Check(shell.Listening==null&&before==JsonUtility.ToJson(p),"Closing dealership listening stops all preview audio without buying or inspecting the car");
+        }
         IEnumerator OwnedFittedPartsChecks(WindowsKeyboardProbe input)
         {
             var original=game.Profile;var field=typeof(PrototypeGame).GetField("profile",BindingFlags.Instance|BindingFlags.NonPublic);

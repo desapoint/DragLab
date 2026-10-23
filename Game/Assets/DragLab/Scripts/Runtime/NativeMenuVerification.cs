@@ -112,6 +112,8 @@ namespace DragLab.Runtime
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-market-baseline-only-verify")>=0){yield return MarketBaselineChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-finish-pacing-only-verify")>=0){yield return FinishPacingChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-race-results-only-verify")>=0){yield return ResultActionChecks(input);yield break;}
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-listening-controls-only-verify")>=0){yield return EngineListeningChecks(input,true);yield break;}
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-engine-listening-only-verify")>=0){yield return EngineListeningChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-quick-leave-only-verify")>=0){yield return QuickLeaveChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-flick-only-verify")>=0){yield return FlickChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-touch-pedals-only-verify")>=0){yield return TouchPedalChecks(input);yield break;}

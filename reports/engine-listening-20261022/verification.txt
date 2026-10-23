@@ -1,0 +1,6 @@
+Live sequence: 64 checks / 0 runtime errors.
+Header controls: 49 checks / 0 runtime errors.
+Owned fitted/layout: 119 checks / 0 runtime errors.
+Turbo physical release delivered while playing: 1.
+Windows build passed. Dealer regression running; Android rebuild follows warning links.
+See CHANGES.md for input isolation, diagnostic corrections and physical-device limits.
