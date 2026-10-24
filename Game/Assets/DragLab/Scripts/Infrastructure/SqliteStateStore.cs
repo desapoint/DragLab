@@ -10,7 +10,7 @@ using DragLab.Domain;
 using DragLab.Domain.Mechanics;
 namespace DragLab.Infrastructure
 {
-    internal static class SqliteStateStore
+    internal static partial class SqliteStateStore
     {
         internal const int SchemaVersion=3,ApplicationId=0x444C4142;
         internal sealed class Migration {public int version;public string name,sql,hash;}
@@ -317,7 +317,12 @@ namespace DragLab.Infrastructure
         }
         static SqliteNative Open(string path,bool create=true,Func<string,PlayerProfile> validateMigration=null)
             =>Open(path,create,validateMigration,out _);
-        static SqliteNative Open(string path,bool create,Func<string,PlayerProfile> validateMigration,out PlayerProfile migratedProfile)
+        static SqliteNative OpenCurrentForCommand(string path)
+        {
+            if(migrations==null)throw new InvalidOperationException("The state owner must prepare storage before dispatching typed commands.");
+            return Open(path,false,null,out _,true);
+        }
+        static SqliteNative Open(string path,bool create,Func<string,PlayerProfile> validateMigration,out PlayerProfile migratedProfile,bool requireCurrentSchema=false)
         {
             migratedProfile=null;
             if(File.Exists(path)&&!IsDatabase(path)&&!(create&&new FileInfo(path).Length==0)){string text=File.ReadAllText(path,Encoding.UTF8);if(text.TrimStart().StartsWith("{")){var version=StateRows.Fields(text.Trim()).FirstOrDefault(f=>f.Key=="saveVersion").Value;if(int.TryParse(version,out int contract)&&contract>MechanicsOwnership.SaveVersion)throw new NotSupportedException("Unexpected future save format; original preserved.");}throw new InvalidDataException("Not a SQLite save database.");}
@@ -327,6 +332,8 @@ namespace DragLab.Infrastructure
                 int version=int.Parse(db.Scalar("PRAGMA user_version"),CultureInfo.InvariantCulture),app=int.Parse(db.Scalar("PRAGMA application_id"),CultureInfo.InvariantCulture);
                 if(version>SchemaVersion)throw new NotSupportedException("Newer save database schema; writes are blocked.");
                 if(app!=0&&app!=ApplicationId)throw new NotSupportedException("Database belongs to another application.");
+                if(requireCurrentSchema&&version!=SchemaVersion)
+                    throw new NotSupportedException("Load and validate the current save schema before running typed commands.");
                 if(version==0&&db.Scalar("SELECT name FROM sqlite_master WHERE type='table' LIMIT 1")!=null)throw new InvalidDataException("Unversioned populated database cannot be treated as a new save.");
                 if(version>0){var history=db.Query("SELECT version,checksum FROM schema_migrations ORDER BY version");if(history.Count!=version)throw new InvalidDataException("Incomplete migration history.");for(int i=0;i<history.Count;i++){if(int.Parse(history[i][0],CultureInfo.InvariantCulture)!=i+1||!HistoryMatches(migrations[i],history[i][1]))throw new NotSupportedException("Migration history does not match this build.");}}
                 if(version==1)VerifySchema1State(db,path,true);

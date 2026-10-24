@@ -71,10 +71,51 @@ namespace DragLab.Editor
 
         public static void RunTypedSaveMigration()
         {
+            VerifyTypedSaveMigration("S05A");
+            VerifyLegacyStorage("S05A");
+        }
+
+        public static void RunTypedFluidRefill()
+        {
             if (!Application.isBatchMode || EditorApplication.isPlaying)
                 throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
             SqlitePluginSetup.Configure();
-            string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/save-refactor/S05A"));
+            string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/save-refactor/S05B"));
+            Directory.CreateDirectory(root);
+            string fixtures = Path.Combine(root, "refill-fixtures-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmssfff"));
+            var log = new StringBuilder();
+            int count = 0;
+            try
+            {
+                TypedFluidRefillCommitChecks.Run((ok, label) =>
+                {
+                    log.AppendLine((ok ? "PASS " : "FAIL ") + label);
+                    if (!ok) throw new InvalidOperationException(label);
+                    count++;
+                }, fixtures);
+                log.AppendLine("RESULT PASS count=" + count);
+                Debug.Log("S05b focused typed refill checks passed: " + count);
+            }
+            catch (Exception error)
+            {
+                log.AppendLine("RESULT FAIL count=" + count);
+                log.AppendLine(error.ToString());
+                throw;
+            }
+            finally
+            {
+                File.WriteAllText(Path.Combine(root, "typed-refill-checks.txt"), log.ToString(), new UTF8Encoding(false));
+            }
+            VerifyTypedSaveMigration("S05B");
+            VerifyLegacyStorage("S05B");
+        }
+
+        static void VerifyTypedSaveMigration(string checkpoint)
+        {
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            SqlitePluginSetup.Configure();
+            string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/save-refactor/" + checkpoint));
             Directory.CreateDirectory(root);
             string fixtures = Path.Combine(root, "migration-fixtures-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmssfff"));
             var log = new StringBuilder();
@@ -101,7 +142,6 @@ namespace DragLab.Editor
             {
                 File.WriteAllText(Path.Combine(root, "typed-migration-checks.txt"), log.ToString(), new UTF8Encoding(false));
             }
-            VerifyLegacyStorage("S05A");
         }
 
         static void VerifyLegacyStorage(string checkpoint)

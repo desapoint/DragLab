@@ -241,7 +241,11 @@ namespace DragLab.Infrastructure
             for (int i = 0; i < typedReceipts.Length; i++)
             {
                 var receipt=typedReceipts[i];
-                if(receipt.ReceiptOrder!=i)throw new InvalidDataException("Typed business receipt order is not contiguous.");
+                // Direct commands append one monotonic order and evict only the
+                // oldest record; the bounded window need not start at zero.
+                if(receipt.ReceiptOrder<0 || i>0 &&
+                    (typedReceipts[i-1].ReceiptOrder==long.MaxValue || receipt.ReceiptOrder!=typedReceipts[i-1].ReceiptOrder+1))
+                    throw new InvalidDataException("Typed business receipt order is not a contiguous window.");
                 if(string.IsNullOrEmpty(receipt.Id)||!receiptIds.Add(receipt.Id)||string.IsNullOrEmpty(receipt.Operation)||receipt.Revision<0||receipt.Revision>economy.Revision||receipt.UtcTicks<=0||receipt.UtcTicks>economy.LastEconomyUtcTicks||receipt.UtcTicks>DateTime.MaxValue.Ticks||receipt.CashBefore<0||receipt.CashAfter<0)
                     throw new InvalidDataException("Invalid typed business receipt scalar fields.");
                 foreach(long bits in new[]{receipt.FuelAddedBits,receipt.OilAddedBits,receipt.CoolantAddedBits})
