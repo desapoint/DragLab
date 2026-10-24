@@ -25,7 +25,7 @@ namespace DragLab.Infrastructure
             internal void Elapsed(string name,long start)
                 =>Value(name,(Stamp()-start)*1000.0/System.Diagnostics.Stopwatch.Frequency);
         }
-        internal sealed class Snapshot {public List<StateRows.Row> rows;public List<string[]> owners,components,slots;public SqliteTypedProfileData typedData;public long revision,expectedCommit,committed;public string build,content,physics,saveVersion;public SaveTrace trace;}
+        internal sealed class Snapshot {public List<StateRows.Row> rows;public List<string[]> owners,components,slots;public SqliteTypedProfileData typedData;public long revision,expectedCommit,committed;public string build,content,physics,saveVersion;public SaveTrace trace;internal SqliteStateOwnerReceipt OwnerReceipt;}
         static readonly object gate=new object();
         static Migration[] migrations;
         static string cachedPath;static long cachedCommit=-1;static Dictionary<string,StateRows.Row> cachedRows;
@@ -727,12 +727,25 @@ namespace DragLab.Infrastructure
                         }
                         else if(Meta(db,"ledger_revision")!=typedData.Economy.Revision.ToString(CultureInfo.InvariantCulture))
                             throw new InvalidDataException("Typed economy revision disagrees with the saved ledger fence.");
+                        SqliteStateOwnerReceipt ownerReceipt=null;
+                        if(typedData.Economy!=null)
+                        {
+                            string ledgerText=Meta(db,"ledger_revision");
+                            string contentText=Meta(db,"content_revision");
+                            string physicsIdentity=Meta(db,"physics_identity");
+                            if(!long.TryParse(ledgerText,NumberStyles.Integer,CultureInfo.InvariantCulture,out long ledgerRevision)||
+                                ledgerRevision<0||
+                                !long.TryParse(contentText,NumberStyles.Integer,CultureInfo.InvariantCulture,out long contentRevision)||contentRevision<0||
+                                string.IsNullOrEmpty(physicsIdentity))
+                                throw new InvalidDataException("Validated profile is missing durable owner metadata.");
+                            ownerReceipt=new SqliteStateOwnerReceipt(commit,generation,ledgerRevision,contentRevision,physicsIdentity);
+                        }
                         // The only rootless read allowed is the fully verified empty bootstrap:
                         // no legacy rows, no typed economy, and EmptyTypedBootstrap already passed.
                         // This supplies an empty JSON object to initialization without creating a player.
                         string legacyJson=legacyRows.Count==0&&typedData.Economy==null
                             ?"{}":StateRows.Restore(legacyRows.Values);
-                        var result=new SqliteStateLoadResult(legacyJson,typedData,commit,generation,migratedProfile);
+                        var result=new SqliteStateLoadResult(legacyJson,typedData,commit,generation,ownerReceipt,migratedProfile);
                         if(materializeLoaded!=null)
                         {
                             var profile=materializeLoaded(result);
@@ -797,6 +810,9 @@ namespace DragLab.Infrastructure
         internal static void WriteLegacy(string path,Snapshot snapshot,bool reset=false)=>Write(path,snapshot,reset);
         internal static void Write(string path,Snapshot snapshot,bool reset=false)
         {
+            if(snapshot==null)throw new ArgumentNullException(nameof(snapshot));
+            snapshot.OwnerReceipt=null;
+            snapshot.committed=0;
             long gateStart=Stamp();
             lock(gate)
             {
@@ -831,6 +847,7 @@ namespace DragLab.Infrastructure
                         FailureInjection?.Invoke("after-reset-intent");
                     }
                     int changed=0,removed=0,inserted=0,updated=0,unchanged=0,marketChanged=0;
+                    SqliteStateOwnerReceipt durableReceipt=null;
                     try
                     {
                         long rowAndOwnershipStart=Stamp();
@@ -863,6 +880,9 @@ namespace DragLab.Infrastructure
                         Sync(db,"installed_slots",new[]{"owner_id","slot","part_id"},snapshot.slots,2);
                         if(snapshot.typedData.Economy.Revision!=snapshot.revision)
                             throw new InvalidOperationException("Typed economy and legacy transaction revision disagree.");
+                        if(snapshot.revision<0||!long.TryParse(snapshot.content,NumberStyles.Integer,CultureInfo.InvariantCulture,out long contentRevision)||
+                            contentRevision<0||string.IsNullOrEmpty(snapshot.physics))
+                            throw new InvalidDataException("Legacy save is missing valid durable owner metadata.");
                         if(reset)db.Exec("DELETE FROM operation_receipts");
                         var typedRows=SyncTypedProfileState(db,snapshot.typedData);
                         SaveMeasured(snapshot,"ownership delta SQL",ref timing);
@@ -882,6 +902,8 @@ namespace DragLab.Infrastructure
                         SetMeta(db,"content_revision",snapshot.content);
                         SetMeta(db,"physics_identity",snapshot.physics);
                         SetMeta(db,"profile_contract",snapshot.saveVersion);
+                        durableReceipt=new SqliteStateOwnerReceipt(
+                            nextCommit,generation,snapshot.revision,contentRevision,snapshot.physics);
                         SaveMeasured(snapshot,"digest + metadata",ref timing);
                         db.Exec("DELETE FROM pending_checkpoints");
                         long preCommit=Stamp();
@@ -889,7 +911,10 @@ namespace DragLab.Infrastructure
                         snapshot.trace?.Elapsed("precommit injection wait",preCommit);
                         timing=Stamp();
                         db.Exec("COMMIT");
-                        SaveMeasured(snapshot,"durable commit",ref timing);
+                        snapshot.OwnerReceipt=durableReceipt;
+                        snapshot.committed=durableReceipt.CommitId;
+                        try{SaveMeasured(snapshot,"durable commit",ref timing);}
+                        catch(Exception error){backupWarning="Save is committed; diagnostic observer failed: "+error.Message;}
                     }
                     catch
                     {
@@ -904,13 +929,14 @@ namespace DragLab.Infrastructure
                     }
                     InvalidateRowsAfterTypedCommit(path,nextCommit);
                     snapshot.committed=cachedCommit;LastChangedRows=changed;
-                    if(oldCommit==0||reset)
+                    try
                     {
-                        try{db.Backup(path+".bak");}
-                        catch(Exception e){backupWarning="Recovery copy refresh failed; durable primary is retained: "+e.Message;}
+                        if(oldCommit==0||reset)db.Backup(path+".bak");
+                        else ScheduleBackup(path);
                     }
-                    else ScheduleBackup(path);
-                    SaveMeasured(snapshot,"backup scheduling",ref timing);
+                    catch(Exception e){backupWarning="Save is committed; recovery copy scheduling failed: "+e.Message;}
+                    try{SaveMeasured(snapshot,"backup scheduling",ref timing);}
+                    catch(Exception error){backupWarning="Save is committed; diagnostic observer failed: "+error.Message;}
                 }
             }
         }

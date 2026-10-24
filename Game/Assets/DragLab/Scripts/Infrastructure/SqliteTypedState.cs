@@ -335,15 +335,18 @@ namespace DragLab.Infrastructure
         internal readonly SqliteTypedProfileData TypedData;
         internal readonly long Commit;
         internal readonly long Generation;
+        internal readonly SqliteStateOwnerReceipt OwnerReceipt;
         internal readonly PlayerProfile ValidatedMigrationProfile;
         internal PlayerProfile LoadedProfile { get; set; }
 
-        internal SqliteStateLoadResult(string legacyJson, SqliteTypedProfileData typedData, long commit, long generation, PlayerProfile validatedMigrationProfile = null)
+        internal SqliteStateLoadResult(string legacyJson, SqliteTypedProfileData typedData, long commit, long generation,
+            SqliteStateOwnerReceipt ownerReceipt, PlayerProfile validatedMigrationProfile = null)
         {
             LegacyJson = legacyJson ?? throw new ArgumentNullException(nameof(legacyJson));
             TypedData = typedData ?? throw new ArgumentNullException(nameof(typedData));
             Commit = commit;
             Generation = generation;
+            OwnerReceipt = ownerReceipt;
             ValidatedMigrationProfile = validatedMigrationProfile;
         }
     }

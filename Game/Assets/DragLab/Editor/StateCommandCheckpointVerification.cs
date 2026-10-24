@@ -144,6 +144,41 @@ namespace DragLab.Editor
             VerifyLegacyStorage("S06A");
         }
 
+        public static void RunSelectedProfileOwner()
+        {
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            SqlitePluginSetup.Configure();
+            string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/save-refactor/S06B"));
+            Directory.CreateDirectory(root);
+            string fixtures = Path.Combine(root, "owner-fixtures-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmssfff"));
+            var log = new StringBuilder();
+            int count = 0;
+            try
+            {
+                SelectedProfileOwnerChecks.Run((ok, label) =>
+                {
+                    log.AppendLine((ok ? "PASS " : "FAIL ") + label);
+                    if (!ok) throw new InvalidOperationException(label);
+                    count++;
+                }, fixtures);
+                log.AppendLine("RESULT PASS count=" + count);
+                Debug.Log("S06b selected profile owner checks passed: " + count);
+            }
+            catch (Exception error)
+            {
+                log.AppendLine("RESULT FAIL count=" + count);
+                log.AppendLine(error.ToString());
+                throw;
+            }
+            finally
+            {
+                File.WriteAllText(Path.Combine(root, "owner-checks.txt"), log.ToString(), new UTF8Encoding(false));
+            }
+            VerifyTypedSaveMigration("S06B");
+            VerifyLegacyStorage("S06B");
+        }
+
         static void VerifyTypedSaveMigration(string checkpoint)
         {
             if (!Application.isBatchMode || EditorApplication.isPlaying)

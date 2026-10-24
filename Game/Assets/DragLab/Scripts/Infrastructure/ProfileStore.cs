@@ -18,6 +18,8 @@ namespace DragLab.Infrastructure
         public static bool TryResetIncompatibleSave(out string error)
         {
             error = null;
+            if(!CanBeginLegacyWrite()){error="A typed save operation is still retained.";return false;}
+            InvalidateOwnerProof();
             if (!writeBlocked) { error = "No incompatible save requires reset."; return false; }
             var moved = new System.Collections.Generic.List<string[]>();
             string backupSuffix = ".before-reset-" + DragLab.Domain.RuntimeEntropy.UtcNow.ToString("yyyyMMddHHmmssfff");
@@ -60,7 +62,19 @@ namespace DragLab.Infrastructure
         }
         static string slot="slot-1";
 #if UNITY_EDITOR
-        public static string VerificationPath;
+        static string verificationPath;
+        public static string VerificationPath
+        {
+            get=>verificationPath;
+            set
+            {
+                if(!string.Equals(verificationPath,value,StringComparison.Ordinal))
+                {
+                    if(!CanChangeSelection())throw new InvalidOperationException("A save operation is still retained.");
+                    InvalidateOwnerProof();verificationPath=value;selectionEpoch=checked(selectionEpoch+1);selectedCheckpointDirty=false;
+                }
+            }
+        }
 #endif
         internal static bool LegacyFixture {
             get {
@@ -72,7 +86,7 @@ namespace DragLab.Infrastructure
             }
         }
         internal static bool DatabasePath(string path)=>path.EndsWith(".sqlite3",StringComparison.OrdinalIgnoreCase)||path.EndsWith(".sqlite3.bak",StringComparison.OrdinalIgnoreCase);
-        public static void UseSlot(string id){if(string.IsNullOrEmpty(id)||id.Length>48||System.Text.RegularExpressions.Regex.IsMatch(id,"[^a-zA-Z0-9_-]"))throw new ArgumentException("Invalid save slot ID.");RaceCheckpointStore.Drain();slot=id;SqliteStateStore.Invalidate();writeBlocked=false;}
+        public static void UseSlot(string id){if(string.IsNullOrEmpty(id)||id.Length>48||System.Text.RegularExpressions.Regex.IsMatch(id,"[^a-zA-Z0-9_-]"))throw new ArgumentException("Invalid save slot ID.");if(!CanChangeSelection())throw new InvalidOperationException("A typed save operation is still retained.");InvalidateOwnerProof();RaceCheckpointStore.Drain();slot=id;selectionEpoch=checked(selectionEpoch+1);selectedCheckpointDirty=false;SqliteStateStore.Invalidate();writeBlocked=false;}
         public static string FilePath {
             get {
 #if UNITY_EDITOR
@@ -87,11 +101,14 @@ namespace DragLab.Infrastructure
         public static string Status {get=>SqliteStateStore.BackupWarning==null?status:status+" "+SqliteStateStore.BackupWarning;private set=>status=value;}
         public static PlayerProfile Load(bool recoverInterrupted=false)
         {
+            if(!CanChangeSelection())throw new InvalidOperationException("A typed save operation is still retained.");
+            InvalidateOwnerProof();
             if(LegacyFixture){var old=LegacyProfileStore.Load(recoverInterrupted);Status=LegacyProfileStore.Status;return old;}
-            RaceCheckpointStore.Drain();SqliteStateStore.DrainBackups();SqliteStateStore.Prepare();SqliteStateStore.Invalidate();writeBlocked=false;Status=null;long now=DragLab.Domain.RuntimeEntropy.UtcNow.Ticks;var catalog=MechanicsTransactions.Catalog();
-            foreach(string path in new[]{FilePath,FilePath+".bak"}){
+            string loadSlot,loadPath;long loadEpoch;CaptureSelectedContext(out loadSlot,out loadPath,out loadEpoch);
+            RaceCheckpointStore.Drain();MarkSelectedCheckpointVerifiedClean();SqliteStateStore.DrainBackups();SqliteStateStore.Prepare();SqliteStateStore.Invalidate();writeBlocked=false;Status=null;long now=DragLab.Domain.RuntimeEntropy.UtcNow.Ticks;var catalog=MechanicsTransactions.Catalog();
+            foreach(string path in new[]{loadPath,loadPath+".bak"}){
                 if(!File.Exists(path))continue;
-                if(path==FilePath&&SqliteStateStore.CanInitialize(path))continue;
+                if(path==loadPath&&SqliteStateStore.CanInitialize(path))continue;
                 try{
                 var state=SqliteStateStore.ReadState(path,
                     raw=>LegacyProfileDecoder.DecodeAndValidate(raw,catalog),
@@ -109,22 +126,23 @@ namespace DragLab.Infrastructure
                     // ReadState has already validated this exact current-contract graph.
                     // Broad normalization here could silently heal durable state after
                     // the strict migration/load boundary, then persist the altered values.
-                    if(path!=FilePath&&!writeBlocked)SqliteStateStore.RecoverBackup(FilePath,path);
-                    Status=path==FilePath?"Save database loaded.":"Recovered previous save database.";
-                    string warning;if(RaceCheckpointStore.Merge(FilePath,p,true,out warning))Status="Save database and latest checkpoint loaded.";if(warning!=null)Status+=" "+warning;
-                    if(recoverInterrupted&&!writeBlocked&&RunPersistence.RecoverInterrupted(p)){bool saved=TrySave(p);Status=saved?"Recovered interrupted run; wear/fuel retained without rewards.":"Interrupted resources retained in memory; "+Status;}
+                    if(path!=loadPath&&!writeBlocked)SqliteStateStore.RecoverBackup(loadPath,path);
+                    Status=path==loadPath?"Save database loaded.":"Recovered previous save database.";
+                    bool merged=RaceCheckpointStore.Merge(loadPath,p,true,out string warning);if(merged){Status="Save database and latest checkpoint loaded.";MarkSelectedCheckpointDirty();}if(warning!=null){Status+=" "+warning;MarkSelectedCheckpointDirty();}
+                    if(recoverInterrupted&&!writeBlocked&&RunPersistence.RecoverInterrupted(p)){bool saved=TrySave(p);Status=saved?"Recovered interrupted run; wear/fuel retained without rewards.":"Interrupted resources retained in memory; "+Status;InvalidateOwnerProof();}
+                    else if(!merged&&warning==null)RegisterValidatedOwner(p,loadSlot,loadPath,loadEpoch,state.OwnerReceipt);
                     return p;
                 }catch(Exception error){if(error is NotSupportedException)writeBlocked=true;Debug.LogWarning("Could not read "+path+": "+error.Message);}
             }
-            if(File.Exists(FilePath)&&!SqliteStateStore.CanInitialize(FilePath)||File.Exists(FilePath+".bak"))writeBlocked=true;
+            if(File.Exists(loadPath)&&!SqliteStateStore.CanInitialize(loadPath)||File.Exists(loadPath+".bak"))writeBlocked=true;
             if(!writeBlocked&&slot=="slot-1"&&(File.Exists(LegacyFilePath)||File.Exists(LegacyFilePath+".bak"))){
                 try{return ImportLegacy(catalog,recoverInterrupted);}catch(Exception error){writeBlocked=true;Status="Legacy import failed; originals preserved: "+error.Message;Debug.LogWarning(Status);}
             }
             var fresh=PlayerProfile.NewGame(now);MechanicsOwnership.Ensure(fresh,catalog);
-            if(writeBlocked){Status=Status??"Save could not be recovered; originals preserved and writes blocked.";return fresh;}
+            if(writeBlocked){Status=Status??"Save could not be recovered; originals preserved and writes blocked.";InvalidateForFailedLoad();return fresh;}
             // Preferences are shared across slots and are independent from starting progression.
             if(File.Exists(DrivingPreferences.FilePath))fresh=JsonUtility.FromJson<PlayerProfile>(DrivingPreferences.AddToJson(JsonUtility.ToJson(fresh)));
-            fresh.catalog=catalog;if(!TrySave(fresh))Status="New game retained in memory; "+Status;else Status="New save database created.";return fresh;
+            fresh.catalog=catalog;if(!TrySave(fresh)){Status="New game retained in memory; "+Status;InvalidateForFailedLoad();}else Status="New save database created.";return fresh;
         }
         static PlayerProfile ImportLegacy(MechanicalCatalog catalog,bool recoverInterrupted)
         {
@@ -140,21 +158,33 @@ namespace DragLab.Infrastructure
         internal static bool TrySaveValidated(PlayerProfile profile)=>TrySaveCore(profile,true);
         static bool TrySaveCore(PlayerProfile profile,bool validated)
         {
+            if(!CanBeginLegacyWrite())return false;
+            if(profile==null)return false;
             if(LegacyFixture){bool ok=validated?LegacyProfileStore.TrySaveValidated(profile):LegacyProfileStore.TrySave(profile);Status=LegacyProfileStore.Status;return ok;}
+            string saveSlot,savePath;long saveEpoch;CaptureSelectedContext(out saveSlot,out savePath,out saveEpoch);
             RaceCheckpointStore.Drain();try{
                 if(writeBlocked)throw new InvalidDataException("Save writes blocked; existing database preserved.");
                 long start=System.Diagnostics.Stopwatch.GetTimestamp();if(!validated)MechanicsOwnership.Ensure(profile,profile.catalog??MechanicsTransactions.Catalog());
-                string warning;RaceCheckpointStore.Merge(FilePath,profile,false,out warning);DrivingPreferences.Ensure(profile);SqliteStateStore.Prepare();var snapshot=SqliteStateStore.LegacyCaptureManaged(profile,Application.version,null);SaveMeasurement?.Invoke("database capture + validation",Elapsed(start));
-                string path=FilePath;start=System.Diagnostics.Stopwatch.GetTimestamp();Task.Run(()=>SqliteStateStore.WriteLegacy(path,snapshot)).GetAwaiter().GetResult();SaveMeasurement?.Invoke("database transaction + durability",Elapsed(start));
-                profile.storageCommit=snapshot.committed;RaceCheckpointStore.Retire(FilePath,false);Status="Saved.";return true;
-            }catch(Exception error){Status="SAVE FAILED: "+error.Message;return false;}
+                string warning;RaceCheckpointStore.Merge(savePath,profile,false,out warning);DrivingPreferences.Ensure(profile);SqliteStateStore.Prepare();var snapshot=SqliteStateStore.LegacyCaptureManaged(profile,Application.version,null);
+                try{SaveMeasurement?.Invoke("database capture + validation",Elapsed(start));}catch(Exception){}
+                start=System.Diagnostics.Stopwatch.GetTimestamp();Task.Run(()=>SqliteStateStore.WriteLegacy(savePath,snapshot)).GetAwaiter().GetResult();
+                try{SaveMeasurement?.Invoke("database transaction + durability",Elapsed(start));}catch(Exception){}
+                profile.storageCommit=snapshot.committed;
+                bool retired=true;string retireError=null;try{RaceCheckpointStore.Retire(savePath,false);}catch(Exception error){retired=false;retireError=error.Message;}
+                if(retired){Status="Saved.";MarkSelectedCheckpointVerifiedClean();if(snapshot.OwnerReceipt!=null&&profile.revision==snapshot.typedData.Economy.Revision&&TypedCaptureMatches(profile,snapshot.typedData))RegisterValidatedOwner(profile,saveSlot,savePath,saveEpoch,snapshot.OwnerReceipt);else InvalidateOwnerProof();}
+                else{Status="Save committed; checkpoint retirement needs recovery: "+retireError;MarkSelectedCheckpointDirty();}
+                return true;
+            }catch(Exception error){InvalidateOwnerProof();Status="SAVE FAILED: "+error.Message;return false;}
         }
         static double Elapsed(long stamp)=>(System.Diagnostics.Stopwatch.GetTimestamp()-stamp)*1000.0/System.Diagnostics.Stopwatch.Frequency;
-        public static bool TryCheckpoint(PlayerProfile profile,RunCheckpoint checkpoint,out string error){if(LegacyFixture)return LegacyProfileStore.TryCheckpoint(profile,checkpoint,out error);if(writeBlocked){error="Save writes blocked; original preserved.";return false;}return RaceCheckpointStore.TryQueue(FilePath,profile,checkpoint,out error);}
+        public static bool TryCheckpoint(PlayerProfile profile,RunCheckpoint checkpoint,out string error){if(!CanUseCheckpoint()){error="A typed save operation is still retained.";return false;}if(LegacyFixture)return LegacyProfileStore.TryCheckpoint(profile,checkpoint,out error);if(writeBlocked){error="Save writes blocked; original preserved.";return false;}bool queued=RaceCheckpointStore.TryQueue(FilePath,profile,checkpoint,out error);if(queued)MarkSelectedCheckpointDirty();return queued;}
         public static bool TryReset(PlayerProfile current,out PlayerProfile committed)
         {
+            if(!CanBeginLegacyWrite()){committed=current;Status="A typed save operation is still retained.";return false;}
+            InvalidateOwnerProof();
             if(LegacyFixture){bool ok=LegacyProfileStore.TryReset(current,out committed);Status=LegacyProfileStore.Status;return ok;}
-            RaceCheckpointStore.Drain();SqliteStateStore.DrainBackups();committed=current;try{if(writeBlocked)throw new InvalidDataException("Save writes are blocked.");var fresh=current.RestartKeepingPreferences(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);fresh.storageCommit=current.storageCommit;MechanicsOwnership.Ensure(fresh,current.catalog??MechanicsTransactions.Catalog());SqliteStateStore.Prepare();var snapshot=SqliteStateStore.LegacyCaptureManaged(fresh,Application.version,null);string path=FilePath;Task.Run(()=>SqliteStateStore.WriteLegacy(path,snapshot,true)).GetAwaiter().GetResult();fresh.storageCommit=snapshot.committed;RaceCheckpointStore.Retire(FilePath,false);committed=fresh;Status="Game reset. Settings preserved.";return true;}catch(Exception error){Status="RESET FAILED: "+error.Message;return false;}
+            string resetSlot,resetPath;long resetEpoch;CaptureSelectedContext(out resetSlot,out resetPath,out resetEpoch);
+            RaceCheckpointStore.Drain();SqliteStateStore.DrainBackups();committed=current;try{if(writeBlocked)throw new InvalidDataException("Save writes are blocked.");var fresh=current.RestartKeepingPreferences(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);fresh.storageCommit=current.storageCommit;MechanicsOwnership.Ensure(fresh,current.catalog??MechanicsTransactions.Catalog());SqliteStateStore.Prepare();var snapshot=SqliteStateStore.LegacyCaptureManaged(fresh,Application.version,null);Task.Run(()=>SqliteStateStore.WriteLegacy(resetPath,snapshot,true)).GetAwaiter().GetResult();fresh.storageCommit=snapshot.committed;committed=fresh;bool retired=true;string retireError=null;try{RaceCheckpointStore.Retire(resetPath,false);}catch(Exception error){retired=false;retireError=error.Message;}if(retired){MarkSelectedCheckpointVerifiedClean();Status="Game reset. Settings preserved.";if(snapshot.OwnerReceipt!=null)RegisterValidatedOwner(fresh,resetSlot,resetPath,resetEpoch,snapshot.OwnerReceipt);}else{MarkSelectedCheckpointDirty();InvalidateOwnerProof();Status="Reset committed; checkpoint retirement needs recovery: "+retireError;}return true;}catch(Exception error){InvalidateOwnerProof();Status="RESET FAILED: "+error.Message;return false;}
         }
     }
 }

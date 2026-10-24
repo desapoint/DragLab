@@ -645,6 +645,10 @@ namespace DragLab.Runtime
                 capturedNullBoundaryReceipt.target = "mutated-after-owner-capture";
                 capturedNullBoundaryReceipt.disposed = new[] { "mutated-item" };
                 var capturedResult = pendingSave.GetAwaiter().GetResult();
+                // Close the real asynchronous owner lifecycle even though this fixture
+                // intentionally dirties its source after capture. Completion must retain
+                // the committed captured state without certifying the dirty live source.
+                ProfileStore.CompleteValidatedSave(loaded, pendingSave);
                 var afterCaptureMutation = SqliteStateStore.ReadState(v2, null, state => Materialize(state, catalog));
                 var capturedReceiptRecords = afterCaptureMutation.TypedData.Receipts;
                 Check(check, capturedResult.commit == afterCaptureMutation.Commit &&

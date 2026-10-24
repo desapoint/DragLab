@@ -10,7 +10,7 @@ Additional hard completion gate: **no JSON encode/decode for runtime data manipu
 
 ## Next checkpoint
 
-**S06a pending-command coordinator infrastructure is active.** S05b is locally committed as `c49f103` after664 focused +66 migration +72 isolated storage checks, Unity exit0 and independent Luna-high PASS. S06a precedes the actual selected-binding provider, serialization and live refill/UI switch; do not call S06 complete from this infrastructure alone. Earlier committed checkpoints are listed below.
+**S06b selected-save owner capability and competing-write fences are active.** S06a is locally committed as `6d08bcb` after149 focused +72 isolated storage checks and Luna-high PASS. S05b is `c49f103` after664 focused +66 migration +72 isolated storage checks and Luna-high PASS. Actual UI/publication activation remains later S06; do not call S06 complete from these infrastructure increments. Earlier committed checkpoints are listed below.
 
 **S05b — final technical review is PASS; local commit precedes S06 activation work.** S05a is committed as `ff9102e` after66 focused +72 isolated storage checks and Luna-high PASS. S05a1 is committed as `ffb1081` after89+72 checks and Luna-high PASS. S05p is committed as `ad4ed4e` after independent Luna-high PASS. S04 is committed as `1fc63d0` after final Luna-high PASS. S03a is committed as `3dfcfa1` after independent Luna-high PASS. S02c is committed as `34abd7f` after Luna-high PASS. S02b is committed as `7e6ea10` after Luna-high PASS. S02a passed Luna-high review and is committed as `62b2bc0`. S01 passed review and is committed as `fd092bc`. S00 is `39d09b7`, whitespace closure `f163454`. No gameplay caller is converted to the dormant refill writer yet; S06 owns ordered admission and publication. Parent coordinates all Unity runs, real mouse tests, staging and commits. Interactive tests run sequentially; no two Unity Editors use this project concurrently.
 
@@ -41,8 +41,9 @@ Runtime paths above are relative to Game/Assets/DragLab/Scripts/. No overlapping
 | S05a1 | 89 codec/native binding + 72 isolated storage checks pass, exit 0; source/meta boundaries pass | PASS — S05A1_REVIEW.md | `ffb1081` | Dormant typed scalar/fluid row only; no migration, writer or live save switch |
 | S05a | 66 typed migration +72 isolated storage checks pass, exit0; original-version recovery/strict load boundaries covered | PASS — S05A_REVIEW.md | `ff9102e` | Typed economy/fluid authority; transitional legacy projection remains explicit debt |
 | S05b | Final-source664 direct refill +66 migration +72 isolated storage checks pass, exit0 | PASS — S05B_REVIEW.md | `c49f103` | Dormant scoped writer; S06 owns selected binding, ordered admission and publication |
-| S06a | Final-source149 coordinator +72 isolated legacy storage checks pass, exit0 | PASS — S06A_REVIEW.md | This checkpoint commit | One retained operation, nonblocking poll and unknown reconciliation; no gameplay activation |
-| S06 activation–S14 | Not implemented | Not reviewed | None | Execute in order after prior gate passes; remaining cache/JSON consumers stay explicit conversion work |
+| S06a | Final-source149 coordinator +72 isolated legacy storage checks pass, exit0 | PASS — S06A_REVIEW.md | `6d08bcb` | One retained operation, nonblocking poll and unknown reconciliation; no gameplay activation |
+| S06b | Final-source83 selected-owner +66 migration +72 isolated storage checks pass, exit0 | PASS — S06B_REVIEW.md | This checkpoint commit | Actual selected binding, captured path/context and legacy write/lifecycle fences before UI activation |
+| S06 UI activation–S14 | Not implemented | Not reviewed | None | Execute in order after prior gate passes; remaining cache/JSON consumers stay explicit conversion work |
 
 Every accepted row records exact checks, measurements, failures/corrections and remaining costs. All named command suffixes have separate commits/reviews. Do not mark an entire family complete from one converted pilot.
 
@@ -220,3 +221,19 @@ Baseline `c49f103`, independently reviewed and locally committed. Follow S06A_DE
 Runtime paths are relative to Game/Assets/DragLab/Scripts; docs are under docs/save-refactor. Agents do not run Unity/processes or Git. Existing legacy writer/checkpoint/reset/slot flows are not yet serialized by this dormant component; later S06 integration must fence them before any gameplay route is switched. Do not substitute this infrastructure for the full S06 acceptance gate.
 
 S06a final integration: fresh Luna-high review is PASS after final-source149 focused +72 isolated legacy storage checks, Unity6000.6.4f1 exit0. Source review corrected result consistency, scheduler late-worker release and mailbox interim-ready handling; the results report distinguishes deterministic tests from the source-reviewed mailbox write window. The current no-JSON/no-profile coordinator remains dormant. Commit this infrastructure before implementing actual selected-owner registration and legacy writer/lifecycle fencing, then the separate UI/publication integration. No human approval pause is required for those already authorized S06 steps.
+
+## S06b file ownership — selected owner proof and competing-write fences
+
+Baseline `6d08bcb`. Follow S06B_DECISIONS.md; coordinate exact receipt/context API before edits. No gameplay/UI switch yet. Main-owned live profile references stay outside every worker capture/result; only existing legacy projection remains temporary debt at its named old boundary.
+
+| Owner | Exclusive paths | Task |
+| --- | --- | --- |
+| s06b_storage_medium / Luna medium | SqliteStateStore.cs, SqliteTypedState.cs, new Infrastructure/SqliteStateOwnerReceipt.cs +meta; S06B_STORAGE.md | Expose validated load/actual post-COMMIT generation/commit/ledger/content/physics receipts without new schema or button-time SQL |
+| s06b_owner_medium / Luna medium | ProfileStore.cs, ProfileStore.Pending.cs, new Infrastructure/ProfileStore.CommandOwner.cs +meta; S06B_OWNER.md | Main-only selected owner registration, captured paths/epoch/profile fences, typed coordinator capacity lease and competing save/reset/slot/load/checkpoint guards |
+| s06b_tests_medium / Luna medium | new Runtime/SelectedProfileOwnerChecks.cs +meta; S06B_TEST_MATRIX.md | Independent native owner/metadata/failure/delayed-writer/lease/path/reset/legacy/preference checks |
+| coordinator | Editor runner, S06B_DECISIONS.md/status/ledger/results | Shared contract arbitration, actual checks/processes/Git |
+| fresh Luna-high reviewer after author release | S06B_REVIEW.md | Final source/evidence review before commit and actual UI/publication work |
+
+Storage/owner/test authors must agree names and integration lifecycle before using each other's API. Parent alone runs Unity/processes/Git after release; no agent edits another owner's paths or unrelated reports. Preserve S05/S06A raw evidence. The eventual full S06 gate still includes live-action exclusion, targeted publication, lifecycle/UI tests and actual responsiveness evidence.
+
+S06b final integration passes83 selected-owner +66 migration +72 isolated storage checks in Unity6000.6.4f1, exit0; fresh Luna-high review is PASS. The results report records the corrected fixture lifecycle/API/quote/owned-car setup and source findings (checkpoint warning proof, redundant projection/hash and quadratic lookup). No guard/oracle was weakened. Main-only proof holds actual durable metadata and a live reference, without another profile clone; comparison remains a linear shallow-accessor legacy boundary. Complete this local commit, then S06c live-action/refill publication/UI integration. Existing unrelated reports, artifacts and user files remain excluded.
