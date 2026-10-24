@@ -69,6 +69,41 @@ namespace DragLab.Editor
             VerifyLegacyStorage("S05A1");
         }
 
+        public static void RunTypedSaveMigration()
+        {
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            SqlitePluginSetup.Configure();
+            string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/save-refactor/S05A"));
+            Directory.CreateDirectory(root);
+            string fixtures = Path.Combine(root, "migration-fixtures-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmssfff"));
+            var log = new StringBuilder();
+            int count = 0;
+            try
+            {
+                TypedSaveMigrationChecks.Run(fixtures, Resources.LoadAll<VehicleDefinition>("Data/Vehicles"),
+                    (ok, label) =>
+                    {
+                        log.AppendLine((ok ? "PASS " : "FAIL ") + label);
+                        if (!ok) throw new InvalidOperationException(label);
+                        count++;
+                    });
+                log.AppendLine("RESULT PASS count=" + count);
+                Debug.Log("S05a focused typed save migration checks passed: " + count);
+            }
+            catch (Exception error)
+            {
+                log.AppendLine("RESULT FAIL count=" + count);
+                log.AppendLine(error.ToString());
+                throw;
+            }
+            finally
+            {
+                File.WriteAllText(Path.Combine(root, "typed-migration-checks.txt"), log.ToString(), new UTF8Encoding(false));
+            }
+            VerifyLegacyStorage("S05A");
+        }
+
         static void VerifyLegacyStorage(string checkpoint)
         {
             string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/save-refactor/" + checkpoint));

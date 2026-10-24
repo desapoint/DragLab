@@ -22,13 +22,15 @@ namespace DragLab.Infrastructure
             DrivingPreferences.Ensure(candidate);SqliteStateStore.Prepare();
             string path=FilePath,build=Application.version;
             bool profileSave=(ValidatedSaveMeasurement!=null);
-            long queued=profileSave?System.Diagnostics.Stopwatch.GetTimestamp():0;
+            var trace=profileSave?new SqliteStateStore.SaveTrace():null;
+            long captureStart=profileSave?System.Diagnostics.Stopwatch.GetTimestamp():0;
+            var snapshot=SqliteStateStore.LegacyCaptureManaged(candidate,build,trace);
+            if(trace!=null)trace.Elapsed("owner complete capture",captureStart);
+            long dispatched=profileSave?System.Diagnostics.Stopwatch.GetTimestamp():0;
             return Task.Run(()=>{
-                var trace=profileSave?new SqliteStateStore.SaveTrace():null;
                 long workStart=profileSave?System.Diagnostics.Stopwatch.GetTimestamp():0;
-                if(trace!=null)trace.Elapsed("worker dispatch wait",queued);
-                var snapshot=SqliteStateStore.CaptureManaged(candidate,build,trace);
-                SqliteStateStore.Write(path,snapshot);
+                if(trace!=null)trace.Elapsed("worker dispatch wait",dispatched);
+                SqliteStateStore.WriteLegacy(path,snapshot);
                 if(trace!=null)trace.Elapsed("entire save worker",workStart);
                 return new ValidatedSaveResult{commit=snapshot.committed,trace=trace};
             });

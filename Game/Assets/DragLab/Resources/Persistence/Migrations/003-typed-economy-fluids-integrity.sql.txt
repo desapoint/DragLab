@@ -1,0 +1,96 @@
+CREATE TABLE profile_economy (
+  singleton INTEGER PRIMARY KEY CHECK(singleton = 1),
+  cash INTEGER NOT NULL CHECK(cash BETWEEN 0 AND 2147483647),
+  revision INTEGER NOT NULL CHECK(revision >= 0),
+  last_economy_utc_ticks INTEGER NOT NULL CHECK(last_economy_utc_ticks BETWEEN 0 AND 3155378975999999999)
+) WITHOUT ROWID;
+
+CREATE TABLE fluid_states (
+  owner_kind TEXT NOT NULL CHECK(owner_kind IN ('car','engine')),
+  owner_id TEXT NOT NULL,
+  value_version INTEGER NOT NULL CHECK(value_version = 1),
+  oil_litres_bits INTEGER NOT NULL,
+  coolant_litres_bits INTEGER NOT NULL,
+  oil_temperature_c_bits INTEGER NOT NULL,
+  oil_pressure_bar_bits INTEGER NOT NULL,
+  coolant_pressure_bar_bits INTEGER NOT NULL,
+  oil_condition_bits INTEGER NOT NULL,
+  oil_consumed_litres_bits INTEGER NOT NULL,
+  oil_leaked_litres_bits INTEGER NOT NULL,
+  coolant_lost_litres_bits INTEGER NOT NULL,
+  service_elapsed_seconds_bits INTEGER NOT NULL,
+  oil_burn_lps_bits INTEGER NOT NULL,
+  oil_leak_lps_bits INTEGER NOT NULL,
+  coolant_leak_lps_bits INTEGER NOT NULL,
+  coolant_vent_lps_bits INTEGER NOT NULL,
+  PRIMARY KEY(owner_kind, owner_id),
+  FOREIGN KEY(owner_id) REFERENCES owners(id) ON DELETE CASCADE
+) WITHOUT ROWID;
+
+CREATE TABLE economy_receipts (
+  id TEXT PRIMARY KEY NOT NULL,
+  receipt_order INTEGER NOT NULL UNIQUE CHECK(receipt_order >= 0),
+  operation TEXT NOT NULL CHECK(length(operation) > 0),
+  target TEXT,
+  revision INTEGER NOT NULL CHECK(revision >= 0),
+  utc_ticks INTEGER NOT NULL CHECK(utc_ticks > 0),
+  cash_before INTEGER NOT NULL CHECK(cash_before BETWEEN 0 AND 2147483647),
+  cash_after INTEGER NOT NULL CHECK(cash_after BETWEEN 0 AND 2147483647),
+  fuel_added_bits INTEGER NOT NULL,
+  oil_added_bits INTEGER NOT NULL,
+  coolant_added_bits INTEGER NOT NULL
+) WITHOUT ROWID;
+
+CREATE TABLE economy_receipt_items (
+  receipt_id TEXT NOT NULL REFERENCES economy_receipts(id) ON DELETE CASCADE,
+  item_kind TEXT NOT NULL CHECK(item_kind IN ('disposed','retained')),
+  item_order INTEGER NOT NULL CHECK(item_order >= 0),
+  item_id TEXT,
+  PRIMARY KEY(receipt_id, item_kind, item_order),
+  UNIQUE(receipt_id, item_kind, item_id)
+) WITHOUT ROWID;
+
+CREATE TABLE operation_receipts (
+  save_slot TEXT NOT NULL,
+  reset_generation INTEGER NOT NULL CHECK(reset_generation >= 0),
+  operation_id TEXT NOT NULL,
+  command_kind TEXT NOT NULL,
+  intent_version INTEGER NOT NULL CHECK(intent_version >= 1),
+  intent_hex TEXT NOT NULL CHECK(length(intent_hex) BETWEEN 2 AND 4096),
+  intent_sha256_hex TEXT NOT NULL CHECK(length(intent_sha256_hex) = 64),
+  ledger_revision_before INTEGER NOT NULL CHECK(ledger_revision_before >= 0),
+  ledger_revision_after INTEGER NOT NULL CHECK(ledger_revision_after >= 0),
+  storage_commit_before INTEGER NOT NULL CHECK(storage_commit_before >= 0),
+  storage_commit_after INTEGER NOT NULL CHECK(storage_commit_after >= 0),
+  content_revision INTEGER NOT NULL CHECK(content_revision >= 0),
+  physics_identity TEXT NOT NULL CHECK(length(physics_identity) > 0),
+  committed_utc_ticks INTEGER NOT NULL CHECK(committed_utc_ticks > 0),
+  domain_receipt_id TEXT,
+  PRIMARY KEY(save_slot, reset_generation, operation_id),
+  CHECK(ledger_revision_after = ledger_revision_before + 1),
+  CHECK(storage_commit_after = storage_commit_before + 1)
+) WITHOUT ROWID;
+
+CREATE TABLE fluid_refill_results (
+  save_slot TEXT NOT NULL,
+  reset_generation INTEGER NOT NULL,
+  operation_id TEXT NOT NULL,
+  car_id TEXT NOT NULL,
+  cost INTEGER NOT NULL CHECK(cost >= 0),
+  cash_after INTEGER NOT NULL CHECK(cash_after BETWEEN 0 AND 2147483647),
+  oil_added_bits INTEGER NOT NULL,
+  coolant_added_bits INTEGER NOT NULL,
+  oil_after_bits INTEGER NOT NULL,
+  coolant_after_bits INTEGER NOT NULL,
+  domain_receipt_id TEXT NOT NULL UNIQUE,
+  PRIMARY KEY(save_slot, reset_generation, operation_id),
+  FOREIGN KEY(save_slot, reset_generation, operation_id)
+    REFERENCES operation_receipts(save_slot, reset_generation, operation_id) ON DELETE CASCADE
+) WITHOUT ROWID;
+
+CREATE TABLE record_integrity (
+  family TEXT NOT NULL,
+  record_key TEXT NOT NULL,
+  row_hash_hex TEXT NOT NULL CHECK(length(row_hash_hex) = 64),
+  PRIMARY KEY(family, record_key)
+) WITHOUT ROWID;

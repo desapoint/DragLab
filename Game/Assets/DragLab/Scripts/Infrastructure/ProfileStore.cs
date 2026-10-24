@@ -93,23 +93,24 @@ namespace DragLab.Infrastructure
                 if(!File.Exists(path))continue;
                 if(path==FilePath&&SqliteStateStore.CanInitialize(path))continue;
                 try{
-                    string json=SqliteStateStore.Read(path,raw=>{var staged=JsonUtility.FromJson<PlayerProfile>(DrivingPreferences.AddToJson(raw));if(staged==null||staged.saveVersion<MechanicsOwnership.SaveVersion)throw new InvalidDataException("Old save element format requires reset.");
-                        // A v12 profile must already own four concrete tire histories.
-                        // Normalization may initialize new parts, but may not heal a broken save.
-                        if(staged.parts!=null)foreach(var savedPart in staged.parts)
-                        {
-                            if(savedPart==null)continue;
-                            var definition=catalog.Find(savedPart.definitionId);
-                            if(definition?.category!=PartCategory.Tires)continue;
-                            if(savedPart.condition?.elements==null||savedPart.condition.elements.Length!=4
-                               ||Array.Exists(savedPart.condition.elements,e=>!(e is TireCondition)))
-                                throw new InvalidDataException("Saved tire pack has missing or invalid typed members; reset required.");
-                        }
-                        MechanicsOwnership.Ensure(staged,catalog);string invalid=MechanicsOwnership.Validate(staged,catalog);if(invalid!=null)throw new InvalidDataException("Migration validation failed: "+invalid);});var p=JsonUtility.FromJson<PlayerProfile>(DrivingPreferences.AddToJson(json));p.storageCommit=SqliteStateStore.ReadCommit;
-                    if(p==null||p.saveVersion!=MechanicsOwnership.SaveVersion||p.mechanicsVersion>MechanicsSchema.Version)throw new NotSupportedException("Newer profile contract; database writes are blocked.");
-                    bool contractMigration=p.saveVersion<MechanicsOwnership.SaveVersion||p.mechanicsVersion<MechanicsSchema.Version;p.Sanitize(now);MechanicsOwnership.Ensure(p,catalog);if(MechanicsOwnership.Validate(p,catalog)!=null)throw new InvalidDataException("Invalid saved ownership/state.");
+                var state=SqliteStateStore.ReadState(path,
+                    raw=>LegacyProfileDecoder.DecodeAndValidate(raw,catalog),
+                    loaded=>{
+                        var profile=loaded.ValidatedMigrationProfile??JsonUtility.FromJson<PlayerProfile>(DrivingPreferences.AddToJson(loaded.LegacyJson));
+                        if(profile==null)throw new InvalidDataException("Saved profile could not be decoded.");
+                        profile.catalog=catalog;
+                        profile.storageCommit=loaded.Commit;
+                        loaded.TypedData.ApplyTo(profile);
+                        LegacyProfileDecoder.ValidateLoadedV12(profile,catalog);
+                        return profile;
+                    });
+                    var p=state.LoadedProfile;
+                    if(p==null)throw new InvalidDataException("Saved profile could not be materialized.");
+                    // ReadState has already validated this exact current-contract graph.
+                    // Broad normalization here could silently heal durable state after
+                    // the strict migration/load boundary, then persist the altered values.
                     if(path!=FilePath&&!writeBlocked)SqliteStateStore.RecoverBackup(FilePath,path);
-                    Status=path==FilePath?"Save database loaded.":"Recovered previous save database.";if(contractMigration&&!writeBlocked&&!TrySave(p))throw new IOException("Logical save-contract migration could not commit: "+Status);
+                    Status=path==FilePath?"Save database loaded.":"Recovered previous save database.";
                     string warning;if(RaceCheckpointStore.Merge(FilePath,p,true,out warning))Status="Save database and latest checkpoint loaded.";if(warning!=null)Status+=" "+warning;
                     if(recoverInterrupted&&!writeBlocked&&RunPersistence.RecoverInterrupted(p)){bool saved=TrySave(p);Status=saved?"Recovered interrupted run; wear/fuel retained without rewards.":"Interrupted resources retained in memory; "+Status;}
                     return p;
@@ -143,8 +144,8 @@ namespace DragLab.Infrastructure
             RaceCheckpointStore.Drain();try{
                 if(writeBlocked)throw new InvalidDataException("Save writes blocked; existing database preserved.");
                 long start=System.Diagnostics.Stopwatch.GetTimestamp();if(!validated)MechanicsOwnership.Ensure(profile,profile.catalog??MechanicsTransactions.Catalog());
-                string warning;RaceCheckpointStore.Merge(FilePath,profile,false,out warning);DrivingPreferences.Ensure(profile);var snapshot=SqliteStateStore.Capture(profile);SaveMeasurement?.Invoke("database capture + validation",Elapsed(start));
-                string path=FilePath;start=System.Diagnostics.Stopwatch.GetTimestamp();Task.Run(()=>SqliteStateStore.Write(path,snapshot)).GetAwaiter().GetResult();SaveMeasurement?.Invoke("database transaction + durability",Elapsed(start));
+                string warning;RaceCheckpointStore.Merge(FilePath,profile,false,out warning);DrivingPreferences.Ensure(profile);SqliteStateStore.Prepare();var snapshot=SqliteStateStore.LegacyCaptureManaged(profile,Application.version,null);SaveMeasurement?.Invoke("database capture + validation",Elapsed(start));
+                string path=FilePath;start=System.Diagnostics.Stopwatch.GetTimestamp();Task.Run(()=>SqliteStateStore.WriteLegacy(path,snapshot)).GetAwaiter().GetResult();SaveMeasurement?.Invoke("database transaction + durability",Elapsed(start));
                 profile.storageCommit=snapshot.committed;RaceCheckpointStore.Retire(FilePath,false);Status="Saved.";return true;
             }catch(Exception error){Status="SAVE FAILED: "+error.Message;return false;}
         }
@@ -153,7 +154,7 @@ namespace DragLab.Infrastructure
         public static bool TryReset(PlayerProfile current,out PlayerProfile committed)
         {
             if(LegacyFixture){bool ok=LegacyProfileStore.TryReset(current,out committed);Status=LegacyProfileStore.Status;return ok;}
-            RaceCheckpointStore.Drain();SqliteStateStore.DrainBackups();committed=current;try{if(writeBlocked)throw new InvalidDataException("Save writes are blocked.");var fresh=current.RestartKeepingPreferences(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);fresh.storageCommit=current.storageCommit;MechanicsOwnership.Ensure(fresh,current.catalog??MechanicsTransactions.Catalog());var snapshot=SqliteStateStore.Capture(fresh);string path=FilePath;Task.Run(()=>SqliteStateStore.Write(path,snapshot,true)).GetAwaiter().GetResult();fresh.storageCommit=snapshot.committed;RaceCheckpointStore.Retire(FilePath,false);committed=fresh;Status="Game reset. Settings preserved.";return true;}catch(Exception error){Status="RESET FAILED: "+error.Message;return false;}
+            RaceCheckpointStore.Drain();SqliteStateStore.DrainBackups();committed=current;try{if(writeBlocked)throw new InvalidDataException("Save writes are blocked.");var fresh=current.RestartKeepingPreferences(DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);fresh.storageCommit=current.storageCommit;MechanicsOwnership.Ensure(fresh,current.catalog??MechanicsTransactions.Catalog());SqliteStateStore.Prepare();var snapshot=SqliteStateStore.LegacyCaptureManaged(fresh,Application.version,null);string path=FilePath;Task.Run(()=>SqliteStateStore.WriteLegacy(path,snapshot,true)).GetAwaiter().GetResult();fresh.storageCommit=snapshot.committed;RaceCheckpointStore.Retire(FilePath,false);committed=fresh;Status="Game reset. Settings preserved.";return true;}catch(Exception error){Status="RESET FAILED: "+error.Message;return false;}
         }
     }
 }

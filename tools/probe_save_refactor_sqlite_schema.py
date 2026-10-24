@@ -1,4 +1,4 @@
-"""Validate S05p's documented DDL in bundled SQLite :memory: only.
+"""Validate documented S05p or actual migration003 DDL in SQLite :memory: only.
 
 This is a proposal syntax/index/constraint probe, not a production migration,
 managed-wrapper test, transaction implementation or performance benchmark.
@@ -6,16 +6,24 @@ managed-wrapper test, transaction implementation or performance benchmark.
 from __future__ import annotations
 
 import ctypes as c
+import argparse
 from pathlib import Path
 import re
 
 
 def main() -> None:
     root = Path(__file__).resolve().parents[1]
-    proposal = (root / "docs/save-refactor/S05P_TYPED_STORAGE_PROPOSAL.md").read_text(encoding="utf-8-sig")
-    blocks = re.findall(r"```sql\s*\n(.*?)```", proposal, re.S)
-    if len(blocks) != 1:
-        raise AssertionError("Expected one reviewed candidate DDL block")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--asset", action="store_true", help="Probe the actual new migration003 asset, still only in :memory:")
+    options = parser.parse_args()
+    if options.asset:
+        ddl = (root / "Game/Assets/DragLab/Resources/Persistence/Migrations/003-typed-economy-fluids-integrity.sql.txt").read_text(encoding="utf-8-sig")
+    else:
+        proposal = (root / "docs/save-refactor/S05P_TYPED_STORAGE_PROPOSAL.md").read_text(encoding="utf-8-sig")
+        blocks = re.findall(r"```sql\s*\n(.*?)```", proposal, re.S)
+        if len(blocks) != 1:
+            raise AssertionError("Expected one reviewed candidate DDL block")
+        ddl = blocks[0]
     library = root / "Game/Assets/DragLab/Plugins/SQLite/Windows/x86_64/draglab_sqlite3.dll"
     sqlite = c.CDLL(str(library))
     ptr = c.c_void_p
@@ -53,10 +61,10 @@ def main() -> None:
 
     try:
         sql("PRAGMA foreign_keys=ON; CREATE TABLE owners(id TEXT PRIMARY KEY, kind TEXT NOT NULL, definition_id TEXT NOT NULL) WITHOUT ROWID;")
-        sql(blocks[0])
+        sql(ddl)
         expected = {"owners", "profile_economy", "fluid_states", "economy_receipts", "economy_receipt_items", "operation_receipts", "fluid_refill_results", "record_integrity"}
         assert {r[0] for r in sql("SELECT name FROM sqlite_master WHERE type='table'")} == expected
-        print(f"sqlite={version().decode('utf-8')} database=:memory: documented_ddl=accepted")
+        print(f"sqlite={version().decode('utf-8')} database=:memory: source={'migration003' if options.asset else 'proposal'} ddl=accepted")
         sql("INSERT INTO profile_economy VALUES(1,1000,1,1)")
         sql("INSERT INTO profile_economy VALUES(2,1000,1,1)", rejected=True)
         sql("UPDATE profile_economy SET cash=-1", rejected=True)
@@ -96,7 +104,7 @@ def main() -> None:
             print(f"plan {label}: {detail}")
         assert sql("PRAGMA foreign_key_check") == []
         print("PASS documented tables/14 bit fields, constraints, owner cascade, durable-result independence, 6 index plans")
-        print("Scope: candidate DDL only; no managed/native Android, production migration/writer or performance evidence.")
+        print("Scope: isolated DDL only; no managed/native Android, production migration/writer or performance evidence.")
     finally:
         if close_db(db):
             raise RuntimeError("Failed closing isolated database")
