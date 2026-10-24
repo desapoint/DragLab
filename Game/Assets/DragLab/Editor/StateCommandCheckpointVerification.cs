@@ -110,6 +110,40 @@ namespace DragLab.Editor
             VerifyLegacyStorage("S05B");
         }
 
+        public static void RunTypedFluidRefillCoordinator()
+        {
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            SqlitePluginSetup.Configure();
+            string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/save-refactor/S06A"));
+            Directory.CreateDirectory(root);
+            string fixtures = Path.Combine(root, "coordinator-fixtures-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmssfff"));
+            var log = new StringBuilder();
+            int count = 0;
+            try
+            {
+                TypedFluidRefillCoordinatorChecks.Run((ok, label) =>
+                {
+                    log.AppendLine((ok ? "PASS " : "FAIL ") + label);
+                    if (!ok) throw new InvalidOperationException(label);
+                    count++;
+                }, fixtures);
+                log.AppendLine("RESULT PASS count=" + count);
+                Debug.Log("S06a pending refill coordinator checks passed: " + count);
+            }
+            catch (Exception error)
+            {
+                log.AppendLine("RESULT FAIL count=" + count);
+                log.AppendLine(error.ToString());
+                throw;
+            }
+            finally
+            {
+                File.WriteAllText(Path.Combine(root, "coordinator-checks.txt"), log.ToString(), new UTF8Encoding(false));
+            }
+            VerifyLegacyStorage("S06A");
+        }
+
         static void VerifyTypedSaveMigration(string checkpoint)
         {
             if (!Application.isBatchMode || EditorApplication.isPlaying)
