@@ -1,0 +1,33 @@
+# S06d1 independent review — native attribution and lifecycle infrastructure
+
+Review status: **PASS for the scoped S06d1 instrumentation and native lifecycle infrastructure.** S06d2 consumer optimization and the full S06 gate remain open. This review does not approve S07, the whole save/state refactor, the no-runtime-JSON/no-full-profile-save-clone goal, Android behavior, or human visual acceptance.
+
+## Source review
+
+- `FramePacingProbe` preserves the original fifteen CSV columns in their original order and appends `nativeOwnedMs`, `nativePartsMs`, `nativeCartMs`, `nativeOtherMenusMs`, and `nativeSurfacesMs`. Its fourteen timing slots match fourteen fixed scalar fields in `Row`; the CSV header and formatter each contain twenty fields. Scope objects capture the probe that started them and update it only while it remains the current instance. With no active probe, the scope takes no timestamp. The added instrumentation does not add per-frame file I/O or array cloning.
+- The five `NativeMenuShell` scopes measure the documented consumer groups without overlap. They remain inside the existing outer shell lifetime where invoked from `LateUpdate`; the probe can also record explicit verification refreshes outside that outer scope. The new columns are therefore attribution signals, not a strict partition of `raceGUIMs`. Reset, paused, or hidden-shell exits may also leave some scopes at zero.
+- Native lifecycle verification uses the real selected-owner binding and SQLite refill executor. Its lost-ack branch commits once and independently checks the retained operation, durable rows, exact fluid bits, receipt/version fences, then reconciles the same operation. The definite-failure case injects at the actual pre-COMMIT phase and compares live and durable owner values before permitting a distinct fresh quote. Recovery failure is injected before the validated-load boundary and verifies the retained lease, unchanged isolated database bytes, retry action, and eventual successful selected-owner reload. The suspension case holds the real pre-COMMIT worker, calls `SuspendForMobile`, invokes `OnApplicationPause(false)` after release, and checks same-operation publication against durable rows. It does not claim process-death coverage.
+- The Editor checkpoint runner now takes an explicitly named, regex-validated report checkpoint. The owner regression fixture uses one captured tick through command construction, admission, and execution; production runtime files were unchanged for that correction.
+
+The maintenance entry uses the `Check save` label; the dialog retry action uses `Retry status`. The lifecycle test checks the actual dialog child label and shared surface.
+
+## Evidence reviewed
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| Windows development-player build | Build 94501 succeeded, exit 0 | [build log](../../reports/save-refactor/S06D1/build-windows.log) |
+| Native lifecycle | 89 checks, 0 runtime errors; includes 40 shared onboarding/starter checks and 49 lifecycle checks | [lifecycle verification](../../reports/player-fixtures/s06d-lifecycle-seed16102026-a/verification.txt), [player log](../../reports/player-fixtures/s06d-lifecycle-seed16102026-a/player.log) |
+| Normal native refill regression | 70 checks, 0 runtime errors | [native verification](../../reports/player-fixtures/s06d-attribution-native-seed16102026-a/verification.txt) |
+| Editor pilot / owner / migration / storage | Pilot: 78 assertions plus 5 timing observations; owner: 83 checks; migration: 66 checks; storage: 72 checks. Final run exited 0. | [final Editor log](../../reports/save-refactor/S06D1/editor.log), checkpoint result files in `reports/save-refactor/S06D1/` |
+| Native capture | The five typed refill screenshots are byte-identical to the pinned pre-change images; input capture and isolated save remain with the run | `reports/player-fixtures/s06d-attribution-native-seed16102026-a/` and `reports/player-fixtures/s06d-before-native-seed16102026/` |
+| Frame-probe output | Original fifteen-column header is preserved exactly; five timing columns append to it. Both baseline and instrumented native captures are retained. | [pre-change CSV](../../reports/player-fixtures/s06d-before-native-seed16102026/frame-pacing.csv), [instrumented CSV](../../reports/player-fixtures/s06d-attribution-native-seed16102026-a/frame-pacing.csv) |
+
+The instrumented CSV contains the expected twenty headers and frame rows. Representative maxima in the normal refill flow include a pending Build frame of 169.08 ms with 151.05 ms in the enclosing shell refresh and 146.62 ms in `nativePartsMs`, and a coolant-confirm frame of 52.15 ms with 40.73 ms in the shell and 39.26 ms in `nativeOwnedMs`. These samples identify expensive consumers; they do not show a performance improvement. `frameMs` is the interval between probe updates and includes startup, capture/setup, storage-boundary checks, and scheduler waits. For example, setup-labelled groups contain much larger intervals with little measured menu work. The report must not attribute those full intervals to the consumer scopes.
+
+## Evidence provenance and limits
+
+The first S06d Editor invocation, run 78498, used the old entry point and its hard-coded S06C report root. Its four suites passed, but its pilot output overwrote the original S06c raw pilot text. That original file could not be restored; the committed S06c review/results retain the summarized 78-assertion outcome, the three companion raw checks were preserved, and the overwritten path has an explicit marker rather than reconstructed content. The fresh run 78498 outputs are archived under `reports/save-refactor/S06D1/regression78498/`.
+
+The corrected checkpoint-specific run 66072 wrote to S06D1 and passed the pilot but failed in the owner regression because its test fixture sampled a different clock tick during planning than the writer used for admission. This was a verification defect, not a production failure. The helper now threads the same captured tick through planning/admission/writing and reports the outcome and tick values. Run 66072 remains archived under `reports/save-refactor/S06D1/regression66072/` and is not counted as a passing gate. The final explicit S06D1 run 26545 is the passing evidence cited above.
+
+S06d1 adds measurement and native lifecycle coverage only. The measured pending Build and coolant completion tails still exceed the provisional 50 ms target in this workload; the source audit and captured attribution require the narrowly scoped S06d2 view/consumer work before S07. Android, forced process termination, S14 soak, remaining legacy callers, and the overall no-JSON/no-clone completion gates remain outstanding.

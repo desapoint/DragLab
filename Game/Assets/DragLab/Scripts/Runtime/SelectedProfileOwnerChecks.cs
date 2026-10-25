@@ -113,9 +113,11 @@ namespace DragLab.Runtime
         }
 
         static TypedFluidRefillCommand MakeCommand(PlayerProfile profile, TypedSaveSlotBinding binding,
-            string physicsIdentity, string operationId = "s06b-owner-check")
+            string physicsIdentity, long acceptedTick, string operationId = "s06b-owner-check")
         {
-            long now = Math.Max(profile.lastEconomyUtcTicks + 10, DateTime.UtcNow.Ticks);
+            // Use the coordinator's single admission tick throughout planning and storage.
+            // A second wall-clock read here could cross acceptedTick and make a valid command stale.
+            long now = acceptedTick;
             var policy = new OperatingPolicy { oilPerLitre = 1, coolantPerLitre = 1, quoteSeconds = 300 };
             long issued = now - TimeSpan.TicksPerMinute;
             var request = new FluidRefillRequest(new StateCommandIdentity(binding.SaveSlot, binding.ResetGeneration, operationId),
@@ -204,11 +206,12 @@ namespace DragLab.Runtime
             var scheduler = new HeldScheduler();
             var coordinator = new TypedFluidRefillCoordinator(new UnknownExecutor(), scheduler);
             bool factoryRan = false;
+            long admissionTick = Math.Max(profile.lastEconomyUtcTicks + 10, DateTime.UtcNow.Ticks);
             Check(ProfileStore.TryBeginTypedOperation(profile, coordinator, now =>
             {
                 factoryRan = true;
-                return MakeCommand(profile, binding, ownerReceipt.PhysicsIdentity);
-            }, DateTime.UtcNow.Ticks, out var lease, out var error),
+                return MakeCommand(profile, binding, ownerReceipt.PhysicsIdentity, now);
+            }, admissionTick, out var lease, out var error),
                 "selected owner acquires capacity before factory and retains a typed operation: " + error);
             Check(factoryRan && coordinator.HasPending, "typed command factory runs only after capacity and owner lease are acquired");
             string before = DurableFingerprint(path);
@@ -256,9 +259,10 @@ namespace DragLab.Runtime
             var successorScheduler = new HeldScheduler();
             var successorCoordinator = new TypedFluidRefillCoordinator(new UnknownExecutor(), successorScheduler);
             Check(ProfileStore.TryGetCommandOwner(reloaded, out var successorBinding, out var successorReceipt), "successor owner can be inspected after release");
+            long successorAdmissionTick = Math.Max(reloaded.lastEconomyUtcTicks + 10, DateTime.UtcNow.Ticks);
             Check(ProfileStore.TryBeginTypedOperation(reloaded, successorCoordinator,
-                now => MakeCommand(reloaded, successorBinding, successorReceipt.PhysicsIdentity, "s06b-successor"),
-                DateTime.UtcNow.Ticks, out var successorLease, out _),
+                now => MakeCommand(reloaded, successorBinding, successorReceipt.PhysicsIdentity, now, "s06b-successor"),
+                successorAdmissionTick, out var successorLease, out _),
                 "a later lease can be acquired after completed acknowledgement");
             Check(!ProfileStore.ReleaseTypedLease(lease), "stale lease cannot release a later owner's capacity reservation");
             successorScheduler.Run(); successorCoordinator.Poll();
@@ -270,13 +274,25 @@ namespace DragLab.Runtime
             Check(ProfileStore.TryGetCommandOwner(durableProfile, out var durableBinding, out var durableReceipt), "fresh load registers before committed-but-unhandled lease scenario");
             var durableScheduler = new HeldScheduler();
             var durableCoordinator = new TypedFluidRefillCoordinator(new SqliteTypedFluidRefillExecutor(), durableScheduler);
-            Check(ProfileStore.TryBeginTypedOperation(durableProfile, durableCoordinator,
-                now => MakeCommand(durableProfile, durableBinding, durableReceipt.PhysicsIdentity, "s06b-owner-committed"), DateTime.UtcNow.Ticks,
-                out var durableLease, out _), "actual typed SQLite commit begins under the selected-owner lease");
+            long durableAdmissionTick = Math.Max(durableProfile.lastEconomyUtcTicks + 10, DateTime.UtcNow.Ticks);
+            long durableFactoryTick = 0;
+            bool durableBegan = ProfileStore.TryBeginTypedOperation(durableProfile, durableCoordinator, now =>
+            {
+                durableFactoryTick = now;
+                return MakeCommand(durableProfile, durableBinding, durableReceipt.PhysicsIdentity, now, "s06b-owner-committed");
+            }, durableAdmissionTick, out var durableLease, out var durableBeginError);
+            Check(durableBegan, "actual typed SQLite commit begins under the selected-owner lease: " + durableBeginError +
+                " / admission tick " + durableAdmissionTick.ToString(CultureInfo.InvariantCulture) +
+                " / factory tick " + durableFactoryTick.ToString(CultureInfo.InvariantCulture));
             durableScheduler.Run(); durableCoordinator.Poll();
             var durableOutcome = durableCoordinator.PendingOutcome;
+            string durableOutcomeDiagnostic = "writer outcome=" + (durableOutcome?.Status.ToString() ?? "missing") +
+                ", error=" + (durableOutcome?.Error ?? "none") +
+                ", admission tick=" + durableAdmissionTick.ToString(CultureInfo.InvariantCulture) +
+                ", factory tick=" + durableFactoryTick.ToString(CultureInfo.InvariantCulture) +
+                ", accepted tick=" + (durableOutcome?.Result?.AcceptedTick.ToString(CultureInfo.InvariantCulture) ?? "missing");
             Check(durableCoordinator.PendingState == TypedFluidRefillCoordinatorState.CommittedAwaitingHandling,
-                "committed typed result remains retained until owner handling");
+                "committed typed result remains retained until owner handling (" + durableOutcomeDiagnostic + ")");
             Check(!durableCoordinator.Acknowledge(false, out _) && !ProfileStore.ReleaseTypedLease(durableLease),
                 "committed-but-unhandled durable result cannot be acknowledged away or release its lease");
             string beforeRejectedSave = DurableFingerprint(path);

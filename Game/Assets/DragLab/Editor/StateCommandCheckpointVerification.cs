@@ -9,7 +9,7 @@ using DragLab.Runtime;
 
 namespace DragLab.Editor
 {
-    /// <summary>Isolated dormant-contract and existing storage regression checkpoint.</summary>
+    /// <summary>Isolated state-command and existing storage regression checkpoints.</summary>
     public static class StateCommandCheckpointVerification
     {
         public static void Run()
@@ -180,14 +180,29 @@ namespace DragLab.Editor
         }
 
         public static void RunTypedFluidRefillPilot()
+            => RunRefillCheckpoint("S06C");
+
+        // Later checkpoints must select their own report root explicitly, so a
+        // regression cannot silently replace an earlier checkpoint's evidence.
+        public static void RunTypedFluidRefillPilotCheckpoint()
+        {
+            var args = Environment.GetCommandLineArgs();
+            int at = Array.IndexOf(args, "--draglab-save-checkpoint");
+            if (at < 0 || at + 1 >= args.Length ||
+                !System.Text.RegularExpressions.Regex.IsMatch(args[at + 1], @"\AS[0-9]{2}[A-Z]?[0-9]{0,2}\z"))
+                throw new ArgumentException("Select a safe checkpoint report name with --draglab-save-checkpoint (for example S06D1).");
+            RunRefillCheckpoint(args[at + 1]);
+        }
+
+        static void RunRefillCheckpoint(string checkpoint)
         {
             if (!Application.isBatchMode || EditorApplication.isPlaying)
                 throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
             SqlitePluginSetup.Configure();
-            VerifyScopedManagedChecks("S06C", "pilot", TypedFluidRefillPilotChecks.Run);
-            VerifyScopedManagedChecks("S06C", "owner-regression", SelectedProfileOwnerChecks.Run);
-            VerifyTypedSaveMigration("S06C");
-            VerifyLegacyStorage("S06C");
+            VerifyScopedManagedChecks(checkpoint, "pilot", TypedFluidRefillPilotChecks.Run);
+            VerifyScopedManagedChecks(checkpoint, "owner-regression", SelectedProfileOwnerChecks.Run);
+            VerifyTypedSaveMigration(checkpoint);
+            VerifyLegacyStorage(checkpoint);
         }
 
         static void VerifyScopedManagedChecks(string checkpoint, string name,

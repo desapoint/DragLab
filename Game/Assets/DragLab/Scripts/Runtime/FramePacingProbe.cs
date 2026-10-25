@@ -15,9 +15,9 @@ namespace DragLab.Runtime
     {
         static FramePacingProbe instance;
         public static bool Active=>instance!=null;
-        static readonly string[] Names = { "raceUpdate", "benchUpdate", "simulation", "checkpoint", "raceGUI", "benchGUI", "scenarioPreparation", "export", "importAndVerification" };
-        readonly double[] costs = new double[9];
-        struct Row { public int frame,gc; public string phase; public double ms,a,b,c,d,e,f,g,h,i; public long bytes,unityBytes; }
+        static readonly string[] Names = { "raceUpdate", "benchUpdate", "simulation", "checkpoint", "raceGUI", "benchGUI", "scenarioPreparation", "export", "importAndVerification", "nativeOwned", "nativeParts", "nativeCart", "nativeOtherMenus", "nativeSurfaces" };
+        readonly double[] costs = new double[Names.Length];
+        struct Row { public int frame,gc; public string phase; public double ms,a,b,c,d,e,f,g,h,i,j,k,l,m,n; public long bytes,unityBytes; }
         readonly List<Row> rows = new List<Row>(100000);
         string folder;
         long last, allocated;
@@ -31,8 +31,9 @@ namespace DragLab.Runtime
         {
             readonly int slot;
             readonly long start;
-            public Scope(int slot) { this.slot = slot; start = instance == null ? 0 : Stopwatch.GetTimestamp(); }
-            public void Dispose() { if (start != 0 && instance != null) instance.costs[slot] += (Stopwatch.GetTimestamp() - start) * 1000.0 / Stopwatch.Frequency; }
+            readonly FramePacingProbe owner;
+            public Scope(int slot) { this.slot = slot; owner = instance; start = owner == null ? 0 : Stopwatch.GetTimestamp(); }
+            public void Dispose() { if (start != 0 && ReferenceEquals(instance,owner)) owner.costs[slot] += (Stopwatch.GetTimestamp() - start) * 1000.0 / Stopwatch.Frequency; }
         }
         public static Scope Measure(int slot) { return new Scope(slot); }
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -52,7 +53,7 @@ namespace DragLab.Runtime
         {
             long now = Stopwatch.GetTimestamp(), bytes = GC.GetAllocatedBytesForCurrentThread();
             int gc = GC.CollectionCount(0);
-            if (last != 0 && rows.Count < 100000) rows.Add(new Row{frame=Time.frameCount,phase=OverridePhase??Phase,ms=(now-last)*1000.0/Stopwatch.Frequency,a=costs[0],b=costs[1],c=costs[2],d=costs[3],e=costs[4],f=costs[5],g=costs[6],h=costs[7],i=costs[8],bytes=bytes-allocated,gc=gc-collections,unityBytes=gcAllocated.Valid?gcAllocated.LastValue:-1});
+            if (last != 0 && rows.Count < 100000) rows.Add(new Row{frame=Time.frameCount,phase=OverridePhase??Phase,ms=(now-last)*1000.0/Stopwatch.Frequency,a=costs[0],b=costs[1],c=costs[2],d=costs[3],e=costs[4],f=costs[5],g=costs[6],h=costs[7],i=costs[8],j=costs[9],k=costs[10],l=costs[11],m=costs[12],n=costs[13],bytes=bytes-allocated,gc=gc-collections,unityBytes=gcAllocated.Valid?gcAllocated.LastValue:-1});
             Array.Clear(costs,0,costs.Length); last=now; allocated=GC.GetAllocatedBytesForCurrentThread(); collections=gc;
         }
         void OnApplicationQuit()
@@ -60,8 +61,8 @@ namespace DragLab.Runtime
             if (folder == null) return;
             Directory.CreateDirectory(folder);
             using(var writer=new StreamWriter(Path.Combine(folder,"frame-pacing.csv"),false,new UTF8Encoding(false))) {
-                writer.WriteLine("frame,phase,frameMs,"+string.Join("Ms,",Names)+"Ms,mainThreadAllocatedBytes,gc0,unityGCAllocatedBytes");
-                foreach(var row in rows)writer.WriteLine(string.Format(CultureInfo.InvariantCulture,"{0},{1},{2:F3},{3:F3},{4:F3},{5:F3},{6:F3},{7:F3},{8:F3},{9:F3},{10:F3},{11:F3},{12},{13},{14}",row.frame,row.phase,row.ms,row.a,row.b,row.c,row.d,row.e,row.f,row.g,row.h,row.i,row.bytes,row.gc,row.unityBytes));
+                writer.WriteLine("frame,phase,frameMs,"+string.Join("Ms,",Names,0,9)+"Ms,mainThreadAllocatedBytes,gc0,unityGCAllocatedBytes,"+string.Join("Ms,",Names,9,5)+"Ms");
+                foreach(var row in rows)writer.WriteLine(string.Format(CultureInfo.InvariantCulture,"{0},{1},{2:F3},{3:F3},{4:F3},{5:F3},{6:F3},{7:F3},{8:F3},{9:F3},{10:F3},{11:F3},{12},{13},{14},{15:F3},{16:F3},{17:F3},{18:F3},{19:F3}",row.frame,row.phase,row.ms,row.a,row.b,row.c,row.d,row.e,row.f,row.g,row.h,row.i,row.bytes,row.gc,row.unityBytes,row.j,row.k,row.l,row.m,row.n));
             }
             gcAllocated.Dispose();
         }

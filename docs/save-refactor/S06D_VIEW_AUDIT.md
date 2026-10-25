@@ -1,0 +1,87 @@
+# S06d view audit — refill publication fan-out
+
+Status: read-only focused trace. This audit does not change game code, alter the global profile revision contract, or claim that UI changes have been implemented. Baseline/evidence reviewed: `2b6687c`, `docs/save-refactor/S06C_REVIEW.md`, `docs/save-refactor/S06C_UI.md`, `docs/save-refactor/S06C_RESULTS.md`, and the final native frame CSV.
+
+## Finding
+
+The typed owner path is not the measured bottleneck. The S06C coolant publication/owner poll is 2.056 ms, while the enclosing native UI refresh reaches 43.225 ms. While a refill is pending, navigating to Build produces a 177.117 ms frame with 158.907 ms in the UI refresh scope. Thus the user-visible delay is work synchronously fanned out from `NativeMenuShell.Refresh`, after a committed refill changes the profile revision and/or the destination route exposes a cold view. The separate 990.030 ms stale-recovery sample includes validated load and should remain classified as the exceptional recovery boundary.
+
+Two concrete revision-triggered rebuild paths are visible:
+
+1. **Garage / coolant completion.** `NativeMenuShell.LateUpdate` calls `Refresh()` every frame. `Refresh()` calls `RefreshOwnedCars(route)` before its `renderedRoute` early return. On Garage, `RefreshOwnedCars` compares `ownedRevision` to the global `profile.revision` and calls `BuildOwnedCars` on any mismatch (`NativeOwnedCars.cs`, `RefreshOwnedCars` / `BuildOwnedCars`). A typed refill increments the global revision, so a coolant-only publication reconstructs the entire owned-car grid, recalculates every car's inspection/status/warnings, prepares any uncached rating probes, reapplies the filter, and invokes `RefreshOwnedDetails`; the latter clears and repopulates the selected detail tree. This is broad for one car's fluid fields plus shared cash.
+2. **Pending / Build navigation.** `RefreshParts` remains called on every shell refresh. Its context key includes the global profile revision, selected-car id, planned flag, serialized unit settings, and serialized cart lines. A revision/key change clears `partsBrowsers` and `partsStateKey`; the next statements construct `NativePartBrowser` and call `RenderPartGrid` (`NativeParts.cs`, `RefreshParts`). That rebuild applies the full part query/sort and restarts comparisons for the destination view just as the refill owner publishes. It can happen during pending Build navigation; the owner completion itself stays small. The current implementation deliberately limits comparison evaluation to a 3 ms stopwatch slice per frame, but synchronous browser construction, query/sort, grid rendering, and `BuildOwnedCars` work are not made bounded by that slice.
+
+`NativeMenuShell.Refresh` also invokes every route consumer (`RefreshOwnedCars`, `RefreshDealership`, `RefreshTuning`, `RefreshNativeCart`, `RefreshParts`, `RefreshEngines`, disposal/race/business) before checking `renderedRoute`. Consumers mostly early-return by route, but work and key calculation in their entry points still occurs on every frame. The completion frame therefore needs a measured scope breakdown after targeted invalidation; a single aggregate UI timer does not prove which consumer dominates either sample.
+
+## Recommended bounded contract
+
+Keep `profile.revision` and storage commit checks intact for persistence, stale commands, and user-action fencing. Add a separate owner-thread **view change set** emitted only after successful typed publication, carrying the target `carId`, old/new revision and storage commit, changed fields (`cash`, `oilLitres`, `coolantLitres`), and owner/profile identity. This is a view invalidation signal, not a replacement transaction token. Do not infer target changes from a revision delta, and do not signal on pending, rejected, unknown, or durable-but-unpublished outcomes. Recovery/reload remains a full invalidation because its changed set is not safely limited to the refill patch.
+
+Consume that signal once in `NativeMenuShell` and dispatch per target:
+
+- **Owned garage:** patch the cash HUD and refresh only the matching owned-car entry/detail. Preserve other cards, scroll, filter, dialog/draft state, and existing rating-cache entries. Recompute the affected car's full inspection, status, and warning snapshot because fluids can affect performance and warning facts; keep prior UI visible with an explicit updating state until the exact result arrives. Any managed calculation must consume an immutable `InspectionBuild`/car snapshot captured on the main thread, never the mutable live `PlayerProfile`. Apply the result only if profile reference/owner epoch, car id, request generation, and current revision/storage proof still match. Refresh `ownedDetailRevision` / warning snapshot proof for that exact target before accepting actions; all unrelated mutation entry points must continue using the global revision fences.
+- **Parts / Build browser:** separate a destination-view key from the global ledger revision. On a refill, preserve `NativePartBrowser` and its catalog/entry objects. Refresh cash-dependent affordance/query results and invalidate only inspection/comparison results whose build depends on the refilled target (normally the selected car); enqueue those comparisons through the existing bounded evaluator. If the target is not the selected/planned build, do not reset the browser. If it is, update displayed current-build inspection and affected comparisons only after exact latest-generation completion. Continue using current `profile.revision` when confirming a purchase or mutation; cache reuse must never authorize stale cart terms.
+- **Shell dispatch:** drain bounded invalidation records and update the relevant consumer once. Do not rebuild an expensive view in `LateUpdate` merely because the global revision changed. For route activation, show the stable cached view immediately and run missing work through a managed immutable-input job with cancellation/coalescing keyed by owner plus view dependencies. A result for a former car, profile, route, or revision must be discarded rather than applied. Keep warning state and quote/currentness explicit while updates are pending.
+
+This is targeted recomputation and preserved view state, not shifting the same whole-page build to the next frame. It also retains exact stats: only cached calculations with matching dependency fingerprints may be reused; the affected car's inspection/warnings and selected-build part comparisons must be recalculated when the refill changes their inputs. No approximate rating, shortened probe, removed warning, or reduced component/condition fidelity is proposed.
+
+## Likely implementation ownership / files
+
+- `NativeMenuShell.cs`: owner-thread change-set drain, route-scoped dispatch, refresh counters/timing by consumer. Keep global transaction freshness distinct from view cache identity.
+- `NativeOwnedCars.cs`: target-card/detail patch and keyed asynchronous exact inspection result acceptance; avoid `BuildOwnedCars` for a refill-only change.
+- `NativeParts.cs`: split browser/catalog identity from cash and selected-build comparison dependencies; avoid clearing all browsers on a refill-only revision; preserve cart invalidation and global revision checks at commit.
+- `NativeCarMaintenance.cs` and `NativeTypedFluidMaintenance.cs`: retain the submitted car identity and dialog status behavior; completion should publish invalidation only through the owner result, with no UI rebuild or navigation side effect from a closed originating dialog.
+- Typed refill facade/controller and its existing verification: produce an exact immutable successful-publication change set. Avoid changing SQLite authority, physics, or refill patch semantics.
+
+These are proposed paths only. Parent integration must freeze interfaces and ownership before game edits.
+
+## Risks to guard
+
+- Fluid quantity changes can alter mass, thermal limits, performance, and warnings. A cash-only refresh or reused pre-refill `CarInspection` is incorrect.
+- A stale async result could overwrite a later garage selection, typed command, recovery reload, or part mutation. Validate profile/slot/epoch, target identity, generation, revision and commit before every patch.
+- Leaving `ownedDetailRevision` or a browser's action token at the old global revision can make safe actions fail needlessly; advancing it globally can authorize stale cart assumptions. Update only view proof where the exact dependency state is known; continue validating actual action quotes against current owner state.
+- Broad invalidation can be required after load/reset/owner swap or another mutation. Only the typed refill's proven narrow after-image may use the narrow path; unknown, failed recovery, and unhandled durable outcomes must retain fences and request explicit broad recovery.
+- Bounded comparison slices do not bound synchronous capture, catalog enumeration, filtering/sorting, rendering, or main-thread `CarInspection.PrepareCar`. Instrument each phase and capture first, then use immutable managed worker inputs where expensive exact work remains.
+
+## Focused verification required
+
+1. Pin identical authored profile/car/cart/catalog and route for before/after measurements; report distributions (including median, p95, max) for quote miss/hit, held poll, completion/publication, Garage completion, and pending Build navigation. Keep fixture/database setup and validated recovery separate. Record per-consumer shell time and allocation/serialization counts so the 158.907 ms work is attributed.
+2. Refill oil and coolant on selected and non-selected owned cars. Assert exact cash and target fluid bits, unchanged non-target fluid/component/condition/wear/fault/resource bits, and parity of target HP/torque/weight, all inspection warnings, card status, and detail data against a fresh authoritative calculation.
+3. Exercise repeated owner polls, route change during pending work, close/reopen dialog, another operation/revision before worker completion, owner/profile swap, selection change, and recovery reload. Old worker results must never hide warnings or patch a newer view; the latest result must eventually display.
+4. On Build, verify existing browser/cart/detail, selected tab, scroll/filter/query, Settings draft, unit preferences and pending comparisons survive refill. Recompute cash affordability and only target-dependent comparisons. Confirm cart action still detects stale terms using the true global revision.
+5. Keep the S06C unknown/retry, definite failure, failed recovery, and interruption/resume identity/fence checks, plus actual advancing-player native measurements and the required build/source/functional review. A low owner-poll number alone is not a UI responsiveness pass. No Unity tests, build, or Git operations were run for this read-only audit.
+
+## S06d attribution addendum — pinned native run
+
+The actual instrumented native run now attributes the two actionable spikes:
+
+| Scenario | `nativePartsMs` | `nativeOwnedMs` | `raceGUIMs` | `frameMs` |
+| --- | ---: | ---: | ---: | ---: |
+| Pending refill while navigating to Build | 146.617 | — | 151.049 | 1636 sample |
+| Coolant completion in Garage | — | 39.258 | 40.725 | 1976 sample |
+
+The five before-instrumentation PNGs are byte-identical to the instrumented run, so this change did not visibly alter the interface. This supersedes the earlier source-based suspicion about the 158.907 ms Build sample being simply the browser rebuild: the pinned run now measures `RefreshParts` as the dominant 146.617 ms consumer. It also confirms the Garage completion work is in `RefreshOwnedCars` / `BuildOwnedCars` and its detail refresh. The parent is still running the source-frozen build/runtime lifecycle gates; this audit is read-only.
+
+## Minimal candidate for the 146.617 ms Build path
+
+`NativePartBrowser`'s Shop branch in `NativePartBrowserModel.cs` rebuilds equivalence groups on every new browser with:
+
+```csharp
+profile.catalog.parts.GroupBy(NewProductKey, StringComparer.Ordinal)
+```
+
+`NewProductKey` calls `PartsMarket.ProductKey`, which reaches `MarketCatalogLayout.Key`. The product key represents authored definition semantics; its cache validates the definition snapshot, and a cold key serializes a copied definition. The group operation then repeats over the full catalog. This work is independent of player cash, target fluids, market stock and cart reservations. `MarketCatalogLayout.WarmSteps` already incrementally builds canonical product groups/alias IDs and exact representative metadata for the same catalog, while `NewSupplyCatalogIndex` warms only per-definition category classifications and is not a substitute for product groups.
+
+The smallest candidate is to expose a read-only **ready-layout groups** lookup from `MarketCatalogLayout` that succeeds only when its existing `TryReadyProductKeys`/layout validation proves the catalog definitions are still the exact published set. In the Shop branch, consume those group member IDs when ready, select the browser representative with the current priority (fitted definition, then current vehicle prefix, then ordinal ID), and build each card's alias/search IDs from the same members. Keep `PartsMarket.Counter`, `Ledger.Quote`, cart-reservation subtraction, ownership checks, live stock units, prices and affordability query against the current profile. If the layout is not ready or fails identity validation, keep the current exact fallback. Do not synchronously finish a cold `WarmSteps` enumerator on the navigation frame. This removes the repeated authored grouping/key work without moving the complete browser constructor to a later frame or changing shop semantics.
+
+Parity gates for that narrowly scoped optimization: fixed catalog with deliberately case/punctuation-sensitive IDs; compare grouped member sets, chosen representative for fitted/same-model/other-model priorities, alias `SearchExtra`, source order/tie-sorted visible cards, owned and stock fields, and actual priced/available entries against the current constructor. Then measure `nativePartsMs` cold-to-Build and repeated Build refresh with both the ready-group and exact fallback paths. Keep a per-constructor substage stopwatch (group lookup/key/grouping vs current inspection vs cart-plan/supply/entry/classification) for one authored capture if the slot remains high; do not add a general profiling framework.
+
+## Minimal candidate for the 39.258 ms Garage path
+
+`RefreshOwnedCars` uses the global `profile.revision` to call `BuildOwnedCars`; that clears and recreates every card/preview, rebuilds all entries and warnings, reapplies the query, and invokes `RefreshOwnedDetails`. `InspectOwned` is correctly content-keyed, so unchanged cars should retain exact current inspections despite the global revision, but their cards/previews are still rebuilt. The target car's `NativePartPreviewCache.CarSignature` includes `car.fluids`; its current inspection must change after refill. `InspectionBuild.Capture(..., healthy:true)` resets part wear but deliberately preserves starting fluids, so `OwnedHealthy`'s dyno curve also depends on the refill and must be recalculated. Reusing the old target stats or its no-wear dyno would be incorrect.
+
+The smallest safe view update is therefore keyed to the confirmed refill target: leave every non-target grid card/tree and its exact inspection/warning state intact; refresh cash HUD; recalculate the target current inspection and warnings; update only that card's HP/torque/weight/status/warning elements and exact current/healthy dyno data where shown. If the target detail is open, update its changed fluid levels/capacity controls, warning/stats facts and dyno only; avoid rebuilding the whole owned grid and unrelated maintenance actions. Preserve the typed dialog and Settings draft while it is open. Keep the old target warnings visible with a clear updating state until the new exact result is accepted; never clear the warning snapshot to hide stale details.
+
+Capture the target's current and healthy `InspectionBuild` inputs on the Unity owner thread, then use the existing pure managed `CarInspection.CalculatePrepared` / `Task.Run` pattern used by `OwnedDriving` for exact calculations if they dominate the measured main-thread time. Accept the result only for the same live profile/owner context, target ID, and latest request generation/revision/commit. Do not run the full `BuildOwnedCars` as a deferred next-frame job. Freshness for target actions still validates the actual global revision; updating a narrow display must not advance unrelated cart or mutation tokens.
+
+For the next measurement only, split the existing `nativeOwnedMs` scope locally into `BuildOwnedCars` body, target `InspectOwned` cache miss/current+healthy probes, `CarPreview` creation count/time, `RefreshOwnedDetails` subcalls (`OwnedCarDyno`, `BuildOwnedStats`, `BuildOwnedMaintenance`) and surface registration. This identifies which minimal patch pays down 39.258 ms before touching unrelated `NativeMenuShell` consumers. `BuildOwnedMaintenance` includes per-action `PaidEconomy.Preview` for each service/replace button, so if that is dominant, patch only the affected oil/coolant rows and refill-button availability/quote state rather than reconstructing every component repair/replacement quote. The fluid refills change stored amount, not component wear/failure history; retain all existing service warnings and do not synthesize recovery.

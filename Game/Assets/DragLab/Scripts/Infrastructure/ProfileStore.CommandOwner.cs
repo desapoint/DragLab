@@ -34,6 +34,11 @@ namespace DragLab.Infrastructure
         // Allows exactly one synchronous, explicit validated recovery load for the
         // retained completed typed operation. It is never set for ordinary reads.
         static TypedOwnerLease controlledRecoveryLease;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        // Isolated verification may fail the load boundary without corrupting a
+        // database. This hook never exists in a release player or runs on a worker.
+        internal static Action ControlledRecoveryFailureInjection;
+#endif
         static long selectionEpoch;
         static bool selectedCheckpointDirty;
 
@@ -251,6 +256,9 @@ namespace DragLab.Infrastructure
             controlledRecoveryLease=lease;
             try
             {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                ControlledRecoveryFailureInjection?.Invoke();
+#endif
                 profile=Load(false);
                 var proof=selectedOwnerProof;
                 if (proof==null || !ReferenceEquals(proof.Profile,profile) || !ContextMatches(lease.Slot,lease.Path,lease.Epoch) ||

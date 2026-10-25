@@ -120,10 +120,13 @@ namespace DragLab.Runtime
         void LateUpdate()
         {
             using(FramePacingProbe.Measure(4)){
-            Refresh();TickEngineListening();
+            Refresh();
+            using(FramePacingProbe.Measure(13)){
+            TickEngineListening();
             if (!NativeMobile.Touch && !game.ResetRequired && Visible && !game.NativeRacePause && Input.GetKeyDown(KeyCode.Escape)) { if (ModalOpen) CloseDialog(); else if(game.ScreenName=="Tuning"&&setupLibraryOpen) BackFromSetupLibrary(); else if (game.ScreenName=="Parts" && cartPageOpen) BackFromNativeCart(); else if (game.ScreenName=="Parts" && partsDetailId!=null) BackToParts(); else if (DealerDetailsOpen) BackToDealer(); else if (DisposalOpen) BackFromDisposal(); else if (OwnedDetailsOpen) BackToOwnedCars(); }
             foreach (var surface in surfaces) surface.Tick(Visible);
             foreach (var surface in switchSurfaces) surface.Tick(Visible);
+            }
             }
         }
         internal void Refresh()
@@ -137,6 +140,7 @@ namespace DragLab.Runtime
             root.EnableInClassList("hidden", !show);
             if (!show) { ReleasePartCards(); return; }
             FramePacingProbe.Phase="menu/"+route;
+            using(FramePacingProbe.Measure(12)){
             int width = panel.targetTexture == null ? Screen.width : panel.targetTexture.width;
             int height = panel.targetTexture == null ? Screen.height : panel.targetTexture.height;
             NativeMobile.Fit(root,panel,width,height);
@@ -146,16 +150,25 @@ namespace DragLab.Runtime
             SetText("fuel", car == null ? "— L" : car.fuel.litres.ToString("F1") + " / " + profile.catalog.Spec(car.vehicleId).fuel.capacityLitres.ToString("F0") + " L");
             SetText("progression", "REP " + profile.reputation);
             StartDealership();
+            }
+            using(FramePacingProbe.Measure(9))
             RefreshOwnedCars(route);
+            using(FramePacingProbe.Measure(12)){
             RefreshDealership(route);
             RefreshTuning(route);
+            }
+            using(FramePacingProbe.Measure(11))
             RefreshNativeCart(route);
+            using(FramePacingProbe.Measure(10))
             RefreshParts(route);
+            using(FramePacingProbe.Measure(12)){
             RefreshEngines(route);
             RefreshDisposal(route);
             RefreshRaceSelection(route);
             RefreshBusiness(route);
+            }
             if (renderedRoute == route) return;
+            using(FramePacingProbe.Measure(12)){
             renderedRoute = route;
             bool settings = route == "Settings";
             for (int i = 0; i < routes.Length; i++) root.Q<Button>("nav" + names[i]).EnableInClassList("selected", route == routes[i] || route == "Recovery" && routes[i] == "Business");
@@ -165,6 +178,7 @@ namespace DragLab.Runtime
             root.Q("settingsActions").EnableInClassList("hidden", !settings);
             ShowCategory();
             for (int i = 0; i < categoryIds.Length; i++) root.Q<Button>("tab" + categoryIds[i]).EnableInClassList("selected", i == category);
+            }
         }
         internal void ResetMenuEntry(string route)
         {

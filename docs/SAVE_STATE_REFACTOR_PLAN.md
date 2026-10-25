@@ -138,6 +138,8 @@ S06a coordinator and S06b selected-owner infrastructure are committed. S06c acti
 
 **S06d is mandatory before S07:** reduce and measure the remaining refill consumer-refresh work, keep all completion/navigation frames in the evidence, and exercise native unknown/retry, failed recovery and interruption/resume. Keep the known blocking exceptional recovery-load cost visible. Preserve the whole command/caller conversion, no-runtime-JSON, no-full-profile-save-clone and S14 platform/soak requirements. This added control-sized checkpoint records unresolved measured work; it does not waive or replace a gate.
 
+S06d1 attribution and native lifecycle infrastructure now passes scoped review and actual managed/build/player checks. It identifies Parts and owned-car refresh costs and adds the missing lifecycle evidence; it does not reduce those costs. Commit that infrastructure before S06d2 consumer optimization, then re-run the full S06 acceptance gate before S07.
+
 ## Measurements and correctness gates
 
 S00 fixes disposable workloads at 1/5/20 owned cars and increasing loose-member/stock/history counts. Include fuel/oil/coolant service, stock+express checkout, cart edits, worn replacement, inventory move, rebuild/swap/sale, setup/tune, market-refresh race settlement, business claim, reset/load and recovery. Pin input hashes, content/physics revisions, seed/stream, epoch, reservation clock, settings, hardware and frame cap. Do not assume invented timings.
