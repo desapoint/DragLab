@@ -74,16 +74,33 @@ namespace DragLab.Runtime
         readonly NativePartPreviewCache cache;readonly string referenceKey;
         internal int EvaluationCount {get;private set;}
         internal double EvaluationMilliseconds {get;private set;}
+        internal readonly bool UsedReadyProductGroups;
+        internal readonly double ProductGroupLookupMilliseconds;
+        internal readonly double ShopPopulationMilliseconds;
+        internal readonly double CurrentInspectionMilliseconds;
+        internal readonly double ShopLedgerSetupMilliseconds;
+        internal readonly double ShopProductEnumerationMilliseconds;
+        internal readonly double ShopClassificationMilliseconds;
+        internal readonly double ShopRepresentativeMilliseconds;
+        internal readonly double ShopAliasMilliseconds;
+        internal readonly double ShopSupplyCountMilliseconds;
+        internal readonly double ShopQuoteAndHoldMilliseconds;
+        internal readonly double ShopEntryCreationMilliseconds;
+        internal readonly double ShopUsedOfferMilliseconds;
+        internal readonly double ShopStockBindingMilliseconds;
+        internal readonly bool UsedReadyStockBinding;
         readonly PlayerProfile actual,reference;
         readonly OwnedCar actualCar,referenceCar;
         readonly Dictionary<PartCategory,string> referenceMap;
         readonly VehicleSpec referenceSpec;
+        static double ElapsedMilliseconds(long start)=>(System.Diagnostics.Stopwatch.GetTimestamp()-start)*1000.0/System.Diagnostics.Stopwatch.Frequency;
         internal NativePartBrowser(PlayerProfile profile,IEnumerable<PartCartLine> lines,bool planned,string page,Func<DealerStock,int> usedPrice,Func<string,bool,int> salePrice,NativePartPreviewCache cache=null)
         {
             actual=profile;actualCar=profile.SelectedCar;plannedReference=planned;this.cache=cache;
             if(actualCar==null)return;
-            cache?.Bind(profile,actualCar);
+            long currentInspectionStart=System.Diagnostics.Stopwatch.GetTimestamp();cache?.Bind(profile,actualCar);
             Current=string.IsNullOrEmpty(actualCar.engineAssemblyId)?null:cache==null?Inspect(InspectionBuild.Capture(profile,actualCar)):cache.Inspection("current",()=>Inspect(InspectionBuild.Capture(profile,actualCar),cache));reference=profile;
+            CurrentInspectionMilliseconds=ElapsedMilliseconds(currentInspectionStart);
             var cart=lines.Select(l=>l.Copy()).ToArray();
             string incoming=cart.Length==0?"":cache==null?JsonUtility.ToJson(profile):cache.Context+"/"+string.Join("/",cart.Select(l=>JsonUtility.ToJson(profile.parts.Find(i=>i.instanceId==l.assetId))+JsonUtility.ToJson(profile.looseEngineElements.Find(i=>i.element.id==l.assetId))+JsonUtility.ToJson(profile.inventory.dealer.Find(i=>i.Id==l.assetId))+JsonUtility.ToJson(profile.catalog.Find(l.definitionId))));
             string planKey="plan/"+NativePartPreviewCache.Fingerprint(JsonUtility.ToJson(new PartCart.Lines{entries=cart.ToList()})+incoming);
@@ -99,18 +116,68 @@ namespace DragLab.Runtime
                 foreach(var p in profile.parts.Where(p=>!actualCar.installed.slots.Any(s=>s.partInstanceId==p.instanceId)))Add(p.instanceId,p.definitionId,"Owned",p,null,true,p.location==PartLocation.Inventory?SharedInventory.StorageOf(p.storageId):p.ownerId,SafePrice(()=>salePrice(p.instanceId,false),p.location==PartLocation.Inventory));
                 foreach(var u in profile.looseEngineElements)Add(u.element.id,u.definitionId,"Owned",null,u,true,SharedInventory.StorageOf(u.storageId),SafePrice(()=>salePrice(u.element.id,true),true));
             }
-            if(page=="Shop"){
-                var fitted=new HashSet<string>(referenceMap.Values);var supplyCount=PartsMarket.Counter(profile,actualCar);var shelf=new PartsMarket.Ledger(profile,profile.inventory.usingCartReservation);
-                foreach(var product in profile.catalog.parts.GroupBy(NewProductKey,StringComparer.Ordinal)){
-                    var d=product.OrderBy(p=>fitted.Contains(p.id)?0:p.id.StartsWith(referenceCar.vehicleId+"/",StringComparison.Ordinal)?1:2).ThenBy(p=>p.id,StringComparer.Ordinal).First();
-                    var supply=shelf.Quote(d,supplyCount(d),d.price);int available=Math.Max(0,shelf.Available(d)-(profile.inventory.usingCartReservation?CartReservations.Held(profile,d):0));
-                    Add("new:"+d.id,d.id,"New",null,null,product.Any(p=>Owns(p.id)),"New",supply.cost);
-                    Entries[Entries.Count-1].StockUnits=available;Entries[Entries.Count-1].RequiresExpress=supply.expressUnits>0;
-                    Entries[Entries.Count-1].SearchExtra=string.Join(" ",product.Select(p=>p.id));
+            long shopPopulationStart=0;bool shopPage=page=="Shop";
+            if(shopPage){
+                shopPopulationStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                long groupLookupStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                bool usedReadyGroups=MarketCatalogLayout.TryReadyShopProductGroups(profile.catalog,out var readyGroups,out var readyGroupById);
+                ProductGroupLookupMilliseconds=ElapsedMilliseconds(groupLookupStart);
+                UsedReadyProductGroups=usedReadyGroups;
+                long ledgerSetupStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                var fitted=new HashSet<string>(referenceMap.Values);
+                var supplyCount=usedReadyGroups?PartsMarket.CounterIndexed(profile,actualCar):PartsMarket.Counter(profile,actualCar);
+                var shelf=new PartsMarket.Ledger(profile,profile.inventory.usingCartReservation);
+                ShopLedgerSetupMilliseconds=ElapsedMilliseconds(ledgerSetupStart);
+                long productEnumerationStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                string selectedModelPrefix=referenceCar.vehicleId+"/";
+                if(usedReadyGroups){
+                    double representativeMs=0,aliasMs=0,supplyCountMs=0,quoteAndHoldMs=0,entryCreationMs=0,usedOfferMs=0;
+                    long bindingStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                    UsedReadyStockBinding=shelf.BindReadyProductGroups(readyGroups,readyGroupById);
+                    ShopStockBindingMilliseconds=ElapsedMilliseconds(bindingStart);
+                    foreach(var product in readyGroups){
+                        long phaseStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                        PartDefinition d=null;int best=int.MaxValue;bool owned=false;
+                        foreach(var id in product.DefinitionIds){
+                            var candidate=profile.catalog.Find(id);if(candidate==null)continue;
+                            owned|=Owns(id);
+                            int rank=fitted.Contains(id)?0:id.StartsWith(selectedModelPrefix,StringComparison.Ordinal)?1:2;
+                            if(rank<best||rank==best&&StringComparer.Ordinal.Compare(id,d?.id)<0){d=candidate;best=rank;}
+                        }
+                        representativeMs+=ElapsedMilliseconds(phaseStart);
+                        if(d==null)continue;
+                        phaseStart=System.Diagnostics.Stopwatch.GetTimestamp();int units=supplyCount(d);supplyCountMs+=ElapsedMilliseconds(phaseStart);
+                        phaseStart=System.Diagnostics.Stopwatch.GetTimestamp();var supply=shelf.Quote(d,units,d.price);int available=Math.Max(0,shelf.Available(d)-(profile.inventory.usingCartReservation?CartReservations.Held(profile,d):0));quoteAndHoldMs+=ElapsedMilliseconds(phaseStart);
+                        phaseStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                        Add("new:"+d.id,d.id,"New",null,null,owned,"New",supply.cost);
+                        Entries[Entries.Count-1].StockUnits=available;Entries[Entries.Count-1].RequiresExpress=supply.expressUnits>0;
+                        entryCreationMs+=ElapsedMilliseconds(phaseStart);
+                        phaseStart=System.Diagnostics.Stopwatch.GetTimestamp();Entries[Entries.Count-1].SearchExtra=string.Join(" ",product.DefinitionIds);aliasMs+=ElapsedMilliseconds(phaseStart);
+                    }
+                    ShopRepresentativeMilliseconds=representativeMs;ShopAliasMilliseconds=aliasMs;
+                    ShopSupplyCountMilliseconds=supplyCountMs;ShopQuoteAndHoldMilliseconds=quoteAndHoldMs;
+                    ShopEntryCreationMilliseconds=entryCreationMs;
+                    long usedOfferStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                    foreach(var d in profile.inventory.dealer.Where(d=>d.IsPart||d.IsUnit))Add("used:"+d.Id,d.DefinitionId,"Used",d.IsPart?d.part:null,d.IsUnit?d.unit:null,Owns(d.DefinitionId),"Dealer",usedPrice(d));
+                    ShopUsedOfferMilliseconds=ElapsedMilliseconds(usedOfferStart);
+                }else{
+                    foreach(var product in profile.catalog.parts.GroupBy(NewProductKey,StringComparer.Ordinal)){
+                        var d=product.OrderBy(p=>fitted.Contains(p.id)?0:p.id.StartsWith(selectedModelPrefix,StringComparison.Ordinal)?1:2).ThenBy(p=>p.id,StringComparer.Ordinal).First();
+                        var supply=shelf.Quote(d,supplyCount(d),d.price);int available=Math.Max(0,shelf.Available(d)-(profile.inventory.usingCartReservation?CartReservations.Held(profile,d):0));
+                        Add("new:"+d.id,d.id,"New",null,null,product.Any(p=>Owns(p.id)),"New",supply.cost);
+                        Entries[Entries.Count-1].StockUnits=available;Entries[Entries.Count-1].RequiresExpress=supply.expressUnits>0;
+                        Entries[Entries.Count-1].SearchExtra=string.Join(" ",product.Select(p=>p.id));
+                    }
+                    long usedOfferStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                    foreach(var d in profile.inventory.dealer.Where(d=>d.IsPart||d.IsUnit))Add("used:"+d.Id,d.DefinitionId,"Used",d.IsPart?d.part:null,d.IsUnit?d.unit:null,Owns(d.DefinitionId),"Dealer",usedPrice(d));
+                    ShopUsedOfferMilliseconds=ElapsedMilliseconds(usedOfferStart);
                 }
-                foreach(var d in profile.inventory.dealer.Where(d=>d.IsPart||d.IsUnit))Add("used:"+d.Id,d.DefinitionId,"Used",d.IsPart?d.part:null,d.IsUnit?d.unit:null,Owns(d.DefinitionId),"Dealer",usedPrice(d));
+                ShopProductEnumerationMilliseconds=ElapsedMilliseconds(productEnumerationStart);
             }
+            long shopClassificationStart=shopPage?System.Diagnostics.Stopwatch.GetTimestamp():0;
             foreach(var entry in Entries)Classify(entry);
+            if(shopPage)ShopClassificationMilliseconds=ElapsedMilliseconds(shopClassificationStart);
+            if(shopPage)ShopPopulationMilliseconds=ElapsedMilliseconds(shopPopulationStart);
         }
         internal static string NewProductKey(PartDefinition definition)
         {

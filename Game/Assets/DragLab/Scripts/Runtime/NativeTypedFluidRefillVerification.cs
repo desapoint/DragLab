@@ -249,6 +249,19 @@ namespace DragLab.Runtime
                 yield return Click(input,"navBuild");
                 Check(game.ScreenName!="Garage"&&game.ManualRefillPending&&game.Profile.cash==cash&&car.fluids.oilLitres==oil,
                     "browsing to Build leaves delayed refill work retained without applying it");
+                var browserTiming=shell.PartBrowser;
+                if(browserTiming!=null)report.AppendLine(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                    "NOTE pending Build browser readyGroups={0} lookupMs={1:F3} inspectionMs={2:F3} shopPopulationMs={3:F3} ledgerSetupMs={4:F3} enumerationMs={5:F3} classificationMs={6:F3}",
+                    browserTiming.UsedReadyProductGroups,browserTiming.ProductGroupLookupMilliseconds,
+                    browserTiming.CurrentInspectionMilliseconds,browserTiming.ShopPopulationMilliseconds,
+                    browserTiming.ShopLedgerSetupMilliseconds,browserTiming.ShopProductEnumerationMilliseconds,
+                    browserTiming.ShopClassificationMilliseconds));
+                if(browserTiming!=null)report.AppendLine(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                    "NOTE pending Build phase sums representativeMs={0:F3} supplyCountMs={1:F3} quoteHoldMs={2:F3} entryMs={3:F3} aliasMs={4:F3} usedMs={5:F3} stockBindingMs={6:F3} bound={7}",
+                    browserTiming.ShopRepresentativeMilliseconds,browserTiming.ShopSupplyCountMilliseconds,
+                    browserTiming.ShopQuoteAndHoldMilliseconds,browserTiming.ShopEntryCreationMilliseconds,
+                    browserTiming.ShopAliasMilliseconds,browserTiming.ShopUsedOfferMilliseconds,
+                    browserTiming.ShopStockBindingMilliseconds,browserTiming.UsedReadyStockBinding));
                 FramePacingProbe.OverridePhase="typed-refill/native-settings-draft-pending";
                 yield return Click(input,"settingsButton");
                 yield return Click(input,"tabSound");

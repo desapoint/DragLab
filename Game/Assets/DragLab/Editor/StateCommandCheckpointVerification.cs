@@ -185,13 +185,34 @@ namespace DragLab.Editor
         // Later checkpoints must select their own report root explicitly, so a
         // regression cannot silently replace an earlier checkpoint's evidence.
         public static void RunTypedFluidRefillPilotCheckpoint()
+            => RunRefillCheckpoint(SelectedCheckpoint());
+
+        public static void RunNativeReadyProductGroupsCheckpoint()
+        {
+            string checkpoint = SelectedCheckpoint();
+            VerifyReadyProductGroups(checkpoint);
+            RunRefillCheckpoint(checkpoint);
+        }
+
+        public static void RunNativeReadyProductGroupsOnlyCheckpoint()
+            => VerifyReadyProductGroups(SelectedCheckpoint());
+
+        static void VerifyReadyProductGroups(string checkpoint)
+        {
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            VerifyScopedManagedChecks(checkpoint, "ready-product-groups", NativeReadyProductGroupChecks.Run);
+            VerifyScopedManagedChecks(checkpoint, "shop-supply-projection", ShopSupplyProjectionChecks.Run);
+        }
+
+        static string SelectedCheckpoint()
         {
             var args = Environment.GetCommandLineArgs();
             int at = Array.IndexOf(args, "--draglab-save-checkpoint");
             if (at < 0 || at + 1 >= args.Length ||
                 !System.Text.RegularExpressions.Regex.IsMatch(args[at + 1], @"\AS[0-9]{2}[A-Z]?[0-9]{0,2}\z"))
                 throw new ArgumentException("Select a safe checkpoint report name with --draglab-save-checkpoint (for example S06D1).");
-            RunRefillCheckpoint(args[at + 1]);
+            return args[at + 1];
         }
 
         static void RunRefillCheckpoint(string checkpoint)

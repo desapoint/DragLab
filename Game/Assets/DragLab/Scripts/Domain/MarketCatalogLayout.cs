@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -49,6 +50,13 @@ namespace DragLab.Domain.Mechanics
             internal int revision;
             internal PartDefinition[] definitions;
             internal Dictionary<string,string> keys;
+            internal IReadOnlyList<ReadyProductGroup> shopGroups;
+            internal IReadOnlyDictionary<string,ReadyProductGroup> shopGroupById;
+        }
+        internal sealed class ReadyProductGroup
+        {
+            internal IReadOnlyList<string> DefinitionIds { get; }
+            internal ReadyProductGroup(string[] ids){DefinitionIds=Array.AsReadOnly(ids);}
         }
         static readonly ConditionalWeakTable<MechanicalCatalog,KeySnapshot> readyKeys=
             new ConditionalWeakTable<MechanicalCatalog,KeySnapshot>();
@@ -70,6 +78,38 @@ namespace DragLab.Domain.Mechanics
                 }
             keys=entry.keys;return true;
         }
+        static bool ValidateReadyProductKeys(MechanicalCatalog catalog,KeySnapshot entry)
+        {
+            for(int i=0;i<entry.definitions.Length;i++)
+            {
+                var definition=catalog.parts[i];
+                if(entry.definitions[i].id!=definition.id||
+                    !entry.keys.TryGetValue(definition.id,out var expected)||Key(definition)!=expected)
+                {
+                    readyKeys.Remove(catalog);layouts.Remove(catalog);return false;
+                }
+            }
+            return true;
+        }
+        // Returns only source-ordered authored product IDs from a completed
+        // warm snapshot. Semantic validation catches public in-place edits,
+        // even when AuthoringRevision and list identity did not change.
+        internal static bool TryReadyShopProductGroups(MechanicalCatalog catalog,
+            out IReadOnlyList<ReadyProductGroup> groups)
+            =>TryReadyShopProductGroups(catalog,out groups,out _);
+        internal static bool TryReadyShopProductGroups(MechanicalCatalog catalog,
+            out IReadOnlyList<ReadyProductGroup> groups,
+            out IReadOnlyDictionary<string,ReadyProductGroup> groupById)
+        {
+            groups=null;groupById=null;
+            if(!TryReadyProductKeys(catalog,out _)||
+                !readyKeys.TryGetValue(catalog,out var entry)||entry.shopGroups==null||
+                entry.shopGroupById==null||entry.shopGroupById.Count!=catalog.parts.Count||
+                !ValidateReadyProductKeys(catalog,entry))
+                return false;
+            groups=entry.shopGroups;groupById=entry.shopGroupById;
+            return true;
+        }
         internal static bool PublishProductKeys(MechanicalCatalog catalog,
             PartDefinition[] definitions,int revision,Dictionary<string,string> keys)
         {
@@ -80,12 +120,23 @@ namespace DragLab.Domain.Mechanics
             for(int i=0;i<definitions.Length;i++)
                 if(!ReferenceEquals(definitions[i],catalog.parts[i])||
                     !keys.ContainsKey(definitions[i].id))return false;
-            // No caller ever writes to this dictionary after publication.
             var complete=new KeySnapshot{
                 revision=revision,definitions=definitions,keys=keys
             };
             readyKeys.Remove(catalog);
             readyKeys.Add(catalog,complete);
+            return true;
+        }
+        static bool PublishShopProductGroups(MechanicalCatalog catalog,KeySnapshot expected,
+            IReadOnlyList<ReadyProductGroup> groups,
+            IReadOnlyDictionary<string,ReadyProductGroup> groupById,
+            int revision,PartDefinition[] definitions)
+        {
+            if(catalog==null||groups==null||groupById==null||definitions==null||groupById.Count!=definitions.Length||
+                !readyKeys.TryGetValue(catalog,out var entry)||!ReferenceEquals(entry,expected)||entry.revision!=revision||
+                revision!=catalog.AuthoringRevision||definitions.Length!=catalog.parts.Count||
+                !definitions.SequenceEqual(catalog.parts)||!ValidateReadyProductKeys(catalog,entry))return false;
+            entry.shopGroups=groups;entry.shopGroupById=groupById;
             return true;
         }
         static bool Same(PartDefinition a,PartDefinition b)
@@ -108,7 +159,26 @@ namespace DragLab.Domain.Mechanics
                 a.heatCapacityJPerC==b.heatCapacityJPerC && a.coolingWattsPerC==b.coolingWattsPerC && a.wearEnergyJ==b.wearEnergyJ && a.overloadSeconds==b.overloadSeconds && a.tireLifeDistanceM==b.tireLifeDistanceM &&
                 a.tireOptimalC==b.tireOptimalC && a.tireHeatFraction==b.tireHeatFraction && a.description==b.description && a.differential==b.differential && a.torqueBiasRatio==b.torqueBiasRatio &&
                 a.preloadNm==b.preloadNm && a.engineHeatTransferScale==b.engineHeatTransferScale && a.maxPowerHp==b.maxPowerHp && a.provenance==b.provenance))return false;
-            foreach(var f in fields){var x=f.GetValue(a);var y=f.GetValue(b);if(ReferenceEquals(x,y))continue;if(f.FieldType.IsValueType||f.FieldType==typeof(string)){if(!Equals(x,y))return false;}else if(JsonUtility.ToJson(x)!=JsonUtility.ToJson(y))return false;}return true;
+            foreach(var f in fields){var x=f.GetValue(a);var y=f.GetValue(b);if(ReferenceEquals(x,y))continue;if(f.Name=="awdHardware"){if(!SameAwdHardware((AwdHardwareSpec)x,(AwdHardwareSpec)y))return false;}else if(f.FieldType.IsValueType||f.FieldType==typeof(string)){if(!Equals(x,y))return false;}else if(JsonUtility.ToJson(x)!=JsonUtility.ToJson(y))return false;}return true;
+        }
+        static bool SameAwdHardware(AwdHardwareSpec a,AwdHardwareSpec b)
+        {
+            if(ReferenceEquals(a,b))return true;if(a==null||b==null)return false;
+            return a.version==b.version&&a.modes==b.modes&&a.integratedCenter==b.integratedCenter&&
+                a.adjustments==b.adjustments&&a.responseMin==b.responseMin&&a.responseMax==b.responseMax&&
+                SameAwdSpec(a.calibration,b.calibration);
+        }
+        static bool SameAwdSpec(AwdSpec a,AwdSpec b)
+        {
+            if(ReferenceEquals(a,b))return true;if(a==null||b==null)return false;
+            return a.mode==b.mode&&a.centerSpeedRatio==b.centerSpeedRatio&&
+                a.torqueBiasRatio==b.torqueBiasRatio&&a.centerPreloadNm==b.centerPreloadNm&&
+                a.frontBias==b.frontBias&&a.minimumFront==b.minimumFront&&a.maximumFront==b.maximumFront&&
+                a.primaryFront==b.primaryFront&&a.isolateFailedAxle==b.isolateFailedAxle&&
+                a.maximumSecondary==b.maximumSecondary&&a.responseSeconds==b.responseSeconds&&
+                a.slipThreshold==b.slipThreshold&&a.preload==b.preload&&
+                a.freeShaftInertiaKgM2==b.freeShaftInertiaKgM2&&a.freeShaftDragNm==b.freeShaftDragNm&&
+                a.freeShaftViscousDrag==b.freeShaftViscousDrag;
         }
         internal static string Key(PartDefinition d)
         {
@@ -302,10 +372,16 @@ namespace DragLab.Domain.Mechanics
         internal static IEnumerable<object> WarmSteps(MechanicalCatalog catalog)
         {
             if(catalog==null)yield break;
+            bool groupsReady=TryReadyShopProductGroups(catalog,out _);
+            if(groupsReady&&TryReadyProductKeys(catalog,out var readyLayoutKeys)&&
+                layouts.TryGetValue(catalog,out var readyLayout)&&Matches(readyLayout,catalog,readyLayoutKeys))yield break;
             var definitions=catalog.parts.ToArray();
             int revision=catalog.AuthoringRevision;
             Dictionary<string,string> keys;
-            if(!TryReadyProductKeys(catalog,out keys))
+            bool haveKeys=TryReadyProductKeys(catalog,out keys);
+            if(haveKeys&&!groupsReady)
+                haveKeys=readyKeys.TryGetValue(catalog,out var cached)&&ValidateReadyProductKeys(catalog,cached);
+            if(!haveKeys)
             {
                 keys=new Dictionary<string,string>(StringComparer.Ordinal);
                 long start=System.Diagnostics.Stopwatch.GetTimestamp();
@@ -326,6 +402,39 @@ namespace DragLab.Domain.Mechanics
             }
             if(revision!=catalog.AuthoringRevision||
                 !definitions.SequenceEqual(catalog.parts))yield break;
+            if(!groupsReady)
+            {
+                if(!readyKeys.TryGetValue(catalog,out var groupingSnapshot)||
+                    !ValidateReadyProductKeys(catalog,groupingSnapshot))yield break;
+                var byKey=new Dictionary<string,List<string>>(StringComparer.Ordinal);
+                var groupOrder=new List<string>();
+                long groupStart=System.Diagnostics.Stopwatch.GetTimestamp();int groupedCount=0;
+                foreach(var definition in definitions)
+                {
+                    string key=keys[definition.id];
+                    if(!byKey.TryGetValue(key,out var ids)){ids=new List<string>();byKey.Add(key,ids);groupOrder.Add(key);}
+                    ids.Add(definition.id);
+                    if(++groupedCount>=512||(System.Diagnostics.Stopwatch.GetTimestamp()-groupStart)*1000.0/System.Diagnostics.Stopwatch.Frequency>=2.0)
+                    {yield return "parts/shop grouping";groupedCount=0;groupStart=System.Diagnostics.Stopwatch.GetTimestamp();}
+                }
+                var shopGroups=new List<ReadyProductGroup>(groupOrder.Count);
+                var groupById=new Dictionary<string,ReadyProductGroup>(StringComparer.Ordinal);
+                groupStart=System.Diagnostics.Stopwatch.GetTimestamp();int publishedCount=0;
+                foreach(var key in groupOrder)
+                {
+                    var product=new ReadyProductGroup(byKey[key].ToArray());shopGroups.Add(product);
+                    foreach(var id in product.DefinitionIds)
+                    {
+                        groupById.Add(id,product);
+                        if(++publishedCount>=512||(System.Diagnostics.Stopwatch.GetTimestamp()-groupStart)*1000.0/System.Diagnostics.Stopwatch.Frequency>=2.0)
+                        {yield return "parts/shop group publish";publishedCount=0;groupStart=System.Diagnostics.Stopwatch.GetTimestamp();}
+                    }
+                }
+                if(!ValidateReadyProductKeys(catalog,groupingSnapshot))yield break;
+                var immutableGroupById=new ReadOnlyDictionary<string,ReadyProductGroup>(groupById);
+                if(!PublishShopProductGroups(catalog,groupingSnapshot,Array.AsReadOnly(shopGroups.ToArray()),immutableGroupById,revision,definitions))yield break;
+                yield return "parts/shop ready";
+            }
             var models=catalog.parts.Where(d=>d.category==PartCategory.CylinderBlock)
                 .Select(d=>d.id.Split('/')[0]).Distinct().OrderBy(s=>s,StringComparer.Ordinal).ToArray();
             var specs=models.Select(catalog.Spec).ToArray();

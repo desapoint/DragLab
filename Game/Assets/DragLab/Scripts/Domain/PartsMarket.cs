@@ -61,6 +61,53 @@ namespace DragLab.Domain.Mechanics
             var selected=car==null?null:p.catalog.Spec(car.vehicleId);var specs=Models(p.catalog).Select(p.catalog.Spec).ToArray();
             return d=>{if(d.category==PartCategory.Tires||d.category==PartCategory.Wheels||d.category==PartCategory.Brakes)return 4;if(!EngineElements.Supported(d.category))return 1;var spec=selected!=null&&p.catalog.Fits(selected,d)?selected:specs.FirstOrDefault(v=>p.catalog.Fits(v,d));return spec==null?1:Count(spec,d);};
         }
+        // Native Shop projection: interface equality is only a candidate prefilter.
+        // Selected-spec priority, exact Fits, and the original Count remain authoritative.
+        internal static Func<PartDefinition,int> CounterIndexed(PlayerProfile p,OwnedCar car)
+        {
+            var selected=car==null?null:p.catalog.Spec(car.vehicleId);
+            var specs=Models(p.catalog).Select(p.catalog.Spec).ToArray();
+            Dictionary<PartCategory,Dictionary<string,VehicleSpec[]>> byInterface;
+            try
+            {
+                var building=new Dictionary<PartCategory,Dictionary<string,List<VehicleSpec>>>();
+                var categories=(PartCategory[])Enum.GetValues(typeof(PartCategory));
+                foreach(var spec in specs)
+                    foreach(PartCategory category in categories)
+                    {
+                        string fitment=MechanicalCatalog.Interface(spec,category);
+                        if(fitment==null)continue;
+                        if(!building.TryGetValue(category,out var byFitment))
+                        {byFitment=new Dictionary<string,List<VehicleSpec>>(StringComparer.Ordinal);building.Add(category,byFitment);}
+                        if(!byFitment.TryGetValue(fitment,out var candidates))
+                        {candidates=new List<VehicleSpec>();byFitment.Add(fitment,candidates);}
+                        candidates.Add(spec);
+                    }
+                byInterface=building.ToDictionary(pair=>pair.Key,
+                    pair=>pair.Value.ToDictionary(value=>value.Key,value=>value.Value.ToArray(),StringComparer.Ordinal));
+            }
+            catch(Exception)
+            {
+                // A malformed or exceptional interface must retain the exact old scan.
+                return Counter(p,car);
+            }
+            Func<PartDefinition,int> exactFallback=null;
+            return d=>
+            {
+                if(d.category==PartCategory.Tires||d.category==PartCategory.Wheels||d.category==PartCategory.Brakes)return 4;
+                if(!EngineElements.Supported(d.category))return 1;
+                if(selected!=null&&p.catalog.Fits(selected,d))return Count(selected,d);
+                if(d.fitment==null||!byInterface.TryGetValue(d.category,out var byFitment)||
+                    !byFitment.TryGetValue(d.fitment,out var candidates))
+                {
+                    if(exactFallback==null)exactFallback=Counter(p,car);
+                    return exactFallback(d);
+                }
+                foreach(var candidate in candidates)
+                    if(p.catalog.Fits(candidate,d))return Count(candidate,d);
+                return 1;
+            };
+        }
         public static bool FitsAny(PlayerProfile p,PartDefinition d)=>d!=null&&Models(p.catalog).Any(m=>p.catalog.Fits(p.catalog.Spec(m),d));
         public static VehicleSpec Reference(PlayerProfile p,PartDefinition d) {string model=Models(p.catalog).FirstOrDefault(m=>p.catalog.Fits(p.catalog.Spec(m),d));if(model==null)throw new InvalidOperationException("No supported engine or vehicle accepts this part.");return p.catalog.Resolve(model,p.catalog.Recipe(model),new Tune()).spec;}
         static string[] Models(MechanicalCatalog c) => c.parts.Where(d=>d.category==PartCategory.CylinderBlock).Select(d=>d.id.Split('/')[0]).Distinct().OrderBy(s=>s,StringComparer.Ordinal).ToArray();
@@ -335,7 +382,30 @@ namespace DragLab.Domain.Mechanics
             readonly Dictionary<string,NewPartStock> stocks=new Dictionary<string,NewPartStock>(StringComparer.Ordinal);
             readonly Dictionary<NewPartStock,int> remaining=new Dictionary<NewPartStock,int>();
             Dictionary<string,NewPartStock> products;
+            IReadOnlyDictionary<string,MarketCatalogLayout.ReadyProductGroup> readyAliasGroups;
+            Dictionary<MarketCatalogLayout.ReadyProductGroup,NewPartStock> readyGroupStocks;
             public Ledger(PlayerProfile p,bool includeReserved=false){owner=p;bool reserved=CartReservations.Active(p);foreach(var s in p.inventory.market.parts){remaining[s]=s.units;if(reserved){var d=p.catalog.Find(s.definitions[0]);remaining[s]=Math.Max(0,s.units-CartReservations.Held(p,d,true))+(includeReserved?CartReservations.Held(p,d):0);}foreach(string id in s.definitions)stocks[id]=s;}}
+            // Bind only after the browser has obtained a fully validated authored
+            // product group snapshot. The local map resolves aliases to the same
+            // first equivalent market row as the legacy products-key dictionary.
+            internal bool BindReadyProductGroups(
+                IReadOnlyList<MarketCatalogLayout.ReadyProductGroup> groups,
+                IReadOnlyDictionary<string,MarketCatalogLayout.ReadyProductGroup> groupById)
+            {
+                if(groups==null||groupById==null)return false;
+                foreach(var group in groups)
+                {
+                    if(group==null||group.DefinitionIds==null||group.DefinitionIds.Count==0)return false;
+                    foreach(var id in group.DefinitionIds)
+                        if(string.IsNullOrEmpty(id)||!groupById.TryGetValue(id,out var indexed)||!ReferenceEquals(indexed,group))return false;
+                }
+                var firstRows=new Dictionary<MarketCatalogLayout.ReadyProductGroup,NewPartStock>();
+                foreach(var row in owner.inventory.market.parts)
+                    foreach(var id in row.definitions)
+                        if(groupById.TryGetValue(id,out var group)&&!firstRows.ContainsKey(group))firstRows.Add(group,row);
+                readyAliasGroups=groupById;readyGroupStocks=firstRows;
+                return true;
+            }
             public SupplyQuote Take(PartDefinition d,int units,int basePrice,int quantity=1,bool consume=false)
             {
                 var stock=Find(d);int available=stock==null?0:remaining[stock];var q=Calculate(available,stock?.deliveryPercent??10,units,basePrice,quantity);
@@ -345,6 +415,9 @@ namespace DragLab.Domain.Mechanics
             NewPartStock Find(PartDefinition d)
             {
                 if(stocks.TryGetValue(d.id,out var stock))return stock;
+                if(readyAliasGroups!=null&&readyAliasGroups.TryGetValue(d.id,out var product)&&
+                    readyGroupStocks!=null)
+                {readyGroupStocks.TryGetValue(product,out stock);stocks[d.id]=stock;return stock;}
                 if(products==null){products=new Dictionary<string,NewPartStock>(StringComparer.Ordinal);foreach(var row in owner.inventory.market.parts)foreach(string id in row.definitions){var definition=owner.catalog.Find(id);if(definition!=null){string key=ProductKey(definition);if(!products.ContainsKey(key))products[key]=row;}}}
                 products.TryGetValue(ProductKey(d),out stock);stocks[d.id]=stock;return stock;
             }
