@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using UnityEngine;
 namespace DragLab.Domain.Mechanics
@@ -38,8 +38,10 @@ namespace DragLab.Domain.Mechanics
             public VehicleSpec Stock(MechanicalCatalog catalog,string model){if(!stockSpecs.TryGetValue(model,out var spec))stockSpecs[model]=spec=catalog.Resolve(model,catalog.Recipe(model),new Tune()).spec;return spec;}
             public PartDefinition[][] Choices(MechanicalCatalog catalog,string model){if(!choices.TryGetValue(model,out var rows)){var spec=Stock(catalog,model);choices[model]=rows=catalog.parts.Where(d=>catalog.Fits(spec,d)&&PartSemantics.Wears(d.category)).GroupBy(d=>d.category).OrderBy(g=>g.Key).Select(g=>g.OrderBy(d=>d.id,StringComparer.Ordinal).ToArray()).ToArray();}return rows;}
         }
-        static readonly HashSet<string> fastFields=new HashSet<string>(new[]{"name","fitment","brand","quality","fuelKind","pistonCrown","crownVolumeCc","valveReliefMm","springMaxLiftMm","followerInterface","plugHeatRange","category","boreMm","power","grip","massScale","shiftScale","capacityScale","boostScale","centerRatioMin","centerRatioMax","rpmLimit","torqueLimitNm","massKg","inertiaKgM2","positionFromFrontAxleM","heightM","price","stage","reputationRequired","clutchEnvironment","clutchMaterial","clutchActuation","clutchPlateCount","clutchOilCapacityLitres","clutchEngagementRpm","tuning","turboSize","fixedBoost","boostMin","boostMax","fixedPulley","pulleyMin","pulleyMax","fixedFinalDrive","finalDriveMin","finalDriveMax","valve","turboUnits","superchargerUnits","fuelDelivery","supportsInjection","supportsDiesel","injectionControlMetadataVersion","controllerCylinderCapacity","injectionIdleControl","injectionMixtureVariation","camLiftMm","camDurationDegrees","camOverlapDegrees","camLobeSeparation","camTorqueBias","valvetrainRpm","camTimingAdjustable","fluidCapacityLitres","fluidMinimumLitres","baffling","pumpFlowScale","capPressureBar","induction","transmission","manualDownshiftInterlock","manualLayout","sequentialShiftScale","thermalLimitC","heatCapacityJPerC","coolingWattsPerC","wearEnergyJ","overloadSeconds","tireLifeDistanceM","tireOptimalC","tireHeatFraction","description","differential","torqueBiasRatio","preloadNm","engineHeatTransferScale","maxPowerHp","provenance"});
-        static readonly FieldInfo[] fields=typeof(PartDefinition).GetFields().Where(f=>f.Name!="id"&&!fastFields.Contains(f.Name)).ToArray();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        static long canonicalJsonEncodeCount;
+        internal static long CanonicalJsonEncodeCount=>canonicalJsonEncodeCount;
+#endif
         static readonly ConditionalWeakTable<PartDefinition,Product> products=new ConditionalWeakTable<PartDefinition,Product>();
         static readonly ConditionalWeakTable<MechanicalCatalog,Layout> layouts=new ConditionalWeakTable<MechanicalCatalog,Layout>();
         // Canonical product-key strings depend on authored data, not the market
@@ -49,9 +51,46 @@ namespace DragLab.Domain.Mechanics
         {
             internal int revision;
             internal PartDefinition[] definitions;
+            internal PartDefinition[] semanticSnapshots;
+            internal string[] ids;
             internal Dictionary<string,string> keys;
             internal IReadOnlyList<ReadyProductGroup> shopGroups;
             internal IReadOnlyDictionary<string,ReadyProductGroup> shopGroupById;
+        }
+        // Main-thread opaque borrow of a completed canonical-key snapshot. It
+        // retains no player stock and validation never recomputes Key/JSON.
+        internal sealed class ReadyContentToken
+        {
+            readonly MechanicalCatalog catalog;
+            readonly KeySnapshot snapshot;
+            readonly IReadOnlyList<ReadyProductGroup> groups;
+            readonly IReadOnlyDictionary<string,ReadyProductGroup> groupById;
+            internal int DefinitionCount=>snapshot.definitions.Length;
+            private ReadyContentToken(MechanicalCatalog catalog,KeySnapshot snapshot)
+            {this.catalog=catalog;this.snapshot=snapshot;groups=snapshot.shopGroups;groupById=snapshot.shopGroupById;}
+            internal static ReadyContentToken Capture(MechanicalCatalog catalog)
+            {
+                if(catalog==null||!readyKeys.TryGetValue(catalog,out var entry)||
+                    entry.revision!=catalog.AuthoringRevision||entry.definitions.Length!=catalog.parts.Count||
+                    entry.shopGroups==null||entry.shopGroupById==null||entry.shopGroupById.Count!=entry.definitions.Length||
+                    entry.semanticSnapshots==null||entry.semanticSnapshots.Length!=entry.definitions.Length||entry.ids==null||entry.ids.Length!=entry.definitions.Length)return null;
+                return new ReadyContentToken(catalog,entry);
+            }
+            internal bool MatchesCurrent(MechanicalCatalog current)
+            {
+                if(!ReferenceEquals(current,catalog)||!readyKeys.TryGetValue(catalog,out var live)||
+                    !ReferenceEquals(live,snapshot)||!ReferenceEquals(snapshot.shopGroups,groups)||!ReferenceEquals(snapshot.shopGroupById,groupById)||snapshot.shopGroups==null||snapshot.shopGroupById==null||snapshot.revision!=catalog.AuthoringRevision||
+                    snapshot.definitions.Length!=catalog.parts.Count||snapshot.ids==null||snapshot.ids.Length!=snapshot.definitions.Length)return false;
+                for(int i=0;i<snapshot.definitions.Length;i++)
+                {
+                    var definition=catalog.parts[i];
+                    if(!ReferenceEquals(snapshot.definitions[i],definition)||
+                        definition.id!=snapshot.ids[i]||!snapshot.keys.ContainsKey(definition.id)||snapshot.semanticSnapshots==null||
+                        snapshot.semanticSnapshots.Length!=snapshot.definitions.Length||
+                        snapshot.semanticSnapshots[i]==null||!Same(definition,snapshot.semanticSnapshots[i]))return false;
+                }
+                return true;
+            }
         }
         internal sealed class ReadyProductGroup
         {
@@ -60,6 +99,16 @@ namespace DragLab.Domain.Mechanics
         }
         static readonly ConditionalWeakTable<MechanicalCatalog,KeySnapshot> readyKeys=
             new ConditionalWeakTable<MechanicalCatalog,KeySnapshot>();
+        internal static bool TryCaptureReadyContentToken(MechanicalCatalog catalog,out ReadyContentToken token)
+        {
+            token=ReadyContentToken.Capture(catalog);return token!=null;
+        }
+        internal static IReadOnlyDictionary<string,string[]> AuthoredComparedFields()=>new Dictionary<string,string[]>
+        {
+            ["PartDefinition"]=new[]{"id","name","fitment","brand","quality","fuelKind","pistonCrown","crownVolumeCc","valveReliefMm","springMaxLiftMm","followerInterface","plugHeatRange","category","boreMm","power","grip","massScale","shiftScale","capacityScale","boostScale","centerRatioMin","centerRatioMax","awdHardware","rpmLimit","torqueLimitNm","massKg","inertiaKgM2","positionFromFrontAxleM","heightM","price","stage","reputationRequired","clutchEnvironment","clutchMaterial","clutchActuation","clutchPlateCount","clutchOilCapacityLitres","clutchEngagementRpm","tuning","turboSize","fixedBoost","boostMin","boostMax","fixedPulley","pulleyMin","pulleyMax","fixedFinalDrive","finalDriveMin","finalDriveMax","valve","turboUnits","superchargerUnits","fuelDelivery","supportsInjection","supportsDiesel","injectionControlMetadataVersion","controllerCylinderCapacity","injectionIdleControl","injectionMixtureVariation","camLiftMm","camDurationDegrees","camOverlapDegrees","camLobeSeparation","camTorqueBias","valvetrainRpm","camTimingAdjustable","fluidCapacityLitres","fluidMinimumLitres","baffling","pumpFlowScale","capPressureBar","induction","transmission","manualDownshiftInterlock","manualLayout","sequentialShiftScale","thermalLimitC","heatCapacityJPerC","coolingWattsPerC","wearEnergyJ","overloadSeconds","tireLifeDistanceM","tireOptimalC","tireHeatFraction","description","differential","torqueBiasRatio","preloadNm","engineHeatTransferScale","maxPowerHp","provenance"},
+            ["AwdHardwareSpec"]=new[]{"version","modes","integratedCenter","adjustments","calibration","responseMin","responseMax"},
+            ["AwdSpec"]=new[]{"mode","centerSpeedRatio","torqueBiasRatio","centerPreloadNm","frontBias","minimumFront","maximumFront","primaryFront","isolateFailedAxle","maximumSecondary","responseSeconds","slipThreshold","preload","freeShaftInertiaKgM2","freeShaftDragNm","freeShaftViscousDrag"}
+        };
         internal static bool TryReadyProductKeys(MechanicalCatalog catalog,out Dictionary<string,string> keys)
         {
             keys=null;
@@ -121,8 +170,10 @@ namespace DragLab.Domain.Mechanics
                 if(!ReferenceEquals(definitions[i],catalog.parts[i])||
                     !keys.ContainsKey(definitions[i].id))return false;
             var complete=new KeySnapshot{
-                revision=revision,definitions=definitions,keys=keys
+                revision=revision,definitions=definitions,ids=definitions.Select(d=>d.id).ToArray(),keys=keys,
+                semanticSnapshots=definitions.Select(d=>products.TryGetValue(d,out var cached)&&cached.snapshot!=null?cached.snapshot:null).ToArray()
             };
+            if(complete.semanticSnapshots.Any(d=>d==null))return false;
             readyKeys.Remove(catalog);
             readyKeys.Add(catalog,complete);
             return true;
@@ -141,6 +192,7 @@ namespace DragLab.Domain.Mechanics
         }
         static bool Same(PartDefinition a,PartDefinition b)
         {
+            if(!SameNumericBits(a,b))return false;
             if(!(a.name==b.name && a.fitment==b.fitment && a.brand==b.brand && a.quality==b.quality && a.fuelKind==b.fuelKind &&
                 a.pistonCrown==b.pistonCrown && a.crownVolumeCc==b.crownVolumeCc && a.valveReliefMm==b.valveReliefMm && a.springMaxLiftMm==b.springMaxLiftMm && a.followerInterface==b.followerInterface &&
                 a.plugHeatRange==b.plugHeatRange && a.category==b.category && a.boreMm==b.boreMm && a.power==b.power && a.grip==b.grip &&
@@ -159,33 +211,47 @@ namespace DragLab.Domain.Mechanics
                 a.heatCapacityJPerC==b.heatCapacityJPerC && a.coolingWattsPerC==b.coolingWattsPerC && a.wearEnergyJ==b.wearEnergyJ && a.overloadSeconds==b.overloadSeconds && a.tireLifeDistanceM==b.tireLifeDistanceM &&
                 a.tireOptimalC==b.tireOptimalC && a.tireHeatFraction==b.tireHeatFraction && a.description==b.description && a.differential==b.differential && a.torqueBiasRatio==b.torqueBiasRatio &&
                 a.preloadNm==b.preloadNm && a.engineHeatTransferScale==b.engineHeatTransferScale && a.maxPowerHp==b.maxPowerHp && a.provenance==b.provenance))return false;
-            foreach(var f in fields){var x=f.GetValue(a);var y=f.GetValue(b);if(ReferenceEquals(x,y))continue;if(f.Name=="awdHardware"){if(!SameAwdHardware((AwdHardwareSpec)x,(AwdHardwareSpec)y))return false;}else if(f.FieldType.IsValueType||f.FieldType==typeof(string)){if(!Equals(x,y))return false;}else if(JsonUtility.ToJson(x)!=JsonUtility.ToJson(y))return false;}return true;
+            return SameAwdHardware(a.awdHardware,b.awdHardware);
         }
         static bool SameAwdHardware(AwdHardwareSpec a,AwdHardwareSpec b)
         {
             if(ReferenceEquals(a,b))return true;if(a==null||b==null)return false;
             return a.version==b.version&&a.modes==b.modes&&a.integratedCenter==b.integratedCenter&&
-                a.adjustments==b.adjustments&&a.responseMin==b.responseMin&&a.responseMax==b.responseMax&&
+                a.adjustments==b.adjustments&&F32(a.responseMin,b.responseMin)&&F32(a.responseMax,b.responseMax)&&
                 SameAwdSpec(a.calibration,b.calibration);
         }
         static bool SameAwdSpec(AwdSpec a,AwdSpec b)
         {
             if(ReferenceEquals(a,b))return true;if(a==null||b==null)return false;
-            return a.mode==b.mode&&a.centerSpeedRatio==b.centerSpeedRatio&&
-                a.torqueBiasRatio==b.torqueBiasRatio&&a.centerPreloadNm==b.centerPreloadNm&&
-                a.frontBias==b.frontBias&&a.minimumFront==b.minimumFront&&a.maximumFront==b.maximumFront&&
+            return a.mode==b.mode&&F32(a.centerSpeedRatio,b.centerSpeedRatio)&&
+                F32(a.torqueBiasRatio,b.torqueBiasRatio)&&F32(a.centerPreloadNm,b.centerPreloadNm)&&
+                F32(a.frontBias,b.frontBias)&&F32(a.minimumFront,b.minimumFront)&&F32(a.maximumFront,b.maximumFront)&&
                 a.primaryFront==b.primaryFront&&a.isolateFailedAxle==b.isolateFailedAxle&&
-                a.maximumSecondary==b.maximumSecondary&&a.responseSeconds==b.responseSeconds&&
-                a.slipThreshold==b.slipThreshold&&a.preload==b.preload&&
-                a.freeShaftInertiaKgM2==b.freeShaftInertiaKgM2&&a.freeShaftDragNm==b.freeShaftDragNm&&
-                a.freeShaftViscousDrag==b.freeShaftViscousDrag;
+                F32(a.maximumSecondary,b.maximumSecondary)&&F32(a.responseSeconds,b.responseSeconds)&&
+                F32(a.slipThreshold,b.slipThreshold)&&F32(a.preload,b.preload)&&
+                F32(a.freeShaftInertiaKgM2,b.freeShaftInertiaKgM2)&&F32(a.freeShaftDragNm,b.freeShaftDragNm)&&
+                F32(a.freeShaftViscousDrag,b.freeShaftViscousDrag);
+        }
+        [StructLayout(LayoutKind.Explicit)] struct FloatBits{[FieldOffset(0)]internal float value;[FieldOffset(0)]internal int bits;}
+        static bool F32(float a,float b){var x=new FloatBits{value=a};var y=new FloatBits{value=b};return x.bits==y.bits;}
+        static bool SameNumericBits(PartDefinition a,PartDefinition b)
+        {
+            return F32(a.crownVolumeCc,b.crownVolumeCc)&&F32(a.valveReliefMm,b.valveReliefMm)&&F32(a.springMaxLiftMm,b.springMaxLiftMm)&&F32(a.boreMm,b.boreMm)&&F32(a.power,b.power)&&F32(a.grip,b.grip)&&F32(a.massScale,b.massScale)&&F32(a.shiftScale,b.shiftScale)&&F32(a.capacityScale,b.capacityScale)&&F32(a.boostScale,b.boostScale)&&F32(a.centerRatioMin,b.centerRatioMin)&&F32(a.centerRatioMax,b.centerRatioMax)&&F32(a.rpmLimit,b.rpmLimit)&&F32(a.torqueLimitNm,b.torqueLimitNm)&&F32(a.massKg,b.massKg)&&F32(a.inertiaKgM2,b.inertiaKgM2)&&F32(a.positionFromFrontAxleM,b.positionFromFrontAxleM)&&F32(a.heightM,b.heightM)&&F32(a.clutchOilCapacityLitres,b.clutchOilCapacityLitres)&&F32(a.clutchEngagementRpm,b.clutchEngagementRpm)&&F32(a.turboSize,b.turboSize)&&F32(a.fixedBoost,b.fixedBoost)&&F32(a.boostMin,b.boostMin)&&F32(a.boostMax,b.boostMax)&&F32(a.fixedPulley,b.fixedPulley)&&F32(a.pulleyMin,b.pulleyMin)&&F32(a.pulleyMax,b.pulleyMax)&&F32(a.fixedFinalDrive,b.fixedFinalDrive)&&F32(a.finalDriveMin,b.finalDriveMin)&&F32(a.finalDriveMax,b.finalDriveMax)&&F32(a.injectionIdleControl,b.injectionIdleControl)&&F32(a.injectionMixtureVariation,b.injectionMixtureVariation)&&F32(a.camLiftMm,b.camLiftMm)&&F32(a.camDurationDegrees,b.camDurationDegrees)&&F32(a.camOverlapDegrees,b.camOverlapDegrees)&&F32(a.camLobeSeparation,b.camLobeSeparation)&&F32(a.camTorqueBias,b.camTorqueBias)&&F32(a.valvetrainRpm,b.valvetrainRpm)&&F32(a.fluidCapacityLitres,b.fluidCapacityLitres)&&F32(a.fluidMinimumLitres,b.fluidMinimumLitres)&&F32(a.baffling,b.baffling)&&F32(a.pumpFlowScale,b.pumpFlowScale)&&F32(a.capPressureBar,b.capPressureBar)&&F32(a.sequentialShiftScale,b.sequentialShiftScale)&&F32(a.thermalLimitC,b.thermalLimitC)&&F32(a.heatCapacityJPerC,b.heatCapacityJPerC)&&F32(a.coolingWattsPerC,b.coolingWattsPerC)&&F32(a.wearEnergyJ,b.wearEnergyJ)&&F32(a.overloadSeconds,b.overloadSeconds)&&F32(a.tireLifeDistanceM,b.tireLifeDistanceM)&&F32(a.tireOptimalC,b.tireOptimalC)&&F32(a.tireHeatFraction,b.tireHeatFraction)&&F32(a.torqueBiasRatio,b.torqueBiasRatio)&&F32(a.preloadNm,b.preloadNm)&&F32(a.engineHeatTransferScale,b.engineHeatTransferScale)&&F32(a.maxPowerHp,b.maxPowerHp);
         }
         internal static string Key(PartDefinition d)
         {
             var entry=products.GetValue(d,_=>new Product());if(entry.snapshot!=null&&Same(d,entry.snapshot))return entry.key;
-            entry.snapshot=d.Copy();entry.json=null;var copy=d.Copy();copy.id="";return entry.key=JsonUtility.ToJson(copy);
+            entry.snapshot=d.Copy();entry.json=null;var copy=d.Copy();copy.id="";
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            canonicalJsonEncodeCount++;
+#endif
+            return entry.key=JsonUtility.ToJson(copy);
         }
-        internal static string Json(PartDefinition d){Key(d);var entry=products.GetValue(d,_=>new Product());if(entry.json==null||entry.jsonId!=d.id){entry.jsonId=d.id;entry.json=JsonUtility.ToJson(d);}return entry.json;}
+        internal static string Json(PartDefinition d){Key(d);var entry=products.GetValue(d,_=>new Product());if(entry.json==null||entry.jsonId!=d.id){entry.jsonId=d.id;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            canonicalJsonEncodeCount++;
+#endif
+            entry.json=JsonUtility.ToJson(d);}return entry.json;}
         static bool Matches(Layout entry,MechanicalCatalog catalog,Dictionary<string,string> keys)
             =>entry.groups!=null&&catalog.parts.Select(d=>d.id).SequenceEqual(entry.ids)&&
                 catalog.parts.Select(d=>keys[d.id]).SequenceEqual(entry.keys);

@@ -197,6 +197,15 @@ namespace DragLab.Editor
         public static void RunNativeReadyProductGroupsOnlyCheckpoint()
             => VerifyReadyProductGroups(SelectedCheckpoint());
 
+        public static void RunNativePartsReadSetCheckpoint()
+        {
+            string checkpoint = SelectedCheckpoint();
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            VerifyScopedManagedChecks(checkpoint, "parts-base-readset", NativePartsReadSetChecks.Run);
+            VerifyReadyProductGroups(checkpoint);
+        }
+
         static void VerifyReadyProductGroups(string checkpoint)
         {
             if (!Application.isBatchMode || EditorApplication.isPlaying)
