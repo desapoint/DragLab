@@ -1,0 +1,40 @@
+# S06d2a browser design review
+
+Date: 2026-10-25
+Review type: independent Luna-high design review of `S06D2A_BROWSER_AUDIT.md` and `S06D2A_BROWSER_TEST_PLAN.md`.
+Scope: design only; no Unity/source edits or performance claims.
+
+## Verdict
+
+**Approved for design freeze and implementation of the dormant typed base-facts support step in `S06D2A_BROWSER_CONTRACT.md`.** It is correctly scoped before a live browser builder, does not change menus or persistence, and explicitly keeps the whole S06 latency gate open, including nonempty-cart latency. The older audit/test plan are superseded where their worker/readiness wording conflicts with this contract. This approval is for the support-step design only; it is not a native latency pass or approval of the later live builder.
+
+The proposed main-thread soft-budget loops do not bound their capture and publication tails. A 2–3 ms loop budget cannot compensate for a large synchronous scan before or after the loop. Source objects expose public mutable fields, so multi-frame validation alone cannot prove that values stayed stable between validation slices. Use incremental private preparation, a typed input baseline, cheap owner/generation checks on every step, and one exact typed comparison of the bounded read set immediately before atomic publication. The comparison is an indivisible tail: measure it and keep the full frame under 50 ms; if it exceeds that budget, reduce the actual read set or add trustworthy typed mutation generations and repeat the complete capture. Do not average the tail across frames.
+
+## Required contract corrections
+
+1. **Scope of this approval.** Implement only the contract's new `NativePartsBaseReadSet`/opaque authored-content token and their dormant checks. Do not add `NativePartBrowserBuild`, alter `NativeParts.RefreshParts`, replace the live JSON context key, or change persistence in this support step. Later builder integration must have its own independent review against the implemented DTOs and measured tail. The support step must not claim to bound the live constructor.
+
+2. **Authored token feasibility.** The existing `MarketCatalogLayout.KeySnapshot` already owns the completed ordered definition-reference list, key dictionary, and immutable ready Shop group/alias metadata; canonical key creation also retains a typed semantic copy per definition. The proposed opaque token is implementable by exposing an internal handle to this captured snapshot plus its retained semantic copies, without copying the whole catalog for each request or invoking `Key`, JSON, reflection, or a changed-data fallback. It must return unavailable/stale when there is no completed snapshot; no sync warmup/key reconstruction. It must retain exact snapshot/group/map identity and compare current authored fields to the captured semantic values with typed field comparers, including null and nested AWD values. Revisions/refs are quick rejection guards, not substitutes for the field comparison. This token only validates authored definitions; it is not player stock or a planned-cart certificate.
+
+3. **Inspection worker boundary.** In `Domain/CarInspection.cs`, `InspectionBuild.Capture` resolves catalog/resource data and must stay on main. `CarInspection.PrepareCar` is explicitly main-thread preparation too; do not move it to a worker. Only after main has produced the detached `InspectionBuild` and its private `CarSimulation`, may a worker call `CarInspection.CalculatePrepared(source, preparedCar, runProbe:false, steadyOutput:null)` for pure inspection math. The worker receives no profile, catalog, authored definition, UI element, callback closing over live game state, or store/Unity static. The prepared car/source are private to that request and are not concurrently consumed elsewhere. If this exact separation cannot be guaranteed, keep calculation on main and bound its work.
+
+4. **Freeze the wrapper pair before code depends on it.** `BeginCapture`'s line/unit/price arguments must be copied into the session at entry; `Advance` reads only its private typed copies and direct read-only profile inputs; `TryFinish(currentInputs,...)` and `MatchesCurrent(currentInputs,...)` must use one named immutable current-input wrapper that can represent exactly the same fields, with a hand-written bounded comparator. The implementation and check authors must agree the wrapper's concrete type/signature before either writes dependent code. Building that `currentInputs` wrapper for final comparison is one atomic main-thread operation and its max cost belongs to the separate comparison metric. Owner context is captured/compared on main only. No multi-frame comparison may certify unchanged unversioned public data by itself.
+
+5. **Nonempty-cart preview remains a later S06 prerequisite.** This base-readset is explicitly not a planned-preview certificate and does not optimize `PartCart.PreviewProfile`. Keep the full S06 latency gate open. The later live browser integration must add a separate typed read-only preview dependency inside S06 and measure nonempty-cart latency before S06 passes or S07 begins. This support-step approval does not skip or waive any S00–S14 work.
+
+6. **Define safe pending presentation and failure behavior.** Keep the previous critical warning text visible until the replacement model is complete, mark the view as updating, and disable stale card actions while its token is invalid. Atomically replace the model/cards only after all entries, facts and warnings pass the same freshness fence. On cancellation, stale input or preparation failure, keep warnings/draft settings intact, discard the private result, and recover from fresh state; never reveal partial results or fall back to a blocking complete constructor. Query, filters, sort, section, scroll and detail are presentation state: apply their latest values at publication and preserve selection/scroll when the selected entry still exists.
+
+7. **Treat filtering/sorting and first-card readiness as measured phases.** The audit notes that `ApplyPartQuery` filters and sorts a whole section but leaves it for later measurement. Include these costs and the full-frame tails in the checkpoint contract. If they exceed the frame budget, bound them too; do not label the constructor improvement a responsiveness pass while a subsequent query/card step produces the same hitch. Keep stat precision, ordering, warnings and every visible value exact.
+
+## Accepted review constraints
+
+- Preserve exact source order, representative and alias semantics, `CounterIndexed`/`Fits`/`Count`, `Ledger` quote/hold behavior, ownership, used prices, compatibility, seven comparison deltas, warnings and current query/card values.
+- Keep browser preparation private until the complete result is valid. Do not let an old action act on new state or show a partial result as current.
+- Keep the existing ~3 ms comparison budget and virtualized-card behavior unless matched evidence justifies a change. Any card budget needs both an item cap and a measured soft-time budget, with largest-step evidence.
+- Preserve search, filter, sort, section, scroll, detail and settings/tuning draft state across resize, invalidation and retry.
+- This support step tests read-set capture/parity and invalidation only. The later builder gate must include empty and nonempty carts, Shop/Inventory/Installed, current/planned views, and the converted read-only nonempty-cart preview; the existing clone path cannot be excluded from whole S06 latency evidence.
+- Correctness and design approval are not a native latency pass, visual acceptance, JSON retirement, S06 completion or authorization to advance to S07.
+
+## Contract status
+
+The dormant facts support-step contract is approved for implementation after the implementation/test authors freeze the concrete input-wrapper signatures together. Keep this approval separate from the live browser builder, whole S06 latency acceptance, visual acceptance, JSON retirement and phase completion. The parent owns the contract freeze and all subsequent source/test/build/Git work.
