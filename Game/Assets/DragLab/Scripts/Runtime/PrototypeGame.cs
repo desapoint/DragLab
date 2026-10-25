@@ -73,7 +73,7 @@ namespace DragLab.Runtime
         internal bool IsPractice { get { return practiceRun; } }
         internal void PauseRace(bool value) { SetPaused(value); }
         internal void OpenAudioSettings() { if (screen == "Race") { SetPaused(true); audioSettingsOpen = true; } else { if (screen != "Settings") SettingsReturnRoute = screen; DiscardPreviews(); screen = "Settings"; scroll = Vector2.zero; } }
-        internal void PreviewVehicle(string id) { DiscardPreviews(); profile.selectedVehicleId = id; MechanicsOwnership.Ensure(profile,profile.catalog); lastBenchmarkKey = null; screen = "Garage"; ShowGarageCar(); }
+        internal void PreviewVehicle(string id) { if(BlockForManualRefill())return; DiscardPreviews(); profile.selectedVehicleId = id; MechanicsOwnership.Ensure(profile,profile.catalog); lastBenchmarkKey = null; screen = "Garage"; ShowGarageCar(); }
         public void ReturnToGarage() { if(AudioAuditionActive)auditionFiles=null; DiscardPreviews(); if(!SyncRaceWear(true,"Returned to garage"))return; race?.CloseOpponentWorker(); race = null; screen = "Garage"; nativeMenu?.ResetMenuEntry("Garage"); ShowGarageCar(); }
         public void StartPractice() { StartRace(null, true); }
         internal bool ResetIncompatibleSave(out string error)
@@ -173,6 +173,7 @@ namespace DragLab.Runtime
 
         public void StartRace(CareerEventDefinition evt = null, bool practice = false)
         {
+            if(BlockForManualRefill())return;
             if (Build == null) { notice = "No owned car. Open Collection / recovery work to buy a replacement."; return; }
             DiscardPreviews();
             if(!SyncRaceWear(true,"Retry / new race"))return;
@@ -236,6 +237,7 @@ namespace DragLab.Runtime
         {
             if(DeterministicCapture.Frame)return;
             if (profile == null || resetRequired) return;
+            UpdateManualRefill();
             if(AudioAuditionActive){AdvanceAudioAudition();return;}
             if(FramePacingProbe.Active&&screen=="Race"&&race!=null)FramePacingProbe.Phase=race.ResultReady?"race/results":"race/driving";
             if(screen!="Race"&&Time.realtimeSinceStartup>.25f&&!Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&GUIUtility.hotControl==0)
@@ -251,7 +253,7 @@ namespace DragLab.Runtime
             }
             if(profile.vehicleStock!=null&&screen!="Race"&&Time.realtimeSinceStartup>.25f&&!Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&GUIUtility.hotControl==0){string key=profile.vehicleStock.seed+"/"+profile.vehicleStock.generation+"/"+profile.firstPurchasePending;if(key!=marketWarmKey){marketWarmKey=key;marketWarm=VehicleListings.WarmNext(profile).GetEnumerator();}if(marketWarm!=null&&!marketWarm.MoveNext())marketWarm=null;}
             if (pendingAction != null) { var action = pendingAction; pendingAction = null; action(); }
-            if (saveDelay > 0 && GUIUtility.hotControl == 0 && !Input.GetMouseButton(0) && !Input.GetMouseButton(1)) { if(drivingPreferencesDirty){if(!ProfileStore.TrySavePreferences(profile,out var error))notice="Settings save failed: "+error;drivingPreferencesDirty=false;}else ProfileStore.Save(profile);saveDelay=0; }
+            if (saveDelay > 0 && (!ManualRefillBlocksMutation || drivingPreferencesDirty) && GUIUtility.hotControl == 0 && !Input.GetMouseButton(0) && !Input.GetMouseButton(1)) { if(drivingPreferencesDirty){if(!ProfileStore.TrySavePreferences(profile,out var error))notice="Settings save failed: "+error;drivingPreferencesDirty=false;}else ProfileStore.Save(profile);saveDelay=0; }
             if (screen == "Garage" && !(nativeMenu != null && (nativeMenu.ModalOpen || nativeMenu.OwnedDetailsOpen || nativeMenu.DealerPageOpen || nativeMenu.EditingText)) && Input.GetKeyDown(KeyCode.P)) StartPractice();
             if(NativeMobile.Touch&&screen!="Race"&&Input.GetKeyDown(KeyCode.Escape))nativeMenu?.TouchBack();
             if (screen != "Race" || race == null) return;
@@ -353,6 +355,7 @@ namespace DragLab.Runtime
         { using (FramePacingProbe.Measure(3)) return SyncRaceWearMeasured(close,reason); }
         bool SyncRaceWearMeasured(bool close=false,string reason="")
         {
+            if(ManualRefillBlocksMutation)return race==null||liveRunClosed;
             if(race==null||profile==null||liveRunClosed)return true;
             if(ResultSettlementPending&&!FlushFinishSettlement())return false;
             var durable=profile.runCheckpoints.Find(r=>r.runId==liveRunId);
@@ -364,6 +367,7 @@ namespace DragLab.Runtime
         }
         internal void SuspendForMobile()
         {
+            if(ManualRefillBlocksMutation){if(profile!=null&&drivingPreferencesDirty&&ProfileStore.TrySavePreferences(profile,out _))drivingPreferencesDirty=false;return;}
             HandleApplicationInterruption(true);
             if(profile==null||resetRequired||screen=="Race")return;
             PersistNativeCartReservation();
@@ -371,7 +375,7 @@ namespace DragLab.Runtime
             ProfileStore.Flush();
         }
         void OnApplicationPause(bool pause) { if(pause){if(NativeMobile.Touch)SuspendForMobile();else HandleApplicationInterruption(true);} }
-        void OnApplicationQuit() { if (profile != null) { SyncRaceWear(true,"Quit");PersistNativeCartReservation();if(drivingPreferencesDirty)ProfileStore.TrySavePreferences(profile,out _);ProfileStore.Save(profile);ProfileStore.Flush(); } }
+        void OnApplicationQuit() { if (profile != null) { if(ManualRefillBlocksMutation){if(drivingPreferencesDirty)ProfileStore.TrySavePreferences(profile,out _);return;} SyncRaceWear(true,"Quit");PersistNativeCartReservation();if(drivingPreferencesDirty)ProfileStore.TrySavePreferences(profile,out _);ProfileStore.Save(profile);ProfileStore.Flush(); } }
 
         internal string AuditMouseEvents = "";
         internal Rect warmupLineLockRect;
@@ -427,6 +431,14 @@ namespace DragLab.Runtime
             }
             GUI.enabled = true;
             GUILayout.EndHorizontal();
+            if (ManualRefillBlocksMutation)
+            {
+                GUILayout.Label(ManualRefillStatus);
+                if (ManualRefillCanRetry && PartButton("manual-refill-check", "Check refill save"))
+                    pendingAction = () => RetryManualRefill();
+                if (ManualRefillNeedsRecovery && PartButton("manual-refill-recover", "Recover refill save"))
+                    pendingAction = () => RecoverManualRefill();
+            }
             scroll = GUILayout.BeginScrollView(scroll);
             if (screen == "Garage") { if (Build == null) CollectionGUI(); else GarageGUI(); }
             if (screen == "Parts") PartsGUI();
@@ -456,13 +468,13 @@ namespace DragLab.Runtime
             if(PartButton("assemblies-open", "Engine assemblies / detach / store / transfer")) pendingAction = OpenAssemblies;
             if(PartButton("valuation-open", "Value car / engine / chassis / loose parts")) pendingAction = () => OpenValuation(ValuationKind.Car, Build.instanceId);
             MaintenanceSummary(); FuelGarage(); FluidGarage();
-            if (GUILayout.Button("Engine / sound test bench")) { ProfileStore.Save(profile); SceneManager.LoadScene("EngineTest"); return; }
+            if (GUILayout.Button("Engine / sound test bench") && !BlockForManualRefill()) { ProfileStore.Save(profile); SceneManager.LoadScene("EngineTest"); return; }
             var resolved = savedStats.source.build;
             GUILayout.Label(Selected.spec.drive + " / " + savedStats.vehicleMassKg.ToString("F0") + " kg / " + savedStats.peakHp.ToString("F0") + " hp" + (savedStats.completed ? " / " + Benchmark.Rating(savedStats.elapsed,savedStats.trapMps*3.6).performanceClass + " " + Benchmark.Rating(savedStats.elapsed,savedStats.trapMps*3.6).points + " PP" : ""),stat);
             GUILayout.Label(savedStats.probeComplete ? (savedStats.completed ? "Current-build auto probe: " + savedStats.elapsed.ToString("F2") + " s at " + SharedUnitSettings.Speed(savedStats.trapMps,"F0") : "Current-build probe could not complete; inspect warnings.") : "Calculating copied-car performance in background...");
             GUI.enabled = resolved.Drivable;
             if (GUILayout.Button("Physical driving bench / this installed build"))
-                pendingAction = () => { PhysicalBenchTransfer.Put(PhysicalBenchTransfer.Capture(profile, Build)); ProfileStore.Save(profile); SceneManager.LoadScene("DrivingTest"); };
+                pendingAction = () => { if(BlockForManualRefill())return; PhysicalBenchTransfer.Put(PhysicalBenchTransfer.Capture(profile, Build)); ProfileStore.Save(profile); SceneManager.LoadScene("DrivingTest"); };
             if (GUILayout.Button("Practice this build / P (quarter mile, no payout)", GUILayout.Height(32))) pendingAction = StartPractice;
             GUI.enabled = true;
             if (Build.lastPass != null)
@@ -508,7 +520,7 @@ namespace DragLab.Runtime
             int max = type == "controls" ? 1 : 3;
             GUI.enabled = level < max && profile.cash >= cost;
             if (GUILayout.Button(type.ToUpperInvariant() + " " + level + "/" + max + "  |  " + effect + (level < max ? "  |  " + DisplayUnits.Money(cost) : "  |  MAX")))
-            { profile.Upgrade(type); ProfileStore.Save(profile); notice = "Installed " + type + "."; }
+            { if(!BlockForManualRefill()){profile.Upgrade(type); ProfileStore.Save(profile); notice = "Installed " + type + ".";} }
             GUI.enabled = true;
         }
         void FreeRaceGUI()

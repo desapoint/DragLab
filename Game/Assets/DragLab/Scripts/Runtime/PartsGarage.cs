@@ -23,6 +23,7 @@ namespace DragLab.Runtime
         }
         internal bool CommitParts(long revision, Action<PlayerProfile> operation)
         {
+            if(BlockForManualRefill())return false;
             if (screen == "Race" && race != null && race.phase != RacePhase.Finished) { notice = "Parts are locked during a run."; return false; }
             PlayerProfile candidate; string error;
             bool ok = MechanicsTransactions.Try(profile, profile.catalog, revision, operation, ProfileStore.TrySaveValidated, out candidate, out error);
@@ -34,7 +35,7 @@ namespace DragLab.Runtime
             notice = "Parts saved. Removed components retain their identity and condition.";
             return true;
         }
-        void QueuePartAction(Action<PlayerProfile> operation) { long revision = profile.revision; pendingAction = () => CommitParts(revision, operation); }
+        void QueuePartAction(Action<PlayerProfile> operation) { if(BlockForManualRefill())return; long revision = profile.revision; pendingAction = () => CommitParts(revision, operation); }
         void PartsGUI()
         {
             var catalog = profile.catalog;

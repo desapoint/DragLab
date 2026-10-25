@@ -31,6 +31,9 @@ namespace DragLab.Infrastructure
         static readonly int commandOwnerThreadId = Thread.CurrentThread.ManagedThreadId;
         static SelectedOwnerProof selectedOwnerProof;
         static TypedOwnerLease typedOwnerLease;
+        // Allows exactly one synchronous, explicit validated recovery load for the
+        // retained completed typed operation. It is never set for ordinary reads.
+        static TypedOwnerLease controlledRecoveryLease;
         static long selectionEpoch;
         static bool selectedCheckpointDirty;
 
@@ -69,7 +72,8 @@ namespace DragLab.Infrastructure
             if (profile == null || receipt == null || receipt.Generation < 0 || receipt.CommitId < 0 ||
                 receipt.LedgerRevision < 0 || receipt.ContentRevision < 0 || string.IsNullOrEmpty(receipt.PhysicsIdentity) ||
                 !ContextMatches(ownerSlot, ownerPath, ownerEpoch) || selectedCheckpointDirty || writeBlocked ||
-                typedOwnerLease != null || profile.revision != receipt.LedgerRevision || profile.storageCommit != receipt.CommitId)
+                (typedOwnerLease != null && !ReferenceEquals(typedOwnerLease, controlledRecoveryLease)) ||
+                profile.revision != receipt.LedgerRevision || profile.storageCommit != receipt.CommitId)
             {
                 selectedOwnerProof = null;
                 return false;
@@ -136,6 +140,76 @@ namespace DragLab.Infrastructure
             return true;
         }
 
+        // Publishes a prepared affected-row patch and transfers the proof to the new
+        // in-memory owner as one main-thread owner operation. All allocation/validation
+        // is done before the callback; after acknowledgement only field assignments occur.
+        internal static bool TryPublishTypedRefill(TypedOwnerLease lease, SqliteStateOwnerReceipt receipt,
+            long beforeRevision, long beforeCommit, Action applyPreparedPatch, out string error)
+        {
+            CheckCommandOwnerThread(); error=null;
+            var profile=lease==null?null:lease.Profile;
+            var outcome=lease?.Coordinator.PendingOutcome;
+            if(lease==null||!ReferenceEquals(typedOwnerLease,lease)||!lease.BeginAttempted||!lease.Coordinator.HasPending||
+                lease.Coordinator.PendingState!=TypedFluidRefillCoordinatorState.CommittedAwaitingHandling||
+                outcome==null||(outcome.Status!=TypedFluidRefillStatus.Committed&&outcome.Status!=TypedFluidRefillStatus.Replayed)||
+                !outcome.ObservedStorageCommit.HasValue||outcome.Result==null||
+                outcome.ObservedStorageCommit.Value!=outcome.Result.CommittedStorageCommit||
+                receipt==null||receipt.Generation!=outcome.Result.ResetGeneration||
+                receipt.CommitId!=outcome.Result.CommittedStorageCommit||receipt.LedgerRevision!=outcome.Result.CommittedLedgerRevision||
+                profile==null||!ContextMatches(lease.Slot,lease.Path,lease.Epoch)||profile.revision!=beforeRevision||profile.storageCommit!=beforeCommit)
+            { error="Typed owner or durable refill proof changed before publication."; return false; }
+            if(applyPreparedPatch==null){error="A prepared affected-row publication is required.";return false;}
+            SelectedOwnerProof nextProof;
+            try
+            {
+                nextProof=new SelectedOwnerProof { Profile=profile,Slot=lease.Slot,Path=CanonicalOwnerPath(lease.Path),Epoch=lease.Epoch,
+                    ProfileRevision=receipt.LedgerRevision,StorageCommit=receipt.CommitId,Receipt=receipt };
+            }
+            catch(Exception ex){error="Owner proof could not be prepared: "+ex.Message;return false;}
+            selectedOwnerProof=null;
+            try { applyPreparedPatch(); }
+            catch(Exception ex){error="The durable refill remains retained; prepared publication failed: "+ex.Message;return false;}
+            if(profile.revision!=nextProof.ProfileRevision||profile.storageCommit!=nextProof.StorageCommit)
+            { error="The durable refill remains retained; published versions did not match its owner proof.";return false; }
+            if(!lease.Coordinator.Acknowledge(true,out error))
+            { controlledRecoveryLease=null;selectedOwnerProof=null;return false; }
+            // Acknowledge has retired the coordinator result. Keep the exact proof we
+            // prepared above and clear the matching lease without a throwing callback.
+            typedOwnerLease=null;
+            selectedOwnerProof=nextProof;
+            return true;
+        }
+
+        // Completes a controlled validated load while preserving its proof. The caller
+        // verifies command-specific receipt facts before calling this acknowledgement gate.
+        internal static bool TryCompleteControlledRecovery(TypedOwnerLease lease, PlayerProfile profile,
+            SqliteStateOwnerReceipt receipt, long originalGeneration, long minimumCommit, long minimumRevision,
+            out string error)
+        {
+            CheckCommandOwnerThread(); error=null;
+            var proof=selectedOwnerProof;
+            if(lease==null||!ReferenceEquals(typedOwnerLease,lease)||!lease.BeginAttempted||!lease.Coordinator.HasPending||
+                lease.Coordinator.PendingState!=TypedFluidRefillCoordinatorState.CommittedAwaitingHandling||
+                !ReferenceEquals(controlledRecoveryLease,lease)||profile==null||proof==null||!ReferenceEquals(proof.Profile,profile)||
+                !ContextMatches(lease.Slot,lease.Path,lease.Epoch)||proof.Receipt!=receipt||receipt==null||
+                receipt.Generation!=originalGeneration||receipt.CommitId<minimumCommit||receipt.LedgerRevision<minimumRevision||
+                profile.storageCommit!=receipt.CommitId||profile.revision!=receipt.LedgerRevision)
+            { if(ReferenceEquals(controlledRecoveryLease,lease)){controlledRecoveryLease=null;selectedOwnerProof=null;}
+              error="Controlled recovery did not return the validated current owner for this lease."; return false; }
+            if(!lease.Coordinator.Acknowledge(true,out error))return false;
+            controlledRecoveryLease=null;
+            typedOwnerLease=null;
+            // selectedOwnerProof was registered by the validated Load and remains current.
+            return true;
+        }
+
+        internal static void AbandonControlledRecoveryLoad(TypedOwnerLease lease)
+        {
+            CheckCommandOwnerThread();
+            if(lease!=null&&ReferenceEquals(typedOwnerLease,lease)&&ReferenceEquals(controlledRecoveryLease,lease))
+            { controlledRecoveryLease=null; selectedOwnerProof=null; }
+        }
+
         // Acquires the owner lease before TryBegin invokes the caller's factory. The
         // wrapper records the factory/admission attempt so an unstarted lease cannot
         // be dropped and cannot leave a selected owner temporarily unfenced.
@@ -161,6 +235,32 @@ namespace DragLab.Infrastructure
 
         internal static bool CanBeginLegacyWrite() => typedOwnerLease == null && !IsValidatedSavePending();
         internal static bool CanChangeSelection() => typedOwnerLease == null && !IsValidatedSavePending();
+        internal static bool CanLoadSelectedOwner() => typedOwnerLease == null && !IsValidatedSavePending() ||
+            controlledRecoveryLease != null && ReferenceEquals(typedOwnerLease, controlledRecoveryLease) &&
+            controlledRecoveryLease.BeginAttempted && controlledRecoveryLease.Coordinator.HasPending &&
+            controlledRecoveryLease.Coordinator.PendingState == TypedFluidRefillCoordinatorState.CommittedAwaitingHandling;
+
+        internal static bool TryControlledRecoveryLoad(TypedOwnerLease lease, out PlayerProfile profile,
+            out SqliteStateOwnerReceipt receipt, out string error)
+        {
+            CheckCommandOwnerThread(); profile=null; receipt=null; error=null;
+            if (lease==null || !ReferenceEquals(typedOwnerLease,lease) || !lease.BeginAttempted ||
+                !lease.Coordinator.HasPending || lease.Coordinator.PendingState!=TypedFluidRefillCoordinatorState.CommittedAwaitingHandling ||
+                controlledRecoveryLease!=null || !ContextMatches(lease.Slot,lease.Path,lease.Epoch))
+            { error="Only the exact retained completed fluid operation can enter controlled recovery."; return false; }
+            controlledRecoveryLease=lease;
+            try
+            {
+                profile=Load(false);
+                var proof=selectedOwnerProof;
+                if (proof==null || !ReferenceEquals(proof.Profile,profile) || !ContextMatches(lease.Slot,lease.Path,lease.Epoch) ||
+                    writeBlocked || selectedCheckpointDirty)
+                { controlledRecoveryLease=null;selectedOwnerProof=null;profile=null; error="Validated recovery did not return a current clean selected owner."; return false; }
+                receipt=proof.Receipt;
+                return true;
+            }
+            catch(Exception ex) { controlledRecoveryLease=null;selectedOwnerProof=null;profile=null; error="Validated recovery failed: "+ex.Message; return false; }
+        }
         internal static bool CanUseCheckpoint() => typedOwnerLease == null && !IsValidatedSavePending();
         internal static void MarkSelectedCheckpointDirty() { CheckCommandOwnerThread(); selectedCheckpointDirty=true; selectedOwnerProof=null; }
         internal static void MarkSelectedCheckpointVerifiedClean() { CheckCommandOwnerThread(); selectedCheckpointDirty=false; }

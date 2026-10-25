@@ -26,6 +26,7 @@ namespace DragLab.Runtime
         int OfferCount(PartDefinition d){var pack=OfferTemplate(d);return pack.condition.elements.Length>0?pack.condition.elements.Length:d.category==PartCategory.Tires||d.category==PartCategory.Wheels||d.category==PartCategory.Brakes?4:1;}
         internal void AddToCart(string id,bool install=false)
         {
+            if(BlockForManualRefill())return;
             EnsureCartOwner();var d=profile.catalog.Find(id);
             if(d==null||install&&!profile.catalog.Fits(Selected.spec,d)||profile.reputation<d.reputationRequired){notice="Offer incompatible or locked by reputation.";return;}
             string role=unitOffers.TryGetValue(id,out var chosen)?chosen:null;var action=role==null?CartAction.NewSet:CartAction.NewUnits;
@@ -33,12 +34,13 @@ namespace DragLab.Runtime
             if(line==null){if(cart.Count>=100){notice="Cart holds at most 100 distinct lines.";return;}line=new PartCartLine{definitionId=id,action=action,role=role};cart.Add(line);}else line.quantity=Math.Min(99,line.quantity+1);
             if(install)SetCartInstallation(line,true);CartChanged();
         }
-        internal void StageInventory(PartCartLine line){EnsureCartOwner();if(cart.Count>=100&&!cart.Any(l=>l.assetId==line.assetId)){notice="Cart holds at most 100 lines.";return;}cart.RemoveAll(l=>!string.IsNullOrEmpty(line.assetId)&&l.assetId==line.assetId);cart.Add(line);CartChanged();}
-        void PersistNativeCartReservation(){if(cartOwner!=null)CartReservations.Capture(profile,cartOwner,cart);}
+        internal void StageInventory(PartCartLine line){if(BlockForManualRefill())return;EnsureCartOwner();if(cart.Count>=100&&!cart.Any(l=>l.assetId==line.assetId)){notice="Cart holds at most 100 lines.";return;}cart.RemoveAll(l=>!string.IsNullOrEmpty(line.assetId)&&l.assetId==line.assetId);cart.Add(line);CartChanged();}
+        void PersistNativeCartReservation(){if(ManualRefillBlocksMutation)return;if(cartOwner!=null)CartReservations.Capture(profile,cartOwner,cart);}
         void CartChanged(){if(profile.inventory.cart!=null&&cartOwner!=null)PersistNativeCartReservation();previewCart=true;previewDefinitionId=previewInstanceId=null;previewRemoval=null;statsKey=null;cartPriceKey=null;}
         bool IsUnit(PartCartLine line)=>line.action==CartAction.NewUnits||line.action==CartAction.BuyUsed&&profile.inventory.dealer.Any(s=>s.Id==line.assetId&&s.IsUnit);
         void SetCartInstallation(PartCartLine line,bool value)
         {
+            if(BlockForManualRefill())return;
             if(value&&!IsUnit(line)){var slot=profile.catalog.Find(line.definitionId).category;foreach(var other in cart)if(other!=line&&other.definitionId!=null&&profile.catalog.Find(other.definitionId).category==slot)other.install=false;}
             if(value&&IsUnit(line)&&line.positions.Count==0){var positions=InventoryUnits.Positions(profile,Build,line.definitionId,line.role);if(positions.Length>0)line.positions.Add(positions[0]);}
             line.install=value;CartChanged();
@@ -51,11 +53,15 @@ namespace DragLab.Runtime
         }
         internal bool CheckoutCartNow()
         {
+            if(BlockForManualRefill())return false;
             try{var quote=PartCart.Quote(profile,Build.instanceId,cart,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks,Costs.quoteSeconds,PricingPolicy);if(!CommitParts(quote.revision,p=>PartCart.Checkout(p,quote,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks,PricingPolicy)))return false;cart.Clear();previewCart=false;statsKey=null;cartPriceKey=null;notice="Complete basket saved once: purchases, sales and moves. Original condition and identities retained.";return true;}catch(Exception e){notice=e.Message;return false;}
         }
         string CartKey(PartCartLine line)=>line.action==CartAction.NewSet?line.definitionId:line.action+"/"+(line.assetId??line.definitionId)+"/"+line.role;
         void CartGUI()
         {
+            bool previousEnabled=GUI.enabled;
+            GUI.enabled=previousEnabled&&!ManualRefillBlocksMutation;
+            try {
             RefreshCartPrice();GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label("TRANSACTION CART / "+CartCount+" entries / preview only",stat);
             foreach(var line in cart){
                 var captured=line;string key=CartKey(line);var d=profile.catalog.Find(line.definitionId);string detail=d==null?line.assetId:d.name;
@@ -76,6 +82,7 @@ namespace DragLab.Runtime
                 GUILayout.BeginHorizontal();if(PartButton("cart-preview","Preview combined changes"))CartChanged();bool enabled=GUI.enabled;GUI.enabled=enabled&&cartError==null&&profile.cash>=cartTotal;if(PartButton("cart-checkout","Confirm all / buy, sell, move"))pendingAction=()=>CheckoutCartNow();GUI.enabled=enabled;if(PartButton("cart-clear","Clear cart"))pendingAction=()=>{cart.Clear();CartChanged();};GUILayout.EndHorizontal();
             }else GUILayout.Label("Add complete sets (default), individual units, retained items or dealer stock. Nothing changes until confirmation.",partProse);
             GUILayout.EndVertical();
+            } finally { GUI.enabled=previousEnabled; }
         }
         void OfferModeGUI(PartDefinition d)
         {

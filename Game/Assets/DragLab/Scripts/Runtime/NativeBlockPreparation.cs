@@ -12,6 +12,7 @@ namespace DragLab.Runtime
     {
         internal bool StagePreparedBlock(BlockPreparationPlan plan,long revision,string owner,string expected)
         {
+            if(BlockForManualRefill())return false;
             if(profile.revision!=revision||Build?.instanceId!=owner||expected!=JsonUtility.ToJson(new PartCart.Lines{entries=cart.Select(l=>l.Copy()).ToList()})){notice="Car or cart changed. Reopen block preparation.";return false;}
             if(!plan.Ready){notice=plan.Error??"Preparation unavailable.";return false;}
             try{if(PartCart.Total(profile,owner,plan.Lines,PricingPolicy)!=plan.Total)throw new InvalidOperationException("Prices changed. Review the preparation again.");cart.Clear();cart.AddRange(plan.Lines.Select(l=>l.Copy()));CartChanged();notice="";return true;}catch(Exception e){notice=e.Message;return false;}

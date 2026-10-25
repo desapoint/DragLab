@@ -168,7 +168,7 @@ namespace DragLab.Infrastructure
                             ObserveCost("resident-cache-bytes", 0);
                             var result = NewResult(command, nextRevision, nextCommit, businessReceipt);
                             FailureInjection?.Invoke("fluid-refill:after-commit");
-                            return new TypedFluidRefillOutcome(TypedFluidRefillStatus.Committed, result, null);
+                            return new TypedFluidRefillOutcome(TypedFluidRefillStatus.Committed, result, null, nextCommit);
                         }
                         catch (RefillRejectedException error)
                         {
@@ -479,7 +479,8 @@ namespace DragLab.Infrastructure
                 if (result.ReadText("domain_receipt_id") != receipt.DomainReceiptId ||
                     result.ReadText("car_id") != command.Request.CarId) throw new InvalidDataException("Durable operation result does not match its recorded intent.");
                 var optional = ReadOptionalBusinessReceipt(db, receipt.DomainReceiptId);
-                return new TypedFluidRefillOutcome(TypedFluidRefillStatus.Replayed, NewStoredResult(command, receipt.RevisionAfter, receipt.CommitAfter, result, optional), null);
+                long currentCommit=ReadNonnegativeMeta(db,"commit_id");
+                return new TypedFluidRefillOutcome(TypedFluidRefillStatus.Replayed, NewStoredResult(command, receipt.RevisionAfter, receipt.CommitAfter, result, optional), null, currentCommit);
             }
             catch (IntentMismatchException error) { return new TypedFluidRefillOutcome(TypedFluidRefillStatus.IntentMismatch, null, error.Message); }
             catch (Exception error) { return new TypedFluidRefillOutcome(TypedFluidRefillStatus.OutcomeUnknown, null, error.Message); }

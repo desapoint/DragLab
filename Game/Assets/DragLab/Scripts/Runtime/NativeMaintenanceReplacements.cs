@@ -104,6 +104,7 @@ namespace DragLab.Runtime
         }
         internal bool StageNativeReplacements(string carId,long revision,string snapshot,string cartSnapshot,bool brokenOnly,double threshold,string[] keys)
         {
+            if(BlockForManualRefill())return false;
             try{
                 if(screen!="Garage"||pendingAction!=null||profile.revision!=revision||!SnapshotEquality.Profile(snapshot,profile,profile.catalog))throw new InvalidOperationException("Car or stock changed. Reopen maintenance.");
                 if(cartSnapshot==null||cartSnapshot!=NativeReplacementCartSnapshot(carId))throw new InvalidOperationException("Cart changed. Reopen maintenance.");

@@ -18,6 +18,8 @@ namespace DragLab.Runtime
         PlayerProfile paymentCostsProfile;long paymentCostsRevision=-1;
         internal int PaymentCost(PaymentRequest request)
         {
+            if(request!=null&&request.kind==PaymentKind.Fluids)
+                return TryQuoteManualRefill(request.carId,request.litres,request.coolantLitres,out var refill,out _)?refill.Cost:-1;
             if(paymentCostsProfile!=profile||paymentCostsRevision!=profile.revision){paymentCosts.Clear();paymentCostsProfile=profile;paymentCostsRevision=profile.revision;}
             string key=JsonUtility.ToJson(request)+"/"+JsonUtility.ToJson(Build?.fuel)+"/"+JsonUtility.ToJson(Build?.fluids);
             if(paymentCosts.TryGetValue(key,out var cost))return cost;
@@ -26,6 +28,7 @@ namespace DragLab.Runtime
         }
         internal bool PayNow(PaymentQuote quote)
         {
+            if(BlockForManualRefill())return false;
             if (quote == null) return false;
             var request = JsonUtility.FromJson<PaymentRequest>(quote.RequestJson);
             return CommitParts(quote.Revision, p => PaidEconomy.Pay(p, p.catalog, Costs, PricingPolicy, quote, DragLab.Domain.RuntimeEntropy.UtcNow.Ticks, (request.kind == PaymentKind.Car || request.kind==PaymentKind.VehicleInspection) ? string.IsNullOrEmpty(request.offer.listingId)?AuthoredOffer(request.offer.model):VehicleListings.Find(p,request.offer.listingId) : null));
@@ -48,6 +51,8 @@ namespace DragLab.Runtime
         internal bool CommitNativeMaintenance(PaymentRequest request, long revision, string snapshot, int shownCost, string replacedPartId = null)
         {
             try {
+                if(BlockForManualRefill())return false;
+                if(request!=null&&request.kind==PaymentKind.Fluids)throw new InvalidOperationException("Confirm a current typed refill quote instead.");
                 if (screen != "Garage" || pendingAction != null) throw new InvalidOperationException("Garage is no longer available.");
                 if (profile.revision != revision || !SnapshotEquality.Profile(snapshot,profile,profile.catalog)) throw new InvalidOperationException("Car details changed. Close and reopen maintenance.");
                 if (request == null || !new[] {PaymentKind.Fuel,PaymentKind.Fluids,PaymentKind.OilChange,PaymentKind.CoolantFlush,PaymentKind.ClutchOil,PaymentKind.Repair,PaymentKind.Part,PaymentKind.Rebuild}.Contains(request.kind)) throw new InvalidOperationException("Unsupported maintenance action.");
@@ -66,6 +71,7 @@ namespace DragLab.Runtime
         internal bool CommitNativeService(string carId,long revision,string snapshot,string rebuildId=null)
         {
             try {
+                if(BlockForManualRefill())return false;
                 if(screen!="Garage"||pendingAction!=null||profile.revision!=revision||!SnapshotEquality.Profile(snapshot,profile,profile.catalog))throw new InvalidOperationException("Car details changed. Close and reopen maintenance.");
                 if(!CommitParts(revision,p=> {
                     if(rebuildId!=null)EngineRebuilds.Collect(p,carId,rebuildId,DragLab.Domain.RuntimeEntropy.UtcNow.Ticks);
@@ -80,15 +86,24 @@ namespace DragLab.Runtime
                 if(carId==profile.selectedOwnedVehicleId)ShowGarageCar();notice="Maintenance saved.";return true;
             }catch(Exception error){notice=error.Message;return false;}
         }
-        void QueuePayment(PaymentRequest request)
+        void QueuePayment(PaymentRequest request, int? shownCost=null)
         {
+            if(BlockForManualRefill())return;
+            if(request!=null&&request.kind==PaymentKind.Fluids)
+            {
+                if(!TryQuoteManualRefill(request.carId,request.litres,request.coolantLitres,out var refill,out var error))
+                {notice=error;return;}
+                if(shownCost.HasValue&&refill.Cost!=shownCost.Value){notice="The refill terms changed. Review the amount and price again.";return;}
+                pendingAction=()=>BeginManualRefill(refill);
+                return;
+            }
             try { var quote = PaidEconomy.Quote(profile, profile.catalog, Costs, PricingPolicy, request, DragLab.Domain.RuntimeEntropy.UtcNow.Ticks); pendingAction = () => PayNow(quote); }
             catch (Exception e) { notice = e.Message; }
         }
         void PaidButton(string id, string label, PaymentRequest request, bool actionable = true)
         {
-            int cost = PaymentCost(request); bool previous = GUI.enabled; GUI.enabled = previous && actionable && cost >= 0 && profile.cash >= cost;
-            if (PartButton(id, label + (cost < 0 ? " / unavailable" : " / " + DisplayUnits.Money(cost)))) QueuePayment(request);
+            int cost = request!=null&&request.kind==PaymentKind.Fluids&&!actionable ? -1 : PaymentCost(request); bool previous = GUI.enabled; GUI.enabled = previous && !ManualRefillBlocksMutation && actionable && cost >= 0 && profile.cash >= cost;
+            if (PartButton(id, label + (cost < 0 ? " / unavailable" : " / " + DisplayUnits.Money(cost)))) QueuePayment(request,cost);
             GUI.enabled = previous;
             if (cost > profile.cash) GUILayout.Label("Need " + DisplayUnits.Money((cost - profile.cash)) + " more. Recovery work / idle claims / sell retained spares are available.");
         }

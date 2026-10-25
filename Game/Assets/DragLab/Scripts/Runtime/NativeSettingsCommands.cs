@@ -22,12 +22,15 @@ namespace DragLab.Runtime
             var candidate = profile.CopyWithPreferences(driver,ai);
             candidate.catalog = profile.catalog; candidate.driving = driver.Copy(); candidate.difficulty = ai;
             if (!PreferenceCommit.TryApply(candidate, units, master, opponent, out error, reverseTouchShifting,onboardingComplete,compressorNoise,engineVolume,tireVolume)) return false;
-            profile = candidate; settings = profile.driving; difficulty = ai; saveDelay = 0;drivingPreferencesDirty=false;
+            // Separate preference publication retains the authoritative progression
+            // owner and its proof; only these independently saved fields change.
+            profile.driving=candidate.driving;profile.difficulty=ai;
+            settings = profile.driving; difficulty = ai; saveDelay = 0;drivingPreferencesDirty=false;
             // A running race owns its captured driver rules; menu edits do not
             // reconstruct its cars, damage, resources or entry contract.
             return true;
         }
-        internal long BeginNativeReset() { resetGameRevision = profile.revision; resetGameConfirm = true; return resetGameRevision; }
+        internal long BeginNativeReset() { if(BlockForManualRefill())return -1; resetGameRevision = profile.revision; resetGameConfirm = true; return resetGameRevision; }
         internal void CancelNativeReset() { resetGameConfirm = false; }
         internal string NativeNotice => notice;
     }

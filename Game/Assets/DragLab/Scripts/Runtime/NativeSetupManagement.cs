@@ -10,6 +10,7 @@ namespace DragLab.Runtime
     {
         internal bool ManageNativeSetup(string id,long revision,string expected,string name,bool delete)
         {
+            if(BlockForManualRefill())return false;
             try{
                 if(screen!="Tuning"||pendingAction!=null||profile.revision!=revision)throw new InvalidOperationException("Saved setups changed. Reopen the dialog.");
                 var saved=profile.savedSetups.Find(s=>s.id==id);if(saved==null||JsonUtility.ToJson(saved)!=expected)throw new InvalidOperationException("Saved setup changed or no longer exists.");

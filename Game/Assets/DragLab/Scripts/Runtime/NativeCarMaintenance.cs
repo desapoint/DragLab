@@ -134,7 +134,18 @@ namespace DragLab.Runtime
             AddSurface(button,RacingSurface.Kind.SecondaryAction);maintenanceSurfaces.Add(button.Q<RacingSurface>());button.SetEnabled(enabled);return button;
         }
         void QuantityAction(VisualElement parent,string id,string label,PaymentRequest request,double free,bool available,bool coolant=false)
-        { MaintenanceButton(parent,id,label,()=>OpenMaintenance("Refill "+(request.kind==PaymentKind.Fuel?"fuel":coolant?"coolant":"engine oil"),request,"Added liquid increases weight. Existing faults and fluid aging remain.",free,coolant),available&&free>.000001); }
+        {
+            bool refillPilot=request.kind==PaymentKind.Fluids;
+            bool checkSave=refillPilot&&game.ManualRefillCanRetry;
+            bool recoverSave=refillPilot&&game.ManualRefillNeedsRecovery;
+            string actionLabel=checkSave?"Check save":recoverSave?"Recover save":label;
+            MaintenanceButton(parent,id,actionLabel,
+                ()=>OpenMaintenance(checkSave?"Check refill save":recoverSave?"Recover refill save":
+                    "Refill "+(request.kind==PaymentKind.Fuel?"fuel":coolant?"coolant":"engine oil"),
+                    request,checkSave||recoverSave?"Resolve the retained refill operation before starting another service.":
+                    "Added liquid increases weight. Existing faults and fluid aging remain.",free,coolant),
+                checkSave||recoverSave||available&&free>.000001);
+        }
         void MaintenanceAction(VisualElement parent,string id,string label,PaymentRequest request,string description,bool available,string replacedId=null)
         {
             int cost=-1;string reason=null;
@@ -146,6 +157,12 @@ namespace DragLab.Runtime
         void OpenMaintenance(string title,PaymentRequest request,string description,double free=-1,bool coolant=false,string replacedId=null)
         {
             if(ModalOpen||!OwnedDetailsOpen||request.carId!=ownedDetailId)return;
+            // The manual engine-fluid pilot is typed end-to-end. Return before the legacy
+            // request clone and profile snapshot below; fuel and other services remain legacy.
+            if(request.kind==PaymentKind.Fluids) {
+                OpenTypedManualRefill(title,request.carId,free,coolant,description);
+                return;
+            }
             long revision=game.Profile.revision;string snapshot=JsonUtility.ToJson(game.Profile);
             var draft=JsonUtility.FromJson<PaymentRequest>(JsonUtility.ToJson(request));
             var cost=new Label {name="maintenanceCost"};var error=new Label {name="maintenanceError"};error.AddToClassList("car-critical");

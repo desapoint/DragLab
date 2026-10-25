@@ -26,6 +26,7 @@ namespace DragLab.Runtime
             if (playerView != null && profile != null && Build != null) { var visible = MechanicsOwnership.Resolve(profile, Build, profile.catalog); playerView.ApplySetup(visible.spec, visible.tune); Color paint; if (ColorUtility.TryParseHtmlString(Build.paintHex, out paint)) playerView.SetPaint(paint); } }
         internal bool ApplyTuneDraftNow()
         {
+            if(BlockForManualRefill())return false;
             if (screen != "Tuning" || draft == null) return false;
             var pending = draft; PlayerProfile committed; string error;
             if (!MechanicsTransactions.Try(profile, profile.catalog, pending.revision, pending.ApplyTo, ProfileStore.TrySave, out committed, out error)) { notice = error; return false; }
@@ -119,8 +120,8 @@ namespace DragLab.Runtime
             {
                 int index = slot;
                 GUILayout.BeginHorizontal();
-                GUI.enabled = !DraftDirty;
-                if (GUILayout.Button("Store saved tune " + (slot + 1))) { Build.SavePreset(index); ProfileStore.Save(profile); }
+                GUI.enabled = !DraftDirty && !ManualRefillBlocksMutation;
+                if (GUILayout.Button("Store saved tune " + (slot + 1)) && !BlockForManualRefill()) { Build.SavePreset(index); ProfileStore.Save(profile); }
                 GUI.enabled = Build.presets.Count > slot && Build.presets[slot] != null;
                 if (GUILayout.Button("Preview tune " + (slot + 1))) pendingAction = () => { draft.values.ApplyAdjustments(Build.presets[index]); draft.values.ClampTo(Selected.spec); notice = "Preset loaded into preview. Apply to use it in races."; };
                 GUI.enabled = true; GUILayout.EndHorizontal();

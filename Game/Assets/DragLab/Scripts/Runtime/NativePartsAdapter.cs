@@ -8,8 +8,8 @@ namespace DragLab.Runtime
     public sealed partial class PrototypeGame
     {
         internal void PrepareNativeCart(){if(Build!=null)EnsureCartOwner();}
-        internal void RemoveNativeCartLine(PartCartLine line){if(line.preparedBlock&&line.preparationOwner!=null)cart.RemoveAll(l=>l.preparationOwner==line.preparationOwner);else cart.Remove(line);CartChanged();}
-        internal void ClearNativeCart(){cart.Clear();CartChanged();}
+        internal void RemoveNativeCartLine(PartCartLine line){if(BlockForManualRefill())return;if(line.preparedBlock&&line.preparationOwner!=null)cart.RemoveAll(l=>l.preparationOwner==line.preparationOwner);else cart.Remove(line);CartChanged();}
+        internal void ClearNativeCart(){if(BlockForManualRefill())return;cart.Clear();CartChanged();}
         internal void SetNativeCartInstall(PartCartLine line,bool install){SetCartInstallation(line,install);}
         internal int NativeCartTotal()=>cart.Count==0?0:PartCart.Total(profile,Build.instanceId,cart,PricingPolicy);
         internal int NativeUsedPrice(DealerStock stock)=>InventoryPricing.BuyUsed(stock,PricingPolicy);
@@ -32,12 +32,14 @@ namespace DragLab.Runtime
         }
         internal bool SetNativeCartUnitPositions(PartCartLine line,IEnumerable<string> targets)
         {
+            if(BlockForManualRefill())return false;
             if(!cart.Contains(line)||line.action!=CartAction.NewUnits){notice="Cart line changed; review it again.";return false;}
             var selected=targets.Distinct().ToList();if(!ValidateNativeUnitPlan(line,profile.catalog.Find(line.definitionId),line.role,line.quantity,selected))return false;
             line.positions=selected;line.install=true;notice="";CartChanged();return true;
         }
         internal bool StageNativePurchase(string definition,string role,int quantity,bool install,IEnumerable<string> targets=null)
         {
+            if(BlockForManualRefill())return false;
             PrepareNativeCart();var d=profile.catalog.Find(definition);var positions=(targets??Enumerable.Empty<string>()).Distinct().ToList();
             if(d==null||install&&!profile.catalog.Fits(Selected.spec,d)||profile.reputation<d.reputationRequired||quantity<1||quantity>99){notice="Offer or quantity unavailable.";return false;}
             bool unit=role!=null;
@@ -65,6 +67,7 @@ namespace DragLab.Runtime
         }
         internal bool EditNativeCartPurchase(PartCartLine current,string expected,string carId,bool individual,string role,int quantity,bool install,IEnumerable<string> targets)
         {
+            if(BlockForManualRefill())return false;
             if(Build==null||Build.instanceId!=carId){notice="Selected car changed; review the cart again.";return false;}
             PrepareNativeCart();
             if(!cart.Contains(current)||UnityEngine.JsonUtility.ToJson(current)!=expected){notice="Cart changed; review the row again.";return false;}
@@ -85,6 +88,7 @@ namespace DragLab.Runtime
         }
         internal void StageNativePart(NativePartEntry entry,bool install,string position=null)
         {
+            if(BlockForManualRefill())return;
             PrepareNativeCart();
             if(entry.Source=="New") {unitOffers.Remove(entry.Definition.id);var existing=cart.Find(l=>l.action==CartAction.NewSet&&l.definitionId==entry.Definition.id);if(install&&existing!=null)SetCartInstallation(existing,true);else AddToCart(entry.Definition.id,install);return;}
             var line=new PartCartLine{definitionId=entry.Definition.id,assetId=entry.AssetId,quantity=1,install=install};

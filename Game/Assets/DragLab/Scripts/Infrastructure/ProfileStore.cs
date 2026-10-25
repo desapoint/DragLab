@@ -101,7 +101,7 @@ namespace DragLab.Infrastructure
         public static string Status {get=>SqliteStateStore.BackupWarning==null?status:status+" "+SqliteStateStore.BackupWarning;private set=>status=value;}
         public static PlayerProfile Load(bool recoverInterrupted=false)
         {
-            if(!CanChangeSelection())throw new InvalidOperationException("A typed save operation is still retained.");
+            if(!CanLoadSelectedOwner())throw new InvalidOperationException("A typed save operation is still retained.");
             InvalidateOwnerProof();
             if(LegacyFixture){var old=LegacyProfileStore.Load(recoverInterrupted);Status=LegacyProfileStore.Status;return old;}
             string loadSlot,loadPath;long loadEpoch;CaptureSelectedContext(out loadSlot,out loadPath,out loadEpoch);

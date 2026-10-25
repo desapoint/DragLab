@@ -102,6 +102,8 @@ namespace DragLab.Runtime
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-shine-only-verify")>=0){yield return AngledShineChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-mobile-only-verify")>=0){yield return MobileAccessChecks(input);yield break;}
                 if(game.Profile.firstPurchasePending)yield return StarterPurchaseChecks(input);
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-typed-refill-only-verify")>=0){yield return TypedFluidRefillChecks(input);yield break;}
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-typed-refill-f8-only-verify")>=0){yield return TypedF8FluidRefillChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-business-only-verify")>=0){yield return BusinessChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-clip-budget-only-verify")>=0){yield return ClipBudgetChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-finish-exit-only-verify")>=0){yield return EarlyFinishExitChecks(input);yield break;}

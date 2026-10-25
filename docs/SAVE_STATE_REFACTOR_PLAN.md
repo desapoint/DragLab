@@ -132,6 +132,12 @@ Each row is a reviewable increment. Rows with several command families are a bac
 | **S13 / AP16** | Remove only converted legacy bridges and duplicate normalization/caches | Assign each obsolete path to one owner; independent L3 review. Coordinator verifies all callers before removal. | No obsolete caller, dual write or new fallback silently reintroduces full cloning. Keep load/import/migration full validation and independent golden references. |
 | **S14 / AP17** | Whole-system soak, scaled memory/performance comparison and final builds | L1 state/leak audit; L2 durability/recovery audit; L3 packaged input/frame/audio tests, run interactively one at a time. Coordinator releases builds. | Windows and Android, actual phone when available, exact workload parity, crash/restart and long-session evidence. Explicit remaining limits and user review. |
 
+### S06 execution checkpoints and remaining gate
+
+S06a coordinator and S06b selected-owner infrastructure are committed. S06c activates manual oil/coolant refills, with managed durability and advancing native/F8 functional evidence. Its functional checkpoint is distinct from the complete S06 acceptance gate. Actual player measurements found refill-triggered UI refresh and navigation frames above50 ms; small controller-publication timing does not close that gap.
+
+**S06d is mandatory before S07:** reduce and measure the remaining refill consumer-refresh work, keep all completion/navigation frames in the evidence, and exercise native unknown/retry, failed recovery and interruption/resume. Keep the known blocking exceptional recovery-load cost visible. Preserve the whole command/caller conversion, no-runtime-JSON, no-full-profile-save-clone and S14 platform/soak requirements. This added control-sized checkpoint records unresolved measured work; it does not waive or replace a gate.
+
 ## Measurements and correctness gates
 
 S00 fixes disposable workloads at 1/5/20 owned cars and increasing loose-member/stock/history counts. Include fuel/oil/coolant service, stock+express checkout, cart edits, worn replacement, inventory move, rebuild/swap/sale, setup/tune, market-refresh race settlement, business claim, reset/load and recovery. Pin input hashes, content/physics revisions, seed/stream, epoch, reservation clock, settings, hardware and frame cap. Do not assume invented timings.

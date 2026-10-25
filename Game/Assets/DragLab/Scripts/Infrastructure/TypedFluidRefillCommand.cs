@@ -381,13 +381,18 @@ namespace DragLab.Infrastructure
         internal readonly TypedFluidRefillStatus Status;
         internal readonly TypedFluidRefillResult Result;
         internal readonly string Error;
+        // Current commit observed in the same writer/reconciliation transaction.
+        // Generic S06a callers may omit it; active S06c publication requires it.
+        internal readonly long? ObservedStorageCommit;
 
-        internal TypedFluidRefillOutcome(TypedFluidRefillStatus status, TypedFluidRefillResult result, string error)
+        internal TypedFluidRefillOutcome(TypedFluidRefillStatus status, TypedFluidRefillResult result, string error,
+            long? observedStorageCommit = null)
         {
             if (!Enum.IsDefined(typeof(TypedFluidRefillStatus), status)) throw new ArgumentOutOfRangeException(nameof(status));
             if ((status == TypedFluidRefillStatus.Committed || status == TypedFluidRefillStatus.Replayed) != (result != null))
                 throw new ArgumentException("Committed and replayed outcomes require an exact result; other outcomes cannot carry one.", nameof(result));
-            Status = status; Result = result; Error = error;
+            if (observedStorageCommit < 0) throw new ArgumentOutOfRangeException(nameof(observedStorageCommit));
+            Status = status; Result = result; Error = error; ObservedStorageCommit=observedStorageCommit;
         }
     }
 }

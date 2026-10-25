@@ -24,6 +24,9 @@ namespace DragLab.Runtime
         int collections;
         ProfilerRecorder gcAllocated;
         public static string Phase = "startup";
+        // Opt-in scenario labels take precedence over the normal menu/race label so
+        // a verification sequence can retain its pending/publication frame interval.
+        public static string OverridePhase;
         public struct Scope : IDisposable
         {
             readonly int slot;
@@ -49,7 +52,7 @@ namespace DragLab.Runtime
         {
             long now = Stopwatch.GetTimestamp(), bytes = GC.GetAllocatedBytesForCurrentThread();
             int gc = GC.CollectionCount(0);
-            if (last != 0 && rows.Count < 100000) rows.Add(new Row{frame=Time.frameCount,phase=Phase,ms=(now-last)*1000.0/Stopwatch.Frequency,a=costs[0],b=costs[1],c=costs[2],d=costs[3],e=costs[4],f=costs[5],g=costs[6],h=costs[7],i=costs[8],bytes=bytes-allocated,gc=gc-collections,unityBytes=gcAllocated.Valid?gcAllocated.LastValue:-1});
+            if (last != 0 && rows.Count < 100000) rows.Add(new Row{frame=Time.frameCount,phase=OverridePhase??Phase,ms=(now-last)*1000.0/Stopwatch.Frequency,a=costs[0],b=costs[1],c=costs[2],d=costs[3],e=costs[4],f=costs[5],g=costs[6],h=costs[7],i=costs[8],bytes=bytes-allocated,gc=gc-collections,unityBytes=gcAllocated.Valid?gcAllocated.LastValue:-1});
             Array.Clear(costs,0,costs.Length); last=now; allocated=GC.GetAllocatedBytesForCurrentThread(); collections=gc;
         }
         void OnApplicationQuit()

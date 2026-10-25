@@ -38,7 +38,7 @@ namespace DragLab.Runtime
             GUILayout.Label("Keeps driving assists, AI difficulty and volume settings.");
             if (!resetGameConfirm)
             {
-                if (ResetButton("request", "Reset game..."))
+                if (ResetButton("request", "Reset game...") && !BlockForManualRefill())
                 { resetGameRevision = profile.revision; resetGameConfirm = true; resetRects.Clear(); }
                 return;
             }
@@ -54,6 +54,7 @@ namespace DragLab.Runtime
         }
         internal bool CommitGameReset(long expectedRevision)
         {
+            if(BlockForManualRefill())return false;
             if (screen != "Settings" || !resetGameConfirm || profile.revision != expectedRevision)
             { resetGameConfirm = false; notice = "Reset cancelled; reopen Settings and try again."; return false; }
             // Publish only after both the new profile and its recovery backup are saved.

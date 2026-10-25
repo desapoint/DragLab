@@ -179,6 +179,48 @@ namespace DragLab.Editor
             VerifyLegacyStorage("S06B");
         }
 
+        public static void RunTypedFluidRefillPilot()
+        {
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            SqlitePluginSetup.Configure();
+            VerifyScopedManagedChecks("S06C", "pilot", TypedFluidRefillPilotChecks.Run);
+            VerifyScopedManagedChecks("S06C", "owner-regression", SelectedProfileOwnerChecks.Run);
+            VerifyTypedSaveMigration("S06C");
+            VerifyLegacyStorage("S06C");
+        }
+
+        static void VerifyScopedManagedChecks(string checkpoint, string name,
+            Action<Action<bool, string>, string> run)
+        {
+            string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../reports/save-refactor/" + checkpoint));
+            Directory.CreateDirectory(root);
+            string fixtures = Path.Combine(root, name + "-fixtures-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmssfff"));
+            var log = new StringBuilder();
+            int count = 0;
+            try
+            {
+                run((ok, label) =>
+                {
+                    log.AppendLine((ok ? "PASS " : "FAIL ") + label);
+                    if (!ok) throw new InvalidOperationException(label);
+                    count++;
+                }, fixtures);
+                log.AppendLine("RESULT PASS count=" + count);
+                Debug.Log(checkpoint + " " + name + " checks passed: " + count);
+            }
+            catch (Exception error)
+            {
+                log.AppendLine("RESULT FAIL count=" + count);
+                log.AppendLine(error.ToString());
+                throw;
+            }
+            finally
+            {
+                File.WriteAllText(Path.Combine(root, name + "-checks.txt"), log.ToString(), new UTF8Encoding(false));
+            }
+        }
+
         static void VerifyTypedSaveMigration(string checkpoint)
         {
             if (!Application.isBatchMode || EditorApplication.isPlaying)
