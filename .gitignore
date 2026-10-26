@@ -109,3 +109,4 @@ Thumbs.db
 
 # Raw save-refactor run logs, attempts and generated frame analysis stay local.
 /reports/save-refactor/S06G1/
+/reports/save-refactor/S06H1/

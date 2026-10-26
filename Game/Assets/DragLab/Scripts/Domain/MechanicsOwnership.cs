@@ -15,22 +15,17 @@ namespace DragLab.Domain.Mechanics
     {
         public const int SaveVersion = 12;
         public static string NewId(string kind) { return kind + "-" + DragLab.Domain.RuntimeEntropy.NewGuid(kind).ToString("N"); }
-        // Quotations are read-only. The transaction clone will normalize recoverable
-        // Unity seller metadata, so validate the same normalization on a COPY only.
+        // Quotations are read-only. A dealer-labelled validation error gets a second
+        // typed read-only pass for the persisted discriminator recovery only.
         // Real conflicting or duplicate identities remain invalid for all payments.
         public static string ValidateForQuote(PlayerProfile profile, MechanicalCatalog catalog)
         {
             string invalid = Validate(profile, catalog);
             if (invalid == null || invalid.IndexOf("dealer", StringComparison.OrdinalIgnoreCase) < 0)
                 return invalid;
-            var copy = UnityEngine.JsonUtility.FromJson<PlayerProfile>(UnityEngine.JsonUtility.ToJson(profile));
-            copy.catalog = catalog;
-            // Unity materializes null inline jobs/reservations during the copy.
-            // Preserve the source's absence exactly; never clear a real record.
-            if (profile.recoveryWork == null) copy.recoveryWork = null;
-            if (profile.inventory.cart == null) copy.inventory.cart = null;
-            SharedInventory.Ensure(copy);
-            return Validate(copy, catalog);
+            // Quote validation preserves the legacy dealer metadata recovery, but performs
+            // it as a read-only validation rule instead of normalizing a JSON profile copy.
+            return ValidateCore(profile, catalog, true);
         }
         // All other callers retain the original synchronous and atomic behavior.
         // Only detached settlement candidates use the stepwise iterator, so no
@@ -237,6 +232,9 @@ namespace DragLab.Domain.Mechanics
             return true;
         }
         public static string Validate(PlayerProfile profile, MechanicalCatalog catalog)
+            =>ValidateCore(profile,catalog,false);
+
+        static string ValidateCore(PlayerProfile profile, MechanicalCatalog catalog, bool tolerateDealerDiscriminator)
         {
             if (profile.saveVersion != SaveVersion || profile.mechanicsVersion != MechanicsSchema.Version || profile.revision < 0 || profile.cash < 0) return "Invalid profile version/revision/cash.";
             if(profile.cars.Count == 0 ? !string.IsNullOrEmpty(profile.selectedOwnedVehicleId) || !string.IsNullOrEmpty(profile.selectedVehicleId) : !profile.cars.Any(c=>c.instanceId==profile.selectedOwnedVehicleId&&c.vehicleId==profile.selectedVehicleId))return "Invalid selected owned vehicle reference.";
@@ -303,7 +301,7 @@ namespace DragLab.Domain.Mechanics
                     if(part.condition.elements==null||part.condition.elements.Length!=4||part.condition.elements.Any(e=>!(e is TireCondition)))return "Tire sets must contain four typed tire elements.";
                 if(profile.driving==null||profile.driving.guaranteedFittingParts<0||profile.driving.guaranteedFittingParts>20)return "Invalid market guarantee difficulty.";
                 // Validate dealer identities first, before market descendant enumeration.
-                string inventoryError=SharedInventory.Validate(profile,identities);if(inventoryError!=null)return inventoryError;
+                string inventoryError=SharedInventory.Validate(profile,identities,tolerateDealerDiscriminator);if(inventoryError!=null)return inventoryError;
                 string marketError=PartsMarket.Validate(profile);if(marketError!=null)return marketError;
                 foreach(var item in profile.parts)foreach(var tire in item.condition.tires??new TireCondition[0])if(!string.IsNullOrEmpty(tire.definitionId)){
                     var d=catalog.Find(tire.definitionId);if(d==null||d.category!=PartCategory.Tires)return "Invalid tire specification.";

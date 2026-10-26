@@ -103,7 +103,12 @@ namespace DragLab.Domain.Mechanics
             if (c.tires.Length > 0) h = Math.Min(h, c.tires.Average(t => t.failed ? 0 : Math.Min(t.health, Clamp(1 - t.consumedLife, 0, 1))));
             return Clamp(h * (1 - .25 * Clamp(c.deposits, 0, 1)) * (1 - .25 * Clamp(c.leakSeverity, 0, 1)) * (1 - .15 * Clamp(c.adjustmentError, 0, 1)), 0, 1);
         }
-        static double Change(List<ValuationLine> lines, string asset, string label, double value, double factor, string why) { double after = value * factor; lines.Add(new ValuationLine(asset, label, value, after, why + " / ×" + factor.ToString("F3"))); return after; }
+        static double Scale(double value,double factor)=>value*factor;
+        static double Change(List<ValuationLine> lines, string asset, string label, double value, double factor, string why) { double after = Scale(value,factor); if(lines!=null)lines.Add(new ValuationLine(asset, label, value, after, why + " / ×" + factor.ToString("F3"))); return after; }
+        static BuyerPolicy Buyer(ValuationPolicy policy,string id){for(int i=0;i<policy.buyers.Count;i++)if(policy.buyers[i].id==id)return policy.buyers[i];return null;}
+        static QualityValue Quality(ValuationPolicy policy,string id){for(int i=0;i<policy.qualities.Count;i++)if(policy.qualities[i].quality==id)return policy.qualities[i];return null;}
+        static PartInstance LoosePart(PlayerProfile profile,string id){for(int i=0;i<profile.parts.Count;i++){var part=profile.parts[i];if(part.instanceId==id&&part.location==PartLocation.Inventory)return part;}return null;}
+        static LooseEngineElement LooseElement(PlayerProfile profile,string id){for(int i=0;i<profile.looseEngineElements.Count;i++){var item=profile.looseEngineElements[i];if(item.element.id==id)return item;}return null;}
         internal static double PartValue(PartInstance part, PartDefinition def, ValuationPolicy policy, BuyerPolicy buyer, List<ValuationLine> lines,MechanicalCatalog catalog=null)
         {
             var c = part.condition;
@@ -117,34 +122,40 @@ namespace DragLab.Domain.Mechanics
                     var t = c.tires[i];
                     var spec = catalog == null ? def : catalog.Find(TireFitments.DefinitionId(part, i)) ?? def;
                     double baseValue = spec.price * .25 * policy.usedPartFraction;
-                    var grade = policy.qualities.Find(q => q.quality == spec.quality);
+                    var grade = Quality(policy,spec.quality);
                     double tread = t.failed ? 0 : Clamp(Math.Min(t.health, 1 - t.consumedLife), 0, 1);
                     double tireHistory = Clamp(t.distanceM / 1000 * policy.distanceDiscountPerKm + t.runningSeconds / 3600 * policy.hourDiscount, 0, policy.historyDiscountLimit);
                     double usedValue = baseValue * (grade == null ? 1 : grade.factor)
                         * (policy.minimumWearFactor + (1 - policy.minimumWearFactor) * tread)
                         * (t.failed || tread <= 0 ? policy.scrapFraction : 1) * (1 - tireHistory);
                     total += usedValue;
-                    lines.Add(new ValuationLine(string.IsNullOrEmpty(t.id) ? part.instanceId + "/tire:" + i : t.id,
+                    if(lines!=null)lines.Add(new ValuationLine(string.IsNullOrEmpty(t.id) ? part.instanceId + "/tire:" + i : t.id,
                         spec.name + " / " + new[] { "Front left", "Front right", "Rear left", "Rear right" }[i],
                         0, usedValue, "Individual compound, wear, failure and " + (t.distanceM / 1000).ToString("F1") + " km / " + (t.runningSeconds / 3600).ToString("F1") + " hours; no condition inherited from other tyres"));
                 }
-                return Change(lines, part.instanceId, "Loose-part buyer", total, buyer.parts, buyer.name);
+                return lines==null?Scale(total,buyer.parts):Change(lines, part.instanceId, "Loose-part buyer", total, buyer.parts, buyer.name);
             }
             double cataloguePrice=def.price;
-            if(def.category==PartCategory.Tires&&c.tires.Length==4&&catalog!=null)cataloguePrice=Enumerable.Range(0,4).Sum(i=>catalog.Find(TireFitments.DefinitionId(part,i)).price*.25);
-            if(def.category==PartCategory.Wheels&&WheelFitments.HasOverrides(part)&&catalog!=null)cataloguePrice=Enumerable.Range(0,4).Sum(i=>catalog.Find(WheelFitments.DefinitionId(part,i)).price*.25);
+            if(def.category==PartCategory.Tires&&c.tires.Length==4&&catalog!=null){cataloguePrice=0;for(int i=0;i<4;i++)cataloguePrice+=catalog.Find(TireFitments.DefinitionId(part,i)).price*.25;}
+            if(def.category==PartCategory.Wheels&&WheelFitments.HasOverrides(part)&&catalog!=null){cataloguePrice=0;for(int i=0;i<4;i++)cataloguePrice+=catalog.Find(WheelFitments.DefinitionId(part,i)).price*.25;}
             double value = cataloguePrice * policy.usedPartFraction;
-            lines.Add(new ValuationLine(part.instanceId, def.name, 0, value, "Catalogue " + DisplayUnits.Money(cataloguePrice) + " × used-market " + policy.usedPartFraction.ToString("P0") + "; actual item " + part.instanceId));
-            var quality = policy.qualities.Find(q => q.quality == def.quality);
-            value = Change(lines, part.instanceId, "Quality demand / " + def.quality, value, quality == null ? 1 : quality.factor, "Price already reflects construction; this is secondary buyer demand");
-            value = Change(lines, part.instanceId, "Wear / individual condition", value, policy.minimumWearFactor + (1 - policy.minimumWearFactor) * Health(c), "Pack health, individual cylinder/valve/tire life and deposits/leaks/adjustment");
-            if (Fault(c)) value = Change(lines, part.instanceId, "Fault / core recovery", value, c.failed || c.health <= 0 ? policy.scrapFraction : .65, "Failed pack or individual fault; no healthy replacement assumed");
+            if(lines!=null)lines.Add(new ValuationLine(part.instanceId, def.name, 0, value, "Catalogue " + DisplayUnits.Money(cataloguePrice) + " × used-market " + policy.usedPartFraction.ToString("P0") + "; actual item " + part.instanceId));
+            var quality = Quality(policy,def.quality);
+            double qualityFactor=quality == null ? 1 : quality.factor;
+            value = lines==null?Scale(value,qualityFactor):Change(lines, part.instanceId, "Quality demand / " + def.quality, value, qualityFactor, "Price already reflects construction; this is secondary buyer demand");
+            double wearFactor=policy.minimumWearFactor + (1 - policy.minimumWearFactor) * Health(c);
+            value = lines==null?Scale(value,wearFactor):Change(lines, part.instanceId, "Wear / individual condition", value, wearFactor, "Pack health, individual cylinder/valve/tire life and deposits/leaks/adjustment");
+            if (Fault(c)) {double faultFactor=c.failed || c.health <= 0 ? policy.scrapFraction : .65;value=lines==null?Scale(value,faultFactor):Change(lines, part.instanceId, "Fault / core recovery", value, faultFactor, "Failed pack or individual fault; no healthy replacement assumed");}
             double history = Clamp(c.distanceM / 1000 * policy.distanceDiscountPerKm + c.runningSeconds / 3600 * policy.hourDiscount + c.stressExposure * policy.stressDiscountPerSecond + c.reconditionCount * policy.reconditionDiscount, 0, policy.historyDiscountLimit);
-            value = Change(lines, part.instanceId, "Use / service history", value, 1 - history, (c.distanceM / 1000).ToString("F1") + " km; " + (c.runningSeconds / 3600).ToString("F1") + " h; " + c.stressExposure.ToString("F1") + " abuse seconds; " + c.serviceCount + " services, " + c.reconditionCount + " reconditions. Service itself grants no resale bonus");
-            return Change(lines, part.instanceId, "Loose-part buyer", value, buyer.parts, buyer.name);
+            value = lines==null?Scale(value,1-history):Change(lines, part.instanceId, "Use / service history", value, 1 - history, (c.distanceM / 1000).ToString("F1") + " km; " + (c.runningSeconds / 3600).ToString("F1") + " h; " + c.stressExposure.ToString("F1") + " abuse seconds; " + c.serviceCount + " services, " + c.reconditionCount + " reconditions. Service itself grants no resale bonus");
+            return lines==null?Scale(value,buyer.parts):Change(lines, part.instanceId, "Loose-part buyer", value, buyer.parts, buyer.name);
         }
         public static ValuationQuote Capture(PlayerProfile profile, MechanicalCatalog catalog, ValuationPolicy policy, ValuationKind kind, string assetId, string buyerId, long nowUtcTicks, IEnumerable<string> retain = null)
             =>Calculate(profile,catalog,policy,kind,assetId,buyerId,nowUtcTicks,retain,true,true);
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        internal static int LoosePriceOracleForChecks(PlayerProfile profile,ValuationPolicy policy,string buyerId,string assetId,bool unit,long nowUtcTicks)
+            =>Calculate(profile,profile.catalog,policy,unit?ValuationKind.LooseElement:ValuationKind.LoosePart,assetId,buyerId,nowUtcTicks,null,false,false).Total;
+#endif
         // A synchronous read-only view validates its common context once. Display
         // amounts use the exact valuation arithmetic, but cannot authorize disposal.
         // Callers must still capture and validate a full quote at confirmation.
@@ -152,7 +163,52 @@ namespace DragLab.Domain.Mechanics
         {
             policy.Validate();string invalid=MechanicsOwnership.ValidateForQuote(profile,profile.catalog);if(invalid!=null)throw new InvalidOperationException(invalid);
             long revision=profile.revision;
-            return (id,unit)=>{if(profile.revision!=revision)throw new InvalidOperationException("Price view changed; refresh inventory.");return Calculate(profile,profile.catalog,policy,unit?ValuationKind.LooseElement:ValuationKind.LoosePart,id,buyerId,nowUtcTicks,null,false,false).Total;};
+            return (id,unit)=>{if(profile.revision!=revision)throw new InvalidOperationException("Price view changed; refresh inventory.");return DisplayLooseTotal(profile,profile.catalog,policy,unit?ValuationKind.LooseElement:ValuationKind.LoosePart,id,buyerId,nowUtcTicks);};
+        }
+        static int DisplayLooseTotal(PlayerProfile profile,MechanicalCatalog catalog,ValuationPolicy policy,ValuationKind kind,string assetId,string buyerId,long nowUtcTicks)
+        {
+            if(profile==null||catalog==null||policy==null||kind!=ValuationKind.LoosePart&&kind!=ValuationKind.LooseElement||nowUtcTicks<=0||nowUtcTicks>DateTime.MaxValue.Ticks-TimeSpan.FromDays(1).Ticks)throw new InvalidOperationException("Invalid valuation request.");
+            var buyer=Buyer(policy,buyerId);if(buyer==null)throw new InvalidOperationException("Unknown buyer.");
+            double total;
+            if(kind==ValuationKind.LoosePart){
+                var item=LoosePart(profile,assetId);
+                if(item==null)throw new InvalidOperationException("Quote requires an owned loose part without retained descendants.");
+                var definition=catalog.Find(item.definitionId);if(definition.price<0)throw new InvalidOperationException("Invalid catalogue price.");
+                total=PartValue(item,definition,policy,buyer,null,catalog);
+            }else{
+                var element=LooseElement(profile,assetId);
+                if(element==null)throw new InvalidOperationException("Quote requires an owned loose engine element without retained descendants.");
+                total=LooseElementValue(element,catalog,policy,buyer,null,out _);
+            }
+            GarageBusiness.Reserved(profile,assetId);
+            profile.runCheckpoints.Any(r=>!r.settled);
+            if(!MechanicsSchema.Finite(total)||total<0||total>int.MaxValue)throw new InvalidOperationException("Quote total outside supported currency range.");
+            return checked((int)Math.Round(total,MidpointRounding.AwayFromZero));
+        }
+        static double LooseElementValue(LooseEngineElement element,MechanicalCatalog catalog,ValuationPolicy policy,BuyerPolicy buyer,List<ValuationLine> lines,out bool faulty)
+        {
+            faulty=false;
+            double loose=element.unitPrice*policy.usedPartFraction;
+            if(element.tireUnit&&element.tire!=null){
+                var t=element.tire;
+                faulty=t.failed||t.health<=0||t.consumedLife>=1;
+                // The old receipt path performs this lookup while making its line. Keep its failure behavior.
+                var tireDefinition=catalog.Find(element.definitionId);
+                string tireDefinitionName=tireDefinition.name;
+                if(lines!=null)lines.Add(new ValuationLine(element.element.id,"Individual tire / "+tireDefinitionName,0,loose,"Owned tire / unique identity "+element.element.id));
+                double remaining=faulty?0:Clamp(Math.Min(t.health,1-t.consumedLife),0,1);
+                double tireWear=policy.minimumWearFactor+(1-policy.minimumWearFactor)*remaining;
+                loose=lines==null?Scale(loose,tireWear):Change(lines,element.element.id,"Individual tire wear",loose,tireWear,"Remaining life of this physical tire");
+                if(faulty)loose=lines==null?Scale(loose,policy.scrapFraction):Change(lines,element.element.id,"Failed tire recovery",loose,policy.scrapFraction,"Damaged tire, not a failed set");
+                double history=Clamp(t.distanceM/1000*policy.distanceDiscountPerKm+t.runningSeconds/3600*policy.hourDiscount,0,policy.historyDiscountLimit);
+                loose=lines==null?Scale(loose,1-history):Change(lines,element.element.id,"Tire usage history",loose,1-history,(t.distanceM/1000).ToString("F1")+" km / "+(t.runningSeconds/3600).ToString("F1")+" operating hours");
+            }else{
+                faulty=element.element.Failed||element.element.fault!=ElementFault.None;
+                if(lines!=null)lines.Add(new ValuationLine(element.element.id,element.element.role+" / cylinder "+(element.element.cylinder+1),0,loose,"Owned single element / unit catalogue "+DisplayUnits.Money(element.unitPrice)));
+                double wearFault=(policy.minimumWearFactor+(1-policy.minimumWearFactor)*ElementHealth(element.element))*(faulty?.65:1);
+                loose=lines==null?Scale(loose,wearFault):Change(lines,element.element.id,"Individual wear / fault",loose,wearFault,"Actual element health/fault");
+            }
+            return lines==null?Scale(loose,buyer.parts):Change(lines,element.element.id,"Loose-element buyer",loose,buyer.parts,buyer.name);
         }
         static ValuationQuote Calculate(PlayerProfile profile,MechanicalCatalog catalog,ValuationPolicy policy,ValuationKind kind,string assetId,string buyerId,long nowUtcTicks,IEnumerable<string> retain,bool snapshot,bool validate)
         {
@@ -170,24 +226,7 @@ namespace DragLab.Domain.Mechanics
                 var element = profile.looseEngineElements.Find(e => e.element.id == assetId);
                 if (element == null || kept.Length > 0) throw new InvalidOperationException("Quote requires an owned loose engine element without retained descendants.");
                 ids.Add(assetId);
-                loose = element.unitPrice * policy.usedPartFraction;
-                if(element.tireUnit && element.tire != null) {
-                    // A stored tire's value belongs to that physical tire, not its
-                    // previous four-tire set or the generic EngineElement wrapper.
-                    var t=element.tire;
-                    faulty=t.failed||t.health<=0||t.consumedLife>=1;
-                    lines.Add(new ValuationLine(assetId, "Individual tire / "+catalog.Find(element.definitionId).name, 0, loose, "Owned tire / unique identity "+assetId));
-                    double remaining=faulty?0:Clamp(Math.Min(t.health,1-t.consumedLife),0,1);
-                    loose=Change(lines,assetId,"Individual tire wear",loose,policy.minimumWearFactor+(1-policy.minimumWearFactor)*remaining,"Remaining life of this physical tire");
-                    if(faulty)loose=Change(lines,assetId,"Failed tire recovery",loose,policy.scrapFraction,"Damaged tire, not a failed set");
-                    double history=Clamp(t.distanceM/1000*policy.distanceDiscountPerKm+t.runningSeconds/3600*policy.hourDiscount,0,policy.historyDiscountLimit);
-                    loose=Change(lines,assetId,"Tire usage history",loose,1-history,(t.distanceM/1000).ToString("F1")+" km / "+(t.runningSeconds/3600).ToString("F1")+" operating hours");
-                }else{
-                    faulty = element.element.Failed || element.element.fault != ElementFault.None;
-                    lines.Add(new ValuationLine(assetId, element.element.role + " / cylinder " + (element.element.cylinder + 1), 0, loose, "Owned single element / unit catalogue " + DisplayUnits.Money(element.unitPrice)));
-                    loose = Change(lines, assetId, "Individual wear / fault", loose, (policy.minimumWearFactor + (1 - policy.minimumWearFactor) * ElementHealth(element.element)) * (faulty ? .65 : 1), "Actual element health/fault");
-                }
-                loose = Change(lines, assetId, "Loose-element buyer", loose, buyer.parts, buyer.name);
+                loose = LooseElementValue(element,catalog,policy,buyer,lines,out faulty);
             } else {
                 if (kind == ValuationKind.Engine) {
                     engine = profile.engines.Find(e => e.instanceId == assetId); if (engine == null) throw new InvalidOperationException("Unknown owned engine.");

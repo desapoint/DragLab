@@ -108,6 +108,8 @@ namespace DragLab.Domain.Mechanics
             else item.storageId=targetId;
         }
         public static string Validate(PlayerProfile p,HashSet<string> identities)
+            =>Validate(p,identities,false);
+        internal static string Validate(PlayerProfile p,HashSet<string> identities,bool tolerateDealerDiscriminator)
         {
             if(p.inventory==null||p.inventory.storage==null||p.inventory.dealer==null)return "Missing inventory state.";
             var containers=new HashSet<string>();foreach(var s in p.inventory.storage)if(s==null||s.kind!=InventoryKind.Storage||string.IsNullOrWhiteSpace(s.id)||string.IsNullOrWhiteSpace(s.name)||!containers.Add(s.id))return "Invalid/duplicate storage container.";
@@ -123,7 +125,7 @@ namespace DragLab.Domain.Mechanics
                 bool hasUnit=stock.HasUnit;
                 if(hasPart==hasUnit)return "Invalid dealer stock at row "+index
                     +(hasPart?": conflicting part and unit payloads.":": missing part/unit identity.");
-                if(stock.isUnit!=hasUnit)return "Invalid dealer stock at row "+index+": wrong part/unit discriminator.";
+                if(!tolerateDealerDiscriminator&&stock.isUnit!=hasUnit)return "Invalid dealer stock at row "+index+": wrong part/unit discriminator.";
                 if(hasPart){
                     var i=stock.part;
                     string id=i.instanceId;
