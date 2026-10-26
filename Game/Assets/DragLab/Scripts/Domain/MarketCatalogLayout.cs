@@ -39,8 +39,9 @@ namespace DragLab.Domain.Mechanics
             public PartDefinition[][] Choices(MechanicalCatalog catalog,string model){if(!choices.TryGetValue(model,out var rows)){var spec=Stock(catalog,model);choices[model]=rows=catalog.parts.Where(d=>catalog.Fits(spec,d)&&PartSemantics.Wears(d.category)).GroupBy(d=>d.category).OrderBy(g=>g.Key).Select(g=>g.OrderBy(d=>d.id,StringComparer.Ordinal).ToArray()).ToArray();}return rows;}
         }
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-        static long canonicalJsonEncodeCount;
+        static long canonicalJsonEncodeCount,canonicalKeyRequestCount;
         internal static long CanonicalJsonEncodeCount=>canonicalJsonEncodeCount;
+        internal static long CanonicalKeyRequestCount=>canonicalKeyRequestCount;
 #endif
         static readonly ConditionalWeakTable<PartDefinition,Product> products=new ConditionalWeakTable<PartDefinition,Product>();
         static readonly ConditionalWeakTable<MechanicalCatalog,Layout> layouts=new ConditionalWeakTable<MechanicalCatalog,Layout>();
@@ -66,6 +67,8 @@ namespace DragLab.Domain.Mechanics
             readonly IReadOnlyList<ReadyProductGroup> groups;
             readonly IReadOnlyDictionary<string,ReadyProductGroup> groupById;
             internal int DefinitionCount=>snapshot.definitions.Length;
+            internal IReadOnlyList<ReadyProductGroup> ShopGroups=>groups;
+            internal IReadOnlyDictionary<string,ReadyProductGroup> ShopGroupById=>groupById;
             private ReadyContentToken(MechanicalCatalog catalog,KeySnapshot snapshot)
             {this.catalog=catalog;this.snapshot=snapshot;groups=snapshot.shopGroups;groupById=snapshot.shopGroupById;}
             internal static ReadyContentToken Capture(MechanicalCatalog catalog)
@@ -109,6 +112,10 @@ namespace DragLab.Domain.Mechanics
             ["AwdHardwareSpec"]=new[]{"version","modes","integratedCenter","adjustments","calibration","responseMin","responseMax"},
             ["AwdSpec"]=new[]{"mode","centerSpeedRatio","torqueBiasRatio","centerPreloadNm","frontBias","minimumFront","maximumFront","primaryFront","isolateFailedAxle","maximumSecondary","responseSeconds","slipThreshold","preload","freeShaftInertiaKgM2","freeShaftDragNm","freeShaftViscousDrag"}
         };
+        internal static bool SameAuthoredDefinition(PartDefinition current,PartDefinition snapshot)
+            =>current!=null&&snapshot!=null&&current.id==snapshot.id&&Same(current,snapshot);
+        internal static PartDefinition CopyAuthoredDefinition(PartDefinition definition)
+            =>definition?.Copy();
         internal static bool TryReadyProductKeys(MechanicalCatalog catalog,out Dictionary<string,string> keys)
         {
             keys=null;
@@ -240,6 +247,9 @@ namespace DragLab.Domain.Mechanics
         }
         internal static string Key(PartDefinition d)
         {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            canonicalKeyRequestCount++;
+#endif
             var entry=products.GetValue(d,_=>new Product());if(entry.snapshot!=null&&Same(d,entry.snapshot))return entry.key;
             entry.snapshot=d.Copy();entry.json=null;var copy=d.Copy();copy.id="";
 #if UNITY_EDITOR || DEVELOPMENT_BUILD

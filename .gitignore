@@ -106,3 +106,6 @@ Thumbs.db
 !/reports/part-statistics-fixes-20261021/recovery-completed-before-timeout.csv
 # Superseded partial-run diagnostic; final regression receipts are versioned.
 /reports/part-statistics-fixes-20261021/remaining-regression-verification.txt
+
+# Raw save-refactor run logs, attempts and generated frame analysis stay local.
+/reports/save-refactor/S06G1/

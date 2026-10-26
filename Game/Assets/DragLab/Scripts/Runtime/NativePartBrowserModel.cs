@@ -65,6 +65,16 @@ namespace DragLab.Runtime
     }
     internal sealed class NativePartBrowser
     {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        static int legacyPlanJsonCount,legacyOwnedCarJsonCount,legacyCartPreviewCount;
+        internal static int LegacyPlanJsonCount=>legacyPlanJsonCount;
+        internal static int LegacyOwnedCarJsonCount=>legacyOwnedCarJsonCount;
+        internal static int LegacyCartPreviewCount=>legacyCartPreviewCount;
+#else
+        internal static int LegacyPlanJsonCount=>0;
+        internal static int LegacyOwnedCarJsonCount=>0;
+        internal static int LegacyCartPreviewCount=>0;
+#endif
         internal static readonly string[] SectionNames={"Engine","Induction","Drivetrain","Wheels & brakes","Body & chassis"};
         internal static readonly string[] MetricNames={"HP change","Torque change","Weight change","Condition change","Torque strength","RPM strength","Cooling change"};
         internal readonly List<NativePartEntry> Entries=new List<NativePartEntry>();
@@ -74,110 +84,99 @@ namespace DragLab.Runtime
         readonly NativePartPreviewCache cache;readonly string referenceKey;
         internal int EvaluationCount {get;private set;}
         internal double EvaluationMilliseconds {get;private set;}
-        internal readonly bool UsedReadyProductGroups;
-        internal readonly double ProductGroupLookupMilliseconds;
-        internal readonly double ShopPopulationMilliseconds;
-        internal readonly double CurrentInspectionMilliseconds;
-        internal readonly double ShopLedgerSetupMilliseconds;
-        internal readonly double ShopProductEnumerationMilliseconds;
-        internal readonly double ShopClassificationMilliseconds;
-        internal readonly double ShopRepresentativeMilliseconds;
-        internal readonly double ShopAliasMilliseconds;
-        internal readonly double ShopSupplyCountMilliseconds;
-        internal readonly double ShopQuoteAndHoldMilliseconds;
-        internal readonly double ShopEntryCreationMilliseconds;
-        internal readonly double ShopUsedOfferMilliseconds;
-        internal readonly double ShopStockBindingMilliseconds;
-        internal readonly bool UsedReadyStockBinding;
+        internal bool UsedReadyProductGroups{get;private set;}
+        internal double ProductGroupLookupMilliseconds{get;private set;}
+        internal double ShopPopulationMilliseconds{get;private set;}
+        internal double CurrentInspectionMilliseconds{get;private set;}
+        internal double ShopLedgerSetupMilliseconds{get;private set;}
+        internal double ShopProductEnumerationMilliseconds{get;private set;}
+        internal double ShopClassificationMilliseconds{get;private set;}
+        internal double ShopRepresentativeMilliseconds{get;private set;}
+        internal double ShopAliasMilliseconds{get;private set;}
+        internal double ShopSupplyCountMilliseconds{get;private set;}
+        internal double ShopQuoteAndHoldMilliseconds{get;private set;}
+        internal double ShopEntryCreationMilliseconds{get;private set;}
+        internal double ShopUsedOfferMilliseconds{get;private set;}
+        internal double ShopStockBindingMilliseconds{get;private set;}
+        internal bool UsedReadyStockBinding{get;private set;}
+        internal double ConstructorSetupMilliseconds{get;private set;}
         readonly PlayerProfile actual,reference;
         readonly OwnedCar actualCar,referenceCar;
         readonly Dictionary<PartCategory,string> referenceMap;
         readonly VehicleSpec referenceSpec;
+        IEnumerator<int> stagedSteps;
+        internal bool PreparationUnavailable{get;private set;}
+        internal bool BuildFinished{get;private set;}
+        internal int LastAdvanceItems{get;private set;}
+        int buildPhase;
         static double ElapsedMilliseconds(long start)=>(System.Diagnostics.Stopwatch.GetTimestamp()-start)*1000.0/System.Diagnostics.Stopwatch.Frequency;
         internal NativePartBrowser(PlayerProfile profile,IEnumerable<PartCartLine> lines,bool planned,string page,Func<DealerStock,int> usedPrice,Func<string,bool,int> salePrice,NativePartPreviewCache cache=null)
+            :this(profile,lines,planned,page,usedPrice==null?(Func<DealerStock,int?>)null:stock=>(int?)usedPrice(stock),salePrice,cache,false,false,null,null){}
+        internal NativePartBrowser(PlayerProfile profile,IEnumerable<PartCartLine> lines,bool planned,string page,Func<DealerStock,int?> usedPrice,Func<string,bool,int> salePrice,NativePartPreviewCache cache,bool deferBuild,bool requireReadyGroups,IReadOnlyList<MarketCatalogLayout.ReadyProductGroup> suppliedGroups,IReadOnlyDictionary<string,MarketCatalogLayout.ReadyProductGroup> suppliedGroupById)
         {
+            long setupStart=System.Diagnostics.Stopwatch.GetTimestamp();
             actual=profile;actualCar=profile.SelectedCar;plannedReference=planned;this.cache=cache;
-            if(actualCar==null)return;
-            long currentInspectionStart=System.Diagnostics.Stopwatch.GetTimestamp();cache?.Bind(profile,actualCar);
-            Current=string.IsNullOrEmpty(actualCar.engineAssemblyId)?null:cache==null?Inspect(InspectionBuild.Capture(profile,actualCar)):cache.Inspection("current",()=>Inspect(InspectionBuild.Capture(profile,actualCar),cache));reference=profile;
+            if(actualCar==null){BuildFinished=true;ConstructorSetupMilliseconds=ElapsedMilliseconds(setupStart);return;}
+            long currentInspectionStart=System.Diagnostics.Stopwatch.GetTimestamp();if(!requireReadyGroups)cache?.Bind(profile,actualCar);
+            Current=string.IsNullOrEmpty(actualCar.engineAssemblyId)?null:requireReadyGroups||cache==null?Inspect(InspectionBuild.Capture(profile,actualCar)):cache.Inspection("current",()=>Inspect(InspectionBuild.Capture(profile,actualCar),cache));reference=profile;
             CurrentInspectionMilliseconds=ElapsedMilliseconds(currentInspectionStart);
             var cart=lines.Select(l=>l.Copy()).ToArray();
-            string incoming=cart.Length==0?"":cache==null?JsonUtility.ToJson(profile):cache.Context+"/"+string.Join("/",cart.Select(l=>JsonUtility.ToJson(profile.parts.Find(i=>i.instanceId==l.assetId))+JsonUtility.ToJson(profile.looseEngineElements.Find(i=>i.element.id==l.assetId))+JsonUtility.ToJson(profile.inventory.dealer.Find(i=>i.Id==l.assetId))+JsonUtility.ToJson(profile.catalog.Find(l.definitionId))));
-            string planKey="plan/"+NativePartPreviewCache.Fingerprint(JsonUtility.ToJson(new PartCart.Lines{entries=cart.ToList()})+incoming);
+            string planKey="current";
+            if(cart.Length>0){
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                legacyPlanJsonCount++;
+#endif
+                string incoming=cache==null?JsonUtility.ToJson(profile):cache.Context+"/"+string.Join("/",cart.Select(l=>JsonUtility.ToJson(profile.parts.Find(i=>i.instanceId==l.assetId))+JsonUtility.ToJson(profile.looseEngineElements.Find(i=>i.element.id==l.assetId))+JsonUtility.ToJson(profile.inventory.dealer.Find(i=>i.Id==l.assetId))+JsonUtility.ToJson(profile.catalog.Find(l.definitionId))));planKey="plan/"+NativePartPreviewCache.Fingerprint(JsonUtility.ToJson(new PartCart.Lines{entries=cart.ToList()})+incoming);}
             if(cart.Length>0)try {PartCart.Total(profile,actualCar.instanceId,cart);var copy=cache==null?PartCart.PreviewProfile(profile,actualCar,cart):cache.Plan(planKey,()=>PartCart.PreviewProfile(profile,actualCar,cart));Plan=cache==null?Inspect(InspectionBuild.Capture(copy,copy.SelectedCar)):cache.Inspection(planKey,()=>Inspect(InspectionBuild.Capture(copy,copy.SelectedCar),cache));if(planned)reference=copy;}catch(Exception e){PlanError=e.Message;}
             referenceKey=planned&&Plan!=null?planKey:"current";
             referenceCar=reference.SelectedCar;referenceMap=MechanicsOwnership.Definitions(reference,referenceCar);Reference=planned&&PlanError!=null||string.IsNullOrEmpty(referenceCar.engineAssemblyId)?null:ReferenceEquals(reference,profile)?Current:Plan;
             referenceSpec=actual.catalog.Resolve(referenceCar.vehicleId,referenceMap,referenceCar.tune).spec;
-            var ownedDefinitions=new HashSet<string>(profile.looseEngineElements.Select(u=>u.definitionId),StringComparer.Ordinal);
-            foreach(var part in profile.parts){if(part.condition.tires.Length==4)for(int i=0;i<4;i++)ownedDefinitions.Add(TireFitments.DefinitionId(part,i));else if(WheelFitments.HasOverrides(part))for(int i=0;i<4;i++)ownedDefinitions.Add(WheelFitments.DefinitionId(part,i));else ownedDefinitions.Add(part.definitionId);}
+            ConstructorSetupMilliseconds=ElapsedMilliseconds(setupStart);
+            stagedSteps=PopulateEntries(profile,page,usedPrice,salePrice,requireReadyGroups,suppliedGroups,suppliedGroupById).GetEnumerator();
+            if(!deferBuild)while(!AdvanceBuild(int.MaxValue,double.MaxValue)){}
+        }
+        internal bool AdvanceBuild(int itemCap,double softMilliseconds)
+        {
+            if(BuildFinished||PreparationUnavailable)return true;
+            if(itemCap<1)itemCap=1;long start=System.Diagnostics.Stopwatch.GetTimestamp();int done=0;LastAdvanceItems=0;
+            while(done<itemCap&&(done==0||ElapsedMilliseconds(start)<softMilliseconds))
+            {long itemStart=System.Diagnostics.Stopwatch.GetTimestamp();if(!stagedSteps.MoveNext()){stagedSteps.Dispose();stagedSteps=null;BuildFinished=true;break;}double itemMs=ElapsedMilliseconds(itemStart);if(buildPhase==1){ShopPopulationMilliseconds+=itemMs;ShopProductEnumerationMilliseconds+=itemMs;}else if(buildPhase==2){ShopPopulationMilliseconds+=itemMs;ShopClassificationMilliseconds+=itemMs;}done++;LastAdvanceItems++;}
+            return BuildFinished||PreparationUnavailable;
+        }
+        internal void AbandonBuild(){stagedSteps?.Dispose();stagedSteps=null;BuildFinished=true;}
+        IEnumerable<int> PopulateEntries(PlayerProfile profile,string page,Func<DealerStock,int?> usedPrice,Func<string,bool,int> salePrice,bool requireReadyGroups,IReadOnlyList<MarketCatalogLayout.ReadyProductGroup> suppliedGroups,IReadOnlyDictionary<string,MarketCatalogLayout.ReadyProductGroup> suppliedGroupById)
+        {
+            var ownedDefinitions=new HashSet<string>(StringComparer.Ordinal);
+            foreach(var unit in profile.looseEngineElements){ownedDefinitions.Add(unit.definitionId);yield return 0;}
+            foreach(var part in profile.parts){if(part.condition.tires.Length==4)for(int i=0;i<4;i++)ownedDefinitions.Add(TireFitments.DefinitionId(part,i));else if(WheelFitments.HasOverrides(part))for(int i=0;i<4;i++)ownedDefinitions.Add(WheelFitments.DefinitionId(part,i));else ownedDefinitions.Add(part.definitionId);yield return 0;}
             bool Owns(string id)=>ownedDefinitions.Contains(id);
-            if(page=="Installed")foreach(var slot in actualCar.installed.slots){var p=profile.parts.Find(i=>i.instanceId==slot.partInstanceId);if(p==null)continue;Add(p.instanceId,p.definitionId,"Installed",p,null,true,p.ownerId,null);}
+            if(page=="Installed")foreach(var slot in actualCar.installed.slots){var p=profile.parts.Find(i=>i.instanceId==slot.partInstanceId);if(p!=null)Add(p.instanceId,p.definitionId,"Installed",p,null,true,p.ownerId,null);yield return 0;}
             if(page=="Inventory"){
-                foreach(var p in profile.parts.Where(p=>!actualCar.installed.slots.Any(s=>s.partInstanceId==p.instanceId)))Add(p.instanceId,p.definitionId,"Owned",p,null,true,p.location==PartLocation.Inventory?SharedInventory.StorageOf(p.storageId):p.ownerId,SafePrice(()=>salePrice(p.instanceId,false),p.location==PartLocation.Inventory));
-                foreach(var u in profile.looseEngineElements)Add(u.element.id,u.definitionId,"Owned",null,u,true,SharedInventory.StorageOf(u.storageId),SafePrice(()=>salePrice(u.element.id,true),true));
+                foreach(var p in profile.parts){if(!actualCar.installed.slots.Any(s=>s.partInstanceId==p.instanceId))Add(p.instanceId,p.definitionId,"Owned",p,null,true,p.location==PartLocation.Inventory?SharedInventory.StorageOf(p.storageId):p.ownerId,SafePrice(()=>salePrice(p.instanceId,false),p.location==PartLocation.Inventory));yield return 0;}
+                foreach(var u in profile.looseEngineElements){Add(u.element.id,u.definitionId,"Owned",null,u,true,SharedInventory.StorageOf(u.storageId),SafePrice(()=>salePrice(u.element.id,true),true));yield return 0;}
             }
-            long shopPopulationStart=0;bool shopPage=page=="Shop";
+            bool shopPage=page=="Shop";
             if(shopPage){
-                shopPopulationStart=System.Diagnostics.Stopwatch.GetTimestamp();
-                long groupLookupStart=System.Diagnostics.Stopwatch.GetTimestamp();
-                bool usedReadyGroups=MarketCatalogLayout.TryReadyShopProductGroups(profile.catalog,out var readyGroups,out var readyGroupById);
-                ProductGroupLookupMilliseconds=ElapsedMilliseconds(groupLookupStart);
-                UsedReadyProductGroups=usedReadyGroups;
-                long ledgerSetupStart=System.Diagnostics.Stopwatch.GetTimestamp();
-                var fitted=new HashSet<string>(referenceMap.Values);
-                var supplyCount=usedReadyGroups?PartsMarket.CounterIndexed(profile,actualCar):PartsMarket.Counter(profile,actualCar);
-                var shelf=new PartsMarket.Ledger(profile,profile.inventory.usingCartReservation);
-                ShopLedgerSetupMilliseconds=ElapsedMilliseconds(ledgerSetupStart);
-                long productEnumerationStart=System.Diagnostics.Stopwatch.GetTimestamp();
-                string selectedModelPrefix=referenceCar.vehicleId+"/";
-                if(usedReadyGroups){
-                    double representativeMs=0,aliasMs=0,supplyCountMs=0,quoteAndHoldMs=0,entryCreationMs=0,usedOfferMs=0;
-                    long bindingStart=System.Diagnostics.Stopwatch.GetTimestamp();
-                    UsedReadyStockBinding=shelf.BindReadyProductGroups(readyGroups,readyGroupById);
-                    ShopStockBindingMilliseconds=ElapsedMilliseconds(bindingStart);
-                    foreach(var product in readyGroups){
-                        long phaseStart=System.Diagnostics.Stopwatch.GetTimestamp();
-                        PartDefinition d=null;int best=int.MaxValue;bool owned=false;
-                        foreach(var id in product.DefinitionIds){
-                            var candidate=profile.catalog.Find(id);if(candidate==null)continue;
-                            owned|=Owns(id);
-                            int rank=fitted.Contains(id)?0:id.StartsWith(selectedModelPrefix,StringComparison.Ordinal)?1:2;
-                            if(rank<best||rank==best&&StringComparer.Ordinal.Compare(id,d?.id)<0){d=candidate;best=rank;}
-                        }
-                        representativeMs+=ElapsedMilliseconds(phaseStart);
-                        if(d==null)continue;
-                        phaseStart=System.Diagnostics.Stopwatch.GetTimestamp();int units=supplyCount(d);supplyCountMs+=ElapsedMilliseconds(phaseStart);
-                        phaseStart=System.Diagnostics.Stopwatch.GetTimestamp();var supply=shelf.Quote(d,units,d.price);int available=Math.Max(0,shelf.Available(d)-(profile.inventory.usingCartReservation?CartReservations.Held(profile,d):0));quoteAndHoldMs+=ElapsedMilliseconds(phaseStart);
-                        phaseStart=System.Diagnostics.Stopwatch.GetTimestamp();
-                        Add("new:"+d.id,d.id,"New",null,null,owned,"New",supply.cost);
-                        Entries[Entries.Count-1].StockUnits=available;Entries[Entries.Count-1].RequiresExpress=supply.expressUnits>0;
-                        entryCreationMs+=ElapsedMilliseconds(phaseStart);
-                        phaseStart=System.Diagnostics.Stopwatch.GetTimestamp();Entries[Entries.Count-1].SearchExtra=string.Join(" ",product.DefinitionIds);aliasMs+=ElapsedMilliseconds(phaseStart);
+                long lookupStart=System.Diagnostics.Stopwatch.GetTimestamp();
+                IReadOnlyList<MarketCatalogLayout.ReadyProductGroup> readyGroups=suppliedGroups;IReadOnlyDictionary<string,MarketCatalogLayout.ReadyProductGroup> readyGroupById=suppliedGroupById;
+                bool ready=readyGroups!=null&&readyGroupById!=null;
+                if(!ready&&!requireReadyGroups)ready=MarketCatalogLayout.TryReadyShopProductGroups(profile.catalog,out readyGroups,out readyGroupById);
+                ProductGroupLookupMilliseconds=ElapsedMilliseconds(lookupStart);UsedReadyProductGroups=ready;
+                if(!ready&&requireReadyGroups){PreparationUnavailable=true;yield break;}
+                long ledgerStart=System.Diagnostics.Stopwatch.GetTimestamp();var fitted=new HashSet<string>(referenceMap.Values);
+                var supplyCount=ready?PartsMarket.CounterIndexed(profile,actualCar):PartsMarket.Counter(profile,actualCar);
+                var shelf=new PartsMarket.Ledger(profile,profile.inventory.usingCartReservation,ready?readyGroups:null,ready?readyGroupById:null);ShopLedgerSetupMilliseconds=ElapsedMilliseconds(ledgerStart);
+                string prefix=referenceCar.vehicleId+"/";buildPhase=1;
+                if(ready){UsedReadyStockBinding=true;
+                    foreach(var product in readyGroups){long phase=System.Diagnostics.Stopwatch.GetTimestamp();PartDefinition d=null;int best=int.MaxValue;bool owned=false;
+                        foreach(var id in product.DefinitionIds){var candidate=profile.catalog.Find(id);if(candidate==null)continue;owned|=Owns(id);int rank=fitted.Contains(id)?0:id.StartsWith(prefix,StringComparison.Ordinal)?1:2;if(rank<best||rank==best&&StringComparer.Ordinal.Compare(id,d?.id)<0){d=candidate;best=rank;}}
+                        ShopRepresentativeMilliseconds+=ElapsedMilliseconds(phase);if(d!=null){phase=System.Diagnostics.Stopwatch.GetTimestamp();int units=supplyCount(d);ShopSupplyCountMilliseconds+=ElapsedMilliseconds(phase);phase=System.Diagnostics.Stopwatch.GetTimestamp();var quote=shelf.Quote(d,units,d.price);int available=Math.Max(0,shelf.Available(d)-(profile.inventory.usingCartReservation?shelf.Held(d):0));ShopQuoteAndHoldMilliseconds+=ElapsedMilliseconds(phase);phase=System.Diagnostics.Stopwatch.GetTimestamp();Add("new:"+d.id,d.id,"New",null,null,owned,"New",quote.cost);if(Entries.Count>0){Entries[Entries.Count-1].StockUnits=available;Entries[Entries.Count-1].RequiresExpress=quote.expressUnits>0;Entries[Entries.Count-1].SearchExtra=string.Join(" ",product.DefinitionIds);}ShopEntryCreationMilliseconds+=ElapsedMilliseconds(phase);}
+                        yield return 0;
                     }
-                    ShopRepresentativeMilliseconds=representativeMs;ShopAliasMilliseconds=aliasMs;
-                    ShopSupplyCountMilliseconds=supplyCountMs;ShopQuoteAndHoldMilliseconds=quoteAndHoldMs;
-                    ShopEntryCreationMilliseconds=entryCreationMs;
-                    long usedOfferStart=System.Diagnostics.Stopwatch.GetTimestamp();
-                    foreach(var d in profile.inventory.dealer.Where(d=>d.IsPart||d.IsUnit))Add("used:"+d.Id,d.DefinitionId,"Used",d.IsPart?d.part:null,d.IsUnit?d.unit:null,Owns(d.DefinitionId),"Dealer",usedPrice(d));
-                    ShopUsedOfferMilliseconds=ElapsedMilliseconds(usedOfferStart);
-                }else{
-                    foreach(var product in profile.catalog.parts.GroupBy(NewProductKey,StringComparer.Ordinal)){
-                        var d=product.OrderBy(p=>fitted.Contains(p.id)?0:p.id.StartsWith(selectedModelPrefix,StringComparison.Ordinal)?1:2).ThenBy(p=>p.id,StringComparer.Ordinal).First();
-                        var supply=shelf.Quote(d,supplyCount(d),d.price);int available=Math.Max(0,shelf.Available(d)-(profile.inventory.usingCartReservation?CartReservations.Held(profile,d):0));
-                        Add("new:"+d.id,d.id,"New",null,null,product.Any(p=>Owns(p.id)),"New",supply.cost);
-                        Entries[Entries.Count-1].StockUnits=available;Entries[Entries.Count-1].RequiresExpress=supply.expressUnits>0;
-                        Entries[Entries.Count-1].SearchExtra=string.Join(" ",product.Select(p=>p.id));
-                    }
-                    long usedOfferStart=System.Diagnostics.Stopwatch.GetTimestamp();
-                    foreach(var d in profile.inventory.dealer.Where(d=>d.IsPart||d.IsUnit))Add("used:"+d.Id,d.DefinitionId,"Used",d.IsPart?d.part:null,d.IsUnit?d.unit:null,Owns(d.DefinitionId),"Dealer",usedPrice(d));
-                    ShopUsedOfferMilliseconds=ElapsedMilliseconds(usedOfferStart);
-                }
-                ShopProductEnumerationMilliseconds=ElapsedMilliseconds(productEnumerationStart);
+                }else foreach(var product in profile.catalog.parts.GroupBy(NewProductKey,StringComparer.Ordinal)){var d=product.OrderBy(p=>fitted.Contains(p.id)?0:p.id.StartsWith(prefix,StringComparison.Ordinal)?1:2).ThenBy(p=>p.id,StringComparer.Ordinal).First();var quote=shelf.Quote(d,supplyCount(d),d.price);int available=Math.Max(0,shelf.Available(d)-(profile.inventory.usingCartReservation?shelf.Held(d):0));Add("new:"+d.id,d.id,"New",null,null,product.Any(p=>Owns(p.id)),"New",quote.cost);Entries[Entries.Count-1].StockUnits=available;Entries[Entries.Count-1].RequiresExpress=quote.expressUnits>0;Entries[Entries.Count-1].SearchExtra=string.Join(" ",product.Select(p=>p.id));yield return 0;}
+                foreach(var d in profile.inventory.dealer){if(d.IsPart||d.IsUnit){long usedStart=System.Diagnostics.Stopwatch.GetTimestamp();Add("used:"+d.Id,d.DefinitionId,"Used",d.IsPart?d.part:null,d.IsUnit?d.unit:null,Owns(d.DefinitionId),"Dealer",usedPrice(d));ShopUsedOfferMilliseconds+=ElapsedMilliseconds(usedStart);}yield return 0;}
             }
-            long shopClassificationStart=shopPage?System.Diagnostics.Stopwatch.GetTimestamp():0;
-            foreach(var entry in Entries)Classify(entry);
-            if(shopPage)ShopClassificationMilliseconds=ElapsedMilliseconds(shopClassificationStart);
-            if(shopPage)ShopPopulationMilliseconds=ElapsedMilliseconds(shopPopulationStart);
+            buildPhase=shopPage?2:0;foreach(var entry in Entries){Classify(entry);yield return 0;}
         }
         internal static string NewProductKey(PartDefinition definition)
         {
@@ -209,6 +208,9 @@ namespace DragLab.Runtime
             e.Unit=new LooseEngineElement{definitionId=e.Definition.id,element=member,tireUnit=e.Definition.category==PartCategory.Tires};
             var available=InventoryUnits.Positions(reference,referenceCar,e.Definition.id,role);var selected=selection.Where(available.Contains).Distinct().ToArray();
             if(selected.Length==0&&available.Length>0)selected=new[]{available[0]};e.Position=selected.FirstOrDefault();Evaluate(e);
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if(selected.Length>1&&e.Proposed!=null)legacyCartPreviewCount++;
+#endif
             if(selected.Length>1&&e.Proposed!=null){
                 var copy=PartCart.PreviewProfile(reference,referenceCar,new[]{new PartCartLine{action=CartAction.NewUnits,definitionId=e.Definition.id,role=role,quantity=selected.Length,install=true,positions=selected.ToList()}});
                 e.Proposed=Inspect(InspectionBuild.Capture(copy,copy.SelectedCar),cache);
@@ -246,7 +248,7 @@ namespace DragLab.Runtime
                         EngineElementService.RefreshAggregate(pack.condition);
                         e.Position=null;
                     }else{
-                    if(!positions.Contains(e.Position))e.Position=positions[0];var copy=UnitPreviewProfile();
+                    if(!positions.Contains(e.Position))e.Position=positions[0];var copy=UnitPreviewProfile(e.Unit);
                     var u=copy.looseEngineElements.Find(i=>i.element.id==e.Unit.element.id);if(u==null){u=new LooseEngineElement{definitionId=d.id,storageId=SharedInventory.Garage,unitPrice=e.Unit.unitPrice,element=e.Unit.element.Copy(),tireUnit=e.Unit.tireUnit,tire=e.Unit.tire?.Copy()};copy.looseEngineElements.Add(u);}
                     InventoryUnits.Install(copy,referenceCar.instanceId,u.element.id,e.Position);candidate=InspectionBuild.Capture(copy,copy.SelectedCar);
                     }
@@ -272,10 +274,13 @@ namespace DragLab.Runtime
             finally{EvaluationMilliseconds+=clock.Elapsed.TotalMilliseconds;if(cache!=null)cache.Store(key,e);}
         }
         internal bool Restore(NativePartEntry e)=>e.Ready||cache!=null&&cache.Restore(NativePartPreviewCache.Key(referenceKey,e),e);
-        PlayerProfile UnitPreviewProfile()
+        PlayerProfile UnitPreviewProfile(LooseEngineElement selectedUnit)
         {
-            var car=JsonUtility.FromJson<OwnedCar>(JsonUtility.ToJson(referenceCar));var installed=new HashSet<string>(car.installed.slots.Select(s=>s.partInstanceId));
-            return new PlayerProfile{catalog=actual.catalog,selectedOwnedVehicleId=car.instanceId,selectedVehicleId=car.vehicleId,cars=new List<OwnedCar>{car},parts=reference.parts.Where(p=>installed.Contains(p.instanceId)).Select(p=>p.Copy()).ToList(),runCheckpoints=reference.runCheckpoints.ToList(),cash=reference.cash};
+            var source=referenceCar;var car=new OwnedCar{instanceId=source.instanceId,chassisId=source.chassisId,engineAssemblyId=source.engineAssemblyId,garageJobId=source.garageJobId,installed=source.installed==null?null:new InstalledBuild{version=source.installed.version,instanceId=source.installed.instanceId,vehicleDefinitionId=source.installed.vehicleDefinitionId,slots=source.installed.slots==null?null:source.installed.slots.Select(s=>s==null?null:new SlotBinding{slot=s.slot,partInstanceId=s.partInstanceId}).ToList()},fuel=source.fuel?.Copy(),fuelInitialized=source.fuelInitialized,fluids=source.fluids?.Copy(),serviceHardwareVersion=source.serviceHardwareVersion,thermalUtcTicks=source.thermalUtcTicks,engineRebuild=source.engineRebuild==null?null:new EngineRebuildJob{active=source.engineRebuild.active},massVersion=source.massVersion,vehicleId=source.vehicleId,tune=source.tune?.Copy()};
+            var installed=new HashSet<string>((car.installed?.slots??new List<SlotBinding>()).Where(s=>s!=null).Select(s=>s.partInstanceId),StringComparer.Ordinal);
+            var parts=reference.parts.Where(p=>p!=null&&installed.Contains(p.instanceId)).Select(p=>p.Copy()).ToList();
+            var unit=selectedUnit==null?null:new LooseEngineElement{definitionId=selectedUnit.definitionId,storageId=selectedUnit.storageId,unitPrice=selectedUnit.unitPrice,element=selectedUnit.element?.Copy(),tireUnit=selectedUnit.tireUnit};
+            return new PlayerProfile{catalog=actual.catalog,selectedOwnedVehicleId=car.instanceId,selectedVehicleId=car.vehicleId,cars=new List<OwnedCar>{car},parts=parts,looseEngineElements=unit==null?new List<LooseEngineElement>():new List<LooseEngineElement>{unit},inventory=new InventoryState(),runCheckpoints=reference.runCheckpoints==null?null:new List<RunCheckpoint>(reference.runCheckpoints)};
         }
     }
     internal static class NativePartReference

@@ -41,6 +41,8 @@ namespace DragLab.Runtime
         internal readonly UnitPreferences Units;
         internal readonly NativePartsOwnerContext Owner;
         internal readonly NativePartsPriceFact[] Prices;
+        internal readonly IReadOnlyDictionary<string,IReadOnlyDictionary<string,NativePartsPriceFact>> PriceIndex;
+        internal bool HasInvalidPriceFacts{get;}
         internal double CaptureMilliseconds{get;}
         internal NativePartsBaseReadInputs(PlayerProfile profile,string page,bool planned,
             IEnumerable<PartCartLine> typedLines,UnitPreferences units,NativePartsOwnerContext ownerContext,
@@ -53,6 +55,11 @@ namespace DragLab.Runtime
             Lines=(typedLines??Enumerable.Empty<PartCartLine>()).Select(CopyLineExact).ToArray();
             Units=units==null?null:new UnitPreferences{version=units.version,speed=units.speed,pressure=units.pressure,torque=units.torque};
             Owner=ownerContext;Prices=(prices??Enumerable.Empty<NativePartsPriceFact>()).Select(x=>x==null?null:new NativePartsPriceFact(x.Source,x.AssetKey,x.Price)).ToArray();
+            var priceBuilders=new Dictionary<string,Dictionary<string,NativePartsPriceFact>>(StringComparer.Ordinal);
+            var priceIndex=new Dictionary<string,IReadOnlyDictionary<string,NativePartsPriceFact>>(StringComparer.Ordinal);bool invalidPriceFacts=false;
+            foreach(var fact in Prices){if(fact==null||string.IsNullOrEmpty(fact.Source)||string.IsNullOrEmpty(fact.AssetKey)){invalidPriceFacts=true;continue;}if(!priceBuilders.TryGetValue(fact.Source,out var byAsset)){byAsset=new Dictionary<string,NativePartsPriceFact>(StringComparer.Ordinal);priceBuilders.Add(fact.Source,byAsset);}if(byAsset.ContainsKey(fact.AssetKey)){invalidPriceFacts=true;continue;}byAsset.Add(fact.AssetKey,fact);}
+            foreach(var pair in priceBuilders)priceIndex.Add(pair.Key,pair.Value);PriceIndex=priceIndex;
+            HasInvalidPriceFacts=invalidPriceFacts;
             CaptureMilliseconds=(Stopwatch.GetTimestamp()-captureStart)*1000.0/Stopwatch.Frequency;
         }
         internal static void ValidatePage(string page)
@@ -60,6 +67,8 @@ namespace DragLab.Runtime
             if(page!="Shop"&&page!="Inventory"&&page!="Installed")throw new ArgumentException("Native parts read facts support only Shop, Inventory, or Installed pages.",nameof(page));
         }
         internal static PartCartLine CopyLineExact(PartCartLine l)=>l==null?null:new PartCartLine{definitionId=l.definitionId,quantity=l.quantity,install=l.install,preparedBlock=l.preparedBlock,preparationOwner=l.preparationOwner,action=l.action,assetId=l.assetId,role=l.role,destinationId=l.destinationId,destination=l.destination,positions=l.positions==null?null:new List<string>(l.positions)};
+        internal bool TryPrice(string source,string assetKey,out NativePartsPriceFact fact)
+        {fact=null;return PriceIndex.TryGetValue(source??"",out var values)&&values.TryGetValue(assetKey??"",out fact);}
     }
     internal sealed class NativePartsBaseReadSet
     {
@@ -67,7 +76,7 @@ namespace DragLab.Runtime
         sealed class UnitFact {internal LooseEngineElement source;internal EngineElement elementSource;internal string definition,storage;internal int price;internal bool tireUnit;internal EngineElement element;}
         sealed class DealerFact {internal DealerStock source;internal PartInstance partSource;internal bool isUnit;internal PartInstance part;internal UnitFact unit;internal int paid;}
         sealed class RebuildTargetFact {internal EngineRebuildTarget source;internal string partId,definitionId;internal bool replace;}
-        readonly PlayerProfile profile;readonly MechanicalCatalog catalog;readonly OwnedCar selectedCar;
+        readonly PlayerProfile profile;readonly MechanicalCatalog catalog;readonly OwnedCar selectedCar;readonly NativePartsBaseReadInputs inputs;
         readonly List<OwnedCar> carsCollection;
         readonly string page,selectedId,selectedModel,engineAssemblyId,garageJobId,selectedOwnedVehicleId,selectedVehicleId;readonly bool planned,fuelInitialized;readonly long revision,storageCommit;
         readonly NativePartsOwnerContext owner;readonly UnitPreferences units;
@@ -80,10 +89,12 @@ namespace DragLab.Runtime
         readonly List<string> ownedIds=new List<string>(); readonly List<UnitFact> relevantUnits=new List<UnitFact>();
         readonly List<DealerFact> dealer=new List<DealerFact>();
         readonly List<PartFact> selectedInstalledParts=new List<PartFact>();
+        readonly HashSet<string> consumedPriceKeys=new HashSet<string>(StringComparer.Ordinal);
         readonly List<PartInstance> ownedPartSources=new List<PartInstance>();readonly List<LooseEngineElement> ownedUnitSources=new List<LooseEngineElement>();
         readonly int cash,reputation;readonly int stockVersion,seed,generation,guarantee,marketCount;
         readonly InventoryState inventoryIdentity;readonly PartsStockState marketIdentity;readonly NewPartStock[] stockSources;
         readonly List<PartInstance> partsCollection;readonly List<LooseEngineElement> looseCollection;
+        readonly List<RunCheckpoint> runCheckpointsCollection;readonly bool runCheckpointsWasNull,hasNullRunCheckpoint,hasUnsettledRun;
         readonly List<DealerStock> dealerCollection;readonly List<NewPartStock> stockCollection;
         readonly MarketCatalogLayout.ReadyContentToken catalogToken;
         readonly VehicleStockState vehicleStockIdentity;readonly int vehicleStockVersion,vehicleSeed,vehicleGeneration,vehiclePurchases,vehicleRuns,vehicleKnowledge;
@@ -93,8 +104,12 @@ namespace DragLab.Runtime
         int partIndex,unitIndex,dealerIndex,ownedPartIndex,ownedUnitIndex,stockIndex;
         readonly int totalItems;
         readonly int partCountAtStart,looseCountAtStart,dealerCountAtStart,marketCountAtStart;
-        bool sourceShapeChanged;
+        bool sourceShapeChanged,priceFactsMismatch;string priceFactsFailure;
         internal bool RequiresTypedPreview=>lines.Length>0;
+        internal bool PriceFactsComplete=>Complete&&!priceFactsMismatch&&consumedPriceKeys.Count==inputs.Prices.Length;
+        internal string PriceFactsFailure=>priceFactsFailure??(consumedPriceKeys.Count!=inputs.Prices.Length?"External price facts contain missing or unused source/asset rows.":null);
+        internal IReadOnlyList<MarketCatalogLayout.ReadyProductGroup> ReadyShopGroups=>catalogToken?.ShopGroups;
+        internal IReadOnlyDictionary<string,MarketCatalogLayout.ReadyProductGroup> ReadyShopGroupById=>catalogToken?.ShopGroupById;
         internal int CapturedItemCount=>partIndex+unitIndex+dealerIndex+ownedPartIndex+ownedUnitIndex+stockIndex;
         internal double CaptureMilliseconds{get;private set;}
         internal double LargestCaptureStepMilliseconds{get;private set;}
@@ -105,7 +120,7 @@ namespace DragLab.Runtime
 
         NativePartsBaseReadSet(NativePartsBaseReadInputs input)
         {
-            profile=input.Profile;catalog=profile?.catalog;page=input.Page??"";planned=input.Planned;owner=input.Owner;
+            inputs=input;profile=input.Profile;catalog=profile?.catalog;page=input.Page??"";planned=input.Planned;owner=input.Owner;
             revision=profile?.revision??0;storageCommit=profile?.storageCommit??0;cash=page=="Shop"?(profile?.cash??0):0;reputation=page=="Shop"?(profile?.reputation??0):0;selectedOwnedVehicleId=profile?.selectedOwnedVehicleId;selectedVehicleId=profile?.selectedVehicleId;
             carsCollection=profile?.cars;selectedCar=profile==null||carsCollection==null?null:profile.SelectedCar;selectedId=selectedCar?.instanceId;selectedModel=selectedCar?.vehicleId;
             engineAssemblyId=selectedCar?.engineAssemblyId;garageJobId=selectedCar?.garageJobId;fuelInitialized=selectedCar!=null&&selectedCar.fuelInitialized;
@@ -113,6 +128,7 @@ namespace DragLab.Runtime
             rebuild=selectedCar?.engineRebuild==null?null:new EngineRebuildJob{active=selectedCar.engineRebuild.active,id=selectedCar.engineRebuild.id,engineId=selectedCar.engineRebuild.engineId,startedUtcTicks=selectedCar.engineRebuild.startedUtcTicks,readyUtcTicks=selectedCar.engineRebuild.readyUtcTicks,paidPrice=selectedCar.engineRebuild.paidPrice};
             rebuildTargets=selectedCar?.engineRebuild?.targets==null?null:selectedCar.engineRebuild.targets.Select(t=>t==null?null:new RebuildTargetFact{source=t,partId=t.partId,definitionId=t.definitionId,replace=t.replace}).ToArray();
             inventoryIdentity=profile?.inventory;marketIdentity=profile?.inventory?.market;partsCollection=profile?.parts;looseCollection=profile?.looseEngineElements;dealerCollection=profile?.inventory?.dealer;stockCollection=profile?.inventory?.market?.parts;
+            runCheckpointsCollection=profile?.runCheckpoints;runCheckpointsWasNull=runCheckpointsCollection==null;hasNullRunCheckpoint=runCheckpointsCollection!=null&&runCheckpointsCollection.Any(x=>x==null);hasUnsettledRun=runCheckpointsCollection!=null&&runCheckpointsCollection.Any(x=>x!=null&&!x.settled);
             MarketCatalogLayout.TryCaptureReadyContentToken(catalog,out catalogToken);
             vehicleStockIdentity=profile?.vehicleStock;if(vehicleStockIdentity!=null){vehicleStockVersion=vehicleStockIdentity.version;vehicleSeed=vehicleStockIdentity.seed;vehicleGeneration=vehicleStockIdentity.generation;vehiclePurchases=vehicleStockIdentity.purchases;vehicleRuns=vehicleStockIdentity.completedRuns;vehicleKnowledge=vehicleStockIdentity.knowledgeRevision;}
             usingCartReservation=profile?.inventory?.usingCartReservation??false;
@@ -137,6 +153,8 @@ namespace DragLab.Runtime
         {
             readonly NativePartsBaseReadSet facts;
             internal bool Complete=>facts.Complete;
+            internal bool PriceFactsComplete=>facts.PriceFactsComplete;
+            internal string PriceFactsFailure=>facts.PriceFactsFailure;
             internal bool Failed=>staleOwner||facts.sourceShapeChanged;
             internal string FailureReason=>staleOwner?"Selected owner changed during bounded capture.":facts.sourceShapeChanged?"Profile asset collections changed during bounded capture.":null;
             bool staleOwner;
@@ -174,10 +192,16 @@ namespace DragLab.Runtime
             bool shop=page=="Shop", inv=page=="Inventory", installedPage=page=="Installed";
             if(shop&&ownedPartIndex<partsCount){var p=profile.parts[ownedPartIndex++];ownedPartSources.Add(p);ownedIds.Add(p?.instanceId);ownedIds.Add(p?.definitionId);if(p?.condition?.elements!=null)foreach(var e in p.condition.elements){ownedIds.Add(e?.id);ownedIds.Add(e?.definitionId);}if(IsSelectedPart(p))selectedInstalledParts.Add(new PartFact{source=p,snapshot=p.Copy()});return;}
             if(shop&&ownedUnitIndex<looseCount){var u=profile.looseEngineElements[ownedUnitIndex++];ownedUnitSources.Add(u);ownedIds.Add(u?.element?.id);ownedIds.Add(u?.definitionId);return;}
-            if((inv||installedPage)&&partIndex<partsCount){var p=profile.parts[partIndex++];PartFact fact=null;if(IsSelectedPart(p)){fact=new PartFact{source=p,snapshot=p.Copy()};selectedInstalledParts.Add(fact);}if(inv){if(fact==null)fact=new PartFact{source=p,snapshot=p?.Copy()};relevantParts.Add(fact);}else if(fact!=null)relevantParts.Add(fact);return;}
-            if(inv&&unitIndex<looseCount){var u=profile.looseEngineElements[unitIndex++];relevantUnits.Add(CopyUnit(u));return;}
-            if(page=="Shop"&&dealerIndex<(profile.inventory?.dealer?.Count??0)){var d=profile.inventory.dealer[dealerIndex++];dealer.Add(d==null?null:new DealerFact{source=d,partSource=d.part,isUnit=d.isUnit,part=d.part?.Copy(),unit=CopyUnit(d.unit),paid=d.paidPrice});return;}
+            if((inv||installedPage)&&partIndex<partsCount){var p=profile.parts[partIndex++];PartFact fact=null;bool selected=IsSelectedPart(p);if(selected){fact=new PartFact{source=p,snapshot=p.Copy()};selectedInstalledParts.Add(fact);}if(inv){if(fact==null)fact=new PartFact{source=p,snapshot=p?.Copy()};relevantParts.Add(fact);if(!selected&&p?.location==PartLocation.Inventory)RequirePrice("OwnedPart",p.instanceId,false);}else if(fact!=null)relevantParts.Add(fact);return;}
+            if(inv&&unitIndex<looseCount){var u=profile.looseEngineElements[unitIndex++];relevantUnits.Add(CopyUnit(u));RequirePrice("OwnedUnit",u?.element?.id,false);return;}
+            if(page=="Shop"&&dealerIndex<(profile.inventory?.dealer?.Count??0)){var d=profile.inventory.dealer[dealerIndex++];if(d!=null&&(d.IsPart||d.IsUnit))RequirePrice("Used",d.Id,true);dealer.Add(d==null?null:new DealerFact{source=d,partSource=d.part,isUnit=d.isUnit,part=d.part?.Copy(),unit=CopyUnit(d.unit),paid=d.paidPrice});return;}
             if(page=="Shop"&&stockIndex<marketCount){var i=stockIndex++;var m=profile.inventory.market.parts[i];stockSources[i]=m;stocks[i]=m==null?null:new NewPartStock{definitions=m.definitions==null?null:new List<string>(m.definitions),units=m.units,initialUnits=m.initialUnits,deliveryPercent=m.deliveryPercent,discovered=m.discovered};return;}
+        }
+        void RequirePrice(string source,string assetKey,bool requiredValue)
+        {
+            if(string.IsNullOrEmpty(assetKey)||!inputs.TryPrice(source,assetKey,out var fact)){priceFactsMismatch=true;priceFactsFailure="Missing external price fact: "+source+" / "+assetKey;return;}
+            string key=source+"\0"+assetKey;if(!consumedPriceKeys.Add(key)){priceFactsMismatch=true;priceFactsFailure="Duplicate externally valued asset row: "+source+" / "+assetKey;}
+            if(requiredValue&&!fact.Price.HasValue){priceFactsMismatch=true;priceFactsFailure="Required used-stock price is unavailable: "+assetKey;}
         }
         bool CaptureSourcesCurrent()=>ReferenceEquals(profile?.parts,partsCollection)&&ReferenceEquals(profile?.looseEngineElements,looseCollection)&&
             (profile?.parts?.Count??0)==partCountAtStart&&(profile?.looseEngineElements?.Count??0)==looseCountAtStart&&
@@ -202,6 +226,7 @@ namespace DragLab.Runtime
         bool SameCapturedRows()
         {
             if(!ReferenceEquals(profile.parts,partsCollection)||!ReferenceEquals(profile.looseEngineElements,looseCollection)||profile.parts!=null&&(profile.parts.Count!=partCountAtStart)||profile.looseEngineElements!=null&&(profile.looseEngineElements.Count!=looseCountAtStart))return false;
+            if(!ReferenceEquals(profile.runCheckpoints,runCheckpointsCollection)||(profile.runCheckpoints==null)!=runCheckpointsWasNull||(profile.runCheckpoints!=null&&(profile.runCheckpoints.Any(x=>x==null)!=hasNullRunCheckpoint||profile.runCheckpoints.Any(x=>x!=null&&!x.settled)!=hasUnsettledRun)))return false;
             // Compare relevant assets by ordered source identity, retaining exact null positions.
             if(page=="Shop")
             {
@@ -259,7 +284,8 @@ namespace DragLab.Runtime
             ["CartReservationState"]=new[]{"version","createdRun","expiresRun","generation","carId","lines","supply"},
             ["ReservedPartSupply"]=new[]{"definitionId","units","generation"},
             ["UnitPreferences"]=new[]{"version","speed","pressure","torque"},
-            ["VehicleStockState scoped"]=new[]{"version","seed","generation","purchases","completedRuns","knowledgeRevision"}
+            ["VehicleStockState scoped"]=new[]{"version","seed","generation","purchases","completedRuns","knowledgeRevision"},
+            ["RunCheckpoint scoped"]=new[]{"settled"}
         };
 
         static InstalledBuild CopyInstalled(InstalledBuild i)=>i==null?null:new InstalledBuild{version=i.version,instanceId=i.instanceId,vehicleDefinitionId=i.vehicleDefinitionId,slots=i.slots==null?null:i.slots.Select(s=>s==null?null:new SlotBinding{slot=s.slot,partInstanceId=s.partInstanceId}).ToList()};

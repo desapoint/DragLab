@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using DragLab.Domain.Mechanics;
 
 namespace DragLab.Runtime
@@ -40,8 +39,17 @@ namespace DragLab.Runtime
     }
     internal sealed class NativePartSpecificationCache
     {
-        readonly Dictionary<string,PartStat[]> values=new Dictionary<string,PartStat[]>();
+        sealed class Entry{internal PartDefinition source,snapshot;internal PartStat[] stats;}
+        readonly List<Entry> values=new List<Entry>();
         internal PartStat[] Get(PartDefinition d)
-        {string key=JsonUtility.ToJson(d);if(values.TryGetValue(key,out var stats))return stats;if(values.Count>=512)values.Clear();return values[key]=NativePartSpecifications.Summary(d);}
+        {
+            if(d==null)return NativePartSpecifications.Summary(d);
+            foreach(var entry in values)if(ReferenceEquals(entry.source,d))
+            {
+                if(MarketCatalogLayout.SameAuthoredDefinition(d,entry.snapshot))return entry.stats;
+                entry.snapshot=MarketCatalogLayout.CopyAuthoredDefinition(d);entry.stats=NativePartSpecifications.Summary(d);return entry.stats;
+            }
+            if(values.Count>=512)values.Clear();var created=new Entry{source=d,snapshot=MarketCatalogLayout.CopyAuthoredDefinition(d),stats=NativePartSpecifications.Summary(d)};values.Add(created);return created.stats;
+        }
     }
 }

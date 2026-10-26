@@ -12,6 +12,14 @@ namespace DragLab.Runtime
 {
     internal sealed class NativePartPreviewCache
     {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        static int legacyCarSignatureJsonCount,legacyEntryKeyJsonCount;
+        internal static int LegacyCarSignatureJsonCount=>legacyCarSignatureJsonCount;
+        internal static int LegacyEntryKeyJsonCount=>legacyEntryKeyJsonCount;
+#else
+        internal static int LegacyCarSignatureJsonCount=>0;
+        internal static int LegacyEntryKeyJsonCount=>0;
+#endif
         object profile,catalog;string context,currentPhysical;
         readonly Dictionary<string,CarInspection> inspections=new Dictionary<string,CarInspection>();
         readonly NativeSteadyOutputCache steadyCache=new NativeSteadyOutputCache();
@@ -35,6 +43,9 @@ namespace DragLab.Runtime
         // and their authored definitions (including individual tire/wheel sets).
         internal static string CarSignature(PlayerProfile p,OwnedCar car)
         {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            legacyCarSignatureJsonCount++;
+#endif
             var state=new StringBuilder();
             // A car's presentation/history is not part of its physics input:
             // paint, rename, saved presets and pass records must never expire a
@@ -75,7 +86,13 @@ namespace DragLab.Runtime
         {if(inspections.TryGetValue(key,out var value)){Hits++;return value;}Misses++;value=calculate();if(inspections.Count>=128)inspections.Clear();inspections[key]=value;return value;}
         internal PlayerProfile Plan(string key,Func<PlayerProfile> calculate)
         {if(plans.TryGetValue(key,out var value)){Hits++;return value;}Misses++;value=calculate();if(plans.Count>=4)plans.Clear();plans[key]=value;return value;}
-        internal static string Key(string reference,NativePartEntry e)=>reference+"/"+JsonUtility.ToJson(e.Definition)+"/"+JsonUtility.ToJson(e.Part)+"/"+JsonUtility.ToJson(e.Unit)+"/"+e.Position;
+        internal static string Key(string reference,NativePartEntry e)
+        {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            legacyEntryKeyJsonCount++;
+#endif
+            return reference+"/"+JsonUtility.ToJson(e.Definition)+"/"+JsonUtility.ToJson(e.Part)+"/"+JsonUtility.ToJson(e.Unit)+"/"+e.Position;
+        }
         internal bool Restore(string key,NativePartEntry e)
         {
             if(!comparisons.TryGetValue(key,out var saved))return false;recent.Remove(nodes[key]);recent.AddLast(nodes[key]);Hits++;e.Ready=true;e.Proposed=saved.Proposed;e.Reason=saved.Reason;e.Compatibility=saved.Compatibility;e.Position=saved.Position;e.RequiresMatchingSet=saved.RequiresMatchingSet;e.Change=(double?[])saved.Change.Clone();return true;

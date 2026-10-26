@@ -384,7 +384,17 @@ namespace DragLab.Domain.Mechanics
             Dictionary<string,NewPartStock> products;
             IReadOnlyDictionary<string,MarketCatalogLayout.ReadyProductGroup> readyAliasGroups;
             Dictionary<MarketCatalogLayout.ReadyProductGroup,NewPartStock> readyGroupStocks;
-            public Ledger(PlayerProfile p,bool includeReserved=false){owner=p;bool reserved=CartReservations.Active(p);foreach(var s in p.inventory.market.parts){remaining[s]=s.units;if(reserved){var d=p.catalog.Find(s.definitions[0]);remaining[s]=Math.Max(0,s.units-CartReservations.Held(p,d,true))+(includeReserved?CartReservations.Held(p,d):0);}foreach(string id in s.definitions)stocks[id]=s;}}
+            public Ledger(PlayerProfile p,bool includeReserved=false):this(p,includeReserved,null,null){}
+            internal Ledger(PlayerProfile p,bool includeReserved,IReadOnlyList<MarketCatalogLayout.ReadyProductGroup> groups,IReadOnlyDictionary<string,MarketCatalogLayout.ReadyProductGroup> groupById)
+            {
+                owner=p;
+                bool ready=groups!=null||groupById!=null;
+                if(ready&&(groups==null||groupById==null||!BindReadyProductGroups(groups,groupById)))
+                    throw new InvalidOperationException("Ready product bindings are unavailable; retry after bounded catalog preparation.");
+                if(ready)foreach(var row in p.inventory.market.parts)foreach(string id in row.definitions)stocks[id]=row;
+                bool reserved=CartReservations.Active(p);
+                foreach(var s in p.inventory.market.parts){remaining[s]=s.units;if(reserved){var d=p.catalog.Find(s.definitions[0]);var resolved=ready?Find(d):s;int held=ready?CartReservations.Held(p,d,true,resolved):CartReservations.Held(p,d,true);remaining[s]=Math.Max(0,s.units-held)+(includeReserved?(ready?CartReservations.Held(p,d,false,resolved):CartReservations.Held(p,d)):0);}if(!ready)foreach(string id in s.definitions)stocks[id]=s;}
+            }
             // Bind only after the browser has obtained a fully validated authored
             // product group snapshot. The local map resolves aliases to the same
             // first equivalent market row as the legacy products-key dictionary.
@@ -406,6 +416,8 @@ namespace DragLab.Domain.Mechanics
                 readyAliasGroups=groupById;readyGroupStocks=firstRows;
                 return true;
             }
+            internal int Held(PartDefinition d,bool currentOnly=false)
+                =>readyAliasGroups==null?CartReservations.Held(owner,d,currentOnly):CartReservations.Held(owner,d,currentOnly,Find(d));
             public SupplyQuote Take(PartDefinition d,int units,int basePrice,int quantity=1,bool consume=false)
             {
                 var stock=Find(d);int available=stock==null?0:remaining[stock];var q=Calculate(available,stock?.deliveryPercent??10,units,basePrice,quantity);

@@ -232,7 +232,8 @@ namespace DragLab.Runtime
                 [nameof(EngineRebuildJob)]=typeof(EngineRebuildJob),[nameof(EngineRebuildTarget)]=typeof(EngineRebuildTarget),
                 [nameof(LooseEngineElement)]=typeof(LooseEngineElement),[nameof(DealerStock)]=typeof(DealerStock),
                 [nameof(NewPartStock)]=typeof(NewPartStock),[nameof(CartReservationState)]=typeof(CartReservationState),
-                [nameof(ReservedPartSupply)]=typeof(ReservedPartSupply),["VehicleStockState scoped"]=typeof(VehicleStockState)
+                [nameof(ReservedPartSupply)]=typeof(ReservedPartSupply),["VehicleStockState scoped"]=typeof(VehicleStockState),
+                ["RunCheckpoint scoped"]=typeof(RunCheckpoint)
             };
             var declared=NativePartsBaseReadSet.ComparedSerializedFields();
             foreach(var pair in types)
@@ -246,7 +247,7 @@ namespace DragLab.Runtime
                 var expectedSet=new HashSet<string>(expected,StringComparer.Ordinal);
                 if(pair.Key==nameof(TireCondition))
                     foreach(string inherited in declared[nameof(EngineElement)])expectedSet.Add(inherited);
-                bool completeSchema=pair.Key=="VehicleStockState scoped"
+                bool completeSchema=pair.Key=="VehicleStockState scoped"||pair.Key=="RunCheckpoint scoped"
                     ?expectedSet.IsSubsetOf(actual):actual.SetEquals(expectedSet);
                 Check(check,completeSchema,"Comparator field list covers Unity serialized schema for "+pair.Key+
                     " (missing: "+string.Join(",",actual.Except(expectedSet))+"; extra: "+string.Join(",",expectedSet.Except(actual))+" )");

@@ -23,6 +23,8 @@ namespace DragLab.Domain.Mechanics
         static bool Same(MechanicalCatalog c,string a,string b)=>a==b||PartsMarket.ProductKey(c.Find(a))==PartsMarket.ProductKey(c.Find(b));
         public static int Held(PlayerProfile p,PartDefinition d,bool currentOnly=false)
         {if(!Active(p))return 0;var stock=PartsMarket.Stock(p,d);return p.inventory.cart.supply.Where(s=>(!currentOnly||s.generation==p.inventory.market.generation)&&(s.definitionId==d.id||stock!=null&&stock.definitions.Contains(s.definitionId))).Sum(s=>s.units);}
+        internal static int Held(PlayerProfile p,PartDefinition d,bool currentOnly,NewPartStock resolvedStock)
+        {if(!Active(p)||d==null)return 0;return p.inventory.cart.supply.Where(s=>(!currentOnly||s.generation==p.inventory.market.generation)&&(s.definitionId==d.id||resolvedStock!=null&&resolvedStock.definitions!=null&&resolvedStock.definitions.Contains(s.definitionId))).Sum(s=>s.units);}
         public static bool HoldsUsed(PlayerProfile p,string id)=>Active(p)&&p.inventory.cart.lines.Any(l=>l.action==CartAction.BuyUsed&&l.assetId==id);
         public static void Capture(PlayerProfile p,string carId,IEnumerable<PartCartLine> rows)
         {

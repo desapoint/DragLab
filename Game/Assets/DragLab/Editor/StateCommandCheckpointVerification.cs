@@ -206,6 +206,33 @@ namespace DragLab.Editor
             VerifyReadyProductGroups(checkpoint);
         }
 
+        public static void RunNativePartsBrowserBuildCheckpoint()
+        {
+            string checkpoint = SelectedCheckpoint();
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            VerifyScopedManagedChecks(checkpoint, "parts-browser-build", NativePartsBrowserBuildChecks.Run);
+            VerifyScopedManagedChecks(checkpoint, "parts-ready-ledger-ctor", NativePartsBrowserBuildChecks.RunReadyConstructorOracle);
+            VerifyScopedManagedChecks(checkpoint, "parts-base-readset", NativePartsReadSetChecks.Run);
+            VerifyReadyProductGroups(checkpoint);
+        }
+
+        public static void RunNativePartsUnitOracleCheckpoint()
+        {
+            string checkpoint = SelectedCheckpoint();
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            VerifyScopedManagedChecks(checkpoint, "parts-unit-oracle", NativePartsBrowserBuildChecks.RunUnitProjectionOracle);
+        }
+
+        public static void RunNativePartsReadyLedgerCheckpoint()
+        {
+            string checkpoint = SelectedCheckpoint();
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            VerifyScopedManagedChecks(checkpoint, "parts-ready-ledger-ctor", NativePartsBrowserBuildChecks.RunReadyConstructorOracle);
+        }
+
         static void VerifyReadyProductGroups(string checkpoint)
         {
             if (!Application.isBatchMode || EditorApplication.isPlaying)
