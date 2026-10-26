@@ -1,0 +1,33 @@
+# S06 detail preparation frame phases
+
+## Evidence and scope
+
+Native run `66324` is the accepted frame baseline for this follow-up: Inventory frames are below 50 ms, with a maximum of 31.733 ms. Opening the first Shop part detail still takes 61.467 ms (Parts: 33.824 ms). The Shop detail breakdown is body 24.621 ms, evaluation 2.799 ms, facts 4.726 ms, stats 15.951 ms (healthy-current 2.574 ms), and price 0.658 ms. `NativeStatsPanel` is already lazy. The stall is the aggregate synchronous `OpenPartDetail` operation, not a reason to relax the 50 ms gate.
+
+This proposal only phases detail construction in `Runtime/NativeParts.cs`. It keeps the existing detail content and calculation paths. It does not add price caching, JSON or profile copies, workers, or changes to other source files. The existing full typed freshness fence and action-origin validation remain required.
+
+## Proposed owner-thread ticket
+
+An open request creates a private detail ticket with the requested entry ID and source, a new monotonically increasing detail generation, accepted data, presentation, and window generations, current browser/model and entry identity, current screen/page context, and the existing scroll restoration target. Opening immediately disables the old detail actions. Every converted open, reopen, and rebuild call site uses this ticket; only explicit legacy mode may keep the synchronous path. It does not replace or publish a partially constructed detail. The accepted browser/list remains visible until the new detail is complete.
+
+Each continuation advances at most one named phase during a rendered `AdvancePartBrowser` call. A detail phase has priority over model/query/window continuation and then returns; it never shares that rendered frame with another Parts preparation step. This honors the shared per-rendered-frame work cap. Before every phase, run the existing complete fresh price generation and typed `TryFreshPartFence`, including phases that only construct visuals. Then require that the ticket still matches the same detail generation, entry ID/source and object, data generation, presentation and window generations, visible Parts route/page, and current accepted browser. A failed fence or ticket comparison discards the private ticket and follows the existing invalidation/rebuild path. No read interval yields or invokes application callbacks.
+
+The phases are:
+
+1. **Evaluate and allocate.** Fence, resolve the entry by ID from the accepted browser, evaluate it using the existing evaluator, and allocate a detached detail root. Capture display-only scalar values needed by later phases while this fence is current. Preserve the original selected entry and action origin; do not retain a mutable owner/profile snapshot.
+2. **Facts and body.** Fence and create the existing heading, information, compatibility/condition/supply/specification facts, and warnings under the detached root. Keep the same text, order, classes, and callbacks. No callback can run while this phase executes.
+3. **Actions and price.** Fence and build the existing action/cart controls and refreshed purchase price under the detached root, preserving current enabled-state rules and action-origin tokens. No callback can run while this phase executes.
+4. **Stats and dyno.** Fence and create the existing quick stats, dyno, detailed stats, healthy-current series, collapse state, and difference state using the existing APIs and values. No health repair or alternate inspection path is permitted. This closes the private detail tree.
+5. **Attach.** Run the complete fresh price and typed fence, recheck the ticket, and attach the complete detached root. Keep actions disabled and the ticket pending through the actual layout/render tail; attachment alone is not completion.
+6. **Layout-ready publish.** On the next rendered call, run a fresh price generation and complete typed fence again, verify ticket generations/route/entry, then mark accepted detail data/presentation generations, set actions ready, and enable mutations. If layout is not yet ready, remain pending and retry under a bound; no interaction is enabled before this phase succeeds.
+The first phase begins when a card opens a detail. Subsequent phases run on subsequent rendered calls, with no loop that drains multiple phases in one call. Timing diagnostics should report each phase and the whole open-to-ready duration so the first-detail frame gate can identify any remaining indivisible tail.
+
+## Cancellation and interaction behavior
+
+A newer detail request, Back/navigation, page or section/query change, F8 comparison change, profile/owner change, window/data/presentation generation change, hide/close, modal open, build failure, or any failed full fence cancels the ticket terminally. Discard its detached visual tree and private handlers. Do not register surfaces globally before final publication; cancellation must leave no registered surfaces or callbacks. Cancellation never restores an earlier query, cart, scroll, dialog, or settings draft. The existing list stays visible while preparation is pending. If the user requests another item, only the latest detail generation may complete.
+
+`PartBrowserPreparationPending`, capture readiness, failure cleanup, and the existing wait/hold diagnostics include every detail phase. Completion means the full detail is attached, current, and actionable; a phase yield is not completion. Every detail action still carries the existing origin token and performs fresh action validation at click/confirmation time.
+
+## Review gates
+
+Before implementation, review the private-build/registration cleanup path to ensure detached construction cannot leak `RacingSurface` registrations or callbacks. Keep the visual tree and text order identical by reusing the current detail-building helpers and DOM structure. A focused check should verify phase-by-phase pending/current/action state, stale same-revision mutation rejection, A→B→A and cancellation at every boundary, latest-detail-wins behavior, scroll restoration, and zero partial publication or global registration. Count allocation, layout and attachment tails in the actual rendered frame; every frame remains subject to the existing 50 ms gate. The attach frame stays pending and disabled, and the following layout-ready frame performs another fresh fence before publication. Native verification must include first fully actionable Shop detail, not just initial Inventory readiness.
