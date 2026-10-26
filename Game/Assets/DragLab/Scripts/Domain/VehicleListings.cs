@@ -86,8 +86,22 @@ namespace DragLab.Domain.Mechanics {
  // Exact condition/history floor prevents instant part-out profit. Deal spread varies above it.
  double spread=starter?1:used?1.02+Next(ref seed)*.24:1;if(warm)return offer;offer.price=1;int floor=PaidEconomy.DealerPrice(c,Costs,Values,offer);offer.price=(int)Math.Ceiling(Math.Max(floor,v.purchasePrice*(used?(offer.drives?.72:.35):1))*spread);return offer;
  }
- public static string Validate(PlayerProfile p,MechanicalCatalog c){var stock=p.vehicleStock;if(stock==null||stock.version!=1||stock.seed==0||stock.generation<0||stock.purchases<0||stock.completedRuns<0||stock.knowledgeRevision<0||stock.listings==null||stock.listings.Count>100)return "Invalid vehicle market.";if(p.firstPurchasePending&&(stock.listings.Count!=3||stock.listings.Any(o=>o==null||!o.firstStarter)))return "Initial market must contain the three fully disclosed starter choices.";var ids=new HashSet<string>();var components=new HashSet<string>(p.parts.Select(i=>i.instanceId));
+ public static string Validate(PlayerProfile p,MechanicalCatalog c)
+ {
+ if(VehicleListingsValidationProof.TryValidate(p,c,out var cached))return cached;
+ VehicleListingsValidationProof.RecordCoreRun();
+ string result=ValidateCore(p,c);
+ if(result==null)VehicleListingsValidationProof.StoreValid(p,c);
+ return result;
+ }
+ static string ValidateCore(PlayerProfile p,MechanicalCatalog c){var stock=p.vehicleStock;if(stock==null||stock.version!=1||stock.seed==0||stock.generation<0||stock.purchases<0||stock.completedRuns<0||stock.knowledgeRevision<0||stock.listings==null||stock.listings.Count>100)return "Invalid vehicle market.";if(p.firstPurchasePending&&(stock.listings.Count!=3||stock.listings.Any(o=>o==null||!o.firstStarter)))return "Initial market must contain the three fully disclosed starter choices.";var ids=new HashSet<string>();var components=new HashSet<string>(p.parts.Select(i=>i.instanceId));
  foreach(var o in stock.listings){if(o==null||string.IsNullOrEmpty(o.listingId)||!ids.Add(o.listingId)||o.price<=0||o.cataloguePrice<0||o.reputation<0||o.stock==null||o.parts==null||o.fuel==null||o.fluids==null||!MechanicsSchema.Finite(o.mileageKm)||o.mileageKm<0)return "Invalid vehicle listing.";if(VehicleInspection.Validate(o)!=null)return VehicleInspection.Validate(o);var spec=c.Spec(o.model);var map=new Dictionary<PartCategory,string>();foreach(var part in o.parts){var d=c.Find(part.definitionId);if(d==null||!c.Fits(spec,d)||!components.Add(part.instanceId)||part.condition.Validate()!=null||(part.condition.elements??Array.Empty<EngineElement>()).Any(e=>!EngineElements.FaultAllowed(d.category,e))||map.ContainsKey(d.category))return "Invalid listing component identity/fitment/condition.";map.Add(d.category,d.id);}var build=c.Resolve(o.model,map,o.stock);if(!build.Drivable||o.fuel.Validate(build.spec.fuel)!=null||o.fluids.Validate(build.spec.fluids)!=null)return "Invalid listing build/resources.";}
  return null;}
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+ internal static long ValidationProofHitsForChecks=>VehicleListingsValidationProof.ProofHitsForChecks;
+ internal static long ValidationCoreRunsForChecks=>VehicleListingsValidationProof.CoreRunsForChecks;
+ internal static bool DirectProofMatchesForChecks(PlayerProfile p,MechanicalCatalog c)=>VehicleListingsValidationProof.DirectMatchesForChecks(p,c);
+ internal static string ValidateWithoutProofForChecks(PlayerProfile p,MechanicalCatalog c)=>ValidateCore(p,c);
+#endif
  }
 }
