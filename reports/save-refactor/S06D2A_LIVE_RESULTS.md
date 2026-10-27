@@ -6,6 +6,16 @@ Baseline `9fc8a6b` (dormant backend `0f2fa8a`). This report does **not** approve
 
 Activate empty-cart typed Parts preparation, exact cache binding, fresh scalar display pricing, bounded filter/sort/card construction and stale action fences. Preserve native design, physical results, actual identities, modal drafts and independent data/presentation lifetimes. Nonempty/multi-position previews and owned refresh remain required within S06 before S07.
 
+## Native 72553: readiness defect isolated, scrollbar correction verified at 720p
+
+Windows build `36155` and native fixture `s06h1-live-browser-seed16102026-k` terminate normally (build exit 0, player exit 1). The native suite records 142 passing checks / 0 runtime errors before a strict phase-0 detail request fails. Immediately before the actual captured card callback, the public window reports Ready/actions enabled with accepted viewport 1184×286 but actual viewport 1164×286. Scroll is zero in both. The production guard correctly rejects the stale geometry, advances data generation 42→43, and leaves detail phase -1. The test is retained unchanged: retrying it or relaxing the action guard would conceal premature publication. A staged disabled grid followed by a fresh-fenced post-layout publication is under implementation; no functional pass is claimed yet.
+
+All exercised owned-unit, install, move, sale and tire confirmation stale-action checks pass. The shared scrollbar class helper fixes dynamically created detail ScrollViews: the 720p detail capture is inspected, with the existing 8px thumb/track and both arrow controls hidden. 1080p and 4K captures remain pending. Technical verification does not substitute for user visual acceptance.
+
+The full measured `bounded-parts/` frame gate still FAILS with seven frames above 50 ms: 50.808, 54.503, 68.381, 51.802, 67.678, 422.387 and 84.835 ms. The 422.387 ms owned Move interaction remains included; its legacy whole-profile JSON preview is mandatory S06d2b work. Inclusive race-GUI and nested Parts counters must not be added. Raw frames and `native-72553-frames.md` remain local in `reports/save-refactor/S06H1/`; no outlier is removed or relabeled to produce a pass.
+
+Independent source review of the first post-attach implementation found two more gaps before compilation: modal opening suspended the ticket indefinitely, and invalid geometry had no terminal attempt bound. Both must be corrected and exercised before this live checkpoint can close. Full S06, nonempty typed preview, owned refresh, S07–S14 and final runtime JSON/whole-profile-save-copy retirement remain open.
+
 ## Attempts retained locally
 
 Raw ignored directory: `reports/save-refactor/S06H1/`.
