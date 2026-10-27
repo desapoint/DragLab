@@ -28,7 +28,7 @@ Additional hard completion gate: **no JSON encode/decode for runtime data manipu
 
 ## S06d2b step1 — frozen oracle and characterization, no caller switch
 
-**S06d2b1a diagnostic baseline (2026-10-27):** Editor45739 and identical-source repeat81984 both complete all eight current groups with162 PASS /11 FAIL; their UTF-8/LF traces are byte-identical (SHA422cfeb0…581423) and1,042-file source manifests show no drift. The remaining failures expose legacy Unity serialization mutating source null payloads/fluids; no invariant is relaxed or runtime fix claimed. Independent Luna-high review recommends only an intermediate diagnostic-source/reference commit with this known red result. Full Step1 matrix, row/action/quantity identity mapping, native callback/clock/identity-stream coverage, the typed planner and full S06/S07–S14 remain OPEN. [Results](../../reports/save-refactor/S06D2B1_RESULTS.md), [review](S06D2B1_REVIEW.md), [coverage](S06D2B1_COVERAGE_REVIEW.md).
+**S06d2b1a diagnostic baseline (2026-10-27), committed `d00fcee`:** Editor45739 and identical-source repeat81984 both complete all eight current groups with162 PASS /11 FAIL; their UTF-8/LF traces are byte-identical (SHA422cfeb0…581423) and1,042-file source manifests show no drift. The remaining failures expose legacy Unity serialization mutating source null payloads/fluids; no invariant is relaxed or runtime fix claimed. Independent Luna-high review recommends only an intermediate diagnostic-source/reference commit with this known red result. Full Step1 matrix, row/action/quantity identity mapping, native callback/clock/identity-stream coverage, the typed planner and full S06/S07–S14 remain OPEN. [Results](../../reports/save-refactor/S06D2B1_RESULTS.md), [review](S06D2B1_REVIEW.md), [coverage](S06D2B1_COVERAGE_REVIEW.md).
 
 
 
@@ -44,6 +44,23 @@ Baseline is local `d541ad8`, independently reviewed functional-only live Parts c
 All new oracle/fixture/check code must be enclosed by UNITY_EDITOR so frozen JSON isolation/reference logic is not shipped in a player. Authors coordinate fixtures/results before editing dependent APIs. Parent alone runs Unity/processes/Git after complete release and freezes all Game source during them. No ordinary profile persistence, user asset, bench, new visual design or production caller is changed by these tests.
 
 Preserve literal existing IDs within source/candidate comparisons, every numeric bit/null/member position, errors and resources. Any cross-run fixture GUID aliases exist only in diagnostic traces; they must not rewrite the domain graph. New hypothetical IDs need a bijective operation/member topology comparison. A copied method that calls mutable legacy helpers is not an eternally independent oracle: capture their source hashes and independently review baseline traces/manual contract assertions before extracting shared planning seams. Known legacy healing becomes an explicit divergence to reject in the future typed projection, never an invitation to heal state. Native dialog/clock traces not actually run remain OPEN. Do not call step1 complete while its required coverage is merely described.
+
+## S06d2b1b — core row and topology coverage expansion
+
+2026-10-27 intermediate diagnostic source/evidence is independently reviewed for a local commit only. Stock46972 passes48/0; corrected sets83790 are95 PASS/6 known source FAIL; final members99339 are226/29 and owners52667 are143/39, with all strict legacy mutation/output failures retained. Exact before/after proofs identify12 untouched-corner null-string conversions and optional AWD/pass-record materialization in owner output; no other captured fields differ. Fixture expectation errors are corrected and verified. No passing implementation checkpoint, full Step1/S06 or S07 advancement. The full matrix/row-key identity/native clock+callback+entropy work remains before the shared planner. [Results](../../reports/save-refactor/S06D2B1B_RESULTS.md), [independent review](S06D2B1B_REVIEW.md).
+
+Baseline `d00fcee` is an independently reviewed intermediate diagnostic commit, not a green Step1 gate. Preserve its exact red v1 fixture. This batch adds missing characterization only, with V2 traces; no runtime planner, save command or S07 advancement.
+
+| Owner | Exclusive files |
+| --- | --- |
+| inventory_price_perf / Luna medium | new Runtime/CartPreviewCharacterizationCoreRows.cs +meta; S06D2B1B_CORE_ROWS.md |
+| vehicle_validation_perf / Luna medium | new Runtime/CartPreviewCharacterizationTopology.cs +meta; S06D2B1B_TOPOLOGY.md |
+| coordinator | existing checker partial declaration/group wiring/provenance, Editor wrapper if necessary, S06D2B1B_DECISIONS/status/results and actual Unity/Git |
+| independent Luna-high reviewer | S06D2B1B_REVIEW.md after complete source/evidence release |
+
+Both files are UNITY_EDITOR-only partials with author-prefixed helpers. The approved corrected core/topology blueprints and full coverage matrix remain authoritative. Parent alone freezes all Game source and runs one Editor after both releases. Known legacy JSON source mutations remain failing assertions; unsupported shapes get explicit evidence/open status rather than fabricated parts or a passing placeholder. No user data, bench or shipping runtime API changes.
+
+The main test auditor caches immutable field descriptors only, keeping the same selection/order and comparing every value. Its snapshot reads raw selection IDs. V1 reference bytes stay unchanged; V2 determinism and added coverage require actual results. Account reset interruption left no partial files before the same Luna tasks resumed; no tests are credited for that interruption.
 
 ## File ownership manifest
 
