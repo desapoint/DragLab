@@ -403,6 +403,68 @@ namespace DragLab.Runtime
             return builder;
         }
 
+        static NativePartBrowserBuild HoldAtState(PlayerProfile profile,NativePartBrowserBuildState target,Action<bool,string> check)
+        {
+            var builder=BeginShop(profile);int calls=0;
+            while(builder.State!=target&&!builder.Failed&&!builder.Complete)
+            {
+                if(++calls>100000)throw new InvalidOperationException("Browser never reached phase "+target+".");
+                builder.Advance(Inputs(profile,"Shop",false,Array.Empty<PartCartLine>(),new UnitPreferences(),Owner(),Prices(profile,"Shop")),8,2.0);
+            }
+            Check(check,!builder.Failed&&!builder.Complete&&builder.State==target&&builder.Model==null&&
+                builder.CompletedReadSet==null&&builder.CacheBinding==null,
+                "Requested pending phase keeps all outputs private / "+target);
+            return builder;
+        }
+
+        static void SetupPhaseFences(PlayerProfile profile,Action<bool,string> check)
+        {
+            var sequence=BeginShop(profile);int captureCalls=0;
+            while(sequence.State==NativePartBrowserBuildState.Capturing&&!sequence.Failed)
+            {
+                if(++captureCalls>100000)throw new InvalidOperationException("Capture did not yield into typed binding.");
+                sequence.Advance(Inputs(profile,"Shop",false,Array.Empty<PartCartLine>(),new UnitPreferences(),Owner(),Prices(profile,"Shop")),32,2.0);
+            }
+            Check(check,sequence.State==NativePartBrowserBuildState.Binding&&sequence.Model==null,"Capture completion yields exactly into Binding");
+            sequence.Advance(Inputs(profile,"Shop",false,Array.Empty<PartCartLine>(),new UnitPreferences(),Owner(),Prices(profile,"Shop")),32,2.0);
+            Check(check,sequence.State==NativePartBrowserBuildState.SettingUp&&sequence.Model==null,"Typed binding yields exactly into SettingUp");
+            sequence.Advance(Inputs(profile,"Shop",false,Array.Empty<PartCartLine>(),new UnitPreferences(),Owner(),Prices(profile,"Shop")),32,2.0);
+            Check(check,sequence.State==NativePartBrowserBuildState.ValidatingSetup&&sequence.Model==null,"Constructor work yields exactly into ValidatingSetup");
+            sequence.Advance(Inputs(profile,"Shop",false,Array.Empty<PartCartLine>(),new UnitPreferences(),Owner(),Prices(profile,"Shop")),32,2.0);
+            Check(check,sequence.State==NativePartBrowserBuildState.Preparing&&sequence.Model==null,"Post-setup fence yields exactly into Preparing");
+            int prepareCalls=0;
+            while(sequence.State==NativePartBrowserBuildState.Preparing&&!sequence.Failed)
+            {
+                if(++prepareCalls>100000)throw new InvalidOperationException("Bounded preparation did not reach Publishing.");
+                sequence.Advance(Inputs(profile,"Shop",false,Array.Empty<PartCartLine>(),new UnitPreferences(),Owner(),Prices(profile,"Shop")),64,2.0);
+                Check(check,sequence.Complete||sequence.Model==null,"Preparation output stays private through its yielded chunks");
+            }
+            Check(check,sequence.State==NativePartBrowserBuildState.Publishing&&sequence.Model==null,"Finished preparation yields exactly into Publishing");
+            sequence.Advance(Inputs(profile,"Shop",false,Array.Empty<PartCartLine>(),new UnitPreferences(),Owner(),Prices(profile,"Shop")),64,2.0);
+            Check(check,sequence.Complete&&sequence.Model!=null,"Publication fence is the only transition that exposes the model");
+            var exactReference=SynchronousReference(profile,"Shop",Array.Empty<PartCartLine>(),false,new NativePartPreviewCache());
+            CompareModels(exactReference,sequence.Model,check,"six-phase Shop build source parity");
+
+            int boundaryIndex=0;var fuel=profile.SelectedCar.fuel;
+            foreach(var boundary in new[]{NativePartBrowserBuildState.Binding,NativePartBrowserBuildState.SettingUp,
+                NativePartBrowserBuildState.ValidatingSetup,NativePartBrowserBuildState.Preparing,NativePartBrowserBuildState.Publishing})
+            {
+                bool editCash=(boundaryIndex++%2)==0;int originalCash=profile.cash;double originalFuel=fuel.litres;
+                var builder=HoldAtState(profile,boundary,check);int priorPrepared=builder.ItemsPrepared;
+                try
+                {
+                    if(editCash)profile.cash=checked(originalCash+1);else fuel.litres=originalFuel+.5;
+                    builder.Advance(Inputs(profile,"Shop",false,Array.Empty<PartCartLine>(),new UnitPreferences(),Owner(),Prices(profile,"Shop")),1,2.0);
+                    Check(check,builder.Failed&&builder.InputsChanged&&builder.State==NativePartBrowserBuildState.Failed&&builder.Model==null&&
+                        builder.CompletedReadSet==null&&builder.CacheBinding==null&&builder.ItemsPrepared==priorPrepared,
+                        "Same-revision A-to-B "+(editCash?"cash":"physical fuel")+" mutation at "+boundary+" is rejected at its next full fence before further work or publication");
+                }
+                finally{profile.cash=originalCash;fuel.litres=originalFuel;}
+                builder.Advance(Inputs(profile,"Shop",false,Array.Empty<PartCartLine>(),new UnitPreferences(),Owner(),Prices(profile,"Shop")),1,2.0);
+                Check(check,builder.Failed&&builder.Model==null,"Restoring A after "+boundary+" failure cannot revive private work");
+            }
+        }
+
         static void ObservedMutationRejectsAndRetry(PlayerProfile profile,Action<bool,string> check,string label,
             Action mutate,Action restore)
         {
@@ -412,7 +474,7 @@ namespace DragLab.Runtime
             {
                 builder.Advance(Inputs(profile,"Shop",false,Array.Empty<PartCartLine>(),
                     new UnitPreferences(),Owner(),Prices(profile,"Shop")),1,2.0);
-                Check(check,builder.Failed&&builder.State.ToString()=="Failed"&&builder.Model==null&&
+                Check(check,builder.Failed&&builder.InputsChanged&&builder.State.ToString()=="Failed"&&builder.Model==null&&
                     !string.IsNullOrEmpty(builder.FailureReason),
                     "Observed same-revision change permanently rejects held private work / "+label);
             }
@@ -440,7 +502,7 @@ namespace DragLab.Runtime
                     new UnitPreferences(),Owner(),Prices(profile,"Shop")),8,2.0);
                 Check(check,builder.Complete||builder.Model==null,"B snapshot remains private until finish fence");
             }
-            Check(check,builder.Failed&&builder.Model==null&&!string.IsNullOrEmpty(builder.FailureReason),
+            Check(check,builder.Failed&&builder.InputsChanged&&builder.Model==null&&!string.IsNullOrEmpty(builder.FailureReason),
                 "Facts captured while B was present reject after A is restored before final publication");
             var retry=CompleteBuild(profile,"Shop",Array.Empty<PartCartLine>(),false,check,
                 "capture-B restore-A retry",out _,out _,out _);
@@ -606,6 +668,8 @@ namespace DragLab.Runtime
                 new UnitPreferences(),Owner(),Prices(profile,"Shop")),1,2.0);
             Check(check,modeFence.Failed&&modeFence.Model==null,
                 "Changing planned/current mode rejects held browser preparation");
+
+            SetupPhaseFences(profile,check);
 
             int cash=profile.cash;
             ObservedMutationRejectsAndRetry(profile,check,"same-revision cash A-B-A",

@@ -1,5 +1,7 @@
 # Save/state refactor execution ledger
 
+**Live Parts functional component (2026-10-27):** final Windows2937/native94925 pass451 checks /0 runtime errors on an unchanged1,034-file source manifest, after independent Luna-high source/evidence review. Post-layout cards, phases0–6, exact stale-action fences, real modal cancellation, zero/one/long results, natural warning retention, themed1080p/offscreen4K captures and F8 recovery pass. Full frame gate remains **FAIL (13/6324 >50ms)**, including410.077ms Move preview; natural invalid-geometry acceptance stays OPEN (synthetic fault proves only robustness). Local functional checkpoint only: typed nonempty/multi-position preview and owned refresh remain mandatory in S06 before S07; all S00–S14/no-JSON/no-whole-profile-save-copy requirements remain active. [Results](../../reports/save-refactor/S06D2A_LIVE_RESULTS.md), [final review](S06D2A_LIVE_FINAL_REVIEW.md).
+
 Authority: user request on 2026-10-23 authorizes the whole [plan](../SAVE_STATE_REFACTOR_PLAN.md), coordinated **gpt-6-luna / medium** implementers and **gpt-6-luna / high** independent checkpoint review before advancing. No worktree, push, unrelated UI/audio/physics changes or blind PR merge. Technical approval is not human visual/phone acceptance.
 
 Baseline: local main `6d19aae`. Unrelated modified files are the pre-existing new-parts-supply, parts-market, race-audio-audition and sqlite-state reports; untracked attachments, Tests.ps1, race-exit-regression and shop-responsive-20261019 remain untouched.

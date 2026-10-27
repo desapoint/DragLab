@@ -90,6 +90,6 @@ namespace DragLab.Runtime
     {
         internal bool CaptureTasksPending => (ownedRatings!=null&&!ownedRatings.IsCompleted)||(dealerRatings!=null&&!dealerRatings.IsCompleted)
             ||carInspections.Values.Any(c=>c?.Driving!=null&&!c.Driving.IsCompleted)
-            ||game.ScreenName=="Parts"&&!ModalOpen&&partsDetailId==null&&PartComparisonPending;
+            ||game.ScreenName=="Parts"&&!ModalOpen&&(PartBrowserPreparationPending||partsDetailId==null&&PartComparisonPending);
     }
 }

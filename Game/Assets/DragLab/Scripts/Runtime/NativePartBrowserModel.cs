@@ -79,9 +79,18 @@ namespace DragLab.Runtime
         internal static readonly string[] MetricNames={"HP change","Torque change","Weight change","Condition change","Torque strength","RPM strength","Cooling change"};
         internal readonly List<NativePartEntry> Entries=new List<NativePartEntry>();
         internal CarInspection Current,Reference,Plan;
+        CarInspection healthyCurrent;
+        bool healthyCurrentReady;
+        internal CarInspection HealthyCurrent=>GetHealthyCurrent();
+        internal CarInspection GetHealthyCurrent()
+        {
+            if(!healthyCurrentReady){healthyCurrentReady=true;healthyCurrent=typedBinding==null||actualCar==null||string.IsNullOrEmpty(actualCar.engineAssemblyId)?null:cache.TypedCurrent(typedBinding,true,()=>Inspect(InspectionBuild.Capture(actual,actualCar,healthy:true),cache));}
+            return healthyCurrent;
+        }
         internal string PlanError;
         readonly bool plannedReference;
         readonly NativePartPreviewCache cache;readonly string referenceKey;
+        readonly NativePartPreviewCache.TypedBinding typedBinding;
         internal int EvaluationCount {get;private set;}
         internal double EvaluationMilliseconds {get;private set;}
         internal bool UsedReadyProductGroups{get;private set;}
@@ -112,19 +121,21 @@ namespace DragLab.Runtime
         static double ElapsedMilliseconds(long start)=>(System.Diagnostics.Stopwatch.GetTimestamp()-start)*1000.0/System.Diagnostics.Stopwatch.Frequency;
         internal NativePartBrowser(PlayerProfile profile,IEnumerable<PartCartLine> lines,bool planned,string page,Func<DealerStock,int> usedPrice,Func<string,bool,int> salePrice,NativePartPreviewCache cache=null)
             :this(profile,lines,planned,page,usedPrice==null?(Func<DealerStock,int?>)null:stock=>(int?)usedPrice(stock),salePrice,cache,false,false,null,null){}
-        internal NativePartBrowser(PlayerProfile profile,IEnumerable<PartCartLine> lines,bool planned,string page,Func<DealerStock,int?> usedPrice,Func<string,bool,int> salePrice,NativePartPreviewCache cache,bool deferBuild,bool requireReadyGroups,IReadOnlyList<MarketCatalogLayout.ReadyProductGroup> suppliedGroups,IReadOnlyDictionary<string,MarketCatalogLayout.ReadyProductGroup> suppliedGroupById)
+        internal NativePartBrowser(PlayerProfile profile,IEnumerable<PartCartLine> lines,bool planned,string page,Func<DealerStock,int?> usedPrice,Func<string,bool,int> salePrice,NativePartPreviewCache cache,bool deferBuild,bool requireReadyGroups,IReadOnlyList<MarketCatalogLayout.ReadyProductGroup> suppliedGroups,IReadOnlyDictionary<string,MarketCatalogLayout.ReadyProductGroup> suppliedGroupById,NativePartPreviewCache.TypedBinding typedBinding=null)
         {
             long setupStart=System.Diagnostics.Stopwatch.GetTimestamp();
-            actual=profile;actualCar=profile.SelectedCar;plannedReference=planned;this.cache=cache;
+            actual=profile;actualCar=profile.SelectedCar;plannedReference=planned;this.cache=cache;this.typedBinding=typedBinding;
             if(actualCar==null){BuildFinished=true;ConstructorSetupMilliseconds=ElapsedMilliseconds(setupStart);return;}
             long currentInspectionStart=System.Diagnostics.Stopwatch.GetTimestamp();if(!requireReadyGroups)cache?.Bind(profile,actualCar);
-            Current=string.IsNullOrEmpty(actualCar.engineAssemblyId)?null:requireReadyGroups||cache==null?Inspect(InspectionBuild.Capture(profile,actualCar)):cache.Inspection("current",()=>Inspect(InspectionBuild.Capture(profile,actualCar),cache));reference=profile;
+            Current=string.IsNullOrEmpty(actualCar.engineAssemblyId)?null:typedBinding!=null?cache.TypedCurrent(typedBinding,false,()=>Inspect(InspectionBuild.Capture(profile,actualCar),cache)):requireReadyGroups||cache==null?Inspect(InspectionBuild.Capture(profile,actualCar)):cache.Inspection("current",()=>Inspect(InspectionBuild.Capture(profile,actualCar),cache));
+            reference=profile;
             CurrentInspectionMilliseconds=ElapsedMilliseconds(currentInspectionStart);
             var cart=lines.Select(l=>l.Copy()).ToArray();
             string planKey="current";
             if(cart.Length>0){
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
                 legacyPlanJsonCount++;
+                RuntimeDataEncodingProbe.RecordJsonCall();
 #endif
                 string incoming=cache==null?JsonUtility.ToJson(profile):cache.Context+"/"+string.Join("/",cart.Select(l=>JsonUtility.ToJson(profile.parts.Find(i=>i.instanceId==l.assetId))+JsonUtility.ToJson(profile.looseEngineElements.Find(i=>i.element.id==l.assetId))+JsonUtility.ToJson(profile.inventory.dealer.Find(i=>i.Id==l.assetId))+JsonUtility.ToJson(profile.catalog.Find(l.definitionId))));planKey="plan/"+NativePartPreviewCache.Fingerprint(JsonUtility.ToJson(new PartCart.Lines{entries=cart.ToList()})+incoming);}
             if(cart.Length>0)try {PartCart.Total(profile,actualCar.instanceId,cart);var copy=cache==null?PartCart.PreviewProfile(profile,actualCar,cart):cache.Plan(planKey,()=>PartCart.PreviewProfile(profile,actualCar,cart));Plan=cache==null?Inspect(InspectionBuild.Capture(copy,copy.SelectedCar)):cache.Inspection(planKey,()=>Inspect(InspectionBuild.Capture(copy,copy.SelectedCar),cache));if(planned)reference=copy;}catch(Exception e){PlanError=e.Message;}
@@ -209,7 +220,7 @@ namespace DragLab.Runtime
             var available=InventoryUnits.Positions(reference,referenceCar,e.Definition.id,role);var selected=selection.Where(available.Contains).Distinct().ToArray();
             if(selected.Length==0&&available.Length>0)selected=new[]{available[0]};e.Position=selected.FirstOrDefault();Evaluate(e);
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-            if(selected.Length>1&&e.Proposed!=null)legacyCartPreviewCount++;
+            if(selected.Length>1&&e.Proposed!=null){legacyCartPreviewCount++;RuntimeDataEncodingProbe.RecordJsonCall();}
 #endif
             if(selected.Length>1&&e.Proposed!=null){
                 var copy=PartCart.PreviewProfile(reference,referenceCar,new[]{new PartCartLine{action=CartAction.NewUnits,definitionId=e.Definition.id,role=role,quantity=selected.Length,install=true,positions=selected.ToList()}});
@@ -227,7 +238,7 @@ namespace DragLab.Runtime
         }
         internal void Evaluate(NativePartEntry e)
         {
-            if(e.Ready)return;string key=cache==null?null:NativePartPreviewCache.Key(referenceKey,e);if(cache!=null&&cache.Restore(key,e))return;
+            if(e.Ready)return;string key=typedBinding==null&&cache!=null?NativePartPreviewCache.Key(referenceKey,e):null;if(cache!=null&&(typedBinding!=null?cache.RestoreTyped(typedBinding,e):cache.Restore(key,e)))return;
             var clock=System.Diagnostics.Stopwatch.StartNew();EvaluationCount++;e.Ready=true;var d=e.Definition;
             if(plannedReference&&PlanError!=null){e.Compatibility="Unavailable";e.Reason=PlanError;return;}
             if(!actual.catalog.Fits(referenceSpec,d)){e.Compatibility="Incompatible";e.Reason="Mounting, bore, fuel type or controller interface does not fit this build.";return;}
@@ -271,9 +282,9 @@ namespace DragLab.Runtime
                 if(PartSemantics.EngineStrengthRated(d.category)&&prior!=null)e.Change[5]=d.rpmLimit-prior.rpmLimit;
                 e.Change[6]=b.radiatorWattsPerC-a.radiatorWattsPerC;
             }catch(Exception error){e.Reason="Performance estimate unavailable: "+error.Message;}
-            finally{EvaluationMilliseconds+=clock.Elapsed.TotalMilliseconds;if(cache!=null)cache.Store(key,e);}
+            finally{EvaluationMilliseconds+=clock.Elapsed.TotalMilliseconds;if(cache!=null){if(typedBinding!=null)cache.StoreTyped(typedBinding,e);else cache.Store(key,e);}}
         }
-        internal bool Restore(NativePartEntry e)=>e.Ready||cache!=null&&cache.Restore(NativePartPreviewCache.Key(referenceKey,e),e);
+        internal bool Restore(NativePartEntry e)=>e.Ready||cache!=null&&(typedBinding!=null?cache.RestoreTyped(typedBinding,e):cache.Restore(NativePartPreviewCache.Key(referenceKey,e),e));
         PlayerProfile UnitPreviewProfile(LooseEngineElement selectedUnit)
         {
             var source=referenceCar;var car=new OwnedCar{instanceId=source.instanceId,chassisId=source.chassisId,engineAssemblyId=source.engineAssemblyId,garageJobId=source.garageJobId,installed=source.installed==null?null:new InstalledBuild{version=source.installed.version,instanceId=source.installed.instanceId,vehicleDefinitionId=source.installed.vehicleDefinitionId,slots=source.installed.slots==null?null:source.installed.slots.Select(s=>s==null?null:new SlotBinding{slot=s.slot,partInstanceId=s.partInstanceId}).ToList()},fuel=source.fuel?.Copy(),fuelInitialized=source.fuelInitialized,fluids=source.fluids?.Copy(),serviceHardwareVersion=source.serviceHardwareVersion,thermalUtcTicks=source.thermalUtcTicks,engineRebuild=source.engineRebuild==null?null:new EngineRebuildJob{active=source.engineRebuild.active},massVersion=source.massVersion,vehicleId=source.vehicleId,tune=source.tune?.Copy()};

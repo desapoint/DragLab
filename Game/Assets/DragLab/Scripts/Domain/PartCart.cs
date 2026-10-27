@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 
@@ -30,15 +31,18 @@ namespace DragLab.Domain.Mechanics
         internal PartCartQuote(PlayerProfile p,string car,IEnumerable<PartCartLine> lines,int amount,long now,int seconds,ValuationPolicy policy,ValuationQuote[] capturedSales)
         {
             id=MechanicsOwnership.NewId("cart");carId=car;revision=p.revision;issued=now;expires=checked(now+TimeSpan.FromSeconds(seconds).Ticks);total=amount;
-            profileJson=JsonUtility.ToJson(p);catalogJson=PartCart.CatalogSnapshot(p.catalog,car,p);
-            linesJson=JsonUtility.ToJson(new PartCart.Lines { entries=lines.Select(l=>l.Copy()).ToList() });
-            policyJson=JsonUtility.ToJson(policy);sales=capturedSales;
+            PartCart.RecordRuntimeJsonCall();profileJson=JsonUtility.ToJson(p);catalogJson=PartCart.CatalogSnapshot(p.catalog,car,p);
+            PartCart.RecordRuntimeJsonCall();linesJson=JsonUtility.ToJson(new PartCart.Lines { entries=lines.Select(l=>l.Copy()).ToList() });
+            PartCart.RecordRuntimeJsonCall();policyJson=JsonUtility.ToJson(policy);sales=capturedSales;
         }
     }
     public static class PartCart
     {
+        [Conditional("UNITY_EDITOR"),Conditional("DEVELOPMENT_BUILD")]
+        internal static void RecordRuntimeJsonCall()=>RuntimeDataEncodingProbe.RecordJsonCall();
         [Serializable] internal sealed class Lines { public List<PartCartLine> entries=new List<PartCartLine>(); }
-        internal static string CatalogSnapshot(MechanicalCatalog catalog,string id,PlayerProfile p) => JsonUtility.ToJson(catalog.Spec(p.cars.Find(c=>c.instanceId==id).vehicleId))+string.Join("/",catalog.parts.Select(MarketCatalogLayout.Json));
+        internal static string CatalogSnapshot(MechanicalCatalog catalog,string id,PlayerProfile p)
+        {RecordRuntimeJsonCall();return JsonUtility.ToJson(catalog.Spec(p.cars.Find(c=>c.instanceId==id).vehicleId))+string.Join("/",catalog.parts.Select(MarketCatalogLayout.Json));}
         public static int Total(PlayerProfile p,string carId,IEnumerable<PartCartLine> source,ValuationPolicy policy=null,long now=0,bool validateBlocks=true,bool includeOwnerReservation=false)
         {
             var car=p.cars.Find(c=>c.instanceId==carId);EngineRebuilds.RequireAvailable(car);
@@ -60,7 +64,7 @@ namespace DragLab.Domain.Mechanics
                 }
                 if(line.action==CartAction.Move) {
                     if(line.quantity!=1||!assets.Add(line.assetId))throw new InvalidOperationException("Duplicate move or invalid quantity.");
-                    if(movePreview==null){movePreview=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(p));MechanicsOwnership.Ensure(movePreview,p.catalog);}SharedInventory.Move(movePreview,line.assetId,line.destination,line.destinationId);
+                    if(movePreview==null){RecordRuntimeJsonCall();RecordRuntimeJsonCall();movePreview=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(p));MechanicsOwnership.Ensure(movePreview,p.catalog);}SharedInventory.Move(movePreview,line.assetId,line.destination,line.destinationId);
                     var moved=p.parts.Find(i=>i.instanceId==line.assetId);if(moved!=null&&line.destination==InventoryKind.Car&&line.destinationId==carId&&!slots.Add(p.catalog.Find(moved.definitionId).category))throw new InvalidOperationException("Conflicting slot installations.");
                     if(moved!=null&&line.destination!=InventoryKind.Storage&&!moveSlots.Add(line.destination+"/"+line.destinationId+"/"+p.catalog.Find(moved.definitionId).category))throw new InvalidOperationException("Conflicting destination slot installations.");
                     continue;
@@ -102,8 +106,8 @@ namespace DragLab.Domain.Mechanics
         {
             if(quote==null||now<quote.issued||now>=quote.expires||now<p.lastEconomyUtcTicks||p.revision!=quote.revision||p.runCheckpoints.Any(r=>!r.settled)||p.economyReceipts.Any(r=>r.id==quote.id))throw new InvalidOperationException("Cart quote stale, expired or already purchased.");
             if(!SnapshotEquality.Profile(quote.profileJson,p,p.catalog)||quote.catalogJson!=CatalogSnapshot(p.catalog,quote.carId,p))throw new InvalidOperationException("Assets or offers changed; review the cart again.");
-            var lines=JsonUtility.FromJson<Lines>(quote.linesJson).entries;
-            policy=policy??ValuationPolicy.Defaults();if(quote.policyJson!=JsonUtility.ToJson(policy))throw new InvalidOperationException("Pricing policy changed; review the cart again.");
+            RecordRuntimeJsonCall();var lines=JsonUtility.FromJson<Lines>(quote.linesJson).entries;
+            policy=policy??ValuationPolicy.Defaults();RecordRuntimeJsonCall();if(quote.policyJson!=JsonUtility.ToJson(policy))throw new InvalidOperationException("Pricing policy changed; review the cart again.");
             int total=Total(p,quote.carId,lines,policy,now);if(total!=quote.total||p.cash<total)throw new InvalidOperationException("Insufficient cash or changed prices; nothing purchased.");
             foreach(var sale in quote.sales){var error=Valuations.Validate(sale,p,p.catalog,policy,now);if(error!=null)throw new InvalidOperationException(error);}
             int before=p.cash;
@@ -134,7 +138,7 @@ namespace DragLab.Domain.Mechanics
         }
         public static PlayerProfile PreviewProfile(PlayerProfile p,OwnedCar car,IEnumerable<PartCartLine> lines)
         {
-            var copy=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(p));MechanicsOwnership.Ensure(copy,p.catalog);copy.cash=int.MaxValue/2;
+            RecordRuntimeJsonCall();RecordRuntimeJsonCall();var copy=JsonUtility.FromJson<PlayerProfile>(JsonUtility.ToJson(p));MechanicsOwnership.Ensure(copy,p.catalog);copy.cash=int.MaxValue/2;
             var captured=lines.ToArray();bool ownsReservation=CartReservations.SameCart(copy,car.instanceId,captured);copy.inventory.usingCartReservation=CartReservations.Matches(copy,car.instanceId,captured);try{Apply(copy,car.instanceId,captured,true);}finally{copy.inventory.usingCartReservation=false;}if(ownsReservation)CartReservations.Clear(copy);MechanicsOwnership.Ensure(copy,p.catalog);return copy;
         }
     }

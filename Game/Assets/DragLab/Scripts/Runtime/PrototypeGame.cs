@@ -230,7 +230,21 @@ namespace DragLab.Runtime
         string marketWarmKey;
         System.Collections.IEnumerator marketWarm;
         MechanicalCatalog layoutWarmCatalog;
+        int layoutWarmRevision=-1;
         IEnumerator<object> layoutWarm;
+        internal bool RequestNativePartsLayoutWarmup(MechanicalCatalog catalog)
+        {
+            if(catalog==null)return false;
+            int revision=catalog.AuthoringRevision;
+            if(!ReferenceEquals(layoutWarmCatalog,catalog)||layoutWarmRevision!=revision)
+            {
+                layoutWarm?.Dispose();layoutWarm=null;layoutWarmCatalog=catalog;layoutWarmRevision=revision;
+            }
+            if(layoutWarm!=null)return false;
+            if(MarketCatalogLayout.TryCaptureReadyContentToken(catalog,out var token)&&token.MatchesCurrent(catalog))return true;
+            layoutWarm=MarketCatalogLayout.WarmSteps(catalog).GetEnumerator();
+            return false;
+        }
         void Update()
         { using (FramePacingProbe.Measure(0)) UpdateMeasured(); }
         void UpdateMeasured()
@@ -247,6 +261,7 @@ namespace DragLab.Runtime
                 {
                     layoutWarm?.Dispose();
                     layoutWarmCatalog=profile.catalog;
+                    layoutWarmRevision=profile.catalog?.AuthoringRevision??-1;
                     layoutWarm=profile.catalog==null?null:MarketCatalogLayout.WarmSteps(profile.catalog).GetEnumerator();
                 }
                 if(layoutWarm!=null&&!layoutWarm.MoveNext()){layoutWarm.Dispose();layoutWarm=null;}

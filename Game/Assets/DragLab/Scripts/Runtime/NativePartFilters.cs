@@ -15,6 +15,14 @@ namespace DragLab.Runtime
         void ClearPartCartSwitches(){foreach(var s in partCartSwitches)switchSurfaces.Remove(s);partCartSwitches.Clear();}
         void OpenPartFilters(NativePartQuery initial=null)
         {
+            using(RuntimeDataEncodingProbe.Measure("parts/filter-read"))OpenPartFiltersCore(initial);
+        }
+        void OpenPartFiltersCore(NativePartQuery initial)
+        {
+            if(!partsLegacyActive)
+            {
+                string reason=null;if(!partActionsEnabled||!TryFreshPartFence(out _,out reason)){RejectPartAction(reason??"Parts are updating. Refresh before filtering.");return;}
+            }
             var query=(initial??PartsQuery).Copy();bool planned=initial==null&&partsPlanned;var error=new Label{name="partFilterError"};error.AddToClassList("car-critical");var fields=new TextField[7];
             bool Validate(){for(int i=0;i<fields.Length;i++){
                 string value=fields[i]?.value??"";if(value.Trim()==""){query.Minimum[i]=null;continue;}

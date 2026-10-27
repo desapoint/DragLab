@@ -113,6 +113,18 @@ namespace DragLab.Runtime
             var surface = new RacingSurface(owner, kind); owner.Insert(0, surface); surfaces.Add(surface);
         }
 
+        RacingSurface CreateStagedPartSurface(VisualElement owner,RacingSurface.Kind kind)
+        {
+            if(owner is Button button&&!string.IsNullOrEmpty(button.text))
+            {string caption=button.text;button.text="";button.Add(new Label(caption){pickingMode=PickingMode.Ignore});}
+            var surface=new RacingSurface(owner,kind);owner.Insert(0,surface);return surface;
+        }
+        void RegisterStagedPartSurfaces(IEnumerable<RacingSurface> staged)
+        {if(staged==null)return;foreach(var surface in staged)if(surface!=null&&!surfaces.Contains(surface))surfaces.Add(surface);}
+        void ReleasePartSurfaces(IEnumerable<RacingSurface> owned)
+        {if(owned==null)return;foreach(var surface in owned)if(surface!=null){surfaces.Remove(surface);surface.RemoveFromHierarchy();}}
+        internal void CancelPartBrowserWork()=>CancelPartBrowserPreparation();
+
         void Hint(Button button, string text)
         {
             button.tooltip = text;
@@ -138,7 +150,7 @@ namespace DragLab.Runtime
             SyncSettingsEntry(route);
             bool show = Supports(route) && InterfaceComparison.IsReplacement(route);
             root.EnableInClassList("hidden", !show);
-            if (!show) { ReleasePartCards(); return; }
+            if (!show) { CancelPartBrowserPreparation();ReleasePartCards(); return; }
             FramePacingProbe.Phase="menu/"+route;
             using(FramePacingProbe.Measure(12)){
             int width = panel.targetTexture == null ? Screen.width : panel.targetTexture.width;
@@ -214,7 +226,7 @@ namespace DragLab.Runtime
             }
         }
         void SetText(string id, string value) { var label = root.Q<Label>(id); if (label.text != value) label.text = value; }
-        void OnDestroy() { StopEngineListening(); ownedCancellation?.Cancel(); ownedCancellation?.Dispose(); dealerCancellation?.Cancel(); dealerCancellation?.Dispose(); if (panel != null) Destroy(panel); }
+        void OnDestroy() { CancelPartBrowserPreparation();StopEngineListening(); ownedCancellation?.Cancel(); ownedCancellation?.Dispose(); dealerCancellation?.Cancel(); dealerCancellation?.Dispose(); if (panel != null) Destroy(panel); }
     }
 
     // Filled, procedurally tessellated shapes stay sharp at native display resolution.

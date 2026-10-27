@@ -46,15 +46,15 @@ namespace DragLab.Runtime
             var quote=PartsMarket.Quote(game.Profile,offer.Definition,InventoryUnits.Count(game.Profile,game.Profile.SelectedCar,offer.Definition),draft.Individual,draft.Quantity);
             var price=partsDetail.Q<Label>("partDetailPrice");if(price!=null)price.text=DisplayUnits.Money(quote.cost);
         }
-        void StagePurchase(NativePartEntry offer,bool install)
+        void StagePurchase(NativePartEntry offer,bool install,PartActionOrigin origin=null)
         {
-            if(offer.Source=="New"||offer.Source=="Used"){OpenPartPurchase(offer);return;}
+            if(offer.Source=="New"||offer.Source=="Used"){OpenPartPurchase(offer,null,origin);return;}
             game.StageNativePart(offer,install,offer.Position);partsStateKey=null;
         }
-        void OpenPartPurchase(NativePartEntry offer,PartCartLine editing=null)
+        void OpenPartPurchase(NativePartEntry offer,PartCartLine editing=null,PartActionOrigin origin=null)
         {
             var d=offer.Definition;var car=game.Profile.SelectedCar;bool fresh=offer.Source=="New";
-            var draft=fresh?PurchaseDraft(offer):null;string expected=editing==null?null:JsonUtility.ToJson(editing),carId=car.instanceId;
+            var draft=fresh?PurchaseDraft(offer):null;if(editing!=null)PartCart.RecordRuntimeJsonCall();string expected=editing==null?null:JsonUtility.ToJson(editing),carId=car.instanceId;
             var roles=fresh?InventoryUnits.Roles(game.Profile,car,d):offer.Unit!=null?new[]{offer.Unit.element.role}:new string[0];
             int setSize=InventoryUnits.Count(game.Profile,car,d);
             bool individual=editing!=null?editing.action==CartAction.NewUnits||editing.action==CartAction.BuyUsed&&offer.Unit!=null:fresh?draft.Individual:offer.Unit!=null,install=editing?.install??(fresh&&draft.Install);
@@ -66,9 +66,11 @@ namespace DragLab.Runtime
             var selected=new HashSet<string>(editing!=null?editing.positions:fresh?draft.Positions:Enumerable.Empty<string>());
             var rows=new List<Tuple<Button,string>>();var groups=new List<VisualElement>();
             VisualElement positionsArea=null,roleGroup=null;Label summary=null,error=null,quantityLabel=null,unitPrice=null,notice=null;FloatField number=null;Button minus=null,plus=null;Action update=null;
+            bool Current(){if(origin==null)return true;if(TryValidatePartAction(origin,out _,out var reason))return true;if(error!=null)error.text=reason;RejectPartAction(reason);return false;}
             OpenDialog(editing==null?"Choose purchase":"Edit purchase","Choose what to buy and where it goes. Payment and installation happen at checkout.",new[]{new DialogAction("Cancel",CloseDialog),new DialogAction(editing==null?"Add to cart":"Apply",()=>{
+                if(!Current())return;
                 var targets=all.Where(selected.Contains).ToList();
-                if(install&&game.NativeBlockPreparationPending(d)){OpenBlockPreparation(offer,quantity,editing);return;}
+                if(install&&game.NativeBlockPreparationPending(d)){OpenBlockPreparation(offer,quantity,editing,origin:origin);return;}
                 if(editing!=null){if(!game.EditNativeCartPurchase(editing,expected,carId,individual,role,quantity,install,targets)){error.text=game.NativeNotice;return;}}
                 else if(fresh){if(!game.StageNativePurchase(d.id,individual?role:null,quantity,install,individual&&install?targets:null)){error.text=game.NativeNotice;return;}
                     draft.Individual=individual;draft.Install=install;draft.Role=role;draft.Quantity=quantity;draft.Positions=individual&&install?targets:new List<string>();
@@ -97,6 +99,7 @@ namespace DragLab.Runtime
                 var shortcuts=new VisualElement{name="partPurchaseShortcuts"};shortcuts.AddToClassList("part-purchase-shortcuts");positionsArea.Add(shortcuts);
                 foreach(string choice in d.category==PartCategory.Tires||d.category==PartCategory.Wheels?new[]{"All","Front","Rear","Failed","Worn","Clear"}:new[]{"All","Failed","Worn","Clear"}){
                     string action=choice;var button=new Button(()=>{
+                        if(!Current())return;
                         individual=true;selected.Clear();var available=InventoryUnits.Positions(game.Profile,car,d.id,role);
                         foreach(string target in available){var member=target.StartsWith("wheel:")?fitted?.condition.elements[int.Parse(target.Substring(6))]:fitted?.condition.elements.FirstOrDefault(e=>e.id==target);var tire=target.StartsWith("tire:")?fitted?.condition.tires[int.Parse(target.Substring(5))]:null;
                             if(action=="All"||action=="Front"&&(target.StartsWith("tire:")&&int.Parse(target.Substring(5))<2||target.StartsWith("wheel:")&&int.Parse(target.Substring(6))<2)||action=="Rear"&&(target.StartsWith("tire:")&&int.Parse(target.Substring(5))>=2||target.StartsWith("wheel:")&&int.Parse(target.Substring(6))>=2)||action=="Failed"&&(member?.Failed==true||tire?.Failed==true)||action=="Worn"&&(member?.health<=.5||tire!=null&&TireDynamics.RemainingHealth(tire)<=.5))selected.Add(target);
@@ -109,6 +112,7 @@ namespace DragLab.Runtime
                     var block=new VisualElement();block.AddToClassList("part-replacement-group");positionsArea.Add(block);groups.Add(block);
                     if(d.category!=PartCategory.Pistons)block.Add(new Label(group.Key){name="replacementGroup:"+group.Key});
                     foreach(string position in group){string target=position;var row=ReplacementPositionRow(block,d,target,"purchasePosition:"+target,()=>{
+                        if(!Current())return;
                         if(!individual){if(!fresh||!matches)return;individual=true;quantity=1;selected.Clear();}
                         if(!selected.Remove(target)){if(!fresh)selected.Clear();selected.Add(target);quantity=Math.Max(quantity,selected.Count);}update();
                     });rows.Add(Tuple.Create(row,target));}
@@ -117,6 +121,7 @@ namespace DragLab.Runtime
                 summary=new Label{name="partPurchaseSummary",enableRichText=false};summary.AddToClassList("part-purchase-summary");content.Add(summary);
                 error=new Label{name="partPurchaseError"};error.AddToClassList("car-critical");content.Add(error);
                 update=()=>{
+                    if(!Current())return;
                     var available=role==null?new string[0]:InventoryUnits.Positions(game.Profile,car,d.id,role);selected.RemoveWhere(p=>!available.Contains(p));
                     roleGroup.EnableInClassList("hidden",!individual||roles.Length<2);
                     positionsArea.EnableInClassList("hidden",!install||all.Length==0);

@@ -1,0 +1,32 @@
+# Independent review: S06d2a live typed empty-cart Parts checkpoint
+
+## Verdict
+
+**Scoped functional approval; recommend a local checkpoint commit for the live typed empty-cart Parts path.** This approval covers the current source integration and reported native functional evidence only. It does not approve performance completion, full S06, final no-JSON/no-profile-copy completion, visual acceptance, Android, or any later S07–S14 phase.
+
+The next authorized work remains within S06: convert the live nonempty/multi-position cart preview to typed `PreviewReadOnly`, then convert owned-car completion refresh and close the full S06 action/frame gates. Preserve the failed frame evidence and continue the approved sequence without treating this checkpoint as S06 completion.
+
+## Source review
+
+- `NativePartBrowserBuild.Begin` rejects nonempty cart input, and the live empty-cart path supplies the shared cache. Capture completion requires `TryFinish`; typed binding performs another full `MatchesCurrent`; setup, post-setup, every model-preparation chunk, and final publication have full current-input comparisons. The model, completed read set, and opaque binding are available only after the builder reaches `Complete`. Failure/cancellation abandons the private model.
+- `BindTyped` validates the full read set before binding. Bindings are cache-instance/facts/generation scoped. Entry keys include generation, source, entry/asset/definition identity, position, and role; cached definition, part and unit snapshots are compared before reuse. Typed and legacy comparisons share the 256-entry limit. Physical inspection retention is based on the separate exact physical-input comparison; it does not stand in for owner freshness.
+- In the empty-cart source branch, typed `Evaluate`/`Restore`/`Store` use typed cache methods and the typed healthy-current path uses the existing healthy `InspectionBuild.Capture` and `Inspect` calculation. The legacy JSON `CarSignature`, entry `Key`, and plan serialization remain in separate legacy branches. This is a source-path audit, not a global encoder-count proof: canonical authored-content warmup and other unconverted/diagnostic paths can still encode JSON outside these methods.
+- Query work has its own presentation ticket and advances filtering, optional change evaluation, final filtering, and merge sorting incrementally. Each query step is preceded by a full fresh fence and publication rechecks the same captured facts on the uninterrupted owner-thread stack. Card creation is separately ticketed and bounded. The attached grid stays disabled and private until a later rendered-step fence verifies current ticket/data/presentation, route, full read-set freshness, finite viewport/scroll geometry, exact range and attached card identities. Modal, scroll/resize, route and freshness changes cancel or supersede work; only the newest matching ticket can publish.
+- Card actions carry ID/source and data/presentation/window generations. The callback validates the current route/window and viewport, regenerates consumed external facts, runs the full freshness comparison, and resolves the ID/source in the accepted model before opening detail. Detail phases re-fence before live reads and publication. The purchase confirmation separately rejects same-revision stock/price changes while retaining its user-entered destination, quantity, and notice. This review found no bypass of these fences in the converted empty-cart interaction path.
+- Typed cache checks cover exact reuse and condition/authored-value misses, LRU eviction, encoder counts, exact physical-input equality, wide-context invalidation with retained physical inspections, and tune invalidation. The source and focused checks are consistent with the stated scope; the tests do not establish completion of legacy nonempty preview or owned refresh.
+
+## Evidence and limits
+
+The coordinator-reported frozen Windows run `2937` passed. The latest native run `94925` (fixture `s06h1-live-browser-seed16102026-m`) exited successfully with 451 checks and zero runtime errors. It exercised the real current card callback through detail phase 0, all builder hold points 0–6, actual A→B→A invalidation, newest/stale action behavior, natural warning retention, modal interruption, scroll/resize supersession, and F8 recovery. The one-row and zero-result queries used the real field event. Captures cover 720p/1080p and an explicitly labeled offscreen 4K panel render at physical 1920×1080. The attached-window suite's viewport-hide case is synthetic fault injection; natural invalid geometry remains open. I rely on the coordinator's reported source-manifest match and frozen evidence here; I did not run Unity or processes.
+
+Encoder evidence is also scoped. The reported stale-confirmation interval has converted-consumer counters unchanged (JSON `1→1`, legacy key `0→0`), while the broader raw counters moved `139814→163399` across the native run. `RuntimeDataEncodingProbe` attributes only synchronous calls made inside its thread-local measurement scopes; background catalog warmup calls stay outside those scoped totals. Therefore this checkpoint does **not** claim that all native-run encodes, the full Parts route, or the whole application are JSON-free. The final S13 file-boundary retirement remains mandatory. The final native-m versus baseline-k capture parity file reports all 16 common PNGs byte-identical; this is automated parity evidence, not human visual acceptance.
+
+The full-frame gate remains **FAIL**: 6,324 selected frames in 148 intervals contain 13 samples above 50 ms. Retain every sample, including the actual 410.077 ms owned Move interaction, 79.585/267.183 ms captures, 119.584 ms capture, and 181.250 ms F8 hide. No Parts-subphase attribution, screenshot interval, or excluded explanation waives a full-frame overrun. This makes performance acceptance open, not a blocker to preserving the functional source checkpoint.
+
+## Required status carried forward
+
+- S06 empty-cart typed activation: functionally reviewed for this local component checkpoint.
+- S06 frame/responsiveness gate: failed and open.
+- Natural invalid-geometry native case: open; synthetic viewport hiding is robustness evidence only.
+- Legacy nonempty/multi-position typed preview and owned refresh: mandatory S06 work remains.
+- Full S00–S14 plan, final runtime-JSON/full-profile-save-clone retirement, Android, and human visual acceptance: not completed or approved by this review.

@@ -94,6 +94,8 @@ namespace DragLab.Domain.Mechanics
                 }
                 return true;
             }
+            internal bool SameContent(ReadyContentToken other)
+                =>other!=null&&ReferenceEquals(catalog,other.catalog)&&ReferenceEquals(snapshot,other.snapshot);
         }
         internal sealed class ReadyProductGroup
         {
@@ -249,17 +251,20 @@ namespace DragLab.Domain.Mechanics
         {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             canonicalKeyRequestCount++;
+            RuntimeDataEncodingProbe.RecordLegacyKeyCall();
 #endif
             var entry=products.GetValue(d,_=>new Product());if(entry.snapshot!=null&&Same(d,entry.snapshot))return entry.key;
             entry.snapshot=d.Copy();entry.json=null;var copy=d.Copy();copy.id="";
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             canonicalJsonEncodeCount++;
+            RuntimeDataEncodingProbe.RecordJsonCall();
 #endif
             return entry.key=JsonUtility.ToJson(copy);
         }
         internal static string Json(PartDefinition d){Key(d);var entry=products.GetValue(d,_=>new Product());if(entry.json==null||entry.jsonId!=d.id){entry.jsonId=d.id;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             canonicalJsonEncodeCount++;
+            RuntimeDataEncodingProbe.RecordJsonCall();
 #endif
             entry.json=JsonUtility.ToJson(d);}return entry.json;}
         static bool Matches(Layout entry,MechanicalCatalog catalog,Dictionary<string,string> keys)

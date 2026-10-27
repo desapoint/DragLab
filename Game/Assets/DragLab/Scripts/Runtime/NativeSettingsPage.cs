@@ -35,16 +35,18 @@ namespace DragLab.Runtime
         internal bool SettingsDirty => draftDriver != null && Changes().Count > 0;
         internal DriverSettings DraftDriver => draftDriver;
 
+        static void ThemeScrollView(ScrollView scroll)
+        {
+            var scroller=scroll.verticalScroller;
+            scroller.AddToClassList("settings-scrollbar");scroller.slider.AddToClassList("settings-scrollbar-slider");
+            scroller.lowButton.AddToClassList("scrollbar-arrow");scroller.highButton.AddToClassList("scrollbar-arrow");
+        }
+
         void InitializeSettings()
         {
             AddSurface(root.Q("settingsBody"), RacingSurface.Kind.Panel);
             AddSurface(root.Q("modalCard"), RacingSurface.Kind.Panel);
-            root.Query<ScrollView>().ForEach(scroll =>
-            {
-                var scroller = scroll.verticalScroller;
-                scroller.AddToClassList("settings-scrollbar"); scroller.slider.AddToClassList("settings-scrollbar-slider");
-                scroller.lowButton.AddToClassList("scrollbar-arrow"); scroller.highButton.AddToClassList("scrollbar-arrow");
-            });
+            root.Query<ScrollView>().ForEach(ThemeScrollView);
             foreach (string id in new[] { "revertSettings", "cancelSettings", "applySettings" })
                 AddSurface(root.Q(id), id == "applySettings" ? RacingSurface.Kind.Action : RacingSurface.Kind.SecondaryAction);
             root.Q<Button>("revertSettings").clicked += () => { ReadApplied(); UpdateControls(); };

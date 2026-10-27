@@ -17,8 +17,8 @@ namespace DragLab.Runtime
         IEnumerator PartDialogClick(WindowsKeyboardProbe input,string id){var target=shell.Root.Q(id);var advanced=shell.Root.Q("partAdvancedFilters");if(advanced!=null&&advanced.ClassListContains("hidden")&&advanced.Contains(target)){yield return PartDialogClick(input,"partAdvancedToggle");}var view=shell.Root.Q<ScrollView>("modalContent");view.ScrollTo(target);yield return new WaitForSecondsRealtime(.15f);yield return Click(input,id);}
         IEnumerator WaitParts()
         {
-            float begin=Time.realtimeSinceStartup,until=begin+45;while(shell.PartComparisonPending&&Time.realtimeSinceStartup<until)yield return null;
-            Check(!shell.PartComparisonPending,"Requested part comparisons finish without a race probe / route "+game.ScreenName+" visible "+shell.Visible);
+            float begin=Time.realtimeSinceStartup,until=begin+45;while((shell.PartBrowserPreparationPending||shell.PartComparisonPending||shell.PartBrowser==null)&&Time.realtimeSinceStartup<until)yield return null;
+            Check(!shell.PartBrowserPreparationPending&&!shell.PartComparisonPending&&shell.PartBrowser!=null,"Requested part preparation/window/comparisons finish without a race probe / route "+game.ScreenName+" visible "+shell.Visible+" state "+shell.PartBrowserPreparationState);
             report.AppendLine("Browser ready wait: "+(Time.realtimeSinceStartup-begin).ToString("F2")+" s / "+shell.PartBrowser.Entries.Count+" offers / "+shell.PartBrowser.EvaluationCount+" full comparisons / "+shell.PartBrowser.EvaluationMilliseconds.ToString("F2")+" ms / "+shell.PartCacheHits+" cache hits");
 
         }

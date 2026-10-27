@@ -10,6 +10,11 @@ using DragLab.Domain.Mechanics;
 
 namespace DragLab.Runtime
 {
+    internal sealed class NativePartsStaleInputsException : InvalidOperationException
+    {
+        internal NativePartsStaleInputsException(string message):base(message){}
+    }
+
     internal sealed class NativePartPreviewCache
     {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -21,6 +26,36 @@ namespace DragLab.Runtime
         internal static int LegacyEntryKeyJsonCount=>0;
 #endif
         object profile,catalog;string context,currentPhysical;
+        NativePartsBaseReadSet typedFacts;
+        long typedGeneration;
+        internal sealed class TypedBinding
+        {
+            readonly NativePartPreviewCache owner;
+            readonly NativePartsBaseReadSet facts;
+            internal long Generation{get;}
+            internal TypedBinding(NativePartPreviewCache owner,NativePartsBaseReadSet facts,long generation){this.owner=owner;this.facts=facts;Generation=generation;}
+            internal bool BelongsTo(NativePartPreviewCache cache)=>ReferenceEquals(owner,cache);
+            internal bool Matches(NativePartPreviewCache cache,NativePartsBaseReadSet currentFacts,long generation)
+                =>ReferenceEquals(owner,cache)&&ReferenceEquals(facts,currentFacts)&&Generation==generation;
+        }
+        sealed class TypedEntryKey : IEquatable<TypedEntryKey>
+        {
+            internal readonly long generation;internal readonly string source,id,asset,definition,position,role;
+            internal TypedEntryKey(long g,NativePartEntry e){generation=g;source=e.Source??"";id=e.Id??"";asset=e.AssetId??"";definition=e.Definition?.id??"";position=e.Position??"";role=e.Unit?.element?.role??"";}
+            public bool Equals(TypedEntryKey x)=>x!=null&&generation==x.generation&&source==x.source&&id==x.id&&asset==x.asset&&definition==x.definition&&position==x.position&&role==x.role;
+            public override bool Equals(object obj)=>Equals(obj as TypedEntryKey);
+            public override int GetHashCode(){unchecked{int h=generation.GetHashCode();h=h*31+StringComparer.Ordinal.GetHashCode(source);h=h*31+StringComparer.Ordinal.GetHashCode(id);h=h*31+StringComparer.Ordinal.GetHashCode(asset);h=h*31+StringComparer.Ordinal.GetHashCode(definition);h=h*31+StringComparer.Ordinal.GetHashCode(position);return h*31+StringComparer.Ordinal.GetHashCode(role);}}
+        }
+        sealed class TypedEntryValue
+        {
+            internal PartDefinition definition;internal PartInstance part;internal LooseEngineElement unit;
+            internal NativePartEntry result;
+            internal bool Matches(NativePartEntry e)=>MarketCatalogLayout.SameAuthoredDefinition(e.Definition,definition)&&NativePartsBaseReadSet.SamePartExact(e.Part,part)&&NativePartsBaseReadSet.SameUnitExact(e.Unit,unit);
+        }
+        readonly Dictionary<TypedEntryKey,TypedEntryValue> typedComparisons=new Dictionary<TypedEntryKey,TypedEntryValue>();
+        readonly Dictionary<TypedEntryKey,LinkedListNode<string>> typedNodes=new Dictionary<TypedEntryKey,LinkedListNode<string>>();
+        readonly Dictionary<string,TypedEntryKey> typedNodeKeys=new Dictionary<string,TypedEntryKey>(StringComparer.Ordinal);
+        long typedNodeSerial;
         readonly Dictionary<string,CarInspection> inspections=new Dictionary<string,CarInspection>();
         readonly NativeSteadyOutputCache steadyCache=new NativeSteadyOutputCache();
         readonly Dictionary<string,PlayerProfile> plans=new Dictionary<string,PlayerProfile>();
@@ -30,7 +65,7 @@ namespace DragLab.Runtime
         internal const int ComparisonLimit=256;
         internal string Context=>context;
         internal int Hits,Misses;
-        internal bool HasComparisons=>comparisons.Count>0;
+        internal bool HasComparisons=>comparisons.Count+typedComparisons.Count>0;
         internal int SteadyHits=>steadyCache.Hits;
         internal int SteadyMisses=>steadyCache.Misses;
         // This cache is independent of the current car/profile revision. Only the exact
@@ -45,6 +80,7 @@ namespace DragLab.Runtime
         {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             legacyCarSignatureJsonCount++;
+            RuntimeDataEncodingProbe.RecordJsonCall();
 #endif
             var state=new StringBuilder();
             // A car's presentation/history is not part of its physics input:
@@ -80,26 +116,72 @@ namespace DragLab.Runtime
                 inspections.TryGetValue("current",out retained);
             profile=p;catalog=p.catalog;context=key;currentPhysical=physical;
             inspections.Clear();if(retained!=null)inspections["current"]=retained;
-            plans.Clear();comparisons.Clear();recent.Clear();nodes.Clear();
+            plans.Clear();comparisons.Clear();typedComparisons.Clear();typedNodes.Clear();typedNodeKeys.Clear();typedFacts=null;typedGeneration=checked(typedGeneration+1);recent.Clear();nodes.Clear();
         }
         internal CarInspection Inspection(string key,Func<CarInspection> calculate)
         {if(inspections.TryGetValue(key,out var value)){Hits++;return value;}Misses++;value=calculate();if(inspections.Count>=128)inspections.Clear();inspections[key]=value;return value;}
+        internal TypedBinding BindTyped(NativePartsBaseReadSet facts,NativePartsBaseReadInputs freshInputs)
+        {
+            NativePartsOwnerContext.AssertMainThread();if(facts==null||freshInputs==null)throw new ArgumentNullException(facts==null?nameof(facts):nameof(freshInputs));
+            if(!facts.MatchesCurrent(freshInputs,out var reason))throw new NativePartsStaleInputsException(reason??"Typed cache binding requires a full current read-set fence.");
+            bool sameWide=typedFacts!=null&&typedFacts.SameWideCacheContext(facts)&&typedFacts.MatchesCurrent(freshInputs,out _);
+            bool samePhysical=typedFacts!=null&&typedFacts.SamePhysicalInspectionInputs(facts);
+            if(!sameWide){typedGeneration=checked(typedGeneration+1);typedComparisons.Clear();typedNodes.Clear();typedNodeKeys.Clear();plans.Clear();comparisons.Clear();recent.Clear();nodes.Clear();}
+            CarInspection current=null,healthy=null;
+            if(samePhysical){inspections.TryGetValue("typed-current",out current);inspections.TryGetValue("typed-healthy-current",out healthy);}
+            inspections.Clear();if(current!=null)inspections["typed-current"]=current;if(healthy!=null)inspections["typed-healthy-current"]=healthy;
+            var typedProfile=facts.CapturedProfile;profile=typedProfile;catalog=typedProfile?.catalog;context=null;currentPhysical=null;typedFacts=facts;
+            return new TypedBinding(this,facts,typedGeneration);
+        }
+        internal CarInspection TypedCurrent(TypedBinding binding,bool healthy,Func<CarInspection> calculate)
+        {
+            RequireBinding(binding);string key=healthy?"typed-healthy-current":"typed-current";
+            return Inspection(key,calculate);
+        }
+        internal bool RestoreTyped(TypedBinding binding,NativePartEntry e)
+        {
+            if(e==null)throw new ArgumentNullException(nameof(e));RequireBinding(binding);var key=new TypedEntryKey(binding.Generation,e);
+            if(!typedComparisons.TryGetValue(key,out var value)){Misses++;return false;}
+            if(!value.Matches(e)){RemoveTyped(key);Misses++;return false;}
+            TouchTyped(key);Hits++;CopyResult(value.result,e);return true;
+        }
+        internal void StoreTyped(TypedBinding binding,NativePartEntry e)
+        {
+            if(e==null)throw new ArgumentNullException(nameof(e));RequireBinding(binding);var key=new TypedEntryKey(binding.Generation,e);
+            if(!typedComparisons.ContainsKey(key))EvictTypedIfFull();
+            typedComparisons[key]=new TypedEntryValue{definition=MarketCatalogLayout.CopyAuthoredDefinition(e.Definition),part=NativePartsBaseReadSet.CopyPartExact(e.Part),unit=NativePartsBaseReadSet.CopyUnitExact(e.Unit),result=CopyResult(e)};
+            TouchTyped(key);
+        }
+        void RequireBinding(TypedBinding binding)
+        {NativePartsOwnerContext.AssertMainThread();if(binding==null||!binding.Matches(this,typedFacts,typedGeneration))throw new InvalidOperationException("Typed preview binding is stale or belongs to another cache.");}
+        void TouchTyped(TypedEntryKey key)
+        {if(typedNodes.TryGetValue(key,out var node)){recent.Remove(node);typedNodes[key]=recent.AddLast(node.Value);return;}string handle="T:"+checked(++typedNodeSerial).ToString(CultureInfo.InvariantCulture);typedNodes[key]=recent.AddLast(handle);typedNodeKeys[handle]=key;}
+        void RemoveTyped(TypedEntryKey key)
+        {typedComparisons.Remove(key);if(typedNodes.TryGetValue(key,out var node)){recent.Remove(node);typedNodes.Remove(key);typedNodeKeys.Remove(node.Value);}}
+        void EvictTypedIfFull()
+        {
+            if(comparisons.Count+typedComparisons.Count<ComparisonLimit)return;
+            while(recent.First!=null){string handle=recent.First.Value;recent.RemoveFirst();if(handle.StartsWith("T:",StringComparison.Ordinal)){if(typedNodeKeys.TryGetValue(handle,out var typedKey)){typedNodeKeys.Remove(handle);typedNodes.Remove(typedKey);typedComparisons.Remove(typedKey);return;}}else if(handle.StartsWith("L:",StringComparison.Ordinal)){string key=handle.Substring(2);if(nodes.ContainsKey(key)){nodes.Remove(key);comparisons.Remove(key);return;}}}
+        }
+        static NativePartEntry CopyResult(NativePartEntry e)=>new NativePartEntry{Ready=e.Ready,Proposed=e.Proposed,Reason=e.Reason,Compatibility=e.Compatibility,Position=e.Position,RequiresMatchingSet=e.RequiresMatchingSet,Change=(double?[])e.Change.Clone()};
+        static void CopyResult(NativePartEntry from,NativePartEntry to){to.Ready=true;to.Proposed=from.Proposed;to.Reason=from.Reason;to.Compatibility=from.Compatibility;to.Position=from.Position;to.RequiresMatchingSet=from.RequiresMatchingSet;to.Change=(double?[])from.Change.Clone();}
         internal PlayerProfile Plan(string key,Func<PlayerProfile> calculate)
         {if(plans.TryGetValue(key,out var value)){Hits++;return value;}Misses++;value=calculate();if(plans.Count>=4)plans.Clear();plans[key]=value;return value;}
         internal static string Key(string reference,NativePartEntry e)
         {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             legacyEntryKeyJsonCount++;
+            RuntimeDataEncodingProbe.RecordJsonCall();
 #endif
             return reference+"/"+JsonUtility.ToJson(e.Definition)+"/"+JsonUtility.ToJson(e.Part)+"/"+JsonUtility.ToJson(e.Unit)+"/"+e.Position;
         }
         internal bool Restore(string key,NativePartEntry e)
         {
-            if(!comparisons.TryGetValue(key,out var saved))return false;recent.Remove(nodes[key]);recent.AddLast(nodes[key]);Hits++;e.Ready=true;e.Proposed=saved.Proposed;e.Reason=saved.Reason;e.Compatibility=saved.Compatibility;e.Position=saved.Position;e.RequiresMatchingSet=saved.RequiresMatchingSet;e.Change=(double?[])saved.Change.Clone();return true;
+            if(!comparisons.TryGetValue(key,out var saved))return false;recent.Remove(nodes[key]);nodes[key]=recent.AddLast("L:"+key);Hits++;e.Ready=true;e.Proposed=saved.Proposed;e.Reason=saved.Reason;e.Compatibility=saved.Compatibility;e.Position=saved.Position;e.RequiresMatchingSet=saved.RequiresMatchingSet;e.Change=(double?[])saved.Change.Clone();return true;
         }
         internal void Store(string key,NativePartEntry e)
         {
-            if(nodes.TryGetValue(key,out var node)){recent.Remove(node);recent.AddLast(node);}else{if(comparisons.Count>=ComparisonLimit){string oldest=recent.First.Value;recent.RemoveFirst();nodes.Remove(oldest);comparisons.Remove(oldest);}nodes[key]=recent.AddLast(key);}
+            if(nodes.TryGetValue(key,out var node)){recent.Remove(node);nodes[key]=recent.AddLast("L:"+key);}else{EvictTypedIfFull();nodes[key]=recent.AddLast("L:"+key);}
             comparisons[key]=new NativePartEntry{Ready=true,Proposed=e.Proposed,Reason=e.Reason,Compatibility=e.Compatibility,Position=e.Position,RequiresMatchingSet=e.RequiresMatchingSet,Change=(double?[])e.Change.Clone()};
         }
     }

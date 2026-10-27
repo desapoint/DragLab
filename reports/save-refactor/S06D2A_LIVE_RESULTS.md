@@ -1,10 +1,42 @@
-# S06d2a live typed Parts checkpoint — verification in progress
+# S06d2a live typed Parts — scoped functional checkpoint
 
-Baseline `9fc8a6b` (dormant backend `0f2fa8a`). This report does **not** approve the live checkpoint or full S06. The complete S00–S14 objective, no whole-profile save cloning and final no-runtime-JSON requirements remain active.
+Baseline `9fc8a6b` (dormant backend `0f2fa8a`). Independent Luna-high review approves the **functional component only** after Windows2937/native94925. The full 50 ms frame gate FAILS; this report does not approve full S06. The complete S00–S14 objective, no whole-profile save cloning and final no-runtime-JSON requirements remain active.
 
 ## Scope
 
 Activate empty-cart typed Parts preparation, exact cache binding, fresh scalar display pricing, bounded filter/sort/card construction and stale action fences. Preserve native design, physical results, actual identities, modal drafts and independent data/presentation lifetimes. Nonempty/multi-position previews and owned refresh remain required within S06 before S07.
+
+## Final scoped functional checkpoint: Windows2937 / native94925
+
+The exact final `window-layout-modal-source-sha256.txt` manifest covers 1,034 source/settings/tool files and has zero drift after the build and native terminal result. Windows2937 exits 0. Native94925, isolated fixture `s06h1-live-browser-seed16102026-m`, exits 0 with **451 checks / 0 runtime errors**. After terminal verification, staged whitespace checking removes only an extra EOF blank line from NativePartFilters.cs (UTF-8/LF normalization; stripped text is identical). This formatting-only difference is statically checked and is not represented as another Unity run. Independent `S06D2A_LIVE_FINAL_REVIEW.md` approves a coherent local **functional-only** commit; it explicitly does not close full S06 or the global JSON/clone requirements.
+
+The final suite exercises actual card actions after post-attach layout, private phases0–6, cancellation at each boundary, newest requests, same-revision price/physical changes, retained warnings and modal drafts, scoped action/confirmation rejection, actual move/install/sale/tire operations, real scroll/resize supersession, exact pending-surface absence after real modal opening, one-card and empty-result layout, and desktop F8 recovery. The one-card fixture uses a unique actual used-asset identity through the real search field and invokes its production guarded callback. The empty-result case publishes zero cards with the final visible label and exact current/accepted 1184×286 geometry. The synthetic viewport-hide fault reaches the exact four-attempt terminal reason and recovers; **natural user-path invalid geometry remains OPEN**, not implicitly passed.
+
+The complete frame gate still **FAILS**: 6,324 selected frames have thirteen tails above50 ms (51.081,59.438,53.260,57.200,79.585,69.583,267.183,71.155,410.077,50.967,73.297,119.584,181.250). Actual Move410.077 ms, detail/owned refresh tails, recorded capture intervals and legacy F8 transition181.250 ms all remain in the evidence. `native-94925-frames.md` and complete CSV are retained locally. No frame is deleted, relabeled or excused to create a pass; nested Parts/race-GUI timings are not added. Typed nonempty/multi-position previews and owned refresh remain mandatory inside S06 before S07.
+
+The encoder check is **narrow**: the stale-confirmation interval records unchanged converted-consumer JSON1→1 and legacy-key0→0. Raw counters139814→163399 continue outside that thread-local scope; cold authored preparation, legacy routes and external diagnostics are not globally retired by this UI component. No whole-operation/global no-JSON claim is supported yet. The complete S13 audit must retire runtime copying/equality/key/preview dependencies, including settings manipulation; settings JSON is file I/O only.
+
+Managed backend validation63595 and component checks remain historical retained evidence, not a new run: the previous frozen baseline's overlapping backend sources match; the later changes are UI continuations, shared scrollbar class reuse and native verifier/development diagnostics. Windows2937 compiles the exact final source and native94925 exercises it. No new Android build, physical-phone performance, whole-system soak or user visual acceptance is claimed.
+
+Interface review checklist for this component:
+
+- Existing palette, controls, surfaces, card content and no-Tab behavior retained; no USS/theme change. All sixteen captures common to final suffix -m and baseline -k are byte-identical. Earlier suffix -l rounding differences are retained separately below.
+- Actual post-layout card callback succeeds; pending cards remain disabled/unregistered, and old detail/warnings stay visible but disabled during refresh/failure.
+- Back/scroll restoration, latest request, real modal interruption and desktop F8 recovery pass actual native tests.
+- Thin eight-point shared detail scroller with hidden arrows is checked at720p/1080p and the accurately labeled offscreen4K panel. Root inspects720p and4K captures. Alternate-resolution images are routed to the gallery's resolution-tests subfolder.
+- Human visual/device review remains separate. Full frame responsiveness, full no-JSON/no-clone retirement and S07–S14 remain open.
+
+## Native 93863: detail lifecycle and layout fix exercised; modal fixture correction
+
+Windows `66948` passes on the frozen `window-layout-final-source-sha256.txt` manifest (1,034 source/settings/tool files). Native `93863`, fixture suffix `-l`, terminates with player exit 1 after 424 checks / 0 runtime errors. The original same-stack card callback now enters phase 0 with no rejection and exactly matching current/accepted 1164×286 viewport. All exercised phases 0–6, private callback/surface publication, boundary cancellation, newest detail, same-revision action/confirmation rejection, and natural warning-retention/failure/retry checks pass. The actual warning candidate is found after six evaluations (`new:reed/Induction/SuperchargerFixedDrive`), with `STATUS=EXERCISED`, not a fabricated warning fixture.
+
+The real scroll/resize supersession reaches Screen 1024×768 and publishes current/accepted viewport 964×346 with scroll 1626; no screen-size number is inferred from inset viewport text. Modal opening cancels the held unpublished window and enters `WindowPaused`. The new fixture then fails because it compares the total registered surface count to the pre-dialog count; the real dialog legitimately registers its own surfaces. The reviewed correction captures the exact pending card surfaces and tests their actual registry membership before/after cancellation, plus zero published cards/callbacks. It adds only a development read seam; production readiness and action guards are unchanged.
+
+720p, actual 1920×1080 and offscreen 3840×2160 native-panel detail captures pass the shared eight-point scrollbar/hidden-arrow checks. Root visually inspects the 720p and 4K output: themed thin track, no white default arrows. The 4K test is accurately labeled an offscreen panel with physical Screen 1920×1080 and shared 2× panel scale. Sixteen captures are common with suffix `-k`: fourteen are byte-identical; the two fitted overview/collapse images differ only at two pixels, with maximum channel delta 1/255. No human/device acceptance is claimed.
+
+The complete frame gate remains FAIL: 4,666 selected frames / 140 intervals contain ten full-frame tails above 50 ms: 51.105, 53.096, 53.877, 57.336, 79.708, 68.903, 292.544, 67.931, 423.351 and 73.111 ms. 79.708 and 292.544 are explicitly recorded 1080p/4K capture intervals; none is removed from the raw gate. The 423.351 ms actual owned Move interaction remains mandatory typed-preview work. Raw CSV and `native-93863-frames.md` are retained; inclusive timing counters are not added. Main-thread allocation-counter zeros must not be interpreted as zero allocations; the Unity allocation column records substantial work.
+
+Windows `2937` passes with the exact-surface assertion, synthetic-layout-fault labeling, and additional zero/one-row query coverage, frozen by `window-layout-modal-source-sha256.txt`. The first suffix `-m` launch is not executed because automatic approval review encounters its usage limit; after the account reports ordinary usage available, root revalidates zero source drift and absence of other Editor/player processes, then retries through the normal approval path. That retry becomes native `94925`; its terminal functional pass and remaining frame failures are recorded above. The natural invalid-geometry user-path case remains OPEN; an explicitly labeled viewport-hide fault only tests synthetic robustness. Whole S06, typed nonempty preview, owned refresh and S07–S14 remain required.
 
 ## Native 72553: readiness defect isolated, scrollbar correction verified at 720p
 

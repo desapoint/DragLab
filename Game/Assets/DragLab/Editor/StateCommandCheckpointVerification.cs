@@ -233,6 +233,29 @@ namespace DragLab.Editor
             VerifyScopedManagedChecks(checkpoint, "parts-ready-ledger-ctor", NativePartsBrowserBuildChecks.RunReadyConstructorOracle);
         }
 
+        public static void RunNativePartsLiveCheckpoint()
+        {
+            string checkpoint = SelectedCheckpoint();
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            VerifyScopedManagedChecks(checkpoint, "parts-encoder-probe", NativePartEncoderProbeChecks.Run);
+            VerifyScopedManagedChecks(checkpoint, "parts-typed-cache", NativePartTypedCacheChecks.Run);
+            VerifyScopedManagedChecks(checkpoint, "vehicle-listing-validation", VehicleListingValidationChecks.Run);
+            VerifyScopedManagedChecks(checkpoint, "parts-display-prices", NativePartDisplayPriceChecks.Run);
+            RunNativePartsBrowserBuildCheckpoint();
+        }
+
+        public static void RunNativePartsLiveHelpersCheckpoint()
+        {
+            string checkpoint = SelectedCheckpoint();
+            if (!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            VerifyScopedManagedChecks(checkpoint, "parts-encoder-probe", NativePartEncoderProbeChecks.Run);
+            VerifyScopedManagedChecks(checkpoint, "parts-typed-cache", NativePartTypedCacheChecks.Run);
+            VerifyScopedManagedChecks(checkpoint, "vehicle-listing-validation", VehicleListingValidationChecks.Run);
+            VerifyScopedManagedChecks(checkpoint, "parts-display-prices", NativePartDisplayPriceChecks.Run);
+        }
+
         static void VerifyReadyProductGroups(string checkpoint)
         {
             if (!Application.isBatchMode || EditorApplication.isPlaying)
