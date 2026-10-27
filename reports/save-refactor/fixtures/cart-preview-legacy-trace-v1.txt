@@ -1,0 +1,251 @@
+S06D2B1_LEGACY_TRACE_V1|mode=collect-all;nonzero-on-any-false-assertion
+seed=16102026;nowTicks=638000000000000000;oracle=LegacyCartPreviewOracle;candidate=PartCart;typedCandidate=NONE
+ASSERT|PASS|Pinned source provenance exists / Domain/AssemblyOperations.cs
+SOURCE_SHA256|Domain/AssemblyOperations.cs|eb46de2ef0acf871c9bcf0069775267c7023915c1e932c7470c56827192f4b1e
+ASSERT|PASS|Pinned source provenance exists / Domain/CartReservations.cs
+SOURCE_SHA256|Domain/CartReservations.cs|17b8bf9fca5994ab13569b42bdf38447634fa52bb127cc221aad667ddeaf7f17
+ASSERT|PASS|Pinned source provenance exists / Domain/EngineElementService.cs
+SOURCE_SHA256|Domain/EngineElementService.cs|b3f756fbf09af8e0c8c2d5672106950c488e0d1f1986b4b006b2e2194f2cb561
+ASSERT|PASS|Pinned source provenance exists / Domain/EngineElements.cs
+SOURCE_SHA256|Domain/EngineElements.cs|5bae8172e1c04599e3bef8a62e84214ffc0e1b9e034c68dc42be14830e582585
+ASSERT|PASS|Pinned source provenance exists / Domain/InventoryUnits.cs
+SOURCE_SHA256|Domain/InventoryUnits.cs|510fc425e85d62f37bdbf0dd2804ea6277474db72bc0a3524ce93f376bccaccf
+ASSERT|PASS|Pinned source provenance exists / Domain/MechanicalCatalog.cs
+SOURCE_SHA256|Domain/MechanicalCatalog.cs|de235ea66f0472ad905898608ca26f86cd2158d646ef1aa55414fe16a4728c21
+ASSERT|PASS|Pinned source provenance exists / Domain/MechanicsOwnership.cs
+SOURCE_SHA256|Domain/MechanicsOwnership.cs|91305e39e34ef6680a10fb9312ebb683cf782749c847e03c4e4fe87b100f52c2
+ASSERT|PASS|Pinned source provenance exists / Domain/PartCart.cs
+SOURCE_SHA256|Domain/PartCart.cs|c7914b365ead6b348d7e3241415fb8ecc54e9ed369a337d95146bf719777f562
+ASSERT|PASS|Pinned source provenance exists / Domain/PartOperations.cs
+SOURCE_SHA256|Domain/PartOperations.cs|62f8a07e45759c03cf177b597207499c6645124ef92f3710f3006368fdd7d2ae
+ASSERT|PASS|Pinned source provenance exists / Domain/PartsMarket.cs
+SOURCE_SHA256|Domain/PartsMarket.cs|61560acc9a491fb35355b24970e0300f13e18a56004c94c838f7977d3bd71d69
+ASSERT|PASS|Pinned source provenance exists / Domain/RuntimeDataEncodingProbe.cs
+SOURCE_SHA256|Domain/RuntimeDataEncodingProbe.cs|b98af34f8f25a7e268d68b77774df4d3cc6ae9f9f513045430e836340ab4b1d8
+ASSERT|PASS|Pinned source provenance exists / Domain/RuntimeEntropy.cs
+SOURCE_SHA256|Domain/RuntimeEntropy.cs|fce9f16c872ac46b4d324c55cb69e4332974fd99894a66f5ae9ff4e115f365a6
+ASSERT|PASS|Pinned source provenance exists / Domain/SharedInventory.cs
+SOURCE_SHA256|Domain/SharedInventory.cs|9265955454930dc8431cc9af6169bf620846b487b9d391ac86b75af2ebcf9d74
+ASSERT|PASS|Pinned source provenance exists / Domain/Valuation.cs
+SOURCE_SHA256|Domain/Valuation.cs|41d6f02366e0c6fe7c6b303937be33ca56f8a5b5494567c90f13047d457180c1
+ASSERT|PASS|Pinned source provenance exists / Domain/VehicleCollection.cs
+SOURCE_SHA256|Domain/VehicleCollection.cs|fb46544d163148798cec3759782d7219d0d4c64f73f9997d7358811d9d9ea65a
+ASSERT|PASS|Pinned source provenance exists / Domain/VehicleListings.cs
+SOURCE_SHA256|Domain/VehicleListings.cs|fab879227d1003690cc83193ca5e4e69c66b1247cf67634299162597c6ac7250
+ASSERT|PASS|Pinned source provenance exists / Runtime/CartPreviewCharacterizationFixtures.cs
+SOURCE_SHA256|Runtime/CartPreviewCharacterizationFixtures.cs|7f073e8335bda82229ffbb780fa04f7facbb731ff3230d61efcddb3d5daac715
+ASSERT|PASS|Pinned source provenance exists / Runtime/LegacyCartPreviewOracle.cs
+SOURCE_SHA256|Runtime/LegacyCartPreviewOracle.cs|e691597b6ee61220436401ebca90b04b19d4affb73fbb096e5575359816391f3
+ASSERT|PASS|Pinned source provenance exists / Runtime/CartPreviewLiteralTestClone.cs
+SOURCE_SHA256|Runtime/CartPreviewLiteralTestClone.cs|f82d0759a8ff7d831cb01604bf32c9d0076694645c9fb6e1060c7b66e9ce06be
+ASSERT|PASS|Pinned source provenance exists / Runtime/CartPreviewCharacterizationChecks.cs
+SOURCE_SHA256|Runtime/CartPreviewCharacterizationChecks.cs|a9e381d708818f8416cb7524a9494f79745f35753c6a87d493392bd3bd527b75
+ASSERT|PASS|Pinned source provenance exists / ../Editor/CartPreviewCharacterizationVerification.cs
+SOURCE_SHA256|../Editor/CartPreviewCharacterizationVerification.cs|a723d6eeda1af84cba66390d4037ee746569544fd5f4c800269fc32ff69e3383
+ASSERT|PASS|Typed walker preserves a one-ULP double difference
+ASSERT|PASS|typed canonical self-check distinguishes signed zero/one-ULP/order and only aliases identity-named string fields
+GROUP|DONE|source-provenance-and-typed-comparator
+ASSERT|PASS|fixture/current-schema selected car and full ownership validator
+ASSERT|PASS|valid normalized Ensure is a serialized graph/random-state no-op / unchanged
+FIXTURE|normalized|car=selected-starter;cars=1;parts=39;units=0;dealer=67;catalogDefinitions=9294
+GROUP|DONE|valid-Ensure-and-Resolve
+ASSERT|PASS|mixed fixture derives real set, dealer part, dealer unit and modeled unit role from the catalog
+ASSERT|PASS|mixed fixture obtains two actual loose parts through authoritative purchase and remains globally valid
+INPUT|mixed|car=selected;nowTicks=638000000000000000;order=0:SellPart/juniper-club/HeadIntake/0/q1/install=False/role=-/asset=part/juniper-club/HeadIntake/0/row39/to=Storage:-;1:NewSet/juniper-club/HeadIntake/0/q1/install=False/role=-/asset=-/to=Storage:-;2:NewUnits/aster-sport/FuelSystem/0/q1/install=False/role=injector/asset=-/to=Storage:-;3:BuyUsed/aster-sport/Controls/0/q1/install=False/role=-/asset=dealer/row67/aster-sport/Controls/0/to=Storage:-;4:BuyUsed/aster-sport/FuelSystem/0/q1/install=False/role=injector/asset=dealer/row68/aster-sport/FuelSystem/0/to=Storage:-;5:Move/juniper-club/HeadIntake/0/q1/install=False/role=-/asset=part/juniper-club/HeadIntake/0/row40/to=Storage:storage
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / mixed-row-order / clone success
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / mixed-row-order / preflight completion
+ASSERT|PASS|literal-preserving independent actual/oracle input copies and rows / mixed-row-order
+ASSERT|FAIL|Production Total input graph remains unchanged / mixed-row-order changed=True
+ASSERT|PASS|Production Total preserves Unity random state / mixed-row-order
+ASSERT|FAIL|Frozen Total input graph remains unchanged / mixed-row-order changed=True
+ASSERT|PASS|Frozen Total preserves Unity random state / mixed-row-order
+ASSERT|PASS|Total input rows remain unchanged on both independent calls / mixed-row-order
+ASSERT|FAIL|Total bridge/manual parity / mixed-row-order actual=260 oracle=260 sourceUnchanged=False
+TOTAL|mixed-row-order|actual=260|legacy=260|same=True|sourceUnchanged=False|rows=0:SellPart/juniper-club/HeadIntake/0/q1/install=False/role=-/asset=part/juniper-club/HeadIntake/0/row39/to=Storage:-;1:NewSet/juniper-club/HeadIntake/0/q1/install=False/role=-/asset=-/to=Storage:-;2:NewUnits/aster-sport/FuelSystem/0/q1/install=False/role=injector/asset=-/to=Storage:-;3:BuyUsed/aster-sport/Controls/0/q1/install=False/role=-/asset=dealer/row67/aster-sport/Controls/0/to=Storage:-;4:BuyUsed/aster-sport/FuelSystem/0/q1/install=False/role=injector/asset=dealer/row68/aster-sport/FuelSystem/0/to=Storage:-;5:Move/juniper-club/HeadIntake/0/q1/install=False/role=-/asset=part/juniper-club/HeadIntake/0/row40/to=Storage:storage
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / mixed-delivery-fee / clone success
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / mixed-delivery-fee / preflight completion
+ASSERT|PASS|literal-preserving independent actual/oracle input copies and rows / mixed-delivery-fee
+ASSERT|PASS|Production DeliveryFee input graph remains unchanged / mixed-delivery-fee
+ASSERT|PASS|Production DeliveryFee preserves Unity random state / mixed-delivery-fee
+ASSERT|PASS|Frozen DeliveryFee input graph remains unchanged / mixed-delivery-fee
+ASSERT|PASS|Frozen DeliveryFee leaves shared catalog and baseline fixture unchanged / mixed-delivery-fee
+ASSERT|PASS|DeliveryFee input rows remain unchanged on both independent calls / mixed-delivery-fee
+ASSERT|PASS|DeliveryFee bridge parity/source immutability / mixed-delivery-fee actual=22 oracle=22
+DELIVERY_FEE|mixed-delivery-fee|actual=22|legacy=22|sourceUnchanged=True
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / mixed-preview-and-apply / clone success
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / mixed-preview-and-apply / preflight completion
+ASSERT|PASS|literal-preserving independent actual/oracle input copies and rows / mixed-preview-and-apply
+ASSERT|FAIL|Production PreviewProfile input graph remains unchanged / mixed-preview-and-apply
+ASSERT|PASS|Production PreviewProfile preserves Unity random state / mixed-preview-and-apply
+ASSERT|FAIL|Frozen PreviewProfile input graph remains unchanged / mixed-preview-and-apply
+ASSERT|PASS|Frozen PreviewProfile leaves shared catalog and baseline fixture unchanged / mixed-preview-and-apply
+ASSERT|PASS|PreviewProfile input rows remain unchanged on both independent calls / mixed-preview-and-apply
+ID_BIJECTION|mixed-preview-and-apply|new=part/juniper-club/HeadIntake/0/occ2/instance=<new:part/juniper-club/HeadIntake/0/occ2/instance>,unit/aster-sport/FuelSystem/0/FuelSystemElement/injector/occ0=<new:unit/aster-sport/FuelSystem/0/FuelSystemElement/injector/occ0>|bijective=True|existingIDsLiteral=302|typedWalker=true
+ASSERT|FAIL|preview source graph/catalogue/random state remains byte-for-byte unchanged / mixed-preview-and-apply
+ASSERT|PASS|PreviewProfile frozen oracle parity with operation/member-role ID bijection / mixed-preview-and-apply actual=DragLab.Domain.PlayerProfile oracle=DragLab.Domain.PlayerProfile
+PREVIEW|mixed-preview-and-apply|actual=DragLab.Domain.PlayerProfile|legacy=DragLab.Domain.PlayerProfile|normalizedGraph=True|sourceUnchanged=False
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / mixed-preview-and-apply.apply / clone success
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / mixed-preview-and-apply.apply / preflight completion
+ASSERT|PASS|literal-preserving independent actual/oracle input copies and rows / mixed-preview-and-apply.apply
+ASSERT|PASS|Production Apply preserves Unity random state / mixed-preview-and-apply
+ASSERT|PASS|Frozen Apply preserves Unity random state / mixed-preview-and-apply
+ASSERT|PASS|Frozen Apply leaves shared catalog and baseline fixture unchanged / mixed-preview-and-apply
+ASSERT|PASS|Apply input rows remain unchanged on both independent calls / mixed-preview-and-apply
+ID_BIJECTION|mixed-preview-and-apply.apply|new=part/juniper-club/HeadIntake/0/occ2/instance=<new:part/juniper-club/HeadIntake/0/occ2/instance>,unit/aster-sport/FuelSystem/0/FuelSystemElement/injector/occ0=<new:unit/aster-sport/FuelSystem/0/FuelSystemElement/injector/occ0>|bijective=True|existingIDsLiteral=302|typedWalker=true
+APPLY|mixed-preview-and-apply|actual=applied|legacy=applied|same=True|sourceUnchanged=True
+ASSERT|PASS|ordered Apply output parity/source immutability / mixed-preview-and-apply
+MANUAL_CONTRACT|mixed|order=sale,new-set,new-units,used-part,used-unit,move;PreviewProfile.Apply skips sale;move is last;sale quote uses fixed wholesale clock;existing source IDs remain literal;newphysicalIDs=role-bijective.
+CATALOG_SHAPE|set=juniper-club/HeadIntake/0;multi=aster-sport/FuelSystem/0;role=injector;positions=;stock=units=0/0;percent=10;marketGeneration=0;definitions=juniper-club/HeadIntake/0,starter-hatch/HeadIntake/0;dealerPart=s06d2b/mixed/used-part/aster-sport/Controls/0/0;dealerUnit=s06d2b/mixed/used-unit/aster-sport/FuelSystem/0/13/element/0;sale=part/juniper-club/HeadIntake/0/row39;move=part/juniper-club/HeadIntake/0/row40
+GROUP|DONE|mixed-cart-and-legacy-previews
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / null-source / clone success
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / null-source / preflight completion
+ASSERT|PASS|literal-preserving independent actual/oracle input copies and rows / null-source
+ASSERT|PASS|Production Total input graph remains unchanged / null-source changed=False
+ASSERT|PASS|Production Total preserves Unity random state / null-source
+ASSERT|PASS|Frozen Total input graph remains unchanged / null-source changed=False
+ASSERT|PASS|Frozen Total preserves Unity random state / null-source
+ASSERT|PASS|Total input rows remain unchanged on both independent calls / null-source
+ASSERT|PASS|Total bridge/manual parity / null-source actual=THREW System.ArgumentNullException | Value cannot be null.
+Parameter name: source oracle=THREW System.ArgumentNullException | Value cannot be null.
+Parameter name: source sourceUnchanged=True expected=System.ArgumentNullException | 
+TOTAL|null-source|actual=THREW System.ArgumentNullException | Value cannot be null.
+Parameter name: source|legacy=THREW System.ArgumentNullException | Value cannot be null.
+Parameter name: source|same=True|sourceUnchanged=True|rows=<null>
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / empty-rows / clone success
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / empty-rows / preflight completion
+ASSERT|PASS|literal-preserving independent actual/oracle input copies and rows / empty-rows
+ASSERT|PASS|Production Total input graph remains unchanged / empty-rows changed=False
+ASSERT|PASS|Production Total preserves Unity random state / empty-rows
+ASSERT|PASS|Frozen Total input graph remains unchanged / empty-rows changed=False
+ASSERT|PASS|Frozen Total preserves Unity random state / empty-rows
+ASSERT|PASS|Total input rows remain unchanged on both independent calls / empty-rows
+ASSERT|PASS|Total bridge/manual parity / empty-rows actual=THREW System.InvalidOperationException | Cart needs 1–100 distinct offers. oracle=THREW System.InvalidOperationException | Cart needs 1–100 distinct offers. sourceUnchanged=True expected=System.InvalidOperationException | Cart needs 1–100 distinct offers.
+TOTAL|empty-rows|actual=THREW System.InvalidOperationException | Cart needs 1–100 distinct offers.|legacy=THREW System.InvalidOperationException | Cart needs 1–100 distinct offers.|same=True|sourceUnchanged=True|rows=
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / null-row / clone success
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / null-row / preflight completion
+ASSERT|PASS|literal-preserving independent actual/oracle input copies and rows / null-row
+ASSERT|PASS|Production Total input graph remains unchanged / null-row changed=False
+ASSERT|PASS|Production Total preserves Unity random state / null-row
+ASSERT|PASS|Frozen Total input graph remains unchanged / null-row changed=False
+ASSERT|PASS|Frozen Total preserves Unity random state / null-row
+ASSERT|PASS|Total input rows remain unchanged on both independent calls / null-row
+ASSERT|PASS|Total bridge/manual parity / null-row actual=THREW System.InvalidOperationException | Invalid cart action or quantity. oracle=THREW System.InvalidOperationException | Invalid cart action or quantity. sourceUnchanged=True expected=System.InvalidOperationException | Invalid cart action or quantity.
+TOTAL|null-row|actual=THREW System.InvalidOperationException | Invalid cart action or quantity.|legacy=THREW System.InvalidOperationException | Invalid cart action or quantity.|same=True|sourceUnchanged=True|rows=0:<null>
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / quantity-zero / clone success
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / quantity-zero / preflight completion
+ASSERT|PASS|literal-preserving independent actual/oracle input copies and rows / quantity-zero
+ASSERT|PASS|Production Total input graph remains unchanged / quantity-zero changed=False
+ASSERT|PASS|Production Total preserves Unity random state / quantity-zero
+ASSERT|PASS|Frozen Total input graph remains unchanged / quantity-zero changed=False
+ASSERT|PASS|Frozen Total preserves Unity random state / quantity-zero
+ASSERT|PASS|Total input rows remain unchanged on both independent calls / quantity-zero
+ASSERT|PASS|Total bridge/manual parity / quantity-zero actual=THREW System.InvalidOperationException | Invalid cart action or quantity. oracle=THREW System.InvalidOperationException | Invalid cart action or quantity. sourceUnchanged=True expected=System.InvalidOperationException | Invalid cart action or quantity.
+TOTAL|quantity-zero|actual=THREW System.InvalidOperationException | Invalid cart action or quantity.|legacy=THREW System.InvalidOperationException | Invalid cart action or quantity.|same=True|sourceUnchanged=True|rows=0:NewSet/juniper-club/HeadIntake/0/q0/install=False/role=-/asset=-/to=Storage:-
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / quantity-100 / clone success
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / quantity-100 / preflight completion
+ASSERT|PASS|literal-preserving independent actual/oracle input copies and rows / quantity-100
+ASSERT|PASS|Production Total input graph remains unchanged / quantity-100 changed=False
+ASSERT|PASS|Production Total preserves Unity random state / quantity-100
+ASSERT|PASS|Frozen Total input graph remains unchanged / quantity-100 changed=False
+ASSERT|PASS|Frozen Total preserves Unity random state / quantity-100
+ASSERT|PASS|Total input rows remain unchanged on both independent calls / quantity-100
+ASSERT|PASS|Total bridge/manual parity / quantity-100 actual=THREW System.InvalidOperationException | Invalid cart action or quantity. oracle=THREW System.InvalidOperationException | Invalid cart action or quantity. sourceUnchanged=True expected=System.InvalidOperationException | Invalid cart action or quantity.
+TOTAL|quantity-100|actual=THREW System.InvalidOperationException | Invalid cart action or quantity.|legacy=THREW System.InvalidOperationException | Invalid cart action or quantity.|same=True|sourceUnchanged=True|rows=0:NewSet/juniper-club/HeadIntake/0/q100/install=False/role=-/asset=-/to=Storage:-
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / duplicate-new-offer / clone success
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / duplicate-new-offer / preflight completion
+ASSERT|PASS|literal-preserving independent actual/oracle input copies and rows / duplicate-new-offer
+ASSERT|PASS|Production Total input graph remains unchanged / duplicate-new-offer changed=False
+ASSERT|PASS|Production Total preserves Unity random state / duplicate-new-offer
+ASSERT|PASS|Frozen Total input graph remains unchanged / duplicate-new-offer changed=False
+ASSERT|PASS|Frozen Total preserves Unity random state / duplicate-new-offer
+ASSERT|PASS|Total input rows remain unchanged on both independent calls / duplicate-new-offer
+ASSERT|PASS|Total bridge/manual parity / duplicate-new-offer actual=THREW System.InvalidOperationException | Duplicate new offer. oracle=THREW System.InvalidOperationException | Duplicate new offer. sourceUnchanged=True expected=System.InvalidOperationException | Duplicate new offer.
+TOTAL|duplicate-new-offer|actual=THREW System.InvalidOperationException | Duplicate new offer.|legacy=THREW System.InvalidOperationException | Duplicate new offer.|same=True|sourceUnchanged=True|rows=0:NewSet/juniper-club/HeadIntake/0/q1/install=False/role=-/asset=-/to=Storage:-;1:NewSet/juniper-club/HeadIntake/0/q1/install=False/role=-/asset=-/to=Storage:-
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / ordered-first-quantity-before-later-duplicate / clone success
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / ordered-first-quantity-before-later-duplicate / preflight completion
+ASSERT|PASS|literal-preserving independent actual/oracle input copies and rows / ordered-first-quantity-before-later-duplicate
+ASSERT|PASS|Production Total input graph remains unchanged / ordered-first-quantity-before-later-duplicate changed=False
+ASSERT|PASS|Production Total preserves Unity random state / ordered-first-quantity-before-later-duplicate
+ASSERT|PASS|Frozen Total input graph remains unchanged / ordered-first-quantity-before-later-duplicate changed=False
+ASSERT|PASS|Frozen Total preserves Unity random state / ordered-first-quantity-before-later-duplicate
+ASSERT|PASS|Total input rows remain unchanged on both independent calls / ordered-first-quantity-before-later-duplicate
+ASSERT|PASS|Total bridge/manual parity / ordered-first-quantity-before-later-duplicate actual=THREW System.InvalidOperationException | Invalid cart action or quantity. oracle=THREW System.InvalidOperationException | Invalid cart action or quantity. sourceUnchanged=True expected=System.InvalidOperationException | Invalid cart action or quantity.
+TOTAL|ordered-first-quantity-before-later-duplicate|actual=THREW System.InvalidOperationException | Invalid cart action or quantity.|legacy=THREW System.InvalidOperationException | Invalid cart action or quantity.|same=True|sourceUnchanged=True|rows=0:NewSet/juniper-club/HeadIntake/0/q100/install=False/role=-/asset=-/to=Storage:-;1:NewSet/juniper-club/HeadIntake/0/q1/install=False/role=-/asset=-/to=Storage:-
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / target-availability-precedes-row-source / clone success
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / target-availability-precedes-row-source / preflight completion
+ASSERT|PASS|literal-preserving independent actual/oracle input copies and rows / target-availability-precedes-row-source
+ASSERT|PASS|Production Total input graph remains unchanged / target-availability-precedes-row-source changed=False
+ASSERT|PASS|Production Total preserves Unity random state / target-availability-precedes-row-source
+ASSERT|PASS|Frozen Total input graph remains unchanged / target-availability-precedes-row-source changed=False
+ASSERT|PASS|Frozen Total preserves Unity random state / target-availability-precedes-row-source
+ASSERT|PASS|Total input rows remain unchanged on both independent calls / target-availability-precedes-row-source
+ASSERT|PASS|Total bridge/manual parity / target-availability-precedes-row-source actual=THREW System.InvalidOperationException | Service vehicle no longer exists. oracle=THREW System.InvalidOperationException | Service vehicle no longer exists. sourceUnchanged=True expected=System.InvalidOperationException | Service vehicle no longer exists.
+TOTAL|target-availability-precedes-row-source|actual=THREW System.InvalidOperationException | Service vehicle no longer exists.|legacy=THREW System.InvalidOperationException | Service vehicle no longer exists.|same=True|sourceUnchanged=True|rows=<null>
+ASSERT|PASS|manual first-error order: missing target car rejects before null row-source materialization
+MANUAL_ERROR_VECTORS|expected=target-before-materialization;line-order;quantity-before-later-duplicate;exact-message-captured;oracle-copy-is-not-the-only-expectation.
+GROUP|DONE|malformed-cart-first-errors
+ASSERT|PASS|authored fixture provides 100 distinct valid offer IDs without shrinking the maximum-line matrix / found=100
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / 100-distinct-row-boundary / clone success
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / 100-distinct-row-boundary / preflight completion
+ASSERT|PASS|literal-preserving independent actual/oracle input copies and rows / 100-distinct-row-boundary
+ASSERT|PASS|Production Total input graph remains unchanged / 100-distinct-row-boundary changed=False
+ASSERT|PASS|Production Total preserves Unity random state / 100-distinct-row-boundary
+ASSERT|PASS|Frozen Total input graph remains unchanged / 100-distinct-row-boundary changed=False
+ASSERT|PASS|Frozen Total preserves Unity random state / 100-distinct-row-boundary
+ASSERT|PASS|Total input rows remain unchanged on both independent calls / 100-distinct-row-boundary
+ASSERT|PASS|Total bridge/manual parity / 100-distinct-row-boundary actual=3252 oracle=3252 sourceUnchanged=True
+TOTAL|100-distinct-row-boundary|actual=3252|legacy=3252|same=True|sourceUnchanged=True|rows=0:NewSet/aster-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;1:NewSet/aster/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;2:NewSet/atlas-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;3:NewSet/atlas/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;4:NewSet/boreal-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;5:NewSet/boreal/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;6:NewSet/cinder-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;7:NewSet/cinder/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;8:NewSet/city-three/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;9:NewSet/comet-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;10:NewSet/comet/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;11:NewSet/finch-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;12:NewSet/finch/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;13:NewSet/fjord-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;14:NewSet/fjord/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;15:NewSet/juniper-club/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;16:NewSet/juniper-economy/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;17:NewSet/kestrel-track/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;18:NewSet/lark-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;19:NewSet/lark/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;20:NewSet/meridian-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;21:NewSet/mistral-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;22:NewSet/mistral/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;23:NewSet/osprey-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;24:NewSet/osprey/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;25:NewSet/piper-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;26:NewSet/piper/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;27:NewSet/rally-sedan/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;28:NewSet/reed-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;29:NewSet/reed/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;30:NewSet/rook-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;31:NewSet/rook/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;32:NewSet/sable-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;33:NewSet/sable/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;34:NewSet/solstice-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;35:NewSet/solstice/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;36:NewSet/sport-coupe/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;37:NewSet/sprig-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;38:NewSet/starter-hatch/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;39:NewSet/super-v8/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;40:NewSet/swift-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;41:NewSet/swift/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;42:NewSet/tempest-rs/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;43:NewSet/timber-diesel-tow/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;44:NewSet/timber-diesel/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;45:NewSet/touring-six/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;46:NewSet/utility-pickup/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;47:NewSet/v8-muscle/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;48:NewSet/vale-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;49:NewSet/vale/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;50:NewSet/wren-sport/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;51:NewSet/wren/OilFilter/0/q1/install=False/role=-/asset=-/to=Storage:-;52:NewSet/aster-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;53:NewSet/aster/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;54:NewSet/atlas-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;55:NewSet/atlas/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;56:NewSet/boreal-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;57:NewSet/boreal/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;58:NewSet/cinder-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;59:NewSet/cinder/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;60:NewSet/city-three/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;61:NewSet/comet-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;62:NewSet/comet/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;63:NewSet/finch-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;64:NewSet/finch/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;65:NewSet/fjord-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;66:NewSet/fjord/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;67:NewSet/juniper-club/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;68:NewSet/juniper-economy/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;69:NewSet/kestrel-track/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;70:NewSet/lark-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;71:NewSet/lark/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;72:NewSet/meridian-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;73:NewSet/mistral-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;74:NewSet/mistral/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;75:NewSet/osprey-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;76:NewSet/osprey/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;77:NewSet/piper-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;78:NewSet/piper/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;79:NewSet/rally-sedan/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;80:NewSet/reed-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;81:NewSet/reed/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;82:NewSet/rook-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;83:NewSet/rook/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;84:NewSet/sable-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;85:NewSet/sable/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;86:NewSet/solstice-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;87:NewSet/solstice/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;88:NewSet/sport-coupe/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;89:NewSet/sprig-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;90:NewSet/starter-hatch/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;91:NewSet/super-v8/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;92:NewSet/swift-sport/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;93:NewSet/swift/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;94:NewSet/tempest-rs/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;95:NewSet/timber-diesel-tow/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;96:NewSet/timber-diesel/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;97:NewSet/touring-six/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;98:NewSet/utility-pickup/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-;99:NewSet/v8-muscle/SparkPlugs/0/q1/install=False/role=-/asset=-/to=Storage:-
+ASSERT|PASS|manual maximum-row contract: 100 distinct valid rows are accepted / 3252
+LINE_BOUNDARY|rows=100;distinctOffers=100;first=aster-sport/OilFilter/0;last=v8-muscle/SparkPlugs/0
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / quantity-99-boundary / clone success
+ASSERT|PASS|Literal copy leaves original profile/catalog/random unchanged / quantity-99-boundary / preflight completion
+ASSERT|PASS|literal-preserving independent actual/oracle input copies and rows / quantity-99-boundary
+ASSERT|PASS|Production Total input graph remains unchanged / quantity-99-boundary changed=False
+ASSERT|PASS|Production Total preserves Unity random state / quantity-99-boundary
+ASSERT|PASS|Frozen Total input graph remains unchanged / quantity-99-boundary changed=False
+ASSERT|PASS|Frozen Total preserves Unity random state / quantity-99-boundary
+ASSERT|PASS|Total input rows remain unchanged on both independent calls / quantity-99-boundary
+ASSERT|PASS|Total bridge/manual parity / quantity-99-boundary actual=18702 oracle=18702 sourceUnchanged=True
+TOTAL|quantity-99-boundary|actual=18702|legacy=18702|same=True|sourceUnchanged=True|rows=0:NewSet/juniper-club/HeadIntake/0/q99/install=False/role=-/asset=-/to=Storage:-
+ASSERT|PASS|manual row contract: quantity 99 is within the supported quantity range / 18702
+GROUP|DONE|100-row-and-quantity-boundaries
+RESERVATION_BOUNDARY|completedRuns=1;generation=0;active=True;expiresRun=9;supply=
+RESERVATION_BOUNDARY|completedRuns=2;generation=0;active=True;expiresRun=9;supply=
+RESERVATION_BOUNDARY|completedRuns=3;generation=1;active=True;expiresRun=9;supply=
+RESERVATION_BOUNDARY|completedRuns=4;generation=1;active=True;expiresRun=9;supply=
+RESERVATION_BOUNDARY|completedRuns=5;generation=1;active=True;expiresRun=9;supply=
+RESERVATION_BOUNDARY|completedRuns=6;generation=2;active=True;expiresRun=9;supply=
+RESERVATION_BOUNDARY|completedRuns=7;generation=2;active=True;expiresRun=9;supply=
+RESERVATION_BOUNDARY|completedRuns=8;generation=2;active=True;expiresRun=9;supply=
+RESERVATION_BOUNDARY|completedRuns=9;generation=3;active=True;expiresRun=9;supply=
+ASSERT|PASS|cart reservation remains active through its ninth completed race and third market refresh
+ASSERT|PASS|cart reservation expires only after the completion following race nine
+GROUP|DONE|reservation-lifetime
+ASSERT|PASS|legacy preview Ensure heals null car fluids on its private copy / DragLab.Domain.PlayerProfile
+ASSERT|FAIL|legacy preview isolation preserves deliberately incomplete null-fluid source graph
+ENSURE_HEAL_DIVERGENCE|nullCarFluids=true;resultFluids=materialized;resultFuel=present;sourceUnchanged=False
+ENSURE_HEAL_DIVERGENCE|OPEN|Only null fluids are mutated here; full legacy-healing divergence set remains pending.
+GROUP|DONE|legacy-Ensure-healing
+MUTATION_BOUNDARY|ToJson-only|sourceChanged=True|result=chars=4523408
+ASSERT|PASS|Diagnostic operation completed / ToJson-only / sourceChanged=True
+ASSERT|FAIL|Source graph remains unchanged / ToJson-only
+MUTATION_BOUNDARY|ToJson-FromJson|sourceChanged=True|result=cars=1
+ASSERT|PASS|Diagnostic operation completed / ToJson-FromJson / sourceChanged=True
+ASSERT|FAIL|Source graph remains unchanged / ToJson-FromJson
+MUTATION_BOUNDARY|FromJson-only|sourceChanged=False|result=cars=1
+ASSERT|PASS|Diagnostic operation completed / FromJson-only / sourceChanged=False
+ASSERT|PASS|Source graph remains unchanged / FromJson-only
+MUTATION_BOUNDARY|Total-no-move|sourceChanged=False|result=198
+ASSERT|PASS|Diagnostic operation completed / Total-no-move / sourceChanged=False
+ASSERT|PASS|Source graph remains unchanged / Total-no-move
+MUTATION_BOUNDARY|Total-move|sourceChanged=True|result=0
+ASSERT|PASS|Diagnostic operation completed / Total-move / sourceChanged=True
+ASSERT|FAIL|Source graph remains unchanged / Total-move
+MUTATION_BOUNDARY|Preview-no-move|sourceChanged=True|result=parts=40
+ASSERT|PASS|Diagnostic operation completed / Preview-no-move / sourceChanged=True
+ASSERT|FAIL|Source graph remains unchanged / Preview-no-move
+GATES|FAIL|Diagnostic completion is not source-immutability acceptance; the strict mixed-cart failure remains open.
+GROUP|DONE|JSON-and-preview-mutation-boundary
+NATIVE_CALLBACK_TRACE|OPEN|NativeInventoryMoves.OpenInventoryMove is not exercised by this Editor-only checker.
+GATES|OPEN|Full supported row/topology matrix, input-row/action/quantity identity mapping, native callback trace, native frame evidence and full S06 gate remain parent-owned.
+RESULT|FAIL|assertions=173;failures=11

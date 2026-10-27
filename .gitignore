@@ -110,3 +110,6 @@ Thumbs.db
 # Raw save-refactor run logs, attempts and generated frame analysis stay local.
 /reports/save-refactor/S06G1/
 /reports/save-refactor/S06H1/
+
+# Reviewed immutable red cart-characterization reference (Editor-only).
+!/reports/save-refactor/fixtures/cart-preview-legacy-trace-v1.txt
