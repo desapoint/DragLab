@@ -472,10 +472,48 @@ namespace DragLab.Domain.Mechanics
             if(m==null||m.version!=2||m.seed!=p.vehicleStock.seed||m.generation!=p.vehicleStock.generation||m.guaranteeAtRefresh<0||m.guaranteeAtRefresh>20||m.parts==null||m.engines==null)return "Invalid parts market epoch.";
             var ids=new HashSet<string>();foreach(var s in m.parts)if(s==null||s.definitions==null||s.definitions.Count==0||s.units<0||s.units>s.initialUnits||s.initialUnits<0||s.deliveryPercent<5||s.deliveryPercent>10||s.definitions.Any(id=>p.catalog.Find(id)==null||!ids.Add(id)))return "Invalid new-parts stock.";
             string reservationError=CartReservations.Validate(p);if(reservationError!=null)return reservationError;
-            ids=new HashSet<string>(p.parts.SelectMany(i=>i.ItemIds).Concat(p.engines.Select(e=>e.instanceId)).Concat(p.looseEngineElements.Select(u=>u.element.id)).Concat(p.inventory.dealer.SelectMany(s=>s.IsPart?s.part.ItemIds:s.IsUnit?new[]{s.unit.element.id}:Enumerable.Empty<string>())).Concat(p.vehicleStock.listings.SelectMany(o=>o.parts.SelectMany(i=>i.ItemIds))));foreach(var o in m.engines){if(o==null||string.IsNullOrWhiteSpace(o.id)||!ids.Add(o.id)||!ids.Add(o.engine?.instanceId??"")||o.quantity<0||o.quantity>3||o.used&&o.quantity>1||o.price<1||o.engine==null||o.engine.vehicleDefinitionId!=o.model||!string.IsNullOrEmpty(o.engine.parentVehicleId)||o.parts==null||o.parts.Count==0||o.engine.slots==null||o.engine.slots.Count!=o.parts.Count)return "Invalid engine stock.";
+            ids=ExistingMarketIdentitySet(p);foreach(var o in m.engines){if(o==null||string.IsNullOrWhiteSpace(o.id)||!ids.Add(o.id)||!ids.Add(o.engine?.instanceId??"")||o.quantity<0||o.quantity>3||o.used&&o.quantity>1||o.price<1||o.engine==null||o.engine.vehicleDefinitionId!=o.model||!string.IsNullOrEmpty(o.engine.parentVehicleId)||o.parts==null||o.parts.Count==0||o.engine.slots==null||o.engine.slots.Count!=o.parts.Count)return "Invalid engine stock.";
                 var map=new Dictionary<PartCategory,string>();foreach(var i in o.parts){var d=p.catalog.Find(i.definitionId);if(d==null||!MechanicalCatalog.EngineSlot(d.category)||!p.catalog.Fits(p.catalog.Spec(o.model),d)||i.Validate()!=null||!ids.Add(i.instanceId)||i.ownerId!=o.engine.instanceId||i.location!=PartLocation.Assembly||map.ContainsKey(d.category)||!o.engine.slots.Any(s=>s.partInstanceId==i.instanceId&&s.slot==d.category.ToString()))return "Invalid offered engine component.";map.Add(d.category,d.id);foreach(var e in i.condition.elements)if(!ids.Add(e.id)||!EngineElements.FaultAllowed(d.category,e))return "Invalid offered engine descendant.";}
                 if(p.catalog.Recipe(o.model).Any(v=>MechanicalCatalog.EngineSlot(v.Key)&&!map.ContainsKey(v.Key))||o.engine.fluids==null||o.engine.fluids.Validate(p.catalog.Spec(o.model).fluids)!=null||o.engine.tune==null)return "Incomplete offered engine.";
             }return null;
+        }
+        static HashSet<string> ExistingMarketIdentitySet(PlayerProfile p)
+        {
+            // The source LINQ expression validates all source arguments before the
+            // HashSet starts enumerating; preserve that exception order without
+            // allocating a SelectMany/Concat/ItemIds iterator for each part.
+            var parts=p.parts;if(parts==null)throw new ArgumentNullException("source");
+            var engines=p.engines;if(engines==null)throw new ArgumentNullException("source");
+            var looseUnits=p.looseEngineElements;if(looseUnits==null)throw new ArgumentNullException("source");
+            var dealer=p.inventory.dealer;if(dealer==null)throw new ArgumentNullException("source");
+            var listings=p.vehicleStock.listings;if(listings==null)throw new ArgumentNullException("source");
+
+            var ids=new HashSet<string>();
+            foreach(var part in parts)AddPartIds(ids,part);
+            foreach(var engine in engines)ids.Add(engine.instanceId);
+            foreach(var unit in looseUnits)ids.Add(unit.element.id);
+            foreach(var stock in dealer)
+            {
+                if(stock.IsPart)AddPartIds(ids,stock.part);
+                else if(stock.IsUnit)ids.Add(stock.unit.element.id);
+            }
+            foreach(var listing in listings)
+            {
+                var listingParts=listing.parts;if(listingParts==null)throw new ArgumentNullException("source");
+                foreach(var part in listingParts)AddPartIds(ids,part);
+            }
+            return ids;
+        }
+        static void AddPartIds(HashSet<string> ids,PartInstance part)
+        {
+            ids.Add(part.instanceId);
+            var elements=part.condition.elements;
+            if(elements==null)return;
+            for(int i=0;i<elements.Length;i++)
+            {
+                var element=elements[i];
+                if(element!=null&&!string.IsNullOrEmpty(element.id))ids.Add(element.id);
+            }
         }
     }
 }
