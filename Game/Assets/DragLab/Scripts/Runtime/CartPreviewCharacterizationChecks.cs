@@ -19,8 +19,8 @@ namespace DragLab.Runtime
     public static partial class CartPreviewCharacterizationChecks
     {
         const uint FixtureSeed=16102026u;
-        const string TraceName="S06D2B1_LEGACY_TRACE_V3.txt";
-        const string TimingName="S06D2B1_METHOD_TIMINGS_V3.txt";
+        const string TraceName="S06D2B1_LEGACY_TRACE_V4.txt";
+        const string TimingName="S06D2B1_METHOD_TIMINGS_V4.txt";
 
         [Serializable] sealed class TypedProbe
         { public float scalar; public double precise; public string id; public string partInstanceId; public string note; public List<int> order; }
@@ -48,6 +48,7 @@ namespace DragLab.Runtime
             readonly Action<bool,string> check;
             readonly string folder;
             readonly bool collectAll;
+            public string ReportFolder=>folder;
             public int Assertions,Failures;
             public readonly StringBuilder Text=new StringBuilder();
             public readonly StringBuilder TimingText=new StringBuilder();
@@ -78,7 +79,7 @@ namespace DragLab.Runtime
             {if(value.StartsWith("METHOD|",StringComparison.Ordinal))TimingText.AppendLine(value);else Text.AppendLine(value);Progress(value);}
             // Retain incomplete diagnostic evidence on timeout/crash. This is
             // explicitly separate from the final complete stable trace.
-            void Progress(string value)=>File.AppendAllText(Path.Combine(folder,"progress-v3.txt"),value.Replace("\r\n","\n")+"\n",new UTF8Encoding(false));
+            void Progress(string value)=>File.AppendAllText(Path.Combine(folder,"progress-v4.txt"),value.Replace("\r\n","\n")+"\n",new UTF8Encoding(false));
         }
         static readonly HashSet<string> IdentityFieldNames=new HashSet<string>(StringComparer.Ordinal)
         {"id","instanceId","assetId","ownerId","parentVehicleId","vehicleInstanceId","engineInstanceId",
@@ -93,7 +94,7 @@ namespace DragLab.Runtime
             if(string.IsNullOrWhiteSpace(reportFolder))throw new ArgumentException("An isolated Editor report folder is required.",nameof(reportFolder));
             Directory.CreateDirectory(reportFolder);
             FixtureBaselines.Clear();
-            var trace=new Trace(check,reportFolder);trace.Add("S06D2B1_LEGACY_TRACE_V3");
+            var trace=new Trace(check,reportFolder);trace.Add("S06D2B1_LEGACY_TRACE_V4");
             trace.Add("seed="+FixtureSeed+";nowTicks="+CartPreviewCharacterizationFixtures.FixedNowTicks+";oracle=LegacyCartPreviewOracle;candidate=PartCart;typedCandidate=NONE");
             try
             {
@@ -134,18 +135,21 @@ namespace DragLab.Runtime
             Directory.CreateDirectory(reportFolder);
             FixtureBaselines.Clear();
             var trace=new Trace(check,reportFolder,true);
-            trace.Add("S06D2B1_LEGACY_TRACE_V3|mode=collect-all;nonzero-on-any-false-assertion");
+            trace.Add("S06D2B1_LEGACY_TRACE_V4|mode=collect-all;nonzero-on-any-false-assertion");
+            RecordMeasurementContext(trace);
             trace.Add("seed="+FixtureSeed+";nowTicks="+CartPreviewCharacterizationFixtures.FixedNowTicks+";oracle=LegacyCartPreviewOracle;candidate=PartCart;typedCandidate=NONE");
             try
             {
                 RunIndependentGroup(trace,"source-provenance-and-typed-comparator",()=>{RecordSourceHashes(trace);RunTypedWalkerSelfTests(trace);});
-                RunIndependentGroup(trace,"valid-Ensure-and-Resolve",()=>RunNormalizedFixtureChecks(trace));
+                RunIndependentGroup(trace,"existing-value-Ensure-Resolve-timing-baseline",()=>RunNormalizedFixtureChecks(trace));
                 RunIndependentGroup(trace,"mixed-cart-and-legacy-previews",()=>RunMixedLegacyTrace(trace));
                 RunIndependentGroup(trace,"malformed-cart-first-errors",()=>RunManualErrorVectors(trace));
                 RunIndependentGroup(trace,"core-row-contracts",()=>RunCoreRowMatrix(trace));
                 RunIndependentGroup(trace,"row-key-physical-identity",()=>RunIdentityMatrix(trace));
                 RunIndependentGroup(trace,"authored-topology-and-owner-graph",()=>RunTopologyMatrix(trace));
                 RunIndependentGroup(trace,"100-row-and-quantity-boundaries",()=>RunHundredLineBoundary(trace));
+                RunIndependentGroup(trace,"complete-limit-and-first-error-contracts",()=>RunLimitContracts(trace,"all"));
+                RunIndependentGroup(trace,"exact-normalization-field-boundary",()=>RunNormalizationContracts(trace,"all"));
                 RunIndependentGroup(trace,"reservation-lifetime",()=>RunReservationLifetime(trace));
                 RunIndependentGroup(trace,"legacy-Ensure-healing",()=>RunEnsureHealingTrace(trace));
                 RunIndependentGroup(trace,"JSON-and-preview-mutation-boundary",()=>RunMutationBoundaryCore(trace));
@@ -181,7 +185,7 @@ namespace DragLab.Runtime
             if(string.IsNullOrWhiteSpace(reportFolder))throw new ArgumentException("An isolated Editor report folder is required.",nameof(reportFolder));
             Directory.CreateDirectory(reportFolder);FixtureBaselines.Clear();
             var trace=new Trace(check,reportFolder,true);
-            trace.Add("S06D2B1_LEGACY_TRACE_V3|mode="+(identity?"identity-only":topology?"topology-only":"core-rows-only")+";subset="+(subset??"all")+";nonzero-on-any-false-assertion");
+            trace.Add("S06D2B1_LEGACY_TRACE_V4|mode="+(identity?"identity-only":topology?"topology-only":"core-rows-only")+";subset="+(subset??"all")+";nonzero-on-any-false-assertion");
             trace.Add("seed="+FixtureSeed+";nowTicks="+CartPreviewCharacterizationFixtures.FixedNowTicks+";oracle=LegacyCartPreviewOracle;candidate=PartCart;typedCandidate=NONE");
             try
             {
@@ -196,6 +200,51 @@ namespace DragLab.Runtime
                 trace.Add("RESULT|"+(trace.Failures==0?"PASS":"FAIL")+"|assertions="+trace.Assertions+";failures="+trace.Failures);
                 WriteReports(trace,reportFolder);FixtureBaselines.Clear();
             }
+        }
+
+        public static void RunSupplemental(Action<bool,string> check,string reportFolder,string subset)
+        {
+            if(check==null)throw new ArgumentNullException(nameof(check));
+            if(string.IsNullOrWhiteSpace(reportFolder))throw new ArgumentException("An isolated Editor report folder is required.",nameof(reportFolder));
+            if(subset!="limits"&&subset!="malformed"&&subset!="normalization"&&subset!="source-diffs"&&subset!="ensure")
+                throw new ArgumentException("Unknown supplemental cart characterization subset.",nameof(subset));
+            Directory.CreateDirectory(reportFolder);FixtureBaselines.Clear();
+            var trace=new Trace(check,reportFolder,true);
+            trace.Add("S06D2B1_LEGACY_TRACE_V4|mode=supplemental;subset="+subset+";nonzero-on-any-false-assertion");
+            try
+            {
+                RunIndependentGroup(trace,"source-provenance-and-typed-comparator",()=>{RecordSourceHashes(trace);RunTypedWalkerSelfTests(trace);});
+                RecordMeasurementContext(trace);
+                if(subset=="limits"||subset=="malformed")
+                    RunIndependentGroup(trace,"remaining-"+subset,()=>RunLimitContracts(trace,subset));
+                else if(subset=="normalization"||subset=="source-diffs"||subset=="ensure")
+                    RunIndependentGroup(trace,"exact-"+subset,()=>RunNormalizationContracts(trace,subset));
+                else throw new ArgumentException("Unknown supplemental cart characterization subset.",nameof(subset));
+                trace.Add("GATES|OPEN|Supplemental characterization only; full Step1 and typed preview/runtime conversion remain required.");
+            }
+            finally
+            {
+                trace.Add("RESULT|"+(trace.Failures==0?"PASS":"FAIL")+"|assertions="+trace.Assertions+";failures="+trace.Failures);
+                WriteReports(trace,reportFolder);FixtureBaselines.Clear();
+            }
+        }
+
+        static void RecordMeasurementContext(Trace trace)
+        {
+            long allocationDelta=-1;string allocationError=null;
+            try
+            {
+                long allocatedBefore=GC.GetAllocatedBytesForCurrentThread();
+                var allocationProbe=new byte[8192];
+                allocationDelta=GC.GetAllocatedBytesForCurrentThread()-allocatedBefore;
+                GC.KeepAlive(allocationProbe);
+            }
+            catch(Exception error){allocationError=error.GetType().FullName;}
+            trace.Add("MEASUREMENT_CONTEXT|stopwatchFrequency="+Stopwatch.Frequency+
+                ";allocationCounterAvailable="+(allocationDelta>=8192)+";knownArrayBytes=8192;observedAllocationDelta="+allocationDelta+
+                ";allocationError="+(allocationError??"none")+
+                ";gcCollections="+GC.CollectionCount(0)+","+GC.CollectionCount(1)+","+GC.CollectionCount(2)+
+                ";scope=Editor-only;unavailable-allocation-counter-is-not-zero-allocation-proof");
         }
 
         static void WriteReports(Trace trace,string reportFolder)
@@ -920,6 +969,8 @@ namespace DragLab.Runtime
                 "Runtime/CartPreviewCharacterizationChecks.cs",
                 "Runtime/CartPreviewCharacterizationCoreRows.cs",
                 "Runtime/CartPreviewCharacterizationIdentity.cs",
+                "Runtime/CartPreviewCharacterizationLimits.cs",
+                "Runtime/CartPreviewCharacterizationNormalization.cs",
                 "Runtime/CartPreviewCharacterizationTopology.cs",
                 "../Editor/CartPreviewCharacterizationVerification.cs"})
             {
