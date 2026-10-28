@@ -25,6 +25,14 @@ namespace DragLab.Editor
         public static void RunNormalization()=>RunCore(false,true,"supplemental","normalization");
         public static void RunSourceDiffs()=>RunCore(false,true,"supplemental","source-diffs");
         public static void RunEnsure()=>RunCore(false,true,"supplemental","ensure");
+        public static void RunCommerce()=>RunCore(false,true,"supplemental","commerce");
+        public static void RunCommerceMixed()=>RunCore(false,true,"supplemental","commerce-mixed");
+        public static void RunCommerceOwner()=>RunCore(false,true,"supplemental","commerce-owner");
+        public static void RunCommerceLifetime()=>RunCore(false,true,"supplemental","commerce-lifetime");
+        public static void RunGraphClosure()=>RunCore(false,true,"supplemental","graph");
+        public static void RunGraphOwners()=>RunCore(false,true,"supplemental","graph-owners");
+        public static void RunGraphBlocks()=>RunCore(false,true,"supplemental","graph-blocks");
+        public static void RunGraphRoundTrip()=>RunCore(false,true,"supplemental","graph-roundtrip");
         public static void RunTopologyMembersCorners()=>RunCore(false,true,"topology","members-corners");
         public static void RunTopologyOwnersParts()=>RunCore(false,true,"topology","owners-parts");
         public static void RunTopologyBlocksLocks()=>RunCore(false,true,"topology","blocks-locks");

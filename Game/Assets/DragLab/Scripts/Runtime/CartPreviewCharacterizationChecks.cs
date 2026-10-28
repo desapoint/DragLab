@@ -150,6 +150,8 @@ namespace DragLab.Runtime
                 RunIndependentGroup(trace,"100-row-and-quantity-boundaries",()=>RunHundredLineBoundary(trace));
                 RunIndependentGroup(trace,"complete-limit-and-first-error-contracts",()=>RunLimitContracts(trace,"all"));
                 RunIndependentGroup(trace,"exact-normalization-field-boundary",()=>RunNormalizationContracts(trace,"all"));
+                RunIndependentGroup(trace,"commerce-reservation-state-boundaries",()=>RunCommerceContracts(trace,"commerce"));
+                RunIndependentGroup(trace,"owner-block-graph-closure",()=>RunGraphClosureContracts(trace,"graph"));
                 RunIndependentGroup(trace,"reservation-lifetime",()=>RunReservationLifetime(trace));
                 RunIndependentGroup(trace,"legacy-Ensure-healing",()=>RunEnsureHealingTrace(trace));
                 RunIndependentGroup(trace,"JSON-and-preview-mutation-boundary",()=>RunMutationBoundaryCore(trace));
@@ -206,7 +208,9 @@ namespace DragLab.Runtime
         {
             if(check==null)throw new ArgumentNullException(nameof(check));
             if(string.IsNullOrWhiteSpace(reportFolder))throw new ArgumentException("An isolated Editor report folder is required.",nameof(reportFolder));
-            if(subset!="limits"&&subset!="malformed"&&subset!="normalization"&&subset!="source-diffs"&&subset!="ensure")
+            if(subset!="limits"&&subset!="malformed"&&subset!="normalization"&&subset!="source-diffs"&&subset!="ensure"&&
+                subset!="commerce"&&subset!="commerce-mixed"&&subset!="commerce-owner"&&subset!="commerce-lifetime"&&
+                subset!="graph"&&subset!="graph-owners"&&subset!="graph-blocks"&&subset!="graph-roundtrip")
                 throw new ArgumentException("Unknown supplemental cart characterization subset.",nameof(subset));
             Directory.CreateDirectory(reportFolder);FixtureBaselines.Clear();
             var trace=new Trace(check,reportFolder,true);
@@ -219,6 +223,10 @@ namespace DragLab.Runtime
                     RunIndependentGroup(trace,"remaining-"+subset,()=>RunLimitContracts(trace,subset));
                 else if(subset=="normalization"||subset=="source-diffs"||subset=="ensure")
                     RunIndependentGroup(trace,"exact-"+subset,()=>RunNormalizationContracts(trace,subset));
+                else if(subset=="commerce"||subset=="commerce-mixed"||subset=="commerce-owner"||subset=="commerce-lifetime")
+                    RunIndependentGroup(trace,"exact-"+subset,()=>RunCommerceContracts(trace,subset));
+                else if(subset=="graph"||subset=="graph-owners"||subset=="graph-blocks"||subset=="graph-roundtrip")
+                    RunIndependentGroup(trace,"exact-"+subset,()=>RunGraphClosureContracts(trace,subset));
                 else throw new ArgumentException("Unknown supplemental cart characterization subset.",nameof(subset));
                 trace.Add("GATES|OPEN|Supplemental characterization only; full Step1 and typed preview/runtime conversion remain required.");
             }
@@ -673,7 +681,8 @@ namespace DragLab.Runtime
             return actual;
         }
 
-        static void ComparePreview(Trace trace,string name,PlayerProfile p,OwnedCar car,IEnumerable<PartCartLine> rows)
+        static void ComparePreview(Trace trace,string name,PlayerProfile p,OwnedCar car,IEnumerable<PartCartLine> rows,
+            string expectedApplyExceptionType=null,string expectedApplyExceptionMessage=null)
         {
             if(!TryPreparePair(trace,name,p,rows,out var pair))return;
             var random=UnityEngine.Random.state;
@@ -709,12 +718,15 @@ namespace DragLab.Runtime
                 "|sourceUnchanged="+unchanged);
             trace.Add("METHOD|PreviewProfile."+name+"|ticks="+actual.ValueTicks+";allocatedBytes="+actual.AllocatedBytes);
 
-            var actualApply=LegacyApplyPair(p,car.instanceId,rows,trace,name);
+            var actualApply=LegacyApplyPair(p,car.instanceId,rows,trace,name,expectedApplyExceptionType,expectedApplyExceptionMessage);
             trace.Assert(actualApply,"ordered Apply output parity/source immutability / "+name);
         }
 
-        static bool LegacyApplyPair(PlayerProfile source,string carId,IEnumerable<PartCartLine> rows,Trace trace,string name)
+        static bool LegacyApplyPair(PlayerProfile source,string carId,IEnumerable<PartCartLine> rows,Trace trace,string name,
+            string expectedExceptionType=null,string expectedExceptionMessage=null)
         {
+            if((expectedExceptionType==null)!=(expectedExceptionMessage==null))
+                throw new ArgumentException("Expected Apply rejection requires both exact exception type and message.");
             if(!TryPreparePair(trace,name+".apply",source,rows,out var pair))return false;
             var random=UnityEngine.Random.state;
             var actual=Measure(()=>{PartCart.Apply(pair.Actual,carId,pair.ActualRows,true,ValuationPolicy.Defaults());return "applied";});
@@ -730,9 +742,16 @@ namespace DragLab.Runtime
             trace.Assert(!catalogChanged&&pair.ProfileBefore==SourceSnapshot(source),"Frozen Apply leaves shared catalog and baseline fixture unchanged / "+name);
             bool rowsChanged=pair.RowsBefore!=RowsSnapshot(pair.ActualRows)||pair.RowsBefore!=RowsSnapshot(pair.LegacyRows);
             trace.Assert(!rowsChanged,"Apply input rows remain unchanged on both independent calls / "+name);
-            bool same=!actual.Threw&&!legacy.Threw&&CanonicalGraphEquivalent(pair.Actual,pair.Legacy,source,trace,name+".apply");
+            // Positive fixtures still require success. An explicit negative fixture
+            // must match both exact errors AND the complete partial working graphs.
+            bool acceptedOutcome=expectedExceptionType==null
+                ? !actual.Threw&&!legacy.Threw
+                : actual.Threw&&legacy.Threw&&actual.ExceptionType==expectedExceptionType&&legacy.ExceptionType==expectedExceptionType&&
+                    actual.ExceptionMessage==expectedExceptionMessage&&legacy.ExceptionMessage==expectedExceptionMessage;
+            bool same=acceptedOutcome&&CanonicalGraphEquivalent(pair.Actual,pair.Legacy,source,trace,name+".apply");
             trace.Add("APPLY|"+name+"|actual="+actual.Text+"|legacy="+legacy.Text+"|same="+same+
-                "|sourceUnchanged="+(pair.ProfileBefore==SourceSnapshot(source)));
+                "|sourceUnchanged="+(pair.ProfileBefore==SourceSnapshot(source))+
+                (expectedExceptionType==null?"":"|expectedException="+expectedExceptionType+" | "+expectedExceptionMessage));
             trace.Add("METHOD|Apply."+name+"|ticks="+actual.ValueTicks+";allocatedBytes="+actual.AllocatedBytes);
             return same&&!actualRandomChanged&&!legacyRandomChanged&&!catalogChanged&&!rowsChanged&&pair.ProfileBefore==SourceSnapshot(source);
         }
@@ -971,6 +990,8 @@ namespace DragLab.Runtime
                 "Runtime/CartPreviewCharacterizationIdentity.cs",
                 "Runtime/CartPreviewCharacterizationLimits.cs",
                 "Runtime/CartPreviewCharacterizationNormalization.cs",
+                "Runtime/CartPreviewCharacterizationCommerce.cs",
+                "Runtime/CartPreviewCharacterizationGraphClosure.cs",
                 "Runtime/CartPreviewCharacterizationTopology.cs",
                 "../Editor/CartPreviewCharacterizationVerification.cs"})
             {

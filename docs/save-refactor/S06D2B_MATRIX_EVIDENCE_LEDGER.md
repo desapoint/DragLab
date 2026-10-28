@@ -1,5 +1,7 @@
 # S06d2b characterization matrix evidence ledger
 
+The original tables below describe the pre-1e evidence. The reviewed additions at the end supersede matching stock/hold/lifetime/owner/block cells; unlisted gaps remain open.
+
 This ledger maps the requirements in [S06D2B_CHARACTERIZATION_MATRIX.md](S06D2B_CHARACTERIZATION_MATRIX.md) to the reviewed execution reports. It tracks **code present**, **runtime evidence**, **legacy findings**, and **remaining concrete gaps** separately. It is a retrieval aid for the next slice, not a replacement matrix, a typed-planner contract, or approval to proceed to S06/S07 implementation.
 
 ## How to read the evidence
@@ -87,3 +89,17 @@ Each label below is named in the matrix. These entries are deliberately narrower
 5. Measure actual indivisible native frames and allocations, not candidate spans; keep Android/device and human visual acceptance separate.
 
 The next slice should use this ledger to select a finite matrix gap and name exact cases/source evidence. It must not use this ledger as a Step 1 completion claim or as approval for a shared planner, caller activation, or S07.
+## S06d2b1e reviewed additions (2026-10-28)
+
+[Results](../../reports/save-refactor/S06D2B1E_RESULTS.md) and [independent review](S06D2B1E_REVIEW.md) add finite executed evidence; this is an intermediate diagnostic commit, not Step1 or typed/S06 completion. Counts overlap helper checks and are not cumulative coverage totals.
+
+| Matrix family | Exact additional evidence | Remaining boundary |
+| --- | --- | --- |
+| 5.1–5.3 mixed supply/holds | Commerce b293/0: six real set/unit/used-part/used-unit/sale rows, independently computed5%/10% fees (Total665/fee21); same Controls offer owner180/fee0 versus unrelated198/fee18; changed/other-car capture and Clear with zero hold, unchanged cash/stock. | Not all malformed reservation shapes or payment/checkout mutations. |
+| 5.4 lifetime | Every read and race transition recorded through runs1–10: held used ID/condition survives run9/generation3; expires/removes at10. Exact source/hash/typed field/reference evidence; no quote mutation. | Refresh contents are recorded, not independently reconstructed; no broad market algorithm proof. |
+| 4 compatible/occupied engine targets and locks | Owners d269/64: distinct actual same-model cars, real engine transfers and displacements; donor/target job locks reached through unlocked callers with exact expected errors. | Rebuild-lock permutations, all other owner categories and live callbacks remain open;64 includes strict source/output failures. |
+| 2/4 ordered pack then unit | Both Total row orders reject the exact full-set-versus-unit rule. Unchecked direct Preview differs by Apply order; expected negative exceptions compare complete partial working graphs. | Not a legal accepted mixed cart; no checkout behavior claim. |
+| 3 block owner and multi-target resolve | Blocks d128/25: real required companions removed/reused by ID; wrong-owner marker retained and ready; first missing Pistons error changes to missing Rods when target rows reverse. |25 source-preservation failures remain; not every block recipe/malformed owner/transaction boundary. |
+| 4 stored descendant roundtrip | Focused e85/16 permits only expected storageId=Garage. Physical part/owner/slot/definition restored. Both condition checks fail exactly four member definitionId null-to-empty paths and four topology paths;14 other source/input reds. | Original condition/null values must be preserved by typed replacement. Default normalization is not approved. |
+
+Compact trace SHA256: commerce b `10022dd87cf0c709bc012ced7696cc945a7c22e08338ae736a34918f7c9fd158`; owners d `2063d780622ea566b34b7f97eb2726f3c7102f9875eb3c45f20da15e15611b7c`; blocks d `95043e09a658b71d228038c5f99165f5af7eb0200336648b101bdf28de684093`; focused e `c9b15144c57e26c1b708867bf7995c6d7428a23d37132fb682ea4e8f7e09ad8d`. Each2,562-file manifest remained unchanged after execution. No fresh player/Android/frame allocation acceptance follows. Remaining finite baseline gaps must be distinguished from future typed ticket/parity gates; legacy reds are not waived or disguised as green.
