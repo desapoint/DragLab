@@ -33,6 +33,14 @@ namespace DragLab.Editor
         public static void RunGraphOwners()=>RunCore(false,true,"supplemental","graph-owners");
         public static void RunGraphBlocks()=>RunCore(false,true,"supplemental","graph-blocks");
         public static void RunGraphRoundTrip()=>RunCore(false,true,"supplemental","graph-roundtrip");
+        public static void RunValidation()=>RunCore(false,true,"supplemental","validation");
+        public static void RunValidationSales()=>RunCore(false,true,"supplemental","validation-sales");
+        public static void RunValidationIntegrity()=>RunCore(false,true,"supplemental","validation-integrity");
+        public static void RunValidationStock()=>RunCore(false,true,"supplemental","validation-stock");
+        public static void RunValidationPositions()=>RunCore(false,true,"supplemental","validation-positions");
+        public static void RunOrder()=>RunCore(false,true,"supplemental","order");
+        public static void RunOrderSales()=>RunCore(false,true,"supplemental","order-sales");
+        public static void RunOrderChain()=>RunCore(false,true,"supplemental","order-chain");
         public static void RunTopologyMembersCorners()=>RunCore(false,true,"topology","members-corners");
         public static void RunTopologyOwnersParts()=>RunCore(false,true,"topology","owners-parts");
         public static void RunTopologyBlocksLocks()=>RunCore(false,true,"topology","blocks-locks");

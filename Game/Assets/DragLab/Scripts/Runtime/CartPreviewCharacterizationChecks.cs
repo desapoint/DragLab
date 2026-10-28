@@ -152,6 +152,8 @@ namespace DragLab.Runtime
                 RunIndependentGroup(trace,"exact-normalization-field-boundary",()=>RunNormalizationContracts(trace,"all"));
                 RunIndependentGroup(trace,"commerce-reservation-state-boundaries",()=>RunCommerceContracts(trace,"commerce"));
                 RunIndependentGroup(trace,"owner-block-graph-closure",()=>RunGraphClosureContracts(trace,"graph"));
+                RunIndependentGroup(trace,"validation-first-error-supplement",()=>RunValidationSupplement(trace,"validation"));
+                RunIndependentGroup(trace,"sale-checkout-and-displacement-order",()=>RunOrderSupplement(trace,"order"));
                 RunIndependentGroup(trace,"reservation-lifetime",()=>RunReservationLifetime(trace));
                 RunIndependentGroup(trace,"legacy-Ensure-healing",()=>RunEnsureHealingTrace(trace));
                 RunIndependentGroup(trace,"JSON-and-preview-mutation-boundary",()=>RunMutationBoundaryCore(trace));
@@ -210,7 +212,9 @@ namespace DragLab.Runtime
             if(string.IsNullOrWhiteSpace(reportFolder))throw new ArgumentException("An isolated Editor report folder is required.",nameof(reportFolder));
             if(subset!="limits"&&subset!="malformed"&&subset!="normalization"&&subset!="source-diffs"&&subset!="ensure"&&
                 subset!="commerce"&&subset!="commerce-mixed"&&subset!="commerce-owner"&&subset!="commerce-lifetime"&&
-                subset!="graph"&&subset!="graph-owners"&&subset!="graph-blocks"&&subset!="graph-roundtrip")
+                subset!="graph"&&subset!="graph-owners"&&subset!="graph-blocks"&&subset!="graph-roundtrip"&&
+                subset!="validation"&&subset!="validation-sales"&&subset!="validation-integrity"&&subset!="validation-stock"&&subset!="validation-positions"&&
+                subset!="order"&&subset!="order-sales"&&subset!="order-chain")
                 throw new ArgumentException("Unknown supplemental cart characterization subset.",nameof(subset));
             Directory.CreateDirectory(reportFolder);FixtureBaselines.Clear();
             var trace=new Trace(check,reportFolder,true);
@@ -227,6 +231,10 @@ namespace DragLab.Runtime
                     RunIndependentGroup(trace,"exact-"+subset,()=>RunCommerceContracts(trace,subset));
                 else if(subset=="graph"||subset=="graph-owners"||subset=="graph-blocks"||subset=="graph-roundtrip")
                     RunIndependentGroup(trace,"exact-"+subset,()=>RunGraphClosureContracts(trace,subset));
+                else if(subset=="validation"||subset=="validation-sales"||subset=="validation-integrity"||subset=="validation-stock"||subset=="validation-positions")
+                    RunIndependentGroup(trace,"exact-"+subset,()=>RunValidationSupplement(trace,subset));
+                else if(subset=="order"||subset=="order-sales"||subset=="order-chain")
+                    RunIndependentGroup(trace,"exact-"+subset,()=>RunOrderSupplement(trace,subset));
                 else throw new ArgumentException("Unknown supplemental cart characterization subset.",nameof(subset));
                 trace.Add("GATES|OPEN|Supplemental characterization only; full Step1 and typed preview/runtime conversion remain required.");
             }
@@ -992,6 +1000,8 @@ namespace DragLab.Runtime
                 "Runtime/CartPreviewCharacterizationNormalization.cs",
                 "Runtime/CartPreviewCharacterizationCommerce.cs",
                 "Runtime/CartPreviewCharacterizationGraphClosure.cs",
+                "Runtime/CartPreviewCharacterizationValidation.cs",
+                "Runtime/CartPreviewCharacterizationOrder.cs",
                 "Runtime/CartPreviewCharacterizationTopology.cs",
                 "../Editor/CartPreviewCharacterizationVerification.cs"})
             {
