@@ -1,0 +1,34 @@
+# S06d2b1c identity and native callback characterization
+
+Baseline:28ccdf1, reviewed intermediate diagnostic source/evidence. Previous turn made progress: committed Editor-only core/topology coverage, corrected concrete fixture expectations, and proved legacy JSON input/output normalization using exact captured values. No passing Step1/S06/planner gate follows; runtime conversion and all S07–S14 remain required.
+
+This batch closes two concrete Step1 evidence gaps. It adds no planner, runtime fallback, persistence behavior or UI design. Parent owns all Unity/process/Git and existing checker/wrapper/harness wiring. All Game source freezes before any Editor/build/player run; source equality is checked immediately after terminal completion before thaw.
+
+| Owner | Exclusive source and notes |
+| --- | --- |
+| inventory_price_perf / Luna medium | new Runtime/CartPreviewCharacterizationIdentity.cs +meta; S06D2B1C_IDENTITY.md |
+| vehicle_validation_perf / Luna medium | new Runtime/NativeCartPreviewCharacterization.cs +meta; S06D2B1C_NATIVE.md |
+| coordinator | existing checker/Editor wrapper/native harness or shell DEV seams only after explicit API coordination; decisions/execution/results/tools integration and actual runs/Git |
+| independent Luna-high reviewer | S06D2B1C_REVIEW.md; read-only review before further checkpoint |
+
+Identity mapping must use input row index/action/quantity/record kind/member role+ordinal or supplied position. Output-list position alone is not a proof. Existing identities remain literal; generated IDs require a full bijection with no extra, missing, aliased or existing-ID collision. Any test-only tracing must retain the exact domain semantics and be independently compared to the frozen oracle, not create a new production simulation. Keep known JSON source/output mutations strict-red. Test-input broad copies remain UNITY_EDITOR-only, never a runtime/save/preview strategy.
+
+Native diagnostics run only in the isolated deterministic Windows Development verification player, using real UI callbacks and domain-created fixture items. Read actual RuntimeEntropy Capture/clock/per-scope counters without changing, clearing, resetting, overriding or consuming them. Observe Unity random state and actual JSON counters separately. Record open/destination/cancel/final Add, candidate row order, selected versus affected owner and stale guards. Characterize actual default clock independently of Editor fixed-now probes. Never warm/serialize/normalize the fixture to hide a source change. Staging may change actual cart/reservation/revision metadata by the existing transaction path; record that authority separately from read-only candidate preparation and unchanged ownership/cash/stock expectations.
+
+Only diagnostic evidence supported by actual runs is credited. Partial coverage stays explicit; a new helper or a generated plan is not proof of callback execution. The no-runtime-JSON/no-full-profile-save-copy end-state and full S06/native/frame/owned-refresh gates remain mandatory.
+
+## Proposed read-only identity emission observation (review before source edit)
+
+Semantic output selectors cannot prove birth quantity for several identical loose sets or same-role unit extras. Do not narrow the supported quantity cases or assign arbitrary output-list ordinals. Observe the actual allocator's returned values instead.
+
+Coordinator proposes a private optional partial-void hook in partial RuntimeEntropy, immediately after each real NewGuid result is obtained, with the same scope/value passed through unchanged. A separate UNITY_EDITOR or DEVELOPMENT_BUILD-only partial implements a thread-local, opt-in, bounded observation lease. It records immutable scope+Guid value events, has no callback, replacement value, seed/reset/counter setter or ID-generation call, and is disposed synchronously on the originating thread. No observer is active during normal play. In release the unimplemented partial method and calls are compiler-erased. Capture counters/clock behavior and real Guid generation remain exactly the same; callbacks are not introduced under the allocator lock.
+
+The lease stores at most65,536 events, flags overflow without interrupting normal generation, and prevents accidental nested/foreign-thread capture. Observation windows bracket existing synchronous domain calls only; no capture survives a yield. Parent owns RuntimeEntropy.cs minimal integration. If approved, Luna-medium identity author additionally owns new Domain/RuntimeEntropy.Diagnostics.cs+meta and tests its usage; the native author may consume the same read-only observer for actual Candidate spans after API agreement.
+
+Input row/quantity keys consume the observed `part` or `element` emissions in actual creation order, resolve those literal created IDs in the output, and validate the exact definition, position and retained condition. Set descendants are correlated through the actual newly identified parent and explicit physical member role/ordinal; derived and separately allocated member IDs must all be covered. Every new physical identity and every relevant emitted identity must be accounted for, with no extra/missing/alias/existing collision. This supports identical noninstalled sets, multiple identical unit extras and mixed same-definition rows without inventing a new simulation or sorting output IDs.
+
+No observer code is authorized until independent Luna-high source/design review of this narrow seam. Its overhead is diagnostic evidence only, not native frame acceptance. The existing copied oracle remains unchanged; it uses the same real allocator, so independent actual/reference observation scopes each record their own issued values without reseeding or overriding either call.
+
+Independent Luna-high approved the observation seam with constraints in S06D2B1C_REVIEW.md. Parent changed only RuntimeEntropy's partial declaration and real-return hook (outside the sequence lock). Luna-medium identity owner additionally owns RuntimeEntropy.Diagnostics.cs/meta; no reset or allocator substitution. Parent wired identity Editor V3 collection/provenance, dedicated native verification flag and PowerShell switch. These are unrun source changes until author release and full source freeze.
+
+Native callback observation uses a Win-Development/!Editor-only synchronous Candidate span. Its Begin/Complete must be no-throw diagnostics and a no-op without the dedicated active test sink, preserving exactly one real Total/Preview result or exception. Any audit/sink fault is retained for a failed test, never changed domain control flow. Immutable row/physical/counter facts do not retain player references across a yield. Empty-cart guarded and naturally reached nonempty-cart legacy/null-origin UI paths are separate cases; do not bypass the actual normal button/guard route.

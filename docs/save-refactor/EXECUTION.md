@@ -62,6 +62,10 @@ Both files are UNITY_EDITOR-only partials with author-prefixed helpers. The appr
 
 The main test auditor caches immutable field descriptors only, keeping the same selection/order and comparing every value. Its snapshot reads raw selection IDs. V1 reference bytes stay unchanged; V2 determinism and added coverage require actual results. Account reset interruption left no partial files before the same Luna tasks resumed; no tests are credited for that interruption.
 
+## S06d2b1c — row-key identity and actual native callback evidence
+
+Baseline28ccdf1 commits the reviewed intermediate diagnostic progress. Next batch follows S06D2B1C_DECISIONS.md: two Luna-medium authors own new identity/native diagnostic files; parent alone wires existing entry points and runs Unity/Git; independent Luna-high reviews. No Step1/S06/planner gate or S07 advancement is claimed. Known JSON mutations stay strict-red, and native entropy is observed read-only without reset/override. The entire S00–S14/no-JSON/no-profile-save-copy goal remains active.
+
 ## File ownership manifest
 
 | S00 owner | Model / reasoning | Exclusive write paths | Task |
@@ -316,3 +320,10 @@ Coordinator owns the diagnostics-only FramePacingProbe.OverridePhase used by nat
 ## S06d active contract
 
 Follow S06D_DECISIONS.md and its exclusive file manifest. Native70/F8 52 functional S06c is committed as2b6687c; the >50 ms consumer frame and actual unknown/retry/failed-recovery/interruption gate remains open. A fixed entropy pre-change native run (seed16102026, fixture s06d-before-native-seed16102026) passes70/0 using the S06c player. Current authors add instrumentation and lifecycle verification only; freeze and independently review/commit this infrastructure before production consumer optimization. S07 and the whole no-JSON/no-clone completion gate remain later required work.
+
+## S06d2b1c final diagnostic evidence (2026-10-28)
+
+The prior goal turn made progress with committed `28ccdf1` characterization. This increment adds actual allocator-emission to input-row/quantity/member mappings and real native Move traces, using Luna-medium implementation plus independent Luna-high review. Final Editor identity subset records255 PASS /20 strict compound source-invariant FAIL, all ten identity/output comparisons passing, no OPEN/SKIP. Windows i builds; isolated native e completes118 checks /0 runtime errors then fails nine read-only findings: JSON in all seven candidates and identity-sequence changes in two mixed NewSet candidates. All1,054 frozen source files remain unchanged after build/player. [Results](../../reports/save-refactor/S06D2B1C_RESULTS.md), [review](S06D2B1C_REVIEW.md), [remaining contract audit](S06D2B_NEXT_CONTRACT_AUDIT.md).
+
+This is a local diagnostic baseline, not Step1/S06/planner approval. Preserve the failing invariants; do not normalize inputs to green. The full valid/malformed/limit and no-op/heal matrix, shared pure scoped planner/resolver, all live caller conversions, owned refresh and real performance gates remain before S07. All S07–S14, no runtime JSON manipulation and no whole-profile save/preview cloning requirements remain active. Diagnostic broad fixture copies/typed snapshots are not production strategies; no new save writer, checkout authority, UI theme or debug bench change is made here.
+Final staged-source whitespace cleanup is rebuilt as Windows j; native f repeats118/0 plusnine strict findings. Fourteen selected row/clock/counter/guard/outcome records match independent native e exactly, excluding timings/raw snapshots/process catalog hashes. Source-j remains unchanged after build/player. This strengthens only the reproducible diagnostic baseline; all implementation gates above remain open.

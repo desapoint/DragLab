@@ -27,7 +27,24 @@ namespace DragLab.Runtime
             bool Current(){if(origin==null)return true;if(TryValidatePartAction(origin,out _,out var reason))return true;error.text=reason;RejectPartAction(reason);return false;}
             string CurrentCartSignature(){PartCart.RecordRuntimeJsonCall();return JsonUtility.ToJson(new PartCart.Lines{entries=game.CartLines.Select(l=>l.Copy()).ToList()});}
             bool NeedsPreparation()=>entry.Definition.category==PartCategory.CylinderBlock&&destination?.kind==InventoryKind.Car&&(!MechanicsOwnership.Definitions(game.Profile,game.Profile.cars.Find(c=>c.instanceId==destination.id)).TryGetValue(PartCategory.CylinderBlock,out var fitted)||fitted!=entry.Definition.id);
-            PlayerProfile Candidate(){var lines=game.CartLines.Where(l=>l.assetId!=entry.AssetId).Select(l=>l.Copy()).ToList();lines.Add(Line());PartCart.Total(game.Profile,game.Profile.SelectedCar.instanceId,lines);return PartCart.PreviewProfile(game.Profile,game.Profile.SelectedCar,lines);}
+            PlayerProfile Candidate()
+            {
+                var lines=game.CartLines.Where(l=>l.assetId!=entry.AssetId).Select(l=>l.Copy()).ToList();lines.Add(Line());
+                PlayerProfile result=null;
+#if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
+                var observation=NativeCartPreviewCandidateProbe.Begin(game.Profile,lines,entry.AssetId,entry.Definition.id);
+                var encodingScope=observation==null?default(RuntimeDataEncodingProbe.Scope):RuntimeDataEncodingProbe.Measure("parts/cart-candidate-characterization");
+                Exception failure=null;
+                try{
+#endif
+                    PartCart.Total(game.Profile,game.Profile.SelectedCar.instanceId,lines);
+                    result=PartCart.PreviewProfile(game.Profile,game.Profile.SelectedCar,lines);
+                    return result;
+#if UNITY_STANDALONE_WIN && DEVELOPMENT_BUILD && !UNITY_EDITOR
+                }catch(Exception error){failure=error;throw;}
+                finally{encodingScope.Dispose();NativeCartPreviewCandidateProbe.Complete(observation,game.Profile,result,failure);}
+#endif
+            }
             OpenDialog("Move part","Choose a destination. This move takes effect when you confirm checkout.",new[]{new DialogAction("Cancel",CloseDialog),new DialogAction("Add move",()=>{
                 if(!Current())return;
                 if(game.Profile.revision!=revision||signature!=CurrentCartSignature()){error.text="Inventory or cart changed. Reopen Move.";return;}

@@ -1,5 +1,8 @@
-param([string]$FixtureName = 'native-menu-shell', [switch]$OnboardingOnly, [switch]$ClipBudgetOnly, [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly, [switch]$MaintenanceOnly, [switch]$RebuildOnly, [switch]$PricingOnly, [switch]$FrameProbe, [switch]$ResponsivenessOnly, [switch]$AwdHardwareOnly, [switch]$PartBrandsOnly, [switch]$SqliteStateOnly, [switch]$DisposalOnly, [switch]$RaceSelectionOnly, [switch]$BusinessOnly, [switch]$SetupManagementOnly, [switch]$RaceHudOnly, [switch]$TouchPedalsOnly, [switch]$MobileOnly, [switch]$FlickOnly, [switch]$QuickLeaveOnly, [switch]$EngineListeningOnly, [switch]$ListeningControlsOnly, [switch]$ResultsOnly, [switch]$FinishPacingOnly, [switch]$MarketBaselineOnly, [switch]$OwnedFittedOnly, [switch]$TireSwapOnly, [switch]$FinishExitOnly, [switch]$RacePauseOnly, [switch]$NavigationOnly, [switch]$ResetRequiredOnly, [string]$PlayerPath = '', [switch]$DeterministicCapture, [switch]$TypedRefillOnly, [switch]$TypedRefillF8Only, [switch]$TypedRefillLifecycleOnly, [switch]$BrowserPreparationOnly)
+param([string]$FixtureName = 'native-menu-shell', [switch]$OnboardingOnly, [switch]$ClipBudgetOnly, [switch]$DealershipOnly, [switch]$InspectionOnly, [switch]$TuningOnly, [switch]$ShineOnly, [switch]$PartsOnly, [switch]$PurchaseOnly, [switch]$CartOnly, [switch]$WarningsOnly, [switch]$WorkshopOnly, [switch]$BlockOnly, [switch]$MaintenanceOnly, [switch]$RebuildOnly, [switch]$PricingOnly, [switch]$FrameProbe, [switch]$ResponsivenessOnly, [switch]$AwdHardwareOnly, [switch]$PartBrandsOnly, [switch]$SqliteStateOnly, [switch]$DisposalOnly, [switch]$RaceSelectionOnly, [switch]$BusinessOnly, [switch]$SetupManagementOnly, [switch]$RaceHudOnly, [switch]$TouchPedalsOnly, [switch]$MobileOnly, [switch]$FlickOnly, [switch]$QuickLeaveOnly, [switch]$EngineListeningOnly, [switch]$ListeningControlsOnly, [switch]$ResultsOnly, [switch]$FinishPacingOnly, [switch]$MarketBaselineOnly, [switch]$OwnedFittedOnly, [switch]$TireSwapOnly, [switch]$FinishExitOnly, [switch]$RacePauseOnly, [switch]$NavigationOnly, [switch]$ResetRequiredOnly, [string]$PlayerPath = '', [switch]$DeterministicCapture, [switch]$TypedRefillOnly, [switch]$TypedRefillF8Only, [switch]$TypedRefillLifecycleOnly, [switch]$BrowserPreparationOnly, [switch]$CartPreviewCharacterizationOnly)
 $ErrorActionPreference = 'Stop'
+if ($CartPreviewCharacterizationOnly -and -not $DeterministicCapture) {
+    throw 'Cart preview characterization requires -DeterministicCapture for its isolated clock and identity observations.'
+}
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 . (Join-Path $PSScriptRoot 'InterfaceScreenshots.ps1')
 $taskFixture = [IO.Path]::GetFullPath((Join-Path $taskRoot ('reports/player-fixtures/' + $FixtureName)))
@@ -20,6 +23,7 @@ if ($ResetRequiredOnly) {
     }
     [IO.File]::WriteAllText((Join-Path $taskFixture 'driving-settings.json'), '{"version":1,"driving":{"wearMode":1,"shifting":1},"difficulty":2}', [Text.UTF8Encoding]::new($false))
 }
+if ($CartPreviewCharacterizationOnly) { $taskArgs += '--draglab-native-cart-preview-characterization-only-verify' }
 if ($BrowserPreparationOnly) { $taskArgs += '--draglab-native-browser-preparation-only-verify' }
 if ($TypedRefillLifecycleOnly) { $taskArgs += '--draglab-typed-refill-lifecycle-only-verify' }
 if ($TypedRefillOnly) { $taskArgs += '--draglab-typed-refill-only-verify' }
@@ -70,7 +74,16 @@ $taskPassed = $false
 try {
     $taskProcess = Start-Process -FilePath $taskPlayer -ArgumentList $taskArgs -WindowStyle Normal -PassThru
     $taskProcess.WaitForExit()
-    if (Test-Path -LiteralPath $taskReport) { Get-Content -LiteralPath $taskReport -Encoding UTF8 }
+    if (Test-Path -LiteralPath $taskReport) {
+        if ($CartPreviewCharacterizationOnly) {
+            Write-Output ('Full cart diagnostic report: ' + $taskReport)
+            foreach ($taskLine in [IO.File]::ReadLines($taskReport, [Text.Encoding]::UTF8)) {
+                if ($taskLine.Length -gt 1800) {
+                    Write-Output ($taskLine.Substring(0,300) + ' ... [' + $taskLine.Length + ' chars; complete record retained in report] ... ' + $taskLine.Substring($taskLine.Length-1200))
+                } else { Write-Output $taskLine }
+            }
+        } else { Get-Content -LiteralPath $taskReport -Encoding UTF8 }
+    }
     $taskPassed = $taskProcess.ExitCode -eq 0 -and (Test-Path -LiteralPath $taskReport) -and (Get-Item -LiteralPath $taskReport).LastWriteTimeUtc -ge $taskScreenshots.Started
     if (-not $taskPassed) { throw "Native menu check failed; inspect $taskFixture/player.log" }
 } finally { Complete-InterfaceScreenshotRun $taskScreenshots $taskPassed $taskReport }

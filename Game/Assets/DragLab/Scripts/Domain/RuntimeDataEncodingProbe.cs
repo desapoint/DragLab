@@ -13,10 +13,12 @@ namespace DragLab.Domain.Mechanics
         [ThreadStatic] static string activeOperation,lastOperation;
         static long jsonCalls,legacyKeyCalls;
         internal static long PartConsumerJsonCallCount=>Interlocked.Read(ref jsonCalls);
+        internal static long CurrentThreadJsonCallCount=>localJsonCalls;
         internal static long PartConsumerLegacyKeyCallCount=>Interlocked.Read(ref legacyKeyCalls);
         internal static string LastOperation=>lastOperation;
 #else
         internal static long PartConsumerJsonCallCount=>0;
+        internal static long CurrentThreadJsonCallCount=>0;
         internal static long PartConsumerLegacyKeyCallCount=>0;
         internal static string LastOperation=>null;
 #endif

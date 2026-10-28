@@ -19,6 +19,7 @@ namespace DragLab.Editor
         public static void RunCoreSalesStock()=>RunCore(false,true,"core-rows","sales-stock");
         public static void RunCoreStock()=>RunCore(false,true,"core-rows","stock");
         public static void RunCoreNewSets()=>RunCore(false,true,"core-rows","new-sets");
+        public static void RunIdentity()=>RunCore(false,true,"identity");
         public static void RunTopologyMembersCorners()=>RunCore(false,true,"topology","members-corners");
         public static void RunTopologyOwnersParts()=>RunCore(false,true,"topology","owners-parts");
         public static void RunTopologyBlocksLocks()=>RunCore(false,true,"topology","blocks-locks");
@@ -43,7 +44,7 @@ namespace DragLab.Editor
                     }
                     else count++;
                 };
-                if(expansion!=null)CartPreviewCharacterizationChecks.RunExpansion(check,root,expansion=="topology",subset);
+                if(expansion!=null)CartPreviewCharacterizationChecks.RunExpansion(check,root,expansion=="topology",subset,expansion=="identity");
                 else if(mutationBoundary)CartPreviewCharacterizationChecks.RunMutationBoundary(check,root);
                 else if(collectAll)CartPreviewCharacterizationChecks.RunCollectAll(check,root);
                 else CartPreviewCharacterizationChecks.Run(check,root);

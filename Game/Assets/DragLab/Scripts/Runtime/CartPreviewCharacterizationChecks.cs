@@ -19,8 +19,8 @@ namespace DragLab.Runtime
     public static partial class CartPreviewCharacterizationChecks
     {
         const uint FixtureSeed=16102026u;
-        const string TraceName="S06D2B1_LEGACY_TRACE_V2.txt";
-        const string TimingName="S06D2B1_METHOD_TIMINGS_V2.txt";
+        const string TraceName="S06D2B1_LEGACY_TRACE_V3.txt";
+        const string TimingName="S06D2B1_METHOD_TIMINGS_V3.txt";
 
         [Serializable] sealed class TypedProbe
         { public float scalar; public double precise; public string id; public string partInstanceId; public string note; public List<int> order; }
@@ -78,7 +78,7 @@ namespace DragLab.Runtime
             {if(value.StartsWith("METHOD|",StringComparison.Ordinal))TimingText.AppendLine(value);else Text.AppendLine(value);Progress(value);}
             // Retain incomplete diagnostic evidence on timeout/crash. This is
             // explicitly separate from the final complete stable trace.
-            void Progress(string value)=>File.AppendAllText(Path.Combine(folder,"progress-v2.txt"),value.Replace("\r\n","\n")+"\n",new UTF8Encoding(false));
+            void Progress(string value)=>File.AppendAllText(Path.Combine(folder,"progress-v3.txt"),value.Replace("\r\n","\n")+"\n",new UTF8Encoding(false));
         }
         static readonly HashSet<string> IdentityFieldNames=new HashSet<string>(StringComparer.Ordinal)
         {"id","instanceId","assetId","ownerId","parentVehicleId","vehicleInstanceId","engineInstanceId",
@@ -93,7 +93,7 @@ namespace DragLab.Runtime
             if(string.IsNullOrWhiteSpace(reportFolder))throw new ArgumentException("An isolated Editor report folder is required.",nameof(reportFolder));
             Directory.CreateDirectory(reportFolder);
             FixtureBaselines.Clear();
-            var trace=new Trace(check,reportFolder);trace.Add("S06D2B1_LEGACY_TRACE_V2");
+            var trace=new Trace(check,reportFolder);trace.Add("S06D2B1_LEGACY_TRACE_V3");
             trace.Add("seed="+FixtureSeed+";nowTicks="+CartPreviewCharacterizationFixtures.FixedNowTicks+";oracle=LegacyCartPreviewOracle;candidate=PartCart;typedCandidate=NONE");
             try
             {
@@ -103,6 +103,7 @@ namespace DragLab.Runtime
                 RunMixedLegacyTrace(trace);
                 RunManualErrorVectors(trace);
                 RunCoreRowMatrix(trace);
+                RunIdentityMatrix(trace);
                 RunTopologyMatrix(trace);
                 RunHundredLineBoundary(trace);
                 RunReservationLifetime(trace);
@@ -133,7 +134,7 @@ namespace DragLab.Runtime
             Directory.CreateDirectory(reportFolder);
             FixtureBaselines.Clear();
             var trace=new Trace(check,reportFolder,true);
-            trace.Add("S06D2B1_LEGACY_TRACE_V2|mode=collect-all;nonzero-on-any-false-assertion");
+            trace.Add("S06D2B1_LEGACY_TRACE_V3|mode=collect-all;nonzero-on-any-false-assertion");
             trace.Add("seed="+FixtureSeed+";nowTicks="+CartPreviewCharacterizationFixtures.FixedNowTicks+";oracle=LegacyCartPreviewOracle;candidate=PartCart;typedCandidate=NONE");
             try
             {
@@ -142,6 +143,7 @@ namespace DragLab.Runtime
                 RunIndependentGroup(trace,"mixed-cart-and-legacy-previews",()=>RunMixedLegacyTrace(trace));
                 RunIndependentGroup(trace,"malformed-cart-first-errors",()=>RunManualErrorVectors(trace));
                 RunIndependentGroup(trace,"core-row-contracts",()=>RunCoreRowMatrix(trace));
+                RunIndependentGroup(trace,"row-key-physical-identity",()=>RunIdentityMatrix(trace));
                 RunIndependentGroup(trace,"authored-topology-and-owner-graph",()=>RunTopologyMatrix(trace));
                 RunIndependentGroup(trace,"100-row-and-quantity-boundaries",()=>RunHundredLineBoundary(trace));
                 RunIndependentGroup(trace,"reservation-lifetime",()=>RunReservationLifetime(trace));
@@ -172,18 +174,20 @@ namespace DragLab.Runtime
         }
 
         /// <summary>Targeted expansion diagnostics, not a substitute for the full collector.</summary>
-        public static void RunExpansion(Action<bool,string> check,string reportFolder,bool topology,string subset=null)
+        public static void RunExpansion(Action<bool,string> check,string reportFolder,bool topology,string subset=null,bool identity=false)
         {
             if(check==null)throw new ArgumentNullException(nameof(check));
+            if(topology&&identity)throw new ArgumentException("Select one diagnostic expansion.");
             if(string.IsNullOrWhiteSpace(reportFolder))throw new ArgumentException("An isolated Editor report folder is required.",nameof(reportFolder));
             Directory.CreateDirectory(reportFolder);FixtureBaselines.Clear();
             var trace=new Trace(check,reportFolder,true);
-            trace.Add("S06D2B1_LEGACY_TRACE_V2|mode="+(topology?"topology-only":"core-rows-only")+";subset="+(subset??"all")+";nonzero-on-any-false-assertion");
+            trace.Add("S06D2B1_LEGACY_TRACE_V3|mode="+(identity?"identity-only":topology?"topology-only":"core-rows-only")+";subset="+(subset??"all")+";nonzero-on-any-false-assertion");
             trace.Add("seed="+FixtureSeed+";nowTicks="+CartPreviewCharacterizationFixtures.FixedNowTicks+";oracle=LegacyCartPreviewOracle;candidate=PartCart;typedCandidate=NONE");
             try
             {
                 RunIndependentGroup(trace,"source-provenance-and-typed-comparator",()=>{RecordSourceHashes(trace);RunTypedWalkerSelfTests(trace);});
-                if(topology)RunIndependentGroup(trace,"authored-topology-and-owner-graph",()=>RunTopologyMatrix(trace,subset));
+                if(identity)RunIndependentGroup(trace,"row-key-physical-identity",()=>RunIdentityMatrix(trace));
+                else if(topology)RunIndependentGroup(trace,"authored-topology-and-owner-graph",()=>RunTopologyMatrix(trace,subset));
                 else RunIndependentGroup(trace,"core-row-contracts",()=>RunCoreRowMatrix(trace,subset));
                 trace.Add("GATES|OPEN|Targeted diagnostic subset only; full collector, native callback and identity stream remain required.");
             }
@@ -905,6 +909,7 @@ namespace DragLab.Runtime
                 "Domain/PartsMarket.cs",
                 "Domain/RuntimeDataEncodingProbe.cs",
                 "Domain/RuntimeEntropy.cs",
+                "Domain/RuntimeEntropy.Diagnostics.cs",
                 "Domain/SharedInventory.cs",
                 "Domain/Valuation.cs",
                 "Domain/VehicleCollection.cs",
@@ -914,6 +919,7 @@ namespace DragLab.Runtime
                 "Runtime/CartPreviewLiteralTestClone.cs",
                 "Runtime/CartPreviewCharacterizationChecks.cs",
                 "Runtime/CartPreviewCharacterizationCoreRows.cs",
+                "Runtime/CartPreviewCharacterizationIdentity.cs",
                 "Runtime/CartPreviewCharacterizationTopology.cs",
                 "../Editor/CartPreviewCharacterizationVerification.cs"})
             {
