@@ -1,0 +1,6 @@
+"Route","SourceManifest","MeasuredN","Warmups","MedianMs","P95Rank","P95Ms","MaxMs","AllocatedBytes","GC0_1_2","Errors"
+"capture","b","31","5","0.1044","30/31","0.1556","0.1560","NA","0/0/0","0"
+"legacyResolve","b","31","5","0.3308","30/31","0.3643","4.5037","NA","1/1/1","0"
+"typedResolve","b","31","5","0.2495","30/31","0.3803","0.3818","NA","0/0/0","0"
+"legacyInspectionCapture","b","31","5","0.3446","30/31","0.3839","0.4213","NA","0/0/0","0"
+"typedInspection","b","31","5","0.2814","30/31","0.3467","0.4295","NA","0/0/0","0"

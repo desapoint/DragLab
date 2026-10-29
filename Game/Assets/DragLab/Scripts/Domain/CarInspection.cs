@@ -42,20 +42,10 @@ namespace DragLab.Domain
                 foreach(var e in c.elements){e.health=1;e.fault=ElementFault.None;e.severity=0;e.wearRemainder=0;}
                 foreach(var t in c.tires){t.health=1;t.failed=false;t.consumedLife=0;}
             }
-            var resolved = profile.catalog.Resolve(car.vehicleId, map, adjustments ?? car.tune);
-            TireFitments.Capture(resolved.spec,components,profile.catalog);
-            if(string.IsNullOrEmpty(car.engineAssemblyId))resolved.errors.Add("No engine attached: stored engines retain their own hardware and liquids.");
-            foreach (var p in components) {
-                var category=profile.catalog.Find(p.definitionId).category;
-                if(category==PartCategory.Tires&&p.condition.tires!=null&&p.condition.tires.Length==4){
-                    for(int i=0;i<4;i++)if(p.condition.tires[i].Failed)
-                        resolved.warnings.Add(new[]{"Front left","Front right","Rear left","Rear right"}[i]+" tire failed");
-                    continue;
-                }
-                if((PartSemantics.Wears(category)||category==PartCategory.Controls&&resolved.spec.engineBehavior.fueling==FuelSystem.Injection)&&(p.condition.failed||p.condition.health<=0))
-                    (MechanicalCatalog.DisablingEngineFailure(category)||category==PartCategory.Controls&&resolved.spec.engineBehavior.fueling==FuelSystem.Injection?resolved.errors:resolved.warnings)
-                        .Add("Failed "+p.slot+": "+p.condition.failureReason);
-            }
+            var resolved=InstalledBuildResolution.Resolve(profile.catalog,car.vehicleId,map,adjustments??car.tune,
+                components.Select(part=>new InstalledBuildComponent(part.slot,part)),
+                !string.IsNullOrEmpty(car.engineAssemblyId),false,false,
+                "No engine attached: stored engines retain their own hardware and liquids.",null,null,true);
             return new InspectionBuild { build = resolved, components = components, startingFluids=car.fluids.Copy(), startingFuel = new FuelState { litres = car.fuel.litres } };
         }
     }

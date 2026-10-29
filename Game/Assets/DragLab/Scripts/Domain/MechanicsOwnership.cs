@@ -169,25 +169,13 @@ namespace DragLab.Domain.Mechanics
         {
             using (var installed = InstalledPartLookup.Capture(profile.parts, car.installed.slots))
             {
-                var result = catalog.Resolve(car.vehicleId, installed.CopyDefinitions(), car.tune);
-                // TireFitments consumes this sequence synchronously and captures only authored
-                // definition copies; no borrowed record or lookup escapes into the result.
-                TireFitments.Capture(result.spec,Enumerable.Range(0,installed.Count).Select(i=>installed.EntryAt(i).Part).Where(p=>p!=null),catalog);
-                if(string.IsNullOrEmpty(car.engineAssemblyId))result.errors.Add("No engine attached. Attach a stored engine in Assemblies.");
-                if(car.engineRebuild!=null)result.errors.Add("Engine is reserved at the rebuild shop. Collect it after the quoted time.");
-                if(!string.IsNullOrEmpty(car.garageJobId))result.errors.Add("Car and installed components are reserved by a garage job. Claim or cancel to release.");
-                for (int bindingIndex = 0; bindingIndex < installed.Count; bindingIndex++)
-                {
-                    var entry = installed.EntryAt(bindingIndex);
-                    var item = entry.Part;
-                    if(item!=null&&catalog.Find(item.definitionId).category==PartCategory.Tires&&item.condition.tires!=null&&item.condition.tires.Length==4){
-                        for(int i=0;i<4;i++)if(item.condition.tires[i].Failed)
-                            result.warnings.Add(new[]{"Front left","Front right","Rear left","Rear right"}[i]+" tire failed");
-                        continue;
-                    }
-                    if (item != null && (PartSemantics.Wears(catalog.Find(item.definitionId).category) || catalog.Find(item.definitionId).category == PartCategory.Controls && result.spec.engineBehavior.fueling == FuelSystem.Injection) && (item.condition.failed || item.condition.health <= 0)) (MechanicalCatalog.DisablingEngineFailure(catalog.Find(item.definitionId).category) || catalog.Find(item.definitionId).category == PartCategory.Controls && result.spec.engineBehavior.fueling == FuelSystem.Injection ? result.errors : result.warnings).Add(entry.Slot + " failed: " + item.condition.failureReason);
-                }
-                return result;
+                var components=Enumerable.Range(0,installed.Count).Select(i=>
+                {var entry=installed.EntryAt(i);return new InstalledBuildComponent(entry.Slot,entry.Part);});
+                return InstalledBuildResolution.Resolve(catalog,car.vehicleId,installed.CopyDefinitions(),car.tune,components,
+                    !string.IsNullOrEmpty(car.engineAssemblyId),car.engineRebuild!=null,!string.IsNullOrEmpty(car.garageJobId),
+                    "No engine attached. Attach a stored engine in Assemblies.",
+                    "Engine is reserved at the rebuild shop. Collect it after the quoted time.",
+                    "Car and installed components are reserved by a garage job. Claim or cancel to release.",false);
             }
         }
         public static void Replace(PlayerProfile profile, OwnedCar car, PartInstance item, MechanicalCatalog catalog)

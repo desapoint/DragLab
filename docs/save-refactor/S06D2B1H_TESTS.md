@@ -1,0 +1,23 @@
+# S06d2b1h — installed-build projection checks
+
+This Editor-only checker characterizes the dormant `ConcreteInstalledBuildInput` seam. It does not activate a cart planner or replace any current caller. The public partial-checker entry point is `RunInstalledBuildProjectionContracts(check, folder, subset)`. Subsets are `normalized`, `replacement`, `tires`, `detached`, and `bindings`; omitted or `all` runs the complete finite set.
+
+## Fixture families
+
+Each family starts from the actual authored `starter-hatch` fixture produced by `CartPreviewCharacterizationFixtures.CreateNormalized`. That setup performs its own one-time normalization and global validation before returning. No test calls Ensure or global validation after it mutates a fixture.
+
+1. **Normalized installed car:** compare frozen original, current public, and typed resolve/inspection results, then compare authoritative `NativePartBrowser.Inspect` outputs. It checks source graph, Unity RNG, and `RuntimeEntropy` mode/clock stability; exact binding/resolved/missing counts; no retained profile, car, catalogue, delegate, or Unity object roots; no observed identity/JSON activity; static seam source tokens; and deep isolation in both directions. Mutating returned build/inspection records must not change source or a later evaluation. Mutating source tune/AWD tune, fuel, fluids, fitted-part condition, and member condition after capture must not change the captured resolve or inspection.
+2. **Same-family replacement:** buy an actual eligible authored alternate Pistons definition, install its new physical part through domain operations, set a valid existing member's fault/history, and retain the displaced physical part. Compare the full resolution and inspection outputs against the frozen reference.
+3. **Tires and wheels:** change existing per-corner tire wear/health and wheel member health/severity on the actual fitted packs. IDs and definitions remain authored. The full domain and authoritative inspection outputs are compared.
+4. **Detached engine and context:** move the actual owned engine to Storage, assign exact car fuel/fluid facts, and compare detached build/inspection outputs. Separate subcases create real rebuild and garage reservations through `EngineRebuilds.Start` and `GarageBusiness.Assign`. Three missing-state variants (fluids only, fuel only, both null) check capture/resolve/inspection boundaries. The typed inspection deliberately refuses missing fluids first, then missing fuel, with `Inspection requires captured fluid state.` and `Inspection requires captured fuel state.` respectively; the frozen legacy capture's first `NullReferenceException` is recorded as an existing route difference. Typed `Resolve` remains usable when inspection-only inputs are absent.
+5. **Installed bindings:** reverse actual binding order, blank an ID, use a dangling target, insert a null row, add an actual duplicate slot row, and clear one fitted physical part's owner field. Each variant compares exact output or first exception against the frozen resolve/inspection reference, with source immutability checks. No repair or identity synthesis is attempted.
+
+## Cost evidence
+
+The normalized case reports separate descriptive spans for capture, frozen `MechanicsOwnership.Resolve`, typed captured resolve, frozen inspection capture, and typed inspection evaluation. Each span uses five warmups and 31 measured operations. A fresh exact literal test copy is prepared outside each timed region; captured input is also prepared outside the typed evaluation timer. The harness checksums results after timing and records median, nearest-rank p95 (rank 30/31), maximum, per-span allocation distributions after the same-thread 8192-byte calibration, and GC counts. If calibration is unavailable, allocations are `NA`. It measures no full simulation/CarInspection race probe, and the figures are Editor diagnostics without native-frame acceptance thresholds.
+
+The harness writes a compact `S06D2B1H_INSTALLED_BUILD_PROJECTION.txt` summary to the supplied folder. Outputs use the existing typed canonicalizer for complete field, array-order, and runtime-type equality. A fixture precondition failure is reported as a failed assertion plus a named `OPEN`, never treated as a pass.
+
+## Evidence state
+
+Source implementation and fixture selection are ready for parent/high review. This file does not claim Unity compilation or runtime assertions have passed; the parent owns the Editor wrapper and all Unity/build execution. No domain source, UI, save writer, or production caller was changed by this characterization increment.
