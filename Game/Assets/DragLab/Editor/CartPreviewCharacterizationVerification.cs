@@ -41,9 +41,43 @@ namespace DragLab.Editor
         public static void RunOrder()=>RunCore(false,true,"supplemental","order");
         public static void RunOrderSales()=>RunCore(false,true,"supplemental","order-sales");
         public static void RunOrderChain()=>RunCore(false,true,"supplemental","order-chain");
+        public static void RunCostAttribution()=>RunCostCore(null);
+        public static void RunCostTotals()=>RunCostCore("totals");
+        public static void RunCostStages()=>RunCostCore("stages");
+        public static void RunCostOperations()=>RunCostCore("operations");
+        public static void RunCostBlock()=>RunCostCore("block");
         public static void RunTopologyMembersCorners()=>RunCore(false,true,"topology","members-corners");
         public static void RunTopologyOwnersParts()=>RunCore(false,true,"topology","owners-parts");
         public static void RunTopologyBlocksLocks()=>RunCore(false,true,"topology","blocks-locks");
+        static void RunCostCore(string subset)
+        {
+            if(!Application.isBatchMode || EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            string root=Path.GetFullPath(Path.Combine(Application.dataPath,
+                "../../reports/save-refactor/S06D2B1G/cost-"+(subset??"all")+"-"+DateTime.UtcNow.ToString("yyyyMMdd-HHmmssfff")));
+            Directory.CreateDirectory(root);
+            var report=new StringBuilder("S06d2b1g descriptive legacy cost attribution\n");
+            int passed=0,failed=0;
+            try
+            {
+                CartPreviewCharacterizationChecks.RunCostAttribution((ok,label)=>
+                {
+                    report.AppendLine((ok?"PASS ":"FAIL ")+label);
+                    if(ok)passed++;else failed++;
+                },root,subset);
+                if(failed!=0)throw new InvalidOperationException("Cost harness retains "+failed+" failed assertions.");
+                report.AppendLine("RESULT PASS count="+passed);
+                Debug.Log("S06 cost attribution PASS "+passed+" folder="+root);
+            }
+            catch(Exception error)
+            {
+                report.AppendLine("RESULT FAIL passed="+passed+" failedAssertions="+failed);
+                report.AppendLine(error.ToString());
+                Debug.LogError("S06 cost attribution FAIL folder="+root);
+                throw;
+            }
+            finally{File.WriteAllText(Path.Combine(root,"checks.txt"),report.ToString(),new UTF8Encoding(false));}
+        }
         static void RunCore(bool mutationBoundary,bool collectAll,string expansion=null,string subset=null)
         {
             if (!Application.isBatchMode || EditorApplication.isPlaying)

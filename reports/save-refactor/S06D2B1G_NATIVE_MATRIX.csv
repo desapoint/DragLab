@@ -1,0 +1,3 @@
+"Fixture","Source","Capture","Interactions","Frames","MedianFrameMs","P95FrameMs","MaxFrameMs","FramesOver50Ms","MaxUnityGCBytes","FrameCSV_SHA256","FunctionalChecks","RuntimeErrors","PerformanceGate"
+"s06d2b1g-passive-capture-b","b","true","1","77","13.9750","20.9880","415.9290","2","55517488","65FF035EC5E1C983408FAEE545BFE0D60BE034D8D6F5959F78E8D6E0CABBEF21","58","0","FAIL"
+"s06d2b1g-passive-noncapture-b","b","false","1","76","13.9810","21.8910","419.3270","2","57724096","CB2B5864658BBA37743DC938C0F4BB989A0A153CE11B0E1454D3422FD488CB92","58","0","FAIL"

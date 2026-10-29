@@ -102,6 +102,8 @@ namespace DragLab.Runtime
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-shine-only-verify")>=0){yield return AngledShineChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-mobile-only-verify")>=0){yield return MobileAccessChecks(input);yield break;}
                 if(game.Profile.firstPurchasePending)yield return StarterPurchaseChecks(input);
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-native-cart-preview-destinations-only-verify")>=0){yield return CartPreviewDestinationChecks(input);yield break;}
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-native-cart-preview-passive-envelope-only-verify")>=0){yield return CartPreviewPassiveEnvelopeChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-native-cart-preview-characterization-only-verify")>=0){yield return CartPreviewCharacterizationChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-native-browser-preparation-only-verify")>=0){yield return BoundedPartsBrowserChecks(input);yield break;}
                 if(Array.IndexOf(Environment.GetCommandLineArgs(),"--draglab-typed-refill-lifecycle-only-verify")>=0){yield return TypedFluidRefillLifecycleChecks(input);yield break;}
