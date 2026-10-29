@@ -125,6 +125,14 @@ namespace DragLab.Domain.Mechanics
             for(int i=0;i<count;i++){var element=Create(d.category);element.id=p.instanceId+"/element/"+i;element.cylinder=i/valves;element.valve=PerValve(d.category)?i%valves:-1;element.role=Role(d.category,i%valves,valves);element.health=p.condition.failed?0:p.condition.health;p.condition.elements[i]=element;}
             if(d.category==PartCategory.Ignition)for(int i=v.combustion.separateSparkPlugs?0:v.sound.cylinders;i<count;i++){var e=p.condition.elements[i];e.role="ignition coil";e.cylinder=Ignition(v)==IgnitionTopology.Distributor?-1:i-(v.combustion.separateSparkPlugs?0:v.sound.cylinders);}
         }
+        // Typed cart projection must not invent missing physical member identities.
+        // Once an array is present, keep the legacy type-validation behavior exactly.
+        internal static void EnsureExisting(VehicleSpec v,PartDefinition d,PartInstance p)
+        {
+            if(Count(v,d)>0&&(p.condition.elements==null||p.condition.elements.Length==0))
+                throw new InvalidOperationException("Typed part move projection cannot initialize missing engine members.");
+            Ensure(v,d,p);
+        }
         static string Role(PartCategory c,int valve,int valves){return c==PartCategory.Wheels?"wheel":c==PartCategory.GlowPlugs?"glow plug":c==PartCategory.SparkPlugs||c==PartCategory.Ignition?"spark plug / lead":c==PartCategory.FuelSystem?"injector":c==PartCategory.Bearings?"rod bearing pair":c==PartCategory.PistonRings?"piston ring pack":PerValve(c)?(valve<valves/2?"intake ":"exhaust ")+(c==PartCategory.Valves?"valve / guide":c==PartCategory.ValveSprings?"spring / retainer":c==PartCategory.ValveSeals?"valve seal":"follower / rocker"):PartSemantics.Friendly(c.ToString());}
         public static bool NeedsService(ComponentCondition c){return c.elements!=null&&c.elements.Any(e=>e.health<.5||e.fault!=ElementFault.None);}
         public static bool FaultAllowed(PartCategory c,EngineElement e)=>MatchesCategory(c,e)&&Faults(c).Contains(e.fault);

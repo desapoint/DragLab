@@ -55,6 +55,16 @@ namespace DragLab.Domain
                 car.fuel==null?0:car.fuel.litres,car.fluids?.Copy());
         }
 
+        internal static ConcreteInstalledBuildInput FromTransitionFacts(string carId,string vehicleId,string engineAssemblyId,
+            string garageJobId,bool rebuildReserved,Tune tune,IDictionary<PartCategory,string> definitions,
+            IEnumerable<InstalledBuildComponent> components,FuelState fuel,FluidState fluids)
+        {
+            var ownedComponents=(components??Enumerable.Empty<InstalledBuildComponent>())
+                .Select(component=>new InstalledBuildComponent(component.Slot,component.Part?.Copy(),component.BindingId)).ToArray();
+            return new ConcreteInstalledBuildInput(carId,vehicleId,engineAssemblyId,garageJobId,rebuildReserved,tune?.Copy(),
+                new Dictionary<PartCategory,string>(definitions),ownedComponents,fuel!=null,fuel==null?0:fuel.litres,fluids?.Copy());
+        }
+
         internal BuildResolution Resolve(MechanicalCatalog catalog)
         {
             return InstalledBuildResolution.Resolve(catalog,vehicleId,new Dictionary<PartCategory,string>(definitions),tune?.Copy(),

@@ -49,23 +49,23 @@ namespace DragLab.Domain.Mechanics
         }
         public static void RemovePart(PlayerProfile p, string engineId, PartCategory category)
         {
-            var engine = Stored(p, engineId); var binding = engine.slots.Find(s => s.slot == category.ToString()) ?? throw new InvalidOperationException("Stored slot is empty.");
-            var item = p.parts.Find(i => i.instanceId == binding.partInstanceId);
-            item.location = PartLocation.Inventory; item.ownerId = item.slot = ""; engine.slots.Remove(binding);
+            using(var state=new ProfileInstalledPartTransitionState(p,false))
+                InstalledPartTransition.RemoveEnginePart(state,engineId,category);
         }
         public static void InstallPart(PlayerProfile p, string engineId, string partId)
         {
-            var engine = Stored(p, engineId); var item = p.parts.Find(i => i.instanceId == partId) ?? throw new InvalidOperationException("Part no longer exists.");
-            var d = p.catalog.Find(item.definitionId);
-            if (item.location != PartLocation.Inventory || !MechanicalCatalog.EngineSlot(d.category) || !p.catalog.Fits(p.catalog.Spec(engine.vehicleDefinitionId), d)) throw new InvalidOperationException("Select a compatible loose engine part.");
-            if (engine.slots.Any(s => s.slot == d.category.ToString())) RemovePart(p, engineId, d.category);
-            item.location = PartLocation.Assembly; item.ownerId = engineId; item.slot = d.category.ToString();
-            engine.slots.Add(new SlotBinding { slot = item.slot, partInstanceId = item.instanceId });
-            EngineElements.Ensure(p.catalog.Resolve(engine.vehicleDefinitionId,Definitions(p,engine),engine.tune).spec, d, item);
+            using(var state=new ProfileInstalledPartTransitionState(p,false))
+            {
+                var engine=InstalledPartTransition.Stored(state,engineId);
+                var item=state.FindPart(partId)??throw new InvalidOperationException("Part no longer exists.");
+                InstalledPartTransition.InstallEnginePartAfterStored(state,p.catalog,engine,item,PartMoveMemberPolicy.LegacyEnsure);
+            }
         }
         internal static PartCategory Parse(string slot) { return (PartCategory)Enum.Parse(typeof(PartCategory), slot); }
         public static Dictionary<PartCategory, string> Definitions(PlayerProfile p, EngineAssemblyInstance engine)
-        { return engine.slots.ToDictionary(s => Parse(s.slot), s => p.parts.Find(i => i.instanceId == s.partInstanceId).definitionId); }
+            =>Definitions(p.parts,engine.slots);
+        internal static Dictionary<PartCategory,string> Definitions(IList<PartInstance> parts,IList<SlotBinding> slots)
+        { return slots.ToDictionary(s => Parse(s.slot), s => parts.FirstOrDefault(i => i.instanceId == s.partInstanceId).definitionId); }
         public static void EngineAdjustments(Tune target, Tune source)
         {
             if (source == null) return;

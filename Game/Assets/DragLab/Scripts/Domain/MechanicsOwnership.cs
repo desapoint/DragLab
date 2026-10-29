@@ -161,8 +161,10 @@ namespace DragLab.Domain.Mechanics
             }
         }
         public static Dictionary<PartCategory, string> Definitions(PlayerProfile profile, OwnedCar car)
+            =>Definitions(profile.parts,car.installed.slots);
+        internal static Dictionary<PartCategory,string> Definitions(IList<PartInstance> parts,IList<SlotBinding> slots)
         {
-            using (var installed = InstalledPartLookup.Capture(profile.parts, car.installed.slots))
+            using (var installed = InstalledPartLookup.Capture(parts, slots))
                 return installed.CopyDefinitions();
         }
         public static BuildResolution Resolve(PlayerProfile profile, OwnedCar car, MechanicalCatalog catalog)
@@ -180,32 +182,20 @@ namespace DragLab.Domain.Mechanics
         }
         public static void Replace(PlayerProfile profile, OwnedCar car, PartInstance item, MechanicalCatalog catalog)
         {
-            EngineRebuilds.RequireAvailable(car);
-            var definition = catalog.Find(item.definitionId);
-            if (item.location != PartLocation.Inventory || !catalog.Fits(catalog.Spec(car.vehicleId), definition)) throw new InvalidOperationException("Part must be loose and compatible.");
-            if(MechanicalCatalog.EngineSlot(definition.category) && string.IsNullOrEmpty(car.engineAssemblyId)) throw new InvalidOperationException("Attach an engine before installing its parts.");
-            string slot = definition.category.ToString(); var old = car.installed.slots.Find(s => s.slot == slot);
-            if (old != null) Remove(profile, car, slot);
-            item.location = MechanicalCatalog.EngineSlot(definition.category) ? PartLocation.Assembly : PartLocation.Vehicle;
-            item.ownerId = item.location == PartLocation.Assembly ? car.engineAssemblyId : car.instanceId; item.slot = slot;
-            car.installed.slots.Add(new SlotBinding { slot = slot, partInstanceId = item.instanceId });
-            ProjectRanks(profile, car, catalog);
+            if(car==null)EngineRebuilds.RequireAvailable(car);
+            using(var state=new ProfileInstalledPartTransitionState(profile,false))
+                InstalledPartTransition.InstallCarPart(state,catalog,new PartMoveCarState(car,false),item);
         }
         public static void Remove(PlayerProfile profile, OwnedCar car, string slot)
         {
-            EngineRebuilds.RequireAvailable(car);
-            var binding = car.installed.slots.Find(s => s.slot == slot);
-            if (binding == null) throw new InvalidOperationException("Slot is empty.");
-            var item = profile.parts.Find(p => p.instanceId == binding.partInstanceId);
-            item.location = PartLocation.Inventory; item.ownerId = item.slot = ""; car.installed.slots.Remove(binding);
+            if(car==null)EngineRebuilds.RequireAvailable(car);
+            using(var state=new ProfileInstalledPartTransitionState(profile,false))
+                InstalledPartTransition.RemoveCarPart(state,new PartMoveCarState(car,false),slot);
         }
         public static void ProjectRanks(PlayerProfile profile, OwnedCar car, MechanicalCatalog catalog)
         {
-            var resolved = catalog.Resolve(car.vehicleId, Definitions(profile, car), car.tune).tune;
-            car.tune.engineLevel = resolved.engineLevel; car.tune.tireLevel = resolved.tireLevel; car.tune.weightLevel = resolved.weightLevel;
-            car.tune.gearboxLevel = resolved.gearboxLevel; car.tune.exhaustLevel = resolved.exhaustLevel; car.tune.controlLevel = resolved.controlLevel;
-            car.tune.inductionUpgrade = resolved.inductionUpgrade; car.tune.transmissionUpgrade = resolved.transmissionUpgrade;
-            car.tune.ApplyAdjustments(resolved);
+            using(var state=new ProfileInstalledPartTransitionState(profile,false))
+                InstalledPartTransition.ProjectRanks(state,catalog,new PartMoveCarState(car,false));
         }
         public static bool LegacyUpgrade(PlayerProfile profile, string category)
         {

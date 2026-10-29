@@ -47,6 +47,8 @@ namespace DragLab.Editor
         public static void RunCostOperations()=>RunCostCore("operations");
         public static void RunCostBlock()=>RunCostCore("block");
         public static void RunInstalledBuild()=>RunCore(false,true,"installed-build");
+        public static void RunWholePartMove()=>RunCore(false,true,"whole-part-move");
+        public static void RunWholePartMoveRegression()=>RunCore(false,true,"whole-part-move-regression");
         public static void RunInstalledBuildRegression()=>RunCore(false,true,"installed-build-regression");
         public static void RunTopologyMembersCorners()=>RunCore(false,true,"topology","members-corners");
         public static void RunTopologyOwnersParts()=>RunCore(false,true,"topology","owners-parts");
@@ -101,7 +103,13 @@ namespace DragLab.Editor
                     }
                     else count++;
                 };
-                if(expansion=="installed-build-regression")NativePartsBrowserBuildChecks.Run(check,root);
+                if(expansion=="whole-part-move-regression")
+                {
+                    CartPreviewCharacterizationChecks.RunInstalledBuildProjectionContracts(check,root);
+                    NativePartsBrowserBuildChecks.Run(check,root);
+                }
+                else if(expansion=="whole-part-move")CartPreviewCharacterizationChecks.RunWholePartMove(check,root);
+                else if(expansion=="installed-build-regression")NativePartsBrowserBuildChecks.Run(check,root);
                 else if(expansion=="installed-build")CartPreviewCharacterizationChecks.RunInstalledBuildProjectionContracts(check,root,subset);
                 else if(expansion=="supplemental")CartPreviewCharacterizationChecks.RunSupplemental(check,root,subset);
                 else if(expansion!=null)CartPreviewCharacterizationChecks.RunExpansion(check,root,expansion=="topology",subset,expansion=="identity");

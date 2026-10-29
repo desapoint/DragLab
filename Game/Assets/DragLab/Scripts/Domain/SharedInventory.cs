@@ -94,18 +94,24 @@ namespace DragLab.Domain.Mechanics
         }
         public static void Move(PlayerProfile p,string assetId,InventoryKind target,string targetId)
         {
-            if(p.runCheckpoints.Any(r=>!r.settled))throw new InvalidOperationException("Close the active run before moving inventory.");
-            if(target==InventoryKind.Storage&&!p.inventory.storage.Any(s=>s.id==targetId))throw new InvalidOperationException("Unknown storage container.");
-            var unit=p.looseEngineElements.Find(u=>u.element.id==assetId);
-            if(unit!=null){if(target!=InventoryKind.Storage)throw new InvalidOperationException("Choose a fitted position to install an individual unit.");unit.storageId=targetId;return;}
-            var engine=p.engines.Find(e=>e.instanceId==assetId);
-            if(engine!=null){if(target==InventoryKind.Car){if(engine.parentVehicleId==targetId)return;if(!string.IsNullOrEmpty(engine.parentVehicleId))AssemblyOperations.Detach(p,engine.parentVehicleId);AssemblyOperations.Attach(p,assetId,targetId);return;}if(target!=InventoryKind.Storage)throw new InvalidOperationException("Engine destination must be storage or a car.");if(!string.IsNullOrEmpty(engine.parentVehicleId))AssemblyOperations.Detach(p,engine.parentVehicleId);engine.storageId=targetId;return;}
-            var item=p.parts.Find(i=>i.instanceId==assetId)??throw new InvalidOperationException("Owned item no longer exists.");
-            if(target!=InventoryKind.Storage&&target!=InventoryKind.Car&&target!=InventoryKind.Engine)throw new InvalidOperationException("Use a quote/cart to buy or sell.");
-            if(item.location!=PartLocation.Inventory){var owner=p.cars.Find(c=>c.installed.slots.Any(s=>s.partInstanceId==assetId));var category=p.catalog.Find(item.definitionId).category;if(owner!=null){AssemblyOperations.MutableCar(p,owner.instanceId);PartOperations.Remove(p,owner.instanceId,category);}else AssemblyOperations.RemovePart(p,item.ownerId,category);}
-            if(target==InventoryKind.Car)PartOperations.Install(p,p.catalog,targetId,assetId);
-            else if(target==InventoryKind.Engine)AssemblyOperations.InstallPart(p,targetId,assetId);
-            else item.storageId=targetId;
+            using(var state=new ProfileInstalledPartTransitionState(p,false))
+            {
+                var preamble=InstalledPartTransition.Preamble(state,assetId,target,targetId);
+                if(preamble.Kind==PartMoveAssetKind.Unit)
+                {
+                    var unit=p.looseEngineElements.Find(u=>u.element.id==assetId);
+                    if(target!=InventoryKind.Storage)throw new InvalidOperationException("Choose a fitted position to install an individual unit.");
+                    unit.storageId=targetId;return;
+                }
+                if(preamble.Kind==PartMoveAssetKind.Engine)
+                {
+                    var engine=p.engines.Find(e=>e.instanceId==assetId);
+                    if(target==InventoryKind.Car){if(engine.parentVehicleId==targetId)return;if(!string.IsNullOrEmpty(engine.parentVehicleId))AssemblyOperations.Detach(p,engine.parentVehicleId);AssemblyOperations.Attach(p,assetId,targetId);return;}
+                    if(target!=InventoryKind.Storage)throw new InvalidOperationException("Engine destination must be storage or a car.");
+                    if(!string.IsNullOrEmpty(engine.parentVehicleId))AssemblyOperations.Detach(p,engine.parentVehicleId);engine.storageId=targetId;return;
+                }
+                InstalledPartTransition.MovePartAfterPreamble(state,p.catalog,preamble,target,targetId,PartMoveMemberPolicy.LegacyEnsure);
+            }
         }
         public static string Validate(PlayerProfile p,HashSet<string> identities)
             =>Validate(p,identities,false);
