@@ -42,6 +42,7 @@ namespace DragLab.Domain.Mechanics
         internal abstract bool HasUnsettledRun {get;}
         internal abstract bool StorageExists(string id);
         internal abstract bool HasLooseUnit(string id);
+        internal abstract PartMoveLooseUnitState FindLooseUnit(string id);
         internal abstract bool HasEngineAsset(string id);
         internal abstract PartInstance FindPart(string id);
         internal abstract PartMoveCarState FindCar(string id);
@@ -58,6 +59,8 @@ namespace DragLab.Domain.Mechanics
         internal abstract IReadOnlyList<PartMoveAffectedOwner> AffectedOwners {get;}
         internal abstract void MarkEngineChanged(PartMoveEngineState engine);
         internal abstract IReadOnlyList<PartMoveEngineState> ChangedEngines {get;}
+        internal abstract void MarkUnitChanged(PartMoveLooseUnitState unit);
+        internal abstract IReadOnlyList<PartMoveLooseUnitState> ChangedUnits {get;}
         public abstract void Dispose();
     }
 
@@ -104,6 +107,7 @@ namespace DragLab.Domain.Mechanics
         internal void Release(){live=null;source=null;bindings=null;tune=null;fuel=null;fluids=null;}
         internal Tune OwnedTuneCopy=>Tune?.Copy();
         internal SlotBinding[] BindingCopies=>Bindings==null?null:Bindings.Select(binding=>binding==null?null:new SlotBinding{slot=binding.slot,partInstanceId=binding.partInstanceId}).ToArray();
+        internal IList<SlotBinding> BindingsForLookup=>live!=null?live.installed.slots:bindingsLoaded?bindings:source.installed.slots;
     }
 
     internal sealed class PartMoveEngineState
@@ -137,6 +141,30 @@ namespace DragLab.Domain.Mechanics
         internal SlotBinding[] BindingCopies=>Bindings==null?null:Bindings.Select(binding=>binding==null?null:new SlotBinding{slot=binding.slot,partInstanceId=binding.partInstanceId}).ToArray();
     }
 
+    internal sealed class PartMoveLooseUnitState
+    {
+        LooseEngineElement live,source;
+        EngineElement element;
+        bool elementLoaded;
+        readonly Func<EngineElement,EngineElement> copyElement;
+        string storageId;
+        internal readonly string Id,DefinitionId;
+        internal readonly int UnitPrice;
+        internal readonly bool TireUnit;
+        internal string StorageId {get{if(live!=null)return live.storageId;return storageId;}set{if(live!=null)live.storageId=value;else storageId=value;}}
+        internal EngineElement Element
+        {
+            get{if(live!=null)return live.element;if(!elementLoaded){element=copyElement(source.element);elementLoaded=true;}return element;}
+            set{if(live!=null)live.element=value;else{element=value;elementLoaded=true;}}
+        }
+        internal PartMoveLooseUnitState(LooseEngineElement unit,bool copy,Func<EngineElement,EngineElement> copyElement)
+        {
+            Id=unit.element.id;DefinitionId=unit.definitionId;UnitPrice=unit.unitPrice;TireUnit=unit.tireUnit;storageId=unit.storageId;
+            if(copy){source=unit;this.copyElement=copyElement;}else live=unit;
+        }
+        internal void Release(){live=null;source=null;element=null;}
+    }
+
     internal sealed class ProfileInstalledPartTransitionState : InstalledPartTransitionState
     {
         sealed class ReferenceComparer<T> : IEqualityComparer<T> where T:class
@@ -146,17 +174,22 @@ namespace DragLab.Domain.Mechanics
         readonly Dictionary<PartInstance,PartInstance> partCopies=new Dictionary<PartInstance,PartInstance>(ReferenceComparer<PartInstance>.Instance);
         readonly Dictionary<OwnedCar,PartMoveCarState> carStates=new Dictionary<OwnedCar,PartMoveCarState>(ReferenceComparer<OwnedCar>.Instance);
         readonly Dictionary<EngineAssemblyInstance,PartMoveEngineState> engineStates=new Dictionary<EngineAssemblyInstance,PartMoveEngineState>(ReferenceComparer<EngineAssemblyInstance>.Instance);
+        readonly Dictionary<LooseEngineElement,PartMoveLooseUnitState> unitStates=new Dictionary<LooseEngineElement,PartMoveLooseUnitState>(ReferenceComparer<LooseEngineElement>.Instance);
         readonly Dictionary<Tune,Tune> tuneCopies=new Dictionary<Tune,Tune>(ReferenceComparer<Tune>.Instance);
         readonly Dictionary<FluidState,FluidState> fluidCopies=new Dictionary<FluidState,FluidState>(ReferenceComparer<FluidState>.Instance);
+        readonly Dictionary<EngineElement,EngineElement> elementCopies=new Dictionary<EngineElement,EngineElement>(ReferenceComparer<EngineElement>.Instance);
         readonly List<PartMoveCarState> affectedCars=new List<PartMoveCarState>();
         readonly List<PartMoveEngineState> affectedEngines=new List<PartMoveEngineState>();
         readonly List<PartMoveAffectedOwner> affectedOwners=new List<PartMoveAffectedOwner>();
         readonly List<PartInstance> changedParts=new List<PartInstance>();
         readonly List<PartMoveEngineState> changedEngines=new List<PartMoveEngineState>();
+        readonly List<PartMoveLooseUnitState> changedUnits=new List<PartMoveLooseUnitState>();
         internal ProfileInstalledPartTransitionState(PlayerProfile profile,bool copyOnRead){this.profile=profile;this.copyOnRead=copyOnRead;}
         internal override bool HasUnsettledRun=>profile.runCheckpoints.Any(run=>!run.settled);
         internal override bool StorageExists(string id)=>profile.inventory.storage.Any(storage=>storage.id==id);
         internal override bool HasLooseUnit(string id)=>profile.looseEngineElements.Find(unit=>unit.element.id==id)!=null;
+        internal override PartMoveLooseUnitState FindLooseUnit(string id)
+        {var unit=profile.looseEngineElements.Find(candidate=>candidate.element.id==id);return unit==null?null:Wrap(unit);}
         internal override bool HasEngineAsset(string id)=>profile.engines.Find(engine=>engine.instanceId==id)!=null;
         internal override PartInstance FindPart(string id)
         {
@@ -172,15 +205,24 @@ namespace DragLab.Domain.Mechanics
         internal override PartMoveCarState FindCar(string id)
         {var car=profile.cars.Find(candidate=>candidate.instanceId==id);return car==null?null:Wrap(car);}
         internal override PartMoveCarState FirstCarOwningPart(string partId)
-        {var car=profile.cars.Find(candidate=>candidate.installed.slots.Any(binding=>binding.partInstanceId==partId));return car==null?null:Wrap(car);}
+        {
+            foreach(var car in profile.cars)
+                if(ReadCarBindingsForLookup(car).Any(binding=>binding.partInstanceId==partId))return Wrap(car);
+            return null;
+        }
+        IList<SlotBinding> ReadCarBindingsForLookup(OwnedCar car)
+            =>car!=null&&carStates.TryGetValue(car,out var state)?state.BindingsForLookup:car.installed.slots;
         PartMoveCarState Wrap(OwnedCar car)
         {if(!carStates.TryGetValue(car,out var state)){state=new PartMoveCarState(car,copyOnRead,CopyTune,CopyFluid);carStates.Add(car,state);}return state;}
         internal override PartMoveEngineState FindEngine(string id)
         {var engine=profile.engines.Find(candidate=>candidate.instanceId==id);return engine==null?null:Wrap(engine);}
         PartMoveEngineState Wrap(EngineAssemblyInstance engine)
         {if(!engineStates.TryGetValue(engine,out var state)){state=new PartMoveEngineState(engine,copyOnRead,CopyTune,CopyFluid);engineStates.Add(engine,state);}return state;}
+        PartMoveLooseUnitState Wrap(LooseEngineElement unit)
+        {if(!unitStates.TryGetValue(unit,out var state)){state=new PartMoveLooseUnitState(unit,copyOnRead,CopyElement);unitStates.Add(unit,state);}return state;}
         Tune CopyTune(Tune source){if(source==null)return null;if(!copyOnRead)return source;if(!tuneCopies.TryGetValue(source,out var copy)){copy=source.Copy();tuneCopies.Add(source,copy);}return copy;}
         FluidState CopyFluid(FluidState source){if(source==null)return null;if(!copyOnRead)return source;if(!fluidCopies.TryGetValue(source,out var copy)){copy=source.Copy();fluidCopies.Add(source,copy);}return copy;}
+        EngineElement CopyElement(EngineElement source){if(source==null)return null;if(!copyOnRead)return source;if(!elementCopies.TryGetValue(source,out var copy)){copy=source.Copy();elementCopies.Add(source,copy);}return copy;}
         internal override IDictionary<PartCategory,string> CarDefinitions(PartMoveCarState car)
             =>MechanicsOwnership.Definitions(new TransitionPartList(this),car.Bindings);
         internal override IDictionary<PartCategory,string> EngineDefinitions(PartMoveEngineState engine)
@@ -196,10 +238,12 @@ namespace DragLab.Domain.Mechanics
         internal override IReadOnlyList<PartMoveAffectedOwner> AffectedOwners=>affectedOwners;
         internal override void MarkEngineChanged(PartMoveEngineState engine){if(engine!=null&&!changedEngines.Contains(engine))changedEngines.Add(engine);}
         internal override IReadOnlyList<PartMoveEngineState> ChangedEngines=>changedEngines;
+        internal override void MarkUnitChanged(PartMoveLooseUnitState unit){if(unit!=null&&!changedUnits.Contains(unit))changedUnits.Add(unit);}
+        internal override IReadOnlyList<PartMoveLooseUnitState> ChangedUnits=>changedUnits;
         public override void Dispose()
         {
-            foreach(var pair in carStates)pair.Value.Release();foreach(var pair in engineStates)pair.Value.Release();
-            carStates.Clear();engineStates.Clear();tuneCopies.Clear();fluidCopies.Clear();partCopies.Clear();affectedCars.Clear();affectedEngines.Clear();affectedOwners.Clear();changedParts.Clear();changedEngines.Clear();profile=null;
+            foreach(var pair in carStates)pair.Value.Release();foreach(var pair in engineStates)pair.Value.Release();foreach(var pair in unitStates)pair.Value.Release();
+            carStates.Clear();engineStates.Clear();unitStates.Clear();tuneCopies.Clear();fluidCopies.Clear();elementCopies.Clear();partCopies.Clear();affectedCars.Clear();affectedEngines.Clear();affectedOwners.Clear();changedParts.Clear();changedEngines.Clear();changedUnits.Clear();profile=null;
         }
 
         // InstalledPartLookup needs source ordering and duplicate checks. Unrelated scanned
@@ -326,7 +370,7 @@ namespace DragLab.Domain.Mechanics
         internal static PartMoveEngineState RemoveEnginePart(InstalledPartTransitionState state,string engineId,PartCategory category)
         {
             var engine=Stored(state,engineId);var binding=engine.Bindings.FirstOrDefault(row=>row.slot==category.ToString())??throw new InvalidOperationException("Stored slot is empty.");
-            var item=state.FindPart(binding.partInstanceId);item.location=PartLocation.Inventory;item.ownerId=item.slot="";engine.Bindings.Remove(binding);state.MarkChanged(item);return engine;
+            var item=state.FindPart(binding.partInstanceId);item.location=PartLocation.Inventory;item.ownerId=item.slot="";state.MarkEngineChanged(engine);engine.Bindings.Remove(binding);state.MarkChanged(item);return engine;
         }
         internal static PartInstance InstallEnginePartAfterStored(InstalledPartTransitionState state,MechanicalCatalog catalog,
             PartMoveEngineState current,PartInstance item,PartMoveMemberPolicy memberPolicy)
@@ -338,7 +382,7 @@ namespace DragLab.Domain.Mechanics
             PartInstance displaced=null;var old=current.Bindings.FirstOrDefault(binding=>binding.slot==definition.category.ToString());
             if(old!=null){RemoveEnginePart(state,current.Id,definition.category);displaced=state.FindPart(old.partInstanceId);}
             item.location=PartLocation.Assembly;item.ownerId=current.Id;item.slot=definition.category.ToString();
-            current.Bindings.Add(new SlotBinding{slot=item.slot,partInstanceId=item.instanceId});state.MarkChanged(item);
+            state.MarkEngineChanged(current);current.Bindings.Add(new SlotBinding{slot=item.slot,partInstanceId=item.instanceId});state.MarkChanged(item);
             var spec=catalog.Resolve(current.VehicleDefinitionId,state.EngineDefinitions(current),current.Tune).spec;
             if(memberPolicy==PartMoveMemberPolicy.ProjectionRequireExisting)EngineElements.EnsureExisting(spec,definition,item);
             else EngineElements.Ensure(spec,definition,item);

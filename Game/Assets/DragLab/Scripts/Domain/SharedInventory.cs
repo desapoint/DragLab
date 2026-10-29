@@ -97,17 +97,7 @@ namespace DragLab.Domain.Mechanics
             using(var state=new ProfileInstalledPartTransitionState(p,false))
             {
                 var preamble=InstalledPartTransition.Preamble(state,assetId,target,targetId);
-                if(preamble.Kind==PartMoveAssetKind.Unit)
-                {
-                    var unit=p.looseEngineElements.Find(u=>u.element.id==assetId);
-                    if(target!=InventoryKind.Storage)throw new InvalidOperationException("Choose a fitted position to install an individual unit.");
-                    unit.storageId=targetId;return;
-                }
-                if(preamble.Kind==PartMoveAssetKind.Engine)
-                {
-                    InstalledEngineTransition.MoveAfterPreamble(state,p.catalog,preamble,target,targetId);return;
-                }
-                InstalledPartTransition.MovePartAfterPreamble(state,p.catalog,preamble,target,targetId,PartMoveMemberPolicy.LegacyEnsure);
+                InstalledInventoryTransition.MoveAfterPreamble(state,p.catalog,preamble,target,targetId,PartMoveMemberPolicy.LegacyEnsure);
             }
         }
         public static string Validate(PlayerProfile p,HashSet<string> identities)

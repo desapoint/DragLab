@@ -74,7 +74,7 @@ namespace DragLab.Domain
             return snapshot;
         }
 
-        static WholeEngineMoveSnapshot SnapshotEngine(ProfileInstalledPartTransitionState state,
+        internal static WholeEngineMoveSnapshot SnapshotEngine(ProfileInstalledPartTransitionState state,
             MechanicalCatalog catalog,PartMoveEngineState engine)
         {
             var bindings=engine.BindingCopies;
