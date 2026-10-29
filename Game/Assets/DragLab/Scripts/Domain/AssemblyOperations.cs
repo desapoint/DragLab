@@ -25,27 +25,15 @@ namespace DragLab.Domain.Mechanics
         }
         public static string Detach(PlayerProfile p, string carId)
         {
-            var car = MutableCar(p, carId);
-            var engine = p.engines.Find(e => e.instanceId == car.engineAssemblyId) ?? throw new InvalidOperationException("This chassis has no engine.");
-            engine.slots = car.installed.slots.Where(s => MechanicalCatalog.EngineSlot(Parse(s.slot))).ToList();
-            car.installed.slots.RemoveAll(s => MechanicalCatalog.EngineSlot(Parse(s.slot)));
-            engine.fluids = car.fluids; engine.tune = car.tune.Copy();
-            car.fluids = new FluidState(); car.engineAssemblyId = ""; engine.parentVehicleId = "";
-            MechanicsOwnership.ProjectRanks(p, car, p.catalog);
-            return engine.instanceId;
+            using(var state=new ProfileInstalledPartTransitionState(p,false))
+                return InstalledEngineTransition.Detach(state,carId,p.catalog);
         }
         public static bool Fits(EngineAssemblyInstance engine, OwnedCar car)
-        { return engine.vehicleDefinitionId == car.vehicleId; } // Declared engine mounts; cross-platform conversions need authored adapters.
+        { return InstalledEngineTransition.Fits(engine.vehicleDefinitionId,car.vehicleId); } // Declared engine mounts; cross-platform conversions need authored adapters.
         public static void Attach(PlayerProfile p, string engineId, string carId)
         {
-            var car = MutableCar(p, carId); var engine = Stored(p, engineId);
-            if (!Fits(engine, car)) throw new InvalidOperationException("Engine mounts are incompatible with this chassis.");
-            if (!string.IsNullOrEmpty(car.engineAssemblyId) || car.installed.slots.Any(s => MechanicalCatalog.EngineSlot(Parse(s.slot)))) throw new InvalidOperationException("Detach the current engine first.");
-            car.engineAssemblyId = engine.instanceId; engine.parentVehicleId = car.instanceId;
-            car.installed.slots.AddRange(engine.slots); engine.slots = new List<SlotBinding>();
-            car.fluids = engine.fluids; engine.fluids = null;
-            EngineAdjustments(car.tune, engine.tune);
-            MechanicsOwnership.ProjectRanks(p, car, p.catalog);
+            using(var state=new ProfileInstalledPartTransitionState(p,false))
+                InstalledEngineTransition.Attach(state,engineId,carId,p.catalog);
         }
         public static void RemovePart(PlayerProfile p, string engineId, PartCategory category)
         {

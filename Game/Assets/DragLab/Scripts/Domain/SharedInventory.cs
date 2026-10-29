@@ -105,10 +105,7 @@ namespace DragLab.Domain.Mechanics
                 }
                 if(preamble.Kind==PartMoveAssetKind.Engine)
                 {
-                    var engine=p.engines.Find(e=>e.instanceId==assetId);
-                    if(target==InventoryKind.Car){if(engine.parentVehicleId==targetId)return;if(!string.IsNullOrEmpty(engine.parentVehicleId))AssemblyOperations.Detach(p,engine.parentVehicleId);AssemblyOperations.Attach(p,assetId,targetId);return;}
-                    if(target!=InventoryKind.Storage)throw new InvalidOperationException("Engine destination must be storage or a car.");
-                    if(!string.IsNullOrEmpty(engine.parentVehicleId))AssemblyOperations.Detach(p,engine.parentVehicleId);engine.storageId=targetId;return;
+                    InstalledEngineTransition.MoveAfterPreamble(state,p.catalog,preamble,target,targetId);return;
                 }
                 InstalledPartTransition.MovePartAfterPreamble(state,p.catalog,preamble,target,targetId,PartMoveMemberPolicy.LegacyEnsure);
             }

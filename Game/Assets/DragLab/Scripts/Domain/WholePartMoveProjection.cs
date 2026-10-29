@@ -87,15 +87,17 @@ namespace DragLab.Domain
             finally{state.Dispose();}
         }
 
-        static WholePartMoveOwnerSnapshot SnapshotCar(ProfileInstalledPartTransitionState state,
+        internal static WholePartMoveOwnerSnapshot SnapshotCar(ProfileInstalledPartTransitionState state,
             MechanicalCatalog catalog,PartMoveCarState car)
         {
-            var bindings=car.BindingCopies;
+            SlotBinding[] bindings=null;
             PartInstance[] parts=null;Dictionary<PartCategory,string> definitions=null;InspectionBuild inspection=null;
             bool materialized=false;string buildErrorType=null,buildErrorMessage=null;
-            var components=new List<InstalledBuildComponent>(bindings.Length);
             try
             {
+                bindings=car.BindingCopies;
+                if(bindings==null)throw new InvalidOperationException("Affected car bindings are unavailable for inspection materialization.");
+                var components=new List<InstalledBuildComponent>(bindings.Length);
                 bool complete=true;
                 foreach(var binding in bindings)
                 {
