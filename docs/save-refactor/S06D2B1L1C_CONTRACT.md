@@ -1,6 +1,6 @@
 # S06D2B1L1C — raw non-sale Cart.Apply typed projection contract
 
-Status: **design for high review; no implementation GO implied.** This checkpoint follows the committed L1B scoped stock/reservation core. It implements only the dormant raw `PartCart.Apply` projection for non-sale rows. `Total`, `DeliveryFee`, quote freshness, `PreviewProfile`, checkout, sale commits, caller activation, S06 completion, and S07–S14 remain open.
+Status: **design for high review; no implementation GO implied.** The concrete signatures, ownership boundaries, catalogue reader, result DTOs, live/candidate routing, and one-checkpoint source map are specified in [the L1C API design](S06D2B1L1C_API.md). This checkpoint follows the committed L1B scoped stock/reservation core. It implements only the dormant raw `PartCart.Apply` projection for non-sale rows. `Total`, `DeliveryFee`, quote freshness, `PreviewProfile`, checkout, sale commits, caller activation, S06 completion, and S07–S14 remain open.
 
 ## Gate order and checkpoint boundary
 
