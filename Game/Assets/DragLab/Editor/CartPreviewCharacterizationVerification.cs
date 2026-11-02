@@ -53,6 +53,8 @@ namespace DragLab.Editor
         public static void RunWholeEngineMoveRegression()=>RunCore(false,true,"whole-engine-move-regression");
         public static void RunOrderedInventoryMove()=>RunCore(false,true,"ordered-inventory-move");
         public static void RunCanonicalBoundaries()=>RunCore(false,true,"canonical-boundaries");
+        public static void RunCanonicalValues()=>RunCore(false,true,"canonical-values");
+        public static void RunCanonicalValuesRegression()=>RunCore(false,true,"canonical-values-regression");
         public static void RunInstalledBuildRegression()=>RunCore(false,true,"installed-build-regression");
         public static void RunTopologyMembersCorners()=>RunCore(false,true,"topology","members-corners");
         public static void RunTopologyOwnersParts()=>RunCore(false,true,"topology","owners-parts");
@@ -107,7 +109,9 @@ namespace DragLab.Editor
                     }
                     else count++;
                 };
-                if(expansion=="canonical-boundaries")CartPreviewCharacterizationChecks.RunCanonicalBoundaries(check,root);
+                if(expansion=="canonical-values-regression")CartPreviewCharacterizationChecks.RunCanonicalBoundaries(check,root);
+                else if(expansion=="canonical-values")CartPreviewCharacterizationChecks.RunCanonicalValues(check,root);
+                else if(expansion=="canonical-boundaries")CartPreviewCharacterizationChecks.RunCanonicalBoundaries(check,root);
                 else if(expansion=="ordered-inventory-move")CartPreviewCharacterizationChecks.RunOrderedInventoryMove(check,root);
                 else if(expansion=="whole-engine-move-regression")
                 {
