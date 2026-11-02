@@ -16,4 +16,6 @@ Root subsequently removed only excess EOF newlines from the API document, verify
 
 The test author then made Models/Recipe and complete car-snapshot comparisons explicit. Luna-high re-reviewed those clarifications; the final test-design SHA256 is `D0DEB321EFC8AAF7B37E3F0BCBF7EB771FACB74097C21BD2917E078F072B2E3D`. The independent review records both final hashes.
 
+The subsequent routing review requires byte-for-byte preservation of existing C0/I/J/K/L1B reference files. Separately named C1 reference copies and a private legacy catalogue adapter must pass all 642 C0 vectors before any Domain edit. A scoped Editor-only checker override must restore its default in `finally`; default C0 behavior remains unchanged. Commit the verified preparation infrastructure as a runnable step without marking the full C1 projection complete.
+
 See the [API](../../docs/save-refactor/S06D2B1L1C_API.md), [test matrix](../../docs/save-refactor/S06D2B1L1C1_TEST_DESIGN.md) and [independent design review](../../docs/save-refactor/S06D2B1L1C1_DESIGN_REVIEW.md). Full C1, S06 and S07–S14 remain open.
