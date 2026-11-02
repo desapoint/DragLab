@@ -439,7 +439,7 @@ namespace DragLab.Domain.Mechanics
         {
             var m=p.inventory.market;if(m.index==null){m.index=new Dictionary<string,NewPartStock>(StringComparer.Ordinal);foreach(var s in m.parts)foreach(string id in s.definitions)m.index.Add(id,s);}if(m.index.TryGetValue(d.id,out var stock))return stock;string key=ProductKey(d);stock=m.parts.FirstOrDefault(row=>row.definitions.Any(id=>{var existing=p.catalog.Find(id);return existing!=null&&ProductKey(existing)==key;}));if(stock!=null)m.index[d.id]=stock;return stock;
         }
-        static SupplyQuote Calculate(int available,int percent,int units,int basePrice,int quantity)
+        internal static SupplyQuote Calculate(int available,int percent,int units,int basePrice,int quantity)
         {
             if(available<0||percent<5||percent>10||units<1||basePrice<0||quantity<1||quantity>99)throw new InvalidOperationException("Invalid supply request.");var q=new SupplyQuote();
             for(int i=0;i<quantity;i++){int local=Math.Min(units,available),express=units-local;available-=local;int fee=express==0?0:checked((int)Math.Ceiling(basePrice*(express/(double)units)*percent/100.0));q.localUnits+=local;q.expressUnits+=express;q.fee=checked(q.fee+fee);q.cost=checked(q.cost+basePrice+fee);}return q;

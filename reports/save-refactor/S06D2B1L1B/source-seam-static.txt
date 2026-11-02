@@ -1,0 +1,7 @@
+Historical pre-compilation-correction check:
+True | normalized-newline method body | Game/Assets/DragLab/Scripts/Domain/MechanicalCatalog.cs | public PartDefinition Find(string id)
+True | normalized-newline method body | Game/Assets/DragLab/Scripts/Domain/MechanicalCatalog.cs | public void RebuildIndexes()
+True | normalized-newline method body | Game/Assets/DragLab/Scripts/Domain/PartsMarket.cs | SupplyQuote Calculate(
+9 unchanged closure files verified; only original bodies plus approved additions/accessibility differ in the other 2.
+
+Final: 8 original dependency files match the pre-extraction manifest. The frozen reference's two name qualifications reconstruct SHA256 D8987F9DE6F1F4CD4AC45D44AF275876DF7BCBF8BD491F34444E08143F744EC1 exactly; no other reference bytes changed. Existing Find/RebuildIndexes/Calculate bodies remain unchanged.

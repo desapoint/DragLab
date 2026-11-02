@@ -1,0 +1,20 @@
+# S06D2B1L1B — scoped market test coverage
+
+Status: Editor diagnostic passes all 273 focused assertions; combined regression and Windows build also pass with independent Luna-high approval. Root execution and source evidence are in the [final results](../../reports/save-refactor/S06D2B1L1B_RESULTS.md). This checkpoint keeps `ScopedMarketReadSet` and the normal Ledger dormant. It does not switch live callers.
+
+## Entry point and fixture boundary
+
+`CartPreviewCharacterizationChecks.RunScopedSupply(Action<bool,string>, string)` is implemented in `Game/Assets/DragLab/Scripts/Runtime/ScopedSupplyChecks.cs`. It uses minimal in-memory profiles, real authored vehicle/part definitions, and ID-only copied aliases. It does not clone whole profiles, construct physical parts, repair malformed data, start Unity or processes, or change live market callers. Root’s runner controls Unity execution and source freeze.
+
+Each parity case builds candidate and frozen-reference fixtures independently. `LegacyScopedSupplyReference` is the expected-value authority; unchanged live operations are compared with the frozen reference first. Candidate operations are bracketed by JSON/key-cache, RNG and entropy/identity observers. Explicit fingerprints include market rows and list/index identities, reservation state, catalog definitions and nested product values, catalog private index facts, and revision/authoring state. Reports contain bounded scalar results and exception details, not profiles, JSON bodies, or product keys.
+
+## Coverage
+
+- **Stock and catalog lookup:** cold and warm exact IDs, case-insensitive warm dictionary behavior, first-match product aliases and reversed ordering, exact-ID precedence, foreign/repeated row identities, cold duplicate-ID partial prefix reuse, uncached misses, and malformed cold/warm null shapes. The `MechanicalCatalog.LookupScope` diagnostic compares independent results and positions against unchanged `Find` for cold/warm hits, stale count, moved/replaced values, mismatched IDs, duplicate IDs, null row/ID, and Editor-only authoring mode. It asserts no source index/revision publication.
+- **Normal Ledger:** later exact-ID duplicate wins; first product-equivalent row wins; alias queries share the row remainder; cached null misses persist in one Ledger while a fresh Ledger sees later source changes; constructor error ordering is compared exactly. Repeated stock and reservation object references are represented by identity groups and all source positions.
+- **Reservations and Consume:** active/inactive boundaries, current/all-generation holds, direct/alias matching, owner nonparticipation, inactive null supply, active null supply and request error ordering, `usingCartReservation` quote asymmetry, generation-ordered consumption, repeated hold references, owned final deltas, and source immutability.
+- **Ledger overlays:** private `Consume` followed by new Ledger construction, active current-generation holds, two independent Ledgers, non-consuming `Take` with a null stock delta, and consuming `Take` whose delta starts at the parent’s current scoped stock overlay and ends at that Ledger’s remainder.
+- **Quote and pricing:** all four quote fields, partial/full/express-only and repeated quantities, delivery bounds, unit pricing, default no-stock behavior, `NewUnit` count classes, validation precedence and exact errors, reachable checked cost overflow, and unchecked express-unit accumulation. No unreachable fee-overflow case is asserted.
+- **Lifetime and purity:** result field inventories prohibit borrowed references, returned position arrays are defensive, disposal is idempotent, nested catalog/Ledger borrowed references are cleared, and all scoped methods reject use after disposal.
+
+The diagnostic records unsupported/error behavior as a failure against the frozen method; it does not substitute an approximate result. Root owns the final compile/run, review, manifests, and checkpoint decision. Native/device performance and any later quote/checkout/Apply integration remain outside L1B.

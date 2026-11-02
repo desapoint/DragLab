@@ -113,6 +113,66 @@ namespace DragLab.Domain.Mechanics
             if(partIndex.TryGetValue(id,out var part)&&part.position<parts.Count&&ReferenceEquals(parts[part.position],part.value)&&part.value.id==id)return part.value;
             var found=parts.Find(p=>p.id==id);if(found!=null||part.value!=null)RebuildIndexes();return found;
         }
+        // Nonpublishing shadow of Find for one synchronous borrowed state operation.
+        // The public Find/RebuildIndexes publication bodies remain the authority.
+        internal LookupScope OpenLookupScope() => new LookupScope(this);
+        internal sealed class LookupScope : IDisposable
+        {
+            MechanicalCatalog owner;
+            Dictionary<string,IndexedPart> shadow,startingIndex;
+            bool startsAuthoring,initialized;
+            int startingCount,startingPartsCount,startingRevision;
+            List<PartDefinition> startingParts;
+            readonly Dictionary<PartDefinition,int> identities = new Dictionary<PartDefinition,int>(ReferenceComparer<PartDefinition>.Instance);
+            int nextIdentity;
+            bool disposed;
+            internal LookupScope(MechanicalCatalog catalog){owner=catalog;}
+            internal PartDefinition FindDefinition(string id,out bool found,out int position,out int identityGroup)
+            {
+                Check();position=-1;identityGroup=-1;
+                if(id==null){found=false;return null;}
+                Initialize();
+                if(startsAuthoring){var authored=startingParts.Find(p=>p.id==id);found=authored!=null;return Group(authored, out position,out identityGroup);}
+                var index=shadow;
+                if(index==null)
+                {
+                    if(startingIndex==null||startingCount!=startingParts.Count)index=RebuildPrivate();
+                    else index=startingIndex;
+                    shadow=index;
+                }
+                IndexedPart part=default(IndexedPart);
+                if(index.TryGetValue(id,out part)&&part.position<startingParts.Count&&ReferenceEquals(startingParts[part.position],part.value)&&part.value.id==id)
+                {found=true;return Group(part.value,out position,out identityGroup);}
+                var fallback=startingParts.Find(p=>p.id==id);
+                if(fallback!=null||part.value!=null)shadow=RebuildPrivate();
+                found=fallback!=null;return Group(fallback,out position,out identityGroup);
+            }
+            void Initialize()
+            {
+                if(initialized)return;
+                startsAuthoring=owner.authoring;startingIndex=owner.partIndex;startingCount=owner.indexedPartCount;
+                startingRevision=owner.authoringRevision;startingParts=owner.parts;startingPartsCount=startingParts.Count;initialized=true;
+            }
+            Dictionary<string,IndexedPart> RebuildPrivate()
+            {
+                var next=new Dictionary<string,IndexedPart>(StringComparer.Ordinal);
+                for(int i=0;i<startingParts.Count;i++)if(!next.ContainsKey(startingParts[i].id))next[startingParts[i].id]=new IndexedPart{value=startingParts[i],position=i};
+                return next;
+            }
+            PartDefinition Group(PartDefinition value,out int position,out int group)
+            {
+                position=-1;group=-1;if(value==null)return null;
+                for(int i=0;i<startingParts.Count;i++)if(ReferenceEquals(startingParts[i],value)){position=i;break;}
+                if(!identities.TryGetValue(value,out group))identities[value]=group=nextIdentity++;
+                return value;
+            }
+            void Check(){if(disposed||owner==null)throw new ObjectDisposedException(nameof(LookupScope));}
+            internal void AssertSourceUnchanged()
+            {
+                Check();Initialize();if(!ReferenceEquals(owner.parts,startingParts)||owner.parts.Count!=startingPartsCount||owner.partIndex!=startingIndex||owner.indexedPartCount!=startingCount||owner.authoringRevision!=startingRevision||owner.authoring!=startsAuthoring)throw new InvalidOperationException("Catalogue changed during scoped lookup.");
+            }
+            public void Dispose(){if(disposed)return;owner=null;shadow=null;startingIndex=null;startingParts=null;identities.Clear();disposed=true;}
+        }
         public static bool EngineSlot(PartCategory category) { return Array.IndexOf(EngineSlots, category) >= 0 || ServiceHardware.IsCategory(category); }
         public static bool DisablingEngineFailure(PartCategory category) { return category == PartCategory.Pistons || category == PartCategory.Rods || category == PartCategory.Crankshaft || category == PartCategory.FuelSystem || category == PartCategory.Ignition || ServiceHardware.CoreFailure(category) || category==PartCategory.ValveSprings || category==PartCategory.Followers; }
         public static bool DriveBranch(PartCategory category) { return category >= PartCategory.FrontAxle && category <= PartCategory.TransferCase; }

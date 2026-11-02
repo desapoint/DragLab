@@ -1,0 +1,4 @@
+Focused-b compiler found lexical name shadowing in the frozen normal Ledger constructor.
+Qualification-only correction: Held(p,d,true) and Held(p,d) -> LegacyScopedSupplyReference.Held(...).
+This selects the intended frozen outer helper; arguments, evaluation order, arithmetic and all other reference code are unchanged.
+Corrected reference SHA256=AE960159340F24C10ED32136B6C6F125154A33355AAF5496D2FAFED5DBD09DCE
