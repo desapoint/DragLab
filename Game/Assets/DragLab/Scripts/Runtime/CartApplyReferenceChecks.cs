@@ -20,6 +20,11 @@ namespace DragLab.Runtime
     {
         enum C0CatalogShape { Warm, ColdIndex, NullPartRow }
 
+        static readonly object C0ReferenceGate = new object();
+        static bool C0ReferenceRunning;
+        static bool C0CatalogReferenceRunning;
+        static Action<PlayerProfile, string, IEnumerable<PartCartLine>, bool, ValuationPolicy> C0ReferenceOverride;
+
         sealed class C0Outcome
         {
             internal Exception Error;
@@ -42,13 +47,80 @@ namespace DragLab.Runtime
 
         /// <summary>Root-owned runner invokes this after the frozen source manifest is pinned.</summary>
         public static void RunCartApplyReference(Action<bool, string> check, string folder)
+            => C0RunReference(check, folder, false);
+
+        public static void RunCartCatalogReference(Action<bool, string> check, string folder)
+        {
+            if (check == null) throw new ArgumentNullException(nameof(check));
+            lock (C0ReferenceGate)
+            {
+                if (C0ReferenceRunning || C0CatalogReferenceRunning)
+                    throw new InvalidOperationException("Cart reference diagnostics cannot be nested.");
+                C0CatalogReferenceRunning = true;
+                try
+                {
+                    MechanicalCatalog absent = null;
+                    C1CheckNullCatalog(check, "Find", () => absent.Find(null),
+                        () => LegacyMechanicalCatalogReference.Find(absent, null));
+                    C1CheckNullCatalog(check, "Spec", () => absent.Spec("missing"),
+                        () => LegacyMechanicalCatalogReference.Spec(absent, "missing"));
+                    C1CheckNullCatalog(check, "Resolve", () => absent.Resolve("missing", new Dictionary<PartCategory, string>()),
+                        () => LegacyMechanicalCatalogReference.Resolve(absent, "missing", new Dictionary<PartCategory, string>()));
+                    bool rejected = false;
+                    try { C0RunReference(check, null, true); }
+                    catch (ArgumentException error) { rejected = error.ParamName == "folder"; }
+                    check(rejected && C0ReferenceOverride == null && !C0ReferenceRunning,
+                        "C1 oracle override restores the default after a pre-matrix failure");
+                    C0RunReference(check, folder, true);
+                    check(C0ReferenceOverride == null && !C0ReferenceRunning,
+                        "C1 oracle override restores the default after the complete C0 matrix");
+                }
+                finally { C0CatalogReferenceRunning = false; }
+            }
+        }
+
+        static void C1CheckNullCatalog(Action<bool, string> check, string operation, Action live, Action frozen)
+        {
+            Exception liveError = C1CatalogError(live), frozenError = C1CatalogError(frozen);
+            check(liveError is NullReferenceException && C0ErrorsEqual(liveError, frozenError),
+                "C1 frozen catalog preserves natural null-receiver error / " + operation);
+        }
+
+        static Exception C1CatalogError(Action operation)
+        {
+            try { operation(); return null; }
+            catch (Exception error) { return error; }
+        }
+
+        static void C0RunReference(Action<bool, string> check, string folder, bool c1CatalogReference)
+        {
+            lock (C0ReferenceGate)
+            {
+                if (C0ReferenceRunning || (C0CatalogReferenceRunning && !c1CatalogReference))
+                    throw new InvalidOperationException("Cart reference diagnostics cannot be nested.");
+                C0ReferenceRunning = true;
+                try
+                {
+                    if (c1CatalogReference) C0ReferenceOverride = LegacyC1CartApplyReference.Apply;
+                    C0RunReferenceCore(check, folder);
+                }
+                finally
+                {
+                    C0ReferenceOverride = null;
+                    C0ReferenceRunning = false;
+                }
+            }
+        }
+
+        static void C0RunReferenceCore(Action<bool, string> check, string folder)
         {
             if (check == null) throw new ArgumentNullException(nameof(check));
             if (string.IsNullOrWhiteSpace(folder)) throw new ArgumentException("An isolated Editor report folder is required.", nameof(folder));
             Directory.CreateDirectory(folder);
             var trace = new Trace(check, folder, true);
             trace.Add("S06D2B1L1C0_CART_APPLY_REFERENCE_V1");
-            trace.Add("oracle=LegacyCartApplyReference.Apply;live=PartCart.Apply;fixture=independent profiles and independent MechanicalCatalog instances;candidate=none");
+            trace.Add("oracle=" + (C0ReferenceOverride == null ? "LegacyCartApplyReference.Apply" : "LegacyC1CartApplyReference.Apply") +
+                ";live=PartCart.Apply;fixture=independent profiles and independent MechanicalCatalog instances;candidate=none");
             try
             {
                 C0RunRawGuardMatrix(trace);
@@ -749,7 +821,11 @@ namespace DragLab.Runtime
             {
                 try
                 {
-                    if (frozen) LegacyCartApplyReference.Apply(profile, carId, rows, preview, ValuationPolicy.Defaults());
+                    if (frozen)
+                    {
+                        if (C0ReferenceOverride == null) LegacyCartApplyReference.Apply(profile, carId, rows, preview, ValuationPolicy.Defaults());
+                        else C0ReferenceOverride(profile, carId, rows, preview, ValuationPolicy.Defaults());
+                    }
                     else PartCart.Apply(profile, carId, rows, preview, ValuationPolicy.Defaults());
                 }
                 catch (Exception error) { result.Error = error; }

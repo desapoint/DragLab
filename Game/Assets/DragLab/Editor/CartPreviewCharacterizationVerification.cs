@@ -58,6 +58,7 @@ namespace DragLab.Editor
         public static void RunScopedSupply()=>RunCore(false,true,"scoped-supply");
         public static void RunScopedSupplyRegression()=>RunCore(false,true,"scoped-supply-regression");
         public static void RunCartApplyReference()=>RunCore(false,true,"cart-apply-reference");
+        public static void RunCartCatalogReference()=>RunCore(false,true,"cart-catalog-reference");
         public static void RunCartApplyReferenceRegression()=>RunCore(false,true,"cart-apply-reference-regression");
         public static void RunInstalledBuildRegression()=>RunCore(false,true,"installed-build-regression");
         public static void RunTopologyMembersCorners()=>RunCore(false,true,"topology","members-corners");
@@ -114,6 +115,7 @@ namespace DragLab.Editor
                     else count++;
                 };
                 if(expansion=="cart-apply-reference")CartPreviewCharacterizationChecks.RunCartApplyReference(check,root);
+                else if(expansion=="cart-catalog-reference")CartPreviewCharacterizationChecks.RunCartCatalogReference(check,root);
                 else if(expansion=="cart-apply-reference-regression")
                 {
                     CartPreviewCharacterizationChecks.RunScopedSupply(check,root);
