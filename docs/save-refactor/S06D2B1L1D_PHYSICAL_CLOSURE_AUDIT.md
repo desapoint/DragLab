@@ -46,3 +46,5 @@ No source, simulation, UI, worker, persistence or caller is changed by this audi
 ## Semantic expansion, still pending review
 
 The root-only lexical table above is now supplemented by the [semantic audit](../../reports/save-refactor/S06D2B1L1D_SEMANTIC_CLOSURE_AUDIT.md): two identical zero-error compiler-based runs, 23 language/input/schema probes and an exact joined 428-member/43-file draft physical inventory. It records explicit virtual/interface/delegate and implicit-disposal gaps, plus a conditional path to authored JSON loading when `hasInstalledParts` is false. Existing typed capture/reader seams and their marker-setting route are identified for review. Neither the unpruned graph nor the compact TSVs are an approved edit allowlist; the complete production gate remains open.
+
+The [physical dispatch proposal](S06D2B1L1D_PHYSICAL_DISPATCH_PROPOSAL.md) records 15 exact support-declaration pins, the 14-type sealed component registry, the existing scoped-reader callbacks and the marker/non-null-component/condition/lifetime test obligations. These are source facts and proposed bindings for review; no OPEN record or production edit is accepted by that document.
