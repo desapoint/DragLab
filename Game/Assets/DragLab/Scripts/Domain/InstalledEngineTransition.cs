@@ -6,7 +6,7 @@ namespace DragLab.Domain.Mechanics
 {
     internal static class InstalledEngineTransition
     {
-        internal static void MoveAfterPreamble(InstalledPartTransitionState state,MechanicalCatalog catalog,
+        internal static void MoveAfterPreamble(InstalledPartTransitionState state,ICartCatalogRead catalog,
             PartMovePreamble preamble,InventoryKind target,string targetId)
         {
             var engine=state.FindEngine(preamble.AssetId);
@@ -22,7 +22,7 @@ namespace DragLab.Domain.Mechanics
             state.MarkAffected(engine);state.MarkEngineChanged(engine);engine.StorageId=targetId;
         }
 
-        internal static string Detach(InstalledPartTransitionState state,string carId,MechanicalCatalog catalog)
+        internal static string Detach(InstalledPartTransitionState state,string carId,ICartCatalogRead catalog)
         {
             var car=InstalledPartTransition.MutableCar(state,carId);
             var engine=state.FindEngine(car.EngineAssemblyId)??throw new InvalidOperationException("This chassis has no engine.");
@@ -35,7 +35,7 @@ namespace DragLab.Domain.Mechanics
             return engine.Id;
         }
 
-        internal static void Attach(InstalledPartTransitionState state,string engineId,string carId,MechanicalCatalog catalog)
+        internal static void Attach(InstalledPartTransitionState state,string engineId,string carId,ICartCatalogRead catalog)
         {
             var car=InstalledPartTransition.MutableCar(state,carId);
             var engine=InstalledPartTransition.Stored(state,engineId);

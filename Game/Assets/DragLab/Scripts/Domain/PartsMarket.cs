@@ -110,6 +110,11 @@ namespace DragLab.Domain.Mechanics
         }
         public static bool FitsAny(PlayerProfile p,PartDefinition d)=>d!=null&&Models(p.catalog).Any(m=>p.catalog.Fits(p.catalog.Spec(m),d));
         public static VehicleSpec Reference(PlayerProfile p,PartDefinition d) {string model=Models(p.catalog).FirstOrDefault(m=>p.catalog.Fits(p.catalog.Spec(m),d));if(model==null)throw new InvalidOperationException("No supported engine or vehicle accepts this part.");return p.catalog.Resolve(model,p.catalog.Recipe(model),new Tune()).spec;}
+        internal static bool FitsAny(ICartApplyState state,PartDefinition d)=>d!=null&&state.Catalog.Models().Any(m=>state.Catalog.Fits(state.Catalog.Spec(m),d));
+        internal static VehicleSpec Reference(ICartApplyState state,PartDefinition d)
+        {string model=state.Catalog.Models().FirstOrDefault(m=>state.Catalog.Fits(state.Catalog.Spec(m),d));if(model==null)throw new InvalidOperationException("No supported engine or vehicle accepts this part.");return state.Catalog.Resolve(model,state.Catalog.Recipe(model),new Tune()).spec;}
+        internal static int Count(ICartApplyState state,PartMoveCarState car,PartDefinition d)
+        {if(d.category==PartCategory.Tires||d.category==PartCategory.Wheels||d.category==PartCategory.Brakes)return 4;if(!EngineElements.Supported(d.category))return 1;if(car!=null&&state.Catalog.Fits(state.Catalog.Spec(car.VehicleId),d))return InventoryUnits.Count(state,car,d);return FitsAny(state,d)?Count(Reference(state,d),d):1;}
         static string[] Models(MechanicalCatalog c) => c.parts.Where(d=>d.category==PartCategory.CylinderBlock).Select(d=>d.id.Split('/')[0]).Distinct().OrderBy(s=>s,StringComparer.Ordinal).ToArray();
         public static void Ensure(PlayerProfile p,bool allowMigration=false)
         {

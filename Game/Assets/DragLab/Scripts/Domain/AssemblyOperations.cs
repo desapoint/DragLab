@@ -26,14 +26,16 @@ namespace DragLab.Domain.Mechanics
         public static string Detach(PlayerProfile p, string carId)
         {
             using(var state=new ProfileInstalledPartTransitionState(p,false))
-                return InstalledEngineTransition.Detach(state,carId,p.catalog);
+            using(var catalog=CartApplyCatalogReaders.Live(p.catalog))
+                return InstalledEngineTransition.Detach(state,carId,catalog);
         }
         public static bool Fits(EngineAssemblyInstance engine, OwnedCar car)
         { return InstalledEngineTransition.Fits(engine.vehicleDefinitionId,car.vehicleId); } // Declared engine mounts; cross-platform conversions need authored adapters.
         public static void Attach(PlayerProfile p, string engineId, string carId)
         {
             using(var state=new ProfileInstalledPartTransitionState(p,false))
-                InstalledEngineTransition.Attach(state,engineId,carId,p.catalog);
+            using(var catalog=CartApplyCatalogReaders.Live(p.catalog))
+                InstalledEngineTransition.Attach(state,engineId,carId,catalog);
         }
         public static void RemovePart(PlayerProfile p, string engineId, PartCategory category)
         {
@@ -46,7 +48,8 @@ namespace DragLab.Domain.Mechanics
             {
                 var engine=InstalledPartTransition.Stored(state,engineId);
                 var item=state.FindPart(partId)??throw new InvalidOperationException("Part no longer exists.");
-                InstalledPartTransition.InstallEnginePartAfterStored(state,p.catalog,engine,item,PartMoveMemberPolicy.LegacyEnsure);
+                using(var catalog=CartApplyCatalogReaders.Live(p.catalog))
+                    InstalledPartTransition.InstallEnginePartAfterStored(state,catalog,engine,item,PartMoveMemberPolicy.LegacyEnsure);
             }
         }
         internal static PartCategory Parse(string slot) { return (PartCategory)Enum.Parse(typeof(PartCategory), slot); }

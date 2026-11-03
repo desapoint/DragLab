@@ -94,11 +94,15 @@ namespace DragLab.Domain.Mechanics
         }
         public static void Move(PlayerProfile p,string assetId,InventoryKind target,string targetId)
         {
-            using(var state=new ProfileInstalledPartTransitionState(p,false))
-            {
-                var preamble=InstalledPartTransition.Preamble(state,assetId,target,targetId);
-                InstalledInventoryTransition.MoveAfterPreamble(state,p.catalog,preamble,target,targetId,PartMoveMemberPolicy.LegacyEnsure);
-            }
+            using(var state=new LiveCartApplyState(p))Move(state,CartApplyIdentityRef.Existing(assetId),target,targetId);
+        }
+        internal static void Move(ICartApplyState state,string assetId,InventoryKind target,string targetId)
+            =>Move(state,CartApplyIdentityRef.Existing(assetId),target,targetId);
+        internal static void Move(ICartApplyState state,CartApplyIdentityRef identity,InventoryKind target,string targetId)
+        {
+            var transition=(InstalledPartTransitionState)state;
+            var preamble=InstalledPartTransition.Preamble(transition,state,identity,target,targetId);
+            InstalledInventoryTransition.MoveAfterPreamble(transition,state.Catalog,preamble,target,targetId,state.MemberPolicy);
         }
         public static string Validate(PlayerProfile p,HashSet<string> identities)
             =>Validate(p,identities,false);

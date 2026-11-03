@@ -119,17 +119,7 @@ namespace DragLab.Domain.Mechanics
         }
         internal static void Apply(PlayerProfile p,string carId,IEnumerable<PartCartLine> lines,bool preview=false,ValuationPolicy policy=null)
         {
-            foreach(var line in lines) {
-                if(line.action==CartAction.SellPart||line.action==CartAction.SellUnit)continue;
-                if(line.action==CartAction.Move){SharedInventory.Move(p,line.assetId,line.destination,line.destinationId);continue;}
-                for(int i=0;i<line.quantity;i++) {
-                    if(line.action==CartAction.NewSet){PartOperations.Buy(p,p.catalog,carId,line.definitionId,line.install&&i==0);continue;}
-                    LooseEngineElement unit;
-                    if(line.action==CartAction.NewUnits)unit=InventoryUnits.Buy(p,carId,line.definitionId,line.role);
-                    else {var stock=p.inventory.dealer.Find(s=>s.Id==line.assetId);if(stock==null||!(stock.IsPart||stock.IsUnit))throw new InvalidOperationException("Used stock unavailable or invalid.");p.cash-=InventoryPricing.BuyUsed(stock,policy);p.inventory.dealer.Remove(stock);if(stock.IsPart){stock.part.storageId=SharedInventory.Garage;p.parts.Add(stock.part);if(line.install)SharedInventory.Move(p,stock.part.instanceId,InventoryKind.Car,carId);continue;}unit=stock.unit;unit.storageId=SharedInventory.Garage;p.looseEngineElements.Add(unit);}
-                    if(line.install&&i<line.positions.Count)InventoryUnits.Install(p,carId,unit.element.id,line.positions[i]);
-                }
-            }
+            OrderedCartApplyTransition.ApplyLive(p,carId,lines,preview,policy);
         }
         public static InspectionBuild Preview(PlayerProfile p,OwnedCar car,IEnumerable<PartCartLine> lines)
         {

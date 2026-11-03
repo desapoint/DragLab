@@ -20,6 +20,13 @@ namespace DragLab.Domain.Mechanics
                 var d=catalog.Find(pack.condition.elements.Length==4?DefinitionId(pack,i):pack.definitionId);if(d==null||d.category!=PartCategory.Wheels||!catalog.Fits(spec,d))throw new InvalidOperationException("Invalid wheel specification at corner "+(i+1));return d.Copy();
             }).ToArray();
         }
+        internal static void Capture(VehicleSpec spec,IEnumerable<PartInstance> parts,ICartCatalogRead catalog)
+        {
+            spec.cornerWheelDefinitions=new PartDefinition[0];var pack=parts.FirstOrDefault(p=>p.slot=="Wheels");if(pack==null)return;
+            spec.cornerWheelDefinitions=Enumerable.Range(0,4).Select(i=>{
+                var d=catalog.FindDefinition(pack.condition.elements.Length==4?DefinitionId(pack,i):pack.definitionId);if(d==null||d.category!=PartCategory.Wheels||!catalog.Fits(spec,d))throw new InvalidOperationException("Invalid wheel specification at corner "+(i+1));return d.Copy();
+            }).ToArray();
+        }
         public static void Install(PlayerProfile p,OwnedCar car,LooseEngineElement unit,string position)
         {
             if(!EngineElements.MatchesCategory(PartCategory.Wheels,unit.element))throw new InvalidOperationException("Choose a physical wheel member, not another component type.");
@@ -29,6 +36,23 @@ namespace DragLab.Domain.Mechanics
             p.looseEngineElements.Add(new LooseEngineElement{definitionId=oldDefinition,unitPrice=InventoryPricing.NewUnit(p.catalog.Find(oldDefinition),4),element=old.Copy()});
             var next=unit.element.Copy();next.role="wheel";next.definitionId=unit.definitionId;next.cylinder=corner;next.valve=-1;pack.condition.elements[corner]=next;p.looseEngineElements.Remove(unit);
             pack.condition.health=pack.condition.elements.Min(e=>e.health);pack.condition.failed=pack.condition.elements.All(e=>e.Failed);pack.condition.failureReason=pack.condition.failed?"Wheels unavailable":"";pack.condition.serviceCount++;pack.condition.lastService="Individual wheel replaced / "+InventoryUnits.PositionLabel(p,car,unit.definitionId,position);
+        }
+        internal static void Install(ICartApplyState state,PartMoveCarState car,LooseEngineElement unit,CartApplyIdentityRef unitIdentity,string position,int rowIndex,int quantityOrdinal,PartMoveMemberPolicy memberPolicy)
+        {
+            if(!EngineElements.MatchesCategory(PartCategory.Wheels,unit.element))throw new InvalidOperationException("Choose a physical wheel member, not another component type.");
+            if(!InventoryUnits.Positions(state,car,unit.definitionId,"wheel").Contains(position))throw new InvalidOperationException("Choose a valid wheel position.");
+            var binding=car.Bindings.FirstOrDefault(s=>s.slot=="Wheels");
+            var pack=state.FindPart(state.IdentityFromOwnedField(binding.partInstanceId));
+            if(pack!=null&&memberPolicy==PartMoveMemberPolicy.ProjectionRequireExisting&&!state.IsCandidateCreated(pack)&&(pack.condition.elements==null||pack.condition.elements.Length==0))
+                throw new CartApplyMalformedSourceException("parts["+pack.instanceId+"].condition.elements");
+            Ensure(pack);
+            int corner=int.Parse(position.Substring(6));
+            var old=pack.condition.elements[corner];string oldDefinition=DefinitionId(pack,corner);
+            state.AppendUnit(new LooseEngineElement{definitionId=oldDefinition,unitPrice=InventoryPricing.NewUnit(state.Catalog.FindDefinition(oldDefinition),4),element=old.Copy()});
+            pack=state.EditPart(pack);
+            var next=unit.element.Copy();next.role="wheel";next.definitionId=unit.definitionId;next.cylinder=corner;next.valve=-1;pack.condition.elements[corner]=next;
+            state.RemoveUnit(unit);
+            pack.condition.health=pack.condition.elements.Min(e=>e.health);pack.condition.failed=pack.condition.elements.All(e=>e.Failed);pack.condition.failureReason=pack.condition.failed?"Wheels unavailable":"";pack.condition.serviceCount++;pack.condition.lastService="Individual wheel replaced / "+InventoryUnits.PositionLabel(state,car,unit.definitionId,position);
         }
     }
 }

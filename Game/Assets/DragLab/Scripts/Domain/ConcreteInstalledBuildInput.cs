@@ -91,5 +91,25 @@ namespace DragLab.Domain
                 startingFuel=startingFuel
             };
         }
+
+        internal InspectionBuild Inspection(ICartCatalogRead catalog)
+        {
+            var ownedComponents=components.Where(component=>component.Part!=null)
+                .Select(component=>new InstalledBuildComponent(component.Part.slot,component.Part.Copy())).ToArray();
+            var result=InstalledBuildResolution.Resolve(catalog,vehicleId,new Dictionary<PartCategory,string>(definitions),tune?.Copy(),
+                ownedComponents,!string.IsNullOrEmpty(engineAssemblyId),false,false,
+                MissingEngineInspection,null,null,true);
+            if(fluids==null)throw new InvalidOperationException("Inspection requires captured fluid state.");
+            if(!hasFuel)throw new InvalidOperationException("Inspection requires captured fuel state.");
+            var startingFluids=fluids.Copy();
+            var startingFuel=new FuelState{litres=fuelLitres};
+            return new InspectionBuild
+            {
+                build=result,
+                components=ownedComponents.Select(component=>component.Part).ToList(),
+                startingFluids=startingFluids,
+                startingFuel=startingFuel
+            };
+        }
     }
 }

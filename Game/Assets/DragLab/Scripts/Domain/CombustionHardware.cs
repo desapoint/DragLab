@@ -34,8 +34,10 @@ namespace DragLab.Domain.Mechanics
             c.compressionRatio=(float)(1+swept/Math.Max(2,chamber+p.crownVolumeCc));c.crown=p.pistonCrown;c.crownCc=p.crownVolumeCc;c.valveReliefMm=p.valveReliefMm;
         }
         public static void ValidateCombination(BuildResolution build,IDictionary<PartCategory,string> map,MechanicalCatalog catalog)
+            =>ValidateCombination(build,map,catalog.Find);
+        internal static void ValidateCombination(BuildResolution build,IDictionary<PartCategory,string> map,Func<string,PartDefinition> find)
         {
-            var s=build.spec;PartDefinition Part(PartCategory c)=>map.TryGetValue(c,out var id)?catalog.Find(id):null;
+            var s=build.spec;PartDefinition Part(PartCategory c)=>map.TryGetValue(c,out var id)?find(id):null;
             var cam=Part(PartCategory.Camshaft);var followers=Part(PartCategory.Followers);var spring=Part(PartCategory.ValveSprings);
             if(cam!=null&&followers!=null&&!string.IsNullOrEmpty(cam.followerInterface)&&cam.followerInterface!=followers.followerInterface)build.errors.Add("Camshaft requires "+cam.followerInterface+" followers; fitted "+followers.followerInterface+" cannot mate with it.");
             if(cam!=null&&spring!=null&&cam.camLiftMm>spring.springMaxLiftMm)build.warnings.Add("Cam lift exceeds spring travel: coil binding can damage cam/followers. Fit springs rated for at least "+cam.camLiftMm.ToString("F1")+" mm lift.");

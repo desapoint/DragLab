@@ -59,6 +59,15 @@ namespace DragLab.Editor
         public static void RunScopedSupplyRegression()=>RunCore(false,true,"scoped-supply-regression");
         public static void RunCartApplyReference()=>RunCore(false,true,"cart-apply-reference");
         public static void RunCartCatalogReference()=>RunCore(false,true,"cart-catalog-reference");
+        public static void RunOrderedCartApply()=>RunCore(false,true,"ordered-cart-apply");
+        public static void RunOrderedCartApplyMalformed()=>RunCore(false,true,"ordered-cart-apply-malformed");
+        public static void CheckOrderedCartApplyCompilation()
+        {
+            if(!Application.isBatchMode||EditorApplication.isPlaying)
+                throw new InvalidOperationException("Use a separate batch Editor outside Play Mode.");
+            Debug.Log("DRAGLAB C1 COMPILE-ONLY PASS; no runtime verification executed.");
+        }
+        public static void RunOrderedCartApplyRegression()=>RunCore(false,true,"ordered-cart-apply-regression");
         public static void RunCartApplyReferenceRegression()=>RunCore(false,true,"cart-apply-reference-regression");
         public static void RunInstalledBuildRegression()=>RunCore(false,true,"installed-build-regression");
         public static void RunTopologyMembersCorners()=>RunCore(false,true,"topology","members-corners");
@@ -116,6 +125,20 @@ namespace DragLab.Editor
                 };
                 if(expansion=="cart-apply-reference")CartPreviewCharacterizationChecks.RunCartApplyReference(check,root);
                 else if(expansion=="cart-catalog-reference")CartPreviewCharacterizationChecks.RunCartCatalogReference(check,root);
+                else if(expansion=="ordered-cart-apply")CartPreviewCharacterizationChecks.RunOrderedCartApply(check,root);
+                else if(expansion=="ordered-cart-apply-malformed")CartPreviewCharacterizationChecks.RunOrderedCartApplyMalformed(check,root);
+                else if(expansion=="ordered-cart-apply-regression")
+                {
+                    CartPreviewCharacterizationChecks.RunCartCatalogReference(check,root);
+                    CartPreviewCharacterizationChecks.RunScopedSupply(check,root);
+                    CartPreviewCharacterizationChecks.RunCanonicalValues(check,root);
+                    CartPreviewCharacterizationChecks.RunCanonicalBoundaries(check,root);
+                    CartPreviewCharacterizationChecks.RunOrderedInventoryMove(check,root);
+                    CartPreviewCharacterizationChecks.RunWholeEngineMove(check,root);
+                    CartPreviewCharacterizationChecks.RunWholePartMove(check,root);
+                    CartPreviewCharacterizationChecks.RunInstalledBuildProjectionContracts(check,root);
+                    NativePartsBrowserBuildChecks.Run(check,root);
+                }
                 else if(expansion=="cart-apply-reference-regression")
                 {
                     CartPreviewCharacterizationChecks.RunScopedSupply(check,root);

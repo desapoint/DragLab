@@ -303,6 +303,8 @@ namespace DragLab.Domain.Mechanics
             return spec.engineBehavior.fueling!=FuelSystem.Injection || FuelingHardware.ControllerSupports(part,spec);
         }
         public BuildResolution Resolve(string model, IDictionary<PartCategory, string> installed, Tune adjustments = null)
+            =>ResolveCore(model,installed,adjustments,Find);
+        internal BuildResolution ResolveCore(string model,IDictionary<PartCategory,string> installed,Tune adjustments,Func<string,PartDefinition> find)
         {
             var result = new BuildResolution { spec = Spec(model), tune = adjustments == null ? new Tune { finalDrive = specs[model].finalDrive, shiftRpm = specs[model].redlineRpm - 200 } : adjustments.Copy(), safeRpm = float.MaxValue, safeTorqueNm = float.MaxValue };
             var factoryRecipe = Recipe(model);
@@ -318,13 +320,13 @@ namespace DragLab.Domain.Mechanics
             t.inductionUpgrade = EngineUpgradeInduction.Factory; t.transmissionUpgrade = TransmissionUpgrade.Factory;
             foreach (PartCategory category in Slots(result.spec))
             {
-                string id; var part = installed.TryGetValue(category, out id) ? Find(id) : null;
+                string id; var part = installed.TryGetValue(category, out id) ? find(id) : null;
                 if (part == null) {
                     if (category == PartCategory.Body) result.spec.hasStructuralBody = false;
-                    string effect = PartSemantics.RemovalEffect(category, result.spec, installed, this);
-                    if (PartSemantics.Optional(category, result.spec, installed, this)) { if (category == PartCategory.Cooling) result.warnings.Add(effect); PartSemantics.ApplyRemoval(category, result.spec, t); }
+                    string effect = PartSemantics.RemovalEffect(category, result.spec, installed, find);
+                    if (PartSemantics.Optional(category, result.spec, installed, find)) { if (category == PartCategory.Cooling) result.warnings.Add(effect); PartSemantics.ApplyRemoval(category, result.spec, t); }
                     else (RoadOnly(category) ? result.warnings : result.errors).Add(effect);
-                    if (factoryRecipe.ContainsKey(category)) PartSemantics.ApplyMassDelta(result.spec, Find(factoryRecipe[category]), -Find(factoryRecipe[category]).massKg);
+                    if (factoryRecipe.ContainsKey(category)) PartSemantics.ApplyMassDelta(result.spec, find(factoryRecipe[category]), -find(factoryRecipe[category]).massKg);
                     continue;
                 }
                 if (part.category != category || !Fits(result.spec, part)) { result.errors.Add("Incompatible " + category); continue; }
@@ -333,7 +335,7 @@ namespace DragLab.Domain.Mechanics
                     if (part.rpmLimit > 0 || PartSemantics.EngineInternal(category)) result.safeRpm = Math.Min(result.safeRpm, part.rpmLimit);
                     if (part.torqueLimitNm > 0 || PartSemantics.EngineInternal(category)) result.safeTorqueNm = Math.Min(result.safeTorqueNm, part.torqueLimitNm);
                 }
-                PartSemantics.Apply(part, result.spec, t, factoryRecipe.ContainsKey(category) ? Find(factoryRecipe[category]) : null);
+                PartSemantics.Apply(part, result.spec, t, factoryRecipe.ContainsKey(category) ? find(factoryRecipe[category]) : null);
                 PartTuning.Project(part, t, specs[model]);
                 switch (category)
                 {
@@ -360,12 +362,12 @@ namespace DragLab.Domain.Mechanics
             if (result.spec.engineBehavior.fueling == FuelSystem.Carburetor) { result.spec.engineBehavior.cut = result.spec.engineBehavior.launchCut = CutMethod.Ignition; t.limiterCut = t.twoStepCut = CutMethod.Ignition; }
             else {
                 if(CombustionHardware.Diesel(result.spec)){result.spec.engineBehavior.cut=result.spec.engineBehavior.launchCut=CutMethod.Fuel;result.spec.engineBehavior.antiLag=result.spec.engineBehavior.launchPreload=false;t.limiterCut=t.twoStepCut=CutMethod.Fuel;}
-                string controllerId; var controller = installed.TryGetValue(PartCategory.Controls, out controllerId) ? Find(controllerId) : null;
+                string controllerId; var controller = installed.TryGetValue(PartCategory.Controls, out controllerId) ? find(controllerId) : null;
                 if (controller != null && !FuelingHardware.ControllerSupports(controller, result.spec)) result.errors.Add("EFI requires injection-capable Controls compatible with this engine's cylinder count: install the fixed EFI controller or programmable engine controller.");
             }
             result.spec.valvetrain.camTimingDegrees=result.spec.valvetrain.timingAdjustable?(float)DragMath.Clamp(t.camTimingDegrees,-6,6):0;
             t.camTimingDegrees=result.spec.valvetrain.camTimingDegrees;
-            CombustionHardware.ValidateCombination(result,installed,this);
+            CombustionHardware.ValidateCombination(result,installed,find);
             t.ClampTo(result.spec);
             // Preserve authored factory calibration; fitted boost headroom is independent of old engine ranks.
             if (result.safeRpm == float.MaxValue) result.safeRpm = result.spec.redlineRpm * 1.08f;
@@ -373,7 +375,7 @@ namespace DragLab.Domain.Mechanics
             result.spec.engineBehavior.safeRpmMultiplier = result.safeRpm / result.spec.redlineRpm;
             t.shiftRpm = Math.Min(t.shiftRpm, result.safeRpm - 100);
             if (t.revLimitRpm > result.safeRpm) t.revLimitRpm = result.safeRpm;
-            result.spec.fittedParts = installed.Values.Select(Find).Where(p => p != null).Select(p => p.Copy()).ToArray();
+            result.spec.fittedParts = installed.Values.Select(find).Where(p => p != null).Select(p => p.Copy()).ToArray();
             result.spec.hasInstalledParts = true;
             AwdHardware.Enforce(result);
             return result;

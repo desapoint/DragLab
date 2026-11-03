@@ -5,16 +5,26 @@ namespace DragLab.Domain
 {
     internal static class InstalledInventoryTransition
     {
-        internal static void MoveAfterPreamble(InstalledPartTransitionState state,MechanicalCatalog catalog,
+        internal static void MoveAfterPreamble(InstalledPartTransitionState state,ICartCatalogRead catalog,
             PartMovePreamble preamble,InventoryKind target,string targetId,PartMoveMemberPolicy memberPolicy)
         {
             switch(preamble.Kind)
             {
                 case PartMoveAssetKind.Unit:
                 {
-                    var unit=state.FindLooseUnit(preamble.AssetId);
                     if(target!=InventoryKind.Storage)throw new InvalidOperationException("Choose a fitted position to install an individual unit.");
-                    state.MarkUnitChanged(unit);unit.StorageId=targetId;
+                    if(state is ICartApplyState applyState)
+                    {
+                        var source=applyState.FindUnit(preamble.Identity);
+                        var unit=applyState.EditUnit(source);
+                        applyState.MarkChangedUnit(unit);
+                        unit.storageId=targetId;
+                    }
+                    else
+                    {
+                        var unit=state.FindLooseUnit(preamble.AssetId);
+                        state.MarkUnitChanged(unit);unit.StorageId=targetId;
+                    }
                     return;
                 }
                 case PartMoveAssetKind.Engine:

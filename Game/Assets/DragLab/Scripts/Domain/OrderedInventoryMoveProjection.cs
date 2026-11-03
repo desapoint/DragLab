@@ -64,6 +64,7 @@ namespace DragLab.Domain
 
             var state=new ProfileInstalledPartTransitionState(profile,true);
             int failedIndex=-1;
+            using(var catalogRead=CartApplyCatalogReaders.Scoped(catalog))
             try
             {
                 for(int i=0;i<ordered.Length;i++)
@@ -71,7 +72,7 @@ namespace DragLab.Domain
                     failedIndex=i;
                     var request=ordered[i];
                     var preamble=InstalledPartTransition.Preamble(state,request.AssetId,request.Destination,request.TargetId);
-                    InstalledInventoryTransition.MoveAfterPreamble(state,catalog,preamble,
+                    InstalledInventoryTransition.MoveAfterPreamble(state,catalogRead,preamble,
                         request.Destination,request.TargetId,PartMoveMemberPolicy.ProjectionRequireExisting);
                 }
 
@@ -79,12 +80,12 @@ namespace DragLab.Domain
                 var engines=state.ChangedEngines.Select(engine=>
                 {
                     if(!snapshotCache.TryGetValue(engine,out var snapshot))
-                    {snapshot=WholeEngineMoveProjection.SnapshotEngine(state,catalog,engine);snapshotCache.Add(engine,snapshot);}
+                    {snapshot=WholeEngineMoveProjection.SnapshotEngine(state,catalogRead,engine);snapshotCache.Add(engine,snapshot);}
                     return snapshot;
                 }).ToArray();
                 var parts=state.ChangedParts.Select(part=>part.Copy()).ToArray();
                 var units=state.ChangedUnits.Select(unit=>new LooseUnitMoveSnapshot(unit)).ToArray();
-                var cars=state.AffectedCars.Select(car=>WholePartMoveProjection.SnapshotCar(state,catalog,car)).ToArray();
+                var cars=state.AffectedCars.Select(car=>WholePartMoveProjection.SnapshotCar(state,catalogRead,car)).ToArray();
                 return OrderedInventoryMoveResult.Completed(parts,engines,units,cars);
             }
             catch(Exception error){return OrderedInventoryMoveResult.Failure(error,failedIndex);}

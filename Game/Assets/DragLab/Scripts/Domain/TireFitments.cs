@@ -40,5 +40,16 @@ namespace DragLab.Domain
                 return d.Copy();
             }).ToArray();
         }
+        internal static void Capture(VehicleSpec spec,IEnumerable<PartInstance> parts,ICartCatalogRead catalog)
+        {
+            WheelFitments.Capture(spec,parts,catalog);
+            var pack=parts.FirstOrDefault(p=>p.slot==PartCategory.Tires.ToString());spec.cornerTireDefinitions=new PartDefinition[0];if(pack==null)return;
+            if(pack.condition.tires==null||pack.condition.tires.Length==0)return;
+            spec.cornerTireDefinitions=Enumerable.Range(0,4).Select(i=>{
+                var d=catalog.FindDefinition(DefinitionId(pack,i));
+                if(d==null||d.category!=PartCategory.Tires||!catalog.Fits(spec,d))throw new InvalidOperationException("Incompatible fitted tire at corner "+(i+1));
+                return d.Copy();
+            }).ToArray();
+        }
     }
 }

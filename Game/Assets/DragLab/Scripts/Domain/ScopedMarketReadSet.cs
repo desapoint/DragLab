@@ -17,15 +17,18 @@ namespace DragLab.Domain.Mechanics
         readonly Dictionary<ReservedPartSupply, int> holdGroups = new Dictionary<ReservedPartSupply, int>(ReferenceComparer<ReservedPartSupply>.Instance);
         readonly HashSet<ScopedSupplyLedger> ledgers = new HashSet<ScopedSupplyLedger>();
         MechanicalCatalog.LookupScope catalog;
+        ICartCatalogRead sharedCatalog;
         int nextStockGroup, nextHoldGroup;
         bool disposed;
 
-        ScopedMarketReadSet(PlayerProfile value)
+        ScopedMarketReadSet(PlayerProfile value,ICartCatalogRead reader=null)
         {
             owner = value;
+            sharedCatalog=reader;
         }
 
         internal static ScopedMarketReadSet OpenBorrowed(PlayerProfile owner) => new ScopedMarketReadSet(owner);
+        internal static ScopedMarketReadSet OpenBorrowed(PlayerProfile owner,ICartCatalogRead reader) => new ScopedMarketReadSet(owner,reader);
         internal bool IsDisposed => disposed;
 
         internal StockResolution Stock(PartDefinition request)
@@ -116,7 +119,9 @@ namespace DragLab.Domain.Mechanics
 
         PartDefinition FindDefinition(string id,out bool found,out int position,out int identityGroup)
         {
-            Check();if(catalog==null)catalog=owner.catalog.OpenLookupScope();
+            Check();
+            if(sharedCatalog!=null){var product=sharedCatalog.FindProduct(id);found=product.Found;position=product.Position;identityGroup=product.IdentityGroup;return product.Definition;}
+            if(catalog==null)catalog=owner.catalog.OpenLookupScope();
             return catalog.FindDefinition(id,out found,out position,out identityGroup);
         }
 
@@ -260,7 +265,7 @@ namespace DragLab.Domain.Mechanics
             stockIndex = null;
             stockAliases = null;
             stockOverlay.Clear(); holdOverlay.Clear(); stockGroups.Clear(); holdGroups.Clear();
-            catalog?.Dispose(); catalog=null; owner = null; disposed = true;
+            catalog?.Dispose(); catalog=null; sharedCatalog=null; owner = null; disposed = true;
         }
 
         internal readonly struct CatalogValue

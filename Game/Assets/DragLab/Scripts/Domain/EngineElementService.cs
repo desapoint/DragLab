@@ -22,6 +22,48 @@ namespace DragLab.Domain.Mechanics
         {
             var car=p.cars.Find(c=>c.instanceId==carId);var item=Installed(p,car,partId);if(p.catalog.Find(item.definitionId).category==PartCategory.Tires)throw new InvalidOperationException("Use per-corner tire replacement instead of generic engine-element service.");if(p.catalog.Find(item.definitionId).category==PartCategory.Wheels){int corner=Array.FindIndex(item.condition.elements,e=>e.id==elementId);if(corner<0)throw new InvalidOperationException("Wheel position changed.");var unit=spareId==null?InventoryUnits.Buy(p,carId,WheelFitments.DefinitionId(item,corner),"wheel"):p.looseEngineElements.Find(u=>u.element.id==spareId);if(unit==null||p.catalog.Find(unit.definitionId)?.category!=PartCategory.Wheels)throw new InvalidOperationException("Choose an owned compatible wheel.");InventoryUnits.Install(p,carId,unit.element.id,"wheel:"+corner);return;}ReplacePack(p,item,elementId,spareId);
         }
+        internal static void Replace(ICartApplyState state,string carId,PartInstance sourcePart,string elementId,LooseEngineElement sourceUnit,CartApplyIdentityRef unitIdentity,int rowIndex,int quantityOrdinal,PartMoveMemberPolicy memberPolicy)
+        {
+            var car=state.FindCarState(carId);
+            EngineRebuilds.RequireAvailable(car!=null,car?.GarageJobId,car!=null&&car.RebuildActive);
+            var partIdentity=sourcePart==null?CartApplyIdentityRef.Existing(null):state.IsCandidateCreated(sourcePart)?state.IdentityFromOwnedField(sourcePart.instanceId):CartApplyIdentityRef.Existing(sourcePart.instanceId);
+            var part=sourcePart==null?null:state.FindPart(partIdentity);
+            if(part==null||!car.Bindings.Any(s=>s.partInstanceId==part.instanceId)||part.condition.elements==null||part.condition.elements.Length==0)
+                throw new InvalidOperationException("Individual part is no longer installed.");
+            if(part.condition.failed)
+            {
+                part=state.EditPart(part);
+                foreach(var e in part.condition.elements)e.health=0;
+            }
+            if(state.Catalog.FindDefinition(part.definitionId).category==PartCategory.Tires)throw new InvalidOperationException("Use per-corner tire replacement instead of generic engine-element service.");
+            if(state.Catalog.FindDefinition(part.definitionId).category==PartCategory.Wheels)
+            {
+                int corner=Array.FindIndex(part.condition.elements,e=>e.id==elementId);
+                if(corner<0)throw new InvalidOperationException("Wheel position changed.");
+                throw new InvalidOperationException("Choose an owned compatible wheel.");
+            }
+            var requestedElement=CartApplyIdentityRef.Existing(elementId);
+            var old=part.condition.elements.FirstOrDefault(e=>(state.IsCandidateCreated(part)?state.IdentityFromOwnedField(e.id):CartApplyIdentityRef.Existing(e.id))==requestedElement);
+            if(old==null)throw new InvalidOperationException("Individual component changed; refresh the quote.");
+            var definition=state.Catalog.FindDefinition(part.definitionId);
+            LooseEngineElement unit=sourceUnit;
+            if(memberPolicy==PartMoveMemberPolicy.LegacyEnsure)
+            {
+                string externalId=unitIdentity.IsVirtual?state.OwnedFieldValue(unitIdentity):unitIdentity.ExistingId;
+                unit=null;
+                foreach(var candidate in state.UnitsInOrder)if(candidate.element.id==externalId){unit=candidate;break;}
+            }
+            unit=unit??state.FindUnit(unitIdentity);
+            var spareDefinition=unit==null?null:state.Catalog.FindDefinition(unit.definitionId);
+            if(spareDefinition==null||spareDefinition.category!=definition.category||spareDefinition.fitment!=definition.fitment||spareDefinition.id!=definition.id||!EngineElements.MatchesCategory(definition.category,unit.element)||unit.element.role!=old.role||unit.element.Failed)
+                throw new InvalidOperationException("Spare needs the same matched specification and role; mixed piston masses/profiles require a complete matched kit.");
+            var replacement=unit.element.Copy();replacement.cylinder=old.cylinder;replacement.valve=old.valve;
+            state.RemoveUnit(unit);
+            int index=Array.IndexOf(part.condition.elements,old);
+            state.AppendUnit(new LooseEngineElement{definitionId=part.definitionId,unitPrice=Price(definition,part.condition),element=old.Copy()});
+            part=state.EditPart(part);
+            part.condition.elements[index]=replacement;RefreshAggregate(part.condition);part.condition.serviceCount++;part.condition.lastService="Individual "+old.role+" replaced / cylinder "+(old.cylinder+1);
+        }
         public static void ReplaceStored(PlayerProfile p,string engineId,string partId,string elementId,string spareId=null)
         {
             var engine=AssemblyOperations.Stored(p,engineId);var item=p.parts.Find(i=>i.instanceId==partId);

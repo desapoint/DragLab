@@ -12,9 +12,12 @@ namespace DragLab.Domain.Mechanics
     {
         internal readonly PartMoveAssetKind Kind;
         internal readonly string AssetId;
+        internal readonly CartApplyIdentityRef Identity;
         internal readonly PartInstance Part;
         internal PartMovePreamble(PartMoveAssetKind kind,string assetId,PartInstance part=null)
-        {Kind=kind;AssetId=assetId;Part=part;}
+        {Kind=kind;AssetId=assetId;Identity=CartApplyIdentityRef.Existing(assetId);Part=part;}
+        internal PartMovePreamble(PartMoveAssetKind kind,CartApplyIdentityRef identity,string assetId,PartInstance part=null)
+        {Kind=kind;Identity=identity;AssetId=assetId;Part=part;}
     }
 
     internal sealed class PartMoveEffect
@@ -73,6 +76,7 @@ namespace DragLab.Domain.Mechanics
         internal string EngineAssemblyId {get{if(live!=null)return live.engineAssemblyId;return engineAssemblyId;}set{if(live!=null)live.engineAssemblyId=value;else engineAssemblyId=value;}}
         internal string GarageJobId;
         internal readonly bool HasRebuildJob,RebuildActive;
+        internal OwnedCar Source=>live??source;
         List<SlotBinding> bindings;
         Tune tune;
         FuelState fuel;
@@ -108,6 +112,20 @@ namespace DragLab.Domain.Mechanics
         internal Tune OwnedTuneCopy=>Tune?.Copy();
         internal SlotBinding[] BindingCopies=>Bindings==null?null:Bindings.Select(binding=>binding==null?null:new SlotBinding{slot=binding.slot,partInstanceId=binding.partInstanceId}).ToArray();
         internal IList<SlotBinding> BindingsForLookup=>live!=null?live.installed.slots:bindingsLoaded?bindings:source.installed.slots;
+        internal OwnedCar SnapshotCopy()
+        {
+            var value=live??source;if(value==null)return null;
+            var rebuild=value.engineRebuild==null?null:new EngineRebuildJob{active=value.engineRebuild.active,id=value.engineRebuild.id,engineId=value.engineRebuild.engineId,startedUtcTicks=value.engineRebuild.startedUtcTicks,readyUtcTicks=value.engineRebuild.readyUtcTicks,paidPrice=value.engineRebuild.paidPrice,targets=value.engineRebuild.targets==null?null:value.engineRebuild.targets.Select(target=>target==null?null:new EngineRebuildTarget{partId=target.partId,definitionId=target.definitionId,replace=target.replace}).ToList()};
+            var pass=value.lastPass==null?null:new PassRecord{distanceM=value.lastPass.distanceM,elapsedSeconds=value.lastPass.elapsedSeconds,reactionSeconds=value.lastPass.reactionSeconds,trapKmh=value.lastPass.trapKmh,sixtyFootSeconds=value.lastPass.sixtyFootSeconds,eighthSeconds=value.lastPass.eighthSeconds,tune=value.lastPass.tune?.Copy(),driving=value.lastPass.driving?.Copy()};
+            return new OwnedCar
+            {
+                instanceId=value.instanceId,chassisId=value.chassisId,engineAssemblyId=EngineAssemblyId,garageJobId=GarageJobId,
+                installed=value.installed==null?null:new InstalledBuild{version=value.installed.version,instanceId=value.installed.instanceId,vehicleDefinitionId=value.installed.vehicleDefinitionId,slots=BindingCopies==null?null:BindingCopies.ToList()},
+                fuel=Fuel?.Copy(),fuelInitialized=value.fuelInitialized,fluids=Fluids?.Copy(),serviceHardwareVersion=value.serviceHardwareVersion,thermalUtcTicks=value.thermalUtcTicks,engineRebuild=rebuild,massVersion=value.massVersion,
+                vehicleId=value.vehicleId,customName=value.customName,usedHistory=value.usedHistory==null?null:value.usedHistory.ToList(),tune=Tune?.Copy(),paintHex=value.paintHex,presets=value.presets==null?null:value.presets.Select(preset=>preset?.Copy()).ToList(),
+                bestQuarterSeconds=value.bestQuarterSeconds,bestSixtyFootSeconds=value.bestSixtyFootSeconds,bestEighthSeconds=value.bestEighthSeconds,bestTrapKmh=value.bestTrapKmh,bestReactionSeconds=value.bestReactionSeconds,completedRuns=value.completedRuns,mileageKm=value.mileageKm,lastPass=pass
+            };
+        }
     }
 
     internal sealed class PartMoveEngineState
@@ -119,6 +137,7 @@ namespace DragLab.Domain.Mechanics
         internal string ParentVehicleId {get{if(live!=null)return live.parentVehicleId;return parentVehicleId;}set{if(live!=null)live.parentVehicleId=value;else parentVehicleId=value;}}
         internal string StorageId {get{if(live!=null)return live.storageId;return storageId;}set{if(live!=null)live.storageId=value;else storageId=value;}}
         internal readonly string CustomName;
+        internal EngineAssemblyInstance Source=>live??source;
         List<SlotBinding> bindings;
         Tune tune;
         FluidState fluids;
@@ -139,6 +158,8 @@ namespace DragLab.Domain.Mechanics
         }
         internal void Release(){live=null;source=null;bindings=null;tune=null;fluids=null;}
         internal SlotBinding[] BindingCopies=>Bindings==null?null:Bindings.Select(binding=>binding==null?null:new SlotBinding{slot=binding.slot,partInstanceId=binding.partInstanceId}).ToArray();
+        internal EngineAssemblyInstance SnapshotCopy()
+        {var value=live??source;if(value==null)return null;return new EngineAssemblyInstance{instanceId=Id,parentVehicleId=ParentVehicleId,vehicleDefinitionId=VehicleDefinitionId,storageId=StorageId,customName=CustomName,slots=BindingCopies==null?null:BindingCopies.ToList(),fluids=Fluids?.Copy(),tune=Tune?.Copy()};}
     }
 
     internal sealed class PartMoveLooseUnitState
@@ -163,15 +184,18 @@ namespace DragLab.Domain.Mechanics
             if(copy){source=unit;this.copyElement=copyElement;}else live=unit;
         }
         internal void Release(){live=null;source=null;element=null;}
+        internal LooseEngineElement SnapshotCopy()=>new LooseEngineElement{definitionId=DefinitionId,storageId=StorageId,unitPrice=UnitPrice,tireUnit=TireUnit,element=Element?.Copy()};
     }
 
-    internal sealed class ProfileInstalledPartTransitionState : InstalledPartTransitionState
+    internal class ProfileInstalledPartTransitionState : InstalledPartTransitionState
     {
         sealed class ReferenceComparer<T> : IEqualityComparer<T> where T:class
         {internal static readonly ReferenceComparer<T> Instance=new ReferenceComparer<T>();public bool Equals(T x,T y)=>ReferenceEquals(x,y);public int GetHashCode(T value)=>System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(value);}
         PlayerProfile profile;
+        protected PlayerProfile SourceProfile => profile;
         readonly bool copyOnRead;
         readonly Dictionary<PartInstance,PartInstance> partCopies=new Dictionary<PartInstance,PartInstance>(ReferenceComparer<PartInstance>.Instance);
+        readonly Dictionary<PartInstance,PartInstance> partSourcesByCopy=new Dictionary<PartInstance,PartInstance>(ReferenceComparer<PartInstance>.Instance);
         readonly Dictionary<OwnedCar,PartMoveCarState> carStates=new Dictionary<OwnedCar,PartMoveCarState>(ReferenceComparer<OwnedCar>.Instance);
         readonly Dictionary<EngineAssemblyInstance,PartMoveEngineState> engineStates=new Dictionary<EngineAssemblyInstance,PartMoveEngineState>(ReferenceComparer<EngineAssemblyInstance>.Instance);
         readonly Dictionary<LooseEngineElement,PartMoveLooseUnitState> unitStates=new Dictionary<LooseEngineElement,PartMoveLooseUnitState>(ReferenceComparer<LooseEngineElement>.Instance);
@@ -195,12 +219,22 @@ namespace DragLab.Domain.Mechanics
         {
             var part=profile.parts.Find(item=>item.instanceId==id);
             if(part==null||!copyOnRead)return part;
-            if(!partCopies.TryGetValue(part,out var copy)){copy=part.Copy();partCopies.Add(part,copy);}return copy;
+            return EditSourcePart(part);
         }
-        PartInstance ReadSourcePart(PartInstance source)
+        protected PartInstance ReadCurrentPart(PartInstance source)
         {
             if(source==null||!copyOnRead)return source;
             return partCopies.TryGetValue(source,out var copy)?copy:source;
+        }
+        protected PartInstance SourcePart(PartInstance value)
+            =>value!=null&&partSourcesByCopy.TryGetValue(value,out var source)?source:value;
+        protected bool SourceCachesCleared=>profile==null&&partCopies.Count==0&&partSourcesByCopy.Count==0&&carStates.Count==0&&engineStates.Count==0&&unitStates.Count==0&&tuneCopies.Count==0&&fluidCopies.Count==0&&elementCopies.Count==0&&affectedCars.Count==0&&affectedEngines.Count==0&&affectedOwners.Count==0&&changedParts.Count==0&&changedEngines.Count==0&&changedUnits.Count==0;
+        protected PartInstance EditSourcePart(PartInstance value)
+        {
+            if(value==null||!copyOnRead)return value;
+            if(partSourcesByCopy.ContainsKey(value))return value;
+            if(partCopies.TryGetValue(value,out var copy))return copy;
+            copy=value.Copy();partCopies.Add(value,copy);partSourcesByCopy.Add(copy,value);return copy;
         }
         internal override PartMoveCarState FindCar(string id)
         {var car=profile.cars.Find(candidate=>candidate.instanceId==id);return car==null?null:Wrap(car);}
@@ -220,6 +254,7 @@ namespace DragLab.Domain.Mechanics
         {if(!engineStates.TryGetValue(engine,out var state)){state=new PartMoveEngineState(engine,copyOnRead,CopyTune,CopyFluid);engineStates.Add(engine,state);}return state;}
         PartMoveLooseUnitState Wrap(LooseEngineElement unit)
         {if(!unitStates.TryGetValue(unit,out var state)){state=new PartMoveLooseUnitState(unit,copyOnRead,CopyElement);unitStates.Add(unit,state);}return state;}
+        protected PartMoveLooseUnitState WrapLooseUnit(LooseEngineElement unit)=>unit==null?null:Wrap(unit);
         Tune CopyTune(Tune source){if(source==null)return null;if(!copyOnRead)return source;if(!tuneCopies.TryGetValue(source,out var copy)){copy=source.Copy();tuneCopies.Add(source,copy);}return copy;}
         FluidState CopyFluid(FluidState source){if(source==null)return null;if(!copyOnRead)return source;if(!fluidCopies.TryGetValue(source,out var copy)){copy=source.Copy();fluidCopies.Add(source,copy);}return copy;}
         EngineElement CopyElement(EngineElement source){if(source==null)return null;if(!copyOnRead)return source;if(!elementCopies.TryGetValue(source,out var copy)){copy=source.Copy();elementCopies.Add(source,copy);}return copy;}
@@ -243,7 +278,7 @@ namespace DragLab.Domain.Mechanics
         public override void Dispose()
         {
             foreach(var pair in carStates)pair.Value.Release();foreach(var pair in engineStates)pair.Value.Release();foreach(var pair in unitStates)pair.Value.Release();
-            carStates.Clear();engineStates.Clear();unitStates.Clear();tuneCopies.Clear();fluidCopies.Clear();elementCopies.Clear();partCopies.Clear();affectedCars.Clear();affectedEngines.Clear();affectedOwners.Clear();changedParts.Clear();changedEngines.Clear();changedUnits.Clear();profile=null;
+            carStates.Clear();engineStates.Clear();unitStates.Clear();tuneCopies.Clear();fluidCopies.Clear();elementCopies.Clear();partCopies.Clear();partSourcesByCopy.Clear();affectedCars.Clear();affectedEngines.Clear();affectedOwners.Clear();changedParts.Clear();changedEngines.Clear();changedUnits.Clear();profile=null;
         }
 
         // InstalledPartLookup needs source ordering and duplicate checks. Unrelated scanned
@@ -253,7 +288,7 @@ namespace DragLab.Domain.Mechanics
             readonly ProfileInstalledPartTransitionState owner;
             internal TransitionPartList(ProfileInstalledPartTransitionState owner){this.owner=owner;}
             public int Count=>owner.profile.parts.Count;public bool IsReadOnly=>true;
-            public PartInstance this[int index]{get=>owner.ReadSourcePart(owner.profile.parts[index]);set=>throw new NotSupportedException();}
+            public PartInstance this[int index]{get=>owner.ReadCurrentPart(owner.profile.parts[index]);set=>throw new NotSupportedException();}
             public int IndexOf(PartInstance item){for(int i=0;i<Count;i++)if(ReferenceEquals(this[i],item))return i;return -1;}
             public bool Contains(PartInstance item)=>IndexOf(item)>=0;
             public void CopyTo(PartInstance[] array,int arrayIndex){for(int i=0;i<Count;i++)array[arrayIndex+i]=this[i];}
@@ -277,7 +312,18 @@ namespace DragLab.Domain.Mechanics
             return new PartMovePreamble(PartMoveAssetKind.Part,assetId,part);
         }
 
-        internal static PartMoveEffect MovePartAfterPreamble(InstalledPartTransitionState state,MechanicalCatalog catalog,
+        internal static PartMovePreamble Preamble(InstalledPartTransitionState state,ICartApplyState applyState,CartApplyIdentityRef identity,InventoryKind target,string targetId)
+        {
+            if(state.HasUnsettledRun)throw new InvalidOperationException("Close the active run before moving inventory.");
+            if(target==InventoryKind.Storage&&!state.StorageExists(targetId))throw new InvalidOperationException("Unknown storage container.");
+            string assetId=applyState.OwnedFieldValue(identity);
+            if(!identity.IsVirtual&&state.HasLooseUnit(assetId))return new PartMovePreamble(PartMoveAssetKind.Unit,identity,assetId);
+            if(!identity.IsVirtual&&state.HasEngineAsset(assetId))return new PartMovePreamble(PartMoveAssetKind.Engine,identity,assetId);
+            var part=applyState.FindPart(identity)??throw new InvalidOperationException("Owned item no longer exists.");
+            return new PartMovePreamble(PartMoveAssetKind.Part,identity,assetId,part);
+        }
+
+        internal static PartMoveEffect MovePartAfterPreamble(InstalledPartTransitionState state,ICartCatalogRead catalog,
             PartMovePreamble preamble,InventoryKind target,string targetId,PartMoveMemberPolicy memberPolicy)
         {
             var item=preamble.Part;
@@ -286,7 +332,7 @@ namespace DragLab.Domain.Mechanics
             var effect=new PartMoveEffect{MovedPart=item};
             if(item.location!=PartLocation.Inventory)
             {
-                var bindingOwner=state.FirstCarOwningPart(preamble.AssetId);var category=catalog.Find(item.definitionId).category;
+                var bindingOwner=state.FirstCarOwningPart(preamble.AssetId);var category=catalog.FindDefinition(item.definitionId).category;
                 if(bindingOwner!=null)
                 {
                     // SharedInventory first selects by a binding, then its public helpers
@@ -312,7 +358,7 @@ namespace DragLab.Domain.Mechanics
             {
                 var targetEngine=Stored(state,targetId);
                 state.MarkAffected(targetEngine);
-                var destinationPart=state.FindPart(preamble.AssetId)??throw new InvalidOperationException("Part no longer exists.");
+                var destinationPart=preamble.Part??state.FindPart(preamble.AssetId)??throw new InvalidOperationException("Part no longer exists.");
                 effect.MovedPart=destinationPart;
                 effect.DisplacedPart=InstallEnginePartAfterStored(state,catalog,targetEngine,destinationPart,memberPolicy);
             }
@@ -350,13 +396,14 @@ namespace DragLab.Domain.Mechanics
         {
             RequireAvailable(car);
             var binding=car.Bindings.FirstOrDefault(row=>row.slot==slot);if(binding==null)throw new InvalidOperationException("Slot is empty.");
-            var item=state.FindPart(binding.partInstanceId);item.location=PartLocation.Inventory;item.ownerId=item.slot="";car.Bindings.Remove(binding);state.MarkChanged(item);return item;
+            var item=state is CartApplyWorkingSet candidate?candidate.FindPart(candidate.IdentityFromOwnedField(binding.partInstanceId)):state.FindPart(binding.partInstanceId);item.location=PartLocation.Inventory;item.ownerId=item.slot="";car.Bindings.Remove(binding);state.MarkChanged(item);return item;
         }
-        internal static PartInstance InstallCarPart(InstalledPartTransitionState state,MechanicalCatalog catalog,
+        internal static PartInstance InstallCarPart(InstalledPartTransitionState state,ICartCatalogRead catalog,
             PartMoveCarState car,PartInstance item)
         {
             RequireAvailable(car);
-            var definition=catalog.Find(item.definitionId);
+            state.MarkAffected(car);
+            var definition=catalog.FindDefinition(item.definitionId);
             if(item.location!=PartLocation.Inventory||!catalog.Fits(catalog.Spec(car.VehicleId),definition))
                 throw new InvalidOperationException("Part must be loose and compatible.");
             if(MechanicalCatalog.EngineSlot(definition.category)&&string.IsNullOrEmpty(car.EngineAssemblyId))
@@ -367,28 +414,49 @@ namespace DragLab.Domain.Mechanics
             item.ownerId=item.location==PartLocation.Assembly?car.EngineAssemblyId:car.Id;item.slot=slot;
             car.Bindings.Add(new SlotBinding{slot=slot,partInstanceId=item.instanceId});state.MarkChanged(item);ProjectRanks(state,catalog,car);return displaced;
         }
+        internal static PartInstance InstallCarPart(InstalledPartTransitionState state,ICartCatalogRead catalog,
+            PartMoveCarState car,PartInstance item,PartMoveMemberPolicy memberPolicy)
+        {
+            // BuyPart has already initialized a fresh purchased root using its exact
+            // authored template. Existing moved roots must never be normalized here.
+            state.MarkAffected(car);
+            return InstallCarPart(state,catalog,car,item);
+        }
         internal static PartMoveEngineState RemoveEnginePart(InstalledPartTransitionState state,string engineId,PartCategory category)
         {
             var engine=Stored(state,engineId);var binding=engine.Bindings.FirstOrDefault(row=>row.slot==category.ToString())??throw new InvalidOperationException("Stored slot is empty.");
-            var item=state.FindPart(binding.partInstanceId);item.location=PartLocation.Inventory;item.ownerId=item.slot="";state.MarkEngineChanged(engine);engine.Bindings.Remove(binding);state.MarkChanged(item);return engine;
+            var item=state is CartApplyWorkingSet candidate?candidate.FindPart(candidate.IdentityFromOwnedField(binding.partInstanceId)):state.FindPart(binding.partInstanceId);item.location=PartLocation.Inventory;item.ownerId=item.slot="";state.MarkEngineChanged(engine);engine.Bindings.Remove(binding);state.MarkChanged(item);return engine;
         }
-        internal static PartInstance InstallEnginePartAfterStored(InstalledPartTransitionState state,MechanicalCatalog catalog,
+        internal static PartInstance InstallEnginePartAfterStored(InstalledPartTransitionState state,ICartCatalogRead catalog,
             PartMoveEngineState current,PartInstance item,PartMoveMemberPolicy memberPolicy)
         {
-            var definition=catalog.Find(item.definitionId);
+            var definition=catalog.FindDefinition(item.definitionId);
             if(item.location!=PartLocation.Inventory||!MechanicalCatalog.EngineSlot(definition.category)||
                 !catalog.Fits(catalog.Spec(current.VehicleDefinitionId),definition))
                 throw new InvalidOperationException("Select a compatible loose engine part.");
+            VehicleSpec spec=null;
+            bool candidateGuarded=false;
+            if(state is ICartApplyState candidateState&&memberPolicy==PartMoveMemberPolicy.ProjectionRequireExisting&&
+                !candidateState.IsCandidateCreated(item))
+            {
+                spec=catalog.Resolve(current.VehicleDefinitionId,state.EngineDefinitions(current),current.Tune).spec;
+                EngineElements.Ensure(spec,definition,item,memberPolicy,false);
+                candidateGuarded=true;
+            }
             PartInstance displaced=null;var old=current.Bindings.FirstOrDefault(binding=>binding.slot==definition.category.ToString());
-            if(old!=null){RemoveEnginePart(state,current.Id,definition.category);displaced=state.FindPart(old.partInstanceId);}
+            if(old!=null){RemoveEnginePart(state,current.Id,definition.category);displaced=state is CartApplyWorkingSet candidate?candidate.FindPart(candidate.IdentityFromOwnedField(old.partInstanceId)):state.FindPart(old.partInstanceId);}
             item.location=PartLocation.Assembly;item.ownerId=current.Id;item.slot=definition.category.ToString();
             state.MarkEngineChanged(current);current.Bindings.Add(new SlotBinding{slot=item.slot,partInstanceId=item.instanceId});state.MarkChanged(item);
-            var spec=catalog.Resolve(current.VehicleDefinitionId,state.EngineDefinitions(current),current.Tune).spec;
-            if(memberPolicy==PartMoveMemberPolicy.ProjectionRequireExisting)EngineElements.EnsureExisting(spec,definition,item);
+            if(spec==null)spec=catalog.Resolve(current.VehicleDefinitionId,state.EngineDefinitions(current),current.Tune).spec;
+            if(state is ICartApplyState applyState)
+            {
+                if(!candidateGuarded)EngineElements.Ensure(spec,definition,item,memberPolicy,applyState.IsCandidateCreated(item));
+            }
+            else if(memberPolicy==PartMoveMemberPolicy.ProjectionRequireExisting)EngineElements.EnsureExisting(spec,definition,item);
             else EngineElements.Ensure(spec,definition,item);
             return displaced;
         }
-        internal static void ProjectRanks(InstalledPartTransitionState state,MechanicalCatalog catalog,PartMoveCarState car)
+        internal static void ProjectRanks(InstalledPartTransitionState state,ICartCatalogRead catalog,PartMoveCarState car)
         {
             var resolved=catalog.Resolve(car.VehicleId,state.CarDefinitions(car),car.Tune).tune;
             var target=car.Tune;target.engineLevel=resolved.engineLevel;target.tireLevel=resolved.tireLevel;target.weightLevel=resolved.weightLevel;

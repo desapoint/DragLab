@@ -184,7 +184,8 @@ namespace DragLab.Domain.Mechanics
         {
             if(car==null)EngineRebuilds.RequireAvailable(car);
             using(var state=new ProfileInstalledPartTransitionState(profile,false))
-                InstalledPartTransition.InstallCarPart(state,catalog,new PartMoveCarState(car,false),item);
+            using(var catalogRead=CartApplyCatalogReaders.Live(catalog))
+                InstalledPartTransition.InstallCarPart(state,catalogRead,new PartMoveCarState(car,false),item);
         }
         public static void Remove(PlayerProfile profile, OwnedCar car, string slot)
         {
@@ -195,7 +196,8 @@ namespace DragLab.Domain.Mechanics
         public static void ProjectRanks(PlayerProfile profile, OwnedCar car, MechanicalCatalog catalog)
         {
             using(var state=new ProfileInstalledPartTransitionState(profile,false))
-                InstalledPartTransition.ProjectRanks(state,catalog,new PartMoveCarState(car,false));
+            using(var catalogRead=CartApplyCatalogReaders.Live(catalog))
+                InstalledPartTransition.ProjectRanks(state,catalogRead,new PartMoveCarState(car,false));
         }
         public static bool LegacyUpgrade(PlayerProfile profile, string category)
         {

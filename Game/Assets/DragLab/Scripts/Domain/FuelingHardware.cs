@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace DragLab.Domain.Mechanics
@@ -6,8 +7,10 @@ namespace DragLab.Domain.Mechanics
     public static class FuelingHardware
     {
         public static FuelSystem Type(VehicleSpec spec, IDictionary<PartCategory,string> installed, MechanicalCatalog catalog)
+            =>Type(spec,installed,catalog.Find);
+        internal static FuelSystem Type(VehicleSpec spec,IDictionary<PartCategory,string> installed,Func<string,PartDefinition> find)
         {
-            string id; var p=installed.TryGetValue(PartCategory.FuelSystem,out id)?catalog.Find(id):null;
+            string id; var p=installed.TryGetValue(PartCategory.FuelSystem,out id)?find(id):null;
             return p!=null && p.fuelDelivery!=FuelDeliveryHardware.Factory ? FuelSystem.Injection : spec.fuelSystemConverted ? spec.originalFueling : spec.engineBehavior.fueling;
         }
         public static bool ControllerSupports(PartDefinition controller, VehicleSpec spec)

@@ -17,12 +17,7 @@ namespace DragLab.Domain {
    if(c.tires.Length==0) {
     // Only a brand-new, untouched pack may create fresh tire elements.
     // Never recreate missing persisted tires from aggregate container history.
-    if((c.elements!=null&&c.elements.Length!=0)||c.health!=1||c.failed
-       ||!string.IsNullOrEmpty(c.failureReason)||c.runningSeconds!=0||c.distanceM!=0
-       ||c.stressExposure!=0||c.temperatureC!=20||c.slipEnergyJ!=0
-       ||c.deposits!=0||c.leakSeverity!=0||c.adjustmentError!=0
-       ||c.serviceWearRemainder!=0||c.serviceCount!=0||c.reconditionCount!=0
-       ||!string.IsNullOrEmpty(c.lastService)||c.clutch!=null)
+    if(!CanSeed(c))
      throw new InvalidOperationException("Tire pack is missing typed members and contains old state; reset required.");
     c.tires=new[]{new TireCondition(),new TireCondition(),new TireCondition(),new TireCondition()};
    }
@@ -38,6 +33,10 @@ namespace DragLab.Domain {
    Ensure(part.condition);
    if(newPack)for(int i=0;i<4;i++)part.condition.tires[i].id=part.instanceId+"/tire/"+i;
   }
+  internal static bool CanSeed(ComponentCondition c)=>(c.elements==null||c.elements.Length==0)&&c.health==1&&!c.failed
+   &&string.IsNullOrEmpty(c.failureReason)&&c.runningSeconds==0&&c.distanceM==0&&c.stressExposure==0&&c.temperatureC==20
+   &&c.slipEnergyJ==0&&c.deposits==0&&c.leakSeverity==0&&c.adjustmentError==0&&c.serviceWearRemainder==0
+   &&c.serviceCount==0&&c.reconditionCount==0&&string.IsNullOrEmpty(c.lastService)&&c.clutch==null;
   // Explicit creation path for new/used market stock and read-only previews.
   // Never call this for persisted data: v12 profile validation must reject
   // missing tire elements, not manufacture replacement identities or wear.

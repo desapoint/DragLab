@@ -22,17 +22,23 @@ namespace DragLab.Domain.Mechanics
         public static bool TorqueRated(PartCategory c) { return EngineStrengthRated(c) || c == PartCategory.Gearbox || c == PartCategory.Driveshaft || c == PartCategory.Differential || MechanicalCatalog.DriveBranch(c); }
         public static bool Wears(PartCategory c) { return ServiceHardware.Wears(c) || EngineInternal(c) || TorqueRated(c) || c == PartCategory.Clutch || c == PartCategory.Cooling || c == PartCategory.Brakes || c == PartCategory.HeadIntake || c == PartCategory.FuelSystem || c == PartCategory.Ignition || c == PartCategory.Induction || c == PartCategory.Exhaust || c == PartCategory.Tires; }
         static TransmissionType Transmission(VehicleSpec spec, IDictionary<PartCategory, string> installed, MechanicalCatalog catalog)
+            =>Transmission(spec,installed,catalog.Find);
+        static TransmissionType Transmission(VehicleSpec spec,IDictionary<PartCategory,string> installed,Func<string,PartDefinition> find)
         {
-            string id; var p = installed.TryGetValue(PartCategory.Gearbox, out id) ? catalog.Find(id) : null;
+            string id; var p = installed.TryGetValue(PartCategory.Gearbox, out id) ? find(id) : null;
             return p == null || p.transmission == TransmissionUpgrade.Factory ? spec.transmission.type : (TransmissionType)((int)p.transmission - 1);
         }
         public static bool Optional(PartCategory c, VehicleSpec spec, IDictionary<PartCategory, string> installed, MechanicalCatalog catalog)
+            =>Optional(c,spec,installed,catalog.Find);
+        internal static bool Optional(PartCategory c,VehicleSpec spec,IDictionary<PartCategory,string> installed,Func<string,PartDefinition> find)
         {
-            var type = Transmission(spec, installed, catalog);
+            var type = Transmission(spec, installed, find);
             return ServiceHardware.Optional(c) || c == PartCategory.RevLimiter || c == PartCategory.ShiftLight || c == PartCategory.TwoStep || c == PartCategory.Interior || c == PartCategory.Accessories || c == PartCategory.Exhaust || c == PartCategory.Induction || c == PartCategory.Cooling ||
-                c == PartCategory.Controls && FuelingHardware.Type(spec, installed, catalog) == FuelSystem.Carburetor || c == PartCategory.Clutch && (type == TransmissionType.Automatic || type == TransmissionType.CVT);
+                c == PartCategory.Controls && FuelingHardware.Type(spec, installed, find) == FuelSystem.Carburetor || c == PartCategory.Clutch && (type == TransmissionType.Automatic || type == TransmissionType.CVT);
         }
         public static string RemovalEffect(PartCategory c, VehicleSpec spec, IDictionary<PartCategory, string> installed, MechanicalCatalog catalog)
+            =>RemovalEffect(c,spec,installed,catalog.Find);
+        internal static string RemovalEffect(PartCategory c,VehicleSpec spec,IDictionary<PartCategory,string> installed,Func<string,PartDefinition> find)
         {
             switch (c)
             {
@@ -48,8 +54,8 @@ namespace DragLab.Domain.Mechanics
                 case PartCategory.Exhaust: return "Exhaust removed: open acoustic path, no silencer/catalyst filtering; engine still runs.";
                 case PartCategory.Induction: return "Induction kit removed: naturally aspirated operation; factory boosted curve is de-rated.";
                 case PartCategory.Cooling: return "Cooling removed: residual air cooling only; sustained load can overheat the engine.";
-                case PartCategory.Controls: return FuelingHardware.Type(spec, installed, catalog) == FuelSystem.Carburetor ? "Optional controller removed: mechanical carb/ignition remain; added limiter/launch functions unavailable." : "Missing EFI controller: install injection-capable Controls; this injected engine cannot run without them.";
-                case PartCategory.Clutch: return Optional(c, spec, installed, catalog) ? "Separate friction clutch omitted: installed converter/CVT coupling remains." : "Missing clutch: no power transfer through this manual/DCT gearbox.";
+                case PartCategory.Controls: return FuelingHardware.Type(spec, installed, find) == FuelSystem.Carburetor ? "Optional controller removed: mechanical carb/ignition remain; added limiter/launch functions unavailable." : "Missing EFI controller: install injection-capable Controls; this injected engine cannot run without them.";
+                case PartCategory.Clutch: return Optional(c, spec, installed, find) ? "Separate friction clutch omitted: installed converter/CVT coupling remains." : "Missing clutch: no power transfer through this manual/DCT gearbox.";
                 case PartCategory.Body: return "Missing structural chassis/body: build is incomplete; weight reduction does not remove the chassis.";
                 default: return "Missing " + c + ": " + (MechanicalCatalog.RoadOnly(c) ? "its drive/braking path is unavailable; engine may still run." : "build is incomplete.");
             }

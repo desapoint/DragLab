@@ -9,17 +9,55 @@ namespace DragLab.Domain.Mechanics
         static PartInstance Item(PlayerProfile profile, string id) { return profile.parts.Find(p => p.instanceId == id) ?? throw new InvalidOperationException("Part no longer exists."); }
         public static string Buy(PlayerProfile profile, MechanicalCatalog catalog, string vehicleId, string definitionId, bool install)
         {
-            var car = Car(profile, vehicleId); var part = catalog.Find(definitionId);
-            if(part==null||!PartsMarket.FitsAny(profile,part)||profile.reputation<part.reputationRequired)throw new InvalidOperationException("Part offer requires REP "+(part==null?0:part.reputationRequired)+"; no preceding rank purchase is required.");
-            if (install && !catalog.Fits(catalog.Spec(car.vehicleId), part)) throw new InvalidOperationException("Incompatible purchase for selected vehicle.");
-            int count=PartsMarket.Count(profile,car,part);int price=PartsMarket.Quote(profile,part,count).cost;if (price < 0 || profile.cash < price) throw new InvalidOperationException("Insufficient cash.");
-            var item = new PartInstance { instanceId = MechanicsOwnership.NewId("part"), definitionId = part.id };
-            EngineElements.Ensure(catalog.Fits(catalog.Spec(car.vehicleId),part)?InventoryUnits.Spec(profile,car,part):PartsMarket.Reference(profile,part),part,item);
-            PartsMarket.Consume(profile,part,count);profile.parts.Add(item); profile.cash -= price;
-            if (install) MechanicsOwnership.Replace(profile, car, item, catalog);
-            return item.instanceId;
+            using(var state=new LiveCartApplyState(profile,catalog))
+            {
+                var item=BuyPart(state,vehicleId,definitionId,install,-1,0,out _);
+                return item.instanceId;
+            }
         }
-        public static void Install(PlayerProfile profile, MechanicalCatalog catalog, string vehicleId, string itemId) { MechanicsOwnership.Replace(profile, Car(profile, vehicleId), Item(profile, itemId), catalog); }
+        internal static PartInstance BuyPart(ICartApplyState state,string vehicleId,string definitionId,bool install,int rowIndex,int quantityOrdinal)
+            =>BuyPart(state,vehicleId,definitionId,install,rowIndex,quantityOrdinal,out _);
+        internal static PartInstance BuyPart(ICartApplyState state,string vehicleId,string definitionId,bool install,int rowIndex,int quantityOrdinal,out CartApplyAcquisitionReceipt<PartInstance> receipt)
+        {
+            receipt=null;
+            var car=state.FindCarState(vehicleId);
+            if(car==null)throw new InvalidOperationException("Vehicle no longer exists.");
+            EngineRebuilds.RequireAvailable(true,car.GarageJobId,car.RebuildActive);
+            var catalog=state.Catalog;
+            var part=catalog.FindDefinition(definitionId);
+            if(part==null||!PartsMarket.FitsAny(state,part)||state.Reputation<part.reputationRequired)
+                throw new InvalidOperationException("Part offer requires REP "+(part==null?0:part.reputationRequired)+"; no preceding rank purchase is required.");
+            if(install&&!catalog.Fits(catalog.Spec(car.VehicleId),part))throw new InvalidOperationException("Incompatible purchase for selected vehicle.");
+            int count=PartsMarket.Count(state,car,part);
+            var quote=state.Supply.Quote(part,count,false);
+            int price=quote.Cost;
+            if(price<0||state.Cash<price)throw new InvalidOperationException("Insufficient cash.");
+            var allocated=state.Identities.Allocate("part",rowIndex,quantityOrdinal,"part");
+            var item=new PartInstance{instanceId=allocated.DomainFieldValue,definitionId=part.id};
+            var memberSpec=catalog.Fits(catalog.Spec(car.VehicleId),part)?InventoryUnits.Spec(state,car,part):PartsMarket.Reference(state,part);
+            bool membersUninitialized=item.condition.elements==null||item.condition.elements.Length==0;
+            EngineElements.Ensure(memberSpec,part,item);
+            if(membersUninitialized&&state.MemberPolicy==PartMoveMemberPolicy.ProjectionRequireExisting&&item.condition.elements!=null)
+                for(int index=0;index<item.condition.elements.Length;index++)
+                    item.condition.elements[index].id=state.Identities.Allocate("element",rowIndex,quantityOrdinal,"part/elements/"+index).DomainFieldValue;
+            var consumed=state.Supply.Consume(part,count,false);
+            state.AppendPart(item);
+            state.Cash=state.Cash-price;
+            if(install)InstalledPartTransition.InstallCarPart((InstalledPartTransitionState)state,catalog,car,item,state.MemberPolicy);
+            if(state.CaptureEffects)receipt=new CartApplyAcquisitionReceipt<PartInstance>(item,allocated.Identity,part.id,quote,price,consumed.StockDeltas,consumed.HoldDeltas);
+            return item;
+        }
+        public static void Install(PlayerProfile profile, MechanicalCatalog catalog, string vehicleId, string itemId)
+        {
+            using(var state=new LiveCartApplyState(profile,catalog))
+            {
+                var car=state.FindCarState(vehicleId);
+                if(car==null)throw new InvalidOperationException("Vehicle no longer exists.");
+                EngineRebuilds.RequireAvailable(true,car.GarageJobId,car.RebuildActive);
+                var item=state.FindPartReadOnly(itemId)??throw new InvalidOperationException("Part no longer exists.");
+                InstalledPartTransition.InstallCarPart((InstalledPartTransitionState)state,state.Catalog,car,item,state.MemberPolicy);
+            }
+        }
         public static void Remove(PlayerProfile profile, string vehicleId, PartCategory category) { MechanicsOwnership.Remove(profile, Car(profile, vehicleId), category.ToString()); }
         public static int SaleValue(PartDefinition definition, ComponentCondition condition) { return (int)Math.Floor(definition.price * .45 * condition.health * (condition.failed ? .1 : 1)); }
         public static void Sell(PlayerProfile profile, MechanicalCatalog catalog, string itemId)

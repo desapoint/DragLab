@@ -49,25 +49,26 @@ namespace DragLab.Domain
             InventoryKind destination,string destinationId,MechanicalCatalog catalog)
         {
             var state=new ProfileInstalledPartTransitionState(profile,true);
+            using(var catalogRead=CartApplyCatalogReaders.Scoped(catalog))
             try
             {
                 var preamble=InstalledPartTransition.Preamble(state,assetId,destination,destinationId);
                 if(preamble.Kind!=PartMoveAssetKind.Engine)
                     throw new NotSupportedException("Whole-engine projection accepts physical engine assets only.");
-                InstalledEngineTransition.MoveAfterPreamble(state,catalog,preamble,destination,destinationId);
+                InstalledEngineTransition.MoveAfterPreamble(state,catalogRead,preamble,destination,destinationId);
 
                 var snapshots=new Dictionary<PartMoveEngineState,WholeEngineMoveSnapshot>();
                 var movedState=state.FindEngine(assetId);
-                var moved=GetSnapshot(state,catalog,movedState,snapshots);
-                var changed=state.ChangedEngines.Select(engine=>GetSnapshot(state,catalog,engine,snapshots)).ToArray();
-                var cars=state.AffectedCars.Select(car=>WholePartMoveProjection.SnapshotCar(state,catalog,car)).ToArray();
+                var moved=GetSnapshot(state,catalogRead,movedState,snapshots);
+                var changed=state.ChangedEngines.Select(engine=>GetSnapshot(state,catalogRead,engine,snapshots)).ToArray();
+                var cars=state.AffectedCars.Select(car=>WholePartMoveProjection.SnapshotCar(state,catalogRead,car)).ToArray();
                 return WholeEngineMoveResult.Completed(moved,changed,cars);
             }
             catch(Exception error){return WholeEngineMoveResult.Failure(error);}
             finally{state.Dispose();}
         }
 
-        static WholeEngineMoveSnapshot GetSnapshot(ProfileInstalledPartTransitionState state,MechanicalCatalog catalog,
+        static WholeEngineMoveSnapshot GetSnapshot(ProfileInstalledPartTransitionState state,ICartCatalogRead catalog,
             PartMoveEngineState engine,Dictionary<PartMoveEngineState,WholeEngineMoveSnapshot> snapshots)
         {
             if(!snapshots.TryGetValue(engine,out var snapshot)){snapshot=SnapshotEngine(state,catalog,engine);snapshots.Add(engine,snapshot);}
@@ -75,7 +76,7 @@ namespace DragLab.Domain
         }
 
         internal static WholeEngineMoveSnapshot SnapshotEngine(ProfileInstalledPartTransitionState state,
-            MechanicalCatalog catalog,PartMoveEngineState engine)
+            ICartCatalogRead catalog,PartMoveEngineState engine)
         {
             var bindings=engine.BindingCopies;
             PartInstance[] parts=null;Dictionary<PartCategory,string> definitions=null;

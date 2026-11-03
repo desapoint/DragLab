@@ -125,6 +125,13 @@ namespace DragLab.Domain.Mechanics
             for(int i=0;i<count;i++){var element=Create(d.category);element.id=p.instanceId+"/element/"+i;element.cylinder=i/valves;element.valve=PerValve(d.category)?i%valves:-1;element.role=Role(d.category,i%valves,valves);element.health=p.condition.failed?0:p.condition.health;p.condition.elements[i]=element;}
             if(d.category==PartCategory.Ignition)for(int i=v.combustion.separateSparkPlugs?0:v.sound.cylinders;i<count;i++){var e=p.condition.elements[i];e.role="ignition coil";e.cylinder=Ignition(v)==IgnitionTopology.Distributor?-1:i-(v.combustion.separateSparkPlugs?0:v.sound.cylinders);}
         }
+        internal static void Ensure(VehicleSpec v,PartDefinition d,PartInstance p,PartMoveMemberPolicy memberPolicy,bool candidateCreated)
+        {
+            if(memberPolicy==PartMoveMemberPolicy.ProjectionRequireExisting&&!candidateCreated&&Count(v,d)>0&&
+                (p.condition.elements==null||p.condition.elements.Length==0))
+                throw new CartApplyMalformedSourceException("parts["+p.instanceId+"].condition.elements");
+            Ensure(v,d,p);
+        }
         // Typed cart projection must not invent missing physical member identities.
         // Once an array is present, keep the legacy type-validation behavior exactly.
         internal static void EnsureExisting(VehicleSpec v,PartDefinition d,PartInstance p)

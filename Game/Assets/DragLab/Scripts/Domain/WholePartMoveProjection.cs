@@ -67,17 +67,18 @@ namespace DragLab.Domain
             InventoryKind destination,string destinationId,MechanicalCatalog catalog)
         {
             var state=new ProfileInstalledPartTransitionState(profile,true);
+            using(var catalogRead=CartApplyCatalogReaders.Scoped(catalog))
             try
             {
                 var preamble=InstalledPartTransition.Preamble(state,assetId,destination,destinationId);
                 if(preamble.Kind!=PartMoveAssetKind.Part)
                     throw new NotSupportedException("Whole-part projection accepts physical part assets only.");
-                var effect=InstalledPartTransition.MovePartAfterPreamble(state,catalog,preamble,destination,destinationId,
+                var effect=InstalledPartTransition.MovePartAfterPreamble(state,catalogRead,preamble,destination,destinationId,
                     PartMoveMemberPolicy.ProjectionRequireExisting);
                 var owners=new List<WholePartMoveOwnerSnapshot>();
                 foreach(var owner in effect.Owners)
                 {
-                    if(owner.Car!=null)owners.Add(SnapshotCar(state,catalog,owner.Car));
+                    if(owner.Car!=null)owners.Add(SnapshotCar(state,catalogRead,owner.Car));
                     else owners.Add(SnapshotEngine(state,owner.Engine));
                 }
                 return WholePartMoveResult.Completed(effect.MovedPart?.Copy(),effect.DisplacedPart?.Copy(),
@@ -88,7 +89,7 @@ namespace DragLab.Domain
         }
 
         internal static WholePartMoveOwnerSnapshot SnapshotCar(ProfileInstalledPartTransitionState state,
-            MechanicalCatalog catalog,PartMoveCarState car)
+            ICartCatalogRead catalog,PartMoveCarState car)
         {
             SlotBinding[] bindings=null;
             PartInstance[] parts=null;Dictionary<PartCategory,string> definitions=null;InspectionBuild inspection=null;
