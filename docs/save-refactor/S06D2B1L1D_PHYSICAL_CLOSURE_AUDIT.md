@@ -41,3 +41,8 @@ No source, simulation, UI, worker, persistence or caller is changed by this audi
 | MechanicalStress.cs | public PartDefinition MechanicalStress::TireDefinition(int corner) | 38–38 | 8746929FA9420107B6959C60BAAD2606A3DCC219CD14393BC099931E162B07BA | 793600F5964ED661424A3F63F8199E80D790ECC6AC76EA1E10599208431A70BE |
 | MechanicalStress.cs | public void MechanicalStress::Prepare(CarState s) | 40–85 | 26BC7B638594A35D6E8785199E79A58828D30F176F21700950E4F60F10F77E44 | 793600F5964ED661424A3F63F8199E80D790ECC6AC76EA1E10599208431A70BE |
 | ServiceDynamics.cs | public void CarSimulation::SetFluids(FluidState fluids) | 140–140 | 2272DF5506A7848CEC7D748A0BAB7735E0AFEC38F8D6572C42AE94FF6BA780F7 | 3B4295E3211BBC27E4C21BB4D8CD426DEEFF7403B20063A1C244F57E4FCEBB34 |
+
+
+## Semantic expansion, still pending review
+
+The root-only lexical table above is now supplemented by the [semantic audit](../../reports/save-refactor/S06D2B1L1D_SEMANTIC_CLOSURE_AUDIT.md): two identical zero-error compiler-based runs, 21 language/input/schema probes and an exact joined 428-member/43-file draft physical inventory. It records explicit virtual/interface/delegate and implicit-disposal gaps, plus a conditional path to authored JSON loading when `hasInstalledParts` is false. Existing typed capture/reader seams and their marker-setting route are identified for review. Neither the unpruned graph nor the compact TSVs are an approved edit allowlist; the complete production gate remains open.

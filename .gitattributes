@@ -48,3 +48,7 @@ docs/reference/audio-phase35/DragLab_Workbench_Subsystem_Audit.csv -text whitesp
 
 # Immutable diagnostic transcript retains one captured empty-message delimiter space.
 reports/save-refactor/fixtures/cart-preview-legacy-trace-v1.txt whitespace=-blank-at-eol
+
+# Keep the draft physical-closure provenance hashes reproducible on checkout.
+reports/save-refactor/S06D2B1L1D/PHYSICAL_REACHABLE_MEMBERS.tsv text eol=lf
+reports/save-refactor/S06D2B1L1D/PHYSICAL_REACHABLE_FILES.tsv text eol=lf
