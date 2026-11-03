@@ -12,29 +12,29 @@ The graph follows resolved invocation, construction, method-group, property, sta
 
 ## Executed final evidence
 
-Final runs `physical-closure-semantic-v12a` and `v12b` both exit 0. Fourteen main evidence artifacts are byte-identical between them, including the exact source/reference captures, member/edge tables, unresolved routes, compact physical inventory, self-checks and tool provenance. All TSV row widths match their headers.
+Final runs `physical-closure-semantic-v13a` and `v13b` both exit 0. Fourteen main evidence artifacts are byte-identical between them, including the exact source/reference captures, member/edge tables, unresolved routes, compact physical inventory, self-checks and tool provenance. All TSV row widths match their headers.
 
 | Tagged root group | Source members | Source files | Remaining OPEN records |
 |---|---:|---:|---|
-| `CarInspection.PrepareCar` / `CalculatePrepared` | 428 | 43 | 141 dispatch records |
-| Legacy `InspectionBuild.Capture` context | 950 | 89 | 578 dispatch, 46 no-body, 8 implicit-disposal |
-| `PartCart.Quote` context | 1,012 | 88 | 604 dispatch, 46 no-body, 10 implicit-disposal |
+| `CarInspection.PrepareCar` / `CalculatePrepared` | 428 | 43 | 154 dispatch records |
+| Legacy `InspectionBuild.Capture` context | 950 | 89 | 613 dispatch, 46 no-body, 8 implicit-disposal |
+| `PartCart.Quote` context | 1,012 | 88 | 641 dispatch, 46 no-body, 10 implicit-disposal |
 | Existing scoped typed catalogue `Resolve` seam | 122 | 22 | 26 dispatch |
-| Existing concrete `Inspection(ICartCatalogRead)` seam | 34 | 16 | 10 dispatch, 3 no-body |
+| Existing concrete `Inspection(ICartCatalogRead)` seam | 34 | 16 | 12 dispatch, 3 no-body |
 
-The union is **1,038 source members and 16,849 edges**. There are 1,073 no-source-declaration boundaries: 789 metadata and 284 compiler-synthesized records. The 1,472 OPEN records are retained, not counted as passed closure. Members include fields, constructors and properties, not only ordinary methods. The two typed-seam tags are available dormant infrastructure, not an activated candidate.
+The union is **1,038 source members and 16,849 edges**. There are 1,073 no-source-declaration boundaries: 789 metadata and 284 compiler-synthesized records. The 1,559 OPEN records are retained, not counted as passed closure. Members include fields, constructors and properties, not only ordinary methods. The two typed-seam tags are available dormant infrastructure, not an activated candidate.
 
-Checks actually run: 21 independent language/input/table probes, two full zero-error semantic runs with byte-identical outputs, TSV-shape checks, and an expected-failure output-boundary test rejecting `Game/Assets` (exit 1 for the intended guard). Probes cover explicit and implicit/static constructors, distinct initializer routes, getters/setters, method groups, operators, foreach enumeration/current/move/disposal, unresolved interface/delegate/optional-base routes, changed input-byte rejection and malformed-table rejection. No game simulation was executed by these probes.
+Checks actually run: 23 independent language/input/table probes, two full zero-error semantic runs with byte-identical outputs, TSV-shape checks, and an expected-failure output-boundary test rejecting `Game/Assets` (exit 1 for the intended guard). Probes cover explicit and implicit/static constructors, distinct initializer routes, getters/setters, method groups, operators, foreach enumeration/current/move/disposal, unresolved interface/delegate/optional-base routes, changed input-byte rejection and malformed-table rejection. No game simulation was executed by these probes.
 
 Initial tool attempts are retained locally as diagnostics. A language probe caught constructor-key collision and omitted instance initialization; those were fixed. Other probe corrections distinguish direct ref-struct disposal from interface-dispatch disposal and normalized generic delegate names. A table review caught inconsistent OPEN-column widths; output now validates table width before writing and tests rejection. These earlier drafts are not acceptance evidence.
 
-| Final artifact under `v12b` | SHA-256 |
+| Final artifact under `v13b` | SHA-256 |
 |---|---|
 | Source capture | `9EDC7436E3605542777C3E9FA5DBD859096525F623B835798988FF6437DF4994` |
 | Reference capture | `EDBB74810FC71729B5034931029C381982C7663E3AEA564C3D7A3F6958763C8E` |
 | Member table | `191CDCA78ED8DC3B9B27277255C8B75094702630008FBED76E3D68C76E3935F2` |
 | Edge table | `F5C3C48BE110A2E48F0F08E5568C190CCD0082A0D8C2703B5A66D4037591F1E3` |
-| OPEN table | `5544E6B6C3E40D50A70B90AD8D9DB73435538BB4081B1886B8AF58197184D837` |
+| OPEN table | `D731E6004F0C518A13DB28D48751D8386F3C6ABC956A83B6F91A416141389F21` |
 | Compact physical member fixture | `C2FD6ABBB4AFD4691771C65F4CBA5B0753D85A36AF4BEA638993080C0922B9AB` |
 | Compact physical file fixture | `307274997CECEF00D113553BCA67CD613575D8FCF008A5F7018F6F8EA84BD79A` |
 
@@ -68,3 +68,8 @@ Next: Luna-medium/high review must reconcile the corrected 730/0 reference check
 
 
 Post-audit source verification: all 2,169 existing Game/tools paths retain their final compile-E byte hashes, and the complete path set differs only by the two explicit new audit tools (2,171 paths total). All 266 baseline Domain and 28 original-reference files match, and Git shows no Game source/package/settings diff. The tools and compact draft fixtures require independent review; this is a local diagnostic preparation increment, not acceptance or advancement of L1D. Unrelated reports and attachments are preserved.
+
+
+### Override-dispatch correction after the initial tooling commit
+
+`d032e96` retains the first verified tooling snapshot. Subsequent source-target review found that Roslyn marks an override with `IsOverride`, separately from `IsVirtual`; the conservative OPEN predicate now includes it. A nonsealed override/more-derived language probe requires that the override body is recorded, the unresolved dispatch remains OPEN, and no more-derived implementation is guessed. This widens actual OPEN evidence from 1,472 to 1,559; source member/edge/inventory bytes remain unchanged. The physical source targets are now the base `EngineElement.Failed.get` (five sites) and `TireCondition.Failed.get` (one site). All other physical OPEN target names are framework/delegate calls; they still need explicit boundary treatment. This follow-up changes tooling/evidence only, not gameplay or an acceptance gate.

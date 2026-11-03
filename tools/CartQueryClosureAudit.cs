@@ -73,7 +73,7 @@ public static class CartQueryClosureAudit
             string name = Display(target);
             var line = site.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
             Edges.Add(Tsv(root, caller.Key, Rel(Repository, site.SyntaxTree.FilePath), line.ToString(CultureInfo.InvariantCulture), kind, name, Identity(target)));
-            if (target is IMethodSymbol dispatch && (dispatch.IsAbstract || dispatch.IsVirtual || dispatch.ContainingType.TypeKind == TypeKind.Interface || dispatch.MethodKind == MethodKind.DelegateInvoke))
+            if (target is IMethodSymbol dispatch && (dispatch.IsAbstract || dispatch.IsVirtual || dispatch.IsOverride || dispatch.ContainingType.TypeKind == TypeKind.Interface || dispatch.MethodKind == MethodKind.DelegateInvoke))
                 Opens.Add(Tsv(root, caller.Key, "dispatch", kind, name));
             if (target.IsStatic || target is IMethodSymbol created && created.MethodKind == MethodKind.Constructor)
                 TypeInitializers(target.ContainingType, root);
@@ -284,6 +284,9 @@ namespace ClosureAuditFixture {
  class OptionalBase { protected OptionalBase(int value = 0) { Leaf.OptionalBaseCall(); } }
  class OptionalChild : OptionalBase { }
  class Lifetime : System.IDisposable { public void Dispose() { Leaf.UsingDisposeCall(); } }
+ class VirtualBase { public virtual int Run() { return 0; } }
+ class VirtualOverride : VirtualBase { public override int Run() { return Leaf.OverrideBody(); } }
+ class VirtualLeaf : VirtualOverride { public override int Run() { return Leaf.MoreDerivedBody(); } }
  struct Number { public static Number operator +(Number a, Number b) { Leaf.Operator(); return a; } }
  class Sequence { public Enumerator GetEnumerator() { Leaf.Enumerate(); return new Enumerator(); } }
  ref struct Enumerator {
@@ -297,6 +300,8 @@ namespace ClosureAuditFixture {
    var optional = new OptionalChild();
    foreach (var value in new Sequence()) host.Value = value;
    using (var lifetime = new Lifetime()) Leaf.UsingBody();
+   VirtualOverride polymorphic = new VirtualLeaf();
+   polymorphic.Run();
    return host.Go(runner);
   }
  }
@@ -319,6 +324,8 @@ namespace ClosureAuditFixture {
   public static int DisposeCall() { return 1; }
   public static int UsingBody() { return 1; }
   public static int UsingDisposeCall() { return 1; }
+  public static int OverrideBody() { return 1; }
+  public static int MoreDerivedBody() { return 1; }
  }
 }
 ";
@@ -336,7 +343,7 @@ namespace ClosureAuditFixture {
         while (walker.Queue.Count != 0) walker.Visit(walker.Queue.Dequeue());
         WriteTable(output, "self-check-open.tsv", Tsv("root", "caller", "reason", "kind", "detail"), walker.Opens);
         var evidence = new List<string>();
-        foreach (string method in new[] { "BaseCall", "StaticInit", "InstanceInit", "ImplicitStaticInit", "ImplicitInstanceInit", "ImplicitBaseCall", "Getter", "Setter", "MethodGroup", "DirectCall", "Operator", "Enumerate", "Current", "Move", "DisposeCall", "UsingBody" })
+        foreach (string method in new[] { "BaseCall", "StaticInit", "InstanceInit", "ImplicitStaticInit", "ImplicitInstanceInit", "ImplicitBaseCall", "Getter", "Setter", "MethodGroup", "DirectCall", "Operator", "Enumerate", "Current", "Move", "DisposeCall", "UsingBody", "OverrideBody" })
         {
             if (!walker.Records.Values.Any(record => record.Symbol == "ClosureAuditFixture.Leaf." + method + "()"))
                 throw new InvalidOperationException("Audit walker omitted required language-semantic route: " + method);
@@ -354,6 +361,10 @@ namespace ClosureAuditFixture {
         if (!walker.Opens.Any(row => row.Contains("implicit-using-disposal")))
             throw new InvalidOperationException("Audit walker concealed implicit using-disposal lowering.");
         evidence.Add("PASS implicit using-disposal lowering remains explicitly OPEN");
+        if (!walker.Opens.Any(row => row.Contains("ClosureAuditFixture.VirtualOverride.Run()")) ||
+            walker.Records.Values.Any(record => record.Symbol == "ClosureAuditFixture.Leaf.MoreDerivedBody()"))
+            throw new InvalidOperationException("Audit walker concealed override dispatch or guessed a more-derived implementation.");
+        evidence.Add("PASS nonsealed override dispatch remains OPEN without guessing the runtime target");
         File.AppendAllText(path, "\n// deliberate probe drift\n", new UTF8Encoding(false));
         bool rejectedDrift = false;
         try { VerifyUnchanged(fixtureHashes); }
